@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>indi.uhyils</groupId>
+    <artifactId>my</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1</version>
+    <modules>
+        <module>my-dubbo-admin</module>
+        <module>my-api</module>
+        <module>my-service</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+        <spring.version>5.2.5.RELEASE</spring.version>
+        <com.dubbo.version>2.6.2</com.dubbo.version>
+        <org.dubbo.version>2.7.6</org.dubbo.version>
+        <druid.version>1.1.22</druid.version>
+        <org.apache.dubbo.nacos.version>1.2.1</org.apache.dubbo.nacos.version>
+        <commons-lang3.version>3.7</commons-lang3.version>
+        <fastjson.version>1.2.68</fastjson.version>
+        <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
+        <zookeeper.version>3.6.0</zookeeper.version>
+        <zk-client.version>0.11</zk-client.version>
+        <curator.version>2.12.0</curator.version>
+        <mybatis.version>3.5.4</mybatis.version>
+        <mybatis.spring.version>2.0.4</mybatis.spring.version>
+        <mysql.version>8.0.19</mysql.version>
+        <jackson.version>2.10.3</jackson.version>
+        <commons-logging.version>1.2</commons-logging.version>
+        <commons-net.version>3.6</commons-net.version>
+        <junit.version>4.13</junit.version>
+    </properties>
+
+
+
+</project>
