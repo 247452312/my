@@ -12,6 +12,7 @@
         <module>my-dubbo-admin</module>
         <module>my-api</module>
         <module>my-service</module>
+        <module>my-common</module>
     </modules>
 
     <properties>

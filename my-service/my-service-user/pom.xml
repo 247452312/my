@@ -31,6 +31,11 @@
             <artifactId>my-api-provider-user</artifactId>
             <version>0.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common</artifactId>
+            <version>0.0.1</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
