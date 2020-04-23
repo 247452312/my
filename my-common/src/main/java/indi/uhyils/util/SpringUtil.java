@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package indi.uhyils;
+package indi.uhyils.util;
 
 
 import org.slf4j.Logger;
