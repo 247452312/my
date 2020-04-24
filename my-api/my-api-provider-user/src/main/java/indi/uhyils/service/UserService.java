@@ -1,8 +1,11 @@
 package indi.uhyils.service;
 
-import indi.uhyils.model.User;
+import indi.uhyils.request.ArgsRequest;
+import indi.uhyils.request.IdRequest;
+import indi.uhyils.request.UserEntity;
+import indi.uhyils.response.Page;
+import indi.uhyils.response.ServiceResult;
 
-import java.util.List;
 
 /**
  * 学生接口API
@@ -10,36 +13,24 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月20日 11时29分
  */
-public interface UserService {
+public interface UserService extends DefaultEntityService<UserEntity> {
 
-    /**
-     * 根据学号获取学生数据
-     *
-     * @return
-     */
-    User getById(Integer id);
 
     /**
      * 根据班级号获取所有此班级的学生
      *
-     * @param classId
+     * @param idRequest 班级id
      * @return
      */
-    List<User> getByClassId(Integer classId);
+    ServiceResult<Page<UserEntity>> getByClassId(IdRequest idRequest);
+
 
     /**
-     * 新增或修改学生
+     * 根据某几列获取数据
      *
      * @return
      */
-    Boolean addOrUpdate(User user);
-
-    /**
-     * 删除学生
-     *
-     * @return
-     */
-    Boolean delete(Integer id);
+    ServiceResult<Page<UserEntity>> getByArgs(ArgsRequest argsRequest);
 
 
 }

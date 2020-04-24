@@ -10,6 +10,14 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <artifactId>my-api-provider-class</artifactId>
+    
+    <dependencies>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
 
 
 

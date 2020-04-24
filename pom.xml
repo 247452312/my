@@ -33,6 +33,7 @@
         <curator.version>2.12.0</curator.version>
         <mybatis.version>3.5.4</mybatis.version>
         <mybatis.spring.version>2.0.4</mybatis.spring.version>
+        <mybatis.spring-boot.version>2.1.2</mybatis.spring-boot.version>
         <mysql.version>8.0.19</mysql.version>
         <jackson.version>2.10.3</jackson.version>
         <commons-logging.version>1.2</commons-logging.version>

@@ -1,7 +1,10 @@
 package indi.uhyils.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import indi.uhyils.model.User;
+import indi.uhyils.request.IdRequest;
+import indi.uhyils.request.UserEntity;
+import indi.uhyils.response.ServiceResult;
+import indi.uhyils.response.WebResponse;
 import indi.uhyils.service.UserService;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -24,7 +27,10 @@ public class UserController {
 
     @RequestMapping("getUserById")
     @ResponseBody
-    public User getUserById(Integer userId) {
-        return userService.getById(userId);
+    public WebResponse<UserEntity> getUserById(String userId) {
+        ServiceResult<UserEntity> byId = userService.getById(IdRequest.build(userId));
+        return WebResponse.build(byId);
     }
+
+
 }

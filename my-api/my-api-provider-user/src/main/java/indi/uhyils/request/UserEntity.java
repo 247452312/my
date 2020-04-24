@@ -1,6 +1,7 @@
-package indi.uhyils.model;
+package indi.uhyils.request;
 
-import java.io.Serializable;
+
+import indi.uhyils.model.DataEntity;
 
 /**
  * 学生
@@ -8,12 +9,8 @@ import java.io.Serializable;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月20日 11时28分
  */
-public class User implements Serializable {
+public class UserEntity extends DataEntity {
 
-    /**
-     * 学号
-     */
-    public Integer id;
     /**
      * 名字
      */
@@ -21,16 +18,8 @@ public class User implements Serializable {
     /**
      * 班级id
      */
-    public Integer classId;
+    public String classId;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -40,11 +29,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public Integer getClassId() {
+    public String getClassId() {
         return classId;
     }
 
-    public void setClassId(Integer classId) {
+    public void setClassId(String classId) {
         this.classId = classId;
     }
 }

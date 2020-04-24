@@ -7,6 +7,7 @@ import indi.uhyils.util.SpringUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ImportResource;
 
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 @EnableDubbo
 @DubboComponentScan(basePackages = "indi.uhyils.serviceImpl")
+@ImportResource(value = {"classpath:dubbo.xml"})
 public class UserApplication {
     public static void main(String[] args) {
         ApplicationContext act = SpringApplication.run(UserApplication.class, args);

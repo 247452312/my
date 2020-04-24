@@ -1,7 +1,12 @@
 package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import indi.uhyils.model.User;
+import indi.uhyils.request.ArgsRequest;
+import indi.uhyils.request.IdRequest;
+import indi.uhyils.request.ObjRequest;
+import indi.uhyils.request.UserEntity;
+import indi.uhyils.response.Page;
+import indi.uhyils.response.ServiceResult;
 import indi.uhyils.service.UserService;
 
 import java.util.ArrayList;
@@ -24,41 +29,32 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User getById(Integer id) {
-        User user = new User();
-        user.setId(id);
-        user.setName("name");
-        user.setClassId(1);
-        return user;
+    public ServiceResult<Page<UserEntity>> getByClassId(IdRequest idRequest) {
+        return null;
     }
 
     @Override
-    public List<User> getByClassId(Integer classId) {
-        List<User> users = new ArrayList<User>();
-
-        for (int i = 0; i < 2; i++) {
-            User user = new User();
-            user.setId(i);
-            user.setName("name");
-            user.setClassId(classId);
-            users.add(user);
-        }
-        return users;
+    public ServiceResult<Page<UserEntity>> getByArgs(ArgsRequest argsRequest) {
+        return null;
     }
 
     @Override
-    public Boolean addOrUpdate(User user) {
-        if (user.getId() == null) {
-            logger.info("ADD");
-            return true;
-        }
-        logger.info("UPDATE");
-        return true;
+    public ServiceResult<UserEntity> getById(IdRequest idRequest) {
+        return null;
     }
 
     @Override
-    public Boolean delete(Integer id) {
-        logger.info("delete");
-        return true;
+    public ServiceResult<Integer> insert(ObjRequest<UserEntity> insert) {
+        return null;
+    }
+
+    @Override
+    public ServiceResult<Integer> update(ObjRequest<UserEntity> update) {
+        return null;
+    }
+
+    @Override
+    public ServiceResult<Integer> delete(IdRequest idRequest) {
+        return null;
     }
 }

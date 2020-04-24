@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.ClassDao">
+
+    <resultMap id="entityMap" type="indi.uhyils.model.ClassEntity">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+
+        <result column="create_date" property="createDate" jdbcType="INTEGER"/>
+        <result column="update_date" property="updateDate" jdbcType="INTEGER"/>
+        <result column="del_mark" property="delMark" jdbcType="TINYINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="columnList">
+        id,
+        `name`,
+        create_date,
+        update_date,
+        del_mark,
+        remark
+    </sql>
+
+    <select id="getByArgs" resultMap="entityMap">
+        select
+        <include refid="columnList"/>
+        from class
+        where del_mark = 0
+        <foreach item="item" index="index" collection="array">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${page * size}
+        </if>
+    </select>
+
+
+    <select id="getByArgsNoPage" resultMap="entityMap">
+        select
+        <include refid="columnList"/>
+        from class
+        where del_mark = 0
+        <foreach item="item" index="index" collection="array">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+
+
+    </select>
+
+
+    <select id="getById" resultMap="entityMap">
+        select
+        <include refid="columnList"/>
+        from class
+        where del_mark = 0
+        and id = #{id}
+    </select>
+
+    <insert id="insert" parameterMap="indi.uhyils.model.ClassEntity">
+        insert class(
+        <include refid="columnList"/>
+        )
+        values(#{id},#{name},#{create_date},#{update_date},0,#{remark})
+    </insert>
+    <update id="update" parameterMap="indi.uhyils.model.ClassEntity">
+        update class set `name`=#{name},create_date=#{createDate},update_date=#{updateDate},del_mark=#{delMark},remark=#{remark} where id = #{id}
+    </update>
+
+</mapper>
