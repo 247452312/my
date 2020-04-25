@@ -2,6 +2,7 @@ target/
 database/
 !.mvn/wrapper/maven-wrapper.jar
 *.jar
+*.log
 
 ### STS ###
 .apt_generated

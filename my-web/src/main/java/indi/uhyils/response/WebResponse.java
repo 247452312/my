@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 16时57分
  */
-public class WebResponse<T extends Serializable> {
+public class WebResponse<T extends Serializable> implements Serializable {
 
     /**
      * token

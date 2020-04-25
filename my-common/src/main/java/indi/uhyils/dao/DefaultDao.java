@@ -1,6 +1,7 @@
 package indi.uhyils.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -8,7 +9,7 @@ import java.io.Serializable;
  */
 public interface DefaultDao<T extends Serializable> {
 
-    T getById(String id);
+    List<T> getById(String id);
 
     int insert(T t);
 

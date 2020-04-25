@@ -29,7 +29,6 @@
 
 
     <dependencies>
-
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-api-provider-user</artifactId>
@@ -100,6 +99,7 @@
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
+
     </dependencies>
 
     <build>

@@ -3,32 +3,22 @@
 
 <mapper namespace="indi.uhyils.dao.ClassDao">
 
-    <resultMap id="entityMap" type="indi.uhyils.model.ClassEntity">
-        <id column="id" property="id" jdbcType="VARCHAR"/>
-
-        <result column="name" property="name" jdbcType="VARCHAR"/>
-
-        <result column="create_date" property="createDate" jdbcType="INTEGER"/>
-        <result column="update_date" property="updateDate" jdbcType="INTEGER"/>
-        <result column="del_mark" property="delMark" jdbcType="TINYINT"/>
-        <result column="remark" property="remark" jdbcType="VARCHAR"/>
-    </resultMap>
 
     <sql id="columnList">
         id,
         `name`,
-        create_date,
-        update_date,
-        del_mark,
+        create_date as 'createDate',
+        update_date as 'updateDate',
+        del_mark as 'delMark',
         remark
     </sql>
 
-    <select id="getByArgs" resultMap="entityMap">
+    <select id="getByArgs" resultType="indi.uhyils.model.ClassEntity">
         select
         <include refid="columnList"/>
         from class
         where del_mark = 0
-        <foreach item="item" index="index" collection="array">
+        <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
         <if test="page != null and page != ''">
@@ -37,12 +27,12 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultMap="entityMap">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.model.ClassEntity">
         select
         <include refid="columnList"/>
         from class
         where del_mark = 0
-        <foreach item="item" index="index" collection="array">
+        <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
 
@@ -50,7 +40,7 @@
     </select>
 
 
-    <select id="getById" resultMap="entityMap">
+    <select id="getById" resultType="indi.uhyils.model.ClassEntity">
         select
         <include refid="columnList"/>
         from class
@@ -58,13 +48,13 @@
         and id = #{id}
     </select>
 
-    <insert id="insert" parameterMap="indi.uhyils.model.ClassEntity">
+    <insert id="insert" parameterType="indi.uhyils.model.ClassEntity">
         insert class(
         <include refid="columnList"/>
         )
         values(#{id},#{name},#{create_date},#{update_date},0,#{remark})
     </insert>
-    <update id="update" parameterMap="indi.uhyils.model.ClassEntity">
+    <update id="update" parameterType="indi.uhyils.model.ClassEntity">
         update class set `name`=#{name},create_date=#{createDate},update_date=#{updateDate},del_mark=#{delMark},remark=#{remark} where id = #{id}
     </update>
 

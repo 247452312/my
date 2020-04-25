@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * class类的增删改查
@@ -41,13 +42,17 @@ public class ClassServiceImpl implements ClassService {
             byArgs = classDao.getByArgs(argsRequest.getArgs(), argsRequest.getPage(), argsRequest.getSize());
         }
 
-        return ServiceResult.buildSuccessResult("查询成功", byArgs,argsRequest);
+        return ServiceResult.buildSuccessResult("查询成功", byArgs, argsRequest);
     }
 
     @Override
     public ServiceResult<ClassEntity> getById(IdRequest idRequest) {
-        ClassEntity byId = classDao.getById(idRequest.getId());
-        return ServiceResult.buildSuccessResult("查询成功", byId,idRequest);
+        List<ClassEntity> byId = classDao.getById(idRequest.getId());
+        if (byId == null && byId.size() == 0) {
+            return ServiceResult.buildFailedResult("查询失败", null, idRequest);
+        } else {
+            return ServiceResult.buildSuccessResult("查询成功", byId.get(0), idRequest);
+        }
     }
 
     @Override
@@ -56,9 +61,9 @@ public class ClassServiceImpl implements ClassService {
         data.preInsert();
         int count = classDao.insert(data);
         if (count == INSERT_SUCCESS) {
-            return ServiceResult.buildSuccessResult("插入成功", count,insert);
+            return ServiceResult.buildSuccessResult("插入成功", count, insert);
         } else {
-            return ServiceResult.buildFailedResult("插入失败", count,insert);
+            return ServiceResult.buildFailedResult("插入失败", count, insert);
         }
     }
 
@@ -68,9 +73,9 @@ public class ClassServiceImpl implements ClassService {
         data.preUpdate();
         int count = classDao.update(data);
         if (count != 0) {
-            return ServiceResult.buildSuccessResult("修改成功", count,update);
+            return ServiceResult.buildSuccessResult("修改成功", count, update);
         } else {
-            return ServiceResult.buildFailedResult("修改失败", count,update);
+            return ServiceResult.buildFailedResult("修改失败", count, update);
         }
     }
 
@@ -78,9 +83,9 @@ public class ClassServiceImpl implements ClassService {
     public ServiceResult<Integer> delete(IdRequest idRequest) {
         int count = classDao.delete(idRequest.getId());
         if (count != 0) {
-            return ServiceResult.buildSuccessResult("删除成功", count,idRequest);
+            return ServiceResult.buildSuccessResult("删除成功", count, idRequest);
         } else {
-            return ServiceResult.buildFailedResult("删除失败", count,idRequest);
+            return ServiceResult.buildFailedResult("删除失败", count, idRequest);
         }
     }
 
