@@ -1,7 +1,6 @@
-package indi.uhyils.request;
+package indi.uhyils.model;
 
 
-import indi.uhyils.model.DataEntity;
 
 /**
  * 学生
