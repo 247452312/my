@@ -25,7 +25,8 @@ public class DubboApiUtil {
 
 
     /**
-     * ReferenceConfig缓存
+     * ReferenceConfig缓存(重量级, 不缓存太慢了, 但是还没有考虑微服务过多的情况)
+     * TODO 现存bug,有时zookeeper服务器done了之后再创建的referencd可能会是null
      */
     private static final HashMap<String, ReferenceConfig<GenericService>> map = new HashMap<>();
 

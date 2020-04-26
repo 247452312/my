@@ -100,6 +100,55 @@
             <version>${fastjson.version}</version>
         </dependency>
 
+
+
+
+
+
+
+        <!-- springCloud依赖(暂时)-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <!--<version>Finchley.SR2</version>-->
+            <version>Edgware.SR5</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+        <!-- 服务注册中心要使用，eureka客户端不用 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+            <version>1.4.7.RELEASE</version>
+        </dependency>
+        <!-- 服务提供者，eureka客户端需要使用 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <version>1.4.7.RELEASE</version>
+        </dependency>
+        <!-- Feign远程调用，需要调用服务接口可以使用 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+            <version>1.4.7.RELEASE</version>
+        </dependency>
+        <!-- 断路器，服务调用者需要使用该组件，来保证其他服务降级时的处理逻辑 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
+            <version>1.4.7.RELEASE</version>
+        </dependency>
+        <!-- 网关，对外开放的接收外部请求的服务 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zuul</artifactId>
+            <version>1.4.7.RELEASE</version>
+        </dependency>
+        <!-- springCloud依赖(暂时)-->
+
+
     </dependencies>
 
     <build>
