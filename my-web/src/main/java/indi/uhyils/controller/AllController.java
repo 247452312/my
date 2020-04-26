@@ -31,6 +31,7 @@ public class AllController {
     @RequestMapping("action")
     @ResponseBody
     public WebResponse action(@RequestBody Action action, HttpServletRequest request) {
+
         try {
             Object args = action.getArgs();
             List list = new ArrayList();

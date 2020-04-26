@@ -1,5 +1,7 @@
 package indi.uhyils.request;
 
+import indi.uhyils.model.UserEntity;
+
 import java.io.Serializable;
 
 /**
@@ -14,6 +16,8 @@ public class DefaultRequest implements Serializable {
      */
     private String token;
 
+    private UserEntity user;
+
 
     public String getToken() {
         return token;
@@ -21,5 +25,13 @@ public class DefaultRequest implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

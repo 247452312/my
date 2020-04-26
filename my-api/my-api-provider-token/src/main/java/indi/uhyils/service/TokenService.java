@@ -1,7 +1,10 @@
 package indi.uhyils.service;
 
+import indi.uhyils.request.DefaultRequest;
 import indi.uhyils.request.IdRequest;
+import indi.uhyils.request.ObjRequest;
 import indi.uhyils.response.ServiceResult;
+import indi.uhyils.service.indi.uhyils.model.TokenInfo;
 
 /**
  * 根据用户名获取token
@@ -22,6 +25,15 @@ public interface TokenService {
      * @return
      */
     ServiceResult<String> getToken(IdRequest userId);
+
+
+    /**
+     * 根据token 获取token中包含的信息
+     *
+     * @param defaultRequest 默认的信息
+     * @return
+     */
+    ServiceResult<TokenInfo> getTokenInfoByToken(DefaultRequest defaultRequest);
 
 
 }
