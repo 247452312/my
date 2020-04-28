@@ -7,10 +7,10 @@
     <!-- 提供方应用信息，用于计算依赖关系 -->
     <dubbo:application name="consumer-web" id="consumer-web-application"/>
     <!-- 使用multicast广播注册中心暴露服务地址 -->
-    <dubbo:registry address="zookeeper://192.168.1.100:2181" client="curator" id="consumer-web-registry"/>
+    <dubbo:registry address="zookeeper://192.168.1.101:2181" client="curator" id="consumer-web-registry"/>
 
     <!-- 用dubbo协议在20880端口暴露服务 -->
-    <dubbo:protocol name="dubbo" port="20888" id="consumer-web-protocol"/>
+    <dubbo:protocol name="dubbo" port="20880" id="consumer-web-protocol"/>
 
     <dubbo:consumer timeout="3000" id="consumer-web-consumer"/>
 

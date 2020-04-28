@@ -1,7 +1,10 @@
 package indi.uhyils.service;
 
+import indi.uhyils.request.ArgsRequest;
 import indi.uhyils.request.IdRequest;
 import indi.uhyils.request.ObjRequest;
+import indi.uhyils.request.DefaultRequest;
+import indi.uhyils.response.Page;
 import indi.uhyils.response.ServiceResult;
 
 import java.io.Serializable;
@@ -15,6 +18,13 @@ import java.io.Serializable;
  */
 public interface DefaultEntityService<T extends Serializable> {
 
+
+    /**
+     * 根据某几列获取数据
+     *
+     * @return
+     */
+    ServiceResult<Page<T>> getByArgs(ArgsRequest argsRequest);
 
     /**
      * 根据id查询

@@ -1,5 +1,6 @@
 package indi.uhyils.model;
 
+import indi.uhyils.request.DefaultRequest;
 import indi.uhyils.util.MD5Util;
 
 import java.io.Serializable;
@@ -20,13 +21,23 @@ public class DataEntity implements Serializable {
     private Integer createDate;
 
     /**
+     * 创建人
+     */
+    private String createUser;
+
+    /**
      * 最后更新时间
      */
     private Integer updateDate;
+
+    /**
+     * 更新人
+     */
+    private String updateUser;
     /**
      * 删除标志 默认为0
      */
-    private Boolean delMark;
+    private Boolean isDelete;
 
     /**
      * 备注
@@ -36,19 +47,23 @@ public class DataEntity implements Serializable {
     /**
      * 插入之前执行方法，需要手动调用
      */
-    public void preInsert() {
+    public void preInsert(DefaultRequest request) {
         String uuid = UUID.randomUUID().toString();
         this.id = MD5Util.MD5Encode(uuid);
         this.createDate = new Long(System.currentTimeMillis() / 1000).intValue();
+        this.createUser = request.getUser().getId();
+        this.updateDate = this.createDate;
+        this.updateUser = this.createUser;
+
     }
 
     /**
      * 更新之前执行方法，需要手动调用
      */
-    public void preUpdate() {
+    public void preUpdate(DefaultRequest request) {
         this.updateDate = new Long(System.currentTimeMillis() / 1000).intValue();
+        this.updateUser = request.getUser().getId();
     }
-
 
     public String getId() {
         return id;
@@ -66,6 +81,14 @@ public class DataEntity implements Serializable {
         this.createDate = createDate;
     }
 
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
     public Integer getUpdateDate() {
         return updateDate;
     }
@@ -74,12 +97,20 @@ public class DataEntity implements Serializable {
         this.updateDate = updateDate;
     }
 
-    public Boolean getDelMark() {
-        return delMark;
+    public String getUpdateUser() {
+        return updateUser;
     }
 
-    public void setDelMark(Boolean delMark) {
-        this.delMark = delMark;
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
     }
 
     public String getRemark() {

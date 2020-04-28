@@ -23,6 +23,14 @@ public class Arg {
      */
     public Object data;
 
+    public Arg(String name, String symbol, Object data) {
+        this.name = name;
+        this.symbol = symbol;
+        this.data = data;
+    }
+
+    public Arg() {
+    }
 
     public String getName() {
         return name;

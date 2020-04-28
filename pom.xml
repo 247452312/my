@@ -7,7 +7,7 @@
     <groupId>indi.uhyils</groupId>
     <artifactId>my</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <modules>
         <module>my-dubbo-admin</module>
         <module>my-api</module>

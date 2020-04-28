@@ -1,19 +1,14 @@
-package indi.uhyils.model;
+package indi.uhyils.request;
 
-
+import indi.uhyils.enum_.UserTypeEnum;
 
 /**
- * 用户
+ * 用户登录用request
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年04月20日 11时28分
+ * @date 文件创建日期 2020年04月28日 16时49分
  */
-public class UserEntity extends DataEntity {
-
-    /**
-     * 昵称
-     */
-    private String nickName;
+public class LoginRequest extends DefaultRequest {
 
     /**
      * 用户名
@@ -26,18 +21,10 @@ public class UserEntity extends DataEntity {
     private String password;
 
     /**
-     * 用户类型
+     * 用户类型 0->管理 1->用户 2->商户 3->游客
      */
-    private Integer userType;
+    private UserTypeEnum userType;
 
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
 
     public String getUserName() {
         return userName;
@@ -55,11 +42,11 @@ public class UserEntity extends DataEntity {
         this.password = password;
     }
 
-    public Integer getUserType() {
+    public UserTypeEnum getUserType() {
         return userType;
     }
 
-    public void setUserType(Integer userType) {
+    public void setUserType(UserTypeEnum userType) {
         this.userType = userType;
     }
 }

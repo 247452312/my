@@ -1,6 +1,7 @@
 package indi.uhyils.request;
 
 
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -9,7 +10,8 @@ package indi.uhyils.request;
 public class Action {
     private String interfaceName;
     private String methodName;
-    private Object args;
+    private String token;
+    private Map<String, Object> args;
 
 
     public String getInterfaceName() {
@@ -28,11 +30,19 @@ public class Action {
         this.methodName = methodName;
     }
 
-    public Object getArgs() {
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Map<String, Object> getArgs() {
         return args;
     }
 
-    public void setArgs(Object args) {
+    public void setArgs(Map<String, Object> args) {
         this.args = args;
     }
 }

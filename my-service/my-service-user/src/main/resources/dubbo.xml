@@ -8,9 +8,10 @@
     <dubbo:application name="provider-user" id="provider-user" />
 
     <!-- 使用multicast广播注册中心暴露服务地址 -->
-    <dubbo:registry address="zookeeper://192.168.1.100:2181" client="curator" />
+    <dubbo:registry address="zookeeper://192.168.1.101:2181" client="curator" />
 
     <!-- 用dubbo协议在20880端口暴露服务 -->
-    <dubbo:protocol name="dubbo" port="20880" />
+    <dubbo:protocol name="dubbo" port="20882" />
 
+    <dubbo:consumer timeout="3000" />
 </beans>

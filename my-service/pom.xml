@@ -5,17 +5,15 @@
     <parent>
         <artifactId>my</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.1</version>
+        <version>0.0.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 
     <artifactId>my-service</artifactId>
     <packaging>pom</packaging>
     <modules>
         <module>my-service-user</module>
-        <module>my-service-class</module>
-        <module>my-service-token</module>
     </modules>
 
 

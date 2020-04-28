@@ -6,11 +6,15 @@
 
     <sql id="columnList">
         id,
-        `name`,
-        class_id as classId,
+        nick_name as nickName,
+        user_name as userName,
+        password,
+        user_type as userType,
         create_date as 'createDate',
+        create_user as createUser,
         update_date as 'updateDate',
-        del_mark as 'delMark',
+        update_user as updateUser,
+        is_delete as isDelete,
         remark
     </sql>
 
@@ -18,8 +22,9 @@
         select
         <include refid="columnList"/>
         from user
-        where del_mark = 0
-        <foreach item="item" index="index" collection="list">
+        where is_delete = 0
+
+        <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
         <if test="page != null and page != ''">
@@ -32,12 +37,10 @@
         select
         <include refid="columnList"/>
         from user
-        where del_mark = 0
+        where is_delete = 0
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
-
-
     </select>
 
 
@@ -45,25 +48,79 @@
         select
         <include refid="columnList"/>
         from user
-        where del_mark = 0
+        where is_delete = 0
         and id = #{id}
     </select>
-    <select id="getByClassId" resultType="indi.uhyils.model.UserEntity">
-        select
-        <include refid="columnList"/>
+
+    <select id="delete" parameterType="java.lang.Integer">
+        update user
+        set is_delete = 1
+        where id = #{id}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
         from user
-        where del_mark = 0
-        and class_id = #{classId}
+        where is_delete = 0;
+    </select>
+
+    <select id="getUserRightsByUserId" parameterType="java.lang.String"
+            resultType="indi.uhyils.model.UserRightEntity">
+        select id,
+               parent_id   as parentId,
+               parent_ids  as parentIds,
+               `name`,
+               url,
+               create_date as createDate,
+               create_user as createUesr,
+               update_date as updateDate,
+               update_user as updateUser,
+               is_delete   as isDelete,
+               remark
+        from user_rights
+        where id in (select rights_id from user_right_middle where user_id = #{userId})
+    </select>
+    <select id="getUserRightsByRightId" resultType="indi.uhyils.model.UserRightEntity">
+        select id,
+               parent_id   as parentId,
+               parent_ids  as parentIds,
+               `name`,
+               url,
+               create_date as createDate,
+               create_user as createUesr,
+               update_date as updateDate,
+               update_user as updateUser,
+               is_delete   as isDelete,
+               remark
+        from user_rights
+        where id = #{userRightId}
     </select>
 
     <insert id="insert" parameterType="indi.uhyils.model.UserEntity">
-        insert user(
-        <include refid="columnList"/>
-        )
-        values(#{id},#{name},#{classId},#{create_date},#{update_date},0,#{remark})
+        insert user(id, nick_name, user_name, password, user_type, create_date, create_user, update_date, update_user,
+                    is_delete, remark)
+        values (#{id}, #{nickName}, #{userName}, #{password}, #{userType}, #{createDate}, #{createUser}, #{updateDate},
+                #{updateUser}, 0, #{remark})
     </insert>
     <update id="update" parameterType="indi.uhyils.model.UserEntity">
-        update class set `name`=#{name},class_id = #{classId},create_date=#{createDate},update_date=#{updateDate},del_mark=#{delMark},remark=#{remark} where id = #{id}
+        update user set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="nickName != null and nickName != ''">
+            ,nick_name = #{nickName}
+        </if>
+        <if test="userName != null and userName != ''">
+            ,user_name = #{userName}
+        </if>
+        <if test="password != null and password != ''">
+            ,password = #{password}
+        </if>
+        <if test="isDelete != null and isDelete != ''">
+            ,is_delete = #{isDelete}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        where id = #{id}
     </update>
 
 </mapper>

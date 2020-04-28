@@ -1,5 +1,7 @@
 package indi.uhyils.response;
 
+import indi.uhyils.request.DefaultPageRequest;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class Page<T extends Serializable> implements Serializable {
     /**
      * 类
      */
-    private List<T> data;
+    private List<T> list;
 
 
     /**
@@ -36,12 +38,35 @@ public class Page<T extends Serializable> implements Serializable {
      */
     private Integer totalPage;
 
-    public List<T> getData() {
-        return data;
+    public static <T extends Serializable> Page build(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
+        return new Page(list, size, pageNum, count, totalPage);
     }
 
-    public void setData(List<T> data) {
-        this.data = data;
+    public static <T extends Serializable> Page build(DefaultPageRequest pageRequest, List<T> list, Integer count, Integer totalPage) {
+        if (pageRequest.getPaging() == true) { //代表分页
+            return build(list, pageRequest.getSize(), pageRequest.getPage(), count, totalPage);
+        } else {
+            return build(list, count, 1, count, 1);
+        }
+    }
+
+    public Page(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
+        this.list = list;
+        this.size = size;
+        this.pageNum = pageNum;
+        this.count = count;
+        this.totalPage = totalPage;
+    }
+
+    public Page() {
+    }
+
+    public List<T> getList() {
+        return list;
+    }
+
+    public void setList(List<T> list) {
+        this.list = list;
     }
 
     public Integer getSize() {

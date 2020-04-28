@@ -9,8 +9,6 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.response.ServiceResult;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,7 +19,6 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2020年04月24日 17时29分
  */
 public class DubboApiUtil {
-
 
 
     /**
@@ -35,7 +32,7 @@ public class DubboApiUtil {
      *
      * @param interfaceName 接口的名字,可以用全名或者接口名
      * @param methodName    方法名
-     * @param args  方法参数
+     * @param args          方法参数
      * @return 方法返回值
      * @throws ClassNotFoundException
      */
@@ -54,9 +51,9 @@ public class DubboApiUtil {
             reference.setInterface(interfaceName);
             // 声明为泛化接口
             reference.setGeneric(true);
-            reference.setApplication((ApplicationConfig) SpringUtil.getBean("consumer-web-application"));
-            reference.setRegistry((RegistryConfig) SpringUtil.getBean("consumer-web-registry"));
-            reference.setConsumer((ConsumerConfig) SpringUtil.getBean("consumer-web-consumer"));
+            reference.setApplication(SpringUtil.getBean(ApplicationConfig.class));
+            reference.setRegistry(SpringUtil.getBean(RegistryConfig.class));
+            reference.setConsumer(SpringUtil.getBean(ConsumerConfig.class));
             map.put(interfaceName, reference);
         }
 
@@ -73,7 +70,7 @@ public class DubboApiUtil {
         //全部方法
         Method[] methods = Class.forName(interfaceName).getMethods();
 
-        Method method = Arrays.stream(methods).filter(m ->methodName.equalsIgnoreCase(m.getName())&& args.size() == m.getParameterTypes().length).findFirst().get();
+        Method method = Arrays.stream(methods).filter(m -> methodName.equalsIgnoreCase(m.getName()) && args.size() == m.getParameterTypes().length).findFirst().get();
 
         Class[] params = method.getParameterTypes();
 

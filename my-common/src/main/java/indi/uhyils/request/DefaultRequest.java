@@ -5,7 +5,7 @@ import indi.uhyils.model.UserEntity;
 import java.io.Serializable;
 
 /**
- * 默认请求
+ * 请求外包类
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时04分
@@ -17,7 +17,6 @@ public class DefaultRequest implements Serializable {
     private String token;
 
     private UserEntity user;
-
 
     public String getToken() {
         return token;

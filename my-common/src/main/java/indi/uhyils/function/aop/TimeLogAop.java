@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Aspect
+@Order(1)
 public class TimeLogAop {
 
 
@@ -22,7 +24,6 @@ public class TimeLogAop {
      */
     private Logger logger = LoggerFactory.getLogger(TimeLogAop.class);
 
-    public StringBuilder sb = new StringBuilder();
 
     /**
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
@@ -35,13 +36,18 @@ public class TimeLogAop {
 
     @Around("logAspectPoint()")
     public Object timeLogAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
+
         String className = pjp.getTarget().getClass().getCanonicalName();
         String methodName = pjp.getSignature().getName();
         //方法执行前显示 类名,方法名,参数名
         before(pjp, className, methodName);
         Long startTime = System.currentTimeMillis();
+
+
         //执行方法
         Object proceed = pjp.proceed();
+
+
         Long endTime = System.currentTimeMillis();
         double v = (endTime - startTime) / 1000.0;
 
@@ -70,6 +76,7 @@ public class TimeLogAop {
      * @param methodName 方法名
      */
     private void before(ProceedingJoinPoint pjp, String className, String methodName) {
+        StringBuilder sb = new StringBuilder();
         Object[] args = pjp.getArgs();
         sb.append(className);
         sb.append("类中的");

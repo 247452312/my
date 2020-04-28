@@ -1,4 +1,6 @@
-package indi.uhyils.service.indi.uhyils.model;
+package indi.uhyils.model;
+
+import indi.uhyils.enum_.UserTypeEnum;
 
 import java.io.Serializable;
 
@@ -10,14 +12,7 @@ import java.io.Serializable;
  */
 public class TokenInfo implements Serializable {
 
-    /**
-     * 年
-     */
-    private Integer year;
-    /**
-     * 月
-     */
-    private Integer month;
+
     /**
      * 日
      */
@@ -37,6 +32,16 @@ public class TokenInfo implements Serializable {
     private Integer sec;
 
     /**
+     * 随机数
+     */
+    private Integer random;
+
+    /**
+     * 用户类型
+     */
+    private UserTypeEnum type;
+
+    /**
      * 用户id
      */
     private String userId;
@@ -45,23 +50,6 @@ public class TokenInfo implements Serializable {
      * 是否超时
      */
     private Boolean timeOut;
-
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Integer getMonth() {
-        return month;
-    }
-
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
 
     public Integer getDay() {
         return day;
@@ -93,6 +81,22 @@ public class TokenInfo implements Serializable {
 
     public void setSec(Integer sec) {
         this.sec = sec;
+    }
+
+    public Integer getRandom() {
+        return random;
+    }
+
+    public void setRandom(Integer random) {
+        this.random = random;
+    }
+
+    public UserTypeEnum getType() {
+        return type;
+    }
+
+    public void setType(UserTypeEnum type) {
+        this.type = type;
     }
 
     public String getUserId() {

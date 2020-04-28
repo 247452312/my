@@ -17,4 +17,7 @@ public interface DefaultDao<T extends Serializable> {
 
     int delete(String id);
 
+    int count();
+
+
 }
