@@ -23,7 +23,6 @@ public class DubboApiUtil {
 
     /**
      * ReferenceConfig缓存(重量级, 不缓存太慢了, 但是还没有考虑微服务过多的情况)
-     * TODO 现存bug,有时zookeeper服务器done了之后再创建的referencd可能会是null
      */
     private static final HashMap<String, ReferenceConfig<GenericService>> map = new HashMap<>();
 
@@ -45,15 +44,13 @@ public class DubboApiUtil {
         ReferenceConfig<GenericService> reference;
         if (map.keySet().contains(interfaceName)) {
             reference = map.get(interfaceName);
+            if (reference == null) {
+                map.remove(interfaceName);
+                reference = getGenericServiceReferenceConfig(interfaceName);
+                map.put(interfaceName, reference);
+            }
         } else {
-            reference = new ReferenceConfig<>();
-            // 弱类型接口名
-            reference.setInterface(interfaceName);
-            // 声明为泛化接口
-            reference.setGeneric(true);
-            reference.setApplication(SpringUtil.getBean(ApplicationConfig.class));
-            reference.setRegistry(SpringUtil.getBean(RegistryConfig.class));
-            reference.setConsumer(SpringUtil.getBean(ConsumerConfig.class));
+            reference = getGenericServiceReferenceConfig(interfaceName);
             map.put(interfaceName, reference);
         }
 
@@ -80,6 +77,19 @@ public class DubboApiUtil {
         String[] parameterTypes = paramNameList.toArray(new String[paramNameList.size()]);
         return JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, parameterTypes, arg)), ServiceResult.class);
 
+    }
+
+    private static ReferenceConfig<GenericService> getGenericServiceReferenceConfig(String interfaceName) {
+        ReferenceConfig<GenericService> reference;
+        reference = new ReferenceConfig<>();
+        // 弱类型接口名
+        reference.setInterface(interfaceName);
+        // 声明为泛化接口
+        reference.setGeneric(true);
+        reference.setApplication(SpringUtil.getBean(ApplicationConfig.class));
+        reference.setRegistry(SpringUtil.getBean(RegistryConfig.class));
+        reference.setConsumer(SpringUtil.getBean(ConsumerConfig.class));
+        return reference;
     }
 
 }
