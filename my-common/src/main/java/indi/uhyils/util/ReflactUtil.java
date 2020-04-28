@@ -13,9 +13,15 @@ public class ReflactUtil {
 
 
     public static Object getAttr(Object obj, String attrName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        //TODO 没有防止下标越界
-        Method declaredMethod = obj.getClass().getDeclaredMethod("get" + attrName.substring(0, 1).toUpperCase() + attrName.substring(1), null);
-        return declaredMethod.invoke(obj, null);
+        if (obj == null) {
+            return null;
+        }
+        if (attrName != null && attrName.length() > 1) {
+            Method declaredMethod = obj.getClass().getDeclaredMethod("get" + attrName.substring(0, 1).toUpperCase() + attrName.substring(1), null);
+            return declaredMethod.invoke(obj, null);
+        } else {
+            return null;
+        }
 
     }
 }

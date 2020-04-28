@@ -56,9 +56,11 @@ public class TokenInjectAop {
 
 
         //注入defaultRequest中的userId
-        //TODO 没有防止下标越界
         //获取token
         Object[] objs = pjp.getArgs();
+        if (objs == null || objs.length == 0) { //如果没有参数
+            throw new Exception("访问请求无参数");
+        }
         DefaultRequest arg = (DefaultRequest) objs[0];
         String token = arg.getToken();
 
