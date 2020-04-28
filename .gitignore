@@ -3,6 +3,7 @@ database/
 !.mvn/wrapper/maven-wrapper.jar
 *.jar
 *.log
+src/test/
 
 ### STS ###
 .apt_generated
