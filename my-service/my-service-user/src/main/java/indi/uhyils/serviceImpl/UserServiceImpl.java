@@ -181,6 +181,20 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public ServiceResult<Boolean> registerNoToken(RegisterRequest registerRequest) {
+        Integer nickNameRepete = userDao.checkRepeat(registerRequest.getNickName(), "nick_name");
+        if (nickNameRepete != 0) {
+            return ServiceResult.buildSuccessResult("昵称已存在", false, registerRequest);
+        }
+        Integer userNameRepete = userDao.checkRepeat(registerRequest.getUserName(), "user_name");
+        if (userNameRepete != 0) {
+            return ServiceResult.buildSuccessResult("用户名已存在", false, registerRequest);
+        }
+        return ServiceResult.buildSuccessResult("创建用户成功", true, registerRequest);
+
+    }
+
     /**
      * 通过用户所有的叶子结点找出权限森林
      *

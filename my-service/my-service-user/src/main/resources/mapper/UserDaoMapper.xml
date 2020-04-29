@@ -95,6 +95,12 @@
         where id = #{userRightId}
     </select>
 
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from user
+        where ${type} = #{value}
+    </select>
+
     <insert id="insert" parameterType="indi.uhyils.model.UserEntity">
         insert user(id, nick_name, user_name, password, user_type, create_date, create_user, update_date, update_user,
                     is_delete, remark)

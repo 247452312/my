@@ -19,9 +19,11 @@ public interface UserDao extends DefaultDao<UserEntity> {
 
     ArrayList<UserEntity> getByArgsNoPage(List<Arg> map);
 
-    ArrayList<UserEntity> getByArgs(@Param("args") List<Arg> args,@Param("page") Integer page,@Param("size") Integer size);
+    ArrayList<UserEntity> getByArgs(@Param("args") List<Arg> args, @Param("page") Integer page, @Param("size") Integer size);
 
     List<UserRightEntity> getUserRightsByUserId(String userId);
 
     UserRightEntity getUserRightsByRightId(String userRightId);
+
+    Integer checkRepeat(@Param("value") String value, @Param("type") String type);
 }

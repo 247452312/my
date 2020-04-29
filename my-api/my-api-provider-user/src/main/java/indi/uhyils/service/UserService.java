@@ -3,10 +3,7 @@ package indi.uhyils.service;
 import indi.uhyils.exception.EnumParseNoHaveException;
 import indi.uhyils.model.TokenInfo;
 import indi.uhyils.model.UserEntity;
-import indi.uhyils.request.DefaultRequest;
-import indi.uhyils.request.GetUserRequest;
-import indi.uhyils.request.IdRequest;
-import indi.uhyils.request.LoginRequest;
+import indi.uhyils.request.*;
 import indi.uhyils.response.LoginResponse;
 import indi.uhyils.response.ServiceResult;
 
@@ -21,10 +18,10 @@ public interface UserService extends DefaultEntityService<UserEntity> {
 
 
     /**
-     * 游客第一次登录 注入游客信息用
+     * 注入信息用,一般不用
      *
-     * @param idRequest 包含自动生成的16位用户id
-     * @return
+     * @param idRequest 用户的idi
+     * @return 用户
      */
     ServiceResult<UserEntity> getUserByIdNoToken(IdRequest idRequest);
 
@@ -39,7 +36,7 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * 如果是游客, 则userId随机生成一个16位数字序列作为这个游客的id
      *
      * @param userRequest 用户id
-     * @return
+     * @return 通过用户id和用户类型编译的token
      */
     ServiceResult<String> getUserTokenNoToken(GetUserRequest userRequest);
 
@@ -49,7 +46,7 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * 解析token
      *
      * @param request 默认的信息
-     * @return
+     * @return 解析后的token数据
      */
     ServiceResult<TokenInfo> getTokenInfoByTokenNoToken(DefaultRequest request);
 
@@ -57,9 +54,18 @@ public interface UserService extends DefaultEntityService<UserEntity> {
     /**
      * 用户登录 包含从哪里登录的信息
      *
-     * @param userRequest
-     * @return
+     * @param userRequest 用户登录所需要的条件
+     * @return 登录所需要的信息
      */
     ServiceResult<LoginResponse> userLogin(LoginRequest userRequest) throws EnumParseNoHaveException;
+
+
+    /**
+     * 注册(用户注册,管理员注册,商家注册)
+     *
+     * @param registerRequest 注册信息
+     * @return 注册是否成功
+     */
+    ServiceResult<Boolean> registerNoToken(RegisterRequest registerRequest);
 
 }
