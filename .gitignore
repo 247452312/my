@@ -30,3 +30,6 @@ nbdist/
 
 ### db2 ###
 h2db.trace.db
+my-web/.mvn/
+my-web/mvnw
+my-web/mvnw.cmd
