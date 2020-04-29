@@ -25,6 +25,7 @@ public class ApplicationTest {
     @After
     public void after() {
         System.out.println("测试结束-----------------");
+        System.out.println("测试结束-----------------");
     }
 
 }

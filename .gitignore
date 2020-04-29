@@ -3,7 +3,7 @@ database/
 !.mvn/wrapper/maven-wrapper.jar
 *.jar
 *.log
-test/
+**/test/**
 
 ### STS ###
 .apt_generated
@@ -30,6 +30,3 @@ nbdist/
 
 ### db2 ###
 h2db.trace.db
-my-web/.mvn/
-my-web/mvnw
-my-web/mvnw.cmd
