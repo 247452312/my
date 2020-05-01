@@ -34,7 +34,7 @@ dubbo:
 
 spring:
   profiles:
-    active: test     # environment
+    active: release     # environment
   output:
     ansi:
       enabled: ALWAYS
