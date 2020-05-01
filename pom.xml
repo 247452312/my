@@ -13,6 +13,7 @@
         <module>my-service</module>
         <module>my-common</module>
         <module>my-web</module>
+        <module>my-dubbo-admin</module>
     </modules>
 
     <properties>
