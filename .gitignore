@@ -1,7 +1,5 @@
-target/
 database/
 !.mvn/wrapper/maven-wrapper.jar
-*.jar
 *.log
 **/test/**
 
