@@ -9,7 +9,6 @@
     <packaging>pom</packaging>
     <version>0.0.2</version>
     <modules>
-        <module>my-dubbo-admin</module>
         <module>my-api</module>
         <module>my-service</module>
         <module>my-common</module>
