@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDubbo
 @DubboComponentScan(basePackages = "indi.uhyils.*")
-@ImportResource(value = {"classpath:dubbo.xml"})
 public class WebApplication {
 
     public static void main(String[] args) {

@@ -18,7 +18,6 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication
 @EnableDubbo
 @DubboComponentScan(basePackages = "indi.uhyils.serviceImpl")
-@ImportResource(value = {"classpath:dubbo.xml"})
 public class UserApplication {
     public static void main(String[] args) {
         ApplicationContext act = SpringApplication.run(UserApplication.class, args);
