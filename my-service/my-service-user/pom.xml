@@ -46,7 +46,6 @@
         </dependency>
 
 
-
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -74,9 +73,9 @@
 
         <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-common &ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>org.apache.dubbo</groupId>-->
-            <!--<artifactId>dubbo-common</artifactId>-->
-            <!--<version>${org.dubbo.version}</version>-->
+        <!--<groupId>org.apache.dubbo</groupId>-->
+        <!--<artifactId>dubbo-common</artifactId>-->
+        <!--<version>${org.dubbo.version}</version>-->
         <!--</dependency>-->
 
 
@@ -89,6 +88,34 @@
             <artifactId>fastjson</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>indi.uhyils.UserApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>
