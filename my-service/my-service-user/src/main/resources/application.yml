@@ -40,8 +40,8 @@ dubbo:
     name: dubbo
     port: 20881
   consumer:
-    timeout: 3000
+  timeout: 3000
 
 token:
-  salt: my #加盐
-  encodeRules: my #AES算法加密规则
+  salt: my
+  encodeRules: my
