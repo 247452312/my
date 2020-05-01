@@ -6,7 +6,6 @@
         <artifactId>my</artifactId>
         <groupId>indi.uhyils</groupId>
         <version>0.0.2</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>my-dubbo-admin</artifactId>
@@ -66,7 +65,6 @@
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
-            <version>2.12.0</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
