@@ -16,5 +16,21 @@
 # limitations under the License.
 #
 
-server.port=8080
-spring.output.ansi.enabled=ALWAYS
+server:
+  port: 8080
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+
+dubbo:
+  application:
+    name: consumer-web
+  registry:
+    address: zookeeper://39.98.164.91:2181
+    client: curator
+  protocol:
+    name: dubbo
+    port: 20880
+  consumer:
+    timeout: 3000
