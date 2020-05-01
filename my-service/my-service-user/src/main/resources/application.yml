@@ -14,34 +14,118 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 server:
   port: 8081
-spring:
-  output:
-    ansi:
-      enabled: ALWAYS
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://39.98.164.91:3306/my
-    username: root
-    password: 123456
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: indi.uhyils.dao
-
-
 dubbo:
-  application:
-    name: provider-user
   registry:
-    address: zookeeper://39.98.164.91:2181
     client: curator
   protocol:
     name: dubbo
     port: 20881
+  application:
+    name: provider-user
   consumer:
-  timeout: 3000
+    timeout: 3000
+  provider:
+    timeout: 3000
 
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: indi.uhyils.dao
 token:
   salt: my
   encodeRules: my
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+  output:
+    ansi:
+      enabled: ALWAYS
+  profiles:
+    active: dev
+
+
+
+---
+#dev
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://192.168.1.101:3306/my
+    username: root
+    password: 123456
+dubbo:
+  registry:
+    address: zookeeper://192.168.1.101:2181
+  consumer:
+    group: dev
+  provider:
+    group: dev
+
+
+
+
+
+---
+#test
+spring:
+  profiles: test
+  datasource:
+    url: jdbc:mysql://192.168.1.101:3306/my
+    username: root
+    password: 123456
+dubbo:
+  registry:
+    address: zookeeper://192.168.1.101:2181
+  consumer:
+    group: test
+  provider:
+    group: test
+
+
+
+
+
+---
+#release
+spring:
+  profiles: release
+  datasource:
+    url: jdbc:mysql://39.98.164.91:3306/my
+    username: root
+    password: 123456
+dubbo:
+  registry:
+    address: zookeeper://39.98.164.91:2181
+  consumer:
+    group: release
+  provider:
+    group: release
+
+
+
+
+
+
+---
+#prod
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://39.98.164.91:3306/my
+    username: root
+    password: 123456
+dubbo:
+  registry:
+    address: zookeeper://39.98.164.91:2181
+  consumer:
+    group: prod
+  provider:
+    group: prod
+
+
+
+
+
+
