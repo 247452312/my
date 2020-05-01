@@ -54,7 +54,6 @@
             <artifactId>dubbo</artifactId>
         </dependency>
 
-
         <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-common -->
         <dependency>
             <groupId>org.apache.dubbo</groupId>
