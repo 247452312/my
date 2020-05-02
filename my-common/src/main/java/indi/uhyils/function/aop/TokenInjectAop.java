@@ -5,9 +5,11 @@ import indi.uhyils.enum_.UserTypeEnum;
 import indi.uhyils.model.TokenInfo;
 import indi.uhyils.model.UserEntity;
 import indi.uhyils.request.DefaultRequest;
+import indi.uhyils.request.GetUserRequest;
 import indi.uhyils.request.IdRequest;
 import indi.uhyils.response.ServiceResult;
 import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.util.MD5Util;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -55,36 +58,53 @@ public class TokenInjectAop {
         }
 
 
-        //注入defaultRequest中的userId
-        //获取token
+        //获取defaultRequest
         Object[] objs = pjp.getArgs();
         if (objs == null || objs.length == 0) { //如果没有参数
             throw new Exception("访问请求无参数");
         }
         DefaultRequest arg = (DefaultRequest) objs[0];
         String token = arg.getToken();
+        if (token != null && !"".equals(token)) { //说明有token 不是第一次访问
+            //解析token获取tokenInfo
+            TokenInfo tokenInfo = getTokenInfo(token);
 
-        //解析token获取tokeninfo
-        TokenInfo tokenInfo = getTokenInfo(token);
+            //根据tokenInfo 获取UserEntity
+            UserTypeEnum type = tokenInfo.getType();
+            UserEntity userEntity;
+            if (type != UserTypeEnum.TOURIST) { //如果不等于 则说明不是游客 -> 数据库中有数据
+                ArrayList<Object> args = new ArrayList<>();
+                args.add(IdRequest.build(tokenInfo.getUserId()));
+                ServiceResult<UserEntity> serviceResult = DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args);
+                userEntity = serviceResult.getData();
+            } else {
+                userEntity = new UserEntity();
+                userEntity.setId(tokenInfo.getUserId());
+                userEntity.setNickName("游客_" + tokenInfo.getUserId());
+            }
+            arg.setUser(userEntity);
+            //执行方法
+            Object proceed = pjp.proceed(objs);
+            return proceed;
 
-        //根据tokeninfo 获取UserEntity
-        UserTypeEnum type = tokenInfo.getType();
-        UserEntity userEntity;
-        if (type != UserTypeEnum.TOURIST) { //如果不等于 则说明不是游客 -> 数据库中有数据
-            ArrayList<Object> args = new ArrayList<>();
-            args.add(IdRequest.build(tokenInfo.getUserId()));
-            ServiceResult<UserEntity> serviceResult = DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args);
-            userEntity = serviceResult.getData();
-        } else {
-            userEntity = new UserEntity();
-            userEntity.setId(tokenInfo.getUserId());
-            userEntity.setNickName("游客_" + tokenInfo.getUserId());
+        } else { //第一次登录
+            GetUserRequest getUserRequest = new GetUserRequest();
+            getUserRequest.setUserType(UserTypeEnum.TOURIST);
+            String touristId = UUID.randomUUID().toString();
+            getUserRequest.setId(MD5Util.MD5Encode(touristId));
+            List list = new ArrayList();
+            list.add(getUserRequest);
+            ServiceResult<String> tokenResult = DubboApiUtil.dubboApiTool("UserService", "getUserTokenNoToken", list);
+            //这个是获取到的token
+            String data = tokenResult.getData();
+            arg.setToken(data);
+            UserEntity userEntity = new UserEntity();
+            userEntity.setId(touristId);
+            userEntity.setNickName(String.format("游客_%s", touristId));
+            arg.setUser(userEntity);
+            return pjp.proceed(objs);
         }
-        arg.setUser(userEntity);
 
-        //执行方法
-        Object proceed = pjp.proceed(objs);
-        return proceed;
     }
 
     private TokenInfo getTokenInfo(String token) throws ClassNotFoundException {
