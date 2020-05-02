@@ -33,8 +33,6 @@ dubbo:
 
 
 spring:
-  profiles:
-    active: dev     # environment
   output:
     ansi:
       enabled: ALWAYS
