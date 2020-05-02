@@ -42,6 +42,48 @@
         <commons-net.version>3.6</commons-net.version>
         <junit.version>4.13</junit.version>
     </properties>
+
+    <!-- profile配置 -->
+    <profiles>
+        <profile>
+            <!-- 本地开发环境 -->
+            <id>dev</id>
+            <!-- 定义该配置的属性 -->
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <!-- 设置默认激活这个配置 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- 测试环境 -->
+            <id>test</id>
+            <!-- 定义该配置的属性 -->
+            <properties>
+                <profiles.active>test</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <!-- 准生产环境 -->
+            <id>release</id>
+            <!-- 定义该配置的属性 -->
+            <properties>
+                <profiles.active>release</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <!-- 生产环境 -->
+            <id>prod</id>
+            <!-- 定义该配置的属性 -->
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
+
+
     <dependencyManagement>
         <dependencies>
             <dependency>
