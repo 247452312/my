@@ -1,0 +1,2 @@
+**/*.yml merge=out
+**/*.xml merge=out

@@ -1,5 +1,7 @@
 package indi.uhyils.function.aop;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -51,7 +53,7 @@ public class TimeLogAop {
         Long endTime = System.currentTimeMillis();
         double v = (endTime - startTime) / 1000.0;
 
-        after(className, methodName, v);
+        after(className, methodName, v, proceed);
         return proceed;
 
 
@@ -63,9 +65,11 @@ public class TimeLogAop {
      * @param className  类名称
      * @param methodName 方法名称
      * @param v          执行时间
+     * @param proceed
      */
-    private void after(String className, String methodName, double v) {
+    private void after(String className, String methodName, double v, Object proceed) {
         logger.info(String.format("%s类中的%s方法执行完毕,执行时间为%f秒", className, methodName, v));
+        logger.info(String.format("返回值为:%s", JSONObject.toJSONString(proceed)));
     }
 
     /**
@@ -83,7 +87,7 @@ public class TimeLogAop {
         sb.append(methodName);
         sb.append("方法开始执行,参数为:");
         for (Object arg : args) {
-            sb.append(arg.toString());
+            sb.append(JSONObject.toJSONString(arg));
             sb.append("(");
             sb.append(arg.getClass().getSimpleName());
             sb.append(")");
