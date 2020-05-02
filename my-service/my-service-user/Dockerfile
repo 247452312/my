@@ -2,10 +2,10 @@
 # VERSION {版本号}
 # Author: uhyils
 
+FROM java:8
+
 ARG runEnv
 ARG version
-
-FROM java:8
 
 #作者
 MAINTAINER uhyils <uhyils@qq.com>
