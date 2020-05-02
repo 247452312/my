@@ -1,0 +1,23 @@
+server:
+  port: 8080
+dubbo:
+  registry:
+    client: curator
+    address: zookeeper://192.168.1.101:2181
+  protocol:
+    name: dubbo
+    port: 20880
+  application:
+    name: consumer-web
+  consumer:
+    timeout: 3000
+    group: dev
+  provider:
+    timeout: 3000
+    group: dev
+
+
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
