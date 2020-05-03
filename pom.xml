@@ -95,6 +95,16 @@
                 <artifactId>my-api-provider-user</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-api-provider-good</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-api-provider-shop</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <!-- Import dependency management from Spring Boot -->
