@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -199,9 +200,9 @@ public class UserServiceImpl implements UserService {
      * 通过用户所有的叶子结点找出权限森林
      *
      * @param userRights
-     * @return
+     * @return 所有的父节点(递归所有子节点)
      */
-    private List<UserRightEntity> initUserRightsParent(List<UserRightEntity> userRights) {
+    private ArrayList<UserRightEntity> initUserRightsParent(List<UserRightEntity> userRights) {
         //获取此节点权限所有の父节点id
         TreeSet<String> treeSet = new TreeSet<>();
         for (UserRightEntity userRight : userRights) {
@@ -227,7 +228,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        List<UserRightEntity> allParent = new ArrayList<>();
+        ArrayList<UserRightEntity> allParent = new ArrayList<>();
         for (Map.Entry<String, UserRightEntity> stringUserRightEntityEntry : map.entrySet()) {
             if (stringUserRightEntityEntry.getValue().getParentId().equals("0")) { // 选出父节点
                 allParent.add(stringUserRightEntityEntry.getValue());

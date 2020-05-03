@@ -46,6 +46,15 @@ public class TokenInjectAop {
     }
 
 
+    /**
+     * token 验证有无
+     * token 解析
+     * 转为userEntity注入
+     *
+     * @param pjp
+     * @return
+     * @throws Throwable
+     */
     @Around("tokenInjectPoint()")
     public Object tokenInjectAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
 
@@ -56,8 +65,6 @@ public class TokenInjectAop {
             Object proceed = pjp.proceed();
             return proceed;
         }
-
-
         //获取defaultRequest
         Object[] objs = pjp.getArgs();
         if (objs == null || objs.length == 0) { //如果没有参数
@@ -100,11 +107,11 @@ public class TokenInjectAop {
             arg.setToken(data);
             UserEntity userEntity = new UserEntity();
             userEntity.setId(touristId);
+            //这是一个游客
             userEntity.setNickName(String.format("游客_%s", touristId));
             arg.setUser(userEntity);
             return pjp.proceed(objs);
         }
-
     }
 
     private TokenInfo getTokenInfo(String token) throws ClassNotFoundException {

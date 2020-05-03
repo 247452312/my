@@ -21,7 +21,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
 
     ArrayList<UserEntity> getByArgs(@Param("args") List<Arg> args, @Param("page") Integer page, @Param("size") Integer size);
 
-    List<UserRightEntity> getUserRightsByUserId(String userId);
+    ArrayList<UserRightEntity> getUserRightsByUserId(String userId);
 
     UserRightEntity getUserRightsByRightId(String userRightId);
 
