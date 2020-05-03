@@ -96,7 +96,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>indi.uhyils.UserApplication</mainClass>
+                    <mainClass>indi.uhyils.ShopApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

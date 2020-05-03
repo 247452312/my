@@ -24,7 +24,6 @@
         </dependencies>
     </dependencyManagement>
 
-
     <dependencies>
         <dependency>
             <groupId>indi.uhyils</groupId>

@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8082
 dubbo:
   registry:
     client: curator
@@ -8,7 +8,7 @@ dubbo:
     name: dubbo
     port: 20881
   application:
-    name: provider-good
+    name: provider-shop
   consumer:
     timeout: 3000
     group: prod
