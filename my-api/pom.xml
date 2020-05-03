@@ -13,6 +13,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>my-api-provider-user</module>
+        <module>my-api-provider-good</module>
+        <module>my-api-provider-shop</module>
     </modules>
 
 

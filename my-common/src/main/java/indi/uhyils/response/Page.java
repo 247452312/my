@@ -42,6 +42,16 @@ public class Page<T extends Serializable> implements Serializable {
         return new Page(list, size, pageNum, count, totalPage);
     }
 
+    /**
+     * 创建一个page
+     *
+     * @param pageRequest
+     * @param list
+     * @param count
+     * @param totalPage
+     * @param <T>
+     * @return
+     */
     public static <T extends Serializable> Page build(DefaultPageRequest pageRequest, List<T> list, Integer count, Integer totalPage) {
         if (pageRequest.getPaging() == true) { //代表分页
             return build(list, pageRequest.getSize(), pageRequest.getPage(), count, totalPage);

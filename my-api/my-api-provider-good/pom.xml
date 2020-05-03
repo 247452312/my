@@ -3,21 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>my</artifactId>
+        <artifactId>my-api</artifactId>
         <groupId>indi.uhyils</groupId>
         <version>0.0.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.2</version>
 
-    <artifactId>my-service</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>my-service-user</module>
-        <module>my-web</module>
-        <module>my-service-good</module>
-        <module>my-service-shop</module>
-    </modules>
-
+    <artifactId>my-api-provider-good</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common</artifactId>
+            <version>0.0.2</version>
+        </dependency>
+    </dependencies>
 
 </project>
