@@ -1,0 +1,37 @@
+server:
+  port: 8082
+dubbo:
+  registry:
+    client: curator
+    address: zookeeper://39.98.164.91:2181
+  protocol:
+    name: dubbo
+    port: 20882
+  application:
+    name: provider-transaction
+  consumer:
+    timeout: 3000
+    group: release
+  provider:
+    timeout: 3000
+    group: release
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: indi.uhyils.dao
+token:
+  salt: my
+  encodeRules: my
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://39.98.164.91:3306/my
+    username: root
+    password: 123456
+  output:
+    ansi:
+      enabled: ALWAYS
+
+redis:
+  ip: 39.98.164.91
+  port: 6379

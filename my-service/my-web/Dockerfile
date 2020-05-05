@@ -14,7 +14,7 @@ MAINTAINER uhyils <uhyils@qq.com>
 ADD target/my-web-$version.jar /app.jar
 
 #启动容器时的进程
-ENTRYPOINT ["java","-jar","/app.jar","--spring.profiles.active=$runEnv"]
+CMD ["java","-jar","/app.jar","--spring.profiles.active=$runEnv"]
 
 #暴露8082端口
 EXPOSE 8080 20880

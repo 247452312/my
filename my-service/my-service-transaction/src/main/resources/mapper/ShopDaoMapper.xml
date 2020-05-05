@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.ShopDao">
+
+
+    <sql id="columnList">
+        id,
+        user_id as userId,
+        name,
+        create_date as 'createDate',
+        create_user as createUser,
+        update_date as 'updateDate',
+        update_user as updateUser,
+        is_delete as isDelete,
+        remark
+    </sql>
+
+    <select id="getByArgs" resultType="indi.uhyils.model.ShopEntity">
+        select
+        <include refid="columnList"/>
+        from shop
+        where is_delete = 0
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${page * size}
+        </if>
+    </select>
+
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.model.ShopEntity">
+        select
+        <include refid="columnList"/>
+        from shop
+        where is_delete = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+
+    <select id="getById" resultType="indi.uhyils.model.ShopEntity">
+        select
+        <include refid="columnList"/>
+        from shop
+        where is_delete = 0
+        and id = #{id}
+    </select>
+
+    <select id="delete" parameterType="java.lang.Integer">
+        update shop
+        set is_delete = 1
+        where id = #{id}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from shop
+        where is_delete = 0;
+    </select>
+
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from shop
+        where ${type} = #{value}
+    </select>
+
+    <insert id="insert" parameterType="indi.uhyils.model.ShopEntity">
+        insert shop(id, user_id, name, create_date, create_user, update_date, update_user,
+                    is_delete, remark)
+        values (#{id}, #{userId}, #{name}, #{createDate}, #{createUser}, #{updateDate},
+                #{updateUser}, 0, #{remark})
+    </insert>
+    <update id="update" parameterType="indi.uhyils.model.ShopEntity">
+        update shop set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="userId != null and userId != ''">
+            ,user_id = #{userId}
+        </if>
+        <if test="name != null and name != ''">
+            ,name = #{name}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        where id = #{id}
+    </update>
+</mapper>

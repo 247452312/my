@@ -78,7 +78,6 @@
         <!--<version>${org.dubbo.version}</version>-->
         <!--</dependency>-->
 
-
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
