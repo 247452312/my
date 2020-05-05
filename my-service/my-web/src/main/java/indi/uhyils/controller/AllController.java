@@ -35,6 +35,7 @@ public class AllController {
     @RequestMapping("action")
     @ResponseBody
     public WebResponse action(@RequestBody Action action, HttpServletRequest request) {
+
         //验证登录情况 如果未登录 则获取游客token
         action.getArgs().put("token", action.getToken());
         try {
