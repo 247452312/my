@@ -8,8 +8,9 @@
         <version>0.0.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <version>0.0.2</version>
 
-    <artifactId>my-service-transaction</artifactId>
+    <artifactId>my-service-shop</artifactId>
     <packaging>jar</packaging>
     <dependencyManagement>
         <dependencies>
@@ -24,10 +25,11 @@
         </dependencies>
     </dependencyManagement>
 
+
     <dependencies>
         <dependency>
             <groupId>indi.uhyils</groupId>
-            <artifactId>my-api-provider-transaction</artifactId>
+            <artifactId>my-api-provider-shop</artifactId>
         </dependency>
         <dependency>
             <groupId>indi.uhyils</groupId>
@@ -77,6 +79,7 @@
         <!--<version>${org.dubbo.version}</version>-->
         <!--</dependency>-->
 
+
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
@@ -114,6 +117,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

@@ -1,20 +1,20 @@
 server:
-  port: 8081
+  port: 8082
 dubbo:
   registry:
     client: curator
-    address: zookeeper://39.98.164.91:2181
+    address: zookeeper://192.168.1.101:2181
   protocol:
     name: dubbo
     port: 20881
   application:
-    name: provider-user
+    name: provider-good
   consumer:
     timeout: 3000
-    group: release
+    group: dev
   provider:
     timeout: 3000
-    group: release
+    group: dev
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -25,13 +25,9 @@ token:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://39.98.164.91:3306/my
+    url: jdbc:mysql://192.168.1.101:3306/my
     username: root
     password: 123456
   output:
     ansi:
       enabled: ALWAYS
-
-redis:
-  ip: 39.98.164.91
-  port: 6379
