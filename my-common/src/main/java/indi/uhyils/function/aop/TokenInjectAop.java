@@ -1,5 +1,6 @@
 package indi.uhyils.function.aop;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.UserTypeEnum;
 import indi.uhyils.model.TokenInfo;
@@ -10,6 +11,7 @@ import indi.uhyils.request.IdRequest;
 import indi.uhyils.response.ServiceResult;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.MD5Util;
+import org.apache.catalina.User;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -65,13 +67,17 @@ public class TokenInjectAop {
             Object proceed = pjp.proceed();
             return proceed;
         }
-        //获取defaultRequest
+
+        //获取token
         Object[] objs = pjp.getArgs();
-        if (objs == null || objs.length == 0) { //如果没有参数
+        boolean b = objs == null;
+        boolean b1 = objs.length == 0;
+        if (b || b1) { //如果没有参数
             throw new Exception("访问请求无参数");
         }
         DefaultRequest arg = (DefaultRequest) objs[0];
         String token = arg.getToken();
+
         if (token != null && !"".equals(token)) { //说明有token 不是第一次访问
             //解析token获取tokenInfo
             TokenInfo tokenInfo = getTokenInfo(token);
@@ -81,9 +87,13 @@ public class TokenInjectAop {
             UserEntity userEntity;
             if (type != UserTypeEnum.TOURIST) { //如果不等于 则说明不是游客 -> 数据库中有数据
                 ArrayList<Object> args = new ArrayList<>();
-                args.add(IdRequest.build(tokenInfo.getUserId()));
-                ServiceResult<UserEntity> serviceResult = DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args);
-                userEntity = serviceResult.getData();
+                IdRequest build = IdRequest.build(tokenInfo.getUserId());
+                build.setToken(token);
+                args.add(build);
+                ServiceResult<JSONObject> serviceResult = DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args);
+                JSONObject data = serviceResult.getData();
+                userEntity = data.toJavaObject(UserEntity.class);
+
             } else {
                 userEntity = new UserEntity();
                 userEntity.setId(tokenInfo.getUserId());

@@ -17,6 +17,7 @@ import indi.uhyils.service.UserService;
 
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
+import indi.uhyils.util.RedisPoolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    @Autowired
+    private RedisPoolUtil redisPoolUtil;
     @Autowired
     private UserDao userDao;
 
@@ -110,6 +113,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServiceResult<UserEntity> getUserByIdNoToken(IdRequest idRequest) {
+
+        //缓存
+        UserEntity user = redisPoolUtil.getUser(idRequest.getToken());
+        if (user != null) {
+            return ServiceResult.buildSuccessResult("查询成功", user, idRequest);
+        }
+
         List<UserEntity> byId = userDao.getById(idRequest.getId());
         if (byId != null && byId.size() == 1) {
             return ServiceResult.buildSuccessResult("查询成功", byId.get(0), idRequest);
@@ -153,22 +163,26 @@ public class UserServiceImpl implements UserService {
             return ServiceResult.buildFailedResult(e.getMessage(), null, request);
         }
         tokenInfo.setUserId(userId);
-
         return ServiceResult.buildSuccessResult("解密成功", tokenInfo, request);
     }
 
     @Override
     public ServiceResult<LoginResponse> userLogin(LoginRequest userRequest) throws EnumParseNoHaveException {
         ArrayList<Arg> objects = new ArrayList<>();
-        objects.add(new Arg("userName", "=", userRequest.getUserName()));
+        objects.add(new Arg("user_name", "=", userRequest.getUserName()));
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
-        objects.add(new Arg("userType", "=", userRequest.getUserType().getUserType()));
+        objects.add(new Arg("user_type", "=", userRequest.getUserType().getUserType()));
         ArrayList<UserEntity> byArgsNoPage = userDao.getByArgsNoPage(objects);
         if (byArgsNoPage.size() != 1) {
             return ServiceResult.buildSuccessResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail(), userRequest);
         }
         UserEntity userEntity = byArgsNoPage.get(0);
+
         String token = getToken(userEntity.getId(), UserTypeEnum.parse(userEntity.getUserType()));
+        userRequest.setToken(token);
+        if (userEntity != null) {
+            redisPoolUtil.addUser(token, userEntity);
+        }
         if (!userRequest.getUserType().equals(UserTypeEnum.USER)) { // 不是用户
             //获取角色所有的权限
             List<UserRightEntity> userRights = userDao.getUserRightsByUserId(userEntity.getId());
@@ -178,8 +192,6 @@ public class UserServiceImpl implements UserService {
         } else {
             return ServiceResult.buildSuccessResult("登录成功", LoginResponse.buildLoginSuccess(token, userEntity, null), userRequest);
         }
-
-
     }
 
     @Override

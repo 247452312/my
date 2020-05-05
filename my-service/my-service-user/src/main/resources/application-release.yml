@@ -31,3 +31,7 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+
+redis:
+  ip: 39.98.164.91
+  port: 6379
