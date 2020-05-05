@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8081
 dubbo:
   registry:
     client: curator
@@ -8,13 +8,13 @@ dubbo:
     name: dubbo
     port: 20881
   application:
-    name: provider-good
+    name: provider-user
   consumer:
     timeout: 3000
-    group: prod
+    group: release
   provider:
     timeout: 3000
-    group: prod
+    group: release
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -31,3 +31,7 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+
+redis:
+  ip: 39.98.164.91
+  port: 6379

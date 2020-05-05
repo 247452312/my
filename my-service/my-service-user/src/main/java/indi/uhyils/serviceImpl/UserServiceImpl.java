@@ -78,7 +78,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServiceResult<Integer> insert(ObjRequest<UserEntity> insert) {
-
         UserEntity data = insert.getData();
         data.preInsert(insert);
         int count = userDao.insert(data);
