@@ -1,6 +1,10 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.request.model.Arg;
+import org.apache.ibatis.annotations.Param;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +14,10 @@ import java.util.List;
 public interface DefaultDao<T extends Serializable> {
 
     List<T> getById(String id);
+
+    ArrayList<T> getByArgsNoPage(List<Arg> map);
+
+    ArrayList<T> getByArgs(@Param("args") List<Arg> args, @Param("page") Integer page, @Param("size") Integer size);
 
     int insert(T t);
 

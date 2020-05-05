@@ -28,22 +28,23 @@
         </dependencies>
     </dependencyManagement>
 
-
     <dependencies>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common</artifactId>
+        </dependency>
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-api-provider-user</artifactId>
         </dependency>
         <dependency>
             <groupId>indi.uhyils</groupId>
-            <artifactId>my-common</artifactId>
+            <artifactId>my-api-provider-transaction</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
         <dependency>

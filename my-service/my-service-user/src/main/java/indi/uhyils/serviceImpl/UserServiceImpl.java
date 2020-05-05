@@ -17,6 +17,7 @@ import indi.uhyils.service.UserService;
 
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
+import indi.uhyils.util.RedisPoolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,15 @@ import java.util.*;
  * @date 文件创建日期 2020年04月20日 11时51分
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements UserService {
 
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
-    private UserDao userDao;
+    private RedisPoolUtil redisPoolUtil;
+    @Autowired
+    private UserDao dao;
 
     @Value("${token.salt}")
     private String salt;
@@ -46,70 +49,16 @@ public class UserServiceImpl implements UserService {
     @Value("${token.encodeRules}")
     private String encodeRules;
 
-    @Override
-    public ServiceResult<Page<UserEntity>> getByArgs(ArgsRequest argsRequest) {
-        List<Arg> args = argsRequest.getArgs();
-        Boolean paging = argsRequest.getPaging();
-        if (paging == true) {
-            ArrayList<UserEntity> byArgs = userDao.getByArgs(args, argsRequest.getPage(), argsRequest.getSize());
-            int count = userDao.count();
-            Page<UserEntity> build = Page.build(argsRequest, byArgs, count, (count / argsRequest.getSize()) + 1);
-            return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
-        } else {
-            ArrayList<UserEntity> byArgs = userDao.getByArgsNoPage(args);
-            int count = userDao.count();
-            Page<UserEntity> build = Page.build(argsRequest, byArgs, count, null);
-            return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
-        }
-    }
-
-    @Override
-    public ServiceResult<UserEntity> getById(IdRequest idRequest) {
-        List<UserEntity> byId = userDao.getById(idRequest.getId());
-        if (byId != null && byId.size() == 1) {
-            return ServiceResult.buildSuccessResult("查询成功", byId.get(0), idRequest);
-        }
-        return ServiceResult.buildFailedResult("查无此人", null, idRequest);
-    }
-
-    @Override
-    public ServiceResult<Integer> insert(ObjRequest<UserEntity> insert) {
-
-        UserEntity data = insert.getData();
-        data.preInsert(insert);
-        int count = userDao.insert(data);
-        if (count == 1) {
-            return ServiceResult.buildSuccessResult("创建成功", count, insert);
-        }
-        return ServiceResult.buildFailedResult("创建失败", 0, insert);
-    }
-
-    @Override
-    public ServiceResult<Integer> update(ObjRequest<UserEntity> update) {
-        UserEntity data = update.getData();
-        data.preUpdate(update);
-        int count = userDao.update(data);
-        if (count != 0) {
-            return ServiceResult.buildSuccessResult("修改成功", count, update);
-        } else {
-            return ServiceResult.buildFailedResult("修改失败", 0, update);
-        }
-    }
-
-    @Override
-    public ServiceResult<Integer> delete(IdRequest idRequest) {
-        int delete = userDao.delete(idRequest.getId());
-        if (delete != 0) {
-            return ServiceResult.buildSuccessResult("删除成功", delete, idRequest);
-        } else {
-            return ServiceResult.buildFailedResult("删除失败", delete, idRequest);
-        }
-    }
-
 
     @Override
     public ServiceResult<UserEntity> getUserByIdNoToken(IdRequest idRequest) {
-        List<UserEntity> byId = userDao.getById(idRequest.getId());
+
+        //缓存
+        UserEntity user = redisPoolUtil.getUser(idRequest.getToken());
+        if (user != null) {
+            return ServiceResult.buildSuccessResult("查询成功", user, idRequest);
+        }
+        List<UserEntity> byId = dao.getById(idRequest.getId());
         if (byId != null && byId.size() == 1) {
             return ServiceResult.buildSuccessResult("查询成功", byId.get(0), idRequest);
         }
@@ -152,42 +101,46 @@ public class UserServiceImpl implements UserService {
             return ServiceResult.buildFailedResult(e.getMessage(), null, request);
         }
         tokenInfo.setUserId(userId);
-
+        UserEntity user = redisPoolUtil.getUser(token);
+        tokenInfo.setTimeOut(user == null);
         return ServiceResult.buildSuccessResult("解密成功", tokenInfo, request);
     }
 
     @Override
     public ServiceResult<LoginResponse> userLogin(LoginRequest userRequest) throws EnumParseNoHaveException {
         ArrayList<Arg> objects = new ArrayList<>();
-        objects.add(new Arg("userName", "=", userRequest.getUserName()));
+        objects.add(new Arg("user_name", "=", userRequest.getUserName()));
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
-        objects.add(new Arg("userType", "=", userRequest.getUserType().getUserType()));
-        ArrayList<UserEntity> byArgsNoPage = userDao.getByArgsNoPage(objects);
+        objects.add(new Arg("user_type", "=", userRequest.getUserType().getUserType()));
+        ArrayList<UserEntity> byArgsNoPage = dao.getByArgsNoPage(objects);
         if (byArgsNoPage.size() != 1) {
             return ServiceResult.buildSuccessResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail(), userRequest);
         }
         UserEntity userEntity = byArgsNoPage.get(0);
+
         String token = getToken(userEntity.getId(), UserTypeEnum.parse(userEntity.getUserType()));
+        userRequest.setToken(token);
+        if (userEntity != null) {
+            redisPoolUtil.addUser(token, userEntity);
+        }
         if (!userRequest.getUserType().equals(UserTypeEnum.USER)) { // 不是用户
             //获取角色所有的权限
-            List<UserRightEntity> userRights = userDao.getUserRightsByUserId(userEntity.getId());
+            List<UserRightEntity> userRights = dao.getUserRightsByUserId(userEntity.getId());
             //获取权限链
             List<UserRightEntity> list = initUserRightsParent(userRights);
             return ServiceResult.buildSuccessResult("登录成功", LoginResponse.buildLoginSuccess(token, userEntity, list), userRequest);
         } else {
             return ServiceResult.buildSuccessResult("登录成功", LoginResponse.buildLoginSuccess(token, userEntity, null), userRequest);
         }
-
-
     }
 
     @Override
     public ServiceResult<Boolean> registerNoToken(RegisterRequest registerRequest) {
-        Integer nickNameRepete = userDao.checkRepeat(registerRequest.getNickName(), "nick_name");
+        Integer nickNameRepete = dao.checkRepeat(registerRequest.getNickName(), "nick_name");
         if (nickNameRepete != 0) {
             return ServiceResult.buildSuccessResult("昵称已存在", false, registerRequest);
         }
-        Integer userNameRepete = userDao.checkRepeat(registerRequest.getUserName(), "user_name");
+        Integer userNameRepete = dao.checkRepeat(registerRequest.getUserName(), "user_name");
         if (userNameRepete != 0) {
             return ServiceResult.buildSuccessResult("用户名已存在", false, registerRequest);
         }
@@ -199,9 +152,9 @@ public class UserServiceImpl implements UserService {
      * 通过用户所有的叶子结点找出权限森林
      *
      * @param userRights
-     * @return
+     * @return 所有的父节点(递归所有子节点)
      */
-    private List<UserRightEntity> initUserRightsParent(List<UserRightEntity> userRights) {
+    private ArrayList<UserRightEntity> initUserRightsParent(List<UserRightEntity> userRights) {
         //获取此节点权限所有の父节点id
         TreeSet<String> treeSet = new TreeSet<>();
         for (UserRightEntity userRight : userRights) {
@@ -216,7 +169,7 @@ public class UserServiceImpl implements UserService {
         for (String userRightId : treeSet) {
             if (userRightId != "0") {
                 if (!map.containsKey(userRightId)) {
-                    UserRightEntity userRightEntity = userDao.getUserRightsByRightId(userRightId);
+                    UserRightEntity userRightEntity = dao.getUserRightsByRightId(userRightId);
                     map.put(userRightId, userRightEntity);
                 }
             }
@@ -227,7 +180,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        List<UserRightEntity> allParent = new ArrayList<>();
+        ArrayList<UserRightEntity> allParent = new ArrayList<>();
         for (Map.Entry<String, UserRightEntity> stringUserRightEntityEntry : map.entrySet()) {
             if (stringUserRightEntityEntry.getValue().getParentId().equals("0")) { // 选出父节点
                 allParent.add(stringUserRightEntityEntry.getValue());
@@ -299,12 +252,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public UserDao getUserDao() {
-        return userDao;
+    public UserDao getDao() {
+        return dao;
     }
 
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
+    public void setDao(UserDao dao) {
+        this.dao = dao;
     }
 
 
