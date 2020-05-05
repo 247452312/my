@@ -97,12 +97,7 @@
             </dependency>
             <dependency>
                 <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-good</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-shop</artifactId>
+                <artifactId>my-api-provider-transaction</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

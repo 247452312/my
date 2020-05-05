@@ -15,8 +15,7 @@
     <modules>
         <module>my-service-user</module>
         <module>my-web</module>
-        <module>my-service-good</module>
-        <module>my-service-shop</module>
+        <module>my-service-transaction</module>
     </modules>
 
 

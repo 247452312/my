@@ -19,7 +19,6 @@ public interface DefaultDao<T extends Serializable> {
 
     ArrayList<T> getByArgs(@Param("args") List<Arg> args, @Param("page") Integer page, @Param("size") Integer size);
 
-
     int insert(T t);
 
     int update(T t);
