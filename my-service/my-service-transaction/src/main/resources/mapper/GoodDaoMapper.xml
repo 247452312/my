@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="indi.uhyils.dao.UserDao">
+<mapper namespace="indi.uhyils.dao.GoodDao">
 
 
     <sql id="columnList">
         id,
-        nick_name as nickName,
-        user_name as userName,
-        password,
-        user_type as userType,
+        name,
+        num,
+        type_id as typeId,
+        shop_id as shopId,
+        price,
+        is_discount as isDiscount,
+        discount_per as discountPer,
+        user_id as userId,
         create_date as 'createDate',
         create_user as createUser,
         update_date as 'updateDate',
@@ -18,10 +22,10 @@
         remark
     </sql>
 
-    <select id="getByArgs" resultType="indi.uhyils.model.UserEntity">
+    <select id="getByArgs" resultType="indi.uhyils.model.GoodEntity">
         select
         <include refid="columnList"/>
-        from user
+        from good
         where is_delete = 0
 
         <foreach item="item" index="index" collection="args">
@@ -33,10 +37,10 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.model.UserEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.model.GoodEntity">
         select
         <include refid="columnList"/>
-        from user
+        from good
         where is_delete = 0
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
@@ -44,84 +48,60 @@
     </select>
 
 
-    <select id="getById" resultType="indi.uhyils.model.UserEntity">
+    <select id="getById" resultType="indi.uhyils.model.GoodEntity">
         select
         <include refid="columnList"/>
-        from user
+        from good
         where is_delete = 0
         and id = #{id}
     </select>
 
     <select id="delete" parameterType="java.lang.Integer">
-        update user
+        update good
         set is_delete = 1
         where id = #{id}
     </select>
     <select id="count" resultType="java.lang.Integer">
         select count(*)
-        from user
+        from good
         where is_delete = 0;
     </select>
 
-    <select id="getUserRightsByUserId" parameterType="java.lang.String"
-            resultType="indi.uhyils.model.UserRightEntity">
-        select id,
-               parent_id   as parentId,
-               parent_ids  as parentIds,
-               `name`,
-               url,
-               create_date as createDate,
-               create_user as createUesr,
-               update_date as updateDate,
-               update_user as updateUser,
-               is_delete   as isDelete,
-               remark
-        from user_rights
-        where id in (select rights_id from user_right_middle where user_id = #{userId})
-    </select>
-    <select id="getUserRightsByRightId" resultType="indi.uhyils.model.UserRightEntity">
-        select id,
-               parent_id   as parentId,
-               parent_ids  as parentIds,
-               `name`,
-               url,
-               create_date as createDate,
-               create_user as createUesr,
-               update_date as updateDate,
-               update_user as updateUser,
-               is_delete   as isDelete,
-               remark
-        from user_rights
-        where id = #{userRightId}
-    </select>
 
-    <select id="checkRepeat" resultType="java.lang.Integer">
-        select count(*)
-        from user
-        where ${type} = #{value}
-    </select>
-
-    <insert id="insert" parameterType="indi.uhyils.model.UserEntity">
-        insert user(id, nick_name, user_name, password, user_type, create_date, create_user, update_date, update_user,
+    <insert id="insert" parameterType="indi.uhyils.model.GoodEntity">
+        insert good(id, name, num, type_id, shop_id, price, is_discount, discount_per, user_id, create_date,
+                    create_user, update_date, update_user,
                     is_delete, remark)
-        values (#{id}, #{nickName}, #{userName}, #{password}, #{userType}, #{createDate}, #{createUser}, #{updateDate},
+        values (#{id}, #{name},#{num},#{typeId},#{shopId},#{price},#{isDiscount},#{discountPer},#{userId}, #{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
-    <update id="update" parameterType="indi.uhyils.model.UserEntity">
-        update user set
+    <update id="update" parameterType="indi.uhyils.model.GoodEntity">
+        update good set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
-        <if test="nickName != null and nickName != ''">
-            ,nick_name = #{nickName}
+        <if test="name != null and name != ''">
+            ,name = #{name}
         </if>
-        <if test="userName != null and userName != ''">
-            ,user_name = #{userName}
+        <if test="num != null and num != ''">
+            ,num = #{num}
         </if>
-        <if test="password != null and password != ''">
-            ,password = #{password}
+        <if test="typeId != null and typeId != ''">
+            ,type_id = #{typeId}
         </if>
-        <if test="isDelete != null and isDelete != ''">
-            ,is_delete = #{isDelete}
+        <if test="shopId != null and shopId != ''">
+            ,shop_id = #{shopId}
+        </if>
+        <if test="price != null and price != ''">
+            ,price = #{price}
+        </if>
+        <if test="isDiscount != null and isDiscount != ''">
+            ,is_discount = #{isDiscount}
+        </if>
+        <if test="discountPer != null and discountPer != ''">
+            ,discount_per = #{discountPer}
+        </if>
+        <if test="userId != null and userId != ''">
+            ,user_id = #{userId}
         </if>
         <if test="remark != null and remark != ''">
             ,remark = #{remark}

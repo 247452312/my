@@ -3,11 +3,6 @@ package indi.uhyils.serviceImpl;
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.GoodDao;
 import indi.uhyils.model.GoodEntity;
-import indi.uhyils.request.ArgsRequest;
-import indi.uhyils.request.IdRequest;
-import indi.uhyils.request.ObjRequest;
-import indi.uhyils.response.Page;
-import indi.uhyils.response.ServiceResult;
 import indi.uhyils.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,41 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2020年05月05日 13时11分
  */
 @Service
-public class GoodServiceImpl implements GoodService {
+public class GoodServiceImpl extends DefaultServiceImpl<GoodEntity> implements GoodService {
 
     @Autowired
-    private GoodDao goodDao;
+    private GoodDao dao;
 
-    @Override
-    public ServiceResult<Page<GoodEntity>> getByArgs(ArgsRequest argsRequest) {
-        return null;
+    public GoodDao getDao() {
+        return dao;
     }
 
-    @Override
-    public ServiceResult<GoodEntity> getById(IdRequest idRequest) {
-        return null;
-    }
-
-    @Override
-    public ServiceResult<Integer> insert(ObjRequest<GoodEntity> insert) {
-        return null;
-    }
-
-    @Override
-    public ServiceResult<Integer> update(ObjRequest<GoodEntity> update) {
-        return null;
-    }
-
-    @Override
-    public ServiceResult<Integer> delete(IdRequest idRequest) {
-        return null;
-    }
-
-    public GoodDao getGoodDao() {
-        return goodDao;
-    }
-
-    public void setGoodDao(GoodDao goodDao) {
-        this.goodDao = goodDao;
+    public void setDao(GoodDao dao) {
+        this.dao = dao;
     }
 }

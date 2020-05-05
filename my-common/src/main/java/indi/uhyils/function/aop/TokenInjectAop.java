@@ -80,12 +80,15 @@ public class TokenInjectAop {
 
         if (token != null && !"".equals(token)) { //说明有token 不是第一次访问
             //解析token获取tokenInfo
-            TokenInfo tokenInfo = getTokenInfo(token);
+            final TokenInfo tokenInfo = getTokenInfo(token);
 
             //根据tokenInfo 获取UserEntity
             UserTypeEnum type = tokenInfo.getType();
             UserEntity userEntity;
             if (type != UserTypeEnum.TOURIST) { //如果不等于 则说明不是游客 -> 数据库中有数据
+                if (tokenInfo.getTimeOut()) { //过期了
+                    return ServiceResult.buildSuccessResult("token已过期", null, arg);
+                }
                 ArrayList<Object> args = new ArrayList<>();
                 IdRequest build = IdRequest.build(tokenInfo.getUserId());
                 build.setToken(token);

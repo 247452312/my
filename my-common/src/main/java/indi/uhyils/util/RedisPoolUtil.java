@@ -33,6 +33,9 @@ public class RedisPoolUtil {
         Jedis jedis = redisPool.getJedis();
         String userJson = jedis.get(token);
         jedis.close();
+        if (userJson == null || "".equals(userJson)) {
+            return null;
+        }
         return JSON.parseObject(userJson, UserEntity.class);
     }
 

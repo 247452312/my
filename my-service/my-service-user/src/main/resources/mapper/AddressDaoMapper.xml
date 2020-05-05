@@ -69,16 +69,16 @@
     </select>
 
     <insert id="insert" parameterType="indi.uhyils.model.AddressEntity">
-        insert user_address(id
-                user_id
-                address
-                type
-                create_date
-                create_user
-                update_date
-                update_user
-                is_delete
-                remark)
+        insert user_address(id,
+                            user_id,
+                            address,
+                            type,
+                            create_date,
+                            create_user,
+                            update_date,
+                            update_user,
+                            is_delete,
+                            remark)
         values (#{id}, #{userId}, #{address}, #{type}, #{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
@@ -86,11 +86,14 @@
         update user_address set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
-        <if test="isDelete != null and isDelete != ''">
-            ,is_delete = #{isDelete}
+        <if test="userId != null and userId != ''">
+            ,user_id = #{userId}
         </if>
-        <if test="isDelete != null and isDelete != ''">
-            ,is_delete = #{isDelete}
+        <if test="address != null and address != ''">
+            ,address = #{address}
+        </if>
+        <if test="type != null and type != ''">
+            ,type = #{type}
         </if>
         where id = #{id}
     </update>
