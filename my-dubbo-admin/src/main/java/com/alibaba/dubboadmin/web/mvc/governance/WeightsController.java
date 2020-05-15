@@ -16,18 +16,6 @@
  */
 package com.alibaba.dubboadmin.web.mvc.governance;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubboadmin.governance.service.OverrideService;
 import com.alibaba.dubboadmin.governance.service.ProviderService;
@@ -36,7 +24,6 @@ import com.alibaba.dubboadmin.registry.common.domain.Weight;
 import com.alibaba.dubboadmin.registry.common.util.OverrideUtils;
 import com.alibaba.dubboadmin.web.mvc.BaseController;
 import com.alibaba.dubboadmin.web.pulltool.Tool;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +34,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.util.*;
+import java.util.regex.Pattern;
+
 /**
  * ProvidersController.
  * URI: /services/$service/weights
- *
  */
 @Controller
 @RequestMapping("/governance/weights")
@@ -67,9 +60,9 @@ public class WeightsController extends BaseController {
     @RequestMapping("")
     public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
         prepare(request, response, model, "index", "weights");
-        BindingAwareModelMap newModel = (BindingAwareModelMap)model;
-        String service = (String)newModel.get("service");
-        String address = (String)newModel.get("address");
+        BindingAwareModelMap newModel = (BindingAwareModelMap) model;
+        String service = (String) newModel.get("service");
+        String address = (String) newModel.get("address");
         service = StringUtils.trimToNull(service);
         address = Tool.getIP(address);
         List<Weight> weights;
@@ -86,13 +79,12 @@ public class WeightsController extends BaseController {
 
     /**
      * load page for the adding
-     *
      */
     @RequestMapping("/add")
     public String add(HttpServletRequest request, HttpServletResponse response, Model model) {
         prepare(request, response, model, "add", "weights");
-        BindingAwareModelMap newModel = (BindingAwareModelMap)model;
-        String service = (String)newModel.get("service");
+        BindingAwareModelMap newModel = (BindingAwareModelMap) model;
+        String service = (String) newModel.get("service");
         String input = request.getParameter("input");
         if (service != null && service.length() > 0 && !service.contains("*")) {
             List<Provider> providerList = providerService.findByService(service);
@@ -200,7 +192,7 @@ public class WeightsController extends BaseController {
         for (String aimService : aimServices) {
             for (String a : addresses) {
                 Weight wt = new Weight();
-                wt.setUsername((String) ((BindingAwareModelMap)model).get("operator"));
+                wt.setUsername((String) ((BindingAwareModelMap) model).get("operator"));
                 wt.setAddress(Tool.getIP(a));
                 wt.setService(aimService);
                 wt.setWeight(w);
@@ -247,7 +239,6 @@ public class WeightsController extends BaseController {
      * load weight for editing
      *
      * @param id
-
      */
     @RequestMapping("/{id}")
     public String show(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response, Model model) {

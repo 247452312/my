@@ -17,6 +17,20 @@
 
 package com.alibaba.dubboadmin.filter;
 
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.alibaba.dubbo.common.utils.StringUtils;
+import com.alibaba.dubboadmin.governance.service.UserService;
+import com.alibaba.dubboadmin.governance.util.WebConstants;
+import com.alibaba.dubboadmin.registry.common.domain.User;
+import com.alibaba.dubboadmin.registry.common.util.Coder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -25,37 +39,15 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.alibaba.dubbo.common.logger.Logger;
-import com.alibaba.dubbo.common.logger.LoggerFactory;
-import com.alibaba.dubbo.common.utils.StringUtils;
-import com.alibaba.dubboadmin.governance.service.UserService;
-import com.alibaba.dubboadmin.governance.util.WebConstants;
-import com.alibaba.dubboadmin.registry.common.domain.User;
-import com.alibaba.dubboadmin.registry.common.util.Coder;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 @Component
-public class LoginFilter implements Filter{
+public class LoginFilter implements Filter {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginFilter.class);
-    private static Pattern PARAMETER_PATTERN = Pattern.compile("(\\w+)=[\"]?([^,\"]+)[\"]?[,]?\\s*");
     private static final String BASIC_CHALLENGE = "Basic";
     private static final String DIGEST_CHALLENGE = "Digest";
     private static final String CHALLENGE = BASIC_CHALLENGE;
     private static final String REALM = User.REALM;
-
+    private static Pattern PARAMETER_PATTERN = Pattern.compile("(\\w+)=[\"]?([^,\"]+)[\"]?[,]?\\s*");
     @Autowired
     private UserService userService;
     private String logout = "/logout";
@@ -85,9 +77,9 @@ public class LoginFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
 
-        HttpServletRequest req = (HttpServletRequest)request;
+        HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         if (logger.isInfoEnabled()) {
             logger.info("AuthorizationValve of uri: " + req.getRequestURI());
@@ -142,8 +134,8 @@ public class LoginFilter implements Filter{
     private void showLoginForm(HttpServletResponse response) throws IOException {
         if (DIGEST_CHALLENGE.equals(CHALLENGE)) {
             response.setHeader("WWW-Authenticate", CHALLENGE + " realm=\"" + REALM + "\", qop=\"auth\", nonce=\""
-                + UUID.randomUUID().toString().replace("-", "") + "\", opaque=\""
-                + Coder.encodeMd5(REALM) + "\"");
+                    + UUID.randomUUID().toString().replace("-", "") + "\", opaque=\""
+                    + Coder.encodeMd5(REALM) + "\"");
         } else {
             response.setHeader("WWW-Authenticate", CHALLENGE + " realm=\"" + REALM + "\"");
         }
@@ -198,11 +190,11 @@ public class LoginFilter implements Filter{
                         String a1 = pwd;
 
                         String a2 = "auth-int".equals(qop)
-                            ? Coder.encodeMd5(method + ":" + uri + ":" + Coder.encodeMd5(readToBytes(request.getInputStream())))
-                            : Coder.encodeMd5(method + ":" + uri);
+                                ? Coder.encodeMd5(method + ":" + uri + ":" + Coder.encodeMd5(readToBytes(request.getInputStream())))
+                                : Coder.encodeMd5(method + ":" + uri);
                         String digest = "auth".equals(qop) || "auth-int".equals(qop)
-                            ? Coder.encodeMd5(a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + a2)
-                            : Coder.encodeMd5(a1 + ":" + nonce + ":" + a2);
+                                ? Coder.encodeMd5(a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + a2)
+                                : Coder.encodeMd5(a1 + ":" + nonce + ":" + a2);
                         if (digest.equals(passwordDigest)) {
                             return user;
                         }

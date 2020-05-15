@@ -19,7 +19,6 @@ package com.alibaba.dubboadmin.governance.biz.common.i18n.impl;
 
 import com.alibaba.dubboadmin.governance.biz.common.i18n.MessageResourceService;
 import com.alibaba.dubboadmin.web.mvc.common.i18n.LocaleUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;

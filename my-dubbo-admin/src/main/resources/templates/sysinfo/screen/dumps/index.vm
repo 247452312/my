@@ -18,8 +18,9 @@
 <br/>
 <table cellpadding="0" cellspacing="0" class="list list_dubbo" id="table_o">
     <tr>
-        <th>#springMessageText("property.name", "property.name"): <input type="text" onkeyup="searchTable('table_o', 0, this.value);"
-                                               onclick="searchTable('table_o', 0, this.value);"/>&nbsp;<img
+        <th>#springMessageText("property.name", "property.name"): <input type="text"
+                                                                         onkeyup="searchTable('table_o', 0, this.value);"
+                                                                         onclick="searchTable('table_o', 0, this.value);"/>&nbsp;<img
                 src="$rootContextPath.getURI("images/ico_search.png")" width="12" height="12"/></th>
         <th>#springMessageText("property.count", "property.count")</th>
     </tr>
@@ -28,7 +29,8 @@
             #springMessageText("noProvider", "noProvider")
         </td>
         <td>
-            <a herf="#" onclick="window.open('$rootContextPath.getURI("/sysinfo/dump/noProviders")')">#springMessageText(
+            <a herf="#"
+               onclick="window.open('$rootContextPath.getURI("/sysinfo/dump/noProviders")')">#springMessageText(
                 "property.count","property.count")
                 ($noProviderServices.size())</a>
         </td>

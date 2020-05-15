@@ -52,7 +52,8 @@
         <tr>
             <td><b>#springMessageText("overrideConsumerAddress", "overrideConsumerAddress"):</b></td>
             <td><input type="text" id="address" name="address" class="setting_input" style="width: 300px;" value=""
-                       maxlength="200"/> <font color="blue">#springMessageText("tipConsumerAddress", "tipConsumerAddress")</font></td>
+                       maxlength="200"/> <font color="blue">#springMessageText(
+                "tipConsumerAddress", "tipConsumerAddress")</font></td>
         </tr>
         <tr>
             <td><b>#springMessageText("status", "status"): <b></td>
@@ -69,17 +70,22 @@
     <br>
     <table cellpadding="0" cellspacing="0" class="info" id="paramTable">
         <tr>
-            <td style="width: 150px;"><b>#springMessageText("parameter.key", "parameter.key"): </b><input name='overrideKey0' id='overrideKey0'
-                                                                                type='text' style='width: 100px;'/></td>
-            <td><b>#springMessageText("parameter.value", "parameter.value"): </b><input type="text" id="overrideValue0" name="overrideValue0"
-                                                            class="setting_input" style="width: 300px;" value=""
-                                                            maxlength="200"/> <font color="blue">#springMessageText(
+            <td style="width: 150px;"><b>#springMessageText("parameter.key", "parameter.key"): </b><input
+                    name='overrideKey0' id='overrideKey0'
+                    type='text' style='width: 100px;'/></td>
+            <td><b>#springMessageText("parameter.value", "parameter.value"): </b><input type="text" id="overrideValue0"
+                                                                                        name="overrideValue0"
+                                                                                        class="setting_input"
+                                                                                        style="width: 300px;" value=""
+                                                                                        maxlength="200"/> <font
+                    color="blue">#springMessageText(
                 "parameter.tip","parameter.tip")</font></td>
         </tr>
     </table>
     <br>
     <div class="btn">
-        <a href="#" onclick="paramTableAddRow(); return false;"><b>#springMessageText("add", "add")#springMessageText("parameter", "parameter")</b></a>
+        <a href="#" onclick="paramTableAddRow(); return false;"><b>#springMessageText("add", "add")#springMessageText(
+            "parameter", "parameter")</b></a>
     </div>
 
     <br>
@@ -97,13 +103,15 @@
                 <option value='force'>#springMessageText("force.mock", "force.mock")</option>
             </select></td>
             <td><input type="text" id="mockDefaultMethodJson" name="mockDefaultMethodJson" class="setting_input"
-                       style="width: 300px;" value="" maxlength="200"/> <font color="blue">#springMessageText("mock.tip", "mock.tip")</font>
+                       style="width: 300px;" value="" maxlength="200"/> <font color="blue">#springMessageText(
+                "mock.tip", "mock.tip")</font>
             </td>
         </tr>
     </table>
     <br/>
     <div class="btn">
-        <a href="#" onclick="mockTableAddRow(); return false;"><b>#springMessageText("add", "add")#springMessageText("mock.method", "mock.method")</b></a>
+        <a href="#" onclick="mockTableAddRow(); return false;"><b>#springMessageText("add", "add")#springMessageText(
+            "mock.method", "mock.method")</b></a>
     </div>
     <br/>
     <hr>
@@ -123,7 +131,8 @@
     function check() {
         var service = byId('service').value.trim();
         if (service == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput") #springMessageText("service", "service")", 'service');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput") #springMessageText(
+                "service", "service")", 'service');
             return false;
         }
 
@@ -165,10 +174,12 @@
 
         var newNameTD = newTR.insertCell(0);
         newNameTD.innerHTML = "<b>#springMessageText(
-                    "parameter.key","parameter.key"): </b><input name='overrideKey" + paramTRLastIndex + "' id='overrideKey" + paramTRLastIndex + "' type='text' style='width: 100px;' />";
+            "parameter.key",
+            "parameter.key"): </b><input name='overrideKey" + paramTRLastIndex + "' id='overrideKey" + paramTRLastIndex + "' type='text' style='width: 100px;' />";
         var newMockTD = newTR.insertCell(1);
         newMockTD.innerHTML = "<b>#springMessageText(
-                    "parameter.value","parameter.value"): </b><input type='text' id='overrideValue" + paramTRLastIndex + "' name='overrideValue" + paramTRLastIndex + "' class='setting_input' style='width: 300px;' value='' maxlength='200'/>"
+                    "parameter.value",
+                    "parameter.value"): </b><input type='text' id='overrideValue" + paramTRLastIndex + "' name='overrideValue" + paramTRLastIndex + "' class='setting_input' style='width: 300px;' value='' maxlength='200'/>"
                 + "&nbsp;<a href='javascript:;' onclick=\"tableDeleteRow('paramTable', 'paramTable" + paramTRLastIndex + "'); return false;\">#springMessageText(
                     "delete","delete")</a>";
 
@@ -186,11 +197,13 @@
 
         var newNameTD = newTR.insertCell(0);
         newNameTD.innerHTML = "<b>#springMessageText(
-                    "mock.method","mock.method")：</b><input name='mockMethodName" + mockTRLastIndex + "' id='mockMethodName" + mockTRLastIndex + "' type='text' style='width: 100px;' /><b>#springMessageText(
-                    "mock.value","mock.value")：</b>";
+            "mock.method",
+            "mock.method")：</b><input name='mockMethodName" + mockTRLastIndex + "' id='mockMethodName" + mockTRLastIndex + "' type='text' style='width: 100px;' /><b>#springMessageText(
+            "mock.value","mock.value")：</b>";
         var newNameTD = newTR.insertCell(1);
         newNameTD.innerHTML = "<select name='mockMethodForce" + mockTRLastIndex + "' id='mockMethodForce" + mockTRLastIndex + "'><option value='fail'>#springMessageText(
-                    "fail.mock","fail.mock")</option><option value='force'>#springMessageText("force.mock", "force.mock")</option></select>";
+            "fail.mock","fail.mock")</option><option value='force'>#springMessageText(
+            "force.mock", "force.mock")</option></select>";
         var newMockTD = newTR.insertCell(2);
         newMockTD.innerHTML = "<input name='mockMethodJson" + mockTRLastIndex + "' id='mockMethodJson" + mockTRLastIndex + "' type='text' value='return empty' style='width: 300px;' />"
                 + "&nbsp;<a href='javascript:;' onclick=\"tableDeleteRow('mockTable', 'mockTable" + mockTRLastIndex + "'); return false;\">#springMessageText(

@@ -3,17 +3,8 @@ package indi.uhyils.serviceImpl;
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.AddressDao;
 import indi.uhyils.model.AddressEntity;
-import indi.uhyils.request.ArgsRequest;
-import indi.uhyils.request.IdRequest;
-import indi.uhyils.request.ObjRequest;
-import indi.uhyils.request.model.Arg;
-import indi.uhyils.response.Page;
-import indi.uhyils.response.ServiceResult;
 import indi.uhyils.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>

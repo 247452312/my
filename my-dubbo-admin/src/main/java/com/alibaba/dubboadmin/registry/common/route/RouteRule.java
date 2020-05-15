@@ -16,18 +16,14 @@
  */
 package com.alibaba.dubboadmin.registry.common.route;
 
-import java.text.ParseException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubboadmin.registry.common.domain.Route;
+
+import java.text.ParseException;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Router rule can be divided into two parts, When Condition and Then Condition <br>
@@ -36,14 +32,13 @@ import com.alibaba.dubboadmin.registry.common.domain.Route;
  * The process of using Conditions to match consumers and providers is called `Filter`.
  * When Condition are used to filter ConsumersController, while Then Condition are used to filter ProvidersController.
  * RouteRule performs like this: If a Consumer matches When Condition, then only return the ProvidersController matches Then Condition. This means RouteRule should be applied to current Consumer and the providers returned are filtered by RouteRule.<br>
- *
+ * <p>
  * An example of Route Rule：<code>
  * key1 = value11,value12 & key2 = value21 & key2 != value22 => key3 = value3 & key4 = value41,vlaue42 & key5 !=value51
  * </code>。
  * The part before <code>=></code> is called When Condition, it's a KV pair; the follower part is Then Condition, also a KV pair. V part in KV can have more than one value, separated by ','<br><br>
- *
+ * <p>
  * Value object, thread safe.
- *
  */
 public class RouteRule {
     @SuppressWarnings("unchecked")
@@ -141,11 +136,11 @@ public class RouteRule {
      * Parse the RouteRule as a string into an object.
      *
      * @throws ParseException RouteRule string format is wrong. The following input conditions, RouteRule are illegal.
-     * <ul> <li> input is <code>null</code>。
-     * <li> input is "" or " "。
-     * <li> input Rule doesn't have a When Condition
-     * <li> input Rule doesn't have a Then Condition
-     * </ul>
+     *                        <ul> <li> input is <code>null</code>。
+     *                        <li> input is "" or " "。
+     *                        <li> input Rule doesn't have a When Condition
+     *                        <li> input Rule doesn't have a Then Condition
+     *                        </ul>
      */
     public static RouteRule parse(Route route) throws ParseException {
         if (route == null)
@@ -182,8 +177,8 @@ public class RouteRule {
     }
 
     /**
-     * @see #parse(String)
      * @throws RuntimeException This is an wrapper exception for the {@link ParseException} thrown by the {@link #parse (String)} method.
+     * @see #parse(String)
      */
     public static RouteRule parseQuitely(Route route) {
         try {
@@ -285,7 +280,7 @@ public class RouteRule {
     /**
      * Replace with the new condition value.
      *
-     * @param copy Replace Base
+     * @param copy          Replace Base
      * @param whenCondition WhenCondition to replace, if Base does not have an item, insert it directly.
      * @param thenCondition ThenCondition to replace, if Base has no items, then insert directly.
      * @return RouteRule after replacement

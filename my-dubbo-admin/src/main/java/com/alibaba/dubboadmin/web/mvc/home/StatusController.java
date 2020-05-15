@@ -16,20 +16,18 @@
  */
 package com.alibaba.dubboadmin.web.mvc.home;
 
+import com.alibaba.dubbo.common.status.Status.Level;
+import com.alibaba.dubbo.common.status.StatusChecker;
+import com.alibaba.dubboadmin.registry.common.StatusManager;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletResponse;
-
-import com.alibaba.dubbo.common.status.Status.Level;
-import com.alibaba.dubbo.common.status.StatusChecker;
-import com.alibaba.dubboadmin.registry.common.StatusManager;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class StatusController {
     private static final Pattern OK_PATTERN = Pattern.compile("o(k)", Pattern.CASE_INSENSITIVE);
@@ -46,7 +44,7 @@ public class StatusController {
     public void execute(Map<String, Object> context) throws Exception {
         //FIXME cache monitoring has bad performance, should be removed from summary page.
         Map<String, com.alibaba.dubbo.common.status.Status>
-            statuses = StatusManager.getInstance().getStatusList(new String[]{"cache"});
+                statuses = StatusManager.getInstance().getStatusList(new String[]{"cache"});
         com.alibaba.dubbo.common.status.Status status = StatusManager.getInstance().getStatusSummary(statuses);
         Level level = status.getLevel();
         if (!Level.OK.equals(level)) {

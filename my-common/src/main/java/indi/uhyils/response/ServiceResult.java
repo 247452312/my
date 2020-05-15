@@ -2,6 +2,7 @@ package indi.uhyils.response;
 
 import indi.uhyils.enum_.ResponseCode;
 import indi.uhyils.request.DefaultRequest;
+import indi.uhyils.request.model.LinkNode;
 
 import java.io.Serializable;
 
@@ -34,6 +35,69 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      */
     private String token;
 
+    /**
+     * 链路跟踪
+     */
+    private LinkNode<String> requestLink;
+
+
+    public ServiceResult(T data, Integer serviceCode, String serviceMessage, String token, LinkNode linkNode) {
+        this.data = data;
+        this.serviceCode = serviceCode;
+        this.serviceMessage = serviceMessage;
+        this.token = token;
+        this.requestLink = linkNode;
+    }
+
+    public ServiceResult(T data, Integer serviceCode, String serviceMessage, DefaultRequest req) {
+        if (req == null) {
+            throw new NullPointerException("请求参数为空");
+        }
+        this.data = data;
+        this.serviceCode = serviceCode;
+        this.serviceMessage = serviceMessage;
+        this.token = req.getToken();
+        this.requestLink = req.getRequestLink();
+    }
+
+    public ServiceResult() {
+    }
+
+    /**
+     * 构建一个逻辑成功的返回
+     *
+     * @param businessMessage
+     * @param t
+     * @param <T>
+     * @return
+     */
+    public static <T extends Serializable> ServiceResult buildSuccessResult(String businessMessage, T t, DefaultRequest req) {
+        return new ServiceResult(t, ResponseCode.SUCCESS.getText(), businessMessage, req);
+    }
+
+    /**
+     * 构建一个逻辑失败的返回
+     *
+     * @param businessMessage
+     * @param t
+     * @param <T>
+     * @return
+     */
+    public static <T extends Serializable> ServiceResult buildFailedResult(String businessMessage, T t, DefaultRequest req) {
+        return new ServiceResult(t, ResponseCode.FAILED.getText(), businessMessage, req);
+    }
+
+    /**
+     * 构建一个程序失败的返回
+     *
+     * @param businessMessage
+     * @param req
+     * @param <T>
+     * @return
+     */
+    public static <T extends Serializable> ServiceResult buildErrorResult(String businessMessage, DefaultRequest req) {
+        return new ServiceResult(null, ResponseCode.ERROR.getText(), businessMessage, req);
+    }
 
     public T getData() {
         return data;
@@ -59,14 +123,12 @@ public class ServiceResult<T extends Serializable> implements Serializable {
         this.serviceMessage = serviceMessage;
     }
 
-    public ServiceResult(T data, Integer serviceCode, String serviceMessage, String token) {
-        this.data = data;
-        this.serviceCode = serviceCode;
-        this.serviceMessage = serviceMessage;
-        this.token = token;
+    public LinkNode<String> getRequestLink() {
+        return requestLink;
     }
 
-    public ServiceResult() {
+    public void setRequestLink(LinkNode<String> requestLink) {
+        this.requestLink = requestLink;
     }
 
     public String getToken() {
@@ -75,29 +137,5 @@ public class ServiceResult<T extends Serializable> implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    /**
-     * 构建一个成功的返回
-     *
-     * @param businessMessage
-     * @param t
-     * @param <T>
-     * @return
-     */
-    public static <T extends Serializable> ServiceResult buildSuccessResult(String businessMessage, T t, DefaultRequest req) {
-        return new ServiceResult(t, ResponseCode.SUCCESS.getText(), businessMessage, req.getToken());
-    }
-
-    /**
-     * 构建一个失败的返回
-     *
-     * @param businessMessage
-     * @param t
-     * @param <T>
-     * @return
-     */
-    public static <T extends Serializable> ServiceResult buildFailedResult(String businessMessage, T t, DefaultRequest req) {
-        return new ServiceResult(t, ResponseCode.FAILED.getText(), businessMessage, req.getToken());
     }
 }

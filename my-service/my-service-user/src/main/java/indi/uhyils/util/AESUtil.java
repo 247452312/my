@@ -19,8 +19,8 @@ import java.security.SecureRandom;
  */
 public class AESUtil {
     public static final String AES = "AES";
+
     /**
-     *
      * 加密
      * 1.构造密钥生成器
      * 2.根据encodeRules规则初始化密钥生成器
@@ -28,8 +28,9 @@ public class AESUtil {
      * 4.创建和初始化密码器
      * 5.内容加密
      * 6.返回字符串
+     *
      * @param encodeRules 加密规则
-     * @param content 加密内容
+     * @param content     加密内容
      * @return 加密后密文
      */
     public static String AESEncode(String encodeRules, String content) {

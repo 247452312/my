@@ -1,7 +1,9 @@
 package indi.uhyils.function.aop;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.request.DefaultRequest;
+import indi.uhyils.request.model.LinkNode;
+import indi.uhyils.util.AopUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -36,15 +38,33 @@ public class TimeLogAop {
     }
 
 
+    /**
+     * 添加链路跟踪
+     *
+     * @param pjp
+     * @return
+     * @throws Throwable
+     */
     @Around("logAspectPoint()")
     public Object timeLogAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
 
         String className = pjp.getTarget().getClass().getCanonicalName();
         String methodName = pjp.getSignature().getName();
+
+        //添加链路跟踪
+        DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
+        LinkNode<String> requestLink = arg.getRequestLink();
+        LinkNode<String> temp = requestLink;
+        while (temp.getLinkNode() != null) {
+            temp = temp.getLinkNode();
+        }
+        LinkNode<String> next = new LinkNode<>();
+        next.setData(String.format("%s : %s", className, methodName));
+        temp.setLinkNode(next);
+
         //方法执行前显示 类名,方法名,参数名
         before(pjp, className, methodName);
         Long startTime = System.currentTimeMillis();
-
 
         //执行方法
         Object proceed = pjp.proceed();
@@ -58,6 +78,7 @@ public class TimeLogAop {
 
 
     }
+
 
     /**
      * 日志切面后

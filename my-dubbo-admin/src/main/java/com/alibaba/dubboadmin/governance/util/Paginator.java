@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 /**
  * TODO Comment of Paginator
- *
  */
 public class Paginator implements Serializable, Cloneable {
 

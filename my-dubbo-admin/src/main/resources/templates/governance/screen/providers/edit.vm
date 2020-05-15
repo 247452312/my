@@ -25,12 +25,14 @@
                                            height="12"/><span class="ico_font">#springMessageText("copy", "copy")</span></a>
         <span class="ico_line">|</span>
         <a href="#" onclick="showConfirm('#springMessageText(
-            "confirm.weight.doubling","confirm.weight.doubling")', '$provider.url', '../$provider.id/doubling'); return false;"><img
+            "confirm.weight.doubling",
+            "confirm.weight.doubling")', '$provider.url', '../$provider.id/doubling'); return false;"><img
                 src="$rootContextPath.getURI("images/ico_up.png")" width="12" height="12"/><span
                 class="ico_font">#springMessageText("weight.doubling", "weight.doubling")</span></a>
         <span class="ico_line">|</span>
         <a href="#" onclick="showConfirm('#springMessageText(
-            "confirm.weight.halving","confirm.weight.halving")', '$provider.url', '../$provider.id/halving'); return false;"><img
+            "confirm.weight.halving",
+            "confirm.weight.halving")', '$provider.url', '../$provider.id/halving'); return false;"><img
                 src="$rootContextPath.getURI("images/ico_down.png")" width="12" height="12"/><span
                 class="ico_font">#springMessageText("weight.halving", "weight.halving")</span></a>
         <span class="ico_line">|</span>
@@ -57,7 +59,7 @@
 <br/>
 <form id="providerForm" action="../update" method="POST">
     <table cellpadding="0" cellspacing="0" class="info">
-        <tr type = "hidden">
+        <tr type="hidden">
             <td>
                 <input type="hidden" name="id" value="$provider.id">
             </td>
@@ -85,22 +87,26 @@
             <tr>
                 <th>#springMessageText("overrides", "overrides"):</th>
                 <td><input type="text" name="parameters" value="$!provider.override.params" class="setting_input"
-                           style="width: 400px;"/> <font color="blue">#springMessageText("dynamic.parameters.tip", "dynamic.parameters.tip")</font></td>
+                           style="width: 400px;"/> <font color="blue">#springMessageText(
+                    "dynamic.parameters.tip", "dynamic.parameters.tip")</font></td>
             </tr>
         #end
         <tr>
             <th>#springMessageText("type", "type"):</th>
-            <td>#if($provider.dynamic)<font color="green">#springMessageText("dynamic", "dynamic")</font>#else<font color="blue">#springMessageText(
+            <td>#if($provider.dynamic)<font color="green">#springMessageText("dynamic", "dynamic")</font>#else<font
+                    color="blue">#springMessageText(
                 "static","static")</font>#end</td>
         </tr>
         <tr>
             <th>#springMessageText("status", "status"):</th>
-            <td>#if($provider.enabled)<font color="green">#springMessageText("enabled", "enabled")</font>#else<font color="red">#springMessageText(
+            <td>#if($provider.enabled)<font color="green">#springMessageText("enabled", "enabled")</font>#else<font
+                    color="red">#springMessageText(
                 "disabled","disabled")</font>#end</td>
         </tr>
         <tr>
             <th>
-                <div class="btn"><a href="#" onclick="document.getElementById('providerForm').submit();">#springMessageText(
+                <div class="btn"><a href="#"
+                                    onclick="document.getElementById('providerForm').submit();">#springMessageText(
                     "save","save")</a></div>
             </th>
             <td></td>

@@ -33,12 +33,12 @@
  *
  * // advanced usage receives configuration object only
  * $("ul li").hoverIntent({
-*	sensitivity: 7, // number = sensitivity threshold (must be 1 or higher)
-*	interval: 100,   // number = milliseconds of polling interval
-*	over: showNav,  // function = onMouseOver callback (required)
-*	timeout: 0,   // number = milliseconds delay before onMouseOut function call
-*	out: hideNav    // function = onMouseOut callback (required)
-* });
+ *	sensitivity: 7, // number = sensitivity threshold (must be 1 or higher)
+ *	interval: 100,   // number = milliseconds of polling interval
+ *	over: showNav,  // function = onMouseOver callback (required)
+ *	timeout: 0,   // number = milliseconds delay before onMouseOut function call
+ *	out: hideNav    // function = onMouseOut callback (required)
+ * });
  *
  * @param  f  onMouseOver function || An object with configuration options
  * @param  g  onMouseOut function  || Nothing (use configuration options object)
@@ -70,7 +70,7 @@
         var compare = function (ev, ob) {
             ob.hoverIntent_t = clearTimeout(ob.hoverIntent_t);
             // compare mouse positions to see if they've crossed the threshold
-            if (( Math.abs(pX - cX) + Math.abs(pY - cY) ) < cfg.sensitivity) {
+            if ((Math.abs(pX - cX) + Math.abs(pY - cY)) < cfg.sensitivity) {
                 $(ob).unbind("mousemove", track);
                 // set hoverIntent state to true (so mouseOut can be called)
                 ob.hoverIntent_s = 1;

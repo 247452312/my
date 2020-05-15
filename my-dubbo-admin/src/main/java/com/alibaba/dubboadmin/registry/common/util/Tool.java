@@ -16,23 +16,18 @@
  */
 package com.alibaba.dubboadmin.registry.common.util;
 
-import java.lang.reflect.Array;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.utils.NetUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
 
+import java.lang.reflect.Array;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
+import java.util.regex.Pattern;
+
 /**
  * Tool
- *
  */
 public class Tool {
 

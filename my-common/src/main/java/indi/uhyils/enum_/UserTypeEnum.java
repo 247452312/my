@@ -29,6 +29,21 @@ public enum UserTypeEnum {
     UserTypeEnum() {
     }
 
+    public static UserTypeEnum parse(Integer userType) throws EnumParseNoHaveException {
+        switch (userType) {
+            case 0:
+                return ADMIN;
+            case 1:
+                return USER;
+            case 2:
+                return MERCHANT;
+            case 3:
+                return TOURIST;
+            default:
+                throw new EnumParseNoHaveException("错误的用户类型!");
+        }
+    }
+
     public Integer getUserType() {
         return userType;
     }
@@ -43,21 +58,5 @@ public enum UserTypeEnum {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
-    }
-
-
-    public static UserTypeEnum parse(Integer userType) throws EnumParseNoHaveException {
-        switch (userType) {
-            case 0:
-                return ADMIN;
-            case 1:
-                return USER;
-            case 2:
-                return MERCHANT;
-            case 3:
-                return TOURIST;
-            default:
-                throw new EnumParseNoHaveException("错误的用户类型!");
-        }
     }
 }

@@ -20,7 +20,8 @@
             <td width="31"><img src="$rootContextPath.getURI("images/pop_close.png")"
                                 onclick="window.location.href = 'rootContextPath.getURI("$redirect")';" style="cursor:
                 pointer;" width="20"
-                                height="20"/></td>
+                height="20"/>
+            </td>
         </tr>
         <tr height="120">
             <td align="right"><span style="font-size: 32px;">#if($success)$i18n.get("operation.success")#else$i18n.get(
@@ -61,6 +62,7 @@
                 }
                 setTimeout("GoOn(" + ind + ")", iMinSecond);
             }
+
             function GoOn(ind) {
                 var obj = window.eventList[ind];
                 window.eventList[ind] = null;

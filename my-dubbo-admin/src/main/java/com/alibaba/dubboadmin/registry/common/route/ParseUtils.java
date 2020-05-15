@@ -16,28 +16,21 @@
  */
 package com.alibaba.dubboadmin.registry.common.route;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.alibaba.dubbo.common.utils.StringUtils;
+
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.alibaba.dubbo.common.utils.StringUtils;
-
 /**
  * String parsing tools related to interpolation, including Glob mode, Query string, Service URL processing.
- *
  */
 public class ParseUtils {
 
     private static final ConcurrentMap<String, Pattern>
-        REPLACE_PARAMETER_PATTERNS = new ConcurrentHashMap<String, Pattern>();
+            REPLACE_PARAMETER_PATTERNS = new ConcurrentHashMap<String, Pattern>();
     public static String METHOD_SPLIT = ",";
     private static Pattern VARIABLE_PATTERN = Pattern.compile(
             "\\$\\s*\\{?\\s*([\\._0-9a-zA-Z]+)\\s*\\}?");
@@ -51,7 +44,7 @@ public class ParseUtils {
      * Execute interpolation (variable insertion).
      *
      * @param expression Expression string containing variables. Variable names in expressions can also be enclosed in <code> {} </ code>。
-     * @param params Variable set. Variable names can include <code>. </ Code>, <code> _ </ code> characters.
+     * @param params     Variable set. Variable names can include <code>. </ Code>, <code> _ </ code> characters.
      * @return After the completion of the interpolation string. Such as: <code> <pre> xxx $ {name} zzz -> xxxjerryzzz </ pre> </ code> (where the variable name = "jerry")
      * @throws IllegalStateException The variables used in the expression string are not in the variable set
      */
@@ -93,6 +86,7 @@ public class ParseUtils {
 
     /**
      * Match Glob mode. The current implementation only supports <code>*</ code> and supports only one. Does not support <code>?</ Code>.
+     *
      * @return For code or value of <code> null </ code>, return <code> false </ code> directly.
      */
     public static boolean isMatchGlobPattern(String pattern, String value) {
@@ -130,12 +124,12 @@ public class ParseUtils {
      * Whether to match Glob mode. Glob mode is the expression to be interpolated. Glob pattern has more than one, as long as matching a pattern, that match is successful.
      *
      * @param patternsNeedInterpolate Multiple Glob patterns to interpolate
-         * @param interpolateParams Set of variables used for interpolation
-         * @param value Glob mode value
+     *                                     * @param interpolateParams Set of variables used for interpolation
+     *                                     * @param value Glob mode value
      */
     public static boolean isMatchGlobPatternsNeedInterpolate(
-        Collection<String> patternsNeedInterpolate,
-        Map<String, String> interpolateParams, String value) {
+            Collection<String> patternsNeedInterpolate,
+            Map<String, String> interpolateParams, String value) {
         if (patternsNeedInterpolate != null && !patternsNeedInterpolate.isEmpty()) {
             for (String patternNeedItp : patternsNeedInterpolate) {
                 if (StringUtils.isEmpty(patternNeedItp)) {
@@ -222,9 +216,9 @@ public class ParseUtils {
      * Parse Query String into Map. For strings that have only Key, key3 = </ code> is ignored.
      *
      * @param keyPrefix In the output of the Map Key plus a unified prefix.
-     * @param query Query String，For example: <code>key1=value1&key2=value2</code>
+     * @param query     Query String，For example: <code>key1=value1&key2=value2</code>
      * @return When Query String is <code>key1=value1&key2=value2</code>, and prefix is <code>pre.</code>,
-     *         then <code>Map{pre.key1=value1, pre.key=value2}</code> will be returned.
+     * then <code>Map{pre.key1=value1, pre.key=value2}</code> will be returned.
      */
     // FIXME Is it reasonable to throw an IllegalStateException??
     public static Map<String, String> parseQuery(String keyPrefix, String query) {

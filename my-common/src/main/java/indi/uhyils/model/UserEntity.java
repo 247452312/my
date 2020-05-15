@@ -1,7 +1,6 @@
 package indi.uhyils.model;
 
 
-
 /**
  * 用户
  *

@@ -16,18 +16,11 @@
  */
 package com.alibaba.dubboadmin.web.mvc.governance;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.dubboadmin.governance.service.OwnerService;
 import com.alibaba.dubboadmin.governance.service.ProviderService;
 import com.alibaba.dubboadmin.registry.common.domain.Owner;
 import com.alibaba.dubboadmin.web.mvc.BaseController;
 import com.alibaba.dubboadmin.web.pulltool.Tool;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,9 +29,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * ProvidersController. URI: /services/$service/owners
- *
  */
 @Controller
 @RequestMapping("/governance/owners")
@@ -54,8 +51,8 @@ public class OwnersController extends BaseController {
     public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
         prepare(request, response, model, "index", "owners");
         List<Owner> owners;
-        BindingAwareModelMap newModel = (BindingAwareModelMap)model;
-        String service = (String)newModel.get("service");
+        BindingAwareModelMap newModel = (BindingAwareModelMap) model;
+        String service = (String) newModel.get("service");
         if (service != null && service.length() > 0) {
             owners = ownerService.findByService(service);
         } else {
@@ -68,8 +65,8 @@ public class OwnersController extends BaseController {
     @RequestMapping("/add")
     public String add(HttpServletRequest request, HttpServletResponse response, Model model) {
         prepare(request, response, model, "add", "owners");
-        BindingAwareModelMap newModel = (BindingAwareModelMap)model;
-        String service = (String)newModel.get("service");
+        BindingAwareModelMap newModel = (BindingAwareModelMap) model;
+        String service = (String) newModel.get("service");
         if (service == null || service.length() == 0) {
             List<String> serviceList = Tool.sortSimpleName(new ArrayList<String>(providerService.findServices()));
             model.addAttribute("serviceList", serviceList);
@@ -77,7 +74,7 @@ public class OwnersController extends BaseController {
         return "governance/screen/owners/add";
     }
 
-    @RequestMapping(value =  "/create", method = RequestMethod.POST)  //post
+    @RequestMapping(value = "/create", method = RequestMethod.POST)  //post
     public String create(Owner owner, HttpServletRequest request, HttpServletResponse response, Model model) {
         prepare(request, response, model, "create", "owners");
         String service = owner.getService();

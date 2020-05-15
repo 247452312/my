@@ -19,7 +19,7 @@
 var Box = {
     show: function (id) {
         var isIE = (document.all) ? true : false;
-        var isIE6 = isIE && ( [/MSIE (\d)\.0/i.exec(navigator.userAgent)][0][1] == 6);
+        var isIE6 = isIE && ([/MSIE (\d)\.0/i.exec(navigator.userAgent)][0][1] == 6);
         var box = document.getElementById(id);
         if (!box) {
             return;
@@ -50,12 +50,13 @@ var Box = {
                 selects[i].style.visibility = "hidden";
             }
         }
+
         function layer_iestyle() {
             layer.style.width = Math.max(document.documentElement.scrollWidth,
-                    document.documentElement.clientWidth)
+                document.documentElement.clientWidth)
                 + "px";
             layer.style.height = Math.max(document.documentElement.scrollHeight,
-                    document.documentElement.clientHeight)
+                document.documentElement.clientHeight)
                 + "px";
         }
 

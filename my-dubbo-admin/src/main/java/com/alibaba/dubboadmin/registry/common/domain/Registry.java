@@ -20,7 +20,6 @@ import java.util.Date;
 
 /**
  * Registry
- *
  */
 public class Registry extends Entity {
 

@@ -39,7 +39,8 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 100px;">#springMessageText("provider", "provider"):&nbsp;&nbsp;<font color='red'>*</font></th>
+            <th style="width: 100px;">#springMessageText("provider", "provider"):&nbsp;&nbsp;<font color='red'>*</font>
+            </th>
             <td>
                 #if($address)
                     <input type="hidden" id="address" name="address"
@@ -59,13 +60,15 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 100px;">#springMessageText("weights", "weights"):&nbsp;&nbsp;<font color='red'>*</font></th>
+            <th style="width: 100px;">#springMessageText("weights", "weights"):&nbsp;&nbsp;<font color='red'>*</font>
+            </th>
             <td><input type="text" id="weight" name="weight" value="" maxlength="3" onkeydown="return checkNumber();"/>
             </td>
         </tr>
         <tr>
             <th>
-                <div class="btn"><a href="#" onclick="if(check()){document.getElementById('df').submit();}">#springMessageText(
+                <div class="btn"><a href="#"
+                                    onclick="if(check()){document.getElementById('df').submit();}">#springMessageText(
                     "save","save")</a></div>
             </th>
             <td></td>
@@ -82,13 +85,13 @@
     //通过服务名后面的选择框，快速设置service_name的值
     function fnSetService(obj) {
         if (obj.value != '') {
-            byId('service').value = (byId('service').value.length > 0 ? byId('service').value + "\n" : "" ) + obj.value;
+            byId('service').value = (byId('service').value.length > 0 ? byId('service').value + "\n" : "") + obj.value;
         }
     }
 
     function fnSetAddress(obj) {
         if (obj.value != '') {
-            byId('address').value = (byId('address').value.length > 0 ? byId('address').value + "\n" : "" ) + obj.value;
+            byId('address').value = (byId('address').value.length > 0 ? byId('address').value + "\n" : "") + obj.value;
         }
     }
 
@@ -112,12 +115,14 @@
     function check() {
         var service = byId('service').value.trim();
         if (service == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput"), #springMessageText("service", "service")", 'service');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput"), #springMessageText(
+                "service", "service")", 'service');
             return false;
         }
         var address = byId('address').value.trim();
         if (address == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput"), #springMessageText("address", "address")", 'address');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput"), #springMessageText(
+                "address", "address")", 'address');
             return false;
         }
         var exp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]):\d+$/;
@@ -129,7 +134,8 @@
             var address = addresses[i];
             if (address != "") {
                 if (!address.match(exp) && !address.match(exp2) && !address.match(exp3) && !address.match(exp4)) {
-                    showAlert("#springMessageText("InvalidIp", "InvalidIp"), #springMessageText("address", "address")", 'address');
+                    showAlert("#springMessageText("InvalidIp", "InvalidIp"), #springMessageText(
+                        "address", "address")", 'address');
                     return false;
                 }
             }

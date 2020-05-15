@@ -16,22 +16,20 @@
  */
 package com.alibaba.dubboadmin.governance.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubboadmin.governance.service.OverrideService;
 import com.alibaba.dubboadmin.governance.sync.util.Pair;
 import com.alibaba.dubboadmin.governance.sync.util.SyncUtils;
 import com.alibaba.dubboadmin.registry.common.domain.Override;
-
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * IbatisOverrideDAO.java
- *
  */
 @Component
 public class OverrideServiceImpl extends AbstractService implements OverrideService {

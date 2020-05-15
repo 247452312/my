@@ -3,7 +3,7 @@ server:
 dubbo:
   registry:
     client: curator
-    address: zookeeper://192.168.1.101:2181
+    address: zookeeper://39.98.164.91:2181
   protocol:
     name: dubbo
     port: 20880

@@ -18,14 +18,16 @@
             class="ico_font">#springMessageText("back", "back")</span></a>
     <span class="ico_line">|</span>
     <a href="../$route.id/routeselect"><img src="$rootContextPath.getURI("images/ico_show.png")" width="12"
-                                            height="12"/><span class="ico_font">#springMessageText("proview", "proview")</span></a>
+                                            height="12"/><span class="ico_font">#springMessageText(
+        "proview", "proview")</span></a>
     #if($currentUser.role != "G")
         <span class="ico_line">|</span>
         <a href="../$route.id"><img src="$rootContextPath.getURI("images/ico_show.png")" width="12" height="12"/><span
                 class="ico_font">#springMessageText("show", "show")</span></a>
         <span class="ico_line">|</span>
         <a href="../$route.id/edit?actionflag=copy"><img src="$rootContextPath.getURI("images/ico_register.png")"
-                                                         width="12" height="12"/><span class="ico_font">#springMessageText(
+                                                         width="12" height="12"/><span
+                class="ico_font">#springMessageText(
             "copy","copy")</span></a>
         <span class="ico_line">|</span>
         #if($route.enabled)
@@ -41,7 +43,8 @@
         #end
         <span class="ico_line">|</span>
         <a href="#"
-           onclick="showConfirm('#springMessageText("confirm.delete", "confirm.delete")', '$route.name', '../$route.id/delete'); return false;">
+           onclick="showConfirm('#springMessageText(
+               "confirm.delete", "confirm.delete")', '$route.name', '../$route.id/delete'); return false;">
             <img src="$rootContextPath.getURI("images/ico_delete.png")" width="12" height="12"/>
             <span class="ico_font">#springMessageText("delete", "delete")</span></a>
     #end
@@ -205,7 +208,8 @@
         </tr>
         <tr>
             <td colspan="4">
-                <div class="btn"><a href="#" onclick="if(check()){document.getElementById('df').submit();}">#springMessageText(
+                <div class="btn"><a href="#"
+                                    onclick="if(check()){document.getElementById('df').submit();}">#springMessageText(
                     "save","save")</a></div>
             </td>
         </tr>
@@ -216,11 +220,13 @@
 <script type="text/javascript">
     function check() {
         if (byId('name').value.trim() == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput"), #springMessageText("route.name","route.name"))", 'name');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput"), #springMessageText(
+                "route.name","route.name"))", 'name');
             return false;
         }
         if (byId('service').value.trim() == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput"), #springMessageText("service", "service"))", 'service');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput"), #springMessageText(
+                "service", "service"))", 'service');
             return false;
         }
         if (byId('service').value.indexOf('*') != -1 || byId('service').value.indexOf(',') != -1) {

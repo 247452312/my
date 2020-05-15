@@ -1,5 +1,7 @@
 package indi.uhyils.response;
 
+import indi.uhyils.enum_.ResponseCode;
+
 import java.io.Serializable;
 
 /**
@@ -24,6 +26,22 @@ public class WebResponse<T extends Serializable> implements Serializable {
      */
     private T data;
 
+    public static <T extends Serializable> WebResponse build(T data, String token, String message, Integer code) {
+        WebResponse serializableWebResponse = new WebResponse();
+        serializableWebResponse.setCode(code);
+        serializableWebResponse.setData(data);
+        serializableWebResponse.setMsg(message);
+        serializableWebResponse.setToken(token);
+        return serializableWebResponse;
+    }
+
+    public static <T extends Serializable> WebResponse build(ServiceResult serviceResult) {
+        if (serviceResult.getServiceCode() != ResponseCode.SUCCESS.getText()) {
+            return build(serviceResult.getData(), serviceResult.getToken(), serviceResult.getServiceMessage(), serviceResult.getServiceCode());
+        }
+        return build(serviceResult.getData(), serviceResult.getToken(), serviceResult.getServiceMessage(), serviceResult.getServiceCode());
+    }
+
     public String getToken() {
         return token;
     }
@@ -38,20 +56,6 @@ public class WebResponse<T extends Serializable> implements Serializable {
 
     public void setData(T data) {
         this.data = data;
-    }
-
-
-    public static <T extends Serializable> WebResponse build(T data, String token, String message, Integer code) {
-        WebResponse serializableWebResponse = new WebResponse();
-        serializableWebResponse.setCode(code);
-        serializableWebResponse.setData(data);
-        serializableWebResponse.setMsg(message);
-        serializableWebResponse.setToken(token);
-        return serializableWebResponse;
-    }
-
-    public static <T extends Serializable> WebResponse build(ServiceResult serviceResult) {
-        return build(serviceResult.getData(), serviceResult.getToken(), serviceResult.getServiceMessage(), serviceResult.getServiceCode());
     }
 
     public Integer getCode() {

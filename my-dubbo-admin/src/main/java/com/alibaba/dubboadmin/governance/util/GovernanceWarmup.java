@@ -20,7 +20,6 @@ import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.common.status.StatusChecker;
 import com.alibaba.dubboadmin.registry.common.StatusManager;
-
 import org.springframework.beans.factory.InitializingBean;
 
 public class GovernanceWarmup implements InitializingBean {

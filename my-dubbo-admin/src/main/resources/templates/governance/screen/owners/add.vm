@@ -21,7 +21,8 @@
 <form id="df" action="create" method="POST">
     <table cellpadding="0" cellspacing="0" class="info">
         <tr>
-            <th style="width: 150px;">#springMessageText("service", "service")&nbsp;&nbsp;<font color='red'>*</font></th>
+            <th style="width: 150px;">#springMessageText("service", "service")&nbsp;&nbsp;<font color='red'>*</font>
+            </th>
             <td>
                 #if($service)
                     <input type="hidden" id="serviceName" name="service" value="$service"/>$service
@@ -39,13 +40,15 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 150px;">#springMessageText("Username", "Username")&nbsp;&nbsp;<font color='red'>*</font></th>
+            <th style="width: 150px;">#springMessageText("Username", "Username")&nbsp;&nbsp;<font color='red'>*</font>
+            </th>
             <td><input type="text" id="username" name="username" style="ime-mode:disabled" value="$operator"
                        maxlength="100"/></td>
         </tr>
         <tr>
             <th>
-                <div class="btn"><a href="#" onclick="if(check()){document.getElementById('df').submit();}">#springMessageText(
+                <div class="btn"><a href="#"
+                                    onclick="if(check()){document.getElementById('df').submit();}">#springMessageText(
                     "save","save")</a></div>
             </th>
             <td></td>
@@ -56,7 +59,8 @@
     function check() {
         var username = byId('username').value.trim();
         if (username == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText("Username", "Username")", 'username');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText(
+                "Username", "Username")", 'username');
             return false;
         }
         return true;

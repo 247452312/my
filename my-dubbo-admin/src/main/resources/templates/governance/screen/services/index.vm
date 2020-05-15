@@ -14,7 +14,8 @@
 ##limitations under the License.
 #set($layout = "/templates/governance/layout/default.vm")
 #if(! $services || $services.size() == 0)
-<font color="red">#springMessageText("not.found", "not.found")</font> (<a href="services?keyword=*">#springMessageText("show.all", "show.all")</a>)
+<font color="red">#springMessageText("not.found", "not.found")</font> (<a href="services?keyword=*">#springMessageText(
+    "show.all", "show.all")</a>)
 #elseif($keyword && $services.size() == 1)
 <script type="text/javascript">
         #if(! $providerServices.contains($services.iterator().next()))
@@ -30,21 +31,24 @@
             <a href="#" onclick="if(! hasCheckbox('ids')) { showAlert('#springMessageText(
                 "empty.list","empty.list")'); } else if(! hasChecked('ids')) { showAlert('#springMessageText(
                 "please.select","please.select")'); } else { showConfirm('#springMessageText(
-                "confirm.batch.force.mock","confirm.batch.force.mock")', 'services/0/shield?service=' + getChecked('ids'));} return false;"><img
+                "confirm.batch.force.mock",
+                "confirm.batch.force.mock")', 'services/0/shield?service=' + getChecked('ids'));} return false;"><img
                     src="$rootContextPath.getURI("images/ico_disable.png")" width="12" height="12"/><span
                     class="ico_font">#springMessageText("batch.force.mock", "batch.force.mock")</span></a>
             <span class="ico_line">|</span>
             <a href="#" onclick="if(! hasCheckbox('ids')) { showAlert('#springMessageText(
                 "empty.list","empty.list")'); } else if(! hasChecked('ids')) { showAlert('#springMessageText(
                 "please.select","please.select")'); } else { showConfirm('#springMessageText(
-                "confirm.batch.fail.mock","confirm.batch.fail.mock")', 'services/0/tolerant?service=' + getChecked('ids'));} return false;"><img
+                "confirm.batch.fail.mock",
+                "confirm.batch.fail.mock")', 'services/0/tolerant?service=' + getChecked('ids'));} return false;"><img
                     src="$rootContextPath.getURI("images/ico_run.png")" width="12" height="12"/><span
                     class="ico_font">#springMessageText("batch.fail.mock", "batch.fail.mock")</span></a>
             <span class="ico_line">|</span>
             <a href="#" onclick="if(! hasCheckbox('ids')) { showAlert('#springMessageText(
                 "empty.list","empty.list")'); } else if(! hasChecked('ids')) { showAlert('#springMessageText(
                 "please.select","please.select")'); } else { showConfirm('#springMessageText(
-                "confirm.batch.fail.mock","confirm.batch.fail.mock")', 'services/0/recover?service=' + getChecked('ids'));} return false;"><img
+                "confirm.batch.fail.mock",
+                "confirm.batch.fail.mock")', 'services/0/recover?service=' + getChecked('ids'));} return false;"><img
                     src="$rootContextPath.getURI("images/ico_enable.png")" width="12" height="12"/><span
                     class="ico_font">#springMessageText("batch.cancel.mock", "batch.cancel.mock")</span></a>
         #end
@@ -63,21 +67,28 @@
         <select onchange="searchTable('table_o', 2, this.value);" onclick="searchTable('table_o', 2, this.value);">
             <option value="">#springMessageText("all", "all")</option>
             #if($app)
-                <option value="#springMessageText("provided", "provided")">#springMessageText("provided", "provided")</option>
-                <option value="#springMessageText("consumed", "consumed")">#springMessageText("consumed", "consumed")</option>
+                <option value="#springMessageText("provided", "provided")">#springMessageText(
+                    "provided", "provided")</option>
+                <option value="#springMessageText("consumed", "consumed")">#springMessageText(
+                    "consumed", "consumed")</option>
             #else
                 <option value="#springMessageText("ok", "ok")">#springMessageText("ok", "ok")</option>
-                <option value="#springMessageText("no.provider", "no.provider")">#springMessageText("no.provider", "no.provider")</option>
-                <option value="#springMessageText("no.consumer", "no.consumer")">#springMessageText("no.consumer", "no.consumer")</option></select>
+                <option value="#springMessageText("no.provider", "no.provider")">#springMessageText(
+                    "no.provider", "no.provider")</option>
+                <option value="#springMessageText("no.consumer", "no.consumer")">#springMessageText(
+                    "no.consumer", "no.consumer")</option></select>
             #end
             </select></th>
         #if($appj)
-            <th width="110">#springMessageText("mock", "mock"): <select onchange="searchTable('table_o', 3, this.value);"
-                                                       onclick="searchTable('table_o', 3, this.value);">
+            <th width="110">#springMessageText("mock", "mock"): <select
+                    onchange="searchTable('table_o', 3, this.value);"
+                    onclick="searchTable('table_o', 3, this.value);">
                 <option value="">#springMessageText("all", "all")</option>
                 <option value="#springMessageText("ok", "ok")">#springMessageText("ok", "ok")</option>
-                <option value="#springMessageText("force.mock", "force.mock")">#springMessageText("force.mock", "force.mock")</option>
-                <option value="#springMessageText("fail.mock", "fail.mock")">#springMessageText("fail.mock", "fail.mock")</option>
+                <option value="#springMessageText("force.mock", "force.mock")">#springMessageText(
+                    "force.mock", "force.mock")</option>
+                <option value="#springMessageText("fail.mock", "fail.mock")">#springMessageText(
+                    "fail.mock", "fail.mock")</option>
             </select></th>
             <th>#springMessageText("operation", "operation")</th>
         #end
@@ -130,32 +141,40 @@
                         #set($mock=$tool.getOverridesMock($overrides.get($app)))
                         #if($mock == "force%3Areturn+null")
                             <a href="#" onclick="showConfirm('#springMessageText(
-                                "confirm.cancel.mock","confirm.cancel.mock")', 'services/0/recover?service=$service'); return false;"><img
+                                "confirm.cancel.mock",
+                                "confirm.cancel.mock")', 'services/0/recover?service=$service'); return false;"><img
                                     src="$rootContextPath.getURI("images/ico_enable.png")" width="12" height="12"/><span
                                     class="ico_font">#springMessageText("cancel.mock", "cancel.mock")</span></a>
                             <span class="ico_line">|</span>
                             <a href="#" onclick="showConfirm('#springMessageText(
-                                "confirm.fail.mock","confirm.fail.mock")', 'services/0/tolerant?service=$service'); return false;"><img
+                                "confirm.fail.mock",
+                                "confirm.fail.mock")', 'services/0/tolerant?service=$service'); return false;"><img
                                     src="$rootContextPath.getURI("images/ico_run.png")" width="12" height="12"/><span
                                     class="ico_font">#springMessageText("fail.mock", "fail.mock")</span></a>
                         #elseif ($mock == "fail%3Areturn+null")
                             <a href="#" onclick="showConfirm('#springMessageText(
-                                "confirm.force.mock","confirm.force.mock")', 'services/0/shield?service=$service'); return false;"><img
+                                "confirm.force.mock",
+                                "confirm.force.mock")', 'services/0/shield?service=$service'); return false;"><img
                                     src="$rootContextPath.getURI("images/ico_disable.png")" width="12"
-                                    height="12"/><span class="ico_font">#springMessageText("force.mock", "force.mock")</span></a>
+                                    height="12"/><span class="ico_font">#springMessageText(
+                                "force.mock", "force.mock")</span></a>
                             <span class="ico_line">|</span>
                             <a href="#" onclick="showConfirm('#springMessageText(
-                                "confirm.cancel.mock","confirm.cancel.mock")', 'services/0/recover?service=$service'); return false;"><img
+                                "confirm.cancel.mock",
+                                "confirm.cancel.mock")', 'services/0/recover?service=$service'); return false;"><img
                                     src="$rootContextPath.getURI("images/ico_enable.png")" width="12" height="12"/><span
                                     class="ico_font">#springMessageText("cancel.mock", "cancel.mock")</span></a>
                         #else
                             <a href="#" onclick="showConfirm('#springMessageText(
-                                "confirm.force.mock","confirm.force.mock")', 'services/0/shield?service=$service'); return false;"><img
+                                "confirm.force.mock",
+                                "confirm.force.mock")', 'services/0/shield?service=$service'); return false;"><img
                                     src="$rootContextPath.getURI("images/ico_disable.png")" width="12"
-                                    height="12"/><span class="ico_font">#springMessageText("force.mock", "force.mock")</span></a>
+                                    height="12"/><span class="ico_font">#springMessageText(
+                                "force.mock", "force.mock")</span></a>
                             <span class="ico_line">|</span>
                             <a href="#" onclick="showConfirm('#springMessageText(
-                                "confirm.fail.mock","confirm.fail.mock")', 'services/0/tolerant?service=$service'); return false;"><img
+                                "confirm.fail.mock",
+                                "confirm.fail.mock")', 'services/0/tolerant?service=$service'); return false;"><img
                                     src="$rootContextPath.getURI("images/ico_run.png")" width="12" height="12"/><span
                                     class="ico_font">#springMessageText("fail.mock", "fail.mock")</span></a>
                         #end
@@ -165,5 +184,6 @@
         </tr>
     #end
 </table>
-<div class="page">#springMessageText("page.total", "page.total")$services.size()#springMessageText("page.records", "page.records") </div>
+<div class="page">#springMessageText("page.total", "page.total")$services.size()#springMessageText(
+    "page.records", "page.records") </div>
 #end

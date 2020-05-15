@@ -39,7 +39,8 @@
                 #if($service)
                     <input type="hidden" id="service" name="service" value="$service"/>$service
                     #if($input)
-                        <button onclick="window.location.href='../routes/add'; return false;">#springMessageText("edit", "edit")</button>
+                        <button onclick="window.location.href='../routes/add'; return false;">#springMessageText(
+                            "edit", "edit")</button>
                     #end
                 #else
                     <input type="text" id="service" name="service" value="$!route.serviceName" style="ime-mode:disabled"
@@ -52,8 +53,10 @@
                             #end
                         </select>
                     #end
-                    <button onclick="if(byId('service').value == '') { showAlert('#springMessageText("PleaseInput", "PleaseInput")#springMessageText(
-                        "ServiceName","ServiceName")', 'service'); } else if(!checkService(byId('service').value)) { showAlert('Service name can not contain , only last * is allowed', 'service'); } else { window.location.href='../services/' + byId('service').value+'/routes/add?input=true'; } return false;">#springMessageText(
+                    <button onclick="if(byId('service').value == '') { showAlert('#springMessageText(
+                        "PleaseInput", "PleaseInput")#springMessageText(
+                        "ServiceName",
+                        "ServiceName")', 'service'); } else if(!checkService(byId('service').value)) { showAlert('Service name can not contain , only last * is allowed', 'service'); } else { window.location.href='../services/' + byId('service').value+'/routes/add?input=true'; } return false;">#springMessageText(
                         "getMethods","getMethods")</button>
                     <br>
                     <font color='blue'>#springMessageText("RouteServiceTip", "RouteServiceTip")</font>
@@ -184,7 +187,8 @@
         </tr>
         <tr>
             <td colspan="4">
-                <div class="btn"><a href="#" onclick="if(check()){document.getElementById('df').submit();}">#springMessageText(
+                <div class="btn"><a href="#"
+                                    onclick="if(check()){document.getElementById('df').submit();}">#springMessageText(
                     "save","save")</a></div>
             </td>
         </tr>
@@ -213,11 +217,13 @@
 
     function check() {
         if (byId('name').value.trim() == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText("route.name","route.name")", 'name');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText(
+                "route.name","route.name")", 'name');
             return false;
         }
         if (byId('service').value.trim() == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText("service", "service")", 'service');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText(
+                "service", "service")", 'service');
             return false;
         }
         if (byId('service').value.indexOf('*') != -1 || byId('service').value.indexOf(',') != -1) {

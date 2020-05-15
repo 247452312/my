@@ -16,16 +16,10 @@
  */
 package com.alibaba.dubboadmin.registry.common.route;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.alibaba.dubbo.common.utils.StringUtils;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 public class RouteRuleUtils {
     private RouteRuleUtils() {
@@ -33,15 +27,16 @@ public class RouteRuleUtils {
 
     /**
      * When one of the value that is bound to a specific key of a condition is expanded, it is merged into another value of a specified key.
-     * @param <T> generic type
+     *
+     * @param <T>            generic type
      * @param condition
-     * @param srcKeyName the key to expand
-     * @param destKeyName the key to merge into
+     * @param srcKeyName     the key to expand
+     * @param destKeyName    the key to merge into
      * @param expandName2Set the mapping of values to values that are carried out
      */
     public static <T extends Collection<String>> Map<String, RouteRule.MatchPair> expandCondition(
-        Map<String, RouteRule.MatchPair> condition, String srcKeyName, String destKeyName,
-        Map<String, T> expandName2Set) {
+            Map<String, RouteRule.MatchPair> condition, String srcKeyName, String destKeyName,
+            Map<String, T> expandName2Set) {
         if (null == condition || StringUtils.isEmpty(srcKeyName) || StringUtils.isEmpty(destKeyName)) {
             return condition;
         }
@@ -104,9 +99,9 @@ public class RouteRuleUtils {
     /**
      * Check whether the KV (key=value pair of Provider or Consumer) matches the conditions.
      *
-     * @param condition can contains variable definition. For example, <code>{key1={matches={value1,value2,$var1},unmatches={Vx,Vy,$var2}}}</code>
+     * @param condition   can contains variable definition. For example, <code>{key1={matches={value1,value2,$var1},unmatches={Vx,Vy,$var2}}}</code>
      * @param valueParams Set of values of interpolated variables in a condition
-     * @param kv key=value pair of Provider or Consumer
+     * @param kv          key=value pair of Provider or Consumer
      * @see RouteRule
      */
     public static boolean isMatchCondition(Map<String, RouteRule.MatchPair> condition,

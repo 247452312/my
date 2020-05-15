@@ -16,16 +16,15 @@
  */
 package com.alibaba.dubboadmin.registry.common.status;
 
+import com.alibaba.dubbo.common.status.Status;
+import com.alibaba.dubbo.common.status.StatusChecker;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.reflect.Method;
 
-import com.alibaba.dubbo.common.status.Status;
-import com.alibaba.dubbo.common.status.StatusChecker;
-
 /**
  * Load StatusController
- *
  */
 public class LoadStatusChecker implements StatusChecker {
 

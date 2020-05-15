@@ -16,22 +16,19 @@
  */
 package com.alibaba.dubboadmin.registry.common.status;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-
-import javax.sql.DataSource;
-
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.common.status.Status;
 import com.alibaba.dubbo.common.status.StatusChecker;
-
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 
 /**
  * DatabaseStatus
- *
  */
 public class DatabaseStatusChecker implements StatusChecker {
 

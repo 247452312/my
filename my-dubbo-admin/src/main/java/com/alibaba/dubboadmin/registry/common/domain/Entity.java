@@ -22,7 +22,6 @@ import java.util.List;
 
 /**
  * Entity
- *
  */
 public abstract class Entity implements Serializable {
 

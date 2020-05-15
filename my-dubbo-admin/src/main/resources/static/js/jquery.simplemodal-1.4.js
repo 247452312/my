@@ -255,12 +255,10 @@
                         s.d.orig = data.clone(true);
                     }
                 }
-            }
-            else if (typeof data === 'string' || typeof data === 'number') {
+            } else if (typeof data === 'string' || typeof data === 'number') {
                 // just insert the data as innerHTML
                 data = $('<div></div>').html(data);
-            }
-            else {
+            } else {
                 // unsupported data type!
                 alert('SimpleModal Error: Unsupported data type: ' + typeof data);
                 return s;
@@ -385,8 +383,7 @@
             $(document).bind('keydown.simplemodal', function (e) {
                 if (s.o.modal && e.keyCode === 9) { // TAB
                     s.watchTab(e);
-                }
-                else if ((s.o.close && s.o.escClose) && e.keyCode === 27) { // ESC
+                } else if ((s.o.close && s.o.escClose) && e.keyCode === 27) { // ESC
                     e.preventDefault();
                     s.close();
                 }
@@ -402,8 +399,7 @@
 
                 if (ie6 || ieQuirks) {
                     s.fixIE();
-                }
-                else if (s.o.modal) {
+                } else if (s.o.modal) {
                     // update the iframe & overlay
                     s.d.iframe && s.d.iframe.css({height: w[0], width: w[1]});
                     s.d.overlay.css({height: w[0], width: w[1]});
@@ -441,8 +437,7 @@
                         s.removeExpression('width');
                         s.setExpression('height', '' + bsh + ' > ' + bch + ' ? ' + bsh + ' : ' + bch + ' + "px"');
                         s.setExpression('width', '' + bsw + ' > ' + bcw + ' ? ' + bsw + ' : ' + bcw + ' + "px"');
-                    }
-                    else {
+                    } else {
                         var te, le;
                         if (p && p.constructor === Array) {
                             var top = p[0]
@@ -458,8 +453,7 @@
                                     ? left + ' + (t = ' + sl + ' ? ' + sl + ' : ' + bsl + ') + "px"'
                                     : parseInt(left.replace(/%/, '')) + ' * ((' + cw + ' || ' + bcw + ') / 100) + (t = ' + sl + ' ? ' + sl + ' : ' + bsl + ') + "px"';
                             }
-                        }
-                        else {
+                        } else {
                             te = '(' + ch + ' || ' + bch + ') / 2 - (this.offsetHeight / 2) + (t = ' + st + ' ? ' + st + ' : ' + bst + ') + "px"';
                             le = '(' + cw + ' || ' + bcw + ') / 2 - (this.offsetWidth / 2) + (t = ' + sl + ' ? ' + sl + ' : ' + bsl + ') + "px"';
                         }
@@ -550,20 +544,16 @@
             if (!ch) {
                 if (!dh) {
                     ch = moh;
-                }
-                else {
+                } else {
                     if (dh > mh) {
                         ch = mh;
-                    }
-                    else if (s.o.minHeight && moh !== 'auto' && dh < moh) {
+                    } else if (s.o.minHeight && moh !== 'auto' && dh < moh) {
                         ch = moh;
-                    }
-                    else {
+                    } else {
                         ch = dh;
                     }
                 }
-            }
-            else {
+            } else {
                 ch = s.o.autoResize && ch > mh ? mh : ch;
             }
 
@@ -572,20 +562,16 @@
             if (!cw) {
                 if (!dw) {
                     cw = mow;
-                }
-                else {
+                } else {
                     if (dw > mw) {
                         cw = mw;
-                    }
-                    else if (s.o.minWidth && mow !== 'auto' && dw < mow) {
+                    } else if (s.o.minWidth && mow !== 'auto' && dw < mow) {
                         cw = mow;
-                    }
-                    else {
+                    } else {
                         cw = dw;
                     }
                 }
-            }
-            else {
+            } else {
                 cw = s.o.autoResize && cw > mw ? mw : cw;
             }
 
@@ -622,8 +608,7 @@
                     var pos = e.shiftKey ? 'last' : 'first';
                     s.focus(pos);
                 }
-            }
-            else {
+            } else {
                 // might be necessary when custom onShow callback is used
                 e.preventDefault();
                 s.focus();
@@ -643,8 +628,7 @@
             if ($.isFunction(s.o.onOpen)) {
                 // execute the onOpen callback
                 s.o.onOpen.apply(s, [s.d]);
-            }
-            else {
+            } else {
                 // display the remaining elements
                 s.d.overlay.show();
                 s.d.container.show();
@@ -682,8 +666,7 @@
 
                 // execute the onClose callback
                 s.o.onClose.apply(s, [s.d]);
-            }
-            else {
+            } else {
                 // if the data came from the DOM, put it back
                 if (s.d.placeholder) {
                     var ph = $('#simplemodal-placeholder');
@@ -691,15 +674,13 @@
                     if (s.o.persist) {
                         // insert the (possibly) modified data back into the DOM
                         ph.replaceWith(s.d.data.removeClass('simplemodal-data').css('display', s.display));
-                    }
-                    else {
+                    } else {
                         // remove the current and insert the original,
                         // unmodified data back into the DOM
                         s.d.data.hide().remove();
                         ph.replaceWith(s.d.orig);
                     }
-                }
-                else {
+                } else {
                     // otherwise, remove it
                     s.d.data.hide().remove();
                 }

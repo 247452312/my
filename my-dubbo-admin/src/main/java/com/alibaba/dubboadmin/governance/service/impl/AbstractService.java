@@ -16,20 +16,18 @@
  */
 package com.alibaba.dubboadmin.governance.service.impl;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
-
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.registry.RegistryService;
 import com.alibaba.dubboadmin.governance.sync.RegistryServerSync;
-
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * IbatisDAO
- *
  */
 public class AbstractService {
 

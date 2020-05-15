@@ -16,6 +16,16 @@
  */
 package com.alibaba.dubboadmin.web.mvc.sysinfo;
 
+import com.alibaba.dubbo.common.logger.Level;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.alibaba.dubboadmin.registry.common.domain.User;
+import com.alibaba.dubboadmin.web.mvc.BaseController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.ByteBuffer;
@@ -23,18 +33,6 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.alibaba.dubbo.common.logger.Level;
-import com.alibaba.dubbo.common.logger.LoggerFactory;
-import com.alibaba.dubboadmin.registry.common.domain.User;
-import com.alibaba.dubboadmin.web.mvc.BaseController;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/sysinfo/logs")

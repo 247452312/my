@@ -6,7 +6,7 @@ package indi.uhyils.request;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时07分
  */
-public class DefaultPageRequest extends DefaultRequest   {
+public class DefaultPageRequest extends DefaultRequest {
 
 
     /**

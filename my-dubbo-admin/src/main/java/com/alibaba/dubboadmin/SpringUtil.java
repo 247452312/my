@@ -20,7 +20,6 @@ package com.alibaba.dubboadmin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.context.ApplicationContext;
 
 public class SpringUtil {
@@ -28,19 +27,19 @@ public class SpringUtil {
     public static final Logger logger = LoggerFactory.getLogger(SpringUtil.class);
     private static ApplicationContext applicationContext = null;
 
+    /**
+     * 获取applicationContext
+     */
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
     public static void setApplicationContext(ApplicationContext applicationContext) {
         if (SpringUtil.applicationContext == null) {
             logger.info("set applicationcontext");
             SpringUtil.applicationContext = applicationContext;
         }
 
-    }
-
-    /**
-     * 获取applicationContext
-     */
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
     }
 
     /**

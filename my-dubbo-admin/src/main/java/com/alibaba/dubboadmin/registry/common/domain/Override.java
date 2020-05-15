@@ -16,11 +16,11 @@
  */
 package com.alibaba.dubboadmin.registry.common.domain;
 
-import java.util.Map;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.utils.StringUtils;
+
+import java.util.Map;
 
 public class Override extends Entity {
 

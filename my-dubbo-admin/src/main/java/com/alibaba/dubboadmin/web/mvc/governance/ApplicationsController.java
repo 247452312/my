@@ -16,18 +16,6 @@
  */
 package com.alibaba.dubboadmin.web.mvc.governance;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubboadmin.governance.service.ConsumerService;
@@ -36,7 +24,6 @@ import com.alibaba.dubboadmin.governance.service.ProviderService;
 import com.alibaba.dubboadmin.registry.common.domain.Override;
 import com.alibaba.dubboadmin.registry.common.route.OverrideUtils;
 import com.alibaba.dubboadmin.web.mvc.BaseController;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,34 +32,34 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+
 /**
  * ProvidersController.
  * URI: /applications
- *
  */
 @Controller
 @RequestMapping("/governance/applications")
 public class ApplicationsController extends BaseController {
 
     @Autowired
+    ServicesController servicesController;
+    @Autowired
     private ProviderService providerService;
-
     @Autowired
     private ConsumerService consumerService;
-
     @Autowired
     private OverrideService overrideService;
-
-    @Autowired
-    ServicesController servicesController;
 
     @RequestMapping("")
     public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
         prepare(request, response, model, "index", "applications");
-        BindingAwareModelMap newModel = (BindingAwareModelMap)model;
-        String service = (String)newModel.get("service");
-        String application = (String)newModel.get("app");
-        String address = (String)newModel.get("address");
+        BindingAwareModelMap newModel = (BindingAwareModelMap) model;
+        String service = (String) newModel.get("service");
+        String application = (String) newModel.get("app");
+        String address = (String) newModel.get("address");
         String keyword = request.getParameter("keyword");
         if (service != null) {
             Set<String> applications = new TreeSet<String>();
@@ -203,13 +190,13 @@ public class ApplicationsController extends BaseController {
 
     @RequestMapping("/{ids}/recover")
     public String recover(@PathVariable("ids") Long[] ids, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        return mock(ids,  "", "recover", request, response, model);
+        return mock(ids, "", "recover", request, response, model);
     }
 
     private String mock(Long[] ids, String mock, String methodName, HttpServletRequest request,
-                         HttpServletResponse response, Model model) throws Exception {
+                        HttpServletResponse response, Model model) throws Exception {
         prepare(request, response, model, methodName, "applications");
-        BindingAwareModelMap newModel = (BindingAwareModelMap)model;
+        BindingAwareModelMap newModel = (BindingAwareModelMap) model;
         String service = (String) newModel.get("service");
         String applications = (String) newModel.get("app");
         if (service == null || service.length() == 0
@@ -263,19 +250,19 @@ public class ApplicationsController extends BaseController {
 
     @RequestMapping("/allshield")
     public String allshield(@RequestParam(required = false) String service, HttpServletRequest request,
-                             HttpServletResponse response, Model model) throws Exception {
+                            HttpServletResponse response, Model model) throws Exception {
         return allmock(service, "force:return null", "allshield", request, response, model);
     }
 
     @RequestMapping("/alltolerant")
     public String alltolerant(@RequestParam(required = false) String service, HttpServletRequest request,
-                               HttpServletResponse response, Model model) throws Exception {
+                              HttpServletResponse response, Model model) throws Exception {
         return allmock(service, "fail:return null", "alltolerant", request, response, model);
     }
 
     @RequestMapping("/allrecover")
     public String allrecover(@RequestParam(required = false) String service, HttpServletRequest request,
-                              HttpServletResponse response, Model model) throws Exception {
+                             HttpServletResponse response, Model model) throws Exception {
         return allmock(service, "", "allrecover", request, response, model);
     }
 

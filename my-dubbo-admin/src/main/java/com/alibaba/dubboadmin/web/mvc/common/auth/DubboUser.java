@@ -16,13 +16,12 @@
  */
 package com.alibaba.dubboadmin.web.mvc.common.auth;
 
-import java.io.Serializable;
-
 import com.alibaba.dubboadmin.registry.common.domain.User;
+
+import java.io.Serializable;
 
 /**
  * MinasUser: DubboUser
- *
  */
 public class DubboUser implements Serializable {
 

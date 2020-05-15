@@ -16,14 +16,13 @@
  */
 package com.alibaba.dubboadmin.registry.common.domain;
 
+import com.alibaba.dubboadmin.registry.common.route.ParseUtils;
+
 import java.util.Arrays;
 import java.util.List;
 
-import com.alibaba.dubboadmin.registry.common.route.ParseUtils;
-
 /**
  * User
- *
  */
 public class User extends Entity {
 

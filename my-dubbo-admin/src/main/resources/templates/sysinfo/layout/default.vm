@@ -31,7 +31,7 @@
     <script type="text/javascript" src="$rootContextPath.getURI("js/dubbo.js")"></script>
 </head>
 <body onload="init();">
-##    $control.setTemplate("home:menu.vm")
+    ##    $control.setTemplate("home:menu.vm")
     #parse("/templates/home/control/menu.vm")
 <script language="javascript">setActiveTab(3);</script>
 <div class="dubbo_search dubbo_search_nobox">
@@ -45,7 +45,8 @@
         </h2>
     </div>
     <div class="crumbs">
-        <a href="$rootContextPath.getURI("/")">#springMessageText("home", "home")</a> &gt; #springMessageText("system.management", "system.management")
+        <a href="$rootContextPath.getURI("/")">#springMessageText("home", "home")</a> &gt; #springMessageText(
+        "system.management", "system.management")
         #if($service)
             &gt; <a href="../../#if($_method == "show" || $_method == "add")../#elseif($_method ==
             "edit")../../#{end}services">#springMessageText("services", "services")</a>

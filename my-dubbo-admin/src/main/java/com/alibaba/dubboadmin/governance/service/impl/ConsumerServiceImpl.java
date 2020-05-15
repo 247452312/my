@@ -16,20 +16,19 @@
  */
 package com.alibaba.dubboadmin.governance.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubboadmin.governance.service.ConsumerService;
 import com.alibaba.dubboadmin.governance.sync.util.Pair;
 import com.alibaba.dubboadmin.governance.sync.util.SyncUtils;
 import com.alibaba.dubboadmin.registry.common.domain.Consumer;
-
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 @Component
 public class ConsumerServiceImpl extends AbstractService implements ConsumerService {
@@ -77,7 +76,7 @@ public class ConsumerServiceImpl extends AbstractService implements ConsumerServ
         List<String> ret = new ArrayList<String>();
         ConcurrentMap<String, Map<Long, URL>> consumerUrls = getRegistryCache().get(Constants.CONSUMERS_CATEGORY);
 
-        if(consumerUrls == null)
+        if (consumerUrls == null)
             return ret;
 
         for (Map.Entry<String, Map<Long, URL>> e1 : consumerUrls.entrySet()) {

@@ -18,7 +18,6 @@ package com.alibaba.dubboadmin.registry.common.domain;
 
 /**
  * Specifies the applied Quality of Service Level Agreement (SLA) object.
- *
  */
 public class Agreement extends Entity {
 

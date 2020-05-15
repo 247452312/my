@@ -1,7 +1,7 @@
 package indi.uhyils.function.aop;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.enum_.ResponseCode;
 import indi.uhyils.enum_.UserTypeEnum;
 import indi.uhyils.model.TokenInfo;
 import indi.uhyils.model.UserEntity;
@@ -9,9 +9,9 @@ import indi.uhyils.request.DefaultRequest;
 import indi.uhyils.request.GetUserRequest;
 import indi.uhyils.request.IdRequest;
 import indi.uhyils.response.ServiceResult;
+import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.MD5Util;
-import org.apache.catalina.User;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -69,18 +69,21 @@ public class TokenInjectAop {
         }
 
         //获取token
-        Object[] objs = pjp.getArgs();
-        boolean b = objs == null;
-        boolean b1 = objs.length == 0;
-        if (b || b1) { //如果没有参数
-            throw new Exception("访问请求无参数");
-        }
-        DefaultRequest arg = (DefaultRequest) objs[0];
+        DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
         String token = arg.getToken();
 
         if (token != null && !"".equals(token)) { //说明有token 不是第一次访问
             //解析token获取tokenInfo
-            final TokenInfo tokenInfo = getTokenInfo(token);
+            DefaultRequest request = new DefaultRequest();
+            request.setToken(token);
+            List list = new ArrayList();
+            list.add(request);
+            ServiceResult getTokenInfoByTokenNoToken = DubboApiUtil.dubboApiTool("UserService", "getTokenInfoByTokenNoToken", list);
+            if (getTokenInfoByTokenNoToken.getServiceCode() != ResponseCode.SUCCESS.getText()) {
+                return getTokenInfoByTokenNoToken;
+            }
+            JSONObject data = (JSONObject) getTokenInfoByTokenNoToken.getData();
+            final TokenInfo tokenInfo = data.toJavaObject(TokenInfo.class);
 
             //根据tokenInfo 获取UserEntity
             UserTypeEnum type = tokenInfo.getType();
@@ -94,8 +97,11 @@ public class TokenInjectAop {
                 build.setToken(token);
                 args.add(build);
                 ServiceResult<JSONObject> serviceResult = DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args);
-                JSONObject data = serviceResult.getData();
-                userEntity = data.toJavaObject(UserEntity.class);
+                // 查询是否有报错,如果报错.则结束请求
+                if (serviceResult.getServiceCode() != ResponseCode.SUCCESS.getText()) {
+                    return serviceResult;
+                }
+                userEntity = serviceResult.getData().toJavaObject(UserEntity.class);
 
             } else {
                 userEntity = new UserEntity();
@@ -104,10 +110,10 @@ public class TokenInjectAop {
             }
             arg.setUser(userEntity);
             //执行方法
-            Object proceed = pjp.proceed(objs);
+            Object proceed = pjp.proceed();
             return proceed;
 
-        } else { //第一次登录
+        } else { //第一次访问
             GetUserRequest getUserRequest = new GetUserRequest();
             getUserRequest.setUserType(UserTypeEnum.TOURIST);
             String touristId = UUID.randomUUID().toString();
@@ -115,6 +121,9 @@ public class TokenInjectAop {
             List list = new ArrayList();
             list.add(getUserRequest);
             ServiceResult<String> tokenResult = DubboApiUtil.dubboApiTool("UserService", "getUserTokenNoToken", list);
+            if (tokenResult.getServiceCode() != ResponseCode.SUCCESS.getText()) {
+                return tokenResult;
+            }
             //这个是获取到的token
             String data = tokenResult.getData();
             arg.setToken(data);
@@ -123,19 +132,8 @@ public class TokenInjectAop {
             //这是一个游客
             userEntity.setNickName(String.format("游客_%s", touristId));
             arg.setUser(userEntity);
-            return pjp.proceed(objs);
+            return pjp.proceed();
         }
-    }
-
-    private TokenInfo getTokenInfo(String token) throws ClassNotFoundException {
-        DefaultRequest request = new DefaultRequest();
-        request.setToken(token);
-        List list = new ArrayList();
-        list.add(request);
-        ServiceResult serviceResult = DubboApiUtil.dubboApiTool("UserService", "getTokenInfoByTokenNoToken", list);
-        JSONObject data = (JSONObject) serviceResult.getData();
-        TokenInfo tokenInfo = data.toJavaObject(TokenInfo.class);
-        return tokenInfo;
     }
 
 

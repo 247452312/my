@@ -16,28 +16,21 @@
  */
 package com.alibaba.dubboadmin.web.mvc.sysinfo;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubboadmin.governance.service.ConsumerService;
 import com.alibaba.dubboadmin.governance.service.ProviderService;
 import com.alibaba.dubboadmin.registry.common.domain.Consumer;
 import com.alibaba.dubboadmin.registry.common.domain.Provider;
 import com.alibaba.dubboadmin.web.mvc.BaseController;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 @Controller
 @RequestMapping("/sysinfo")
@@ -81,7 +74,7 @@ public class VersionsController extends BaseController {
 
     @RequestMapping("/version/{version}/versions/show")
     public String show(@PathVariable("version") String version, HttpServletRequest request, HttpServletResponse response,
-                     Model model) {
+                       Model model) {
         prepare(request, response, model, "show", "versions");
         if (version != null && version.length() > 0) {
             List<Provider> providers = providerService.findAll();

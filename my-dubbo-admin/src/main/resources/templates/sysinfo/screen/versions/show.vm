@@ -20,8 +20,9 @@
 <br/>
 <table cellpadding="0" cellspacing="0" class="list list_dubbo" id="table_o">
     <tr>
-        <th>#springMessageText("applications", "applications"): <input type="text" onkeyup="searchTable('table_o', 0, this.value);"
-                                              onclick="searchTable('table_o', 0, this.value);"/>&nbsp;<img
+        <th>#springMessageText("applications", "applications"): <input type="text"
+                                                                       onkeyup="searchTable('table_o', 0, this.value);"
+                                                                       onclick="searchTable('table_o', 0, this.value);"/>&nbsp;<img
                 src="$rootContextPath.getURI("images/ico_search.png")" width="12" height="12"/></th>
     </tr>
     #foreach($app in $applications)
@@ -35,4 +36,5 @@
         </tr>
     #end
 </table>
-<div class="page">#springMessageText("page.total", "page.total")$applications.size()#springMessageText("page.records", "page.records")</div>
+<div class="page">#springMessageText("page.total", "page.total")$applications.size()#springMessageText(
+    "page.records", "page.records")</div>

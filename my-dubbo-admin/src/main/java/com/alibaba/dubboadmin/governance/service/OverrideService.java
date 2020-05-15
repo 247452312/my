@@ -16,9 +16,9 @@
  */
 package com.alibaba.dubboadmin.governance.service;
 
-import java.util.List;
-
 import com.alibaba.dubboadmin.registry.common.domain.Override;
+
+import java.util.List;
 
 public interface OverrideService {
 

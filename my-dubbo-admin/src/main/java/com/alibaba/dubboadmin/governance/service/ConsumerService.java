@@ -16,13 +16,12 @@
  */
 package com.alibaba.dubboadmin.governance.service;
 
-import java.util.List;
-
 import com.alibaba.dubboadmin.registry.common.domain.Consumer;
+
+import java.util.List;
 
 /**
  * Query service for consumer info
- *
  */
 public interface ConsumerService {
 

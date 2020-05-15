@@ -21,7 +21,8 @@
 <form id="df" action="../loadbalances/create" method="POST" onsubmit="return check()">
     <table cellpadding="0" cellspacing="0" class="info">
         <tr>
-            <th style="width: 150px;">#springMessageText("service", "service")&nbsp;&nbsp;<font color='red'>*</font></th>
+            <th style="width: 150px;">#springMessageText("service", "service")&nbsp;&nbsp;<font color='red'>*</font>
+            </th>
             <td>#if($service)
                 <input type="hidden" id="service" name="service" value="$service"/>$service
                 #if($input)
@@ -39,8 +40,10 @@
                         #end
                     </select>
                 #end
-                <button onclick="if(byId('service').value == '') { showAlert('#springMessageText("PleaseInput", "PleaseInput")#springMessageText(
-                    "ServiceName", "ServiceName")', 'service'); } else if(!checkService(byId('service').value)) { showAlert('Service name can not contain , only last * is allowed', 'service'); } else { window.location.href='../services/' + byId('service').value+'/loadbalances/add?input=true'; } return false;">#springMessageText(
+                <button onclick="if(byId('service').value == '') { showAlert('#springMessageText(
+                    "PleaseInput", "PleaseInput")#springMessageText(
+                    "ServiceName",
+                    "ServiceName")', 'service'); } else if(!checkService(byId('service').value)) { showAlert('Service name can not contain , only last * is allowed', 'service'); } else { window.location.href='../services/' + byId('service').value+'/loadbalances/add?input=true'; } return false;">#springMessageText(
                     "getMethods","getMethods")</button>
                 <br>
                 <font color='blue'>#springMessageText("MultiServiceTip", "MultiServiceTip")</font>
@@ -48,7 +51,8 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 150px;">#springMessageText("methodName", "methodName")&nbsp;&nbsp;<font color='red'>*</font></th>
+            <th style="width: 150px;">#springMessageText("methodName", "methodName")&nbsp;&nbsp;<font
+                    color='red'>*</font></th>
             <td>
                 <input type="type" id="method" name="method" value="*" style="ime-mode:disabled" maxlength="200"/>
                 #if ($methods)
@@ -77,7 +81,8 @@
         </tr>
         <tr>
             <th>
-                <div class="btn"><a href="#" onclick="if(check()){document.getElementById('df').submit();}">#springMessageText(
+                <div class="btn"><a href="#"
+                                    onclick="if(check()){document.getElementById('df').submit();}">#springMessageText(
                     "save","save")</a></div>
             </th>
             <td></td>
@@ -106,12 +111,14 @@
     function check() {
         var method = byId('method').value.trim();
         if (method == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText("methodName", "methodName")", 'method');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText(
+                "methodName", "methodName")", 'method');
             return false;
         }
         var strategy = byId('strategy').value.trim();
         if (strategy == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText("loadBalanceStrategy", "loadBalanceStrategy")", 'strategy');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText(
+                "loadBalanceStrategy", "loadBalanceStrategy")", 'strategy');
             return false;
         }
         return true;

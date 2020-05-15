@@ -16,11 +16,11 @@
  */
 package com.alibaba.dubboadmin.registry.common.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.utils.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConvertUtil {
     private ConvertUtil() {

@@ -18,7 +18,6 @@ package com.alibaba.dubboadmin.registry.common.domain;
 
 /**
  * Test
- *
  */
 public class Test extends Entity {
 

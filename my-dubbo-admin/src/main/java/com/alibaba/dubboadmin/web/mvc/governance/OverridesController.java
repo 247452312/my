@@ -16,19 +16,6 @@
  */
 package com.alibaba.dubboadmin.web.mvc.governance;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
@@ -37,13 +24,19 @@ import com.alibaba.dubboadmin.governance.service.OverrideService;
 import com.alibaba.dubboadmin.governance.service.ProviderService;
 import com.alibaba.dubboadmin.registry.common.domain.Override;
 import com.alibaba.dubboadmin.web.mvc.BaseController;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/governance/overrides")
@@ -89,10 +82,10 @@ public class OverridesController extends BaseController {
     @RequestMapping("")
     public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
         prepare(request, response, model, "index", "overrides");
-        BindingAwareModelMap newModel = (BindingAwareModelMap)model;
-        String service = (String)newModel.get("service");
-        String application = (String)newModel.get("app");
-        String address = (String)newModel.get("address");
+        BindingAwareModelMap newModel = (BindingAwareModelMap) model;
+        String service = (String) newModel.get("service");
+        String application = (String) newModel.get("app");
+        String address = (String) newModel.get("address");
         List<Override> overrides;
         if (StringUtils.isNotEmpty(service)) {
             overrides = overrideService.findByService(service);
@@ -109,7 +102,7 @@ public class OverridesController extends BaseController {
 
     @RequestMapping("/{id}")
     public String show(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response,
-                     Model model) {
+                       Model model) {
         prepare(request, response, model, "show", "overrides");
         Override override = overrideService.findById(id);
 
@@ -146,10 +139,10 @@ public class OverridesController extends BaseController {
 
     @RequestMapping("/add")
     public String add(HttpServletRequest request, HttpServletResponse response, Model model) {
-        prepare(request, response, model,"add", "overrides");
-        BindingAwareModelMap newModel = (BindingAwareModelMap)model;
-        String application = (String)newModel.get("app");
-        String service = (String)newModel.get("service");
+        prepare(request, response, model, "add", "overrides");
+        BindingAwareModelMap newModel = (BindingAwareModelMap) model;
+        String application = (String) newModel.get("app");
+        String service = (String) newModel.get("service");
         List<String> serviceList = new ArrayList<String>();
         List<String> applicationList = new ArrayList<String>();
         if (StringUtils.isNotEmpty(application)) {
@@ -176,7 +169,7 @@ public class OverridesController extends BaseController {
 
     @RequestMapping("/{id}/edit")
     public String edit(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response,
-                     Model model) {
+                       Model model) {
         prepare(request, response, model, "edit", "overrides");
         Override override = overrideService.findById(id);
 
@@ -263,7 +256,8 @@ public class OverridesController extends BaseController {
 
         for (Entry<String, String[]> param : map.entrySet()) {
             String key = param.getKey().trim();
-            if(param.getValue().length != 1) continue;;
+            if (param.getValue().length != 1) continue;
+            ;
 
             String value = param.getValue()[0];
 
@@ -284,7 +278,7 @@ public class OverridesController extends BaseController {
             if (key.startsWith(FORM_DYNAMIC_METHOD_NAME_PREFIX) && value != null && value.trim().length() > 0) {
                 String index = key.substring(FORM_DYNAMIC_METHOD_NAME_PREFIX.length());
                 String force = map.get(FORM_DYNAMIC_METHOD_FORCE_PREFIX + index)[0];
-                String json =  map.get(FORM_DYNAMIC_METHOD_JSON_PREFIX + index)[0];
+                String json = map.get(FORM_DYNAMIC_METHOD_JSON_PREFIX + index)[0];
 
                 if (json != null && json.trim().length() > 0) {
                     method2Json.put(value.trim(), force + ":" + json.trim());
@@ -325,10 +319,10 @@ public class OverridesController extends BaseController {
     @RequestMapping("/create")
     public String create(Override override, HttpServletRequest request,
                          HttpServletResponse response, Model model) {
-        prepare(request,response,model,"update", "overrides");
+        prepare(request, response, model, "update", "overrides");
         boolean success = true;
         if (!catchParams(override, request, model)) {
-            success =false;
+            success = false;
         } else {
             overrideService.saveOverride(override);
         }
@@ -342,7 +336,7 @@ public class OverridesController extends BaseController {
     public String update(Override override, HttpServletRequest request,
                          HttpServletResponse response, Model model) {
         prepare(request, response, model, "update", "overrides");
-        boolean  succcess = true;
+        boolean succcess = true;
         Override o = overrideService.findById(override.getId());
         override.setService(o.getService());
         override.setAddress(o.getAddress());
@@ -362,7 +356,7 @@ public class OverridesController extends BaseController {
 
     @RequestMapping("/{ids}/delete")
     public String delete(@PathVariable("ids") Long[] ids, HttpServletRequest request,
-                              HttpServletResponse response, Model model) {
+                         HttpServletResponse response, Model model) {
         prepare(request, response, model, "delete", "overrides");
         for (Long id : ids) {
             overrideService.deleteOverride(id);
@@ -375,7 +369,7 @@ public class OverridesController extends BaseController {
 
     @RequestMapping("/{ids}/enable")
     public String enable(@PathVariable("ids") Long[] ids, HttpServletRequest request,
-                          HttpServletResponse response, Model model) {
+                         HttpServletResponse response, Model model) {
         prepare(request, response, model, "enable", "overrides");
         boolean success = true;
         for (Long id : ids) {
@@ -408,7 +402,7 @@ public class OverridesController extends BaseController {
 
     @RequestMapping("/{ids}/disable")
     public String disable(@PathVariable("ids") Long[] ids, HttpServletRequest request,
-                           HttpServletResponse response, Model model) {
+                          HttpServletResponse response, Model model) {
         prepare(request, response, model, "disable", "overrides");
         boolean success = true;
         for (Long id : ids) {

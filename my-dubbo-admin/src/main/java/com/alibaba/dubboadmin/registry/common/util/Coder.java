@@ -16,10 +16,10 @@
  */
 package com.alibaba.dubboadmin.registry.common.util;
 
+import com.alibaba.dubbo.common.io.Bytes;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import com.alibaba.dubbo.common.io.Bytes;
 
 public class Coder {
 

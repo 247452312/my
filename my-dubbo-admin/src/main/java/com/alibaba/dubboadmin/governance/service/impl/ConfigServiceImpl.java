@@ -16,15 +16,14 @@
  */
 package com.alibaba.dubboadmin.governance.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.dubboadmin.governance.service.ConfigService;
 import com.alibaba.dubboadmin.registry.common.domain.Config;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * TODO Comment of IbatisConfigDAO
- *
  */
 public class ConfigServiceImpl extends AbstractService implements ConfigService {
 

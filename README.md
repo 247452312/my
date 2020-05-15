@@ -5,6 +5,7 @@
 * java1.8环境
 * zookeeper
 * mysql
+* 本地启动时需要加入 --spring.profiles.active=dev命令
 ## 使用说明
 zookeeper配置在dubbo.xml中
 mysql配置在application.properties中

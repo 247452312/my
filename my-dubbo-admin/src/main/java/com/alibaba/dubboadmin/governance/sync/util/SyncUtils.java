@@ -16,11 +16,6 @@
  */
 package com.alibaba.dubboadmin.governance.sync.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.utils.StringUtils;
@@ -28,6 +23,11 @@ import com.alibaba.dubboadmin.registry.common.domain.Consumer;
 import com.alibaba.dubboadmin.registry.common.domain.Override;
 import com.alibaba.dubboadmin.registry.common.domain.Provider;
 import com.alibaba.dubboadmin.registry.common.domain.Route;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SyncUtils {
 
@@ -185,7 +185,7 @@ public class SyncUtils {
 
     public static List<Override> url2OverrideList(Map<Long, URL> cs) {
         List<Override>
-            list = new ArrayList<Override>();
+                list = new ArrayList<Override>();
         if (cs == null) return list;
         for (Map.Entry<Long, URL> entry : cs.entrySet()) {
             list.add(url2Override(new Pair<Long, URL>(entry.getKey(), entry.getValue())));

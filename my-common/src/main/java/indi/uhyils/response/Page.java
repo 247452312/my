@@ -38,6 +38,17 @@ public class Page<T extends Serializable> implements Serializable {
      */
     private Integer totalPage;
 
+    public Page(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
+        this.list = list;
+        this.size = size;
+        this.pageNum = pageNum;
+        this.count = count;
+        this.totalPage = totalPage;
+    }
+
+    public Page() {
+    }
+
     public static <T extends Serializable> Page build(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
         return new Page(list, size, pageNum, count, totalPage);
     }
@@ -58,17 +69,6 @@ public class Page<T extends Serializable> implements Serializable {
         } else {
             return build(list, count, 1, count, 1);
         }
-    }
-
-    public Page(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
-        this.list = list;
-        this.size = size;
-        this.pageNum = pageNum;
-        this.count = count;
-        this.totalPage = totalPage;
-    }
-
-    public Page() {
     }
 
     public List<T> getList() {

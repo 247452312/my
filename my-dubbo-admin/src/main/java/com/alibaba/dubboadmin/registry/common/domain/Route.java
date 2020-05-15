@@ -16,14 +16,13 @@
  */
 package com.alibaba.dubboadmin.registry.common.domain;
 
-import java.util.List;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 
+import java.util.List;
+
 /**
  * Route
- *
  */
 public class Route extends Entity {
 

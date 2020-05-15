@@ -16,13 +16,12 @@
  */
 package com.alibaba.dubboadmin.web.mvc.personal;
 
-import java.util.Map;
-
 import com.alibaba.dubboadmin.governance.service.UserService;
 import com.alibaba.dubboadmin.registry.common.domain.User;
 import com.alibaba.dubboadmin.web.mvc.BaseController;
-
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 public class InfosController extends BaseController {
     @Autowired

@@ -21,7 +21,8 @@
         <a href="#" onclick="if(! hasCheckbox('ids')) { showAlert('#springMessageText(
             "empty.list","empty.list")'); } else if(! hasChecked('ids')) { showAlert('#springMessageText(
             "please.select","please.select")'); } else { showConfirm('#springMessageText(
-            "confirm.batch.delete","confirm.batch.delete")', 'loadbalances/' + getChecked('ids') + '/delete'); } return false;"><img
+            "confirm.batch.delete",
+            "confirm.batch.delete")', 'loadbalances/' + getChecked('ids') + '/delete'); } return false;"><img
                 src="$rootContextPath.getURI("images/ico_delete.png")" width="12" height="12"/><span
                 class="ico_font">#springMessageText("batch.delete", "batch.delete")</span></a>
     #end
@@ -30,27 +31,35 @@
 <table cellpadding="0" cellspacing="0" class="list list_dubbo" id="table_o">
     <tr>
         <th width="20"><input type="checkbox" onclick="checkAll('table_o', 'ids', this.checked)"/></th>
-        <th>#springMessageText("service.method", "service.method"): <input type="text" onkeyup="searchTable('table_o', 1, this.value);"
-                                                onclick="searchTable('table_o', 1, this.value);"/>&nbsp;<img
+        <th>#springMessageText("service.method", "service.method"): <input type="text"
+                                                                           onkeyup="searchTable('table_o', 1, this.value);"
+                                                                           onclick="searchTable('table_o', 1, this.value);"/>&nbsp;<img
                 src="$rootContextPath.getURI("images/ico_search.png")" width="12" height="12"/></th>
         #if(! $service)
-            <th>#springMessageText("service", "service"): <input type="text" onkeyup="searchTable('table_o', 2, this.value);"
-                                             onclick="searchTable('table_o', 2, this.value);"/>&nbsp;<img
+            <th>#springMessageText("service", "service"): <input type="text"
+                                                                 onkeyup="searchTable('table_o', 2, this.value);"
+                                                                 onclick="searchTable('table_o', 2, this.value);"/>&nbsp;<img
                     src="$rootContextPath.getURI("images/ico_search.png")" width="12" height="12"/></th>
-            <th width="190">#springMessageText("loadBalanceStrategy", "loadBalanceStrategy"): <select onchange="searchTable('table_o', 3, this.value);"
-                                                                      onclick="searchTable('table_o', 3, this.value);">
+            <th width="190">#springMessageText("loadBalanceStrategy", "loadBalanceStrategy"): <select
+                    onchange="searchTable('table_o', 3, this.value);"
+                    onclick="searchTable('table_o', 3, this.value);">
                 <option value="">#springMessageText("all", "all")</option>
                 <option value="#springMessageText("random", "random")">#springMessageText("random", "random")</option>
-                <option value="#springMessageText("roundrobin", "roundrobin")">#springMessageText("roundrobin", "roundrobin")</option>
-                <option value="#springMessageText("leastactive", "leastactive")">#springMessageText("leastactive", "leastactive")</option>
+                <option value="#springMessageText("roundrobin", "roundrobin")">#springMessageText(
+                    "roundrobin", "roundrobin")</option>
+                <option value="#springMessageText("leastactive", "leastactive")">#springMessageText(
+                    "leastactive", "leastactive")</option>
             </select></th>
         #else
-            <th width="190">#springMessageText("loadBalanceStrategy", "loadBalanceStrategy"): <select onchange="searchTable('table_o', 2, this.value);"
-                                                                      onclick="searchTable('table_o', 2, this.value);">
+            <th width="190">#springMessageText("loadBalanceStrategy", "loadBalanceStrategy"): <select
+                    onchange="searchTable('table_o', 2, this.value);"
+                    onclick="searchTable('table_o', 2, this.value);">
                 <option value="">#springMessageText("all", "all")</option>
                 <option value="#springMessageText("random", "random")">#springMessageText("random", "random")</option>
-                <option value="#springMessageText("roundrobin", "roundrobin")">#springMessageText("roundrobin", "roundrobin")</option>
-                <option value="#springMessageText("leastactive", "leastactive")">#springMessageText("leastactive", "leastactive")</option>
+                <option value="#springMessageText("roundrobin", "roundrobin")">#springMessageText(
+                    "roundrobin", "roundrobin")</option>
+                <option value="#springMessageText("leastactive", "leastactive")">#springMessageText(
+                    "leastactive", "leastactive")</option>
             </select></th>
         #end
         #if($currentUser.role != "G")
@@ -71,7 +80,8 @@
                             class="ico_font">#springMessageText("edit", "edit")</span></a>
                     <span class="ico_line">|</span>
                     <a href="#" onclick="showConfirm('#springMessageText(
-                        "confirm.delete","confirm.delete")', '$loadbalance.service', 'loadbalances/$loadbalance.id/delete'); return false;">
+                        "confirm.delete",
+                        "confirm.delete")', '$loadbalance.service', 'loadbalances/$loadbalance.id/delete'); return false;">
                         <img src="$rootContextPath.getURI("images/ico_delete.png")" width="12" height="12"/>
                         <span class="ico_font">#springMessageText("delete", "delete")</span></a>
                 </td>
@@ -79,4 +89,5 @@
         </tr>
     #end
 </table>
-<div class="page">#springMessageText("page.total", "page.total")$loadbalances.size()#springMessageText("page.records", "page.records") </div>
+<div class="page">#springMessageText("page.total", "page.total")$loadbalances.size()#springMessageText(
+    "page.records", "page.records") </div>

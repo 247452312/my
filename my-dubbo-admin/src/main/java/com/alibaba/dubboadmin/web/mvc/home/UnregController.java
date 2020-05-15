@@ -23,7 +23,6 @@ import java.util.Set;
 
 /**
  * UnReg.java
- *
  */
 public class UnregController extends RestfulController {
 

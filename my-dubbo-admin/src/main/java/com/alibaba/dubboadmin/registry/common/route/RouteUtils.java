@@ -16,23 +16,17 @@
  */
 package com.alibaba.dubboadmin.registry.common.route;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubboadmin.registry.common.domain.Override;
 import com.alibaba.dubboadmin.registry.common.domain.Provider;
 import com.alibaba.dubboadmin.registry.common.domain.Route;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
+
 /**
  * RouteParser route rule parse tool。
- *
  */
 public class RouteUtils {
 
@@ -99,12 +93,12 @@ public class RouteUtils {
     }
 
     /**
-     * @param serviceName e.g. {@code com.alibaba.morgan.MemberService}
-     * @param consumerAddress e.g. {@code 192.168.1.3:54333}
+     * @param serviceName      e.g. {@code com.alibaba.morgan.MemberService}
+     * @param consumerAddress  e.g. {@code 192.168.1.3:54333}
      * @param consumerQueryUrl metadata of subscribe url, e.g. <code>aplication=nasdaq&dubbo=2.0.3&methods=updateItems,validateNew&revision=1.7.0</code>
-     * @param serviceUrls providers
-     * @param routes all route rules
-     * @param clusters all clusters
+     * @param serviceUrls      providers
+     * @param routes           all route rules
+     * @param clusters         all clusters
      * @return route result, Map<url-body, url-params>
      */
     // FIXME The combination of clusters and routes can be done in advance when clusters or routes changes

@@ -15,7 +15,8 @@
 #set($layout = "/templates/governance/layout/default.vm")
 <div class="ico_btn">
     <a href="#if($id)../#end../providers"><img src="$rootContextPath.getURI("images/ico_back.png")" width="12"
-                                               height="12"/><span class="ico_font">#springMessageText("back", "back")</span></a>
+                                               height="12"/><span class="ico_font">#springMessageText(
+        "back", "back")</span></a>
 </div>
 <br/>
 <form id="providerForm" action="#if($id)../create#{else}create#end" method="POST">
@@ -80,11 +81,13 @@
             document.getElementById('service').value = obj.value;
         }
     }
+
     function check() {
         #if(! $service)
             var service = byId('service').value.trim();
             if (service == '') {
-                showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText("service", "service")", 'service');
+                showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText(
+                    "service", "service")", 'service');
                 return false;
             }
         #end

@@ -22,7 +22,8 @@
         <span class="ico_font">#springMessageText("edit", "edit")</span></a>
     <span class="ico_line">|</span>
     <a href="#"
-       onclick="showConfirm('#springMessageText("confirm.delete", "confirm.delete")', '$override.id', '$override.id/delete'); return false;">
+       onclick="showConfirm('#springMessageText(
+           "confirm.delete", "confirm.delete")', '$override.id', '$override.id/delete'); return false;">
         <img src="$rootContextPath.getURI("images/ico_delete.png")" width="12" height="12"/>
         <span class="ico_font">#springMessageText("delete", "delete")</span></a>
 </div>
@@ -90,7 +91,8 @@
         </tr>
     #end
     #foreach($m in $methodJsons.entrySet())
-        <td><b>#springMessageText("mock.method", "mock.method")<font color="orange"><code>${m.key}</code></font>#springMessageText("mock.value", "mock.value"):</b>
+        <td><b>#springMessageText("mock.method", "mock.method")<font
+                color="orange"><code>${m.key}</code></font>#springMessageText("mock.value", "mock.value"):</b>
         </td>
         <td>
             #if($methodForces.get($m.key) == "force")
@@ -119,7 +121,8 @@
     function check() {
         var service = byId('service').value.trim();
         if (service == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput"), #springMessageText("service", "service"))", 'service');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput"), #springMessageText(
+                "service", "service"))", 'service');
             return false;
         }
         return true;

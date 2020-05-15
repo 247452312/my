@@ -18,7 +18,6 @@ package com.alibaba.dubboadmin.registry.common.domain;
 
 /**
  * Service change information object
- *
  */
 public class Change extends Entity {
 

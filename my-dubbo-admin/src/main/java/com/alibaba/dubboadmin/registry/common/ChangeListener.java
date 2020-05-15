@@ -21,7 +21,7 @@ public interface ChangeListener {
     /**
      * Invoked when data changed
      *
-     * @param type     data type
+     * @param type data type
      */
     void onChanged(String type);
 

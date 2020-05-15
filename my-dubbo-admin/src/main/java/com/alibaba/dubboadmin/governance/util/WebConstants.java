@@ -21,7 +21,6 @@ import java.util.Map;
 
 /**
  * Contains the constants used in the web layer
- *
  */
 public class WebConstants {
 
@@ -61,9 +60,7 @@ public class WebConstants {
     /**
      * Help Url
      */
-    public static final String HELP_URL="https://github.com/apache/incubator-dubbo-ops";
-    Map<String, Object> context;
-
+    public static final String HELP_URL = "https://github.com/apache/incubator-dubbo-ops";
     public static final Map<String, String> mapper = new HashMap<>();
 
     static {
@@ -80,6 +77,7 @@ public class WebConstants {
         mapper.put("services", "servicesController");
     }
 
+    Map<String, Object> context;
 
 
 }

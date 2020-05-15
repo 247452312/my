@@ -16,18 +16,17 @@
  */
 package com.alibaba.dubboadmin.registry.common;
 
+import com.alibaba.dubbo.common.status.Status;
+import com.alibaba.dubbo.common.status.Status.Level;
+import com.alibaba.dubbo.common.status.StatusChecker;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.alibaba.dubbo.common.status.Status;
-import com.alibaba.dubbo.common.status.Status.Level;
-import com.alibaba.dubbo.common.status.StatusChecker;
-
 /**
  * StatusManager
- *
  */
 public class StatusManager {
 

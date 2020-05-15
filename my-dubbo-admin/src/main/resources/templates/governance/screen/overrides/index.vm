@@ -21,7 +21,8 @@
         <a href="#" onclick="if(! hasCheckbox('ids')) { showAlert('#springMessageText(
             "empty.list","empty.list")'); } else if(! hasChecked('ids')) { showAlert('#springMessageText(
             "please.select","please.select")'); } else { showConfirm('#springMessageText(
-            "confirm.batch.delete","confirm.batch.delete")', 'overrides/' + getChecked('ids') + '/delete'); } return false;"><img
+            "confirm.batch.delete",
+            "confirm.batch.delete")', 'overrides/' + getChecked('ids') + '/delete'); } return false;"><img
                 src="$rootContextPath.getURI("images/ico_delete.png")" width="12" height="12"/><span
                 class="ico_font">#springMessageText("batch.delete", "batch.delete")</span></a>
     #end
@@ -68,18 +69,21 @@
                     <span class="ico_line">|</span>
                     #if($override.enabled)
                         <a href="#" onclick="showConfirm('#springMessageText(
-                            "confirm.disable","confirm.disable")', '$override.application - $override.address', 'overrides/$override.id/disable'); return false;"><img
+                            "confirm.disable",
+                            "confirm.disable")', '$override.application - $override.address', 'overrides/$override.id/disable'); return false;"><img
                                 src="$rootContextPath.getURI("images/ico_disable.png")" width="12" height="12"/><span
                                 class="ico_font">#springMessageText("disable", "disable")</span></a>
                     #else
                         <a href="#" onclick="showConfirm('#springMessageText(
-                            "confirm.enable","confirm.enable")', '$override.application - $override.address', 'overrides/$override.id/enable'); return false;"><img
+                            "confirm.enable",
+                            "confirm.enable")', '$override.application - $override.address', 'overrides/$override.id/enable'); return false;"><img
                                 src="$rootContextPath.getURI("images/ico_enable.png")" width="12" height="12"/><span
                                 class="ico_font">#springMessageText("enable", "enable")</span></a>
                     #end
                     <span class="ico_line">|</span>
                     <a href="#" onclick="showConfirm('#springMessageText(
-                        "confirm.delete","confirm.delete")', '$override.id', 'overrides/$override.id/delete'); return false;">
+                        "confirm.delete",
+                        "confirm.delete")', '$override.id', 'overrides/$override.id/delete'); return false;">
                         <img src="$rootContextPath.getURI("images/ico_delete.png")" width="12" height="12"/>
                         <span class="ico_font">#springMessageText("delete", "delete")</span></a>
                 </td>
@@ -87,4 +91,5 @@
         </tr>
     #end
 </table>
-<div class="page">#springMessageText("page.total", "page.total")$overrides.size()#springMessageText("page.records", "page.records") </div>
+<div class="page">#springMessageText("page.total", "page.total")$overrides.size()#springMessageText(
+    "page.records", "page.records") </div>

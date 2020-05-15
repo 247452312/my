@@ -18,7 +18,6 @@ package com.alibaba.dubboadmin.registry.common.domain;
 
 /**
  * LoadBalance
- *
  */
 public class LoadBalance extends Entity {
 

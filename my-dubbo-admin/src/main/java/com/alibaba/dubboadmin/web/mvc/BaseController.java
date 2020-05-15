@@ -17,22 +17,20 @@
 
 package com.alibaba.dubboadmin.web.mvc;
 
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.dubboadmin.governance.biz.common.i18n.MessageResourceService;
 import com.alibaba.dubboadmin.governance.util.WebConstants;
 import com.alibaba.dubboadmin.registry.common.domain.User;
 import com.alibaba.dubboadmin.web.pulltool.RootContextPath;
 import com.alibaba.dubboadmin.web.pulltool.Tool;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class BaseController {
     protected static final Logger logger = LoggerFactory.getLogger(BaseController.class);
@@ -45,10 +43,9 @@ public class BaseController {
     protected String operatorAddress = null;
     protected String currentRegistry = null;
     @Autowired
-    private MessageResourceService messageResourceService;
-
-    @Autowired
     protected Tool tool;
+    @Autowired
+    private MessageResourceService messageResourceService;
 
     public void prepare(HttpServletRequest request, HttpServletResponse response, Model model,
                         String methodName, String type) {

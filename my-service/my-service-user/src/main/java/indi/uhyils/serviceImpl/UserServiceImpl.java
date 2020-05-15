@@ -5,16 +5,13 @@ import indi.uhyils.dao.UserDao;
 import indi.uhyils.enum_.UserTypeEnum;
 import indi.uhyils.exception.EnumParseNoHaveException;
 import indi.uhyils.model.TokenInfo;
+import indi.uhyils.model.UserEntity;
 import indi.uhyils.model.UserRightEntity;
 import indi.uhyils.request.*;
-import indi.uhyils.model.UserEntity;
 import indi.uhyils.request.model.Arg;
 import indi.uhyils.response.LoginResponse;
-import indi.uhyils.response.Page;
 import indi.uhyils.response.ServiceResult;
 import indi.uhyils.service.UserService;
-
-
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
 import indi.uhyils.util.RedisPoolUtil;

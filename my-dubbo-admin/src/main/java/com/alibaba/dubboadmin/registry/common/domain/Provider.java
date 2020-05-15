@@ -16,17 +16,16 @@
  */
 package com.alibaba.dubboadmin.registry.common.domain;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubboadmin.registry.common.registry.ConvertUtil;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Provider
- *
  */
 public class Provider extends Entity {
 

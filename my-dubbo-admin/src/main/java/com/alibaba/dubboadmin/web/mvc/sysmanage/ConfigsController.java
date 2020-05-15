@@ -16,21 +16,14 @@
  */
 package com.alibaba.dubboadmin.web.mvc.sysmanage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.alibaba.dubboadmin.governance.service.ConfigService;
 import com.alibaba.dubboadmin.registry.common.domain.Config;
 import com.alibaba.dubboadmin.registry.common.domain.User;
 import com.alibaba.dubboadmin.web.mvc.BaseController;
-
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 public class ConfigsController extends BaseController {
 

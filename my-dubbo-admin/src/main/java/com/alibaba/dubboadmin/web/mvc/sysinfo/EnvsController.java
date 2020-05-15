@@ -16,23 +16,21 @@
  */
 package com.alibaba.dubboadmin.web.mvc.sysinfo;
 
+import com.alibaba.dubbo.common.Version;
+import com.alibaba.dubbo.common.utils.NetUtils;
+import com.alibaba.dubboadmin.web.mvc.BaseController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.management.ManagementFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.alibaba.dubbo.common.Version;
-import com.alibaba.dubbo.common.utils.NetUtils;
-import com.alibaba.dubboadmin.web.mvc.BaseController;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/sysinfo/envs")
@@ -62,7 +60,7 @@ public class EnvsController extends BaseController {
                 + System.getProperty("file.encoding"));
         properties.put("Uptime", formatUptime(ManagementFactory.getRuntimeMXBean().getUptime())
                 + " From " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z").format(new Date(
-            ManagementFactory.getRuntimeMXBean().getStartTime()))
+                ManagementFactory.getRuntimeMXBean().getStartTime()))
                 + " To " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z").format(new Date()));
         model.addAttribute("properties", properties);
         return "sysinfo/screen/envs/index";

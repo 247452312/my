@@ -16,17 +16,15 @@
  */
 package com.alibaba.dubboadmin.web.mvc.sysmanage;
 
+import com.alibaba.dubboadmin.governance.service.OwnerService;
+import com.alibaba.dubboadmin.web.mvc.BaseController;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.dubboadmin.governance.service.OwnerService;
-import com.alibaba.dubboadmin.web.mvc.BaseController;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  * ProvidersController. URI: /services/$service/owners
- *
  */
 public class UserownController extends BaseController {
 

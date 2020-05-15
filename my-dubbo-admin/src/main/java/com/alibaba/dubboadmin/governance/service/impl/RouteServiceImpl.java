@@ -16,22 +16,20 @@
  */
 package com.alibaba.dubboadmin.governance.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubboadmin.governance.service.RouteService;
 import com.alibaba.dubboadmin.governance.sync.util.Pair;
 import com.alibaba.dubboadmin.governance.sync.util.SyncUtils;
 import com.alibaba.dubboadmin.registry.common.domain.Route;
-
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * IbatisRouteService
- *
  */
 @Component
 public class RouteServiceImpl extends AbstractService implements RouteService {

@@ -16,19 +16,17 @@
  */
 package com.alibaba.dubboadmin.governance.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.dubboadmin.governance.service.UserService;
 import com.alibaba.dubboadmin.registry.common.domain.User;
 import com.alibaba.dubboadmin.registry.common.util.Coder;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * IBatisUserService
- *
  */
 @Component
 public class UserServiceImpl extends AbstractService implements UserService {

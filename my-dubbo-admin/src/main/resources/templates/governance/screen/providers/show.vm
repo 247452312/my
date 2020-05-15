@@ -19,29 +19,35 @@
     #if($currentUser.hasServicePrivilege($provider.service))
         <span class="ico_line">|</span>
         <a href="$provider.id/edit"><img src="$rootContextPath.getURI("images/ico_edit.png")" width="12"
-                                         height="12"/><span class="ico_font">#springMessageText("edit", "edit")</span></a>
+                                         height="12"/><span class="ico_font">#springMessageText(
+            "edit", "edit")</span></a>
         <span class="ico_line">|</span>
         <a href="$provider.id/add"><img src="$rootContextPath.getURI("images/ico_add.png")" width="12"
-                                        height="12"/><span class="ico_font">#springMessageText("copy", "copy")</span></a>
+                                        height="12"/><span class="ico_font">#springMessageText(
+            "copy", "copy")</span></a>
         <span class="ico_line">|</span>
         <a href="#" onclick="showConfirm('#springMessageText(
-            "confirm.weight.doubling","confirm.weight.doubling")', '$provider.url', '../doubling?ids=$provider.id'); return false;"><img
+            "confirm.weight.doubling",
+            "confirm.weight.doubling")', '$provider.url', '../doubling?ids=$provider.id'); return false;"><img
                 src="$rootContextPath.getURI("images/ico_up.png")" width="12" height="12"/><span
                 class="ico_font">#springMessageText("weight.doubling", "weight.doubling")</span></a>
         <span class="ico_line">|</span>
         <a href="#" onclick="showConfirm('#springMessageText(
-            "confirm.weight.halving","confirm.weight.halving")', '$provider.url', '../halving?ids=$provider.id'); return false;"><img
+            "confirm.weight.halving",
+            "confirm.weight.halving")', '$provider.url', '../halving?ids=$provider.id'); return false;"><img
                 src="$rootContextPath.getURI("images/ico_down.png")" width="12" height="12"/><span
                 class="ico_font">#springMessageText("weight.halving", "weight.halving")</span></a>
         <span class="ico_line">|</span>
         #if($tool.isProviderEnabled($provider))
             <a href="#" onclick="showConfirm('#springMessageText(
-                "confirm.disable","confirm.disable")', '$provider.url', '../disable?ids=$provider.id'); return false;"><img
+                "confirm.disable",
+                "confirm.disable")', '$provider.url', '../disable?ids=$provider.id'); return false;"><img
                     src="$rootContextPath.getURI("images/ico_disable.png")" width="12" height="12"/><span
                     class="ico_font">#springMessageText("disable", "disable")</span></a>
         #else
             <a href="#" onclick="showConfirm('#springMessageText(
-                "confirm.enable", "confirm.enable")', '$provider.url', '../enable?ids=$provider.id'); return false;"><img
+                "confirm.enable",
+                "confirm.enable")', '$provider.url', '../enable?ids=$provider.id'); return false;"><img
                     src="$rootContextPath.getURI("images/ico_enable.png")" width="12" height="12"/><span
                     class="ico_font">#springMessageText("enable", "enable")</span></a>
         #end
@@ -85,12 +91,14 @@
     #end
     <tr>
         <th>#springMessageText("type", "type"):</th>
-        <td>#if($provider.dynamic)<font color="green">#springMessageText("dynamic", "dynamic")</font>#else<font color="blue">#springMessageText(
+        <td>#if($provider.dynamic)<font color="green">#springMessageText("dynamic", "dynamic")</font>#else<font
+                color="blue">#springMessageText(
             "static","static")</font>#end</td>
     </tr>
     <tr>
         <th>#springMessageText("status", "status"):</th>
-        <td>#if($provider.enabled)<font color="green">#springMessageText("enabled", "enabled")</font>#else<font color="red">#springMessageText(
+        <td>#if($provider.enabled)<font color="green">#springMessageText("enabled", "enabled")</font>#else<font
+                color="red">#springMessageText(
             "disabled","disabled")</font>#end</td>
     </tr>
     <tr>
@@ -103,18 +111,21 @@
                 "localhost:") || $provider.address.startsWith("0.0.0.0:"))
                 #if ($errorLevel != "error") #set($errorLevel = "warn") #end
                 #set($errorMessage =
-                    "$errorMessage<br>#springMessageText('warn', 'warn'): #springMessage('CheckProviderLocalAddress', $provider.address)")
+                    "$errorMessage<br>#springMessageText('warn', 'warn'): #springMessage(
+                        'CheckProviderLocalAddress', $provider.address)")
             #end
 
             #if ($errorLevel == "warn")
                 <a href="#"
-                   onclick="showAlert('<font color=orange>#springMessageText("warn", "warn")</font>', '$errorMessage'); return false;">
+                   onclick="showAlert('<font color=orange>#springMessageText(
+                       "warn", "warn")</font>', '$errorMessage'); return false;">
                     <img src="$rootContextPath.getURI("images/ico_warn.png")" width="12" height="12"/>
                     <font color="orange"><u>#springMessageText("warn", "warn")</u></font>
                 </a>
             #elseif ($errorLevel == "error")
                 <a href="#"
-                   onclick="showAlert('<font color=red>#springMessageText("error", "error")</font>', '$errorMessage'); return false;">
+                   onclick="showAlert('<font color=red>#springMessageText(
+                       "error", "error")</font>', '$errorMessage'); return false;">
                     <img src="$rootContextPath.getURI("images/ico_error.png")" width="12" height="12"/>
                     <font color="red"><u>#springMessageText("error", "error")</u></font>
                 </a>

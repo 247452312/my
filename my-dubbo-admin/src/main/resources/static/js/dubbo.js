@@ -22,13 +22,15 @@ function init() {
     scanAlphaPNG();
     addChangeRowEvent();
 }
+
 // ==== utils ====
 var isIE = (window.ActiveXObject && navigator.userAgent.toLowerCase().indexOf(" msie ") != -1);
 var isIE6 = (isIE && (navigator.userAgent.toLowerCase().indexOf(" msie 5.") > -1
-|| navigator.userAgent.toLowerCase().indexOf(" msie 6.") > -1));
+    || navigator.userAgent.toLowerCase().indexOf(" msie 6.") > -1));
 String.prototype.trim = function () {
     return this.replace(/(^\\s*)|(\\s*$)/g, "");
 }
+
 function checkNumber() {
     if (event.keyCode == 8 || event.keyCode == 46
         || (event.keyCode >= 37 && event.keyCode <= 40)
@@ -37,6 +39,7 @@ function checkNumber() {
         return true;
     return false;
 }
+
 function randPassword() {
     var text = ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz', '1234567890', '~_-+='];
     var rand = function (min, max) {
@@ -50,6 +53,7 @@ function randPassword() {
     }
     return pwd;
 }
+
 function byId(x) {
     if (typeof x == "string")
         return document.getElementById(x);
@@ -68,6 +72,7 @@ function setCookie(key, value) {
     date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
     document.cookie = key + "=" + escape(value) + "; path=/; expires=" + date.toGMTString();
 }
+
 function getCookie(objName) {
     var arrStr = document.cookie.split("; ");
     for (var i = 0; i < arrStr.length; i++) {
@@ -77,6 +82,7 @@ function getCookie(objName) {
         }
     }
 }
+
 function addCookie(objName, objValue, objHours) {
     var str = objName + "=" + escape(objValue);
     if (objHours > 0) {
@@ -87,8 +93,10 @@ function addCookie(objName, objValue, objHours) {
     }
     document.cookie = str;
 }
+
 // ==== search table ====
 var lastSequence = 0;
+
 function searchTable(id, column, keyword) {
     var table = byId(id);
     if (table) {
@@ -106,6 +114,7 @@ function searchTable(id, column, keyword) {
         }
     }
 }
+
 function addChangeRowEvent() {
     var content = document.getElementById('table_o');
     if (content) {
@@ -133,6 +142,7 @@ function addChangeRowEvent() {
         }
     }
 }
+
 // ==== tab ====
 function setTab(name, cursel, n) {
     for (i = 1; i <= n; i++) {
@@ -142,6 +152,7 @@ function setTab(name, cursel, n) {
         con.style.display = i == cursel ? "block" : "none";
     }
 }
+
 function setActiveTab(i) {
     if (i == 1) {
         document.getElementById("unique_tab" + i).className = "current_nosub";
@@ -162,10 +173,12 @@ function checkAll(tableId, checkboxName, checked) {
         }
     }
 }
+
 function hasCheckbox(name) {
     var checkboxs = document.getElementsByName(name);
     return checkboxs && checkboxs.length > 0;
 }
+
 function hasChecked(name) {
     var checkboxs = document.getElementsByName(name);
     if (checkboxs && checkboxs.length > 0) {
@@ -177,6 +190,7 @@ function hasChecked(name) {
     }
     return false;
 }
+
 function getChecked(name) {
     var result = "";
     var checkboxs = document.getElementsByName(name);
@@ -190,11 +204,14 @@ function getChecked(name) {
     }
     return result;
 }
+
 // ==== show box ====
 var confirmUrl = "";
+
 function confirmRedirect(msg, data, url) {
     showConfirm(msg, data, url);
 }
+
 function showConfirm(msg, data, url) {
     if (!url) {
         url = data;
@@ -211,6 +228,7 @@ function showConfirm(msg, data, url) {
     byId("confirmData").innerHTML = data;
     Box.show("confirmBox");
 }
+
 function confirmOK() {
     Box.hide("confirmBox");
     if (confirmUrl == null || confirmUrl == "") {
@@ -218,10 +236,13 @@ function confirmOK() {
     }
     window.location.href = confirmUrl;
 }
+
 function confirmCancel() {
     Box.hide("confirmBox");
 }
+
 var alertId = "";
+
 function showAlert(msg, data, id) {
     if (id) {
         alertId = id;
@@ -238,6 +259,7 @@ function showAlert(msg, data, id) {
     byId("alertData").innerHTML = data;
     Box.show("alertBox");
 }
+
 function alertOK() {
     Box.hide("alertBox");
     if (alertId == null || alertId == "") {
@@ -245,8 +267,10 @@ function alertOK() {
     }
     byId(alertId).focus();
 }
+
 // ==== scroll bar ====
 var marqueeInterval = null;
+
 function moveScroll() {
     var marqueeBox = document.getElementById("marqueeBox");
     var marqueeText = document.getElementById("marqueeText");
@@ -256,12 +280,15 @@ function moveScroll() {
         marqueeBox.scrollLeft = marqueeBox.scrollLeft + 1;
     }
 }
+
 function startScroll() {
     marqueeInterval = window.setInterval(moveScroll, 30)
 }
+
 function stopScroll() {
     window.clearInterval(marqueeInterval)
 }
+
 function initScroll() {
     var marqueeText = document.getElementById("marqueeText");
     if (marqueeText == null) {
@@ -276,6 +303,7 @@ function initScroll() {
     marqueeText.style.width = (len * 6 + 30) + "px";
     startScroll();
 }
+
 // ==== show modal ====
 $(function () {
     function showModal(src, height, width) {
@@ -294,6 +322,7 @@ $(function () {
     $(".link").click(function () {
         showModal("tip_message_choose.html", "300", "600");
     });
+
     function megaHoverOver() {
         $(this).find(".sub").stop().fadeTo('fast', 1).show();
         // Calculate width of all ul's
@@ -353,6 +382,7 @@ $(function () {
         // function = onMouseOut callback (REQUIRED)
     };
 });
+
 // ==== favorites ====
 function fnFavorites(id, title) {
     if (confirm(title + 'confirm favorites')) {
@@ -362,6 +392,7 @@ function fnFavorites(id, title) {
     }
     //return false;
 }
+
 function fnSelectAll() {
     var flag = false;
     if (document.df.favoritesAll.checked == true) {
@@ -373,6 +404,7 @@ function fnSelectAll() {
         ids[i].checked = flag;
     }
 }
+
 function fnDeleteAll() {
     var idlist = "";
     var ids = document.getElementsByName('favoritesId');
@@ -386,9 +418,11 @@ function fnDeleteAll() {
         window.location.href = "/governance/favorites/" + idlist + "/delete";
     }
 }
+
 function fnFolder() {
     document.getElementById('fav_box').style.display = "none";
 }
+
 // ==== search service ====
 function loadServiceList(keyword) {
     var url = "/governance/" + searchType + "/search?keyword=" + keyword;
@@ -412,10 +446,13 @@ function loadServiceList(keyword) {
         }
     });
 }
+
 function hideService() {
     byId('serviceDiv').style.display = 'none';
 }
+
 var searchTimes = 0;
+
 function searchService(keyword) {
 
     if (keyword == null || keyword == "") {
@@ -443,6 +480,7 @@ function searchService(keyword) {
         byId('serviceDiv').style.display = '';
     }
 }
+
 function setSearchCookie(key, value) {
     var separatorsB = "\\.\\.\\.\\.\\.\\.";
     var cookie_new_sub = key + "...." + value
@@ -465,6 +503,7 @@ function setSearchCookie(key, value) {
 // ==== image load ====
 
 var alphapngs = ["logo.png", "pop_close.png", "tip_choose.png", "tip_confirm.png", "tip_del.png", "tip_succeed.png"];
+
 function isAlphaPng(imgName) {
     for (var i = 0; i < alphapngs.length; i++) {
         var ap = "/images/" + alphapngs[i];
@@ -474,12 +513,14 @@ function isAlphaPng(imgName) {
     }
     return false;
 }
+
 function replaceAlphaPNG(img) {
     var strNewHTML = "<div style=\"width:" + img.width + "px; height:" + img.height
         + "px; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'"
         + img.src + "\', sizingMethod='nonscale');\" />";
     img.outerHTML = strNewHTML;
 }
+
 function scanAlphaPNG() {
     if (isIE6 && document.images) {
         var imgs = [];
@@ -495,7 +536,9 @@ function scanAlphaPNG() {
         }
     }
 }
+
 var preloads = ["pop_close.png", "tip_choose.png", "tip_confirm.png", "tip_del.png", "tip_succeed.png"];
+
 function preloadImage() {
     for (var i = 0; i < preloads.length; i++) {
         new Image().src = "/images/" + preloads[i];
@@ -512,6 +555,7 @@ function getAbsoluteLeft(ele) {
     }
     return i;
 }
+
 function getAbsoluteTop(ele) {
     var i = 0;
     while (ele) {
@@ -520,6 +564,7 @@ function getAbsoluteTop(ele) {
     }
     return i;
 }
+
 function showMenu(c, m, g) {
     var l = getAbsoluteLeft(c);
     var h = c.clientHeight;
@@ -532,10 +577,12 @@ function showMenu(c, m, g) {
         replaceAlphaPNG(g);
     }
 }
+
 function hideMenu(c, m) {
     c.style.background = 'url("/images/menu_bg.png")';
     m.style.display = 'none';
 }
+
 function switchToRegistry(r) {
     var url = window.location.href;
     var i = url.indexOf("://");

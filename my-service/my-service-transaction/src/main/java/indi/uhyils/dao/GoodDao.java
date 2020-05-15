@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年05月05日 13时11分
  */
 @Mapper
-public interface GoodDao extends DefaultDao<GoodEntity>  {
+public interface GoodDao extends DefaultDao<GoodEntity> {
 }

@@ -16,15 +16,14 @@
  */
 package com.alibaba.dubboadmin.registry.common.util;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
-
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
+
 /**
  * MessageSource
- *
  */
 public class MessageSource {
 

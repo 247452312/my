@@ -16,14 +16,13 @@
  */
 package com.alibaba.dubboadmin.governance.service;
 
+import com.alibaba.dubboadmin.registry.common.domain.Config;
+
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.dubboadmin.registry.common.domain.Config;
-
 /**
  * TODO Comment of ConfigDAO
- *
  */
 public interface ConfigService {
 

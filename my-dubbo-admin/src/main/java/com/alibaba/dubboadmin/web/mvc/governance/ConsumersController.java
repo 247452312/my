@@ -16,16 +16,6 @@
  */
 package com.alibaba.dubboadmin.web.mvc.governance;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.dubbo.common.URL;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubboadmin.governance.service.ConsumerService;
@@ -42,20 +32,18 @@ import com.alibaba.dubboadmin.registry.common.route.RouteRule.MatchPair;
 import com.alibaba.dubboadmin.registry.common.route.RouteUtils;
 import com.alibaba.dubboadmin.web.mvc.BaseController;
 import com.alibaba.dubboadmin.web.pulltool.Tool;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.support.BindingAwareModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * ConsumersController. URI: /services/$service/consumers
- *
  */
 @Controller
 @RequestMapping("/governance/consumers")
@@ -75,16 +63,16 @@ public class ConsumersController extends BaseController {
 
     @RequestMapping("")
     public String index(HttpServletRequest request, HttpServletResponse response,
-                      Model model) {
+                        Model model) {
         prepare(request, response, model, "index", "consumers");
         List<Consumer> consumers;
         List<Override> overrides;
         List<Provider> providers = null;
         List<Route> routes = null;
-        BindingAwareModelMap newModel = (BindingAwareModelMap)model;
-        String service = (String)newModel.get("service");
-        String address = (String)newModel.get("address");
-        String application = (String)newModel.get("app");
+        BindingAwareModelMap newModel = (BindingAwareModelMap) model;
+        String service = (String) newModel.get("service");
+        String address = (String) newModel.get("address");
+        String application = (String) newModel.get("app");
         // service
         if (service != null && service.length() > 0) {
             consumers = consumerService.findByService(service);
@@ -115,7 +103,7 @@ public class ConsumersController extends BaseController {
                 }
                 List<Route> routed = new ArrayList<Route>();
                 consumer.setProviders(RouteUtils
-                    .route(consumer.getService(), consumer.getAddress(), consumer.getParameters(), providers, overrides, routes, null, routed));
+                        .route(consumer.getService(), consumer.getAddress(), consumer.getParameters(), providers, overrides, routes, null, routed));
                 consumer.setRoutes(routed);
                 OverrideUtils.setConsumerOverrides(consumer, overrides);
             }
@@ -144,7 +132,7 @@ public class ConsumersController extends BaseController {
     }
 
     @RequestMapping("/{id}/edit")
-    public String edit(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response,  Model model) {
+    public String edit(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response, Model model) {
         prepare(request, response, model, "edit", "consumers");
         Consumer consumer = consumerService.findConsumer(id);
         List<Provider> providers = providerService.findByService(consumer.getService());
@@ -252,11 +240,11 @@ public class ConsumersController extends BaseController {
 
     @RequestMapping("/{ids}/recover")
     public String recover(@PathVariable("ids") Long[] ids, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        return mock(ids,  "", "recover", request, response, model);
+        return mock(ids, "", "recover", request, response, model);
     }
 
     private String mock(Long[] ids, String mock, String methodName, HttpServletRequest request,
-                         HttpServletResponse response, Model model) throws Exception {
+                        HttpServletResponse response, Model model) throws Exception {
         prepare(request, response, model, methodName, "consumers");
         boolean success = true;
         if (ids == null || ids.length == 0) {
@@ -318,8 +306,8 @@ public class ConsumersController extends BaseController {
         return "governance/screen/redirect";
     }
 
-    private void showDetail( Long id,
-                             HttpServletRequest request, HttpServletResponse response, Model model) {
+    private void showDetail(Long id,
+                            HttpServletRequest request, HttpServletResponse response, Model model) {
         Consumer consumer = consumerService.findConsumer(id);
         List<Provider> providers = providerService.findByService(consumer.getService());
         List<Route> routes = routeService.findByService(consumer.getService());
@@ -336,24 +324,24 @@ public class ConsumersController extends BaseController {
 
     @RequestMapping("/allshield")
     public String allshield(@RequestParam(required = false) String service, HttpServletRequest request,
-                                                   HttpServletResponse response, Model model) throws Exception {
-        return allmock(service,  "force:return null", "allshield",request, response, model);
+                            HttpServletResponse response, Model model) throws Exception {
+        return allmock(service, "force:return null", "allshield", request, response, model);
     }
 
     @RequestMapping("/alltolerant")
     public String alltolerant(@RequestParam(required = false) String service, HttpServletRequest request,
-                               HttpServletResponse response, Model model) throws Exception {
+                              HttpServletResponse response, Model model) throws Exception {
         return allmock(service, "fail:return null", "alltolerant", request, response, model);
     }
 
     @RequestMapping("/allrecover")
     public String allrecover(@RequestParam(required = false) String service, HttpServletRequest request,
-                              HttpServletResponse response, Model model) throws Exception {
+                             HttpServletResponse response, Model model) throws Exception {
         return allmock(service, "", "allrecover", request, response, model);
     }
 
     private String allmock(String service, String mock, String methodName, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        prepare(request, response, model, methodName,"consumers");
+        prepare(request, response, model, methodName, "consumers");
         boolean success = true;
         if (service == null || service.length() == 0) {
             model.addAttribute("message", getMessage("NoSuchOperationData"));
@@ -430,7 +418,7 @@ public class ConsumersController extends BaseController {
     }
 
     private String access(HttpServletRequest request, HttpServletResponse response, Long[] ids,
-                           Model model, boolean allow, boolean only, String methodName) throws Exception {
+                          Model model, boolean allow, boolean only, String methodName) throws Exception {
         prepare(request, response, model, methodName, "consumers");
         boolean success = true;
         if (ids == null || ids.length == 0) {

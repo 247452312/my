@@ -18,7 +18,6 @@ package com.alibaba.dubboadmin.registry.common.domain;
 
 /**
  * Service online / offline approval
- *
  */
 public class ApprovalRequisition extends Entity {
     private static final long serialVersionUID = -8778092807313048367L;

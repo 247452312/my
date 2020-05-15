@@ -39,7 +39,8 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 100px;">#springMessageText("ConsumerAddress", "ConsumerAddress"):&nbsp;&nbsp;<font color='red'>*</font></th>
+            <th style="width: 100px;">#springMessageText("ConsumerAddress", "ConsumerAddress"):&nbsp;&nbsp;<font
+                    color='red'>*</font></th>
             <td>
                 #if($address)
                     <input type="hidden" id="address" name="address"
@@ -76,19 +77,21 @@
     //通过服务名后面的选择框，快速设置service_name的值
     function fnSetService(obj) {
         if (obj.value != '') {
-            byId('serviceName').value = (byId('serviceName').value.length > 0 ? byId('serviceName').value + "\n" : "" ) + obj.value;
+            byId('serviceName').value = (byId('serviceName').value.length > 0 ? byId('serviceName').value + "\n" : "") + obj.value;
         }
     }
 
     function check() {
         var serviceName = byId('serviceName').value.trim();
         if (serviceName == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText("service", "service")", 'serviceName');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText(
+                "service", "service")", 'serviceName');
             return false;
         }
         var consumerAddress = byId('consumerAddress').value.trim();
         if (consumerAddress == '') {
-            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText("ConsumerAddress", "ConsumerAddress")", 'consumerAddress');
+            showAlert("#springMessageText("PleaseInput", "PleaseInput")#springMessageText(
+                "ConsumerAddress", "ConsumerAddress")", 'consumerAddress');
             return false;
         }
         var exp = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;

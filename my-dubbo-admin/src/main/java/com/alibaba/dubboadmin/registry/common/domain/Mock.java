@@ -18,7 +18,6 @@ package com.alibaba.dubboadmin.registry.common.domain;
 
 /**
  * Mock
- *
  */
 public class Mock extends Entity {
 

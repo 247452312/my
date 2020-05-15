@@ -16,19 +16,18 @@
  */
 package com.alibaba.dubboadmin.registry.common.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubboadmin.registry.common.domain.LoadBalance;
 import com.alibaba.dubboadmin.registry.common.domain.Override;
 import com.alibaba.dubboadmin.registry.common.domain.Weight;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 /**
  * OverrideUtils.java
- *
  */
 public class OverrideUtils {
     public static List<Weight> overridesToWeights(List<Override> overrides) {

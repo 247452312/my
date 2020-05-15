@@ -21,7 +21,6 @@ import java.util.List;
 
 /**
  * PageList
- *
  */
 public class PageList<T> implements Serializable {
 

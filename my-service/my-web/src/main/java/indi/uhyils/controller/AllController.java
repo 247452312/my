@@ -1,13 +1,9 @@
 package indi.uhyils.controller;
 
-import indi.uhyils.enum_.UserTypeEnum;
 import indi.uhyils.request.Action;
-import indi.uhyils.request.GetUserRequest;
-import indi.uhyils.response.ServiceResult;
 import indi.uhyils.response.WebResponse;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogUtil;
-import indi.uhyils.util.TouristUserIdMakeUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -36,38 +33,28 @@ public class AllController {
     @ResponseBody
     public WebResponse action(@RequestBody Action action, HttpServletRequest request) {
 
-        //验证登录情况 如果未登录 则获取游客token
         action.getArgs().put("token", action.getToken());
+        actionAddRequestLink(action);
         try {
-            Object args = action.getArgs();
             List list = new ArrayList();
-            list.add(args);
+            list.add(action.getArgs());
             return WebResponse.build(DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list));
         } catch (ClassNotFoundException e) {
             LogUtil.error(this, e);
+            return WebResponse.build(null, "", e.getMessage(), 500);
         }
-        return WebResponse.build(null, "1", "msg", 404);
     }
 
     /**
-     * 游客token注入
+     * action 添加链路跟踪起点
      *
      * @param action
      */
-    private void touristUserIdInject(@RequestBody Action action) {
-        String touristUserId = TouristUserIdMakeUtil.getTouristUserId();
-        ArrayList<Object> args1 = new ArrayList<>();
-        GetUserRequest build = GetUserRequest.build(touristUserId, UserTypeEnum.TOURIST);
-        args1.add(build);
-        try {
-            //获取游客token
-            ServiceResult<String> serviceResult = DubboApiUtil.dubboApiTool("UserService", "getUserTokenNoToken", args1);
-            String touriseToken = serviceResult.getData();
-            action.getArgs().put("token", touriseToken);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    private void actionAddRequestLink(@RequestBody Action action) {
+        HashMap<String, String> requestLink = new HashMap<>();
+        requestLink.put("class", "indi.uhyils.request.model.LinkNode");
+        requestLink.put("data", "页面请求");
+        action.getArgs().put("requestLink", requestLink);
     }
-
 
 }

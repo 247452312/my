@@ -16,13 +16,12 @@
  */
 package com.alibaba.dubboadmin.governance.service;
 
-import java.util.List;
-
 import com.alibaba.dubboadmin.registry.common.domain.User;
+
+import java.util.List;
 
 /**
  * UserService
- *
  */
 public interface UserService {
 

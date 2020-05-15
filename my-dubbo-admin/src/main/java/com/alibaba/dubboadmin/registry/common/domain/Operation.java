@@ -22,7 +22,6 @@ import java.util.List;
 
 /**
  * Record error messages and record all user operations
- *
  */
 public class Operation extends Entity {
 
@@ -44,9 +43,9 @@ public class Operation extends Entity {
     public static final String CONFIG_TYPE = "Config";
     public static final List<String> TYPES =
             Collections.unmodifiableList(
-                Arrays.asList(new String[]{PROVIDER_TYPE, CONSUMER_TYPE, ROUTE_TYPE, WEIGHT_TYPE,
-                    CLUSTER_TYPE, DOCUMENT_TYPE, LOADBALANCE_TYPE, TEST_TYPE,
-                    AGREEMENT_TYPE, USER_TYPE, FEATURE_TYPE, CONFIG_TYPE}));
+                    Arrays.asList(new String[]{PROVIDER_TYPE, CONSUMER_TYPE, ROUTE_TYPE, WEIGHT_TYPE,
+                            CLUSTER_TYPE, DOCUMENT_TYPE, LOADBALANCE_TYPE, TEST_TYPE,
+                            AGREEMENT_TYPE, USER_TYPE, FEATURE_TYPE, CONFIG_TYPE}));
     private static final long serialVersionUID = 8220325876753890396L;
     private String username;     // operator
 
