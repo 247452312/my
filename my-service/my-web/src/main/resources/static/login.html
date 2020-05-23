@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>登录</title>
     <link rel="stylesheet" href="/css/my.css">
-    <script src="/js/my.js"></script>
     <script src="/js/jquery.min.js"></script>
+    <script src="/js/my.js"></script>
     <link rel="stylesheet" href="/css/login.css">
     <script>
         $.fn.serializeObject = function () {
@@ -31,8 +31,11 @@
             arg.password = a.password;
             arg.userType = 1;
             pushRequest(new request(getCookie("token"), "UserService", "userLogin", arg), function (data) {
-                if (data.code == 200) { //不一定登录成功, 有可能是游客
+                if (data.code == 200) {
                     setCookie("token", data.token, 1);
+                    setAttrBySession("userInfo", data.data.userEntity)
+                    setAttrBySession("userRightList", data.data.userRightList)
+                    window.location.href = "/index.html";
                 }
             });
 

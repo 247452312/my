@@ -62,7 +62,7 @@ public class TokenInjectAop {
 
         //NoToken结尾的方法直接放行 不需要token
         String methodName = pjp.getSignature().getName();
-        if (methodName.endsWith("NoToken")) {
+        if (methodName.endsWith("NoToken") || methodName.contains("Login") || methodName.contains("login")) {
             //执行方法
             Object proceed = pjp.proceed();
             return proceed;

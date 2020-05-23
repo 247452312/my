@@ -3,6 +3,7 @@ package indi.uhyils.controller;
 import indi.uhyils.enum_.ResponseCode;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.SessionRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.pojo.response.WebResponse;
@@ -11,11 +12,13 @@ import indi.uhyils.util.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +56,21 @@ public class AllController {
             LogUtil.error(this, e);
             return WebResponse.build(null, "", ResponseCode.ERROR.getMsg(), ResponseCode.ERROR.getText());
         }
+    }
+
+    @PostMapping("/getSession")
+    @ResponseBody
+    public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return session.getAttribute(sessionRequest.getAttrName());
+    }
+
+    @PostMapping("/setSession")
+    @ResponseBody
+    public boolean setSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
+        return true;
     }
 
     private void linkPrint(LinkNode<String> requestLink) {

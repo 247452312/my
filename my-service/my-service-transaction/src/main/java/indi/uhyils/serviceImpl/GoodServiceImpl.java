@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月05日 13时11分
  */
-@Service
+@Service(group = "${spring.profiles.active}")
 public class GoodServiceImpl extends DefaultServiceImpl<GoodEntity> implements GoodService {
 
     @Autowired

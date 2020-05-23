@@ -47,6 +47,7 @@ function pushRequest(request, success) {
         type: "POST",
         data: JSON.stringify(request),
         contentType: "application/json",
+        async: false,
         success: function (data) {
             console.log(data);
             result = success(data);
@@ -64,4 +65,35 @@ class request {
     }
 }
 
+function getAttrBySession(attrName) {
+    var result = {};
+    $.ajax({
+        url: "/getSession",
+        type: "POST",
+        data: JSON.stringify({
+            "attrName": attrName
+        }),
+        async: false,
+        contentType: "application/json;charset=UTF-8"
+    }).done(function (data) {
+        console.log("获取session: " + JSON.stringify(data))
+        result = data;
+    });
+    return result;
+}
 
+function setAttrBySession(attrName, data) {
+    $.ajax({
+        url: "/setSession",
+        type: "POST",
+        data: JSON.stringify({
+            "attrName": attrName,
+            "data": data
+        }),
+        contentType: "application/json;charset=UTF-8",
+        success: function (data) {
+            console.log("注入session" + JSON.stringify(data))
+        }
+    });
+
+}

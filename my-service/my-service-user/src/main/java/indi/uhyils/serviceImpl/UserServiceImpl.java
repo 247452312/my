@@ -29,7 +29,7 @@ import java.util.*;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月20日 11时51分
  */
-@Service
+@Service(group = "${spring.profiles.active}")
 public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements UserService {
 
 

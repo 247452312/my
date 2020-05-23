@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/my.js"></script>
 </head>
 <body>
 首页
 </body>
+<script>
+    $(document).ready(function () {
+        const attrBySession = getAttrBySession("userInfo");
+        alert(JSON.stringify(attrBySession));
+    });
+</script>
 </html>
