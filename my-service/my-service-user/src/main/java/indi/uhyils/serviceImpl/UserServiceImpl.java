@@ -120,7 +120,7 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
         if (userEntity != null) {
             redisPoolUtil.addUser(token, userEntity);
         }
-        if (!userRequest.getUserType().equals(UserTypeEnum.USER)) { // 不是用户
+        if (!userRequest.getUserType().equals(UserTypeEnum.USER)) { // 只有商家和管理员才有权限这种东西
             //获取角色所有的权限
             List<UserRightEntity> userRights = dao.getUserRightsByUserId(userEntity.getId());
             //获取权限链
@@ -132,7 +132,7 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
     }
 
     @Override
-    public ServiceResult<Boolean> registerNoToken(RegisterRequest registerRequest) {
+    public ServiceResult<Boolean> registerNoToken(RegisterRequest registerRequest) { // 只有用户和商家才能创建, 管理员是 总管理员创建的,总管理员是系统初始化的时候就会有的
         Integer nickNameRepete = dao.checkRepeat(registerRequest.getNickName(), "nick_name");
         if (nickNameRepete != 0) {
             return ServiceResult.buildSuccessResult("昵称已存在", false, registerRequest);

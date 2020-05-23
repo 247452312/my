@@ -10,6 +10,7 @@ dubbo:
   application:
     name: consumer-web
   consumer:
+    check: false # 关闭启动时检查依赖服务
     timeout: 3000
     group: ${spring.profiles.active}
   provider:

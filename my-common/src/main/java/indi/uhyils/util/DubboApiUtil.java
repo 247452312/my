@@ -40,7 +40,7 @@ public class DubboApiUtil {
      */
     public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) throws ClassNotFoundException {
 
-        if (interfaceName.contains(".") != true) {
+        if (!interfaceName.contains(".")) {
             interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
         }
 
@@ -89,6 +89,9 @@ public class DubboApiUtil {
         reference = new ReferenceConfig<>();
         // 弱类型接口名
         reference.setInterface(interfaceName);
+        // 设置分组名称
+        reference.setGroup(SpringUtil.getApplicationContext().getEnvironment().getActiveProfiles()[0]);
+
         // 声明为泛化接口
         reference.setGeneric(true);
         reference.setApplication(SpringUtil.getBean(ApplicationConfig.class));
