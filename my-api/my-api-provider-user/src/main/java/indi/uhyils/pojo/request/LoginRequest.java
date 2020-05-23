@@ -23,7 +23,7 @@ public class LoginRequest extends DefaultRequest {
     /**
      * 用户类型 0->管理 1->用户 2->商户 3->游客
      */
-    private UserTypeEnum userType;
+    private Integer userType;
 
 
     public String getUserName() {
@@ -42,11 +42,11 @@ public class LoginRequest extends DefaultRequest {
         this.password = password;
     }
 
-    public UserTypeEnum getUserType() {
+    public Integer getUserType() {
         return userType;
     }
 
-    public void setUserType(UserTypeEnum userType) {
+    public void setUserType(Integer userType) {
         this.userType = userType;
     }
 }

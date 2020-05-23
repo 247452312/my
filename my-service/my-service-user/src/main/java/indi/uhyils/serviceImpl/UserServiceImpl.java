@@ -108,7 +108,7 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
         ArrayList<Arg> objects = new ArrayList<>();
         objects.add(new Arg("user_name", "=", userRequest.getUserName()));
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
-        objects.add(new Arg("user_type", "=", userRequest.getUserType().getUserType()));
+        objects.add(new Arg("user_type", "=", userRequest.getUserType()));
         ArrayList<UserEntity> byArgsNoPage = dao.getByArgsNoPage(objects);
         if (byArgsNoPage.size() != 1) {
             return ServiceResult.buildSuccessResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail(), userRequest);

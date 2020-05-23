@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="/css/my.css">
+    <script src="/js/my.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/login.css">
+    <script>
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
+        function login() {
+            let a = $(".login-submit-target").serializeObject();
+            arg = {};
+            arg.userName = a.username;
+            arg.password = a.password;
+            arg.userType = 1;
+            pushRequest(new request(getCookie("token"), "UserService", "userLogin", arg), function (data) {
+                if (data.code == 200) { //不一定登录成功, 有可能是游客
+                    setCookie("token", data.token, 1);
+                }
+            });
+
+        }
+    </script>
+</head>
+<body>
+<div class="login-background">
+    <div class="login-middle">
+        <div class="login-middle-top-logo">
+            <img src="/pic/logo.gif" alt>
+        </div>
+        <div class="login-middle-top-title">my框架 v 0.0.1</div>
+        <div class="login-middle-login-border">
+            <!-- 登录框↓↓↓  -->
+            <form class="login-form login-submit-target" onsubmit="return false;">
+                <div class="login-form-line">
+                    <input type="text" name="username" autocomplete="off" placeholder="请输入用户名">
+                    <span class="input-prefix-username">
+                        <img class="input-prefix-username-icon" src="/pic/login_username.svg"/>
+                    </span>
+
+                </div>
+                <div class="login-form-line">
+                    <input type="password" name="password" autocomplete="off" placeholder="请输入密码">
+                    <span class="input-suffix-username">
+                        <img class="input-suffix-username-icon" src="/pic/login_password.svg"/>
+                    </span>
+                </div>
+                <div class="login-form-line">
+                    <button class="button login-submit-button" onclick="login()">登录</button>
+                </div>
+            </form>
+            <!-- 登录框↑↑↑  -->
+
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $(".login-middle").animate({left: '0'}, 200); // 登录框弹出
+    });
+</script>
+</body>
+</html>
