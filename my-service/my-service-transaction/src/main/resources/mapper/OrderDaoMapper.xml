@@ -20,7 +20,7 @@
         remark
     </sql>
 
-    <select id="getByArgs" resultType="indi.uhyils.model.OrderEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderEntity">
         select
         <include refid="columnList"/>
         from order
@@ -34,7 +34,7 @@
         </if>
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.model.OrderEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderEntity">
         select
         <include refid="columnList"/>
         from order
@@ -44,7 +44,7 @@
         </foreach>
     </select>
 
-    <select id="getById" resultType="indi.uhyils.model.OrderEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.OrderEntity">
         select
         <include refid="columnList"/>
         from order
@@ -63,7 +63,7 @@
         where is_delete = 0;
     </select>
 
-    <insert id="insert" parameterType="indi.uhyils.model.OrderEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderEntity">
         insert order(id, status, good_name, push_user_id, push_user_name, push_shop_id, push_shop_name, create_date,
                      create_user,
                      update_date, update_user,
@@ -72,7 +72,7 @@
                 #{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
-    <update id="update" parameterType="indi.uhyils.model.OrderEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.OrderEntity">
         update order set
         update_date = #{updateDate}
         ,update_user = #{updateUser}

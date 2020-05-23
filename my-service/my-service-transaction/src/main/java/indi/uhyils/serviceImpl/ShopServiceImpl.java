@@ -2,7 +2,7 @@ package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.ShopDao;
-import indi.uhyils.model.ShopEntity;
+import indi.uhyils.pojo.model.ShopEntity;
 import indi.uhyils.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 

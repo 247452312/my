@@ -1,6 +1,6 @@
 package indi.uhyils.service;
 
-import indi.uhyils.model.ShopEntity;
+import indi.uhyils.pojo.model.ShopEntity;
 
 /**
  * 店铺service

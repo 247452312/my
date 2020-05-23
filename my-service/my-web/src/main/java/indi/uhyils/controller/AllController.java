@@ -1,9 +1,14 @@
 package indi.uhyils.controller;
 
-import indi.uhyils.request.Action;
-import indi.uhyils.response.WebResponse;
+import indi.uhyils.pojo.request.Action;
+import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.model.LinkNode;
+import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +25,8 @@ import java.util.List;
  */
 @Controller
 public class AllController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AllController.class);
 
 
     /**
@@ -38,11 +45,24 @@ public class AllController {
         try {
             List list = new ArrayList();
             list.add(action.getArgs());
-            return WebResponse.build(DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list));
+            ServiceResult serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list, new DefaultRequest());
+            linkPrint(serviceResult.getRequestLink());
+            return WebResponse.build(serviceResult);
         } catch (ClassNotFoundException e) {
             LogUtil.error(this, e);
             return WebResponse.build(null, "", e.getMessage(), 500);
         }
+    }
+
+    private void linkPrint(LinkNode<String> requestLink) {
+        StringBuilder sb = new StringBuilder();
+        LinkNode<String> p = requestLink;
+        do {
+            sb.append(" \n--> ");
+            sb.append(p.getData());
+            p = p.getLinkNode();
+        } while (p != null);
+        logger.info(String.format("链路跟踪: %s \n--> 结束!", sb.toString()));
     }
 
     /**
@@ -52,7 +72,7 @@ public class AllController {
      */
     private void actionAddRequestLink(@RequestBody Action action) {
         HashMap<String, String> requestLink = new HashMap<>();
-        requestLink.put("class", "indi.uhyils.request.model.LinkNode");
+        requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
         requestLink.put("data", "页面请求");
         action.getArgs().put("requestLink", requestLink);
     }

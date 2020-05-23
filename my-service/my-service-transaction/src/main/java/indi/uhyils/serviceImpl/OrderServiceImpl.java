@@ -2,7 +2,7 @@ package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.OrderDao;
-import indi.uhyils.model.OrderEntity;
+import indi.uhyils.pojo.model.OrderEntity;
 import indi.uhyils.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 

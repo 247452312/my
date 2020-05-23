@@ -2,6 +2,9 @@ package indi.uhyils.util;
 
 
 import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.model.LinkNode;
+import indi.uhyils.pojo.response.ServiceResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,5 +130,17 @@ public class LogUtil {
                 logger.error("no this LogType!");
                 break;
         }
+    }
+
+
+    /**
+     * 添加链路跟踪
+     *
+     * @param targetRequest
+     * @param serviceResult
+     */
+    public static void addRequestLink(DefaultRequest targetRequest, ServiceResult serviceResult) {
+        LinkNode<String> serviceResultRequestLink = serviceResult.getRequestLink();
+        targetRequest.setRequestLink(serviceResultRequestLink);
     }
 }

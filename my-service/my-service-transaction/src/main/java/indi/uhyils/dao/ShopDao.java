@@ -1,6 +1,6 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.model.ShopEntity;
+import indi.uhyils.pojo.model.ShopEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

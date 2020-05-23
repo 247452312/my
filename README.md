@@ -36,3 +36,5 @@ mysql配置在application.properties中
                      }
                  }
              }
+### 请求链路跟踪
+

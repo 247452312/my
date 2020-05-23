@@ -6,7 +6,8 @@ import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.alibaba.dubbo.rpc.service.GenericService;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.response.ServiceResult;
+import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.response.ServiceResult;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -37,7 +38,7 @@ public class DubboApiUtil {
      * @return 方法返回值
      * @throws ClassNotFoundException
      */
-    public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args) throws ClassNotFoundException {
+    public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) throws ClassNotFoundException {
 
         if (interfaceName.contains(".") != true) {
             interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
@@ -77,7 +78,9 @@ public class DubboApiUtil {
 
         Object[] arg = args.toArray(new Object[args.size()]);
         String[] parameterTypes = paramNameList.toArray(new String[paramNameList.size()]);
-        return JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, parameterTypes, arg)), ServiceResult.class);
+        ServiceResult serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, parameterTypes, arg)), ServiceResult.class);
+        request.setRequestLink(serviceResult.getRequestLink());
+        return serviceResult;
 
     }
 

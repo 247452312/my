@@ -2,7 +2,7 @@ package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.GoodDao;
-import indi.uhyils.model.GoodEntity;
+import indi.uhyils.pojo.model.GoodEntity;
 import indi.uhyils.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 

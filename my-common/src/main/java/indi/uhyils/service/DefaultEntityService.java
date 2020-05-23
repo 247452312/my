@@ -1,10 +1,10 @@
 package indi.uhyils.service;
 
-import indi.uhyils.request.ArgsRequest;
-import indi.uhyils.request.IdRequest;
-import indi.uhyils.request.ObjRequest;
-import indi.uhyils.response.Page;
-import indi.uhyils.response.ServiceResult;
+import indi.uhyils.pojo.request.ArgsRequest;
+import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.pojo.response.Page;
+import indi.uhyils.pojo.response.ServiceResult;
 
 import java.io.Serializable;
 

@@ -2,7 +2,7 @@ package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.model.UserEntity;
+import indi.uhyils.pojo.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;

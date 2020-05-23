@@ -1,6 +1,6 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.model.AddressEntity;
+import indi.uhyils.pojo.model.AddressEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

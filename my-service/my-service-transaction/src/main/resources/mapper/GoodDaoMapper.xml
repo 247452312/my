@@ -22,7 +22,7 @@
         remark
     </sql>
 
-    <select id="getByArgs" resultType="indi.uhyils.model.GoodEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.GoodEntity">
         select
         <include refid="columnList"/>
         from good
@@ -37,7 +37,7 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.model.GoodEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.GoodEntity">
         select
         <include refid="columnList"/>
         from good
@@ -48,7 +48,7 @@
     </select>
 
 
-    <select id="getById" resultType="indi.uhyils.model.GoodEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.GoodEntity">
         select
         <include refid="columnList"/>
         from good
@@ -68,14 +68,14 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.model.GoodEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.GoodEntity">
         insert good(id, name, num, type_id, shop_id, price, is_discount, discount_per, user_id, create_date,
                     create_user, update_date, update_user,
                     is_delete, remark)
         values (#{id}, #{name},#{num},#{typeId},#{shopId},#{price},#{isDiscount},#{discountPer},#{userId}, #{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
-    <update id="update" parameterType="indi.uhyils.model.GoodEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.GoodEntity">
         update good set
         update_date = #{updateDate}
         ,update_user = #{updateUser}

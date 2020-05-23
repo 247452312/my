@@ -1,13 +1,13 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.DefaultDao;
-import indi.uhyils.model.DataEntity;
-import indi.uhyils.request.ArgsRequest;
-import indi.uhyils.request.IdRequest;
-import indi.uhyils.request.ObjRequest;
-import indi.uhyils.request.model.Arg;
-import indi.uhyils.response.Page;
-import indi.uhyils.response.ServiceResult;
+import indi.uhyils.pojo.model.DataEntity;
+import indi.uhyils.pojo.request.ArgsRequest;
+import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.pojo.request.model.Arg;
+import indi.uhyils.pojo.response.Page;
+import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.DefaultEntityService;
 
 import java.lang.reflect.InvocationTargetException;

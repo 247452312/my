@@ -1,6 +1,6 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.request.model.Arg;
+import indi.uhyils.pojo.request.model.Arg;
 import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;

@@ -17,7 +17,7 @@
         remark
     </sql>
 
-    <select id="getByArgs" resultType="indi.uhyils.model.AddressEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.AddressEntity">
         select
         <include refid="columnList"/>
         from user_address
@@ -32,7 +32,7 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.model.AddressEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.AddressEntity">
         select
         <include refid="columnList"/>
         from user_address
@@ -43,7 +43,7 @@
     </select>
 
 
-    <select id="getById" resultType="indi.uhyils.model.AddressEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.AddressEntity">
         select
         <include refid="columnList"/>
         from user_address
@@ -68,7 +68,7 @@
         where ${type} = #{value}
     </select>
 
-    <insert id="insert" parameterType="indi.uhyils.model.AddressEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.AddressEntity">
         insert user_address(id,
                             user_id,
                             address,
@@ -82,7 +82,7 @@
         values (#{id}, #{userId}, #{address}, #{type}, #{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
-    <update id="update" parameterType="indi.uhyils.model.AddressEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.AddressEntity">
         update user_address set
         update_date = #{updateDate}
         ,update_user = #{updateUser}

@@ -1,6 +1,6 @@
 package indi.uhyils.service;
 
-import indi.uhyils.model.AddressEntity;
+import indi.uhyils.pojo.model.AddressEntity;
 
 /**
  * @author uhyils <247452312@qq.com>

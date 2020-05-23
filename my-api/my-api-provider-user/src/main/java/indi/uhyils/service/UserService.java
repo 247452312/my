@@ -1,11 +1,11 @@
 package indi.uhyils.service;
 
 import indi.uhyils.exception.EnumParseNoHaveException;
-import indi.uhyils.model.TokenInfo;
-import indi.uhyils.model.UserEntity;
-import indi.uhyils.request.*;
-import indi.uhyils.response.LoginResponse;
-import indi.uhyils.response.ServiceResult;
+import indi.uhyils.pojo.model.TokenInfo;
+import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.response.LoginResponse;
+import indi.uhyils.pojo.response.ServiceResult;
 
 
 /**

@@ -3,7 +3,7 @@ server:
 dubbo:
   registry:
     client: curator
-    address: zookeeper://39.98.164.91:2181
+    address: zookeeper://192.168.1.101:2181
   protocol:
     name: dubbo
     port: 20880
@@ -11,13 +11,20 @@ dubbo:
     name: consumer-web
   consumer:
     timeout: 3000
-    group: dev
+    group: ${spring.profiles.active}
   provider:
     timeout: 3000
-    group: dev
+    group: ${spring.profiles.active}
 
 
 spring:
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+      exclude: WEB-INF/**
+    freemarker:
+      cache: false    #页面不加载缓存，修改即时生效
   output:
     ansi:
       enabled: ALWAYS

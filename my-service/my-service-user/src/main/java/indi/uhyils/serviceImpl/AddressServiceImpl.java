@@ -2,7 +2,7 @@ package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.AddressDao;
-import indi.uhyils.model.AddressEntity;
+import indi.uhyils.pojo.model.AddressEntity;
 import indi.uhyils.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 

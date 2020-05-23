@@ -18,7 +18,7 @@
         remark
     </sql>
 
-    <select id="getByArgs" resultType="indi.uhyils.model.UserEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.UserEntity">
         select
         <include refid="columnList"/>
         from user
@@ -33,7 +33,7 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.model.UserEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.UserEntity">
         select
         <include refid="columnList"/>
         from user
@@ -44,7 +44,7 @@
     </select>
 
 
-    <select id="getById" resultType="indi.uhyils.model.UserEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.UserEntity">
         select
         <include refid="columnList"/>
         from user
@@ -64,7 +64,7 @@
     </select>
 
     <select id="getUserRightsByUserId" parameterType="java.lang.String"
-            resultType="indi.uhyils.model.UserRightEntity">
+            resultType="indi.uhyils.pojo.model.UserRightEntity">
         select id,
                parent_id   as parentId,
                parent_ids  as parentIds,
@@ -79,7 +79,7 @@
         from user_rights
         where id in (select rights_id from user_right_middle where user_id = #{userId})
     </select>
-    <select id="getUserRightsByRightId" resultType="indi.uhyils.model.UserRightEntity">
+    <select id="getUserRightsByRightId" resultType="indi.uhyils.pojo.model.UserRightEntity">
         select id,
                parent_id   as parentId,
                parent_ids  as parentIds,
@@ -101,13 +101,13 @@
         where ${type} = #{value}
     </select>
 
-    <insert id="insert" parameterType="indi.uhyils.model.UserEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.UserEntity">
         insert user(id, nick_name, user_name, password, user_type, create_date, create_user, update_date, update_user,
                     is_delete, remark)
         values (#{id}, #{nickName}, #{userName}, #{password}, #{userType}, #{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
-    <update id="update" parameterType="indi.uhyils.model.UserEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.UserEntity">
         update user set
         update_date = #{updateDate}
         ,update_user = #{updateUser}

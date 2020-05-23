@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.model.UserEntity;
-import indi.uhyils.model.UserRightEntity;
+import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.UserRightEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
