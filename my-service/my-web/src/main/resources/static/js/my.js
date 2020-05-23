@@ -48,7 +48,7 @@ function pushRequest(request, success) {
         data: JSON.stringify(request),
         contentType: "application/json",
         success: function (data) {
-            console.log(data)
+            console.log(data);
             result = success(data);
         }
     });

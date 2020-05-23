@@ -84,7 +84,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @return
      */
     public static <T extends Serializable> ServiceResult buildFailedResult(String businessMessage, T t, DefaultRequest req) {
-        return new ServiceResult(t, ResponseCode.FAILED.getText(), businessMessage, req);
+        return new ServiceResult(t, ResponseCode.REQUEST_PARM_ERROR.getText(), businessMessage, req);
     }
 
     /**

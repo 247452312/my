@@ -1,5 +1,6 @@
 package indi.uhyils.controller;
 
+import indi.uhyils.enum_.ResponseCode;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
@@ -48,9 +49,9 @@ public class AllController {
             ServiceResult serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list, new DefaultRequest());
             linkPrint(serviceResult.getRequestLink());
             return WebResponse.build(serviceResult);
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             LogUtil.error(this, e);
-            return WebResponse.build(null, "", e.getMessage(), 500);
+            return WebResponse.build(null, "", ResponseCode.ERROR.getMsg(), ResponseCode.ERROR.getText());
         }
     }
 

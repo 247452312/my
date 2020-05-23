@@ -36,9 +36,6 @@ public class WebResponse<T extends Serializable> implements Serializable {
     }
 
     public static <T extends Serializable> WebResponse build(ServiceResult serviceResult) {
-        if (serviceResult.getServiceCode() != ResponseCode.SUCCESS.getText()) {
-            return build(serviceResult.getData(), serviceResult.getToken(), serviceResult.getServiceMessage(), serviceResult.getServiceCode());
-        }
         return build(serviceResult.getData(), serviceResult.getToken(), serviceResult.getServiceMessage(), serviceResult.getServiceCode());
     }
 

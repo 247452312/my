@@ -11,19 +11,9 @@ public enum ResponseCode {
     SUCCESS(200, "操作成功"),
 
     /**
-     * 操作失败
+     * 前台传值错误
      */
-    FAILED(400, "操作失败"),
-
-    /**
-     * 业务异常，比如需要删除一条数据数据库没有
-     */
-    BUSI_EXCEPTION(404, "业务异常"),
-
-    /**
-     * 全局异常，比如找不到资源，没有权限
-     */
-    OVERALL_EXCEPTION(405, "全局异常"),
+    REQUEST_PARM_ERROR(400, "前台传值错误"),
 
     /**
      * 服务器内部错误
@@ -44,5 +34,13 @@ public enum ResponseCode {
 
     public void setText(Integer text) {
         this.text = text;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }
