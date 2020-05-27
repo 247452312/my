@@ -1,7 +1,5 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.enum_.UserTypeEnum;
-
 import java.io.Serializable;
 
 /**
@@ -36,10 +34,6 @@ public class TokenInfo implements Serializable {
      */
     private Integer random;
 
-    /**
-     * 用户类型
-     */
-    private UserTypeEnum type;
 
     /**
      * 用户id
@@ -91,13 +85,6 @@ public class TokenInfo implements Serializable {
         this.random = random;
     }
 
-    public UserTypeEnum getType() {
-        return type;
-    }
-
-    public void setType(UserTypeEnum type) {
-        this.type = type;
-    }
 
     public String getUserId() {
         return userId;

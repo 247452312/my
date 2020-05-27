@@ -71,7 +71,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @param <T>
      * @return
      */
-    public static <T extends Serializable> ServiceResult buildSuccessResult(String businessMessage, T t, DefaultRequest req) {
+    public static <T extends Serializable> ServiceResult<T> buildSuccessResult(String businessMessage, T t, DefaultRequest req) {
         return new ServiceResult(t, ResponseCode.SUCCESS.getText(), businessMessage, req);
     }
 
@@ -83,7 +83,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @param <T>
      * @return
      */
-    public static <T extends Serializable> ServiceResult buildFailedResult(String businessMessage, T t, DefaultRequest req) {
+    public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage, T t, DefaultRequest req) {
         return new ServiceResult(t, ResponseCode.REQUEST_PARM_ERROR.getText(), businessMessage, req);
     }
 
@@ -95,7 +95,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @param <T>
      * @return
      */
-    public static <T extends Serializable> ServiceResult buildErrorResult(String businessMessage, DefaultRequest req) {
+    public static <T extends Serializable> ServiceResult<T> buildErrorResult(String businessMessage, DefaultRequest req) {
         return new ServiceResult(null, ResponseCode.ERROR.getText(), businessMessage, req);
     }
 

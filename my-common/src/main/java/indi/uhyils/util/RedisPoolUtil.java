@@ -39,6 +39,11 @@ public class RedisPoolUtil {
         return JSON.parseObject(userJson, UserEntity.class);
     }
 
+    public Boolean haveToken(String token){
+        Jedis jedis = redisPool.getJedis();
+        return jedis.exists(token);
+    }
+
 
     public RedisPool getRedisPool() {
         return redisPool;

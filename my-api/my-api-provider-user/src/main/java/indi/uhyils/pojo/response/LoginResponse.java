@@ -1,10 +1,8 @@
 package indi.uhyils.pojo.response;
 
 import indi.uhyils.pojo.model.UserEntity;
-import indi.uhyils.pojo.model.UserRightEntity;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -28,11 +26,6 @@ public class LoginResponse implements Serializable {
     private UserEntity userEntity;
 
 
-    /**
-     * 用户权限
-     */
-    private List<UserRightEntity> userRightList;
-
     public static LoginResponse buildLoginFail() {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setSuccess(false);
@@ -42,15 +35,13 @@ public class LoginResponse implements Serializable {
     /**
      * @param token      token
      * @param userEntity 用户本体
-     * @param list       权限
      * @return
      */
-    public static LoginResponse buildLoginSuccess(String token, UserEntity userEntity, List<UserRightEntity> list) {
+    public static LoginResponse buildLoginSuccess(String token, UserEntity userEntity) {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setSuccess(true);
         loginResponse.setToken(token);
         loginResponse.setUserEntity(userEntity);
-        loginResponse.setUserRightList(list);
         return loginResponse;
 
     }
@@ -80,11 +71,4 @@ public class LoginResponse implements Serializable {
         this.userEntity = userEntity;
     }
 
-    public List<UserRightEntity> getUserRightList() {
-        return userRightList;
-    }
-
-    public void setUserRightList(List<UserRightEntity> userRightList) {
-        this.userRightList = userRightList;
-    }
 }

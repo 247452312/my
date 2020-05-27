@@ -1,6 +1,5 @@
 package indi.uhyils.pojo.request;
 
-import indi.uhyils.enum_.UserTypeEnum;
 
 /**
  * 用户登录用request
@@ -13,25 +12,19 @@ public class LoginRequest extends DefaultRequest {
     /**
      * 用户名
      */
-    private String userName;
+    private String username;
 
     /**
      * 密码
      */
     private String password;
 
-    /**
-     * 用户类型 0->管理 1->用户 2->商户 3->游客
-     */
-    private Integer userType;
-
-
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -40,13 +33,5 @@ public class LoginRequest extends DefaultRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Integer getUserType() {
-        return userType;
-    }
-
-    public void setUserType(Integer userType) {
-        this.userType = userType;
     }
 }

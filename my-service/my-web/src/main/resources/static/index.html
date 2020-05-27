@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
-    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/my.css">
     <script src="/js/my.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/mouse.min.js"></script>
+    <script src="/js/index.js"></script>
 </head>
 <body>
-首页
+
 </body>
 <script>
     $(document).ready(function () {
-        const attrBySession = getAttrBySession("userInfo");
-        alert(JSON.stringify(attrBySession));
+        /* 开启鼠标动画效果(嘿咻) */
+        $.shuicheMouse({
+            type: 11,
+            color: "rgb(0,0,0)"
+        })
     });
 </script>
 </html>

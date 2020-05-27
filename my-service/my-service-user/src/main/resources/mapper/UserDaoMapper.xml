@@ -5,24 +5,60 @@
 
 
     <sql id="columnList">
-        id,
-        nick_name as nickName,
-        user_name as userName,
-        password,
-        user_type as userType,
-        create_date as 'createDate',
-        create_user as createUser,
-        update_date as 'updateDate',
-        update_user as updateUser,
-        is_delete as isDelete,
-        remark
+        a.id,
+        a.create_date as 'createDate',
+        a.create_user as createUser,
+        a.update_date as 'updateDate',
+        a.update_user as updateUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+
+        a.nick_name as nickName,
+        a.username,
+        a.password,
+        a.role_id as roleId
+    </sql>
+    <sql id="deptColumnList">
+        a.id,
+        a.create_date as 'createDate',
+        a.create_user as createUser,
+        a.update_date as 'updateDate',
+        a.update_user as updateUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+
+        a.name
+    </sql>
+    <sql id="powerColumnList">
+        a.id,
+        a.create_date as 'createDate',
+        a.create_user as createUser,
+        a.update_date as 'updateDate',
+        a.update_user as updateUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+
+        a.interface_name as interfaceName,
+        a.method_name as methodName
+    </sql>
+    <sql id="roleColumnList">
+        a.id,
+        a.create_date as 'createDate',
+        a.create_user as createUser,
+        a.update_date as 'updateDate',
+        a.update_user as updateUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+
+        a.name,
+        a.level
     </sql>
 
     <select id="getByArgs" resultType="indi.uhyils.pojo.model.UserEntity">
         select
         <include refid="columnList"/>
-        from user
-        where is_delete = 0
+        from sys_user a
+        where delete_flag = 0
 
         <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
@@ -36,8 +72,8 @@
     <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.UserEntity">
         select
         <include refid="columnList"/>
-        from user
-        where is_delete = 0
+        from sys_user a
+        where delete_flag = 0
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
@@ -47,86 +83,74 @@
     <select id="getById" resultType="indi.uhyils.pojo.model.UserEntity">
         select
         <include refid="columnList"/>
-        from user
-        where is_delete = 0
+        from sys_user a
+        where delete_flag = 0
         and id = #{id}
     </select>
 
     <select id="delete" parameterType="java.lang.Integer">
-        update user
-        set is_delete = 1
+        update sys_user
+        set delete_flag = 1
         where id = #{id}
     </select>
     <select id="count" resultType="java.lang.Integer">
         select count(*)
-        from user
-        where is_delete = 0;
-    </select>
-
-    <select id="getUserRightsByUserId" parameterType="java.lang.String"
-            resultType="indi.uhyils.pojo.model.UserRightEntity">
-        select id,
-               parent_id   as parentId,
-               parent_ids  as parentIds,
-               `name`,
-               url,
-               create_date as createDate,
-               create_user as createUesr,
-               update_date as updateDate,
-               update_user as updateUser,
-               is_delete   as isDelete,
-               remark
-        from user_rights
-        where id in (select rights_id from user_right_middle where user_id = #{userId})
-    </select>
-    <select id="getUserRightsByRightId" resultType="indi.uhyils.pojo.model.UserRightEntity">
-        select id,
-               parent_id   as parentId,
-               parent_ids  as parentIds,
-               `name`,
-               url,
-               create_date as createDate,
-               create_user as createUesr,
-               update_date as updateDate,
-               update_user as updateUser,
-               is_delete   as isDelete,
-               remark
-        from user_rights
-        where id = #{userRightId}
+        from sys_user a
+        where delete_flag = 0;
     </select>
 
     <select id="checkRepeat" resultType="java.lang.Integer">
         select count(*)
-        from user
-        where ${type} = #{value}
+        from sys_user a
+        where ${columnName} = #{value}
     </select>
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.UserEntity">
-        insert user(id, nick_name, user_name, password, user_type, create_date, create_user, update_date, update_user,
-                    is_delete, remark)
-        values (#{id}, #{nickName}, #{userName}, #{password}, #{userType}, #{createDate}, #{createUser}, #{updateDate},
+        insert sys_user(id, nick_name, username, password, create_date, create_user, update_date, update_user,
+                    delete_flag, remark)
+        values (#{id}, #{nickName}, #{username}, #{password},  #{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
     <update id="update" parameterType="indi.uhyils.pojo.model.UserEntity">
-        update user set
+        update sys_user set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
         <if test="nickName != null and nickName != ''">
             ,nick_name = #{nickName}
         </if>
-        <if test="userName != null and userName != ''">
-            ,user_name = #{userName}
+        <if test="username != null and username != ''">
+            ,username = #{username}
         </if>
         <if test="password != null and password != ''">
             ,password = #{password}
         </if>
-        <if test="isDelete != null and isDelete != ''">
-            ,is_delete = #{isDelete}
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
         </if>
         <if test="remark != null and remark != ''">
             ,remark = #{remark}
         </if>
         where id = #{id}
     </update>
+
+
+    <select id="getUserRoleById" resultType="indi.uhyils.pojo.model.RoleEntity">
+        select
+        <include refid="roleColumnList"/>
+        from sys_role a
+        where
+        id = #{roleId}
+    </select>
+
+    <select id="getUserDeptsByRoleId" resultType="indi.uhyils.pojo.model.DeptEntity">
+        select
+        <include refid="deptColumnList"/>
+        from sys_dept a right join sys_role_dept b on a.id = b.dept_id where b.role_id = #{roleId}
+    </select>
+    <select id="getUserPowerByDeptId" resultType="indi.uhyils.pojo.model.PowerEntity">
+        select
+        <include refid="powerColumnList"/>
+        from sys_power a right join sys_dept_power b on a.id = b.power_id where b.dept_id = #{deptId}
+    </select>
 
 </mapper>

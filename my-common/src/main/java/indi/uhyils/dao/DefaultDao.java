@@ -27,5 +27,7 @@ public interface DefaultDao<T extends Serializable> {
 
     int count();
 
+    int checkRepeat(@Param("columnName") String columnName, @Param("value") Object value);
+
 
 }

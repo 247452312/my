@@ -1,6 +1,5 @@
 package indi.uhyils.pojo.request;
 
-import indi.uhyils.enum_.UserTypeEnum;
 
 /**
  * 注册
@@ -22,11 +21,6 @@ public class RegisterRequest extends DefaultRequest {
     private String password;
 
     /**
-     * 用户类型
-     */
-    private UserTypeEnum userType;
-
-    /**
      * 昵称
      */
     private String nickName;
@@ -46,14 +40,6 @@ public class RegisterRequest extends DefaultRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public UserTypeEnum getUserType() {
-        return userType;
-    }
-
-    public void setUserType(UserTypeEnum userType) {
-        this.userType = userType;
     }
 
     public String getNickName() {

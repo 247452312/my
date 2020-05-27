@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.model;
 
 
+import java.util.List;
+
 /**
  * 用户
  *
@@ -25,9 +27,14 @@ public class UserEntity extends DataEntity {
     private String password;
 
     /**
-     * 用户类型
+     * 用户角色
      */
-    private Integer userType;
+    private String roleId;
+
+    /**
+     * 用户角色(实体)
+     */
+    private RoleEntity role;
 
 
     public String getNickName() {
@@ -54,11 +61,21 @@ public class UserEntity extends DataEntity {
         this.password = password;
     }
 
-    public Integer getUserType() {
-        return userType;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setUserType(Integer userType) {
-        this.userType = userType;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
+
+
+    public RoleEntity getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEntity role) {
+        this.role = role;
+    }
+
 }

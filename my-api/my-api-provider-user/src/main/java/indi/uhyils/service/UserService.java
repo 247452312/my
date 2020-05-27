@@ -57,15 +57,6 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * @param userRequest 用户登录所需要的条件
      * @return 登录所需要的信息
      */
-    ServiceResult<LoginResponse> userLogin(LoginRequest userRequest) throws EnumParseNoHaveException;
-
-
-    /**
-     * 注册(用户注册,管理员注册,商家注册)
-     *
-     * @param registerRequest 注册信息
-     * @return 注册是否成功
-     */
-    ServiceResult<Boolean> registerNoToken(RegisterRequest registerRequest);
+    ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest) throws EnumParseNoHaveException;
 
 }

@@ -1,6 +1,5 @@
 package indi.uhyils.pojo.request;
 
-import indi.uhyils.enum_.UserTypeEnum;
 
 /**
  * 用来获取用户的Request
@@ -11,12 +10,10 @@ import indi.uhyils.enum_.UserTypeEnum;
 public class GetUserRequest extends DefaultRequest {
 
     private String id;
-    private UserTypeEnum userType;
 
-    public static GetUserRequest build(String touristUserId, UserTypeEnum userType) {
+    public static GetUserRequest build(String touristUserId) {
         GetUserRequest getUserRequest = new GetUserRequest();
         getUserRequest.setId(touristUserId);
-        getUserRequest.setUserType(userType);
         return getUserRequest;
     }
 
@@ -28,11 +25,5 @@ public class GetUserRequest extends DefaultRequest {
         this.id = id;
     }
 
-    public UserTypeEnum getUserType() {
-        return userType;
-    }
 
-    public void setUserType(UserTypeEnum userType) {
-        this.userType = userType;
-    }
 }
