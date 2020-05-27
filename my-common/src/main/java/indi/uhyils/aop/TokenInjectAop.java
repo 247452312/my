@@ -97,6 +97,11 @@ public class TokenInjectAop {
             return serviceResult;
         }
         UserEntity userEntity = serviceResult.getData().toJavaObject(UserEntity.class);
+        if (userEntity.getUserName().equals("admin")) { // 超级管理员直接放行
+            arg.setUser(userEntity);
+            //执行方法
+            return pjp.proceed(new DefaultRequest[]{arg});
+        }
         boolean haveAuth = false;
         PowerEntity powerEntity = new PowerEntity();
         powerEntity.setInterfaceName(className);
@@ -116,17 +121,6 @@ public class TokenInjectAop {
         Object proceed = pjp.proceed(new DefaultRequest[]{arg});
         return proceed;
     }
-// TODO 如果此截面没问题 删了这段
-//    private ServiceResult<String> getUserTokenNoToken(String touristId, DefaultRequest request) throws ClassNotFoundException {
-//        GetUserRequest getUserRequest = new GetUserRequest();
-//        getUserRequest.setUserType(UserTypeEnum.TOURIST);
-//        getUserRequest.setId(MD5Util.MD5Encode(touristId));
-//        getUserRequest.setRequestLink(request.getRequestLink());
-//        List list = new ArrayList();
-//        list.add(getUserRequest);
-//        ServiceResult<String> stringServiceResult = DubboApiUtil.dubboApiTool("UserService", "getUserTokenNoToken", list, request);
-//        return stringServiceResult;
-//    }
 
 
     private ServiceResult<JSONObject> getUserByIdNoToken(String token, TokenInfo tokenInfo, DefaultRequest request) throws ClassNotFoundException {

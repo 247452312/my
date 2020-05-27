@@ -59,4 +59,13 @@ public interface DefaultEntityService<T extends Serializable> {
      */
     ServiceResult<Integer> delete(IdRequest idRequest);
 
+
+    /**
+     * 数量
+     *
+     * @param argsRequest
+     * @return
+     */
+    ServiceResult<Integer> countByArgs(ArgsRequest argsRequest);
+
 }

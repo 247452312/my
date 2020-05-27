@@ -111,6 +111,9 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
         if (userEntity != null) { // 登录->加入缓存中 TODO 如果重复登录问题
             redisPoolUtil.addUser(token, userEntity);
         }
+        if (userEntity.getRoleId() == null) {
+            return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
+        }
         RoleEntity roleEntity = dao.getUserRoleById(userEntity.getRoleId()); // 获取权限
         /* 注入dept*/
         List<DeptEntity> deptEntities = dao.getUserDeptsByRoleId(roleEntity.getId());

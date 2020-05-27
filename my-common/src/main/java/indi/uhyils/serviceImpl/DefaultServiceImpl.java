@@ -72,12 +72,26 @@ public abstract class DefaultServiceImpl<T extends DataEntity> implements Defaul
 
     @Override
     public ServiceResult<Integer> delete(IdRequest idRequest) {
-        int delete = getDao().delete(idRequest.getId());
+        List<T> byId = getDao().getById(idRequest.getId());
+        if (byId == null) {
+            return ServiceResult.buildFailedResult("查无此人", null, idRequest);
+        }
+        T t = byId.get(0);
+        t.setDeleteFlag(true);
+        t.preUpdate(idRequest);
+        int delete = getDao().update(t);
         if (delete != 0) {
             return ServiceResult.buildSuccessResult("删除成功", delete, idRequest);
         } else {
             return ServiceResult.buildFailedResult("删除失败", delete, idRequest);
         }
+    }
+
+    @Override
+    public ServiceResult<Integer> countByArgs(ArgsRequest argsRequest) {
+        List<Arg> args = argsRequest.getArgs();
+        int count = getDao().countByArgs(args);
+        return ServiceResult.buildSuccessResult("查询数量成功", count, argsRequest);
     }
 
 

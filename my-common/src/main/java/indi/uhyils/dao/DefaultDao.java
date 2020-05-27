@@ -23,7 +23,7 @@ public interface DefaultDao<T extends Serializable> {
 
     int update(T t);
 
-    int delete(String id);
+    int countByArgs(@Param("args") List<Arg> args);
 
     int count();
 

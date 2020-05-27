@@ -88,15 +88,19 @@
         and id = #{id}
     </select>
 
-    <select id="delete" parameterType="java.lang.Integer">
-        update sys_user
-        set delete_flag = 1
-        where id = #{id}
-    </select>
     <select id="count" resultType="java.lang.Integer">
         select count(*)
         from sys_user a
         where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_user a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
     </select>
 
     <select id="checkRepeat" resultType="java.lang.Integer">
@@ -111,6 +115,7 @@
         values (#{id}, #{nickName}, #{username}, #{password},  #{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
+
     <update id="update" parameterType="indi.uhyils.pojo.model.UserEntity">
         update sys_user set
         update_date = #{updateDate}
@@ -147,6 +152,7 @@
         <include refid="deptColumnList"/>
         from sys_dept a right join sys_role_dept b on a.id = b.dept_id where b.role_id = #{roleId}
     </select>
+
     <select id="getUserPowerByDeptId" resultType="indi.uhyils.pojo.model.PowerEntity">
         select
         <include refid="powerColumnList"/>

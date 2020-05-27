@@ -37,7 +37,7 @@ public class DataEntity implements Serializable {
     /**
      * 删除标志 默认为0
      */
-    private Boolean isDelete;
+    private Boolean deleteFlag;
 
     /**
      * 备注
@@ -105,12 +105,12 @@ public class DataEntity implements Serializable {
         this.updateUser = updateUser;
     }
 
-    public Boolean getDelete() {
-        return isDelete;
+    public Boolean getDeleteFlag() {
+        return deleteFlag;
     }
 
-    public void setDelete(Boolean delete) {
-        isDelete = delete;
+    public void setDeleteFlag(Boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 
     public String getRemark() {

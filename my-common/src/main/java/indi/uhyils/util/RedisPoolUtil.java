@@ -23,7 +23,8 @@ public class RedisPoolUtil {
 
     public void addUser(String token, UserEntity user) {
         Jedis jedis = redisPool.getJedis();
-        jedis.append(token, JSONObject.toJSONString(user));
+        String value = JSONObject.toJSONString(user);
+        jedis.append(token, value);
         //半个小时
         jedis.expire(token, 60 * 30);
         jedis.close();
