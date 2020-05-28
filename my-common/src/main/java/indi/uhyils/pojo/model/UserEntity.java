@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.model;
 
 
-import java.util.List;
+import indi.uhyils.pojo.model.base.DataEntity;
 
 /**
  * 用户

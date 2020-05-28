@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.model;
 
+import indi.uhyils.pojo.model.base.DataEntity;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月05日 12时26分

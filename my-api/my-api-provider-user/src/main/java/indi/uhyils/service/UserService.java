@@ -1,7 +1,7 @@
 package indi.uhyils.service;
 
 import indi.uhyils.exception.EnumParseNoHaveException;
-import indi.uhyils.pojo.model.TokenInfo;
+import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.response.LoginResponse;

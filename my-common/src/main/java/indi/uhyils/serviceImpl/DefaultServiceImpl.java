@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.DefaultDao;
-import indi.uhyils.pojo.model.DataEntity;
+import indi.uhyils.pojo.model.base.DataEntity;
 import indi.uhyils.pojo.request.ArgsRequest;
 import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.request.ObjRequest;

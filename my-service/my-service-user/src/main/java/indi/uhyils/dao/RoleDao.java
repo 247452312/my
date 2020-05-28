@@ -1,7 +1,11 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.pojo.model.RoleDeptMiddle;
 import indi.uhyils.pojo.model.RoleEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -10,4 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface RoleDao extends DefaultDao<RoleEntity> {
 
+    Boolean insertRoleDept(RoleDeptMiddle middle);
+
+    boolean deleteRoleDept(List<String> ids);
 }

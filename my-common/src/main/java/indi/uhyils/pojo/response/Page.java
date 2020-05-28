@@ -49,7 +49,7 @@ public class Page<T extends Serializable> implements Serializable {
     public Page() {
     }
 
-    public static <T extends Serializable> Page build(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
+    public static <T extends Serializable> Page<T> build(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
         return new Page(list, size, pageNum, count, totalPage);
     }
 
@@ -63,7 +63,7 @@ public class Page<T extends Serializable> implements Serializable {
      * @param <T>
      * @return
      */
-    public static <T extends Serializable> Page build(DefaultPageRequest pageRequest, List<T> list, Integer count, Integer totalPage) {
+    public static <T extends Serializable> Page<T> build(DefaultPageRequest pageRequest, List<T> list, Integer count, Integer totalPage) {
         if (pageRequest.getPaging() == true) { //代表分页
             return build(list, pageRequest.getSize(), pageRequest.getPage(), count, totalPage);
         } else {

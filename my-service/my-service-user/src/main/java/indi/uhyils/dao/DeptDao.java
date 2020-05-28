@@ -1,8 +1,10 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.pojo.model.DeptEntity;
-import indi.uhyils.pojo.model.RoleEntity;
+import indi.uhyils.pojo.model.DeptPowerMiddle;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -10,5 +12,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface DeptDao extends DefaultDao<DeptEntity> {
+
+    Boolean insertDeptPower(DeptPowerMiddle middle);
+
+    boolean deleteDeptPower(List<String> ids);
 
 }

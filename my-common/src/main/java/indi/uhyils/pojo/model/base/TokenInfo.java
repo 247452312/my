@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.model;
+package indi.uhyils.pojo.model.base;
 
 import java.io.Serializable;
 

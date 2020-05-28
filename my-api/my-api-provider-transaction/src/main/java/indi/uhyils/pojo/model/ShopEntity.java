@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.model;
 
+import indi.uhyils.pojo.model.base.DataEntity;
+
 /**
  * 店铺
  *

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ResponseCode;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
-import indi.uhyils.pojo.model.TokenInfo;
+import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.IdRequest;
@@ -41,6 +41,12 @@ public class TokenInjectAop {
      * 放行方法后缀
      */
     private static final String RELEASE_SUFFIX = "NoToken";
+
+    /**
+     * 超级管理员账号
+     */
+    private static final String ADMIN = "admin";
+
 
     /**
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
@@ -97,7 +103,7 @@ public class TokenInjectAop {
             return serviceResult;
         }
         UserEntity userEntity = serviceResult.getData().toJavaObject(UserEntity.class);
-        if (userEntity.getUserName().equals("admin")) { // 超级管理员直接放行
+        if (ADMIN.equals(userEntity.getUserName())) { // 超级管理员直接放行
             arg.setUser(userEntity);
             //执行方法
             return pjp.proceed(new DefaultRequest[]{arg});

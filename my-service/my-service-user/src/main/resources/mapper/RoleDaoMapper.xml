@@ -98,5 +98,17 @@
         where ${columnName} = #{value}
     </select>
 
+    <insert id="insertRoleDept" parameterType="indi.uhyils.pojo.model.RoleDeptMiddle">
+        insert into sys_role_dept(id, dept_id, role_id)
+        values (#{id}, #{deptId}, #{roleId})
+    </insert>
+
+    <delete id="deleteRoleDept" parameterType="java.lang.String">
+        delete from sys_role_dept where id in
+        <foreach item="ids" index="index" collection="list" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
 
 </mapper>

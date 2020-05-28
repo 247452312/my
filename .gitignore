@@ -28,3 +28,11 @@ nbdist/
 
 ### db2 ###
 h2db.trace.db
+/my-service/my-web/src/main/resources/static/layuimini/
+my-api/my-api-provider-transaction/target/
+my-api/my-api-provider-user/target/
+my-common/target/
+my-dubbo-admin/target/
+my-service/my-service-transaction/target/
+my-service/my-service-user/target/
+my-service/my-web/target/

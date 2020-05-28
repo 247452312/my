@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.model;
+package indi.uhyils.pojo.model.base;
 
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.util.MD5Util;

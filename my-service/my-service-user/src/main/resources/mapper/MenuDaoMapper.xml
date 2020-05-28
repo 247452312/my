@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="indi.uhyils.dao.DeptDao">
+<mapper namespace="indi.uhyils.dao.MenuDao">
 
 
     <sql id="columnList">
@@ -13,31 +13,37 @@
         a.delete_flag as deleteFlag,
         a.remark,
 
-        a.name
+        a.fid,
+        a.i_frame as iFrame,
+        a.icon,
+        a.name,
+        a.sort,
+        a.type,
+        a.url
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.DeptEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.MenuEntity">
         select
         <include refid="columnList"/>
-        from sys_dept a
+        from sys_menu a
         where delete_flag = 0
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.DeptEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.MenuEntity">
         select
         <include refid="columnList"/>
-        from sys_dept a
+        from sys_menu a
         where delete_flag = 0
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.DeptEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.MenuEntity">
         select
         <include refid="columnList"/>
-        from sys_dept a
+        from sys_menu a
         where delete_flag = 0
 
         <foreach item="item" index="index" collection="args">
@@ -49,23 +55,42 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.DeptEntity">
-        insert sys_dept(id,
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.MenuEntity">
+        insert sys_menu(id,
                         create_date,
                         create_user,
                         update_date,
                         update_user,
                         delete_flag,
-                        name)
-        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{name})
+                        fid, i_frame, icon, name, sort, type, url)
+        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{fid}, #{iFrame}, #{icon},
+                #{name}, #{sort}, #{type}, #{url})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.DeptEntity">
-        update sys_dept set
+    <update id="update" parameterType="indi.uhyils.pojo.model.MenuEntity">
+        update sys_menu set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
+        <if test="fid != null and fid != ''">
+            ,fid = #{fid}
+        </if>
+        <if test="iFrame != null and iFrame != ''">
+            ,i_frame = #{iFrame}
+        </if>
+        <if test="icon != null and icon != ''">
+            ,icon = #{icon}
+        </if>
         <if test="name != null and name != ''">
             ,name = #{name}
+        </if>
+        <if test="sort != null and sort != ''">
+            ,sort = #{sort}
+        </if>
+        <if test="type != null and type != ''">
+            ,type = #{type}
+        </if>
+        <if test="url != null and url != ''">
+            ,url = #{url}
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
@@ -75,13 +100,13 @@
 
     <select id="count" resultType="java.lang.Integer">
         select count(*)
-        from sys_dept a
+        from sys_menu a
         where delete_flag = 0;
     </select>
 
     <select id="countByArgs" resultType="java.lang.Integer">
         select count(*)
-        from sys_dept a
+        from sys_menu a
         where delete_flag = 0
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
@@ -90,21 +115,23 @@
 
     <select id="checkRepeat" resultType="java.lang.Integer">
         select count(*)
-        from sys_dept a
+        from sys_menu a
         where ${columnName} = #{value}
     </select>
+    <select id="getByIFrame" resultType="indi.uhyils.pojo.model.MenuEntity">
+        select
+        <include refid="columnList"/>
+        from sys_menu a
+        where delete_flag = 0
+        and i_frame = #{data}
+    </select>
 
-    <insert id="insertDeptPower" parameterType="indi.uhyils.pojo.model.DeptPowerMiddle">
-        insert into sys_dept_power(id, dept_id, power_id)
-        values (#{id}, #{deptId}, #{powerId})
-    </insert>
-
-    <delete id="deleteDeptPower" parameterType="java.lang.String">
-        delete from sys_dept_power where id in
-        <foreach item="ids" index="index" collection="list" open="(" separator="," close=")">
-            #{ids}
+    <select id="getByDeptIds" resultType="java.lang.String">
+        select menu_id from sys_dept_menu where base_id in
+        <foreach item="deptIds" index="index" collection="list" open="(" separator="," close=")">
+            #{deptIds}
         </foreach>
-    </delete>
+    </select>
 
 
 </mapper>
