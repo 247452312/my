@@ -1,6 +1,6 @@
 package indi.uhyils.service;
 
-import indi.uhyils.model.GoodEntity;
+import indi.uhyils.pojo.model.GoodEntity;
 
 /**
  * 货物service

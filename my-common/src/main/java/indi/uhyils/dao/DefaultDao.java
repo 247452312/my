@@ -1,6 +1,6 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.request.model.Arg;
+import indi.uhyils.pojo.request.model.Arg;
 import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;
@@ -23,9 +23,11 @@ public interface DefaultDao<T extends Serializable> {
 
     int update(T t);
 
-    int delete(String id);
+    int countByArgs(@Param("args") List<Arg> args);
 
     int count();
+
+    int checkRepeat(@Param("columnName") String columnName, @Param("value") Object value);
 
 
 }

@@ -1,11 +1,12 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.model.UserEntity;
-import indi.uhyils.model.UserRightEntity;
+import indi.uhyils.pojo.model.DeptEntity;
+import indi.uhyils.pojo.model.PowerEntity;
+import indi.uhyils.pojo.model.RoleEntity;
+import indi.uhyils.pojo.model.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 @Mapper
 public interface UserDao extends DefaultDao<UserEntity> {
 
-    ArrayList<UserRightEntity> getUserRightsByUserId(String userId);
+    RoleEntity getUserRoleById(String roleId);
 
-    UserRightEntity getUserRightsByRightId(String userRightId);
+    List<DeptEntity> getUserDeptsByRoleId(String roleId);
 
-    Integer checkRepeat(@Param("value") String value, @Param("type") String type);
+    List<PowerEntity> getUserPowerByDeptId(String deptId);
 }
