@@ -28,3 +28,4 @@ nbdist/
 
 ### db2 ###
 h2db.trace.db
+/my-service/my-web/src/main/resources/static/layuimini/

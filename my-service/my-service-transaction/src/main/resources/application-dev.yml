@@ -3,7 +3,7 @@ server:
 dubbo:
   registry:
     client: curator
-    address: zookeeper://39.98.164.91:2181
+    address: zookeeper://192.168.1.101:2181
   protocol:
     name: dubbo
     port: 20882
@@ -25,13 +25,20 @@ token:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://39.98.164.91:3306/my
+    url: jdbc:mysql://192.168.1.101:3306/my
     username: root
     password: 123456
   output:
     ansi:
       enabled: ALWAYS
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+      exclude: WEB-INF/**
+    freemarker:
+      cache: false    #页面不加载缓存，修改即时生效
 
 redis:
-  ip: 39.98.164.91
+  ip: 192.168.1.101
   port: 6379

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>top</title>
+    <!--    所有页面都有的-->
+    <link rel="stylesheet" href="/css/my.css">
+    <script src="/js/my.js"></script>
+    <!-- 外部的 -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/mouse.min.js"></script>
+
+    <!-- 我自己的 -->
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/index.js"></script>
+</head>
+<body>
+<div id="my">
+    <div class="my-left">
+        <div class="my-left-logo">
+            <img alt="这是一个logo">
+        </div>
+        <div class="my-left-menu">这是左侧菜单</div>
+    </div>
+    <div class="my-right">
+        <div class="my-right-top">这是上面的导航栏</div>
+        <div class="my-right-middle">
+            <ui>这是ui</ui>
+        </div>
+        <div class="my-right-under">这是iframe</div>
+    </div>
+</div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        /* 开启鼠标动画效果(嘿咻) */
+        $.shuicheMouse({
+            type: 11,
+            color: "rgb(0,0,0)"
+        })
+    });
+</script>
+</html>

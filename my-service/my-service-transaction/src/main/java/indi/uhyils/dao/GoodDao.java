@@ -1,6 +1,6 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.model.GoodEntity;
+import indi.uhyils.pojo.model.GoodEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
