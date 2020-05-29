@@ -2,7 +2,9 @@ package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.MenuDao;
+import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.MenuEntity;
+import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
 import indi.uhyils.pojo.response.MenuTreeResponse;
 import indi.uhyils.pojo.response.ServiceResult;
@@ -40,7 +42,16 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
         /* 1.全取出来 */
         List<MenuEntity> byIFrame = dao.getByIFrame(request.getiFrame());
         /* 2.删除没用的子节点 */
-        deleteUnUseableMenuNode(request.getDeptIds(), byIFrame);
+        UserEntity user = request.getUser();
+        if (user.getRole() == null) {
+            return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
+        }
+        List<DeptEntity> depts = user.getRole().getDepts();
+        List<String> lists = new ArrayList<>();
+        for (DeptEntity dept : depts) {
+            lists.add(dept.getId());
+        }
+        deleteUnUseableMenuNode(lists, byIFrame);
         /* 3. 递归删除所有没有子节点的父节点 */
         deleteNoChNodeNode(byIFrame);
         ArrayList<MenuTreeResponse> list = (ArrayList<MenuTreeResponse>) buildMenuTree(byIFrame);
@@ -54,7 +65,6 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
                 menuTreeResponse.getSubNode().add(MenuTreeResponse.build(menuTreeResponse, menuEntity));
             }
         }
-
         for (MenuTreeResponse treeResponse : menuTreeResponse.getSubNode()) { //每一个父节点都添加属于自己的树
             addSubType(treeResponse, byIFrame);
         }
