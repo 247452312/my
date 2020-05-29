@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ResponseCode;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
-import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.response.ServiceResult;
@@ -88,7 +88,8 @@ public class TokenInjectAop {
         /* 查询是否超时 */
         //解析token获取tokenInfo
         ServiceResult getTokenInfoByTokenNoToken = parseToken(token, arg);
-        if (!ResponseCode.SUCCESS.getText().equals(getTokenInfoByTokenNoToken.getServiceCode())) { //解析出现异常
+        //解析出现异常
+        if (!ResponseCode.SUCCESS.getText().equals(getTokenInfoByTokenNoToken.getServiceCode())) {
             return getTokenInfoByTokenNoToken;
         }
         JSONObject data = (JSONObject) getTokenInfoByTokenNoToken.getData();

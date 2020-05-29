@@ -32,6 +32,7 @@ public class AllController {
 
     private static final Logger logger = LoggerFactory.getLogger(AllController.class);
 
+    private static final String TOKEN = "token";
 
     /**
      * 默认返回所有的方法
@@ -44,7 +45,7 @@ public class AllController {
     @ResponseBody
     public WebResponse action(@RequestBody Action action, HttpServletRequest request) {
 
-        action.getArgs().put("token", action.getToken());
+        action.getArgs().put(TOKEN, action.getToken());
         actionAddRequestLink(action);
         try {
             List list = new ArrayList();
@@ -54,7 +55,7 @@ public class AllController {
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
             LogUtil.error(this, e);
-            return WebResponse.build(null, "", ResponseCode.ERROR.getMsg(), ResponseCode.ERROR.getText());
+            return WebResponse.build(null, ResponseCode.ERROR.getMsg(), ResponseCode.ERROR.getText());
         }
     }
 

@@ -254,7 +254,7 @@
 .login-submit-button:hover {
     -webkit-animation-name: bluePulse;
     -webkit-animation-duration: 1s;
-    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: 1;
 }
 
 .login-form-line-prefix {

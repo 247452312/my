@@ -8,6 +8,7 @@
     <script src="/js/my.js"></script>
     <!-- 外部的 -->
     <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.rotate.min.js"></script>
     <script src="/js/mouse.min.js"></script>
 
     <!-- 我自己的 -->
@@ -18,17 +19,32 @@
 <div id="my">
     <div class="my-left">
         <div class="my-left-logo">
-            <img alt="这是一个logo">
+            <img class="img1" alt="这是一个logo">
+            <img class="img2" alt="这也是一个logo">
+            <div class="clean"></div>
         </div>
-        <div class="my-left-menu">这是左侧菜单</div>
+        <div class="my-left-menu">
+            <ul id="left-tree"></ul>
+        </div>
     </div>
     <div class="my-right">
-        <div class="my-right-top">这是上面的导航栏</div>
+        <div class="my-right-top">
+            <ul class="left" id="title-ul">
+                <li class="left title-span make-small"><a href='javascript:;'><i></i><span>←</span></a></li>
+            </ul>
+            <div class="clean"></div>
+        </div>
         <div class="my-right-middle">
-            <ui>这是ui</ui>
+            <ul>
+                <li class="first-li left">←</li>
+                <li class="little-right-button right">↓</li>
+                <li class="last-li right">→</li>
+                <div class="clean"></div>
+            </ul>
         </div>
         <div class="my-right-under">这是iframe</div>
     </div>
+    <div class="clean"></div>
 </div>
 </body>
 

@@ -9,11 +9,12 @@ import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
 import indi.uhyils.pojo.response.MenuTreeResponse;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.MenuService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -41,34 +42,54 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
     public ServiceResult<ArrayList<MenuTreeResponse>> getByIFrameAndDepts(GetByIFrameAndDeptsRequest request) {
         /* 1.全取出来 */
         List<MenuEntity> byIFrame = dao.getByIFrame(request.getiFrame());
-        /* 2.删除没用的子节点 */
+        Map<String, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
+        Set<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
         if (user.getRole() == null) {
             return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
         }
         List<DeptEntity> depts = user.getRole().getDepts();
-        List<String> lists = new ArrayList<>();
+
+
+        List<String> deptIds = new ArrayList<>();
         for (DeptEntity dept : depts) {
-            lists.add(dept.getId());
+            deptIds.add(dept.getId());
         }
-        deleteUnUseableMenuNode(lists, byIFrame);
-        /* 3. 递归删除所有没有子节点的父节点 */
-        deleteNoChNodeNode(byIFrame);
-        ArrayList<MenuTreeResponse> list = (ArrayList<MenuTreeResponse>) buildMenuTree(byIFrame);
+        List<String> level = dao.getByDeptIds(deptIds);
+
+        for (String id : level) {
+            MenuEntity e = map.get(id);
+            set.add(e);
+            getParents(e, set, map);
+        }
+        /* 4.tree */
+        ArrayList<MenuTreeResponse> list = (ArrayList<MenuTreeResponse>) buildMenuTree(set);
         return ServiceResult.buildSuccessResult("树创建成功", list, request);
     }
 
-    private List<MenuTreeResponse> buildMenuTree(List<MenuEntity> byIFrame) {
+    private void getParents(MenuEntity e, Set<MenuEntity> set, Map<String, MenuEntity> map) {
+        String fid = e.getFid();
+        if (StringUtils.isBlank(fid)) {
+            return;
+        }
+        MenuEntity father = map.get(fid);
+        set.add(father);
+        getParents(father, set, map);
+
+    }
+
+    private List<MenuTreeResponse> buildMenuTree(Set<MenuEntity> byIFrame) {
         MenuTreeResponse menuTreeResponse = new MenuTreeResponse();
-        for (MenuEntity menuEntity : byIFrame) { // 父节点都找出来
+        // 父节点都找出来
+        for (MenuEntity menuEntity : byIFrame) {
             if (NONE.equals(menuEntity.getFid())) {
                 menuTreeResponse.getSubNode().add(MenuTreeResponse.build(menuTreeResponse, menuEntity));
             }
         }
-        for (MenuTreeResponse treeResponse : menuTreeResponse.getSubNode()) { //每一个父节点都添加属于自己的树
+        //每一个父节点都添加属于自己的树
+        for (MenuTreeResponse treeResponse : menuTreeResponse.getSubNode()) {
             addSubType(treeResponse, byIFrame);
         }
-
         return menuTreeResponse.getSubNode();
     }
 
@@ -78,7 +99,7 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
      * @param treeResponse
      * @param byIFrame
      */
-    private void addSubType(MenuTreeResponse treeResponse, List<MenuEntity> byIFrame) {
+    private void addSubType(MenuTreeResponse treeResponse, Set<MenuEntity> byIFrame) {
         for (MenuEntity menuEntity : byIFrame) {
             if (menuEntity.getFid().equals(treeResponse.getId())) {
                 MenuTreeResponse build = MenuTreeResponse.build(treeResponse, menuEntity);
@@ -139,5 +160,7 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
             }
         }
     }
+
+
 
 }
