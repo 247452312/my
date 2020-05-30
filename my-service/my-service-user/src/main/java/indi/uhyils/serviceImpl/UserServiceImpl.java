@@ -2,9 +2,15 @@ package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.UserDao;
-import indi.uhyils.pojo.model.*;
+import indi.uhyils.pojo.model.DeptEntity;
+import indi.uhyils.pojo.model.PowerEntity;
+import indi.uhyils.pojo.model.RoleEntity;
+import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.GetUserRequest;
+import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.LoginRequest;
 import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.LoginResponse;
 import indi.uhyils.pojo.response.ServiceResult;
@@ -56,9 +62,25 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
         }
         List<UserEntity> byId = dao.getById(idRequest.getId());
         if (byId != null && byId.size() == 1) {
-            return ServiceResult.buildSuccessResult("查询成功", byId.get(0), idRequest);
+            UserEntity userEntity = byId.get(0);
+            initRole(userEntity);
+            return ServiceResult.buildSuccessResult("查询成功", userEntity, idRequest);
         }
         return ServiceResult.buildFailedResult("查无此人", null, idRequest);
+    }
+
+    private void initRole(UserEntity userEntity) {
+        // 获取权限
+        RoleEntity roleEntity = dao.getUserRoleById(userEntity.getRoleId());
+        /* 注入dept*/
+        List<DeptEntity> deptEntities = dao.getUserDeptsByRoleId(roleEntity.getId());
+        roleEntity.setDepts(deptEntities);
+        /* 注入power */
+        for (DeptEntity deptEntity : deptEntities) {
+            List<PowerEntity> powerEntities = dao.getUserPowerByDeptId(deptEntity.getId());
+            deptEntity.setPowers(powerEntities);
+        }
+        userEntity.setRole(roleEntity);
     }
 
 
@@ -102,28 +124,20 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
         ArrayList<UserEntity> byArgsNoPage = dao.getByArgsNoPage(objects);
         if (byArgsNoPage.size() != 1) {
-            return ServiceResult.buildSuccessResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail(), userRequest);
+            return ServiceResult.buildFailedResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail(), userRequest);
         }
         UserEntity userEntity = byArgsNoPage.get(0);
 
         String token = getToken(userEntity.getId());
         userRequest.setToken(token);
-        if (userEntity != null) { // 登录->加入缓存中 TODO 如果重复登录问题
-            redisPoolUtil.addUser(token, userEntity);
-        }
+
+
         if (userEntity.getRoleId() == null) {
             return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
         }
-        RoleEntity roleEntity = dao.getUserRoleById(userEntity.getRoleId()); // 获取权限
-        /* 注入dept*/
-        List<DeptEntity> deptEntities = dao.getUserDeptsByRoleId(roleEntity.getId());
-        roleEntity.setDepts(deptEntities);
-        /* 注入power */
-        for (DeptEntity deptEntity : deptEntities) {
-            List<PowerEntity> powerEntities = dao.getUserPowerByDeptId(deptEntity.getId());
-            deptEntity.setPowers(powerEntities);
-        }
-        userEntity.setRole(roleEntity);
+        initRole(userEntity);
+        // 登录->加入缓存中 TODO 如果重复登录问题
+        redisPoolUtil.addUser(token, userEntity);
         return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
     }
 

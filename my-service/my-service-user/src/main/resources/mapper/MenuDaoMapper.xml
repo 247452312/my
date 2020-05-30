@@ -15,6 +15,7 @@
 
         a.fid,
         a.i_frame as iFrame,
+        a.target,
         a.icon,
         a.name,
         a.sort,
@@ -62,9 +63,9 @@
                         update_date,
                         update_user,
                         delete_flag,
-                        fid, i_frame, icon, name, sort, type, url)
+                        fid, i_frame, icon, name, target, sort, type, url)
         values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{fid}, #{iFrame}, #{icon},
-                #{name}, #{sort}, #{type}, #{url})
+                #{name}, #{target}, #{sort}, #{type}, #{url})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.MenuEntity">
@@ -127,7 +128,7 @@
     </select>
 
     <select id="getByDeptIds" resultType="java.lang.String">
-        select menu_id from sys_dept_menu where base_id in
+        select menu_id from sys_dept_menu where dept_id in
         <foreach item="deptIds" index="index" collection="list" open="(" separator="," close=")">
             #{deptIds}
         </foreach>

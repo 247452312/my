@@ -25,6 +25,14 @@ public class MenuEntity extends DataEntity {
     private Boolean type;
 
     /**
+     * 页面的跳转方式
+     * _self->iframe修改
+     * _blank->整个页面跳转
+     * 空->不跳
+     */
+    private String target;
+
+    /**
      * 父节点id
      */
     private String fid;
@@ -42,6 +50,14 @@ public class MenuEntity extends DataEntity {
      */
     private String url;
 
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
 
     public Integer getiFrame() {
         return iFrame;

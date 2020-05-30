@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ResponseCode;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
+import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.request.DefaultRequest;
@@ -104,6 +105,15 @@ public class TokenInjectAop {
             return serviceResult;
         }
         UserEntity userEntity = serviceResult.getData().toJavaObject(UserEntity.class);
+        /* 注入权限 */
+        if (userEntity.getRoleId() != null && userEntity.getRole() == null) {
+            ServiceResult<JSONObject> userRoleByRoleId = getUserRoleByRoleId(token, userEntity.getRoleId(), arg);
+            if (!ResponseCode.SUCCESS.getText().equals(userRoleByRoleId.getServiceCode())) {
+                return serviceResult;
+            }
+            RoleEntity role = userRoleByRoleId.getData().toJavaObject(RoleEntity.class);
+            userEntity.setRole(role);
+        }
         if (ADMIN.equals(userEntity.getUserName())) { // 超级管理员直接放行
             arg.setUser(userEntity);
             //执行方法
@@ -127,6 +137,16 @@ public class TokenInjectAop {
         //执行方法
         Object proceed = pjp.proceed(new DefaultRequest[]{arg});
         return proceed;
+    }
+
+    private ServiceResult<JSONObject> getUserRoleByRoleId(String token, String roleId, DefaultRequest arg) throws ClassNotFoundException {
+        IdRequest build = IdRequest.build(roleId);
+        build.setToken(token);
+        build.setRequestLink(arg.getRequestLink());
+        ArrayList<Object> args = new ArrayList<>();
+        args.add(build);
+        ServiceResult<JSONObject> serviceResult = DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args, arg);
+        return serviceResult;
     }
 
 

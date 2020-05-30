@@ -1,5 +1,6 @@
 package indi.uhyils.controller;
 
+import com.alibaba.fastjson.JSON;
 import indi.uhyils.enum_.ResponseCode;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.DefaultRequest;
@@ -44,7 +45,7 @@ public class AllController {
     @RequestMapping("action")
     @ResponseBody
     public WebResponse action(@RequestBody Action action, HttpServletRequest request) {
-
+        logger.info("param: " + JSON.toJSONString(action));
         action.getArgs().put(TOKEN, action.getToken());
         actionAddRequestLink(action);
         try {
@@ -62,13 +63,17 @@ public class AllController {
     @PostMapping("/getSession")
     @ResponseBody
     public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
+        logger.info("getSession: " + sessionRequest.getAttrName());
         HttpSession session = request.getSession();
+        logger.info("result: " + session.getAttribute(sessionRequest.getAttrName()));
         return session.getAttribute(sessionRequest.getAttrName());
     }
 
     @PostMapping("/setSession")
     @ResponseBody
     public boolean setSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
+        logger.info("setSession: " + sessionRequest.getAttrName());
+        logger.info("sessionData : " + sessionRequest.getData());
         HttpSession session = request.getSession();
         session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
         return true;

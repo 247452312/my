@@ -1,13 +1,18 @@
 package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import indi.uhyils.dao.ContentDao;
 import indi.uhyils.dao.MenuDao;
+import indi.uhyils.pojo.model.ContentEntity;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.MenuEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
-import indi.uhyils.pojo.response.MenuTreeResponse;
+import indi.uhyils.pojo.response.MenuTreeLayuiResponse;
 import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.info.LayuiMenuHomeInfo;
+import indi.uhyils.pojo.response.info.LayuiMenuLogoInfo;
+import indi.uhyils.pojo.response.info.LayuiMenuMenuInfo;
 import indi.uhyils.service.MenuService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +35,9 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
     @Autowired
     private MenuDao dao;
 
+    @Autowired
+    private ContentDao contentDao;
+
     public MenuDao getDao() {
         return dao;
     }
@@ -39,8 +47,8 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
     }
 
     @Override
-    public ServiceResult<ArrayList<MenuTreeResponse>> getByIFrameAndDepts(GetByIFrameAndDeptsRequest request) {
-        /* 1.全取出来 */
+    public ServiceResult<MenuTreeLayuiResponse> getByIFrameAndDepts(GetByIFrameAndDeptsRequest request) {
+        /* 1. 全取出来 */
         List<MenuEntity> byIFrame = dao.getByIFrame(request.getiFrame());
         Map<String, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
         Set<MenuEntity> set = new HashSet<>();
@@ -49,22 +57,29 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
             return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
         }
         List<DeptEntity> depts = user.getRole().getDepts();
-
-
         List<String> deptIds = new ArrayList<>();
         for (DeptEntity dept : depts) {
             deptIds.add(dept.getId());
         }
         List<String> level = dao.getByDeptIds(deptIds);
 
+        /* 2. 只取出来有用的 */
         for (String id : level) {
             MenuEntity e = map.get(id);
             set.add(e);
             getParents(e, set, map);
         }
-        /* 4.tree */
-        ArrayList<MenuTreeResponse> list = (ArrayList<MenuTreeResponse>) buildMenuTree(set);
-        return ServiceResult.buildSuccessResult("树创建成功", list, request);
+        /* 4. tree */
+        ArrayList<LayuiMenuMenuInfo> menuMenuInfoArrayList = buildMenuTree(set);
+        ContentEntity honeInfo = contentDao.getByName("honeInfo");
+        ContentEntity logoInfo = contentDao.getByName("logoInfo");
+
+        MenuTreeLayuiResponse tree = new MenuTreeLayuiResponse();
+        tree.setMenuInfo(menuMenuInfoArrayList);
+        tree.setHomeInfo(LayuiMenuHomeInfo.build(honeInfo));
+        tree.setLogoInfo(LayuiMenuLogoInfo.build(logoInfo));
+        /* 5. 返回 */
+        return ServiceResult.buildSuccessResult("树创建成功", tree, request);
     }
 
     private void getParents(MenuEntity e, Set<MenuEntity> set, Map<String, MenuEntity> map) {
@@ -78,20 +93,22 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
 
     }
 
-    private List<MenuTreeResponse> buildMenuTree(Set<MenuEntity> byIFrame) {
-        MenuTreeResponse menuTreeResponse = new MenuTreeResponse();
+    private ArrayList<LayuiMenuMenuInfo> buildMenuTree(Set<MenuEntity> byIFrame) {
+        ArrayList<LayuiMenuMenuInfo> menuInfo = new ArrayList<>();
+
         // 父节点都找出来
         for (MenuEntity menuEntity : byIFrame) {
             if (NONE.equals(menuEntity.getFid())) {
-                menuTreeResponse.getSubNode().add(MenuTreeResponse.build(menuTreeResponse, menuEntity));
+                menuInfo.add(LayuiMenuMenuInfo.build(menuEntity));
             }
         }
         //每一个父节点都添加属于自己的树
-        for (MenuTreeResponse treeResponse : menuTreeResponse.getSubNode()) {
-            addSubType(treeResponse, byIFrame);
+        for (LayuiMenuMenuInfo treeResponse : menuInfo) {
+            addChild(treeResponse, byIFrame);
         }
-        return menuTreeResponse.getSubNode();
+        return menuInfo;
     }
+
 
     /**
      * 递归添加子结点
@@ -99,12 +116,12 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
      * @param treeResponse
      * @param byIFrame
      */
-    private void addSubType(MenuTreeResponse treeResponse, Set<MenuEntity> byIFrame) {
+    private void addChild(LayuiMenuMenuInfo treeResponse, Set<MenuEntity> byIFrame) {
         for (MenuEntity menuEntity : byIFrame) {
             if (menuEntity.getFid().equals(treeResponse.getId())) {
-                MenuTreeResponse build = MenuTreeResponse.build(treeResponse, menuEntity);
-                treeResponse.getSubNode().add(build);
-                addSubType(build, byIFrame);
+                LayuiMenuMenuInfo build = LayuiMenuMenuInfo.build(menuEntity);
+                addChild(build, byIFrame);
+                treeResponse.getChild().add(build);
             }
         }
     }
@@ -160,7 +177,6 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
             }
         }
     }
-
 
 
 }

@@ -27,14 +27,13 @@
         function login() {
             let a = $(".login-submit-target").serializeObject();
             arg = {};
-            arg.userName = a.username;
+            arg.username = a.username;
             arg.password = a.password;
-            arg.userType = 1;
-            pushRequest(new request(getCookie("token"), "UserService", "userLogin", arg), function (data) {
+            pushRequest(new request(getCookie("token"), "UserService", "userLoginNoToken", arg), function (data) {
                 if (data.code == 200) {
-                    setCookie("token", data.token, 1);
-                    setAttrBySession("userInfo", data.data.userEntity)
-                    setAttrBySession("userRightList", data.data.userRightList)
+                    setCookie("token", data.data.token, 1);
+                    setAttrBySession("userInfo", data.data.userEntity);
+                    setAttrBySession("token", {token: data.data.token});
                     window.location.href = "/index.html";
                 }
             });

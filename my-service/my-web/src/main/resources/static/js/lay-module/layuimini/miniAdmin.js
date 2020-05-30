@@ -4,12 +4,12 @@
  * version:2.0
  * description:layuimini 主体框架扩展
  */
-layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function (exports) {
+layui.define(["jquery", "miniMenu", "element", "miniTab", "miniTheme"], function (exports) {
     var $ = layui.$,
         layer = layui.layer,
         miniMenu = layui.miniMenu,
         miniTheme = layui.miniTheme,
-        element = layui.element ,
+        element = layui.element,
         miniTab = layui.miniTab;
 
     if (!/http(s*):\/\//.test(location.href)) {
@@ -41,41 +41,103 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
             options.loadingTime = options.loadingTime || 1;
             options.pageAnim = options.pageAnim || false;
             options.maxTabNum = options.maxTabNum || 20;
-            $.getJSON(options.iniUrl, function (data) {
-                if (data == null) {
-                    miniAdmin.error('暂无菜单信息')
-                } else {
-                    miniAdmin.renderLogo(data.logoInfo);
-                    miniAdmin.renderClear(options.clearUrl);
-                    miniAdmin.renderHome(data.homeInfo);
-                    miniAdmin.renderAnim(options.pageAnim);
-                    miniAdmin.listen();
-                    miniMenu.render({
-                        menuList: data.menuInfo,
-                        multiModule: options.multiModule,
-                        menuChildOpen: options.menuChildOpen
-                    });
-                    miniTab.render({
-                        filter: 'layuiminiTab',
-                        urlHashLocation: options.urlHashLocation,
-                        multiModule: options.multiModule,
-                        menuChildOpen: options.menuChildOpen,
-                        maxTabNum: options.maxTabNum,
-                        menuList: data.menuInfo,
-                        homeInfo: data.homeInfo,
-                        listenSwichCallback: function () {
-                            miniAdmin.renderDevice();
-                        }
-                    });
-                    miniTheme.render({
-                        bgColorDefault: options.bgColorDefault,
-                        listen: true,
-                    });
-                    miniAdmin.deleteLoader(options.loadingTime);
-                }
+            $.ajax({
+                type: "POST",
+                url: options.iniUrl,
+                headers: {'Content-Type': 'application/json;charset=utf8'},
+                data: JSON.stringify({
+                    interfaceName: "MenuService",
+                    methodName: "getByIFrameAndDepts",
+                    token: getAttrBySession("token").token,
+                    args: {
+                        iFrame: 1
+                    }
+                }),
+                success: function (data) {
+                    if (data.code != 200) {
+                        miniAdmin.error(data.msg);
+                        return;
+                    }
+                    let temp = data.data;
+                    if (temp == null) {
+                        miniAdmin.error('暂无菜单信息');
+                    } else {
+                        miniAdmin.renderLogo(temp.logoInfo);
+                        miniAdmin.renderClear(options.clearUrl);
+                        miniAdmin.renderHome(temp.homeInfo);
+                        miniAdmin.renderAnim(options.pageAnim);
+                        miniAdmin.listen();
+                        miniMenu.render({
+                            menuList: temp.menuInfo,
+                            multiModule: options.multiModule,
+                            menuChildOpen: options.menuChildOpen
+                        });
+                        miniTab.render({
+                            filter: 'layuiminiTab',
+                            urlHashLocation: options.urlHashLocation,
+                            multiModule: options.multiModule,
+                            menuChildOpen: options.menuChildOpen,
+                            maxTabNum: options.maxTabNum,
+                            menuList: temp.menuInfo,
+                            homeInfo: temp.homeInfo,
+                            listenSwichCallback: function () {
+                                miniAdmin.renderDevice();
+                            }
+                        });
+                        miniTheme.render({
+                            bgColorDefault: options.bgColorDefault,
+                            listen: true,
+                        });
+                        miniAdmin.deleteLoader(options.loadingTime);
+                    }
+                },
+                dataType: "json"
             }).fail(function () {
                 miniAdmin.error('菜单接口有误');
             });
+
+            // $.getJSON(options.iniUrl, {
+            //     interfaceName: "MenuService",
+            //     methodName: "getByIFrameAndDepts",
+            //     token: my_token,
+            //     args: {
+            //         iFrame: 1
+            //     }
+            // }, function (data) {
+            //     if (data == null) {
+            //         miniAdmin.error('暂无菜单信息')
+            //     } else {
+            //         miniAdmin.renderLogo(data.logoInfo);
+            //         miniAdmin.renderClear(options.clearUrl);
+            //         miniAdmin.renderHome(data.homeInfo);
+            //         miniAdmin.renderAnim(options.pageAnim);
+            //         miniAdmin.listen();
+            //         miniMenu.render({
+            //             menuList: data.menuInfo,
+            //             multiModule: options.multiModule,
+            //             menuChildOpen: options.menuChildOpen
+            //         });
+            //         miniTab.render({
+            //             filter: 'layuiminiTab',
+            //             urlHashLocation: options.urlHashLocation,
+            //             multiModule: options.multiModule,
+            //             menuChildOpen: options.menuChildOpen,
+            //             maxTabNum: options.maxTabNum,
+            //             menuList: data.menuInfo,
+            //             homeInfo: data.homeInfo,
+            //             listenSwichCallback: function () {
+            //                 miniAdmin.renderDevice();
+            //             }
+            //         });
+            //         miniTheme.render({
+            //             bgColorDefault: options.bgColorDefault,
+            //             listen: true,
+            //         });
+            //         miniAdmin.deleteLoader(options.loadingTime);
+            //     }
+            // }).fail(function () {
+            //     miniAdmin.error('菜单接口有误');
+            // }, "json");
         },
 
         /**
@@ -103,7 +165,7 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
          * @param clearUrl
          */
         renderClear: function (clearUrl) {
-            $('.layuimini-clear').attr('data-href',clearUrl);
+            $('.layuimini-clear').attr('data-href', clearUrl);
         },
 
         /**
@@ -170,7 +232,7 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
                 el.msExitFullscreen();
             } else if (el.oRequestFullscreen) {
                 el.oCancelFullScreen();
-            }else if (el.mozCancelFullScreen) {
+            } else if (el.mozCancelFullScreen) {
                 el.mozCancelFullScreen();
             } else if (el.webkitCancelFullScreen) {
                 el.webkitCancelFullScreen();
@@ -290,14 +352,14 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
                     tips = $(this).prop("innerHTML"),
                     isShow = $('.layuimini-tool i').attr('data-side-fold');
                 if (isShow == 0 && tips) {
-                    tips = "<ul class='layuimini-menu-left-zoom layui-nav layui-nav-tree layui-this'><li class='layui-nav-item layui-nav-itemed'>"+tips+"</li></ul>" ;
+                    tips = "<ul class='layuimini-menu-left-zoom layui-nav layui-nav-tree layui-this'><li class='layui-nav-item layui-nav-itemed'>" + tips + "</li></ul>";
                     window.openTips = layer.tips(tips, $(this), {
                         tips: [2, '#2f4056'],
                         time: 300000,
-                        skin:"popup-tips",
-                        success:function (el) {
-                            var left = $(el).position().left - 10 ;
-                            $(el).css({ left:left });
+                        skin: "popup-tips",
+                        success: function (el) {
+                            var left = $(el).position().left - 10;
+                            $(el).css({left: left});
                             element.render();
                         }
                     });
