@@ -39,8 +39,8 @@ public class AllController {
      * 默认返回所有的方法
      *
      * @param action  包含请求参数的信息
-     * @param request
-     * @return
+     * @param request 请求,暂时没用,日后或许有用
+     * @return 向界面返回的值
      */
     @RequestMapping("action")
     @ResponseBody

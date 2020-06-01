@@ -37,7 +37,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
     private LinkNode<String> requestLink;
 
 
-    public ServiceResult(T data, Integer serviceCode, String serviceMessage,  LinkNode linkNode) {
+    public ServiceResult(T data, Integer serviceCode, String serviceMessage, LinkNode linkNode) {
         this.data = data;
         this.serviceCode = serviceCode;
         this.serviceMessage = serviceMessage;
@@ -60,10 +60,11 @@ public class ServiceResult<T extends Serializable> implements Serializable {
     /**
      * 构建一个逻辑成功的返回
      *
-     * @param businessMessage
-     * @param t
-     * @param <T>
-     * @return
+     * @param businessMessage 给前台返回的信息
+     * @param t               请求返回值
+     * @param req             请求(链路跟踪用)
+     * @param <T>             请求返回值
+     * @return 一个code是200 代表成功的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildSuccessResult(String businessMessage, T t, DefaultRequest req) {
         return new ServiceResult(t, ResponseCode.SUCCESS.getText(), businessMessage, req);
@@ -72,10 +73,11 @@ public class ServiceResult<T extends Serializable> implements Serializable {
     /**
      * 构建一个逻辑失败的返回
      *
-     * @param businessMessage
-     * @param t
-     * @param <T>
-     * @return
+     * @param businessMessage 给前台的返回
+     * @param t               失败的返回体,通常是null
+     * @param req             请求(链路跟踪用)
+     * @param <T>             失败的返回体,通常是null
+     * @return 一个code是400的 代表逻辑错误的返回(程序并没有错)
      */
     public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage, T t, DefaultRequest req) {
         return new ServiceResult(t, ResponseCode.REQUEST_PARM_ERROR.getText(), businessMessage, req);
@@ -84,10 +86,11 @@ public class ServiceResult<T extends Serializable> implements Serializable {
     /**
      * 构建一个程序失败的返回
      *
-     * @param businessMessage
-     * @param req
-     * @param <T>
-     * @return
+     * @param businessMessage 给前台的返回
+     * @param req             前台的请求
+     * @param req             请求(链路跟踪用)
+     * @param <T>             null
+     * @return 一个code是500 代表逻辑错误的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildErrorResult(String businessMessage, DefaultRequest req) {
         return new ServiceResult(null, ResponseCode.ERROR.getText(), businessMessage, req);

@@ -27,12 +27,12 @@ public abstract class DefaultServiceImpl<T extends DataEntity> implements Defaul
         Boolean paging = argsRequest.getPaging();
         if (paging == true) {
             ArrayList<T> byArgs = getDao().getByArgs(args, argsRequest.getPage(), argsRequest.getSize());
-            int count = getDao().count();
+            int count = getDao().countByArgs(argsRequest.getArgs());
             Page<T> build = Page.build(argsRequest, byArgs, count, (count / argsRequest.getSize()) + 1);
             return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
         } else {
             ArrayList<T> byArgs = getDao().getByArgsNoPage(args);
-            int count = getDao().count();
+            int count = getDao().countByArgs(argsRequest.getArgs());
             Page<T> build = Page.build(argsRequest, byArgs, count, null);
             return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
         }

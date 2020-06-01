@@ -371,7 +371,7 @@ public class RoutesController extends BaseController {
         boolean success = true;
         String idStr = String.valueOf(id);
         if (idStr != null && idStr.length() > 0) {
-            String[] blacks = request.getParameterMap().get("black");
+            String[] blacks = (String[]) request.getParameterMap().get("black");
             //String[] blacks = (String[]) context.get("black");
             boolean black = false;
             if (blacks != null && blacks.length > 0) {
