@@ -35,6 +35,7 @@ public class DubboApiUtil {
      * @param interfaceName 接口的名字,可以用全名或者接口名
      * @param methodName    方法名
      * @param args          方法参数
+     * @param request       请求
      * @return 方法返回值
      * @throws ClassNotFoundException
      */
