@@ -79,7 +79,7 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
         tree.setHomeInfo(LayuiMenuHomeInfo.build(honeInfo));
         tree.setLogoInfo(LayuiMenuLogoInfo.build(logoInfo));
         /* 5. 返回 */
-        return ServiceResult.buildSuccessResult("树创建成功", tree, request);
+        return ServiceResult.buildSuccessResult("菜单请求成功", tree, request);
     }
 
     private void getParents(MenuEntity e, Set<MenuEntity> set, Map<String, MenuEntity> map) {

@@ -41,9 +41,10 @@ layui.define(["jquery", "miniMenu", "element", "miniTab", "miniTheme"], function
             options.loadingTime = options.loadingTime || 1;
             options.pageAnim = options.pageAnim || false;
             options.maxTabNum = options.maxTabNum || 20;
+
             $.ajax({
                 type: "POST",
-                url: options.iniUrl,
+                url: '/action',
                 headers: {'Content-Type': 'application/json;charset=utf8'},
                 data: JSON.stringify({
                     interfaceName: "MenuService",
@@ -56,19 +57,16 @@ layui.define(["jquery", "miniMenu", "element", "miniTab", "miniTheme"], function
                 success: function (data) {
                     if (data.code != 200) {
                         miniAdmin.error(data.msg);
-                        return;
-                    }
-                    let temp = data.data;
-                    if (temp == null) {
-                        miniAdmin.error('暂无菜单信息');
                     } else {
-                        miniAdmin.renderLogo(temp.logoInfo);
+                        data = data.data;
+
+                        miniAdmin.renderLogo(data.logoInfo);
                         miniAdmin.renderClear(options.clearUrl);
-                        miniAdmin.renderHome(temp.homeInfo);
+                        miniAdmin.renderHome(data.homeInfo);
                         miniAdmin.renderAnim(options.pageAnim);
                         miniAdmin.listen();
                         miniMenu.render({
-                            menuList: temp.menuInfo,
+                            menuList: data.menuInfo,
                             multiModule: options.multiModule,
                             menuChildOpen: options.menuChildOpen
                         });
@@ -78,8 +76,8 @@ layui.define(["jquery", "miniMenu", "element", "miniTab", "miniTheme"], function
                             multiModule: options.multiModule,
                             menuChildOpen: options.menuChildOpen,
                             maxTabNum: options.maxTabNum,
-                            menuList: temp.menuInfo,
-                            homeInfo: temp.homeInfo,
+                            menuList: data.menuInfo,
+                            homeInfo: data.homeInfo,
                             listenSwichCallback: function () {
                                 miniAdmin.renderDevice();
                             }
@@ -90,54 +88,8 @@ layui.define(["jquery", "miniMenu", "element", "miniTab", "miniTheme"], function
                         });
                         miniAdmin.deleteLoader(options.loadingTime);
                     }
-                },
-                dataType: "json"
-            }).fail(function () {
-                miniAdmin.error('菜单接口有误');
+                }
             });
-
-            // $.getJSON(options.iniUrl, {
-            //     interfaceName: "MenuService",
-            //     methodName: "getByIFrameAndDepts",
-            //     token: my_token,
-            //     args: {
-            //         iFrame: 1
-            //     }
-            // }, function (data) {
-            //     if (data == null) {
-            //         miniAdmin.error('暂无菜单信息')
-            //     } else {
-            //         miniAdmin.renderLogo(data.logoInfo);
-            //         miniAdmin.renderClear(options.clearUrl);
-            //         miniAdmin.renderHome(data.homeInfo);
-            //         miniAdmin.renderAnim(options.pageAnim);
-            //         miniAdmin.listen();
-            //         miniMenu.render({
-            //             menuList: data.menuInfo,
-            //             multiModule: options.multiModule,
-            //             menuChildOpen: options.menuChildOpen
-            //         });
-            //         miniTab.render({
-            //             filter: 'layuiminiTab',
-            //             urlHashLocation: options.urlHashLocation,
-            //             multiModule: options.multiModule,
-            //             menuChildOpen: options.menuChildOpen,
-            //             maxTabNum: options.maxTabNum,
-            //             menuList: data.menuInfo,
-            //             homeInfo: data.homeInfo,
-            //             listenSwichCallback: function () {
-            //                 miniAdmin.renderDevice();
-            //             }
-            //         });
-            //         miniTheme.render({
-            //             bgColorDefault: options.bgColorDefault,
-            //             listen: true,
-            //         });
-            //         miniAdmin.deleteLoader(options.loadingTime);
-            //     }
-            // }).fail(function () {
-            //     miniAdmin.error('菜单接口有误');
-            // }, "json");
         },
 
         /**
