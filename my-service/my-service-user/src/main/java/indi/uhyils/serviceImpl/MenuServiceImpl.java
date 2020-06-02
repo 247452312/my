@@ -7,13 +7,16 @@ import indi.uhyils.pojo.model.ContentEntity;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.MenuEntity;
 import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
-import indi.uhyils.pojo.response.MenuTreeLayuiResponse;
+import indi.uhyils.pojo.response.IndexMenuTreeLayuiResponse;
+import indi.uhyils.pojo.response.MenuHtmlTreeLayuiResponse;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.pojo.response.info.LayuiMenuHomeInfo;
 import indi.uhyils.pojo.response.info.LayuiMenuLogoInfo;
 import indi.uhyils.pojo.response.info.LayuiMenuMenuInfo;
 import indi.uhyils.service.MenuService;
+import indi.uhyils.util.ContentUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +25,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
+ * TODO layui污染了我的代码,消灭它!!!!!!!!!!!!!!!!!!!!!
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月28日 12时48分
  */
@@ -32,6 +37,7 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
      * 最高一级菜单的fid
      */
     private static final String NONE = "";
+
     @Autowired
     private MenuDao dao;
 
@@ -47,9 +53,10 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
     }
 
     @Override
-    public ServiceResult<MenuTreeLayuiResponse> getByIFrameAndDepts(GetByIFrameAndDeptsRequest request) {
+    public ServiceResult<IndexMenuTreeLayuiResponse> getIndexMenu(DefaultRequest request) {
+        ContentEntity indexIframe = contentDao.getByName("indexIframe");
         /* 1. 全取出来 */
-        List<MenuEntity> byIFrame = dao.getByIFrame(request.getiFrame());
+        List<MenuEntity> byIFrame = dao.getByIFrame(Integer.parseInt(ContentUtil.getContentVarByTitle(indexIframe, "indexIframe")));
         Map<String, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
         Set<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
@@ -65,21 +72,30 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
 
         /* 2. 只取出来有用的 */
         for (String id : level) {
-            MenuEntity e = map.get(id);
-            set.add(e);
-            getParents(e, set, map);
+            if (map.keySet().contains(id)) {
+                MenuEntity e = map.get(id);
+                set.add(e);
+                getParents(e, set, map);
+            }
         }
         /* 4. tree */
         ArrayList<LayuiMenuMenuInfo> menuMenuInfoArrayList = buildMenuTree(set);
         ContentEntity honeInfo = contentDao.getByName("honeInfo");
         ContentEntity logoInfo = contentDao.getByName("logoInfo");
 
-        MenuTreeLayuiResponse tree = new MenuTreeLayuiResponse();
+        IndexMenuTreeLayuiResponse tree = new IndexMenuTreeLayuiResponse();
         tree.setMenuInfo(menuMenuInfoArrayList);
         tree.setHomeInfo(LayuiMenuHomeInfo.build(honeInfo));
         tree.setLogoInfo(LayuiMenuLogoInfo.build(logoInfo));
         /* 5. 返回 */
         return ServiceResult.buildSuccessResult("菜单请求成功", tree, request);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<MenuHtmlTreeLayuiResponse>> getMenuTree(GetByIFrameAndDeptsRequest request) {
+
+
+        return null;
     }
 
     private void getParents(MenuEntity e, Set<MenuEntity> set, Map<String, MenuEntity> map) {
@@ -177,6 +193,5 @@ public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements M
             }
         }
     }
-
 
 }

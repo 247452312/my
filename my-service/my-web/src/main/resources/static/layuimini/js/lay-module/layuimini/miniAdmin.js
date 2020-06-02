@@ -48,11 +48,9 @@ layui.define(["jquery", "miniMenu", "element", "miniTab", "miniTheme"], function
                 headers: {'Content-Type': 'application/json;charset=utf8'},
                 data: JSON.stringify({
                     interfaceName: "MenuService",
-                    methodName: "getByIFrameAndDepts",
+                    methodName: "getIndexMenu",
                     token: getAttrBySession("token").token,
-                    args: {
-                        iFrame: 1
-                    }
+                    args: {}
                 }),
                 success: function (data) {
                     if (data.code != 200) {

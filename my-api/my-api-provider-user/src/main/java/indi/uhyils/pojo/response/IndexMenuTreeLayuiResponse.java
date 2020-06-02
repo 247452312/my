@@ -13,7 +13,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月30日 07时36分
  */
-public class MenuTreeLayuiResponse implements Serializable {
+public class IndexMenuTreeLayuiResponse implements Serializable {
 
     private LayuiMenuHomeInfo homeInfo;
 
