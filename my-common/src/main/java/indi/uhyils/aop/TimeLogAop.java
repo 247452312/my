@@ -118,6 +118,7 @@ public class TimeLogAop {
             sb.append(arg.getClass().getSimpleName());
             sb.append(")");
         }
+        logger.info("---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
         logger.info(sb.toString());
         sb.delete(0, sb.length());
     }

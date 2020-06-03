@@ -1,6 +1,9 @@
 package indi.uhyils.pojo.response;
 
+import indi.uhyils.pojo.model.MenuEntity;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +32,7 @@ public class MenuHtmlTreeLayuiResponse implements Serializable {
     /**
      * 子节点
      */
-    private List<MenuHtmlTreeLayuiResponse> children;
+    private List<MenuHtmlTreeLayuiResponse> children = new ArrayList<>();
 
     /**
      * 点击节点弹出新窗口对应的 url。需开启 isJump 参数
@@ -50,6 +53,14 @@ public class MenuHtmlTreeLayuiResponse implements Serializable {
      * 是否禁用
      */
     private Boolean disable = false;
+
+    public static MenuHtmlTreeLayuiResponse build(MenuEntity menuEntity) {
+        MenuHtmlTreeLayuiResponse response = new MenuHtmlTreeLayuiResponse();
+        response.setId(menuEntity.getId());
+        response.setHref(menuEntity.getUrl());
+        response.setTitle(menuEntity.getName());
+        return response;
+    }
 
 
     public String getTitle() {

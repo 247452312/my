@@ -5,6 +5,7 @@
     <title>菜单表格</title>
     <link rel="stylesheet" href="/css/layui.css" media="all">
     <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/layuimini/lib/layui-v2.5.5/css/modules/layer/default/layer.css">
 
 </head>
 <body>
@@ -16,39 +17,46 @@
 
 <script src="/layuimini/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="/js/jquery.min.js"></script>
+<script src="/layuimini/lib/layui-v2.5.5/lay/modules/layer.js"></script>
 <script src="/js/my.js"></script>
 <script>
     layui.use(['tree', 'layer'], function () {
         var tree = layui.tree;
         var layer = layui.layer;
 
-
-        $.ajax({
-            type: "POST",
-            url: '/action',
-            headers: {'Content-Type': 'application/json;charset=utf8'},
-            data: JSON.stringify({
-                interfaceName: "MenuService",
-                methodName: "getByIFrameAndDepts",
-                token: getAttrBySession("token").token,
-                args: {
-                    iFrame: 1
-                }
-            }),
-            success: function (data) {
-                if (data.code == 200) {
-                    //无连接线风格
-                    tree.render({
-                        elem: '#test13'
-                        , data: data.data
-                        , showLine: false  //是否开启连接线
-                    });
-                } else {
-                    layer.msg(data.msg);
-                }
-
-            }
+        pushRequest("MenuService", "getMenuTree", {}, function (data) {
+            //无连接线风格
+            tree.render({
+                elem: '#test13'
+                , data: data
+                , showLine: false  //是否开启连接线
+            });
         });
+        //
+        // $.ajax({
+        //     type: "POST",
+        //     url: '/action',
+        //     headers: {'Content-Type': 'application/json;charset=utf8'},
+        //     data: JSON.stringify({
+        //         interfaceName: "MenuService",
+        //         methodName: "getMenuTree",
+        //         token: getAttrBySession("token").token,
+        //         args: {}
+        //     }),
+        //     success: function (data) {
+        //         if (data.code == 200) {
+        //             //无连接线风格
+        //             tree.render({
+        //                 elem: '#test13'
+        //                 , data: data.data
+        //                 , showLine: false  //是否开启连接线
+        //             });
+        //         } else {
+        //             layer.msg(data.msg);
+        //         }
+        //
+        //     }
+        // });
 
     });
 

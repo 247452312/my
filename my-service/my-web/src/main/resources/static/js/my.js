@@ -1,3 +1,4 @@
+
 /**
  * 设置cookie
  * @param cname
@@ -40,22 +41,28 @@ function getCookie(cname) {
  * @param success
  * @returns {null}
  */
-function pushRequest(request, success) {
-    var result = null;
+function pushRequest(interfaceName, methodName, data, success) {
+    let result = null;
+    let json = JSON.stringify(new my_request(getAttrBySession("token").token, interfaceName, methodName, data));
     $.ajax({
         url: "/action",
         type: "POST",
-        data: JSON.stringify(request),
-        contentType: "application/json",
+        data: json,
+        contentType: "application/json;charset=utf8",
         async: false,
         success: function (data) {
-            result = success(data);
+            if (data.code == 200) {
+                layer.msg(data.msg)
+                result = success(data.data);
+            } else {
+                layer.msg(data.msg)
+            }
         }
     });
     return result;
 }
 
-class request {
+class my_request {
     constructor(token, interfaceName, methodName, args) {
         this.token = token;
         this.interfaceName = interfaceName;

@@ -70,6 +70,7 @@ public class TokenInjectAop {
     @Around("tokenInjectPoint()")
     public Object tokenInjectAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
 
+        // TODO 微服务调用微服务是不需要验证的,因为一定有user携带,只需要鉴定权限就可以了
         //NoToken结尾的方法直接放行 不需要token
         String className = pjp.getTarget().getClass().getCanonicalName();
         String methodName = pjp.getSignature().getName();

@@ -55,7 +55,8 @@ public class AllController {
             linkPrint(serviceResult.getRequestLink());
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
-            LogUtil.error(this, e);
+            LogUtil.error(this, e.getMessage());
+            e.printStackTrace();
             return WebResponse.build(null, ResponseCode.ERROR.getMsg(), ResponseCode.ERROR.getText());
         }
     }
