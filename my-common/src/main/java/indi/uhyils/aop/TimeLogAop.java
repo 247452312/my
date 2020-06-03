@@ -57,7 +57,7 @@ public class TimeLogAop {
         DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
         LinkNode<String> requestLink = arg.getRequestLink();
         if (requestLink == null) {
-            throw new NoRequestLinkException("请求无链路跟踪,请检查参数");
+            throw new NoRequestLinkException();
         }
         LinkNode<String> temp = requestLink;
         while (temp.hasNext()) {
@@ -73,7 +73,6 @@ public class TimeLogAop {
 
         //执行方法
         Object proceed = pjp.proceed();
-
 
         Long endTime = System.currentTimeMillis();
         double v = (endTime - startTime) / 1000.0;

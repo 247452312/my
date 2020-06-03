@@ -6,8 +6,11 @@ import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.alibaba.dubbo.rpc.service.GenericService;
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.aop.TimeLogAop;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.response.ServiceResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -23,6 +26,10 @@ import java.util.stream.Collectors;
  */
 public class DubboApiUtil {
 
+    /**
+     * 自定义日志
+     */
+    private static Logger logger = LoggerFactory.getLogger(DubboApiUtil.class);
 
     /**
      * ReferenceConfig缓存(重量级, 不缓存太慢了, 但是还没有考虑微服务过多的情况)
@@ -39,50 +46,54 @@ public class DubboApiUtil {
      * @return 方法返回值
      * @throws ClassNotFoundException
      */
-    public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) throws ClassNotFoundException {
+    public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
+        try {
+            if (!interfaceName.contains(".")) {
+                interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
+            }
 
-        if (!interfaceName.contains(".")) {
-            interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
-        }
-
-        ReferenceConfig<GenericService> reference;
-        if (map.keySet().contains(interfaceName)) {
-            reference = map.get(interfaceName);
-            if (reference == null) {
-                map.remove(interfaceName);
+            ReferenceConfig<GenericService> reference;
+            if (map.keySet().contains(interfaceName)) {
+                reference = map.get(interfaceName);
+                if (reference == null) {
+                    map.remove(interfaceName);
+                    reference = getGenericServiceReferenceConfig(interfaceName);
+                    map.put(interfaceName, reference);
+                }
+            } else {
                 reference = getGenericServiceReferenceConfig(interfaceName);
                 map.put(interfaceName, reference);
             }
-        } else {
-            reference = getGenericServiceReferenceConfig(interfaceName);
-            map.put(interfaceName, reference);
+
+            // 用com.alibaba.dubbo.rpc.service.GenericService可以替代所有接口引用
+            GenericService genericService = reference.get();
+
+            /**
+             * GenericService 这个接口只有一个方法，名为 $invoke，它接受三个参数，分别为方法名、方法参数类型数组和参数值数组；
+             * 对于方法参数类型数组 如果是基本类型，如 int 或 long，可以使用 int.class.getName()获取其类型； 如果是基本类型数组，如
+             * int[]，则可以使用 int[].class.getName()； 如果是 POJO，则直接使用全类名，如
+             * com.alibaba.dubbo.samples.generic.api.Params。
+             */
+
+            //全部方法
+            Method[] methods = Class.forName(interfaceName).getMethods();
+
+            Method method = Arrays.stream(methods).filter(m -> methodName.equalsIgnoreCase(m.getName()) && args.size() == m.getParameterTypes().length).findFirst().get();
+
+            Class[] params = method.getParameterTypes();
+
+            List<String> paramNameList = Arrays.stream(params).map(p -> p.getName()).collect(Collectors.toList());
+
+            Object[] arg = args.toArray(new Object[args.size()]);
+            String[] parameterTypes = paramNameList.toArray(new String[paramNameList.size()]);
+            ServiceResult serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, parameterTypes, arg)), ServiceResult.class);
+            request.setRequestLink(serviceResult.getRequestLink());
+            return serviceResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getLocalizedMessage());
+            return ServiceResult.buildErrorResult("远程调用错误,具体见日志", request);
         }
-
-        // 用com.alibaba.dubbo.rpc.service.GenericService可以替代所有接口引用
-        GenericService genericService = reference.get();
-
-        /**
-         * GenericService 这个接口只有一个方法，名为 $invoke，它接受三个参数，分别为方法名、方法参数类型数组和参数值数组；
-         * 对于方法参数类型数组 如果是基本类型，如 int 或 long，可以使用 int.class.getName()获取其类型； 如果是基本类型数组，如
-         * int[]，则可以使用 int[].class.getName()； 如果是 POJO，则直接使用全类名，如
-         * com.alibaba.dubbo.samples.generic.api.Params。
-         */
-
-        //全部方法
-        Method[] methods = Class.forName(interfaceName).getMethods();
-
-        Method method = Arrays.stream(methods).filter(m -> methodName.equalsIgnoreCase(m.getName()) && args.size() == m.getParameterTypes().length).findFirst().get();
-
-        Class[] params = method.getParameterTypes();
-
-        List<String> paramNameList = Arrays.stream(params).map(p -> p.getName()).collect(Collectors.toList());
-
-        Object[] arg = args.toArray(new Object[args.size()]);
-        String[] parameterTypes = paramNameList.toArray(new String[paramNameList.size()]);
-        ServiceResult serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, parameterTypes, arg)), ServiceResult.class);
-        request.setRequestLink(serviceResult.getRequestLink());
-        return serviceResult;
-
     }
 
     private static ReferenceConfig<GenericService> getGenericServiceReferenceConfig(String interfaceName) {
