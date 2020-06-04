@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2020年05月27日 16时28分
  */
 @Service(group = "${spring.profiles.active}")
-public class PowerServiceImpl extends DefaultServiceImpl<PowerEntity> implements PowerService {
+public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implements PowerService {
 
 
     @Autowired

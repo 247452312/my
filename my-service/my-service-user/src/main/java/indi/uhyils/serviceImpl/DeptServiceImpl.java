@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2020年05月27日 16时28分
  */
 @Service(group = "${spring.profiles.active}")
-public class DeptServiceImpl extends DefaultServiceImpl<DeptEntity> implements DeptService {
+public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implements DeptService {
     @Autowired
     private DeptDao dao;
 

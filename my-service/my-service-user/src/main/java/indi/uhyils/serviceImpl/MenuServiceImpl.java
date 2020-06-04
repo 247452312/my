@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2020年05月28日 12时48分
  */
 @Service(group = "${spring.profiles.active}")
-public class MenuServiceImpl extends DefaultServiceImpl<MenuEntity> implements MenuService {
+public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implements MenuService {
 
     /**
      * 最高一级菜单的fid

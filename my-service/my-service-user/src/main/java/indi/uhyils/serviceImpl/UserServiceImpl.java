@@ -35,7 +35,7 @@ import java.util.Random;
  * @date 文件创建日期 2020年04月20日 11时51分
  */
 @Service(group = "${spring.profiles.active}")
-public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements UserService {
+public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implements UserService {
 
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -95,16 +95,16 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
     public ServiceResult<TokenInfo> getTokenInfoByTokenNoToken(DefaultRequest request) {
         String token = request.getToken();
 
-        String tokenInfo_ = AESUtil.AESDecode(encodeRules, token);
+        String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
 
-        String day = tokenInfo_.substring(0, 2);
-        String hour = tokenInfo_.substring(2, 4);
-        String mon = tokenInfo_.substring(4, 6);
-        String sec = tokenInfo_.substring(6, 8);
-        String random = tokenInfo_.substring(8, 10);
+        String day = tokenInfoString.substring(0, 2);
+        String hour = tokenInfoString.substring(2, 4);
+        String mon = tokenInfoString.substring(4, 6);
+        String sec = tokenInfoString.substring(6, 8);
+        String random = tokenInfoString.substring(8, 10);
 
 
-        String userId = tokenInfo_.substring(10, tokenInfo_.length() - 1 - salt.length());
+        String userId = tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length());
 
         TokenInfo tokenInfo = new TokenInfo();
         tokenInfo.setDay(Integer.parseInt(day));

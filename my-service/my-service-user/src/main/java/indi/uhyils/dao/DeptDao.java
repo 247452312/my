@@ -13,8 +13,20 @@ import java.util.List;
 @Mapper
 public interface DeptDao extends DefaultDao<DeptEntity> {
 
-    Boolean insertDeptPower(DeptPowerMiddle middle);
+    /**
+     * 插入权限集与权限的关联关系
+     *
+     * @param middle 权限集与权限的关联关系
+     * @return 影响行数
+     */
+    Integer insertDeptPower(DeptPowerMiddle middle);
 
-    boolean deleteDeptPower(List<String> ids);
+    /**
+     * 删除权限集与权限的关联关系
+     *
+     * @param ids 权限集与权限的关联关系
+     * @return影响行数
+     */
+    Integer deleteDeptPower(List<String> ids);
 
 }

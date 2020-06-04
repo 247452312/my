@@ -15,9 +15,28 @@ import java.util.List;
 @Mapper
 public interface UserDao extends DefaultDao<UserEntity> {
 
+    /**
+     * 根据角色Id获取用户的角色
+     *
+     * @param roleId 角色id
+     * @return 角色实例
+     */
     RoleEntity getUserRoleById(String roleId);
 
+    /**
+     * 根据角色id获取用户的权限集
+     *
+     * @param roleId 角色id
+     * @return 用户的权限集
+     */
     List<DeptEntity> getUserDeptsByRoleId(String roleId);
 
+
+    /**
+     * 根据权限集id获取权限
+     *
+     * @param deptId 权限集id
+     * @return 用户的权限
+     */
     List<PowerEntity> getUserPowerByDeptId(String deptId);
 }

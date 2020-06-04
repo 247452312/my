@@ -6,9 +6,21 @@ package indi.uhyils.enum_;
  */
 public enum LogTypeEnum {
 
+    /**
+     * info
+     */
     INFO,
+    /**
+     * debug
+     */
     DEBUG,
+    /**
+     * warn
+     */
     WARN,
+    /**
+     * error
+     */
     ERROR;
 
 }

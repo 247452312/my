@@ -97,7 +97,7 @@ public class AllController {
      * @param action
      */
     private void actionAddRequestLink(@RequestBody Action action) {
-        HashMap<String, String> requestLink = new HashMap<>();
+        HashMap<String, String> requestLink = new HashMap<>(2);
         requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
         requestLink.put("data", "页面请求");
         action.getArgs().put("requestLink", requestLink);

@@ -8,6 +8,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 
+
+/**
+ * 前台项目启动类
+ *
+ * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2020年04月27日 16时46分
+ */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDubbo
 @DubboComponentScan(basePackages = "indi.uhyils.*")

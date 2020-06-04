@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2020年05月27日 16时27分
  */
 @Service(group = "${spring.profiles.active}")
-public class RoleServiceImpl extends DefaultServiceImpl<RoleEntity> implements RoleService {
+public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implements RoleService {
 
 
     @Autowired

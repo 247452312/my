@@ -19,7 +19,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月05日 17时57分
  */
-public abstract class DefaultServiceImpl<T extends DataEntity> implements DefaultEntityService<T> {
+public abstract class BaseDefaultServiceImpl<T extends DataEntity> implements DefaultEntityService<T> {
 
     @Override
     public ServiceResult<Page<T>> getByArgs(ArgsRequest argsRequest) {

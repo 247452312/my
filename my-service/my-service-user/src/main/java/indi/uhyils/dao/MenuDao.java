@@ -13,7 +13,19 @@ import java.util.List;
 public interface MenuDao extends DefaultDao<MenuEntity> {
 
 
-    List<MenuEntity> getByIFrame(Integer data);
+    /**
+     * 根据IFrame获取实例
+     *
+     * @param iframe IFrame
+     * @return 实例
+     */
+    List<MenuEntity> getByIFrame(Integer iframe);
 
+    /**
+     * 根据权限集ids获取menuId
+     *
+     * @param deptIds 权限集ids
+     * @return menuIds
+     */
     List<String> getByDeptIds(List<String> deptIds);
 }

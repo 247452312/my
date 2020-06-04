@@ -2,6 +2,8 @@ package indi.uhyils.pojo.model;
 
 import indi.uhyils.pojo.model.base.DataEntity;
 
+import java.util.Objects;
+
 /**
  * 菜单
  *
@@ -113,5 +115,29 @@ public class MenuEntity extends DataEntity {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MenuEntity that = (MenuEntity) o;
+        return Objects.equals(iFrame, that.iFrame) &&
+                Objects.equals(sort, that.sort) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(target, that.target) &&
+                Objects.equals(fid, that.fid) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(icon, that.icon) &&
+                Objects.equals(url, that.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(iFrame, sort, type, target, fid, name, icon, url);
     }
 }

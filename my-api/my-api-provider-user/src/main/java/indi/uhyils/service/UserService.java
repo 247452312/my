@@ -1,6 +1,5 @@
 package indi.uhyils.service;
 
-import indi.uhyils.exception.EnumParseNoHaveException;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.request.DefaultRequest;
@@ -60,6 +59,6 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * @param userRequest 用户登录所需要的条件
      * @return 登录所需要的信息
      */
-    ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest) throws EnumParseNoHaveException;
+    ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest);
 
 }

@@ -6,7 +6,6 @@ import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.alibaba.dubbo.rpc.service.GenericService;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.aop.TimeLogAop;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 import org.slf4j.Logger;
@@ -32,9 +31,14 @@ public class DubboApiUtil {
     private static Logger logger = LoggerFactory.getLogger(DubboApiUtil.class);
 
     /**
+     * 接口名称包分隔符
+     */
+    private static final String INTERFACE_NAME_PACKAGE_SEPARATOR = ".";
+
+    /**
      * ReferenceConfig缓存(重量级, 不缓存太慢了, 但是还没有考虑微服务过多的情况)
      */
-    private static final HashMap<String, ReferenceConfig<GenericService>> map = new HashMap<>();
+    private static final HashMap<String, ReferenceConfig<GenericService>> MAP = new HashMap<>();
 
     /**
      * dubbo泛化接口调用类
@@ -48,21 +52,21 @@ public class DubboApiUtil {
      */
     public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
         try {
-            if (!interfaceName.contains(".")) {
+            if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
             }
 
             ReferenceConfig<GenericService> reference;
-            if (map.keySet().contains(interfaceName)) {
-                reference = map.get(interfaceName);
+            if (MAP.keySet().contains(interfaceName)) {
+                reference = MAP.get(interfaceName);
                 if (reference == null) {
-                    map.remove(interfaceName);
+                    MAP.remove(interfaceName);
                     reference = getGenericServiceReferenceConfig(interfaceName);
-                    map.put(interfaceName, reference);
+                    MAP.put(interfaceName, reference);
                 }
             } else {
                 reference = getGenericServiceReferenceConfig(interfaceName);
-                map.put(interfaceName, reference);
+                MAP.put(interfaceName, reference);
             }
 
             // 用com.alibaba.dubbo.rpc.service.GenericService可以替代所有接口引用
