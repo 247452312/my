@@ -8,7 +8,6 @@ package indi.uhyils.pojo.request;
  */
 public class GetByIFrameAndDeptsRequest extends DefaultRequest {
 
-
     private Integer iFrame;
 
     public Integer getiFrame() {
