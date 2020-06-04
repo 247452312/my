@@ -96,7 +96,8 @@ public class TokenInjectAop {
         }
         JSONObject data = (JSONObject) getTokenInfoByTokenNoToken.getData();
         final TokenInfo tokenInfo = data.toJavaObject(TokenInfo.class);
-        if (tokenInfo.getTimeOut()) { //redis中token超时
+        //redis中token超时
+        if (tokenInfo.getTimeOut()) {
             return ServiceResult.buildFailedResult("登录超时,请重新登录", null, arg);
         }
         /* 查询是否有权限 */
@@ -115,7 +116,8 @@ public class TokenInjectAop {
             RoleEntity role = userRoleByRoleId.getData().toJavaObject(RoleEntity.class);
             userEntity.setRole(role);
         }
-        if (ADMIN.equals(userEntity.getUserName())) { // 超级管理员直接放行
+        // 超级管理员直接放行
+        if (ADMIN.equals(userEntity.getUserName())) {
             arg.setUser(userEntity);
             //执行方法
             return pjp.proceed(new DefaultRequest[]{arg});
@@ -140,7 +142,7 @@ public class TokenInjectAop {
         return proceed;
     }
 
-    private ServiceResult<JSONObject> getUserRoleByRoleId(String token, String roleId, DefaultRequest arg) throws ClassNotFoundException {
+    private ServiceResult<JSONObject> getUserRoleByRoleId(String token, String roleId, DefaultRequest arg) {
         IdRequest build = IdRequest.build(roleId);
         build.setToken(token);
         build.setRequestLink(arg.getRequestLink());
@@ -151,7 +153,7 @@ public class TokenInjectAop {
     }
 
 
-    private ServiceResult<JSONObject> getUserByIdNoToken(String token, TokenInfo tokenInfo, DefaultRequest request) throws ClassNotFoundException {
+    private ServiceResult<JSONObject> getUserByIdNoToken(String token, TokenInfo tokenInfo, DefaultRequest request){
         ArrayList<Object> args = new ArrayList<>();
         IdRequest build = IdRequest.build(tokenInfo.getUserId());
         build.setToken(token);
