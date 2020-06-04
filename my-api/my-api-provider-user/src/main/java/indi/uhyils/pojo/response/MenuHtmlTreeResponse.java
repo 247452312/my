@@ -12,7 +12,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月02日 17时14分
  */
-public class MenuHtmlTreeLayuiResponse implements Serializable {
+public class MenuHtmlTreeResponse implements Serializable {
 
     /**
      * 标题
@@ -32,7 +32,7 @@ public class MenuHtmlTreeLayuiResponse implements Serializable {
     /**
      * 子节点
      */
-    private List<MenuHtmlTreeLayuiResponse> children = new ArrayList<>();
+    private List<MenuHtmlTreeResponse> children = new ArrayList<>();
 
     /**
      * 点击节点弹出新窗口对应的 url。需开启 isJump 参数
@@ -54,8 +54,8 @@ public class MenuHtmlTreeLayuiResponse implements Serializable {
      */
     private Boolean disable = false;
 
-    public static MenuHtmlTreeLayuiResponse build(MenuEntity menuEntity) {
-        MenuHtmlTreeLayuiResponse response = new MenuHtmlTreeLayuiResponse();
+    public static MenuHtmlTreeResponse build(MenuEntity menuEntity) {
+        MenuHtmlTreeResponse response = new MenuHtmlTreeResponse();
         response.setId(menuEntity.getId());
         response.setHref(menuEntity.getUrl());
         response.setTitle(menuEntity.getName());
@@ -87,11 +87,11 @@ public class MenuHtmlTreeLayuiResponse implements Serializable {
         this.field = field;
     }
 
-    public List<MenuHtmlTreeLayuiResponse> getChildren() {
+    public List<MenuHtmlTreeResponse> getChildren() {
         return children;
     }
 
-    public void setChildren(List<MenuHtmlTreeLayuiResponse> children) {
+    public void setChildren(List<MenuHtmlTreeResponse> children) {
         this.children = children;
     }
 

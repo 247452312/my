@@ -25,7 +25,7 @@ public abstract class BaseDefaultServiceImpl<T extends DataEntity> implements De
     public ServiceResult<Page<T>> getByArgs(ArgsRequest argsRequest) {
         List<Arg> args = argsRequest.getArgs();
         Boolean paging = argsRequest.getPaging();
-        if (paging == true) {
+        if (paging) {
             ArrayList<T> byArgs = getDao().getByArgs(args, argsRequest.getPage(), argsRequest.getSize());
             int count = getDao().countByArgs(argsRequest.getArgs());
             Page<T> build = Page.build(argsRequest, byArgs, count, (count / argsRequest.getSize()) + 1);
@@ -95,10 +95,10 @@ public abstract class BaseDefaultServiceImpl<T extends DataEntity> implements De
     }
 
 
-    private DefaultDao getDao() {
+    private DefaultDao<T> getDao() {
         try {
             Method declaredMethod = getClass().getDeclaredMethod("getDao");
-            return (DefaultDao) declaredMethod.invoke(this, null);
+            return (DefaultDao<T>) declaredMethod.invoke(this);
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
         }

@@ -97,6 +97,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
         String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
 
+        assert tokenInfoString != null;
         String day = tokenInfoString.substring(0, 2);
         String hour = tokenInfoString.substring(2, 4);
         String mon = tokenInfoString.substring(4, 6);
@@ -128,6 +129,12 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         }
         UserEntity userEntity = byArgsNoPage.get(0);
 
+        //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
+        Boolean haveUserId = redisPoolUtil.haveUserId(userEntity.getId());
+        if (haveUserId) {
+            redisPoolUtil.removeUserById(userEntity.getId());
+        }
+
         String token = getToken(userEntity.getId());
         userRequest.setToken(token);
 
@@ -136,7 +143,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
             return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
         }
         initRole(userEntity);
-        // 登录->加入缓存中 TODO 如果重复登录问题
+        // 登录->加入缓存中
         redisPoolUtil.addUser(token, userEntity);
         return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
     }
@@ -177,9 +184,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         //盐 x位
         sb.append(salt);
 
-        String token = AESUtil.AESEncode(encodeRules, sb.toString());
-
-        return token;
+        return AESUtil.AESEncode(encodeRules, sb.toString());
     }
 
 

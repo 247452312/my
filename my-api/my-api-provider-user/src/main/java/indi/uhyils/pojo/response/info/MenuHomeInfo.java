@@ -6,21 +6,23 @@ import indi.uhyils.util.ContentUtil;
 import java.io.Serializable;
 
 /**
+ * index页面的主页设置
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月30日 07时38分
  */
-public class LayuiMenuHomeInfo implements Serializable {
+public class MenuHomeInfo implements Serializable {
     private static final String HOME_INFO = "homeInfo";
     private String title;
     private String href;
 
-    public static LayuiMenuHomeInfo build(ContentEntity honeInfo) {
+    public static MenuHomeInfo build(ContentEntity honeInfo) {
         assert HOME_INFO.equals(honeInfo.getName());
 
-        LayuiMenuHomeInfo layuiMenuHomeInfo = new LayuiMenuHomeInfo();
-        layuiMenuHomeInfo.setTitle(ContentUtil.getContentVarByTitle(honeInfo, "title"));
-        layuiMenuHomeInfo.setHref(ContentUtil.getContentVarByTitle(honeInfo, "href"));
-        return layuiMenuHomeInfo;
+        MenuHomeInfo menuHomeInfo = new MenuHomeInfo();
+        menuHomeInfo.setTitle(ContentUtil.getContentVarByTitle(honeInfo, "title"));
+        menuHomeInfo.setHref(ContentUtil.getContentVarByTitle(honeInfo, "href"));
+        return menuHomeInfo;
     }
 
 

@@ -10,24 +10,24 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月30日 07时38分
  */
-public class LayuiMenuMenuInfo implements Serializable {
+public class IndexMenuInfo implements Serializable {
     private String id;
     private String fid;
     private String title;
     private String icon;
     private String href;
     private String target;
-    private List<LayuiMenuMenuInfo> child = new ArrayList<>();
+    private List<IndexMenuInfo> child = new ArrayList<>();
 
-    public static LayuiMenuMenuInfo build(MenuEntity menuEntity) {
-        LayuiMenuMenuInfo layuiMenuMenuInfo = new LayuiMenuMenuInfo();
-        layuiMenuMenuInfo.setFid(menuEntity.getFid());
-        layuiMenuMenuInfo.setId(menuEntity.getId());
-        layuiMenuMenuInfo.setTarget(menuEntity.getTarget());
-        layuiMenuMenuInfo.setTitle(menuEntity.getName());
-        layuiMenuMenuInfo.setIcon(menuEntity.getIcon());
-        layuiMenuMenuInfo.setHref(menuEntity.getUrl());
-        return layuiMenuMenuInfo;
+    public static IndexMenuInfo build(MenuEntity menuEntity) {
+        IndexMenuInfo menuMenuInfo = new IndexMenuInfo();
+        menuMenuInfo.setFid(menuEntity.getFid());
+        menuMenuInfo.setId(menuEntity.getId());
+        menuMenuInfo.setTarget(menuEntity.getTarget());
+        menuMenuInfo.setTitle(menuEntity.getName());
+        menuMenuInfo.setIcon(menuEntity.getIcon());
+        menuMenuInfo.setHref(menuEntity.getUrl());
+        return menuMenuInfo;
     }
 
     public String getId() {
@@ -78,11 +78,11 @@ public class LayuiMenuMenuInfo implements Serializable {
         this.target = target;
     }
 
-    public List<LayuiMenuMenuInfo> getChild() {
+    public List<IndexMenuInfo> getChild() {
         return child;
     }
 
-    public void setChild(List<LayuiMenuMenuInfo> child) {
+    public void setChild(List<IndexMenuInfo> child) {
         this.child = child;
     }
 }

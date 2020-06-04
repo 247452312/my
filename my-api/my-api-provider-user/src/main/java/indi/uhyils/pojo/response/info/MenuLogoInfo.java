@@ -6,21 +6,23 @@ import indi.uhyils.util.ContentUtil;
 import java.io.Serializable;
 
 /**
+ * 主页logo信息
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月30日 07时38分
  */
-public class LayuiMenuLogoInfo implements Serializable {
+public class MenuLogoInfo implements Serializable {
 
     private String title;
     private String image;
     private String href;
 
-    public static LayuiMenuLogoInfo build(ContentEntity logoInfo) {
-        LayuiMenuLogoInfo layuiMenuLogoInfo = new LayuiMenuLogoInfo();
-        layuiMenuLogoInfo.setHref(ContentUtil.getContentVarByTitle(logoInfo, "href"));
-        layuiMenuLogoInfo.setImage(ContentUtil.getContentVarByTitle(logoInfo, "image"));
-        layuiMenuLogoInfo.setTitle(ContentUtil.getContentVarByTitle(logoInfo, "title"));
-        return layuiMenuLogoInfo;
+    public static MenuLogoInfo build(ContentEntity logoInfo) {
+        MenuLogoInfo menuLogoInfo = new MenuLogoInfo();
+        menuLogoInfo.setHref(ContentUtil.getContentVarByTitle(logoInfo, "href"));
+        menuLogoInfo.setImage(ContentUtil.getContentVarByTitle(logoInfo, "image"));
+        menuLogoInfo.setTitle(ContentUtil.getContentVarByTitle(logoInfo, "title"));
+        return menuLogoInfo;
     }
 
 

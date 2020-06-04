@@ -55,10 +55,10 @@ public class AESUtil {
             //8.获取加密内容的字节数组(这里要设置为utf-8)不然内容中如果有中文和英文混合中文就会解密为乱码
             byte[] byteEncode = content.getBytes(PROJECT_CODE);
             //9.根据密码器的初始化方式--加密：将数据加密
-            byte[] byteAES = cipher.doFinal(byteEncode);
+            byte[] byteAes = cipher.doFinal(byteEncode);
             //10.将加密后的数据转换为字符串
             //11.将字符串返回
-            return new BASE64Encoder().encode(byteAES);
+            return new BASE64Encoder().encode(byteAes);
         } catch (NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | NoSuchPaddingException | InvalidKeyException e) {
             e.printStackTrace();
         }

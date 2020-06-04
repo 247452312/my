@@ -63,14 +63,14 @@ public class TokenInjectAop {
      * token 解析
      * 转为userEntity注入
      *
-     * @param pjp
-     * @return
-     * @throws Throwable
+     * @param pjp pjp
+     * @return pjp 的返回值
+     * @throws Throwable pjp执行出错
      */
     @Around("tokenInjectPoint()")
     public Object tokenInjectAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
 
-        // TODO 微服务调用微服务是不需要验证的,因为一定有user携带,只需要鉴定权限就可以了
+
         //NoToken结尾的方法直接放行 不需要token
         String className = pjp.getTarget().getClass().getCanonicalName();
         String methodName = pjp.getSignature().getName();
@@ -89,29 +89,36 @@ public class TokenInjectAop {
         }
         /* 查询是否超时 */
         //解析token获取tokenInfo
-        ServiceResult getTokenInfoByTokenNoToken = parseToken(token, arg);
+        ServiceResult<JSONObject> getTokenInfoByTokenNoToken = parseToken(token, arg);
         //解析出现异常
         if (!ResponseCode.SUCCESS.getText().equals(getTokenInfoByTokenNoToken.getServiceCode())) {
             return getTokenInfoByTokenNoToken;
         }
-        JSONObject data = (JSONObject) getTokenInfoByTokenNoToken.getData();
+        JSONObject data = getTokenInfoByTokenNoToken.getData();
         final TokenInfo tokenInfo = data.toJavaObject(TokenInfo.class);
         //redis中token超时
         if (tokenInfo.getTimeOut()) {
             return ServiceResult.buildFailedResult("登录超时,请重新登录", null, arg);
         }
         /* 查询是否有权限 */
-        ServiceResult<JSONObject> serviceResult = getUserByIdNoToken(token, tokenInfo, arg);
-        // 查询是否有报错,如果报错.则结束请求
-        if (!ResponseCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
-            return serviceResult;
+        UserEntity userEntity;
+        // 如果参数中携带了用户,则不需要去再次查询用户
+        if (arg.getUser() != null) {
+            userEntity = arg.getUser();
+        } else {
+            ServiceResult<JSONObject> serviceResult = getUserByIdNoToken(token, tokenInfo, arg);
+            // 查询是否有报错,如果报错.则结束请求
+            if (!ResponseCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
+                return serviceResult;
+            }
+            userEntity = serviceResult.getData().toJavaObject(UserEntity.class);
         }
-        UserEntity userEntity = serviceResult.getData().toJavaObject(UserEntity.class);
+
         /* 注入权限 */
         if (userEntity.getRoleId() != null && userEntity.getRole() == null) {
             ServiceResult<JSONObject> userRoleByRoleId = getUserRoleByRoleId(token, userEntity.getRoleId(), arg);
             if (!ResponseCode.SUCCESS.getText().equals(userRoleByRoleId.getServiceCode())) {
-                return serviceResult;
+                return userRoleByRoleId;
             }
             RoleEntity role = userRoleByRoleId.getData().toJavaObject(RoleEntity.class);
             userEntity.setRole(role);
@@ -138,8 +145,7 @@ public class TokenInjectAop {
 
         arg.setUser(userEntity);
         //执行方法
-        Object proceed = pjp.proceed(new DefaultRequest[]{arg});
-        return proceed;
+        return pjp.proceed(new DefaultRequest[]{arg});
     }
 
     private ServiceResult<JSONObject> getUserRoleByRoleId(String token, String roleId, DefaultRequest arg) {
@@ -148,36 +154,32 @@ public class TokenInjectAop {
         build.setRequestLink(arg.getRequestLink());
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        ServiceResult<JSONObject> serviceResult = DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args, arg);
-        return serviceResult;
+        return DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args, arg);
     }
 
 
-    private ServiceResult<JSONObject> getUserByIdNoToken(String token, TokenInfo tokenInfo, DefaultRequest request){
+    private ServiceResult<JSONObject> getUserByIdNoToken(String token, TokenInfo tokenInfo, DefaultRequest request) {
         ArrayList<Object> args = new ArrayList<>();
         IdRequest build = IdRequest.build(tokenInfo.getUserId());
         build.setToken(token);
         build.setRequestLink(request.getRequestLink());
         args.add(build);
-        ServiceResult<JSONObject> jsonObjectServiceResult = DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args, request);
-        return jsonObjectServiceResult;
+        return DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args, request);
     }
 
     /**
      * 解析token
      *
-     * @param token
-     * @return
-     * @throws ClassNotFoundException
+     * @param token token
+     * @return tokenInfo
      */
-    private ServiceResult parseToken(String token, DefaultRequest request) throws ClassNotFoundException {
+    private ServiceResult<JSONObject> parseToken(String token, DefaultRequest request) {
         DefaultRequest defaultRequest = new DefaultRequest();
         defaultRequest.setToken(token);
         defaultRequest.setRequestLink(request.getRequestLink());
-        List list = new ArrayList();
+        List<Object> list = new ArrayList<>();
         list.add(defaultRequest);
-        ServiceResult serviceResult = DubboApiUtil.dubboApiTool("UserService", "getTokenInfoByTokenNoToken", list, request);
-        return serviceResult;
+        return DubboApiUtil.dubboApiTool("UserService", "getTokenInfoByTokenNoToken", list, request);
     }
 
 

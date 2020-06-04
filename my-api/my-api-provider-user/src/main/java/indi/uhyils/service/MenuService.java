@@ -3,8 +3,8 @@ package indi.uhyils.service;
 import indi.uhyils.pojo.model.MenuEntity;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
-import indi.uhyils.pojo.response.IndexMenuTreeLayuiResponse;
-import indi.uhyils.pojo.response.MenuHtmlTreeLayuiResponse;
+import indi.uhyils.pojo.response.IndexMenuTreeResponse;
+import indi.uhyils.pojo.response.MenuHtmlTreeResponse;
 import indi.uhyils.pojo.response.ServiceResult;
 
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ public interface MenuService extends DefaultEntityService<MenuEntity> {
      * 获取主页的菜单
      *
      * @param request 请求
-     * @return
+     * @return 主页菜单 包括主页信息 logo信息 菜单信息
      */
-    ServiceResult<IndexMenuTreeLayuiResponse> getIndexMenu(DefaultRequest request);
+    ServiceResult<IndexMenuTreeResponse> getIndexMenu(DefaultRequest request);
 
 
     /**
@@ -31,7 +31,7 @@ public interface MenuService extends DefaultEntityService<MenuEntity> {
      * @param request 请求
      * @return 格式处理好菜单
      */
-    ServiceResult<ArrayList<MenuHtmlTreeLayuiResponse>> getMenuTree(GetByIFrameAndDeptsRequest request);
+    ServiceResult<ArrayList<MenuHtmlTreeResponse>> getMenuTree(GetByIFrameAndDeptsRequest request);
 
 
 }

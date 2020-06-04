@@ -48,16 +48,15 @@ public class DubboApiUtil {
      * @param args          方法参数
      * @param request       请求
      * @return 方法返回值
-     * @throws ClassNotFoundException
      */
-    public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
+    public static ServiceResult<JSONObject> dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
         try {
             if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
             }
 
             ReferenceConfig<GenericService> reference;
-            if (MAP.keySet().contains(interfaceName)) {
+            if (MAP.containsKey(interfaceName)) {
                 reference = MAP.get(interfaceName);
                 if (reference == null) {
                     MAP.remove(interfaceName);
@@ -72,13 +71,12 @@ public class DubboApiUtil {
             // 用com.alibaba.dubbo.rpc.service.GenericService可以替代所有接口引用
             GenericService genericService = reference.get();
 
-            /**
+            /*
              * GenericService 这个接口只有一个方法，名为 $invoke，它接受三个参数，分别为方法名、方法参数类型数组和参数值数组；
              * 对于方法参数类型数组 如果是基本类型，如 int 或 long，可以使用 int.class.getName()获取其类型； 如果是基本类型数组，如
              * int[]，则可以使用 int[].class.getName()； 如果是 POJO，则直接使用全类名，如
              * com.alibaba.dubbo.samples.generic.api.Params。
              */
-
             //全部方法
             Method[] methods = Class.forName(interfaceName).getMethods();
 
@@ -86,11 +84,9 @@ public class DubboApiUtil {
 
             Class[] params = method.getParameterTypes();
 
-            List<String> paramNameList = Arrays.stream(params).map(p -> p.getName()).collect(Collectors.toList());
-
-            Object[] arg = args.toArray(new Object[args.size()]);
-            String[] parameterTypes = paramNameList.toArray(new String[paramNameList.size()]);
-            ServiceResult serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, parameterTypes, arg)), ServiceResult.class);
+            Object[] arg = args.toArray(new Object[0]);
+            String[] parameterTypes = Arrays.stream(params).map(Class::getName).toArray(String[]::new);
+            ServiceResult<JSONObject> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, parameterTypes, arg)), ServiceResult.class);
             request.setRequestLink(serviceResult.getRequestLink());
             return serviceResult;
         } catch (Exception e) {

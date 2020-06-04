@@ -60,8 +60,8 @@ public class RedisPool {
 
         config.setTestOnBorrow(testOnBorrow);
         config.setTestOnReturn(testOnReturn);
-
-        config.setBlockWhenExhausted(true);//连接耗尽的时候，是否阻塞，false会抛出异常，true阻塞直到超时。默认为true。
+        //连接耗尽的时候，是否阻塞，false会抛出异常，true阻塞直到超时。默认为true。
+        config.setBlockWhenExhausted(true);
         pool = new JedisPool(config, redisIp, Integer.parseInt(redisPort), 1000 * 2);
     }
 

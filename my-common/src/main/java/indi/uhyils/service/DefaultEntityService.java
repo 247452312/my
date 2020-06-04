@@ -37,7 +37,7 @@ public interface DefaultEntityService<T extends DataEntity> {
     /**
      * 插入
      *
-     * @param insert 插入信息,要求是entity TODO 不能单独插入中间表
+     * @param insert 插入信息,要求是entity
      * @return 插入条数
      */
     ServiceResult<Integer> insert(ObjRequest<T> insert);
