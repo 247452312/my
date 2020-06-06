@@ -4,6 +4,7 @@ import indi.uhyils.pojo.model.RoleDeptMiddle;
 import indi.uhyils.pojo.model.RoleEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,4 +30,11 @@ public interface RoleDao extends DefaultDao<RoleEntity> {
      * @return 删除个数
      */
     Integer deleteRoleDept(List<String> ids);
+
+    /**
+     * 获取所有的角色
+     *
+     * @return 所有角色
+     */
+    ArrayList<RoleEntity> getAll();
 }

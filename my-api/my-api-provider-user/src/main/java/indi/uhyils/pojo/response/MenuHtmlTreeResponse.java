@@ -3,127 +3,62 @@ package indi.uhyils.pojo.response;
 import indi.uhyils.pojo.model.MenuEntity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 /**
- * menu菜单页获取数据用
+ * menu.html菜单页用
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年06月02日 17时14分
+ * @date 文件创建日期 2020年06月05日 11时44分
  */
 public class MenuHtmlTreeResponse implements Serializable {
 
-    /**
-     * 标题
-     */
-    private String title;
+    Integer code = 0;
 
-    /**
-     * 唯一标识
-     */
-    private String id;
+    String msg = "";
 
-    /**
-     * 表字段名(不知道干什么的)
-     */
-    private String field;
+    Integer count;
 
-    /**
-     * 子节点
-     */
-    private List<MenuHtmlTreeResponse> children = new ArrayList<>();
+    Collection<MenuEntity> data;
 
-    /**
-     * 点击节点弹出新窗口对应的 url。需开启 isJump 参数
-     */
-    private String href;
 
-    /**
-     * 是否展开
-     */
-    private Boolean spread = false;
-
-    /**
-     * 是否选中
-     */
-    private Boolean checked = false;
-
-    /**
-     * 是否禁用
-     */
-    private Boolean disable = false;
-
-    public static MenuHtmlTreeResponse build(MenuEntity menuEntity) {
-        MenuHtmlTreeResponse response = new MenuHtmlTreeResponse();
-        response.setId(menuEntity.getId());
-        response.setHref(menuEntity.getUrl());
-        response.setTitle(menuEntity.getName());
-        return response;
+    public static MenuHtmlTreeResponse build(Collection<MenuEntity> list) {
+        assert list != null;
+        MenuHtmlTreeResponse menuHtmlTreeResponse = new MenuHtmlTreeResponse();
+        menuHtmlTreeResponse.setCount(list.size());
+        menuHtmlTreeResponse.setData(list);
+        return menuHtmlTreeResponse;
     }
 
-
-    public String getTitle() {
-        return title;
+    public Integer getCode() {
+        return code;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
-    public String getId() {
-        return id;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getField() {
-        return field;
+    public Integer getCount() {
+        return count;
     }
 
-    public void setField(String field) {
-        this.field = field;
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
-    public List<MenuHtmlTreeResponse> getChildren() {
-        return children;
+    public Collection<MenuEntity> getData() {
+        return data;
     }
 
-    public void setChildren(List<MenuHtmlTreeResponse> children) {
-        this.children = children;
-    }
-
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href;
-    }
-
-    public Boolean getSpread() {
-        return spread;
-    }
-
-    public void setSpread(Boolean spread) {
-        this.spread = spread;
-    }
-
-    public Boolean getChecked() {
-        return checked;
-    }
-
-    public void setChecked(Boolean checked) {
-        this.checked = checked;
-    }
-
-    public Boolean getDisable() {
-        return disable;
-    }
-
-    public void setDisable(Boolean disable) {
-        this.disable = disable;
+    public void setData(Collection<MenuEntity> data) {
+        this.data = data;
     }
 }

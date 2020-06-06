@@ -72,7 +72,7 @@
         update sys_menu set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
-        <if test="fid != null and fid != ''">
+        <if test="fid != null">
             ,fid = #{fid}
         </if>
         <if test="iFrame != null and iFrame != ''">
@@ -87,11 +87,14 @@
         <if test="sort != null and sort != ''">
             ,sort = #{sort}
         </if>
-        <if test="type != null and type != ''">
+        <if test="type != null">
             ,type = #{type}
         </if>
-        <if test="url != null and url != ''">
+        <if test="url != null">
             ,url = #{url}
+        </if>
+        <if test="target != null">
+            ,target = #{target}
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
@@ -133,6 +136,26 @@
             #{deptIds}
         </foreach>
     </select>
+
+    <update id="deleteByIds" parameterType="java.util.List">
+        update sys_menu set delete_flag = 1 where id in
+        <foreach item="collect" index="index" collection="list" open="(" separator="," close=")">
+            #{collect}
+        </foreach>
+    </update>
+
+    <delete id="deleteDeptMenuByMenuIds" parameterType="java.util.List">
+        delete from sys_dept_menu where menu_id in
+        <foreach item="menuIds" index="index" collection="list" open="(" separator="," close=")">
+            #{menuIds}
+        </foreach>
+    </delete>
+    <delete id="deleteDeptMenuByDeptIds" parameterType="java.util.List">
+        delete from sys_dept_menu where dept_id in
+        <foreach item="deptIds" index="index" collection="list" open="(" separator="," close=")">
+            #{menuIds}
+        </foreach>
+    </delete>
 
 
 </mapper>

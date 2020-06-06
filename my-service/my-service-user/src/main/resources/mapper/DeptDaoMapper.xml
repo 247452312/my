@@ -106,5 +106,25 @@
         </foreach>
     </delete>
 
+    <insert id="insertDeptMenu" parameterType="indi.uhyils.pojo.model.DeptMenuMiddle">
+        insert into sys_dept_menu(id, dept_id, menu_id)
+        VALUES (#{id}, #{deptId}, #{menuId})
+    </insert>
+
+    <select id="getByMenuId" resultType="indi.uhyils.pojo.response.GetDeptsByMenuIdResponse">
+        select a.id                                                                                 deptId,
+               a.name                                                                               deptName,
+               (select count(*) = 1 from sys_dept_menu where menu_id = #{id} and dept_id = a.id) as mark
+        from sys_dept a
+        where delete_flag = 0
+    </select>
+
+    <select id="getAll" resultType="indi.uhyils.pojo.model.DeptEntity">
+        select
+        <include refid="columnList"/>
+        from sys_dept a
+        where delete_flag = 0
+    </select>
+
 
 </mapper>

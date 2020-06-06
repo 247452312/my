@@ -4,11 +4,14 @@ import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.RoleDao;
 import indi.uhyils.pojo.model.RoleDeptMiddle;
 import indi.uhyils.pojo.model.RoleEntity;
+import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.IdsRequest;
 import indi.uhyils.pojo.request.PutDeptsToRoleRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -37,6 +40,11 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     public ServiceResult<Boolean> deleteRoleDept(IdsRequest idsRequest) {
         dao.deleteRoleDept(idsRequest.getIds());
         return ServiceResult.buildSuccessResult("删除成功", true, idsRequest);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<RoleEntity>> getRoles(DefaultRequest request) {
+        return ServiceResult.buildSuccessResult("查询成功", dao.getAll(), request);
     }
 
     public RoleDao getDao() {

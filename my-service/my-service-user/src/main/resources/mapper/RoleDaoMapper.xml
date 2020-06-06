@@ -110,5 +110,12 @@
         </foreach>
     </delete>
 
+    <select id="getAll" resultType="indi.uhyils.pojo.model.RoleEntity">
+        select
+        <include refid="columnList"/>
+        from sys_role a
+        where delete_flag = 0
+    </select>
+
 
 </mapper>

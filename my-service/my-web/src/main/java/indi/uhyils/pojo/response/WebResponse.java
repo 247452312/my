@@ -21,7 +21,13 @@ public class WebResponse<T extends Serializable> implements Serializable {
     private T data;
 
     public static <T extends Serializable> WebResponse build(T data, String message, Integer code) {
-        WebResponse serializableWebResponse = new WebResponse();
+        WebResponse<T> serializableWebResponse = new WebResponse();
+        if (data == null) {
+            serializableWebResponse.setCode(400);
+            serializableWebResponse.setMsg("返回值为空" + message);
+            serializableWebResponse.setData(null);
+            return serializableWebResponse;
+        }
         serializableWebResponse.setCode(code);
         serializableWebResponse.setData(data);
         serializableWebResponse.setMsg(message);

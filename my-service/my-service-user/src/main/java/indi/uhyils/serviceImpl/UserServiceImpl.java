@@ -7,10 +7,7 @@ import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.GetUserRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.LoginRequest;
+import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.LoginResponse;
 import indi.uhyils.pojo.response.ServiceResult;
@@ -90,6 +87,14 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         return ServiceResult.buildSuccessResult("token生成成功", token, userRequest);
     }
 
+    @Override
+    public ServiceResult<Integer> insert(ObjRequest<UserEntity> insert) {
+        UserEntity data = insert.getData();
+        data.preInsert(insert);
+        data.setPassword(MD5Util.MD5Encode(data.getPassword()));
+        return ServiceResult.buildSuccessResult("插入成功", dao.insert(data), insert);
+    }
+
 
     @Override
     public ServiceResult<TokenInfo> getTokenInfoByTokenNoToken(DefaultRequest request) {
@@ -146,6 +151,31 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         // 登录->加入缓存中
         redisPoolUtil.addUser(token, userEntity);
         return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request) {
+        ArrayList<UserEntity> all = dao.getAll();
+        all.forEach(t -> {
+            String roleId = t.getRoleId();
+            RoleEntity userRoleById = dao.getUserRoleById(roleId);
+            t.setRole(userRoleById);
+        });
+        return ServiceResult.buildSuccessResult("查询成功", all, request);
+    }
+
+    @Override
+    public ServiceResult<UserEntity> getUserById(IdRequest request) {
+        String id = request.getId();
+        List<UserEntity> byId = dao.getById(id);
+        if (byId == null || byId.size() != 1) {
+            return ServiceResult.buildFailedResult("id不存在", null, request);
+        }
+        UserEntity userEntity = byId.get(0);
+        String roleId = userEntity.getRoleId();
+        RoleEntity userRoleById = dao.getUserRoleById(roleId);
+        userEntity.setRole(userRoleById);
+        return ServiceResult.buildSuccessResult("获取用户成功", userEntity, request);
     }
 
 

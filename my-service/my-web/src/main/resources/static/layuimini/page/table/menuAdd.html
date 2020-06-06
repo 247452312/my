@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <!--  父id    -->
+    <input type="text" name="id" value="" style="display:none;">
+    <input type="text" name="class" value="indi.uhyils.pojo.model.MenuEntity" style="display:none;">
+    <input type="text" name="fid" value="" style="display:none;">
+    <input type="text" name="iFrame" value="1" style="display:none;">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">菜单名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" lay-verify="required" placeholder="请输入菜单名称" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">icon</label>
+        <div class="layui-input-block">
+            <select name="icon">
+                <option value="icon0">0</option>
+                <option value="icon1">1</option>
+                <option value="icon2">2</option>
+                <option value="icon3">3</option>
+                <option value="icon4">4</option>
+                <option value="icon5">5</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">排序</label>
+        <div class="layui-input-block">
+            <input type="text" name="sort" lay-verify="required" lay-reqtext="排序不能为空" placeholder="序号 e.g.(1)" value=""
+                   οnkeyup="value=value.replace(/^0(0+)|[^\d]+/g,'')"
+                   class="layui-input">
+            <tip>序号越小越靠前</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">是否是叶子结点</label>
+        <div class="layui-input-block dependent">
+            <input type="radio" lay-filter="level" target-mark="0" name="type" value="true" title="是" checked="">
+            <input type="radio" lay-filter="level" target-mark="1" name="type" value="false" title="否">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">跳转方式</label>
+        <div class="layui-input-block independent">
+            <input type="radio" name="target" value="" title="不跳转" checked="">
+            <input type="radio" name="target" value="_self" title="iframe页面跳转">
+            <input type="radio" name="target" value="_blank" title="页面跳转">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label ">跳转页面</label>
+        <div class="layui-input-block independent">
+            <input type="text" name="url" placeholder="请输入目标网址" value=""
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/my.js"></script>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        form.on('radio(level)', function (data) {
+            let value = data.value;
+            if (value == 'false') { // 非叶子结点
+                $('.independent input').attr("disabled", "disabled");
+            } else if (value == 'true') { // 叶子结点
+                $('.independent input').removeAttr("disabled");
+            }
+            form.render();
+        });
+
+
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        };
+        let id = $.getUrlParam('id');
+        let func = $.getUrlParam('func');
+        pushRequest("MenuService", "getById", {
+            id: id
+        }, function (data) {
+            $('[name="iFrame"]').attr('value', data.iFrame);
+            if (func == 'edit') {
+                $('[name="id"]').attr('value', data.id);
+                $('[name="fid"]').attr('value', data.fid);
+                $('[name="sort"]').attr('value', data.sort);
+                $('[name="type"]').attr("checked", false);
+                $('[name="type"][value="' + data.type + '"]').attr("checked", true);
+                if (!data.type) { // 非叶子结点
+                    $('.independent input').attr("disabled", "disabled");
+                } else { // 叶子结点
+                    $('.independent input').removeAttr("disabled");
+                }
+                $('[name="target"]').attr("checked", false);
+                $('[name="target"][value="' + data.target + '"]').attr("checked", true);
+                $('[name="name"]').attr('value', data.name);
+                $('[name="icon"]').attr('value', data.icon);
+                $('[name="url"]').attr('value', data.url);
+            } else if (func == 'add') {
+                $('[name="fid"]').attr('value', id);
+            }
+            form.render();
+        });
+
+        var closeAndReload = function () {
+            var iframeIndex = parent.layer.getFrameIndex(window.name);
+            parent.$.reloadTable();
+            parent.layer.close(iframeIndex);
+        };
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+                // 关闭弹出层
+                layer.close(index);
+                if (data.field.type == 'false') { // 非叶子节点不能拥有跳转方式和跳转页面
+                    data.field.target = '';
+                    data.field.url = '';
+                }
+                if (func === 'add') {
+                    pushRequest("MenuService", "insert", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                } else if (func === 'edit') {
+                    pushRequest("MenuService", "update", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

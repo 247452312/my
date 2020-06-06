@@ -1,4 +1,3 @@
-
 /**
  * 设置cookie
  * @param cname
@@ -41,9 +40,11 @@ function getCookie(cname) {
  * @param success
  * @returns {null}
  */
-function pushRequest(interfaceName, methodName, data, success) {
+function pushRequest(interfaceName, methodName, data, success, target = false) {
     let result = null;
     let json = JSON.stringify(new my_request(getAttrBySession("token").token, interfaceName, methodName, data));
+    console.log("发送")
+    console.log(json);
     $.ajax({
         url: "/action",
         type: "POST",
@@ -51,11 +52,12 @@ function pushRequest(interfaceName, methodName, data, success) {
         contentType: "application/json;charset=utf8",
         async: false,
         success: function (data) {
+            if (target) {
+                layer.msg(data.msg);
+            }
             if (data.code == 200) {
-                layer.msg(data.msg)
                 result = success(data.data);
             } else {
-                layer.msg(data.msg)
             }
         }
     });

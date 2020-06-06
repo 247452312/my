@@ -15,6 +15,7 @@ public class MenuEntity extends DataEntity {
     /**
      * 场景
      */
+
     private Integer iFrame;
 
     /**

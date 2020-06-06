@@ -17,6 +17,7 @@ public class IndexMenuInfo implements Serializable {
     private String icon;
     private String href;
     private String target;
+    private Integer sort;
     private List<IndexMenuInfo> child = new ArrayList<>();
 
     public static IndexMenuInfo build(MenuEntity menuEntity) {
@@ -27,7 +28,16 @@ public class IndexMenuInfo implements Serializable {
         menuMenuInfo.setTitle(menuEntity.getName());
         menuMenuInfo.setIcon(menuEntity.getIcon());
         menuMenuInfo.setHref(menuEntity.getUrl());
+        menuMenuInfo.setSort(menuEntity.getSort());
         return menuMenuInfo;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 
     public String getId() {

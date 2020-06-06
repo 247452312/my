@@ -6,6 +6,7 @@ import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,4 +40,12 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @return 用户的权限
      */
     List<PowerEntity> getUserPowerByDeptId(String deptId);
+
+    /**
+     * 获取全部用户
+     *
+     * @return 全部用户
+     */
+    ArrayList<UserEntity> getAll();
+
 }

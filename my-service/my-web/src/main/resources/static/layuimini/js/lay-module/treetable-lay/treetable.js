@@ -56,6 +56,24 @@ layui.define(['layer', 'table'], function (exports) {
                     }
                 }
             };
+
+            function sortNode(tNodes) {
+                for (let j = 0; j < tNodes.length; j++) {
+                    let min = tNodes[j].sort;
+                    let index = j;
+                    for (let i = j; i < tNodes.length; i++) {
+                        if (tNodes[i].sort < min) {
+                            index = i;
+                            min = tNodes[i].sort;
+                        }
+                    }
+                    let temp = tNodes[index];
+                    tNodes[index] = tNodes[j];
+                    tNodes[j] = temp;
+                }
+            }
+
+            sortNode(tNodes);
             sort(param.treeSpid, tNodes);
 
             // 重写参数

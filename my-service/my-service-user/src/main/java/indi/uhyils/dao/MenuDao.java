@@ -28,4 +28,29 @@ public interface MenuDao extends DefaultDao<MenuEntity> {
      * @return menuIds
      */
     List<String> getByDeptIds(List<String> deptIds);
+
+    /**
+     * 根据ids删除菜单
+     *
+     * @param collect 菜单ids
+     * @return 删除个数
+     */
+    Integer deleteByIds(List<String> collect);
+
+    /**
+     * 根据菜单ids删除权限集与菜单中间表数据
+     *
+     * @param menuIds 菜单ids
+     * @return 删除个数
+     */
+    Integer deleteDeptMenuByMenuIds(List<String> menuIds);
+
+
+    /**
+     * 根据权限集ids删除权限集与菜单中间表数据
+     *
+     * @param deptIds 权限集ids
+     * @return 删除个数
+     */
+    Integer deleteDeptMenuByDeptIds(List<String> deptIds);
 }

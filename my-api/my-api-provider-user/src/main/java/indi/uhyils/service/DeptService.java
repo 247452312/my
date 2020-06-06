@@ -2,8 +2,12 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.request.IdsRequest;
+import indi.uhyils.pojo.request.PutDeptsToMenuRequest;
+import indi.uhyils.pojo.request.PutMenusToDeptsRequest;
 import indi.uhyils.pojo.request.PutPowersToDeptRequest;
 import indi.uhyils.pojo.response.ServiceResult;
+
+import java.util.ArrayList;
 
 /**
  * 权限集接口API
@@ -29,5 +33,30 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * @return
      */
     ServiceResult<Boolean> deleteDeptPower(IdsRequest idsRequest);
+
+
+    /**
+     * 将许多菜单添加到一个权限集
+     *
+     * @param request 将许多菜单添加到一个权限集的请求
+     * @return 是否成功
+     */
+    ServiceResult<Boolean> putMenusToDept(PutMenusToDeptsRequest request);
+
+    /**
+     * 将许多权限集添加到一个菜单
+     *
+     * @param request 将许多权限集添加到一个菜单的请求
+     * @return 是否成功
+     */
+    ServiceResult<Boolean> putDeptsToMenu(PutDeptsToMenuRequest request);
+
+    /**
+     * 获取全部权限集
+     *
+     * @param request 请求
+     * @return 权限集
+     */
+    ServiceResult<ArrayList<DeptEntity>> getDepts(PutDeptsToMenuRequest request);
 
 }

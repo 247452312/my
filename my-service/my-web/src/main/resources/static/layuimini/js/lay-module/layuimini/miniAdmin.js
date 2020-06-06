@@ -42,22 +42,65 @@ layui.define(["jquery", "miniMenu", "element", "miniTab", "miniTheme"], function
             options.pageAnim = options.pageAnim || false;
             options.maxTabNum = options.maxTabNum || 20;
 
-            $.ajax({
-                type: "POST",
-                url: '/action',
-                headers: {'Content-Type': 'application/json;charset=utf8'},
-                data: JSON.stringify({
-                    interfaceName: "MenuService",
-                    methodName: "getIndexMenu",
-                    token: getAttrBySession("token").token,
-                    args: {}
-                }),
-                success: function (data) {
-                    if (data.code != 200) {
-                        miniAdmin.error(data.msg);
-                    } else {
-                        data = data.data;
+            function sortNode(tNodes) {
+                if (tNodes == null || tNodes.length == 0) {
+                    return;
+                }
+                for (let j = 0; j < tNodes.length; j++) {
+                    let min = tNodes[j].sort;
+                    let index = j;
+                    for (let i = j; i < tNodes.length; i++) {
+                        if (tNodes[i].sort < min) {
+                            index = i;
+                            min = tNodes[i].sort;
+                        }
+                    }
+                    let temp = tNodes[index];
+                    tNodes[index] = tNodes[j];
+                    tNodes[j] = temp;
+                }
+                for (let i = 0; i < tNodes.length; i++) {
+                    sortNode(tNodes[i].child);
+                }
+            }
 
+            if (options.iniUrl == "/action") {
+                pushRequest("MenuService", "getIndexMenu", {}, function (data) {
+                        sortNode(data.menuInfo);
+                        miniAdmin.renderLogo(data.logoInfo);
+                        miniAdmin.renderClear(options.clearUrl);
+                        miniAdmin.renderHome(data.homeInfo);
+                        miniAdmin.renderAnim(options.pageAnim);
+                        miniAdmin.listen();
+                        miniMenu.render({
+                            menuList: data.menuInfo,
+                            multiModule: options.multiModule,
+                            menuChildOpen: options.menuChildOpen
+                        });
+                        miniTab.render({
+                            filter: 'layuiminiTab',
+                            urlHashLocation: options.urlHashLocation,
+                            multiModule: options.multiModule,
+                            menuChildOpen: options.menuChildOpen,
+                            maxTabNum: options.maxTabNum,
+                            menuList: data.menuInfo,
+                            homeInfo: data.homeInfo,
+                            listenSwichCallback: function () {
+                                miniAdmin.renderDevice();
+                            }
+                        });
+                        miniTheme.render({
+                            bgColorDefault: options.bgColorDefault,
+                            listen: true,
+                        });
+                        miniAdmin.deleteLoader(options.loadingTime);
+                    }, true
+                );
+            } else {
+                $.getJSON(options.iniUrl, function (data) {
+                    if (data == null) {
+                        miniAdmin.error('暂无菜单信息')
+                    } else {
                         miniAdmin.renderLogo(data.logoInfo);
                         miniAdmin.renderClear(options.clearUrl);
                         miniAdmin.renderHome(data.homeInfo);
@@ -86,8 +129,11 @@ layui.define(["jquery", "miniMenu", "element", "miniTab", "miniTheme"], function
                         });
                         miniAdmin.deleteLoader(options.loadingTime);
                     }
-                }
-            });
+                }).fail(function () {
+                    miniAdmin.error('菜单接口有误');
+                });
+            }
+
         },
 
         /**

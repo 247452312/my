@@ -1,9 +1,12 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.RoleEntity;
+import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.IdsRequest;
 import indi.uhyils.pojo.request.PutDeptsToRoleRequest;
 import indi.uhyils.pojo.response.ServiceResult;
+
+import java.util.ArrayList;
 
 /**
  * 角色接口API
@@ -28,6 +31,14 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * @return 删除是否成功
      */
     ServiceResult<Boolean> deleteRoleDept(IdsRequest idsRequest);
+
+    /**
+     * 获取所有的角色
+     *
+     * @param request 默认
+     * @return 角色
+     */
+    ServiceResult<ArrayList<RoleEntity>> getRoles(DefaultRequest request);
 
 
 }

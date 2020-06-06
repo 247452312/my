@@ -1,11 +1,11 @@
 package indi.uhyils.service;
 
+import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.MenuEntity;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
-import indi.uhyils.pojo.response.IndexMenuTreeResponse;
-import indi.uhyils.pojo.response.MenuHtmlTreeResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.response.*;
 
 import java.util.ArrayList;
 
@@ -31,7 +31,25 @@ public interface MenuService extends DefaultEntityService<MenuEntity> {
      * @param request 请求
      * @return 格式处理好菜单
      */
-    ServiceResult<ArrayList<MenuHtmlTreeResponse>> getMenuTree(GetByIFrameAndDeptsRequest request);
+    ServiceResult<MenuHtmlTreeResponse> getMenuTree(GetByIFrameAndDeptsRequest request);
+
+
+    /**
+     * 1.删除对应id节点以及所有子节点
+     * 2.删除权限集表与菜单连接表中的对应关系
+     *
+     * @param req 要删除的节点id
+     * @return 是否删除成功
+     */
+    ServiceResult<Boolean> deleteMenu(IdRequest req);
+
+    /**
+     * 根据菜单id获取属于这个菜单的权限集以及全部权限集
+     *
+     * @param req 包含菜单id的请求
+     * @return 权限集们
+     */
+    ServiceResult<ArrayList<GetDeptsByMenuIdResponse>> getDeptsByMenuId(IdRequest req);
 
 
 }

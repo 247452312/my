@@ -2,16 +2,18 @@ package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.ContentDao;
+import indi.uhyils.dao.DeptDao;
 import indi.uhyils.dao.MenuDao;
 import indi.uhyils.pojo.model.ContentEntity;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.MenuEntity;
 import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.base.DataEntity;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
-import indi.uhyils.pojo.response.IndexMenuTreeResponse;
-import indi.uhyils.pojo.response.MenuHtmlTreeResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.model.Arg;
+import indi.uhyils.pojo.response.*;
 import indi.uhyils.pojo.response.info.IndexMenuInfo;
 import indi.uhyils.pojo.response.info.MenuHomeInfo;
 import indi.uhyils.pojo.response.info.MenuLogoInfo;
@@ -19,6 +21,9 @@ import indi.uhyils.service.MenuService;
 import indi.uhyils.util.ContentUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.function.Function;
@@ -34,6 +39,11 @@ import java.util.stream.Collectors;
 public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implements MenuService {
 
     /**
+     * 超级管理员的账号
+     */
+    private static final String ADMIN_USER_NAME = "admin";
+
+    /**
      * 最高一级菜单的fid
      */
     private static final String NONE = "";
@@ -43,6 +53,10 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
 
     @Autowired
     private ContentDao contentDao;
+
+    @Autowired
+    private DeptDao deptDao;
+
 
     public MenuDao getDao() {
         return dao;
@@ -70,7 +84,14 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         for (DeptEntity dept : depts) {
             deptIds.add(dept.getId());
         }
-        List<String> level = dao.getByDeptIds(deptIds);
+        // 准备获取权限内的子节点
+        List<String> level;
+        // 超级管理员 就是牛逼
+        if (user.getUserName().equals(ADMIN_USER_NAME)) {
+            level = byIFrame.stream().map(MenuEntity::getId).collect(Collectors.toList());
+        } else {
+            level = dao.getByDeptIds(deptIds);
+        }
 
         /* 2. 只取出来有用的 */
         for (String id : level) {
@@ -94,11 +115,11 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     }
 
     @Override
-    public ServiceResult<ArrayList<MenuHtmlTreeResponse>> getMenuTree(GetByIFrameAndDeptsRequest request) {
+    public ServiceResult<MenuHtmlTreeResponse> getMenuTree(GetByIFrameAndDeptsRequest request) {
         /* 1. 全取出来 */
         List<MenuEntity> byIFrame = dao.getByIFrame(1);
         Map<String, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
-        Set<MenuEntity> set = new HashSet<>();
+        HashSet<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
         if (user.getRole() == null) {
             return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
@@ -108,7 +129,14 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         for (DeptEntity dept : depts) {
             deptIds.add(dept.getId());
         }
-        List<String> level = dao.getByDeptIds(deptIds);
+        // 准备获取权限内的子节点
+        List<String> level;
+        // 超级管理员 就是牛逼
+        if (user.getUserName().equals(ADMIN_USER_NAME)) {
+            level = byIFrame.stream().map(MenuEntity::getId).collect(Collectors.toList());
+        } else {
+            level = dao.getByDeptIds(deptIds);
+        }
 
         /* 2. 只取出来有用的 */
         for (String id : level) {
@@ -118,10 +146,55 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
                 getParents(e, set, map);
             }
         }
-        /* 4. tree */
-        ArrayList<MenuHtmlTreeResponse> menuMenuInfoArrayList = buildMenuHtmlTree(set);
+        return ServiceResult.buildSuccessResult("查询树列表成功", MenuHtmlTreeResponse.build(set), request);
+    }
 
-        return ServiceResult.buildSuccessResult("查询树列表成功", menuMenuInfoArrayList, request);
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
+    public ServiceResult<Boolean> deleteMenu(IdRequest req) {
+        /* 注:开启了事务 即@Transactional 参数propagation->事务传播类型,其中Propagation.REQUIRED为如果事务不存在,则创建新事物,如果事务存在,则加入
+           isolation事务隔离级别 Isolation.DEFAULT默认隔离级别 */
+
+        /* 1.删除所有对应子节点 */
+        String menuId = req.getId();
+        List<MenuEntity> byId = dao.getById(menuId);
+        if (byId == null || byId.size() != 1) {
+            return ServiceResult.buildFailedResult("要删除的菜单不存在", null, req);
+        }
+        MenuEntity menuEntity = byId.get(0);
+        Integer frame = menuEntity.getiFrame();
+        List<MenuEntity> byIFrame = dao.getByIFrame(frame);
+        HashSet<MenuEntity> menuEntityHashSet = new HashSet<>();
+        menuEntityHashSet.add(menuEntity);
+        addWillDeleteChild(menuEntity, menuEntityHashSet, byIFrame);
+        List<String> menuIds = menuEntityHashSet.stream().map(MenuEntity::getId).collect(Collectors.toList());
+        dao.deleteByIds(menuIds);
+        /* 2.删除连接表节点 */
+        dao.deleteDeptMenuByMenuIds(menuIds);
+        return ServiceResult.buildSuccessResult("删除成功", true, req);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<GetDeptsByMenuIdResponse>> getDeptsByMenuId(IdRequest req) {
+        ArrayList<GetDeptsByMenuIdResponse> list = deptDao.getByMenuId(req.getId());
+        return ServiceResult.buildSuccessResult("查询成功", list, req);
+    }
+
+    /**
+     * 添加将要删除的子节点
+     *
+     * @param menuEntity
+     * @param menuEntityHashSet
+     * @param byIFrame
+     */
+    private void addWillDeleteChild(MenuEntity menuEntity, HashSet<MenuEntity> menuEntityHashSet, List<MenuEntity> byIFrame) {
+        byIFrame.forEach(t -> {
+            if (t.getFid().equals(menuEntity.getId())) {
+                menuEntityHashSet.add(t);
+                addWillDeleteChild(t, menuEntityHashSet, byIFrame);
+            }
+        });
     }
 
 
@@ -141,38 +214,6 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         set.add(father);
         getParents(father, set, map);
 
-    }
-
-    private ArrayList<MenuHtmlTreeResponse> buildMenuHtmlTree(Set<MenuEntity> byIFrame) {
-        ArrayList<MenuHtmlTreeResponse> menuInfo = new ArrayList<>();
-
-        // 父节点都找出来
-        for (MenuEntity menuEntity : byIFrame) {
-            if (NONE.equals(menuEntity.getFid())) {
-                menuInfo.add(MenuHtmlTreeResponse.build(menuEntity));
-            }
-        }
-        //每一个父节点都添加属于自己的树
-        for (MenuHtmlTreeResponse treeResponse : menuInfo) {
-            addMenuHtmlTreeChild(treeResponse, byIFrame);
-        }
-        return menuInfo;
-    }
-
-    /**
-     * 递归添加子结点
-     *
-     * @param treeResponse 父节点
-     * @param byIFrame     有用节点
-     */
-    private void addMenuHtmlTreeChild(MenuHtmlTreeResponse treeResponse, Set<MenuEntity> byIFrame) {
-        for (MenuEntity menuEntity : byIFrame) {
-            if (menuEntity.getFid().equals(treeResponse.getId())) {
-                MenuHtmlTreeResponse build = MenuHtmlTreeResponse.build(menuEntity);
-                addMenuHtmlTreeChild(build, byIFrame);
-                treeResponse.getChildren().add(build);
-            }
-        }
     }
 
 

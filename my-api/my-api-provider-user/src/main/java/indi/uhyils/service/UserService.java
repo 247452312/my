@@ -9,6 +9,8 @@ import indi.uhyils.pojo.request.LoginRequest;
 import indi.uhyils.pojo.response.LoginResponse;
 import indi.uhyils.pojo.response.ServiceResult;
 
+import java.util.ArrayList;
+
 
 /**
  * 用户接口API
@@ -60,5 +62,20 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * @return 登录所需要的信息
      */
     ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest);
+
+    /**
+     * 获取全部用户
+     *
+     * @param request 默认请求
+     * @return 全部用户
+     */
+    ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request);
+
+    /**
+     * 根据用户获取id
+     *
+     * @return
+     */
+    ServiceResult<UserEntity> getUserById(IdRequest request);
 
 }
