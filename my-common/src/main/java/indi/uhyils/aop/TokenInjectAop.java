@@ -2,14 +2,11 @@ package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ResponseCode;
-import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
-import indi.uhyils.pojo.request.ArgsRequest;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.DubboApiUtil;
@@ -134,7 +131,7 @@ public class TokenInjectAop {
             substring = substring.substring(0, substring.length() - 4);
         }
         ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userEntity.getId(), substring, methodName, token, arg);
-        if (ResponseCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
+        if (!ResponseCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
             return checkUserHavePowerServiceResult;
         }
         Boolean havePower = (Boolean) checkUserHavePowerServiceResult.getData();
@@ -161,7 +158,7 @@ public class TokenInjectAop {
         build.setRequestLink(request.getRequestLink());
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        return DubboApiUtil.dubboApiTool("PowerService", "checkUserHavePower", args, request);
+        return DubboApiUtil.dubboApiTool("PowerService", "checkUserHavePowerNoToken", args, request);
     }
 
     private ServiceResult<JSONObject> getUserRoleByRoleId(String token, String roleId, DefaultRequest arg) {
