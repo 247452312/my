@@ -147,7 +147,6 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         if (userEntity.getRoleId() == null) {
             return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
         }
-        initRole(userEntity);
         // 登录->加入缓存中
         redisPoolUtil.addUser(token, userEntity);
         return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);

@@ -12,6 +12,7 @@
         body {
             background-color: #ffffff;
         }
+
         .layui-transfer-box {
             overflow: auto;
         }
@@ -19,9 +20,8 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
-    <!--  父id    -->
     <input type="text" name="id" value="" style="display:none;">
-    <input type="text" name="class" value="indi.uhyils.pojo.model.DeptMenuMiddle" style="display:none;">
+    <input type="text" name="class" value="indi.uhyils.pojo.model.DeptPowerMiddle" style="display:none;">
     <div id="test6" class="demo-transfer"></div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
         <legend>
@@ -46,43 +46,44 @@
             if (r != null) return unescape(r[2]);
             return null;
         };
-        let menuId = $.getUrlParam('id');
+        let deptId = $.getUrlParam('id');
 
-        pushRequest("MenuService", "getDeptsByMenuId", {id: menuId}, function (data) {
+        pushRequest("DeptService", "getAllPowerWithHaveMark", {id: deptId}, function (data) {
             layer.msg("查询到权限集");
             list = [];
             for (let i = 0; i < data.length; i++) {
                 if (data[i].mark == true) {
-                    list.push(data[i].deptId);
+                    list.push(data[i].powerId);
                 }
             }
             transfer.render({
                 elem: '#test6'
                 , data: data
-                , title: ['权限集', '包含此菜单的权限集']  //自定义标题
+                , title: ['所有菜单', '此权限集包含的菜单']  //自定义标题
                 , value: list
-                , id: 'deptId'
+                // ,width: 150 //定义宽度
+                //  ,height: 600 //定义高度
+                , id: 'powerId'
                 , parseData: function (res) {
                     return {
-                        "value": res.deptId //数据值
-                        , "title": res.deptName //数据标题
+                        value: res.powerId //数据值
+                        , title: res.interfaceName + ':' + res.methodName //数据标题
                     }
                 }
             });
             //批量办法定事件
             util.event('lay-demoTransferActive', {
                 getData: function (othis) {
-                    var getData = transfer.getData('deptId'); //提交修改 getData是一个数组,包含了value:deptId
+                    var getData = transfer.getData('powerId'); //提交修改 getData是一个数组,包含了value:deptId
                     var obj = {};
-                    obj.deptIds = [];
+                    obj.powerIds = [];
                     for (let i = 0; i < getData.length; i++) {
-                        obj.deptIds.push(getData[i].value);
+                        obj.powerIds.push(getData[i].value);
                     }
-                    obj.menuId = menuId;
-                    obj.class = 'indi.uhyils.pojo.request.PutDeptsToMenuRequest';
-                    pushRequest("DeptService", "putDeptsToMenu", obj, function (data) {
+                    obj.deptId = deptId;
+                    obj.class = 'indi.uhyils.pojo.request.PutPowersToDeptRequest';
+                    pushRequest("DeptService", "putPowersToDept", obj, function (data) {
                         layer.msg("成功");
-
                         var iframeIndex = parent.layer.getFrameIndex(window.name);
                         parent.$.reloadTable();
                         parent.layer.close(iframeIndex);

@@ -19,9 +19,8 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
-    <!--  父id    -->
     <input type="text" name="id" value="" style="display:none;">
-    <input type="text" name="class" value="indi.uhyils.pojo.model.DeptMenuMiddle" style="display:none;">
+    <input type="text" name="class" value="indi.uhyils.pojo.model.RoleDeptMiddle" style="display:none;">
     <div id="test6" class="demo-transfer"></div>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
         <legend>
@@ -46,9 +45,9 @@
             if (r != null) return unescape(r[2]);
             return null;
         };
-        let menuId = $.getUrlParam('id');
+        let roleId = $.getUrlParam('id');
 
-        pushRequest("MenuService", "getDeptsByMenuId", {id: menuId}, function (data) {
+        pushRequest("RoleService", "getAllDeptWithHaveMark", {id: roleId}, function (data) {
             layer.msg("查询到权限集");
             list = [];
             for (let i = 0; i < data.length; i++) {
@@ -59,7 +58,7 @@
             transfer.render({
                 elem: '#test6'
                 , data: data
-                , title: ['权限集', '包含此菜单的权限集']  //自定义标题
+                , title: ['权限集', '此角色包含的权限集']  //自定义标题
                 , value: list
                 , id: 'deptId'
                 , parseData: function (res) {
@@ -78,9 +77,9 @@
                     for (let i = 0; i < getData.length; i++) {
                         obj.deptIds.push(getData[i].value);
                     }
-                    obj.menuId = menuId;
-                    obj.class = 'indi.uhyils.pojo.request.PutDeptsToMenuRequest';
-                    pushRequest("DeptService", "putDeptsToMenu", obj, function (data) {
+                    obj.roleId = roleId;
+                    obj.class = 'indi.uhyils.pojo.request.PutDeptsToRoleRequest';
+                    pushRequest("RoleService", "putDeptsToRole", obj, function (data) {
                         layer.msg("成功");
 
                         var iframeIndex = parent.layer.getFrameIndex(window.name);

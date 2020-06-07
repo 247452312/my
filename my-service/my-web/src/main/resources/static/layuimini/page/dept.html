@@ -39,6 +39,8 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="menu">菜单管理</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="power">权限管理</a>
 </script>
 
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
@@ -129,9 +131,37 @@
                         $(window).on("resize", function () {
                             layer.full(index);
                         });
+                    } else if (obj.event === 'menu') {
+                        layer.msg("菜单管理");
+                        var index = layer.open({
+                            title: '权限集->菜单管理',
+                            type: 2,
+                            shade: 0.2,
+                            maxmin: true,
+                            shadeClose: true,
+                            area: ['30%', '60%'],
+                            content: 'table/deptAddMenu.html?id=' + data.id,
+                        });
+                        $(window).on("resize", function () {
+                            layer.full(index);
+                        });
+                    } else if (obj.event === 'power') {
+                        layer.msg("权限管理");
+                        var index = layer.open({
+                            title: '权限集->权限管理',
+                            type: 2,
+                            shade: 0.2,
+                            maxmin: true,
+                            shadeClose: true,
+                            area: ['30%', '60%'],
+                            content: 'table/deptAddPower.html?id=' + data.id,
+                        });
+                        $(window).on("resize", function () {
+                            layer.full(index);
+                        });
+
                     }
                 });
-
             });
         }
         $.reloadTable();

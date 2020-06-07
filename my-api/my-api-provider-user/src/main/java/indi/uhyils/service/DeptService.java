@@ -1,10 +1,9 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.DeptEntity;
-import indi.uhyils.pojo.request.IdsRequest;
-import indi.uhyils.pojo.request.PutDeptsToMenuRequest;
-import indi.uhyils.pojo.request.PutMenusToDeptsRequest;
-import indi.uhyils.pojo.request.PutPowersToDeptRequest;
+import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
+import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
 import indi.uhyils.pojo.response.ServiceResult;
 
 import java.util.ArrayList;
@@ -58,5 +57,25 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * @return 权限集
      */
     ServiceResult<ArrayList<DeptEntity>> getDepts(PutDeptsToMenuRequest request);
+
+
+    /**
+     * 获取所有叶子菜单(包含羁绊标记)
+     *
+     * @param request 权限集id
+     * @return 所有叶子菜单(包含羁绊标记)
+     */
+    ServiceResult<ArrayList<GetAllMenuWithHaveMarkResponse>> getAllMenuWithHaveMark(IdRequest request);
+
+    /**
+     * 获取所有
+     * @param request
+     * @return
+     */
+    ServiceResult<ArrayList<GetAllPowerWithHaveMarkResponse>> getAllPowerWithHaveMark(IdRequest request);
+
+
+
+
 
 }

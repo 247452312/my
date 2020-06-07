@@ -1,6 +1,7 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.PowerEntity;
+import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 
@@ -21,4 +22,12 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * @return 所有权限
      */
     ServiceResult<ArrayList<PowerEntity>> getPowers(DefaultRequest request);
+
+    /**
+     * 检查用户是否存在此权限
+     *
+     * @param request 检查用户是否存在此权限请求
+     * @return 是否存在
+     */
+    ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerRequest request);
 }

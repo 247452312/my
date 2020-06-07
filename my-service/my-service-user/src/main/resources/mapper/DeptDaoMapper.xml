@@ -126,5 +126,26 @@
         where delete_flag = 0
     </select>
 
+    <delete id="deleteDeptMenuMiddleByDeptId">
+        delete
+        from sys_dept_menu
+        where dept_id = #{deptId}
+    </delete>
+
+    <select id="getAllPowerWithHaveMark" resultType="indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse">
+        select a.id                                                                                   powerId,
+               a.interface_name                                                                       interfaceName,
+               a.method_name                                                                          methodName,
+               (select count(*) = 1 from sys_dept_power where dept_id = #{id} and power_id = a.id) as mark
+        from sys_power a
+        where delete_flag = 0
+    </select>
+
+    <delete id="deleteDeptPowerMiddleByDeptId">
+        delete
+        from sys_dept_power
+        where dept_id = #{deptId}
+    </delete>
+
 
 </mapper>

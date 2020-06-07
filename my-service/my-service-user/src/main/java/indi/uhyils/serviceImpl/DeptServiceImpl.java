@@ -6,10 +6,9 @@ import indi.uhyils.dao.MenuDao;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.DeptMenuMiddle;
 import indi.uhyils.pojo.model.DeptPowerMiddle;
-import indi.uhyils.pojo.request.IdsRequest;
-import indi.uhyils.pojo.request.PutDeptsToMenuRequest;
-import indi.uhyils.pojo.request.PutMenusToDeptsRequest;
-import indi.uhyils.pojo.request.PutPowersToDeptRequest;
+import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
+import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
 
     @Override
     public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) {
+        dao.deleteDeptPowerMiddleByDeptId(request.getDeptId());
         String deptId = request.getDeptId();
         for (String powerId : request.getPowerIds()) {
             DeptPowerMiddle middle = DeptPowerMiddle.build(deptId, powerId);
@@ -83,6 +83,19 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     public ServiceResult<ArrayList<DeptEntity>> getDepts(PutDeptsToMenuRequest request) {
         return ServiceResult.buildSuccessResult("获取成功", dao.getAll(), request);
     }
+
+    @Override
+    public ServiceResult<ArrayList<GetAllMenuWithHaveMarkResponse>> getAllMenuWithHaveMark(IdRequest request) {
+        ArrayList<GetAllMenuWithHaveMarkResponse> list = menuDao.getAllMenuWithHaveMark(request.getId());
+        return ServiceResult.buildSuccessResult("查询菜单(包含羁绊)成功", list, request);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<GetAllPowerWithHaveMarkResponse>> getAllPowerWithHaveMark(IdRequest request) {
+        ArrayList<GetAllPowerWithHaveMarkResponse> list = dao.getAllPowerWithHaveMark(request.getId());
+        return ServiceResult.buildSuccessResult("查询权限(包含羁绊)成功", list, request);
+    }
+
 
     public DeptDao getDao() {
         return dao;

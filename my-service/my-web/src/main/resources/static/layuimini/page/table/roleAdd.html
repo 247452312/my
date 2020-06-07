@@ -12,25 +12,28 @@
         body {
             background-color: #ffffff;
         }
+        .layui-transfer-box {
+            overflow: auto;
+        }
     </style>
 </head>
 <body>
 <div class="layui-form layuimini-form">
     <!--  父id    -->
     <input type="text" name="id" value="" style="display:none;">
-    <input type="text" name="class" value="indi.uhyils.pojo.model.PowerEntity" style="display:none;">
+    <input type="text" name="class" value="indi.uhyils.pojo.model.RoleEntity" style="display:none;">
 
     <div class="layui-form-item">
         <label class="layui-form-label required">角色名称</label>
         <div class="layui-input-block">
-            <input type="text" name="name" lay-verify="required" placeholder="请输入接口名称" value=""
+            <input type="text" name="name" lay-verify="required" placeholder="请输入角色名称" value=""
                    class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">角色等级</label>
         <div class="layui-input-block">
-            <input type="text" name="level" lay-verify="required" placeholder="请输入方法名称" value=""
+            <input type="text" name="level" lay-verify="required" placeholder="请输入角色等级" value=""
                    class="layui-input">
         </div>
     </div>

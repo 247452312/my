@@ -52,12 +52,14 @@ function pushRequest(interfaceName, methodName, data, success, target = false) {
         contentType: "application/json;charset=utf8",
         async: false,
         success: function (data) {
-            if (target) {
-                layer.msg(data.msg);
-            }
+
             if (data.code == 200) {
+                if (target) {
+                    layer.msg(data.msg);
+                }
                 result = success(data.data);
             } else {
+                layer.msg(data.msg);
             }
         }
     });

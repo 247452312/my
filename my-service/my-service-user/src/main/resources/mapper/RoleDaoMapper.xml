@@ -117,5 +117,19 @@
         where delete_flag = 0
     </select>
 
+    <select id="getAllDeptWithHaveMark" resultType="indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse">
+        select a.id                                                                                 deptId,
+               a.name                                                                               deptName,
+               (select count(*) = 1 from sys_role_dept where role_id = #{id} and dept_id = a.id) as mark
+        from sys_dept a
+        where delete_flag = 0
+    </select>
+
+    <delete id="deleteRoleDeptMiddleByRoleId">
+        delete
+        from sys_role_dept
+        where role_id = #{roleId}
+    </delete>
+
 
 </mapper>

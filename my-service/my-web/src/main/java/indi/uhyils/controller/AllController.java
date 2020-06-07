@@ -45,6 +45,7 @@ public class AllController {
     @RequestMapping("action")
     @ResponseBody
     public WebResponse action(@RequestBody Action action, HttpServletRequest request) {
+        System.out.println(1);
         logger.info("param: " + JSON.toJSONString(action));
         action.getArgs().put(TOKEN, action.getToken());
         actionAddRequestLink(action);
@@ -52,7 +53,9 @@ public class AllController {
             List list = new ArrayList();
             list.add(action.getArgs());
             ServiceResult serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list, new DefaultRequest());
-            linkPrint(serviceResult.getRequestLink());
+            if (ResponseCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
+                linkPrint(serviceResult.getRequestLink());
+            }
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
             LogUtil.error(this, e.getMessage());

@@ -13,13 +13,12 @@
             background-color: #ffffff;
         }
         .layui-transfer-box {
-            overflow: auto;
-        }
+             overflow: auto;
+         }
     </style>
 </head>
 <body>
 <div class="layui-form layuimini-form">
-    <!--  父id    -->
     <input type="text" name="id" value="" style="display:none;">
     <input type="text" name="class" value="indi.uhyils.pojo.model.DeptMenuMiddle" style="display:none;">
     <div id="test6" class="demo-transfer"></div>
@@ -46,43 +45,44 @@
             if (r != null) return unescape(r[2]);
             return null;
         };
-        let menuId = $.getUrlParam('id');
+        let deptId = $.getUrlParam('id');
 
-        pushRequest("MenuService", "getDeptsByMenuId", {id: menuId}, function (data) {
+        pushRequest("DeptService", "getAllMenuWithHaveMark", {id: deptId}, function (data) {
             layer.msg("查询到权限集");
             list = [];
             for (let i = 0; i < data.length; i++) {
                 if (data[i].mark == true) {
-                    list.push(data[i].deptId);
+                    list.push(data[i].menuId);
                 }
             }
             transfer.render({
                 elem: '#test6'
                 , data: data
-                , title: ['权限集', '包含此菜单的权限集']  //自定义标题
+                , title: ['所有菜单', '此权限集包含的菜单']  //自定义标题
                 , value: list
-                , id: 'deptId'
+                // ,width: 150 //定义宽度
+                //  ,height: 600 //定义高度
+                , id: 'menuId'
                 , parseData: function (res) {
                     return {
-                        "value": res.deptId //数据值
-                        , "title": res.deptName //数据标题
+                        value: res.menuId //数据值
+                        , title: res.menuName //数据标题
                     }
                 }
             });
             //批量办法定事件
             util.event('lay-demoTransferActive', {
                 getData: function (othis) {
-                    var getData = transfer.getData('deptId'); //提交修改 getData是一个数组,包含了value:deptId
+                    var getData = transfer.getData('menuId'); //提交修改 getData是一个数组,包含了value:deptId
                     var obj = {};
-                    obj.deptIds = [];
+                    obj.menuIds = [];
                     for (let i = 0; i < getData.length; i++) {
-                        obj.deptIds.push(getData[i].value);
+                        obj.menuIds.push(getData[i].value);
                     }
-                    obj.menuId = menuId;
-                    obj.class = 'indi.uhyils.pojo.request.PutDeptsToMenuRequest';
-                    pushRequest("DeptService", "putDeptsToMenu", obj, function (data) {
+                    obj.deptId = deptId;
+                    obj.class = 'indi.uhyils.pojo.request.PutMenusToDeptsRequest';
+                    pushRequest("DeptService", "putMenusToDept", obj, function (data) {
                         layer.msg("成功");
-
                         var iframeIndex = parent.layer.getFrameIndex(window.name);
                         parent.$.reloadTable();
                         parent.layer.close(iframeIndex);

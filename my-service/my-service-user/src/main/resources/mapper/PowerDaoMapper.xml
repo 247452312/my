@@ -104,6 +104,27 @@
         <include refid="columnList"/>
         from sys_power a
         where delete_flag = 0
+        ORDER BY interface_name,method_name
+    </select>
+
+    <select id="checkUserHavePower" resultType="java.lang.Integer">
+        select count(*)
+        from sys_user
+        where id = #{userId}
+          and role_id in (select id
+                          from sys_role
+                          where id in (select role_id
+                                       from sys_role_dept
+                                       where dept_id in (select id
+                                                         from sys_dept
+                                                         where id in (select dept_id
+                                                                      from sys_dept_power
+                                                                      where power_id in (select id
+                                                                                         from sys_power
+                                                                                         where interface_name = #{interfaceName}
+                                                                                           and method_name = #{methodName})))))
+
+
     </select>
 
 </mapper>

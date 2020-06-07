@@ -4,16 +4,18 @@ import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.ContentDao;
 import indi.uhyils.dao.DeptDao;
 import indi.uhyils.dao.MenuDao;
+import indi.uhyils.dao.UserDao;
 import indi.uhyils.pojo.model.ContentEntity;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.MenuEntity;
 import indi.uhyils.pojo.model.UserEntity;
-import indi.uhyils.pojo.model.base.DataEntity;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
 import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.model.Arg;
-import indi.uhyils.pojo.response.*;
+import indi.uhyils.pojo.response.GetDeptsByMenuIdResponse;
+import indi.uhyils.pojo.response.IndexMenuTreeResponse;
+import indi.uhyils.pojo.response.MenuHtmlTreeResponse;
+import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.pojo.response.info.IndexMenuInfo;
 import indi.uhyils.pojo.response.info.MenuHomeInfo;
 import indi.uhyils.pojo.response.info.MenuLogoInfo;
@@ -57,6 +59,9 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     @Autowired
     private DeptDao deptDao;
 
+    @Autowired
+    private UserDao userDao;
+
 
     public MenuDao getDao() {
         return dao;
@@ -76,14 +81,16 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         Map<String, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
         Set<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
-        if (user.getRole() == null) {
+        if (user.getRole() == null && (user.getRoleId() == null || "".equals(user.getRoleId()))) {
             return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
         }
-        List<DeptEntity> depts = user.getRole().getDepts();
-        List<String> deptIds = new ArrayList<>();
-        for (DeptEntity dept : depts) {
-            deptIds.add(dept.getId());
+        List<DeptEntity> depts;
+        if (user.getRole() == null) {
+            depts = userDao.getUserDeptsByRoleId(user.getRoleId());
+        } else {
+            depts = user.getRole().getDepts();
         }
+        List<String> deptIds = depts.stream().map(DeptEntity::getId).collect(Collectors.toList());
         // 准备获取权限内的子节点
         List<String> level;
         // 超级管理员 就是牛逼
@@ -121,14 +128,16 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         Map<String, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
         HashSet<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
-        if (user.getRole() == null) {
+        if (user.getRole() == null && (user.getRoleId() == null || "".equals(user.getRoleId()))) {
             return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
         }
-        List<DeptEntity> depts = user.getRole().getDepts();
-        List<String> deptIds = new ArrayList<>();
-        for (DeptEntity dept : depts) {
-            deptIds.add(dept.getId());
+        List<DeptEntity> depts;
+        if (user.getRole() == null) {
+            depts = userDao.getUserDeptsByRoleId(user.getRoleId());
+        } else {
+            depts = user.getRole().getDepts();
         }
+        List<String> deptIds = depts.stream().map(DeptEntity::getId).collect(Collectors.toList());
         // 准备获取权限内的子节点
         List<String> level;
         // 超级管理员 就是牛逼

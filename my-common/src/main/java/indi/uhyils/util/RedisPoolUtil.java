@@ -23,11 +23,13 @@ public class RedisPoolUtil {
 
     /**
      * 添加user到缓存 一共添加两个, 一个是 (token,userEntity->json) 一个是(userId,token) 都设置60分钟的过期时间
+     * 缓存中的角色是没有权限的.也就是AOP中注入的user是没有记录权限集的
      *
      * @param token token
      * @param user  user
      */
     public void addUser(String token, UserEntity user) {
+
         Jedis jedis = redisPool.getJedis();
         String value = JSONObject.toJSONString(user);
         jedis.append(token, value);

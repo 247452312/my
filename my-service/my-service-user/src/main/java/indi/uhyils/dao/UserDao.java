@@ -30,7 +30,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param roleId 角色id
      * @return 用户的权限集
      */
-    List<DeptEntity> getUserDeptsByRoleId(String roleId);
+    ArrayList<DeptEntity> getUserDeptsByRoleId(String roleId);
 
 
     /**

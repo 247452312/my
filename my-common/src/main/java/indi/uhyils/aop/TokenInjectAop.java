@@ -2,13 +2,14 @@ package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ResponseCode;
-import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
-import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
+import indi.uhyils.pojo.request.ArgsRequest;
+import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.DubboApiUtil;
@@ -38,6 +39,10 @@ public class TokenInjectAop {
      */
     private Logger logger = LoggerFactory.getLogger(TokenInjectAop.class);
 
+    /**
+     * service后缀
+     */
+    private static final String IMPL = "Impl";
     /**
      * 放行方法后缀
      */
@@ -83,10 +88,12 @@ public class TokenInjectAop {
         //获取token
         DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
         String token = arg.getToken();
+
         /* 查询有没有登录 */
         if (token == null || "".equals(token)) {
             return ServiceResult.buildFailedResult("请登录!", null, arg);
         }
+
         /* 查询是否超时 */
         //解析token获取tokenInfo
         ServiceResult<JSONObject> getTokenInfoByTokenNoToken = parseToken(token, arg);
@@ -100,6 +107,7 @@ public class TokenInjectAop {
         if (tokenInfo.getTimeOut()) {
             return ServiceResult.buildFailedResult("登录超时,请重新登录", null, arg);
         }
+
         /* 查询是否有权限 */
         UserEntity userEntity;
         // 如果参数中携带了用户,则不需要去再次查询用户
@@ -114,32 +122,23 @@ public class TokenInjectAop {
             userEntity = serviceResult.getData().toJavaObject(UserEntity.class);
         }
 
-        /* 注入权限 */
-        if (userEntity.getRoleId() != null && userEntity.getRole() == null) {
-            ServiceResult<JSONObject> userRoleByRoleId = getUserRoleByRoleId(token, userEntity.getRoleId(), arg);
-            if (!ResponseCode.SUCCESS.getText().equals(userRoleByRoleId.getServiceCode())) {
-                return userRoleByRoleId;
-            }
-            RoleEntity role = userRoleByRoleId.getData().toJavaObject(RoleEntity.class);
-            userEntity.setRole(role);
-        }
         // 超级管理员直接放行
         if (ADMIN.equals(userEntity.getUserName())) {
             arg.setUser(userEntity);
             //执行方法
             return pjp.proceed(new DefaultRequest[]{arg});
         }
-        boolean haveAuth = false;
-        PowerEntity powerEntity = new PowerEntity();
-        powerEntity.setInterfaceName(className);
-        powerEntity.setMethodName(methodName);
-        for (DeptEntity dept : userEntity.getRole().getDepts()) {
-            if (dept.getPowers().contains(powerEntity)) {
-                haveAuth = true;
-                break;
-            }
+
+        String substring = className.substring(className.lastIndexOf('.') + 1);
+        if (substring.contains(IMPL)) {
+            substring = substring.substring(0, substring.length() - 4);
         }
-        if (!haveAuth) {
+        ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userEntity.getId(), substring, methodName, token, arg);
+        if (ResponseCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
+            return checkUserHavePowerServiceResult;
+        }
+        Boolean havePower = (Boolean) checkUserHavePowerServiceResult.getData();
+        if (!havePower) {
             return ServiceResult.buildFailedResult("没有权限", null, arg);
         }
 
@@ -148,13 +147,30 @@ public class TokenInjectAop {
         return pjp.proceed(new DefaultRequest[]{arg});
     }
 
+    /**
+     * 检查指定用户有没有指定权限
+     *
+     * @param id            用户id
+     * @param interfaceName 权限接口名
+     * @param methodName    权限方法名
+     * @return 是否有权限
+     */
+    private ServiceResult<JSONObject> checkUserHavePower(String id, String interfaceName, String methodName, String token, DefaultRequest request) {
+        CheckUserHavePowerRequest build = CheckUserHavePowerRequest.build(interfaceName, methodName, id);
+        build.setToken(token);
+        build.setRequestLink(request.getRequestLink());
+        ArrayList<Object> args = new ArrayList<>();
+        args.add(build);
+        return DubboApiUtil.dubboApiTool("PowerService", "checkUserHavePower", args, request);
+    }
+
     private ServiceResult<JSONObject> getUserRoleByRoleId(String token, String roleId, DefaultRequest arg) {
         IdRequest build = IdRequest.build(roleId);
         build.setToken(token);
         build.setRequestLink(arg.getRequestLink());
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        return DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args, arg);
+        return DubboApiUtil.dubboApiTool("RoleService", "getRoleByRoleIdNoToken", args, arg);
     }
 
 

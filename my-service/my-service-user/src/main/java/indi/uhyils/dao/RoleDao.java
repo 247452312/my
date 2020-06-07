@@ -2,6 +2,8 @@ package indi.uhyils.dao;
 
 import indi.uhyils.pojo.model.RoleDeptMiddle;
 import indi.uhyils.pojo.model.RoleEntity;
+import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
+import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
@@ -37,4 +39,22 @@ public interface RoleDao extends DefaultDao<RoleEntity> {
      * @return 所有角色
      */
     ArrayList<RoleEntity> getAll();
+
+    /**
+     * 获取所有权限集以及角色是否有此权限集的标记
+     *
+     * @param id 角色id
+     * @return 所有权限集以及角色是否有此权限集的标记
+     */
+    ArrayList<GetAllDeptWithHaveMarkResponse> getAllDeptWithHaveMark(String id);
+
+    /**
+     * 删除角色对应的所有权限集羁绊
+     *
+     * @param roleId
+     * @return
+     */
+    Integer deleteRoleDeptMiddleByRoleId(String roleId);
+
+
 }

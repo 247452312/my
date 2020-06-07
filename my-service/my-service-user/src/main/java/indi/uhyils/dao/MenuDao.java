@@ -1,8 +1,10 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.pojo.model.MenuEntity;
+import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,4 +55,12 @@ public interface MenuDao extends DefaultDao<MenuEntity> {
      * @return 删除个数
      */
     Integer deleteDeptMenuByDeptIds(List<String> deptIds);
+
+    /**
+     * 获取所有叶子菜单(包含羁绊标记)
+     *
+     * @param deptId 权限集id
+     * @return 所有叶子菜单(包含羁绊标记)
+     */
+    ArrayList<GetAllMenuWithHaveMarkResponse> getAllMenuWithHaveMark(String deptId);
 }

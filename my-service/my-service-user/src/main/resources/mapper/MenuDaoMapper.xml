@@ -153,9 +153,19 @@
     <delete id="deleteDeptMenuByDeptIds" parameterType="java.util.List">
         delete from sys_dept_menu where dept_id in
         <foreach item="deptIds" index="index" collection="list" open="(" separator="," close=")">
-            #{menuIds}
+            #{deptIds}
         </foreach>
     </delete>
+
+    <select id="getAllMenuWithHaveMark" resultType="indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse">
+        select a.id                                                                                     menuId,
+               a.name                                                                                   menuName,
+               (select count(*) = 1 from sys_dept_menu where dept_id = #{deptId} and menu_id = a.id) as mark
+        from sys_menu a
+        where delete_flag = 0
+          and type = 1;
+
+    </select>
 
 
 </mapper>
