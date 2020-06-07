@@ -76,7 +76,11 @@
                     cols: [[
                         {type: 'numbers'},
                         {field: 'name', title: '菜单名称'},
-                        {field: 'icon', width: 150, title: '图标'},
+                        {
+                            field: 'icon', width: 150, title: '图标', templet: function (d) {
+                                return '<div class="' + d.icon + '"></div>';
+                            }
+                        },
                         {field: 'url', width: 250, title: '菜单url'},
                         {
                             field: 'target', minWidth: 200, templet: function (d) {

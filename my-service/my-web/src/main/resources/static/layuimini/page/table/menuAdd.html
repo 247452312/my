@@ -8,10 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../../css/public.css" media="all">
+    <link rel="stylesheet" href="../../../css/my.css" media="all">
     <style>
         body {
             background-color: #ffffff;
         }
+
         .layui-transfer-box {
             overflow: auto;
         }
@@ -130,7 +132,8 @@
                 $('[name="target"]').attr("checked", false);
                 $('[name="target"][value="' + data.target + '"]').attr("checked", true);
                 $('[name="name"]').attr('value', data.name);
-                $('[name="icon"]').attr('value', data.icon);
+                // $('[name="icon"]').attr('value', data.icon);
+                $('[name="icon"] option[value="' + data.icon + '"]').attr('selected', true);
                 $('[name="url"]').attr('value', data.url);
             } else if (func == 'add') {
                 $('[name="fid"]').attr('value', id);
