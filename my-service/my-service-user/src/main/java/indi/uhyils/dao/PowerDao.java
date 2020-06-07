@@ -30,4 +30,12 @@ public interface PowerDao extends DefaultDao<PowerEntity> {
      * @return 查询数量 大于0表示存在
      */
     Integer checkUserHavePower(@Param("userId") String userId, @Param("interfaceName") String interfaceName, @Param("methodName") String methodName);
+
+    /**
+     * 根据权限id删除权限集-权限中间表
+     *
+     * @param id 权限id
+     * @return 删除数量
+     */
+    Integer deleteDeptPowerMiddleByPowerId(String id);
 }

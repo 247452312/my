@@ -3,7 +3,6 @@ package indi.uhyils.dao;
 import indi.uhyils.pojo.model.RoleDeptMiddle;
 import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
-import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
@@ -57,4 +56,11 @@ public interface RoleDao extends DefaultDao<RoleEntity> {
     Integer deleteRoleDeptMiddleByRoleId(String roleId);
 
 
+    /**
+     * 根据角色id将用户角色置空
+     *
+     * @param id 角色id
+     * @return 更新数量
+     */
+    Integer updateUserRoleToNullByRoleId(String id);
 }

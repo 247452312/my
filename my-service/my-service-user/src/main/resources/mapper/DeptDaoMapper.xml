@@ -148,4 +148,13 @@
     </delete>
 
 
+    <delete id="deleteRoleDeptMiddleByDeptId">
+        delete
+        from sys_role_dept
+        where dept_id = #{deptId}
+    </delete>
+
+
+
+
 </mapper>

@@ -67,5 +67,13 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      */
     ServiceResult<ArrayList<GetAllDeptWithHaveMarkResponse>> getAllDeptWithHaveMark(IdRequest request);
 
+    /**
+     * 根据角色id删除角色以及关联表
+     *
+     * @param request 角色id
+     * @return 删除是否成功
+     */
+    ServiceResult<Boolean> deleteRole(IdRequest request);
+
 
 }

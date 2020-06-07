@@ -69,13 +69,20 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
 
     /**
      * 获取所有
+     *
      * @param request
      * @return
      */
     ServiceResult<ArrayList<GetAllPowerWithHaveMarkResponse>> getAllPowerWithHaveMark(IdRequest request);
 
 
-
+    /**
+     * 根据权限集id删除 并且删除关联表
+     *
+     * @param request 权限集id
+     * @return 删除是否成功
+     */
+    ServiceResult<Boolean> deleteDept(IdRequest request);
 
 
 }

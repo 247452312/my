@@ -5,11 +5,13 @@ import indi.uhyils.dao.PowerDao;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
 import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.PowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -47,5 +49,21 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
         }
         return ServiceResult.buildSuccessResult("查询成功", havePower, request);
 
+    }
+
+    @Override
+    public ServiceResult<Boolean> deletePower(IdRequest request) {
+        List<PowerEntity> byId = getDao().getById(request.getId());
+        if (byId == null) {
+            return ServiceResult.buildFailedResult("查无此人", null, request);
+        }
+        PowerEntity powerEntity = byId.get(0);
+        powerEntity.setDeleteFlag(true);
+        powerEntity.preUpdate(request);
+        dao.update(powerEntity);
+
+        dao.deleteDeptPowerMiddleByPowerId(request.getId());
+
+        return ServiceResult.buildSuccessResult("删除成功", true, request);
     }
 }

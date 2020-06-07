@@ -3,6 +3,7 @@ package indi.uhyils.service;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
 import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 
 import java.util.ArrayList;
@@ -30,4 +31,12 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * @return 是否存在
      */
     ServiceResult<Boolean> checkUserHavePowerNoToken(CheckUserHavePowerRequest request);
+
+    /**
+     * 删除权限->包括连接表
+     *
+     * @param request
+     * @return
+     */
+    ServiceResult<Boolean> deletePower(IdRequest request);
 }

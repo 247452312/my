@@ -3,6 +3,7 @@ package indi.uhyils.serviceImpl;
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.DeptDao;
 import indi.uhyils.dao.MenuDao;
+import indi.uhyils.dao.RoleDao;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.DeptMenuMiddle;
 import indi.uhyils.pojo.model.DeptPowerMiddle;
@@ -30,6 +31,9 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
 
     @Autowired
     private MenuDao menuDao;
+
+    @Autowired
+    private RoleDao roleDao;
 
     @Override
     public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) {
@@ -94,6 +98,23 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     public ServiceResult<ArrayList<GetAllPowerWithHaveMarkResponse>> getAllPowerWithHaveMark(IdRequest request) {
         ArrayList<GetAllPowerWithHaveMarkResponse> list = dao.getAllPowerWithHaveMark(request.getId());
         return ServiceResult.buildSuccessResult("查询权限(包含羁绊)成功", list, request);
+    }
+
+    @Override
+    public ServiceResult<Boolean> deleteDept(IdRequest request) {
+        List<DeptEntity> byId = getDao().getById(request.getId());
+        if (byId == null) {
+            return ServiceResult.buildFailedResult("查无此人", null, request);
+        }
+        DeptEntity t = byId.get(0);
+        t.setDeleteFlag(true);
+        t.preUpdate(request);
+        getDao().update(t);
+        dao.deleteDeptPowerMiddleByDeptId(request.getId());
+        dao.deleteDeptMenuMiddleByDeptId(request.getId());
+        dao.deleteRoleDeptMiddleByDeptId(request.getId());
+
+        return ServiceResult.buildSuccessResult("删除成功", true, request);
     }
 
 

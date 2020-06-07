@@ -81,6 +81,23 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
         return ServiceResult.buildSuccessResult("查询带存在标记的权限集成功", allDeptWithHaveMark, request);
     }
 
+    @Override
+    public ServiceResult<Boolean> deleteRole(IdRequest request) {
+        List<RoleEntity> byId = getDao().getById(request.getId());
+        if (byId == null) {
+            return ServiceResult.buildFailedResult("查无此人", null, request);
+        }
+        RoleEntity t = byId.get(0);
+        t.setDeleteFlag(true);
+        t.preUpdate(request);
+        dao.update(t);
+        dao.deleteRoleDeptMiddleByRoleId(request.getId());
+        dao.updateUserRoleToNullByRoleId(request.getId());
+
+        return ServiceResult.buildSuccessResult("删除成功", true, request);
+
+    }
+
 
     public RoleDao getDao() {
         return dao;

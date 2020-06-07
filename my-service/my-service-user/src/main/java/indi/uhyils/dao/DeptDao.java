@@ -79,4 +79,12 @@ public interface DeptDao extends DefaultDao<DeptEntity> {
      * @return 删除数量
      */
     Integer deleteDeptPowerMiddleByDeptId(String deptId);
+
+    /**
+     * 根据权限集id删除角色-权限集关联表
+     *
+     * @param id 权限集id
+     * @return 删除个数
+     */
+    Integer deleteRoleDeptMiddleByDeptId(String id);
 }

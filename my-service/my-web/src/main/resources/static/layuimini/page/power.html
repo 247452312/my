@@ -112,7 +112,7 @@
                     //console.log(obj)
                     if (obj.event === 'del') { // 删除
                         layer.confirm('真的删除行么', function (index) {
-                            pushRequest("PowerService", "delete", {id: data.id}, function (data) {
+                            pushRequest("PowerService", "deletePower", {id: data.id}, function (data) {
                                 layer.close(index);
                                 $.reloadTable();
                             });
