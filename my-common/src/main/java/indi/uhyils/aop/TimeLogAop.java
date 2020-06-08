@@ -40,7 +40,7 @@ public class TimeLogAop {
 
 
     /**
-     * 日志
+     * 日志显示
      * 添加链路跟踪
      *
      * @param pjp

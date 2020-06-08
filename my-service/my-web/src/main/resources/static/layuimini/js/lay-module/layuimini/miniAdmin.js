@@ -94,6 +94,26 @@ layui.define(["jquery", "miniMenu", "element", "miniTab", "miniTheme"], function
                             listen: true,
                         });
                         miniAdmin.deleteLoader(options.loadingTime);
+
+                        function bubbleIframeMouseMove(iframe) {
+                            var existingOnMouseMove = iframe.contentWindow.onmousemove;
+                            iframe.contentWindow.onmousemove = function (e) {
+                                if (existingOnMouseMove) existingOnMouseMove(e);
+                                var evt = document.createEvent("MouseEvents");
+                                var boundingClientRect = iframe.getBoundingClientRect();
+                                evt.initMouseEvent("mousemove", true,
+                                    false,
+                                    window, e.detail, e.screenX, e.screenY, e.clientX + boundingClientRect.left, e.clientY + boundingClientRect.top, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, null);
+                                iframe.dispatchEvent(evt);
+                            };
+                        }
+
+                        myIframe = document.getElementsByTagName("iframe");
+                        for (let i = 0; i < myIframe.length; i++) {
+                            bubbleIframeMouseMove(myIframe[i]);
+                        }
+
+
                     }, true
                 );
             } else {

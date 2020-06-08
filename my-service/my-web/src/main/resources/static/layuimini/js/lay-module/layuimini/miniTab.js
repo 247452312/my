@@ -51,11 +51,30 @@ layui.define(["element", "layer", "jquery"], function (exports) {
             }
             var ele = element;
             if (options.isIframe) ele = parent.layui.element;
+            var content = '<iframe width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"   src="' + options.href + '"></iframe>';
             ele.tabAdd('layuiminiTab', {
                 title: '<span class="layuimini-tab-active"></span><span>' + options.title + '</span><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>' //用于演示
-                , content: '<iframe width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"   src="' + options.href + '"></iframe>'
+                , content: content
                 , id: options.tabId
             });
+
+            function bubbleIframeMouseMove(iframe) {
+                var existingOnMouseMove = iframe.contentWindow.onmousemove;
+                iframe.contentWindow.onmousemove = function (e) {
+                    if (existingOnMouseMove) existingOnMouseMove(e);
+                    var evt = document.createEvent("MouseEvents");
+                    var boundingClientRect = iframe.getBoundingClientRect();
+                    evt.initMouseEvent("mousemove", true,
+                        false,
+                        window, e.detail, e.screenX, e.screenY, e.clientX + boundingClientRect.left, e.clientY + boundingClientRect.top, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, null);
+                    iframe.dispatchEvent(evt);
+                };
+            }
+
+            myIframe = document.getElementsByTagName("iframe");
+            for (let i = 0; i < myIframe.length; i++) {
+                bubbleIframeMouseMove(myIframe[i]);
+            }
             $('.layuimini-menu-left').attr('layuimini-tab-tag', 'add');
             sessionStorage.setItem('layuiminimenu_' + options.tabId, options.title);
         },
@@ -263,6 +282,8 @@ layui.define(["element", "layer", "jquery"], function (exports) {
                     });
                 }
                 parent.layui.element.tabChange('layuiminiTab', tabId);
+
+
                 parent.layer.close(loading);
             });
 
@@ -403,10 +424,10 @@ layui.define(["element", "layer", "jquery"], function (exports) {
             options.menuList = options.menuList || [];
             if (!options.urlHashLocation) return false;
             var tabId = location.hash.replace(/^#\//, '');
-            if (tabId === null || tabId === undefined || tabId ==='') return false;
+            if (tabId === null || tabId === undefined || tabId === '') return false;
 
             // 判断是否为首页
-            if(tabId ===options.homeInfo.href) return false;
+            if (tabId === options.homeInfo.href) return false;
 
             // 判断是否为右侧菜单
             var menu = miniTab.searchMenu(tabId, options.menuList);

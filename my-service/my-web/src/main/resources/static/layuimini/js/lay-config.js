@@ -15,6 +15,7 @@ layui.config({
     version: true
 }).extend({
     miniAdmin: "layuimini/miniAdmin", // layuimini后台扩展
+    iconPicker: "layuimini/iconPicker", // select图标选择
     miniMenu: "layuimini/miniMenu", // layuimini菜单扩展
     miniTab: "layuimini/miniTab", // layuimini tab扩展
     miniTheme: "layuimini/miniTheme", // layuimini 主题扩展
