@@ -40,6 +40,8 @@
         <commons-net.version>3.6</commons-net.version>
         <junit.version>4.13</junit.version>
         <jedis.version>3.2.0</jedis.version>
+        <distrupter.version>3.4.2</distrupter.version>
+
     </properties>
 
     <!-- profile配置 -->
@@ -97,7 +99,7 @@
             </dependency>
             <dependency>
                 <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-transaction</artifactId>
+                <artifactId>my-api-provider-log</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -185,6 +187,13 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${distrupter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

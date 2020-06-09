@@ -9,6 +9,7 @@ import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,14 +39,15 @@ public class AllController {
     /**
      * 默认返回所有的方法
      *
-     * @param action  包含请求参数的信息
-     * @param request 请求,暂时没用,日后或许有用
+     * @param action             包含请求参数的信息
+     * @param httpServletRequest 请求,暂时没用,日后或许有用
      * @return 向界面返回的值
      */
     @RequestMapping("action")
     @ResponseBody
-    public WebResponse action(@RequestBody Action action, HttpServletRequest request) {
-        System.out.println(1);
+    public WebResponse action(@RequestBody Action action, HttpServletRequest httpServletRequest) {
+        String eMasg = null;
+        LinkNode<String> link = null;
         logger.info("param: " + JSON.toJSONString(action));
         action.getArgs().put(TOKEN, action.getToken());
         actionAddRequestLink(action);
@@ -56,11 +58,15 @@ public class AllController {
             if (ResponseCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
                 linkPrint(serviceResult.getRequestLink());
             }
+            link = serviceResult.getRequestLink();
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
             LogUtil.error(this, e.getMessage());
             e.printStackTrace();
+            eMasg = e.getMessage();
             return WebResponse.build(null, ResponseCode.ERROR.getMsg(), ResponseCode.ERROR.getText());
+        } finally {
+            LogPushUtils.pushLog(eMasg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken());
         }
     }
 

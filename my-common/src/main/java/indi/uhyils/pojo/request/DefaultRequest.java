@@ -19,6 +19,7 @@ public class DefaultRequest implements Serializable {
 
     private UserEntity user;
 
+
     /**
      * 跟踪请求链路
      */

@@ -37,7 +37,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
     private LinkNode<String> requestLink;
 
 
-    public ServiceResult(T data, Integer serviceCode, String serviceMessage, LinkNode linkNode) {
+    public ServiceResult(T data, Integer serviceCode, String serviceMessage, LinkNode<String> linkNode) {
         this.data = data;
         this.serviceCode = serviceCode;
         this.serviceMessage = serviceMessage;

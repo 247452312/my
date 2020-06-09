@@ -196,7 +196,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
 
     private String getToken(String userId) {
-        StringBuilder sb = new StringBuilder(27 + salt.length());
+        StringBuilder sb = new StringBuilder(26 + salt.length());
 
         //生成日期部分 8位
         LocalDateTime localDateTime = LocalDateTime.now();
