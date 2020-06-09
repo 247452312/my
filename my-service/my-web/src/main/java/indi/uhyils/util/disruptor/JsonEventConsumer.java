@@ -31,8 +31,8 @@ public class JsonEventConsumer implements EventHandler<JsonEvent> {
      * 发送日志
      *
      * @param jsonEvent 事件本身
-     * @param l         未知
-     * @param b         未知 TODO 想办法弄明白这两个参数
+     * @param l         正在处理的事件的顺序
+     * @param b         是否是最后一个事件
      * @throws Exception
      */
     @Override
