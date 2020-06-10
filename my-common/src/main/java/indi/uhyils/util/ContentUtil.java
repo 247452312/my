@@ -3,6 +3,8 @@ package indi.uhyils.util;
 import indi.uhyils.pojo.model.ContentEntity;
 
 /**
+ * Content表工具
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月30日 08时31分
  */

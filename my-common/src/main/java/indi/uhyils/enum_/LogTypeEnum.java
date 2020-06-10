@@ -9,18 +9,31 @@ public enum LogTypeEnum {
     /**
      * info
      */
-    INFO,
+    INFO(0),
     /**
      * debug
      */
-    DEBUG,
+    DEBUG(1),
     /**
      * warn
      */
-    WARN,
+    WARN(2),
     /**
      * error
      */
-    ERROR;
+    ERROR(3);
 
+    private Integer type;
+
+    LogTypeEnum(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 }

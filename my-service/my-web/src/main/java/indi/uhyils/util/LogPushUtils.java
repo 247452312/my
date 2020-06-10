@@ -3,7 +3,7 @@ package indi.uhyils.util;
 import com.alibaba.fastjson.JSONObject;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
-import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.content.Content;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.util.disruptor.JsonEvent;
 import indi.uhyils.util.disruptor.JsonEventConsumer;
@@ -11,9 +11,7 @@ import indi.uhyils.util.disruptor.JsonEventFactory;
 import indi.uhyils.util.disruptor.JsonEventProducerWithTranslator;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
 
 /**
  * 日志推送请求
@@ -27,25 +25,24 @@ public class LogPushUtils {
     private static JsonEventProducerWithTranslator producer;
 
     static {
-        ThreadPoolExecutor jsonExecutor = new ThreadPoolExecutor(1, 3, 60, TimeUnit.SECONDS, new LinkedBlockingDeque<>(10));
         JsonEventFactory factory = new JsonEventFactory();
         int bufferSize = 1024 * 8;
-        Disruptor<JsonEvent> disruptor = new Disruptor<JsonEvent>(factory, bufferSize, jsonExecutor);
+        Disruptor<JsonEvent> disruptor = new Disruptor<JsonEvent>(factory, bufferSize, Executors.defaultThreadFactory());
         disruptor.handleEventsWith(SpringUtil.getBean(JsonEventConsumer.class));
         disruptor.start();
         RingBuffer<JsonEvent> ringBuffer = disruptor.getRingBuffer();
         producer = new JsonEventProducerWithTranslator(ringBuffer);
     }
 
-    public static void pushLog(String exceptionDetail, String interfaceName, String methodName, Object params, LinkNode<String> link, HttpServletRequest request, String token) {
+    public static void pushLog(String exceptionDetail, String interfaceName, String methodName, Object params, LinkNode<String> link, HttpServletRequest request, String token, Integer serviceCode) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("class", "indi.uhyils.pojo.model.LogEntity");
         // 说明有错误信息,类型是错误
         if (exceptionDetail != null && !"".equals(exceptionDetail)) {
-            jsonObject.put("logType", LogTypeEnum.ERROR.getType());
+            jsonObject.put("logType", serviceCode);
             jsonObject.put("exceptionDetail", exceptionDetail);
         } else {
-            jsonObject.put("logType", LogTypeEnum.NOMAL.getType());
+            jsonObject.put("logType", serviceCode);
         }
 
         jsonObject.put("interfaceName", interfaceName);
@@ -66,22 +63,22 @@ public class LogPushUtils {
         //X-Forwarded-For：Squid 服务代理
         String ipAddresses = request.getHeader("X-Forwarded-For");
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || Content.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
             //Proxy-Client-IP：apache 服务代理
             ipAddresses = request.getHeader("Proxy-Client-IP");
         }
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || Content.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
             //WL-Proxy-Client-IP：weblogic 服务代理
             ipAddresses = request.getHeader("WL-Proxy-Client-IP");
         }
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || Content.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
             //HTTP_CLIENT_IP：有些代理服务器
             ipAddresses = request.getHeader("HTTP_CLIENT_IP");
         }
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || Content.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
             //X-Real-IP：nginx服务代理
             ipAddresses = request.getHeader("X-Real-IP");
         }
@@ -92,7 +89,7 @@ public class LogPushUtils {
         }
 
         //还是不能获取到，最后再通过request.getRemoteAddr();获取
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+        if (ip == null || ip.length() == 0 || Content.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
             ip = request.getRemoteAddr();
         }
         return ip;

@@ -1,7 +1,7 @@
 package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.ResponseCode;
+import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
@@ -95,7 +95,7 @@ public class TokenInjectAop {
         //解析token获取tokenInfo
         ServiceResult<JSONObject> getTokenInfoByTokenNoToken = parseToken(token, arg);
         //解析出现异常
-        if (!ResponseCode.SUCCESS.getText().equals(getTokenInfoByTokenNoToken.getServiceCode())) {
+        if (!ServiceCode.SUCCESS.getText().equals(getTokenInfoByTokenNoToken.getServiceCode())) {
             return getTokenInfoByTokenNoToken;
         }
         JSONObject data = getTokenInfoByTokenNoToken.getData();
@@ -113,7 +113,7 @@ public class TokenInjectAop {
         } else {
             ServiceResult<JSONObject> serviceResult = getUserByIdNoToken(token, tokenInfo, arg);
             // 查询是否有报错,如果报错.则结束请求
-            if (!ResponseCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
+            if (!ServiceCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
                 return serviceResult;
             }
             userEntity = serviceResult.getData().toJavaObject(UserEntity.class);
@@ -131,7 +131,7 @@ public class TokenInjectAop {
             substring = substring.substring(0, substring.length() - 4);
         }
         ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userEntity.getId(), substring, methodName, token, arg);
-        if (!ResponseCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
+        if (!ServiceCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
             return checkUserHavePowerServiceResult;
         }
         Boolean havePower = (Boolean) checkUserHavePowerServiceResult.getData();

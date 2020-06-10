@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.enum_.ResponseCode;
+import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 
@@ -67,7 +67,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @return 一个code是200 代表成功的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildSuccessResult(String businessMessage, T t, DefaultRequest req) {
-        return new ServiceResult(t, ResponseCode.SUCCESS.getText(), businessMessage, req);
+        return new ServiceResult(t, ServiceCode.SUCCESS.getText(), businessMessage, req);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @return 一个code是400的 代表逻辑错误的返回(程序并没有错)
      */
     public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage, T t, DefaultRequest req) {
-        return new ServiceResult(t, ResponseCode.REQUEST_PARM_ERROR.getText(), businessMessage, req);
+        return new ServiceResult(t, ServiceCode.REQUEST_PARM_ERROR.getText(), businessMessage, req);
     }
 
     /**
@@ -93,7 +93,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @return 一个code是500 代表逻辑错误的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildErrorResult(String businessMessage, DefaultRequest req) {
-        return new ServiceResult(null, ResponseCode.ERROR.getText(), businessMessage, req);
+        return new ServiceResult(null, ServiceCode.ERROR.getText(), businessMessage, req);
     }
 
     public T getData() {

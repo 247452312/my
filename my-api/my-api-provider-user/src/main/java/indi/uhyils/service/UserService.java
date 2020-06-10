@@ -72,8 +72,9 @@ public interface UserService extends DefaultEntityService<UserEntity> {
     ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request);
 
     /**
-     * 根据用户获取id
+     * 根据用户id获取用户
      *
+     * @param request 用户id
      * @return
      */
     ServiceResult<UserEntity> getUserById(IdRequest request);

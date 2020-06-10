@@ -1,7 +1,7 @@
 package indi.uhyils.controller;
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.enum_.ResponseCode;
+import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.SessionRequest;
@@ -48,14 +48,16 @@ public class AllController {
     public WebResponse action(@RequestBody Action action, HttpServletRequest httpServletRequest) {
         String eMasg = null;
         LinkNode<String> link = null;
+        ServiceResult serviceResult = null;
+
         logger.info("param: " + JSON.toJSONString(action));
         action.getArgs().put(TOKEN, action.getToken());
         actionAddRequestLink(action);
         try {
             List list = new ArrayList();
             list.add(action.getArgs());
-            ServiceResult serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list, new DefaultRequest());
-            if (ResponseCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
+            serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list, new DefaultRequest());
+            if (ServiceCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
                 linkPrint(serviceResult.getRequestLink());
             }
             link = serviceResult.getRequestLink();
@@ -64,9 +66,11 @@ public class AllController {
             LogUtil.error(this, e.getMessage());
             e.printStackTrace();
             eMasg = e.getMessage();
-            return WebResponse.build(null, ResponseCode.ERROR.getMsg(), ResponseCode.ERROR.getText());
+            return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
         } finally {
-            LogPushUtils.pushLog(eMasg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken());
+            if (serviceResult != null) {
+                LogPushUtils.pushLog(eMasg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken(), serviceResult.getServiceCode());
+            }
         }
     }
 
