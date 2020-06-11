@@ -15,7 +15,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * dubbo 泛化接口
@@ -86,7 +85,12 @@ public class DubboApiUtil {
 
             Object[] arg = args.toArray(new Object[0]);
             String[] parameterTypes = Arrays.stream(params).map(Class::getName).toArray(String[]::new);
+            if (genericService == null) {
+                reference.destroy();
+            }
             ServiceResult<JSONObject> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, parameterTypes, arg)), ServiceResult.class);
+
+            // 添加链路
             request.setRequestLink(serviceResult.getRequestLink());
             return serviceResult;
         } catch (Exception e) {

@@ -46,7 +46,7 @@ public class AllController {
     @RequestMapping("action")
     @ResponseBody
     public WebResponse action(@RequestBody Action action, HttpServletRequest httpServletRequest) {
-        String eMasg = null;
+        String eMsg = null;
         LinkNode<String> link = null;
         ServiceResult serviceResult = null;
 
@@ -61,15 +61,18 @@ public class AllController {
                 linkPrint(serviceResult.getRequestLink());
             }
             link = serviceResult.getRequestLink();
+            if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
+                eMsg = serviceResult.getServiceMessage();
+            }
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
             LogUtil.error(this, e.getMessage());
             e.printStackTrace();
-            eMasg = e.getMessage();
+            eMsg = e.getMessage();
             return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
         } finally {
             if (serviceResult != null) {
-                LogPushUtils.pushLog(eMasg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken(), serviceResult.getServiceCode());
+                LogPushUtils.pushLog(eMsg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken(), serviceResult.getServiceCode());
             }
         }
     }

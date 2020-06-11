@@ -135,8 +135,8 @@
         select count(*)
         from sys_log a
         where delete_flag = 0
-        <foreach item="item" index="index" collection="list">
-            and ${item.name} ${item.symbol} #{item.data}
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
         </foreach>
     </select>
 

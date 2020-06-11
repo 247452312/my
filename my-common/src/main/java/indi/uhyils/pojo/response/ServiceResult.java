@@ -7,7 +7,7 @@ import indi.uhyils.pojo.request.model.LinkNode;
 import java.io.Serializable;
 
 /**
- * 返回类
+ * 微服务返回类
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时17分

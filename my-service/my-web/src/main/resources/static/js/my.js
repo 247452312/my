@@ -52,7 +52,6 @@ function pushRequest(interfaceName, methodName, data, success, target = false) {
         contentType: "application/json;charset=utf8",
         async: false,
         success: function (data) {
-
             if (data.code == 200) {
                 if (target) {
                     layer.msg(data.msg);
@@ -241,3 +240,19 @@ var Base64 = {
     }
 
 }
+
+$.fn.serializeJson = function () {
+    var serializeObj = {};
+    var array = this.serializeArray();
+    $.each(array, function () {
+        if (serializeObj[this.name] !== undefined) {
+            if (!serializeObj[this.name].push) {
+                serializeObj[this.name] = [serializeObj[this.name]];
+            }
+            serializeObj[this.name].push(this.value || '');
+        } else {
+            serializeObj[this.name] = this.value || '';
+        }
+    });
+    return serializeObj;
+};
