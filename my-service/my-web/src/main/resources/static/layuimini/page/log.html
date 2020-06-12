@@ -21,14 +21,19 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">接口名称</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="interface_name" autocomplete="off" class="layui-input">
+                                <select id="interface_name" name="interface_name" lay-verify=""
+                                        lay-filter="interface_name">
+                                    <option value="">请选择一个接口</option>
+                                </select>
                             </div>
                         </div>
 
                         <div class="layui-inline">
                             <label class="layui-form-label">方法名称</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="method_name" autocomplete="off" class="layui-input">
+                                <select id="method_name" name="method_name" lay-verify="">
+                                    <option value="">请选择一个方法</option>
+                                </select>
                             </div>
                         </div>
 
@@ -91,21 +96,26 @@
                     // url: '/action',
                     data: data.list,
                     toolbar: false,
-                    defaultToolbar: ['filter', 'exports', 'print', {
-                        title: '提示',
-                        layEvent: 'LAYTABLE_TIPS',
-                        icon: 'layui-icon-tips'
-                    }],
                     page: false,
                     cols: [[
-                        {field: 'id', width: 80, title: 'ID'},
-                        {field: 'interfaceName', width: 80, title: '接口名称'},
-                        {field: 'methodName', width: 80, title: '方法名称', sort: true},
-                        {field: 'ip', width: 80, title: 'IP'},
+                        {field: 'id', title: 'ID'},
+                        {field: 'interfaceName', title: '接口名称'},
+                        {field: 'methodName', title: '方法名称', sort: true},
+                        {field: 'ip', title: 'IP'},
                         {field: 'logType', title: '日志类型', minWidth: 150},
-                        {field: 'params', width: 80, title: '参数', sort: true},
-                        {field: 'time', width: 80, title: '日期', sort: true},
-                        {field: 'userId', width: 80, title: '用户'},
+                        {field: 'params', width: 135, title: '参数', sort: true},
+                        {
+                            title: '日期', sort: true, templet: function (d) {
+                                var dateType = "";
+                                var date = new Date();
+                                date.setTime(d.time);
+                                dateType += date.getFullYear();  //年
+                                dateType += "-" + date.getMonth(); //月
+                                dateType += "-" + date.getDay();  //日
+                                return dateType;
+                            }
+                        },
+                        {field: 'userId', title: '用户'},
                         {field: 'link', width: 135, title: '链路跟踪', sort: true}
                     ]],
                     skin: 'line'
@@ -117,7 +127,7 @@
                     , count: data.count             //数据总数
                     , limit: data.size                      //每页显示条数
                     , limits: [10, 20, 30, 40, 50]
-                    , curr: location.hash.replace('#!fenye=', '') //获取起始页
+                    , curr: page //获取起始页
                     , hash: 'fenye' //自定义hash值
                     , groups: 5                      //连续页码个数
                     , prev: '上一页'                 //上一页文本
@@ -129,14 +139,43 @@
                         //首次不执行
                         if (!first) {
                             let serializeJson = $(".layui-form").serializeJson();
-                            reload(obj.curr, obj.limit, []);
+                            var args = []
+                            $.each(serializeJson, function (key, value) {
+                                if (value != "") {
+                                    var arg = {};
+                                    arg.name = key;
+                                    arg.symbol = '=';
+                                    arg.data = value;
+                                    args.push(arg);
+                                }
+                            });
+                            reload(obj.curr, obj.limit, args);
                         }
 
                     }
                 });
-            })
-        }
 
+
+            })
+        };
+        pushRequest("PowerService", "getInterfaces", {}, function (data) {
+            $("[name='interface_name']").empty();
+            for (let i = 0; i < data.length; i++) {
+                $("[name='interface_name']").append('<option value="' + data[i] + '">' + data[i] + '</option> ');
+            }
+            form.render('select');
+        });
+        form.on('select(interface_name)', function (data) {
+            let value = data.value;
+            pushRequest("PowerService", "getMethodNameByInterfaceName", {interfaceName: value}, function (data) {
+                $("#method_name").empty();
+                $("#method_name").append("<option value=''>请选择一个方法</option>");
+                for (let i = 0; i < data.length; i++) {
+                    $("#method_name").append("<option value='" + data[i] + "'>" + data[i] + "</option>")
+                }
+                form.render('select');
+            })
+        });
         reload(1, 10, [
             {
                 name: "1",
@@ -152,16 +191,18 @@
             layer.alert(result, {
                 title: '最终的搜索信息'
             });
-
-            //执行搜索重载
-            table.reload('currentTableId', {
-                page: {
-                    curr: 1
+            let serializeJson = $(".layui-form").serializeJson();
+            var args = []
+            $.each(serializeJson, function (key, value) {
+                if (value != "") {
+                    var arg = {};
+                    arg.name = key;
+                    arg.symbol = '=';
+                    arg.data = value;
+                    args.push(arg);
                 }
-                , where: {
-                    searchParams: result
-                }
-            }, 'data');
+            });
+            reload(1, 10, args);
 
             return false;
         });

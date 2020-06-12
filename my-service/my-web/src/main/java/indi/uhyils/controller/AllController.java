@@ -58,7 +58,7 @@ public class AllController {
             list.add(action.getArgs());
             serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list, new DefaultRequest());
             if (ServiceCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
-                linkPrint(serviceResult.getRequestLink());
+                LogUtil.linkPrint(serviceResult.getRequestLink(), logger);
             }
             link = serviceResult.getRequestLink();
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
@@ -72,7 +72,12 @@ public class AllController {
             return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
         } finally {
             if (serviceResult != null) {
-                LogPushUtils.pushLog(eMsg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken(), serviceResult.getServiceCode());
+                try {
+                    LogPushUtils.pushLog(eMsg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken(), serviceResult.getServiceCode());
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                }
+
             }
         }
     }
@@ -96,16 +101,6 @@ public class AllController {
         return true;
     }
 
-    private void linkPrint(LinkNode<String> requestLink) {
-        StringBuilder sb = new StringBuilder();
-        LinkNode<String> p = requestLink;
-        do {
-            sb.append(" \n--> ");
-            sb.append(p.getData());
-            p = p.getLinkNode();
-        } while (p != null);
-        logger.info(String.format("链路跟踪: %s \n--> 结束!", sb.toString()));
-    }
 
     /**
      * action 添加链路跟踪起点
@@ -113,7 +108,7 @@ public class AllController {
      * @param action
      */
     private void actionAddRequestLink(@RequestBody Action action) {
-        HashMap<String, String> requestLink = new HashMap<>(2);
+        HashMap<String, Object> requestLink = new HashMap<>(2);
         requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
         requestLink.put("data", "页面请求");
         action.getArgs().put("requestLink", requestLink);

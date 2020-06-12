@@ -38,4 +38,28 @@ public interface PowerDao extends DefaultDao<PowerEntity> {
      * @return 删除数量
      */
     Integer deleteDeptPowerMiddleByPowerId(String id);
+
+    /**
+     * 获取所有的interface
+     *
+     * @return 所有的interface
+     */
+    ArrayList<String> getInterfaces();
+
+    /**
+     * 获取指定接口的方法
+     *
+     * @param interfaceName 接口
+     * @return 对应的方法
+     */
+    ArrayList<String> getMethodNameByInterfaceName(String interfaceName);
+
+    /**
+     * 查询此权限是否存在
+     *
+     * @param interfaceName 接口名称
+     * @param methodName    方法名称
+     * @return 数量
+     */
+    Integer checkPower(@Param("interfaceName") String interfaceName, @Param("methodName") String methodName);
 }

@@ -1,6 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import indi.uhyils.content.Content;
 import indi.uhyils.dao.LogDao;
 import indi.uhyils.pojo.model.LogEntity;
 import indi.uhyils.pojo.model.UserEntity;
@@ -34,7 +35,7 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
 
     {
         // 日志的创建用户一定是超级管理员
-        userEntity.setId("49ba59abbe56e057");
+        userEntity.setId(Content.ADMIN_USER_ID);
     }
 
     @Override

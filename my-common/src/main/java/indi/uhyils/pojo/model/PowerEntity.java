@@ -21,6 +21,13 @@ public class PowerEntity extends DataEntity {
      */
     private String methodName;
 
+    public static PowerEntity build(PowerSimpleEntity powerSimpleEntity) {
+        PowerEntity powerEntity = new PowerEntity();
+        powerEntity.setInterfaceName(powerSimpleEntity.getInterfaceName());
+        powerEntity.setMethodName(powerSimpleEntity.getMethodName());
+        return powerEntity;
+    }
+
     public String getInterfaceName() {
         return interfaceName;
     }

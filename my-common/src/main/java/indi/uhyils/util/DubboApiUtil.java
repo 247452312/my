@@ -48,7 +48,7 @@ public class DubboApiUtil {
      * @param request       请求
      * @return 方法返回值
      */
-    public static ServiceResult<JSONObject> dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
+    public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
         try {
             if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 interfaceName = String.format("indi.uhyils.service.%s", interfaceName);

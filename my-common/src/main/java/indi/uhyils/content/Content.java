@@ -34,4 +34,9 @@ public class Content {
      */
     public static final String UN_KNOW = "unknown";
 
+    /**
+     * 超级管理员的id
+     */
+    public static final String ADMIN_USER_ID = "49ba59abbe56e057";
+
 }

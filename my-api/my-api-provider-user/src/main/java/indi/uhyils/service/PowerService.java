@@ -1,9 +1,8 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.PowerEntity;
-import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.model.PowerSimpleEntity;
+import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.response.ServiceResult;
 
 import java.util.ArrayList;
@@ -39,4 +38,31 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * @return
      */
     ServiceResult<Boolean> deletePower(IdRequest request);
+
+
+    /**
+     * 获取所有interfaceName
+     *
+     * @param request 原始请求
+     * @return 所有interfaceName
+     */
+    ServiceResult<ArrayList<String>> getInterfaces(DefaultRequest request);
+
+
+    /**
+     * 获取所有指定接口的方法
+     *
+     * @param request 接口名称
+     * @return 对应方法
+     */
+    ServiceResult<ArrayList<String>> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameRequest request);
+
+
+    /**
+     * 初始化权限,如果权限不存在,则添加权限,如果权限已经存在,则不作任何修改
+     *
+     * @param request 权限集
+     * @return 添加的权限
+     */
+    ServiceResult<ArrayList<PowerSimpleEntity>> initPowerInProStartNoToken(ObjsRequest<PowerSimpleEntity> request);
 }

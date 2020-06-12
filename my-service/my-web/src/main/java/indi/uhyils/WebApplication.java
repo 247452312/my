@@ -2,6 +2,7 @@ package indi.uhyils;
 
 import com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan;
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
+import indi.uhyils.config.PowerInitStartRunner;
 import indi.uhyils.util.SpringUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,9 +21,19 @@ import org.springframework.context.ApplicationContext;
 @DubboComponentScan(basePackages = "indi.uhyils.*")
 public class WebApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         ApplicationContext act = SpringApplication.run(WebApplication.class, args);
         SpringUtil.setApplicationContext(act);
+        init();
+    }
+
+
+    /**
+     * 项目初始化
+     */
+    public static void init() throws Exception {
+        PowerInitStartRunner bean = SpringUtil.getBean(PowerInitStartRunner.class);
+        bean.run();
     }
 
 }
