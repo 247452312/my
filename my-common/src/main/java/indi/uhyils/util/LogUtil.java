@@ -2,6 +2,9 @@ package indi.uhyils.util;
 
 
 import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.model.LinkNode;
+import indi.uhyils.pojo.response.ServiceResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,5 +130,35 @@ public class LogUtil {
                 logger.error("no this LogType!");
                 break;
         }
+    }
+
+
+    /**
+     * 添加链路跟踪
+     *
+     * @param targetRequest 目标请求
+     * @param serviceResult 请求返回
+     */
+    public static void addRequestLink(DefaultRequest targetRequest, ServiceResult serviceResult) {
+        LinkNode<String> serviceResultRequestLink = serviceResult.getRequestLink();
+        targetRequest.setRequestLink(serviceResultRequestLink);
+    }
+
+
+    /**
+     * 控制台输出链路跟踪
+     *
+     * @param requestLink 链
+     * @param logger      输出
+     */
+    public static void linkPrint(LinkNode<String> requestLink, Logger logger) {
+        StringBuilder sb = new StringBuilder();
+        LinkNode<String> p = requestLink;
+        do {
+            sb.append(" \n--> ");
+            sb.append(p.getData());
+            p = p.getLinkNode();
+        } while (p != null);
+        logger.info(String.format("链路跟踪: %s \n--> 结束!", sb.toString()));
     }
 }

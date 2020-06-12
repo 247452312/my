@@ -5,6 +5,7 @@
 * java1.8环境
 * zookeeper
 * mysql
+* 本地启动时需要加入 --spring.profiles.active=dev命令
 ## 使用说明
 zookeeper配置在dubbo.xml中
 mysql配置在application.properties中
@@ -20,7 +21,7 @@ mysql配置在application.properties中
     * my-service ------ 微服务,即服务提供者
     * my-web ----- 整个项目前台模块
 
-### dubbo泛化调用
+### dubbo泛化调用 
 * 调用api为 http://localhost:8083/action
 * post请求
 * json为: {
@@ -35,3 +36,5 @@ mysql配置在application.properties中
                      }
                  }
              }
+### 请求链路跟踪
+

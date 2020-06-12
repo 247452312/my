@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.RoleDao">
+
+
+    <sql id="columnList">
+        a.id,
+        a.create_date as 'createDate',
+        a.create_user as createUser,
+        a.update_date as 'updateDate',
+        a.update_user as updateUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+        a.name,
+        a.level
+    </sql>
+
+    <select id="getById" resultType="indi.uhyils.pojo.model.RoleEntity">
+        select
+        <include refid="columnList"/>
+        from sys_role a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.RoleEntity">
+        select
+        <include refid="columnList"/>
+        from sys_role a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.RoleEntity">
+        select
+        <include refid="columnList"/>
+        from sys_role a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${page * size}
+        </if>
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.RoleEntity">
+        insert sys_role(id,
+                        create_date,
+                        create_user,
+                        update_date,
+                        update_user,
+                        delete_flag,
+                        name,
+                        level)
+        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{name}, #{level})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.RoleEntity">
+        update sys_role set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="name != null and name != ''">
+            ,name = #{name}
+        </if>
+        <if test="level != null and level != ''">
+            ,level = #{level}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_role a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_role a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_role a
+        where ${columnName} = #{value}
+    </select>
+
+    <insert id="insertRoleDept" parameterType="indi.uhyils.pojo.model.RoleDeptMiddle">
+        insert into sys_role_dept(id, dept_id, role_id)
+        values (#{id}, #{deptId}, #{roleId})
+    </insert>
+
+    <delete id="deleteRoleDept" parameterType="java.lang.String">
+        delete from sys_role_dept where id in
+        <foreach item="ids" index="index" collection="list" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <select id="getAll" resultType="indi.uhyils.pojo.model.RoleEntity">
+        select
+        <include refid="columnList"/>
+        from sys_role a
+        where delete_flag = 0
+    </select>
+
+    <select id="getAllDeptWithHaveMark" resultType="indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse">
+        select a.id                                                                                 deptId,
+               a.name                                                                               deptName,
+               (select count(*) = 1 from sys_role_dept where role_id = #{id} and dept_id = a.id) as mark
+        from sys_dept a
+        where delete_flag = 0
+    </select>
+
+    <delete id="deleteRoleDeptMiddleByRoleId">
+        delete
+        from sys_role_dept
+        where role_id = #{roleId}
+    </delete>
+
+    <update id="updateUserRoleToNullByRoleId">
+        update sys_user
+        set role_id = null
+        where role_id = #{id}
+    </update>
+
+
+</mapper>

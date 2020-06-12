@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>menu</title>
+    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <link rel="stylesheet" href="../css/my.css" media="all">
+
+    <style>
+        .layui-btn:not(.layui-btn-lg ):not(.layui-btn-sm):not(.layui-btn-xs) {
+            height: 34px;
+            line-height: 34px;
+            padding: 0 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            主页菜单项<br>
+        </blockquote>
+        <div>
+            <div class="layui-btn-group">
+                <button class="layui-btn" id="btn-expand layui-btn-radius">全部展开</button>
+                <button class="layui-btn layui-btn-normal" id="btn-fold">全部折叠</button>
+            </div>
+            <div class="layui-btn-group right">
+                <button class="layui-btn layui-btn-warm" id="btn-add" style="border-radius: 15px">添加新菜单</button>
+            </div>
+            <div class="clean"></div>
+            <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
+        </div>
+    </div>
+</div>
+<!-- 操作列 -->
+<script type="text/html" id="auth-state">
+    <!--    这个是非叶子节点 不允许赋权 -->
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="add">添加</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-radius layui-btn-disabled" lay-event="disabled">赋权</a>
+</script>
+<script type="text/html" id="auth-state-no-add">
+    <!--    这个是叶子结点 不允许添加子节点 -->
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs layui-btn-disabled" lay-event="disabled">添加</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-radius" lay-event="empowerment">赋权</a>
+</script>
+
+<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="/js/jquery.min.js" charset="UTF-8"></script>
+<script src="/js/my.js" charset="UTF-8"></script>
+<script>
+    layui.use(['table', 'treetable', 'layer'], function () {
+        var $ = layui.jquery;
+        var table = layui.table;
+        var treetable = layui.treetable;
+        var layer = layui.layer;
+        $.reloadTable = function () {
+            pushRequest("MenuService", "getMenuTree", {iFrame: 1}, function (data) {
+                // 渲染表格
+                layer.load(2);
+                treetable.render({
+                    treeColIndex: 1,
+                    treeSpid: '',
+                    treeIdName: 'id',
+                    treePidName: 'fid',
+                    elem: '#munu-table',
+                    data: data.data,
+                    // url: '../api/menus.json',
+                    page: false,
+                    cols: [[
+                        {type: 'numbers'},
+                        {field: 'name', title: '菜单名称'},
+                        {
+                            field: 'icon', width: 150, title: '图标', templet: function (d) {
+                                return '<div class="' + d.icon + '"></div>';
+                            }
+                        },
+                        {field: 'url', width: 250, title: '菜单url'},
+                        {
+                            field: 'target', minWidth: 200, templet: function (d) {
+                                if (d.target == '_self') {
+                                    return 'iframe添加页面';
+                                } else if (d.target == '_blank') {
+                                    return '整个页面跳转';
+                                } else {
+                                    return '无操作';
+                                }
+                            }, width: 200, title: '页面跳转方式'
+                        },
+                        {title: '排序号', field: 'sort', width: 80, align: 'center'},
+                        {
+                            title: '节点类型',
+                            field: 'isMenu', width: 180, align: 'center', templet: function (d) {
+                                if (d.type == false) {
+                                    return '非叶子节点';
+                                } else {
+                                    return '叶子结点';
+                                }
+                            }
+                        },
+                        {
+                            title: '操作',
+                            templet: function (d) {
+                                if (d.type == false) {
+                                    return $('#auth-state').html();
+                                } else {
+                                    return $('#auth-state-no-add').html();
+                                }
+                            }, width: 250, align: 'center'
+                        }
+                    ]],
+                    done: function () {
+                        layer.closeAll('loading');
+                    }
+                });
+            });
+        }
+        $.reloadTable();
+        treetable.foldAll('#munu-table');
+
+        $('#btn-expand').click(function () {
+            treetable.expandAll('#munu-table');
+        });
+
+        $('#btn-fold').click(function () {
+            treetable.foldAll('#munu-table');
+        });
+        $("#btn-add").click(function () {
+            var index = layer.open({
+                title: '添加菜单',
+                type: 2,
+                shade: 0.2,
+                maxmin: true,
+                shadeClose: true,
+                area: ['50%', '60%'],
+                content: 'table/menuAdd.html?id=&func=add',
+            });
+            $(window).on("resize", function () {
+                layer.full(index);
+            });
+        });
+
+        //监听工具条
+        table.on('tool(munu-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'del') { // 删除
+                layer.confirm('是否确认删除', {
+                    btn: ['确认', '取消'] //按钮
+                }, function () {
+                    pushRequest("MenuService", "deleteMenu", {id: data.id}, function (data) {
+                        if (data == true) {
+                            layer.msg('删除成功', {icon: 1});
+                            $.reloadTable();
+                        } else {
+                            layer.msg('删除失败,通知管理员', {icon: 1});
+                        }
+                    });
+
+                }, function () {
+
+                });
+            } else if (layEvent === 'edit') { // 修改
+                var index = layer.open({
+                    title: '修改菜单',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['50%', '60%'],
+                    content: 'table/menuAdd.html?id=' + data.id + '&func=edit',
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            } else if (layEvent === 'add') { // 添加
+                var index = layer.open({
+                    title: '添加菜单',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['50%', '60%'],
+                    content: 'table/menuAdd.html?id=' + data.id + '&func=add',
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            } else if (layEvent === 'empowerment') { // 赋权
+                layer.msg('赋权' + data.id);
+                var index = layer.open({
+                    title: '赋权窗口',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['50%', '60%'],
+                    content: 'table/authEdit.html?id=' + data.id,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            } else if (layEvent === 'disabled') { // 不能操作的按钮
+                layer.msg('此操作已被禁止');
+            }
+
+        });
+    });
+</script>
+</body>
+</html>

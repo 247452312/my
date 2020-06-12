@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -12,8 +12,6 @@
         <module>my-api</module>
         <module>my-service</module>
         <module>my-common</module>
-        <module>my-web</module>
-        <module>my-dubbo-admin</module>
     </modules>
 
     <properties>
@@ -41,7 +39,52 @@
         <commons-logging.version>1.2</commons-logging.version>
         <commons-net.version>3.6</commons-net.version>
         <junit.version>4.13</junit.version>
+        <jedis.version>3.2.0</jedis.version>
+        <distrupter.version>3.4.2</distrupter.version>
+
     </properties>
+
+    <!-- profile配置 -->
+    <profiles>
+        <profile>
+            <!-- 本地开发环境 -->
+            <id>dev</id>
+            <!-- 定义该配置的属性 -->
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <!-- 设置默认激活这个配置 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- 测试环境 -->
+            <id>test</id>
+            <!-- 定义该配置的属性 -->
+            <properties>
+                <profiles.active>test</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <!-- 准生产环境 -->
+            <id>release</id>
+            <!-- 定义该配置的属性 -->
+            <properties>
+                <profiles.active>release</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <!-- 生产环境 -->
+            <id>prod</id>
+            <!-- 定义该配置的属性 -->
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
+
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -52,6 +95,11 @@
             <dependency>
                 <groupId>indi.uhyils</groupId>
                 <artifactId>my-api-provider-user</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-api-provider-log</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -82,6 +130,14 @@
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
             </dependency>
+<!--            &lt;!&ndash;devtools热部署&ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-devtools</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--                <optional>true</optional>-->
+<!--                <scope>true</scope>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
@@ -124,6 +180,20 @@
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-framework</artifactId>
                 <version>2.12.0</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${distrupter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

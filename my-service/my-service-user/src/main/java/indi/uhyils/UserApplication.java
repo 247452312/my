@@ -4,11 +4,10 @@ package indi.uhyils;
 import com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan;
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import indi.uhyils.util.SpringUtil;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 /**
@@ -17,6 +16,7 @@ import org.springframework.context.annotation.ImportResource;
  */
 @SpringBootApplication
 @EnableDubbo
+@EnableTransactionManagement
 @DubboComponentScan(basePackages = "indi.uhyils.serviceImpl")
 public class UserApplication {
     public static void main(String[] args) {

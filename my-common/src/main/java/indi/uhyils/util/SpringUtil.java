@@ -22,37 +22,65 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+/**
+ * 存储spring上下文缓存的地方
+ *
+ * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2020年04月27日 16时46分
+ */
 public class SpringUtil {
 
     public static final Logger logger = LoggerFactory.getLogger(SpringUtil.class);
     private static ApplicationContext applicationContext = null;
 
-    public static void setApplicationContext(ApplicationContext applicationContext){
-        if(SpringUtil.applicationContext == null){
-            logger.info("set applicationcontext");
-            SpringUtil.applicationContext  = applicationContext;
-        }
-
-    }
-
-    //获取applicationContext
+    /**
+     * 获取applicationContext
+     *
+     * @return applicationContext
+     */
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
-    //通过name获取 Bean.
-    public static Object getBean(String name){
+    public static void setApplicationContext(ApplicationContext applicationContext) {
+        if (SpringUtil.applicationContext == null) {
+            logger.info("set applicationcontext");
+            SpringUtil.applicationContext = applicationContext;
+        }
+
+    }
+
+    /**
+     * 通过name获取 Bean.
+     *
+     * @param name bean名称
+     * @return bean
+     */
+    public static Object getBean(String name) {
         return getApplicationContext().getBean(name);
 
     }
 
-    //通过class获取Bean.
-    public static <T> T getBean(Class<T> clazz){
+    /**
+     * 通过class获取Bean.
+     *
+     * @param clazz class
+     * @param <T>   类型
+     * @return 对应类型的bean
+     */
+    public static <T> T getBean(Class<T> clazz) {
         return getApplicationContext().getBean(clazz);
     }
 
-    //通过name,以及Clazz返回指定的Bean
-    public static <T> T getBean(String name,Class<T> clazz){
+    /**
+     * 通过name,以及Clazz返回指定的Bean
+     *
+     * @param name  bean名称
+     * @param clazz class
+     * @param <T>   类型
+     * @return 对应的bean
+     */
+    public static <T> T getBean(String name, Class<T> clazz) {
         return getApplicationContext().getBean(name, clazz);
     }
 

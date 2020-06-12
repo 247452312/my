@@ -1,0 +1,180 @@
+@charset "UTF-8";
+:root {
+    --left-per: 10.5%; /* 左 */
+    --top-per: 6%; /* 上层 */
+    --left-middle: 3%; /* 中层 */
+}
+
+#my {
+    height: 100%;
+    width: 100%;
+}
+
+.my-left {
+    height: 100%;
+    width: var(--left-per);
+    float: left;
+}
+
+.my-right {
+    float: left;
+    height: 100%;
+    width: calc(100% - var(--left-per));
+    background-color: #000000;
+}
+
+.my-left-logo {
+    height: var(--top-per);
+    width: 100%;
+    background-color: rgb(25, 32, 39);
+}
+
+.my-left-logo .img1 {
+    height: 100%;
+    width: 33.3%;
+    float: left;
+}
+
+.my-left-logo .img2 {
+    height: 100%;
+    width: 66.7%;
+    float: left;
+}
+
+.my-left-menu {
+    height: calc(100% - var(--top-per));
+    width: 100%;
+    background-color: #28333e;
+}
+
+.my-right-top {
+    height: var(--top-per);
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.my-right-middle {
+    height: var(--left-middle);
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.my-right-under {
+    height: calc(100% - var(--top-per) - var(--left-middle));
+    width: 100%;
+    background-color: #ffffff;
+}
+
+#title-ul {
+    height: 100%;
+    width: 50%;
+}
+
+.title-span {
+    height: 100%;
+    width: 9%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@-webkit-keyframes title-a-hover {
+    0% {
+        color: #9b9b9b;
+    }
+    100% {
+        color: #1d1d1d;
+    }
+}
+
+.title-span a {
+    text-decoration: none;
+    color: #9b9b9b;
+    font-weight: bold;
+}
+
+.title-span a:hover {
+    -webkit-animation: title-a-hover 0.7s forwards;
+    animation-iteration-count: 1;
+
+}
+
+
+.my-left-menu a {
+    text-decoration: none;
+    color: #727272;
+}
+
+.title-select {
+    background-color: #f4f4f4;
+}
+
+.shadow {
+    display: none;
+}
+
+.left-span {
+    width: 100%;
+}
+
+.left-span > a {
+    display: block;
+    height: 40px;
+    width: 82%;
+    margin-left: 18%;
+}
+
+.left-span > a > span {
+    color: rgb(191, 187, 187);
+    font-size: 14px;
+    float: left;
+    display: block;
+    padding-top: 10px;
+}
+
+.left-span > a > i {
+    float: left;
+    display: block;
+    position: relative;
+    top: 10px;
+    right: 15px;
+    height: 10px;
+    width: 10px;
+    font-style: normal;
+
+}
+
+.left-span > a > .arrow {
+    left: 30px;
+    top: 14px;
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 5px;
+    border-top: 2px solid #fff;
+    border-right: 2px solid #fff;
+    -webkit-transform: rotate(-135deg);
+    -webkit-transtion: all 1.3s linear;
+}
+
+
+#left-tree {
+    height: 100%;
+    width: 100%;
+}
+
+#left-tree .level {
+    padding-left: 25px;
+    background-color: #111111;
+}
+
+.my-right-middle ul {
+    height: 100%;
+    width: 100%;
+}
+
+.first-li, .little-right-button, .last-li {
+    height: 100%;
+    width: 2%;
+    text-align: center
+}
