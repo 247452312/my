@@ -16,6 +16,7 @@
         <module>my-service-user</module>
         <module>my-web</module>
         <module>my-service-log</module>
+        <module>my-serivce-software</module>
     </modules>
 
 

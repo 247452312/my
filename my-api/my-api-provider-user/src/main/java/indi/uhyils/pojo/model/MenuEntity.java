@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.DataEntity;
+import indi.uhyils.pojo.model.base.BaseEntity;
 
 import java.util.Objects;
 
@@ -10,7 +10,7 @@ import java.util.Objects;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月28日 12时36分
  */
-public class MenuEntity extends DataEntity {
+public class MenuEntity extends BaseEntity {
 
     /**
      * 场景

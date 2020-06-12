@@ -8,7 +8,7 @@ dubbo:
     name: dubbo
     port: 20882
   application:
-    name: provider-user
+    name: provider-log
   consumer:
     timeout: 3000
     group: ${spring.profiles.active}

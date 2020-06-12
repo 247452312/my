@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.DataEntity;
+import indi.uhyils.pojo.model.base.BaseEntity;
 
 /**
  * 日志
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.DataEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月28日 12时36分
  */
-public class LogEntity extends DataEntity {
+public class LogEntity extends BaseEntity {
 
     private String exceptionDetail;
 
