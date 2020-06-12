@@ -35,7 +35,7 @@ public class LoginResponse implements Serializable {
     /**
      * @param token      token
      * @param userEntity 用户本体
-     * @return
+     * @return 登录成功
      */
     public static LoginResponse buildLoginSuccess(String token, UserEntity userEntity) {
         LoginResponse loginResponse = new LoginResponse();

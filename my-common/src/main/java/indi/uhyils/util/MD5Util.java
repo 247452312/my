@@ -27,10 +27,12 @@ public class MD5Util {
             StringBuilder buf = new StringBuilder();
             for (byte value : b) {
                 i = value;
-                if (i < 0)
+                if (i < 0) {
                     i += 256;
-                if (i < 16)
+                }
+                if (i < 16) {
                     buf.append("0");
+                }
                 buf.append(Integer.toHexString(i));
             }
             return buf.toString().substring(8, 24);

@@ -17,8 +17,8 @@ public class ReflactUtil {
             return null;
         }
         if (attrName != null && attrName.length() > 1) {
-            Method declaredMethod = obj.getClass().getDeclaredMethod("get" + attrName.substring(0, 1).toUpperCase() + attrName.substring(1), null);
-            return declaredMethod.invoke(obj, null);
+            Method declaredMethod = obj.getClass().getDeclaredMethod("get" + attrName.substring(0, 1).toUpperCase() + attrName.substring(1));
+            return declaredMethod.invoke(obj );
         } else {
             return null;
         }

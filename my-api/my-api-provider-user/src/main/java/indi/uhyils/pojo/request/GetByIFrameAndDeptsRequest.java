@@ -1,7 +1,5 @@
 package indi.uhyils.pojo.request;
 
-import java.util.List;
-
 /**
  * 获取权限菜单的请求
  *
@@ -10,19 +8,7 @@ import java.util.List;
  */
 public class GetByIFrameAndDeptsRequest extends DefaultRequest {
 
-
-    private List<String> deptIds;
-
     private Integer iFrame;
-
-
-    public List<String> getDeptIds() {
-        return deptIds;
-    }
-
-    public void setDeptIds(List<String> deptIds) {
-        this.deptIds = deptIds;
-    }
 
     public Integer getiFrame() {
         return iFrame;

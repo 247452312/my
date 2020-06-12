@@ -15,6 +15,7 @@
 
         a.fid,
         a.i_frame as iFrame,
+        a.target,
         a.icon,
         a.name,
         a.sort,
@@ -62,16 +63,16 @@
                         update_date,
                         update_user,
                         delete_flag,
-                        fid, i_frame, icon, name, sort, type, url)
+                        fid, i_frame, icon, name, target, sort, type, url)
         values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{fid}, #{iFrame}, #{icon},
-                #{name}, #{sort}, #{type}, #{url})
+                #{name}, #{target}, #{sort}, #{type}, #{url})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.MenuEntity">
         update sys_menu set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
-        <if test="fid != null and fid != ''">
+        <if test="fid != null">
             ,fid = #{fid}
         </if>
         <if test="iFrame != null and iFrame != ''">
@@ -86,11 +87,14 @@
         <if test="sort != null and sort != ''">
             ,sort = #{sort}
         </if>
-        <if test="type != null and type != ''">
+        <if test="type != null">
             ,type = #{type}
         </if>
-        <if test="url != null and url != ''">
+        <if test="url != null">
             ,url = #{url}
+        </if>
+        <if test="target != null">
+            ,target = #{target}
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
@@ -127,10 +131,40 @@
     </select>
 
     <select id="getByDeptIds" resultType="java.lang.String">
-        select menu_id from sys_dept_menu where base_id in
+        select menu_id from sys_dept_menu where dept_id in
         <foreach item="deptIds" index="index" collection="list" open="(" separator="," close=")">
             #{deptIds}
         </foreach>
+    </select>
+
+    <update id="deleteByIds" parameterType="java.util.List">
+        update sys_menu set delete_flag = 1 where id in
+        <foreach item="collect" index="index" collection="list" open="(" separator="," close=")">
+            #{collect}
+        </foreach>
+    </update>
+
+    <delete id="deleteDeptMenuByMenuIds" parameterType="java.util.List">
+        delete from sys_dept_menu where menu_id in
+        <foreach item="menuIds" index="index" collection="list" open="(" separator="," close=")">
+            #{menuIds}
+        </foreach>
+    </delete>
+    <delete id="deleteDeptMenuByDeptIds" parameterType="java.util.List">
+        delete from sys_dept_menu where dept_id in
+        <foreach item="deptIds" index="index" collection="list" open="(" separator="," close=")">
+            #{deptIds}
+        </foreach>
+    </delete>
+
+    <select id="getAllMenuWithHaveMark" resultType="indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse">
+        select a.id                                                                                     menuId,
+               a.name                                                                                   menuName,
+               (select count(*) = 1 from sys_dept_menu where dept_id = #{deptId} and menu_id = a.id) as mark
+        from sys_menu a
+        where delete_flag = 0
+          and type = 1;
+
     </select>
 
 

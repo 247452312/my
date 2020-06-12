@@ -1,5 +1,20 @@
 @charset "UTF-8";
 
+:root {
+    --left-middle: 3%; /* 中层 */
+    --icon-width: 20px;
+    --icon-hight: 20px;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    overflow: hidden;
+}
+
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
     margin: 0;
     padding: 0;
@@ -17,6 +32,7 @@ table {
 fieldset, img {
     border: 0;
 }
+
 
 address, caption, cite, code, dfn, em, strong, th, var {
     font-style: normal;
@@ -56,5 +72,237 @@ abbr, acronym {
     display: inline-block;
     font-size: 16px;
     border-radius: 5px;
+
 }
 
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clean {
+    clear: both;
+}
+
+/* ----------------------------------------------------------------------------icon---------------------------------------------------------------------------- */
+.icon0 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon0.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon1 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon2 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon3 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon3.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon4 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon4.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon5 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon5.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon6 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon6.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon7 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon7.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon8 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon8.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon9 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon9.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon10 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon10.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon11 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon11.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon12 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon12.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon13 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon13.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon14 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon14.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon15 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon15.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon16 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon16.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon17 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon17.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon18 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon18.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon19 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon19.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon20 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon20.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon21 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon21.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon22 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon22.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+.icon23 {
+    width: var(--icon-width);
+    height: var(--icon-hight);
+    background-image: url("/pic/lxh_icon/icon23.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+}
+
+
+/* ----------------------------------------------------------------------------icon---------------------------------------------------------------------------- */

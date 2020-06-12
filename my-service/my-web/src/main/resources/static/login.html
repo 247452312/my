@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>登录</title>
+    <title>登录页</title>
+    <link rel="bookmark" type="image/x-icon" href="/pic/lxh_icon/icon11.png"/>
+    <link rel="shortcut icon" href="/pic/lxh_icon/icon11.png">
     <link rel="stylesheet" href="/css/my.css">
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/my.js"></script>
+    <link rel="stylesheet" href="/static/lib/layui-v2.5.5/css/modules/layer/default/layer.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="lib/layui-v2.5.5/lay/modules/layer.js"></script>
+    <script src="js/my.js"></script>
     <link rel="stylesheet" href="/css/login.css">
     <script>
         $.fn.serializeObject = function () {
@@ -27,16 +31,13 @@
         function login() {
             let a = $(".login-submit-target").serializeObject();
             arg = {};
-            arg.userName = a.username;
+            arg.username = a.username;
             arg.password = a.password;
-            arg.userType = 1;
-            pushRequest(new request(getCookie("token"), "UserService", "userLogin", arg), function (data) {
-                if (data.code == 200) {
-                    setCookie("token", data.token, 1);
-                    setAttrBySession("userInfo", data.data.userEntity)
-                    setAttrBySession("userRightList", data.data.userRightList)
-                    window.location.href = "/index.html";
-                }
+            pushRequest("UserService", "userLoginNoToken", arg, function (data) {
+                setCookie("token", data.token, 1);
+                setAttrBySession("userInfo", data.userEntity);
+                setAttrBySession("token", {token: data.token});
+                window.location.href = "index.html";
             });
 
         }

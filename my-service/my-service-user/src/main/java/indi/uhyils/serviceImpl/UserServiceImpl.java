@@ -2,7 +2,10 @@ package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.UserDao;
-import indi.uhyils.pojo.model.*;
+import indi.uhyils.pojo.model.DeptEntity;
+import indi.uhyils.pojo.model.PowerEntity;
+import indi.uhyils.pojo.model.RoleEntity;
+import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.request.model.Arg;
@@ -29,7 +32,7 @@ import java.util.Random;
  * @date 文件创建日期 2020年04月20日 11时51分
  */
 @Service(group = "${spring.profiles.active}")
-public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements UserService {
+public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implements UserService {
 
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -56,9 +59,25 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
         }
         List<UserEntity> byId = dao.getById(idRequest.getId());
         if (byId != null && byId.size() == 1) {
-            return ServiceResult.buildSuccessResult("查询成功", byId.get(0), idRequest);
+            UserEntity userEntity = byId.get(0);
+            initRole(userEntity);
+            return ServiceResult.buildSuccessResult("查询成功", userEntity, idRequest);
         }
         return ServiceResult.buildFailedResult("查无此人", null, idRequest);
+    }
+
+    private void initRole(UserEntity userEntity) {
+        // 获取权限
+        RoleEntity roleEntity = dao.getUserRoleById(userEntity.getRoleId());
+        /* 注入dept*/
+        List<DeptEntity> deptEntities = dao.getUserDeptsByRoleId(roleEntity.getId());
+        roleEntity.setDepts(deptEntities);
+        /* 注入power */
+        for (DeptEntity deptEntity : deptEntities) {
+            List<PowerEntity> powerEntities = dao.getUserPowerByDeptId(deptEntity.getId());
+            deptEntity.setPowers(powerEntities);
+        }
+        userEntity.setRole(roleEntity);
     }
 
 
@@ -68,21 +87,30 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
         return ServiceResult.buildSuccessResult("token生成成功", token, userRequest);
     }
 
+    @Override
+    public ServiceResult<Integer> insert(ObjRequest<UserEntity> insert) {
+        UserEntity data = insert.getData();
+        data.preInsert(insert);
+        data.setPassword(MD5Util.MD5Encode(data.getPassword()));
+        return ServiceResult.buildSuccessResult("插入成功", dao.insert(data), insert);
+    }
+
 
     @Override
     public ServiceResult<TokenInfo> getTokenInfoByTokenNoToken(DefaultRequest request) {
         String token = request.getToken();
 
-        String tokenInfo_ = AESUtil.AESDecode(encodeRules, token);
+        String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
 
-        String day = tokenInfo_.substring(0, 2);
-        String hour = tokenInfo_.substring(2, 4);
-        String mon = tokenInfo_.substring(4, 6);
-        String sec = tokenInfo_.substring(6, 8);
-        String random = tokenInfo_.substring(8, 10);
+        assert tokenInfoString != null;
+        String day = tokenInfoString.substring(0, 2);
+        String hour = tokenInfoString.substring(2, 4);
+        String mon = tokenInfoString.substring(4, 6);
+        String sec = tokenInfoString.substring(6, 8);
+        String random = tokenInfoString.substring(8, 10);
 
 
-        String userId = tokenInfo_.substring(10, tokenInfo_.length() - 1 - salt.length());
+        String userId = tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length());
 
         TokenInfo tokenInfo = new TokenInfo();
         tokenInfo.setDay(Integer.parseInt(day));
@@ -102,29 +130,51 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
         ArrayList<UserEntity> byArgsNoPage = dao.getByArgsNoPage(objects);
         if (byArgsNoPage.size() != 1) {
-            return ServiceResult.buildSuccessResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail(), userRequest);
+            return ServiceResult.buildFailedResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail(), userRequest);
         }
         UserEntity userEntity = byArgsNoPage.get(0);
 
+        //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
+        Boolean haveUserId = redisPoolUtil.haveUserId(userEntity.getId());
+        if (haveUserId) {
+            redisPoolUtil.removeUserById(userEntity.getId());
+        }
+
         String token = getToken(userEntity.getId());
         userRequest.setToken(token);
-        if (userEntity != null) { // 登录->加入缓存中 TODO 如果重复登录问题
-            redisPoolUtil.addUser(token, userEntity);
-        }
+
+
         if (userEntity.getRoleId() == null) {
             return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
         }
-        RoleEntity roleEntity = dao.getUserRoleById(userEntity.getRoleId()); // 获取权限
-        /* 注入dept*/
-        List<DeptEntity> deptEntities = dao.getUserDeptsByRoleId(roleEntity.getId());
-        roleEntity.setDepts(deptEntities);
-        /* 注入power */
-        for (DeptEntity deptEntity : deptEntities) {
-            List<PowerEntity> powerEntities = dao.getUserPowerByDeptId(deptEntity.getId());
-            deptEntity.setPowers(powerEntities);
-        }
-        userEntity.setRole(roleEntity);
+        // 登录->加入缓存中
+        redisPoolUtil.addUser(token, userEntity);
         return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request) {
+        ArrayList<UserEntity> all = dao.getAll();
+        all.forEach(t -> {
+            String roleId = t.getRoleId();
+            RoleEntity userRoleById = dao.getUserRoleById(roleId);
+            t.setRole(userRoleById);
+        });
+        return ServiceResult.buildSuccessResult("查询成功", all, request);
+    }
+
+    @Override
+    public ServiceResult<UserEntity> getUserById(IdRequest request) {
+        String id = request.getId();
+        List<UserEntity> byId = dao.getById(id);
+        if (byId == null || byId.size() != 1) {
+            return ServiceResult.buildFailedResult("id不存在", null, request);
+        }
+        UserEntity userEntity = byId.get(0);
+        String roleId = userEntity.getRoleId();
+        RoleEntity userRoleById = dao.getUserRoleById(roleId);
+        userEntity.setRole(userRoleById);
+        return ServiceResult.buildSuccessResult("获取用户成功", userEntity, request);
     }
 
 
@@ -146,7 +196,7 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
 
 
     private String getToken(String userId) {
-        StringBuilder sb = new StringBuilder(27 + salt.length());
+        StringBuilder sb = new StringBuilder(26 + salt.length());
 
         //生成日期部分 8位
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -163,9 +213,7 @@ public class UserServiceImpl extends DefaultServiceImpl<UserEntity> implements U
         //盐 x位
         sb.append(salt);
 
-        String token = AESUtil.AESEncode(encodeRules, sb.toString());
-
-        return token;
+        return AESUtil.AESEncode(encodeRules, sb.toString());
     }
 
 

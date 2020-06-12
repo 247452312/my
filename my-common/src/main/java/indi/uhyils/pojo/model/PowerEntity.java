@@ -21,6 +21,13 @@ public class PowerEntity extends DataEntity {
      */
     private String methodName;
 
+    public static PowerEntity build(PowerSimpleEntity powerSimpleEntity) {
+        PowerEntity powerEntity = new PowerEntity();
+        powerEntity.setInterfaceName(powerSimpleEntity.getInterfaceName());
+        powerEntity.setMethodName(powerSimpleEntity.getMethodName());
+        return powerEntity;
+    }
+
     public String getInterfaceName() {
         return interfaceName;
     }
@@ -39,8 +46,12 @@ public class PowerEntity extends DataEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         PowerEntity that = (PowerEntity) o;
         return Objects.equals(interfaceName, that.interfaceName) &&
                 Objects.equals(methodName, that.methodName);

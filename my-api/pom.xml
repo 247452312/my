@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>my-api-provider-user</module>
-        <module>my-api-provider-transaction</module>
+        <module>my-api-provider-log</module>
     </modules>
 
 
