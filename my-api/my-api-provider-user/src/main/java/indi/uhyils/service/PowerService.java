@@ -64,5 +64,5 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * @param request 权限集
      * @return 添加的权限
      */
-    ServiceResult<ArrayList<PowerSimpleEntity>> initPowerInProStartNoToken(ObjsRequest<PowerSimpleEntity> request);
+    ServiceResult<Boolean> initPowerInProStartNoToken(DefaultRequest request);
 }

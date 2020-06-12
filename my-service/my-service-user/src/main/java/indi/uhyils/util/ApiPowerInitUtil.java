@@ -1,13 +1,7 @@
 package indi.uhyils.util;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.PowerSimpleEntity;
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.ObjsRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.serviceImpl.PowerServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,16 +14,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 添加权限测试用
+ * api权限初始化工具
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年06月07日 15时02分
+ * @date 文件创建日期 2020年06月12日 10时40分
  */
-public class PowerAddUtils {
+public class ApiPowerInitUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(PowerAddUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApiPowerInitUtil.class);
 
-    public static void initPower() throws IOException {
+    public static List<PowerSimpleEntity> getPowersSingle() throws IOException {
         String basePath = new File("").getCanonicalPath();
         basePath += "\\my-api\\";
         File file = new File(basePath);
@@ -63,35 +57,15 @@ public class PowerAddUtils {
                             list.addAll(methodsName.stream().map(v -> PowerSimpleEntity.build(interfaceName, v)).collect(Collectors.toList()));
 
                         } catch (IOException | ClassNotFoundException e) {
-                            LogUtil.error(PowerAddUtils.class, e.getMessage());
+                            LogUtil.error(ApiPowerInitUtil.class, e.getMessage());
                         }
 
                     });
                 } catch (IOException e) {
-                    LogUtil.error(PowerAddUtils.class, e.getMessage());
+                    LogUtil.error(ApiPowerInitUtil.class, e.getMessage());
                 }
             }
         });
-
-        ObjsRequest<PowerSimpleEntity> build = ObjsRequest.build(list);
-        build.setToken("");
-        LinkNode<String> requestLink = new LinkNode<>();
-        requestLink.setData("初始化请求");
-        build.setRequestLink(requestLink);
-        ArrayList<Object> args = new ArrayList<>();
-        args.add(build);
-        ServiceResult<JSONArray> jsonObjectServiceResult = DubboApiUtil.dubboApiTool("PowerService", "initPowerInProStartNoToken", args, new DefaultRequest());
-        if (ServiceCode.SUCCESS.getText().equals(jsonObjectServiceResult.getServiceCode())) {
-            LogUtil.linkPrint(jsonObjectServiceResult.getRequestLink(), logger);
-        }
-        JSONArray arrayList = jsonObjectServiceResult.getData();
-        arrayList.forEach(t -> {
-            JSONObject obj = (JSONObject) t;
-            PowerSimpleEntity powerSimpleEntity = obj.toJavaObject(PowerSimpleEntity.class);
-            logger.info("添加权限: " + powerSimpleEntity.getInterfaceName() + " : " + powerSimpleEntity.getMethodName());
-        });
-
+        return list;
     }
-
-
 }

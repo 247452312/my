@@ -31,8 +31,8 @@
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
         <button class="layui-btn layui-btn-warm" lay-event="addNewPower" style="border-radius: 15px">添加新权限</button>
+        <button class="layui-btn layui-btn-warm" lay-event="initPower" style="border-radius: 15px">初始化权限</button>
     </div>
 </script>
 
@@ -81,9 +81,6 @@
                             var data = checkStatus.data;
                             layer.msg('选中了：' + data.length + ' 个');
                             break;
-                        case 'isAll':
-                            layer.msg(checkStatus.isAll ? '全选' : '未全选');
-                            break;
                         case 'addNewPower': // 添加新权限
                             var index = layer.open({
                                 title: '添加权限',
@@ -96,6 +93,14 @@
                             });
                             $(window).on("resize", function () {
                                 layer.full(index);
+                            });
+                            break;
+                        case 'initPower': // 初始化权限
+                            pushRequest("PowerService", "initPowerInProStartNoToken", {}, function (data) {
+                                if (data == true) {
+                                    layer.msg("权限加载成功");
+                                    table.render();
+                                }
                             });
                             break;
 

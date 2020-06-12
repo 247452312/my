@@ -1,16 +1,21 @@
 package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import indi.uhyils.content.Content;
 import indi.uhyils.dao.PowerDao;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.PowerSimpleEntity;
-import indi.uhyils.pojo.model.UserEntity;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
+import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.GetMethodNameByInterfaceNameRequest;
+import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.PowerService;
+import indi.uhyils.util.ApiPowerInitUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +26,7 @@ import java.util.List;
 @Service(group = "${spring.profiles.active}")
 public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implements PowerService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PowerServiceImpl.class);
 
     @Autowired
     private PowerDao dao;
@@ -79,26 +85,29 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
-    public ServiceResult<ArrayList<PowerSimpleEntity>> initPowerInProStartNoToken(ObjsRequest<PowerSimpleEntity> request) {
-        UserEntity user = new UserEntity();
-        user.setId(Content.ADMIN_USER_ID);
-        request.setUser(user);
-        List<PowerSimpleEntity> list = request.getList();
+    public ServiceResult<Boolean> initPowerInProStartNoToken(DefaultRequest request) {
+        List<PowerSimpleEntity> powersSingle;
+        try {
+            powersSingle = ApiPowerInitUtil.getPowersSingle();
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            return ServiceResult.buildErrorResult("初始化power失败:" + e.getMessage(), request);
+        }
         ArrayList<PowerSimpleEntity> result = new ArrayList<>();
-        for (PowerSimpleEntity powerSimpleEntity : list) {
+        boolean b = true;
+        for (PowerSimpleEntity powerSimpleEntity : powersSingle) {
             Integer count = dao.checkPower(powerSimpleEntity.getInterfaceName(), powerSimpleEntity.getMethodName());
             // 如果数据库中不存在此权限
             if (count == 0) {
                 PowerEntity powerEntity = PowerEntity.build(powerSimpleEntity);
                 powerEntity.preInsert(request);
                 int insert = dao.insert(powerEntity);
-                // 插入成功
-                if (insert == 1) {
-                    result.add(powerSimpleEntity);
+                if (insert != 1) {
+                    b = false;
                 }
             }
         }
-
-        return ServiceResult.buildSuccessResult("初始化power成功", result, request);
+        return ServiceResult.buildSuccessResult("初始化power成功", b, request);
     }
+
 }
