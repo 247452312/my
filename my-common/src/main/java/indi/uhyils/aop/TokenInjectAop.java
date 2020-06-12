@@ -88,7 +88,7 @@ public class TokenInjectAop {
 
         /* 查询有没有登录 */
         if (token == null || "".equals(token)) {
-            return ServiceResult.buildFailedResult("请登录!", null, arg);
+            return ServiceResult.buildNoLoginResult(arg);
         }
 
         /* 查询是否超时 */
@@ -102,7 +102,7 @@ public class TokenInjectAop {
         final TokenInfo tokenInfo = data.toJavaObject(TokenInfo.class);
         //redis中token超时
         if (tokenInfo.getTimeOut()) {
-            return ServiceResult.buildFailedResult("登录超时,请重新登录", null, arg);
+            return ServiceResult.buildLoginOutResult(arg);
         }
 
         /* 查询是否有权限 */
@@ -136,7 +136,7 @@ public class TokenInjectAop {
         }
         Boolean havePower = (Boolean) checkUserHavePowerServiceResult.getData();
         if (!havePower) {
-            return ServiceResult.buildFailedResult("没有权限", null, arg);
+            return ServiceResult.buildNoAuthResult(arg);
         }
 
         arg.setUser(userEntity);

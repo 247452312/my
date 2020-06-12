@@ -80,7 +80,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @return 一个code是400的 代表逻辑错误的返回(程序并没有错)
      */
     public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage, T t, DefaultRequest req) {
-        return new ServiceResult(t, ServiceCode.REQUEST_PARM_ERROR.getText(), businessMessage, req);
+        return new ServiceResult(t, ServiceCode.REQUEST_PARAM_ERROR.getText(), businessMessage, req);
     }
 
     /**
@@ -94,6 +94,50 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      */
     public static <T extends Serializable> ServiceResult<T> buildErrorResult(String businessMessage, DefaultRequest req) {
         return new ServiceResult(null, ServiceCode.ERROR.getText(), businessMessage, req);
+    }
+
+    /**
+     * 构建一个权限未通过的返回
+     *
+     * @param req 前台的请求
+     * @param <T> null
+     * @return 一个code是401 代表权限未通过的返回
+     */
+    public static <T extends Serializable> ServiceResult<T> buildNoAuthResult(DefaultRequest req) {
+        return buildResultByServiceCode(ServiceCode.NONE_AUTH_ERROR, req);
+    }
+
+    /**
+     * 构建一个登录过期的返回
+     *
+     * @param req 前台的请求
+     * @param <T> null
+     * @return 一个code是402 代表登录问题的返回
+     */
+    public static <T extends Serializable> ServiceResult<T> buildLoginOutResult(DefaultRequest req) {
+        return buildResultByServiceCode(ServiceCode.LOGIN_TIME_OUT_ERROR, req);
+    }
+
+    /**
+     * 构建一个未登录的返回
+     *
+     * @param req 前台的请求
+     * @param <T> null
+     * @return 一个code是402 代表登录问题的返回
+     */
+    public static <T extends Serializable> ServiceResult<T> buildNoLoginResult(DefaultRequest req) {
+        return buildResultByServiceCode(ServiceCode.NO_LOGIN__ERROR, req);
+    }
+
+    /**
+     * 根据ServiceCode构建一个返回
+     *
+     * @param req 前台的请求
+     * @param <T> null
+     * @return 一个返回
+     */
+    public static <T extends Serializable> ServiceResult<T> buildResultByServiceCode(ServiceCode code, DefaultRequest req) {
+        return new ServiceResult(null, code.getText(), code.getMsg(), req);
     }
 
     public T getData() {

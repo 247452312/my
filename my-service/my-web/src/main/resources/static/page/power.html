@@ -5,7 +5,7 @@
     <title>menu</title>
     <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../css/public.css" media="all">
-    <link rel="stylesheet" href="../../css/my.css" media="all">
+    <link rel="stylesheet" href="../css/my.css" media="all">
 
     <style>
         .layui-btn:not(.layui-btn-lg ):not(.layui-btn-sm):not(.layui-btn-xs) {
@@ -19,7 +19,7 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
         <blockquote class="layui-elem-quote">
-            主页用户<br>
+            主页power项<br>
         </blockquote>
         <div>
             <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
@@ -31,8 +31,8 @@
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
-        <button class="layui-btn layui-btn-warm" lay-event="addNewUser" style="border-radius: 15px">添加新用户</button>
+        <button class="layui-btn layui-btn-warm" lay-event="addNewPower" style="border-radius: 15px">添加新权限</button>
+        <button class="layui-btn layui-btn-warm" lay-event="initPower" style="border-radius: 15px">初始化权限</button>
     </div>
 </script>
 
@@ -51,24 +51,19 @@
         var table = layui.table;
         var layer = layui.layer;
         $.reloadTable = function () {
-            pushRequest("UserService", "getUsers", {}, function (data) {
+            pushRequest("PowerService", "getPowers", {}, function (data) {
                 // 渲染表格
                 table.render({
                     elem: '#munu-table'
                     , data: data
                     , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
-                    , title: '用户表'
+                    , title: '用户权限表'
                     , cellMinWidth: 80 // 全局最小列宽
                     , cols: [[
                         {type: 'checkbox', fixed: 'left'}
                         , {field: 'id', title: 'id', fixed: 'left', unresize: true}
-                        , {field: 'nickName', title: '昵称'}
-                        , {field: 'userName', title: '用户名'}
-                        , {
-                            title: '用户角色id', templet: function (d) {
-                                return d.role.name;
-                            }
-                        }
+                        , {field: 'interfaceName', title: '接口名称'}
+                        , {field: 'methodName', title: '方法名'}
                         , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
                     ]]
                     , page: true
@@ -86,21 +81,26 @@
                             var data = checkStatus.data;
                             layer.msg('选中了：' + data.length + ' 个');
                             break;
-                        case 'isAll':
-                            layer.msg(checkStatus.isAll ? '全选' : '未全选');
-                            break;
-                        case 'addNewUser': // 添加新用户
+                        case 'addNewPower': // 添加新权限
                             var index = layer.open({
-                                title: '添加用户',
+                                title: '添加权限',
                                 type: 2,
                                 shade: 0.2,
                                 maxmin: true,
                                 shadeClose: true,
                                 area: ['30%', '40%'],
-                                content: 'table/userAdd.html?func=add',
+                                content: 'table/powerAdd.html?func=add',
                             });
                             $(window).on("resize", function () {
                                 layer.full(index);
+                            });
+                            break;
+                        case 'initPower': // 初始化权限
+                            pushRequest("PowerService", "initPowerInProStartNoToken", {}, function (data) {
+                                if (data == true) {
+                                    layer.msg("权限加载成功");
+                                    table.render();
+                                }
                             });
                             break;
 
@@ -117,10 +117,11 @@
                     //console.log(obj)
                     if (obj.event === 'del') { // 删除
                         layer.confirm('真的删除行么', function (index) {
-                            pushRequest("UserService", "delete", {id: data.id}, function (data) {
+                            pushRequest("PowerService", "deletePower", {id: data.id}, function (data) {
                                 layer.close(index);
                                 $.reloadTable();
                             });
+
                         });
                     } else if (obj.event === 'edit') {
                         var index = layer.open({
@@ -130,7 +131,7 @@
                             maxmin: true,
                             shadeClose: true,
                             area: ['30%', '40%'],
-                            content: 'table/userAdd.html?func=edit&id=' + data.id,
+                            content: 'table/powerAdd.html?func=edit&id=' + data.id,
                         });
                         $(window).on("resize", function () {
                             layer.full(index);

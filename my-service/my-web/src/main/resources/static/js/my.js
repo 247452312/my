@@ -43,7 +43,7 @@ function getCookie(cname) {
 function pushRequest(interfaceName, methodName, data, success, target = false) {
     let result = null;
     let json = JSON.stringify(new my_request(getAttrBySession("token").token, interfaceName, methodName, data));
-    console.log("发送")
+    console.log("发送");
     console.log(json);
     $.ajax({
         url: "/action",
@@ -52,13 +52,29 @@ function pushRequest(interfaceName, methodName, data, success, target = false) {
         contentType: "application/json;charset=utf8",
         async: false,
         success: function (data) {
-            if (data.code == 200) {
+            if (data.code >= 200 && data.code < 300) {
                 if (target) {
                     layer.msg(data.msg);
                 }
                 result = success(data.data);
             } else {
-                layer.msg(data.msg);
+                // code不为200
+                switch (data.code) {
+                    case 402:
+                        // 代表登录问题. 返回登录页
+                        top.layer.alert(data.msg + ", 即将返回登录页", function (index) {
+
+                            layer.close(index);
+                            top.window.location.href = "/login.html";
+                        });
+                        break;
+                    case 401:
+                        // 代表没有权限
+                        layer.msg(data.msg + " ,由于您触发了权限检测,所以您的信息将出现在我们的数据库暗杀名单中,出门请注意安全!");
+                        break;
+                    default:
+                        layer.msg(data.msg);
+                }
             }
         }
     });

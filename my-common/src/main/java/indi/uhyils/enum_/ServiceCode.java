@@ -13,7 +13,7 @@ public enum ServiceCode {
     /**
      * 前台传值错误
      */
-    REQUEST_PARM_ERROR(400, "前台传值错误"),
+    REQUEST_PARAM_ERROR(400, "前台传值错误"),
 
     /**
      * 没有权限错误
@@ -24,6 +24,11 @@ public enum ServiceCode {
      * 登录已过期
      */
     LOGIN_TIME_OUT_ERROR(402, "登录已过期"),
+
+    /**
+     * 未登录
+     */
+    NO_LOGIN__ERROR(402, "未登录"),
 
 
     /**
