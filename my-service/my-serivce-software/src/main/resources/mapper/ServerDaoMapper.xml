@@ -127,5 +127,17 @@
         where ${columnName} = #{value}
     </select>
 
+    <select id="getServersIdAndName" resultType="indi.uhyils.pojo.model.ServerEntity">
+        select id, name
+        from sys_server
+        where delete_flag = 0
+    </select>
+
+    <select id="getNameById" resultType="java.lang.String">
+        select name
+        from sys_server
+        where delete_flag = 0
+    </select>
+
 
 </mapper>

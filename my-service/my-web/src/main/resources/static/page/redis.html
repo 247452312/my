@@ -14,7 +14,7 @@
     <div class="layuimini-main">
 
         <fieldset class="table-search-fieldset">
-            <legend>服务器搜索</legend>
+            <legend>redis</legend>
             <div style="margin: 10px 10px 10px 10px">
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
@@ -37,7 +37,7 @@
         </fieldset>
 
 
-        <table class="layui-hide" id="server-table" lay-filter="server-table"></table>
+        <table class="layui-hide" id="redis-table" lay-filter="redis-table"></table>
         <div id="page-change"></div>
     </div>
 </div>
@@ -47,7 +47,7 @@
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
         <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
-        <button class="layui-btn layui-btn-warm" lay-event="addNewServer" style="border-radius: 15px">添加新服务器</button>
+        <button class="layui-btn layui-btn-warm" lay-event="addNewRedis" style="border-radius: 15px">添加新redis</button>
     </div>
 </script>
 <script type="text/html" id="barDemo">
@@ -67,26 +67,45 @@
             $ = layui.jquery;
 
         $.reload = function (page, size, args) {
-            pushRequest("ServerService", "getByArgs", {
+            pushRequest("RedisService", "getByArgs", {
                 page: page,
                 size: size,
                 paging: true,
                 args: args
             }, function (data) {
                 table.render({
-                    elem: '#server-table',
+                    elem: '#redis-table',
                     // url: '/action',
                     data: data.list,
                     toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
                     page: false,
                     cols: [[
                         {field: 'id', title: 'ID'},
-                        {field: 'ip', title: 'ip'},
-                        {field: 'name', title: '服务器名称', sort: true},
-                        {field: 'port', width: 135, title: 'api端口', sort: true},
-                        {field: 'username', title: '登录用户名'},
-                        {field: 'type', title: '类型'},
-                         {fixed: 'right', title: '操作', toolbar: '#barDemo'}
+                        {field: 'port', title: '端口'},
+                        {
+                            title: '服务器', templet: function (d) {
+                                return pushRequest("ServerService", "getNameById", {id: d.serverId}, function (data) {
+                                    return data;
+                                })
+                            }
+                        },
+                        {field: 'startSh', title: '开启服务命令'},
+                        {
+                            title: '服务状态', templet: function (d) {
+                                if (d.status == 1) {
+                                    return "运行中";
+                                } else if (d.status == 2) {
+                                    return "停止中";
+                                } else if (d.status == 3) {
+                                    return "出错啦";
+                                }
+
+                            }
+                        },
+                        {field: 'statusSh', title: '查询状态命令'},
+                        {field: 'stopSh', title: '停止服务命令'},
+                        {field: 'version', title: '版本'},
+                        {fixed: 'right', title: '操作', toolbar: '#barDemo'}
                     ]],
                     skin: 'line'
                 });
@@ -97,7 +116,6 @@
                     , limit: data.size                      //每页显示条数
                     , limits: [10, 20, 30, 40, 50]
                     , curr: page //获取起始页
-                    , hash: 'fenye' //自定义hash值
                     , groups: 5                      //连续页码个数
                     , prev: '上一页'                 //上一页文本
                     , next: '下一页'                 //下一页文本
@@ -135,7 +153,7 @@
             }
         ]);
         //头工具栏事件
-        table.on('toolbar(server-table)', function (obj) {
+        table.on('toolbar(redis-table)', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
                 case 'getCheckData':
@@ -149,15 +167,15 @@
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选' : '未全选');
                     break;
-                case 'addNewServer': // 添加新服务器
+                case 'addNewRedis': // 添加新redis
                     var index = layer.open({
-                        title: '添加新服务器',
+                        title: '添加新redis',
                         type: 2,
                         shade: 0.2,
                         maxmin: true,
                         shadeClose: true,
                         area: ['30%', '60%'],
-                        content: 'table/serverAdd.html?func=add',
+                        content: 'table/redisAdd.html?func=add',
                     });
                     $(window).on("resize", function () {
                         layer.full(index);
@@ -172,12 +190,12 @@
         });
 
         //监听行工具事件
-        table.on('tool(server-table)', function (obj) {
+        table.on('tool(redis-table)', function (obj) {
             var data = obj.data;
             //console.log(obj)
             if (obj.event === 'del') { // 删除
                 layer.confirm('真的删除行么', function (index) {
-                    pushRequest("ServerService", "delete", {id: data.id}, function (data) {
+                    pushRequest("RedisService", "delete", {id: data.id}, function (data) {
                         layer.close(index);
                         $.reload(1, 10, [
                             {
@@ -190,13 +208,13 @@
                 });
             } else if (obj.event === 'edit') {
                 var index = layer.open({
-                    title: '修改服务器',
+                    title: '修改redis',
                     type: 2,
                     shade: 0.2,
                     maxmin: true,
                     shadeClose: true,
                     area: ['30%', '60%'],
-                    content: 'table/serverAdd.html?func=edit&id=' + data.id,
+                    content: 'table/redisAdd.html?func=edit&id=' + data.id,
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

@@ -10,10 +10,6 @@ import indi.uhyils.pojo.model.base.BaseEntity;
  */
 public class RedisEntity extends BaseEntity {
 
-    /**
-     * 登录用户名
-     */
-    private String username;
 
     /**
      * 密码
@@ -28,7 +24,7 @@ public class RedisEntity extends BaseEntity {
     /**
      * 服务器id
      */
-    private String serviceId;
+    private String serverId;
 
     /**
      * 开启服务命令
@@ -55,14 +51,6 @@ public class RedisEntity extends BaseEntity {
      */
     private String version;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -79,12 +67,12 @@ public class RedisEntity extends BaseEntity {
         this.port = port;
     }
 
-    public String getServiceId() {
-        return serviceId;
+    public String getServerId() {
+        return serverId;
     }
 
-    public void setServiceId(String serviceId) {
-        this.serviceId = serviceId;
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
     }
 
     public String getStartSh() {

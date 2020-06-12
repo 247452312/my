@@ -15,16 +15,13 @@
 
 
 
-        a.other_1,
-        a.other_2,
         a.password,
         a.port,
-        a.server_id,
-        a.start_sh,
+        a.server_id as serverId,
+        a.start_sh as startSh,
         a.status,
-        a.status_sh,
-        a.stop_sh,
-        a.username,
+        a.status_sh as statusSh,
+        a.stop_sh as stopSh,
         a.version
 
     </sql>
@@ -77,7 +74,6 @@
                             status,
                             status_sh,
                             stop_sh,
-                            username,
                             version)
         values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, 1,
                 #{password},
@@ -87,7 +83,6 @@
                 #{status},
                 #{statusSh},
                 #{stopSh},
-                #{username},
                 #{version})
     </insert>
 
@@ -116,9 +111,6 @@
         </if>
         <if test="stopSh != null and stopSh != ''">
             ,stop_sh = #{stopSh}
-        </if>
-        <if test="username != null and username != ''">
-            ,username = #{username}
         </if>
         <if test="version != null and version != ''">
             ,version = #{version}
