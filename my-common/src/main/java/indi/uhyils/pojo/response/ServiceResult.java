@@ -1,13 +1,13 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.enum_.ResponseCode;
+import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 
 import java.io.Serializable;
 
 /**
- * 返回类
+ * 微服务返回类
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时17分
@@ -30,10 +30,6 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      */
     private String serviceMessage;
 
-    /**
-     * 用户信息
-     */
-    private String token;
 
     /**
      * 链路跟踪
@@ -41,11 +37,10 @@ public class ServiceResult<T extends Serializable> implements Serializable {
     private LinkNode<String> requestLink;
 
 
-    public ServiceResult(T data, Integer serviceCode, String serviceMessage, String token, LinkNode linkNode) {
+    public ServiceResult(T data, Integer serviceCode, String serviceMessage, LinkNode<String> linkNode) {
         this.data = data;
         this.serviceCode = serviceCode;
         this.serviceMessage = serviceMessage;
-        this.token = token;
         this.requestLink = linkNode;
     }
 
@@ -56,7 +51,6 @@ public class ServiceResult<T extends Serializable> implements Serializable {
         this.data = data;
         this.serviceCode = serviceCode;
         this.serviceMessage = serviceMessage;
-        this.token = req.getToken();
         this.requestLink = req.getRequestLink();
     }
 
@@ -66,37 +60,84 @@ public class ServiceResult<T extends Serializable> implements Serializable {
     /**
      * 构建一个逻辑成功的返回
      *
-     * @param businessMessage
-     * @param t
-     * @param <T>
-     * @return
+     * @param businessMessage 给前台返回的信息
+     * @param t               请求返回值
+     * @param req             请求(链路跟踪用)
+     * @param <T>             请求返回值
+     * @return 一个code是200 代表成功的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildSuccessResult(String businessMessage, T t, DefaultRequest req) {
-        return new ServiceResult(t, ResponseCode.SUCCESS.getText(), businessMessage, req);
+        return new ServiceResult(t, ServiceCode.SUCCESS.getText(), businessMessage, req);
     }
 
     /**
      * 构建一个逻辑失败的返回
      *
-     * @param businessMessage
-     * @param t
-     * @param <T>
-     * @return
+     * @param businessMessage 给前台的返回
+     * @param t               失败的返回体,通常是null
+     * @param req             请求(链路跟踪用)
+     * @param <T>             失败的返回体,通常是null
+     * @return 一个code是400的 代表逻辑错误的返回(程序并没有错)
      */
     public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage, T t, DefaultRequest req) {
-        return new ServiceResult(t, ResponseCode.REQUEST_PARM_ERROR.getText(), businessMessage, req);
+        return new ServiceResult(t, ServiceCode.REQUEST_PARAM_ERROR.getText(), businessMessage, req);
     }
 
     /**
      * 构建一个程序失败的返回
      *
-     * @param businessMessage
-     * @param req
-     * @param <T>
-     * @return
+     * @param businessMessage 给前台的返回
+     * @param req             前台的请求
+     * @param req             请求(链路跟踪用)
+     * @param <T>             null
+     * @return 一个code是500 代表逻辑错误的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildErrorResult(String businessMessage, DefaultRequest req) {
-        return new ServiceResult(null, ResponseCode.ERROR.getText(), businessMessage, req);
+        return new ServiceResult(null, ServiceCode.ERROR.getText(), businessMessage, req);
+    }
+
+    /**
+     * 构建一个权限未通过的返回
+     *
+     * @param req 前台的请求
+     * @param <T> null
+     * @return 一个code是401 代表权限未通过的返回
+     */
+    public static <T extends Serializable> ServiceResult<T> buildNoAuthResult(DefaultRequest req) {
+        return buildResultByServiceCode(ServiceCode.NONE_AUTH_ERROR, req);
+    }
+
+    /**
+     * 构建一个登录过期的返回
+     *
+     * @param req 前台的请求
+     * @param <T> null
+     * @return 一个code是402 代表登录问题的返回
+     */
+    public static <T extends Serializable> ServiceResult<T> buildLoginOutResult(DefaultRequest req) {
+        return buildResultByServiceCode(ServiceCode.LOGIN_TIME_OUT_ERROR, req);
+    }
+
+    /**
+     * 构建一个未登录的返回
+     *
+     * @param req 前台的请求
+     * @param <T> null
+     * @return 一个code是402 代表登录问题的返回
+     */
+    public static <T extends Serializable> ServiceResult<T> buildNoLoginResult(DefaultRequest req) {
+        return buildResultByServiceCode(ServiceCode.NO_LOGIN__ERROR, req);
+    }
+
+    /**
+     * 根据ServiceCode构建一个返回
+     *
+     * @param req 前台的请求
+     * @param <T> null
+     * @return 一个返回
+     */
+    public static <T extends Serializable> ServiceResult<T> buildResultByServiceCode(ServiceCode code, DefaultRequest req) {
+        return new ServiceResult(null, code.getText(), code.getMsg(), req);
     }
 
     public T getData() {
@@ -129,13 +170,5 @@ public class ServiceResult<T extends Serializable> implements Serializable {
 
     public void setRequestLink(LinkNode<String> requestLink) {
         this.requestLink = requestLink;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

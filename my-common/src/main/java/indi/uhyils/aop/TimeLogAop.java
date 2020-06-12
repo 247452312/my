@@ -1,6 +1,7 @@
 package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.enum_.RequestTypeEnum;
 import indi.uhyils.exception.NoRequestLinkException;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
@@ -40,7 +41,7 @@ public class TimeLogAop {
 
 
     /**
-     * 日志
+     * 日志显示
      * 添加链路跟踪
      *
      * @param pjp
@@ -50,14 +51,14 @@ public class TimeLogAop {
     @Around("logAspectPoint()")
     public Object timeLogAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
 
-        String className = pjp.getTarget().getClass().getCanonicalName();
+        String className = pjp.getTarget().getClass().getSimpleName();
         String methodName = pjp.getSignature().getName();
 
         //添加链路跟踪
         DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
         LinkNode<String> requestLink = arg.getRequestLink();
         if (requestLink == null) {
-            throw new NoRequestLinkException("请求无链路跟踪,请检查参数");
+            throw new NoRequestLinkException();
         }
         LinkNode<String> temp = requestLink;
         while (temp.hasNext()) {
@@ -73,7 +74,6 @@ public class TimeLogAop {
 
         //执行方法
         Object proceed = pjp.proceed();
-
 
         Long endTime = System.currentTimeMillis();
         double v = (endTime - startTime) / 1000.0;
@@ -94,8 +94,8 @@ public class TimeLogAop {
      * @param proceed
      */
     private void after(String className, String methodName, double v, Object proceed) {
-        logger.info(String.format("%s类中的%s方法执行完毕,执行时间为%f秒", className, methodName, v));
-        logger.info(String.format("返回值为:%s", JSONObject.toJSONString(proceed)));
+        logger.info(String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));
+        logger.info(String.format("   返回值为:%s", JSONObject.toJSONString(proceed)));
     }
 
     /**
@@ -108,16 +108,18 @@ public class TimeLogAop {
     private void before(ProceedingJoinPoint pjp, String className, String methodName) {
         StringBuilder sb = new StringBuilder();
         Object[] args = pjp.getArgs();
+        sb.append("方法开始执行:  ");
         sb.append(className);
         sb.append("类中的");
         sb.append(methodName);
-        sb.append("方法开始执行,参数为:");
+        sb.append(",参数为:");
         for (Object arg : args) {
             sb.append(JSONObject.toJSONString(arg));
             sb.append("(");
             sb.append(arg.getClass().getSimpleName());
             sb.append(")");
         }
+        logger.info("---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
         logger.info(sb.toString());
         sb.delete(0, sb.length());
     }

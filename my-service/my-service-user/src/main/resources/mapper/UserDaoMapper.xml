@@ -110,9 +110,9 @@
     </select>
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.UserEntity">
-        insert sys_user(id, nick_name, username, password, create_date, create_user, update_date, update_user,
+        insert sys_user(id, nick_name, username, password,role_id, create_date, create_user, update_date, update_user,
                     delete_flag, remark)
-        values (#{id}, #{nickName}, #{username}, #{password},  #{createDate}, #{createUser}, #{updateDate},
+        values (#{id}, #{nickName}, #{userName},#{password},#{roleId},#{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
 
@@ -123,11 +123,14 @@
         <if test="nickName != null and nickName != ''">
             ,nick_name = #{nickName}
         </if>
-        <if test="username != null and username != ''">
-            ,username = #{username}
+        <if test="userName != null and userName != ''">
+            ,username = #{userName}
         </if>
         <if test="password != null and password != ''">
             ,password = #{password}
+        </if>
+        <if test="roleId != null and roleId != ''">
+            ,role_id = #{roleId}
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
@@ -159,4 +162,10 @@
         from sys_power a right join sys_dept_power b on a.id = b.power_id where b.dept_id = #{deptId}
     </select>
 
+    <select id="getAll" resultType="indi.uhyils.pojo.model.UserEntity">
+        select
+        <include refid="columnList"/>
+        from sys_user a
+        where delete_flag = 0
+    </select>
 </mapper>

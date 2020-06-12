@@ -22,7 +22,8 @@ public class AopUtil {
         Object[] objs = pjp.getArgs();
         boolean b = objs == null;
         boolean b1 = objs.length == 0;
-        if (b || b1) { //如果没有参数
+        //如果没有参数
+        if (b || b1) {
             throw new Exception("访问请求无参数");
         }
         return (DefaultRequest) objs[0];

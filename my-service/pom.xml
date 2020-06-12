@@ -15,7 +15,7 @@
     <modules>
         <module>my-service-user</module>
         <module>my-web</module>
-        <module>my-service-transaction</module>
+        <module>my-service-log</module>
     </modules>
 
 

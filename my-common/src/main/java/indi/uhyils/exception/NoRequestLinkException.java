@@ -8,10 +8,8 @@ package indi.uhyils.exception;
  */
 public class NoRequestLinkException extends Exception {
 
-    public NoRequestLinkException(String message) {
-        super(message);
+    public NoRequestLinkException() {
+        super("请求无链路跟踪,请检查参数");
     }
 
-    public NoRequestLinkException() {
-    }
 }
