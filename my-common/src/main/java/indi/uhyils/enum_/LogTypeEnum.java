@@ -6,9 +6,34 @@ package indi.uhyils.enum_;
  */
 public enum LogTypeEnum {
 
-    INFO,
-    DEBUG,
-    WARN,
-    ERROR;
+    /**
+     * info
+     */
+    INFO(0),
+    /**
+     * debug
+     */
+    DEBUG(1),
+    /**
+     * warn
+     */
+    WARN(2),
+    /**
+     * error
+     */
+    ERROR(3);
 
+    private Integer type;
+
+    LogTypeEnum(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 }

@@ -12,7 +12,6 @@
         <module>my-api</module>
         <module>my-service</module>
         <module>my-common</module>
-        <module>my-dubbo-admin</module>
     </modules>
 
     <properties>
@@ -41,6 +40,8 @@
         <commons-net.version>3.6</commons-net.version>
         <junit.version>4.13</junit.version>
         <jedis.version>3.2.0</jedis.version>
+        <distrupter.version>3.4.2</distrupter.version>
+
     </properties>
 
     <!-- profile配置 -->
@@ -98,7 +99,7 @@
             </dependency>
             <dependency>
                 <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-transaction</artifactId>
+                <artifactId>my-api-provider-log</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -129,14 +130,14 @@
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!--devtools热部署-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-devtools</artifactId>
-                <version>${spring-boot.version}</version>
-                <optional>true</optional>
-                <scope>true</scope>
-            </dependency>
+<!--            &lt;!&ndash;devtools热部署&ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-devtools</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--                <optional>true</optional>-->
+<!--                <scope>true</scope>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
@@ -186,6 +187,13 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${distrupter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

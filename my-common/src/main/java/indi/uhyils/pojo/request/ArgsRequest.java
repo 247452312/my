@@ -2,6 +2,7 @@ package indi.uhyils.pojo.request;
 
 import indi.uhyils.pojo.request.model.Arg;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,5 +25,15 @@ public class ArgsRequest extends DefaultPageRequest {
 
     public void setArgs(List<Arg> args) {
         this.args = args;
+    }
+
+    public static ArgsRequest build(List<Arg> args) {
+        ArgsRequest argsRequest = new ArgsRequest();
+        argsRequest.setArgs(args);
+        return argsRequest;
+    }
+
+    public static ArgsRequest build(Arg... args) {
+        return build(Arrays.asList(args));
     }
 }

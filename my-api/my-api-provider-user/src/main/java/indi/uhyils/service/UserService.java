@@ -1,11 +1,15 @@
 package indi.uhyils.service;
 
-import indi.uhyils.exception.EnumParseNoHaveException;
-import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.model.UserEntity;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.model.base.TokenInfo;
+import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.GetUserRequest;
+import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.LoginRequest;
 import indi.uhyils.pojo.response.LoginResponse;
 import indi.uhyils.pojo.response.ServiceResult;
+
+import java.util.ArrayList;
 
 
 /**
@@ -57,6 +61,22 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * @param userRequest 用户登录所需要的条件
      * @return 登录所需要的信息
      */
-    ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest) throws EnumParseNoHaveException;
+    ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest);
+
+    /**
+     * 获取全部用户
+     *
+     * @param request 默认请求
+     * @return 全部用户
+     */
+    ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request);
+
+    /**
+     * 根据用户id获取用户
+     *
+     * @param request 用户id
+     * @return
+     */
+    ServiceResult<UserEntity> getUserById(IdRequest request);
 
 }

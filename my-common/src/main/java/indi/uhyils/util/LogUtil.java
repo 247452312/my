@@ -136,11 +136,29 @@ public class LogUtil {
     /**
      * 添加链路跟踪
      *
-     * @param targetRequest
-     * @param serviceResult
+     * @param targetRequest 目标请求
+     * @param serviceResult 请求返回
      */
     public static void addRequestLink(DefaultRequest targetRequest, ServiceResult serviceResult) {
         LinkNode<String> serviceResultRequestLink = serviceResult.getRequestLink();
         targetRequest.setRequestLink(serviceResultRequestLink);
+    }
+
+
+    /**
+     * 控制台输出链路跟踪
+     *
+     * @param requestLink 链
+     * @param logger      输出
+     */
+    public static void linkPrint(LinkNode<String> requestLink, Logger logger) {
+        StringBuilder sb = new StringBuilder();
+        LinkNode<String> p = requestLink;
+        do {
+            sb.append(" \n--> ");
+            sb.append(p.getData());
+            p = p.getLinkNode();
+        } while (p != null);
+        logger.info(String.format("链路跟踪: %s \n--> 结束!", sb.toString()));
     }
 }

@@ -1,0 +1,47 @@
+server:
+  port: 8082
+dubbo:
+  registry:
+    client: curator
+    address: zookeeper://192.168.1.101:2181
+  protocol:
+    name: dubbo
+    port: 20882
+  application:
+    name: provider-user
+  consumer:
+    timeout: 3000
+    group: ${spring.profiles.active}
+  provider:
+    timeout: 3000
+    group: ${spring.profiles.active}
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: indi.uhyils.dao
+logging:
+  level:
+    indi.uhyils.dao: trace
+token:
+  salt: my
+  encodeRules: my
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.101:3306/my
+    username: root
+    password: 123456
+  output:
+    ansi:
+      enabled: ALWAYS
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+      exclude: WEB-INF/**
+    freemarker:
+      cache: false    #页面不加载缓存，修改即时生效
+
+redis:
+  ip: 192.168.1.101
+  port: 6379
