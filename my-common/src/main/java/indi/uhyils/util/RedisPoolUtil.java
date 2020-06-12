@@ -52,7 +52,6 @@ public class RedisPoolUtil {
         if (userJson == null || "".equals(userJson)) {
             return null;
         }
-        // TODO token格式修改. 现在有json不闭合风险
         UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
         jedis.expire(token, 60 * 30);
         jedis.expire(userEntity.getId(), 60 * 30);
