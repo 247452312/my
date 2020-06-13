@@ -13,7 +13,7 @@ public class LogEntity extends BaseEntity {
     private String exceptionDetail;
 
     /**
-     * 0->正常日志 1->错误日志
+     * 详情见ServiceCode
      */
     private Integer logType;
 

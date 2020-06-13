@@ -119,7 +119,28 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         tokenInfo.setSec(Integer.parseInt(sec));
         tokenInfo.setRandom(Integer.parseInt(random));
         tokenInfo.setUserId(userId);
-        tokenInfo.setTimeOut(!redisPoolUtil.haveToken(token));
+        Boolean aBoolean = redisPoolUtil.haveToken(token);
+        // redis挂了 怎么办.手动计算是否超时,但是又有了 TODO token刷新问题
+        if (aBoolean == null) {
+            LocalDateTime localDateTime = LocalDateTime.now();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddhhmm");
+            String format = localDateTime.format(dateTimeFormatter);
+            Integer dayNow = Integer.parseInt(format.substring(0, 2));
+            Integer hourNow = Integer.parseInt(format.substring(2, 4));
+            Integer monNow = Integer.parseInt(format.substring(4, 6));
+            // 如果分钟差超过30
+            if (monNow - Integer.parseInt(mon) >= 30) {
+                tokenInfo.setTimeOut(true);
+            } else if (hourNow - Integer.parseInt(hour) >= 1) {
+                tokenInfo.setTimeOut(true);
+            } else if (dayNow - Integer.parseInt(day) >= 1) {
+                tokenInfo.setTimeOut(true);
+            } else {
+                tokenInfo.setTimeOut(false);
+            }
+        } else {
+            tokenInfo.setTimeOut(!aBoolean);
+        }
         return ServiceResult.buildSuccessResult("解密成功", tokenInfo, request);
     }
 
@@ -136,7 +157,8 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
         //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
         Boolean haveUserId = redisPoolUtil.haveUserId(userEntity.getId());
-        if (haveUserId) {
+
+        if (haveUserId != null && haveUserId) {
             redisPoolUtil.removeUserById(userEntity.getId());
         }
 

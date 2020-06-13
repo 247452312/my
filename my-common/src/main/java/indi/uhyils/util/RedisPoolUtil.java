@@ -3,10 +3,13 @@ package indi.uhyils.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.pojo.model.UserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 /**
  * 懒加载,除了用到redis
@@ -18,6 +21,7 @@ import redis.clients.jedis.Jedis;
 @Component
 public class RedisPoolUtil {
 
+    private static final Logger logger = LoggerFactory.getLogger(RedisPoolUtil.class);
     @Autowired
     private RedisPool redisPool;
 
@@ -29,15 +33,19 @@ public class RedisPoolUtil {
      * @param user  user
      */
     public void addUser(String token, UserEntity user) {
+        try {
+            Jedis jedis = redisPool.getJedis();
+            String value = JSONObject.toJSONString(user);
+            jedis.append(token, value);
+            //半个小时
+            jedis.expire(token, 60 * 30);
+            jedis.append(user.getId(), token);
+            jedis.expire(user.getId(), 60 * 30);
+            jedis.close();
+        } catch (JedisConnectionException e) {
+            logger.error(e.getMessage());
+        }
 
-        Jedis jedis = redisPool.getJedis();
-        String value = JSONObject.toJSONString(user);
-        jedis.append(token, value);
-        //半个小时
-        jedis.expire(token, 60 * 30);
-        jedis.append(user.getId(), token);
-        jedis.expire(user.getId(), 60 * 30);
-        jedis.close();
     }
 
     /**
@@ -47,51 +55,79 @@ public class RedisPoolUtil {
      * @return user
      */
     public UserEntity getUser(String token) {
-        Jedis jedis = redisPool.getJedis();
-        String userJson = jedis.get(token);
-        if (userJson == null || "".equals(userJson)) {
-            return null;
+        try {
+            Jedis jedis = redisPool.getJedis();
+            String userJson = jedis.get(token);
+            if (userJson == null || "".equals(userJson)) {
+                return null;
+            }
+            UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
+            jedis.expire(token, 60 * 30);
+            jedis.expire(userEntity.getId(), 60 * 30);
+            jedis.close();
+            return userEntity;
+        } catch (JedisConnectionException e) {
+            logger.error(e.getMessage());
         }
-        UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
-        jedis.expire(token, 60 * 30);
-        jedis.expire(userEntity.getId(), 60 * 30);
-        jedis.close();
-        return userEntity;
+        return null;
+
     }
 
     public Boolean haveToken(String token) {
-        Jedis jedis = redisPool.getJedis();
-        Boolean exists = jedis.exists(token);
-        jedis.close();
-        return exists;
+        try {
+            Jedis jedis = redisPool.getJedis();
+            Boolean exists = jedis.exists(token);
+            jedis.close();
+            return exists;
+        } catch (JedisConnectionException e) {
+            logger.error(e.getMessage());
+        }
+        return null;
+
     }
 
     public Boolean haveUserId(String userId) {
-        Jedis jedis = redisPool.getJedis();
-        Boolean exists = jedis.exists(userId);
-        jedis.close();
-        return exists;
+        try {
+            Jedis jedis = redisPool.getJedis();
+            Boolean exists = jedis.exists(userId);
+            jedis.close();
+            return exists;
+        } catch (JedisConnectionException e) {
+            logger.error(e.getMessage());
+        }
+        return null;
+
     }
 
     public boolean removeUserById(String userId) {
-        Jedis jedis = redisPool.getJedis();
-        String token = jedis.get(userId);
-        Long del = jedis.del(userId, token);
-        jedis.close();
-        return del != 0;
+        try {
+            Jedis jedis = redisPool.getJedis();
+            String token = jedis.get(userId);
+            Long del = jedis.del(userId, token);
+            jedis.close();
+            return del != 0;
+        } catch (JedisConnectionException e) {
+            logger.error(e.getMessage());
+        }
+        return true;
     }
 
     public boolean removeUserBytoken(String token) {
-        Jedis jedis = redisPool.getJedis();
-        String userJson = jedis.get(token);
-        if (userJson == null || "".equals(userJson)) {
-            return true;
+        try {
+            Jedis jedis = redisPool.getJedis();
+            String userJson = jedis.get(token);
+            if (userJson == null || "".equals(userJson)) {
+                return true;
+            }
+            UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
+            String id = userEntity.getId();
+            Long del = jedis.del(id, token);
+            jedis.close();
+            return del != 0;
+        } catch (JedisConnectionException e) {
+            logger.error(e.getMessage());
         }
-        UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
-        String id = userEntity.getId();
-        Long del = jedis.del(id, token);
-        jedis.close();
-        return del != 0;
+        return true;
     }
 
 

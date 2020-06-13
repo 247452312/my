@@ -1,8 +1,15 @@
 package indi.uhyils.service;
 
+import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.LogEntity;
+import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.ObjRequest;
 import indi.uhyils.pojo.response.ServiceResult;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 日志接口
@@ -19,6 +26,14 @@ public interface LogService extends DefaultEntityService<LogEntity> {
      * @return 是否成功
      */
     ServiceResult<Boolean> pushRequestLogNoToken(ObjRequest<LogEntity> request);
+
+    /**
+     * 获取所有的日志类型 -- > 这个应该不用访问数据库
+     *
+     * @param request 请求
+     * @return 所有的日志类型
+     */
+    ServiceResult<ArrayList<Map<String,Object>>> getLogTypes(DefaultRequest request);
 
 
 }

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -84,7 +85,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
-    public ServiceResult<Boolean> initPowerInProStartNoToken(DefaultRequest request) {
+    public ServiceResult<Integer> initPowerInProStart(DefaultRequest request) {
         List<PowerSimpleEntity> powersSingle;
         try {
             powersSingle = ApiPowerInitUtil.getPowersSingle();
@@ -92,21 +93,19 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
             logger.error(e.getMessage());
             return ServiceResult.buildErrorResult("初始化power失败:" + e.getMessage(), request);
         }
-        ArrayList<PowerSimpleEntity> result = new ArrayList<>();
-        boolean b = true;
+        AtomicInteger newPowerCount = new AtomicInteger(0);
         for (PowerSimpleEntity powerSimpleEntity : powersSingle) {
             Integer count = dao.checkPower(powerSimpleEntity.getInterfaceName(), powerSimpleEntity.getMethodName());
             // 如果数据库中不存在此权限
             if (count == 0) {
                 PowerEntity powerEntity = PowerEntity.build(powerSimpleEntity);
                 powerEntity.preInsert(request);
-                int insert = dao.insert(powerEntity);
-                if (insert != 1) {
-                    b = false;
-                }
+                dao.insert(powerEntity);
+                newPowerCount.incrementAndGet();
+
             }
         }
-        return ServiceResult.buildSuccessResult("初始化power成功", b, request);
+        return ServiceResult.buildSuccessResult("初始化power成功", newPowerCount.get(), request);
     }
 
 }
