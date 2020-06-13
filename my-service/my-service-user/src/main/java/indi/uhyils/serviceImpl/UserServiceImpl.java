@@ -120,7 +120,6 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         tokenInfo.setRandom(Integer.parseInt(random));
         tokenInfo.setUserId(userId);
         Boolean aBoolean = redisPoolUtil.haveToken(token);
-        // redis挂了 怎么办.手动计算是否超时,但是又有了 TODO token刷新问题
         if (aBoolean == null) {
             LocalDateTime localDateTime = LocalDateTime.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddhhmm");
