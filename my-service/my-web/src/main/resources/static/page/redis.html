@@ -53,6 +53,9 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reload">reload</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="start">start</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="stop">stop</a>
 </script>
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="/js/jquery.min.js" charset="utf-8"></script>
@@ -80,8 +83,9 @@
                     toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
                     page: false,
                     cols: [[
-                        {field: 'id', title: 'ID'},
-                        {field: 'port', title: '端口'},
+                        {type: "numbers", title: '序号'},
+                        {field: 'dockerName', width: 70, title: 'docker容器的名字'},
+                        {field: 'port', width: 70, title: '端口'},
                         {
                             title: '服务器', templet: function (d) {
                                 return pushRequest("ServerService", "getNameById", {id: d.serverId}, function (data) {
@@ -91,7 +95,7 @@
                         },
                         {field: 'startSh', title: '开启服务命令'},
                         {
-                            title: '服务状态', templet: function (d) {
+                            title: '服务状态', width: 90, templet: function (d) {
                                 if (d.status == 1) {
                                     return "运行中";
                                 } else if (d.status == 2) {
@@ -104,8 +108,8 @@
                         },
                         {field: 'statusSh', title: '查询状态命令'},
                         {field: 'stopSh', title: '停止服务命令'},
-                        {field: 'version', title: '版本'},
-                        {fixed: 'right', title: '操作', toolbar: '#barDemo'}
+                        {field: 'version', width: 70, title: '版本'},
+                        {fixed: 'right', width: 260, title: '操作', toolbar: '#barDemo'}
                     ]],
                     skin: 'line'
                 });
@@ -219,7 +223,29 @@
                 $(window).on("resize", function () {
                     layer.full(index);
                 });
+            } else if (obj.event === 'reload') { // 更新状态
+                let id = data.id;
+                pushRequest("RedisService", "reload", {id: id}, function (backData) {
+                    data.status = backData.status;
+                    data.version = backData.version;
+                    table.render();
+                })
+
+            } else if (obj.event === 'start') {
+                pushRequest("RedisService", "start", {id: data.id}, function (backData) {
+                    data.status = backData.status;
+                    table.render();
+                    layer.msg(backData.msg);
+
+                })
+            } else if (obj.event === 'stop') {
+                pushRequest("RedisService", "stop", {id: data.id}, function (backData) {
+                    data.status = backData.status;
+                    table.render();
+                    layer.msg(backData.msg);
+                })
             }
+
         });
 
         // 监听搜索操作

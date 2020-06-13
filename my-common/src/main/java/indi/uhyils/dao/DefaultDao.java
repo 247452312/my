@@ -15,12 +15,12 @@ public interface DefaultDao<T extends Serializable> {
 
 
     /**
-     * 根据id获取实例,因防止特殊表id可重复,所以设置为list
+     * 获取一个例子,所有表id不可重复,所以只取一个
      *
      * @param id id
      * @return 实例
      */
-    List<T> getById(String id);
+    T getById(String id);
 
     /**
      * 根据某些字段获取实例(不分页)

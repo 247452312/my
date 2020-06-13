@@ -40,6 +40,13 @@
         </div>
     </div>
     <div class="layui-form-item">
+        <label class="layui-form-label required">docker容器名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="dockerName" lay-verify="required" placeholder="请输入docker容器名称" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
         <label class="layui-form-label required">服务器</label>
         <div class="layui-input-block">
             <select name="serverId" lay-filter="aihao">
@@ -111,6 +118,7 @@
                 $('[name="id"]').attr('value', data.id);
                 $('[name="password"]').parent().parent().remove();
                 $('[name="port"]').attr('value', data.port);
+                $('[name="dockerName"]').attr('value', data.dockerName);
                 let s = '[name="serverId"] option[value="' + data.serverId + '"]';
                 $(s).attr("selected", true);
                 $('[name="startSh"]').attr('value', data.startSh);

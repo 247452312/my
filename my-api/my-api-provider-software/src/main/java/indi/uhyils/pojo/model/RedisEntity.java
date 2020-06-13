@@ -51,6 +51,11 @@ public class RedisEntity extends BaseEntity {
      */
     private String version;
 
+    /**
+     * other1 对应容器名称
+     */
+    private String dockerName;
+
     public String getPassword() {
         return password;
     }
@@ -113,5 +118,13 @@ public class RedisEntity extends BaseEntity {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getDockerName() {
+        return dockerName;
+    }
+
+    public void setDockerName(String dockerName) {
+        this.dockerName = dockerName;
     }
 }

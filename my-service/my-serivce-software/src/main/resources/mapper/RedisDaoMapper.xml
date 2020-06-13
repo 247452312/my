@@ -22,6 +22,7 @@
         a.status,
         a.status_sh as statusSh,
         a.stop_sh as stopSh,
+        a.other_1 as dockerName,
         a.version
 
     </sql>
@@ -74,7 +75,8 @@
                             status,
                             status_sh,
                             stop_sh,
-                            version)
+                            version,
+                            other_1)
         values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, 1,
                 #{password},
                 #{port},
@@ -83,7 +85,8 @@
                 #{status},
                 #{statusSh},
                 #{stopSh},
-                #{version})
+                #{version},
+                #{dokerName})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.RedisEntity">
@@ -114,6 +117,9 @@
         </if>
         <if test="version != null and version != ''">
             ,version = #{version}
+        </if>
+        <if test="dockerName != null and dockerName != ''">
+            ,other_1 = #{dockerName}
         </if>
 
 

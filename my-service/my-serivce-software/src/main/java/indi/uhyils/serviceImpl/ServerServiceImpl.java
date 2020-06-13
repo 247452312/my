@@ -43,11 +43,10 @@ public class ServerServiceImpl extends BaseDefaultServiceImpl<ServerEntity> impl
 
     @Override
     public ServiceResult<Boolean> testConnById(IdRequest request) {
-        List<ServerEntity> byId = dao.getById(request.getId());
-        if (byId == null || byId.size() != 1) {
-            return ServiceResult.buildFailedResult("没有对应id", false, request);
+        ServerEntity serverEntity = dao.getById(request.getId());
+        if (serverEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, request);
         }
-        ServerEntity serverEntity = byId.get(0);
         Boolean aBoolean = SshUtils.testConn(serverEntity.getIp(), serverEntity.getPort(), serverEntity.getUsername(), serverEntity.getPassword());
         return ServiceResult.buildSuccessResult("测试成功", aBoolean, request);
     }

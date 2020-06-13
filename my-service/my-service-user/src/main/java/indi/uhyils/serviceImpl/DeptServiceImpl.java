@@ -102,11 +102,10 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
 
     @Override
     public ServiceResult<Boolean> deleteDept(IdRequest request) {
-        List<DeptEntity> byId = getDao().getById(request.getId());
-        if (byId == null) {
+        DeptEntity t = getDao().getById(request.getId());
+        if (t == null) {
             return ServiceResult.buildFailedResult("查无此人", null, request);
         }
-        DeptEntity t = byId.get(0);
         t.setDeleteFlag(true);
         t.preUpdate(request);
         getDao().update(t);

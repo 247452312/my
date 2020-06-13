@@ -3,6 +3,7 @@ package indi.uhyils.util;
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
 import ch.ethz.ssh2.StreamGobbler;
+import indi.uhyils.pojo.model.ServerEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
@@ -52,6 +53,10 @@ public class SshUtils {
                 conn.close();
             }
         }
+    }
+
+    public static String execCommandBySsh(ServerEntity serverEntity, String command) {
+        return execCommandBySsh(serverEntity.getIp(), serverEntity.getPort(), serverEntity.getUsername(), serverEntity.getPassword(), command);
     }
 
     public static String execCommandBySsh(String ip, Integer port, String username, String password, String command) {

@@ -167,11 +167,10 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
 
         /* 1.删除所有对应子节点 */
         String menuId = req.getId();
-        List<MenuEntity> byId = dao.getById(menuId);
-        if (byId == null || byId.size() != 1) {
-            return ServiceResult.buildFailedResult("要删除的菜单不存在", null, req);
+        MenuEntity menuEntity = dao.getById(menuId);
+        if (menuEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, req);
         }
-        MenuEntity menuEntity = byId.get(0);
         Integer frame = menuEntity.getiFrame();
         List<MenuEntity> byIFrame = dao.getByIFrame(frame);
         HashSet<MenuEntity> menuEntityHashSet = new HashSet<>();

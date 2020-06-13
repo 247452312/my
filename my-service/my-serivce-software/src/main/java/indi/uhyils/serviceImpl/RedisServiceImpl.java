@@ -6,7 +6,9 @@ import indi.uhyils.dao.ServerDao;
 import indi.uhyils.enum_.SoftwareStatusEnum;
 import indi.uhyils.pojo.model.RedisEntity;
 import indi.uhyils.pojo.model.ServerEntity;
+import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.pojo.response.OperateSoftwareResponse;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.RedisService;
 import indi.uhyils.util.SshUtils;
@@ -17,7 +19,7 @@ import redis.clients.jedis.Jedis;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -57,15 +59,103 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
     @Override
     public ServiceResult<Integer> insert(ObjRequest<RedisEntity> insert) {
-        RedisEntity data = insert.getData();
-        List<ServerEntity> byId = serverDao.getById(data.getServerId());
-        if (byId == null || byId.size() != 1) {
+        RedisEntity redisEntity = insert.getData();
+        ServerEntity serverEntity = serverDao.getById(redisEntity.getServerId());
+        if (serverEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null, insert);
         }
-        ServerEntity serverEntity = byId.get(0);
-        Jedis jedis = new Jedis(serverEntity.getIp(), data.getPort());
-        if (!StringUtils.isBlank(data.getPassword())) {
-            jedis.auth(data.getPassword());
+        String redisVersion = getRedisNewVersion(redisEntity, serverEntity);
+        redisEntity.setVersion(redisVersion);
+        redisEntity.setStatus(getRedisNewStatus(redisEntity, serverEntity));
+        redisEntity.preInsert(insert);
+        dao.insert(redisEntity);
+        return ServiceResult.buildSuccessResult("插入成功", 1, insert);
+
+    }
+
+    @Override
+    public ServiceResult<RedisEntity> reload(IdRequest request) {
+        String id = request.getId();
+        RedisEntity redisEntity = dao.getById(id);
+        if (redisEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, request);
+        }
+        String serverId = redisEntity.getServerId();
+        ServerEntity serverEntity = serverDao.getById(serverId);
+        if (serverEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, request);
+        }
+        redisEntity.setStatus(getRedisNewStatus(redisEntity, serverEntity));
+        String redisVersion = getRedisNewVersion(redisEntity, serverEntity);
+        redisEntity.setVersion(redisVersion);
+        redisEntity.preUpdate(request);
+        dao.update(redisEntity);
+        return ServiceResult.buildSuccessResult("刷新状态成功", redisEntity, request);
+    }
+
+    @Override
+    public ServiceResult<OperateSoftwareResponse> start(IdRequest request) {
+        OperateSoftwareResponse operateSoftwareResponse = new OperateSoftwareResponse();
+        RedisEntity redisEntity = dao.getById(request.getId());
+        String serverId = redisEntity.getServerId();
+        ServerEntity serverEntity = serverDao.getById(serverId);
+        Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
+        if (SoftwareStatusEnum.RUNNING.getStatus().equals(redisNewStatus)) {
+            operateSoftwareResponse.setStatus(SoftwareStatusEnum.RUNNING.getStatus());
+            operateSoftwareResponse.setMsg("redis运行中,不需要启动");
+            return ServiceResult.buildSuccessResult("启动成功", operateSoftwareResponse, request);
+        }
+        String s = SshUtils.execCommandBySsh(serverEntity, redisEntity.getStartSh());
+        if (StringUtils.contains(s, redisEntity.getDockerName())) {
+            operateSoftwareResponse.setStatus(SoftwareStatusEnum.RUNNING.getStatus());
+            operateSoftwareResponse.setMsg("redis docker启动成功");
+            return ServiceResult.buildSuccessResult("启动成功", operateSoftwareResponse, request);
+        }
+        return ServiceResult.buildFailedResult("启动失败", null, request);
+    }
+
+    @Override
+    public ServiceResult<OperateSoftwareResponse> stop(IdRequest request) {
+        OperateSoftwareResponse operateSoftwareResponse = new OperateSoftwareResponse();
+        RedisEntity redisEntity = dao.getById(request.getId());
+        String serverId = redisEntity.getServerId();
+        ServerEntity serverEntity = serverDao.getById(serverId);
+        Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
+        if (SoftwareStatusEnum.STOP.getStatus().equals(redisNewStatus)) {
+            operateSoftwareResponse.setStatus(SoftwareStatusEnum.STOP.getStatus());
+            operateSoftwareResponse.setMsg("redis已经停止,不需要再次停止");
+            return ServiceResult.buildSuccessResult("停止成功", operateSoftwareResponse, request);
+        }
+        String s = SshUtils.execCommandBySsh(serverEntity, redisEntity.getStopSh());
+        if (StringUtils.contains(s, redisEntity.getDockerName())) {
+            operateSoftwareResponse.setStatus(SoftwareStatusEnum.STOP.getStatus());
+            operateSoftwareResponse.setMsg("redis docker停止成功");
+            return ServiceResult.buildSuccessResult("停止成功", operateSoftwareResponse, request);
+        }
+        return ServiceResult.buildFailedResult("停止失败", null, request);
+    }
+
+
+    public Integer getRedisNewStatus(RedisEntity redisEntity, ServerEntity serverEntity) {
+
+        String statusSh = redisEntity.getStatusSh();
+        String status = SshUtils.execCommandBySsh(serverEntity.getIp(), serverEntity.getPort(), serverEntity.getUsername(), serverEntity.getPassword(), statusSh);
+        if (status.contains(DOCKER_REDIS_STATUS_RUNNING)) {
+            return SoftwareStatusEnum.RUNNING.getStatus();
+        } else {
+            return SoftwareStatusEnum.STOP.getStatus();
+        }
+    }
+
+    public String getRedisNewVersion(RedisEntity redisEntity, ServerEntity serverEntity) {
+        Map<String, String> redisNewInfo = getRedisNewInfo(redisEntity, serverEntity);
+        return redisNewInfo.get("redis_version");
+    }
+
+    public Map<String, String> getRedisNewInfo(RedisEntity redisEntity, ServerEntity serverEntity) {
+        Jedis jedis = new Jedis(serverEntity.getIp(), redisEntity.getPort());
+        if (!StringUtils.isBlank(redisEntity.getPassword())) {
+            jedis.auth(redisEntity.getPassword());
         }
         Client client = jedis.getClient();
         client.info();
@@ -84,15 +174,6 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
         });
         jedis.close();
-        String redisVersion = redisInfoMap.get("redis_version");
-        data.setVersion(redisVersion);
-        String status = SshUtils.execCommandBySsh(serverEntity.getIp(), serverEntity.getPort(), serverEntity.getUsername(), serverEntity.getPassword(), data.getStatusSh());
-        if (status.contains(DOCKER_REDIS_STATUS_RUNNING)) {
-            data.setStatus(SoftwareStatusEnum.RUNNING.getStatus());
-        }
-        data.preInsert(insert);
-        dao.insert(data);
-        return ServiceResult.buildSuccessResult("插入成功", 1, insert);
-
+        return redisInfoMap;
     }
 }

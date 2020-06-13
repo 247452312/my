@@ -57,13 +57,13 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         if (user != null) {
             return ServiceResult.buildSuccessResult("查询成功", user, idRequest);
         }
-        List<UserEntity> byId = dao.getById(idRequest.getId());
-        if (byId != null && byId.size() == 1) {
-            UserEntity userEntity = byId.get(0);
-            initRole(userEntity);
-            return ServiceResult.buildSuccessResult("查询成功", userEntity, idRequest);
+        UserEntity userEntity = dao.getById(idRequest.getId());
+        if (userEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, idRequest);
         }
-        return ServiceResult.buildFailedResult("查无此人", null, idRequest);
+        initRole(userEntity);
+        return ServiceResult.buildSuccessResult("查询成功", userEntity, idRequest);
+
     }
 
     private void initRole(UserEntity userEntity) {
@@ -166,11 +166,10 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     @Override
     public ServiceResult<UserEntity> getUserById(IdRequest request) {
         String id = request.getId();
-        List<UserEntity> byId = dao.getById(id);
-        if (byId == null || byId.size() != 1) {
-            return ServiceResult.buildFailedResult("id不存在", null, request);
+        UserEntity userEntity = dao.getById(id);
+        if (userEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, request);
         }
-        UserEntity userEntity = byId.get(0);
         String roleId = userEntity.getRoleId();
         RoleEntity userRoleById = dao.getUserRoleById(roleId);
         userEntity.setRole(userRoleById);
