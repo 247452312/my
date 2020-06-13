@@ -2,8 +2,9 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.RedisEntity;
 import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.IdsRequest;
 import indi.uhyils.pojo.response.OperateSoftwareResponse;
+import indi.uhyils.pojo.response.ServiceResult;
 
 /**
  * redisService
@@ -38,5 +39,40 @@ public interface RedisService extends DefaultEntityService<RedisEntity> {
      * @return 返回信息
      */
     ServiceResult<OperateSoftwareResponse> stop(IdRequest request);
+
+
+    /**
+     * 批量删除redis
+     *
+     * @param request 多个redis id
+     * @return 删除是否成功
+     */
+    ServiceResult<Boolean> deleteManyRedis(IdsRequest request);
+
+
+    /**
+     * 批量更新redis信息
+     *
+     * @param request
+     * @return
+     */
+    ServiceResult<Boolean> reloadManyRedis(IdsRequest request);
+
+    /**
+     * 开启选中的redis
+     *
+     * @param request 多个redis id
+     * @return 是否成功
+     */
+    ServiceResult<Boolean> startManyRedis(IdsRequest request);
+
+    /**
+     * 停止选中的redis
+     *
+     * @param request 多个redis id
+     * @return 是否成功
+     */
+    ServiceResult<Boolean> stopManyRedis(IdsRequest request);
+
 
 }

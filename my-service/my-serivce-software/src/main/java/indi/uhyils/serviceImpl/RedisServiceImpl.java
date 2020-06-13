@@ -7,10 +7,12 @@ import indi.uhyils.enum_.SoftwareStatusEnum;
 import indi.uhyils.pojo.model.RedisEntity;
 import indi.uhyils.pojo.model.ServerEntity;
 import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.IdsRequest;
 import indi.uhyils.pojo.request.ObjRequest;
 import indi.uhyils.pojo.response.OperateSoftwareResponse;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.RedisService;
+import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SshUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,10 @@ import redis.clients.jedis.Jedis;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -133,6 +138,90 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
             return ServiceResult.buildSuccessResult("停止成功", operateSoftwareResponse, request);
         }
         return ServiceResult.buildFailedResult("停止失败", null, request);
+    }
+
+    @Override
+    public ServiceResult<Boolean> deleteManyRedis(IdsRequest request) {
+        List<String> ids = request.getIds();
+        List<RedisEntity> collect = ids.stream().map(t -> dao.getById(t)).collect(Collectors.toList());
+        AtomicBoolean b = new AtomicBoolean(true);
+        collect.forEach(t -> {
+            t.setDeleteFlag(true);
+            t.preUpdate(request);
+            int update = dao.update(t);
+            if (update == 0) {
+                b.set(false);
+            }
+        });
+        return ServiceResult.buildSuccessResult("删除redis执行成功", b.get(), request);
+    }
+
+    @Override
+    public ServiceResult<Boolean> reloadManyRedis(IdsRequest request) {
+        List<String> ids = request.getIds();
+        AtomicBoolean b = new AtomicBoolean(true);
+        ids.forEach(id -> {
+            try {
+                RedisEntity redisEntity = dao.getById(id);
+                String serverId = redisEntity.getServerId();
+                ServerEntity serverEntity = serverDao.getById(serverId);
+                redisEntity.setStatus(getRedisNewStatus(redisEntity, serverEntity));
+                String redisVersion = getRedisNewVersion(redisEntity, serverEntity);
+                redisEntity.setVersion(redisVersion);
+                redisEntity.preUpdate(request);
+                dao.update(redisEntity);
+            } catch (Exception e) {
+                LogUtil.error(this.getClass(), e.getMessage());
+                b.set(false);
+            }
+        });
+
+        return ServiceResult.buildSuccessResult("重置数据操作成功", b.get(), request);
+
+    }
+
+    @Override
+    public ServiceResult<Boolean> startManyRedis(IdsRequest request) {
+        List<String> ids = request.getIds();
+        AtomicBoolean b = new AtomicBoolean(true);
+        ids.forEach(id -> {
+            RedisEntity redisEntity = dao.getById(id);
+            String serverId = redisEntity.getServerId();
+            ServerEntity serverEntity = serverDao.getById(serverId);
+            Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
+            if (SoftwareStatusEnum.RUNNING.getStatus().equals(redisNewStatus)) {
+                return;
+            }
+            String s = SshUtils.execCommandBySsh(serverEntity, redisEntity.getStartSh());
+            if (StringUtils.contains(s, redisEntity.getDockerName())) {
+                return;
+            }
+            b.set(false);
+        });
+        return ServiceResult.buildSuccessResult("批量开启redis执行成功", b.get(), request);
+
+    }
+
+    @Override
+    public ServiceResult<Boolean> stopManyRedis(IdsRequest request) {
+        AtomicBoolean b = new AtomicBoolean(true);
+        request.getIds().forEach(id -> {
+            RedisEntity redisEntity = dao.getById(id);
+            String serverId = redisEntity.getServerId();
+            ServerEntity serverEntity = serverDao.getById(serverId);
+            Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
+            if (SoftwareStatusEnum.STOP.getStatus().equals(redisNewStatus)) {
+                return;
+            }
+            String s = SshUtils.execCommandBySsh(serverEntity, redisEntity.getStopSh());
+            if (StringUtils.contains(s, redisEntity.getDockerName())) {
+                return;
+            }
+            b.set(false);
+        });
+
+        return ServiceResult.buildSuccessResult("redis批量停止操作执行成功", b.get(), request);
+
     }
 
 
