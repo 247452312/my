@@ -14,8 +14,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -31,10 +29,6 @@ import java.util.List;
 @Order(20)
 public class TokenInjectAop {
 
-    /**
-     * 自定义日志
-     */
-    private Logger logger = LoggerFactory.getLogger(TokenInjectAop.class);
 
     /**
      * service后缀

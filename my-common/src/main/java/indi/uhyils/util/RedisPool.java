@@ -1,7 +1,5 @@
 package indi.uhyils.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -41,10 +39,6 @@ public class RedisPool {
      * 在return一个jedis实例的时候，是否要进行验证操作，如果赋值true。则放回jedispool的jedis实例肯定是可以用的。
      */
     private static Boolean testOnReturn = false;
-    /**
-     * 自定义日志
-     */
-    private Logger logger = LoggerFactory.getLogger(RedisPool.class);
     @Value("${redis.ip}")
     private String redisIp;
     @Value("${redis.port}")

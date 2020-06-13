@@ -11,8 +11,7 @@ import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.PowerService;
 import indi.uhyils.util.ApiPowerInitUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import indi.uhyils.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -27,7 +26,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service(group = "${spring.profiles.active}")
 public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implements PowerService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PowerServiceImpl.class);
 
     @Autowired
     private PowerDao dao;
@@ -90,7 +88,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
         try {
             powersSingle = ApiPowerInitUtil.getPowersSingle();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LogUtil.error(this.getClass(), e.getMessage());
             return ServiceResult.buildErrorResult("初始化power失败:" + e.getMessage(), request);
         }
         AtomicInteger newPowerCount = new AtomicInteger(0);

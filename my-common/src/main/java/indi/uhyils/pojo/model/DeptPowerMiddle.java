@@ -20,6 +20,13 @@ public class DeptPowerMiddle extends MiddleEntity {
      */
     private String powerId;
 
+    public static DeptPowerMiddle build(String deptId, String powerId) {
+        DeptPowerMiddle deptPowerMiddle = new DeptPowerMiddle();
+        deptPowerMiddle.setDeptId(deptId);
+        deptPowerMiddle.setPowerId(powerId);
+        return deptPowerMiddle;
+    }
+
     public String getDeptId() {
         return deptId;
     }
@@ -34,13 +41,6 @@ public class DeptPowerMiddle extends MiddleEntity {
 
     public void setPowerId(String powerId) {
         this.powerId = powerId;
-    }
-
-    public static DeptPowerMiddle build(String deptId, String powerId) {
-        DeptPowerMiddle deptPowerMiddle = new DeptPowerMiddle();
-        deptPowerMiddle.setDeptId(deptId);
-        deptPowerMiddle.setPowerId(powerId);
-        return deptPowerMiddle;
     }
 
 }

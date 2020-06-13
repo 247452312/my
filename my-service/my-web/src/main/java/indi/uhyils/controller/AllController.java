@@ -11,8 +11,6 @@ import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +30,6 @@ import java.util.List;
 @Controller
 public class AllController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AllController.class);
 
     private static final String TOKEN = "token";
 
@@ -50,7 +47,7 @@ public class AllController {
         LinkNode<String> link = null;
         ServiceResult serviceResult = null;
 
-        logger.info("param: " + JSON.toJSONString(action));
+        LogUtil.info(this.getClass(), "param: " + JSON.toJSONString(action));
         action.getArgs().put(TOKEN, action.getToken());
         actionAddRequestLink(action);
         try {
@@ -58,7 +55,7 @@ public class AllController {
             list.add(action.getArgs());
             serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list, new DefaultRequest());
             if (ServiceCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
-                LogUtil.linkPrint(serviceResult.getRequestLink(), logger);
+                LogUtil.linkPrint(serviceResult.getRequestLink());
             }
             link = serviceResult.getRequestLink();
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
@@ -75,7 +72,7 @@ public class AllController {
                 try {
                     LogPushUtils.pushLog(eMsg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken(), serviceResult.getServiceCode());
                 } catch (Exception e) {
-                    logger.error(e.getMessage());
+                    LogUtil.error(this.getClass(), e.getMessage());
                 }
 
             }
@@ -85,17 +82,17 @@ public class AllController {
     @PostMapping("/getSession")
     @ResponseBody
     public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
-        logger.info("getSession: " + sessionRequest.getAttrName());
+        LogUtil.info(this.getClass(), "getSession: " + sessionRequest.getAttrName());
         HttpSession session = request.getSession();
-        logger.info("result: " + session.getAttribute(sessionRequest.getAttrName()));
+        LogUtil.info(this.getClass(), "result: " + session.getAttribute(sessionRequest.getAttrName()));
         return session.getAttribute(sessionRequest.getAttrName());
     }
 
     @PostMapping("/setSession")
     @ResponseBody
     public boolean setSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
-        logger.info("setSession: " + sessionRequest.getAttrName());
-        logger.info("sessionData : " + sessionRequest.getData());
+        LogUtil.info(this.getClass(), "setSession: " + sessionRequest.getAttrName());
+        LogUtil.info(this.getClass(), "sessionData : " + sessionRequest.getData());
         HttpSession session = request.getSession();
         session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
         return true;

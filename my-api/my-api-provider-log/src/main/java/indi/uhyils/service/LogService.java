@@ -1,14 +1,11 @@
 package indi.uhyils.service;
 
-import indi.uhyils.enum_.LogTypeEnum;
-import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.LogEntity;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.ObjRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,7 +30,7 @@ public interface LogService extends DefaultEntityService<LogEntity> {
      * @param request 请求
      * @return 所有的日志类型
      */
-    ServiceResult<ArrayList<Map<String,Object>>> getLogTypes(DefaultRequest request);
+    ServiceResult<ArrayList<Map<String, Object>>> getLogTypes(DefaultRequest request);
 
 
 }

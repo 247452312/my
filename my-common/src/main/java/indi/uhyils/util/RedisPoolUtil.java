@@ -3,8 +3,6 @@ package indi.uhyils.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.pojo.model.UserEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -21,7 +19,6 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 @Component
 public class RedisPoolUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(RedisPoolUtil.class);
     @Autowired
     private RedisPool redisPool;
 
@@ -43,7 +40,7 @@ public class RedisPoolUtil {
             jedis.expire(user.getId(), 60 * 30);
             jedis.close();
         } catch (JedisConnectionException e) {
-            logger.error(e.getMessage());
+            LogUtil.error(this.getClass(), e.getMessage());
         }
 
     }
@@ -67,7 +64,7 @@ public class RedisPoolUtil {
             jedis.close();
             return userEntity;
         } catch (JedisConnectionException e) {
-            logger.error(e.getMessage());
+            LogUtil.error(this.getClass(), e.getMessage());
         }
         return null;
 
@@ -80,7 +77,7 @@ public class RedisPoolUtil {
             jedis.close();
             return exists;
         } catch (JedisConnectionException e) {
-            logger.error(e.getMessage());
+            LogUtil.error(this.getClass(), e.getMessage());
         }
         return null;
 
@@ -93,7 +90,7 @@ public class RedisPoolUtil {
             jedis.close();
             return exists;
         } catch (JedisConnectionException e) {
-            logger.error(e.getMessage());
+            LogUtil.error(this.getClass(), e.getMessage());
         }
         return null;
 
@@ -107,7 +104,7 @@ public class RedisPoolUtil {
             jedis.close();
             return del != 0;
         } catch (JedisConnectionException e) {
-            logger.error(e.getMessage());
+            LogUtil.error(this.getClass(), e.getMessage());
         }
         return true;
     }
@@ -125,7 +122,7 @@ public class RedisPoolUtil {
             jedis.close();
             return del != 0;
         } catch (JedisConnectionException e) {
-            logger.error(e.getMessage());
+            LogUtil.error(this.getClass(), e.getMessage());
         }
         return true;
     }

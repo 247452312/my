@@ -15,8 +15,6 @@ import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
 import indi.uhyils.util.RedisPoolUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -34,8 +32,6 @@ import java.util.Random;
 @Service(group = "${spring.profiles.active}")
 public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implements UserService {
 
-
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private RedisPoolUtil redisPoolUtil;

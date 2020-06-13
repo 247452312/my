@@ -25,15 +25,6 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
 
     @Autowired
     private LogDao dao;
-
-    public LogDao getDao() {
-        return dao;
-    }
-
-    public void setDao(LogDao dao) {
-        this.dao = dao;
-    }
-
     /**
      * 工具entity, 插入日志时用来插入登录日志
      */
@@ -42,6 +33,14 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
     {
         // 日志的创建用户一定是超级管理员
         userEntity.setId(Content.ADMIN_USER_ID);
+    }
+
+    public LogDao getDao() {
+        return dao;
+    }
+
+    public void setDao(LogDao dao) {
+        this.dao = dao;
     }
 
     @Override
