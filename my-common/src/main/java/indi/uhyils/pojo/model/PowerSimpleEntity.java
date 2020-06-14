@@ -14,6 +14,12 @@ public class PowerSimpleEntity implements Serializable {
 
     private String methodName;
 
+    public static PowerSimpleEntity build(String interfaceName, String methodName) {
+        PowerSimpleEntity powerSimpleEntity = new PowerSimpleEntity();
+        powerSimpleEntity.setInterfaceName(interfaceName);
+        powerSimpleEntity.setMethodName(methodName);
+        return powerSimpleEntity;
+    }
 
     public String getInterfaceName() {
         return interfaceName;
@@ -29,12 +35,5 @@ public class PowerSimpleEntity implements Serializable {
 
     public void setMethodName(String methodName) {
         this.methodName = methodName;
-    }
-
-    public static PowerSimpleEntity build(String interfaceName, String methodName) {
-        PowerSimpleEntity powerSimpleEntity = new PowerSimpleEntity();
-        powerSimpleEntity.setInterfaceName(interfaceName);
-        powerSimpleEntity.setMethodName(methodName);
-        return powerSimpleEntity;
     }
 }

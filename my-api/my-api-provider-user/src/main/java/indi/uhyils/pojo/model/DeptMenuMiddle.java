@@ -16,6 +16,21 @@ public class DeptMenuMiddle extends MiddleEntity {
     private String deptId;
     private String menuId;
 
+    public static DeptMenuMiddle build(String deptId, String menuId) {
+        DeptMenuMiddle deptMenuMiddle = new DeptMenuMiddle();
+        deptMenuMiddle.setDeptId(deptId);
+        deptMenuMiddle.setMenuId(menuId);
+        return deptMenuMiddle;
+    }
+
+    public static List<DeptMenuMiddle> build(String deptId, List<String> menuIds) {
+        return menuIds.stream().map(t -> build(deptId, t)).collect(Collectors.toList());
+    }
+
+    public static List<DeptMenuMiddle> build(List<String> deptIds, String menuId) {
+        return deptIds.stream().map(t -> build(t, menuId)).collect(Collectors.toList());
+    }
+
     public String getDeptId() {
         return deptId;
     }
@@ -30,20 +45,5 @@ public class DeptMenuMiddle extends MiddleEntity {
 
     public void setMenuId(String menuId) {
         this.menuId = menuId;
-    }
-
-    public static DeptMenuMiddle build(String deptId, String menuId) {
-        DeptMenuMiddle deptMenuMiddle = new DeptMenuMiddle();
-        deptMenuMiddle.setDeptId(deptId);
-        deptMenuMiddle.setMenuId(menuId);
-        return deptMenuMiddle;
-    }
-
-    public static List<DeptMenuMiddle> build(String deptId, List<String> menuIds) {
-        return menuIds.stream().map(t -> build(deptId, t)).collect(Collectors.toList());
-    }
-
-    public static List<DeptMenuMiddle> build(List<String> deptIds, String menuId) {
-        return deptIds.stream().map(t -> build(t, menuId)).collect(Collectors.toList());
     }
 }

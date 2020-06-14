@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.DataEntity;
+import indi.uhyils.pojo.model.base.BaseEntity;
 
 /**
  * 系统常量
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.DataEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月30日 08时12分
  */
-public class ContentEntity extends DataEntity {
+public class ContentEntity extends BaseEntity {
 
     /**
      * 标记此变量的名字

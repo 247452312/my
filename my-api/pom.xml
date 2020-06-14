@@ -5,15 +5,16 @@
     <parent>
         <artifactId>my</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <artifactId>my-api</artifactId>
     <packaging>pom</packaging>
     <modules>
         <module>my-api-provider-user</module>
         <module>my-api-provider-log</module>
+        <module>my-api-provider-software</module>
     </modules>
 
 

@@ -36,6 +36,7 @@
         code: "modules/code",
         jquery: "modules/jquery",
         mobile: "modules/mobile",
+        soulTable: 'modules/soulTable', //  带筛选的表格
         "layui.all": "../layui.all"
     };
     n.prototype.cache = o, n.prototype.define = function (e, t) {

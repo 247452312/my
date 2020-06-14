@@ -5,12 +5,12 @@
     <parent>
         <artifactId>my-service</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </parent>
     <groupId>indi.uhyils</groupId>
     <artifactId>my-web</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>my-web</name>
     <description>Demo project for Spring Boot</description>
 
@@ -40,6 +40,10 @@
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-api-provider-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-software</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
