@@ -40,7 +40,10 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">日志类型</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="log_type" autocomplete="off" class="layui-input">
+                                <select id="log_type" name="log_type" lay-verify=""
+                                        lay-filter="log_type">
+                                    <option value="">请选择一个日志类型</option>
+                                </select>
                             </div>
                         </div>
 
@@ -84,6 +87,15 @@
             layer = layui.layer,
             table = layui.table;
 
+        var logType = pushRequest("LogService", "getLogTypes", {}, function (data) {
+            $("[name='log_type']").empty();
+            $("[name='log_type']").append('<option value="">请选择一个日志类型</option> ');
+            for (let i = 0; i < data.length; i++) {
+                $("[name='log_type']").append('<option value="' + data[i].text + '">' + data[i].msg + '</option> ');
+            }
+            form.render('select');
+            return data;
+        });
         var reload = function (page, size, args) {
             pushRequest("LogService", "getByArgs", {
                 page: page,
@@ -98,20 +110,27 @@
                     toolbar: false,
                     page: false,
                     cols: [[
-                        {field: 'id', title: 'ID'},
+                        {type: "numbers", title: '序号'},
                         {field: 'interfaceName', title: '接口名称'},
                         {field: 'methodName', title: '方法名称', sort: true},
                         {field: 'ip', title: 'IP'},
-                        {field: 'logType', title: '日志类型', minWidth: 150},
+                        {
+                            title: '日志类型', minWidth: 150, templet: function (d) {
+                                for (let i = 0; i < logType.length; i++) {
+                                    if (logType[i].text == d.logType) {
+                                        return logType[i].msg;
+                                    }
+                                }
+                            }
+                        },
                         {field: 'params', width: 135, title: '参数', sort: true},
                         {
                             title: '日期', sort: true, templet: function (d) {
                                 var dateType = "";
-                                var date = new Date();
-                                date.setTime(d.time);
+                                var date = new Date(parseInt(d.time));
                                 dateType += date.getFullYear();  //年
-                                dateType += "-" + date.getMonth(); //月
-                                dateType += "-" + date.getDay();  //日
+                                dateType += "-" + (date.getMonth() + 1); //月
+                                dateType += "-" + date.getDate();  //日
                                 return dateType;
                             }
                         },
@@ -160,6 +179,7 @@
         };
         pushRequest("PowerService", "getInterfaces", {}, function (data) {
             $("[name='interface_name']").empty();
+            $("[name='interface_name']").append('<option value="">请选择一个接口</option> ');
             for (let i = 0; i < data.length; i++) {
                 $("[name='interface_name']").append('<option value="' + data[i] + '">' + data[i] + '</option> ');
             }
@@ -167,14 +187,20 @@
         });
         form.on('select(interface_name)', function (data) {
             let value = data.value;
-            pushRequest("PowerService", "getMethodNameByInterfaceName", {interfaceName: value}, function (data) {
+            if (value != "") {
+                pushRequest("PowerService", "getMethodNameByInterfaceName", {interfaceName: value}, function (data) {
+                    $("#method_name").empty();
+                    $("#method_name").append("<option value=''>请选择一个方法</option>");
+                    for (let i = 0; i < data.length; i++) {
+                        $("#method_name").append("<option value='" + data[i] + "'>" + data[i] + "</option>")
+                    }
+                    form.render('select');
+                });
+            } else {
                 $("#method_name").empty();
                 $("#method_name").append("<option value=''>请选择一个方法</option>");
-                for (let i = 0; i < data.length; i++) {
-                    $("#method_name").append("<option value='" + data[i] + "'>" + data[i] + "</option>")
-                }
                 form.render('select');
-            })
+            }
         });
         reload(1, 10, [
             {

@@ -18,8 +18,6 @@
 package indi.uhyils.util;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -30,7 +28,6 @@ import org.springframework.context.ApplicationContext;
  */
 public class SpringUtil {
 
-    public static final Logger logger = LoggerFactory.getLogger(SpringUtil.class);
     private static ApplicationContext applicationContext = null;
 
     /**
@@ -44,7 +41,7 @@ public class SpringUtil {
 
     public static void setApplicationContext(ApplicationContext applicationContext) {
         if (SpringUtil.applicationContext == null) {
-            logger.info("set applicationcontext");
+            LogUtil.info(SpringUtil.class, "set applicationcontext");
             SpringUtil.applicationContext = applicationContext;
         }
 

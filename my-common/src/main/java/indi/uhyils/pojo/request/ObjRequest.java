@@ -17,19 +17,19 @@ public class ObjRequest<T extends Serializable> extends DefaultRequest {
      */
     private T data;
 
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
     public static <T extends Serializable> ObjRequest<T> build(T data, String token) {
         ObjRequest<T> serializableObjRequest = new ObjRequest<>();
         serializableObjRequest.setData(data);
         serializableObjRequest.setToken(token);
         serializableObjRequest.setRequestLink(new LinkNode<String>());
         return serializableObjRequest;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }

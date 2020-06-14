@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .layui-transfer-box {
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <!--  父id    -->
+    <input type="text" name="id" value="" style="display:none;">
+    <input type="text" name="class" value="indi.uhyils.pojo.model.ServerEntity" style="display:none;">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">服务器IP</label>
+        <div class="layui-input-block">
+            <input type="text" name="ip" lay-verify="required" placeholder="请输入服务器ip" value=""
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">ssh端口</label>
+        <div class="layui-input-block">
+            <input type="text" name="port" lay-verify="required" placeholder="请输入端口号" value=""
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">服务器名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" lay-verify="required" placeholder="请输入服务器名称" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" lay-verify="required" placeholder="请输入用户名" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="password" lay-verify="required" placeholder="请输入密码" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">服务器类型</label>
+        <div class="layui-input-block">
+            <select name="type" lay-filter="aihao">
+                <option value="">请选择</option>
+                <option value="1">windows_10</option>
+                <option value="2">centos_7</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+
+            <button class="layui-btn layui-btn-warm" lay-submit lay-filter="testConn">测试连接</button>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/my.js"></script>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        };
+        let id = $.getUrlParam('id');
+        let func = $.getUrlParam('func');
+        if (func == 'edit') { // 这是修改
+            pushRequest("ServerService", "getById", {
+                id: id
+            }, function (data) {
+                $('[name="id"]').attr('value', data.id);
+                $('[name="ip"]').attr('value', data.ip);
+                $('[name="port"]').attr('value', data.port);
+                $('[name="name"]').attr('value', data.name);
+                $('[name="username"]').attr('value', data.username);
+                $('[name="password"]').parent().parent().remove();
+                let s = '[name="type"] option[value="' + data.type + '"]';
+                $(s).attr("selected", true);
+                form.render();
+            })
+        }
+
+        var closeAndReload = function () {
+            var iframeIndex = parent.layer.getFrameIndex(window.name);
+            parent.$.reload(1, 10, [
+                {
+                    name: "1",
+                    symbol: "=",
+                    data: "1"
+                }
+            ]);
+            parent.layer.close(iframeIndex);
+        };
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+                // 关闭弹出层
+                layer.close(index);
+                if (func === 'add') {
+                    pushRequest("ServerService", "insert", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                } else if (func === 'edit') {
+                    pushRequest("ServerService", "update", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                }
+            });
+            return false;
+        });
+        //监听提交
+        form.on('submit(testConn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+                // 关闭弹出层
+                layer.close(index);
+                if (func === 'add') {
+                    pushRequest("ServerService", "testConnByData", {
+                        ip: data.field.ip,
+                        port: data.field.port,
+                        username: data.field.username,
+                        password: data.field.password
+                    }, function (data) {
+                        layer.msg(data);
+                    });
+                    closeAndReload();
+                } else if (func === 'edit') {
+                    pushRequest("ServerService", "testConnById", {id: data.field.id}, function (data) {
+                        layer.msg(data);
+                    });
+                }
+            });
+            return false;
+        });
+        form.render();
+
+    });
+</script>
+</body>
+</html>

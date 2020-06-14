@@ -15,8 +15,6 @@ import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
 import indi.uhyils.util.RedisPoolUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -34,8 +32,6 @@ import java.util.Random;
 @Service(group = "${spring.profiles.active}")
 public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implements UserService {
 
-
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private RedisPoolUtil redisPoolUtil;
@@ -57,13 +53,13 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         if (user != null) {
             return ServiceResult.buildSuccessResult("查询成功", user, idRequest);
         }
-        List<UserEntity> byId = dao.getById(idRequest.getId());
-        if (byId != null && byId.size() == 1) {
-            UserEntity userEntity = byId.get(0);
-            initRole(userEntity);
-            return ServiceResult.buildSuccessResult("查询成功", userEntity, idRequest);
+        UserEntity userEntity = dao.getById(idRequest.getId());
+        if (userEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, idRequest);
         }
-        return ServiceResult.buildFailedResult("查无此人", null, idRequest);
+        initRole(userEntity);
+        return ServiceResult.buildSuccessResult("查询成功", userEntity, idRequest);
+
     }
 
     private void initRole(UserEntity userEntity) {
@@ -119,7 +115,27 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         tokenInfo.setSec(Integer.parseInt(sec));
         tokenInfo.setRandom(Integer.parseInt(random));
         tokenInfo.setUserId(userId);
-        tokenInfo.setTimeOut(!redisPoolUtil.haveToken(token));
+        Boolean aBoolean = redisPoolUtil.haveToken(token);
+        if (aBoolean == null) {
+            LocalDateTime localDateTime = LocalDateTime.now();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddhhmm");
+            String format = localDateTime.format(dateTimeFormatter);
+            Integer dayNow = Integer.parseInt(format.substring(0, 2));
+            Integer hourNow = Integer.parseInt(format.substring(2, 4));
+            Integer monNow = Integer.parseInt(format.substring(4, 6));
+            // 如果分钟差超过30
+            if (monNow - Integer.parseInt(mon) >= 30) {
+                tokenInfo.setTimeOut(true);
+            } else if (hourNow - Integer.parseInt(hour) >= 1) {
+                tokenInfo.setTimeOut(true);
+            } else if (dayNow - Integer.parseInt(day) >= 1) {
+                tokenInfo.setTimeOut(true);
+            } else {
+                tokenInfo.setTimeOut(false);
+            }
+        } else {
+            tokenInfo.setTimeOut(!aBoolean);
+        }
         return ServiceResult.buildSuccessResult("解密成功", tokenInfo, request);
     }
 
@@ -136,7 +152,8 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
         //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
         Boolean haveUserId = redisPoolUtil.haveUserId(userEntity.getId());
-        if (haveUserId) {
+
+        if (haveUserId != null && haveUserId) {
             redisPoolUtil.removeUserById(userEntity.getId());
         }
 
@@ -166,11 +183,10 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     @Override
     public ServiceResult<UserEntity> getUserById(IdRequest request) {
         String id = request.getId();
-        List<UserEntity> byId = dao.getById(id);
-        if (byId == null || byId.size() != 1) {
-            return ServiceResult.buildFailedResult("id不存在", null, request);
+        UserEntity userEntity = dao.getById(id);
+        if (userEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, request);
         }
-        UserEntity userEntity = byId.get(0);
         String roleId = userEntity.getRoleId();
         RoleEntity userRoleById = dao.getUserRoleById(roleId);
         userEntity.setRole(userRoleById);

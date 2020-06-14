@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .layui-transfer-box {
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <!--  父id    -->
+    <input type="text" name="id" value="" style="display:none;">
+    <input type="text" name="class" value="indi.uhyils.pojo.model.RedisEntity" style="display:none;">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label ">密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="password" placeholder="请输入密码" value=""
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">登录端口</label>
+        <div class="layui-input-block">
+            <input type="text" name="port" lay-verify="required" placeholder="请输入登录端口" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">docker容器名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="dockerName" lay-verify="required" placeholder="请输入docker容器名称" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">服务器</label>
+        <div class="layui-input-block">
+            <select name="serverId" lay-filter="aihao">
+                <option value="">请选择服务器</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">开启服务命令</label>
+        <div class="layui-input-block">
+            <input type="text" name="startSh" lay-verify="required" placeholder="请输入开启服务命令" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">查询状态命令</label>
+        <div class="layui-input-block">
+            <input type="text" name="statusSh" lay-verify="required" placeholder="请输入查询状态命令" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">停止服务命令</label>
+        <div class="layui-input-block">
+            <input type="text" name="stopSh" lay-verify="required" placeholder="请输入停止服务命令" value=""
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+
+            <button class="layui-btn layui-btn-warm" lay-submit lay-filter="testConn">测试连接</button>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/my.js"></script>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        };
+        let id = $.getUrlParam('id');
+        let func = $.getUrlParam('func');
+
+        pushRequest("ServerService", "getServersIdAndName", {}, function (data) {
+            for (let i = 0; i < data.length; i++) {
+                let serverId = data[i].id;
+                let name = data[i].name;
+                let option = '<option value="' + serverId + '">' + name + '</option>';
+                $("[name='serverId']").append(option);
+            }
+        });
+
+        if (func == 'edit') { // 这是修改
+            pushRequest("RedisService", "getById", {
+                id: id
+            }, function (data) {
+                $('[name="id"]').attr('value', data.id);
+                $('[name="password"]').parent().parent().remove();
+                $('[name="port"]').attr('value', data.port);
+                $('[name="dockerName"]').attr('value', data.dockerName);
+                let s = '[name="serverId"] option[value="' + data.serverId + '"]';
+                $(s).attr("selected", true);
+                $('[name="startSh"]').attr('value', data.startSh);
+                $('[name="status"]').attr('value', data.status);
+                $('[name="statusSh"]').attr('value', data.statusSh);
+                $('[name="stopSh"]').attr('value', data.stopSh);
+                $('[name="version"]').attr('value', data.version);
+                form.render();
+            })
+        }
+
+        var closeAndReload = function () {
+            var iframeIndex = parent.layer.getFrameIndex(window.name);
+            parent.$.reload(1, 10, [
+                {
+                    name: "1",
+                    symbol: "=",
+                    data: "1"
+                }
+            ]);
+            parent.layer.close(iframeIndex);
+        };
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+                // 关闭弹出层
+                layer.close(index);
+                if (func === 'add') {
+                    pushRequest("RedisService", "insert", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                } else if (func === 'edit') {
+                    pushRequest("RedisService", "update", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                }
+            });
+            return false;
+        });
+        //监听提交
+        form.on('submit(testConn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+                // 关闭弹出层
+                layer.close(index);
+                if (func === 'add') {
+                    pushRequest("RedisService", "testConnByData", {
+                        ip: data.field.ip,
+                        port: data.field.port,
+                        password: data.field.password
+                    }, function (data) {
+                        layer.msg(data);
+                    });
+                    closeAndReload();
+                } else if (func === 'edit') {
+                    pushRequest("RedisService", "testConnById", {id: data.field.id}, function (data) {
+                        layer.msg(data);
+                    });
+                }
+            });
+            return false;
+        });
+        form.render();
+
+    });
+</script>
+</body>
+</html>

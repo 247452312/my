@@ -21,6 +21,7 @@ public class AESUtil {
     public static final String AES = "AES";
 
     public static final String PROJECT_CODE = "utf-8";
+
     /**
      * 加密
      * 1.构造密钥生成器
