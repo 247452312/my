@@ -37,7 +37,7 @@ public class SshUtils {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(stdout));
             String line = br.readLine();
-            if (StringUtils.isBlank(line)) {
+            if (StringUtils.isEmpty(line)) {
                 return false;
             } else {
                 return true;

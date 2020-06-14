@@ -158,6 +158,6 @@ public class LogUtil {
             sb.append(p.getData());
             p = p.getLinkNode();
         } while (p != null);
-        LogUtil.error(LogUtil.class, String.format("链路跟踪: %s \n--> 结束!", sb.toString()));
+        LogUtil.info(LogUtil.class, String.format("链路跟踪: %s \n--> 结束!", sb.toString()));
     }
 }

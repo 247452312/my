@@ -3,13 +3,19 @@ package indi.uhyils.serviceImpl;
 import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.RedisDao;
 import indi.uhyils.dao.ServerDao;
+import indi.uhyils.enum_.RedisAddEnum;
+import indi.uhyils.enum_.RedisUpdateEnum;
 import indi.uhyils.enum_.SoftwareStatusEnum;
 import indi.uhyils.pojo.model.RedisEntity;
+import indi.uhyils.pojo.model.RedisKeyAndValue;
 import indi.uhyils.pojo.model.ServerEntity;
+import indi.uhyils.pojo.request.GetRedisKeysRequest;
 import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.request.IdsRequest;
 import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.pojo.response.GetInfosResponse;
 import indi.uhyils.pojo.response.OperateSoftwareResponse;
+import indi.uhyils.pojo.response.RedisKeyResponse;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.RedisService;
 import indi.uhyils.util.LogUtil;
@@ -19,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Client;
 import redis.clients.jedis.Jedis;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -224,6 +227,126 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
     }
 
+    @Override
+    public ServiceResult<ArrayList<RedisKeyResponse>> getRedisKeys(GetRedisKeysRequest request) {
+        Integer db = request.getDb();
+        String id = request.getRedisId();
+        Jedis jedis = getJedis(id);
+        jedis.select(db);
+
+        Set<String> keys = jedis.keys("*");
+        jedis.close();
+        ArrayList<RedisKeyResponse> list = new ArrayList<>();
+        for (String key : keys) {
+            list.add(RedisKeyResponse.build(key));
+        }
+        return ServiceResult.buildSuccessResult("查询key成功", list, request);
+    }
+
+
+    @Override
+    public ServiceResult<Integer> getRedisDB(IdRequest request) {
+        String id = request.getId();
+        Jedis jedis = getJedis(id);
+        List<String> databases = jedis.configGet("databases");
+        jedis.close();
+        LogUtil.info(this.getClass(), "查询 configGet数量为:" + databases.size());
+        if (databases.size() == 2) {
+            String count = databases.get(1);
+            return ServiceResult.buildSuccessResult("查询数据库成功", Integer.parseInt(count), request);
+        }
+
+        return ServiceResult.buildSuccessResult("查询数据库出问题了,查看日志", null, request);
+    }
+
+    @Override
+    public ServiceResult<Integer> addKey(ObjRequest<RedisKeyAndValue> request) {
+        RedisKeyAndValue data = request.getData();
+        String redisId = data.getRedisId();
+        Jedis jedis = getJedis(redisId);
+        jedis.select(data.getDb());
+        String s = jedis.get(data.getKey());
+        // 查询出来的不为空
+        if (!StringUtils.isEmpty(s)) {
+            jedis.close();
+            return ServiceResult.buildSuccessResult("redis中已经存在此key了", RedisAddEnum.HAVE_KEY.getType(), request);
+        }
+        jedis.append(data.getKey(), data.getValue());
+        jedis.close();
+
+        return ServiceResult.buildSuccessResult("插入成功", RedisAddEnum.SUCCESS.getType(), request);
+    }
+
+    @Override
+    public ServiceResult<Integer> addKeyCover(ObjRequest<RedisKeyAndValue> request) {
+        RedisKeyAndValue data = request.getData();
+        String redisId = data.getRedisId();
+        Jedis jedis = getJedis(redisId);
+        jedis.append(data.getKey(), data.getValue());
+        jedis.close();
+        return ServiceResult.buildSuccessResult("添加成功", RedisAddEnum.SUCCESS.getType(), request);
+    }
+
+    @Override
+    public ServiceResult<Integer> updateKey(ObjRequest<RedisKeyAndValue> request) {
+        RedisKeyAndValue data = request.getData();
+        String redisId = data.getRedisId();
+        Jedis jedis = getJedis(redisId);
+        String s = jedis.get(data.getKey());
+        // 如果是空,则说明修改没有
+        if (StringUtils.isEmpty(s)) {
+            jedis.close();
+            return ServiceResult.buildSuccessResult("key不存在", RedisUpdateEnum.NO_KEY.getType(), request);
+        }
+        jedis.set(data.getKey(), data.getValue());
+        jedis.close();
+        return ServiceResult.buildSuccessResult("修改成功", RedisUpdateEnum.SUCCESS.getType(), request);
+    }
+
+    @Override
+    public ServiceResult<String> getValueByKey(ObjRequest<RedisKeyAndValue> request) {
+        RedisKeyAndValue data = request.getData();
+        Jedis jedis = getJedis(data.getRedisId());
+        String value = jedis.get(data.getKey());
+        jedis.close();
+        return ServiceResult.buildSuccessResult("redis value查询成功", value, request);
+    }
+
+    @Override
+    public ServiceResult<Boolean> deleteRedisByKey(ObjRequest<RedisKeyAndValue> request) {
+        RedisKeyAndValue data = request.getData();
+        String redisId = data.getRedisId();
+        Jedis jedis = getJedis(redisId);
+        jedis.del(data.getKey());
+        jedis.close();
+        return ServiceResult.buildSuccessResult("删除成功", true, request);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<GetInfosResponse>> getInfos(IdRequest request) {
+        String id = request.getId();
+        Jedis jedis = getJedis(id);
+        Client client = jedis.getClient();
+        client.info();
+        String bulkReply = client.getBulkReply();
+        String[] split = bulkReply.replace("\r", "").split("\\n");
+        ArrayList<GetInfosResponse> list = new ArrayList<>();
+        Arrays.stream(split).forEach(t -> {
+            t = t.trim();
+            // # 开头属于注释 所以要去掉 :结尾会报错,所以要去掉
+            if (StringUtils.isEmpty(t) || t.startsWith(REDIS_NOTES) || t.endsWith(ERROR_END_WITH)) {
+                return;
+            }
+
+            String[] keyAndValue = t.split(":");
+            list.add(GetInfosResponse.build(keyAndValue[0], keyAndValue[1]));
+
+        });
+        jedis.close();
+
+        return ServiceResult.buildSuccessResult("获取redis服务器信息", list, request);
+    }
+
 
     public Integer getRedisNewStatus(RedisEntity redisEntity, ServerEntity serverEntity) {
 
@@ -236,6 +359,18 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         }
     }
 
+    private Jedis getJedis(String id) {
+        RedisEntity redisEntity = dao.getById(id);
+        String serverId = redisEntity.getServerId();
+        ServerEntity serverEntity = serverDao.getById(serverId);
+        Jedis jedis = new Jedis(serverEntity.getIp(), redisEntity.getPort());
+        if (!StringUtils.isEmpty(redisEntity.getPassword())) {
+            jedis.auth(redisEntity.getPassword());
+        }
+        return jedis;
+
+    }
+
     public String getRedisNewVersion(RedisEntity redisEntity, ServerEntity serverEntity) {
         Map<String, String> redisNewInfo = getRedisNewInfo(redisEntity, serverEntity);
         return redisNewInfo.get("redis_version");
@@ -243,7 +378,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
     public Map<String, String> getRedisNewInfo(RedisEntity redisEntity, ServerEntity serverEntity) {
         Jedis jedis = new Jedis(serverEntity.getIp(), redisEntity.getPort());
-        if (!StringUtils.isBlank(redisEntity.getPassword())) {
+        if (!StringUtils.isEmpty(redisEntity.getPassword())) {
             jedis.auth(redisEntity.getPassword());
         }
         Client client = jedis.getClient();
@@ -254,7 +389,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         Arrays.stream(split).forEach(t -> {
             t = t.trim();
             // # 开头属于注释 所以要去掉 :结尾会报错,所以要去掉
-            if (StringUtils.isBlank(t) || t.startsWith(REDIS_NOTES) || t.endsWith(ERROR_END_WITH)) {
+            if (StringUtils.isEmpty(t) || t.startsWith(REDIS_NOTES) || t.endsWith(ERROR_END_WITH)) {
                 return;
             }
 

@@ -57,7 +57,7 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="info">info</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="info">操作</a>
 </script>
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="/js/jquery.min.js" charset="utf-8"></script>
@@ -282,7 +282,18 @@
                     layer.full(index);
                 });
             } else if (obj.event === 'info') {
-                layer.msg("info");
+                var index = layer.open({
+                    title: 'redis详情',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: 'detail/redisInfo.html?id=' + data.id,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
             }
 
         });

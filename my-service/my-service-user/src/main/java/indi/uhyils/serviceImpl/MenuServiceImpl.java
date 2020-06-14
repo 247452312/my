@@ -215,7 +215,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
      */
     private void getParents(MenuEntity e, Set<MenuEntity> set, Map<String, MenuEntity> map) {
         String fid = e.getFid();
-        if (StringUtils.isBlank(fid)) {
+        if (StringUtils.isEmpty(fid)) {
             return;
         }
         MenuEntity father = map.get(fid);
