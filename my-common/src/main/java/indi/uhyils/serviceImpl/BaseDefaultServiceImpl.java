@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.DefaultDao;
-import indi.uhyils.pojo.model.base.DataEntity;
+import indi.uhyils.pojo.model.base.BaseEntity;
 import indi.uhyils.pojo.request.ArgsRequest;
 import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.request.ObjRequest;
@@ -19,7 +19,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月05日 17时57分
  */
-public abstract class BaseDefaultServiceImpl<T extends DataEntity> implements DefaultEntityService<T> {
+public abstract class BaseDefaultServiceImpl<T extends BaseEntity> implements DefaultEntityService<T> {
 
     @Override
     public ServiceResult<Page<T>> getByArgs(ArgsRequest argsRequest) {
@@ -40,11 +40,11 @@ public abstract class BaseDefaultServiceImpl<T extends DataEntity> implements De
 
     @Override
     public ServiceResult<T> getById(IdRequest idRequest) {
-        List<T> byId = getDao().getById(idRequest.getId());
-        if (byId != null && byId.size() == 1) {
-            return ServiceResult.buildSuccessResult("查询成功", byId.get(0), idRequest);
+        T byId = getDao().getById(idRequest.getId());
+        if (byId == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, idRequest);
         }
-        return ServiceResult.buildFailedResult("查无此人", null, idRequest);
+        return ServiceResult.buildSuccessResult("查询成功", byId, idRequest);
     }
 
     @Override
@@ -72,14 +72,13 @@ public abstract class BaseDefaultServiceImpl<T extends DataEntity> implements De
 
     @Override
     public ServiceResult<Integer> delete(IdRequest idRequest) {
-        List<T> byId = getDao().getById(idRequest.getId());
+        T byId = getDao().getById(idRequest.getId());
         if (byId == null) {
             return ServiceResult.buildFailedResult("查无此人", null, idRequest);
         }
-        T t = byId.get(0);
-        t.setDeleteFlag(true);
-        t.preUpdate(idRequest);
-        int delete = getDao().update(t);
+        byId.setDeleteFlag(true);
+        byId.preUpdate(idRequest);
+        int delete = getDao().update(byId);
         if (delete != 0) {
             return ServiceResult.buildSuccessResult("删除成功", delete, idRequest);
         } else {

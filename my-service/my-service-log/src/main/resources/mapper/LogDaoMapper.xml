@@ -41,6 +41,7 @@
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
+        order by time desc
     </select>
 
     <select id="getByArgs" resultType="indi.uhyils.pojo.model.LogEntity">
@@ -52,9 +53,11 @@
         <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
+        order by time desc
         <if test="page != null and page != ''">
             limit ${(page-1) * size},${page * size}
         </if>
+
     </select>
 
 

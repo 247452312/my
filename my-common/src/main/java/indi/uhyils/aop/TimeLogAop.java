@@ -1,17 +1,15 @@
 package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.RequestTypeEnum;
 import indi.uhyils.exception.NoRequestLinkException;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.util.AopUtil;
+import indi.uhyils.util.LogUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -23,12 +21,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Order(10)
 public class TimeLogAop {
-
-
-    /**
-     * 自定义日志
-     */
-    private Logger logger = LoggerFactory.getLogger(TimeLogAop.class);
 
 
     /**
@@ -94,8 +86,8 @@ public class TimeLogAop {
      * @param proceed
      */
     private void after(String className, String methodName, double v, Object proceed) {
-        logger.info(String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));
-        logger.info(String.format("   返回值为:%s", JSONObject.toJSONString(proceed)));
+        LogUtil.info(this.getClass(), String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));
+        LogUtil.info(this.getClass(), String.format("   返回值为:%s", JSONObject.toJSONString(proceed)));
     }
 
     /**
@@ -119,8 +111,8 @@ public class TimeLogAop {
             sb.append(arg.getClass().getSimpleName());
             sb.append(")");
         }
-        logger.info("---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
-        logger.info(sb.toString());
+        LogUtil.info(this.getClass(), "---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
+        LogUtil.info(this.getClass(), sb.toString());
         sb.delete(0, sb.length());
     }
 }

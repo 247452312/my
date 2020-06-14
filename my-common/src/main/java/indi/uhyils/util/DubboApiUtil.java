@@ -8,8 +8,6 @@ import com.alibaba.dubbo.rpc.service.GenericService;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.response.ServiceResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -24,10 +22,6 @@ import java.util.List;
  */
 public class DubboApiUtil {
 
-    /**
-     * 自定义日志
-     */
-    private static Logger logger = LoggerFactory.getLogger(DubboApiUtil.class);
 
     /**
      * 接口名称包分隔符
@@ -95,7 +89,7 @@ public class DubboApiUtil {
             return serviceResult;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e.getLocalizedMessage());
+            LogUtil.error(DubboApiUtil.class, e.getLocalizedMessage());
             return ServiceResult.buildErrorResult("远程调用错误,具体见日志", request);
         }
     }

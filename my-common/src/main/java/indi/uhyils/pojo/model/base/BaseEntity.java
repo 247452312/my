@@ -11,7 +11,7 @@ import java.util.UUID;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 13时23分
  */
-public class DataEntity implements Serializable {
+public class BaseEntity implements Serializable {
     /**
      * id 一定是uuid的格式
      */
@@ -130,7 +130,7 @@ public class DataEntity implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DataEntity that = (DataEntity) o;
+        BaseEntity that = (BaseEntity) o;
         return Objects.equals(id, that.id);
     }
 

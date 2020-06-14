@@ -7,7 +7,7 @@
     <groupId>indi.uhyils</groupId>
     <artifactId>my</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <modules>
         <module>my-api</module>
         <module>my-service</module>
@@ -41,6 +41,7 @@
         <junit.version>4.13</junit.version>
         <jedis.version>3.2.0</jedis.version>
         <distrupter.version>3.4.2</distrupter.version>
+        <ssh2.version>262</ssh2.version>
 
     </properties>
 
@@ -97,6 +98,20 @@
                 <artifactId>my-api-provider-user</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-api-provider-software</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/ch.ethz.ganymed/ganymed-ssh2 -->
+            <dependency>
+                <groupId>ch.ethz.ganymed</groupId>
+                <artifactId>ganymed-ssh2</artifactId>
+                <version>${ssh2.version}</version>
+            </dependency>
+
+
             <dependency>
                 <groupId>indi.uhyils</groupId>
                 <artifactId>my-api-provider-log</artifactId>

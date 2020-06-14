@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.ServerDao">
+
+
+    <sql id="columnList">
+        a.id,
+        a.create_date as 'createDate',
+        a.create_user as createUser,
+        a.update_date as 'updateDate',
+        a.update_user as updateUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+
+        a.ip,
+        a.name,
+        a.password,
+        a.port,
+        a.username,
+        a.type
+
+    </sql>
+    <select id="getById" resultType="indi.uhyils.pojo.model.ServerEntity">
+        select
+        <include refid="columnList"/>
+        from sys_server a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.ServerEntity">
+        select
+        <include refid="columnList"/>
+        from sys_server a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.ServerEntity">
+        select
+        <include refid="columnList"/>
+        from sys_server a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${page * size}
+        </if>
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.ServerEntity">
+        insert sys_server(id,
+                          create_date,
+                          create_user,
+                          update_date,
+                          update_user,
+                          delete_flag,
+                          ip,
+                          name,
+                          password,
+                          username,
+                          type,
+                          port)
+        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0,
+                #{ip},
+                #{name},
+                #{password},
+                #{username},
+                #{type},
+                #{port})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.ServerEntity">
+        update sys_server set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+
+        <if test="ip != null and ip != ''">
+            ,ip = #{ip}
+        </if>
+        <if test="name != null and name != ''">
+            ,name = #{name}
+        </if>
+        <if test="password != null and password != ''">
+            ,password = #{password}
+        </if>
+        <if test="username != null and username != ''">
+            ,username = #{username}
+        </if>
+        <if test="type != null and type != ''">
+            ,type = #{type}
+        </if>
+        <if test="port != null and port != ''">
+            ,port = #{port}
+        </if>
+
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_server a
+        where delete_flag = 0
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_server a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_server a
+        where ${columnName} = #{value}
+    </select>
+
+    <select id="getServersIdAndName" resultType="indi.uhyils.pojo.model.ServerEntity">
+        select id, name
+        from sys_server
+        where delete_flag = 0
+    </select>
+
+    <select id="getNameById" resultType="java.lang.String">
+        select name
+        from sys_server
+        where delete_flag = 0
+    </select>
+
+
+</mapper>

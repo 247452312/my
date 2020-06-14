@@ -1,8 +1,10 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.PowerEntity;
-import indi.uhyils.pojo.model.PowerSimpleEntity;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
+import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.GetMethodNameByInterfaceNameRequest;
+import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 
 import java.util.ArrayList;
@@ -64,5 +66,5 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * @param request 权限集
      * @return 添加的权限
      */
-    ServiceResult<Boolean> initPowerInProStartNoToken(DefaultRequest request);
+    ServiceResult<Integer> initPowerInProStart(DefaultRequest request);
 }

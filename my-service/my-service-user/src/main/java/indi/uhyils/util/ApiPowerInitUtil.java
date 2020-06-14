@@ -1,9 +1,6 @@
 package indi.uhyils.util;
 
 import indi.uhyils.pojo.model.PowerSimpleEntity;
-import indi.uhyils.serviceImpl.PowerServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +18,6 @@ import java.util.stream.Collectors;
  */
 public class ApiPowerInitUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiPowerInitUtil.class);
 
     public static List<PowerSimpleEntity> getPowersSingle() throws IOException {
         String basePath = new File("").getCanonicalPath();

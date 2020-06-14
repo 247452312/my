@@ -1,8 +1,8 @@
 package indi.uhyils.pojo.response;
 
+import indi.uhyils.pojo.response.info.IndexMenuInfo;
 import indi.uhyils.pojo.response.info.MenuHomeInfo;
 import indi.uhyils.pojo.response.info.MenuLogoInfo;
-import indi.uhyils.pojo.response.info.IndexMenuInfo;
 
 import java.io.Serializable;
 import java.util.List;

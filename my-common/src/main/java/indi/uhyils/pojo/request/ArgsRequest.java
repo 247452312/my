@@ -18,15 +18,6 @@ public class ArgsRequest extends DefaultPageRequest {
      */
     private List<Arg> args;
 
-
-    public List<Arg> getArgs() {
-        return args;
-    }
-
-    public void setArgs(List<Arg> args) {
-        this.args = args;
-    }
-
     public static ArgsRequest build(List<Arg> args) {
         ArgsRequest argsRequest = new ArgsRequest();
         argsRequest.setArgs(args);
@@ -35,5 +26,13 @@ public class ArgsRequest extends DefaultPageRequest {
 
     public static ArgsRequest build(Arg... args) {
         return build(Arrays.asList(args));
+    }
+
+    public List<Arg> getArgs() {
+        return args;
+    }
+
+    public void setArgs(List<Arg> args) {
+        this.args = args;
     }
 }

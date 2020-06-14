@@ -17,7 +17,6 @@ import indi.uhyils.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -39,11 +38,11 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
 
     @Override
     public ServiceResult<RoleEntity> getRoleByRoleIdNoToken(IdRequest request) {
-        List<RoleEntity> byId = dao.getById(request.getId());
-        if (byId == null || byId.size() != 1) {
-            return ServiceResult.buildFailedResult("获取角色错误", null, request);
+        RoleEntity byId = dao.getById(request.getId());
+        if (byId == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, request);
         }
-        return ServiceResult.buildSuccessResult("获取用户角色成功", byId.get(0), request);
+        return ServiceResult.buildSuccessResult("获取用户角色成功", byId, request);
     }
 
     @Override
@@ -83,11 +82,10 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
 
     @Override
     public ServiceResult<Boolean> deleteRole(IdRequest request) {
-        List<RoleEntity> byId = getDao().getById(request.getId());
-        if (byId == null) {
-            return ServiceResult.buildFailedResult("查无此人", null, request);
+        RoleEntity t = getDao().getById(request.getId());
+        if (t == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, request);
         }
-        RoleEntity t = byId.get(0);
         t.setDeleteFlag(true);
         t.preUpdate(request);
         dao.update(t);

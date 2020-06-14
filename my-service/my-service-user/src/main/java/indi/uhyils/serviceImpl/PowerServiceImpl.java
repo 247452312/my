@@ -11,13 +11,13 @@ import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.PowerService;
 import indi.uhyils.util.ApiPowerInitUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import indi.uhyils.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -26,7 +26,6 @@ import java.util.List;
 @Service(group = "${spring.profiles.active}")
 public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implements PowerService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PowerServiceImpl.class);
 
     @Autowired
     private PowerDao dao;
@@ -60,11 +59,10 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
 
     @Override
     public ServiceResult<Boolean> deletePower(IdRequest request) {
-        List<PowerEntity> byId = getDao().getById(request.getId());
-        if (byId == null) {
-            return ServiceResult.buildFailedResult("查无此人", null, request);
+        PowerEntity powerEntity = getDao().getById(request.getId());
+        if (powerEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, request);
         }
-        PowerEntity powerEntity = byId.get(0);
         powerEntity.setDeleteFlag(true);
         powerEntity.preUpdate(request);
         dao.update(powerEntity);
@@ -85,29 +83,27 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
-    public ServiceResult<Boolean> initPowerInProStartNoToken(DefaultRequest request) {
+    public ServiceResult<Integer> initPowerInProStart(DefaultRequest request) {
         List<PowerSimpleEntity> powersSingle;
         try {
             powersSingle = ApiPowerInitUtil.getPowersSingle();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LogUtil.error(this.getClass(), e.getMessage());
             return ServiceResult.buildErrorResult("初始化power失败:" + e.getMessage(), request);
         }
-        ArrayList<PowerSimpleEntity> result = new ArrayList<>();
-        boolean b = true;
+        AtomicInteger newPowerCount = new AtomicInteger(0);
         for (PowerSimpleEntity powerSimpleEntity : powersSingle) {
             Integer count = dao.checkPower(powerSimpleEntity.getInterfaceName(), powerSimpleEntity.getMethodName());
             // 如果数据库中不存在此权限
             if (count == 0) {
                 PowerEntity powerEntity = PowerEntity.build(powerSimpleEntity);
                 powerEntity.preInsert(request);
-                int insert = dao.insert(powerEntity);
-                if (insert != 1) {
-                    b = false;
-                }
+                dao.insert(powerEntity);
+                newPowerCount.incrementAndGet();
+
             }
         }
-        return ServiceResult.buildSuccessResult("初始化power成功", b, request);
+        return ServiceResult.buildSuccessResult("初始化power成功", newPowerCount.get(), request);
     }
 
 }

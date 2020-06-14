@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.DataEntity;
+import indi.uhyils.pojo.model.base.BaseEntity;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 08时26分
  */
-public class DeptEntity extends DataEntity {
+public class DeptEntity extends BaseEntity {
 
     /**
      * 权限集名称

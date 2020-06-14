@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.DataEntity;
+import indi.uhyils.pojo.model.base.BaseEntity;
 
 import java.util.Objects;
 
@@ -10,7 +10,7 @@ import java.util.Objects;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 08时26分
  */
-public class PowerEntity extends DataEntity {
+public class PowerEntity extends BaseEntity {
 
     /**
      * 接口名称

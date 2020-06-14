@@ -2,12 +2,11 @@ package indi.uhyils.aop;
 
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.util.AopUtil;
+import indi.uhyils.util.LogUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +20,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Order(30)
 public class ExceptionAop {
-
-    /**
-     * 自定义日志
-     */
-    private Logger logger = LoggerFactory.getLogger(ExceptionAop.class);
 
 
     /**
@@ -42,11 +36,11 @@ public class ExceptionAop {
             return pjp.proceed();
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e.getMessage());
+            LogUtil.error(this.getClass(), e.getMessage());
             return ServiceResult.buildErrorResult(e.getMessage(), AopUtil.getDefaultRequestInPjp(pjp));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
-            logger.error(throwable.getMessage());
+            LogUtil.error(this.getClass(), throwable.getMessage());
             return ServiceResult.buildErrorResult(throwable.getMessage(), AopUtil.getDefaultRequestInPjp(pjp));
         }
     }
