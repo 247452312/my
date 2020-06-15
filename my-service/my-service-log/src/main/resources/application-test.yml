@@ -1,12 +1,12 @@
 server:
-  port: 8082
+  port: 8053
 dubbo:
   registry:
     client: curator
     address: zookeeper://192.168.1.101:2181
   protocol:
     name: dubbo
-    port: 20882
+    port: 20853
   application:
     name: provider-log
   consumer:
