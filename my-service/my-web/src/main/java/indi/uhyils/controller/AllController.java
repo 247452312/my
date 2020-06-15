@@ -47,7 +47,7 @@ public class AllController {
         LinkNode<String> link = null;
         ServiceResult serviceResult = null;
 
-        LogUtil.info(this.getClass(), "param: " + JSON.toJSONString(action));
+        LogUtil.info(this, "param: " + JSON.toJSONString(action));
         action.getArgs().put(TOKEN, action.getToken());
         actionAddRequestLink(action);
         try {
@@ -63,7 +63,7 @@ public class AllController {
             }
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
-            LogUtil.error(this, e.getMessage());
+            LogUtil.error(this, e);
             e.printStackTrace();
             eMsg = e.getMessage();
             return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
@@ -72,7 +72,7 @@ public class AllController {
                 try {
                     LogPushUtils.pushLog(eMsg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken(), serviceResult.getServiceCode());
                 } catch (Exception e) {
-                    LogUtil.error(this.getClass(), e.getMessage());
+                    LogUtil.error(this, e);
                 }
 
             }
@@ -82,17 +82,17 @@ public class AllController {
     @PostMapping("/getSession")
     @ResponseBody
     public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
-        LogUtil.info(this.getClass(), "getSession: " + sessionRequest.getAttrName());
+        LogUtil.info(this, "getSession: " + sessionRequest.getAttrName());
         HttpSession session = request.getSession();
-        LogUtil.info(this.getClass(), "result: " + session.getAttribute(sessionRequest.getAttrName()));
+        LogUtil.info(this, "result: " + session.getAttribute(sessionRequest.getAttrName()));
         return session.getAttribute(sessionRequest.getAttrName());
     }
 
     @PostMapping("/setSession")
     @ResponseBody
     public boolean setSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
-        LogUtil.info(this.getClass(), "setSession: " + sessionRequest.getAttrName());
-        LogUtil.info(this.getClass(), "sessionData : " + sessionRequest.getData());
+        LogUtil.info(this, "setSession: " + sessionRequest.getAttrName());
+        LogUtil.info(this, "sessionData : " + sessionRequest.getData());
         HttpSession session = request.getSession();
         session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
         return true;

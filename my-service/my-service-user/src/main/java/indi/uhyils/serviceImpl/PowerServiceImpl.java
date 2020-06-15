@@ -1,6 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import indi.uhyils.annotation.NoToken;
 import indi.uhyils.dao.PowerDao;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.PowerSimpleEntity;
@@ -45,6 +46,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
+    @NoToken
     public ServiceResult<Boolean> checkUserHavePowerNoToken(CheckUserHavePowerRequest request) {
         Integer count = dao.checkUserHavePower(request.getUserId(), request.getInterfaceName(), request.getMethodName());
         boolean havePower;
@@ -88,7 +90,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
         try {
             powersSingle = ApiPowerInitUtil.getPowersSingle();
         } catch (IOException e) {
-            LogUtil.error(this.getClass(), e.getMessage());
+            LogUtil.error(this, e);
             return ServiceResult.buildErrorResult("初始化power失败:" + e.getMessage(), request);
         }
         AtomicInteger newPowerCount = new AtomicInteger(0);

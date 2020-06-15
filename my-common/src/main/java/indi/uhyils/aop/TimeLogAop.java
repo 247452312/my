@@ -86,8 +86,8 @@ public class TimeLogAop {
      * @param proceed
      */
     private void after(String className, String methodName, double v, Object proceed) {
-        LogUtil.info(this.getClass(), String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));
-        LogUtil.info(this.getClass(), String.format("   返回值为:%s", JSONObject.toJSONString(proceed)));
+        LogUtil.info(this, String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));
+        LogUtil.info(this, String.format("   返回值为:%s", JSONObject.toJSONString(proceed)));
     }
 
     /**
@@ -111,8 +111,8 @@ public class TimeLogAop {
             sb.append(arg.getClass().getSimpleName());
             sb.append(")");
         }
-        LogUtil.info(this.getClass(), "---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
-        LogUtil.info(this.getClass(), sb.toString());
+        LogUtil.info(this, "---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
+        LogUtil.info(this, sb.toString());
         sb.delete(0, sb.length());
     }
 }
