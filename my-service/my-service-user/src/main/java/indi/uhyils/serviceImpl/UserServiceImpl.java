@@ -1,6 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import indi.uhyils.annotation.NoToken;
 import indi.uhyils.dao.UserDao;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
@@ -46,6 +47,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
 
     @Override
+    @NoToken
     public ServiceResult<UserEntity> getUserByIdNoToken(IdRequest idRequest) {
 
         //缓存
@@ -78,6 +80,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
 
     @Override
+    @NoToken
     public ServiceResult<String> getUserTokenNoToken(GetUserRequest userRequest) {
         String token = getToken(userRequest.getId());
         return ServiceResult.buildSuccessResult("token生成成功", token, userRequest);
@@ -93,6 +96,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
 
     @Override
+    @NoToken
     public ServiceResult<TokenInfo> getTokenInfoByTokenNoToken(DefaultRequest request) {
         String token = request.getToken();
 
@@ -140,6 +144,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
     @Override
+    @NoToken
     public ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest) {
         ArrayList<Arg> objects = new ArrayList<>();
         objects.add(new Arg("username", "=", userRequest.getUsername()));

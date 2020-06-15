@@ -37,9 +37,9 @@ public class EnumUtils {
                     String fieldName = substring.substring(0, 1).toLowerCase() + substring.substring(1);
                     map.put(fieldName, invoke);
                 } catch (IllegalAccessException e) {
-                    LogUtil.error(EnumUtils.class, e.getMessage());
+                    LogUtil.error(EnumUtils.class, e);
                 } catch (InvocationTargetException e) {
-                    LogUtil.error(EnumUtils.class, e.getMessage());
+                    LogUtil.error(EnumUtils.class, e);
                 }
             });
             result.add(map);

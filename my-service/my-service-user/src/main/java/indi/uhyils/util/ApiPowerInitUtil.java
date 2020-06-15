@@ -46,19 +46,20 @@ public class ApiPowerInitUtil {
                             //全部方法名称
                             List<String> methodsName = Arrays.stream(declaredMethods).map(Method::getName).collect(Collectors.toList()); // 此类里面的所有方法
 
-                            Class<?> aClass = Class.forName("indi.uhyils.service.DefaultEntityService");
+                            Class<?> aClass = Class.forName("indi.uhyils.service.DefaultEnt" +
+                                    "ityService");
                             //父类全部方法名称
                             List<String> fatherMethodsName = Arrays.stream(aClass.getDeclaredMethods()).map(Method::getName).collect(Collectors.toList());
                             methodsName.addAll(fatherMethodsName);
                             list.addAll(methodsName.stream().map(v -> PowerSimpleEntity.build(interfaceName, v)).collect(Collectors.toList()));
 
                         } catch (IOException | ClassNotFoundException e) {
-                            LogUtil.error(ApiPowerInitUtil.class, e.getMessage());
+                            LogUtil.error(ApiPowerInitUtil.class, e);
                         }
 
                     });
                 } catch (IOException e) {
-                    LogUtil.error(ApiPowerInitUtil.class, e.getMessage());
+                    LogUtil.error(ApiPowerInitUtil.class, e);
                 }
             }
         });

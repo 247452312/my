@@ -174,7 +174,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
                 redisEntity.preUpdate(request);
                 dao.update(redisEntity);
             } catch (Exception e) {
-                LogUtil.error(this.getClass(), e.getMessage());
+                LogUtil.error(this, e);
                 b.set(false);
             }
         });
@@ -250,7 +250,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         Jedis jedis = getJedis(id);
         List<String> databases = jedis.configGet("databases");
         jedis.close();
-        LogUtil.info(this.getClass(), "查询 configGet数量为:" + databases.size());
+        LogUtil.info(this, "查询 configGet数量为:" + databases.size());
         if (databases.size() == 2) {
             String count = databases.get(1);
             return ServiceResult.buildSuccessResult("查询数据库成功", Integer.parseInt(count), request);

@@ -1,6 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import indi.uhyils.annotation.NoToken;
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.LogDao;
 import indi.uhyils.enum_.ServiceCode;
@@ -44,6 +45,7 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
     }
 
     @Override
+    @NoToken
     public ServiceResult<Boolean> pushRequestLogNoToken(ObjRequest<LogEntity> request) {
         LogEntity data = request.getData();
         request.setUser(userEntity);
