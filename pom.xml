@@ -93,6 +93,13 @@
                 <artifactId>my-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>indi.uhyils</groupId>
                 <artifactId>my-api-provider-user</artifactId>
@@ -103,6 +110,12 @@
                 <artifactId>my-api-provider-software</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-api-provider-log</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
 
             <!-- https://mvnrepository.com/artifact/ch.ethz.ganymed/ganymed-ssh2 -->
             <dependency>
@@ -111,12 +124,6 @@
                 <version>${ssh2.version}</version>
             </dependency>
 
-
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-log</artifactId>
-                <version>${project.version}</version>
-            </dependency>
 
             <dependency>
                 <!-- Import dependency management from Spring Boot -->
@@ -145,14 +152,14 @@
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
             </dependency>
-<!--            &lt;!&ndash;devtools热部署&ndash;&gt;-->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-devtools</artifactId>-->
-<!--                <version>${spring-boot.version}</version>-->
-<!--                <optional>true</optional>-->
-<!--                <scope>true</scope>-->
-<!--            </dependency>-->
+            <!--            &lt;!&ndash;devtools热部署&ndash;&gt;-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.springframework.boot</groupId>-->
+            <!--                <artifactId>spring-boot-devtools</artifactId>-->
+            <!--                <version>${spring-boot.version}</version>-->
+            <!--                <optional>true</optional>-->
+            <!--                <scope>true</scope>-->
+            <!--            </dependency>-->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
