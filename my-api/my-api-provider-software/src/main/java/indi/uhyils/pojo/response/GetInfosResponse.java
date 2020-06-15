@@ -19,6 +19,12 @@ public class GetInfosResponse implements Serializable {
      */
     private String value;
 
+    public static GetInfosResponse build(String name, String value) {
+        GetInfosResponse getInfosResponse = new GetInfosResponse();
+        getInfosResponse.setName(name);
+        getInfosResponse.setValue(value);
+        return getInfosResponse;
+    }
 
     public String getName() {
         return name;
@@ -34,12 +40,5 @@ public class GetInfosResponse implements Serializable {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public static GetInfosResponse build(String name, String value) {
-        GetInfosResponse getInfosResponse = new GetInfosResponse();
-        getInfosResponse.setName(name);
-        getInfosResponse.setValue(value);
-        return getInfosResponse;
     }
 }

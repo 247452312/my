@@ -1,6 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import indi.uhyils.annotation.NoToken;
 import indi.uhyils.dao.MenuDao;
 import indi.uhyils.dao.RoleDao;
 import indi.uhyils.dao.UserDao;
@@ -37,6 +38,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
 
 
     @Override
+    @NoToken
     public ServiceResult<RoleEntity> getRoleByRoleIdNoToken(IdRequest request) {
         RoleEntity byId = dao.getById(request.getId());
         if (byId == null) {

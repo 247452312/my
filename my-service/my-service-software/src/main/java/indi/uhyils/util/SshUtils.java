@@ -43,7 +43,7 @@ public class SshUtils {
                 return true;
             }
         } catch (Exception e) {
-            LogUtil.error(SshUtils.class, e.getMessage());
+            LogUtil.error(SshUtils.class, e);
             return false;
         } finally {
             if (ses != null) {
@@ -73,7 +73,7 @@ public class SshUtils {
             ses.execCommand(command);
             return getResult(ses.getStdout());
         } catch (Exception e) {
-            LogUtil.error(SshUtils.class, e.getMessage());
+            LogUtil.error(SshUtils.class, e);
             return null;
         } finally {
             if (ses != null) {
@@ -98,7 +98,7 @@ public class SshUtils {
             ses = conn.openSession();
             ses.execCommand(command);
         } catch (Exception e) {
-            LogUtil.error(SshUtils.class, e.getMessage());
+            LogUtil.error(SshUtils.class, e);
         } finally {
             if (ses != null) {
                 ses.close();

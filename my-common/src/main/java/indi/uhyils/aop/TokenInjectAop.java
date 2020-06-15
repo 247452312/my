@@ -1,6 +1,7 @@
 package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.annotation.NoToken;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
@@ -11,12 +12,15 @@ import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.DubboApiUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,10 +75,15 @@ public class TokenInjectAop {
         String className = pjp.getTarget().getClass().getCanonicalName();
         String methodName = pjp.getSignature().getName();
 
-        if (methodName.endsWith(RELEASE_SUFFIX)) {
+        Signature signature = pjp.getSignature();
+        MethodSignature methodSignature = (MethodSignature) signature;
+        Method targetMethod = methodSignature.getMethod();
+        NoToken[] annotationsByType = targetMethod.getAnnotationsByType(NoToken.class);
+        if (annotationsByType != null && annotationsByType.length != 0) {
             //执行方法
             return pjp.proceed();
         }
+
 
         //获取token
         DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
