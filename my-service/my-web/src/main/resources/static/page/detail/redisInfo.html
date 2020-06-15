@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
     <meta charset="utf-8">
     <title>redis详情</title>
@@ -769,7 +769,7 @@
 
         /* redis开关,如果开了就关 如果关了就开 */
         $("#off_on_redis").click(function () {
-            if (status == 1) { // 说明现在是开着的,要关了
+            if (status === 1) { // 说明现在是开着的,要关了
                 layer.confirm('是否确认关闭', {
                     btn: ['确认', '取消'] //按钮
                 }, function () {
@@ -802,7 +802,7 @@
         $("#addRedisKey").click(function () {
                 // 获取数据库的值
                 let value = $("#redis-db").val();
-                if (value == null || value == "") {
+                if (value == null || value === "") {
                     layer.msg("请选择数据库");
                     return;
                 }
