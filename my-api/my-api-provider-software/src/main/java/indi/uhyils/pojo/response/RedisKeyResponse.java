@@ -15,17 +15,17 @@ public class RedisKeyResponse implements Serializable {
      */
     private String key;
 
+    public static RedisKeyResponse build(String key) {
+        RedisKeyResponse redisKeyResponse = new RedisKeyResponse();
+        redisKeyResponse.setKey(key);
+        return redisKeyResponse;
+    }
+
     public String getKey() {
         return key;
     }
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public static RedisKeyResponse build(String key) {
-        RedisKeyResponse redisKeyResponse = new RedisKeyResponse();
-        redisKeyResponse.setKey(key);
-        return redisKeyResponse;
     }
 }

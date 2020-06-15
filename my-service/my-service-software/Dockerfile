@@ -11,7 +11,7 @@ ARG version
 MAINTAINER uhyils <uhyils@qq.com>
 
 #应用构建成功后的jar文件被复制到镜像内，名字也改成了app.jar
-ADD target/my-service-user-$version.jar /app.jar
+ADD target/my-service-doftware-$version.jar /app.jar
 
 #启动容器时的进程
 CMD ["java","-jar","/app.jar","--spring.profiles.active=$runEnv"]

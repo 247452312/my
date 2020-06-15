@@ -24,73 +24,70 @@ public class LogUtil {
 
 
     public static void info(Class cls, String msg) {
-        writeLog(cls, msg, LogTypeEnum.INFO);
+        writeLog(cls, msg, null, LogTypeEnum.INFO);
+    }
+
+    public static void info(Class cls, Throwable e) {
+        writeLog(cls, null, e, LogTypeEnum.INFO);
     }
 
     public static void info(Object obj, String msg) {
         info(obj.getClass(), msg);
     }
 
-
-    public static void info(Class cls, Exception e) {
-        info(cls, e.getMessage());
+    public static void info(Object obj, Throwable e) {
+        info(obj.getClass(), e);
     }
 
-    public static void info(Object obj, Exception e) {
-        info(obj.getClass(), e.getMessage());
-    }
 
     public static void debug(Class cls, String msg) {
-        writeLog(cls, msg, LogTypeEnum.DEBUG);
+        writeLog(cls, msg, null, LogTypeEnum.DEBUG);
+    }
+
+    public static void debug(Class cls, Throwable e) {
+        writeLog(cls, null, e, LogTypeEnum.DEBUG);
     }
 
     public static void debug(Object obj, String msg) {
         debug(obj.getClass(), msg);
     }
 
-
-    public static void debug(Class cls, Exception e) {
-        debug(cls, e.getMessage());
-    }
-
-    public static void debug(Object obj, Exception e) {
-        debug(obj.getClass(), e.getMessage());
+    public static void debug(Object obj, Throwable e) {
+        debug(obj.getClass(), e);
     }
 
 
     public static void warn(Class cls, String msg) {
-        writeLog(cls, msg, LogTypeEnum.WARN);
+        writeLog(cls, msg, null, LogTypeEnum.WARN);
+    }
+
+    public static void warn(Class cls, Throwable e) {
+        writeLog(cls, null, e, LogTypeEnum.WARN);
     }
 
     public static void warn(Object obj, String msg) {
         warn(obj.getClass(), msg);
     }
 
-
-    public static void warn(Class cls, Exception e) {
-        warn(cls, e.getMessage());
-    }
-
-    public static void warn(Object obj, Exception e) {
-        warn(obj.getClass(), e.getMessage());
+    public static void warn(Object obj, Throwable e) {
+        warn(obj.getClass(), e);
     }
 
 
     public static void error(Class cls, String msg) {
-        writeLog(cls, msg, LogTypeEnum.ERROR);
+        writeLog(cls, msg, null, LogTypeEnum.ERROR);
+    }
+
+    public static void error(Class cls, Throwable e) {
+        writeLog(cls, null, e, LogTypeEnum.ERROR);
     }
 
     public static void error(Object obj, String msg) {
         error(obj.getClass(), msg);
     }
 
-    public static void error(Object obj, Exception e) {
-        error(obj.getClass(), e.getMessage());
-    }
-
-
-    public static void error(Class cls, Exception e) {
-        error(cls, e.getMessage());
+    public static void error(Object obj, Throwable e) {
+        error(obj.getClass(), e);
     }
 
 
@@ -101,30 +98,31 @@ public class LogUtil {
      * @param msg
      * @param logTypeEnum
      */
-    private static void writeLog(Class cls, String msg, LogTypeEnum logTypeEnum) {
+    private static void writeLog(Class cls, String msg, Throwable throwable, LogTypeEnum logTypeEnum) {
         if (loggerMap.keySet().contains(cls)) {
             Logger logger = loggerMap.get(cls);
-            choiseLogType(msg, logTypeEnum, logger);
+            choiseLogType(msg, throwable, logTypeEnum, logger);
             return;
         }
         Logger logger = LoggerFactory.getLogger(cls);
         loggerMap.put(cls, logger);
-        choiseLogType(msg, logTypeEnum, logger);
+        choiseLogType(msg, throwable, logTypeEnum, logger);
     }
 
-    private static void choiseLogType(String msg, LogTypeEnum logTypeEnum, Logger logger) {
+
+    private static void choiseLogType(String msg, Throwable throwable, LogTypeEnum logTypeEnum, Logger logger) {
         switch (logTypeEnum) {
             case INFO:
-                logger.info(msg);
+                logger.info(msg, throwable);
                 break;
             case WARN:
-                logger.warn(msg);
+                logger.warn(msg, throwable);
                 break;
             case DEBUG:
-                logger.debug(msg);
+                logger.debug(msg, throwable);
                 break;
             case ERROR:
-                logger.error(msg);
+                logger.error(msg, throwable);
                 break;
             default:
                 logger.error("no this LogType!");

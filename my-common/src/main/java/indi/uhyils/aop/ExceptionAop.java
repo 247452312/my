@@ -36,11 +36,11 @@ public class ExceptionAop {
             return pjp.proceed();
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.error(this.getClass(), e.getMessage());
+            LogUtil.error(this, e);
             return ServiceResult.buildErrorResult(e.getMessage(), AopUtil.getDefaultRequestInPjp(pjp));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
-            LogUtil.error(this.getClass(), throwable.getMessage());
+            LogUtil.error(this, throwable);
             return ServiceResult.buildErrorResult(throwable.getMessage(), AopUtil.getDefaultRequestInPjp(pjp));
         }
     }

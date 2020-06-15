@@ -40,7 +40,7 @@ public class RedisPoolUtil {
             jedis.expire(user.getId(), 60 * 30);
             jedis.close();
         } catch (JedisConnectionException e) {
-            LogUtil.error(this.getClass(), e.getMessage());
+            LogUtil.error(this, e);
         }
 
     }
@@ -64,7 +64,7 @@ public class RedisPoolUtil {
             jedis.close();
             return userEntity;
         } catch (JedisConnectionException e) {
-            LogUtil.error(this.getClass(), e.getMessage());
+            LogUtil.error(this, e);
         }
         return null;
 
@@ -77,7 +77,7 @@ public class RedisPoolUtil {
             jedis.close();
             return exists;
         } catch (JedisConnectionException e) {
-            LogUtil.error(this.getClass(), e.getMessage());
+            LogUtil.error(this, e);
         }
         return null;
 
@@ -90,7 +90,7 @@ public class RedisPoolUtil {
             jedis.close();
             return exists;
         } catch (JedisConnectionException e) {
-            LogUtil.error(this.getClass(), e.getMessage());
+            LogUtil.error(this, e);
         }
         return null;
 
@@ -104,7 +104,7 @@ public class RedisPoolUtil {
             jedis.close();
             return del != 0;
         } catch (JedisConnectionException e) {
-            LogUtil.error(this.getClass(), e.getMessage());
+            LogUtil.error(this, e);
         }
         return true;
     }
@@ -122,7 +122,7 @@ public class RedisPoolUtil {
             jedis.close();
             return del != 0;
         } catch (JedisConnectionException e) {
-            LogUtil.error(this.getClass(), e.getMessage());
+            LogUtil.error(this, e);
         }
         return true;
     }
