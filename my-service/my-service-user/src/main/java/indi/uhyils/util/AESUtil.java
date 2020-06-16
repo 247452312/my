@@ -41,8 +41,10 @@ public class AESUtil {
 
             KeyGenerator keygen = KeyGenerator.getInstance(AES);
             //2.根据encodeRules规则初始化密钥生成器
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            random.setSeed(encodeRules.getBytes());
             //生成一个128位的随机源,根据传入的字节数组
-            keygen.init(128, new SecureRandom(encodeRules.getBytes()));
+            keygen.init(128, random);
             //3.产生原始对称密钥
             SecretKey originalKey = keygen.generateKey();
             //4.获得原始对称密钥的字节数组
@@ -80,8 +82,10 @@ public class AESUtil {
             //1.构造密钥生成器，指定为AES算法,不区分大小写
             KeyGenerator keygen = KeyGenerator.getInstance(AES);
             //2.根据encodeRules规则初始化密钥生成器
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            random.setSeed(encodeRules.getBytes());
             //生成一个128位的随机源,根据传入的字节数组
-            keygen.init(128, new SecureRandom(encodeRules.getBytes()));
+            keygen.init(128, random);
             //3.产生原始对称密钥
             SecretKey originalKey = keygen.generateKey();
             //4.获得原始对称密钥的字节数组
