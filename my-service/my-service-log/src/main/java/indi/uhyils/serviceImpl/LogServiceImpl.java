@@ -46,7 +46,7 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
 
     @Override
     @NoToken
-    public ServiceResult<Boolean> pushRequestLogNoToken(ObjRequest<LogEntity> request) {
+    public ServiceResult<Boolean> pushRequestLog(ObjRequest<LogEntity> request) {
         LogEntity data = request.getData();
         request.setUser(userEntity);
         data.preInsert(request);

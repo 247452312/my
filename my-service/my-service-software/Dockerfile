@@ -1,6 +1,11 @@
 # Docker image for {tomcat? springBoot?}
 # VERSION {版本号}
 # Author: uhyils
+# docker stop prod-my-service-software
+# docker rm prod-my-service-software
+# docker rmi my-service/prod-my-service-software:latest
+# docker build --build-arg version=0.0.3 --build-arg runEnv=prod -t my-service/prod-my-service-software .
+# docker run -it -d  -p 8054:8054 -p 20854:20854 --name prod-my-service-software my-service/prod-my-service-software:latest java -jar /app.jar --spring.profiles.active=prod
 
 FROM java:8
 

@@ -31,7 +31,7 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * @param request 检查用户是否存在此权限请求
      * @return 是否存在
      */
-    ServiceResult<Boolean> checkUserHavePowerNoToken(CheckUserHavePowerRequest request);
+    ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerRequest request);
 
     /**
      * 删除权限->包括连接表

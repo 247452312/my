@@ -769,7 +769,7 @@
 
         /* redis开关,如果开了就关 如果关了就开 */
         $("#off_on_redis").click(function () {
-            if (status === 1) { // 说明现在是开着的,要关了
+            if (status == 1) { // 说明现在是开着的,要关了
                 layer.confirm('是否确认关闭', {
                     btn: ['确认', '取消'] //按钮
                 }, function () {
@@ -781,8 +781,8 @@
                     });
                 }, function () {
                 });
-            } else { // 说明现在没有开启,关闭
-                layer.confirm('是否确认关闭', {
+            } else { // 说明现在没有开启,开启
+                layer.confirm('是否确认开启', {
                     btn: ['确认', '取消'] //按钮
                 }, function () {
                     pushRequest("RedisService", "start", {id: id}, function (data) {
@@ -802,7 +802,7 @@
         $("#addRedisKey").click(function () {
                 // 获取数据库的值
                 let value = $("#redis-db").val();
-                if (value == null || value === "") {
+                if (value == null || value == "") {
                     layer.msg("请选择数据库");
                     return;
                 }
@@ -824,7 +824,7 @@
         table.on('tool(redis-keys-table)', function (obj) {
             var data = obj.data;
             //console.log(obj)
-            if (obj.event === 'del') { // 删除
+            if (obj.event == 'del') { // 删除
                 layer.confirm('真的删除行么', function (index) {
                     pushRequest("RedisService", "deleteRedisByKey", {
                         data: {
@@ -837,7 +837,7 @@
                         reloadTable();
                     });
                 });
-            } else if (obj.event === 'edit') {
+            } else if (obj.event == 'edit') {
                 let value = $("#redis-db").val();
 
                 var index = layer.open({

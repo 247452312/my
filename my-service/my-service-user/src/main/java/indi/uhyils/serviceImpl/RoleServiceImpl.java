@@ -39,7 +39,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<RoleEntity> getRoleByRoleIdNoToken(IdRequest request) {
+    public ServiceResult<RoleEntity> getRoleByRoleId(IdRequest request) {
         RoleEntity byId = dao.getById(request.getId());
         if (byId == null) {
             return ServiceResult.buildFailedResult("查询失败", null, request);

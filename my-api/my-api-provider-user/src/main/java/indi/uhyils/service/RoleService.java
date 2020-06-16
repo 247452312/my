@@ -25,7 +25,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * @param request 角色id
      * @return 角色
      */
-    ServiceResult<RoleEntity> getRoleByRoleIdNoToken(IdRequest request);
+    ServiceResult<RoleEntity> getRoleByRoleId(IdRequest request);
 
     /**
      * 给角色添加权限集
