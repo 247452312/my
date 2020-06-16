@@ -3,6 +3,7 @@ package indi.uhyils.service;
 import indi.uhyils.pojo.model.DictEntity;
 import indi.uhyils.pojo.model.DictItemEntity;
 import indi.uhyils.pojo.request.ArgsRequest;
+import indi.uhyils.pojo.request.GetByItemArgsRequest;
 import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.request.ObjRequest;
 import indi.uhyils.pojo.response.Page;
@@ -72,8 +73,8 @@ public interface DictService extends DefaultEntityService<DictEntity> {
     /**
      * 根据某几列获取item数据
      *
-     * @param argsRequest 根据列名获取信息
+     * @param request 根据列名获取信息
      * @return 分页数据(也可以设置不分页)
      */
-    ServiceResult<Page<DictItemEntity>> getByItemArgs(ArgsRequest argsRequest);
+    ServiceResult<Page<DictItemEntity>> getByItemArgs(GetByItemArgsRequest request);
 }

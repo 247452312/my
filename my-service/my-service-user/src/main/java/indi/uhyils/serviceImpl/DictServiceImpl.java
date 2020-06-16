@@ -5,7 +5,7 @@ import indi.uhyils.dao.DictDao;
 import indi.uhyils.dao.DictItemDao;
 import indi.uhyils.pojo.model.DictEntity;
 import indi.uhyils.pojo.model.DictItemEntity;
-import indi.uhyils.pojo.request.ArgsRequest;
+import indi.uhyils.pojo.request.GetByItemArgsRequest;
 import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.request.ObjRequest;
 import indi.uhyils.pojo.request.model.Arg;
@@ -109,19 +109,24 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     }
 
     @Override
-    public ServiceResult<Page<DictItemEntity>> getByItemArgs(ArgsRequest argsRequest) {
-        List<Arg> args = argsRequest.getArgs();
-        Boolean paging = argsRequest.getPaging();
+    public ServiceResult<Page<DictItemEntity>> getByItemArgs(GetByItemArgsRequest request) {
+        List<Arg> args = request.getArgs();
+        Boolean paging = request.getPaging();
+        Arg arg = new Arg();
+        arg.setName("dict_id");
+        arg.setSymbol("=");
+        arg.setData(request.getDictId());
+        args.add(arg);
         if (paging) {
-            ArrayList<DictItemEntity> byArgs = dictItemDao.getByArgs(args, argsRequest.getPage(), argsRequest.getSize());
-            int count = dictItemDao.countByArgs(argsRequest.getArgs());
-            Page<DictItemEntity> build = Page.build(argsRequest, byArgs, count, (count / argsRequest.getSize()) + 1);
-            return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
+            ArrayList<DictItemEntity> byArgs = dictItemDao.getByArgs(args, request.getPage(), request.getSize());
+            int count = dictItemDao.countByArgs(request.getArgs());
+            Page<DictItemEntity> build = Page.build(request, byArgs, count, (count / request.getSize()) + 1);
+            return ServiceResult.buildSuccessResult("查询成功", build, request);
         } else {
             ArrayList<DictItemEntity> byArgs = dictItemDao.getByArgsNoPage(args);
-            int count = dictItemDao.countByArgs(argsRequest.getArgs());
-            Page<DictItemEntity> build = Page.build(argsRequest, byArgs, count, null);
-            return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
+            int count = dictItemDao.countByArgs(request.getArgs());
+            Page<DictItemEntity> build = Page.build(request, byArgs, count, null);
+            return ServiceResult.buildSuccessResult("查询成功", build, request);
         }
     }
 }

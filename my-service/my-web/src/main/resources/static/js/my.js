@@ -273,3 +273,9 @@ $.fn.serializeJson = function () {
     });
     return serializeObj;
 };
+
+function getDict(dictCode) {
+    pushRequest("DictService", "getDictByCode", {code: dictCode}, function (data) {
+        return data;
+    })
+}

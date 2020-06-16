@@ -52,6 +52,7 @@
         };
         $.reload = function (page, size, args) {
             pushRequest("DictService", "getByItemArgs", {
+                dictId: dictId,
                 page: page,
                 size: size,
                 paging: true,
@@ -127,7 +128,7 @@
                         shade: 0.2,
                         maxmin: true,
                         shadeClose: true,
-                        area: ['30%', '60%'],
+                        area: ['40%', '50%'],
                         content: 'table/dictItemAdd.html?func=add&id=' + dictId,
                     });
                     $(window).on("resize", function () {
