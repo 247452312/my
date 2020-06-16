@@ -42,3 +42,4 @@ spring:
 redis:
   ip: 172.26.59.129
   port: 6379
+  password: uhyils
