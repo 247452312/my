@@ -60,6 +60,7 @@ function pushRequest(interfaceName, methodName, data, success, target = false) {
             } else {
                 // code不为200
                 switch (data.code) {
+                    case 403:
                     case 402:
                         // 代表登录问题. 返回登录页
                         top.layer.alert(data.msg + ", 即将返回登录页", function (index) {

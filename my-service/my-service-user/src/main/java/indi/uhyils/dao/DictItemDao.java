@@ -3,6 +3,8 @@ package indi.uhyils.dao;
 import indi.uhyils.pojo.model.DictItemEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.ArrayList;
+
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -19,4 +21,11 @@ public interface DictItemDao extends DefaultDao<DictItemEntity> {
      */
     Integer deleteByDictId(String id);
 
+    /**
+     * 获取某个字典的所有字典项
+     *
+     * @param id 字典id
+     * @return 某个字典的所有字典项
+     */
+    ArrayList<DictItemEntity> getByDictId(String id);
 }

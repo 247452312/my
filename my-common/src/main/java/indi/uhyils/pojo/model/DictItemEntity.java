@@ -30,12 +30,7 @@ public class DictItemEntity extends BaseEntity {
     /**
      * 排序
      */
-    private String sortOrder;
-
-    /**
-     * 0->不启用 1->启用
-     */
-    private Integer status;
+    private Integer sortOrder;
 
     public String getDictId() {
         return dictId;
@@ -69,19 +64,12 @@ public class DictItemEntity extends BaseEntity {
         this.description = description;
     }
 
-    public String getSortOrder() {
+    public Integer getSortOrder() {
         return sortOrder;
     }
 
-    public void setSortOrder(String sortOrder) {
+    public void setSortOrder(Integer sortOrder) {
         this.sortOrder = sortOrder;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
 }

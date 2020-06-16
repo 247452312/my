@@ -4,10 +4,18 @@ import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.DictDao;
 import indi.uhyils.dao.DictItemDao;
 import indi.uhyils.pojo.model.DictEntity;
+import indi.uhyils.pojo.model.DictItemEntity;
+import indi.uhyils.pojo.request.ArgsRequest;
 import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.pojo.request.model.Arg;
+import indi.uhyils.pojo.response.Page;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.DictService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -33,7 +41,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         dictEntity.preUpdate(idRequest);
         dao.update(dictEntity);
         dictItemDao.deleteByDictId(id);
-        return ServiceResult.buildSuccessResult("删除字典以及字典项成功", null, idRequest);
+        return ServiceResult.buildSuccessResult("删除字典以及字典项成功", 1, idRequest);
     }
 
     public DictDao getDao() {
@@ -50,5 +58,70 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
 
     public void setDictItemDao(DictItemDao dictItemDao) {
         this.dictItemDao = dictItemDao;
+    }
+
+    @Override
+    public ServiceResult<Boolean> insertItem(ObjRequest<DictItemEntity> request) {
+        DictItemEntity data = request.getData();
+        data.preInsert(request);
+        dictItemDao.insert(data);
+        return ServiceResult.buildSuccessResult("插入字典项成功", true, request);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<DictItemEntity>> getItemByDictId(IdRequest request) {
+        ArrayList<DictItemEntity> items = dictItemDao.getByDictId(request.getId());
+        return ServiceResult.buildSuccessResult("查询成功", items, request);
+    }
+
+    @Override
+    public ServiceResult<Boolean> updateItem(ObjRequest<DictItemEntity> request) {
+        DictItemEntity data = request.getData();
+        data.preUpdate(request);
+        dictItemDao.update(data);
+        return ServiceResult.buildSuccessResult("修改成功", true, request);
+    }
+
+    @Override
+    public ServiceResult<Boolean> deleteItem(IdRequest request) {
+        String itemId = request.getId();
+        DictItemEntity dictItemEntity = dictItemDao.getById(itemId);
+        dictItemEntity.preUpdate(request);
+        dictItemEntity.setDeleteFlag(true);
+        dictItemDao.update(dictItemEntity);
+        return ServiceResult.buildSuccessResult("删除成功", true, request);
+    }
+
+    @Override
+    public ServiceResult<Boolean> cleanDictItem(IdRequest request) {
+        ArrayList<DictItemEntity> items = dictItemDao.getByDictId(request.getId());
+        items.forEach(item -> {
+            item.setDeleteFlag(true);
+            item.preUpdate(request);
+            dictItemDao.update(item);
+        });
+        return ServiceResult.buildSuccessResult("清理成功", true, request);
+    }
+
+    @Override
+    public ServiceResult<DictItemEntity> getItemById(IdRequest request) {
+        return ServiceResult.buildSuccessResult("查询成功", dictItemDao.getById(request.getId()), request);
+    }
+
+    @Override
+    public ServiceResult<Page<DictItemEntity>> getByItemArgs(ArgsRequest argsRequest) {
+        List<Arg> args = argsRequest.getArgs();
+        Boolean paging = argsRequest.getPaging();
+        if (paging) {
+            ArrayList<DictItemEntity> byArgs = dictItemDao.getByArgs(args, argsRequest.getPage(), argsRequest.getSize());
+            int count = dictItemDao.countByArgs(argsRequest.getArgs());
+            Page<DictItemEntity> build = Page.build(argsRequest, byArgs, count, (count / argsRequest.getSize()) + 1);
+            return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
+        } else {
+            ArrayList<DictItemEntity> byArgs = dictItemDao.getByArgsNoPage(args);
+            int count = dictItemDao.countByArgs(argsRequest.getArgs());
+            Page<DictItemEntity> build = Page.build(argsRequest, byArgs, count, null);
+            return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
+        }
     }
 }
