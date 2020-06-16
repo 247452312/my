@@ -44,6 +44,9 @@ public class RedisPool {
     @Value("${redis.port}")
     private String redisPort;
 
+    @Value("${redis.password}")
+    private String password;
+
 
     private void initPool() {
         JedisPoolConfig config = new JedisPoolConfig();
@@ -56,7 +59,7 @@ public class RedisPool {
         config.setTestOnReturn(testOnReturn);
         //连接耗尽的时候，是否阻塞，false会抛出异常，true阻塞直到超时。默认为true。
         config.setBlockWhenExhausted(true);
-        pool = new JedisPool(config, redisIp, Integer.parseInt(redisPort), 1000 * 2);
+        pool = new JedisPool(config, redisIp, Integer.parseInt(redisPort), 1000 * 2, password);
     }
 
     public Jedis getJedis() {
