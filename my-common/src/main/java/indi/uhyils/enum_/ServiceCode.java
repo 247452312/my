@@ -28,7 +28,7 @@ public enum ServiceCode {
     /**
      * 未登录
      */
-    NO_LOGIN__ERROR(402, "未登录"),
+    NO_LOGIN__ERROR(403, "未登录"),
 
 
     /**

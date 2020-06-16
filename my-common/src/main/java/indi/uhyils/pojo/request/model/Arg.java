@@ -1,5 +1,8 @@
 package indi.uhyils.pojo.request.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 自定义查询中的一个参数
  *
@@ -30,6 +33,16 @@ public class Arg {
     }
 
     public Arg() {
+    }
+
+    public static List<Arg> buildSingleArgs(String name, String symbol, String data) {
+        List<Arg> list = new ArrayList<>();
+        Arg e = new Arg();
+        e.setName(name);
+        e.setSymbol("=");
+        e.setData(data);
+        list.add(e);
+        return list;
     }
 
     public String getName() {

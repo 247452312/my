@@ -17,7 +17,6 @@
         a.description,
         a.dict_id as dictId,
         a.sort_order as sortOrder,
-        a.status,
         a.text,
         a.value
 
@@ -39,6 +38,7 @@
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
+        order by sort_order
     </select>
 
     <select id="getByArgs" resultType="indi.uhyils.pojo.model.DictItemEntity">
@@ -50,6 +50,7 @@
         <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
+        order by sort_order
         <if test="page != null and page != ''">
             limit ${(page-1) * size},${page * size}
         </if>
@@ -66,14 +67,12 @@
                              description,
                              dict_id,
                              sort_order,
-                             status,
                              text,
                              value)
         values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0,
                 #{description},
-                #{dict_id},
-                #{sort_order},
-                #{status},
+                #{dictId},
+                #{sortOrder},
                 #{text},
                 #{value})
     </insert>
@@ -91,9 +90,6 @@
         </if>
         <if test="sortOrder != null and sortOrder != ''">
             ,sort_order = #{sortOrder}
-        </if>
-        <if test="status != null and status != ''">
-            ,status = #{status}
         </if>
         <if test="text != null and text != ''">
             ,text = #{text}
@@ -119,7 +115,7 @@
         select count(*)
         from sys_dict_item a
         where delete_flag = 0
-        <foreach item="item" index="index" collection="list">
+        <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
     </select>
@@ -134,6 +130,15 @@
         update sys_dict_item
         set delete_flag = 1
         where dict_id = #{id}
+    </select>
+
+
+    <select id="getByDictId" resultType="indi.uhyils.pojo.model.DictItemEntity">
+        select
+        <include refid="columnList"/>
+        from sys_dict_item a
+        where dict_id = #{id}
+        order by sort_order
     </select>
 
 
