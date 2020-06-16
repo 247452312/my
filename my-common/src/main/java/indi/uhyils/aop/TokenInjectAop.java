@@ -38,10 +38,6 @@ public class TokenInjectAop {
      * service后缀
      */
     private static final String IMPL = "Impl";
-    /**
-     * 放行方法后缀
-     */
-    private static final String RELEASE_SUFFIX = "NoToken";
 
     /**
      * 超级管理员账号
@@ -71,7 +67,7 @@ public class TokenInjectAop {
     public Object tokenInjectAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
 
 
-        //NoToken结尾的方法直接放行 不需要token
+        //NoToken注释的方法直接放行 不需要token
         String className = pjp.getTarget().getClass().getCanonicalName();
         String methodName = pjp.getSignature().getName();
 
@@ -96,12 +92,12 @@ public class TokenInjectAop {
 
         /* 查询是否超时 */
         //解析token获取tokenInfo
-        ServiceResult<JSONObject> getTokenInfoByTokenNoToken = parseToken(token, arg);
+        ServiceResult<JSONObject> getTokenInfoByToken = parseToken(token, arg);
         //解析出现异常
-        if (!ServiceCode.SUCCESS.getText().equals(getTokenInfoByTokenNoToken.getServiceCode())) {
-            return getTokenInfoByTokenNoToken;
+        if (!ServiceCode.SUCCESS.getText().equals(getTokenInfoByToken.getServiceCode())) {
+            return getTokenInfoByToken;
         }
-        JSONObject data = getTokenInfoByTokenNoToken.getData();
+        JSONObject data = getTokenInfoByToken.getData();
         final TokenInfo tokenInfo = data.toJavaObject(TokenInfo.class);
         //redis中token超时
         if (tokenInfo.getTimeOut()) {
@@ -114,7 +110,7 @@ public class TokenInjectAop {
         if (arg.getUser() != null) {
             userEntity = arg.getUser();
         } else {
-            ServiceResult<JSONObject> serviceResult = getUserByIdNoToken(token, tokenInfo, arg);
+            ServiceResult<JSONObject> serviceResult = getUserById(token, tokenInfo, arg);
             // 查询是否有报错,如果报错.则结束请求
             if (!ServiceCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
                 return serviceResult;
@@ -161,7 +157,7 @@ public class TokenInjectAop {
         build.setRequestLink(request.getRequestLink());
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        return DubboApiUtil.dubboApiTool("PowerService", "checkUserHavePowerNoToken", args, request);
+        return DubboApiUtil.dubboApiTool("PowerService", "checkUserHavePower", args, request);
     }
 
     private ServiceResult<JSONObject> getUserRoleByRoleId(String token, String roleId, DefaultRequest arg) {
@@ -170,17 +166,17 @@ public class TokenInjectAop {
         build.setRequestLink(arg.getRequestLink());
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        return DubboApiUtil.dubboApiTool("RoleService", "getRoleByRoleIdNoToken", args, arg);
+        return DubboApiUtil.dubboApiTool("RoleService", "getRoleByRoleId", args, arg);
     }
 
 
-    private ServiceResult<JSONObject> getUserByIdNoToken(String token, TokenInfo tokenInfo, DefaultRequest request) {
+    private ServiceResult<JSONObject> getUserById(String token, TokenInfo tokenInfo, DefaultRequest request) {
         ArrayList<Object> args = new ArrayList<>();
         IdRequest build = IdRequest.build(tokenInfo.getUserId());
         build.setToken(token);
         build.setRequestLink(request.getRequestLink());
         args.add(build);
-        return DubboApiUtil.dubboApiTool("UserService", "getUserByIdNoToken", args, request);
+        return DubboApiUtil.dubboApiTool("UserService", "getUserById", args, request);
     }
 
     /**
@@ -195,7 +191,7 @@ public class TokenInjectAop {
         defaultRequest.setRequestLink(request.getRequestLink());
         List<Object> list = new ArrayList<>();
         list.add(defaultRequest);
-        return DubboApiUtil.dubboApiTool("UserService", "getTokenInfoByTokenNoToken", list, request);
+        return DubboApiUtil.dubboApiTool("UserService", "getTokenInfoByToken", list, request);
     }
 
 

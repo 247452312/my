@@ -282,18 +282,24 @@
                     layer.full(index);
                 });
             } else if (obj.event === 'info') {
-                var index = layer.open({
-                    title: 'redis详情',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin: true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: 'detail/redisInfo.html?id=' + data.id,
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
+                // 如果运行中才能打开info
+                if (data.status == 1) {
+                    var index = layer.open({
+                        title: 'redis详情',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: 'detail/redisInfo.html?id=' + data.id,
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                } else {
+                    layer.msg("redis没有在开启状态,请开启redis或者刷新属性后再试");
+                }
+
             }
 
         });

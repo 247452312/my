@@ -47,7 +47,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
 
     @Override
     @NoToken
-    public ServiceResult<Boolean> checkUserHavePowerNoToken(CheckUserHavePowerRequest request) {
+    public ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerRequest request) {
         Integer count = dao.checkUserHavePower(request.getUserId(), request.getInterfaceName(), request.getMethodName());
         boolean havePower;
         if (count > 0) {

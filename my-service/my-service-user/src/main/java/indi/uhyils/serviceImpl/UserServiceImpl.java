@@ -48,7 +48,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<UserEntity> getUserByIdNoToken(IdRequest idRequest) {
+    public ServiceResult<UserEntity> getUserById(IdRequest idRequest) {
 
         //缓存
         UserEntity user = redisPoolUtil.getUser(idRequest.getToken());
@@ -81,7 +81,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<String> getUserTokenNoToken(GetUserRequest userRequest) {
+    public ServiceResult<String> getUserToken(GetUserRequest userRequest) {
         String token = getToken(userRequest.getId());
         return ServiceResult.buildSuccessResult("token生成成功", token, userRequest);
     }
@@ -97,7 +97,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<TokenInfo> getTokenInfoByTokenNoToken(DefaultRequest request) {
+    public ServiceResult<TokenInfo> getTokenInfoByToken(DefaultRequest request) {
         String token = request.getToken();
 
         String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
@@ -145,7 +145,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest) {
+    public ServiceResult<LoginResponse> userLogin(LoginRequest userRequest) {
         ArrayList<Arg> objects = new ArrayList<>();
         objects.add(new Arg("username", "=", userRequest.getUsername()));
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
@@ -183,19 +183,6 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
             t.setRole(userRoleById);
         });
         return ServiceResult.buildSuccessResult("查询成功", all, request);
-    }
-
-    @Override
-    public ServiceResult<UserEntity> getUserById(IdRequest request) {
-        String id = request.getId();
-        UserEntity userEntity = dao.getById(id);
-        if (userEntity == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, request);
-        }
-        String roleId = userEntity.getRoleId();
-        RoleEntity userRoleById = dao.getUserRoleById(roleId);
-        userEntity.setRole(userRoleById);
-        return ServiceResult.buildSuccessResult("获取用户成功", userEntity, request);
     }
 
 

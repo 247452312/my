@@ -27,7 +27,7 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * @param idRequest 用户的idi
      * @return 用户
      */
-    ServiceResult<UserEntity> getUserByIdNoToken(IdRequest idRequest);
+    ServiceResult<UserEntity> getUserById(IdRequest idRequest);
 
 
     /**
@@ -42,7 +42,7 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * @param userRequest 用户id
      * @return 通过用户id和用户类型编译的token
      */
-    ServiceResult<String> getUserTokenNoToken(GetUserRequest userRequest);
+    ServiceResult<String> getUserToken(GetUserRequest userRequest);
 
 
     /**
@@ -52,7 +52,7 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * @param request 默认的信息
      * @return 解析后的token数据
      */
-    ServiceResult<TokenInfo> getTokenInfoByTokenNoToken(DefaultRequest request);
+    ServiceResult<TokenInfo> getTokenInfoByToken(DefaultRequest request);
 
 
     /**
@@ -61,7 +61,7 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * @param userRequest 用户登录所需要的条件
      * @return 登录所需要的信息
      */
-    ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest);
+    ServiceResult<LoginResponse> userLogin(LoginRequest userRequest);
 
     /**
      * 获取全部用户
@@ -71,12 +71,5 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      */
     ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request);
 
-    /**
-     * 根据用户id获取用户
-     *
-     * @param request 用户id
-     * @return
-     */
-    ServiceResult<UserEntity> getUserById(IdRequest request);
 
 }
