@@ -116,8 +116,7 @@
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
-                $('[name="password"]').attr('value', data.password);
-                $('[name="password"]').parent().parent().css("display", "none");
+                $('[name="password"]').parent().parent().remove();
                 $('[name="port"]').attr('value', data.port);
                 $('[name="dockerName"]').attr('value', data.dockerName);
                 let s = '[name="serverId"] option[value="' + data.serverId + '"]';
