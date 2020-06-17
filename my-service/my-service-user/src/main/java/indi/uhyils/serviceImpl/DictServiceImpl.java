@@ -1,6 +1,6 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.dao.DictDao;
 import indi.uhyils.dao.DictItemDao;
 import indi.uhyils.pojo.model.DictEntity;

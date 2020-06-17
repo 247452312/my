@@ -1,6 +1,6 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.dao.ContentDao;
 import indi.uhyils.dao.DeptDao;
 import indi.uhyils.dao.MenuDao;

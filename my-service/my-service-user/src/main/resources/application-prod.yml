@@ -1,6 +1,8 @@
 server:
   port: 8052
 dubbo:
+  metadata-report:
+    address: zookeeper://172.26.59.129:2181
   registry:
     client: curator
     address: zookeeper://172.26.59.129:2181

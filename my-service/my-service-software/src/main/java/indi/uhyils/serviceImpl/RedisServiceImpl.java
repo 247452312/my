@@ -1,6 +1,6 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.dao.RedisDao;
 import indi.uhyils.dao.ServerDao;
 import indi.uhyils.enum_.RedisAddEnum;

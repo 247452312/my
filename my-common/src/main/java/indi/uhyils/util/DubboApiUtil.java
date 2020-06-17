@@ -1,10 +1,10 @@
 package indi.uhyils.util;
 
-import com.alibaba.dubbo.config.ApplicationConfig;
-import com.alibaba.dubbo.config.ConsumerConfig;
-import com.alibaba.dubbo.config.ReferenceConfig;
-import com.alibaba.dubbo.config.RegistryConfig;
-import com.alibaba.dubbo.rpc.service.GenericService;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ConsumerConfig;
+import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.RegistryConfig;
+import org.apache.dubbo.rpc.service.GenericService;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.response.ServiceResult;
@@ -61,14 +61,14 @@ public class DubboApiUtil {
                 MAP.put(interfaceName, reference);
             }
 
-            // 用com.alibaba.dubbo.rpc.service.GenericService可以替代所有接口引用
+            // 用org.apache.dubbo.rpc.service.GenericService可以替代所有接口引用
             GenericService genericService = reference.get();
 
             /*
              * GenericService 这个接口只有一个方法，名为 $invoke，它接受三个参数，分别为方法名、方法参数类型数组和参数值数组；
              * 对于方法参数类型数组 如果是基本类型，如 int 或 long，可以使用 int.class.getName()获取其类型； 如果是基本类型数组，如
              * int[]，则可以使用 int[].class.getName()； 如果是 POJO，则直接使用全类名，如
-             * com.alibaba.dubbo.samples.generic.api.Params。
+             * org.apache.dubbo.samples.generic.api.Params。
              */
             //全部方法
             Method[] methods = Class.forName(interfaceName).getMethods();

@@ -20,7 +20,6 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
         <spring.version>5.2.5.RELEASE</spring.version>
-        <com.dubbo.version>2.6.2</com.dubbo.version>
         <org.dubbo.version>2.7.6</org.dubbo.version>
         <druid.version>1.1.22</druid.version>
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
@@ -30,7 +29,7 @@
         <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
         <zookeeper.version>3.6.0</zookeeper.version>
         <zk-client.version>0.11</zk-client.version>
-        <curator.version>2.12.0</curator.version>
+        <curator.version>4.3.0</curator.version>
         <mybatis.version>3.5.4</mybatis.version>
         <mybatis.spring.version>2.0.4</mybatis.spring.version>
         <mybatis.spring-boot.version>2.1.2</mybatis.spring-boot.version>
@@ -181,27 +180,34 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo -->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>dubbo</artifactId>
-                <version>${com.dubbo.version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-common -->
+
+            <!-- dubbo -->
             <dependency>
                 <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-common</artifactId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
                 <version>${org.dubbo.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo</artifactId>
+                <version>${org.dubbo.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+            <!--zookeeper-->
             <dependency>
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-framework</artifactId>
-                <version>2.12.0</version>
+                <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->

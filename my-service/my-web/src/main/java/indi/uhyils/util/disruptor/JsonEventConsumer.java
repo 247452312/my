@@ -1,6 +1,6 @@
 package indi.uhyils.util.disruptor;
 
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
 import com.lmax.disruptor.EventHandler;
 import indi.uhyils.pojo.model.LogEntity;
