@@ -13,8 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>indi.uhyils</groupId>
-            <artifactId>my-common</artifactId>
-            <version>0.0.3</version>
+            <artifactId>my-common-base</artifactId>
         </dependency>
     </dependencies>
 

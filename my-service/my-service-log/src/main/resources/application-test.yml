@@ -45,3 +45,8 @@ redis:
   ip: 192.168.1.101
   port: 6379
   password: uhyils
+rabbit:
+  host: 192.168.1.101
+  port: 5672
+  username: uhyils
+  password: 123456

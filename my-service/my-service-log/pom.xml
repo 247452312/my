@@ -29,8 +29,13 @@
 
         <dependency>
             <groupId>indi.uhyils</groupId>
-            <artifactId>my-common</artifactId>
+            <artifactId>my-common-base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-service</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-api-provider-log</artifactId>

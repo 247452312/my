@@ -41,6 +41,7 @@
         <jedis.version>3.2.0</jedis.version>
         <distrupter.version>3.4.2</distrupter.version>
         <ssh2.version>262</ssh2.version>
+        <rabbitmq-client.version>5.7.3</rabbitmq-client.version>
 
     </properties>
 
@@ -89,7 +90,12 @@
         <dependencies>
             <dependency>
                 <groupId>indi.uhyils</groupId>
-                <artifactId>my-common</artifactId>
+                <artifactId>my-common-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-common-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -180,6 +186,15 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
+
+            <!--MQ-->
+            <dependency>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>${rabbitmq-client.version}</version>
+            </dependency>
+
+
 
             <!-- dubbo -->
             <dependency>
