@@ -48,6 +48,10 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
         JvmStartInfo jvmStartInfo = JSONObject.parseObject(text, JvmStartInfo.class);
         Integer i = monitorDao.checkMonitorRepeat(jvmStartInfo.getJvmUniqueMark());
         if (i == 0) {
+            /*查询有没有同样ip 且同样服务名称的,如果有,将endtime设置为现在,表示发现停止的时间*/
+            monitorDao.updateMonitorThatRepeatByIpAndName(jvmStartInfo.getJvmUniqueMark().getServiceName(), jvmStartInfo.getJvmUniqueMark().getIp(), System.currentTimeMillis());
+
+            /* 新增JVM启动信息 */
             LogUtil.info(this, "接收到JVM启动信息");
             LogUtil.info(this, text);
             MonitorDO monitorDO = ModelTransUtils.transJvmStartInfoToMonitorDO(jvmStartInfo);

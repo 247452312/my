@@ -116,12 +116,20 @@
         where end_time > #{time}
     </select>
 
-    <select id="checkMonitorRepeat" parameterType="indi.uhyils.pojo.mqinfo.JvmUniqueMark" resultType="java.lang.Integer">
+    <select id="checkMonitorRepeat" parameterType="indi.uhyils.pojo.mqinfo.JvmUniqueMark"
+            resultType="java.lang.Integer">
         select count(*)
         from sys_log_monitor
         where service_name = #{serviceName}
           and ip = #{ip}
           and time = #{time}
+    </select>
+    <select id="updateMonitorThatRepeatByIpAndName">
+        update sys_log_monitor
+        set end_time = #{now}
+        where service_name = #{serviceName}
+          and ip = #{ip}
+          and end_time > #{now}
     </select>
 
 </mapper>

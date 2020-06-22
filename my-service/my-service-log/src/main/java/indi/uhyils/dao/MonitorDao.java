@@ -107,4 +107,13 @@ public interface MonitorDao {
      * @return 个数
      */
     Integer checkMonitorRepeat(JvmUniqueMark jvmUniqueMark);
+
+    /**
+     * 更新监控信息 -> ip和服务名称都存在并且没有停止 -> 说明已经停止 但是没来得及发现
+     *
+     * @param serviceName 服务名称
+     * @param ip          ip
+     * @param now         现在时间
+     */
+    void updateMonitorThatRepeatByIpAndName(@Param("serviceName") String serviceName, @Param("ip") String ip, @Param("now") long now);
 }
