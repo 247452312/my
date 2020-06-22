@@ -1,7 +1,6 @@
 package indi.uhyils.util;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -61,7 +60,7 @@ public class AESUtil {
             byte[] byteAes = cipher.doFinal(byteEncode);
             //10.将加密后的数据转换为字符串
             //11.将字符串返回
-            return new BASE64Encoder().encode(byteAes);
+            return new String(Base64.encodeBase64(byteAes));
         } catch (NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | NoSuchPaddingException | InvalidKeyException e) {
             e.printStackTrace();
         }
@@ -97,7 +96,7 @@ public class AESUtil {
             //7.初始化密码器，第一个参数为加密(Encrypt_mode)或者解密(Decrypt_mode)操作，第二个参数为使用的KEY
             cipher.init(Cipher.DECRYPT_MODE, key);
             //8.将加密并编码后的内容解码成字节数组
-            byte[] byteContent = new BASE64Decoder().decodeBuffer(content);
+            byte[] byteContent = Base64.decodeBase64(content);
             /*
              * 解密
              */
@@ -107,5 +106,15 @@ public class AESUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public static void main(String[] args) {
+        String mmm = "uhyils";
+        String role = "rrr";
+        String s = AESEncode(role, mmm);
+        System.out.println(s);
+        String s1 = AESDecode(role, s);
+        System.out.println(s1);
     }
 }
