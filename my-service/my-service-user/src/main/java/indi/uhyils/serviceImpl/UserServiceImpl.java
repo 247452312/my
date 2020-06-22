@@ -1,6 +1,5 @@
 package indi.uhyils.serviceImpl;
 
-import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.dao.UserDao;
 import indi.uhyils.pojo.model.DeptEntity;
@@ -16,6 +15,7 @@ import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
 import indi.uhyils.util.RedisPoolUtil;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -165,10 +165,6 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         String token = getToken(userEntity.getId());
         userRequest.setToken(token);
 
-
-        if (userEntity.getRoleId() == null) {
-            return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
-        }
         // 登录->加入缓存中
         redisPoolUtil.addUser(token, userEntity);
         return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);

@@ -1,6 +1,7 @@
 package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 
@@ -14,9 +15,10 @@ import java.util.ArrayList;
  */
 public class DistributeDubboApiUtil {
 
-    public static ServiceResult<JSONObject> defaultRequest(String interfaceName, String methodName, DefaultRequest request) {
+    public static ServiceResult<JSONObject> defaultRequest(UserEntity userEntity, String interfaceName, String methodName, DefaultRequest request) {
         ArrayList<Object> args = new ArrayList<>();
         DefaultRequest defaultRequest = new DefaultRequest();
+        defaultRequest.setUser(userEntity);
         defaultRequest.setToken(request.getToken());
         defaultRequest.setRequestLink(request.getRequestLink());
         args.add(defaultRequest);
