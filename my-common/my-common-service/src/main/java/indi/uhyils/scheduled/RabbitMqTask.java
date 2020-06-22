@@ -9,6 +9,7 @@ import indi.uhyils.pojo.rabbit.RabbitFactory;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RabbitUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,7 @@ import java.nio.charset.StandardCharsets;
  * @date 文件创建日期 2020年06月19日 07时38分
  */
 @Component
+@EnableScheduling
 public class RabbitMqTask {
 
     /**
@@ -53,7 +55,7 @@ public class RabbitMqTask {
      *
      * @throws Exception
      */
-    @Scheduled(cron = "0 */30 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void sendInfo() throws Exception {
         // 如果start信息没有发送过,那么发送start信息(只有项目启动时发送start信息失败时重复发送)
         if (!startInfoSended) {
@@ -107,6 +109,7 @@ public class RabbitMqTask {
         } else {
             // 否则正常发送
             if (statusChannel == null) {
+                statusChannel = rabbitFactory.getConn().createChannel();
                 statusChannel.confirmSelect();
                 //创建exchange
                 statusChannel.exchangeDeclare(RabbitMqContent.EXCHANGE_NAME, "direct", false, false, null);

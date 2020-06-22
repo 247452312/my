@@ -16,6 +16,7 @@ import indi.uhyils.util.JvmStatusAnalysisUtil;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,15 +98,16 @@ public class JvmServiceImpl implements JvmService {
                 Long time = monitorStatus.getTime();
                 String format = simpleDateFormat.format(new Date(time));
                 xAxix.add(format);
-                noHeapMem.add(monitorStatus.getNoHeapUseMem());
-                heapMem.add(monitorStatus.getHeapUseMem());
+                BigDecimal noHeapUseMem = BigDecimal.valueOf(monitorStatus.getNoHeapUseMem());
+                noHeapMem.add(noHeapUseMem.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                BigDecimal heapUseMem = BigDecimal.valueOf(monitorStatus.getHeapUseMem());
+                heapMem.add(heapUseMem.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
             }
             List list = new ArrayList();
             list.add(xAxix);
             list.add(noHeapMem);
             list.add(heapMem);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("mm月dd日 hh:MM");
-            map.put(monitorDO.getServiceName() + ":" + monitorDO.getIp() + ":" + dateFormat.format(new Date(monitorDO.getTime())), list);
+            map.put(monitorDO.getServiceName() + ":" + monitorDO.getIp(), list);
         }
         JvmInfoLogResponse build = JvmInfoLogResponse.build(map);
         return ServiceResult.buildSuccessResult("查询JVM内存信息成功", build, request);

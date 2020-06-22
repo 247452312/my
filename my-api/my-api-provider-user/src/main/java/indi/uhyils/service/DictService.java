@@ -6,7 +6,10 @@ import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.GetByItemArgsRequest;
 import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.request.ObjRequest;
-import indi.uhyils.pojo.response.*;
+import indi.uhyils.pojo.response.LastPlanResponse;
+import indi.uhyils.pojo.response.Page;
+import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.VersionInfoResponse;
 
 import java.util.ArrayList;
 
@@ -94,4 +97,13 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      * @return 下一步计划
      */
     ServiceResult<LastPlanResponse> getLastPlanResponse(DefaultRequest request);
+
+
+    /**
+     * 获取全部的按钮菜单
+     *
+     * @param request 默认请求
+     * @return 图标class
+     */
+    ServiceResult<ArrayList<String>> getAllMenuIcon(DefaultRequest request);
 }

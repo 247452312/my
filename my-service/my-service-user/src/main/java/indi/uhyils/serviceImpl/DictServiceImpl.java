@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -37,6 +38,11 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
      * 首页下一步计划展示 字典code
      */
     private static final String LAST_PLAN_CODE = "lastPlan";
+
+    /**
+     * 图标的icon-class
+     */
+    private static final String MENU_ICON_CLASS_CODE = "icon-class";
 
 
     @Autowired
@@ -161,6 +167,14 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
         LastPlanResponse build = LastPlanResponse.build(infos);
         return ServiceResult.buildSuccessResult("查询成功", build, request);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<String>> getAllMenuIcon(DefaultRequest request) {
+        String dictId = dao.getIdByCode(MENU_ICON_CLASS_CODE);
+        ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
+        ArrayList<String> collect = (ArrayList<String>) infos.stream().map(DictItemEntity::getValue).collect(Collectors.toList());
+        return ServiceResult.buildSuccessResult("查询成功", collect, request);
     }
 
 }

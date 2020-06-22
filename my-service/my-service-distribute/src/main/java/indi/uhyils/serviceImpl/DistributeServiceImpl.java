@@ -1,6 +1,5 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.DefaultRequest;
@@ -47,7 +46,7 @@ public class DistributeServiceImpl implements DistributeService {
         /*算法信息 还没有*/
         welcomeResponse.setAlgorithmStatisticsResponse(AlgorithmStatisticsResponse.build(new ArrayList<>()));
 
-        /*版本状态*/
+        /*版本信息*/
         ServiceResult<JSONObject> versionInfo = DistributeDubboApiUtil.defaultRequest(request.getUser(),"DictService", "getVersionInfoResponse", request);
         if (!versionInfo.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             throw new Exception(versionInfo.getServiceMessage());

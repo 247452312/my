@@ -70,7 +70,6 @@ public class JvmInfoLogResponse implements Serializable {
                 build.setDefaultData(stringListEntry.getKey());
             }
             List<String> xAxis = data.get(0);
-            Double allCount = 0.0;
             List value = stringListEntry.getValue();
             assert value.get(1) instanceof List;
             assert value.get(2) instanceof List;
@@ -79,24 +78,24 @@ public class JvmInfoLogResponse implements Serializable {
             assert list1.size() == xAxis.size();
             assert list2.size() == xAxis.size();
             for (Double number : list1) {
-                allCount += number;
                 if (number > max) {
                     max = number;
                 }
             }
             for (Double number : list2) {
-                allCount += number;
                 if (number > max) {
                     max = number;
                 }
             }
+            double element = list1.get(list1.size() - 1) + list2.get(list2.size() - 1);
             if (value.size() > 3) {
-                value.set(3, allCount);
+                value.set(3, element);
             } else {
-                value.add(allCount);
+                value.add(element);
             }
         }
         build.setData(data);
+        // 比最大值还大1 保证不顶格
         Double v = max + 1;
         build.setMaxY(v.intValue());
 

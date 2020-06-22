@@ -129,13 +129,13 @@
         <if test="password != null and password != ''">
             ,password = #{password}
         </if>
-        <if test="roleId != null and roleId != ''">
+        <if test="roleId != null ">
             ,role_id = #{roleId}
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
         </if>
-        <if test="remark != null and remark != ''">
+        <if test="remark != null ">
             ,remark = #{remark}
         </if>
         where id = #{id}

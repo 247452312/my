@@ -6,6 +6,7 @@ import indi.uhyils.aop.TimeLogAop;
 import indi.uhyils.content.RabbitMqContent;
 import indi.uhyils.pojo.mqinfo.InterfaceCallInfo;
 import indi.uhyils.pojo.mqinfo.JvmStartInfo;
+import indi.uhyils.pojo.mqinfo.JvmStatusInfo;
 import indi.uhyils.pojo.mqinfo.JvmUniqueMark;
 
 import java.nio.charset.StandardCharsets;
@@ -47,8 +48,8 @@ public class RabbitUtils {
             return;
         }
         try {
-            JvmStartInfo jvmStartInfo = JvmUtil.getJvmStartInfo(jvmUniqueMark);
-            String s = JSON.toJSONString(jvmStartInfo);
+            JvmStatusInfo jvmStatusInfo = JvmUtil.getJvmStatusInfo(jvmUniqueMark);
+            String s = JSON.toJSONString(jvmStatusInfo);
             channel.basicPublish(RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.JVM_STATUS_QUEUE_NAME, null, s.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             LogUtil.error(RabbitUtils.class, e);

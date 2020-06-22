@@ -78,7 +78,7 @@
         <if test="iFrame != null and iFrame != ''">
             ,i_frame = #{iFrame}
         </if>
-        <if test="icon != null and icon != ''">
+        <if test="icon != null ">
             ,icon = #{icon}
         </if>
         <if test="name != null and name != ''">

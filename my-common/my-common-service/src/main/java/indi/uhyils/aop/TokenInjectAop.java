@@ -4,10 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.UserEntity;
-import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
 import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.DubboApiUtil;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -54,7 +51,7 @@ public class TokenInjectAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public * indi.uhyils.serviceImpl.*.*(..)))")
+    @Pointcut("execution(public indi.uhyils.pojo.response.ServiceResult indi.uhyils.serviceImpl.*.*(indi.uhyils.pojo.request.DefaultRequest)))")
     public void tokenInjectPoint() {
     }
 
@@ -119,7 +116,7 @@ public class TokenInjectAop {
         if (substring.contains(IMPL)) {
             substring = substring.substring(0, substring.length() - 4);
         }
-        ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userEntity,userEntity.getId(), substring, methodName, token, arg);
+        ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userEntity, userEntity.getId(), substring, methodName, token, arg);
         if (!ServiceCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
             return checkUserHavePowerServiceResult;
         }
