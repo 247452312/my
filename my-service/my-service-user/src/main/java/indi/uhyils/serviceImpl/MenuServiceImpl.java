@@ -1,27 +1,19 @@
 package indi.uhyils.serviceImpl;
 
-import org.apache.dubbo.config.annotation.Service;
-import indi.uhyils.dao.ContentDao;
-import indi.uhyils.dao.DeptDao;
-import indi.uhyils.dao.MenuDao;
-import indi.uhyils.dao.UserDao;
-import indi.uhyils.pojo.model.ContentEntity;
-import indi.uhyils.pojo.model.DeptEntity;
-import indi.uhyils.pojo.model.MenuEntity;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.dao.*;
+import indi.uhyils.pojo.model.*;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
 import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.response.GetDeptsByMenuIdResponse;
-import indi.uhyils.pojo.response.IndexMenuTreeResponse;
-import indi.uhyils.pojo.response.MenuHtmlTreeResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.*;
 import indi.uhyils.pojo.response.info.IndexMenuInfo;
 import indi.uhyils.pojo.response.info.MenuHomeInfo;
 import indi.uhyils.pojo.response.info.MenuLogoInfo;
 import indi.uhyils.service.MenuService;
 import indi.uhyils.util.ContentUtil;
+import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -50,6 +42,11 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
      */
     private static final String NONE = "";
 
+    /**
+     * 首页下一步计划展示 字典code
+     */
+    private static final String QUICK_START_CODE = "quickStart";
+
     @Autowired
     private MenuDao dao;
 
@@ -61,6 +58,11 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private DictDao dictDao;
+    @Autowired
+    private DictItemDao dictItemDao;
 
 
     public MenuDao getDao() {
@@ -187,6 +189,27 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     public ServiceResult<ArrayList<GetDeptsByMenuIdResponse>> getDeptsByMenuId(IdRequest req) {
         ArrayList<GetDeptsByMenuIdResponse> list = deptDao.getByMenuId(req.getId());
         return ServiceResult.buildSuccessResult("查询成功", list, req);
+    }
+
+    @Override
+    public ServiceResult<QuickStartResponse> getQuickStartResponse(DefaultRequest request) {
+        // TODO 快捷入口应该去缓存里
+        String idByCode = dictDao.getIdByCode(QUICK_START_CODE);
+        ArrayList<DictItemEntity> byDictId = dictItemDao.getByDictId(idByCode);
+        ArrayList<MenuEntity> collect = (ArrayList<MenuEntity>) byDictId.stream().map(t -> {
+            String menuId = t.getValue();
+            MenuEntity byId = dao.getById(menuId);
+            if (byId.getType() == false) {
+                try {
+                    throw new Exception("服务字典中快捷入口(" + byId.getName() + ") 不是叶子结点");
+                } catch (Exception e) {
+                    LogUtil.error(this, e);
+                }
+            }
+            return byId;
+        }).collect(Collectors.toList());
+        QuickStartResponse build = QuickStartResponse.build(collect);
+        return ServiceResult.buildSuccessResult("查询快捷入口成功", build, request);
     }
 
     /**

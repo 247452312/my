@@ -73,4 +73,12 @@ public interface MonitorInterfaceDetailDao {
      * @return 重复个数
      */
     int checkRepeat(@Param("columnName") String columnName, @Param("value") Object value);
+
+    /**
+     * 获取从从开始时间到现在的服务调用次数
+     *
+     * @param time 开始时间
+     * @return 从开始时间到现在的服务调用次数
+     */
+    Integer getCountByStartTime(Long time);
 }

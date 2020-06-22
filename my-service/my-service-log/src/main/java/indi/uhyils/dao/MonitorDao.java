@@ -91,4 +91,20 @@ public interface MonitorDao {
      * @return
      */
     String getIdByJvmUniqueMark(JvmUniqueMark jvmUniqueMark);
+
+    /**
+     * 获取现在正在运行中的服务数量
+     *
+     * @param time 现在时间
+     * @return 现在正在运行中的服务数量
+     */
+    List<MonitorDO> getOnlineService(long time);
+
+    /**
+     * 查询监控主表是否重复
+     *
+     * @param jvmUniqueMark 唯一标示
+     * @return 个数
+     */
+    Integer checkMonitorRepeat(JvmUniqueMark jvmUniqueMark);
 }

@@ -4,10 +4,7 @@ import indi.uhyils.pojo.model.MenuEntity;
 import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
 import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.response.GetDeptsByMenuIdResponse;
-import indi.uhyils.pojo.response.IndexMenuTreeResponse;
-import indi.uhyils.pojo.response.MenuHtmlTreeResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.*;
 
 import java.util.ArrayList;
 
@@ -52,6 +49,14 @@ public interface MenuService extends DefaultEntityService<MenuEntity> {
      * @return 权限集们
      */
     ServiceResult<ArrayList<GetDeptsByMenuIdResponse>> getDeptsByMenuId(IdRequest req);
+
+    /**
+     * 获取开始界面快捷入口信息
+     *
+     * @param request 默认请求
+     * @return 开始界面快捷入口信息
+     */
+    ServiceResult<QuickStartResponse> getQuickStartResponse(DefaultRequest request);
 
 
 }

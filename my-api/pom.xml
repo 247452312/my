@@ -15,6 +15,7 @@
         <module>my-api-provider-user</module>
         <module>my-api-provider-log</module>
         <module>my-api-provider-software</module>
+        <module>my-api-provider-distribute</module>
     </modules>
 
 

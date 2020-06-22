@@ -73,4 +73,12 @@ public interface MonitorJvmStatusDetailDao {
      * @return 重复个数
      */
     int checkRepeat(@Param("columnName") String columnName, @Param("value") Object value);
+
+    /**
+     * 根据主表id获取分表数据
+     *
+     * @param id 主表id
+     * @return 主表id对应的分表数据
+     */
+    List<MonitorJvmStatusDetailDO> getByMonitorId(String id);
 }

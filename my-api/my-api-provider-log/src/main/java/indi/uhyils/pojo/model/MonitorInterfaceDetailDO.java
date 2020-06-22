@@ -1,10 +1,14 @@
 package indi.uhyils.pojo.model;
 
+import java.io.Serializable;
+
 /**
+ * 接口调用监控信息
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时22分
  */
-public class MonitorInterfaceDetailDO {
+public class MonitorInterfaceDetailDO implements Serializable {
 
     private String id;
 

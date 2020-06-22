@@ -109,6 +109,19 @@
           and time = #{time}
           and ip = #{ip}
     </select>
+    <select id="getOnlineService" resultType="indi.uhyils.pojo.model.MonitorDO" parameterType="java.lang.Long">
+        select
+        <include refid="columnList"/>
+        from sys_log_monitor a
+        where end_time > #{time}
+    </select>
 
+    <select id="checkMonitorRepeat" parameterType="indi.uhyils.pojo.mqinfo.JvmUniqueMark" resultType="java.lang.Integer">
+        select count(*)
+        from sys_log_monitor
+        where service_name = #{serviceName}
+          and ip = #{ip}
+          and time = #{time}
+    </select>
 
 </mapper>

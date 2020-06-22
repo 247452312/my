@@ -45,23 +45,26 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
         String text = new String(body, StandardCharsets.UTF_8);
-        LogUtil.info(this, "接收到JVM启动信息");
-        LogUtil.info(this, text);
         JvmStartInfo jvmStartInfo = JSONObject.parseObject(text, JvmStartInfo.class);
-        MonitorDO monitorDO = ModelTransUtils.transJvmStartInfoToMonitorDO(jvmStartInfo);
-        monitorDao.insert(monitorDO);
-        List<JvmStatusInfo> jvmStatusInfos = jvmStartInfo.getJvmStatusInfos();
-        List<MonitorJvmStatusDetailDO> monitorJvmStatusDetailDOS = ModelTransUtils.transJvmStatusInfosToMonitorJvmStatusDetailDOs(jvmStatusInfos, monitorDO.getId());
-        final Long[] endTime = {0L};
-        monitorJvmStatusDetailDOS.forEach(t -> {
-            monitorJvmStatusDetailDao.insert(t);
-            Long time = t.getTime();
-            if (time > endTime[0]) {
-                endTime[0] = time;
-            }
-        });
-        Double v = endTime[0] + ModelTransUtils.OUT_TIME * 60 * 1000 * ModelTransUtils.PROP;
-        monitorDao.changeEndTime(monitorDO.getId(), v.longValue());
+        Integer i = monitorDao.checkMonitorRepeat(jvmStartInfo.getJvmUniqueMark());
+        if (i == 0) {
+            LogUtil.info(this, "接收到JVM启动信息");
+            LogUtil.info(this, text);
+            MonitorDO monitorDO = ModelTransUtils.transJvmStartInfoToMonitorDO(jvmStartInfo);
+            monitorDao.insert(monitorDO);
+            List<JvmStatusInfo> jvmStatusInfos = jvmStartInfo.getJvmStatusInfos();
+            List<MonitorJvmStatusDetailDO> monitorJvmStatusDetailDOS = ModelTransUtils.transJvmStatusInfosToMonitorJvmStatusDetailDOs(jvmStatusInfos, monitorDO.getId());
+            final Long[] endTime = {0L};
+            monitorJvmStatusDetailDOS.forEach(t -> {
+                monitorJvmStatusDetailDao.insert(t);
+                Long time = t.getTime();
+                if (time > endTime[0]) {
+                    endTime[0] = time;
+                }
+            });
+            Double v = endTime[0] + ModelTransUtils.OUT_TIME * 60 * 1000 * ModelTransUtils.PROP;
+            monitorDao.changeEndTime(monitorDO.getId(), v.longValue());
+        }
         // 获取tag(队列中的唯一标示)
         long deliveryTag = envelope.getDeliveryTag();
         // 确认 false为不批量确认

@@ -50,6 +50,10 @@
             <artifactId>my-api-provider-software</artifactId>
         </dependency>
         <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-distribute</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>

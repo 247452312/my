@@ -2,12 +2,11 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.DictEntity;
 import indi.uhyils.pojo.model.DictItemEntity;
-import indi.uhyils.pojo.request.ArgsRequest;
+import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.GetByItemArgsRequest;
 import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.request.ObjRequest;
-import indi.uhyils.pojo.response.Page;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.*;
 
 import java.util.ArrayList;
 
@@ -77,4 +76,22 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      * @return 分页数据(也可以设置不分页)
      */
     ServiceResult<Page<DictItemEntity>> getByItemArgs(GetByItemArgsRequest request);
+
+
+    /**
+     * 获取版本信息response
+     *
+     * @param request 默认请求
+     * @return 版本信息
+     */
+    ServiceResult<VersionInfoResponse> getVersionInfoResponse(DefaultRequest request);
+
+
+    /**
+     * 获取下一步计划
+     *
+     * @param request 默认
+     * @return 下一步计划
+     */
+    ServiceResult<LastPlanResponse> getLastPlanResponse(DefaultRequest request);
 }

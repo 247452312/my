@@ -17,6 +17,7 @@
         <module>my-web</module>
         <module>my-service-log</module>
         <module>my-service-software</module>
+        <module>my-service-distribute</module>
     </modules>
 
 

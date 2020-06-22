@@ -87,5 +87,11 @@
         where ${columnName} = #{value}
     </select>
 
+    <select id="getCountByStartTime" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(*)
+        from sys_log_monitor_interface_call
+        where time > #{firstStartTile}
+    </select>
+
 
 </mapper>

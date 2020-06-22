@@ -118,5 +118,11 @@
         where ${columnName} = #{value}
     </select>
 
+    <select id="getIdByCode" resultType="java.lang.String">
+        select id
+        from sys_dict
+        where code = #{code}
+    </select>
+
 
 </mapper>
