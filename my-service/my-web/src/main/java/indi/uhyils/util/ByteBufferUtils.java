@@ -26,7 +26,7 @@ public class ByteBufferUtils {
         try {
             return ByteBuffer.wrap(key.getBytes("utf-8"));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LogUtil.error(ByteBufferUtils.class,e);
         }
         return ByteBuffer.wrap(key.getBytes());
     }

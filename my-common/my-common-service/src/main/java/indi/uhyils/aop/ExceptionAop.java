@@ -34,14 +34,9 @@ public class ExceptionAop {
     public Object exceptionAroundAspect(ProceedingJoinPoint pjp) throws Exception {
         try {
             return pjp.proceed();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable e) {
             LogUtil.error(this, e);
             return ServiceResult.buildErrorResult(e.getMessage(), AopUtil.getDefaultRequestInPjp(pjp));
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-            LogUtil.error(this, throwable);
-            return ServiceResult.buildErrorResult(throwable.getMessage(), AopUtil.getDefaultRequestInPjp(pjp));
         }
     }
 }

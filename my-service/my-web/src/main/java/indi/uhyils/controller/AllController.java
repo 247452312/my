@@ -64,7 +64,6 @@ public class AllController {
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
             LogUtil.error(this, e);
-            e.printStackTrace();
             eMsg = e.getMessage();
             return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
         } finally {

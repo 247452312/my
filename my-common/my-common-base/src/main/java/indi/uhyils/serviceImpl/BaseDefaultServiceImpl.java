@@ -9,6 +9,7 @@ import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.Page;
 import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.service.DefaultEntityService;
+import indi.uhyils.util.LogUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -99,7 +100,7 @@ public abstract class BaseDefaultServiceImpl<T extends BaseEntity> implements De
             Method declaredMethod = getClass().getDeclaredMethod("getDao");
             return (DefaultDao<T>) declaredMethod.invoke(this);
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            e.printStackTrace();
+            LogUtil.error(this,e);
         }
         return null;
     }

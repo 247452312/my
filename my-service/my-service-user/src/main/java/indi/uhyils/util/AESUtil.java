@@ -62,7 +62,7 @@ public class AESUtil {
             //11.将字符串返回
             return new String(Base64.encodeBase64(byteAes));
         } catch (NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | NoSuchPaddingException | InvalidKeyException e) {
-            e.printStackTrace();
+            LogUtil.error(AESUtil.class, e);
         }
 
         //如果有错就返加null
@@ -103,7 +103,7 @@ public class AESUtil {
             byte[] byteDecode = cipher.doFinal(byteContent);
             return new String(byteDecode, PROJECT_CODE);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IOException | IllegalBlockSizeException | BadPaddingException e) {
-            e.printStackTrace();
+            LogUtil.error(AESUtil.class, e);
         }
         return null;
     }

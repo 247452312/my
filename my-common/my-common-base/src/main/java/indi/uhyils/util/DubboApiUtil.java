@@ -90,7 +90,7 @@ public class DubboApiUtil {
             request.setRequestLink(serviceResult.getRequestLink());
             return serviceResult;
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtil.error(DubboApiUtil.class,e);
             LogUtil.error(DubboApiUtil.class, e.getLocalizedMessage());
             return ServiceResult.buildErrorResult("远程调用错误,具体见日志", request);
         }

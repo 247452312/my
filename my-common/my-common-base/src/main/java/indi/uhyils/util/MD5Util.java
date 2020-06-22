@@ -37,7 +37,7 @@ public class MD5Util {
             }
             return buf.toString().substring(8, 24);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LogUtil.error(MD5Util.class,e);
         }
         return null;
     }
