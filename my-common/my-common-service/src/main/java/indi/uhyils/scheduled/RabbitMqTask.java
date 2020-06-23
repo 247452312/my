@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
@@ -32,15 +33,10 @@ public class RabbitMqTask {
     private volatile Boolean startInfoSended = false;
 
     /**
-     * 这个service的唯一标示
+     * 这个微服务的唯一标示
      */
+    @Autowired
     private volatile JvmUniqueMark jvmUniqueMark;
-
-
-    /**
-     * 啥都不想发送时就发这个
-     */
-    private byte[] defaultBytes = "0".getBytes(StandardCharsets.UTF_8);
 
     @Autowired
     private RabbitFactory rabbitFactory;
@@ -55,6 +51,7 @@ public class RabbitMqTask {
      *
      * @throws Exception
      */
+    @PostConstruct
     @Scheduled(cron = "0 */1 * * * ?")
     public void sendInfo() throws Exception {
         // 如果start信息没有发送过,那么发送start信息(只有项目启动时发送start信息失败时重复发送)
@@ -86,6 +83,7 @@ public class RabbitMqTask {
                             rabbitMqTask.setJvmUniqueMark(jvmUniqueMark);
                             // 设置起始信息已经发送过
                             rabbitMqTask.setStartInfoSended(true);
+                            // 设置interface可以开始干活了
                             RabbitMqContent.setLogServiceOnLine(true);
                             // 设置为空 释放内存
                             JvmStartInfo.setStatusInfos(null);
@@ -145,14 +143,6 @@ public class RabbitMqTask {
 
     public void setJvmUniqueMark(JvmUniqueMark jvmUniqueMark) {
         this.jvmUniqueMark = jvmUniqueMark;
-    }
-
-    public byte[] getDefaultBytes() {
-        return defaultBytes;
-    }
-
-    public void setDefaultBytes(byte[] defaultBytes) {
-        this.defaultBytes = defaultBytes;
     }
 
     public Boolean getStartInfoSended() {
