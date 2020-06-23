@@ -2,10 +2,11 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.*;
 import indi.uhyils.pojo.model.*;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
-import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.*;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.response.info.IndexMenuInfo;
 import indi.uhyils.pojo.response.info.MenuHomeInfo;
 import indi.uhyils.pojo.response.info.MenuLogoInfo;
@@ -83,7 +84,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         Map<String, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
         Set<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
-        if (user.getRole() == null && (user.getRoleId() == null || "".equals(user.getRoleId()))) {
+        if (user.getRole() == null && StringUtils.isEmpty(user.getRoleId())) {
             return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
         }
         List<DeptEntity> depts;
@@ -130,7 +131,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         Map<String, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
         HashSet<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
-        if (user.getRole() == null && (user.getRoleId() == null || "".equals(user.getRoleId()))) {
+        if (user.getRole() == null && StringUtils.isEmpty(user.getRoleId())) {
             return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
         }
         List<DeptEntity> depts;

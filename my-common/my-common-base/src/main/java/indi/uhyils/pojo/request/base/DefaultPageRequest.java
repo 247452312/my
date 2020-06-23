@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.request;
+package indi.uhyils.pojo.request.base;
 
 /**
  * 分页查询

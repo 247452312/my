@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.request;
 
+import indi.uhyils.pojo.request.base.DefaultRequest;
+
 /**
  * 获取接口对应的所有方法的请求
  *

@@ -55,11 +55,13 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
             LogUtil.info(this, "接收到JVM启动信息");
             LogUtil.info(this, text);
             MonitorDO monitorDO = ModelTransUtils.transJvmStartInfoToMonitorDO(jvmStartInfo);
+            monitorDO.preInsert(null);
             monitorDao.insert(monitorDO);
             List<JvmStatusInfo> jvmStatusInfos = jvmStartInfo.getJvmStatusInfos();
-            List<MonitorJvmStatusDetailDO> monitorJvmStatusDetailDOS = ModelTransUtils.transJvmStatusInfosToMonitorJvmStatusDetailDOs(jvmStatusInfos, monitorDO.getId());
+            List<MonitorJvmStatusDetailDO> monitorJvmStatusDetailDos = ModelTransUtils.transJvmStatusInfosToMonitorJvmStatusDetailDOs(jvmStatusInfos, monitorDO.getId());
             final Long[] endTime = {0L};
-            monitorJvmStatusDetailDOS.forEach(t -> {
+            monitorJvmStatusDetailDos.forEach(t -> {
+                t.preInsert(null);
                 monitorJvmStatusDetailDao.insert(t);
                 Long time = t.getTime();
                 if (time > endTime[0]) {

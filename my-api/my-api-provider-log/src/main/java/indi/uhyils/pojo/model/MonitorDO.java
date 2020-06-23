@@ -1,16 +1,13 @@
 package indi.uhyils.pojo.model;
 
-import java.io.Serializable;
+import indi.uhyils.pojo.model.base.BaseIdEntity;
 
 /**
  * JVM监控信息
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时06分
  */
-public class MonitorDO implements Serializable {
-
-
-    private String id;
+public class MonitorDO extends BaseIdEntity {
 
     private String serviceName;
 
@@ -50,14 +47,6 @@ public class MonitorDO implements Serializable {
      * jvm非堆区初始内存
      */
     private Double noHeapInitMem;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getServiceName() {
         return serviceName;

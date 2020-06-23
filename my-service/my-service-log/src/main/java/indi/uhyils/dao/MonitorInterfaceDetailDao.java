@@ -1,5 +1,6 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.BaseDao;
 import indi.uhyils.pojo.model.MonitorInterfaceDetailDO;
 import indi.uhyils.pojo.request.model.Arg;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,7 +14,7 @@ import java.util.List;
  * @date 文件创建日期 2020年06月19日 14时55分
  */
 @Mapper
-public interface MonitorInterfaceDetailDao {
+public interface MonitorInterfaceDetailDao extends BaseDao {
 
     /**
      * 获根据id获取监控信息

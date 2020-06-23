@@ -1,17 +1,15 @@
-package indi.uhyils.pojo.request;
+package indi.uhyils.pojo.request.base;
 
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.model.LinkNode;
 
-import java.io.Serializable;
-
 /**
- * 请求父类
+ * 请求父类,所有页面请求都应该继承这个类
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时04分
  */
-public class DefaultRequest implements Serializable {
+public class DefaultRequest implements BaseRequest {
     /**
      * token
      */

@@ -28,7 +28,7 @@ public class JvmStatusAnalysisUtil {
      * @param statuses  状态们
      * @return 是否健康
      */
-    public static List<ServiceQualityEnum> Analysis(MonitorDO monitorDO, List<MonitorJvmStatusDetailDO> statuses) {
+    public static List<ServiceQualityEnum> analysis(MonitorDO monitorDO, List<MonitorJvmStatusDetailDO> statuses) {
         List<ServiceQualityEnum> list = new ArrayList<>();
         if (statuses.size() < STATUS_SIZE_MIN) {
             // 如果状态信息没有超过6个 也就是系统没有运行超过3个小时 没有分析的必要 直接返回正常

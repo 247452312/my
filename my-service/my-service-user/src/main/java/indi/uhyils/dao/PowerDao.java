@@ -1,5 +1,6 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.PowerEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

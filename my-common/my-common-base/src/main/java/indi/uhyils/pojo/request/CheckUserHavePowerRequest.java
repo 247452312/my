@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.request;
 
+import indi.uhyils.pojo.request.base.DefaultRequest;
+
 /**
  * 检查用户是否存在此权限
  *

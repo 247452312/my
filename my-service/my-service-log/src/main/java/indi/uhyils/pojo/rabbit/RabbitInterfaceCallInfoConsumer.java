@@ -30,7 +30,7 @@ public class RabbitInterfaceCallInfoConsumer extends DefaultConsumer {
     /**
      * Constructs a new instance and records its association to the passed-in channel.
      *
-     * @param channel the channel to which this consumer is attached
+     * @param channel            the channel to which this consumer is attached
      * @param applicationContext
      */
     public RabbitInterfaceCallInfoConsumer(Channel channel, ApplicationContext applicationContext) {
@@ -47,6 +47,7 @@ public class RabbitInterfaceCallInfoConsumer extends DefaultConsumer {
         InterfaceCallInfo interfaceCallInfo = JSONObject.parseObject(text, InterfaceCallInfo.class);
         String id = monitorDao.getIdByJvmUniqueMark(interfaceCallInfo.getJvmUniqueMark());
         MonitorInterfaceDetailDO monitorInterfaceDetailDO = ModelTransUtils.transInterfaceCallInfoToMonitorInterfaceDetailDO(interfaceCallInfo, id);
+        monitorInterfaceDetailDO.preInsert(null);
         monitorInterfaceDetailDao.insert(monitorInterfaceDetailDO);
     }
 }

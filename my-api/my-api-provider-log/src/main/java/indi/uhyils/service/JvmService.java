@@ -1,9 +1,10 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.JvmDataStatisticsResponse;
 import indi.uhyils.pojo.response.JvmInfoLogResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.BaseService;
 
 /**
  * JVM查询接口
@@ -11,7 +12,7 @@ import indi.uhyils.pojo.response.ServiceResult;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时25分
  */
-public interface JvmService {
+public interface JvmService extends BaseService {
 
     /**
      * 获取JVM数据统计信息

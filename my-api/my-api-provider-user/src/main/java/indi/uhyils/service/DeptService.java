@@ -2,9 +2,12 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 

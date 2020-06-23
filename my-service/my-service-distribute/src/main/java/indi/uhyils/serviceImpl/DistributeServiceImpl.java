@@ -2,8 +2,9 @@ package indi.uhyils.serviceImpl;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.*;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.response.welcome.AlgorithmStatisticsResponse;
 import indi.uhyils.pojo.response.welcome.WelcomeResponse;
 import indi.uhyils.service.DistributeService;

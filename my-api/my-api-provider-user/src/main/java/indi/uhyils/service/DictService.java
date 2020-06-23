@@ -2,14 +2,15 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.DictEntity;
 import indi.uhyils.pojo.model.DictItemEntity;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.GetByItemArgsRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.LastPlanResponse;
-import indi.uhyils.pojo.response.Page;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.Page;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.response.VersionInfoResponse;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 

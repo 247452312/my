@@ -1,16 +1,20 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.annotation.NoToken;
+import indi.uhyils.content.Content;
 import indi.uhyils.dao.UserDao;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.LoginRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.LoginResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
@@ -81,9 +85,9 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<String> getUserToken(GetUserRequest userRequest) {
-        String token = getToken(userRequest.getId());
-        return ServiceResult.buildSuccessResult("token生成成功", token, userRequest);
+    public ServiceResult<String> getUserToken(IdRequest request) {
+        String token = getToken(request.getId());
+        return ServiceResult.buildSuccessResult("token生成成功", token, request);
     }
 
     @Override
@@ -128,11 +132,11 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
             Integer hourNow = Integer.parseInt(format.substring(2, 4));
             Integer monNow = Integer.parseInt(format.substring(4, 6));
             // 如果分钟差超过30
-            if (monNow - Integer.parseInt(mon) >= 30) {
+            if (monNow - Integer.parseInt(mon) >= Content.LOGIN_TIME_OUT_MIN) {
                 tokenInfo.setTimeOut(true);
-            } else if (hourNow - Integer.parseInt(hour) >= 1) {
+            } else if (hourNow - Integer.parseInt(hour) > 0) {
                 tokenInfo.setTimeOut(true);
-            } else if (dayNow - Integer.parseInt(day) >= 1) {
+            } else if (dayNow - Integer.parseInt(day) > 0) {
                 tokenInfo.setTimeOut(true);
             } else {
                 tokenInfo.setTimeOut(false);

@@ -1,14 +1,14 @@
 package indi.uhyils.serviceImpl;
 
-import indi.uhyils.dao.DefaultDao;
-import indi.uhyils.pojo.model.base.BaseEntity;
-import indi.uhyils.pojo.request.ArgsRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.dao.base.DefaultDao;
+import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.request.base.ArgsRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.request.model.Arg;
-import indi.uhyils.pojo.response.Page;
-import indi.uhyils.pojo.response.ServiceResult;
-import indi.uhyils.service.DefaultEntityService;
+import indi.uhyils.pojo.response.base.Page;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 import indi.uhyils.util.LogUtil;
 
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +20,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月05日 17时57分
  */
-public abstract class BaseDefaultServiceImpl<T extends BaseEntity> implements DefaultEntityService<T> {
+public abstract class BaseDefaultServiceImpl<T extends BaseVoEntity> implements DefaultEntityService<T> {
 
     @Override
     public ServiceResult<Page<T>> getByArgs(ArgsRequest argsRequest) {

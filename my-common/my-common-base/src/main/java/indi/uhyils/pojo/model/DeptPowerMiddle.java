@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.MiddleEntity;
+import indi.uhyils.pojo.model.base.BaseMiddleEntity;
 
 /**
  * 权限集-权限
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.MiddleEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 08时32分
  */
-public class DeptPowerMiddle extends MiddleEntity {
+public class DeptPowerMiddle extends BaseMiddleEntity {
 
     /**
      * 权限集id

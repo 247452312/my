@@ -1,5 +1,6 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.BaseDao;
 import indi.uhyils.pojo.model.MonitorDO;
 import indi.uhyils.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.request.model.Arg;
@@ -14,7 +15,7 @@ import java.util.List;
  * @date 文件创建日期 2020年06月19日 14时55分
  */
 @Mapper
-public interface MonitorDao {
+public interface MonitorDao extends BaseDao {
 
     /**
      * 获根据id获取监控信息

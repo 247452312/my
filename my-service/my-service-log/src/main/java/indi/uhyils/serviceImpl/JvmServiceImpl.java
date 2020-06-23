@@ -7,10 +7,10 @@ import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.enum_.ServiceQualityEnum;
 import indi.uhyils.pojo.model.MonitorDO;
 import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.JvmDataStatisticsResponse;
 import indi.uhyils.pojo.response.JvmInfoLogResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.JvmService;
 import indi.uhyils.util.JvmStatusAnalysisUtil;
 import org.apache.dubbo.config.annotation.Service;
@@ -49,7 +49,7 @@ public class JvmServiceImpl implements JvmService {
         HashMap<String, List<ServiceQualityEnum>> map = new HashMap<>(monitorDOList.size());
         for (MonitorDO monitorDO : monitorDOList) {
             List<MonitorJvmStatusDetailDO> list = monitorJvmStatusDetailDao.getByMonitorId(monitorDO.getId());
-            List<ServiceQualityEnum> analysis = JvmStatusAnalysisUtil.Analysis(monitorDO, list);
+            List<ServiceQualityEnum> analysis = JvmStatusAnalysisUtil.analysis(monitorDO, list);
             map.put(monitorDO.getId(), analysis);
         }
         // 由于无法分辨前台发送请求是哪一个服务的 所以这里以现在正在运行的jvm最早启动时间为开始时间

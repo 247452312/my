@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseEntity;
+import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月16日 14时45分
  */
-public class DictEntity extends BaseEntity {
+public class DictEntity extends BaseVoEntity {
 
     /**
      * 名称

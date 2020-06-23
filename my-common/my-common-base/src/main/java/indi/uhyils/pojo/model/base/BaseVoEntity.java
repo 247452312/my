@@ -1,21 +1,14 @@
 package indi.uhyils.pojo.model.base;
 
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.util.MD5Util;
-
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.UUID;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 
 /**
+ * 前台可操作性的的数据库实体中都应该有id,创建信息,修改信息删除标志灯信息
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 13时23分
  */
-public class BaseEntity implements Serializable {
-    /**
-     * id 一定是uuid的格式
-     */
-    private String id;
+public class BaseVoEntity extends BaseIdEntity {
     /**
      * 创建时间
      */
@@ -48,9 +41,10 @@ public class BaseEntity implements Serializable {
     /**
      * 插入之前执行方法，需要手动调用
      */
+    @Override
     public void preInsert(DefaultRequest request) {
-        String uuid = UUID.randomUUID().toString();
-        this.id = MD5Util.MD5Encode(uuid);
+        // 这里生成了id
+        super.preInsert(request);
         this.createDate = new Long(System.currentTimeMillis() / 1000).intValue();
         this.createUser = request.getUser().getId();
         this.updateDate = this.createDate;
@@ -61,17 +55,11 @@ public class BaseEntity implements Serializable {
     /**
      * 更新之前执行方法，需要手动调用
      */
+    @Override
     public void preUpdate(DefaultRequest request) {
+        super.preUpdate(request);
         this.updateDate = new Long(System.currentTimeMillis() / 1000).intValue();
         this.updateUser = request.getUser().getId();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Integer getCreateDate() {
@@ -120,22 +108,5 @@ public class BaseEntity implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        BaseEntity that = (BaseEntity) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

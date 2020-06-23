@@ -1,8 +1,10 @@
-package indi.uhyils.pojo.request;
+package indi.uhyils.pojo.request.base;
 
 import java.util.List;
 
 /**
+ * 多个id的请求
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时10分
  */

@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.MiddleEntity;
+import indi.uhyils.pojo.model.base.BaseMiddleEntity;
 
 /**
  * 角色-权限集
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.MiddleEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 08时30分
  */
-public class RoleDeptMiddle extends MiddleEntity {
+public class RoleDeptMiddle extends BaseMiddleEntity {
 
     /**
      * 角色id

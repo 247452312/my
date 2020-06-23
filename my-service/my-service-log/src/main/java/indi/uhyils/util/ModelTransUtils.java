@@ -32,8 +32,6 @@ public class ModelTransUtils {
 
     public static MonitorDO transJvmStartInfoToMonitorDO(JvmStartInfo jvmStartInfo) {
         MonitorDO monitorDO = new MonitorDO();
-        String uuid = UUID.randomUUID().toString();
-        monitorDO.setId(MD5Util.MD5Encode(uuid));
         JvmUniqueMark jvmUniqueMark = jvmStartInfo.getJvmUniqueMark();
         monitorDO.setIp(jvmUniqueMark.getIp());
         monitorDO.setServiceName(jvmUniqueMark.getServiceName());
@@ -53,8 +51,6 @@ public class ModelTransUtils {
 
     public static MonitorJvmStatusDetailDO transJvmStatusInfoToMonitorJvmStatusDetailDO(JvmStatusInfo jvmStatusInfo, String fid) {
         MonitorJvmStatusDetailDO monitorJvmStatusDetailDO = new MonitorJvmStatusDetailDO();
-        String uuid = UUID.randomUUID().toString();
-        monitorJvmStatusDetailDO.setId(MD5Util.MD5Encode(uuid));
         monitorJvmStatusDetailDO.setFid(fid);
         monitorJvmStatusDetailDO.setHeapUseMem(jvmStatusInfo.getHeapUseMem());
         monitorJvmStatusDetailDO.setNoHeapUseMem(jvmStatusInfo.getNoHeapUseMem());
@@ -69,8 +65,6 @@ public class ModelTransUtils {
 
     public static MonitorInterfaceDetailDO transInterfaceCallInfoToMonitorInterfaceDetailDO(InterfaceCallInfo interfaceCallInfo, String fid) {
         MonitorInterfaceDetailDO monitorInterfaceDetailDO = new MonitorInterfaceDetailDO();
-        String uuid = UUID.randomUUID().toString();
-        monitorInterfaceDetailDO.setId(MD5Util.MD5Encode(uuid));
         monitorInterfaceDetailDO.setFid(fid);
         monitorInterfaceDetailDO.setInterfaceName(interfaceCallInfo.getInterfaceName());
         monitorInterfaceDetailDO.setMethodName(interfaceCallInfo.getMethodName());

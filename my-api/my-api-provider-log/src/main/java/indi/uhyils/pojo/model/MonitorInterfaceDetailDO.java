@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import java.io.Serializable;
+import indi.uhyils.pojo.model.base.BaseIdEntity;
 
 /**
  * 接口调用监控信息
@@ -8,9 +8,7 @@ import java.io.Serializable;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时22分
  */
-public class MonitorInterfaceDetailDO implements Serializable {
-
-    private String id;
+public class MonitorInterfaceDetailDO extends BaseIdEntity {
 
     private String fid;
 
@@ -29,14 +27,6 @@ public class MonitorInterfaceDetailDO implements Serializable {
      * 执行时间
      */
     private Long runTime;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getFid() {
         return fid;

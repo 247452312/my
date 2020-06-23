@@ -1,11 +1,11 @@
-package indi.uhyils.service;
+package indi.uhyils.service.base;
 
-import indi.uhyils.pojo.model.base.BaseEntity;
-import indi.uhyils.pojo.request.ArgsRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.ObjRequest;
-import indi.uhyils.pojo.response.Page;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.request.base.ArgsRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
+import indi.uhyils.pojo.response.base.Page;
+import indi.uhyils.pojo.response.base.ServiceResult;
 
 /**
  * 如果是一个EntityService 就应该继承这个类,包含增删改以及
@@ -14,7 +14,7 @@ import indi.uhyils.pojo.response.ServiceResult;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时29分
  */
-public interface DefaultEntityService<T extends BaseEntity> {
+public interface DefaultEntityService<T extends BaseVoEntity> extends BaseService {
 
 
     /**

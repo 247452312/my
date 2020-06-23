@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import java.io.Serializable;
+import indi.uhyils.pojo.model.base.BaseIdEntity;
 
 /**
  * JVM实时信息
@@ -8,9 +8,7 @@ import java.io.Serializable;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时18分
  */
-public class MonitorJvmStatusDetailDO implements Serializable {
-
-    private String id;
+public class MonitorJvmStatusDetailDO extends BaseIdEntity {
 
     private String fid;
 
@@ -33,14 +31,6 @@ public class MonitorJvmStatusDetailDO implements Serializable {
      * status生成时间
      */
     private Long time;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getFid() {
         return fid;

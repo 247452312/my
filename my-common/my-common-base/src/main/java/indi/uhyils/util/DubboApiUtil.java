@@ -1,9 +1,8 @@
 package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ConsumerConfig;
 import org.apache.dubbo.config.ReferenceConfig;
@@ -11,7 +10,6 @@ import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.rpc.service.GenericService;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -105,7 +103,7 @@ public class DubboApiUtil {
         reference.setGroup(SpringUtil.getApplicationContext().getEnvironment().getActiveProfiles()[0]);
 
         // 声明为泛化接口
-        reference.setGeneric(true);
+        reference.setGeneric("true");
         reference.setApplication(SpringUtil.getBean(ApplicationConfig.class));
         reference.setRegistry(SpringUtil.getBean(RegistryConfig.class));
         reference.setConsumer(SpringUtil.getBean(ConsumerConfig.class));

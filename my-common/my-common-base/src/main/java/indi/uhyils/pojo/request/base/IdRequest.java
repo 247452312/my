@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.request;
+package indi.uhyils.pojo.request.base;
 
 /**
  * @author uhyils <247452312@qq.com>

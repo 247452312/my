@@ -47,6 +47,7 @@ public class RabbitJvmStatusInfoConsumer extends DefaultConsumer {
         String id = monitorDao.getIdByJvmUniqueMark(jvmStatusInfo.getJvmUniqueMark());
         MonitorJvmStatusDetailDO monitorJvmStatusDetailDO = ModelTransUtils.transJvmStatusInfoToMonitorJvmStatusDetailDO(jvmStatusInfo, id);
         // 保存状态信息
+        monitorJvmStatusDetailDO.preInsert(null);
         monitorJvmStatusDetailDao.insert(monitorJvmStatusDetailDO);
         Long time = monitorJvmStatusDetailDO.getTime();
         Double v = time + ModelTransUtils.OUT_TIME * 60 * 1000 * ModelTransUtils.PROP;

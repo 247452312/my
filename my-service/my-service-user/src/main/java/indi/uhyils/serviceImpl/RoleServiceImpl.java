@@ -8,12 +8,12 @@ import indi.uhyils.dao.UserDao;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.RoleDeptMiddle;
 import indi.uhyils.pojo.model.RoleEntity;
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.IdsRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.request.PutDeptsToRoleRequest;
 import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -54,7 +54,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
         dao.deleteRoleDeptMiddleByRoleId(roleId);
         for (String deptId : request.getDeptIds()) {
             RoleDeptMiddle build = RoleDeptMiddle.build(roleId, deptId);
-            build.preInsert();
+            build.preInsert(request);
             dao.insertRoleDept(build);
         }
         return ServiceResult.buildSuccessResult("角色添加权限集成功", true, request);

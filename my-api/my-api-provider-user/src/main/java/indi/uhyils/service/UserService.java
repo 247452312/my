@@ -2,12 +2,12 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.GetUserRequest;
-import indi.uhyils.pojo.request.IdRequest;
 import indi.uhyils.pojo.request.LoginRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.LoginResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 
@@ -39,10 +39,10 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * 规则修改为  ddhhmmss + 2位随机数(防重复) + 用户类型 + userId + salt 共8+2+1+16+3 = 30位
      * 如果是游客, 则userId随机生成一个16位数字序列作为这个游客的id
      *
-     * @param userRequest 用户id
+     * @param request 用户id
      * @return 通过用户id和用户类型编译的token
      */
-    ServiceResult<String> getUserToken(GetUserRequest userRequest);
+    ServiceResult<String> getUserToken(IdRequest request);
 
 
     /**

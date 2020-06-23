@@ -2,9 +2,9 @@ package indi.uhyils.util;
 
 
 import indi.uhyils.enum_.LogTypeEnum;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

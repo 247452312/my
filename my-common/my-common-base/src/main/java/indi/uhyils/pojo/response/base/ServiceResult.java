@@ -1,7 +1,7 @@
-package indi.uhyils.pojo.response;
+package indi.uhyils.pojo.response.base;
 
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 
 import java.io.Serializable;

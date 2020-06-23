@@ -1,17 +1,21 @@
 package indi.uhyils.serviceImpl;
 
-import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.dao.DeptDao;
 import indi.uhyils.dao.MenuDao;
 import indi.uhyils.dao.RoleDao;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.DeptMenuMiddle;
 import indi.uhyils.pojo.model.DeptPowerMiddle;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.PutDeptsToMenuRequest;
+import indi.uhyils.pojo.request.PutMenusToDeptsRequest;
+import indi.uhyils.pojo.request.PutPowersToDeptRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.DeptService;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -41,7 +45,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
         String deptId = request.getDeptId();
         for (String powerId : request.getPowerIds()) {
             DeptPowerMiddle middle = DeptPowerMiddle.build(deptId, powerId);
-            middle.preInsert();
+            middle.preInsert(request);
             dao.insertDeptPower(middle);
         }
         return ServiceResult.buildSuccessResult("权限集添加权限成功", true, request);
@@ -62,7 +66,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
         deptIds.add(deptId);
         menuDao.deleteDeptMenuByDeptIds(deptIds);
         build.forEach(t -> {
-            t.preInsert();
+            t.preInsert(request);
             dao.insertDeptMenu(t);
         });
         return ServiceResult.buildSuccessResult("赋权成功", true, request);
@@ -77,7 +81,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
         menuDao.deleteDeptMenuByMenuIds(menuIds);
         List<DeptMenuMiddle> build = DeptMenuMiddle.build(request.getDeptIds(), request.getMenuId());
         build.forEach(t -> {
-            t.preInsert();
+            t.preInsert(request);
             dao.insertDeptMenu(t);
         });
         return ServiceResult.buildSuccessResult("赋权成功", true, request);

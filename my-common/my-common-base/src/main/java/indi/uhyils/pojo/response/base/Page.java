@@ -1,6 +1,6 @@
-package indi.uhyils.pojo.response;
+package indi.uhyils.pojo.response.base;
 
-import indi.uhyils.pojo.request.DefaultPageRequest;
+import indi.uhyils.pojo.request.base.DefaultPageRequest;
 
 import java.io.Serializable;
 import java.util.List;

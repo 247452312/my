@@ -8,9 +8,9 @@ import indi.uhyils.exception.NoRequestLinkException;
 import indi.uhyils.pojo.mqinfo.InterfaceCallInfo;
 import indi.uhyils.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.rabbit.RabbitFactory;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RabbitUtils;
@@ -37,7 +37,7 @@ public class TimeLogAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.response.ServiceResult indi.uhyils.serviceImpl.*.*(indi.uhyils.pojo.request.DefaultRequest)))")
+    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(indi.uhyils.pojo.request.base.DefaultRequest)))")
     public void logAspectPoint() {
     }
 

@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.request;
+package indi.uhyils.pojo.request.base;
 
 import indi.uhyils.pojo.request.model.Arg;
 

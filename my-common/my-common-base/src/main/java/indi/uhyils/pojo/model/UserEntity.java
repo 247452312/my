@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.model;
 
 
-import indi.uhyils.pojo.model.base.BaseEntity;
+import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 /**
  * 用户
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.model.base.BaseEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月20日 11时28分
  */
-public class UserEntity extends BaseEntity {
+public class UserEntity extends BaseVoEntity {
 
     /**
      * 昵称

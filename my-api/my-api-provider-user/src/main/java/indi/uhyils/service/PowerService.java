@@ -2,10 +2,11 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.GetMethodNameByInterfaceNameRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 

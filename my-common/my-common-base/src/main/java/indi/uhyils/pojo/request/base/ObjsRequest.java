@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.request;
+package indi.uhyils.pojo.request.base;
 
 import java.io.Serializable;
 import java.util.Arrays;

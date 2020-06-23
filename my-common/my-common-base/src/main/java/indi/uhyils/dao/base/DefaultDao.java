@@ -1,4 +1,4 @@
-package indi.uhyils.dao;
+package indi.uhyils.dao.base;
 
 import indi.uhyils.pojo.request.model.Arg;
 import org.apache.ibatis.annotations.Param;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 15时22分
  */
-public interface DefaultDao<T extends Serializable> {
+public interface DefaultDao<T extends Serializable> extends BaseDao {
 
 
     /**

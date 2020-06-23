@@ -39,4 +39,9 @@ public class Content {
      */
     public static final String ADMIN_USER_ID = "49ba59abbe56e057";
 
+    /**
+     * 登录过期分钟
+     */
+    public static final Integer LOGIN_TIME_OUT_MIN = 30;
+
 }
