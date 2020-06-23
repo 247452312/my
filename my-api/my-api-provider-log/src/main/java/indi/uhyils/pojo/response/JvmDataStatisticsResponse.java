@@ -89,8 +89,8 @@ public class JvmDataStatisticsResponse implements Serializable {
         jvmDataStatisticsResponse.setInterfaceCellCount(interfaceCellCount);
         // 默认是好的
         boolean serviceOperationQuality = true;
-        for (Map.Entry<String, List<ServiceQualityEnum>> monitorDOListEntry : serviceMap.entrySet()) {
-            List<ServiceQualityEnum> value = monitorDOListEntry.getValue();
+        for (Map.Entry<String, List<ServiceQualityEnum>> entity : serviceMap.entrySet()) {
+            List<ServiceQualityEnum> value = entity.getValue();
             if (value.size() != 1 || !value.get(0).equals(ServiceQualityEnum.GOOD)) {
                 serviceOperationQuality = false;
                 break;
