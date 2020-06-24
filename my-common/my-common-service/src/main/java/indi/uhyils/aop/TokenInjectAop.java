@@ -24,6 +24,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
+ * token转用户信息切面(包含验证)
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月27日 16时32分
  */

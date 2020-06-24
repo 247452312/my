@@ -6,6 +6,7 @@ import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,4 +50,12 @@ public interface UserDao extends DefaultDao<UserEntity> {
      */
     ArrayList<UserEntity> getAll();
 
+    /**
+     * 对比密码是否和数据库中的相同
+     *
+     * @param id          用户id
+     * @param oldPassword 旧密码
+     * @return 是否正确
+     */
+    Integer checkUserPassword(@Param("id") String id,@Param("password") String oldPassword);
 }

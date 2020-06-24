@@ -15,7 +15,6 @@
 
         a.nick_name as nickName,
         a.username,
-        a.password,
         a.role_id as roleId
     </sql>
     <sql id="deptColumnList">
@@ -167,5 +166,9 @@
         <include refid="columnList"/>
         from sys_user a
         where delete_flag = 0
+    </select>
+
+    <select id="checkUserPassword" resultType="java.lang.Integer">
+        select count(*) from sys_user where delete_flag=0 and passowrd = #{passowrd} and id = #{id}
     </select>
 </mapper>

@@ -12,7 +12,6 @@ import indi.uhyils.pojo.model.MonitorDO;
 import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
 import indi.uhyils.pojo.mqinfo.JvmStartInfo;
 import indi.uhyils.pojo.mqinfo.JvmStatusInfo;
-import indi.uhyils.scheduled.RabbitMqTask;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ModelTransUtils;
 import org.springframework.context.ApplicationContext;
@@ -70,6 +69,7 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
                     endTime[0] = time;
                 }
             });
+            // 修改结束时间为假想时间
             Double v = endTime[0] + RabbitMqContent.OUT_TIME * 60 * 1000 * RabbitMqContent.OUT_TIME_PRO;
             monitorDao.changeEndTime(monitorDO.getId(), v.longValue());
         }

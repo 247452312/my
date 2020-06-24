@@ -9,6 +9,7 @@ import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.request.LoginRequest;
+import indi.uhyils.pojo.request.UpdatePasswordRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
@@ -128,9 +129,9 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
             LocalDateTime localDateTime = LocalDateTime.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddhhmm");
             String format = localDateTime.format(dateTimeFormatter);
-            Integer dayNow = Integer.parseInt(format.substring(0, 2));
-            Integer hourNow = Integer.parseInt(format.substring(2, 4));
-            Integer monNow = Integer.parseInt(format.substring(4, 6));
+            int dayNow = Integer.parseInt(format.substring(0, 2));
+            int hourNow = Integer.parseInt(format.substring(2, 4));
+            int monNow = Integer.parseInt(format.substring(4, 6));
             // 如果分钟差超过30
             if (monNow - Integer.parseInt(mon) >= Content.LOGIN_TIME_OUT_MIN) {
                 tokenInfo.setTimeOut(true);
@@ -183,6 +184,28 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
             t.setRole(userRoleById);
         });
         return ServiceResult.buildSuccessResult("查询成功", all, request);
+    }
+
+    @Override
+    public ServiceResult<UserEntity> getUserByToken(DefaultRequest request) {
+        return ServiceResult.buildSuccessResult("查询成功", request.getUser(), request);
+    }
+
+    @Override
+    public ServiceResult<String> updatePassword(UpdatePasswordRequest request) {
+        String oldPassword = request.getOldPassword();
+        UserEntity user = request.getUser();
+        String userId = user.getId();
+        Integer passwordIsTrue = dao.checkUserPassword(userId, MD5Util.MD5Encode(oldPassword));
+        // 不为1 说明不正确
+        if (passwordIsTrue != 1) {
+            return ServiceResult.buildFailedResult("密码不正确", "密码不正确", request);
+        }
+        UserEntity byId = dao.getById(userId);
+        byId.setPassword(request.getNewPassword());
+        byId.preUpdate(request);
+        dao.update(byId);
+        return ServiceResult.buildSuccessResult("修改密码成功", "true", request);
     }
 
 

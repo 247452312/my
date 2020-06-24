@@ -3,6 +3,7 @@ package indi.uhyils.service;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.request.LoginRequest;
+import indi.uhyils.pojo.request.UpdatePasswordRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.LoginResponse;
@@ -70,6 +71,22 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * @return 全部用户
      */
     ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request);
+
+    /**
+     * 默认获取用户本身的方式
+     *
+     * @param request 默认请求
+     * @return 用户
+     */
+    ServiceResult<UserEntity> getUserByToken(DefaultRequest request);
+
+    /**
+     * 更新密码
+     *
+     * @param request 修改密码请求
+     * @return 修改密码的返回
+     */
+    ServiceResult<String> updatePassword(UpdatePasswordRequest request);
 
 
 }

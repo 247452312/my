@@ -307,7 +307,7 @@
                     </div>
                     <div class="layui-col-md12">
                         <div class="layui-card">
-                            <div class="layui-card-header"><i class="fa fa-line-chart icon"></i>报表统计</div>
+                            <div class="layui-card-header"><i class="fa fa-line-chart icon"></i>微服务JVM运行状态监控</div>
                             <div class="layui-card-body">
                                 <div id="echarts-records" style="width: 100%;min-height:550px"></div>
                             </div>
@@ -459,6 +459,239 @@
             var title = $(this).children('.layuimini-notice-title').text();
             console.log(title);
         });
+
+        function extracted(myChart, jvmInfoLogResponse) {
+            let first = jvmInfoLogResponse.data[jvmInfoLogResponse.defaultData];
+            var fx = first[0];
+            var fxdata = [];
+            for (var i = 0; i < fx.length; i++) {
+                fxdata.push({
+                    name: fx[i],
+                    max: 20
+                })
+            }
+
+            var data = jvmInfoLogResponse.data;
+            var nodedata = []
+            var defaultData = jvmInfoLogResponse.defaultData;
+
+            for (var key in data) {
+                if (key == defaultData) {
+                    nodedata.push({
+                            name: key,
+                            symbolSize: Math.max(data[key][2], 5),
+                            value: data[key][3],
+                            itemStyle: {
+                                normal: {
+                                    color: '#13A4FC'
+                                }
+                            }
+                        }
+                    )
+                } else {
+                    nodedata.push({
+                            name: key,
+                            symbolSize: Math.max(data[key][2], 5),
+                            value: data[key][3],
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgba(18,89,147,1)'
+                                }
+                            }
+
+                        }
+                    )
+                }
+            }
+
+            option = {
+                title: {
+                    text: 'JVM运行状态情况',
+                    subtext: defaultData,
+                    x: 'center',
+                    show: false
+                },
+                backgroundColor: '#ffffff',
+                legend: {
+                    data: ['堆内存', '非堆内存'],
+                    align: 'left',
+                    left: 10
+                },
+                // toolbox: {
+                //     feature: {
+                //         magicType: {
+                //             type: ['stack', 'tiled']
+                //         },
+                //         dataView: {}
+                //     }
+                // },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                yAxis: {
+                    max: jvmInfoLogResponse.maxY,
+                    min: 0,
+                    name: '内存大小',
+                    inverse: false, // 反转
+                    show: true,
+                    splitArea: {
+                        show: false // 是否显示分割区域
+                    }
+
+                },
+                xAxis: {
+                    data: fx,
+                    type: 'category',
+                    boundaryGap: false,
+                    name: '时间',
+                    silent: false,
+                    axisLine: {
+                        onZero: true
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    }
+                },
+                grid: {
+                    left: 50,
+                    name: '内存(M)',
+                    height: '40%',
+                    width: '100%',
+                },
+                series: [{
+                    name: '非堆内存',
+                    type: 'line',
+                    smooth: true,
+                    smoothMonotone: 'x',
+                    // stack: 'one',
+                    xAxisIndex: 0,
+                    yAxisIndex: 0,
+                    data: data[defaultData][1],
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'inside'
+                        }
+                    }
+                }, {
+                    name: '堆内存',
+                    type: 'line',
+                    smooth: true,
+                    smoothMonotone: 'x',
+                    // stack: 'one',
+                    xAxisIndex: 0,
+                    yAxisIndex: 0,
+                    data: data[defaultData][2],
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'inside'
+                        }
+                    }
+                }, {
+
+                    type: 'pie',
+                    radius: '30%',
+                    center: [500, 400],
+                    // layout: 'force',
+                    // radius: 65,//控制内容大小
+                    // center: [500, 100],//圆形居中
+                    focusNodeAdjacency: true,
+                    roam: true,
+                    data: nodedata,
+                    label: {
+                        normal: {
+                            position: 'top',
+                            show: true,
+                            textStyle: {
+                                color: 'rgba(18,89,147,1)',
+                                fontSize: 12
+                            },
+                        }
+                    },
+                    force: {
+                        repulsion: 100 // 节点之间的斥力因子
+                    },
+                    links: [], // 节点之间的连线
+                    tooltip: {
+                        formatter: function (d) {
+                            var str = d.name + '<br>';
+                            str = str + '&nbsp;&nbsp;&nbsp;&nbsp;总内存占用量: ' + d.data.value + ' M <br>';
+                            str = str + '&nbsp;&nbsp;&nbsp;&nbsp;ip: ' + d.data.value + ' <br>';
+                            str = str + '&nbsp;&nbsp;&nbsp;&nbsp;启动时间: ' + d.data.value + '<br> ';
+                            return str;
+                        }
+                    }
+
+                }
+
+
+                ]
+            };
+            myChart.on('click', function (p) {
+                console.log(p)
+                if (p.seriesType == 'pie') {
+                    var clickToPoint = p.name
+                    var nodedata = []
+                    for (var key in data) {
+                        if (key == clickToPoint) {
+                            nodedata.push({
+                                    name: key,
+                                    symbolSize: Math.max(data[key][2], 5),
+                                    value: data[key][3],
+                                    itemStyle: {
+                                        normal: {
+                                            color: '#13a4fc'
+                                        }
+                                    }
+
+                                }
+                            )
+                        } else {
+                            nodedata.push({
+                                    name: key,
+                                    symbolSize: Math.max(data[key][2], 5),
+                                    value: data[key][3],
+                                    itemStyle: {
+                                        normal: {
+                                            color: 'rgba(18,89,147,1)'
+                                        }
+                                    }
+
+                                }
+                            )
+                        }
+                    }
+                    myChart.setOption({
+                        title: {
+                            subtext: clickToPoint
+                        },
+                        xAxis: {
+                            data: data[clickToPoint][0],
+                        },
+                        series: [{
+                            data: data[clickToPoint][1]
+                        }, {
+                            data: data[clickToPoint][2]
+                        }, {
+                            data: nodedata
+                        }]
+                    })
+                }
+            });
+            myChart.setOption(option);
+            return data;
+        }
+
         $.getJSON('/json/essos.project.json', function (themeJSON) {
             echarts.registerTheme('essos', themeJSON);
             var myChart = echarts.init(document.getElementById('echarts-records'), 'essos');
@@ -522,236 +755,21 @@
                 }
 
 
-                var jvmInfoLogResponse = data.jvmInfoLogResponse;
-                let first = jvmInfoLogResponse.data[jvmInfoLogResponse.defaultData];
-                var fx = first[0];
-                var fxdata = [];
-                for (var i = 0; i < fx.length; i++) {
-                    fxdata.push({
-                        name: fx[i],
-                        max: 20
-                    })
-                }
-
-                var data = jvmInfoLogResponse.data;
-                var nodedata = []
-                var university = jvmInfoLogResponse.defaultData;
-
-                for (var key in data) {
-                    if (key == university) {
-                        nodedata.push({
-                                name: key,
-                                symbolSize: Math.max(data[key][2], 5),
-                                value: data[key][2],
-                                itemStyle: {
-                                    normal: {
-                                        color: '#13A4FC'
-                                    }
-                                }
-                            }
-                        )
-                    } else {
-                        nodedata.push({
-                                name: key,
-                                symbolSize: Math.max(data[key][2], 5),
-                                value: data[key][2],
-                                itemStyle: {
-                                    normal: {
-                                        color: 'rgba(18,89,147,1)'
-                                    }
-                                }
-
-                            }
-                        )
-                    }
-                }
-
-                option = {
-                    title: {
-                        text: 'JVM运行状态情况',
-                        subtext: university,
-                        x: 'center',
-                        show: false
-                    },
-                    backgroundColor: '#ffffff',
-                    legend: {
-                        data: ['堆内存', '非堆内存'],
-                        align: 'left',
-                        left: 10
-                    },
-                    // toolbox: {
-                    //     feature: {
-                    //         magicType: {
-                    //             type: ['stack', 'tiled']
-                    //         },
-                    //         dataView: {}
-                    //     }
-                    // },
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'cross',
-                            label: {
-                                backgroundColor: '#6a7985'
-                            }
-                        }
-                    },
-                    yAxis: {
-                        max: jvmInfoLogResponse.maxY,
-                        min: 0,
-                        name: '内存大小',
-                        inverse: false, // 反转
-                        splitArea: {
-                            show: false // 是否显示分割区域
-                        }
-
-                    },
-                    xAxis: {
-                        data: fx,
-                        type: 'category',
-                        boundaryGap: false,
-                        name: '时间',
-                        silent: false,
-                        axisLine: {
-                            onZero: true
-                        },
-                        splitLine: {
-                            show: false
-                        },
-                        splitArea: {
-                            show: false
-                        }
-                    },
-                    grid: {
-                        left: 50,
-                        name: '内存(M)',
-                        height: '40%',
-                        width: '100%',
-                    },
-                    series: [{
-                        name: '非堆内存',
-                        type: 'line',
-                        // stack: 'one',
-                        xAxisIndex: 0,
-                        yAxisIndex: 0,
-                        data: data[university][1],
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'inside'
-                            }
-                        },
-                    }, {
-                        name: '堆内存',
-                        type: 'line',
-                        // stack: 'one',
-                        xAxisIndex: 0,
-                        yAxisIndex: 0,
-                        data: data[university][2],
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'inside'
-                            }
-                        },
-                    }, {
-
-                        type: 'pie',
-                        radius: '30%',
-                        center: [500, 400],
-                        // layout: 'force',
-                        // radius: 65,//控制内容大小
-                        // center: [500, 100],//圆形居中
-                        focusNodeAdjacency: true,
-                        roam: true,
-                        data: nodedata,
-                        label: {
-                            normal: {
-                                position: 'top',
-                                show: true,
-                                textStyle: {
-                                    color: 'rgba(18,89,147,1)',
-                                    fontSize: 12
-                                },
-                            }
-                        },
-                        force: {
-                            repulsion: 100 // 节点之间的斥力因子
-                        },
-                        links: [], // 节点之间的连线
-                        tooltip: {
-                            formatter: function (d) {
-                                var str = d.name + '<br>';
-                                str = str + '&nbsp;&nbsp;&nbsp;&nbsp;总内存占用量: ' + d.data.value + ' M <br>';
-                                str = str + '&nbsp;&nbsp;&nbsp;&nbsp;ip: ' + d.data.value + ' <br>';
-                                str = str + '&nbsp;&nbsp;&nbsp;&nbsp;启动时间: ' + d.data.value + '<br> ';
-                                return str;
-                            }
-                        }
-
-                    }
-
-
-                    ]
-                };
-                myChart.on('click', function (p) {
-                    console.log(p)
-                    if (p.seriesType == 'pie') {
-                        var clickToPoint = p.name
-                        var nodedata = []
-                        for (var key in data) {
-                            if (key == clickToPoint) {
-                                nodedata.push({
-                                        name: key,
-                                        symbolSize: Math.max(data[key][2], 5),
-                                        value: data[key][2],
-                                        itemStyle: {
-                                            normal: {
-                                                color: '#13a4fc'
-                                            }
-                                        }
-
-                                    }
-                                )
-                            } else {
-                                nodedata.push({
-                                        name: key,
-                                        symbolSize: Math.max(data[key][2], 5),
-                                        value: data[key][2],
-                                        itemStyle: {
-                                            normal: {
-                                                color: 'rgba(18,89,147,1)'
-                                            }
-                                        }
-
-                                    }
-                                )
-                            }
-                        }
-                        myChart.setOption({
-                            title: {
-                                subtext: clickToPoint
-                            },
-                            xAxis: {
-                                data: data[clickToPoint][0],
-                            },
-                            series: [{
-                                data: data[clickToPoint][1]
-                            }, {
-                                data: data[clickToPoint][2]
-                            }, {
-                                data: nodedata
-                            }]
-                        })
-                    }
-                });
-                myChart.setOption(option);
+                var data = extracted(myChart, data.jvmInfoLogResponse);
 
 
             });
 
         });
 
+        function refreshJvmInfo() {
+            pushRequest("JvmService", "getJvmDataStatisticsResponse", {}, function (data) {
+                var myChart = echarts.init(document.getElementById('echarts-records'), 'essos');
+                extracted(myChart, data);
+            })
+        }
+
+        setInterval(refreshJvmInfo, 1000 * 60 * 5);
     });
 </script>
 </body>

@@ -39,7 +39,7 @@ public class RabbitMqContent {
      * 数据库中默认假想超时时间 设置假想结束时间=JVM上次发送状态时间+ OUT_TIME*比例系数
      * 同时也是微服务发送监控间隔
      */
-    public static final long OUT_TIME = 30L;
+    public static final long OUT_TIME = 5L;
     /**
      * 数据库中默认假想超时时间比例系数 设置假想结束时间=JVM上次发送状态时间+ OUT_TIME*比例系数
      */
