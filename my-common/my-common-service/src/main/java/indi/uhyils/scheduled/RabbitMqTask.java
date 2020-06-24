@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * MQ发送者
@@ -26,11 +25,6 @@ import java.nio.charset.StandardCharsets;
 @Component
 @EnableScheduling
 public class RabbitMqTask {
-
-    /**
-     * 启动信息是否发送过
-     */
-    private volatile Boolean startInfoSended = false;
 
     /**
      * 这个微服务的唯一标示
@@ -52,10 +46,10 @@ public class RabbitMqTask {
      * @throws Exception
      */
     @PostConstruct
-    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "0 */" + RabbitMqContent.OUT_TIME + " * * * ?")
     public void sendInfo() throws Exception {
         // 如果start信息没有发送过,那么发送start信息(只有项目启动时发送start信息失败时重复发送)
-        if (!startInfoSended) {
+        if (!RabbitMqContent.getLogServiceOnLine()) {
             if (startChannel == null) {
                 startChannel = rabbitFactory.getConn().createChannel();
                 startChannel.confirmSelect();
@@ -81,8 +75,6 @@ public class RabbitMqTask {
                             LogUtil.info(this, "JVM启动消息处理成功(定时任务)");
                             // 设置唯一标示
                             rabbitMqTask.setJvmUniqueMark(jvmUniqueMark);
-                            // 设置起始信息已经发送过
-                            rabbitMqTask.setStartInfoSended(true);
                             // 设置interface可以开始干活了
                             RabbitMqContent.setLogServiceOnLine(true);
                             // 设置为空 释放内存
@@ -143,13 +135,5 @@ public class RabbitMqTask {
 
     public void setJvmUniqueMark(JvmUniqueMark jvmUniqueMark) {
         this.jvmUniqueMark = jvmUniqueMark;
-    }
-
-    public Boolean getStartInfoSended() {
-        return startInfoSended;
-    }
-
-    public void setStartInfoSended(Boolean startInfoSended) {
-        this.startInfoSended = startInfoSended;
     }
 }

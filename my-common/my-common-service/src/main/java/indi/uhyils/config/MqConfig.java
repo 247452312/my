@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 /**
- * 初始化MqBean
+ * 初始化MqBean 配置文件中配置的东西
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 19时03分
@@ -23,6 +23,7 @@ public class MqConfig {
     private String username;
     @Value("${rabbit.password}")
     private String password;
+
 
     @Bean
     public RabbitFactory getRabbitFactory() {

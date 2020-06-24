@@ -5,6 +5,7 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import indi.uhyils.content.RabbitMqContent;
 import indi.uhyils.dao.MonitorDao;
 import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
@@ -50,7 +51,7 @@ public class RabbitJvmStatusInfoConsumer extends DefaultConsumer {
         monitorJvmStatusDetailDO.preInsert(null);
         monitorJvmStatusDetailDao.insert(monitorJvmStatusDetailDO);
         Long time = monitorJvmStatusDetailDO.getTime();
-        Double v = time + ModelTransUtils.OUT_TIME * 60 * 1000 * ModelTransUtils.PROP;
+        Double v = time + RabbitMqContent.OUT_TIME * 60 * 1000 * RabbitMqContent.OUT_TIME_PRO;
         // 修改主类假想结束时间
         monitorDao.changeEndTime(id, v.longValue());
 

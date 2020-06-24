@@ -2,6 +2,7 @@ package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.content.Content;
 import indi.uhyils.pojo.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -35,9 +36,9 @@ public class RedisPoolUtil {
             String value = JSONObject.toJSONString(user);
             jedis.append(token, value);
             //半个小时
-            jedis.expire(token, 60 * 30);
+            jedis.expire(token, 60 * Content.LOGIN_TIME_OUT_MIN);
             jedis.append(user.getId(), token);
-            jedis.expire(user.getId(), 60 * 30);
+            jedis.expire(user.getId(), 60 * Content.LOGIN_TIME_OUT_MIN);
             jedis.close();
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
@@ -59,8 +60,8 @@ public class RedisPoolUtil {
                 return null;
             }
             UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
-            jedis.expire(token, 60 * 30);
-            jedis.expire(userEntity.getId(), 60 * 30);
+            jedis.expire(token, 60 * Content.LOGIN_TIME_OUT_MIN);
+            jedis.expire(userEntity.getId(), 60 *Content.LOGIN_TIME_OUT_MIN);
             jedis.close();
             return userEntity;
         } catch (JedisConnectionException e) {

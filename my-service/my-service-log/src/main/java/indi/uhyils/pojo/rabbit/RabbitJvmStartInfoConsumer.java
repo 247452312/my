@@ -5,12 +5,14 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import indi.uhyils.content.RabbitMqContent;
 import indi.uhyils.dao.MonitorDao;
 import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.pojo.model.MonitorDO;
 import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
 import indi.uhyils.pojo.mqinfo.JvmStartInfo;
 import indi.uhyils.pojo.mqinfo.JvmStatusInfo;
+import indi.uhyils.scheduled.RabbitMqTask;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ModelTransUtils;
 import org.springframework.context.ApplicationContext;
@@ -68,7 +70,7 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
                     endTime[0] = time;
                 }
             });
-            Double v = endTime[0] + ModelTransUtils.OUT_TIME * 60 * 1000 * ModelTransUtils.PROP;
+            Double v = endTime[0] + RabbitMqContent.OUT_TIME * 60 * 1000 * RabbitMqContent.OUT_TIME_PRO;
             monitorDao.changeEndTime(monitorDO.getId(), v.longValue());
         }
         // 获取tag(队列中的唯一标示)

@@ -1,5 +1,6 @@
 package indi.uhyils.util;
 
+import indi.uhyils.content.RabbitMqContent;
 import indi.uhyils.pojo.model.MonitorDO;
 import indi.uhyils.pojo.model.MonitorInterfaceDetailDO;
 import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
@@ -9,7 +10,6 @@ import indi.uhyils.pojo.mqinfo.JvmStatusInfo;
 import indi.uhyils.pojo.mqinfo.JvmUniqueMark;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -20,16 +20,6 @@ import java.util.stream.Collectors;
  */
 public class ModelTransUtils {
 
-    /**
-     * 假象结束时间->超出时间(分钟)
-     */
-    public static final Long OUT_TIME = 30L;
-
-    /**
-     * 假象结束时间->比例系数
-     */
-    public static final Double PROP = 1.1;
-
     public static MonitorDO transJvmStartInfoToMonitorDO(JvmStartInfo jvmStartInfo) {
         MonitorDO monitorDO = new MonitorDO();
         JvmUniqueMark jvmUniqueMark = jvmStartInfo.getJvmUniqueMark();
@@ -39,7 +29,7 @@ public class ModelTransUtils {
         monitorDO.setTime(time);
 
         //设置假想结束时间=JVM上次发送状态时间+ OUT_TIME*比例系数
-        double v = time + OUT_TIME * 60 * 1000 * PROP;
+        double v = time + RabbitMqContent.OUT_TIME * 60 * 1000 * RabbitMqContent.OUT_TIME_PRO;
         monitorDO.setEndTime(new Double(v).longValue());
         monitorDO.setJvmTotalMem(jvmStartInfo.getJvmTotalMem());
         monitorDO.setHeapTotalMem(jvmStartInfo.getHeapTotalMem());
