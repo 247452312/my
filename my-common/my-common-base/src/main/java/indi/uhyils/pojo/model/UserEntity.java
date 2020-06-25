@@ -27,6 +27,16 @@ public class UserEntity extends BaseVoEntity {
     private String password;
 
     /**
+     * 邮箱
+     */
+    private String mail;
+
+    /**
+     * 手机
+     */
+    private String phone;
+
+    /**
      * 用户角色
      */
     private String roleId;
@@ -78,4 +88,19 @@ public class UserEntity extends BaseVoEntity {
         this.role = role;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }
