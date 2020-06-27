@@ -43,6 +43,23 @@ public class DubboApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
+        return getServiceResult(interfaceName, methodName, args, request, false);
+    }
+
+    /**
+     * dubbo泛化接口调用类(异步)
+     *
+     * @param interfaceName 接口的名字,可以用全名或者接口名
+     * @param methodName    方法名
+     * @param args          方法参数
+     * @param request       请求
+     * @return 方法返回值
+     */
+    public static ServiceResult dubboApiToolAsyn(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
+        return getServiceResult(interfaceName, methodName, args, request, true);
+    }
+
+    private static ServiceResult getServiceResult(String interfaceName, String methodName, List<Object> args, DefaultRequest request, boolean ansyn) {
         try {
             if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
@@ -53,11 +70,11 @@ public class DubboApiUtil {
                 reference = MAP.get(interfaceName);
                 if (reference == null) {
                     MAP.remove(interfaceName);
-                    reference = getGenericServiceReferenceConfig(interfaceName);
+                    reference = getGenericServiceReferenceConfig(interfaceName, ansyn);
                     MAP.put(interfaceName, reference);
                 }
             } else {
-                reference = getGenericServiceReferenceConfig(interfaceName);
+                reference = getGenericServiceReferenceConfig(interfaceName, ansyn);
                 MAP.put(interfaceName, reference);
             }
 
@@ -84,24 +101,28 @@ public class DubboApiUtil {
             }
             ServiceResult<JSONObject> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, parameterTypes, arg)), ServiceResult.class);
 
-            // 添加链路
-            request.setRequestLink(serviceResult.getRequestLink());
+            if (ansyn == false) {
+                // 添加链路
+                request.setRequestLink(serviceResult.getRequestLink());
+            }
+
             return serviceResult;
         } catch (Exception e) {
-            LogUtil.error(DubboApiUtil.class,e);
+            LogUtil.error(DubboApiUtil.class, e);
             LogUtil.error(DubboApiUtil.class, e.getLocalizedMessage());
             return ServiceResult.buildErrorResult("远程调用错误,具体见日志", request);
         }
     }
 
-    private static ReferenceConfig<GenericService> getGenericServiceReferenceConfig(String interfaceName) {
+    private static ReferenceConfig<GenericService> getGenericServiceReferenceConfig(String interfaceName, Boolean async) {
         ReferenceConfig<GenericService> reference;
         reference = new ReferenceConfig<>();
         // 弱类型接口名
         reference.setInterface(interfaceName);
         // 设置分组名称
         reference.setGroup(SpringUtil.getApplicationContext().getEnvironment().getActiveProfiles()[0]);
-
+        // 设置同步异步
+        reference.setAsync(async);
         // 声明为泛化接口
         reference.setGeneric("true");
         reference.setApplication(SpringUtil.getBean(ApplicationConfig.class));

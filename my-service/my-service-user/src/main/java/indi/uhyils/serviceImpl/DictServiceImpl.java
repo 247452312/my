@@ -4,15 +4,16 @@ import indi.uhyils.dao.DictDao;
 import indi.uhyils.dao.DictItemDao;
 import indi.uhyils.pojo.model.DictEntity;
 import indi.uhyils.pojo.model.DictItemEntity;
-import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.GetByCodeRequest;
 import indi.uhyils.pojo.request.GetByItemArgsRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.LastPlanResponse;
+import indi.uhyils.pojo.response.VersionInfoResponse;
 import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.pojo.response.VersionInfoResponse;
 import indi.uhyils.service.DictService;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,6 +176,12 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
         ArrayList<String> collect = (ArrayList<String>) infos.stream().map(DictItemEntity::getValue).collect(Collectors.toList());
         return ServiceResult.buildSuccessResult("查询成功", collect, request);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<DictItemEntity>> getByCode(GetByCodeRequest request) {
+        ArrayList<DictItemEntity> list = dictItemDao.getByCode(request.getCode());
+        return ServiceResult.buildSuccessResult("查询成功", list, request);
     }
 
 }

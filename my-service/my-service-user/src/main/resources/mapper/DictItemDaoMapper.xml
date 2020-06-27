@@ -141,5 +141,12 @@
         order by sort_order
     </select>
 
+    <select id="getByCode" resultType="indi.uhyils.pojo.model.DictItemEntity">
+        select
+        <include refid="columnList"/>
+        from sys_dict_item a
+        where dict_id = (select id from sys_dict where code = #{code})
+    </select>
+
 
 </mapper>

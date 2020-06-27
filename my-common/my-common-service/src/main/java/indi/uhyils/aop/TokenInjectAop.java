@@ -10,6 +10,7 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.RedisPoolUtil;
+import org.apache.dubbo.common.utils.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -59,9 +60,12 @@ public class TokenInjectAop {
 
 
     /**
-     * token 验证有无
-     * token 解析
-     * 转为userEntity注入
+     * 1. 如果方法有NoToken注解,直接放行,不需要user注入
+     * 2. 查询用户是否存在, 如果存在 就不需要检查token
+     * 3. 如果没有user 根据token获取用户 检查用户是否存在
+     * 4. 超级管理员直接放行
+     * 5. 查询用户是否有权限
+     * 6. 查询正常用户是否登录
      *
      * @param pjp pjp
      * @return pjp 的返回值
@@ -84,13 +88,13 @@ public class TokenInjectAop {
             return pjp.proceed();
         }
 
-
         //获取token
         DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
         String token = arg.getToken();
 
+
         /* 查询有没有登录 */
-        if (token == null || "".equals(token)) {
+        if (StringUtils.isEmpty(token) && arg.getUser() == null) {
             return ServiceResult.buildNoLoginResult(arg);
         }
 
@@ -113,6 +117,7 @@ public class TokenInjectAop {
             //执行方法
             return pjp.proceed(new DefaultRequest[]{arg});
         }
+
 
         String substring = className.substring(className.lastIndexOf('.') + 1);
         if (substring.contains(IMPL)) {

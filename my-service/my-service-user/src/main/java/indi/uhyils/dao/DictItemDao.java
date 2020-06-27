@@ -29,4 +29,12 @@ public interface DictItemDao extends DefaultDao<DictItemEntity> {
      * @return 某个字典的所有字典项
      */
     ArrayList<DictItemEntity> getByDictId(String id);
+
+    /**
+     * 根据字典code获取字典项
+     *
+     * @param code 字典code
+     * @return 字典项
+     */
+    ArrayList<DictItemEntity> getByCode(String code);
 }

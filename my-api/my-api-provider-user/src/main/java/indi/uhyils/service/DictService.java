@@ -2,14 +2,15 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.DictEntity;
 import indi.uhyils.pojo.model.DictItemEntity;
-import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.GetByCodeRequest;
 import indi.uhyils.pojo.request.GetByItemArgsRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.LastPlanResponse;
+import indi.uhyils.pojo.response.VersionInfoResponse;
 import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.pojo.response.VersionInfoResponse;
 import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
@@ -107,4 +108,13 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      * @return 图标class
      */
     ServiceResult<ArrayList<String>> getAllMenuIcon(DefaultRequest request);
+
+
+    /**
+     * 获取code对应的字典对应的所有项
+     *
+     * @param request 字典code
+     * @return code对应的字典对应的所有项
+     */
+    ServiceResult<ArrayList<DictItemEntity>> getByCode(GetByCodeRequest request);
 }
