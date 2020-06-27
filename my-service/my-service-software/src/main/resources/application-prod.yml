@@ -1,6 +1,8 @@
 server:
   port: 8054
 dubbo:
+  metadata-report:
+    address: zookeeper://172.26.59.129:2181
   registry:
     client: curator
     address: zookeeper://172.26.59.129:2181
@@ -8,7 +10,7 @@ dubbo:
     name: dubbo
     port: 20854
   application:
-    name: provider-user
+    name: provider-software
   consumer:
     timeout: 3000
     group: ${spring.profiles.active}
@@ -43,3 +45,8 @@ redis:
   ip: 172.26.59.129
   port: 6379
   password: uhyils
+rabbit:
+  host: 172.26.59.129
+  port: 5672
+  username: uhyils
+  password: 123456

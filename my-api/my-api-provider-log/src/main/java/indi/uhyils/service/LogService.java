@@ -1,9 +1,10 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.LogEntity;
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.ObjRequest;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 import java.util.Map;

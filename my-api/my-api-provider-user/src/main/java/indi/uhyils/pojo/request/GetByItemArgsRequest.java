@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.request;
 
+import indi.uhyils.pojo.request.base.ArgsRequest;
+
 /**
  * 分页查询,多一个字典id
  *

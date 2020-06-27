@@ -1,5 +1,6 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.DictItemEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,4 +29,12 @@ public interface DictItemDao extends DefaultDao<DictItemEntity> {
      * @return 某个字典的所有字典项
      */
     ArrayList<DictItemEntity> getByDictId(String id);
+
+    /**
+     * 根据字典code获取字典项
+     *
+     * @param code 字典code
+     * @return 字典项
+     */
+    ArrayList<DictItemEntity> getByCode(String code);
 }

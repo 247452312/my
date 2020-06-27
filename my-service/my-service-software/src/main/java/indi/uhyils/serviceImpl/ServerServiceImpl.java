@@ -1,13 +1,13 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.dao.ServerDao;
 import indi.uhyils.pojo.model.ServerEntity;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.GetNameByIdRequest;
-import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.TestConnByDataRequest;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.ServerService;
 import indi.uhyils.util.SshUtils;
 import org.springframework.beans.factory.annotation.Autowired;

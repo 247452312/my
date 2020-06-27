@@ -7,7 +7,7 @@
     <groupId>indi.uhyils</groupId>
     <artifactId>my</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <modules>
         <module>my-api</module>
         <module>my-service</module>
@@ -20,7 +20,6 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
         <spring.version>5.2.5.RELEASE</spring.version>
-        <com.dubbo.version>2.6.2</com.dubbo.version>
         <org.dubbo.version>2.7.6</org.dubbo.version>
         <druid.version>1.1.22</druid.version>
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
@@ -30,7 +29,7 @@
         <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
         <zookeeper.version>3.6.0</zookeeper.version>
         <zk-client.version>0.11</zk-client.version>
-        <curator.version>2.12.0</curator.version>
+        <curator.version>4.3.0</curator.version>
         <mybatis.version>3.5.4</mybatis.version>
         <mybatis.spring.version>2.0.4</mybatis.spring.version>
         <mybatis.spring-boot.version>2.1.2</mybatis.spring-boot.version>
@@ -42,6 +41,8 @@
         <jedis.version>3.2.0</jedis.version>
         <distrupter.version>3.4.2</distrupter.version>
         <ssh2.version>262</ssh2.version>
+        <rabbitmq-client.version>5.7.3</rabbitmq-client.version>
+        <quartz.version>2.3.2</quartz.version>
 
     </properties>
 
@@ -90,7 +91,12 @@
         <dependencies>
             <dependency>
                 <groupId>indi.uhyils</groupId>
-                <artifactId>my-common</artifactId>
+                <artifactId>my-common-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-common-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -103,6 +109,11 @@
             <dependency>
                 <groupId>indi.uhyils</groupId>
                 <artifactId>my-api-provider-user</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-api-provider-distribute</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -152,6 +163,15 @@
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+
             <!--            &lt;!&ndash;devtools热部署&ndash;&gt;-->
             <!--            <dependency>-->
             <!--                <groupId>org.springframework.boot</groupId>-->
@@ -181,27 +201,51 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo -->
+
+            <!--MQ-->
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>dubbo</artifactId>
-                <version>${com.dubbo.version}</version>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>${rabbitmq-client.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-common -->
+
+            <!-- 动态定时任务 -->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
+            </dependency>
+
+
+
+
+            <!-- dubbo -->
             <dependency>
                 <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-common</artifactId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
                 <version>${org.dubbo.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo</artifactId>
+                <version>${org.dubbo.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+            <!--zookeeper-->
             <dependency>
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-framework</artifactId>
-                <version>2.12.0</version>
+                <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->

@@ -1,21 +1,26 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.DictDao;
 import indi.uhyils.dao.DictItemDao;
 import indi.uhyils.pojo.model.DictEntity;
 import indi.uhyils.pojo.model.DictItemEntity;
+import indi.uhyils.pojo.request.GetByCodeRequest;
 import indi.uhyils.pojo.request.GetByItemArgsRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.request.model.Arg;
-import indi.uhyils.pojo.response.Page;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.LastPlanResponse;
+import indi.uhyils.pojo.response.VersionInfoResponse;
+import indi.uhyils.pojo.response.base.Page;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.DictService;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -23,6 +28,23 @@ import java.util.List;
  */
 @Service(group = "${spring.profiles.active}")
 public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implements DictService {
+
+    /**
+     * 首页版本信息展示 字典code
+     */
+    private static final String VERSION_CODE = "myVersionCode";
+
+
+    /**
+     * 首页下一步计划展示 字典code
+     */
+    private static final String LAST_PLAN_CODE = "lastPlan";
+
+    /**
+     * 图标的icon-class
+     */
+    private static final String MENU_ICON_CLASS_CODE = "icon-class";
+
 
     @Autowired
     private DictDao dao;
@@ -129,4 +151,37 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
             return ServiceResult.buildSuccessResult("查询成功", build, request);
         }
     }
+
+    @Override
+    public ServiceResult<VersionInfoResponse> getVersionInfoResponse(DefaultRequest request) {
+        // TODO 版本信息应该加入在缓存里
+        String dictId = dao.getIdByCode(VERSION_CODE);
+        ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
+        VersionInfoResponse build = VersionInfoResponse.build(infos);
+        return ServiceResult.buildSuccessResult("查询成功", build, request);
+    }
+
+    @Override
+    public ServiceResult<LastPlanResponse> getLastPlanResponse(DefaultRequest request) {
+        // TODO 下一步计划应该在缓存里
+        String dictId = dao.getIdByCode(LAST_PLAN_CODE);
+        ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
+        LastPlanResponse build = LastPlanResponse.build(infos);
+        return ServiceResult.buildSuccessResult("查询成功", build, request);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<String>> getAllMenuIcon(DefaultRequest request) {
+        String dictId = dao.getIdByCode(MENU_ICON_CLASS_CODE);
+        ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
+        ArrayList<String> collect = (ArrayList<String>) infos.stream().map(DictItemEntity::getValue).collect(Collectors.toList());
+        return ServiceResult.buildSuccessResult("查询成功", collect, request);
+    }
+
+    @Override
+    public ServiceResult<ArrayList<DictItemEntity>> getByCode(GetByCodeRequest request) {
+        ArrayList<DictItemEntity> list = dictItemDao.getByCode(request.getCode());
+        return ServiceResult.buildSuccessResult("查询成功", list, request);
+    }
+
 }

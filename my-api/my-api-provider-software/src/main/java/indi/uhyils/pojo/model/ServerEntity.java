@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseEntity;
+import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 /**
  * 服务器
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.BaseEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 13时01分
  */
-public class ServerEntity extends BaseEntity {
+public class ServerEntity extends BaseVoEntity {
 
     /**
      * 服务器ip

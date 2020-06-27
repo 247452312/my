@@ -1,15 +1,15 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.LogDao;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.LogEntity;
 import indi.uhyils.pojo.model.UserEntity;
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.ObjRequest;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.LogService;
 import indi.uhyils.util.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;

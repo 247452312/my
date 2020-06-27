@@ -2,12 +2,16 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.DictEntity;
 import indi.uhyils.pojo.model.DictItemEntity;
-import indi.uhyils.pojo.request.ArgsRequest;
+import indi.uhyils.pojo.request.GetByCodeRequest;
 import indi.uhyils.pojo.request.GetByItemArgsRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.ObjRequest;
-import indi.uhyils.pojo.response.Page;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
+import indi.uhyils.pojo.response.LastPlanResponse;
+import indi.uhyils.pojo.response.VersionInfoResponse;
+import indi.uhyils.pojo.response.base.Page;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 
@@ -77,4 +81,40 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      * @return 分页数据(也可以设置不分页)
      */
     ServiceResult<Page<DictItemEntity>> getByItemArgs(GetByItemArgsRequest request);
+
+
+    /**
+     * 获取版本信息response
+     *
+     * @param request 默认请求
+     * @return 版本信息
+     */
+    ServiceResult<VersionInfoResponse> getVersionInfoResponse(DefaultRequest request);
+
+
+    /**
+     * 获取下一步计划
+     *
+     * @param request 默认
+     * @return 下一步计划
+     */
+    ServiceResult<LastPlanResponse> getLastPlanResponse(DefaultRequest request);
+
+
+    /**
+     * 获取全部的按钮菜单
+     *
+     * @param request 默认请求
+     * @return 图标class
+     */
+    ServiceResult<ArrayList<String>> getAllMenuIcon(DefaultRequest request);
+
+
+    /**
+     * 获取code对应的字典对应的所有项
+     *
+     * @param request 字典code
+     * @return code对应的字典对应的所有项
+     */
+    ServiceResult<ArrayList<DictItemEntity>> getByCode(GetByCodeRequest request);
 }

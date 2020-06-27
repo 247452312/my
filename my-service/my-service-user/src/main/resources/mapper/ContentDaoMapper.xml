@@ -104,45 +104,45 @@
             ,name = #{name}
         </if>
 
-        <if test="title1 != null and title1 != ''">
+        <if test="title1 != null">
             ,title1 = #{title1}
         </if>
-        <if test="var1 != null and var1 != ''">
+        <if test="var1 != null">
             ,var1 = #{var1}
         </if>
 
-        <if test="title2 != null and title2 != ''">
+        <if test="title2 != null ">
             ,title2 = #{title2}
         </if>
-        <if test="var2 != null and var2 != ''">
+        <if test="var2 != null">
             ,var2 = #{var2}
         </if>
 
-        <if test="title3 != null and title3 != ''">
+        <if test="title3 != null ">
             ,title3 = #{title3}
         </if>
-        <if test="var3 != null and var3 != ''">
+        <if test="var3 != null ">
             ,var3 = #{var3}
         </if>
 
-        <if test="title4 != null and title4 != ''">
+        <if test="title4 != null">
             ,title4 = #{title4}
         </if>
-        <if test="var4 != null and var4 != ''">
+        <if test="var4 != null ">
             ,var4 = #{var4}
         </if>
 
-        <if test="title5 != null and title5 != ''">
+        <if test="title5 != null">
             ,title5 = #{title5}
         </if>
-        <if test="var5 != null and var5 != ''">
+        <if test="var5 != null ">
             ,var5 = #{var5}
         </if>
 
-        <if test="title6 != null and title6 != ''">
+        <if test="title6 != null">
             ,title6 = #{title6}
         </if>
-        <if test="var6 != null and var6 != ''">
+        <if test="var6 != null">
             ,var6 = #{var6}
         </if>
 

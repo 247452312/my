@@ -61,9 +61,11 @@
                     , cellMinWidth: 80 // 全局最小列宽
                     , cols: [[
                         {type: 'checkbox', fixed: 'left'}
-                        , {type: "numbers", title: '序号',  unresize: true}
+                        , {type: "numbers", title: '序号', unresize: true}
                         , {field: 'nickName', title: '昵称'}
                         , {field: 'userName', title: '用户名'}
+                        , {field: 'mail', title: '邮箱'}
+                        , {field: 'phone', title: '手机'}
                         , {
                             title: '用户角色id', templet: function (d) {
                                 return d.role.name;

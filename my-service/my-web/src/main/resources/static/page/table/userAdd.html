@@ -12,6 +12,7 @@
         body {
             background-color: #ffffff;
         }
+
         .layui-transfer-box {
             overflow: auto;
         }
@@ -35,6 +36,20 @@
         <label class="layui-form-label required">角色用户名</label>
         <div class="layui-input-block">
             <input type="text" name="userName" lay-verify="required" placeholder="请输入角色用户名" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">邮箱</label>
+        <div class="layui-input-block">
+            <input type="text" name="mail" lay-verify="required" placeholder="请输入邮箱" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">手机</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" lay-verify="required" placeholder="请输入手机" value=""
                    class="layui-input">
         </div>
     </div>
@@ -92,6 +107,8 @@
                 $('[name="id"]').attr('value', data.id);
                 $('[name="nickName"]').attr('value', data.nickName);
                 $('[name="userName"]').attr('value', data.userName);
+                $('[name="mail"]').attr('value', data.mail);
+                $('[name="phone"]').attr('value', data.phone);
                 $('[name="password"]').parent().parent().remove();
                 let s = '[name="roleId"] option[value="' + data.role.id + '"]';
                 $(s).attr("selected", true);

@@ -1,15 +1,15 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.dao.PowerDao;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.PowerSimpleEntity;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.GetMethodNameByInterfaceNameRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.PowerService;
 import indi.uhyils.util.ApiPowerInitUtil;
 import indi.uhyils.util.LogUtil;

@@ -1,0 +1,58 @@
+package indi.uhyils.runner;
+
+import indi.uhyils.dao.JobDao;
+import indi.uhyils.pojo.model.JobEntity;
+import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.ScheduledManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+/**
+ * 定时任务初始化类
+ *
+ * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2020年06月27日 07时39分
+ */
+@Component
+public class JobInitRunner implements ApplicationRunner {
+
+    @Autowired
+    private ScheduledManager scheduledManager;
+
+    @Autowired
+    private JobDao jobDao;
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+
+        List<JobEntity> list = jobDao.getAll();
+        list.forEach(t -> {
+            if (t.getPause() != true) {
+                scheduledManager.addJob(t);
+            }
+        });
+
+        LogUtil.info(this, "定时任务初始化成功");
+    }
+
+
+    public ScheduledManager getScheduledManager() {
+        return scheduledManager;
+    }
+
+    public void setScheduledManager(ScheduledManager scheduledManager) {
+        this.scheduledManager = scheduledManager;
+    }
+
+    public JobDao getJobDao() {
+        return jobDao;
+    }
+
+    public void setJobDao(JobDao jobDao) {
+        this.jobDao = jobDao;
+    }
+}

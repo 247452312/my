@@ -86,7 +86,7 @@
                 #{statusSh},
                 #{stopSh},
                 #{version},
-                #{dokerName})
+                #{dockerName})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.RedisEntity">
@@ -94,7 +94,7 @@
         update_date = #{updateDate}
         ,update_user = #{updateUser}
 
-        <if test="password != null and password != ''">
+        <if test="password != null ">
             ,password = #{password}
         </if>
         <if test="port != null and port != ''">
@@ -118,7 +118,7 @@
         <if test="version != null and version != ''">
             ,version = #{version}
         </if>
-        <if test="dockerName != null and dockerName != ''">
+        <if test="dockerName != null ">
             ,other_1 = #{dockerName}
         </if>
 

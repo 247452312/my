@@ -16,13 +16,17 @@ mysql配置在application.properties中
         * 服务提供者的responseCode
         * 服务消费者查询的规范请求
         * 服务提供者返回的标准回复
-        * Entity默认继承的类->DataEntity 包含createDate,updateDate,delMark,remark  
+        * Entity默认继承的类->BaseEntity 包含createDate,updateDate,delete_flag,remark  
     * my-dubbo-admin >------ dubbo控制台
     * my-service ------ 微服务,即服务提供者
-    * my-web ----- 整个项目前台模块
+        * my-service-log ----- 日志模块
+        * my-service-software ----- 软件模块
+        * my-service-user ----- 用户及权限模块
+        * my-web ----- 整个项目前台模块
+    
 
 ### dubbo泛化调用 
-* 调用api为 http://localhost:8083/action
+* 调用api为 http://${ip}:${webPort}/action
 * post请求
 * json为: {
                  "interfaceName": "XxxService",

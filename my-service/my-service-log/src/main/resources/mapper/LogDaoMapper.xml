@@ -148,6 +148,11 @@
         from sys_log a
         where ${columnName} = #{value}
     </select>
+    <select id="getCountByStartTime" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(*)
+        from sys_log
+        where time > #{time}
+    </select>
 
 
 </mapper>
