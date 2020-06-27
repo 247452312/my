@@ -1,6 +1,8 @@
 server:
   port: 8001
 dubbo:
+  metadata-report:
+    address: zookeeper://192.168.1.101:2181
   registry:
     client: curator
     address: zookeeper://192.168.1.101:2181
@@ -29,3 +31,14 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+
+redis:
+  ip: 192.168.1.101
+  port: 6379
+  password: uhyils
+
+rabbit:
+  host: 192.168.1.101
+  port: 5672
+  username: uhyils
+  password: 123456

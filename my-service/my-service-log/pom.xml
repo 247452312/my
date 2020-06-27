@@ -5,10 +5,10 @@
     <parent>
         <artifactId>my-service</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <artifactId>my-service-log</artifactId>
     <packaging>jar</packaging>
 
@@ -29,8 +29,13 @@
 
         <dependency>
             <groupId>indi.uhyils</groupId>
-            <artifactId>my-common</artifactId>
+            <artifactId>my-common-base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-service</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-api-provider-log</artifactId>
@@ -77,9 +82,13 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo -->
+        <!-- dubbo -->
         <dependency>
-            <groupId>com.alibaba</groupId>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
         </dependency>
 
@@ -91,9 +100,14 @@
         <!--<version>${org.dubbo.version}</version>-->
         <!--</dependency>-->
 
+        <!--zookeeper-->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>

@@ -2,6 +2,12 @@
 # VERSION {版本号}
 # Author: uhyils
 
+# docker stop prod-my-web
+# docker rm prod-my-web
+# docker rmi my-service/prod-my-web:latest
+# docker build --build-arg version=0.0.3 --build-arg runEnv=prod -t my-service/prod-my-web .
+# docker run -it -d  -p 8051:8051 -p 20851:20851 --name prod-my-web my-service/prod-my-web:latest java -jar /app.jar --spring.profiles.active=prod
+
 FROM java:8
 
 ARG runEnv

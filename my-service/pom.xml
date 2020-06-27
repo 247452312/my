@@ -5,10 +5,10 @@
     <parent>
         <artifactId>my</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
     <artifactId>my-service</artifactId>
     <packaging>pom</packaging>
@@ -17,6 +17,7 @@
         <module>my-web</module>
         <module>my-service-log</module>
         <module>my-service-software</module>
+        <module>my-service-distribute</module>
     </modules>
 
 

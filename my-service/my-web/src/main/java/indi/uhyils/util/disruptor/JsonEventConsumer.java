@@ -1,10 +1,10 @@
 package indi.uhyils.util.disruptor;
 
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
 import com.lmax.disruptor.EventHandler;
 import indi.uhyils.pojo.model.LogEntity;
-import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.service.LogService;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +37,6 @@ public class JsonEventConsumer implements EventHandler<JsonEvent> {
      */
     @Override
     public void onEvent(JsonEvent jsonEvent, long l, boolean b) throws Exception {
-        logService.pushRequestLogNoToken(ObjRequest.build(JSONObject.parseObject(jsonEvent.getValue(), LogEntity.class), jsonEvent.getToken()));
+        logService.pushRequestLog(ObjRequest.build(JSONObject.parseObject(jsonEvent.getValue(), LogEntity.class), jsonEvent.getToken()));
     }
 }

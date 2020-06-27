@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.request;
 
 
+import indi.uhyils.pojo.request.base.DefaultRequest;
+
 /**
  * 用户登录用request
  *

@@ -8,7 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../../css/public.css" media="all">
+    <link rel="stylesheet" href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
     <link rel="stylesheet" href="../../css/my.css" media="all">
+
     <style>
         body {
             background-color: #ffffff;
@@ -37,13 +40,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">icon</label>
         <div class="layui-input-block">
-            <select name="icon">
-                <option value="icon0">0</option>
-                <option value="icon1">1</option>
-                <option value="icon2">2</option>
-                <option value="icon3">3</option>
-                <option value="icon4">4</option>
-                <option value="icon5">5</option>
+            <select name="icon" id="menu_icon">
+                <option value="">请选择</option>
             </select>
         </div>
     </div>
@@ -114,6 +112,14 @@
         };
         let id = $.getUrlParam('id');
         let func = $.getUrlParam('func');
+        pushRequest("DictService", "getAllMenuIcon", {}, function (data) {
+            let $menuIcon = $("#menu_icon");
+            $menuIcon.empty();
+            $menuIcon.append("<option value=\"\">请选择</option>");
+            for (let i = 0; i < data.length; i++) {
+                $menuIcon.append('<option value="' + data[i] + '" icon="' + data[i] + '">' + data[i] + '</option>')
+            }
+        });
         pushRequest("MenuService", "getById", {
             id: id
         }, function (data) {
@@ -133,6 +139,7 @@
                 $('[name="target"][value="' + data.target + '"]').attr("checked", true);
                 $('[name="name"]').attr('value', data.name);
                 // $('[name="icon"]').attr('value', data.icon);
+                $('[name="icon"] option').removeAttr("selected");
                 $('[name="icon"] option[value="' + data.icon + '"]').attr('selected', true);
                 $('[name="url"]').attr('value', data.url);
             } else if (func == 'add') {

@@ -1,21 +1,26 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.annotation.NoToken;
+import indi.uhyils.content.Content;
 import indi.uhyils.dao.UserDao;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.LoginRequest;
+import indi.uhyils.pojo.request.UpdatePasswordRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.LoginResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
 import indi.uhyils.util.RedisPoolUtil;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -48,7 +53,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<UserEntity> getUserByIdNoToken(IdRequest idRequest) {
+    public ServiceResult<UserEntity> getUserById(IdRequest idRequest) {
 
         //缓存
         UserEntity user = redisPoolUtil.getUser(idRequest.getToken());
@@ -81,9 +86,9 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<String> getUserTokenNoToken(GetUserRequest userRequest) {
-        String token = getToken(userRequest.getId());
-        return ServiceResult.buildSuccessResult("token生成成功", token, userRequest);
+    public ServiceResult<String> getUserToken(IdRequest request) {
+        String token = getToken(request.getId());
+        return ServiceResult.buildSuccessResult("token生成成功", token, request);
     }
 
     @Override
@@ -97,7 +102,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<TokenInfo> getTokenInfoByTokenNoToken(DefaultRequest request) {
+    public ServiceResult<TokenInfo> getTokenInfoByToken(DefaultRequest request) {
         String token = request.getToken();
 
         String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
@@ -124,15 +129,15 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
             LocalDateTime localDateTime = LocalDateTime.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddhhmm");
             String format = localDateTime.format(dateTimeFormatter);
-            Integer dayNow = Integer.parseInt(format.substring(0, 2));
-            Integer hourNow = Integer.parseInt(format.substring(2, 4));
-            Integer monNow = Integer.parseInt(format.substring(4, 6));
+            int dayNow = Integer.parseInt(format.substring(0, 2));
+            int hourNow = Integer.parseInt(format.substring(2, 4));
+            int monNow = Integer.parseInt(format.substring(4, 6));
             // 如果分钟差超过30
-            if (monNow - Integer.parseInt(mon) >= 30) {
+            if (monNow - Integer.parseInt(mon) >= Content.LOGIN_TIME_OUT_MIN) {
                 tokenInfo.setTimeOut(true);
-            } else if (hourNow - Integer.parseInt(hour) >= 1) {
+            } else if (hourNow - Integer.parseInt(hour) > 0) {
                 tokenInfo.setTimeOut(true);
-            } else if (dayNow - Integer.parseInt(day) >= 1) {
+            } else if (dayNow - Integer.parseInt(day) > 0) {
                 tokenInfo.setTimeOut(true);
             } else {
                 tokenInfo.setTimeOut(false);
@@ -145,7 +150,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest) {
+    public ServiceResult<LoginResponse> userLogin(LoginRequest userRequest) {
         ArrayList<Arg> objects = new ArrayList<>();
         objects.add(new Arg("username", "=", userRequest.getUsername()));
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
@@ -165,10 +170,6 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         String token = getToken(userEntity.getId());
         userRequest.setToken(token);
 
-
-        if (userEntity.getRoleId() == null) {
-            return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
-        }
         // 登录->加入缓存中
         redisPoolUtil.addUser(token, userEntity);
         return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
@@ -186,16 +187,25 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
     @Override
-    public ServiceResult<UserEntity> getUserById(IdRequest request) {
-        String id = request.getId();
-        UserEntity userEntity = dao.getById(id);
-        if (userEntity == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, request);
+    public ServiceResult<UserEntity> getUserByToken(DefaultRequest request) {
+        return ServiceResult.buildSuccessResult("查询成功", request.getUser(), request);
+    }
+
+    @Override
+    public ServiceResult<String> updatePassword(UpdatePasswordRequest request) {
+        String oldPassword = request.getOldPassword();
+        UserEntity user = request.getUser();
+        String userId = user.getId();
+        Integer passwordIsTrue = dao.checkUserPassword(userId, MD5Util.MD5Encode(oldPassword));
+        // 不为1 说明不正确
+        if (passwordIsTrue != 1) {
+            return ServiceResult.buildFailedResult("密码不正确", "密码不正确", request);
         }
-        String roleId = userEntity.getRoleId();
-        RoleEntity userRoleById = dao.getUserRoleById(roleId);
-        userEntity.setRole(userRoleById);
-        return ServiceResult.buildSuccessResult("获取用户成功", userEntity, request);
+        UserEntity byId = dao.getById(userId);
+        byId.setPassword(request.getNewPassword());
+        byId.preUpdate(request);
+        dao.update(byId);
+        return ServiceResult.buildSuccessResult("修改密码成功", "true", request);
     }
 
 

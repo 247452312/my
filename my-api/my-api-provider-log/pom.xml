@@ -5,17 +5,22 @@
     <parent>
         <artifactId>my-api</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <artifactId>my-api-provider-log</artifactId>
     <dependencies>
         <dependency>
             <groupId>indi.uhyils</groupId>
-            <artifactId>my-common</artifactId>
-            <version>0.0.3</version>
+            <artifactId>my-common-base</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-service</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

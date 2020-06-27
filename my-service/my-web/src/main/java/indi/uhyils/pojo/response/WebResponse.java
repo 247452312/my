@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.response;
 
+import indi.uhyils.pojo.response.base.ServiceResult;
+
 import java.io.Serializable;
 
 /**

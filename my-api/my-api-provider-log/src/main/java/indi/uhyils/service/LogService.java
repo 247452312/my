@@ -1,9 +1,10 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.LogEntity;
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.ObjRequest;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,7 +23,7 @@ public interface LogService extends DefaultEntityService<LogEntity> {
      * @param request 请求
      * @return 是否成功
      */
-    ServiceResult<Boolean> pushRequestLogNoToken(ObjRequest<LogEntity> request);
+    ServiceResult<Boolean> pushRequestLog(ObjRequest<LogEntity> request);
 
     /**
      * 获取所有的日志类型 -- > 这个应该不用访问数据库

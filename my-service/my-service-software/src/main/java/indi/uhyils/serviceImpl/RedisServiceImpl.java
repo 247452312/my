@@ -1,26 +1,26 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import indi.uhyils.dao.RedisDao;
 import indi.uhyils.dao.ServerDao;
 import indi.uhyils.enum_.RedisAddEnum;
 import indi.uhyils.enum_.RedisUpdateEnum;
 import indi.uhyils.enum_.SoftwareStatusEnum;
 import indi.uhyils.pojo.model.RedisEntity;
-import indi.uhyils.pojo.model.RedisKeyAndValue;
 import indi.uhyils.pojo.model.ServerEntity;
 import indi.uhyils.pojo.request.GetRedisKeysRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.IdsRequest;
-import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.pojo.request.RedisKeyAndValue;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.IdsRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.GetInfosResponse;
 import indi.uhyils.pojo.response.OperateSoftwareResponse;
 import indi.uhyils.pojo.response.RedisKeyResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.RedisService;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SshUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Client;
 import redis.clients.jedis.Jedis;
@@ -50,6 +50,11 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
      * docker启动中的redis返回值
      */
     private static final String DOCKER_REDIS_STATUS_RUNNING = "true";
+
+    /**
+     * redis 获取属性时list的size
+     */
+    private static final Integer CONFIG_GET_SIZE = 2;
 
     @Autowired
     private RedisDao dao;
@@ -251,7 +256,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         List<String> databases = jedis.configGet("databases");
         jedis.close();
         LogUtil.info(this, "查询 configGet数量为:" + databases.size());
-        if (databases.size() == 2) {
+        if (databases.size() == CONFIG_GET_SIZE) {
             String count = databases.get(1);
             return ServiceResult.buildSuccessResult("查询数据库成功", Integer.parseInt(count), request);
         }
@@ -385,7 +390,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         client.info();
         String bulkReply = client.getBulkReply();
         String[] split = bulkReply.replace("\r", "").split("\\n");
-        HashMap<String, String> redisInfoMap = new HashMap<>();
+        HashMap<String, String> redisInfoMap = new HashMap<>(split.length);
         Arrays.stream(split).forEach(t -> {
             t = t.trim();
             // # 开头属于注释 所以要去掉 :结尾会报错,所以要去掉
