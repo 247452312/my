@@ -11,12 +11,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 异步任务线程池装配类
- * https://juejin.im/entry/5abb8f6951882555677e9da2
+ *
+ * @author 来自网络
  */
 @Configuration
 public class AsyncTaskExecutePool implements AsyncConfigurer {
 
-    //注入配置类
+    /**
+     * 注入配置类
+     */
     private final AsyncTaskProperties config;
 
     public AsyncTaskExecutePool(AsyncTaskProperties config) {

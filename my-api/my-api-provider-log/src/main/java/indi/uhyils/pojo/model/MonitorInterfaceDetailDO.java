@@ -75,4 +75,33 @@ public class MonitorInterfaceDetailDO extends BaseIdEntity {
     public void setRunTime(Long runTime) {
         this.runTime = runTime;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("            \"fid\":\"")
+                .append(fid).append('\"');
+        if (interfaceName != null) {
+            sb.append(",            \"interfaceName\":\"")
+                    .append(interfaceName).append('\"');
+        }
+        if (methodName != null) {
+            sb.append(",            \"methodName\":\"")
+                    .append(methodName).append('\"');
+        }
+        if (success != null) {
+            sb.append(",            \"success\":")
+                    .append(success);
+        }
+        if (time != null) {
+            sb.append(",            \"time\":")
+                    .append(time);
+        }
+        if (runTime != null) {
+            sb.append(",            \"runTime\":")
+                    .append(runTime);
+        }
+        sb.append('}');
+        return sb.toString();
+    }
 }

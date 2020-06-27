@@ -13,11 +13,15 @@ import java.io.Serializable;
 public interface BaseDbSaveable extends Serializable {
     /**
      * 插入前时使用的方法
+     *
+     * @param request 请求
      */
     void preInsert(DefaultRequest request);
 
     /**
      * 修改前时使用的方法
+     *
+     * @param request 请求
      */
     void preUpdate(DefaultRequest request);
 }

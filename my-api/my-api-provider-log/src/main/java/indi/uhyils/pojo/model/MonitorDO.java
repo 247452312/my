@@ -119,4 +119,45 @@ public class MonitorDO extends BaseIdEntity {
     public void setNoHeapInitMem(Double noHeapInitMem) {
         this.noHeapInitMem = noHeapInitMem;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("            \"serviceName\":\"")
+                .append(serviceName).append('\"');
+        if (ip != null) {
+            sb.append(",            \"ip\":\"")
+                    .append(ip).append('\"');
+        }
+        if (time != null) {
+            sb.append(",            \"time\":")
+                    .append(time);
+        }
+        if (endTime != null) {
+            sb.append(",            \"endTime\":")
+                    .append(endTime);
+        }
+        if (jvmTotalMem != null) {
+            sb.append(",            \"jvmTotalMem\":")
+                    .append(jvmTotalMem);
+        }
+        if (heapTotalMem != null) {
+            sb.append(",            \"heapTotalMem\":")
+                    .append(heapTotalMem);
+        }
+        if (heapInitMem != null) {
+            sb.append(",            \"heapInitMem\":")
+                    .append(heapInitMem);
+        }
+        if (noHeapTotalMem != null) {
+            sb.append(",            \"noHeapTotalMem\":")
+                    .append(noHeapTotalMem);
+        }
+        if (noHeapInitMem != null) {
+            sb.append(",            \"noHeapInitMem\":")
+                    .append(noHeapInitMem);
+        }
+        sb.append('}');
+        return sb.toString();
+    }
 }

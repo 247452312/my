@@ -6,9 +6,9 @@ import indi.uhyils.enum_.RedisAddEnum;
 import indi.uhyils.enum_.RedisUpdateEnum;
 import indi.uhyils.enum_.SoftwareStatusEnum;
 import indi.uhyils.pojo.model.RedisEntity;
-import indi.uhyils.pojo.request.RedisKeyAndValue;
 import indi.uhyils.pojo.model.ServerEntity;
 import indi.uhyils.pojo.request.GetRedisKeysRequest;
+import indi.uhyils.pojo.request.RedisKeyAndValue;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
@@ -50,6 +50,11 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
      * docker启动中的redis返回值
      */
     private static final String DOCKER_REDIS_STATUS_RUNNING = "true";
+
+    /**
+     * redis 获取属性时list的size
+     */
+    private static final Integer CONFIG_GET_SIZE = 2;
 
     @Autowired
     private RedisDao dao;
@@ -251,7 +256,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         List<String> databases = jedis.configGet("databases");
         jedis.close();
         LogUtil.info(this, "查询 configGet数量为:" + databases.size());
-        if (databases.size() == 2) {
+        if (databases.size() == CONFIG_GET_SIZE) {
             String count = databases.get(1);
             return ServiceResult.buildSuccessResult("查询数据库成功", Integer.parseInt(count), request);
         }

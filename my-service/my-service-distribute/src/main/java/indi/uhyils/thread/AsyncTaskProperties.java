@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 线程池配置属性类
+ * @author 来自网络
  */
 @Component
 @ConfigurationProperties(prefix = "task.pool")

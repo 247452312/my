@@ -71,4 +71,29 @@ public class MonitorJvmStatusDetailDO extends BaseIdEntity {
     public void setTime(Long time) {
         this.time = time;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("            \"fid\":\"")
+                .append(fid).append('\"');
+        if (useMem != null) {
+            sb.append(",            \"useMem\":")
+                    .append(useMem);
+        }
+        if (heapUseMem != null) {
+            sb.append(",            \"heapUseMem\":")
+                    .append(heapUseMem);
+        }
+        if (noHeapUseMem != null) {
+            sb.append(",            \"noHeapUseMem\":")
+                    .append(noHeapUseMem);
+        }
+        if (time != null) {
+            sb.append(",            \"time\":")
+                    .append(time);
+        }
+        sb.append('}');
+        return sb.toString();
+    }
 }
