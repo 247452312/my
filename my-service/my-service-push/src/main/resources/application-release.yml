@@ -1,16 +1,16 @@
 server:
-  port: 8005
+  port: 8006
 dubbo:
   metadata-report:
-    address: zookeeper://192.168.1.101:2181
+    address: zookeeper://172.26.59.129:2181
   registry:
     client: curator
-    address: zookeeper://192.168.1.101:2181
+    address: zookeeper://172.26.59.129:2181
   protocol:
     name: dubbo
-    port: 20805
+    port: 20806
   application:
-    name: provider-distribute
+    name: provider-push
   consumer:
     timeout: 3000
     group: ${spring.profiles.active}
@@ -21,16 +21,13 @@ dubbo:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: indi.uhyils.dao
-logging:
-  level:
-    indi.uhyils.dao: trace
 token:
   salt: my
   encodeRules: my
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.1.101:3306/my
+    url: jdbc:mysql://172.26.59.129:3306/my
     username: root
     password: 123456
   output:
@@ -45,12 +42,18 @@ spring:
       cache: false    #页面不加载缓存，修改即时生效
 
 redis:
-  ip: 192.168.1.101
+  ip: 172.26.59.129
   port: 6379
   password: uhyils
-
 rabbit:
-  host: 192.168.1.101
+  host: 172.26.59.129
   port: 5672
   username: uhyils
   password: 123456
+
+task:
+  pool:
+    corePoolSize: 5
+    maxPoolSize: 20
+    keepAliveSeconds: 1000
+    queueCapacity: 10

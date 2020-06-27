@@ -75,7 +75,7 @@
             $("[name='interfaceName']").empty();
             $("[name='interfaceName']").append('<option value="">请选择一个接口</option> ');
             for (let i = 0; i < data.length; i++) {
-                $("[name='interfaceName']").append('<option value="' + data[i] + '">' + data[i] + '</option> ');
+                $("[name='interfaceName']").append('<option value="' + data[i].value + '">' + data[i].text + '</option> ');
             }
             form.render('select');
         });

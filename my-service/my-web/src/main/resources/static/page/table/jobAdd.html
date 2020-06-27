@@ -131,7 +131,8 @@
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
-                $('[name="interfaceName"]').attr('value', data.interfaceName);
+                // $('[name="interfaceName"]').attr('value', data.interfaceName);
+                $('[name="interfaceName"] option[value="' + data.interfaceName + '"]').attr("selected", true);
                 $('[name="methodName"]').attr('value', data.methodName);
                 $('[name="cron"]').attr('value', data.cron);
                 $('[name="name"]').attr('value', data.name);
@@ -139,7 +140,8 @@
                 if (data.pause == false) {
                     $('[name="pause"]').attr("checked");
                 }
-                $('[name="paramType"]').attr('value', data.paramType);
+                // $('[name="paramType"]').attr('value', data.paramType);
+                $('[name="paramType"] option[value="' + data.paramType + '"]').attr("selected", true);
                 form.render();
             })
         }
