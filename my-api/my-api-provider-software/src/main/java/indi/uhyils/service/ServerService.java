@@ -1,11 +1,12 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.ServerEntity;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.GetNameByIdRequest;
-import indi.uhyils.pojo.request.IdRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.TestConnByDataRequest;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 

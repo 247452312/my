@@ -14,8 +14,9 @@
         a.remark,
 
         a.nick_name as nickName,
+        a.mail,
+        a.phone,
         a.username,
-        a.password,
         a.role_id as roleId
     </sql>
     <sql id="deptColumnList">
@@ -98,7 +99,7 @@
         select count(*)
         from sys_user a
         where delete_flag = 0
-        <foreach item="item" index="index" collection="list">
+        <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
     </select>
@@ -110,9 +111,9 @@
     </select>
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.UserEntity">
-        insert sys_user(id, nick_name, username, password,role_id, create_date, create_user, update_date, update_user,
+        insert sys_user(id, nick_name,mail,phone, username, password,role_id, create_date, create_user, update_date, update_user,
                     delete_flag, remark)
-        values (#{id}, #{nickName}, #{userName},#{password},#{roleId},#{createDate}, #{createUser}, #{updateDate},
+        values (#{id}, #{nickName},#{mail},#{phone},#{userName},#{password},#{roleId},#{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
 
@@ -129,13 +130,19 @@
         <if test="password != null and password != ''">
             ,password = #{password}
         </if>
-        <if test="roleId != null and roleId != ''">
+        <if test="mail != null">
+            ,mail = #{mail}
+        </if>
+        <if test="phone != null">
+            ,phone = #{phone}
+        </if>
+        <if test="roleId != null ">
             ,role_id = #{roleId}
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
         </if>
-        <if test="remark != null and remark != ''">
+        <if test="remark != null ">
             ,remark = #{remark}
         </if>
         where id = #{id}
@@ -167,5 +174,9 @@
         <include refid="columnList"/>
         from sys_user a
         where delete_flag = 0
+    </select>
+
+    <select id="checkUserPassword" resultType="java.lang.Integer">
+        select count(*) from sys_user where delete_flag=0 and passowrd = #{passowrd} and id = #{id}
     </select>
 </mapper>

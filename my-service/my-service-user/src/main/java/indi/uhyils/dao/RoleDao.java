@@ -1,5 +1,6 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.RoleDeptMiddle;
 import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
     <meta charset="utf-8">
     <title>redis详情</title>
@@ -167,11 +167,11 @@
                 <div class="layui-row layui-col-space15">
                     <!--设置与刷新按钮-->
                     <div class="layui-col-md12" style="text-align: center;">
-                        <button class="layui-btn layui-btn-radius layui-btn-primary layui-btn-xs "><i
+                        <button id="menu_redis" class="layui-btn layui-btn-radius layui-btn-primary layui-btn-xs "><i
                                 class="fa fa-reorder"></i></button>
-                        <button class="layui-btn layui-btn-radius layui-btn-primary layui-btn-xs "><i
+                        <button id="off_on_redis" class="layui-btn layui-btn-radius layui-btn-primary layui-btn-xs "><i
                                 class="fa fa-power-off"></i></button>
-                        <button class="layui-btn layui-btn-radius layui-btn-primary layui-btn-xs "><i
+                        <button id="refresh_redis" class="layui-btn layui-btn-radius layui-btn-primary layui-btn-xs "><i
                                 class="fa fa-refresh"></i></button>
                     </div>
                     <!--切换db和新建-->
@@ -216,7 +216,7 @@
                                                         <!--redis_mode-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="redis_mode">null</h2>
+                                                        <h2 class="no-margins" into-name="redis_mode">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -230,7 +230,7 @@
                                                         <!--os-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="os">null</h2>
+                                                        <h2 class="no-margins" into-name="os">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -244,7 +244,7 @@
                                                         <!--process_id-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="process_id">null</h2>
+                                                        <h2 class="no-margins" into-name="process_id">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,7 +258,7 @@
                                                         <!--uptime_in_days-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="uptime_in_days">null</h2>
+                                                        <h2 class="no-margins" into-name="uptime_in_days">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -272,7 +272,7 @@
                                                         <!--tcp_port-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="tcp_port">null</h2>
+                                                        <h2 class="no-margins" into-name="tcp_port">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -286,7 +286,7 @@
                                                         <!--redis_version-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="redis_version">null</h2>
+                                                        <h2 class="no-margins" into-name="redis_version">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -311,7 +311,7 @@
                                                         <h5>已连接客户端的数量</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="connected_clients">null</h2>
+                                                        <h2 class="no-margins" into-name="connected_clients">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -324,8 +324,9 @@
                                                         <h5>最长的输出列表</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="client_recent_max_output_buffer">
-                                                            null</h2>
+                                                        <h2 class="no-margins"
+                                                            into-name="client_recent_max_output_buffer">
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -338,8 +339,9 @@
                                                         <h5>最大输入缓存</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="client_recent_max_input_buffer">
-                                                            null</h2>
+                                                        <h2 class="no-margins"
+                                                            into-name="client_recent_max_input_buffer">
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -352,7 +354,7 @@
                                                         <h5>正在等待阻塞命令</h5>
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="blocked_clients">null</h2>
+                                                        <h2 class="no-margins" into-name="blocked_clients">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -378,7 +380,7 @@
                                                         <!--used_memory_human-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="used_memory_human">null</h2>
+                                                        <h2 class="no-margins" into-name="used_memory_human">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -393,7 +395,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h2 class="no-margins" into-name="used_memory_peak_human">
-                                                            null</h2>
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -408,7 +410,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h2 class="no-margins" into-name="used_memory_peak_perc">
-                                                            null</h2>
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -422,7 +424,7 @@
                                                         <!--maxmemory_human-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="maxmemory_human">null</h2>
+                                                        <h2 class="no-margins" into-name="maxmemory_human">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -436,7 +438,7 @@
                                                         <!--mem_allocator-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="mem_allocator">null</h2>
+                                                        <h2 class="no-margins" into-name="mem_allocator">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -450,7 +452,7 @@
                                                         <!--maxmemory_policy-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="maxmemory_policy">null</h2>
+                                                        <h2 class="no-margins" into-name="maxmemory_policy">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -476,7 +478,7 @@
                                                         <!--loading-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="loading">null</h2>
+                                                        <h2 class="no-margins" into-name="loading">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -490,7 +492,7 @@
                                                         <!--aof_enabled-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="aof_enabled">null</h2>
+                                                        <h2 class="no-margins" into-name="aof_enabled">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -505,7 +507,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h2 class="no-margins" into-name="rdb_changes_since_last_save">
-                                                            null</h2>
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -520,7 +522,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h2 class="no-margins" into-name="aof_last_write_status">
-                                                            null</h2>
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -547,7 +549,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h2 class="no-margins" into-name="total_connections_received">
-                                                            null</h2>
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -562,7 +564,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h2 class="no-margins" into-name="instantaneous_ops_per_sec">
-                                                            null</h2>
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -577,7 +579,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h2 class="no-margins" into-name="instantaneous_input_kbps">
-                                                            null</h2>
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -592,7 +594,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h2 class="no-margins" into-name="instantaneous_output_kbps">
-                                                            null</h2>
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -606,7 +608,7 @@
                                                         <!--keyspace_hits-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="keyspace_hits">null</h2>
+                                                        <h2 class="no-margins" into-name="keyspace_hits">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -620,7 +622,7 @@
                                                         <!--keyspace_misses-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="keyspace_misses">null</h2>
+                                                        <h2 class="no-margins" into-name="keyspace_misses">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -646,7 +648,7 @@
                                                         <!--used_cpu_sys-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="used_cpu_sys">null</h2>
+                                                        <h2 class="no-margins" into-name="used_cpu_sys">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -660,7 +662,7 @@
                                                         <!--used_cpu_user-->
                                                     </div>
                                                     <div class="panel-content">
-                                                        <h2 class="no-margins" into-name="used_cpu_user">null</h2>
+                                                        <h2 class="no-margins" into-name="used_cpu_user">无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -675,7 +677,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h2 class="no-margins" into-name="used_cpu_sys_children">
-                                                            null</h2>
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -690,7 +692,7 @@
                                                     </div>
                                                     <div class="panel-content">
                                                         <h2 class="no-margins" into-name="used_cpu_user_children">
-                                                            null</h2>
+                                                            无</h2>
                                                     </div>
                                                 </div>
                                             </div>
@@ -716,6 +718,8 @@
 <script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script>
+
+    var status = 1;
     layui.use(['layer', 'form', 'table', 'soulTable'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
@@ -731,6 +735,7 @@
         };
         let id = $.getUrlParam('id');
 
+        /*获取redis的数据库*/
         pushRequest("RedisService", "getRedisDB", {id: id}, function (data) {
             for (let i = 0; i < data; i++) {
                 $("#redis-db").append("<option value='" + i + "'>db" + i + "</option>")
@@ -741,16 +746,58 @@
             reloadTable();
         });
 
-        pushRequest("RedisService", "getInfos", {id: id}, function (data) {
-            for (let i = 0; i < data.length; i++) {
-                let $1 = $("[into-name='" + data[i].name + "']");
-                if ($1.length > 0) {
-                    if (data[i].name == "os") {
-                        data[i].value = data[i].value.split(" ")[0];
+        var getRedisInfos = function () {
+            if (status == 1) {
+                /*获取redis的所有info*/
+                pushRequest("RedisService", "getInfos", {id: id}, function (data) {
+                    for (let i = 0; i < data.length; i++) {
+                        let $1 = $("[into-name='" + data[i].name + "']");
+                        if ($1.length > 0) {
+                            if (data[i].name == "os") {
+                                data[i].value = data[i].value.split(" ")[0];
+                            }
+                            $1.html(data[i].value);
+                        } else {
+                            $1.html("无");
+                        }
                     }
-                    $1.html(data[i].value);
-                }
+                });
+            } else {
+                layer.msg("redis没有开启,获取信息失败");
             }
+        };
+
+        /* redis开关,如果开了就关 如果关了就开 */
+        $("#off_on_redis").click(function () {
+            if (status == 1) { // 说明现在是开着的,要关了
+                layer.confirm('是否确认关闭', {
+                    btn: ['确认', '取消'] //按钮
+                }, function () {
+                    pushRequest("RedisService", "stop", {id: id}, function (data) {
+                        status = data.status;
+                        layer.msg(data.msg);
+                        getRedisInfos();
+                        reloadTable();
+                    });
+                }, function () {
+                });
+            } else { // 说明现在没有开启,开启
+                layer.confirm('是否确认开启', {
+                    btn: ['确认', '取消'] //按钮
+                }, function () {
+                    pushRequest("RedisService", "start", {id: id}, function (data) {
+                        status = data.status;
+                        layer.msg(data.msg);
+                        getRedisInfos();
+                        reloadTable();
+                    });
+                }, function () {
+                });
+            }
+        });
+        /* 刷新按钮 */
+        $("#refresh_redis").click(function () {
+            getRedisInfos();
         });
         $("#addRedisKey").click(function () {
                 // 获取数据库的值
@@ -777,7 +824,7 @@
         table.on('tool(redis-keys-table)', function (obj) {
             var data = obj.data;
             //console.log(obj)
-            if (obj.event === 'del') { // 删除
+            if (obj.event == 'del') { // 删除
                 layer.confirm('真的删除行么', function (index) {
                     pushRequest("RedisService", "deleteRedisByKey", {
                         data: {
@@ -790,7 +837,7 @@
                         reloadTable();
                     });
                 });
-            } else if (obj.event === 'edit') {
+            } else if (obj.event == 'edit') {
                 let value = $("#redis-db").val();
 
                 var index = layer.open({
@@ -841,6 +888,7 @@
                 });
             }
         };
+        getRedisInfos();
         reloadTable();
         form.render();
     });

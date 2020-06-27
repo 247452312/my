@@ -1,15 +1,16 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.RedisEntity;
-import indi.uhyils.pojo.model.RedisKeyAndValue;
+import indi.uhyils.pojo.request.RedisKeyAndValue;
 import indi.uhyils.pojo.request.GetRedisKeysRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.IdsRequest;
-import indi.uhyils.pojo.request.ObjRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.IdsRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.GetInfosResponse;
 import indi.uhyils.pojo.response.OperateSoftwareResponse;
 import indi.uhyils.pojo.response.RedisKeyResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 

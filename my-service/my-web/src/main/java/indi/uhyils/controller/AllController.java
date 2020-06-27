@@ -3,10 +3,10 @@ package indi.uhyils.controller;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.Action;
-import indi.uhyils.pojo.request.DefaultRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.SessionRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogPushUtils;
@@ -64,7 +64,6 @@ public class AllController {
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
             LogUtil.error(this, e);
-            e.printStackTrace();
             eMsg = e.getMessage();
             return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
         } finally {

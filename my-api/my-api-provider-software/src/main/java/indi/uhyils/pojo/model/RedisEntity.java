@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseEntity;
+import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 /**
  * redis
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.BaseEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 12时59分
  */
-public class RedisEntity extends BaseEntity {
+public class RedisEntity extends BaseVoEntity {
 
 
     /**

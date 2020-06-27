@@ -1,7 +1,6 @@
 package indi.uhyils.util;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -41,8 +40,10 @@ public class AESUtil {
 
             KeyGenerator keygen = KeyGenerator.getInstance(AES);
             //2.根据encodeRules规则初始化密钥生成器
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            random.setSeed(encodeRules.getBytes());
             //生成一个128位的随机源,根据传入的字节数组
-            keygen.init(128, new SecureRandom(encodeRules.getBytes()));
+            keygen.init(128, random);
             //3.产生原始对称密钥
             SecretKey originalKey = keygen.generateKey();
             //4.获得原始对称密钥的字节数组
@@ -59,9 +60,9 @@ public class AESUtil {
             byte[] byteAes = cipher.doFinal(byteEncode);
             //10.将加密后的数据转换为字符串
             //11.将字符串返回
-            return new BASE64Encoder().encode(byteAes);
+            return new String(Base64.encodeBase64(byteAes));
         } catch (NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | NoSuchPaddingException | InvalidKeyException e) {
-            e.printStackTrace();
+            LogUtil.error(AESUtil.class, e);
         }
 
         //如果有错就返加null
@@ -80,8 +81,10 @@ public class AESUtil {
             //1.构造密钥生成器，指定为AES算法,不区分大小写
             KeyGenerator keygen = KeyGenerator.getInstance(AES);
             //2.根据encodeRules规则初始化密钥生成器
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            random.setSeed(encodeRules.getBytes());
             //生成一个128位的随机源,根据传入的字节数组
-            keygen.init(128, new SecureRandom(encodeRules.getBytes()));
+            keygen.init(128, random);
             //3.产生原始对称密钥
             SecretKey originalKey = keygen.generateKey();
             //4.获得原始对称密钥的字节数组
@@ -93,15 +96,25 @@ public class AESUtil {
             //7.初始化密码器，第一个参数为加密(Encrypt_mode)或者解密(Decrypt_mode)操作，第二个参数为使用的KEY
             cipher.init(Cipher.DECRYPT_MODE, key);
             //8.将加密并编码后的内容解码成字节数组
-            byte[] byteContent = new BASE64Decoder().decodeBuffer(content);
+            byte[] byteContent = Base64.decodeBase64(content);
             /*
              * 解密
              */
             byte[] byteDecode = cipher.doFinal(byteContent);
             return new String(byteDecode, PROJECT_CODE);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IOException | IllegalBlockSizeException | BadPaddingException e) {
-            e.printStackTrace();
+            LogUtil.error(AESUtil.class, e);
         }
         return null;
+    }
+
+
+    public static void main(String[] args) {
+        String mmm = "uhyils";
+        String role = "rrr";
+        String s = AESEncode(role, mmm);
+        System.out.println(s);
+        String s1 = AESDecode(role, s);
+        System.out.println(s1);
     }
 }

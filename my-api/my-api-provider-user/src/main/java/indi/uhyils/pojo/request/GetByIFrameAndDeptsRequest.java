@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.request;
 
+import indi.uhyils.pojo.request.base.DefaultRequest;
+
 /**
  * 获取权限菜单的请求
  *

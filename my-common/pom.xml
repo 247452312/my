@@ -5,47 +5,17 @@
     <parent>
         <artifactId>my</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.3</version>
-    <packaging>jar</packaging>
+    <version>0.0.4</version>
+    <modules>
+        <module>my-common-base</module>
+        <module>my-common-service</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <artifactId>my-common</artifactId>
 
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!--引入AOP依赖-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-        </dependency>
-
-    </dependencies>
 </project>
