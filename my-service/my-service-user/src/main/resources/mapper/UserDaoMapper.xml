@@ -179,4 +179,7 @@
     <select id="checkUserPassword" resultType="java.lang.Integer">
         select count(*) from sys_user where delete_flag=0 and passowrd = #{passowrd} and id = #{id}
     </select>
+    <select id="getNameById" resultType="java.lang.String">
+        select name from sys_user where id = #{id}
+    </select>
 </mapper>

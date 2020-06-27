@@ -57,5 +57,13 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param oldPassword 旧密码
      * @return 是否正确
      */
-    Integer checkUserPassword(@Param("id") String id,@Param("password") String oldPassword);
+    Integer checkUserPassword(@Param("id") String id, @Param("password") String oldPassword);
+
+    /**
+     * 获取用户名称
+     *
+     * @param id id
+     * @return 用户名称
+     */
+    String getNameById(String id);
 }

@@ -88,5 +88,13 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      */
     ServiceResult<String> updatePassword(UpdatePasswordRequest request);
 
+    /**
+     * 根据id获取用户名称
+     *
+     * @param request id
+     * @return 用户名称
+     */
+    ServiceResult<String> getNameById(IdRequest request);
+
 
 }

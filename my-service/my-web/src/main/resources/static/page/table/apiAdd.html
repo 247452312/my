@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .layui-transfer-box {
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <!--  父id    -->
+    <input type="text" name="id" value="" style="display:none;">
+    <input type="text" name="class" value="indi.uhyils.pojo.model.ApiEntity" style="display:none;">
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" lay-verify="required" placeholder="请输入名称" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">api所在组(群)</label>
+        <div class="layui-input-block">
+            <input type="text" name="apiGroup" lay-verify="required" placeholder="请输入组名" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">调用顺位</label>
+        <div class="layui-input-block">
+            <input type="text" name="apiOrder" lay-verify="required" placeholder="请输入调用顺位" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">是否需要重复</label>
+        <div class="layui-input-block">
+            <input type="checkbox" checked="" name="needRepeat" value="true" lay-skin="switch" lay-filter="switchTest"
+                   lay-text="需要|不需要">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">请求网址</label>
+        <div class="layui-input-block">
+            <input type="text" name="url" lay-verify="required" placeholder="请输入请求网址" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">请求类型</label>
+        <div class="layui-input-block">
+            <select name="type" lay-filter="aihao">
+                <option value="">请选择请求类型</option>
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="DELETE">DELETE</option>
+                <option value="UPDATE">UPDATE</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">请求头</label>
+        <div class="layui-input-block">
+            <input type="text" name="head" lay-verify="required" placeholder="换行和冒号分割请求头" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">请求限制频率</label>
+        <div class="layui-input-block">
+            <input type="text" name="frequency" lay-verify="required" placeholder="请求限制频率(单位:小时)" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">请求参数</label>
+        <div class="layui-input-block">
+            <input type="text" name="param" lay-verify="required" placeholder="请求参数(JSON)" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">结果格式</label>
+        <div class="layui-input-block">
+            <input type="text" name="resultFormat" lay-verify="required" placeholder="结果格式(JSON)" value=""
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/my.js"></script>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        $("[name='param']").on("input", function (e) {
+            //获取input输入的值
+            layer.tips('支持的值为${username},${email},${phone},${nickName},以及之前顺位中结果的值,表现形式为:${顺位号.值}或${顺位号.值1.值2}', '[name="param"]');
+        });
+
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        };
+        let id = $.getUrlParam('id');
+        let func = $.getUrlParam('func');
+
+        //监听指定开关
+        form.on('switch(switchTest)', function (data) {
+            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
+                offset: '6px'
+            });
+            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+        });
+
+        if (func == 'edit') { // 这是修改
+            pushRequest("ApiService", "getById", {
+                id: id
+            }, function (data) {
+                $('[name="id"]').attr('value', data.id);
+                $('[name="name"]').attr('value', data.name);
+                $('[name="apiGroup"]').attr('value', data.apiGroup);
+                $('[name="apiOrder"]').attr('value', data.apiOrder);
+                $('[name="url"]').attr('value', data.url);
+                $('[name="type"] option[value="' + data.type + '"]').attr("selected", true);
+                $('[name="head"]').attr('value', data.head);
+                $('[name="frequency"]').attr('value', data.frequency);
+                $('[name="param"]').attr('value', data.param);
+                $('[name="resultFormat"]').attr('value', data.resultFormat);
+                if (data.needRepeat == true) {
+                    $('[name="needRepeat"]').attr("checked");
+                }
+                form.render();
+            })
+        }
+
+
+        var closeAndReload = function () {
+            var iframeIndex = parent.layer.getFrameIndex(window.name);
+            parent.$.reloadTable();
+            parent.layer.close(iframeIndex);
+        };
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+                // 关闭弹出层
+                layer.close(index);
+                if (func === 'add') {
+                    pushRequest("ApiService", "insert", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                } else if (func === 'edit') {
+                    pushRequest("ApiService", "update", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

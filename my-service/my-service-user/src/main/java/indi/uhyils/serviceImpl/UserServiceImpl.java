@@ -208,6 +208,12 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         return ServiceResult.buildSuccessResult("修改密码成功", "true", request);
     }
 
+    @Override
+    public ServiceResult<String> getNameById(IdRequest request) {
+        String name = dao.getNameById(request.getId());
+        return ServiceResult.buildSuccessResult("查询成功", name, request);
+    }
+
 
     public String getSalt() {
         return salt;
