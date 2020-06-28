@@ -73,9 +73,9 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">请求头</label>
+        <label class="layui-form-label ">请求头</label>
         <div class="layui-input-block">
-            <input type="text" name="head" lay-verify="required" placeholder="换行和冒号分割请求头" value=""
+            <input type="text" name="head" placeholder="换行和冒号分割请求头" value=""
                    class="layui-input">
         </div>
     </div>
@@ -87,9 +87,9 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">请求参数</label>
+        <label class="layui-form-label ">请求参数</label>
         <div class="layui-input-block">
-            <input type="text" name="param" lay-verify="required" placeholder="请求参数(JSON)" value=""
+            <input type="text" name="param" placeholder="请求参数(JSON)" value=""
                    class="layui-input">
         </div>
     </div>
@@ -98,6 +98,14 @@
         <div class="layui-input-block">
             <input type="text" name="resultFormat" lay-verify="required" placeholder="结果格式(JSON)" value=""
                    class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">结果编码</label>
+        <div class="layui-input-block">
+            <select name="resultCode" lay-filter="aihao">
+                <option value="">请选择结果编码</option>
+            </select>
         </div>
     </div>
 
@@ -137,6 +145,14 @@
             });
             layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
         });
+        pushRequest("DictService", "getByCode", {code: 'result-code'}, function (data) {
+            $("[name='resultCode']").empty();
+            $("[name='resultCode']").append('<option value="">请选择结果编码</option> ');
+            for (let i = 0; i < data.length; i++) {
+                $("[name='resultCode']").append('<option value="' + data[i].value + '">' + data[i].text + '</option> ');
+            }
+            form.render('select');
+        });
 
         if (func == 'edit') { // 这是修改
             pushRequest("ApiService", "getById", {
@@ -152,6 +168,7 @@
                 $('[name="frequency"]').attr('value', data.frequency);
                 $('[name="param"]').attr('value', data.param);
                 $('[name="resultFormat"]').attr('value', data.resultFormat);
+                $('[name="resultCode"] option[value="' + data.resultCode + '"]').attr("selected", true);
                 if (data.needRepeat == true) {
                     $('[name="needRepeat"]').attr("checked");
                 }
@@ -167,6 +184,7 @@
         };
         //监听提交
         form.on('submit(saveBtn)', function (data) {
+
             var index = layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
             }, function () {
@@ -174,12 +192,14 @@
                 layer.close(index);
                 if (func === 'add') {
                     pushRequest("ApiService", "insert", {data: data.field}, function () {
+                        closeAndReload();
                     });
-                    closeAndReload();
+
                 } else if (func === 'edit') {
                     pushRequest("ApiService", "update", {data: data.field}, function () {
+                        closeAndReload();
                     });
-                    closeAndReload();
+
                 }
             });
             return false;

@@ -4,6 +4,8 @@ import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.ApiEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -12,4 +14,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ApiDao extends DefaultDao<ApiEntity> {
 
+    /**
+     * 获取某个api群的所有api -> 排序 从小到大
+     *
+     * @param apiGroup api群名称
+     * @return apis
+     */
+    List<ApiEntity> getGroupByGroupId(String apiGroup);
 }

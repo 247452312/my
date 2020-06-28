@@ -59,6 +59,11 @@ public class ApiEntity extends BaseVoEntity {
      */
     private String resultFormat;
 
+    /**
+     * 结果编码
+     */
+    private String resultCode;
+
 
     public Integer getApiOrder() {
         return apiOrder;
@@ -138,5 +143,13 @@ public class ApiEntity extends BaseVoEntity {
 
     public void setApiGroup(String apiGroup) {
         this.apiGroup = apiGroup;
+    }
+
+    public String getResultCode() {
+        return resultCode;
+    }
+
+    public void setResultCode(String resultCode) {
+        this.resultCode = resultCode;
     }
 }

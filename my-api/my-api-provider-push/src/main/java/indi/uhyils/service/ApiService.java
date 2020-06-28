@@ -1,6 +1,8 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.ApiEntity;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
 
 /**
@@ -11,4 +13,11 @@ import indi.uhyils.service.base.DefaultEntityService;
  */
 public interface ApiService extends DefaultEntityService<ApiEntity> {
 
+    /**
+     * 测试api
+     *
+     * @param request api id
+     * @return 结果
+     */
+    ServiceResult<String> test(IdRequest request);
 }

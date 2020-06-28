@@ -22,6 +22,7 @@
         a.need_repeat as needRepeat,
         a.param,
         a.result_format as resultFormat,
+        a.result_code as resultCode,
         a.type,
         a.url
 
@@ -79,6 +80,7 @@
                        need_repeat,
                        param,
                        result_format,
+                       result_code,
                        type,
                        url)
         values (#{id},
@@ -96,6 +98,7 @@
                 #{needRepeat},
                 #{param},
                 #{resultFormat},
+                #{resultCode},
                 #{type},
                 #{url})
     </insert>
@@ -129,6 +132,9 @@
         <if test="resultFormat != null and resultFormat != ''">
             ,result_format = #{resultFormat}
         </if>
+        <if test="resultCode != null and resultCode != ''">
+            ,result_code = #{resultCode}
+        </if>
         <if test="type != null and type != ''">
             ,type = #{type}
         </if>
@@ -160,6 +166,13 @@
         select count(*)
         from sys_api a
         where ${columnName} = #{value}
+    </select>
+    <select id="getGroupByGroupId" resultType="indi.uhyils.pojo.model.ApiEntity">
+        select
+        <include refid="columnList"/>
+        from sys_api a
+        where api_group = #{apiGroup}
+        order by api_order
     </select>
 
 </mapper>
