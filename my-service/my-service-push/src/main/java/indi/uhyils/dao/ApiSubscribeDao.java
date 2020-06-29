@@ -4,6 +4,8 @@ import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.ApiSubscribeEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -12,4 +14,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ApiSubscribeDao extends DefaultDao<ApiSubscribeEntity> {
 
+    /**
+     * 根据cron获取订阅信息
+     *
+     * @param cron
+     * @return
+     */
+    List<ApiSubscribeEntity> getByCron(String cron);
 }

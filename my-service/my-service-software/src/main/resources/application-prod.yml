@@ -9,6 +9,7 @@ dubbo:
   protocol:
     name: dubbo
     port: 20854
+    threadpool: cached
   application:
     name: provider-software
   consumer:

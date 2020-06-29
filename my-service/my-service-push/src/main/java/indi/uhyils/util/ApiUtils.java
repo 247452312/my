@@ -30,13 +30,12 @@ public class ApiUtils {
      * @param apis 已经排好序的api们
      * @return 结果
      */
-    public static String callApi(List<ApiEntity> apis, UserEntity userEntity) {
+    public static String callApi(List<ApiEntity> apis, UserEntity userEntity,HashMap<String,String> parameter) {
         // 初始化调用群期间可传递的参数
-        HashMap<String, String> map = new HashMap<>(apis.size() - 1);
-        map.put("${username}", userEntity.getUserName());
-        map.put("${nickName}", userEntity.getNickName());
-        map.put("${mail}", userEntity.getMail());
-        map.put("${phone}", userEntity.getPhone());
+        parameter.put("${username}", userEntity.getUserName());
+        parameter.put("${nickName}", userEntity.getNickName());
+        parameter.put("${mail}", userEntity.getMail());
+        parameter.put("${phone}", userEntity.getPhone());
         String result = null;
         int apiIndex = 0;
         // 遍历api群中的每一个api(已经排好序)
@@ -47,7 +46,7 @@ public class ApiUtils {
             HashMap<String, String> httpHead = new HashMap<>();
             if (!StringUtils.isEmpty(head)) {
                 // 注入head中的参数
-                for (Map.Entry<String, String> en : map.entrySet()) {
+                for (Map.Entry<String, String> en : parameter.entrySet()) {
                     if (head.indexOf(en.getKey()) != -1) {
                         head = head.replaceAll(en.getKey(), en.getValue());
                     }
@@ -64,13 +63,13 @@ public class ApiUtils {
             byte[] paramByte = null;
             if (!StringUtils.isEmpty(param)) {
                 // 注入param中的参数
-                for (Map.Entry<String, String> en : map.entrySet()) {
+                for (Map.Entry<String, String> en : parameter.entrySet()) {
                     param = param.replaceAll(en.getKey(), en.getValue());
                 }
                 // 获取流
                 paramByte = param.getBytes(StandardCharsets.UTF_8);
             }
-            result = getHttpResultString(map, result, apiIndex, api, param, httpHead, paramByte);
+            result = getHttpResultString(parameter, result, apiIndex, api, param, httpHead, paramByte);
             apiIndex++;
         }
         LogUtil.info(ApiUtils.class, "api调用群结束");
@@ -142,8 +141,6 @@ public class ApiUtils {
                     default:
                         break;
                 }
-                // 解析Unicode编码为汉字
-                text = StringEncodingUtils.decodeUnicodeString(text);
                 LogUtil.info(ApiUtils.class, "请求返回值: " + text);
                 result = text;
                 JSONObject jsonObject = JSONObject.parseObject(text);

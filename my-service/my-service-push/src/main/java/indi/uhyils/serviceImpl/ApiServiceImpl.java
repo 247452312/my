@@ -9,6 +9,7 @@ import indi.uhyils.util.ApiUtils;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class ApiServiceImpl extends BaseDefaultServiceImpl<ApiEntity> implements
         }
         String apiGroup = apiEntity.getApiGroup();
         List<ApiEntity> list = dao.getGroupByGroupId(apiGroup);
-        String s = ApiUtils.callApi(list, request.getUser());
+        String s = ApiUtils.callApi(list, request.getUser(), new HashMap<>());
         return ServiceResult.buildSuccessResult("执行成功", s, request);
     }
 }

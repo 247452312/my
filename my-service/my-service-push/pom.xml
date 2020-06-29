@@ -127,6 +127,17 @@
             <artifactId>fastjson</artifactId>
         </dependency>
 
+        <!--工具包-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <!--邮件依赖-->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

@@ -1,0 +1,49 @@
+package indi.uhyils.util;
+
+import indi.uhyils.enum_.PushTypeEnum;
+import indi.uhyils.pojo.model.MsgEntity;
+
+/**
+ * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2020年06月29日 07时56分
+ */
+public class MsgBuild {
+
+    /**
+     * 创建一个成功的消息
+     *
+     * @param userId  用户id
+     * @param title   标题
+     * @param content 内容
+     * @param type    类型
+     * @return 成功的消息
+     */
+    public static MsgEntity buildSuccessMsg(String userId, String title, String content, PushTypeEnum type) {
+        MsgEntity msgEntity = new MsgEntity();
+        msgEntity.setContent(content);
+        msgEntity.setSuccess(true);
+        msgEntity.setTarget(userId);
+        msgEntity.setTitle(title);
+        msgEntity.setType(type.getCode());
+        return msgEntity;
+    }
+
+    /**
+     * 创建一个失败的消息
+     *
+     * @param userId  用户id
+     * @param title   标题
+     * @param content 内容
+     * @param type    类型
+     * @return 成功的消息
+     */
+    public static MsgEntity buildFaultMsg(String userId, String title, String content, PushTypeEnum type) {
+        MsgEntity msgEntity = new MsgEntity();
+        msgEntity.setContent(content);
+        msgEntity.setSuccess(false);
+        msgEntity.setTarget(userId);
+        msgEntity.setTitle(title);
+        msgEntity.setType(type.getCode());
+        return msgEntity;
+    }
+}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="indi.uhyils.dao.ApiSubscribeDao">
+<mapper namespace="indi.uhyils.dao.MsgDao">
 
 
     <sql id="columnList">
@@ -13,37 +13,38 @@
         a.update_date as updateDate,
         a.update_user as updateUser,
 
-        a.api_group_id as apiGroupId,
-        a.cron,
-        a.type,
-        a.user_id as userId
+        a.content,
+        a.success,
+        a.target,
+        a.title,
+        a.type
 
 
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.ApiSubscribeEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.MsgEntity">
         select
         <include refid="columnList"/>
-        from sys_api_subscribe a
+        from sys_push_msg a
         where delete_flag = 0
         and id = #{id}
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.ApiSubscribeEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.MsgEntity">
         select
         <include refid="columnList"/>
-        from sys_api_subscribe a
+        from sys_push_msg a
         where delete_flag = 0
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.ApiSubscribeEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.MsgEntity">
         select
         <include refid="columnList"/>
-        from sys_api_subscribe a
+        from sys_push_msg a
         where delete_flag = 0
 
         <foreach item="item" index="index" collection="args">
@@ -56,18 +57,19 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.ApiSubscribeEntity">
-        insert sys_api_subscribe(id,
-                                 create_date,
-                                 create_user,
-                                 delete_flag,
-                                 remark,
-                                 update_date,
-                                 update_user,
-                                 api_group_id,
-                                 cron,
-                                 type,
-                                 user_id)
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.MsgEntity">
+        insert sys_push_msg(id,
+                            create_date,
+                            create_user,
+                            delete_flag,
+                            remark,
+                            update_date,
+                            update_user,
+                            content,
+                            success,
+                            target,
+                            title,
+                            type)
         values (#{id},
                 #{createDate},
                 #{createUser},
@@ -75,28 +77,32 @@
                 #{remark},
                 #{updateDate},
                 #{updateUser},
-                #{apiGroupId},
-                #{cron},
-                #{type},
-                #{userId})
+                #{content},
+                #{success},
+                #{target},
+                #{title},
+                #{type})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.ApiSubscribeEntity">
-        update sys_api_subscribe set
+    <update id="update" parameterType="indi.uhyils.pojo.model.MsgEntity">
+        update sys_push_msg set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
 
-        <if test="apiGroupId != null and apiGroupId != ''">
-            ,api_group_id = #{apiGroupId}
+        <if test="content != null and content != ''">
+            ,content = #{content}
         </if>
-        <if test="cron != null and cron != ''">
-            ,cron = #{cron}
+        <if test="success != null and success != ''">
+            ,success = #{success}
+        </if>
+        <if test="target != null and target != ''">
+            ,target = #{target}
+        </if>
+        <if test="title != null and title != ''">
+            ,title = #{title}
         </if>
         <if test="type != null and type != ''">
             ,type = #{type}
-        </if>
-        <if test="userId != null and userId != ''">
-            ,user_id = #{userId}
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
@@ -106,13 +112,13 @@
 
     <select id="count" resultType="java.lang.Integer">
         select count(*)
-        from sys_api_subscribe a
+        from sys_push_msg a
         where delete_flag = 0;
     </select>
 
     <select id="countByArgs" resultType="java.lang.Integer">
         select count(*)
-        from sys_api_subscribe a
+        from sys_push_msg a
         where delete_flag = 0
         <foreach item="arg" index="index" collection="args">
             and ${arg.name} ${arg.symbol} #{arg.data}
@@ -121,15 +127,9 @@
 
     <select id="checkRepeat" resultType="java.lang.Integer">
         select count(*)
-        from sys_api_subscribe a
+        from sys_push_msg a
         where ${columnName} = #{value}
     </select>
-    <select id="getByCron" resultType="indi.uhyils.pojo.model.ApiSubscribeEntity">
-        select
-        <include refid="columnList"/>
-        from sys_api_subscribe a
-        where delete_flag = 0
-        and cron = #{cron}
-    </select>
+
 
 </mapper>

@@ -43,6 +43,8 @@
         <ssh2.version>262</ssh2.version>
         <rabbitmq-client.version>5.7.3</rabbitmq-client.version>
         <quartz.version>2.3.2</quartz.version>
+        <hutool.version>5.3.8</hutool.version>
+        <mail.version>1.4.7</mail.version>
 
     </properties>
 
@@ -265,6 +267,20 @@
                 <groupId>com.lmax</groupId>
                 <artifactId>disruptor</artifactId>
                 <version>${distrupter.version}</version>
+            </dependency>
+
+
+            <!--工具包-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <!--邮件依赖-->
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>${mail.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

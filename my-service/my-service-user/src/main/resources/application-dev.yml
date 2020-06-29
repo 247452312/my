@@ -10,6 +10,7 @@ dubbo:
   protocol:
     name: dubbo
     port: 20802
+    threadpool: cached
   application:
     name: provider-user
   consumer:

@@ -171,7 +171,14 @@
         select
         <include refid="columnList"/>
         from sys_api a
-        where api_group = #{apiGroup}
+        where delete_flag = 0 and api_group = #{apiGroup}
+        order by api_order
+    </select>
+    <select id="getAll" resultType="indi.uhyils.pojo.model.ApiEntity">
+        select
+        <include refid="columnList"/>
+        from sys_api a
+        where delete_flag = 0
         order by api_order
     </select>
 

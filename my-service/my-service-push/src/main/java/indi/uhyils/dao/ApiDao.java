@@ -21,4 +21,11 @@ public interface ApiDao extends DefaultDao<ApiEntity> {
      * @return apis
      */
     List<ApiEntity> getGroupByGroupId(String apiGroup);
+
+    /**
+     * 获取全部api
+     *
+     * @return 全部api
+     */
+    List<ApiEntity> getAll();
 }
