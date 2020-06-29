@@ -15,7 +15,10 @@ public class SendMail {
 
     private static final String HOST = "smtp.qq.com";
     private static final String PORT = "465";
-    private static final String PASS = "zjwiwaransijbicf";
+    /**
+    * stmp密码
+    */
+    private static final String PASS = "*************";
     private static final String USER = "uhyils";
     private static final String FROM_USER = "uhyils@qq.com";
 
