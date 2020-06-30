@@ -83,10 +83,10 @@ public class PushServiceImpl implements PushService {
             String sendContent = PushUtils.getSendContent(userEntity, apiGroupEntity);
             switch (Objects.requireNonNull(PushTypeEnum.prase(apiSubscribeEntity.getType()))) {
                 case PAGE:
-                    result = !PushUtils.pagePush(userEntity, sendContent) ? false : result;
+                    result = !PushUtils.pagePush(userEntity, "my系统,订阅消息-" + apiGroupEntity.getName(), sendContent) ? false : result;
                     break;
                 case EMAIL:
-                    result = !PushUtils.emailPush(userEntity, sendContent) ? false : result;
+                    result = !PushUtils.emailPush(userEntity, "my系统,订阅邮件-" + apiGroupEntity.getName(), sendContent) ? false : result;
                     break;
                 default:
                     break;

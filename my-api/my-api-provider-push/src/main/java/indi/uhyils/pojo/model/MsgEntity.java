@@ -10,7 +10,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  */
 public class MsgEntity extends BaseVoEntity {
     /**
-     * 用户类型
+     * 发送类型
      */
     private Integer type;
     /**

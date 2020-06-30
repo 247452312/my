@@ -3,7 +3,6 @@ package indi.uhyils.util;
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.MsgDao;
 import indi.uhyils.enum_.PushTypeEnum;
-import indi.uhyils.pojo.model.ApiEntity;
 import indi.uhyils.pojo.model.ApiGroupEntity;
 import indi.uhyils.pojo.model.MsgEntity;
 import indi.uhyils.pojo.model.UserEntity;
@@ -27,12 +26,12 @@ public class PushUtils {
      * 发送邮件
      *
      * @param userEntity  目标用户
+     * @param title       标题
      * @param sendContent 发送内容
      * @return
      */
-    public static Boolean emailPush(UserEntity userEntity, String sendContent) {
+    public static Boolean emailPush(UserEntity userEntity, String title, String sendContent) {
         String mail = userEntity.getMail();
-        String title = "my系统,订阅邮件";
         Boolean send = SendMail.send(mail, title, sendContent);
         saveMsg(userEntity, title, sendContent, PushTypeEnum.EMAIL, send);
         LogUtil.info(PushUtils.class, "向" + userEntity.getNickName() + " 发送邮件");
@@ -44,12 +43,12 @@ public class PushUtils {
      * 页面推送
      *
      * @param userEntity  用户信息
+     * @param title       标题
      * @param sendContent 发送内容
      * @return
      */
-    public static Boolean pagePush(UserEntity userEntity, String sendContent) {
+    public static Boolean pagePush(UserEntity userEntity, String title, String sendContent) {
         String userId = userEntity.getId();
-        String title = "my系统,订阅邮件";
         Boolean send = SendPage.send(userId, title, sendContent);
         saveMsg(userEntity, title, sendContent, PushTypeEnum.PAGE, send);
         LogUtil.info(PushUtils.class, "向" + userEntity.getNickName() + " 页面推送");
