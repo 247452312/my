@@ -1,6 +1,8 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.ApiSubscribeEntity;
+import indi.uhyils.pojo.request.SubscribeRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
 
 /**
@@ -11,4 +13,11 @@ import indi.uhyils.service.base.DefaultEntityService;
  */
 public interface ApiSubscribeService extends DefaultEntityService<ApiSubscribeEntity> {
 
+    /**
+     * 订阅
+     *
+     * @param request 订阅请求
+     * @return 是否订阅成功
+     */
+    ServiceResult<Boolean> subscribe(SubscribeRequest request);
 }

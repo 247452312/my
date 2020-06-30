@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.model;
 
 import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.request.SubscribeRequest;
 
 /**
  * api订阅类
@@ -29,6 +30,15 @@ public class ApiSubscribeEntity extends BaseVoEntity {
      * 时间
      */
     private String cron;
+
+    public static ApiSubscribeEntity build(SubscribeRequest request) {
+        ApiSubscribeEntity apiSubscribeEntity = new ApiSubscribeEntity();
+        apiSubscribeEntity.setApiGroupId(request.getApiGroup());
+        apiSubscribeEntity.setCron(request.getCron());
+        apiSubscribeEntity.setType(request.getSendType());
+        apiSubscribeEntity.setUserId(request.getUser().getId());
+        return apiSubscribeEntity;
+    }
 
     public String getUserId() {
         return userId;

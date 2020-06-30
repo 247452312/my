@@ -10,15 +10,11 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  */
 public class ApiEntity extends BaseVoEntity {
 
-    /**
-     * 此api的名称
-     */
-    private String name;
 
     /**
      * api所在组(群)
      */
-    private String apiGroup;
+    private String apiGroupId;
     /**
      * 调用顺位
      */
@@ -55,15 +51,17 @@ public class ApiEntity extends BaseVoEntity {
     private String param;
 
     /**
-     * 结果格式
-     */
-    private String resultFormat;
-
-    /**
      * 结果编码
      */
     private String resultCode;
 
+    public String getApiGroupId() {
+        return apiGroupId;
+    }
+
+    public void setApiGroupId(String apiGroupId) {
+        this.apiGroupId = apiGroupId;
+    }
 
     public Integer getApiOrder() {
         return apiOrder;
@@ -119,30 +117,6 @@ public class ApiEntity extends BaseVoEntity {
 
     public void setParam(String param) {
         this.param = param;
-    }
-
-    public String getResultFormat() {
-        return resultFormat;
-    }
-
-    public void setResultFormat(String resultFormat) {
-        this.resultFormat = resultFormat;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getApiGroup() {
-        return apiGroup;
-    }
-
-    public void setApiGroup(String apiGroup) {
-        this.apiGroup = apiGroup;
     }
 
     public String getResultCode() {

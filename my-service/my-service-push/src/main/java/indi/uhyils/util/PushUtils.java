@@ -4,6 +4,7 @@ import indi.uhyils.content.Content;
 import indi.uhyils.dao.MsgDao;
 import indi.uhyils.enum_.PushTypeEnum;
 import indi.uhyils.pojo.model.ApiEntity;
+import indi.uhyils.pojo.model.ApiGroupEntity;
 import indi.uhyils.pojo.model.MsgEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.base.DefaultRequest;
@@ -11,7 +12,6 @@ import indi.uhyils.util.mail.SendMail;
 import indi.uhyils.util.page.SendPage;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,15 +60,14 @@ public class PushUtils {
     /**
      * 获取api结果内容
      *
-     * @param userEntity 用户
-     * @param list       api群
+     * @param userEntity     用户
+     * @param apiGroupEntity api群
      * @return 内容
      */
-    public static String getSendContent(UserEntity userEntity, List<ApiEntity> list) {
+    public static String getSendContent(UserEntity userEntity, ApiGroupEntity apiGroupEntity) {
         HashMap<String, String> parameter = new HashMap<>();
-        ApiUtils.callApi(list, userEntity, parameter);
-        ApiEntity lastApi = list.get(list.size() - 1);
-        String resultFormat = lastApi.getResultFormat();
+        ApiUtils.callApi(apiGroupEntity.getApis(), userEntity, parameter);
+        String resultFormat = apiGroupEntity.getResultFormat();
         // 获取最终要推送的结果
         for (Map.Entry<String, String> entry : parameter.entrySet()) {
             resultFormat = resultFormat.replaceAll(entry.getKey(), entry.getValue());

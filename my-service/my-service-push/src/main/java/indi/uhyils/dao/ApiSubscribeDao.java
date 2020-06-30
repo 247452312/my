@@ -21,4 +21,12 @@ public interface ApiSubscribeDao extends DefaultDao<ApiSubscribeEntity> {
      * @return
      */
     List<ApiSubscribeEntity> getByCron(String cron);
+
+    /**
+     * 检查指定订阅有没有重复->只检查此用户的此api群
+     *
+     * @param entity 新订阅
+     * @return 重复个数
+     */
+    int checkSubscribeRepeat(ApiSubscribeEntity entity);
 }

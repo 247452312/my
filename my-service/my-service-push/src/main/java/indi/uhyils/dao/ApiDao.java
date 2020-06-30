@@ -2,6 +2,7 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.ApiEntity;
+import indi.uhyils.pojo.model.ApiGroupEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -28,4 +29,11 @@ public interface ApiDao extends DefaultDao<ApiEntity> {
      * @return 全部api
      */
     List<ApiEntity> getAll();
+
+    /**
+     * 删除所有
+     * @param byId
+     * @return
+     */
+    int deleteAllByGroup(ApiGroupEntity byId);
 }

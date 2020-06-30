@@ -1,9 +1,12 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.ApiEntity;
-import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.GetByArgsAndGroupRequest;
+import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
+
+import java.util.ArrayList;
 
 /**
  * 外界api调用表
@@ -14,10 +17,10 @@ import indi.uhyils.service.base.DefaultEntityService;
 public interface ApiService extends DefaultEntityService<ApiEntity> {
 
     /**
-     * 测试api
+     * 获取所有的指定组下的api
      *
-     * @param request api id
-     * @return 结果
+     * @param request 筛选信息
+     * @return 所有的指定组下的api
      */
-    ServiceResult<String> test(IdRequest request);
+    ServiceResult<Page<ApiEntity>> getByArgsAndGroup(GetByArgsAndGroupRequest request);
 }

@@ -2,14 +2,15 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.ApiDao;
 import indi.uhyils.pojo.model.ApiEntity;
-import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.GetByArgsAndGroupRequest;
+import indi.uhyils.pojo.request.model.Arg;
+import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.ApiService;
-import indi.uhyils.util.ApiUtils;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,15 +32,24 @@ public class ApiServiceImpl extends BaseDefaultServiceImpl<ApiEntity> implements
     }
 
     @Override
-    public ServiceResult<String> test(IdRequest request) {
-        ApiEntity apiEntity = dao.getById(request.getId());
-        Integer apiOrder = apiEntity.getApiOrder();
-        if (apiOrder != 1) {
-            return ServiceResult.buildFailedResult("错误,此api顺位不为1,不能执行", null, request);
+    public ServiceResult<Page<ApiEntity>> getByArgsAndGroup(GetByArgsAndGroupRequest request) {
+        List<Arg> args = request.getArgs();
+        Boolean paging = request.getPaging();
+        Arg e = new Arg();
+        e.setName("api_group_id");
+        e.setSymbol("=");
+        e.setData(request.getGroupId());
+        args.add(e);
+        if (paging) {
+            ArrayList<ApiEntity> byArgs = getDao().getByArgs(args, request.getPage(), request.getSize());
+            int count = getDao().countByArgs(request.getArgs());
+            Page<ApiEntity> build = Page.build(request, byArgs, count, (count / request.getSize()) + 1);
+            return ServiceResult.buildSuccessResult("查询成功", build, request);
+        } else {
+            ArrayList<ApiEntity> byArgs = getDao().getByArgsNoPage(args);
+            int count = getDao().countByArgs(request.getArgs());
+            Page<ApiEntity> build = Page.build(request, byArgs, count, null);
+            return ServiceResult.buildSuccessResult("查询成功", build, request);
         }
-        String apiGroup = apiEntity.getApiGroup();
-        List<ApiEntity> list = dao.getGroupByGroupId(apiGroup);
-        String s = ApiUtils.callApi(list, request.getUser(), new HashMap<>());
-        return ServiceResult.buildSuccessResult("执行成功", s, request);
     }
 }

@@ -30,7 +30,7 @@ public class ApiUtils {
      * @param apis 已经排好序的api们
      * @return 结果
      */
-    public static String callApi(List<ApiEntity> apis, UserEntity userEntity,HashMap<String,String> parameter) {
+    public static String callApi(List<ApiEntity> apis, UserEntity userEntity, HashMap<String, String> parameter) {
         // 初始化调用群期间可传递的参数
         parameter.put("${username}", userEntity.getUserName());
         parameter.put("${nickName}", userEntity.getNickName());
@@ -46,16 +46,14 @@ public class ApiUtils {
             HashMap<String, String> httpHead = new HashMap<>();
             if (!StringUtils.isEmpty(head)) {
                 // 注入head中的参数
-                for (Map.Entry<String, String> en : parameter.entrySet()) {
-                    if (head.indexOf(en.getKey()) != -1) {
-                        head = head.replaceAll(en.getKey(), en.getValue());
-                    }
-                }
+                head = replaceString(parameter, head);
                 // 解析请求头
                 String[] split = head.split("\n");
                 for (String s : split) {
                     String[] split1 = s.split(":");
                     assert split1.length == 2;
+                    split1[0] = replaceString(parameter, split1[0]);
+                    split1[1] = replaceString(parameter, split1[1]);
                     httpHead.put(split1[0], split1[1]);
                 }
             }
@@ -74,6 +72,18 @@ public class ApiUtils {
         }
         LogUtil.info(ApiUtils.class, "api调用群结束");
         return result;
+    }
+
+    public static String replaceString(HashMap<String, String> parameter, String head) {
+        for (Map.Entry<String, String> en : parameter.entrySet()) {
+            String key = en.getKey();
+            String value = en.getValue();
+            if (head.contains(key)) {
+                int index = head.indexOf(key);
+                head = head.substring(0, index) + value + head.substring(index + key.length());
+            }
+        }
+        return head;
     }
 
     /**

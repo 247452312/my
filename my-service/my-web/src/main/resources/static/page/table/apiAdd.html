@@ -25,20 +25,10 @@
     <input type="text" name="class" value="indi.uhyils.pojo.model.ApiEntity" style="display:none;">
 
 
-    <div class="layui-form-item">
-        <label class="layui-form-label required">名称</label>
-        <div class="layui-input-block">
-            <input type="text" name="name" lay-verify="required" placeholder="请输入名称" value=""
+
+            <input type="hidden" name="apiGroupId" lay-verify="required"  value=""
                    class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">api所在组(群)</label>
-        <div class="layui-input-block">
-            <input type="text" name="apiGroup" lay-verify="required" placeholder="请输入组名" value=""
-                   class="layui-input">
-        </div>
-    </div>
+
     <div class="layui-form-item">
         <label class="layui-form-label required">调用顺位</label>
         <div class="layui-input-block">
@@ -49,7 +39,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">是否需要重复</label>
         <div class="layui-input-block">
-            <input type="checkbox" checked="" name="needRepeat" value="true" lay-skin="switch" lay-filter="switchTest"
+            <input type="checkbox" name="needRepeat" value="true" lay-skin="switch" lay-filter="switchTest"
                    lay-text="需要|不需要">
         </div>
     </div>
@@ -94,13 +84,6 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">结果格式</label>
-        <div class="layui-input-block">
-            <input type="text" name="resultFormat" lay-verify="required" placeholder="结果格式(JSON)" value=""
-                   class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
         <label class="layui-form-label required">结果编码</label>
         <div class="layui-input-block">
             <select name="resultCode" lay-filter="aihao">
@@ -138,13 +121,6 @@
         let id = $.getUrlParam('id');
         let func = $.getUrlParam('func');
 
-        //监听指定开关
-        form.on('switch(switchTest)', function (data) {
-            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
-                offset: '6px'
-            });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
-        });
         pushRequest("DictService", "getByCode", {code: 'result-code'}, function (data) {
             $("[name='resultCode']").empty();
             $("[name='resultCode']").append('<option value="">请选择结果编码</option> ');
@@ -160,7 +136,7 @@
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
                 $('[name="name"]').attr('value', data.name);
-                $('[name="apiGroup"]').attr('value', data.apiGroup);
+                $('[name="apiGroupId"]').attr('value', data.apiGroupId);
                 $('[name="apiOrder"]').attr('value', data.apiOrder);
                 $('[name="url"]').attr('value', data.url);
                 $('[name="type"] option[value="' + data.type + '"]').attr("selected", true);
@@ -174,6 +150,8 @@
                 }
                 form.render();
             })
+        } else {
+            $('[name="apiGroupId"]').attr('value', id);
         }
 
 

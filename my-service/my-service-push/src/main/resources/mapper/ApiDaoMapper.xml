@@ -14,14 +14,12 @@
         a.update_user as updateUser,
 
 
-        a.api_group as apiGroup,
-        a.name,
+        a.api_group_id as apiGroupid,
         a.api_order as apiOrder,
         a.frequency,
         a.head,
         a.need_repeat as needRepeat,
         a.param,
-        a.result_format as resultFormat,
         a.result_code as resultCode,
         a.type,
         a.url
@@ -72,14 +70,12 @@
                        remark,
                        update_date,
                        update_user,
-                       api_group,
-                       name,
+                       api_group_id,
                        api_order,
                        frequency,
                        head,
                        need_repeat,
                        param,
-                       result_format,
                        result_code,
                        type,
                        url)
@@ -90,14 +86,12 @@
                 #{remark},
                 #{updateDate},
                 #{updateUser},
-                #{apiGroup},
-                #{name},
+                #{apiGroupId},
                 #{apiOrder},
                 #{frequency},
                 #{head},
                 #{needRepeat},
                 #{param},
-                #{resultFormat},
                 #{resultCode},
                 #{type},
                 #{url})
@@ -108,11 +102,9 @@
         update_date = #{updateDate}
         ,update_user = #{updateUser}
 
-        <if test="name != null and name != ''">
-            ,name = #{name}
-        </if>
-        <if test="apiGroup != null and apiGroup != ''">
-            ,api_group = #{apiGroup}
+
+        <if test="apiGroupId != null and apiGroupId != ''">
+            ,api_group_id = #{apiGroupId}
         </if>
         <if test="apiOrder != null and apiOrder != ''">
             ,api_order = #{apiOrder}
@@ -128,9 +120,6 @@
         </if>
         <if test="param != null and param != ''">
             ,param = #{param}
-        </if>
-        <if test="resultFormat != null and resultFormat != ''">
-            ,result_format = #{resultFormat}
         </if>
         <if test="resultCode != null and resultCode != ''">
             ,result_code = #{resultCode}
@@ -171,7 +160,7 @@
         select
         <include refid="columnList"/>
         from sys_api a
-        where delete_flag = 0 and api_group = #{apiGroup}
+        where delete_flag = 0 and api_group_id = #{apiGroupId}
         order by api_order
     </select>
     <select id="getAll" resultType="indi.uhyils.pojo.model.ApiEntity">
@@ -180,6 +169,14 @@
         from sys_api a
         where delete_flag = 0
         order by api_order
+    </select>
+    <select id="deleteAllByGroup" parameterType="indi.uhyils.pojo.model.ApiGroupEntity" resultType="java.lang.Integer">
+        update sys_api
+        set update_date = #{updateDate}
+          , update_user = #{updateUser}
+          , delete_flag = 0
+        where api_group_id = #{id}
+
     </select>
 
 </mapper>
