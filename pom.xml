@@ -45,6 +45,7 @@
         <quartz.version>2.3.2</quartz.version>
         <hutool.version>5.3.8</hutool.version>
         <mail.version>1.4.7</mail.version>
+        <mongo.version>3.12.5</mongo.version>
 
     </properties>
 
@@ -131,6 +132,11 @@
             <dependency>
                 <groupId>indi.uhyils</groupId>
                 <artifactId>my-api-provider-push</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-api-provider-mongo</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -267,6 +273,13 @@
                 <groupId>com.lmax</groupId>
                 <artifactId>disruptor</artifactId>
                 <version>${distrupter.version}</version>
+            </dependency>
+
+            <!-- mongo driver -->
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongo-java-driver</artifactId>
+                <version>${mongo.version}</version>
             </dependency>
 
 

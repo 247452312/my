@@ -19,6 +19,7 @@
         <module>my-service-software</module>
         <module>my-service-distribute</module>
         <module>my-service-push</module>
+        <module>my-service-mongo</module>
     </modules>
 
 
