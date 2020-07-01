@@ -55,3 +55,9 @@ rabbit:
   port: 5672
   username: uhyils
   password: 123456
+
+mongo:
+  ip: 192.168.1.101
+  port: 27017
+  username: uhyils
+  password: myuhyils
