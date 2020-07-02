@@ -3,21 +3,19 @@ package indi.uhyils.controller;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.Action;
-import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.SessionRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.response.WebResponse;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,6 +95,11 @@ public class AllController {
         return true;
     }
 
+    @PostMapping("/file/${fileName}")
+    @ResponseBody
+    public boolean getFile(@PathVariable String fileName, HttpServletRequest request, HttpServletResponse httpServletResponse) {
+        return false;
+    }
 
     /**
      * action 添加链路跟踪起点

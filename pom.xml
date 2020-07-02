@@ -46,6 +46,7 @@
         <hutool.version>5.3.8</hutool.version>
         <mail.version>1.4.7</mail.version>
         <mongo.version>3.12.5</mongo.version>
+        <hessian.version>4.0.63</hessian.version>
 
     </properties>
 
@@ -230,8 +231,6 @@
             </dependency>
 
 
-
-
             <!-- dubbo -->
             <dependency>
                 <groupId>org.apache.dubbo</groupId>
@@ -295,6 +294,15 @@
                 <artifactId>mail</artifactId>
                 <version>${mail.version}</version>
             </dependency>
+
+
+            <!-- hessian协议  -->
+            <dependency>
+                <groupId>com.caucho</groupId>
+                <artifactId>hessian</artifactId>
+                <version>${hessian.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

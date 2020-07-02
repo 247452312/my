@@ -22,11 +22,6 @@ public class MongoConnPool {
      */
     private volatile List<MongoConn> list = SynchronizedList.decorate(new ArrayList<>());
 
-    /**
-     * 守护线程 用来销毁到期线程
-     */
-    private Thread guardianThread;
-
     @Autowired
     private MongoDbFactory mongoDbFactory;
 
@@ -54,7 +49,14 @@ public class MongoConnPool {
      * 初始化
      */
     private void init() {
-        // ?? nothing to do
+        // 开启守护线程
+        /**
+         * 守护线程 用来销毁到期线程
+         */
+        Runnable guardianThread = new MongoGuardianThread(this);
+        // TODO 修改为线程池
+        Thread thread = new Thread(guardianThread);
+        thread.start();
     }
 
     public List<MongoConn> getList() {
@@ -105,9 +107,11 @@ public class MongoConnPool {
         if (list.size() >= maxConnSize) {
             throw new Exception("连接池已满,fuck?!!");
         }
+        // 连接池没有满, 并且其他的都在用,就新建一个连接并返回
         synchronized (list) {
             MongoConn conn = mongoDbFactory.getConn(this);
             list.add(conn);
+            conn.setHaveUse(true);
             return conn;
         }
     }

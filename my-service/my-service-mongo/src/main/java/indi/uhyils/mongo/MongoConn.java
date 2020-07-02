@@ -2,6 +2,14 @@ package indi.uhyils.mongo;
 
 import com.mongodb.MongoClient;
 import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSInputFile;
+import indi.uhyils.util.LogUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * mongo工厂生产的东西
@@ -78,6 +86,9 @@ public class MongoConn {
         return build;
     }
 
+    /**
+     * 关闭连接, 如果在线程池中,则归还连接,不关闭
+     */
     public void close() {
         if (pool == null) {
             mongoClient.close();
@@ -85,4 +96,43 @@ public class MongoConn {
             pool.returnConn(this);
         }
     }
+
+
+    public boolean addFile(String fileName, byte[] bytes) {
+        GridFSInputFile gridFsInputFile = fs.createFile(bytes);
+        gridFsInputFile.setFilename(fileName);
+        gridFsInputFile.save();
+        close();
+        return true;
+    }
+
+    public boolean removeFile(String fileName) {
+        fs.remove(fileName);
+        close();
+        return true;
+    }
+
+    public List<byte[]> getFile(String fileName) {
+        List<GridFSDBFile> gridFSDBFiles = fs.find(fileName);
+        List<byte[]> list = new ArrayList<>();
+        try {
+            for (GridFSDBFile one : gridFSDBFiles) {
+                InputStream inputStream = one.getInputStream();
+                byte[] b = new byte[inputStream.available()];
+                inputStream.read(b);
+                inputStream.close();
+                list.add(b);
+
+            }
+            return list;
+        } catch (IOException e) {
+            LogUtil.error(this, e);
+            return new ArrayList<>();
+        } finally {
+            close();
+        }
+
+
+    }
+
 }

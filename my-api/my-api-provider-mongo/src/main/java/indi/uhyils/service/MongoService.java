@@ -1,7 +1,7 @@
 package indi.uhyils.service;
 
-import indi.uhyils.model.MongoEntity;
-import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.model.MongoEntity;
+import indi.uhyils.pojo.request.NameRequest;
 import indi.uhyils.pojo.request.base.ObjsRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
@@ -27,34 +27,17 @@ public interface MongoService extends BaseService {
     /**
      * 删除
      *
-     * @param idRequest key
+     * @param request fileName
      * @return 是否成功
      */
-    ServiceResult<Boolean> delete(IdRequest idRequest);
+    ServiceResult<Boolean> delete(NameRequest request);
+
 
     /**
-     * 改
+     * 根据fileName精准查询
      *
-     * @param request mongo实体
-     * @return 是否成功
-     */
-    ServiceResult<Boolean> update(ObjsRequest<MongoEntity> request);
-
-    /**
-     * 根据key查询
-     *
-     * @param idRequest key
+     * @param request fileName
      * @return mongo实体
      */
-    ServiceResult<MongoEntity> getByKey(IdRequest idRequest);
-
-    /**
-     * 查询key以传入值为开头的所有实体
-     *
-     * @param idRequest key
-     * @return key以传入值为开头的所有实体
-     */
-    ServiceResult<ArrayList<MongoEntity>> getByKeyStart(IdRequest idRequest);
-
-
+    ServiceResult<ArrayList<MongoEntity>> getByFileName(NameRequest request);
 }

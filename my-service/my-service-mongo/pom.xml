@@ -133,6 +133,12 @@
             <artifactId>mongo-java-driver</artifactId>
         </dependency>
 
+        <!-- hessian协议  -->
+        <dependency>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

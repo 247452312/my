@@ -1,9 +1,7 @@
-package indi.uhyils.model;
+package indi.uhyils.pojo.model;
 
 import indi.uhyils.pojo.model.base.BaseDbSaveable;
 import indi.uhyils.pojo.request.base.DefaultRequest;
-
-import java.util.HashMap;
 
 /**
  * mongo传输数据集(此系统的mongo只存视频,图片,文件等)
@@ -13,10 +11,16 @@ import java.util.HashMap;
  */
 public class MongoEntity implements BaseDbSaveable {
 
+
     /**
-     * mongo中的数据结构
+     * 文件名称
      */
-    private HashMap<String, byte[]> map;
+    private String fileName;
+
+    /**
+     * 文件本体
+     */
+    private byte[] bytes;
 
     @Override
     public void preInsert(DefaultRequest request) {
@@ -28,11 +32,19 @@ public class MongoEntity implements BaseDbSaveable {
         // nothing to do
     }
 
-    public HashMap<String, byte[]> getMap() {
-        return map;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setMap(HashMap<String, byte[]> map) {
-        this.map = map;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
     }
 }

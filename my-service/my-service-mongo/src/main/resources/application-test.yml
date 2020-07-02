@@ -7,7 +7,7 @@ dubbo:
     client: curator
     address: zookeeper://192.168.1.101:2181
   protocol:
-    name: dubbo
+    name: hessian
     port: 20857
     threadpool: cached
   application:
