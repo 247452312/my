@@ -150,7 +150,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<LoginResponse> userLogin(LoginRequest userRequest) {
+    public ServiceResult<LoginResponse> login(LoginRequest userRequest) {
         ArrayList<Arg> objects = new ArrayList<>();
         objects.add(new Arg("username", "=", userRequest.getUsername()));
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));

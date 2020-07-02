@@ -6,7 +6,7 @@ import indi.uhyils.pojo.request.NameRequest;
 import indi.uhyils.pojo.request.base.ObjsRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.MongoService;
-import indi.uhyils.util.MongoEntityBuild;
+import indi.uhyils.utils.MongoEntityBuild;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,10 +50,10 @@ public class MongoServiceImpl implements MongoService {
     }
 
     @Override
-    public ServiceResult<ArrayList<MongoEntity>> getByFileName(NameRequest request) {
+    public ServiceResult<MongoEntity> getByFileName(NameRequest request) {
         String name = request.getName();
-        List<byte[]> file = mongoManager.getFile(name);
-        ArrayList<MongoEntity> mongoEntity = MongoEntityBuild.build(name, file);
+        byte[] file = mongoManager.getFile(name);
+        MongoEntity mongoEntity = MongoEntityBuild.build(name, file);
         return ServiceResult.buildSuccessResult("获取文件成功", mongoEntity, request);
     }
 

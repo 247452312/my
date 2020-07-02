@@ -39,5 +39,5 @@ public interface MongoService extends BaseService {
      * @param request fileName
      * @return mongo实体
      */
-    ServiceResult<ArrayList<MongoEntity>> getByFileName(NameRequest request);
+    ServiceResult<MongoEntity> getByFileName(NameRequest request);
 }

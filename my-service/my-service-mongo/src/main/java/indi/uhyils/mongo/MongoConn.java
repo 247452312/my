@@ -112,22 +112,17 @@ public class MongoConn {
         return true;
     }
 
-    public List<byte[]> getFile(String fileName) {
-        List<GridFSDBFile> gridFSDBFiles = fs.find(fileName);
-        List<byte[]> list = new ArrayList<>();
+    public byte[] getFile(String fileName) {
+        GridFSDBFile one = fs.findOne(fileName);
         try {
-            for (GridFSDBFile one : gridFSDBFiles) {
-                InputStream inputStream = one.getInputStream();
-                byte[] b = new byte[inputStream.available()];
-                inputStream.read(b);
-                inputStream.close();
-                list.add(b);
-
-            }
-            return list;
+            InputStream inputStream = one.getInputStream();
+            byte[] b = new byte[inputStream.available()];
+            inputStream.read(b);
+            inputStream.close();
+            return b;
         } catch (IOException e) {
             LogUtil.error(this, e);
-            return new ArrayList<>();
+            return null;
         } finally {
             close();
         }

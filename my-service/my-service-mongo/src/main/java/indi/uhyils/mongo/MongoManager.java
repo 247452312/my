@@ -52,7 +52,7 @@ public class MongoManager {
 
     }
 
-    public List<byte[]> getFile(String fileName) {
+    public byte[] getFile(String fileName) {
         MongoConn conn = null;
         try {
             conn = pool.getConn();

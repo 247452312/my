@@ -62,7 +62,7 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      * @param userRequest 用户登录所需要的条件
      * @return 登录所需要的信息
      */
-    ServiceResult<LoginResponse> userLogin(LoginRequest userRequest);
+    ServiceResult<LoginResponse> login(LoginRequest userRequest);
 
     /**
      * 获取全部用户

@@ -33,7 +33,7 @@
             arg = {};
             arg.username = a.username;
             arg.password = a.password;
-            pushRequest("UserService", "userLogin", arg, function (data) {
+            pushRequest("UserService", "login", arg, function (data) {
                 setCookie("token", data.token, 1);
                 setAttrBySession("userInfo", data.userEntity);
                 setAttrBySession("token", {token: data.token});

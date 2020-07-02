@@ -13,6 +13,7 @@ import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -95,18 +96,13 @@ public class AllController {
         return true;
     }
 
-    @PostMapping("/file/${fileName}")
-    @ResponseBody
-    public boolean getFile(@PathVariable String fileName, HttpServletRequest request, HttpServletResponse httpServletResponse) {
-        return false;
-    }
 
     /**
      * action 添加链路跟踪起点
      *
      * @param action
      */
-    private void actionAddRequestLink(@RequestBody Action action) {
+    public static void actionAddRequestLink(@RequestBody Action action) {
         HashMap<String, Object> requestLink = new HashMap<>(2);
         requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
         requestLink.put("data", "页面请求");
