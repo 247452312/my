@@ -2,11 +2,9 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.MongoEntity;
 import indi.uhyils.pojo.request.NameRequest;
-import indi.uhyils.pojo.request.base.ObjsRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
-
-import java.util.ArrayList;
 
 /**
  * mongo接口
@@ -22,7 +20,7 @@ public interface MongoService extends BaseService {
      * @param request mongo实体
      * @return 是否成功
      */
-    ServiceResult<Boolean> add(ObjsRequest<MongoEntity> request);
+    ServiceResult<String> add(ObjRequest<MongoEntity> request);
 
     /**
      * 删除

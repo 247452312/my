@@ -52,31 +52,7 @@ function pushRequest(interfaceName, methodName, data, success, target = false) {
         contentType: "application/json;charset=utf8",
         async: false,
         success: function (data) {
-            if (data.code >= 200 && data.code < 300) {
-                if (target) {
-                    layer.msg(data.msg);
-                }
-                result = success(data.data);
-            } else {
-                // code不为200
-                switch (data.code) {
-                    case 403:
-                    case 402:
-                        // 代表登录问题. 返回登录页
-                        top.layer.alert(data.msg + ", 即将返回登录页", function (index) {
-
-                            layer.close(index);
-                            top.window.location.href = "/login.html";
-                        });
-                        break;
-                    case 401:
-                        // 代表没有权限
-                        layer.msg(data.msg + " ,由于您触发了权限检测,所以您的信息将出现在我们的数据库暗杀名单中,出门请注意安全!");
-                        break;
-                    default:
-                        layer.msg(data.msg);
-                }
-            }
+            result = dealResponse(data, success, target);
         }
     });
     return result;
@@ -278,4 +254,66 @@ function getDict(dictCode) {
     pushRequest("DictService", "getDictByCode", {code: dictCode}, function (data) {
         return data;
     })
+}
+
+/**
+ * 文件上传
+ * @param upload layui文件上传工具
+ * @param button 绑定元素
+ * @param data 传送值
+ * @param success 成功后回调
+ * @returns {null}
+ */
+function uploadFile(upload, button, data, success) {
+    let result = null;
+    let json = JSON.stringify(new my_request(getAttrBySession("token").token, "MongoService", "add", data));
+
+    upload.render({
+        elem: button
+        , url: '/file/up'
+        , data: json
+        , field: 'file'
+        , size: 7168 // 限制大小7M
+        , done: function (res, index, upload) { //上传后的回调
+            result = dealResponse(res, success);
+        }
+    });
+    return result;
+}
+
+/**
+ * 处理返回值
+ * @param res 返回值
+ * @param success 成功后回调方法
+ * @param target 成功后是否显示信息
+ * @returns {null}
+ */
+function dealResponse(res, success, target = false) {
+    let result = null;
+    if (res.code >= 200 && res.code < 300) {
+        if (target) {
+            layer.msg(res.msg);
+        }
+        result = success(res.data);
+    } else {
+        // code不为200
+        switch (res.code) {
+            case 403:
+            case 402:
+                // 代表登录问题. 返回登录页
+                top.layer.alert(res.msg + ", 即将返回登录页", function (index) {
+
+                    layer.close(index);
+                    top.window.location.href = "/login.html";
+                });
+                break;
+            case 401:
+                // 代表没有权限
+                layer.msg(res.msg + " ,由于您触发了权限检测,所以您的信息将出现在我们的数据库暗杀名单中,出门请注意安全!");
+                break;
+            default:
+                layer.msg(res.msg);
+        }
+    }
+    return result;
 }

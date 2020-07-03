@@ -6,6 +6,7 @@ import indi.uhyils.pojo.model.MongoEntity;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
+import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogPushUtils;
@@ -19,13 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月24日 16时14分
  */
-@Controller
+@Controller("/file")
 public class FileController {
 
     private static final String TOKEN = "token";
@@ -35,17 +37,19 @@ public class FileController {
      *
      * @param fileName            文件名称
      * @param request             默认请求
-     * @param action              请求参数
+     * @param token               token
      * @param httpServletResponse 返回体
      * @return
      */
-    @PostMapping("/file/down/${fileName}")
+    @PostMapping("/down/${token}/${fileName}")
     @ResponseBody
-    public void getFile(@PathVariable String fileName, @RequestBody Action action, HttpServletRequest request, HttpServletResponse httpServletResponse) {
+    public void getFile(@PathVariable String fileName, @PathVariable String token, HttpServletRequest request, HttpServletResponse httpServletResponse) {
         String eMsg = null;
         LinkNode<String> link = null;
         ServiceResult serviceResult = null;
-
+        Action action = new Action();
+        action.setToken(token);
+        action.setArgs(new HashMap<>());
         LogUtil.info(this, "param: " + JSON.toJSONString(action));
         action.getArgs().put(TOKEN, action.getToken());
         // 设置文件名称
@@ -93,11 +97,11 @@ public class FileController {
      * @return 是否成功
      * @throws IOException
      */
-    @PostMapping("/file/up")
-    public boolean uploadFile(@RequestParam("file") MultipartFile file, @RequestBody Action action, HttpServletRequest request) throws IOException {
+    @PostMapping("/up")
+    public WebResponse uploadFile(@RequestParam("file") MultipartFile file, @RequestBody Action action, HttpServletRequest request) throws IOException {
         String eMsg = null;
         LinkNode<String> link = null;
-        ServiceResult serviceResult = null;
+        ServiceResult<String> serviceResult = null;
 
         LogUtil.info(this, "param: " + JSON.toJSONString(action));
         action.getArgs().put(TOKEN, action.getToken());
@@ -117,12 +121,11 @@ public class FileController {
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 eMsg = serviceResult.getServiceMessage();
             }
-            return true;
-
+            return WebResponse.build(serviceResult);
         } catch (Exception e) {
             LogUtil.error(this, e);
             eMsg = e.getMessage();
-            return false;
+            return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
         } finally {
             if (serviceResult != null) {
                 try {
