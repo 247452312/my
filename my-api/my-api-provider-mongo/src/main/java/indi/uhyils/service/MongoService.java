@@ -1,6 +1,5 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.MongoEntity;
 import indi.uhyils.pojo.request.NameRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -17,10 +16,10 @@ public interface MongoService extends BaseService {
     /**
      * 添加
      *
-     * @param request mongo实体
-     * @return 是否成功
+     * @param request base64 图片
+     * @return fileName
      */
-    ServiceResult<String> add(ObjRequest<MongoEntity> request);
+    ServiceResult<String> add(ObjRequest<String> request);
 
     /**
      * 删除
@@ -35,7 +34,7 @@ public interface MongoService extends BaseService {
      * 根据fileName精准查询
      *
      * @param request fileName
-     * @return mongo实体
+     * @return base64
      */
-    ServiceResult<MongoEntity> getByFileName(NameRequest request);
+    ServiceResult<String> getByFileName(NameRequest request);
 }

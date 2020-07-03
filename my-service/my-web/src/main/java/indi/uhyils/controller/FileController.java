@@ -40,6 +40,7 @@ public class FileController {
     @RequestMapping("/down/{fileName}/{token}")
     @ResponseBody
     public String down(@PathVariable String token, @PathVariable String fileName, HttpServletRequest request) {
+        String methodName = "getByFileName";
         String eMsg = null;
         LinkNode<String> link = null;
         ServiceResult serviceResult = null;
@@ -51,7 +52,7 @@ public class FileController {
             args.put("name", fileName);
             List<Object> list = new ArrayList();
             list.add(args);
-            serviceResult = DubboApiUtil.dubboApiTool(INTERFACE, "getByFileName", list, new DefaultRequest());
+            serviceResult = DubboApiUtil.dubboApiTool(INTERFACE, methodName, list, new DefaultRequest());
             link = serviceResult.getRequestLink();
             LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
@@ -66,7 +67,7 @@ public class FileController {
         } finally {
             if (serviceResult != null) {
                 try {
-                    LogPushUtils.pushLog(eMsg, INTERFACE, "getByFileName", args, link, request, token, serviceResult.getServiceCode());
+                    LogPushUtils.pushLog(eMsg, INTERFACE, methodName, args, link, request, token, serviceResult.getServiceCode());
                 } catch (Exception e) {
                     LogUtil.error(this, e);
                 }
