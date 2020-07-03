@@ -12,11 +12,12 @@ import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,16 +48,16 @@ public class AllController {
         ServiceResult serviceResult = null;
 
         LogUtil.info(this, "param: " + JSON.toJSONString(action));
+        // token修改到arg中
         action.getArgs().put(TOKEN, action.getToken());
+        // 添加链路跟踪
         actionAddRequestLink(action);
         try {
             List list = new ArrayList();
             list.add(action.getArgs());
             serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list, new DefaultRequest());
-            if (ServiceCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
-                LogUtil.linkPrint(serviceResult.getRequestLink());
-            }
             link = serviceResult.getRequestLink();
+            LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 eMsg = serviceResult.getServiceMessage();
             }

@@ -94,8 +94,8 @@ public class LogUtil {
     /**
      * 根据类型输出不同级别的对应类的日志
      *
-     * @param cls class
-     * @param msg 信息
+     * @param cls         class
+     * @param msg         信息
      * @param logTypeEnum 类型
      */
     private static void writeLog(Class<?> cls, String msg, Throwable throwable, LogTypeEnum logTypeEnum) {
@@ -149,6 +149,9 @@ public class LogUtil {
      * @param requestLink 链
      */
     public static void linkPrint(LinkNode<String> requestLink) {
+        if (requestLink == null) {
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         LinkNode<String> p = requestLink;
         do {
