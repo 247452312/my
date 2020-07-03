@@ -37,6 +37,11 @@ public class UserEntity extends BaseVoEntity {
     private String phone;
 
     /**
+     * 头像->(用户id + fileName) MD5后的16位
+     */
+    private String headPortrait;
+
+    /**
      * 用户角色
      */
     private String roleId;
@@ -102,5 +107,13 @@ public class UserEntity extends BaseVoEntity {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getHeadPortrait() {
+        return headPortrait;
+    }
+
+    public void setHeadPortrait(String headPortrait) {
+        this.headPortrait = headPortrait;
     }
 }

@@ -85,11 +85,6 @@
         </dependency>
 
 
-        <!-- 动态定时任务 -->
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -133,11 +128,6 @@
             <artifactId>mongo-java-driver</artifactId>
         </dependency>
 
-        <!-- hessian协议  -->
-        <dependency>
-            <groupId>com.caucho</groupId>
-            <artifactId>hessian</artifactId>
-        </dependency>
 
     </dependencies>
     <build>

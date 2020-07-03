@@ -7,7 +7,6 @@ dubbo:
     client: curator
     address: zookeeper://192.168.1.101:2181
   protocol:
-    name: hessian
     port: 20857
     threadpool: cached
   application:
@@ -57,3 +56,7 @@ mongo:
   port: 27017
   username: uhyils
   password: myuhyils
+  pool:
+    coreSize: 5
+    maxSize: 10
+    keepAliveTime: 50000

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,12 +43,12 @@ public class MongoConnPool {
     private Long keepAliveTime;
 
     public MongoConnPool() {
-        init();
     }
 
     /**
      * 初始化
      */
+    @PostConstruct
     private void init() {
         // 开启守护线程
         /**

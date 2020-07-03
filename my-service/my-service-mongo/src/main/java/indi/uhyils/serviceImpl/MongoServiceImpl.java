@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月01日 07时08分
  */
-@Service(group = "${spring.profiles.active}", protocol = "hessian")
+@Service(group = "${spring.profiles.active}")
 public class MongoServiceImpl implements MongoService {
 
     @Autowired
@@ -50,5 +50,6 @@ public class MongoServiceImpl implements MongoService {
         MongoEntity mongoEntity = MongoEntityBuild.build(name, file);
         return ServiceResult.buildSuccessResult("获取文件成功", mongoEntity, request);
     }
+
 
 }

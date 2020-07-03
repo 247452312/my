@@ -17,6 +17,7 @@
         a.mail,
         a.phone,
         a.username,
+        a.head_portrait as headPortrait,
         a.role_id as roleId
     </sql>
     <sql id="deptColumnList">
@@ -111,9 +112,9 @@
     </select>
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.UserEntity">
-        insert sys_user(id, nick_name,mail,phone, username, password,role_id, create_date, create_user, update_date, update_user,
+        insert sys_user(id, nick_name,mail,phone,head_portrait, username, password,role_id, create_date, create_user, update_date, update_user,
                     delete_flag, remark)
-        values (#{id}, #{nickName},#{mail},#{phone},#{userName},#{password},#{roleId},#{createDate}, #{createUser}, #{updateDate},
+        values (#{id}, #{nickName},#{mail},#{phone},#{headPortrait},#{userName},#{password},#{roleId},#{createDate}, #{createUser}, #{updateDate},
                 #{updateUser}, 0, #{remark})
     </insert>
 
@@ -135,6 +136,9 @@
         </if>
         <if test="phone != null">
             ,phone = #{phone}
+        </if>
+        <if test="headPortrait != null and headPortrait != ''">
+            ,head_portrait = #{headPortrait}
         </if>
         <if test="roleId != null ">
             ,role_id = #{roleId}

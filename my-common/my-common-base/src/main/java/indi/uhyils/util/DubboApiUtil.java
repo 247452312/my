@@ -43,7 +43,7 @@ public class DubboApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
-        return getServiceResult(interfaceName, methodName, args, request, false);
+        return getServiceResult(interfaceName, methodName, args, request, false, "dubbo");
     }
 
     /**
@@ -56,10 +56,10 @@ public class DubboApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult dubboApiToolAsyn(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
-        return getServiceResult(interfaceName, methodName, args, request, true);
+        return getServiceResult(interfaceName, methodName, args, request, true, "dubbo");
     }
 
-    private static ServiceResult getServiceResult(String interfaceName, String methodName, List<Object> args, DefaultRequest request, boolean ansyn) {
+    private static ServiceResult getServiceResult(String interfaceName, String methodName, List<Object> args, DefaultRequest request, boolean ansyn, String procotol) {
         try {
             if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
@@ -70,11 +70,11 @@ public class DubboApiUtil {
                 reference = MAP.get(interfaceName);
                 if (reference == null) {
                     MAP.remove(interfaceName);
-                    reference = getGenericServiceReferenceConfig(interfaceName, ansyn);
+                    reference = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol);
                     MAP.put(interfaceName, reference);
                 }
             } else {
-                reference = getGenericServiceReferenceConfig(interfaceName, ansyn);
+                reference = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol);
                 MAP.put(interfaceName, reference);
             }
 
@@ -114,7 +114,7 @@ public class DubboApiUtil {
         }
     }
 
-    private static ReferenceConfig<GenericService> getGenericServiceReferenceConfig(String interfaceName, Boolean async) {
+    private static ReferenceConfig<GenericService> getGenericServiceReferenceConfig(String interfaceName, Boolean async, String procotol) {
         ReferenceConfig<GenericService> reference;
         reference = new ReferenceConfig<>();
         // 弱类型接口名
@@ -128,6 +128,7 @@ public class DubboApiUtil {
         reference.setApplication(SpringUtil.getBean(ApplicationConfig.class));
         reference.setRegistry(SpringUtil.getBean(RegistryConfig.class));
         reference.setConsumer(SpringUtil.getBean(ConsumerConfig.class));
+        reference.setProtocol(procotol);
         return reference;
     }
 

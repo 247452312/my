@@ -36,7 +36,7 @@ public class MongoGuardianThread implements Runnable {
         List<MongoConn> list = pool.getList();
         while (alive) {
             // 如果只有核心线程,则略过
-            if (list.size() <= pool.getCoreConnSize()) {
+            if (list.size() > pool.getCoreConnSize()) {
                 int i = 0;
                 Iterator<MongoConn> iterator = list.iterator();
                 Long now = System.currentTimeMillis();
@@ -57,11 +57,12 @@ public class MongoGuardianThread implements Runnable {
                         }
                     }
                 }
-                try {
-                    Thread.sleep(SLEEP_TIME);
-                } catch (InterruptedException e) {
-                    LogUtil.error(this, e);
-                }
+
+            }
+            try {
+                Thread.sleep(SLEEP_TIME);
+            } catch (InterruptedException e) {
+                LogUtil.error(this, e);
             }
 
         }
