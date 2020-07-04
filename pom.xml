@@ -139,6 +139,11 @@
                 <artifactId>my-api-provider-mongo</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-api-provider-Algorithm</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 
             <!-- https://mvnrepository.com/artifact/ch.ethz.ganymed/ganymed-ssh2 -->

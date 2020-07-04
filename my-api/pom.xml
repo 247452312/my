@@ -18,6 +18,7 @@
         <module>my-api-provider-distribute</module>
         <module>my-api-provider-push</module>
         <module>my-api-provider-mongo</module>
+        <module>my-api-provider-algorithm</module>
     </modules>
 
 
