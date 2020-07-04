@@ -53,6 +53,15 @@
                    class="layui-input">
         </div>
     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">头像</label>
+        <div class="layui-input-block">
+            <input type="file" lay-verify="required" value=""
+                   class="layui-input">
+            <img src="" style="display: none;height: 50px;width: 100px;" id="headPortraitImg" alt="">
+            <input type="text" style="display: none" id="headPortrait" name="headPortrait"/>
+        </div>
+    </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label required">密码</label>
@@ -92,6 +101,16 @@
         };
         let id = $.getUrlParam('id');
         let func = $.getUrlParam('func');
+        bandUpFile($('[type="file"]'), function (name, base) {
+            /* 1.取消img 的隐藏 */
+            $('#headPortraitImg').css("display", "block");
+
+            /* 2.添加img的src */
+            $('#headPortraitImg').attr("src", base);
+
+            /* 3.添加input的name */
+            $('#headPortrait').val(name);
+        });
         pushRequest("RoleService", "getRoles", {}, function (data) {
             for (let i = 0; i < data.length; i++) {
                 let roleId = data[i].id;
@@ -100,18 +119,31 @@
                 $("[name='roleId']").append(option);
             }
         });
+
         if (func == 'edit') { // 这是修改
             pushRequest("UserService", "getUserById", {
                 id: id
             }, function (data) {
+
                 $('[name="id"]').attr('value', data.id);
                 $('[name="nickName"]').attr('value', data.nickName);
                 $('[name="userName"]').attr('value', data.userName);
                 $('[name="mail"]').attr('value', data.mail);
                 $('[name="phone"]').attr('value', data.phone);
                 $('[name="password"]').parent().parent().remove();
+
+                /* 1.取消img 的隐藏 */
+                $('#headPortraitImg').css("display", "block");
+
+                /* 2.添加img的src */
+                $('#headPortraitImg').attr("src", download(data.headPortrait));
+
+                /* 3.添加input的name */
+                $('#headPortrait').val(data.headPortrait);
+
                 let s = '[name="roleId"] option[value="' + data.role.id + '"]';
                 $(s).attr("selected", true);
+
                 form.render();
             })
         }

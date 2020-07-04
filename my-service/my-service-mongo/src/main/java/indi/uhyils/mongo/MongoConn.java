@@ -1,15 +1,13 @@
 package indi.uhyils.mongo;
 
+import com.alibaba.fastjson.JSONObject;
 import com.mongodb.MongoClient;
-import com.mongodb.gridfs.GridFS;
-import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSInputFile;
-import indi.uhyils.util.LogUtil;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 
 /**
  * mongo工厂生产的东西
@@ -19,6 +17,17 @@ import java.util.List;
  */
 public class MongoConn {
 
+
+    /**
+     * key
+     */
+    private static final String KEY_NAME = "key";
+
+    /**
+     * value
+     */
+    private static final String VALUE_NAME = "value";
+
     /**
      * 客户端连接,用来连接客户端
      */
@@ -27,7 +36,7 @@ public class MongoConn {
     /**
      * 用来存取文件
      */
-    private GridFS fs;
+    private MongoCollection<Document> mongoCollection;
 
     /**
      * 是否正在被使用
@@ -44,12 +53,20 @@ public class MongoConn {
      */
     private MongoConnPool pool;
 
-    public GridFS getFs() {
-        return fs;
+    public MongoClient getMongoClient() {
+        return mongoClient;
     }
 
-    public void setFs(GridFS fs) {
-        this.fs = fs;
+    public void setMongoClient(MongoClient mongoClient) {
+        this.mongoClient = mongoClient;
+    }
+
+    public MongoCollection<Document> getMongoCollection() {
+        return mongoCollection;
+    }
+
+    public void setMongoCollection(MongoCollection<Document> mongoCollection) {
+        this.mongoCollection = mongoCollection;
     }
 
     public Boolean getHaveUse() {
@@ -76,9 +93,9 @@ public class MongoConn {
         this.createTime = createTime;
     }
 
-    public static MongoConn build(MongoClient mongoClient, GridFS gridFS, MongoConnPool pool) {
+    public static MongoConn build(MongoClient mongoClient, MongoCollection<Document> mongoCollection, MongoConnPool pool) {
         MongoConn build = new MongoConn();
-        build.fs = gridFS;
+        build.mongoCollection = mongoCollection;
         build.mongoClient = mongoClient;
         build.pool = pool;
         build.createTime = System.currentTimeMillis();
@@ -98,36 +115,38 @@ public class MongoConn {
     }
 
 
-    public boolean addFile(String fileName, byte[] bytes) {
-        GridFSInputFile gridFsInputFile = fs.createFile(bytes);
-        gridFsInputFile.setFilename(fileName);
-        gridFsInputFile.save();
+    public boolean addFile(String fileName, String base) {
+        Document document = new Document();
+        document.put(KEY_NAME, fileName);
+        document.put(VALUE_NAME, base);
+        mongoCollection.insertOne(document);
         close();
         return true;
     }
 
     public boolean removeFile(String fileName) {
-        fs.remove(fileName);
+        Bson bson = Filters.gte(KEY_NAME, fileName);
+        mongoCollection.deleteOne(bson);
         close();
         return true;
     }
 
-    public byte[] getFile(String fileName) {
-        GridFSDBFile one = fs.findOne(fileName);
+    public String getFile(String fileName) {
         try {
-            InputStream inputStream = one.getInputStream();
-            byte[] b = new byte[inputStream.available()];
-            inputStream.read(b);
-            inputStream.close();
-            return b;
-        } catch (IOException e) {
-            LogUtil.error(this, e);
+            Bson name = Filters.eq(KEY_NAME, fileName);
+            FindIterable<Document> documents = mongoCollection.find(name);
+            MongoCursor<Document> iterator = documents.iterator();
+            if (iterator.hasNext()) {
+                Document next = iterator.next();
+                String s = next.toJson();
+                JSONObject jsonObject = JSONObject.parseObject(s);
+                Object o = jsonObject.get(VALUE_NAME);
+                return o == null ? null : o.toString();
+            }
             return null;
         } finally {
             close();
         }
-
-
     }
 
 }

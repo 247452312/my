@@ -147,10 +147,8 @@
         color: "rgb(0,0,0)"
     });
     pushRequest("UserService", "getUserByToken", {}, function (data) {
-        let token = getAttrBySession("token").token;
-        console.log(token);
-        token = Base64.encode(token);
-        $("#head").append("<img src='/file/down/" + token + "/" + data.headPortrait + "'>")
+        let base = download(data.headPortrait);
+        $("#head").append("<img style='width: 50px;height: 50px;' src='" + base + "'>")
     });
     layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
         var $ = layui.jquery,

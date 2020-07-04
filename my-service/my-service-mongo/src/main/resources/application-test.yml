@@ -9,6 +9,7 @@ dubbo:
   protocol:
     port: 20857
     threadpool: cached
+    name: dubbo
   application:
     name: provider-pmongo
   consumer:

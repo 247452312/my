@@ -257,28 +257,51 @@ function getDict(dictCode) {
 }
 
 /**
- * 文件上传
- * @param upload layui文件上传工具
- * @param button 绑定元素
- * @param data 传送值
- * @param success 成功后回调
+ * 文件下载
+ * @param name 文件名称
  * @returns {null}
  */
-function uploadFile(upload, button, data, success) {
+function download(name) {
     let result = null;
-    let json = JSON.stringify(new my_request(getAttrBySession("token").token, "MongoService", "add", data));
-
-    upload.render({
-        elem: button
-        , url: '/file/up'
-        , data: json
-        , field: 'file'
-        , size: 7168 // 限制大小7M
-        , done: function (res, index, upload) { //上传后的回调
-            result = dealResponse(res, success);
+    let token = Base64.encode(getAttrBySession("token").token);
+    $.ajax({
+        url: "/file/down/" + name + "/" + token,
+        type: "POST",
+        contentType: "application/json;charset=utf8",
+        async: false,
+        success: function (data) {
+            result = data;
         }
     });
     return result;
+}
+
+function bandUpFile(element, success) {
+    $(element).change(function () {
+        let result = null;
+        let reader = new FileReader();   //新建一个FileReader对象
+        reader.readAsDataURL(this.files[0]);  //将读取的文件转换成base64格式
+        reader.onload = function (e) {
+            let json = JSON.stringify(new my_request(getAttrBySession("token").token, null, null, {data: e.target.result}));
+            console.log("发送");
+            console.log(json);
+            $.ajax({
+                url: "/file/up",
+                type: "POST",
+                data: json,
+                contentType: "application/json;charset=utf8",
+                async: false,
+                success: function (data) {
+                    result = dealResponse(data, function (realData) {
+                        return realData;
+                    }, false);
+                    success(result, e.target.result);
+                }
+            });
+        }
+    });
+
+
 }
 
 /**

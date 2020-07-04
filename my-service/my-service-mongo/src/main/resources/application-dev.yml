@@ -9,6 +9,7 @@ dubbo:
   protocol:
     port: 20807
     threadpool: cached
+    name: dubbo
   application:
     name: provider-mongo
   consumer:

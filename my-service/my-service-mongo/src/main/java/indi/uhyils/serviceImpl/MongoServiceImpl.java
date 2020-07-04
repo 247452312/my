@@ -27,7 +27,7 @@ public class MongoServiceImpl implements MongoService {
         String uuid = UUID.randomUUID().toString();
         String md5 = MD5Util.MD5Encode(uuid);
         boolean b1 = mongoManager.addFile(md5, file);
-        if (!b1) {
+        if (b1) {
             return ServiceResult.buildSuccessResult("插入执行完成", md5, request);
         }
         return ServiceResult.buildFailedResult("插入出错", md5, request);

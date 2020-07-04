@@ -50,6 +50,10 @@ public class FileController {
             token = new String(Base64.decodeBase64(token));
             args.put("token", token);
             args.put("name", fileName);
+            HashMap<String, Object> requestLink = new HashMap<>(2);
+            requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
+            requestLink.put("data", "页面请求");
+            args.put("requestLink", requestLink);
             List<Object> list = new ArrayList();
             list.add(args);
             serviceResult = DubboApiUtil.dubboApiTool(INTERFACE, methodName, list, new DefaultRequest());

@@ -1,12 +1,12 @@
 package indi.uhyils.mongo;
 
-import com.mongodb.DB;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
-import com.mongodb.gridfs.GridFS;
-
-import java.util.Arrays;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 
 /**
  * mongo
@@ -21,6 +21,8 @@ public class MongoDbFactory {
      * 存放文件的数据库
      */
     private static final String DB_NAME = "fileDB";
+
+
 
     private static MongoDbFactory INSTANCE = null;
 
@@ -47,10 +49,15 @@ public class MongoDbFactory {
     }
 
     public MongoConn getConn(MongoConnPool pool) {
+
+        MongoClientOptions.Builder builder = new MongoClientOptions.Builder();
+        //每个地址的最大连接数
+        builder.connectionsPerHost(10);
         MongoCredential credential = MongoCredential.createCredential(mongoConfig.getUsername(), DB_NAME, mongoConfig.getPassword().toCharArray());
-        MongoClient mongoClient = new MongoClient(new ServerAddress(mongoConfig.getIp(), mongoConfig.getPort()), Arrays.asList(credential));
-        DB db = mongoClient.getDB(DB_NAME);
-        GridFS fs = new GridFS(db);
-        return MongoConn.build(mongoClient, fs, pool);
+        ServerAddress address = new ServerAddress(mongoConfig.getIp(), mongoConfig.getPort());
+        MongoClient mongoClient = new MongoClient(address, credential, builder.build());
+        MongoDatabase database = mongoClient.getDatabase(DB_NAME);
+        MongoCollection<Document> collection = database.getCollection(DB_NAME);
+        return MongoConn.build(mongoClient, collection, pool);
     }
 }
