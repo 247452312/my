@@ -32,9 +32,9 @@ public enum CodeEnum {
     }
 
     public static CodeEnum prase(String code) {
-        if ("utf-8".equalsIgnoreCase(code)) {
+        if (UTF_8.code.equalsIgnoreCase(code)) {
             return UTF_8;
-        } else if ("unicode".equalsIgnoreCase(code)) {
+        } else if (UNICODE.code.equalsIgnoreCase(code)) {
             return UNICODE;
         }
         return null;

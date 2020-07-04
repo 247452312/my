@@ -19,6 +19,10 @@ dubbo:
     timeout: 3000
     group: ${spring.profiles.active}
 
+log-out:
+  path: /my/logs
+  dir-name: log
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: indi.uhyils.dao

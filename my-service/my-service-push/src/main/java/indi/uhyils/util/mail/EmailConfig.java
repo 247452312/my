@@ -4,23 +4,33 @@ import java.io.Serializable;
 
 /**
  * 邮件配置类，数据存覆盖式存入数据存
+ *
+ * @author uhyils@qq.com
  */
 public class EmailConfig implements Serializable {
 
     private Long id;
 
-    // 邮件服务器SMTP地址
+    /**
+     * 邮件服务器SMTP地址
+     */
     private String host;
 
-    // 邮件服务器SMTP端口
+    /**
+     * 邮件服务器SMTP端口
+     */
     private String port;
 
-    // 发件者用户名，默认为发件人邮箱前缀
+    /**
+     * 发件者用户名，默认为发件人邮箱前缀
+     */
     private String user;
 
     private String pass;
 
-    // 收件人
+    /**
+     * 收件人
+     */
     private String fromUser;
 
     public Long getId() {

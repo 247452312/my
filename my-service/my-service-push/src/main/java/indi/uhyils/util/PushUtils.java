@@ -64,7 +64,7 @@ public class PushUtils {
      * @return 内容
      */
     public static String getSendContent(UserEntity userEntity, ApiGroupEntity apiGroupEntity) {
-        HashMap<String, String> parameter = new HashMap<>();
+        HashMap<String, String> parameter = new HashMap<>(16);
         ApiUtils.callApi(apiGroupEntity.getApis(), userEntity, parameter);
         String resultFormat = apiGroupEntity.getResultFormat();
         // 获取最终要推送的结果

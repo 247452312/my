@@ -43,7 +43,7 @@ public class ApiUtils {
             String head = api.getHead();
             String param = api.getParam();
             // 初始化head
-            HashMap<String, String> httpHead = new HashMap<>();
+            HashMap<String, String> httpHead = new HashMap<>(16);
             if (!StringUtils.isEmpty(head)) {
                 // 注入head中的参数
                 head = replaceString(parameter, head);
@@ -109,14 +109,7 @@ public class ApiUtils {
             con = (HttpURLConnection) urlC.openConnection();
             //设置请求类型
             con.setRequestMethod(api.getType());
-            // 设置请求头
-            LogUtil.info(ApiUtils.class, "发送http请求: " + api.getUrl());
-            LogUtil.info(ApiUtils.class, "请求头开始: ");
-            for (Map.Entry<String, String> stringStringEntry : httpHead.entrySet()) {
-                con.setRequestProperty(stringStringEntry.getKey(), stringStringEntry.getValue());
-                LogUtil.info(ApiUtils.class, "\t" + stringStringEntry.getKey() + ":" + stringStringEntry.getValue());
-            }
-            LogUtil.info(ApiUtils.class, "请求头结束");
+            setHttpHead(api, httpHead, con);
 
             //允许写出
             con.setDoOutput(true);
@@ -189,5 +182,16 @@ public class ApiUtils {
             }
         }
         return result;
+    }
+
+    private static void setHttpHead(ApiEntity api, HashMap<String, String> httpHead, HttpURLConnection con) {
+        // 设置请求头
+        LogUtil.info(ApiUtils.class, "发送http请求: " + api.getUrl());
+        LogUtil.info(ApiUtils.class, "请求头开始: ");
+        for (Map.Entry<String, String> stringStringEntry : httpHead.entrySet()) {
+            con.setRequestProperty(stringStringEntry.getKey(), stringStringEntry.getValue());
+            LogUtil.info(ApiUtils.class, "\t" + stringStringEntry.getKey() + ":" + stringStringEntry.getValue());
+        }
+        LogUtil.info(ApiUtils.class, "请求头结束");
     }
 }

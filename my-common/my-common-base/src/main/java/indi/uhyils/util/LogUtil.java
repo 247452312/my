@@ -155,10 +155,10 @@ public class LogUtil {
         StringBuilder sb = new StringBuilder();
         LinkNode<String> p = requestLink;
         do {
-            sb.append(" \n--> ");
             sb.append(p.getData());
+            sb.append(" --> ");
             p = p.getLinkNode();
         } while (p != null);
-        LogUtil.info(LogUtil.class, String.format("链路跟踪: %s \n--> 结束!", sb.toString()));
+        LogUtil.info(LogUtil.class, String.format("链路跟踪: %s  结束!", sb.toString()));
     }
 }

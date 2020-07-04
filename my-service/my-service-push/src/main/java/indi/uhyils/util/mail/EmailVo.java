@@ -5,10 +5,14 @@ import java.util.List;
 
 /**
  * 发送邮件时，接收参数的类
+ *
+ * @author uhyils@qq.com
  */
 public class EmailVo {
 
-    // 收件人，支持多个收件人，用逗号分隔
+    /**
+     * 收件人，支持多个收件人，用逗号分隔
+     */
     private List<String> tos;
 
     private String subject;

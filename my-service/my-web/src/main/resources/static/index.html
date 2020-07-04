@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="css/themes/default.css" media="all">
     <link rel="stylesheet" href="lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
     <link rel="stylesheet" href="lib/layui-v2.5.5/css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="/css/my.css">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -67,7 +68,7 @@
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a id="head" href="javascript:;">admin</a>
+                    <a id="head" href="javascript:;"></a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" layuimini-content-href="page/user-setting.html" data-title="基本资料"
@@ -148,7 +149,7 @@
     });
     pushRequest("UserService", "getUserByToken", {}, function (data) {
         let base = download(data.headPortrait);
-        $("#head").append("<img style='width: 50px;height: 50px;' src='" + base + "'>")
+        $("#head").append("<img style='border-radius: 10px;width: 50px;height: 50px;' src='" + base + "'>")
     });
     layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
         var $ = layui.jquery,

@@ -25,6 +25,11 @@ mybatis:
 logging:
   level:
     indi.uhyils.dao: trace
+
+log-out:
+  path: D:/my/logs
+  dir-name: distribute
+
 token:
   salt: my
   encodeRules: my

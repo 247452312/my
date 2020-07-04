@@ -44,7 +44,7 @@ public class FileController {
         String eMsg = null;
         LinkNode<String> link = null;
         ServiceResult serviceResult = null;
-        Map<String, Object> args = new HashMap<>();
+        Map<String, Object> args = new HashMap<>(3);
 
         try {
             token = new String(Base64.decodeBase64(token));

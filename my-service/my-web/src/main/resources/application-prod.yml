@@ -18,7 +18,9 @@ dubbo:
   provider:
     timeout: 3000
     group: ${spring.profiles.active}
-
+log-out:
+  path: /my/logs
+  dir-name: web
 
 spring:
   devtools:

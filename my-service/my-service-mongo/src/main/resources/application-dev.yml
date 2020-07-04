@@ -45,6 +45,10 @@ spring:
     freemarker:
       cache: false    #页面不加载缓存，修改即时生效
 
+log-out:
+  path: D:/my/logs
+  dir-name: mongo
+
 redis:
   ip: 192.168.1.101
   port: 6379
