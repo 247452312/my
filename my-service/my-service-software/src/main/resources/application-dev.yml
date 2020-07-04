@@ -35,7 +35,7 @@ token:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.1.101:3306/my
+    url: jdbc:mysql://192.168.1.101:3306/my_software
     username: root
     password: 123456
   output:

@@ -141,7 +141,7 @@
             </dependency>
             <dependency>
                 <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-Algorithm</artifactId>
+                <artifactId>my-api-provider-algorithm</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
