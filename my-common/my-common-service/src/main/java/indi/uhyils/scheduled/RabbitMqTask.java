@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 
 /**
  * MQ发送者
@@ -43,11 +42,13 @@ public class RabbitMqTask {
     /**
      * 从程序启动开始 每半小时执行一次
      *
-     * @throws Exception
+     * @throws Exception MQ管道连接异常
      */
     @PostConstruct
     @Scheduled(cron = "0 */" + RabbitMqContent.OUT_TIME + " * * * ?")
     public void sendInfo() throws Exception {
+        // 发送监控前主动gc一次
+        System.gc();
         // 如果start信息没有发送过,那么发送start信息(只有项目启动时发送start信息失败时重复发送)
         if (!RabbitMqContent.getLogServiceOnLine()) {
             if (startChannel == null) {
@@ -65,12 +66,11 @@ public class RabbitMqTask {
                 startChannel.addConfirmListener(new ConfirmListener() {
                     /**
                      * 消息处理成功
-                     * @param deliveryTag
-                     * @param multiple
-                     * @throws IOException
+                     * @param deliveryTag 唯一标示
+                     * @param multiple 未知
                      */
                     @Override
-                    public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+                    public void handleAck(long deliveryTag, boolean multiple) {
                         synchronized (this) {
                             LogUtil.info(this, "JVM启动消息处理成功(定时任务)");
                             // 设置唯一标示
@@ -85,12 +85,11 @@ public class RabbitMqTask {
 
                     /**
                      * 消息处理失败
-                     * @param deliveryTag
-                     * @param multiple
-                     * @throws IOException
+                     * @param deliveryTag 唯一标识
+                     * @param multiple 未知
                      */
                     @Override
-                    public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+                    public void handleNack(long deliveryTag, boolean multiple) {
                         LogUtil.warn(this, "启动信息处理失败(定时任务)");
                     }
                 });
@@ -109,7 +108,7 @@ public class RabbitMqTask {
                 statusChannel.queueBind(RabbitMqContent.JVM_STATUS_QUEUE_NAME, RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.JVM_STATUS_QUEUE_NAME);
                 statusChannel.addConfirmListener(new ConfirmListener() {
                     @Override
-                    public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+                    public void handleAck(long deliveryTag, boolean multiple) {
                         LogUtil.info(this, "JVM状态消息处理成功");
                         // 成功了就开启interface发送
                         RabbitMqContent.setLogServiceOnLine(true);
@@ -117,7 +116,7 @@ public class RabbitMqTask {
                     }
 
                     @Override
-                    public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+                    public void handleNack(long deliveryTag, boolean multiple) {
                         // 失败了就取消interface发送
                         RabbitMqContent.setLogServiceOnLine(false);
                         LogUtil.warn(this, "JVM信息处理失败");
