@@ -2,10 +2,10 @@ server:
   port: 8054
 dubbo:
   metadata-report:
-    address: zookeeper://192.168.1.101:2181
+    address: nacos://192.168.1.101:8848
   registry:
     client: curator
-    address: zookeeper://192.168.1.101:2181
+    address: nacos://192.168.1.101:8848
   protocol:
     name: dubbo
     port: 20854

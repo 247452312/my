@@ -20,7 +20,7 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
         <spring.version>5.2.5.RELEASE</spring.version>
-        <org.dubbo.version>2.7.6</org.dubbo.version>
+        <org.dubbo.version>2.7.3</org.dubbo.version>
         <druid.version>1.1.22</druid.version>
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
         <org.apache.dubbo.nacos.version>1.2.1</org.apache.dubbo.nacos.version>
@@ -47,6 +47,8 @@
         <mail.version>1.4.7</mail.version>
         <mongo.version>3.12.5</mongo.version>
         <druid.version>1.1.22</druid.version>
+        <nacos.version>1.3.1</nacos.version>
+        <dubbo.nacos.version>2.7.7</dubbo.nacos.version>
 
     </properties>
 
@@ -277,6 +279,19 @@
                 <artifactId>curator-recipes</artifactId>
                 <version>${curator.version}</version>
             </dependency>
+            <!-- Dubbo Registry Nacos -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-registry-nacos</artifactId>
+                <version>${dubbo.nacos.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos.version}</version>
+            </dependency>
+
 
             <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
             <dependency>

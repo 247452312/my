@@ -1,11 +1,15 @@
+# 端口
 server:
   port: 8008
+
 dubbo:
+  # dubbo元数据
   metadata-report:
-    address: zookeeper://192.168.1.101:2181
+    address: nacos://192.168.1.101:8848
+  # dubbo 注册中心
   registry:
     client: curator
-    address: zookeeper://192.168.1.101:2181
+    address: nacos://192.168.1.101:8848
   protocol:
     name: dubbo
     port: 20808
@@ -19,17 +23,19 @@ dubbo:
     timeout: 3000
     group: ${spring.profiles.active}
 
+# 日志输出文件配置
 log-out:
   path: D:/my/logs
   dir-name: algorithm
 
+#sql日志配置
 logging:
   level:
     indi.uhyils.dao: trace
 spring:
   output:
     ansi:
-      enabled: ALWAYS
+      enabled: ALWAYS # 彩色
   devtools:
     restart:
       enabled: true  #设置开启热部署

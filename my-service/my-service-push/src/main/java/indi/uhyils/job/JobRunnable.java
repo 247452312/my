@@ -55,7 +55,7 @@ public class JobRunnable implements Callable {
         defaultRequest.setRequestLink(new LinkNode<>());
         ArrayList<Object> list = new ArrayList<>(1);
         list.add(defaultRequest);
-        DubboApiUtil.dubboApiToolAsyn(interfaceName, methodName, list, new DefaultRequest());
+        DubboApiUtil.dubboApiToolAsync(interfaceName, methodName, list, new DefaultRequest());
         return true;
     }
 }

@@ -55,7 +55,7 @@ public class DubboApiUtil {
      * @param request       请求
      * @return 方法返回值
      */
-    public static ServiceResult dubboApiToolAsyn(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
+    public static ServiceResult dubboApiToolAsync(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
         return getServiceResult(interfaceName, methodName, args, request, true, "dubbo");
     }
 
