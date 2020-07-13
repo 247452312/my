@@ -107,10 +107,12 @@ public class MongoConn {
      * 关闭连接, 如果在线程池中,则归还连接,不关闭
      */
     public void close() {
-        if (pool == null) {
-            mongoClient.close();
-        } else {
-            pool.returnConn(this);
+        synchronized (this) {
+            if (pool == null) {
+                mongoClient.close();
+            } else {
+                pool.returnConn(this);
+            }
         }
     }
 
