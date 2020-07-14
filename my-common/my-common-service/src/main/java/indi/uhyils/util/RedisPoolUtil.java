@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
-import java.util.ArrayList;
-
 /**
  * 懒加载,除了用到redis
  *
@@ -147,18 +145,7 @@ public class RedisPoolUtil {
     }
 
 
-    private static final String REDIS_GET_LOCK_LUA = "" +
-            "if(redis.call('exists',KEYS[1]) == 0) then " +
-            "redis.call('hset',KEYS[1],ARGV[2],1);" +
-            "redis.call('pexpire',KEYS[1],ARGV[1]);" +
-            "return nil;" +
-            "end;" +
-            "if(redis.call('hexists',KEYS[1],ARGV[2]) == 1) then " +
-            "redis.call('hincrby',KEYS[1],ARGV[2],1);" +
-            "redis.call('pexpire',KEYS[1],ARGV[1]);" +
-            "return nil;" +
-            "end;" +
-            "return redis.call('pttl',KEYS[1]);";
+
 
     /**
      * 分布式锁,key为lock + lockName,value为 "持有此锁的线程的名称 : 此微服务的名称"
@@ -166,12 +153,8 @@ public class RedisPoolUtil {
      * @param lockName
      * @param thread
      */
-    public void lock(String lockName, Thread thread, Long outTime) {
-        Jedis jedis = redisPool.getJedis();
-        ArrayList<String> keys = new ArrayList<>();
-        ArrayList<String> args = new ArrayList<>();
-        keys.add("lock_" + lockName);
-        args.add();
-        jedis.evalsha(REDIS_GET_LOCK_LUA, keys, args);
+    public RedisLock lock(String lockName, Thread thread) {
+        return new RedisLock("lock_" + lockName, redisPool, thread);
+
     }
 }
