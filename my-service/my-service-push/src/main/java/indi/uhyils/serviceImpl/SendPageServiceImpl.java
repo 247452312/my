@@ -2,7 +2,7 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.SendPageDao;
 import indi.uhyils.pojo.model.SendPageEntity;
-import indi.uhyils.service.SnedPageService;
+import indi.uhyils.service.SendPageService;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2020年06月25日 13时30分
  */
 @Service(group = "${spring.profiles.active}")
-public class SendPageServiceImpl extends BaseDefaultServiceImpl<SendPageEntity> implements SnedPageService {
+public class SendPageServiceImpl extends BaseDefaultServiceImpl<SendPageEntity> implements SendPageService {
 
     @Autowired
     private SendPageDao dao;

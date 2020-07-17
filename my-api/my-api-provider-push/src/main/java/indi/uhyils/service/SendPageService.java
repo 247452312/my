@@ -9,5 +9,5 @@ import indi.uhyils.service.base.DefaultEntityService;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月29日 08时11分
  */
-public interface SnedPageService extends DefaultEntityService<SendPageEntity> {
+public interface SendPageService extends DefaultEntityService<SendPageEntity> {
 }
