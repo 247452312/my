@@ -16,7 +16,7 @@ public class Algorithm {
         FileInputStream fis = null;
         File file = null;
         try {
-            Object[] objects = MatlabCell.matlabCell("MatlabVideo.Video", "getVedio", "temp");
+            Object[] objects = MatlabCell.matlabCell("MatlabVideo.Video", "getVideo", "temp");
             assert objects != null;
             String fileName = objects[0].toString();
             file = new File(fileName);
@@ -24,7 +24,7 @@ public class Algorithm {
             byte[] b = new byte[fis.available()];
             fis.read(b);
             return b;
-        } catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | InstantiationException | IOException e) {
+        } catch (Exception e) {
             LogUtil.error(Algorithm.class, e);
         } finally {
             if (fis != null) {
@@ -39,6 +39,6 @@ public class Algorithm {
 
     public static void main(String[] args) throws IOException {
         byte[] tests = getVoice();
-        int i = 9;
+
     }
 }

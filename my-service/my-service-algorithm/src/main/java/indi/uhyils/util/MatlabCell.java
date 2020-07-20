@@ -1,8 +1,5 @@
 package indi.uhyils.util;
 
-import com.mathworks.toolbox.javabuilder.MWException;
-
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -16,15 +13,13 @@ public class MatlabCell {
      *
      * @return
      */
-    public static Object[] matlabCell(String className, String methodName, Object... param) throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public static Object[] matlabCell(String className, String methodName, Object... param) throws Exception {
         Class<?> aClass = Class.forName(className);
         Object o = aClass.newInstance();
-        Method[] declaredMethods = aClass.getDeclaredMethods();
-        for (Method declaredMethod : declaredMethods) {
-            if (declaredMethod.getName().equalsIgnoreCase(methodName)) {
-                return (Object[]) declaredMethod.invoke(o, param.length, param);
-            }
+        Method declaredMethod = aClass.getDeclaredMethod(methodName, int.class, java.lang.Object[].class);
+        if (declaredMethod.getName().equalsIgnoreCase(methodName)) {
+            return (Object[]) declaredMethod.invoke(o, param.length, param);
         }
-        return null;
+        throw new Exception("没有找到Method");
     }
 }
