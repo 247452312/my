@@ -17,7 +17,7 @@ public class Algorithm {
         FileInputStream fis = null;
         File file = null;
         try {
-            Object[] objects = MatlabCell.matlabCell("MatlabVideo.Video", "getVideo", "temp");
+            Object[] objects = MatlabCellUtil.matlabCell("MatlabVideo.Video", "getVideo", "temp");
             assert objects != null;
             String fileName = objects[0].toString();
             file = new File(fileName);

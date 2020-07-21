@@ -11,7 +11,10 @@ public class FeatureVector implements Serializable {
 	 * 2d array of feature vector, dimension=noOfFrame*noOfFeatures
 	 */
 	private double[][] mfccFeature;
-	private double[][] featureVector; // all
+	/**
+	 *  all
+	 */
+	private double[][] featureVector;
 	private int noOfFrames;
 	private int noOfFeatures;
 
