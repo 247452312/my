@@ -1,9 +1,10 @@
 package indi.uhyils.util;
 
+import indi.uhyils.util.audio.main.MFCCFeatureMain;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * 算法集合
@@ -12,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
  * @date 文件创建日期 2020年07月19日 09时16分
  */
 public class Algorithm {
-    public static byte[] getVoice() throws IOException {
+    public static double[] getMfccVoice() throws IOException {
         FileInputStream fis = null;
         File file = null;
         try {
@@ -20,10 +21,7 @@ public class Algorithm {
             assert objects != null;
             String fileName = objects[0].toString();
             file = new File(fileName);
-            fis = new FileInputStream(file);
-            byte[] b = new byte[fis.available()];
-            fis.read(b);
-            return b;
+            return MFCCFeatureMain.getFeature(file);
         } catch (Exception e) {
             LogUtil.error(Algorithm.class, e);
         } finally {
@@ -38,7 +36,7 @@ public class Algorithm {
     }
 
     public static void main(String[] args) throws IOException {
-        byte[] tests = getVoice();
+        double[] mfccVoice = getMfccVoice();
 
     }
 }
