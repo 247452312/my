@@ -2,6 +2,7 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.request.CellAlgorithmRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.CellAlgorithmResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
@@ -21,4 +22,13 @@ public interface AlgorithmService extends BaseService {
      * @return
      */
     ServiceResult<CellAlgorithmResponse> cellAlgorithm(CellAlgorithmRequest request);
+
+
+    /**
+     * 获取某个算法的准确率
+     *
+     * @param request 算法id
+     * @return 准确率
+     */
+    ServiceResult<Double> getAlgorithmAccuracy(IdRequest request);
 }

@@ -49,6 +49,9 @@
         <druid.version>1.1.22</druid.version>
         <nacos.version>1.3.1</nacos.version>
         <dubbo.nacos.version>2.7.7</dubbo.nacos.version>
+        <httpclient.version>4.5.12</httpclient.version>
+        <httpcore.version>4.4.13</httpcore.version>
+        <tencentcloud.version>3.1.99</tencentcloud.version>
 
     </properties>
 
@@ -327,6 +330,29 @@
                 <artifactId>mail</artifactId>
                 <version>${mail.version}</version>
             </dependency>
+
+
+            <!-- httpclient -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <!-- httpcore -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>${httpcore.version}</version>
+            </dependency>
+
+            <!-- tencentcloud-sdk-java -->
+            <dependency>
+                <groupId>com.tencentcloudapi</groupId>
+                <artifactId>tencentcloud-sdk-java</artifactId>
+                <version>${tencentcloud.version}</version>
+            </dependency>
+
+
 
         </dependencies>
     </dependencyManagement>
