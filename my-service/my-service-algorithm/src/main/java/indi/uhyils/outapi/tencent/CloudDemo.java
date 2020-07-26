@@ -16,9 +16,9 @@ import java.util.Base64;
  * @date 文件创建日期 2020年07月26日 12时48分
  */
 public class CloudDemo {
-    private static String appId = "1302730988";
-    private static String secretId = "AKIDziQvCzGifMn1mIn4D8TfbikZXHmNtpAP";
-    private static String secretKey = "KUWOkbDWauxzlFEwPnskwRqyoSp300mH";
+    private static String appId = "xxx";
+    private static String secretId = "xxx";
+    private static String secretKey = "xxx";
 
     public static void main(String[] args) {
         /*语音文件识别*/
