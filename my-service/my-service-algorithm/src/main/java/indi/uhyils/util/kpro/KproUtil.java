@@ -20,9 +20,10 @@ public class KproUtil {
      * 生成mysql项目
      *
      * @param dbInformation 数据库信息
+     * @param dateFormat
      * @return mysql生成的文件
      */
-    public static HashMap<String, String> getMySqlKpro(DbInformation dbInformation) {
+    public static HashMap<String, String> getMySqlKpro(DbInformation dbInformation, String dateFormat) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = dbInformation.getUrl();
@@ -31,7 +32,7 @@ public class KproUtil {
             Connection conn = DriverManager.getConnection(url, userName, password);
             HashMap<String, TableInfo> tableInfos = getStringTableInfoHashMap(dbInformation, conn);
             conn.close();
-            return getFileHashMapByTableInfos(tableInfos, dbInformation, DbTypeEnum.MYSQL);
+            return getFileHashMapByTableInfos(tableInfos, dbInformation, dateFormat, DbTypeEnum.MYSQL);
         } catch (Exception e) {
             LogUtil.error(KproUtil.class, e);
         }
@@ -43,24 +44,25 @@ public class KproUtil {
      *
      * @param tableInfos    <table名称,table数据>
      * @param dbInformation
+     * @param dateFormat
      * @return
      */
-    private static HashMap<String, String> getFileHashMapByTableInfos(HashMap<String, TableInfo> tableInfos, DbInformation dbInformation, DbTypeEnum typeEnum) {
+    private static HashMap<String, String> getFileHashMapByTableInfos(HashMap<String, TableInfo> tableInfos, DbInformation dbInformation, String dateFormat, DbTypeEnum typeEnum) {
         HashMap<String, String> result = new HashMap<>();
         String apiPath = "my-api/my-api-provider-" + dbInformation.getSmallProjectName();
         String servicePath = "my-service/my-service-" + dbInformation.getSmallProjectName();
         for (Map.Entry<String, TableInfo> stringTableInfoEntry : tableInfos.entrySet()) {
-            result.putAll(Objects.requireNonNull(createPojo(apiPath + "/src/main/java/indi/uhyils", KproStringUtil.dealDbNameToJavaFileName(stringTableInfoEntry.getKey()), stringTableInfoEntry.getValue(), typeEnum)));
-            result.putAll(Objects.requireNonNull(createDao(servicePath + "/src/main/java/indi/uhyils", KproStringUtil.dealDbNameToJavaFileName(stringTableInfoEntry.getKey()), stringTableInfoEntry.getValue(), typeEnum)));
-            result.putAll(Objects.requireNonNull(createMapper(servicePath + "/src/main/resources", KproStringUtil.dealDbNameToJavaFileName(stringTableInfoEntry.getKey()), stringTableInfoEntry.getValue())));
-            result.putAll(Objects.requireNonNull(createService(apiPath + "/src/main/java/indi/uhyils", KproStringUtil.dealDbNameToJavaFileName(stringTableInfoEntry.getKey()), stringTableInfoEntry.getValue())));
-            result.putAll(Objects.requireNonNull(createServiceImpl(servicePath + "/src/main/java/indi/uhyils", KproStringUtil.dealDbNameToJavaFileName(stringTableInfoEntry.getKey()), stringTableInfoEntry.getValue())));
+            result.putAll(Objects.requireNonNull(createPojo(apiPath + "/src/main/java/indi/uhyils", KproStringUtil.dealDbNameToJavaFileName(stringTableInfoEntry.getKey()), stringTableInfoEntry.getValue(), dateFormat, typeEnum)));
+            result.putAll(Objects.requireNonNull(createDao(servicePath + "/src/main/java/indi/uhyils", KproStringUtil.dealDbNameToJavaFileName(stringTableInfoEntry.getKey()), stringTableInfoEntry.getValue(), dateFormat, typeEnum)));
+            result.putAll(Objects.requireNonNull(createMapper(servicePath + "/src/main/resources", KproStringUtil.dealDbNameToJavaFileName(stringTableInfoEntry.getKey()), stringTableInfoEntry.getValue(), dateFormat)));
+            result.putAll(Objects.requireNonNull(createService(apiPath + "/src/main/java/indi/uhyils", KproStringUtil.dealDbNameToJavaFileName(stringTableInfoEntry.getKey()), stringTableInfoEntry.getValue(), dateFormat)));
+            result.putAll(Objects.requireNonNull(createServiceImpl(servicePath + "/src/main/java/indi/uhyils", KproStringUtil.dealDbNameToJavaFileName(stringTableInfoEntry.getKey()), stringTableInfoEntry.getValue(), dateFormat)));
         }
-        result.putAll(Objects.requireNonNull(createOther(apiPath, servicePath, dbInformation, typeEnum)));
+        result.putAll(Objects.requireNonNull(createOther(apiPath, servicePath, dbInformation, dateFormat, typeEnum)));
         return result;
     }
 
-    private static HashMap<String, String> createOther(String apiPath, String servicePath, DbInformation dbInformation, DbTypeEnum typeEnum) {
+    private static HashMap<String, String> createOther(String apiPath, String servicePath, DbInformation dbInformation, String dateFormat, DbTypeEnum typeEnum) {
         HashMap<String, String> result = new HashMap<>(10);
         /*api pom.xml*/
         result.putAll(createApiPom(apiPath, dbInformation));
@@ -75,21 +77,33 @@ public class KproUtil {
         /*service logback-spring.xml*/
         result.putAll(createLogBack(servicePath));
         /*service Application.java*/
-        result.putAll(createApplication(servicePath, dbInformation));
+        result.putAll(createApplication(servicePath, dbInformation, dateFormat));
+        /*jvm启动参数*/
+        result.putAll(createStartJvmParam(servicePath, dbInformation));
         return result;
     }
 
-    private static Map<String, String> createApplication(String servicePath, DbInformation dbInformation) {
-        String fileName = servicePath + "/" + dbInformation.getBigProjectName() + "Application.java";
+    private static Map<String, String> createStartJvmParam(String servicePath, DbInformation dbInformation) {
+        String fileName = servicePath + "/jvmStartParam.txt";
         HashMap<String, String> result = new HashMap<>(1);
         StringBuilder sb = new StringBuilder();
-        sb.append("package indi.uhyils;\n").append("\n").append("import indi.uhyils.util.SpringUtil;\n").append("import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;\n").append("import org.springframework.boot.SpringApplication;\n").append("import org.springframework.boot.autoconfigure.SpringBootApplication;\n").append("import org.springframework.context.ApplicationContext;\n").append("import org.springframework.transaction.annotation.EnableTransactionManagement;\n").append("\n").append("/**\n").append(" * @author uhyils <247452312@qq.com>\n").append(" * @date 文件创建日期 2020年06月08日 13时56分\n").append(" */\n").append("\n").append("\n").append("@SpringBootApplication\n").append("@EnableDubbo\n").append("@EnableTransactionManagement\n").append("public class ").append(dbInformation.getBigProjectName()).append("Application {\n").append("    public static void main(String[] args) {\n").append("        ApplicationContext act = SpringApplication.run(").append(dbInformation.getBigProjectName()).append("Application.class, args);\n").append("        SpringUtil.setApplicationContext(act);\n").append("    }\n").append("}\n");
+        sb.append("-XX:+UseG1GC ").append("-XX:+PrintGCTimeStamps ").append("-XX:+HeapDumpOnOutOfMemoryError ").append("-XX:HeapDumpPath=d:/my/logs/").append(dbInformation.getSmallProjectName()).append("/JVM_DOWN.dump ").append("-Xms512m ").append("-Xmx512m ").append("-XX:NewRatio=1 ").append("-Xloggc:d:/my/logs/").append(dbInformation.getSmallProjectName()).append("/JVM.log ");
+        sb.append("--spring.profiles.active=dev");
+        result.put(fileName, sb.toString());
+        return result;
+    }
+
+    private static Map<String, String> createApplication(String servicePath, DbInformation dbInformation, String dateFormat) {
+        String fileName = servicePath + "/src/main/java/indi/uhyils/" + dbInformation.getBigProjectName() + "Application.java";
+        HashMap<String, String> result = new HashMap<>(1);
+        StringBuilder sb = new StringBuilder();
+        sb.append("package indi.uhyils;\n").append("\n").append("import indi.uhyils.util.SpringUtil;\n").append("import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;\n").append("import org.springframework.boot.SpringApplication;\n").append("import org.springframework.boot.autoconfigure.SpringBootApplication;\n").append("import org.springframework.context.ApplicationContext;\n").append("import org.springframework.transaction.annotation.EnableTransactionManagement;\n").append("\n").append("/**\n").append(" * @author uhyils <247452312@qq.com>\n").append(" * @date 文件创建日期 " + dateFormat + "\n").append(" */\n").append("\n").append("\n").append("@SpringBootApplication\n").append("@EnableDubbo\n").append("@EnableTransactionManagement\n").append("public class ").append(dbInformation.getBigProjectName()).append("Application {\n").append("    public static void main(String[] args) {\n").append("        ApplicationContext act = SpringApplication.run(").append(dbInformation.getBigProjectName()).append("Application.class, args);\n").append("        SpringUtil.setApplicationContext(act);\n").append("    }\n").append("}\n");
         result.put(fileName, sb.toString());
         return result;
     }
 
     private static Map<String, String> createLogBack(String servicePath) {
-        String fileName = servicePath + "/logback-spring.xml";
+        String fileName = servicePath + "/src/main/resources/logback-spring.xml";
         HashMap<String, String> result = new HashMap<>(1);
         StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n").append("<!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出 -->\n").append("<!-- scan:当此属性设置为true时，配置文档如果发生改变，将会被重新加载，默认值为true -->\n").append("<!-- scanPeriod:设置监测配置文档是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。\n").append("                 当scan为true时，此属性生效。默认的时间间隔为1分钟。 -->\n").append("<!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->\n").append("<configuration scan=\"true\" scanPeriod=\"10 seconds\">\n").append("    <contextName>logback</contextName>\n").append("\n").append("    <!-- 获取yml中的log地址 -->\n").append("    <springProperty scope=\"context\" name=\"log.path\" source=\"log-out.path\" defaultValue=\"/usr/my/logs\"/>\n").append("    <springProperty scope=\"context\" name=\"log.dir.name\" source=\"log-out.dir-name\" defaultValue=\"defaultDir\"/>\n").append("\n").append("    <!--0. 日志格式和颜色渲染 -->\n").append("    <!-- 彩色日志依赖的渲染类 -->\n").append("    <conversionRule conversionWord=\"clr\" converterClass=\"org.springframework.boot.logging.logback.ColorConverter\"/>\n").append("    <conversionRule conversionWord=\"wex\"\n").append("                    converterClass=\"org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter\"/>\n").append("    <conversionRule conversionWord=\"wEx\"\n").append("                    converterClass=\"org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter\"/>\n").append("    <!-- 彩色日志格式 -->\n").append("    <property name=\"CONSOLE_LOG_PATTERN\"\n").append("              value=\"${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}\"/>\n").append("\n").append("    <!--1. 输出到控制台-->\n").append("    <appender name=\"CONSOLE\" class=\"ch.qos.logback.core.ConsoleAppender\">\n").append("        <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->\n").append("        <filter class=\"ch.qos.logback.classic.filter.ThresholdFilter\">\n").append("            <level>debug</level>\n").append("        </filter>\n").append("        <encoder>\n").append("            <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>\n").append("            <!-- 设置字符集 -->\n").append("            <charset>UTF-8</charset>\n").append("        </encoder>\n").append("    </appender>\n").append("\n").append("    <!--2. 输出到文档-->\n").append("    <!-- 2.1 level为 DEBUG 日志，时间滚动输出  -->\n").append("    <appender name=\"DEBUG_FILE\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\">\n").append("        <!-- 正在记录的日志文档的路径及文档名 -->\n").append("        <file>${log.path}/${log.dir.name}/debug.log</file>\n").append("        <!--日志文档输出格式-->\n").append("        <encoder>\n").append("            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>\n").append("            <charset>UTF-8</charset> <!-- 设置字符集 -->\n").append("        </encoder>\n").append("        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->\n").append("        <rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\">\n").append("            <!-- 日志归档 -->\n").append("            <fileNamePattern>${log.path}/${log.dir.name}/debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>\n").append("            <timeBasedFileNamingAndTriggeringPolicy class=\"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP\">\n").append("                <maxFileSize>100MB</maxFileSize>\n").append("            </timeBasedFileNamingAndTriggeringPolicy>\n").append("            <!--日志文档保留天数-->\n").append("            <maxHistory>15</maxHistory>\n").append("        </rollingPolicy>\n").append("        <!-- 此日志文档只记录debug级别的 -->\n").append("        <filter class=\"ch.qos.logback.classic.filter.LevelFilter\">\n").append("            <level>debug</level>\n").append("            <onMatch>ACCEPT</onMatch>\n").append("            <onMismatch>DENY</onMismatch>\n").append("        </filter>\n").append("    </appender>\n").append("\n").append("    <!-- 2.2 level为 INFO 日志，时间滚动输出  -->\n").append("    <appender name=\"INFO_FILE\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\">\n").append("        <!-- 正在记录的日志文档的路径及文档名 -->\n").append("        <file>${log.path}/${log.dir.name}/info.log</file>\n").append("        <!--日志文档输出格式-->\n").append("        <encoder>\n").append("            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>\n").append("            <charset>UTF-8</charset>\n").append("        </encoder>\n").append("        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->\n").append("        <rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\">\n").append("            <!-- 每天日志归档路径以及格式 -->\n").append("            <fileNamePattern>${log.path}/${log.dir.name}/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>\n").append("            <timeBasedFileNamingAndTriggeringPolicy class=\"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP\">\n").append("                <maxFileSize>100MB</maxFileSize>\n").append("            </timeBasedFileNamingAndTriggeringPolicy>\n").append("            <!--日志文档保留天数-->\n").append("            <maxHistory>15</maxHistory>\n").append("        </rollingPolicy>\n").append("        <!-- 此日志文档只记录info级别的 -->\n").append("        <filter class=\"ch.qos.logback.classic.filter.LevelFilter\">\n").append("            <level>info</level>\n").append("            <onMatch>ACCEPT</onMatch>\n").append("            <onMismatch>DENY</onMismatch>\n").append("        </filter>\n").append("    </appender>\n").append("\n").append("    <!-- 2.3 level为 WARN 日志，时间滚动输出  -->\n").append("    <appender name=\"WARN_FILE\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\">\n").append("        <!-- 正在记录的日志文档的路径及文档名 -->\n").append("        <file>${log.path}/${log.dir.name}/warn.log</file>\n").append("        <!--日志文档输出格式-->\n").append("        <encoder>\n").append("            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>\n").append("            <charset>UTF-8</charset> <!-- 此处设置字符集 -->\n").append("        </encoder>\n").append("        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->\n").append("        <rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\">\n").append("            <fileNamePattern>${log.path}/${log.dir.name}/warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>\n").append("            <timeBasedFileNamingAndTriggeringPolicy class=\"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP\">\n").append("                <maxFileSize>100MB</maxFileSize>\n").append("            </timeBasedFileNamingAndTriggeringPolicy>\n").append("            <!--日志文档保留天数-->\n").append("            <maxHistory>15</maxHistory>\n").append("        </rollingPolicy>\n").append("        <!-- 此日志文档只记录warn级别的 -->\n").append("        <filter class=\"ch.qos.logback.classic.filter.LevelFilter\">\n").append("            <level>warn</level>\n").append("            <onMatch>ACCEPT</onMatch>\n").append("            <onMismatch>DENY</onMismatch>\n").append("        </filter>\n").append("    </appender>\n").append("\n").append("    <!-- 2.4 level为 ERROR 日志，时间滚动输出  -->\n").append("    <appender name=\"ERROR_FILE\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\">\n").append("        <!-- 正在记录的日志文档的路径及文档名 -->\n").append("        <file>${log.path}/${log.dir.name}/error.log</file>\n").append("        <!--日志文档输出格式-->\n").append("        <encoder>\n").append("            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>\n").append("            <charset>UTF-8</charset> <!-- 此处设置字符集 -->\n").append("        </encoder>\n").append("        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->\n").append("        <rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\">\n").append("            <fileNamePattern>${log.path}/${log.dir.name}/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>\n").append("            <timeBasedFileNamingAndTriggeringPolicy class=\"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP\">\n").append("                <maxFileSize>100MB</maxFileSize>\n").append("            </timeBasedFileNamingAndTriggeringPolicy>\n").append("            <!--日志文档保留天数-->\n").append("            <maxHistory>15</maxHistory>\n").append("        </rollingPolicy>\n").append("        <!-- 此日志文档只记录ERROR级别的 -->\n").append("        <filter class=\"ch.qos.logback.classic.filter.LevelFilter\">\n").append("            <level>ERROR</level>\n").append("            <onMatch>ACCEPT</onMatch>\n").append("            <onMismatch>DENY</onMismatch>\n").append("        </filter>\n").append("    </appender>\n").append("\n").append("    <!--\n").append("        <logger>用来设置某一个包或者具体的某一个类的日志打印级别、\n").append("        以及指定<appender>。<logger>仅有一个name属性，\n").append("        一个可选的level和一个可选的addtivity属性。\n").append("        name:用来指定受此logger约束的某一个包或者具体的某一个类。\n").append("        level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，\n").append("              还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。\n").append("              如果未设置此属性，那么当前logger将会继承上级的级别。\n").append("        addtivity:是否向上级logger传递打印信息。默认是true。\n").append("        <logger name=\"org.springframework.web\" level=\"info\"/>\n").append("        <logger name=\"org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor\" level=\"INFO\"/>\n").append("    -->\n").append("\n").append("    <!--\n").append("        使用mybatis的时候，sql语句是debug下才会打印，而这里我们只配置了info，所以想要查看sql语句的话，有以下两种操作：\n").append("        第一种把<root level=\"info\">改成<root level=\"DEBUG\">这样就会打印sql，不过这样日志那边会出现很多其他消息\n").append("        第二种就是单独给dao下目录配置debug模式，代码如下，这样配置sql语句会打印，其他还是正常info级别：\n").append("        【logging.level.org.mybatis=debug logging.level.dao=debug】\n").append("     -->\n").append("\n").append("    <!--\n").append("        root节点是必选节点，用来指定最基础的日志输出级别，只有一个level属性\n").append("        level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，\n").append("        不能设置为INHERITED或者同义词NULL。默认是DEBUG\n").append("        可以包含零个或多个元素，标识这个appender将会添加到这个logger。\n").append("    -->\n").append("\n").append("    <!-- 4. 最终的策略 -->\n").append("    <!-- 4.1 开发环境:打印控制台-->\n").append("    <springProfile name=\"dev\">\n").append("        <logger name=\"com.sdcm.pmp\" level=\"debug\"/>\n").append("    </springProfile>\n").append("\n").append("    <root level=\"info\">\n").append("        <appender-ref ref=\"CONSOLE\"/>\n").append("        <appender-ref ref=\"DEBUG_FILE\"/>\n").append("        <appender-ref ref=\"INFO_FILE\"/>\n").append("        <appender-ref ref=\"WARN_FILE\"/>\n").append("        <appender-ref ref=\"ERROR_FILE\"/>\n").append("    </root>\n").append("\n").append("    <!-- 4.2 生产环境:输出到文档\n").append("    <springProfile name=\"pro\">\n").append("        <root level=\"info\">\n").append("            <appender-ref ref=\"CONSOLE\" />\n").append("            <appender-ref ref=\"DEBUG_FILE\" />\n").append("            <appender-ref ref=\"INFO_FILE\" />\n").append("            <appender-ref ref=\"ERROR_FILE\" />\n").append("            <appender-ref ref=\"WARN_FILE\" />\n").append("        </root>\n").append("    </springProfile> -->\n").append("\n").append("</configuration>\n");
@@ -98,7 +112,7 @@ public class KproUtil {
     }
 
     private static Map<String, String> createBanner(String servicePath) {
-        String fileName = servicePath + "/banner.txt";
+        String fileName = servicePath + "/src/main/resources/banner.txt";
         HashMap<String, String> result = new HashMap<>(1);
         StringBuilder sb = new StringBuilder();
         sb.append("                        _           _ _\n").append("                        | |         (_) |\n").append(" _ __ ___  _   _   _   _| |__  _   _ _| |___\n").append("| '_ ` _ \\| | | | | | | | '_ \\| | | | | / __|\n").append("| | | | | | |_| | | |_| | | | | |_| | | \\__ \\\n").append("|_| |_| |_|\\__, |  \\__,_|_| |_|\\__, |_|_|___/\n").append("            __/ |               __/ |\n").append("           |___/               |___/\n");
@@ -107,10 +121,10 @@ public class KproUtil {
     }
 
     private static Map<String, String> createApplicationYml(String servicePath, DbInformation dbInformation) {
-        String filePathDev = servicePath + "/application-dev.yml";
-        String filePathTest = servicePath + "/application-test.yml";
-        String filePathRelease = servicePath + "/application-release.yml";
-        String filePathProd = servicePath + "/application-prod.yml";
+        String filePathDev = servicePath + "/src/main/resources/application-dev.yml";
+        String filePathTest = servicePath + "/src/main/resources/application-test.yml";
+        String filePathRelease = servicePath + "/src/main/resources/application-release.yml";
+        String filePathProd = servicePath + "/src/main/resources/application-prod.yml";
         HashMap<String, String> result = new HashMap<>(1);
         StringBuilder sb = new StringBuilder();
         sb.append("server:\n").append("  port: 8003\n").append("dubbo:\n").append("  metadata-report:\n").append("    address: nacos://192.168.1.101:8848\n").append("  registry:\n").append("    client: curator\n").append("    address: nacos://192.168.1.101:8848\n").append("  protocol:\n").append("    name: dubbo\n").append("    port: 20803\n").append("    threadpool: cached\n").append("  application:\n").append("    name: provider-").append(dbInformation.getSmallProjectName()).append("\n").append("  consumer:\n").append("    timeout: 3000\n").append("    group: ${spring.profiles.active}\n").append("  provider:\n").append("    timeout: 3000\n").append("    group: ${spring.profiles.active}\n").append("\n").append("log-out:\n").append("  path: D:/my/logs\n").append("  dir-name: ").append(dbInformation.getSmallProjectName()).append("\n").append("\n").append("mybatis:\n").append("  mapper-locations: classpath:mapper/*.xml\n").append("  type-aliases-package: indi.uhyils.dao\n").append("logging:\n").append("  level:\n").append("    indi.uhyils.dao: DEBUG\n").append("token:\n").append("  salt: my\n").append("  encodeRules: my\n").append("spring:\n").append("  datasource:\n").append("    driver-class-name: com.mysql.jdbc.Driver\n").append("    url: ").append(dbInformation.getUrl()).append("\n").append("    username: ").append(dbInformation.getUserName()).append("\n").append("    password: ").append(dbInformation.getPassword()).append("\n").append("    type: com.alibaba.druid.pool.DruidDataSource\n").append("    # 初始化物理连接个数\n").append("    initial-size: 1\n").append("    # 最大连接池数量\n").append("    max-active: 20\n").append("    # 最小连接池数量\n").append("    min-idle: 5\n").append("    # 获取连接时最大等待时间(ms)\n").append("    max-wait: 60000\n").append("    # 开启缓存preparedStatement(PSCache)\n").append("    pool-prepared-statements: true\n").append("    # 启用PSCache后，指定每个连接上PSCache的大小\n").append("    max-pool-prepared-statement-per-connection-size: 20\n").append("    # 用来检测连接是否有效的sql\n").append("    validation-query: select 'x'\n").append("    # 申请连接时不检测连接是否有效\n").append("    test-on-borrow: false\n").append("    # 归还连接时不检测连接是否有效\n").append("    test-on-return: false\n").append("    # 申请连接时检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效（不影响性能）\n").append("    test-while-idle: true\n").append("    # 检测连接的间隔时间，若连接空闲时间 >= minEvictableIdleTimeMillis，则关闭物理连接\n").append("    time-between-eviction-runs-millis: 60000\n").append("    # 连接保持空闲而不被驱逐的最小时间(ms)\n").append("    min-evictable-idle-time-millis: 300000\n").append("    # 配置监控统计拦截的filters（不配置则监控界面sql无法统计），监控统计filter:stat，日志filter:log4j，防御sql注入filter:wall\n").append("    filters: stat,log4j,wall\n").append("    # 支持合并多个DruidDataSource的监控数据\n").append("    use-global-data-source-stat: true\n").append("    # 通过connectProperties属性来打开mergeSql(Sql合并)功能；慢SQL记录(配置超过5秒就是慢，默认是3秒)\n").append("    connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000\n").append("  output:\n").append("    ansi:\n").append("      enabled: ALWAYS\n").append("  devtools:\n").append("    restart:\n").append("      enabled: true  #设置开启热部署\n").append("      additional-paths: src/main/java #重启目录\n").append("      exclude: WEB-INF/**\n").append("    freemarker:\n").append("      cache: false    #页面不加载缓存，修改即时生效\n").append("\n").append("redis:\n").append("  ip: 192.168.1.101\n").append("  port: 6379\n").append("  password: uhyils\n").append("\n").append("rabbit:\n").append("  host: 192.168.1.101\n").append("  port: 5672\n").append("  username: uhyils\n").append("  password: 123456\n");
@@ -160,24 +174,24 @@ public class KproUtil {
         return result;
     }
 
-    private static HashMap<String, String> createServiceImpl(String filepath, String className, TableInfo tableInfo) {
+    private static HashMap<String, String> createServiceImpl(String filepath, String className, TableInfo tableInfo, String dateFormat) {
         HashMap<String, String> result = new HashMap<>(1);
         String fileAllName = filepath + "/serviceImpl/" + className + "ServiceImpl.java";
-        StringBuilder sb = new StringBuilder().append("package indi.uhyils.serviceImpl;\n").append("\n").append("import org.apache.dubbo.config.annotation.Service;\n").append("import indi.uhyils.annotation.NoToken;\n").append("import indi.uhyils.content.Content;\n").append("import indi.uhyils.dao.").append(className).append("Dao;\n").append("import indi.uhyils.enum_.ServiceCode;\n").append("import indi.uhyils.pojo.model.*;\n").append("import indi.uhyils.service.").append(className).append("Service;\n").append("import org.springframework.beans.factory.annotation.Autowired;\n").append("\n").append("/**\n").append(" * @author uhyils <247452312@qq.com>\n").append(" * @date 文件创建日期 2020年05月27日 16时28分\n").append(" */\n").append("@Service(group = \"${spring.profiles.active}\")\n").append("public class ").append(className).append("ServiceImpl extends BaseDefaultServiceImpl<").append(className).append("Entity> implements ").append(className).append("Service {\n").append("\n").append("    @Autowired\n").append("    private ").append(className).append("Dao dao;\n").append("\n").append("\n").append("    public ").append(className).append("Dao getDao() {\n").append("        return dao;\n").append("    }\n").append("\n").append("    public void setDao(").append(className).append("Dao dao) {\n").append("        this.dao = dao;\n").append("    }\n").append("}\n");
+        StringBuilder sb = new StringBuilder().append("package indi.uhyils.serviceImpl;\n").append("\n").append("import org.apache.dubbo.config.annotation.Service;\n").append("import indi.uhyils.annotation.NoToken;\n").append("import indi.uhyils.content.Content;\n").append("import indi.uhyils.dao.").append(className).append("Dao;\n").append("import indi.uhyils.enum_.ServiceCode;\n").append("import indi.uhyils.pojo.model.*;\n").append("import indi.uhyils.service.").append(className).append("Service;\n").append("import org.springframework.beans.factory.annotation.Autowired;\n").append("\n").append("/**\n").append(" * @author uhyils <247452312@qq.com>\n").append(" * @date 文件创建日期 ").append(dateFormat).append("\n").append(" */\n").append("@Service(group = \"${spring.profiles.active}\")\n").append("public class ").append(className).append("ServiceImpl extends BaseDefaultServiceImpl<").append(className).append("Entity> implements ").append(className).append("Service {\n").append("\n").append("    @Autowired\n").append("    private ").append(className).append("Dao dao;\n").append("\n").append("\n").append("    public ").append(className).append("Dao getDao() {\n").append("        return dao;\n").append("    }\n").append("\n").append("    public void setDao(").append(className).append("Dao dao) {\n").append("        this.dao = dao;\n").append("    }\n").append("}\n");
         result.put(fileAllName, sb.toString());
         return result;
     }
 
-    private static HashMap<String, String> createService(String filepath, String className, TableInfo tableInfo) {
+    private static HashMap<String, String> createService(String filepath, String className, TableInfo tableInfo, String dateFormat) {
         HashMap<String, String> result = new HashMap<>(1);
         String fileAllName = filepath + "/service/" + className + "Service.java";
         StringBuilder sb = new StringBuilder();
-        sb.append("package indi.uhyils.service;\n").append("\n").append("import indi.uhyils.pojo.model.*;\n").append("import indi.uhyils.service.base.DefaultEntityService;\n").append("\n").append("/**\n").append(" *\n").append(" * @author uhyils <247452312@qq.com>\n").append(" * @date 文件创建日期 2020年05月27日 16时25分\n").append(" */\n").append("public interface ").append(className).append("Service extends DefaultEntityService<").append(className).append("Entity> {\n").append("\n").append("\n").append("}\n");
+        sb.append("package indi.uhyils.service;\n").append("\n").append("import indi.uhyils.pojo.model.*;\n").append("import indi.uhyils.service.base.DefaultEntityService;\n").append("\n").append("/**\n").append(" *\n").append(" * @author uhyils <247452312@qq.com>\n").append(" * @date 文件创建日期 ").append(dateFormat).append("\n").append(" */\n").append("public interface ").append(className).append("Service extends DefaultEntityService<").append(className).append("Entity> {\n").append("\n").append("\n").append("}\n");
         result.put(fileAllName, sb.toString());
         return result;
     }
 
-    private static HashMap<String, String> createDao(String filepath, String className, TableInfo tableInfo, DbTypeEnum prase) {
+    private static HashMap<String, String> createDao(String filepath, String className, TableInfo tableInfo, String dateFormat, DbTypeEnum prase) {
         HashMap<String, String> result = new HashMap<>(1);
         String fileAllName = filepath + "/dao/" + className + "Dao.java";
         StringBuilder sb = new StringBuilder();
@@ -185,6 +199,7 @@ public class KproUtil {
         sb.append("import indi.uhyils.pojo.model.*;\n");
         sb.append("import indi.uhyils.dao.base.DefaultDao;\n");
         sb.append("import org.apache.ibatis.annotations.Mapper;\n\n");
+        sb.append("/**\n").append(" *\n").append(" * @author uhyils <247452312@qq.com>\n").append(" * @date 文件创建日期 ").append(dateFormat).append("\n").append(" */\n");
         sb.append("@Mapper\n");
         sb.append("public interface ");
         sb.append(className);
@@ -196,7 +211,7 @@ public class KproUtil {
         return result;
     }
 
-    private static HashMap<String, String> createMapper(String filepath, String className, TableInfo tableInfo) {
+    private static HashMap<String, String> createMapper(String filepath, String className, TableInfo tableInfo, String dateFormat) {
         HashMap<String, String> result = new HashMap<>(1);
         String fileAllName = filepath + "/mapper/" + className + "DaoMapper.xml";
         StringBuilder sb = new StringBuilder();
@@ -249,7 +264,7 @@ public class KproUtil {
         return result;
     }
 
-    private static Map<String, String> createPojo(String filepath, String className, TableInfo tableInfo, DbTypeEnum typeEnum) {
+    private static Map<String, String> createPojo(String filepath, String className, TableInfo tableInfo, String dateFormat, DbTypeEnum typeEnum) {
         TypeConvertor typeConvertor = TypeConvertorFactory.getTypeConvertor(typeEnum);
         HashMap<String, String> result = new HashMap<>(1);
         String fileAllName = filepath + "/pojo/model/" + className + ".java";
@@ -274,6 +289,11 @@ public class KproUtil {
 
         //import
         sb.append("import java.util.*;\n\n");
+        sb.append("/**\n" +
+                " *\n" +
+                " * @author uhyils <247452312@qq.com>\n" +
+                " * @date 文件创建日期 " + dateFormat + "\n" +
+                " */\n");
         sb.append("public class ");
         sb.append(className);
         sb.append("{\n\n");
@@ -308,9 +328,10 @@ public class KproUtil {
      * 获取oracle项目
      *
      * @param dbInformation 数据库信息
+     * @param dateFormat
      * @return oracle生成的文件
      */
-    public static HashMap<String, String> getOracleKpro(DbInformation dbInformation) {
+    public static HashMap<String, String> getOracleKpro(DbInformation dbInformation, String dateFormat) {
         return null;
     }
 
@@ -318,9 +339,10 @@ public class KproUtil {
      * 获取sqlite项目
      *
      * @param dbInformation 数据库信息
+     * @param dateFormat
      * @return sqlite生成的文件
      */
-    public static HashMap<String, String> getSqliteKpro(DbInformation dbInformation) {
+    public static HashMap<String, String> getSqliteKpro(DbInformation dbInformation, String dateFormat) {
         return null;
     }
 
