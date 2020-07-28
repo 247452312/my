@@ -62,6 +62,10 @@
             <artifactId>my-api-provider-mongo</artifactId>
         </dependency>
         <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-algorithm</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>

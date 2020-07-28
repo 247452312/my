@@ -23,6 +23,10 @@ public class ColumnInfo {
      */
     private String name;
 
+    private String bigName;
+
+    private String smallName;
+
     public String getDataType() {
         return dataType;
     }
@@ -45,6 +49,22 @@ public class ColumnInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBigName() {
+        return bigName;
+    }
+
+    public void setBigName(String bigName) {
+        this.bigName = bigName;
+    }
+
+    public String getSmallName() {
+        return smallName;
+    }
+
+    public void setSmallName(String smallName) {
+        this.smallName = smallName;
     }
 
     public ColumnInfo(String dataType, int keyType, String name) {
