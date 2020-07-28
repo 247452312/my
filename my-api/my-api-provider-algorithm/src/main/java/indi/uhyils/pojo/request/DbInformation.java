@@ -19,6 +19,20 @@ public class DbInformation {
      */
     private String dbName;
     /**
+     * 项目包名称
+     */
+    private String projectName;
+
+    /**
+     * 前台不传 项目名首字母大写
+     */
+    private String bigProjectName;
+    /**
+     * 前台不传 项目名首字母小写
+     */
+    private String smallProjectName;
+
+    /**
      * 类型
      */
     private Integer type;
@@ -83,5 +97,23 @@ public class DbInformation {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+        this.bigProjectName = projectName.substring(0, 1).toUpperCase() + projectName.substring(1);
+        this.smallProjectName = projectName.substring(0, 1).toLowerCase() + projectName.substring(1);
+    }
+
+    public String getBigProjectName() {
+        return bigProjectName;
+    }
+
+    public String getSmallProjectName() {
+        return smallProjectName;
     }
 }

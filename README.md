@@ -3,7 +3,7 @@
     自己磨练技能的地方,知道的东西全都加进去
 ## 运行代码需要的环境
 * java1.8环境
-* zookeeper
+* nacos
 * mysql
 * 本地启动时需要加入 --spring.profiles.active=dev命令
 ## 使用说明
@@ -22,6 +22,7 @@ mysql配置在application.properties中
         * my-service-log ----- 日志模块
         * my-service-software ----- 软件模块
         * my-service-user ----- 用户及权限模块
+        * ...
         * my-web ----- 整个项目前台模块
     
 
