@@ -3,14 +3,22 @@ package indi.uhyils.pojo.model;
 import indi.uhyils.pojo.model.base.BaseIdEntity;
 
 /**
- * JVM监控信息
+ * 每一个 -->微服务的集群<-- 中的每一个 -->微服务<-- 都会有这么一条JVM监控信息数据
+ * {@db sys_MonitorDO}
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时06分
  */
 public class MonitorDO extends BaseIdEntity {
 
+    /**
+     * 微服务的名称 名称与微服务dubbo的applicationName相同
+     */
     private String serviceName;
 
+    /**
+     * 微服务所在服务器的访问ip
+     */
     private String ip;
 
     /**
@@ -19,12 +27,15 @@ public class MonitorDO extends BaseIdEntity {
     private Long time;
 
     /**
-     * 假想结束时间
+     * 假想结束时间 默认是往后推30分钟,如果不更新则此处的结束
+     * 时间变成了真实的结束时间,也就是说,此条记录是静态的,并没
+     * 有储存微服务现在的状态,但是依旧可以通过endTime有没有超
+     * 出来判断微服务是否在半小时内离线
      */
     private Long endTime;
 
     /**
-     * jvm总分配内存
+     * jvm总分配内存(堆内存 + 堆外内存)
      */
     private Double jvmTotalMem;
 

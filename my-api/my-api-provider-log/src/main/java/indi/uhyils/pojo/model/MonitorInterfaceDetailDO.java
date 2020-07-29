@@ -3,28 +3,41 @@ package indi.uhyils.pojo.model;
 import indi.uhyils.pojo.model.base.BaseIdEntity;
 
 /**
- * 接口调用监控信息
+ * 接口调用监控信息 和{@link MonitorDO}是多对一的关系,记录了每一次的接口调用的信息 拟将此数据库代替log数据库,但是没有解决无法获取用户ip的痛点
+ * {@db sys_monitorInterfaceDetailDO}
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时22分
  */
 public class MonitorInterfaceDetailDO extends BaseIdEntity {
 
+    /**
+     * 见{@link MonitorDO}
+     */
     private String fid;
 
+    /**
+     * 用户调用的接口名称
+     */
     private String interfaceName;
 
+    /**
+     * 用户调用的接口方法
+     */
     private String methodName;
 
+    /**
+     * 此条操作是否达到了用户想要的效果 即只有ServiceCode{@ps 无法link} 为success时此字段才为true
+     */
     private Boolean success;
 
     /**
-     * 此条发送时间
+     * 操作发生时间 时间戳类型
      */
     private Long time;
 
     /**
-     * 执行时间
+     * 执行时间跨度 时间戳类型
      */
     private Long runTime;
 

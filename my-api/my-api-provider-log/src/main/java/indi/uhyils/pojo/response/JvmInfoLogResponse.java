@@ -7,6 +7,7 @@ import java.util.Map;
 
 /**
  * JVM内存信息日志 --> 只有正在运行的微服务才能统计到
+ * 这里返回的信息通过Echart展示为曲线
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月21日 07时11分

@@ -3,7 +3,9 @@ package indi.uhyils.pojo.request;
 import java.util.List;
 
 /**
- * 数据库信息(项目生成用)
+ * 前端传入的数据库信息,除了标记前端不传的{@link DbInformation#bigProjectName}和{@link DbInformation#smallProjectName}之外 其他的都属于必传项
+ * 其中类型见{@link indi.uhyils.enum_.DbTypeEnum} 暂时支持mysql oracle 两种
+ * 其中 {@link DbInformation#tables} 可以使用_匹配单个字符 或者使用%匹配多个字符
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月27日 07时08分
@@ -105,8 +107,6 @@ public class DbInformation {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-        this.bigProjectName = projectName.substring(0, 1).toUpperCase() + projectName.substring(1);
-        this.smallProjectName = projectName.substring(0, 1).toLowerCase() + projectName.substring(1);
     }
 
     public String getBigProjectName() {

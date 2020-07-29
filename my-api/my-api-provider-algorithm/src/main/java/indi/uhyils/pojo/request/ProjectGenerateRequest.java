@@ -5,7 +5,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import java.util.List;
 
 /**
- * 项目生成请求
+ * 项目生成请求 其中{@link ProjectGenerateRequest#list} 详细介绍见{@link DbInformation}
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月27日 07时04分

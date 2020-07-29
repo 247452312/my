@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * 首页 JVM 线信息
+ * Echart的参数形式
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月21日 11时17分

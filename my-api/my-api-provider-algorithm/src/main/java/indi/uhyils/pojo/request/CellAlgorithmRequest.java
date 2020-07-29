@@ -3,7 +3,8 @@ package indi.uhyils.pojo.request;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 
 /**
- * 调用算法请求值
+ * 调用算法请求值 这个类中包含了请求算法的所有需要的东西
+ * 算法类还没有实现,等待之后的完善 TODO
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月04日 17时15分

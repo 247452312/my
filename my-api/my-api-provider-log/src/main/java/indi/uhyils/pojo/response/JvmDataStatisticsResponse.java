@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * JVM数据统计信息
+ * 通过一系列的算法计算出服务的运行质量,其中服务运行质量{@link JvmDataStatisticsResponse#serviceOperationQuality}代表了总体运行质量有没有好坏之分
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月21日 06时59分

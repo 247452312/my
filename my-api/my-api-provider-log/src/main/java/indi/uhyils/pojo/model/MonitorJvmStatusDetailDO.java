@@ -4,6 +4,12 @@ import indi.uhyils.pojo.model.base.BaseIdEntity;
 
 /**
  * JVM实时信息
+ * 记录了每一个微服务的JVM信息,值得注意的是,并
+ * 不是实时的,会有5-30分钟的间隔,通过各个微服务
+ * 的定时任务来进行此表的插入操作{@ps 中间通过了
+ * MQ来转移消息, 保证尽量不延迟}
+ * 此数据库与{@link MonitorDO} 是多对一的关系
+ * {@db sys_MonitorJvmStatusDetailDO}
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时18分

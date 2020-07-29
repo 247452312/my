@@ -6,6 +6,22 @@ import java.io.Serializable;
 
 /**
  * 首页初始化数据vo
+ * <p>
+ * 其中数据统计{@link JvmDataStatisticsResponse} 中携带质量详情,暂时
+ * 前端无展示 其余都有展示
+ * </p>
+ * <p>
+ * 快捷入口{@link QuickStartResponse} 返回值是从数据字典数据库中获取的
+ * 值
+ * </p>
+ * <p>
+ * JVM内存信息{@link JvmInfoLogResponse} 是项目初始化时通过MQ向JVM服务
+ * 定时发送JVM信息 保存在数据库中
+ * 算法统计{@link AlgorithmStatisticsResponse} 未完待续
+ * 版本信息{@link VersionInfoResponse} 以及下一步计划{@link LastPlanResponse}
+ * 均在数据字典数据库中获取
+ * 以上5条组成了首页的展示具体位置见各个属性的注释
+ * </p>
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月21日 06时35分
