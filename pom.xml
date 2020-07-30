@@ -345,7 +345,7 @@
                 <version>${httpcore.version}</version>
             </dependency>
 
-            <!-- tencentcloud-sdk-java -->
+            <!-- tencent cloud-sdk-java -->
             <dependency>
                 <groupId>com.tencentcloudapi</groupId>
                 <artifactId>tencentcloud-sdk-java</artifactId>
