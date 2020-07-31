@@ -40,6 +40,17 @@ public class ThreeConvLayer implements Layer {
      */
     private Integer kernelChannel;
 
+    /**
+     * 残差 每个样本结束后损失函数计算出的值通过反向传播记录在这里
+     * 等待之后的
+     */
+    private Double[][][][] errors;
+
+    /**
+     * 偏置值
+     */
+    private Double[][][][] bias;
+
     public ThreeConvLayer(Integer kernelHeight, Integer kernelWidth, Integer kernelChannel, ActivationFunction activationFunction) {
         this.kernelHeight = kernelHeight;
         this.kernelWidth = kernelWidth;
@@ -68,7 +79,6 @@ public class ThreeConvLayer implements Layer {
                     // 图中卷积核走的列数
                     for (int j = 0; j < in[i].length - kernelWidth + 1; j++) {
                         result[m][n][i][j] = 0.0;
-                        int count = 0;
                         // 卷积核第o通道
                         for (int o = 0; o < kernelChannel; o++) {
                             // 卷积核第k行
@@ -76,11 +86,10 @@ public class ThreeConvLayer implements Layer {
                                 // 卷积核第l列
                                 for (int l = 0; l < kernelWidth; l++) {
                                     result[m][n][i][j] += kernels[m][o][k][l] * in[n + o][i + k][j + l];
-                                    count++;
                                 }
                             }
                         }
-                        result[m][n][i][j] = activationFunction.forward(result[m][n][i][j]);
+                        result[m][n][i][j] = activationFunction.forward(result[m][n][i][j] + bias[m][n][i][j]);
                     }
                 }
             }
@@ -89,8 +98,17 @@ public class ThreeConvLayer implements Layer {
     }
 
     @Override
-    public Object reverse(Double inData) {
+    public Object reverse(Double[] inData) {
+        for (int i = 0; i < inData.length; i++) {
+            Double reverse = activationFunction.reverse(inData[i]);
+
+        }
         return null;
+    }
+
+    @Override
+    public void updateWeight() {
+
     }
 
     @Override

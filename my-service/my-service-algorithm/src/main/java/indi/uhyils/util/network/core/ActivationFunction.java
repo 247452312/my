@@ -22,5 +22,5 @@ public interface ActivationFunction {
      * @param inData 输出数据
      * @return 结果
      */
-    Double Reverse(Double inData);
+    Double reverse(Double inData);
 }

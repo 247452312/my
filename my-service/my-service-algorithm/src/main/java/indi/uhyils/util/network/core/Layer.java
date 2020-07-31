@@ -25,12 +25,17 @@ public interface Layer extends Cloneable {
     Double[][][][] calculation(Double[][][] obj);
 
     /**
-     * 反向计算(注:要包含学习过程)
+     * 反向计算(注:要包含记录残差的过程)
      *
      * @param inData 输入误差
      * @return 上一层的误差
      */
-    Object reverse(Double inData);
+    Object reverse(Double[] inData);
+
+    /**
+     * 每进行完成一个batch更新一次权重
+     */
+    void updateWeight();
 
     /**
      * 初始化权重(随机初始化)
