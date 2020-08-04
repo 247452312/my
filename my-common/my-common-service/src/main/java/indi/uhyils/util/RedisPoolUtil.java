@@ -153,7 +153,7 @@ public class RedisPoolUtil {
      * @param lockName
      * @param thread
      */
-    public RedisLock lock(String lockName, Thread thread) {
+    public RedisLock getLock(String lockName, Thread thread) {
         return new RedisLock("lock_" + lockName, redisPool, thread);
 
     }

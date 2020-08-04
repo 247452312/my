@@ -36,9 +36,9 @@ public class RedisLock {
     private String value;
 
     /**
-     * 默认持有锁3秒
+     * 默认持有锁3分钟
      */
-    private Long lockTime = 3000L;
+    private Long lockTime = 3 * 60L;
 
     public String getLockName() {
         return lockName;
@@ -97,6 +97,7 @@ public class RedisLock {
             Long lockCount = jedis.incrBy(lockCountName, -1L);
             if (lockCount == 0) {
                 jedis.del(lockName);
+                jedis.del(lockCountName);
             }
         } catch (Exception e) {
             LogUtil.error(this, e);
@@ -121,20 +122,30 @@ public class RedisLock {
     public final boolean tryLock(Long time) {
         Jedis jedis = pool.getJedis();
         try {
-            // 尝试获取锁
-            Long getLockSuccess = jedis.setnx(lockName, value);
-            if (getLockSuccess == 1L) {
-                // 双重检测,防止并发(但是redis应该是原子操作,这一步不知道有没有必要) FIXME
-                String s = jedis.get(lockName);
-                if (value.equals(s)) {
+            // 如果此线程已经获取到这个锁,那么不需要再次获取
+            String s = jedis.get(lockName);
+            if (s != null && s.equals(value)) {
+                // (因为redis为原子操作 所以不需要再次检测)
+                jedis.expire(lockName, time.intValue());
+                // 此时该线程真正持有了这把锁
+                // 重入数量+1
+                jedis.incrBy(lockCountName, 1L);
+                jedis.expire(lockCountName, time.intValue());
+                return true;
+            } else if (s == null) {
+                // 尝试获取锁
+                Long getLockSuccess = jedis.setnx(lockName, value);
+                if (getLockSuccess == 1L) {
+                    // (因为redis为原子操作 所以不需要再次检测)
                     jedis.expire(lockName, time.intValue());
                     // 此时该线程真正持有了这把锁
                     // 重入数量+1
                     jedis.incrBy(lockCountName, 1L);
+                    jedis.expire(lockCountName, time.intValue());
                     return true;
                 }
-
             }
+
         } catch (Exception e) {
             LogUtil.error(this, e);
         } finally {
