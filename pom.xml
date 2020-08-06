@@ -52,6 +52,7 @@
         <httpclient.version>4.5.12</httpclient.version>
         <httpcore.version>4.4.13</httpcore.version>
         <tencentcloud.version>3.1.99</tencentcloud.version>
+        <poi.version>4.1.2</poi.version>
 
     </properties>
 
@@ -138,6 +139,11 @@
             <dependency>
                 <groupId>indi.uhyils</groupId>
                 <artifactId>my-api-provider-push</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-api-provider-redis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -350,6 +356,21 @@
                 <groupId>com.tencentcloudapi</groupId>
                 <artifactId>tencentcloud-sdk-java</artifactId>
                 <version>${tencentcloud.version}</version>
+            </dependency>
+
+
+            <!-- poi -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+
+            <!-- poi-ooxml -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
             </dependency>
 
 

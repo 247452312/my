@@ -1,7 +1,8 @@
-package indi.uhyils.util;
+package indi.uhyils.util.redis;
 
+import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.SpringUtil;
 import org.apache.dubbo.config.ApplicationConfig;
-import redis.clients.jedis.Jedis;
 
 /**
  * redis实现的分布式锁
@@ -92,7 +93,7 @@ public class RedisLock {
      * 解锁
      */
     public void unlock() {
-        Jedis jedis = pool.getJedis();
+        Redisable jedis = pool.getJedis();
         try {
             Long lockCount = jedis.incrBy(lockCountName, -1L);
             if (lockCount == 0) {
@@ -120,7 +121,7 @@ public class RedisLock {
     }
 
     public final boolean tryLock(Long time) {
-        Jedis jedis = pool.getJedis();
+        Redisable jedis = pool.getJedis();
         try {
             // 如果此线程已经获取到这个锁,那么不需要再次获取
             String s = jedis.get(lockName);

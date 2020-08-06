@@ -1,13 +1,13 @@
-package indi.uhyils.util;
+package indi.uhyils.util.redis;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.content.Content;
 import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 /**
@@ -31,7 +31,7 @@ public class RedisPoolUtil {
      * @param user  user
      */
     public void addUser(String token, UserEntity user) {
-        Jedis jedis = redisPool.getJedis();
+        Redisable jedis = redisPool.getJedis();
         try {
             String value = JSONObject.toJSONString(user);
             jedis.append(token, value);
@@ -55,7 +55,7 @@ public class RedisPoolUtil {
      * @return user
      */
     public UserEntity getUser(String token) {
-        Jedis jedis = redisPool.getJedis();
+        Redisable jedis = redisPool.getJedis();
         try {
             String userJson = jedis.get(token);
             if (userJson == null || "".equals(userJson)) {
@@ -75,7 +75,7 @@ public class RedisPoolUtil {
     }
 
     public Boolean haveToken(String token) {
-        Jedis jedis = redisPool.getJedis();
+        Redisable jedis = redisPool.getJedis();
         try {
             Boolean exists = jedis.exists(token);
             return exists;
@@ -89,7 +89,7 @@ public class RedisPoolUtil {
     }
 
     public Boolean haveUserId(String userId) {
-        Jedis jedis = redisPool.getJedis();
+        Redisable jedis = redisPool.getJedis();
         try {
             Boolean exists = jedis.exists(userId);
             return exists;
@@ -103,7 +103,7 @@ public class RedisPoolUtil {
     }
 
     public boolean removeUserById(String userId) {
-        Jedis jedis = redisPool.getJedis();
+        Redisable jedis = redisPool.getJedis();
         try {
             String token = jedis.get(userId);
             Long del = jedis.del(userId, token);
@@ -117,7 +117,7 @@ public class RedisPoolUtil {
     }
 
     public boolean removeUserBytoken(String token) {
-        Jedis jedis = redisPool.getJedis();
+        Redisable jedis = redisPool.getJedis();
         try {
             String userJson = jedis.get(token);
             if (userJson == null || "".equals(userJson)) {
@@ -143,8 +143,6 @@ public class RedisPoolUtil {
     public void setRedisPool(RedisPool redisPool) {
         this.redisPool = redisPool;
     }
-
-
 
 
     /**
