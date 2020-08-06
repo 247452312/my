@@ -19,4 +19,4 @@ MAINTAINER uhyils <uhyils@qq.com>
 ADD target/my-service-software-$version.jar /app.jar
 
 #启动容器时的进程
-CMD ["java","-jar","/app.jar","-XX:+UseG1GC -XX:+PrintGCTimeStamps -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/my/logs/software/JVM_DOWN.dump -Xms512m -Xmx512m -XX:NewRatio=1 -Xloggc:/my/logs/software/JVM.log","--spring.profiles.active=$runEnv"]
+CMD ["java","-XX:+UseG1GC -XX:+PrintGCTimeStamps -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/my/logs/software/JVM_DOWN.dump -Xms512m -Xmx512m -XX:NewRatio=1 -Xloggc:/my/logs/software/JVM.log","-jar","/app.jar","--spring.profiles.active=$runEnv"]
