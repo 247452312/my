@@ -27,4 +27,4 @@ ENTRYPOINT ["mkdir","-p","/my/logs"]
 ADD target/my-web-$version.jar /app.jar
 
 #启动容器时的进程
-CMD ["java","-Xms512m","-Xmx512m","-XX:+PrintGCTimeStamps","-XX:+UseG1GC","-XX:+HeapDumpOnOutOfMemoryError","-XX:HeapDumpPath=/my/logs/web/JVM_DOWN.dump","-XX:NewRatio=1","-Xloggc:/my/logs/web/JVM.log","-jar","/app.jar","--spring.profiles.active=$runEnv"]
+ENTRYPOINT ["java","-Xms512m","-Xmx512m","-XX:+PrintGCTimeStamps","-XX:+UseG1GC","-XX:+HeapDumpOnOutOfMemoryError","-XX:HeapDumpPath=/my/logs/web/JVM_DOWN.dump","-XX:NewRatio=1","-Xloggc:/my/logs/web/JVM.log","-jar","/app.jar","--spring.profiles.active=$runEnv"]
