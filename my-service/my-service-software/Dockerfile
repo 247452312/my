@@ -19,7 +19,7 @@ VOLUME /my/logs
 EXPOSE 8054 20854
 
 #应用构建成功后的jar文件被复制到镜像内，名字也改成了app.jar
-ADD target/my-*.jar /
+ADD target/my-*.jar /app.jar
 
 #启动容器时的进程
 ENTRYPOINT ["java","-Xms512m","-Xmx512m","-XX:+PrintGCTimeStamps","-XX:+UseG1GC","-XX:+HeapDumpOnOutOfMemoryError","-XX:HeapDumpPath=/my/logs/software/JVM_DOWN.dump","-XX:NewRatio=1","-Xloggc:/my/logs/software/JVM.log","-jar","/app.jar","--spring.profiles.active=prod"]
