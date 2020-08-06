@@ -18,7 +18,7 @@ MAINTAINER uhyils <uhyils@qq.com>
 
 #应用构建成功后的jar文件被复制到镜像内，名字也改成了app.jar
 ADD target/my-web-$version.jar /app.jar
-
+EXPOSE 8051 20851
 #创建目录
 CMD ["mkdir -p /my/logs"]
 #启动容器时的进程
