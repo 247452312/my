@@ -3,6 +3,7 @@ database/
 *.log
 **/test/**
 **/venv/**
+**/target/**
 
 ### STS ###
 .apt_generated
