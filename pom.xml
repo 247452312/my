@@ -53,6 +53,7 @@
         <httpcore.version>4.4.13</httpcore.version>
         <tencentcloud.version>3.1.99</tencentcloud.version>
         <poi.version>4.1.2</poi.version>
+        <asr.version>1.0</asr.version>
 
     </properties>
 
@@ -373,6 +374,11 @@
                 <version>${poi.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.tencent</groupId>
+                <artifactId>asr-sdk</artifactId>
+                <version>${asr.version}</version>
+            </dependency>
 
 
         </dependencies>
