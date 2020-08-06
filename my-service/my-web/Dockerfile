@@ -15,7 +15,7 @@ MAINTAINER uhyils <uhyils@qq.com>
 
 
 #挂载
-VOLUME /my/logs
+VOLUME /my/logs:/my/logs
 
 #暴露端口
 EXPOSE 8051 20851
