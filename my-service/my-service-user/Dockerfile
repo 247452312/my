@@ -4,8 +4,8 @@
 # docker stop prod-my-service-user
 # docker rm prod-my-service-user
 # docker rmi my-service/prod-my-service-user:latest
-# docker build --build-arg version=0.0.3 --build-arg runEnv=prod -t my-service/prod-my-service-user .
-# docker run -it -d  -p 8052:8052 -p 20852:20852 --name prod-my-service-user my-service/prod-my-service-user:latest java -jar /app.jar --spring.profiles.active=prod
+# docker build --build-arg version=0.0.5 --build-arg runEnv=prod -t my-service/prod-my-service-user .
+# docker run -it -d  -p 8052:8052 -p 20852:20852 -v /my/logs:/my/logs --name prod-my-service-user my-service/prod-my-service-user:latest
 
 FROM java:8
 
@@ -19,4 +19,4 @@ MAINTAINER uhyils <uhyils@qq.com>
 ADD target/my-service-user-$version.jar /app.jar
 
 #启动容器时的进程
-CMD ["java","-jar","/app.jar","--spring.profiles.active=$runEnv"]
+CMD ["java","-jar","/app.jar","-XX:+UseG1GC -XX:+PrintGCTimeStamps -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/my/logs/user/JVM_DOWN.dump -Xms512m -Xmx512m -XX:NewRatio=1 -Xloggc:/my/logs/user/JVM.log","--spring.profiles.active=$runEnv"]

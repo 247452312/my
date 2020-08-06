@@ -1,11 +1,11 @@
 # Docker image for {tomcat? springBoot?}
 # VERSION {版本号}
 # Author: uhyils
-# docker stop prod-my-service-log
-# docker rm prod-my-service-log
-# docker rmi my-service/prod-my-service-log:latest
-# docker build --build-arg version=0.0.3 --build-arg runEnv=prod -t my-service/prod-my-service-log .
-# docker run -it -d  -p 8053:8053 -p 20853:20853 --name prod-my-service-log my-service/prod-my-service-log:latest java -jar /app.jar --spring.profiles.active=prod
+# docker stop prod-my-service-algorithm
+# docker rm prod-my-service-algorithm
+# docker rmi my-service/prod-my-service-algorithm:latest
+# docker build --build-arg version=0.0.5 --build-arg runEnv=prod -t my-service/prod-my-service-algorithm .
+# docker run -it -d  -p 8058:8058 -p 20858:20858 -v /my/logs:/my/logs --name prod-my-service-algorithm my-service/prod-my-service-algorithm:latest
 
 FROM java:8
 
@@ -19,4 +19,4 @@ MAINTAINER uhyils <uhyils@qq.com>
 ADD target/my-service-algorithm-$version.jar /app.jar
 
 #启动容器时的进程
-CMD ["java","-jar","/app.jar","--spring.profiles.active=$runEnv"]
+CMD ["java","-jar","/app.jar","-XX:+UseG1GC -XX:+PrintGCTimeStamps -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/my/logs/algorithm/JVM_DOWN.dump -Xms512m -Xmx512m -XX:NewRatio=1 -Xloggc:/my/logs/algorithm/JVM.log","--spring.profiles.active=$runEnv"]
