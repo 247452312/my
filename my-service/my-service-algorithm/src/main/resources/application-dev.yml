@@ -17,10 +17,10 @@ dubbo:
   application:
     name: provider-algorithm
   consumer:
-    timeout: 3000
+    timeout: 5000
     group: ${spring.profiles.active}
   provider:
-    timeout: 3000
+    timeout: 5000
     group: ${spring.profiles.active}
 
 # 日志输出文件配置

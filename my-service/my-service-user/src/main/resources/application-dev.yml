@@ -14,10 +14,10 @@ dubbo:
   application:
     name: provider-user
   consumer:
-    timeout: 3000
+    timeout: 5000
     group: ${spring.profiles.active}
   provider:
-    timeout: 3000
+    timeout: 5000
     group: ${spring.profiles.active}
 
 mybatis:

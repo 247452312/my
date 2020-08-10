@@ -13,10 +13,10 @@ dubbo:
   application:
     name: provider-software
   consumer:
-    timeout: 3000
+    timeout: 5000
     group: ${spring.profiles.active}
   provider:
-    timeout: 3000
+    timeout: 5000
     group: ${spring.profiles.active}
 
 log-out:
