@@ -12,10 +12,7 @@ import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -30,6 +27,7 @@ import static indi.uhyils.controller.AllController.actionAddRequestLink;
  * @date 文件创建日期 2020年07月03日 15时05分
  */
 @Controller
+@CrossOrigin
 @RequestMapping("/file")
 public class FileController {
 
