@@ -41,7 +41,7 @@ public class JavaPojoFileGetAndSet {
         sb.append(big);
         sb.append("(){\n\t\treturn ");
         sb.append(smallFieldName);
-        sb.append("\n\t}");
+        sb.append(";\n\t}");
         this.getString = sb.toString();
         sb.delete(0, sb.length());
 
@@ -53,7 +53,7 @@ public class JavaPojoFileGetAndSet {
         sb.append(" ");
         sb.append(smallFieldName);
         sb.append("){\n\t\tthis.");
-        sb.append(fieldType);
+        sb.append(smallFieldName);
         sb.append(" = ");
         sb.append(smallFieldName);
         sb.append(";\n\t}");

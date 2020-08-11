@@ -26,17 +26,15 @@ public abstract class BaseDefaultServiceImpl<T extends BaseVoEntity> implements 
     public ServiceResult<Page<T>> getByArgs(ArgsRequest argsRequest) {
         List<Arg> args = argsRequest.getArgs();
         Boolean paging = argsRequest.getPaging();
+        ArrayList<T> byArgs;
         if (paging) {
-            ArrayList<T> byArgs = getDao().getByArgs(args, argsRequest.getPage(), argsRequest.getSize());
-            int count = getDao().countByArgs(argsRequest.getArgs());
-            Page<T> build = Page.build(argsRequest, byArgs, count, (count / argsRequest.getSize()) + 1);
-            return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
+            byArgs = getDao().getByArgs(args, argsRequest.getPage(), argsRequest.getSize());
         } else {
-            ArrayList<T> byArgs = getDao().getByArgsNoPage(args);
-            int count = getDao().countByArgs(argsRequest.getArgs());
-            Page<T> build = Page.build(argsRequest, byArgs, count, null);
-            return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
+            byArgs = getDao().getByArgsNoPage(args);
         }
+        int count = getDao().countByArgs(argsRequest.getArgs());
+        Page<T> build = Page.build(argsRequest, byArgs, count, null);
+        return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
     }
 
     @Override
@@ -100,7 +98,7 @@ public abstract class BaseDefaultServiceImpl<T extends BaseVoEntity> implements 
             Method declaredMethod = getClass().getDeclaredMethod("getDao");
             return (DefaultDao<T>) declaredMethod.invoke(this);
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            LogUtil.error(this,e);
+            LogUtil.error(this, e);
         }
         return null;
     }

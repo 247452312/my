@@ -12,6 +12,7 @@ public class KproStringUtil {
      * @return java model名称
      */
     public static String dealDbNameToJavaFileName(String dbName) {
+        dbName = dbName.replaceAll("sys_", "");
         String[] tableNameSplits = dbName.split("_");
         StringBuilder sb = new StringBuilder();
         for (String tableNameSplit : tableNameSplits) {

@@ -35,6 +35,11 @@ public class DbInformation {
     private String smallProjectName;
 
     /**
+     * 此项目端口
+     */
+    private Integer port;
+
+    /**
      * 类型
      */
     private Integer type;
@@ -107,6 +112,8 @@ public class DbInformation {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+        this.smallProjectName = projectName.substring(0, 1).toLowerCase() + projectName.substring(1);
+        this.bigProjectName = projectName.substring(0, 1).toUpperCase() + projectName.substring(1);
     }
 
     public String getBigProjectName() {
@@ -115,5 +122,13 @@ public class DbInformation {
 
     public String getSmallProjectName() {
         return smallProjectName;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 }
