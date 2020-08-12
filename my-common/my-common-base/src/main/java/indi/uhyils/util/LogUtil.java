@@ -27,6 +27,10 @@ public class LogUtil {
         writeLog(cls, msg, null, LogTypeEnum.INFO);
     }
 
+    public static void info(String msg) {
+        writeLog(Thread.currentThread().getClass(), msg, null, LogTypeEnum.INFO);
+    }
+
     public static void info(Class<?> cls, Throwable e) {
         writeLog(cls, null, e, LogTypeEnum.INFO);
     }
@@ -42,6 +46,10 @@ public class LogUtil {
 
     public static void debug(Class<?> cls, String msg) {
         writeLog(cls, msg, null, LogTypeEnum.DEBUG);
+    }
+
+    public static void debug(String msg) {
+        writeLog(Thread.currentThread().getClass(), msg, null, LogTypeEnum.DEBUG);
     }
 
     public static void debug(Class<?> cls, Throwable e) {
@@ -61,6 +69,10 @@ public class LogUtil {
         writeLog(cls, msg, null, LogTypeEnum.WARN);
     }
 
+    public static void warn(String msg) {
+        writeLog(Thread.currentThread().getClass(), msg, null, LogTypeEnum.WARN);
+    }
+
     public static void warn(Class<?> cls, Throwable e) {
         writeLog(cls, null, e, LogTypeEnum.WARN);
     }
@@ -76,6 +88,10 @@ public class LogUtil {
 
     public static void error(Class<?> cls, String msg) {
         writeLog(cls, msg, null, LogTypeEnum.ERROR);
+    }
+
+    public static void error(String msg) {
+        writeLog(Thread.currentThread().getClass(), msg, null, LogTypeEnum.ERROR);
     }
 
     public static void error(Class<?> cls, Throwable e) {
