@@ -20,19 +20,19 @@ public class LogUtil {
     /**
      * 日志文件缓存地
      */
-    private static Map<Class<?>, Logger> loggerMap = new HashMap<>();
+    private static Map<String, Logger> loggerMap = new HashMap<>();
 
 
     public static void info(Class<?> cls, String msg) {
-        writeLog(cls, msg, null, LogTypeEnum.INFO);
+        writeLog(cls.getSimpleName(), msg, null, LogTypeEnum.INFO);
     }
 
     public static void info(String msg) {
-        writeLog(Thread.currentThread().getClass(), msg, null, LogTypeEnum.INFO);
+        writeLog(Thread.currentThread().getName(), msg, null, LogTypeEnum.INFO);
     }
 
     public static void info(Class<?> cls, Throwable e) {
-        writeLog(cls, null, e, LogTypeEnum.INFO);
+        writeLog(cls.getSimpleName(), null, e, LogTypeEnum.INFO);
     }
 
     public static void info(Object obj, String msg) {
@@ -45,15 +45,15 @@ public class LogUtil {
 
 
     public static void debug(Class<?> cls, String msg) {
-        writeLog(cls, msg, null, LogTypeEnum.DEBUG);
+        writeLog(cls.getSimpleName(), msg, null, LogTypeEnum.DEBUG);
     }
 
     public static void debug(String msg) {
-        writeLog(Thread.currentThread().getClass(), msg, null, LogTypeEnum.DEBUG);
+        writeLog(Thread.currentThread().getName(), msg, null, LogTypeEnum.DEBUG);
     }
 
     public static void debug(Class<?> cls, Throwable e) {
-        writeLog(cls, null, e, LogTypeEnum.DEBUG);
+        writeLog(cls.getSimpleName(), null, e, LogTypeEnum.DEBUG);
     }
 
     public static void debug(Object obj, String msg) {
@@ -66,15 +66,15 @@ public class LogUtil {
 
 
     public static void warn(Class<?> cls, String msg) {
-        writeLog(cls, msg, null, LogTypeEnum.WARN);
+        writeLog(cls.getSimpleName(), msg, null, LogTypeEnum.WARN);
     }
 
     public static void warn(String msg) {
-        writeLog(Thread.currentThread().getClass(), msg, null, LogTypeEnum.WARN);
+        writeLog(Thread.currentThread().getName(), msg, null, LogTypeEnum.WARN);
     }
 
     public static void warn(Class<?> cls, Throwable e) {
-        writeLog(cls, null, e, LogTypeEnum.WARN);
+        writeLog(cls.getSimpleName(), null, e, LogTypeEnum.WARN);
     }
 
     public static void warn(Object obj, String msg) {
@@ -87,15 +87,15 @@ public class LogUtil {
 
 
     public static void error(Class<?> cls, String msg) {
-        writeLog(cls, msg, null, LogTypeEnum.ERROR);
+        writeLog(cls.getSimpleName(), msg, null, LogTypeEnum.ERROR);
     }
 
     public static void error(String msg) {
-        writeLog(Thread.currentThread().getClass(), msg, null, LogTypeEnum.ERROR);
+        writeLog(Thread.currentThread().getName(), msg, null, LogTypeEnum.ERROR);
     }
 
     public static void error(Class<?> cls, Throwable e) {
-        writeLog(cls, null, e, LogTypeEnum.ERROR);
+        writeLog(cls.getSimpleName(), null, e, LogTypeEnum.ERROR);
     }
 
     public static void error(Object obj, String msg) {
@@ -110,18 +110,18 @@ public class LogUtil {
     /**
      * 根据类型输出不同级别的对应类的日志
      *
-     * @param cls         class
+     * @param className   名称,simpleName
      * @param msg         信息
      * @param logTypeEnum 类型
      */
-    private static void writeLog(Class<?> cls, String msg, Throwable throwable, LogTypeEnum logTypeEnum) {
-        if (loggerMap.containsKey(cls)) {
-            Logger logger = loggerMap.get(cls);
+    private static void writeLog(String className, String msg, Throwable throwable, LogTypeEnum logTypeEnum) {
+        if (loggerMap.containsKey(className)) {
+            Logger logger = loggerMap.get(className);
             choiseLogType(msg, throwable, logTypeEnum, logger);
             return;
         }
-        Logger logger = LoggerFactory.getLogger(cls);
-        loggerMap.put(cls, logger);
+        Logger logger = LoggerFactory.getLogger(className);
+        loggerMap.put(className, logger);
         choiseLogType(msg, throwable, logTypeEnum, logger);
     }
 
@@ -176,5 +176,13 @@ public class LogUtil {
             p = p.getLinkNode();
         } while (p != null);
         LogUtil.info(LogUtil.class, String.format("链路跟踪: %s  结束!", sb.toString()));
+    }
+
+
+    public static void main(String[] args) {
+        info("hello world");
+        Thread thread = new Thread(() -> info("temp hello world"));
+        thread.setName("temp");
+        thread.start();
     }
 }
