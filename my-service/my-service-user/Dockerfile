@@ -4,7 +4,7 @@
 # docker stop prod-my-service-user
 # docker rm prod-my-service-user
 # docker rmi my-service/prod-my-service-user:latest
-# docker build --build-arg version=0.0.5 --build-arg runEnv=prod -t my-service/prod-my-service-user .
+# docker build -t my-service/prod-my-service-user .
 # docker run -it -d  -p 8052:8052 -p 20852:20852 -v /my/logs:/my/logs --name prod-my-service-user my-service/prod-my-service-user:latest
 
 FROM java:8

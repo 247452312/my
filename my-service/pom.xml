@@ -5,10 +5,10 @@
     <parent>
         <artifactId>my</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.5</version>
+        <version>0.0.6-my-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.5</version>
+    <version>0.0.6-my-SNAPSHOT</version>
 
     <artifactId>my-service</artifactId>
     <packaging>pom</packaging>

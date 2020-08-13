@@ -4,7 +4,7 @@
 # docker stop prod-my-service-distribute
 # docker rm prod-my-service-distribute
 # docker rmi my-service/prod-my-service-distribute:latest
-# docker build --build-arg version=0.0.5 --build-arg runEnv=prod -t my-service/prod-my-service-distribute .
+# docker build -t my-service/prod-my-service-distribute .
 # docker run -it -d  -p 8055:8055 -p 20855:20855 -v /my/logs:/my/logs --name prod-my-service-distribute my-service/prod-my-service-distribute:latest
 
 FROM java:8

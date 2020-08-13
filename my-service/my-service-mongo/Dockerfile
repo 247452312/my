@@ -4,7 +4,7 @@
 # docker stop prod-my-service-mongo
 # docker rm prod-my-service-mongo
 # docker rmi my-service/prod-my-service-mongo:latest
-# docker build --build-arg version=0.0.5 --build-arg runEnv=prod -t my-service/prod-my-service-mongo .
+# docker build -t my-service/prod-my-service-mongo .
 # docker run -it -d  -p 8057:8057 -p 20857:20857 -v /my/logs:/my/logs --name prod-my-service-mongo my-service/prod-my-service-mongo:latest
 
 FROM java:8

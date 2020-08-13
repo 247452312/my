@@ -4,7 +4,7 @@
 # docker stop prod-my-service-algorithm
 # docker rm prod-my-service-algorithm
 # docker rmi my-service/prod-my-service-algorithm:latest
-# docker build --build-arg version=0.0.5 --build-arg runEnv=prod -t my-service/prod-my-service-algorithm .
+# docker build -t my-service/prod-my-service-algorithm .
 # docker run -it -d  -p 8058:8058 -p 20858:20858 -v /my/logs:/my/logs --name prod-my-service-algorithm my-service/prod-my-service-algorithm:latest
 
 FROM java:8
