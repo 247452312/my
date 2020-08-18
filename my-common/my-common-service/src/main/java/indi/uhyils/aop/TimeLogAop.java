@@ -1,25 +1,15 @@
 package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
-import com.rabbitmq.client.Channel;
-import indi.uhyils.content.RabbitMqContent;
-import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.exception.NoRequestLinkException;
-import indi.uhyils.pojo.mqinfo.InterfaceCallInfo;
-import indi.uhyils.pojo.mqinfo.JvmUniqueMark;
-import indi.uhyils.pojo.rabbit.RabbitFactory;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.LogUtil;
-import indi.uhyils.util.RabbitUtils;
-import indi.uhyils.util.ServiceUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -41,21 +31,14 @@ public class TimeLogAop {
     public void logAspectPoint() {
     }
 
-    @Autowired
-    private RabbitFactory rabbitFactory;
-
-    @Autowired
-    private JvmUniqueMark jvmUniqueMark;
-
-    private Channel channel;
 
     /**
      * 日志显示
      * 添加链路跟踪
      *
-     * @param pjp
-     * @return
-     * @throws Throwable
+     * @param pjp 切点
+     * @return 正常的返回值
+     * @throws Throwable 意外,没有请求参数, 没有链路跟踪
      */
     @Around("logAspectPoint()")
     public Object timeLogAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
@@ -88,23 +71,7 @@ public class TimeLogAop {
         long runTime = endTime - startTime;
 
         after(className, methodName, runTime / 1000.0, proceed);
-        ServiceResult sr = (ServiceResult) proceed;
 
-        if (channel == null) {
-            synchronized (rabbitFactory) {
-                if (channel == null) {
-                    channel = rabbitFactory.getConn().createChannel();
-                    //创建exchange
-                    this.channel.exchangeDeclare(RabbitMqContent.EXCHANGE_NAME, "direct", false, false, null);
-                    //创建队列
-                    this.channel.queueDeclare(RabbitMqContent.INTERFACE_CALL_INFO, false, false, false, null);
-                    //绑定exchange和queue
-                    this.channel.queueBind(RabbitMqContent.INTERFACE_CALL_INFO, RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.INTERFACE_CALL_INFO);
-                }
-            }
-        }
-        InterfaceCallInfo interfaceCallInfo = ServiceUtil.getInterfaceCallInfo(className, methodName, ServiceCode.SUCCESS.getText().equals(sr.getServiceCode()), runTime, jvmUniqueMark);
-        RabbitUtils.sendInterfaceCallInfo(interfaceCallInfo, channel);
         return proceed;
 
 
@@ -117,7 +84,7 @@ public class TimeLogAop {
      * @param className  类名称
      * @param methodName 方法名称
      * @param v          执行时间
-     * @param proceed
+     * @param proceed    返回值
      */
     private void after(String className, String methodName, double v, Object proceed) {
         LogUtil.info(this, String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));

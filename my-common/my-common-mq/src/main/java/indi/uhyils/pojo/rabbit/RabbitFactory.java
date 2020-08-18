@@ -2,7 +2,6 @@ package indi.uhyils.pojo.rabbit;
 
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import indi.uhyils.exception.NoRabbitConfigException;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -20,7 +19,7 @@ public class RabbitFactory extends ConnectionFactory {
      */
     private volatile static RabbitFactory factory;
 
-    private Connection connection;
+    private volatile Connection connection;
 
     /**
      * 双重检测锁
@@ -48,7 +47,7 @@ public class RabbitFactory extends ConnectionFactory {
 
     public Connection getConn() throws IOException, TimeoutException {
         if (null == connection) {
-            synchronized (factory) {
+            synchronized (this) {
                 if (null == connection) {
                     connection = newConnection();
                 }

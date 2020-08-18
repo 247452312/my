@@ -12,6 +12,7 @@
     <modules>
         <module>my-common-base</module>
         <module>my-common-service</module>
+        <module>my-common-mq</module>
     </modules>
     <packaging>pom</packaging>
 
