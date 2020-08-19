@@ -17,6 +17,11 @@ public class DefaultRequest implements BaseRequest {
 
     private UserEntity user;
 
+    /**
+     * 保证请求幂等性, 不会在前一个相同幂等id执行结束前执行方法
+     */
+    private String idempotentId;
+
 
     /**
      * 跟踪请求链路
@@ -45,5 +50,13 @@ public class DefaultRequest implements BaseRequest {
 
     public void setRequestLink(LinkNode<String> requestLink) {
         this.requestLink = requestLink;
+    }
+
+    public String getIdempotentId() {
+        return idempotentId;
+    }
+
+    public void setIdempotentId(String idempotentId) {
+        this.idempotentId = idempotentId;
     }
 }

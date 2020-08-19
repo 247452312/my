@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
@@ -175,6 +176,34 @@ public class OffLineJedis implements Redisable {
             return (long) value.length();
 
         }
+    }
+
+    /* redis没有启动时 集合所在的方法是没有用的,只是保证不会出错*/
+
+    @Override
+    public Boolean sismember(String key, String member) {
+        // 一直返回false. 不保证幂等性
+        return false;
+    }
+
+    @Override
+    public Long sadd(String key, String... members) {
+        return 0L;
+    }
+
+    @Override
+    public Long srem(String key, String... members) {
+        return 0L;
+    }
+
+    @Override
+    public Long scard(String key) {
+        return 0L;
+    }
+
+    @Override
+    public Object lua(String lua, List<String> keys, List<String> args) {
+        return null;
     }
 
 }

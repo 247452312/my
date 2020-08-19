@@ -2,6 +2,8 @@ package indi.uhyils.util.redis;
 
 import redis.clients.jedis.Jedis;
 
+import java.util.List;
+
 /**
  * Redisable的jedis实现 用来在获取jedis时使用
  *
@@ -72,5 +74,31 @@ public class MyJedis implements Redisable {
     @Override
     public Long append(String key, String value) {
         return jedis.append(key, value);
+    }
+
+    @Override
+    public Boolean sismember(String key, String member) {
+        return jedis.sismember(key, member);
+    }
+
+    @Override
+    public Long sadd(String key, String... members) {
+        return jedis.sadd(key, members);
+    }
+
+    @Override
+    public Long srem(String key, String... members) {
+        return jedis.srem(key, members);
+    }
+
+    @Override
+    public Long scard(String key) {
+        return jedis.scard(key);
+    }
+
+    @Override
+    public Object lua(String lua, List<String> keys, List<String> args) {
+        String luaKey = jedis.scriptLoad(lua);
+        return jedis.evalsha(luaKey, keys, args);
     }
 }
