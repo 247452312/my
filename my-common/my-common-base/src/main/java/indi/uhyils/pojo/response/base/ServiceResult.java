@@ -80,6 +80,9 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @return 一个code是400的 代表逻辑错误的返回(程序并没有错)
      */
     public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage, T t, DefaultRequest req) {
+        if (req == null) {
+            req = new DefaultRequest();
+        }
         return new ServiceResult(t, ServiceCode.REQUEST_PARAM_ERROR.getText(), businessMessage, req);
     }
 
@@ -93,6 +96,9 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @return 一个code是500 代表逻辑错误的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildErrorResult(String businessMessage, DefaultRequest req) {
+        if (req == null) {
+            req = new DefaultRequest();
+        }
         return new ServiceResult(null, ServiceCode.ERROR.getText(), businessMessage, req);
     }
 

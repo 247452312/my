@@ -109,7 +109,6 @@ public class DubboApiUtil {
             return serviceResult;
         } catch (Exception e) {
             LogUtil.error(DubboApiUtil.class, e);
-            LogUtil.error(DubboApiUtil.class, e.getLocalizedMessage());
             return ServiceResult.buildErrorResult("远程调用错误,具体见日志", request);
         }
     }

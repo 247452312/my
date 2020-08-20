@@ -54,6 +54,7 @@
         <tencentcloud.version>3.1.99</tencentcloud.version>
         <poi.version>4.1.2</poi.version>
         <asr.version>1.0</asr.version>
+        <hystrix.version>1.5.18</hystrix.version>
 
     </properties>
 
@@ -231,6 +232,13 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>${druid.version}</version>
+            </dependency>
+
+            <!-- hystrix-core 熔断 -->
+            <dependency>
+                <groupId>com.netflix.hystrix</groupId>
+                <artifactId>hystrix-core</artifactId>
+                <version>${hystrix.version}</version>
             </dependency>
 
 
