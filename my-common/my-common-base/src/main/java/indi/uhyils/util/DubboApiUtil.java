@@ -1,7 +1,10 @@
 package indi.uhyils.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
+import indi.uhyils.pojo.request.base.ObjsRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ConsumerConfig;
@@ -9,10 +12,10 @@ import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.rpc.service.GenericService;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * dubbo 泛化接口
@@ -92,14 +95,17 @@ public class DubboApiUtil {
 
             Method method = Arrays.stream(methods).filter(m -> methodName.equalsIgnoreCase(m.getName()) && args.size() == m.getParameterTypes().length).findFirst().get();
 
-            Class[] params = method.getParameterTypes();
+            Class params = method.getParameterTypes()[0];
 
             Object[] arg = args.toArray(new Object[0]);
-            String[] parameterTypes = Arrays.stream(params).map(Class::getName).toArray(String[]::new);
+
+            // 检测参数中有没有泛型,如果有,则直接将hashMap转为对应类实例
+            arg[0] = changeObjRequestParadigm(arg[0], params, Class.forName(interfaceName));
+            String parameterTypes = params.getName();
             if (genericService == null) {
                 reference.destroy();
             }
-            ServiceResult<JSONObject> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, parameterTypes, arg)), ServiceResult.class);
+            ServiceResult<JSONObject> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, new String[]{parameterTypes}, arg)), ServiceResult.class);
 
             if (ansyn == false) {
                 // 添加链路
@@ -111,6 +117,37 @@ public class DubboApiUtil {
             LogUtil.error(DubboApiUtil.class, e);
             return ServiceResult.buildErrorResult("远程调用错误,具体见日志", request);
         }
+    }
+
+    private static Object changeObjRequestParadigm(Object request, Class paramsClass, Class interfaceClass) throws ClassNotFoundException {
+        Map<String, Object> temp = (Map<String, Object>) request;
+        boolean objRequestEquals = paramsClass.equals(ObjRequest.class);
+        boolean objsRequestEquals = paramsClass.equals(ObjsRequest.class);
+        if (objRequestEquals || objsRequestEquals) {
+            Type[] genericInterfaces = interfaceClass.getGenericInterfaces();
+            Type genericSuperclass = genericInterfaces[0];
+            String className = genericSuperclass.getTypeName();
+            if (className.contains("<")) {
+                String substring = className.substring(className.indexOf("<") + 1, className.lastIndexOf(">"));
+                String json = JSON.toJSONString(temp);
+                if (objRequestEquals) {
+                    ObjRequest<Serializable> objRequest = JSONObject.parseObject(json, ObjRequest.class);
+                    objRequest.setData((Serializable) JSONObject.parseObject(JSON.toJSONString(objRequest.getData()), Class.forName(substring)));
+                    return objRequest;
+
+                } else if (objsRequestEquals) {
+                    ObjsRequest<Serializable> objsRequest = JSONObject.parseObject(json, ObjsRequest.class);
+                    List<Serializable> list = objsRequest.getList();
+                    List<Serializable> targetList = new ArrayList<>(list.size());
+                    for (Serializable serializable : list) {
+                        targetList.add((Serializable) JSONObject.parseObject(JSON.toJSONString(serializable), Class.forName(substring)));
+                    }
+                    objsRequest.setList(targetList);
+                    return objsRequest;
+                }
+            }
+        }
+        return request;
     }
 
     private static ReferenceConfig<GenericService> getGenericServiceReferenceConfig(String interfaceName, Boolean async, String procotol) {
@@ -130,5 +167,6 @@ public class DubboApiUtil {
         reference.setProtocol(procotol);
         return reference;
     }
+
 
 }

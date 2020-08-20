@@ -71,10 +71,10 @@ public class ShowDocUtil {
                                     .append("    \n")
                                     .append("##### 简要描述\n")
                                     .append("\n")
-                                    .append("- .\n")
+                                    .append("- \n")
                                     .append("\n")
                                     .append("##### 接口默认信息\n")
-                                    .append("- [见默认接口说明](/web/#/6?page_id=82 \"见默认接口说明\")\n")
+                                    .append("- 见默认接口说明\n")
                                     .append("\n")
                                     .append("| 参数名称 |   参数类型|参数值|\n")
                                     .append("| :------------: | :------------: |:------------: |\n")
@@ -99,8 +99,8 @@ public class ShowDocUtil {
                                     .append("```\n")
                                     .append(resultList).toString();
                             ApiContent apiContent = new ApiContent();
-                            apiContent.setApi_key("8e34a82bc684690f0131a03c4367689e1092196219");
-                            apiContent.setApi_token("c9b956635b8f119e6000877a28c763a0536723296");
+                            apiContent.setApi_key("bc973c7dea684a306ad7f4c3df5feb581341237566");
+                            apiContent.setApi_token("1f48fe4aea0dc96599f6f7ca5ebe0eaa1211797159");
                             apiContent.setCat_name("接口api/" + projectDir.getName().substring(projectDir.getName().lastIndexOf("-") + 1) + "/" + aClass.getSimpleName());
                             apiContent.setPage_title(declaredMethod.getName());
                             apiContent.setPage_content(html);
@@ -115,7 +115,7 @@ public class ShowDocUtil {
 
     private static void sendHttpToShowDoc(JSONObject data) throws Exception {
 
-        String url = "http://192.168.1.101:4999/server/index.php?s=/api/item/updateByApi";
+        String url = "http://39.98.164.91:4999/server/index.php?s=/api/item/updateByApi";
         HashMap<String, Object> head = new HashMap<>();
         head.put("ContentType", "application/json");
         Object o = HttpUtil.sendHttpPost(url, head, data);

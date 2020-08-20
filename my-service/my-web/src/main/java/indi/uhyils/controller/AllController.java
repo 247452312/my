@@ -11,7 +11,6 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月24日 16时14分
  */
-@Controller
+@RestController
 @CrossOrigin
 public class AllController {
 
@@ -39,7 +38,6 @@ public class AllController {
      * @return 向界面返回的值
      */
     @RequestMapping("action")
-    @ResponseBody
     public WebResponse action(@RequestBody Action action, HttpServletRequest httpServletRequest) {
         String eMsg = null;
         LinkNode<String> link = null;
@@ -77,7 +75,6 @@ public class AllController {
     }
 
     @PostMapping("/getSession")
-    @ResponseBody
     public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
         LogUtil.info(this, "getSession: " + sessionRequest.getAttrName());
         HttpSession session = request.getSession();
@@ -86,7 +83,6 @@ public class AllController {
     }
 
     @PostMapping("/setSession")
-    @ResponseBody
     public boolean setSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
         LogUtil.info(this, "setSession: " + sessionRequest.getAttrName());
         LogUtil.info(this, "sessionData : " + sessionRequest.getData());

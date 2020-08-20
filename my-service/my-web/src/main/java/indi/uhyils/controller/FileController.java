@@ -11,7 +11,6 @@ import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +25,7 @@ import static indi.uhyils.controller.AllController.actionAddRequestLink;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月03日 15时05分
  */
-@Controller
+@RestController
 @CrossOrigin
 @RequestMapping("/file")
 public class FileController {
@@ -36,7 +35,6 @@ public class FileController {
     private static final String TOKEN = "token";
 
     @RequestMapping("/down/{fileName}/{token}")
-    @ResponseBody
     public String down(@PathVariable String token, @PathVariable String fileName, HttpServletRequest request) {
         String methodName = "getByFileName";
         String eMsg = null;
@@ -79,7 +77,6 @@ public class FileController {
     }
 
     @RequestMapping("/up")
-    @ResponseBody
     public WebResponse up(@RequestBody Action action, HttpServletRequest request) {
         String methodName = "add";
         String eMsg = null;
