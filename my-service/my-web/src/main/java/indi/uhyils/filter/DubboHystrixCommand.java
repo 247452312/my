@@ -107,7 +107,6 @@ public class DubboHystrixCommand extends HystrixCommand<Result> {
 
         @Override
         public Result whenCompleteWithContext(BiConsumer<Result, Throwable> fn) {
-            fn.accept(this, null);
             return this;
         }
     }
