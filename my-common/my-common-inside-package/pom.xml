@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <groupId>indi.uhyils</groupId>
+    <artifactId>my-common-inside-package</artifactId>
+    <version>0.0.7-my-SNAPSHOT</version>
+    <description>my 内部项目版本控制</description>
+
+    <dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-base</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-mq</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-user</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-distribute</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-software</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-log</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-push</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-mongo</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-algorithm</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    </dependencyManagement>
+
+
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin.version}</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>maven-my-releases</name>
+            <url>http://39.98.164.91:8081/repository/maven-my-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id> <!-- 选择settings文件中的快照版本的id-->
+            <name>maven-my-snapshots</name>
+            <url>http://39.98.164.91:8081/repository/maven-my-snapshots/</url><!-- 私服地址-->
+        </snapshotRepository>
+    </distributionManagement>
+
+
+    <properties>
+        <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+    </properties>
+    <!-- 仓库地址 组-->
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <name>nexus-my</name>
+            <url>http://39.98.164.91:8081/repository/nexus-my/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+</project>

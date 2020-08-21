@@ -7,7 +7,7 @@
     <groupId>indi.uhyils</groupId>
     <artifactId>my</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.6-my-SNAPSHOT</version>
+    <version>0.0.7-my-SNAPSHOT</version>
     <modules>
         <module>my-api</module>
         <module>my-service</module>
@@ -103,63 +103,11 @@
         <dependencies>
             <dependency>
                 <groupId>indi.uhyils</groupId>
-                <artifactId>my-common-base</artifactId>
+                <artifactId>my-common-inside-package</artifactId>
                 <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-common-service</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-common-mq</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-user</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-distribute</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-software</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-log</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-push</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-mongo</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-algorithm</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-
             <!-- https://mvnrepository.com/artifact/ch.ethz.ganymed/ganymed-ssh2 -->
             <dependency>
                 <groupId>ch.ethz.ganymed</groupId>
@@ -414,6 +362,7 @@
         </pluginManagement>
     </build>
 
+
     <distributionManagement>
         <repository>
             <id>releases</id>
@@ -441,5 +390,4 @@
             </snapshots>
         </repository>
     </repositories>
-
 </project>

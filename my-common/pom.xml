@@ -5,14 +5,15 @@
     <parent>
         <artifactId>my</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.6-my-SNAPSHOT</version>
+        <version>0.0.7-my-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.6-my-SNAPSHOT</version>
+    <version>0.0.7-my-SNAPSHOT</version>
     <modules>
         <module>my-common-base</module>
         <module>my-common-service</module>
         <module>my-common-mq</module>
+        <module>my-common-inside-package</module>
     </modules>
     <packaging>pom</packaging>
 

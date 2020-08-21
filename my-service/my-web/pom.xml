@@ -5,11 +5,11 @@
     <parent>
         <artifactId>my-service</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.6-my-SNAPSHOT</version>
+        <version>0.0.7-my-SNAPSHOT</version>
     </parent>
     <artifactId>my-web</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.6-my-SNAPSHOT</version>
+    <version>0.0.7-my-SNAPSHOT</version>
     <name>my-web</name>
     <description>Demo project for Spring Boot</description>
 
