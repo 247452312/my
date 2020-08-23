@@ -83,8 +83,7 @@ public class DubboHystrixCommand extends HystrixCommand<Result> {
 
     @Override
     protected Result getFallback() {
-        LogUtil.error("熔断了=================================================================================================================");
-        ServiceResult sr = ServiceResult.buildFailedResult("服务熔断机制开启,服务熔断", null, null);
+        ServiceResult sr = ServiceResult.buildFailedResult("您好,您请求的服务暂时不可用,请一分钟后重试!", null, null);
         try {
             return new MyAppResponse(sr);
         } catch (RuntimeException ex) {
