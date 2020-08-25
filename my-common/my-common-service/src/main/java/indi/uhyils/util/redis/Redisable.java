@@ -1,6 +1,7 @@
 package indi.uhyils.util.redis;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 可以当做redis的东西
@@ -85,4 +86,56 @@ public interface Redisable {
     Object lua(String lua, List<String> keys, List<String> args);
 
 
+    /**
+     * hash 删除
+     *
+     * @param key  hash key
+     * @param hKey key
+     * @return 数量
+     */
+    Long hdel(String key, String hKey);
+
+    /**
+     * 是否存在
+     *
+     * @param key  hash key
+     * @param hKey 内部key
+     * @return 是否存在
+     */
+    Boolean hexists(String key, String hKey);
+
+    /**
+     * hash get
+     *
+     * @param key  hash key
+     * @param hKey 内部key
+     * @return 获取指定值
+     */
+    String hget(String key, String hKey);
+
+    /**
+     * 获取hash的全部
+     *
+     * @param key hash的key
+     * @return hash的全部
+     */
+    Map<String, String> hgetAll(String key);
+
+    /**
+     * 自增1
+     *
+     * @param key  hash的key
+     * @param hKey hash内部key
+     * @return 自增后的值
+     */
+    Long hincrby(String key, String hKey);
+
+
+    /**
+     * hash 设置值
+     *
+     * @param key hash的key
+     * @param ip  hash内部的key
+     */
+    void hset(String key, String ip, String value);
 }

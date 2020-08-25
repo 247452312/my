@@ -19,6 +19,13 @@ dubbo:
     timeout: 3000
     group: ${spring.profiles.active}
 
+#访问警告数量 如果总数超出12次,则不进行对比
+black-list:
+  size: 12
+  # 用户访问请求的平均间隔方差最小值 请求时间的单位为ms
+  spider:
+    frequency: 10
+
 log-out:
   path: /my/logs
   dir-name: log

@@ -120,6 +120,9 @@ public class DubboApiUtil {
     }
 
     private static Object changeObjRequestParadigm(Object request, Class paramsClass, Class interfaceClass) throws ClassNotFoundException {
+        if (!(request instanceof Map)) {
+            return request;
+        }
         Map<String, Object> temp = (Map<String, Object>) request;
         boolean objRequestEquals = paramsClass.equals(ObjRequest.class);
         boolean objsRequestEquals = paramsClass.equals(ObjsRequest.class);

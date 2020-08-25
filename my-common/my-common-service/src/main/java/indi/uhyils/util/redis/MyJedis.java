@@ -3,6 +3,7 @@ package indi.uhyils.util.redis;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Redisable的jedis实现 用来在获取jedis时使用
@@ -100,5 +101,35 @@ public class MyJedis implements Redisable {
     public Object lua(String lua, List<String> keys, List<String> args) {
         String luaKey = jedis.scriptLoad(lua);
         return jedis.evalsha(luaKey, keys, args);
+    }
+
+    @Override
+    public Long hdel(String key, String hKey) {
+        return jedis.hdel(key, hKey);
+    }
+
+    @Override
+    public Boolean hexists(String key, String hKey) {
+        return jedis.hexists(key, hKey);
+    }
+
+    @Override
+    public String hget(String key, String hKey) {
+        return jedis.hget(key, hKey);
+    }
+
+    @Override
+    public Map<String, String> hgetAll(String key) {
+        return jedis.hgetAll(key);
+    }
+
+    @Override
+    public Long hincrby(String key, String hKey) {
+        return jedis.hincrBy(key, hKey, 1L);
+    }
+
+    @Override
+    public void hset(String key, String ip, String value) {
+        jedis.hset(key, ip, value);
     }
 }

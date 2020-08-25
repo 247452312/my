@@ -21,8 +21,8 @@ public class ListenerUtil {
      * @param exceptionCallBack 发生错误时的操作
      * @param <T>               中间变量返回值
      */
-    public static <T> void addListening(Supplier<T> call, Consumer<T> callback, Function<Throwable, Void> exceptionCallBack) {
-        CompletableFuture.supplyAsync(call).thenAccept(callback).exceptionally(exceptionCallBack);
+    public static <T> CompletableFuture<T> addListening(Supplier<T> call, Consumer<T> callback, Function<Throwable, Void> exceptionCallBack) {
+        return CompletableFuture.supplyAsync(call);
     }
 
     /**
@@ -34,7 +34,7 @@ public class ListenerUtil {
      * @param <T>      中间变量返回值
      */
     public static <T> void addListening(Supplier<T> call, Consumer<T> callback) {
-        CompletableFuture.supplyAsync(call).thenAccept(callback).exceptionally(throwable -> {
+        CompletableFuture<Void> exceptionally = CompletableFuture.supplyAsync(call).thenAccept(callback).exceptionally(throwable -> {
             LogUtil.error(ListenerUtil.class, throwable);
             return null;
         });

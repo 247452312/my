@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
+import java.util.ArrayList;
+
 /**
  * 懒加载,除了用到redis
  *
@@ -74,6 +76,12 @@ public class RedisPoolUtil {
 
     }
 
+    /**
+     * 是否存在token
+     *
+     * @param token
+     * @return
+     */
     public Boolean haveToken(String token) {
         Redisable jedis = redisPool.getJedis();
         try {
@@ -155,4 +163,95 @@ public class RedisPoolUtil {
         return new RedisLock("lock_" + lockName, redisPool, thread);
 
     }
+
+
+    public Long exists(String... keys) {
+        Redisable jedis = redisPool.getJedis();
+        try {
+            return jedis.exists(keys);
+        } catch (JedisConnectionException e) {
+            LogUtil.error(this, e);
+            return -1L;
+        } finally {
+            jedis.close();
+        }
+    }
+
+    public Long sadd(String key, ArrayList<String> values) {
+        if (values == null || values.size() == 0) {
+            return 0L;
+        }
+        Redisable jedis = redisPool.getJedis();
+        try {
+            return jedis.sadd(key, values.toArray(new String[]{}));
+        } catch (JedisConnectionException e) {
+            LogUtil.error(this, e);
+            return -1L;
+        } finally {
+            jedis.close();
+        }
+    }
+
+    public Boolean sismember(String key, String ip) {
+
+        Redisable jedis = redisPool.getJedis();
+        try {
+            return jedis.sismember(key, ip);
+        } catch (JedisConnectionException e) {
+            LogUtil.error(this, e);
+            return false;
+        } finally {
+            jedis.close();
+        }
+    }
+
+    public Boolean hexists(String key, String ip) {
+        Redisable jedis = redisPool.getJedis();
+        try {
+            return jedis.hexists(key, ip);
+        } catch (JedisConnectionException e) {
+            LogUtil.error(this, e);
+            return false;
+        } finally {
+            jedis.close();
+        }
+    }
+
+    public String hget(String key, String ip) {
+        Redisable jedis = redisPool.getJedis();
+        try {
+            return jedis.hget(key, ip);
+        } catch (JedisConnectionException e) {
+            LogUtil.error(this, e);
+            return "0";
+        } finally {
+            jedis.close();
+        }
+    }
+
+    public Long hdel(String key, String ip) {
+        Redisable jedis = redisPool.getJedis();
+        try {
+            return jedis.del(key, ip);
+        } catch (JedisConnectionException e) {
+            LogUtil.error(this, e);
+            return -1L;
+        } finally {
+            jedis.close();
+        }
+    }
+
+    public Long hincrby(String key, String ip) {
+        Redisable jedis = redisPool.getJedis();
+        try {
+            return jedis.hincrby(key, ip);
+        } catch (JedisConnectionException e) {
+            LogUtil.error(this, e);
+            return -1L;
+        } finally {
+            jedis.close();
+        }
+    }
+
+
 }

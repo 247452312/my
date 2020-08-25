@@ -206,4 +206,35 @@ public class OffLineJedis implements Redisable {
         return null;
     }
 
+    @Override
+    public Long hdel(String key, String hKey) {
+        return null;
+    }
+
+    @Override
+    public Boolean hexists(String key, String hKey) {
+        return null;
+    }
+
+    @Override
+    public String hget(String key, String hKey) {
+        return null;
+    }
+
+    @Override
+    public Map<String, String> hgetAll(String key) {
+        return null;
+    }
+
+    @Override
+    public Long hincrby(String key, String hKey) {
+        return null;
+    }
+
+    @Override
+    public void hset(String key, String ip, String value) {
+
+    }
+
+
 }

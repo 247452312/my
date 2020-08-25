@@ -57,7 +57,7 @@ public class LogPushUtils {
         producer.onData(json, token);
     }
 
-    private static String getIPAddress(HttpServletRequest request) {
+    public static String getIPAddress(HttpServletRequest request) {
         String ip = null;
 
         //X-Forwarded-For：Squid 服务代理

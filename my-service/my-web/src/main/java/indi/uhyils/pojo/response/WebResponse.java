@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.response;
 
+import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.response.base.ServiceResult;
 
 import java.io.Serializable;
@@ -27,6 +28,14 @@ public class WebResponse<T extends Serializable> implements Serializable {
         serializableWebResponse.setCode(code);
         serializableWebResponse.setData(data);
         serializableWebResponse.setMsg(message);
+        return serializableWebResponse;
+    }
+
+    public static <T extends Serializable> WebResponse build(T data, ServiceCode code) {
+        WebResponse<T> serializableWebResponse = new WebResponse();
+        serializableWebResponse.setCode(code.getText());
+        serializableWebResponse.setData(data);
+        serializableWebResponse.setMsg(code.getMsg());
         return serializableWebResponse;
     }
 

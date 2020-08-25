@@ -10,7 +10,7 @@ public class DefaultPageRequest extends DefaultRequest {
 
 
     /**
-     * 页码
+     * 页码 下标从1开始 sql中会主动减去1
      */
     private Integer page;
 

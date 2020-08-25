@@ -30,6 +30,23 @@ public enum ServiceCode {
      */
     NO_LOGIN__ERROR(403, "未登录"),
 
+    /**
+     * 爬虫验证
+     */
+    SPIDER_VERIFICATION(404, "爬虫验证"),
+    /**
+     * 业务已经执行完毕的爬虫验证
+     */
+    SPIDER_VERIFICATION_RUN(407, "您的请求已经被执行,请填写爬虫验证"),
+    /**
+     * 临时冻结
+     */
+    FROZEN_TEMP(405, "临时冻结"),
+
+    /**
+     * 拒绝此ip访问
+     */
+    REFUSE_VISIT(406, "您已被拒绝访问"),
 
     /**
      * 服务器内部错误
