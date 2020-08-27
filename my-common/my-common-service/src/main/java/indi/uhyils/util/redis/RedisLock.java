@@ -55,6 +55,11 @@ public class RedisLock {
     }
 
 
+    /**
+     * @param lockName 分布式锁名称
+     * @param pool     redis线程池
+     * @param thread   这里只做名字用, 和获取加锁信息时用,没有其他特别的用处
+     */
     public RedisLock(String lockName, RedisPool pool, Thread thread) {
         this.lockName = lockName;
         this.pool = pool;
