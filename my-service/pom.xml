@@ -21,6 +21,7 @@
         <module>my-service-push</module>
         <module>my-service-mongo</module>
         <module>my-service-algorithm</module>
+        <module>my-service-smart-home</module>
     </modules>
 
 
