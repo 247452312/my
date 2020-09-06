@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <!--设置1个小时的缓存-->
+    <meta http-equiv="Cache-Control" content="max-age=3200"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .layui-transfer-box {
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <input type="text" name="id" value="" style="display:none;">
+    <div class="layui-form-item">
+        <label class="layui-form-label required">设备名</label>
+        <div class="layui-input-block">
+            <input style="display: none" type="text" name="deviceId"  >
+            <input readonly="readonly" type="text" name="deviceName" lay-verify="required" lay-reqtext="设备名不能为空" placeholder="请输入设备名" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">水平夹角</label>
+        <div class="layui-input-block">
+            <input type="text" name="directionX" value="" lay-verify="required" lay-reqtext="不能为空" placeholder="请输入角度" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">正南夹角</label>
+        <div class="layui-input-block">
+            <input type="text" name="directionY" lay-verify="required" lay-reqtext="不能为空" placeholder="请输入角度" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否可动</label>
+        <div class="layui-input-block">
+            <input type="radio" name="canMove" value="true" title="是" checked="">
+            <input type="radio" name="canMove" value="false" title="否">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否可以转动</label>
+        <div class="layui-input-block">
+            <input type="radio" name="canRotate" value="true" title="是" checked="">
+            <input type="radio" name="canRotate" value="false" title="否">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        };
+        let id = $.getUrlParam('id');
+        let func = $.getUrlParam('func');
+        let name = $.getUrlParam('name');
+
+        if (func == 'edit') { // 这是修改
+            pushRequest("DictService", "getById", {
+                id: id
+            }, function (data) {
+                $('[name="id"]').attr('value', data.id);
+                $('[name="deviceId"]').attr('value', data.deviceId);
+                $('[name="deviceName"]').attr('value', name);
+                $('[name="directionX"]').attr('value', data.directionX);
+                $('[name="directionY"]').attr('value', data.directionY);
+
+                $('[name="canMove"]').removeAttr("checked");
+                let s = '[name="canMove"][value=' + data.canMove + ']';
+                $(s).attr("checked", "");
+
+                $('[name="canRotate"]').removeAttr("checked");
+                let d = '[name="canRotate"][value=' + data.canRotate + ']';
+                $(d).attr("checked", "");
+                form.render();
+            })
+        }
+
+        var closeAndReload = function () {
+            var iframeIndex = parent.layer.getFrameIndex(window.name);
+            parent.$.reload(1, 10, [
+                {
+                    name: "1",
+                    symbol: "=",
+                    data: "1"
+                }
+            ]);
+            parent.layer.close(iframeIndex);
+        };
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+
+                // 关闭弹出层
+                layer.close(index);
+                if (func === 'add') {
+                    pushRequest("DeviceArgService", "insert", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                } else if (func === 'edit') {
+                    pushRequest("DeviceArgService", "update", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                }
+
+            });
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>
