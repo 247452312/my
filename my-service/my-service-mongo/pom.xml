@@ -5,13 +5,13 @@
     <parent>
         <artifactId>my-service</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.7-my-SNAPSHOT</version>
+        <version>0.0.8-my-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>my-service-mongo</artifactId>
 
-    <version>0.0.7-my-SNAPSHOT</version>
+    <version>0.0.8-my-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencyManagement>
@@ -40,6 +40,10 @@
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-common-mq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-data-mongo</artifactId>
         </dependency>
 
         <dependency>
@@ -136,11 +140,7 @@
             <artifactId>nacos-client</artifactId>
         </dependency>
 
-        <!-- mongo driver -->
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-        </dependency>
+
 
 
     </dependencies>

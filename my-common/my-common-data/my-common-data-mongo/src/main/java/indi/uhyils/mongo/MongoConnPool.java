@@ -1,12 +1,12 @@
 package indi.uhyils.mongo;
 
-import org.apache.commons.collections.list.SynchronizedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,7 +21,7 @@ public class MongoConnPool {
     /**
      * 连接安全的集合
      */
-    private volatile List<MongoConn> list = SynchronizedList.decorate(new ArrayList<>());
+    private volatile List<MongoConn> list = Collections.synchronizedList(new ArrayList<>());
 
     @Autowired
     private MongoDbFactory mongoDbFactory;

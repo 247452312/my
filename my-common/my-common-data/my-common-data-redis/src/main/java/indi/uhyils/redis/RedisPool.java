@@ -1,4 +1,4 @@
-package indi.uhyils.util.redis;
+package indi.uhyils.redis;
 
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;

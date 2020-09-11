@@ -1,4 +1,4 @@
-package indi.uhyils.util.redis;
+package indi.uhyils.redis;
 
 /**
  * @author uhyils <247452312@qq.com>

@@ -1,4 +1,4 @@
-package indi.uhyils.util.redis;
+package indi.uhyils.redis;
 
 import indi.uhyils.util.LogUtil;
 import org.springframework.context.annotation.Lazy;

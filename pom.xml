@@ -7,7 +7,7 @@
     <groupId>indi.uhyils</groupId>
     <artifactId>my</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.7-my-SNAPSHOT</version>
+    <version>0.0.8-my-SNAPSHOT</version>
     <modules>
         <module>my-api</module>
         <module>my-service</module>
@@ -55,6 +55,7 @@
         <poi.version>4.1.2</poi.version>
         <asr.version>1.0</asr.version>
         <hystrix.version>1.5.18</hystrix.version>
+        <es.version>7.9.1</es.version>
 
     </properties>
 
@@ -169,6 +170,13 @@
                 <groupId>com.alibaba.boot</groupId>
                 <artifactId>velocity-spring-boot-starter</artifactId>
                 <version>0.1.0</version>
+            </dependency>
+
+            <!-- es -->
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${es.version}</version>
             </dependency>
             <!-- druid连接池 -->
             <dependency>

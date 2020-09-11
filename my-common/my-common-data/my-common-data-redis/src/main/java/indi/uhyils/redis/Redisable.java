@@ -1,4 +1,4 @@
-package indi.uhyils.util.redis;
+package indi.uhyils.redis;
 
 import java.util.List;
 import java.util.Map;

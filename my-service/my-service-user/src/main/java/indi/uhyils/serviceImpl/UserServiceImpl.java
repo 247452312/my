@@ -19,7 +19,7 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
-import indi.uhyils.util.redis.RedisPoolUtil;
+import indi.uhyils.redis.RedisPoolUtil;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

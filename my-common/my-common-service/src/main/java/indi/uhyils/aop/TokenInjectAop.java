@@ -9,7 +9,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.DubboApiUtil;
-import indi.uhyils.util.redis.RedisPoolUtil;
+import indi.uhyils.redis.RedisPoolUtil;
 import org.apache.dubbo.common.utils.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;

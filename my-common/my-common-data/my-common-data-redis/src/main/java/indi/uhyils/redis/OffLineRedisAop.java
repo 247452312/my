@@ -1,4 +1,4 @@
-package indi.uhyils.util.redis;
+package indi.uhyils.redis;
 
 import indi.uhyils.util.LogUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -23,7 +23,7 @@ public class OffLineRedisAop {
      * 定义切入点，切入点为offlineRedis类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public * indi.uhyils.util.redis.OffLineJedis.*(*)))")
+    @Pointcut("execution(public * indi.uhyils.redis.OffLineJedis.*(*)))")
     public void offLineRedisAop() {
     }
 
