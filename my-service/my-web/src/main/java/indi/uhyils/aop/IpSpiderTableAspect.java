@@ -10,14 +10,14 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.redis.OffLineJedis;
+import indi.uhyils.redis.RedisPoolUtil;
+import indi.uhyils.redis.Redisable;
 import indi.uhyils.service.BlackListService;
 import indi.uhyils.service.LogService;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
-import indi.uhyils.redis.OffLineJedis;
-import indi.uhyils.redis.RedisPoolUtil;
-import indi.uhyils.redis.Redisable;
 import org.apache.dubbo.config.annotation.Reference;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 /**
+ * 爬虫防范
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月23日 09时43分
  */
@@ -54,14 +56,6 @@ public class IpSpiderTableAspect {
      */
     private static final String IP_BLACK_REDIS_KEY = "ip_black_redis_key";
 
-    /**
-     * 验证码验证接口名称
-     */
-    private static final String VERIFICATION_CODE_INTERFACE = "VerificationService";
-    /**
-     * 验证码验证方法名称
-     */
-    private static final String VERIFICATION_CODE_METHOD = "verification";
 
     /**
      * 临时冻结等级 在redis中的key
@@ -158,6 +152,10 @@ public class IpSpiderTableAspect {
         if (!(init && canInit)) {
             return pjp.proceed();
         }
+        //如果是获取验证码的请求,忽略
+        if (action.getInterfaceName().equals(Content.VERIFICATION_CODE_INTERFACE) && action.getMethodName().equals(Content.GET_VERIFICATION_CODE_METHOD)) {
+            return pjp.proceed();
+        }
         Redisable jedis = redisPoolUtil.getRedisPool().getJedis();
         // 如果redis没有开启,此功能默认不开启
         if (jedis instanceof OffLineJedis) {
@@ -192,7 +190,7 @@ public class IpSpiderTableAspect {
                 /*验证 验证码 是否正确*/
                 String interfaceName = action.getInterfaceName();
                 String methodName = action.getMethodName();
-                if (interfaceName.equals(VERIFICATION_CODE_INTERFACE) && methodName.equals(VERIFICATION_CODE_METHOD)) {
+                if (interfaceName.equals(Content.VERIFICATION_CODE_INTERFACE) && methodName.equals(Content.VERIFICATION_CODE_METHOD)) {
                     WebResponse<Boolean> proceed = (WebResponse<Boolean>) pjp.proceed();
                     Boolean data = proceed.getData();
                     // 验证码验证失败

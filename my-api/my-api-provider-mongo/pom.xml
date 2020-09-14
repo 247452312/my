@@ -5,10 +5,10 @@
     <parent>
         <artifactId>my-api</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.8-my-SNAPSHOT</version>
+        <version>0.0.9-my-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.8-my-SNAPSHOT</version>
+    <version>0.0.9-my-SNAPSHOT</version>
     <packaging>jar</packaging>
     <artifactId>my-api-provider-mongo</artifactId>
     <dependencies>

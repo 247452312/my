@@ -1,9 +1,16 @@
 package indi.uhyils.pojo.response;
 
+import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.content.Content;
 import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.util.DefaultRequestBuildUtil;
+import indi.uhyils.util.DubboApiUtil;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 从前台后端返回前台前端的返回
@@ -32,6 +39,20 @@ public class WebResponse<T extends Serializable> implements Serializable {
     }
 
     public static <T extends Serializable> WebResponse build(T data, ServiceCode code) {
+        if (code == ServiceCode.SPIDER_VERIFICATION) {
+            WebResponse<VerificationGetResponse> serializableWebResponse = new WebResponse<>();
+            serializableWebResponse.setCode(code.getText());
+
+            List args = new ArrayList();
+            args.add(DefaultRequestBuildUtil.getAdminDefaultRequest());
+            ServiceResult<JSONObject> serviceResult = DubboApiUtil.dubboApiTool(Content.VERIFICATION_CODE_INTERFACE, Content.GET_VERIFICATION_CODE_METHOD, args, new DefaultRequest());
+            JSONObject verification = serviceResult.getData();
+            VerificationGetResponse verificationGetResponse = verification.toJavaObject(VerificationGetResponse.class);
+            serializableWebResponse.setData(verificationGetResponse);
+
+            serializableWebResponse.setMsg(code.getMsg());
+            return serializableWebResponse;
+        }
         WebResponse<T> serializableWebResponse = new WebResponse();
         serializableWebResponse.setCode(code.getText());
         serializableWebResponse.setData(data);

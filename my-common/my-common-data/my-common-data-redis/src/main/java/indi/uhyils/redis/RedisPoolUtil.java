@@ -148,6 +148,10 @@ public class RedisPoolUtil {
         return redisPool;
     }
 
+    public Redisable getJedis() {
+        return redisPool.getJedis();
+    }
+
     public void setRedisPool(RedisPool redisPool) {
         this.redisPool = redisPool;
     }

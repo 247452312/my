@@ -321,6 +321,45 @@ function dealResponse(res, success, target = false) {
     } else {
         // code不为200
         switch (res.code) {
+            case 404:
+                top.layer.alert("您已被认定为爬虫,请输入验证码");
+                let key = res.data.key;
+                let picBase64 = res.data.picBase64;
+
+
+                top.layer.prompt({
+                    title: '<img src="' + picBase64 + '"  id="verifyImg" height="50">',
+                    formType: 0,
+                    move: false,
+                    value: '', //初始时的值，默认空字符
+                    maxlength: 140, //可输入文本的最大长度，默认500
+                    success: function (layero, index) {
+                        layero.find('input').attr('placeholder', "请输入图形验证码");
+                        $('.layui-layer-title img').css('cursor', 'crosshair');
+                        layero.on('click', '#verifyImg', function () {
+                            pushRequest('VerificationService', 'getVerification', {}, function (data) {
+                                key = data.key;
+                                $(this).attr('src', data.picBase64);
+                            });
+                        });
+                    }
+                }, function (value, index, elem) {
+                    let code = value;
+                    pushRequest('VerificationService', 'verification', {code: code, key: key}, function (data) {
+                        if (data) {
+                            top.layer.alert("验证正确");
+                        } else {
+                            top.layer.alert("验证错误,请重新验证");
+                            pushRequest('VerificationService', 'getVerification', {}, function (data) {
+                                key = data.key;
+                                $(this).attr('src', data.picBase64);
+                            });
+                        }
+                    });
+                });
+
+
+                break;
             case 403:
             case 402:
                 // 代表登录问题. 返回登录页

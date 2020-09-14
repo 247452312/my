@@ -44,4 +44,17 @@ public class Content {
      */
     public static final Integer LOGIN_TIME_OUT_MIN = 30;
 
+    /**
+     * 验证码验证接口名称
+     */
+    public static final String VERIFICATION_CODE_INTERFACE = "VerificationService";
+    /**
+     * 验证码验证方法名称
+     */
+    public static final String VERIFICATION_CODE_METHOD = "verification";
+    /**
+     * 获取验证码方法(此方法不计入爬虫)
+     */
+    public static final String GET_VERIFICATION_CODE_METHOD = "getVerification";
+
 }
