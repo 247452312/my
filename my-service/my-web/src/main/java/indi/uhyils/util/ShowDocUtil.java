@@ -180,15 +180,15 @@ public class ShowDocUtil {
         String list = "##### 参数列表\n";
         list += "|参数|类型|描述|\n" +
                 "|:-------|:-------|:-------|\n";
-        if (paramJson.equalsIgnoreCase("{}")) {
+        if ("{}".equalsIgnoreCase(paramJson)) {
             return list + String.format("| %s | %s | 无 |\n", "不确定参数", "object");
-        } else if (paramJson.equalsIgnoreCase("2")) {
+        } else if ("2".equalsIgnoreCase(paramJson)) {
             return list + String.format("| %s | %s | 无 |\n", "唯一返回参数", "number");
-        } else if (paramJson.equalsIgnoreCase("\"String\"")) {
+        } else if ("\"String\"".equalsIgnoreCase(paramJson)) {
             return list + String.format("| %s | %s | 无 |\n", "唯一返回参数", "string");
-        } else if (paramJson.equalsIgnoreCase("[]")) {
+        } else if ("[]".equalsIgnoreCase(paramJson)) {
             return list + String.format("| %s | %s | 无 |\n", "唯一返回数组参数", "array");
-        } else if (paramJson.equalsIgnoreCase("true")) {
+        } else if ("true".equalsIgnoreCase(paramJson)) {
             return list + String.format("| %s | %s | 无 |\n", "唯一返回参数", "bool");
         } else if (paramJson.startsWith("[")) {
             paramJson = paramJson.substring(1, paramJson.length() - 1);
@@ -212,13 +212,13 @@ public class ShowDocUtil {
         return list;
     }
 
-    private static final List<String> numbers = new ArrayList<>();
+    private static final List<String> NUMBERS = new ArrayList<>();
 
     static {
-        numbers.add("Integer");
-        numbers.add("Double");
-        numbers.add("Float");
-        numbers.add("Long");
+        NUMBERS.add("Integer");
+        NUMBERS.add("Double");
+        NUMBERS.add("Float");
+        NUMBERS.add("Long");
     }
 
     /**
@@ -232,13 +232,13 @@ public class ShowDocUtil {
      */
     private static String getJson(Class clazz, List<Class> lastClass, Boolean recursionSuperClass, Type lastClassType) throws Exception {
         String simpleName = clazz.getSimpleName();
-        if (lastClass.contains(clazz) || simpleName.equalsIgnoreCase("Object") || simpleName.equalsIgnoreCase("Serializable")) {
+        if (lastClass.contains(clazz) || "Object".equalsIgnoreCase(simpleName) || "Serializable".equalsIgnoreCase(simpleName)) {
             return "{}";
-        } else if (simpleName.equalsIgnoreCase("String")) {
+        } else if ("String".equalsIgnoreCase(simpleName)) {
             return "\"" + simpleName + "\"";
-        } else if (simpleName.equalsIgnoreCase("Boolean")) {
+        } else if ("Boolean".equalsIgnoreCase(simpleName)) {
             return "true";
-        } else if (simpleName.equalsIgnoreCase("List") || simpleName.equalsIgnoreCase("ArrayList") || simpleName.equalsIgnoreCase("LinkedList")) {
+        } else if ("List".equalsIgnoreCase(simpleName) || "ArrayList".equalsIgnoreCase(simpleName) || "LinkedList".equalsIgnoreCase(simpleName)) {
             if (lastClassType != null) {
                 String typeName = lastClassType.getTypeName();
                 typeName = typeName.substring(typeName.indexOf("<") + 1, typeName.lastIndexOf(">"));
@@ -253,7 +253,7 @@ public class ShowDocUtil {
         } else if (simpleName.endsWith("[]")) {
             // 进来的是一个数组类型
             return "[]";
-        } else if (numbers.contains(simpleName)) {
+        } else if (NUMBERS.contains(simpleName)) {
             return "2";
         } else if (simpleName.contains("Map")) {
             return "{}";
@@ -305,7 +305,7 @@ public class ShowDocUtil {
         listSuperClass.add(clazz);
         Class superclass = clazz.getSuperclass();
         while (superclass != null) {
-            if (superclass.getName().equals("java.lang.Object")) {
+            if ("java.lang.Object".equals(superclass.getName())) {
                 break;
             }
             listSuperClass.add(superclass);

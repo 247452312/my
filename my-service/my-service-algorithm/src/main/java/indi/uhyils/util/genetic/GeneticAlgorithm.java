@@ -213,4 +213,23 @@ public class GeneticAlgorithm {
         }
         return result;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GeneticAlgorithm that = (GeneticAlgorithm) o;
+        return Objects.equals(maxNum, that.maxNum) &&
+                Objects.equals(mutationProbability, that.mutationProbability) &&
+                Objects.equals(fitnessFunction, that.fitnessFunction) &&
+                Objects.equals(initialization, that.initialization) &&
+                Objects.equals(growthRate, that.growthRate) &&
+                Objects.equals(nonVariationRatio, that.nonVariationRatio) &&
+                Objects.equals(data, that.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maxNum, mutationProbability, fitnessFunction, initialization, growthRate, nonVariationRatio, data);
+    }
 }

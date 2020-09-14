@@ -120,7 +120,7 @@ public class InputDataDealUtil {
 
     }
 
-    static final int max = 1 << 30;
+    static final int MAX = 1 << 30;
 
     /**
      * Returns a power of two size for the given target capacity.
@@ -133,7 +133,7 @@ public class InputDataDealUtil {
         n |= n >>> 8;
         n |= n >>> 16;
 
-        return (n < 0) ? 1 : (n >= max) ? max : n + 1;
+        return (n < 0) ? 1 : (n >= MAX) ? MAX : n + 1;
     }
 
 

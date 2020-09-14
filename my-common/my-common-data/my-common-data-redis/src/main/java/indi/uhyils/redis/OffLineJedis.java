@@ -24,12 +24,12 @@ public class OffLineJedis implements Redisable {
     /**
      * 缓存
      */
-    private static final Map<String, String> cache = new HashMap<>();
+    private static final Map<String, String> CACHE = new HashMap<>();
 
     /**
      * 时间
      */
-    private static final Map<String, Long> cacheTime = new HashMap<>();
+    private static final Map<String, Long> CACHE_TIME = new HashMap<>();
 
     /**
      * 锁
@@ -44,15 +44,15 @@ public class OffLineJedis implements Redisable {
     static {
         Runnable thread = () -> {
             while (!redisStart) {
-                for (Map.Entry<String, Long> objectLongEntry : cacheTime.entrySet()) {
+                for (Map.Entry<String, Long> objectLongEntry : CACHE_TIME.entrySet()) {
                     Object key = objectLongEntry.getKey();
                     Long value = objectLongEntry.getValue();
                     // 超时了
                     if (value <= System.currentTimeMillis()) {
                         lock.lock();
                         try {
-                            cacheTime.remove(key);
-                            cache.remove(key);
+                            CACHE_TIME.remove(key);
+                            CACHE.remove(key);
                         } catch (Exception e) {
                             LogUtil.error(RedisPoolUtil.class, e);
                         } finally {
@@ -73,20 +73,20 @@ public class OffLineJedis implements Redisable {
 
     @Override
     public String set(String key, String value) {
-        return cache.put(key, value);
+        return CACHE.put(key, value);
     }
 
 
     @Override
     public String get(String key) {
-        return cache.get(key);
+        return CACHE.get(key);
     }
 
     @Override
     public Long exists(String... keys) {
         AtomicLong count = new AtomicLong();
         Arrays.stream(keys).forEach(key -> {
-            if (cache.containsKey(key)) {
+            if (CACHE.containsKey(key)) {
                 count.getAndIncrement();
             }
         });
@@ -95,18 +95,18 @@ public class OffLineJedis implements Redisable {
 
     @Override
     public Boolean exists(String key) {
-        return cache.containsKey(key);
+        return CACHE.containsKey(key);
     }
 
     @Override
     public Long del(String... keys) {
         AtomicLong count = new AtomicLong();
         Arrays.stream(keys).forEach(key -> {
-            if (cache.containsKey(key)) {
-                cache.remove(key);
+            if (CACHE.containsKey(key)) {
+                CACHE.remove(key);
                 count.getAndIncrement();
-                if (cacheTime.containsKey(key)) {
-                    cacheTime.remove(key);
+                if (CACHE_TIME.containsKey(key)) {
+                    CACHE_TIME.remove(key);
                 }
             }
         });
@@ -116,11 +116,11 @@ public class OffLineJedis implements Redisable {
     @Override
     public Long del(String key) {
         Boolean b = false;
-        if (cache.containsKey(key)) {
-            cache.remove(key);
+        if (CACHE.containsKey(key)) {
+            CACHE.remove(key);
             b = true;
-            if (cacheTime.containsKey(key)) {
-                cacheTime.remove(key);
+            if (CACHE_TIME.containsKey(key)) {
+                CACHE_TIME.remove(key);
             }
         }
         if (b) {
@@ -131,8 +131,8 @@ public class OffLineJedis implements Redisable {
 
     @Override
     public Long expire(String key, int seconds) {
-        if (cache.containsKey(key)) {
-            cacheTime.put(key, System.currentTimeMillis() + seconds * 1000);
+        if (CACHE.containsKey(key)) {
+            CACHE_TIME.put(key, System.currentTimeMillis() + seconds * 1000);
             return 1L;
         }
         return 0L;
@@ -140,10 +140,10 @@ public class OffLineJedis implements Redisable {
 
     @Override
     public Long incrBy(String key, long increment) {
-        if (cache.containsKey(key)) {
-            String s = cache.get(key);
+        if (CACHE.containsKey(key)) {
+            String s = CACHE.get(key);
             Long l = Long.parseLong(s) + increment;
-            cache.put(key, l.toString());
+            CACHE.put(key, l.toString());
             return l;
         }
         return null;
@@ -151,10 +151,10 @@ public class OffLineJedis implements Redisable {
 
     @Override
     public Long setnx(String key, String value) {
-        if (cache.containsKey(key)) {
+        if (CACHE.containsKey(key)) {
             return 0L;
         }
-        cache.put(key, value);
+        CACHE.put(key, value);
         return 1L;
     }
 
@@ -166,13 +166,13 @@ public class OffLineJedis implements Redisable {
 
     @Override
     public Long append(String key, String value) {
-        if (cache.containsKey(key)) {
-            String s = cache.get(key);
+        if (CACHE.containsKey(key)) {
+            String s = CACHE.get(key);
             String result = s + value;
-            cache.put(key, result);
+            CACHE.put(key, result);
             return (long) result.length();
         } else {
-            cache.put(key, value);
+            CACHE.put(key, value);
             return (long) value.length();
 
         }
