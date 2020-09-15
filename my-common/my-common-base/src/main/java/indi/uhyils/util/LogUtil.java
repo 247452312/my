@@ -178,11 +178,4 @@ public class LogUtil {
         LogUtil.info(LogUtil.class, String.format("链路跟踪: %s  结束!", sb.toString()));
     }
 
-
-    public static void main(String[] args) {
-        info("hello world");
-        Thread thread = new Thread(() -> info("temp hello world"));
-        thread.setName("temp");
-        thread.start();
-    }
 }

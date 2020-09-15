@@ -83,6 +83,15 @@ public class IpSpiderTableAspect {
     private static final Integer WRONG_COUNT = 3;
 
     /**
+     * 首次被冻结时间
+     */
+    private static final Long FIRST_FROZEN_TIME = 3 * 60 * 1000L;
+    /**
+     * 第二次冻结时间
+     */
+    private static final Long SECOND_FROZEN_TIME = 60 * 60 * 1000L;
+
+    /**
      * 定义切入点，切入点为 {@link indi.uhyils.controller.AllController#action(Action, HttpServletRequest)}
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
@@ -264,12 +273,12 @@ public class IpSpiderTableAspect {
             String outTime = jedis.hget(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip);
             /* 如果之前是冻结等级为1 并且已经过了冻结结束时间3分钟,设置冻结等级为1
              *  如果之前冻结等级为2 并且已经过了冻结结束时间 1小时 设置冻结等级为1*/
-            if (frozenCount == 2 && now - Long.parseLong(outTime) > 3 * 60 * 1000) {
+            if (frozenCount == 2 && now - Long.parseLong(outTime) > FIRST_FROZEN_TIME) {
                 jedis.hset(IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip, "1");
-                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(now + 3 * 60 * 1000L));
-            } else if (frozenCount == 3 && now - Long.parseLong(outTime) > 60 * 60 * 1000) {
+                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(now + FIRST_FROZEN_TIME));
+            } else if (frozenCount == 3 && now - Long.parseLong(outTime) > SECOND_FROZEN_TIME) {
                 jedis.hset(IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip, "1");
-                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(now + 3 * 60 * 1000L));
+                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(now + FIRST_FROZEN_TIME));
             } else if (frozenCount > MAX_FROZEN_COUNT) {
                 // 加入永久黑名单
                 AddBlackIpRequest build = AddBlackIpRequest.build(ip);
@@ -284,10 +293,10 @@ public class IpSpiderTableAspect {
                 return WebResponse.build(null, ServiceCode.REFUSE_VISIT);
             } else if (frozenCount == 1) {
                 //冻结第一个等级 (3分钟)
-                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(System.currentTimeMillis() + 3 * 60 * 1000L));
+                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(System.currentTimeMillis() + FIRST_FROZEN_TIME));
             } else if (frozenCount == 2) {
                 //冻结第二个等级 (一小时)
-                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(System.currentTimeMillis() + 60 * 60 * 1000L));
+                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(System.currentTimeMillis() + SECOND_FROZEN_TIME));
             }
             //告知前端您已被冻结以及冻结等级
             return WebResponse.build(frozenCount, ServiceCode.FROZEN_TEMP);

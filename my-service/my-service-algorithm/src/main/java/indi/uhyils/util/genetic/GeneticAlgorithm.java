@@ -216,8 +216,12 @@ public class GeneticAlgorithm {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         GeneticAlgorithm that = (GeneticAlgorithm) o;
         return Objects.equals(maxNum, that.maxNum) &&
                 Objects.equals(mutationProbability, that.mutationProbability) &&

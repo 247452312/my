@@ -1,6 +1,7 @@
 package indi.uhyils.util.genetic.core;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 环状DNA数据
@@ -34,4 +35,20 @@ public class DnaData implements Data {
         return doubleDoubleGene.get();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DnaData dnaData = (DnaData) o;
+        return Objects.equals(genes, dnaData.genes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(genes);
+    }
 }

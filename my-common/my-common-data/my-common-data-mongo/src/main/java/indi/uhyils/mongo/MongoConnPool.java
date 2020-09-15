@@ -57,6 +57,7 @@ public class MongoConnPool {
         Runnable guardianThread = new MongoGuardianThread(this);
         // TODO 修改为线程池
         Thread thread = new Thread(guardianThread);
+        thread.setDaemon(true);
         thread.start();
     }
 

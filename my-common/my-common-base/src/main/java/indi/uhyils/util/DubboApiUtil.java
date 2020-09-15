@@ -130,8 +130,10 @@ public class DubboApiUtil {
             Type[] genericInterfaces = interfaceClass.getGenericInterfaces();
             Type genericSuperclass = genericInterfaces[0];
             String className = genericSuperclass.getTypeName();
-            if (className.contains("<")) {
-                String substring = className.substring(className.indexOf("<") + 1, className.lastIndexOf(">"));
+            String brackets = "<";
+            String lastBrackets = ">";
+            if (className.contains(brackets)) {
+                String substring = className.substring(className.indexOf(brackets) + 1, className.lastIndexOf(lastBrackets));
                 String json = JSON.toJSONString(temp);
                 if (objRequestEquals) {
                     ObjRequest<Serializable> objRequest = JSONObject.parseObject(json, ObjRequest.class);
