@@ -1,45 +1,24 @@
 # my
 ### 项目简介
-    自己磨练技能的地方,知道的东西全都加进去(注: 底下的好多已经过期了, 最新版还没有写)
+    基于docker的中间件: nacos(dubbo注册中心) mysql redis MongoDB rabbitmq zookeeper(dubbo原注册中心 已弃用)  nginx
+    基于dubbo的微服务架构
+    基于dubbo SPI的Filter熔断(Hystrix)
+    基于redis的分布式锁 + 热点缓存技术
+    基于rabbitmq的分布式事务
+    基于mq的JVM内存监控 + JVM调优
+    基于docker的mysql读写分离
+    集中处理并转发请求的网关服务
+    基于MongoDB的文件系统
+    基于nginx的负载匀衡
+    爬虫流量隔离
+    Aop代理加token的方式实现不同用户的登录
+    基于Github genkins docker 的自动化部署
+    卷积神经网络识别图像
 ## 运行代码需要的环境
 * java1.8环境
 * nacos
 * mysql
+* mongoDB
+* redis
+* rabbitMQ
 * 本地启动时需要加入 --spring.profiles.active=dev命令
-## 使用说明
-zookeeper配置在dubbo.xml中
-mysql配置在application.properties中
-### 项目结构  
-    * my-api ------  微服务提供的api   
-    * my-common ------  公共类 包含了所有模块都需要的类,包括  :
-        * 默认Dao 包含增删改 以及通过id查询
-        * 服务提供者的responseCode
-        * 服务消费者查询的规范请求
-        * 服务提供者返回的标准回复
-        * Entity默认继承的类->BaseEntity 包含createDate,updateDate,delete_flag,remark  
-    * my-dubbo-admin >------ dubbo控制台
-    * my-service ------ 微服务,即服务提供者
-        * my-service-log ----- 日志模块
-        * my-service-software ----- 软件模块
-        * my-service-user ----- 用户及权限模块
-        * ...
-        * my-web ----- 整个项目前台模块
-    
-
-### dubbo泛化调用 
-* 调用api为 http://${ip}:${webPort}/action
-* post请求
-* json为: {
-                 "interfaceName": "XxxService",
-                 "methodName": "xx",
-                 "args": {
-                     "paging": true,
-                     "args": {
-                         "name": "id",
-                         "symbol": "=",
-                         "data": "id"
-                     }
-                 }
-             }
-### 请求链路跟踪
-
