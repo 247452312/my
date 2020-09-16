@@ -13,7 +13,6 @@
     爬虫流量隔离
     Aop代理加token的方式实现不同用户的登录
     基于Github genkins docker 的自动化部署
-    卷积神经网络识别图像
 ## 运行代码需要的环境
 * java1.8环境
 * nacos
