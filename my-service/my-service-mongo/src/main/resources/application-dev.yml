@@ -10,6 +10,7 @@ dubbo:
     port: 20807
     threadpool: cached
     name: dubbo
+    accepts: 200
   application:
     name: provider-mongo
   consumer:

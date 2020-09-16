@@ -25,21 +25,21 @@ public class DistributeServiceImpl implements DistributeService {
     public ServiceResult<WelcomeResponse> getWelcomeData(DefaultRequest request) throws Exception {
         WelcomeResponse welcomeResponse = new WelcomeResponse();
         /* 统计信息 */
-        ServiceResult<JSONObject> jsonObjectServiceResult = DistributeDubboApiUtil.defaultRequest(request.getUser(),"JvmService", "getJvmDataStatisticsResponse", request);
+        ServiceResult<JSONObject> jsonObjectServiceResult = DistributeDubboApiUtil.defaultRequest(request.getUser(), "JvmService", "getJvmDataStatisticsResponse", request);
         if (!jsonObjectServiceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             throw new Exception(jsonObjectServiceResult.getServiceMessage());
         }
         welcomeResponse.setJvmDataStatisticsResponse(jsonObjectServiceResult.getData().toJavaObject(JvmDataStatisticsResponse.class));
 
         /*快捷启动*/
-        ServiceResult<JSONObject> quickStart = DistributeDubboApiUtil.defaultRequest(request.getUser(),"MenuService", "getQuickStartResponse", request);
+        ServiceResult<JSONObject> quickStart = DistributeDubboApiUtil.defaultRequest(request.getUser(), "MenuService", "getQuickStartResponse", request);
         if (!quickStart.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             throw new Exception(quickStart.getServiceMessage());
         }
         welcomeResponse.setQuickStartResponse(quickStart.getData().toJavaObject(QuickStartResponse.class));
 
         /*jvm图表信息*/
-        ServiceResult<JSONObject> jvmInfoLog = DistributeDubboApiUtil.defaultRequest(request.getUser(),"JvmService", "getJvmInfoLogResponse", request);
+        ServiceResult<JSONObject> jvmInfoLog = DistributeDubboApiUtil.defaultRequest(request.getUser(), "JvmService", "getJvmInfoLogResponse", request);
         if (!jvmInfoLog.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             throw new Exception(jvmInfoLog.getServiceMessage());
         }
@@ -48,14 +48,14 @@ public class DistributeServiceImpl implements DistributeService {
         welcomeResponse.setAlgorithmStatisticsResponse(AlgorithmStatisticsResponse.build(new ArrayList<>()));
 
         /*版本信息*/
-        ServiceResult<JSONObject> versionInfo = DistributeDubboApiUtil.defaultRequest(request.getUser(),"DictService", "getVersionInfoResponse", request);
+        ServiceResult<JSONObject> versionInfo = DistributeDubboApiUtil.defaultRequest(request.getUser(), "DictService", "getVersionInfoResponse", request);
         if (!versionInfo.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             throw new Exception(versionInfo.getServiceMessage());
         }
         welcomeResponse.setVersionInfoResponse(versionInfo.getData().toJavaObject(VersionInfoResponse.class));
 
         /* 下一步计划 */
-        ServiceResult<JSONObject> lastPlan = DistributeDubboApiUtil.defaultRequest(request.getUser(),"DictService", "getLastPlanResponse", request);
+        ServiceResult<JSONObject> lastPlan = DistributeDubboApiUtil.defaultRequest(request.getUser(), "DictService", "getLastPlanResponse", request);
         if (!lastPlan.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             throw new Exception(lastPlan.getServiceMessage());
         }

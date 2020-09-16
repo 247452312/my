@@ -10,6 +10,7 @@ dubbo:
     name: dubbo
     port: 20855
     threadpool: cached
+    accepts: 200
   application:
     name: provider-distribute
   consumer:

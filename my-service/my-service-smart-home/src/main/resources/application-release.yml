@@ -10,6 +10,7 @@ dubbo:
     name: dubbo
     port: 20810
     threadpool: cached
+    accepts: 200
   application:
     name: provider-smart-home
   consumer:
