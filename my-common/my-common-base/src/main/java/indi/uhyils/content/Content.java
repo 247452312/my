@@ -57,4 +57,9 @@ public class Content {
      */
     public static final String GET_VERIFICATION_CODE_METHOD = "getVerification";
 
+    /**
+     * 并发数数据字典的code
+     */
+    public static final String CONCURRENT_NUM_DICT_CODE = "concurrent_num_dict_code";
+
 }

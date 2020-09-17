@@ -81,4 +81,14 @@ public class SpringUtil {
         return getApplicationContext().getBean(name, clazz);
     }
 
+    /**
+     * 通过key 获取环境变量
+     *
+     * @param key 环境变量的key
+     * @return 环境变量的值
+     */
+    public static String getProperty(String key) {
+        return getApplicationContext().getEnvironment().getProperty(key);
+    }
+
 }
