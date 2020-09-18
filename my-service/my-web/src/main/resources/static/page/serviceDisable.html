@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>menu</title>
+    <!--设置1个小时的缓存-->
+    <meta http-equiv="Cache-Control" content="max-age=3200"/>
+    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <link rel="stylesheet" href="../css/my.css" media="all">
+
+    <style>
+        .layui-btn:not(.layui-btn-lg ):not(.layui-btn-sm):not(.layui-btn-xs) {
+            height: 34px;
+            line-height: 34px;
+            padding: 0 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            接口禁用页<br>
+        </blockquote>
+        <div>
+            <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-warm" lay-event="addNewServiceDisable" style="border-radius: 15px">添加新权限
+        </button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="/js/jquery.min.js" charset="UTF-8"></script>
+<script src="/js/my.js" charset="UTF-8"></script>
+<script>
+    layui.use(['table', 'layer'], function () {
+        var $ = layui.jquery;
+        var table = layui.table;
+        var layer = layui.layer;
+        $.reloadTable = function () {
+            pushRequest("ServiceControlServiceImpl", "getAllMethodDisable", {}, function (data) {
+                // 渲染表格
+                table.render({
+                    elem: '#munu-table'
+                    , data: data
+                    , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                    , title: '接口禁用表'
+                    , cellMinWidth: 80 // 全局最小列宽
+                    , cols: [[
+                        {type: 'checkbox', fixed: 'left'}
+                        , {type: "numbers", title: '序号'}
+                        , {field: 'className', title: '接口名称'}
+                        , {field: 'methodName', title: '方法名'}
+                        , {field: 'disableType', title: '类型'}
+                        , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
+                    ]]
+                    , page: true,
+                    skin: "line"
+                });
+
+                //头工具栏事件
+                table.on('toolbar(munu-table)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'getCheckData':
+                            var data = checkStatus.data;
+                            layer.alert(JSON.stringify(data));
+                            break;
+                        case 'getCheckLength':
+                            var data = checkStatus.data;
+                            layer.msg('选中了：' + data.length + ' 个');
+                            break;
+                        case 'addNewServiceDisable': // 添加禁用接口
+                            var index = layer.open({
+                                title: '添加禁用接口',
+                                type: 2,
+                                shade: 0.2,
+                                maxmin: true,
+                                shadeClose: true,
+                                area: ['30%', '40%'],
+                                content: 'table/serviceDisableAdd.html?func=add',
+                            });
+                            $(window).on("resize", function () {
+                                layer.full(index);
+                            });
+                            break;
+
+                        //自定义头工具栏右侧图标 - 提示
+                        case 'LAYTABLE_TIPS':
+                            layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                            break;
+                    }
+                });
+
+                //监听行工具事件
+                table.on('tool(munu-table)', function (obj) {
+                    var data = obj.data;
+                    //console.log(obj)
+                    if (obj.event === 'del') { // 删除
+                        layer.confirm('真的删除行么', function (index) {
+                            pushRequest("ServiceControlService", "delMethodDisable", {
+                                className: data.className,
+                                methodName: data.methodName
+                            }, function (data) {
+                                layer.close(index);
+                                $.reloadTable();
+                            });
+
+                        });
+                    } else if (obj.event === 'edit') {
+                        var index = layer.open({
+                            title: '修改接口禁用',
+                            type: 2,
+                            shade: 0.2,
+                            maxmin: true,
+                            shadeClose: true,
+                            area: ['30%', '40%'],
+                            content: 'table/serviceDisableAdd.html?func=edit&className=' + data.className + "&methodName=" + data.methodName,
+                        });
+                        $(window).on("resize", function () {
+                            layer.full(index);
+                        });
+                    }
+                });
+
+            });
+        }
+        $.reloadTable();
+
+    });
+</script>
+</body>
+</html>

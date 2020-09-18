@@ -3,6 +3,7 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.content.Content;
 import indi.uhyils.pojo.model.MethodDisableInfo;
 import indi.uhyils.pojo.request.AddOrEditMethodDisableRequest;
+import indi.uhyils.pojo.request.DelMethodDisableRequest;
 import indi.uhyils.pojo.request.GetMethodDisableRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -88,6 +89,27 @@ public class ServiceControlServiceImpl implements ServiceControlService {
             } else {
                 jedis.hset(Content.SERVICE_USEABLE_SWITCH, className, request.getType().toString());
             }
+            return ServiceResult.buildSuccessResult(true, request);
+        } finally {
+            jedis.close();
+        }
+    }
+
+    @Override
+    public ServiceResult<Boolean> delMethodDisable(DelMethodDisableRequest request) {
+        Redisable jedis = redisPoolUtil.getJedis();
+        try {
+            String key = null;
+            String className = request.getClassName();
+            if (className != null && !className.contains(DubboApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
+                key = Content.PACKAGE_PREFIX + className;
+            }
+            String methodName = request.getMethodName();
+
+            if (methodName != null) {
+                key = key + METHOD_LINK_CLASS_SYMBOL + methodName;
+            }
+            jedis.hdel(Content.SERVICE_USEABLE_SWITCH, key);
             return ServiceResult.buildSuccessResult(true, request);
         } finally {
             jedis.close();
