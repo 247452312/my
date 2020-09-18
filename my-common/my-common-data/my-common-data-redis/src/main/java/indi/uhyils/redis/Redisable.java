@@ -1,5 +1,6 @@
 package indi.uhyils.redis;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -138,4 +139,12 @@ public interface Redisable {
      * @param ip  hash内部的key
      */
     void hset(String key, String ip, String value);
+
+    /**
+     * hash设置值
+     *
+     * @param key    hash的key
+     * @param values hash中的所有值
+     */
+    void hset(String key, HashMap<String, String> values);
 }

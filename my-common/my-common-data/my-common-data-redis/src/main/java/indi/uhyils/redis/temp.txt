@@ -1,0 +1,29 @@
+-- 查询方法名是否存在
+if redis.call("HEXISTS",KEYS[2]) then
+    -- 获取redis中methodType是几
+    return redis.call("HGET",KEYS[2])
+end
+
+-- 查询类名是否存在
+if redis.call("HEXISTS",KEYS[1]) then
+    -- 获取redis中classType是几
+    local classType = redis.call("HGET",KEYS[1])
+    -- 类接口没有被禁用(这里什么也不干)
+    if classType == 0 then
+
+    -- 类中的读接口被禁用
+    elseif classType == 1 then
+        -- 刚好这个方法也是读接口
+        if KEYS[3] == 1 then
+            -- 返回被禁用
+            return 1
+    -- 类中的写接口被禁用
+    elseif classType == 2 then
+        if KEYS[3] == 2 then
+            return 1
+    --类中的所有接口被禁用
+    elseif classType == 3 them
+        return 1
+else
+    -- 没有类名也没有方法名 返回未禁用
+    return 0

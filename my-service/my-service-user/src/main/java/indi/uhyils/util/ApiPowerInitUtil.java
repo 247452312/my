@@ -19,6 +19,12 @@ import java.util.stream.Collectors;
 public class ApiPowerInitUtil {
 
 
+    /**
+     * 此工具只在未打包时有用 获取所有接口的方法 TODO 此处需要修改
+     *
+     * @return
+     * @throws IOException
+     */
     public static List<PowerSimpleEntity> getPowersSingle() throws IOException {
         String basePath = new File("").getCanonicalPath();
         basePath += "\\my-api\\";

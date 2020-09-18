@@ -62,4 +62,12 @@ public class Content {
      */
     public static final String CONCURRENT_NUM_DICT_CODE = "concurrent_num_dict_code";
 
+    /**
+     * 接口禁用redis中的hash-key
+     */
+    public static final String SERVICE_USEABLE_SWITCH = "service_useable_switch";
+    /**
+     * 包前缀
+     */
+    public static final String PACKAGE_PREFIX = "indi.uhyils.";
 }

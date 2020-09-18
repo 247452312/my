@@ -15,6 +15,7 @@ dubbo:
   consumer:
     timeout: 3000
     group: ${spring.profiles.active}
+    check: false
   provider:
     timeout: 5000
     group: ${spring.profiles.active}

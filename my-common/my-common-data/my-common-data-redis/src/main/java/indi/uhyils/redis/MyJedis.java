@@ -2,6 +2,7 @@ package indi.uhyils.redis;
 
 import redis.clients.jedis.Jedis;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -131,5 +132,10 @@ public class MyJedis implements Redisable {
     @Override
     public void hset(String key, String ip, String value) {
         jedis.hset(key, ip, value);
+    }
+
+    @Override
+    public void hset(String key, HashMap<String, String> values) {
+        jedis.hset(key, values);
     }
 }

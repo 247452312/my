@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
@@ -258,4 +259,50 @@ public class RedisPoolUtil {
     }
 
 
+    /**
+     * 检查方法是否允许执行所需要执行的lua脚本
+     */
+    private static String checkMethodDisableLua = "-- 查询方法名是否存在\nif redis.call(\"HEXISTS\",KEYS[2]) then\n    -- 获取redis中methodType是几\n    return redis.call(\"HGET\",KEYS[2])\nend\n\n-- 查询类名是否存在\nif redis.call(\"HEXISTS\",KEYS[1]) then\n    -- 获取redis中classType是几\n    local classType = redis.call(\"HGET\",KEYS[1])\n    -- 类接口没有被禁用(这里什么也不干)\n    if classType == 0 then\n\n    -- 类中的读接口被禁用\n    elseif classType == 1 then\n        -- 刚好这个方法也是读接口\n        if KEYS[3] == 1 then\n            -- 返回被禁用\n            return 1\n    -- 类中的写接口被禁用\n    elseif classType == 2 then\n        if KEYS[3] == 2 then\n            return 1\n    --类中的所有接口被禁用\n    elseif classType == 3 them\n        return 1\nelse\n    -- 没有类名也没有方法名 返回未禁用\n    return 0";
+
+    /**
+     * 检查方法是否允许执行
+     *
+     * @param targetClass    目标class
+     * @param declaredMethod 目标方法
+     * @param readWriteType  方法的类型 1->读接口 2->写接口
+     * @return 是否允许执行
+     */
+    public Boolean checkMethodDisable(Class<?> targetClass, Method declaredMethod, Integer readWriteType) {
+        String className = targetClass.getName();
+        String methodName = className + "#" + declaredMethod.getName();
+        return checkMethodDisable(className, methodName, readWriteType);
+
+
+    }
+
+    /**
+     * 检查方法是否允许执行
+     *
+     * @param className     目标class
+     * @param methodName    目标className+#+methodName
+     * @param readWriteType 方法的类型 1->读接口 2->写接口
+     * @return 是否允许执行
+     */
+    public Boolean checkMethodDisable(String className, String methodName, Integer readWriteType) {
+        Redisable jedis = redisPool.getJedis();
+
+        try {
+            Boolean exists = jedis.exists(Content.SERVICE_USEABLE_SWITCH);
+            if (!exists) {
+                return true;
+            }
+            ArrayList<String> keys = new ArrayList<>();
+            keys.add(className);
+            keys.add(methodName);
+            keys.add(readWriteType.toString());
+            return 0 == (int) jedis.lua(checkMethodDisableLua, keys, new ArrayList<>());
+        } finally {
+            jedis.close();
+        }
+    }
 }

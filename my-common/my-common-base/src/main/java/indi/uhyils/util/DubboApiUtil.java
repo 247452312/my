@@ -29,7 +29,7 @@ public class DubboApiUtil {
     /**
      * 接口名称包分隔符
      */
-    private static final String INTERFACE_NAME_PACKAGE_SEPARATOR = ".";
+    public static final String INTERFACE_NAME_PACKAGE_SEPARATOR = ".";
 
     /**
      * ReferenceConfig缓存(重量级, 不缓存太慢了, 但是还没有考虑微服务过多的情况)
@@ -100,7 +100,7 @@ public class DubboApiUtil {
             Object[] arg = args.toArray(new Object[0]);
 
             // 检测参数中有没有泛型,如果有,则直接将hashMap转为对应类实例
-            arg[0] = changeObjRequestParadigm(arg[0], params, Class.forName(interfaceName));
+            arg[0] = changeObjRequestParadigm(arg[0], params, Class.forName(interfaceName), methodName);
             String parameterTypes = params.getName();
             if (genericService == null) {
                 reference.destroy();
@@ -119,7 +119,7 @@ public class DubboApiUtil {
         }
     }
 
-    private static Object changeObjRequestParadigm(Object request, Class paramsClass, Class interfaceClass) throws ClassNotFoundException {
+    private static Object changeObjRequestParadigm(Object request, Class paramsClass, Class interfaceClass, String methodName) throws ClassNotFoundException, NoSuchMethodException {
         if (!(request instanceof Map)) {
             return request;
         }
@@ -127,13 +127,24 @@ public class DubboApiUtil {
         boolean objRequestEquals = paramsClass.equals(ObjRequest.class);
         boolean objsRequestEquals = paramsClass.equals(ObjsRequest.class);
         if (objRequestEquals || objsRequestEquals) {
-            Type[] genericInterfaces = interfaceClass.getGenericInterfaces();
+            Method tempMethod = null;
+            if (objRequestEquals) {
+                tempMethod = interfaceClass.getDeclaredMethod(methodName, ObjRequest.class);
+            } else {
+                tempMethod = interfaceClass.getDeclaredMethod(methodName, ObjsRequest.class);
+            }
+            Type[] genericInterfaces = tempMethod.getGenericParameterTypes();
             Type genericSuperclass = genericInterfaces[0];
             String className = genericSuperclass.getTypeName();
             String brackets = "<";
             String lastBrackets = ">";
             if (className.contains(brackets)) {
                 String substring = className.substring(className.indexOf(brackets) + 1, className.lastIndexOf(lastBrackets));
+                if ("T".equals(substring)) {
+                    Type genericInterface = interfaceClass.getGenericInterfaces()[0];
+                    className = genericInterface.getTypeName();
+                    substring = className.substring(className.indexOf(brackets) + 1, className.lastIndexOf(lastBrackets));
+                }
                 String json = JSON.toJSONString(temp);
                 if (objRequestEquals) {
                     ObjRequest<Serializable> objRequest = JSONObject.parseObject(json, ObjRequest.class);

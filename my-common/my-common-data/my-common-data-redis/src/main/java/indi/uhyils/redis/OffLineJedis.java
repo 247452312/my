@@ -236,5 +236,10 @@ public class OffLineJedis implements Redisable {
 
     }
 
+    @Override
+    public void hset(String key, HashMap<String, String> values) {
+
+    }
+
 
 }

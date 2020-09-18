@@ -11,6 +11,7 @@ import indi.uhyils.service.DictService;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.NacosUtil;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,7 @@ public class ConcurrentNumberTask {
     @Autowired
     private LogDao logDao;
 
-    @Autowired
+    @Reference(group = "${spring.profiles.active}", check = false)
     private DictService dictService;
 
     private static final Double RECOVERY_PRE = 0.8;
@@ -41,7 +42,7 @@ public class ConcurrentNumberTask {
     private volatile static Boolean degradation = false;
 
 
-    @Scheduled(cron = "*/1 * * * * ?")
+    @Scheduled(cron = "*/2 * * * * ?")
     public void demoSchedule() {
         // 获取每秒网关的并发数
         Integer countByStartTime = logDao.getCountByStartTime(System.currentTimeMillis() - 1000L);
