@@ -2,10 +2,11 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.content.Content;
 import indi.uhyils.pojo.model.MethodDisableInfo;
-import indi.uhyils.pojo.request.AddOrEditMethodDisableRequest;
+import indi.uhyils.pojo.model.AddOrEditMethodDisable;
 import indi.uhyils.pojo.request.DelMethodDisableRequest;
 import indi.uhyils.pojo.request.GetMethodDisableRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolUtil;
 import indi.uhyils.redis.Redisable;
@@ -73,21 +74,22 @@ public class ServiceControlServiceImpl implements ServiceControlService {
     }
 
     @Override
-    public ServiceResult<Boolean> addOrEditMethodDisable(AddOrEditMethodDisableRequest request) {
+    public ServiceResult<Boolean> addOrEditMethodDisable(ObjRequest<AddOrEditMethodDisable> request) {
         Redisable jedis = redisPoolUtil.getJedis();
+        AddOrEditMethodDisable data = request.getData();
         try {
-            String className = request.getClassName();
+            String className = data.getClassName();
             if (className != null && !className.contains(DubboApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 className = Content.PACKAGE_PREFIX + className;
             }
-            String methodName = request.getMethodName();
+            String methodName = data.getMethodName();
             // 这是一个方法
             if (StringUtils.isNotBlank(methodName)) {
                 String key = className + METHOD_LINK_CLASS_SYMBOL + methodName;
-                Integer type = request.getType();
+                Integer type = data.getType();
                 jedis.hset(Content.SERVICE_USEABLE_SWITCH, key, type.toString());
             } else {
-                jedis.hset(Content.SERVICE_USEABLE_SWITCH, className, request.getType().toString());
+                jedis.hset(Content.SERVICE_USEABLE_SWITCH, className, data.getType().toString());
             }
             return ServiceResult.buildSuccessResult(true, request);
         } finally {

@@ -31,10 +31,22 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">方法名称</label>
+        <label class="layui-form-label ">方法名称</label>
         <div class="layui-input-block">
-            <input type="text" name="methodName" lay-verify="required" placeholder="请输入方法名称" value=""
+            <input type="text" name="methodName" lay-filter="methodInput" placeholder="请输入方法名称" value=""
                    class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">禁用类型</label>
+        <div class="layui-input-block">
+            <select name="type" class="layui-input">
+                <option value="">请选择</option>
+                <option value="0">无</option>
+                <option value="1">禁用此接口中所有读方法</option>
+                <option value="2">禁用此接口中所有写方法</option>
+                <option value="3">禁用此接口中所有方法</option>
+            </select>
         </div>
     </div>
 
@@ -62,6 +74,7 @@
         let func = $.getUrlParam('func');
         let className = $.getUrlParam('className');
         let methodName = $.getUrlParam('methodName');
+        let type = $.getUrlParam('type');
 
         //监听指定开关
         form.on('switch(switchTest)', function (data) {
@@ -74,6 +87,7 @@
         if (func == 'edit') { // 这是修改
             $('[name="className"]').attr('value', className);
             $('[name="methodName"]').attr('value', methodName);
+            $('[name="type"]').attr('value', type);
             form.render();
         }
 
@@ -94,6 +108,27 @@
                 closeAndReload();
             });
             return false;
+        });
+        $('[name="methodName"]').on("input", function (event) {
+            let data = event.delegateTarget.value;
+            let $name = $('[name="type"]');
+            $name.empty();
+            if (data == null || data == '') {
+                $name.append('<option value="">请选择</option>\n' +
+                    '                <option value="0">无</option>\n' +
+                    '                <option value="1">禁用此接口中所有读方法</option>\n' +
+                    '                <option value="2">禁用此接口中所有写方法</option>\n' +
+                    '                <option value="3">禁用此接口中所有方法</option>');
+            } else {
+                $name.append('<option value="">请选择</option>\n' +
+                    '                <option value="0">无</option>\n' +
+                    '                <option value="1">禁用此方法</option>');
+
+            }
+
+            form.render();
+
+
         });
 
     });

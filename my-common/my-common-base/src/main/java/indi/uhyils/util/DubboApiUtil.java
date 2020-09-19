@@ -100,7 +100,7 @@ public class DubboApiUtil {
             Object[] arg = args.toArray(new Object[0]);
 
             // 检测参数中有没有泛型,如果有,则直接将hashMap转为对应类实例
-            arg[0] = changeObjRequestParadigm(arg[0], params, Class.forName(interfaceName), methodName);
+            arg[0] = changeObjRequestParadigm(arg[0], params, Class.forName(interfaceName), method);
             String parameterTypes = params.getName();
             if (genericService == null) {
                 reference.destroy();
@@ -119,7 +119,7 @@ public class DubboApiUtil {
         }
     }
 
-    private static Object changeObjRequestParadigm(Object request, Class paramsClass, Class interfaceClass, String methodName) throws ClassNotFoundException, NoSuchMethodException {
+    private static Object changeObjRequestParadigm(Object request, Class paramsClass, Class interfaceClass, Method method) throws ClassNotFoundException, NoSuchMethodException {
         if (!(request instanceof Map)) {
             return request;
         }
@@ -127,13 +127,7 @@ public class DubboApiUtil {
         boolean objRequestEquals = paramsClass.equals(ObjRequest.class);
         boolean objsRequestEquals = paramsClass.equals(ObjsRequest.class);
         if (objRequestEquals || objsRequestEquals) {
-            Method tempMethod = null;
-            if (objRequestEquals) {
-                tempMethod = interfaceClass.getDeclaredMethod(methodName, ObjRequest.class);
-            } else {
-                tempMethod = interfaceClass.getDeclaredMethod(methodName, ObjsRequest.class);
-            }
-            Type[] genericInterfaces = tempMethod.getGenericParameterTypes();
+            Type[] genericInterfaces = method.getGenericParameterTypes();
             Type genericSuperclass = genericInterfaces[0];
             String className = genericSuperclass.getTypeName();
             String brackets = "<";

@@ -33,7 +33,7 @@
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-        <button class="layui-btn layui-btn-warm" lay-event="addNewServiceDisable" style="border-radius: 15px">添加新权限
+        <button class="layui-btn layui-btn-warm" lay-event="addNewServiceDisable" style="border-radius: 15px">添加新接口禁用
         </button>
     </div>
 </script>
@@ -53,7 +53,7 @@
         var table = layui.table;
         var layer = layui.layer;
         $.reloadTable = function () {
-            pushRequest("ServiceControlServiceImpl", "getAllMethodDisable", {}, function (data) {
+            pushRequest("ServiceControlService", "getAllMethodDisable", {}, function (data) {
                 // 渲染表格
                 table.render({
                     elem: '#munu-table'

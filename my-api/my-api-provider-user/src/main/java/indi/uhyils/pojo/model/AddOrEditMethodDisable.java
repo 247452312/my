@@ -1,6 +1,6 @@
-package indi.uhyils.pojo.request;
+package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.request.base.DefaultRequest;
+import java.io.Serializable;
 
 /**
  * 添加或修改method禁用信息
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年09月18日 10时58分
  */
-public class AddOrEditMethodDisableRequest extends DefaultRequest {
+public class AddOrEditMethodDisable implements Serializable {
 
     /**
      * 接口名称

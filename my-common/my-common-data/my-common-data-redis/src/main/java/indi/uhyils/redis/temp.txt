@@ -22,7 +22,7 @@ if redis.call("HEXISTS",KEYS[1]) then
         if KEYS[3] == 2 then
             return 1
     --类中的所有接口被禁用
-    elseif classType == 3 them
+    elseif classType == 3 then
         return 1
 else
     -- 没有类名也没有方法名 返回未禁用

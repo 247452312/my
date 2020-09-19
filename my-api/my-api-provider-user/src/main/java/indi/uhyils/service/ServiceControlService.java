@@ -1,10 +1,11 @@
 package indi.uhyils.service;
 
+import indi.uhyils.pojo.model.AddOrEditMethodDisable;
 import indi.uhyils.pojo.model.MethodDisableInfo;
-import indi.uhyils.pojo.request.AddOrEditMethodDisableRequest;
 import indi.uhyils.pojo.request.DelMethodDisableRequest;
 import indi.uhyils.pojo.request.GetMethodDisableRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
 
@@ -50,7 +51,7 @@ public interface ServiceControlService extends BaseService {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> addOrEditMethodDisable(AddOrEditMethodDisableRequest request);
+    ServiceResult<Boolean> addOrEditMethodDisable(ObjRequest<AddOrEditMethodDisable> request);
 
     /**
      * 删除对应的禁用接口项
