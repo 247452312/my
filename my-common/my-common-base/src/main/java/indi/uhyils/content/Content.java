@@ -69,5 +69,5 @@ public class Content {
     /**
      * 包前缀
      */
-    public static final String PACKAGE_PREFIX = "indi.uhyils.";
+    public static final String PACKAGE_PREFIX = "indi.uhyils.service.";
 }

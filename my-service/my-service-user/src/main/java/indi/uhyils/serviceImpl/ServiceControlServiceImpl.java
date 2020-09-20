@@ -1,8 +1,8 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.content.Content;
-import indi.uhyils.pojo.model.MethodDisableInfo;
 import indi.uhyils.pojo.model.AddOrEditMethodDisable;
+import indi.uhyils.pojo.model.MethodDisableInfo;
 import indi.uhyils.pojo.request.DelMethodDisableRequest;
 import indi.uhyils.pojo.request.GetMethodDisableRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
@@ -105,6 +105,8 @@ public class ServiceControlServiceImpl implements ServiceControlService {
             String className = request.getClassName();
             if (className != null && !className.contains(DubboApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 key = Content.PACKAGE_PREFIX + className;
+            } else {
+                key = className;
             }
             String methodName = request.getMethodName();
 

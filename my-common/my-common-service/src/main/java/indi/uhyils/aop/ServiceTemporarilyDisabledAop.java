@@ -15,6 +15,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 方法临时禁用aop
@@ -35,7 +38,7 @@ public class ServiceTemporarilyDisabledAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(indi.uhyils.pojo.request.base.DefaultRequest)))")
+    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)) || execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.service.base.DefaultEntityService.*(..))")
     public void serviceTemporarilyDisabledAspectPoint() {
     }
 
@@ -43,8 +46,29 @@ public class ServiceTemporarilyDisabledAop {
     public Object exceptionAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
         Class<?> targetClass = pjp.getTarget().getClass();
         String name = pjp.getSignature().getName();
-        Method[] declaredMethods = targetClass.getDeclaredMethods();
-        Method declaredMethod = targetClass.getDeclaredMethod(name, DefaultRequest.class);
+        List<Class> classList = new ArrayList<>();
+        classList.add(targetClass);
+        Class<?>[] interfaces = targetClass.getInterfaces();
+        classList.addAll(Arrays.asList(interfaces));
+        if (interfaces != null && interfaces.length != 0) {
+            interfaces = interfaces[0].getInterfaces();
+            classList.addAll(Arrays.asList(interfaces));
+        }
+        List<Method> methodList = new ArrayList<>();
+        for (Class aClass : classList) {
+            Method[] declaredMethods = aClass.getDeclaredMethods();
+            methodList.addAll(Arrays.asList(declaredMethods));
+        }
+        Method declaredMethod = null;
+        for (Method method : methodList) {
+            String methodName = method.getName();
+            if (methodName.equals(name)) {
+                declaredMethod = method;
+            }
+        }
+        if (declaredMethod == null) {
+            return pjp.proceed();
+        }
         ReadWriteTypeEnum methodType = null;
 
         // 先找类上的注解,如果有,则设置
