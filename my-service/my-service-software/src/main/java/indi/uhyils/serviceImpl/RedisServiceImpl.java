@@ -1,7 +1,9 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.RedisDao;
 import indi.uhyils.dao.ServerDao;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.enum_.RedisAddEnum;
 import indi.uhyils.enum_.RedisUpdateEnum;
 import indi.uhyils.enum_.SoftwareStatusEnum;
@@ -71,6 +73,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> insert(ObjRequest<RedisEntity> insert) {
         RedisEntity redisEntity = insert.getData();
         ServerEntity serverEntity = serverDao.getById(redisEntity.getServerId());
@@ -107,6 +110,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<OperateSoftwareResponse> start(IdRequest request) {
         OperateSoftwareResponse operateSoftwareResponse = new OperateSoftwareResponse();
         RedisEntity redisEntity = dao.getById(request.getId());
@@ -128,6 +132,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<OperateSoftwareResponse> stop(IdRequest request) {
         OperateSoftwareResponse operateSoftwareResponse = new OperateSoftwareResponse();
         RedisEntity redisEntity = dao.getById(request.getId());
@@ -149,6 +154,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deleteManyRedis(IdsRequest request) {
         List<String> ids = request.getIds();
         List<RedisEntity> collect = ids.stream().map(t -> dao.getById(t)).collect(Collectors.toList());
@@ -165,6 +171,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> reloadManyRedis(IdsRequest request) {
         List<String> ids = request.getIds();
         AtomicBoolean b = new AtomicBoolean(true);
@@ -189,6 +196,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> startManyRedis(IdsRequest request) {
         List<String> ids = request.getIds();
         AtomicBoolean b = new AtomicBoolean(true);
@@ -211,6 +219,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> stopManyRedis(IdsRequest request) {
         AtomicBoolean b = new AtomicBoolean(true);
         request.getIds().forEach(id -> {
@@ -265,6 +274,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> addKey(ObjRequest<RedisKeyAndValue> request) {
         RedisKeyAndValue data = request.getData();
         String redisId = data.getRedisId();
@@ -283,6 +293,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> addKeyCover(ObjRequest<RedisKeyAndValue> request) {
         RedisKeyAndValue data = request.getData();
         String redisId = data.getRedisId();
@@ -293,6 +304,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> updateKey(ObjRequest<RedisKeyAndValue> request) {
         RedisKeyAndValue data = request.getData();
         String redisId = data.getRedisId();
@@ -318,6 +330,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deleteRedisByKey(ObjRequest<RedisKeyAndValue> request) {
         RedisKeyAndValue data = request.getData();
         String redisId = data.getRedisId();

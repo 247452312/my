@@ -1,5 +1,7 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.mongo.MongoManager;
 import indi.uhyils.pojo.request.NameRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
@@ -22,6 +24,7 @@ public class MongoServiceImpl implements MongoService {
     private MongoManager mongoManager;
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<String> add(ObjRequest<String> request) {
         String file = request.getData();
         String uuid = UUID.randomUUID().toString();
@@ -34,6 +37,7 @@ public class MongoServiceImpl implements MongoService {
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> delete(NameRequest request) {
         String name = request.getName();
         boolean b = mongoManager.removeFile(name);

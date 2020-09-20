@@ -1,5 +1,7 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.dao.PowerDao;
@@ -60,6 +62,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deletePower(IdRequest request) {
         PowerEntity powerEntity = getDao().getById(request.getId());
         if (powerEntity == null) {
@@ -85,6 +88,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> initPowerInProStart(DefaultRequest request) {
         List<PowerSimpleEntity> powersSingle;
         try {

@@ -1,7 +1,9 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.JobDao;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.JobEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.base.IdRequest;
@@ -47,6 +49,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> insert(ObjRequest<JobEntity> insert) {
         JobEntity data = insert.getData();
         data.preInsert(insert);
@@ -61,6 +64,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> update(ObjRequest<JobEntity> update) {
         JobEntity data = update.getData();
         data.preUpdate(update);
@@ -76,6 +80,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> pause(IdRequest request) throws ClassNotFoundException {
         String id = request.getId();
         JobEntity byId = dao.getById(id);
@@ -89,6 +94,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> start(IdRequest request) {
         String id = request.getId();
         JobEntity byId = dao.getById(id);

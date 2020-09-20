@@ -1,6 +1,8 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.content.Content;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.AddOrEditMethodDisable;
 import indi.uhyils.pojo.model.MethodDisableInfo;
 import indi.uhyils.pojo.request.DelMethodDisableRequest;
@@ -74,6 +76,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> addOrEditMethodDisable(ObjRequest<AddOrEditMethodDisable> request) {
         Redisable jedis = redisPoolUtil.getJedis();
         AddOrEditMethodDisable data = request.getData();
@@ -98,6 +101,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> delMethodDisable(DelMethodDisableRequest request) {
         Redisable jedis = redisPoolUtil.getJedis();
         try {

@@ -1,8 +1,10 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.annotation.NoToken;
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.UserDao;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.RoleEntity;
@@ -192,6 +194,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<String> updatePassword(UpdatePasswordRequest request) {
         String oldPassword = request.getOldPassword();
         UserEntity user = request.getUser();

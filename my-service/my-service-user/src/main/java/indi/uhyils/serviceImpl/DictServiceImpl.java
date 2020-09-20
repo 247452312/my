@@ -1,7 +1,9 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.DictDao;
 import indi.uhyils.dao.DictItemDao;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.DictEntity;
 import indi.uhyils.pojo.model.DictItemEntity;
 import indi.uhyils.pojo.request.GetByCodeRequest;
@@ -53,6 +55,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     private DictItemDao dictItemDao;
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> delete(IdRequest idRequest) {
         String id = idRequest.getId();
         DictEntity dictEntity = dao.getById(id);
@@ -83,6 +86,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> insertItem(ObjRequest<DictItemEntity> request) {
         DictItemEntity data = request.getData();
         data.preInsert(request);
@@ -97,6 +101,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> updateItem(ObjRequest<DictItemEntity> request) {
         DictItemEntity data = request.getData();
         data.preUpdate(request);
@@ -105,6 +110,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deleteItem(IdRequest request) {
         String itemId = request.getId();
         DictItemEntity dictItemEntity = dictItemDao.getById(itemId);
@@ -115,6 +121,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> cleanDictItem(IdRequest request) {
         ArrayList<DictItemEntity> items = dictItemDao.getByDictId(request.getId());
         items.forEach(item -> {

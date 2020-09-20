@@ -1,6 +1,8 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.*;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.*;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
@@ -163,6 +165,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
 
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public ServiceResult<Boolean> deleteMenu(IdRequest req) {
         /* 注:开启了事务 即@Transactional 参数propagation->事务传播类型,其中Propagation.REQUIRED为如果事务不存在,则创建新事物,如果事务存在,则加入

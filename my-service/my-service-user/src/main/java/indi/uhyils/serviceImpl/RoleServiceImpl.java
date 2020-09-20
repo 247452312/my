@@ -1,5 +1,7 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.dao.MenuDao;
@@ -48,6 +50,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleRequest request) {
 
         String roleId = request.getRoleId();
@@ -61,6 +64,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deleteRoleDept(IdsRequest idsRequest) {
         dao.deleteRoleDept(idsRequest.getIds());
         return ServiceResult.buildSuccessResult("删除成功", true, idsRequest);
@@ -83,6 +87,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deleteRole(IdRequest request) {
         RoleEntity t = getDao().getById(request.getId());
         if (t == null) {

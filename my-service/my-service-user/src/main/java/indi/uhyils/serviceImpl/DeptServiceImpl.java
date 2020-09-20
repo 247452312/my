@@ -1,8 +1,10 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.DeptDao;
 import indi.uhyils.dao.MenuDao;
 import indi.uhyils.dao.RoleDao;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.DeptMenuMiddle;
 import indi.uhyils.pojo.model.DeptPowerMiddle;
@@ -40,6 +42,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     private RoleDao roleDao;
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) {
         dao.deleteDeptPowerMiddleByDeptId(request.getDeptId());
         String deptId = request.getDeptId();
@@ -52,12 +55,14 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deleteDeptPower(IdsRequest idsRequest) {
         dao.deleteDeptPower(idsRequest.getIds());
         return ServiceResult.buildSuccessResult("删除成功", true, idsRequest);
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public ServiceResult<Boolean> putMenusToDept(PutMenusToDeptsRequest request) {
         List<DeptMenuMiddle> build = DeptMenuMiddle.build(request.getDeptId(), request.getMenuIds());
@@ -73,6 +78,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public ServiceResult<Boolean> putDeptsToMenu(PutDeptsToMenuRequest request) {
         String menuId = request.getMenuId();
@@ -105,6 +111,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deleteDept(IdRequest request) {
         DeptEntity t = getDao().getById(request.getId());
         if (t == null) {

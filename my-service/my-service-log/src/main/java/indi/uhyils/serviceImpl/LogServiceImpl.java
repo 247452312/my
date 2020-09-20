@@ -1,5 +1,7 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.content.Content;
@@ -46,6 +48,7 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
 
     @Override
     @NoToken
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> pushRequestLog(ObjRequest<LogEntity> request) {
         LogEntity data = request.getData();
         request.setUser(userEntity);

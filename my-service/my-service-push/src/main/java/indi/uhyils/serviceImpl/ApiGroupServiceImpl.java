@@ -1,7 +1,9 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.ApiDao;
 import indi.uhyils.dao.ApiGroupDao;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.ApiEntity;
 import indi.uhyils.pojo.model.ApiGroupEntity;
 import indi.uhyils.pojo.request.SubscribeRequest;
@@ -56,6 +58,7 @@ public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> 
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> delete(IdRequest idRequest) {
         ApiGroupEntity byId = getDao().getById(idRequest.getId());
         if (byId == null) {

@@ -1,6 +1,8 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.base.DefaultDao;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 import indi.uhyils.pojo.request.base.ArgsRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
@@ -47,6 +49,7 @@ public abstract class BaseDefaultServiceImpl<T extends BaseVoEntity> implements 
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> insert(ObjRequest<T> insert) {
         T data = insert.getData();
         data.preInsert(insert);
@@ -58,6 +61,7 @@ public abstract class BaseDefaultServiceImpl<T extends BaseVoEntity> implements 
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> update(ObjRequest<T> update) {
         T data = update.getData();
         data.preUpdate(update);
@@ -70,6 +74,7 @@ public abstract class BaseDefaultServiceImpl<T extends BaseVoEntity> implements 
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> delete(IdRequest idRequest) {
         T byId = getDao().getById(idRequest.getId());
         if (byId == null) {

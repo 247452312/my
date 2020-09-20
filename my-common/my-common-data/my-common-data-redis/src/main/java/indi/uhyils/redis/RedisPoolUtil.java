@@ -333,8 +333,14 @@ public class RedisPoolUtil {
                     int classPowerInt = Integer.parseInt(classPower);
                     if (classPowerInt == 3) {
                         return false;
+                    } else if (classPowerInt == 0) {
+                        return true;
+
                     } else {
-                        return classPowerInt == readWriteType;
+                        if (classPowerInt == readWriteType) {
+                            return false;
+                        }
+                        return true;
                     }
                 }
                 return true;

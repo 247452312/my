@@ -1,6 +1,8 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.annotation.NoToken;
+import indi.uhyils.annotation.ReadWriteMark;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.request.VerificationRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.VerificationGetResponse;
@@ -85,6 +87,7 @@ public class VerificationServiceImpl implements VerificationService {
 
     @Override
     @NoToken
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> verification(VerificationRequest request) {
         String key = request.getKey();
         String code = request.getCode();

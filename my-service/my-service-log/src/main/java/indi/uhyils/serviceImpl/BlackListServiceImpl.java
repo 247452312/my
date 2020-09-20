@@ -111,7 +111,7 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
 
     @Override
     public ServiceResult<Boolean> addBlackIp(AddBlackIpRequest request) {
-
+        // TODO 记得把这里补上
         return null;
     }
 }

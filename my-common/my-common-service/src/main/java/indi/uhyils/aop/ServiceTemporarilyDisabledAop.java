@@ -88,7 +88,7 @@ public class ServiceTemporarilyDisabledAop {
         if (methodType == null) {
             methodType = ReadWriteTypeEnum.READ;
         }
-        Boolean allowRun = redisPoolUtil.checkMethodDisable(targetClass, declaredMethod, methodType == ReadWriteTypeEnum.READ ? 0 : 1);
+        Boolean allowRun = redisPoolUtil.checkMethodDisable(targetClass, declaredMethod, methodType == ReadWriteTypeEnum.READ ? 1 : 2);
         if (allowRun) {
             return pjp.proceed();
         } else {

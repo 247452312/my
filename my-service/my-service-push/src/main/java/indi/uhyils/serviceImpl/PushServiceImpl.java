@@ -1,10 +1,12 @@
 package indi.uhyils.serviceImpl;
 
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.ApiDao;
 import indi.uhyils.dao.ApiGroupDao;
 import indi.uhyils.dao.ApiSubscribeDao;
 import indi.uhyils.enum_.PushTypeEnum;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.ApiEntity;
 import indi.uhyils.pojo.model.ApiGroupEntity;
@@ -42,6 +44,7 @@ public class PushServiceImpl implements PushService {
     ApiGroupDao apiGroupDao;
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> push(CronRequest request) {
         Boolean result = true;
         String cron = request.getCron();
