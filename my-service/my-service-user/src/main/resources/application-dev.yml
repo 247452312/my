@@ -11,7 +11,7 @@ dubbo:
     name: dubbo
     port: 20802
     threadpool: cached
-    accepts: 200
+    accepts: 500
   application:
     name: provider-user
   consumer:

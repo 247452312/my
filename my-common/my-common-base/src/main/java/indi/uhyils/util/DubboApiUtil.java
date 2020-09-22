@@ -34,7 +34,7 @@ public class DubboApiUtil {
     /**
      * ReferenceConfig缓存(重量级, 不缓存太慢了, 但是还没有考虑微服务过多的情况)
      */
-    private static final HashMap<String, ReferenceConfig<GenericService>> MAP = new HashMap<>();
+    private static final HashMap<String, GenericService> MAP = new HashMap<>();
 
     /**
      * dubbo泛化接口调用类
@@ -63,27 +63,28 @@ public class DubboApiUtil {
     }
 
     private static ServiceResult getServiceResult(String interfaceName, String methodName, List<Object> args, DefaultRequest request, boolean ansyn, String procotol) {
+        long start = System.currentTimeMillis();
         try {
             if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
             }
 
-            ReferenceConfig<GenericService> reference;
+            // 用org.apache.dubbo.rpc.service.GenericService可以替代所有接口引用
+            GenericService genericService;
             if (MAP.containsKey(interfaceName)) {
-                reference = MAP.get(interfaceName);
-                if (reference == null) {
+                genericService = MAP.get(interfaceName);
+                if (genericService == null) {
                     MAP.remove(interfaceName);
-                    reference = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol);
-                    MAP.put(interfaceName, reference);
+                    genericService = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol).get();
+                    MAP.put(interfaceName, genericService);
                 }
             } else {
-                reference = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol);
-                MAP.put(interfaceName, reference);
+                genericService = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol).get();
+                MAP.put(interfaceName, genericService);
             }
 
-            // 用org.apache.dubbo.rpc.service.GenericService可以替代所有接口引用
-            GenericService genericService = reference.get();
-
+            long getGenericService = System.currentTimeMillis();
+            System.out.println("获取GenericService" + (getGenericService - start));
             /*
              * GenericService 这个接口只有一个方法，名为 $invoke，它接受三个参数，分别为方法名、方法参数类型数组和参数值数组；
              * 对于方法参数类型数组 如果是基本类型，如 int 或 long，可以使用 int.class.getName()获取其类型； 如果是基本类型数组，如
@@ -103,10 +104,16 @@ public class DubboApiUtil {
             arg[0] = changeObjRequestParadigm(arg[0], params, Class.forName(interfaceName), method);
             String parameterTypes = params.getName();
             if (genericService == null) {
-                reference.destroy();
+                GenericService value = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol).get();
+                genericService = value;
+                MAP.put(interfaceName, value);
             }
+            long beforeSend = System.currentTimeMillis();
+            System.out.println("正式发送前" + (beforeSend - getGenericService));
             ServiceResult<JSONObject> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, new String[]{parameterTypes}, arg)), ServiceResult.class);
 
+            long sendEnd = System.currentTimeMillis();
+            System.out.println("发送后" + (sendEnd - beforeSend));
             if (ansyn == false) {
                 // 添加链路
                 request.setRequestLink(serviceResult.getRequestLink());
