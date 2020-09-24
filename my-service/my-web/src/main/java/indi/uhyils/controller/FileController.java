@@ -31,12 +31,12 @@ import static indi.uhyils.controller.AllController.actionAddRequestLink;
 public class FileController {
 
     private static final String INTERFACE = "MongoService";
+    private static final String METHOD_NAME = "getByFileName";
 
     private static final String TOKEN = "token";
 
     @RequestMapping("/down/{fileName}/{token}")
     public String down(@PathVariable String token, @PathVariable String fileName, HttpServletRequest request) {
-        String methodName = "getByFileName";
         String eMsg = null;
         LinkNode<String> link = null;
         ServiceResult serviceResult = null;
@@ -50,9 +50,7 @@ public class FileController {
             requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
             requestLink.put("data", "页面请求");
             args.put("requestLink", requestLink);
-            List<Object> list = new ArrayList();
-            list.add(args);
-            serviceResult = DubboApiUtil.dubboApiTool(INTERFACE, methodName, list, new DefaultRequest());
+            serviceResult = DubboApiUtil.dubboApiTool(INTERFACE, METHOD_NAME, new DefaultRequest(), args);
             link = serviceResult.getRequestLink();
             LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
@@ -67,7 +65,7 @@ public class FileController {
         } finally {
             if (serviceResult != null) {
                 try {
-                    LogPushUtils.pushLog(eMsg, INTERFACE, methodName, args, link, request, token, serviceResult.getServiceCode());
+                    LogPushUtils.pushLog(eMsg, INTERFACE, METHOD_NAME, args, link, request, token, serviceResult.getServiceCode());
                 } catch (Exception e) {
                     LogUtil.error(this, e);
                 }

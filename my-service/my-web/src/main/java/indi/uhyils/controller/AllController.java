@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.SessionRequest;
-import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -43,15 +40,10 @@ public class AllController {
         LinkNode<String> link = null;
         ServiceResult serviceResult = null;
 
-        LogUtil.info(this, "param: " + JSON.toJSONString(action));
-        // token修改到arg中
-        action.getArgs().put(TOKEN, action.getToken());
-        // 添加链路跟踪
-        actionAddRequestLink(action);
+        // 发送前处理
+        dealActionBeforeCall(action);
         try {
-            List list = new ArrayList();
-            list.add(action.getArgs());
-            serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list, new DefaultRequest());
+            serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
             link = serviceResult.getRequestLink();
             LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
@@ -59,6 +51,7 @@ public class AllController {
             }
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
+            // 如果失败,就返回微服务传回来的错误信息与提示
             LogUtil.error(this, e);
             eMsg = e.getMessage();
             return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
@@ -72,6 +65,14 @@ public class AllController {
 
             }
         }
+    }
+
+    private void dealActionBeforeCall(Action action) {
+        LogUtil.info(this, "param: " + JSON.toJSONString(action));
+        // token修改到arg中
+        action.getArgs().put(TOKEN, action.getToken());
+        // 添加链路跟踪
+        actionAddRequestLink(action);
     }
 
     @PostMapping("/getSession")
@@ -97,7 +98,7 @@ public class AllController {
      *
      * @param action
      */
-    public static void actionAddRequestLink(@RequestBody Action action) {
+    public static void actionAddRequestLink(Action action) {
         HashMap<String, Object> requestLink = new HashMap<>(2);
         requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
         requestLink.put("data", "页面请求");

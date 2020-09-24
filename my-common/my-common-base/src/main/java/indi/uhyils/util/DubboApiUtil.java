@@ -50,6 +50,18 @@ public class DubboApiUtil {
     }
 
     /**
+     * dubbo泛化接口调用类
+     *
+     * @param interfaceName 接口的名字,可以用全名或者接口名
+     * @param methodName    方法名
+     * @param args          方法参数
+     * @return 方法返回值
+     */
+    public static ServiceResult dubboApiTool(String interfaceName, String methodName, Object... args) {
+        return getServiceResult(interfaceName, methodName, Arrays.asList(args), new DefaultRequest(), false, "dubbo");
+    }
+
+    /**
      * dubbo泛化接口调用类(异步)
      *
      * @param interfaceName 接口的名字,可以用全名或者接口名
@@ -62,29 +74,15 @@ public class DubboApiUtil {
         return getServiceResult(interfaceName, methodName, args, request, true, "dubbo");
     }
 
-    private static ServiceResult getServiceResult(String interfaceName, String methodName, List<Object> args, DefaultRequest request, boolean ansyn, String procotol) {
-        long start = System.currentTimeMillis();
+    private static ServiceResult getServiceResult(String interfaceName, String methodName, List<Object> args, DefaultRequest request, boolean async, String procotol) {
         try {
             if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
             }
+            // 获取执行接口
+            GenericService genericService = getGenericService(interfaceName, async, procotol);
 
-            // 用org.apache.dubbo.rpc.service.GenericService可以替代所有接口引用
-            GenericService genericService;
-            if (MAP.containsKey(interfaceName)) {
-                genericService = MAP.get(interfaceName);
-                if (genericService == null) {
-                    MAP.remove(interfaceName);
-                    genericService = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol).get();
-                    MAP.put(interfaceName, genericService);
-                }
-            } else {
-                genericService = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol).get();
-                MAP.put(interfaceName, genericService);
-            }
 
-            long getGenericService = System.currentTimeMillis();
-            System.out.println("获取GenericService" + (getGenericService - start));
             /*
              * GenericService 这个接口只有一个方法，名为 $invoke，它接受三个参数，分别为方法名、方法参数类型数组和参数值数组；
              * 对于方法参数类型数组 如果是基本类型，如 int 或 long，可以使用 int.class.getName()获取其类型； 如果是基本类型数组，如
@@ -93,28 +91,22 @@ public class DubboApiUtil {
              */
             //全部方法
             Method[] methods = Class.forName(interfaceName).getMethods();
-
+            //获取指定方法
             Method method = Arrays.stream(methods).filter(m -> methodName.equalsIgnoreCase(m.getName()) && args.size() == m.getParameterTypes().length).findFirst().get();
-
+            // 获取第一个参数(my所有dubbo接口只有一个参数)
             Class params = method.getParameterTypes()[0];
-
             Object[] arg = args.toArray(new Object[0]);
-
             // 检测参数中有没有泛型,如果有,则直接将hashMap转为对应类实例
             arg[0] = changeObjRequestParadigm(arg[0], params, Class.forName(interfaceName), method);
             String parameterTypes = params.getName();
             if (genericService == null) {
-                GenericService value = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol).get();
+                GenericService value = getGenericServiceReferenceConfig(interfaceName, async, procotol).get();
                 genericService = value;
                 MAP.put(interfaceName, value);
             }
-            long beforeSend = System.currentTimeMillis();
-            System.out.println("正式发送前" + (beforeSend - getGenericService));
-            ServiceResult<JSONObject> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, new String[]{parameterTypes}, arg)), ServiceResult.class);
+            ServiceResult<Serializable> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, new String[]{parameterTypes}, arg)), ServiceResult.class);
 
-            long sendEnd = System.currentTimeMillis();
-            System.out.println("发送后" + (sendEnd - beforeSend));
-            if (ansyn == false) {
+            if (async == false) {
                 // 添加链路
                 request.setRequestLink(serviceResult.getRequestLink());
             }
@@ -124,6 +116,31 @@ public class DubboApiUtil {
             LogUtil.error(DubboApiUtil.class, e);
             return ServiceResult.buildErrorResult("远程调用错误,具体见日志", request);
         }
+    }
+
+    /**
+     * 获取GenericService(通用接口)
+     *
+     * @param interfaceName 接口名称
+     * @param ansyn         是否是异步接口
+     * @param procotol
+     * @return
+     */
+    private static GenericService getGenericService(String interfaceName, boolean ansyn, String procotol) {
+        // 用org.apache.dubbo.rpc.service.GenericService可以替代所有接口引用
+        GenericService genericService;
+        if (MAP.containsKey(interfaceName)) {
+            genericService = MAP.get(interfaceName);
+            if (genericService == null) {
+                MAP.remove(interfaceName);
+                genericService = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol).get();
+                MAP.put(interfaceName, genericService);
+            }
+        } else {
+            genericService = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol).get();
+            MAP.put(interfaceName, genericService);
+        }
+        return genericService;
     }
 
     private static Object changeObjRequestParadigm(Object request, Class paramsClass, Class interfaceClass, Method method) throws ClassNotFoundException, NoSuchMethodException {
