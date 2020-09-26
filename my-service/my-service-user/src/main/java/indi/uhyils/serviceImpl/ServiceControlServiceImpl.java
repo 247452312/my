@@ -41,7 +41,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
 
         String className = request.getClassName();
         if (!className.contains(DubboApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
-            className = Content.PACKAGE_PREFIX + className;
+            className = Content.SERVICE_PACKAGE_PREFIX + className;
         }
         Boolean enable = redisPoolUtil.checkMethodDisable(className, className + METHOD_LINK_CLASS_SYMBOL + request.getMethodName(), request.getMethodType());
         return ServiceResult.buildSuccessResult(enable, request);
@@ -83,7 +83,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
         try {
             String className = data.getClassName();
             if (className != null && !className.contains(DubboApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
-                className = Content.PACKAGE_PREFIX + className;
+                className = Content.SERVICE_PACKAGE_PREFIX + className;
             }
             String methodName = data.getMethodName();
             // 这是一个方法
@@ -108,7 +108,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
             String key = null;
             String className = request.getClassName();
             if (className != null && !className.contains(DubboApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
-                key = Content.PACKAGE_PREFIX + className;
+                key = Content.SERVICE_PACKAGE_PREFIX + className;
             } else {
                 key = className;
             }

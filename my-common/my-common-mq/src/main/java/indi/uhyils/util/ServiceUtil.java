@@ -11,7 +11,17 @@ import indi.uhyils.pojo.mqinfo.JvmUniqueMark;
  */
 public class ServiceUtil {
 
-    public static InterfaceCallInfo getInterfaceCallInfo(String interfaceName, String methodName, Boolean success, Long runTime,JvmUniqueMark jvmUniqueMark) {
+    /**
+     * 获取微服务的interface调用日志
+     *
+     * @param interfaceName 调用接口名称
+     * @param methodName    调用方法名称
+     * @param success       是否成功
+     * @param runTime       调用时间
+     * @param jvmUniqueMark JVM信息
+     * @return
+     */
+    public static InterfaceCallInfo getInterfaceCallInfo(String interfaceName, String methodName, Boolean success, Long runTime, JvmUniqueMark jvmUniqueMark) {
         InterfaceCallInfo interfaceCallInfo = new InterfaceCallInfo();
         interfaceCallInfo.setInterfaceName(interfaceName);
         interfaceCallInfo.setMethodName(methodName);

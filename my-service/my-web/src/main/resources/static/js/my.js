@@ -36,9 +36,8 @@ function getCookie(cname) {
  * @param token
  * @param interfaceName
  * @param methodName
- * @param args
- * @param success
- * @returns {null}
+ * @param data 向后台发送的数据
+ * @param success 成功后执行的方法
  */
 function pushRequest(interfaceName, methodName, data, success, target = false) {
     let result = null;

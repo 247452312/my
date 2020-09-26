@@ -6,6 +6,8 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 
 /**
+ * 创建一个默认的ADMIN用户的请求 此方法只用来作服务之间的调用
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月24日 07时25分
  */

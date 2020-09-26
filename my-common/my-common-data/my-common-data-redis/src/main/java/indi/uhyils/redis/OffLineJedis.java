@@ -44,31 +44,38 @@ public class OffLineJedis implements Redisable {
     static {
         Runnable thread = () -> {
             while (!redisStart) {
-                for (Map.Entry<String, Long> objectLongEntry : CACHE_TIME.entrySet()) {
-                    Object key = objectLongEntry.getKey();
-                    Long value = objectLongEntry.getValue();
-                    // 超时了
-                    if (value <= System.currentTimeMillis()) {
-                        lock.lock();
-                        try {
-                            CACHE_TIME.remove(key);
-                            CACHE.remove(key);
-                        } catch (Exception e) {
-                            LogUtil.error(RedisPoolUtil.class, e);
-                        } finally {
-                            lock.unlock();
-                        }
-                    }
-                }
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    LogUtil.error(RedisPoolUtil.class, e);
-                }
+                inspectTimeOutField();
             }
         };
-        new Thread(thread).start();
+        Thread redis = new Thread(thread);
+        redis.setName("redis_guardian_thread");
+        redis.setDaemon(true);
+        redis.start();
 
+    }
+
+    private static void inspectTimeOutField() {
+        for (Map.Entry<String, Long> objectLongEntry : CACHE_TIME.entrySet()) {
+            Object key = objectLongEntry.getKey();
+            Long value = objectLongEntry.getValue();
+            // 超时了
+            if (value <= System.currentTimeMillis()) {
+                lock.lock();
+                try {
+                    CACHE_TIME.remove(key);
+                    CACHE.remove(key);
+                } catch (Exception e) {
+                    LogUtil.error(RedisPoolUtil.class, e);
+                } finally {
+                    lock.unlock();
+                }
+            }
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            LogUtil.error(RedisPoolUtil.class, e);
+        }
     }
 
     @Override

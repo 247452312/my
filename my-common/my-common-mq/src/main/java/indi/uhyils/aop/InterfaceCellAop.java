@@ -32,7 +32,7 @@ public class InterfaceCellAop {
     @Autowired
     private JvmUniqueMark jvmUniqueMark;
 
-    private Channel channel;
+    private volatile Channel channel;
 
 
     /**
@@ -58,7 +58,7 @@ public class InterfaceCellAop {
         long runTime = endTime - startTime;
 
         if (channel == null) {
-            synchronized (rabbitFactory) {
+            synchronized (InterfaceCellAop.class) {
                 if (channel == null) {
                     channel = rabbitFactory.getConn().createChannel();
                     //创建exchange

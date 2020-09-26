@@ -14,11 +14,6 @@ public class Content {
     public static final String BLACK = "";
 
     /**
-     * list中只有一个时用
-     */
-    public static final Integer ONLY_ONE = 1;
-
-    /**
      * 作者
      */
     public static final String PROJECT_AUTHOR = "uhyils";
@@ -67,7 +62,7 @@ public class Content {
      */
     public static final String SERVICE_USEABLE_SWITCH = "service_useable_switch";
     /**
-     * 包前缀
+     * service包前缀
      */
-    public static final String PACKAGE_PREFIX = "indi.uhyils.service.";
+    public static final String SERVICE_PACKAGE_PREFIX = "indi.uhyils.service.";
 }
