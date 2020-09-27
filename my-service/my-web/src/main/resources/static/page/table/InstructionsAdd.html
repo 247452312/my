@@ -22,52 +22,38 @@
 </head>
 <body>
 <div class="layui-form layuimini-form">
+    <!--  父id    -->
     <input type="text" name="id" value="" style="display:none;">
 
+    <div class="layui-form-item">
+        <label class="layui-form-label required">指令描述</label>
+        <div class="layui-input-block">
+            <input type="text" name="instructionsDescribe" lay-verify="required" placeholder="请输入指令描述" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">指令代码(与程序中的enum相对应)</label>
+        <div class="layui-input-block">
+            <input type="text" name="instructionsTypeCode" lay-verify="required" placeholder="请输入指令代码(与程序中的enum相对应)" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">被动方设备id</label>
+        <div class="layui-input-block">
+            <input type="text" name="passiveDeviceId" lay-verify="required" placeholder="请输入被动方设备id" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">传递中介(路由器 or 红外线发射器)</label>
+        <div class="layui-input-block">
+            <input type="text" name="transmissionIntermediary" lay-verify="required" placeholder="请输入传递中介(路由器 or 红外线发射器)" value=""
+                   class="layui-input">
+        </div>
+    </div>
 
-    <input type="hidden" name="apiGroupId" lay-verify="required" value=""
-           class="layui-input">
-
-    <div class="layui-form-item">
-        <label class="layui-form-label required">设备名称</label>
-        <div class="layui-input-block">
-            <input type="text" name="name" lay-verify="required" placeholder="请输入设备名称" value=""
-                   class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">所在空间</label>
-        <div class="layui-input-block">
-            <select name="spaceId" lay-filter="aihao">
-                <option value="">请选择空间</option>
-            </select>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">设备类型</label>
-        <div class="layui-input-block">
-            <select name="type" lay-filter="aihao">
-                <option value="">请选择请求类型</option>
-                <option value="1">观察设备</option>
-                <option value="2">接受设备</option>
-                <option value="3">观察接受设备</option>
-            </select>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">ip</label>
-        <div class="layui-input-block">
-            <input type="text" name="ip" lay-verify="required" placeholder="请输入ip" value=""
-                   class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">端口</label>
-        <div class="layui-input-block">
-            <input type="text" name="port" lay-verify="required" placeholder="请输入端口" value=""
-                   class="layui-input">
-        </div>
-    </div>
 
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -84,11 +70,6 @@
             layer = layui.layer,
             $ = layui.$;
 
-        $("[name='param']").on("input", function (e) {
-            //获取input输入的值
-            layer.tips('支持的值为${username},${email},${phone},${nickName},以及之前顺位中结果的值,表现形式为:${顺位号.值}或${顺位号.值1.值2}', '[name="param"]');
-        });
-
         $.getUrlParam = function (name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
             var r = window.location.search.substr(1).match(reg);
@@ -98,33 +79,18 @@
         let id = $.getUrlParam('id');
         let func = $.getUrlParam('func');
 
-        pushRequest("SpaceService", "getByArgs", {
-            paging: false,
-            args: []
-        }, function (data) {
-            $("[name='spaceId']").empty();
-            $("[name='spaceId']").append('<option value="">请选择空间</option> ');
-            for (let i = 0; i < data.length; i++) {
-                $("[name='spaceId']").append('<option value="' + data[i].id + '">' + data[i].name + '</option> ');
-            }
-            form.render('select');
-        });
-
         if (func == 'edit') { // 这是修改
-            pushRequest("DeviceService", "getById", {
+            pushRequest("InstructionsService", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
-                $('[name="name"]').attr('value', data.name);
-                $('[name="spaceId"] option[value="' + data.spaceId + '"]').attr("selected", true);
-                $('[name="type"] option[value="' + data.type + '"]').attr("selected", true);
-                $('[name="ip"]').attr('value', data.ip);
-                $('[name="port"]').attr('value', data.port);
-
+                $('[name="instructionsDescribe"]').attr('value', data.instructionsDescribe);
+                $('[name="instructionsTypeCode"]').attr('value', data.instructionsTypeCode);
+                $('[name="passiveDeviceId"]').attr('value', data.passiveDeviceId);
+                $('[name="transmissionIntermediary"]').attr('value', data.transmissionIntermediary);
                 form.render();
             })
         }
-
 
         var closeAndReload = function () {
             var iframeIndex = parent.layer.getFrameIndex(window.name);
@@ -133,22 +99,19 @@
         };
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-
             var index = layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
             }, function () {
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("DeviceService", "insert", {data: data.field}, function () {
-                        closeAndReload();
+                    pushRequest("InstructionsService", "insert", {data: data.field}, function () {
                     });
-
+                    closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("DeviceService", "update", {data: data.field}, function () {
-                        closeAndReload();
+                    pushRequest("InstructionsService", "update", {data: data.field}, function () {
                     });
-
+                    closeAndReload();
                 }
             });
             return false;
