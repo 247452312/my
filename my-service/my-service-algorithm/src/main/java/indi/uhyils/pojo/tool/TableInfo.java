@@ -19,6 +19,11 @@ public class TableInfo {
     private String tableName;
 
     /**
+     * table描述
+     */
+    private String tableComment;
+
+    /**
      * 列信息
      */
     private Map<String, ColumnInfo> colums;
@@ -52,10 +57,24 @@ public class TableInfo {
         this.onlyKey = onlyKey;
     }
 
+    public String getTableComment() {
+        return tableComment;
+    }
+
+    public void setTableComment(String tableComment) {
+        this.tableComment = tableComment;
+    }
+
     public TableInfo(String tableName, Map<String, ColumnInfo> colums,
                      ColumnInfo onlyKey) {
-        super();
         this.tableName = tableName;
+        this.colums = colums;
+        this.onlyKey = onlyKey;
+    }
+
+    public TableInfo(String tableName, String tableComment, Map<String, ColumnInfo> colums, ColumnInfo onlyKey) {
+        this.tableName = tableName;
+        this.tableComment = tableComment;
         this.colums = colums;
         this.onlyKey = onlyKey;
     }

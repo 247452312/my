@@ -23,9 +23,20 @@ public class ColumnInfo {
      */
     private String name;
 
+    /**
+     * 首字母大写
+     */
     private String bigName;
 
+    /**
+     * 首字母小写
+     */
     private String smallName;
+
+    /**
+     * 列备注
+     */
+    private String remark;
 
     public String getDataType() {
         return dataType;
@@ -65,6 +76,14 @@ public class ColumnInfo {
 
     public void setSmallName(String smallName) {
         this.smallName = smallName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public ColumnInfo(String dataType, int keyType, String name) {
