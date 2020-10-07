@@ -11,7 +11,7 @@ import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.OffLineJedis;
-import indi.uhyils.redis.RedisPoolUtil;
+import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
 import indi.uhyils.service.BlackListService;
 import indi.uhyils.service.LogService;
@@ -47,7 +47,7 @@ public class IpSpiderTableAspect {
     private BlackListService blackListService;
 
     @Autowired
-    private RedisPoolUtil redisPoolUtil;
+    private RedisPoolHandle redisPoolHandle;
 
     /**
      * 黑名单 在redis中的key
@@ -131,7 +131,7 @@ public class IpSpiderTableAspect {
                             return false;
                         }
                         // 将黑名单存入redis
-                        Long sadd = redisPoolUtil.sadd(IP_BLACK_REDIS_KEY, allIpBlackList.getData());
+                        Long sadd = redisPoolHandle.sadd(IP_BLACK_REDIS_KEY, allIpBlackList.getData());
                         // 如果redis不可用
                         if (sadd == -1L) {
                             canInit = false;
@@ -165,7 +165,7 @@ public class IpSpiderTableAspect {
         if (action.getInterfaceName().equals(Content.VERIFICATION_CODE_INTERFACE) && action.getMethodName().equals(Content.GET_VERIFICATION_CODE_METHOD)) {
             return pjp.proceed();
         }
-        Redisable jedis = redisPoolUtil.getRedisPool().getJedis();
+        Redisable jedis = redisPoolHandle.getRedisPool().getJedis();
         // 如果redis没有开启,此功能默认不开启
         if (jedis instanceof OffLineJedis) {
             return pjp.proceed();

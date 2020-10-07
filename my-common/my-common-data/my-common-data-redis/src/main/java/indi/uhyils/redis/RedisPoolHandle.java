@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 @Lazy
 @Component
-public class RedisPoolUtil {
+public class RedisPoolHandle {
 
     @Autowired
     private RedisPool redisPool;

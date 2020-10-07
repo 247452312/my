@@ -4,7 +4,7 @@ import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.redis.RedisPoolUtil;
+import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.util.AopUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -32,7 +32,7 @@ public class ServiceTemporarilyDisabledAop {
 
 
     @Autowired
-    private RedisPoolUtil redisPoolUtil;
+    private RedisPoolHandle redisPoolHandle;
 
     /**
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
@@ -88,7 +88,7 @@ public class ServiceTemporarilyDisabledAop {
         if (methodType == null) {
             methodType = ReadWriteTypeEnum.READ;
         }
-        Boolean allowRun = redisPoolUtil.checkMethodDisable(targetClass, declaredMethod, methodType == ReadWriteTypeEnum.READ ? 1 : 2);
+        Boolean allowRun = redisPoolHandle.checkMethodDisable(targetClass, declaredMethod, methodType == ReadWriteTypeEnum.READ ? 1 : 2);
         if (allowRun) {
             return pjp.proceed();
         } else {

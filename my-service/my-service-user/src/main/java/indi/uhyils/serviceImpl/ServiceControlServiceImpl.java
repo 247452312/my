@@ -10,7 +10,7 @@ import indi.uhyils.pojo.request.GetMethodDisableRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.redis.RedisPoolUtil;
+import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
 import indi.uhyils.service.ServiceControlService;
 import indi.uhyils.util.DubboApiUtil;
@@ -29,7 +29,7 @@ import java.util.Map;
 public class ServiceControlServiceImpl implements ServiceControlService {
 
     @Autowired
-    private RedisPoolUtil redisPoolUtil;
+    private RedisPoolHandle redisPoolHandle;
 
     /**
      * 接口连接方法的分隔符
@@ -43,13 +43,13 @@ public class ServiceControlServiceImpl implements ServiceControlService {
         if (!className.contains(DubboApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
             className = Content.SERVICE_PACKAGE_PREFIX + className;
         }
-        Boolean enable = redisPoolUtil.checkMethodDisable(className, className + METHOD_LINK_CLASS_SYMBOL + request.getMethodName(), request.getMethodType());
+        Boolean enable = redisPoolHandle.checkMethodDisable(className, className + METHOD_LINK_CLASS_SYMBOL + request.getMethodName(), request.getMethodType());
         return ServiceResult.buildSuccessResult(enable, request);
     }
 
     @Override
     public ServiceResult<ArrayList<MethodDisableInfo>> getAllMethodDisable(DefaultRequest request) {
-        Redisable jedis = redisPoolUtil.getJedis();
+        Redisable jedis = redisPoolHandle.getJedis();
         try {
             Boolean exists = jedis.exists(Content.SERVICE_USEABLE_SWITCH);
             // 如果不存在禁用对应的key
@@ -78,7 +78,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> addOrEditMethodDisable(ObjRequest<AddOrEditMethodDisable> request) {
-        Redisable jedis = redisPoolUtil.getJedis();
+        Redisable jedis = redisPoolHandle.getJedis();
         AddOrEditMethodDisable data = request.getData();
         try {
             String className = data.getClassName();
@@ -103,7 +103,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> delMethodDisable(DelMethodDisableRequest request) {
-        Redisable jedis = redisPoolUtil.getJedis();
+        Redisable jedis = redisPoolHandle.getJedis();
         try {
             String key = null;
             String className = request.getClassName();

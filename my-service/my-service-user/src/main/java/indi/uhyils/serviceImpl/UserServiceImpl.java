@@ -21,7 +21,7 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
-import indi.uhyils.redis.RedisPoolUtil;
+import indi.uhyils.redis.RedisPoolHandle;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +42,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
 
     @Autowired
-    private RedisPoolUtil redisPoolUtil;
+    private RedisPoolHandle redisPoolHandle;
     @Autowired
     private UserDao dao;
 
@@ -58,7 +58,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     public ServiceResult<UserEntity> getUserById(IdRequest idRequest) {
 
         //缓存
-        UserEntity user = redisPoolUtil.getUser(idRequest.getToken());
+        UserEntity user = redisPoolHandle.getUser(idRequest.getToken());
         if (user != null) {
             return ServiceResult.buildSuccessResult("查询成功", user, idRequest);
         }
@@ -126,7 +126,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         tokenInfo.setSec(Integer.parseInt(sec));
         tokenInfo.setRandom(Integer.parseInt(random));
         tokenInfo.setUserId(userId);
-        Boolean aBoolean = redisPoolUtil.haveToken(token);
+        Boolean aBoolean = redisPoolHandle.haveToken(token);
         if (aBoolean == null) {
             LocalDateTime localDateTime = LocalDateTime.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddhhmm");
@@ -163,17 +163,17 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         UserEntity userEntity = byArgsNoPage.get(0);
 
         //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
-        Boolean haveUserId = redisPoolUtil.haveUserId(userEntity.getId());
+        Boolean haveUserId = redisPoolHandle.haveUserId(userEntity.getId());
 
         if (haveUserId != null && haveUserId) {
-            redisPoolUtil.removeUserById(userEntity.getId());
+            redisPoolHandle.removeUserById(userEntity.getId());
         }
 
         String token = getToken(userEntity.getId());
         userRequest.setToken(token);
 
         // 登录->加入缓存中
-        redisPoolUtil.addUser(token, userEntity);
+        redisPoolHandle.addUser(token, userEntity);
         return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
     }
 

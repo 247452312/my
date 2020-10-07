@@ -65,7 +65,7 @@ public class OffLineJedis implements Redisable {
                     CACHE_TIME.remove(key);
                     CACHE.remove(key);
                 } catch (Exception e) {
-                    LogUtil.error(RedisPoolUtil.class, e);
+                    LogUtil.error(RedisPoolHandle.class, e);
                 } finally {
                     lock.unlock();
                 }
@@ -74,7 +74,7 @@ public class OffLineJedis implements Redisable {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-            LogUtil.error(RedisPoolUtil.class, e);
+            LogUtil.error(RedisPoolHandle.class, e);
         }
     }
 

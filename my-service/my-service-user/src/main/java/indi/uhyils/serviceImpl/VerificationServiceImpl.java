@@ -7,7 +7,7 @@ import indi.uhyils.pojo.request.VerificationRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.VerificationGetResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.redis.RedisPoolUtil;
+import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
 import indi.uhyils.service.VerificationService;
 import org.apache.dubbo.config.annotation.Service;
@@ -30,7 +30,7 @@ import java.util.UUID;
 public class VerificationServiceImpl implements VerificationService {
 
     @Autowired
-    private RedisPoolUtil redisPool;
+    private RedisPoolHandle redisPool;
 
 
     /**

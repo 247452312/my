@@ -7,7 +7,7 @@ import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.redis.RedisPoolUtil;
+import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.DubboApiUtil;
 import org.apache.dubbo.common.utils.StringUtils;
@@ -47,7 +47,7 @@ public class TokenInjectAop {
     private static final String ADMIN = "admin";
 
     @Autowired
-    private RedisPoolUtil redisPoolUtil;
+    private RedisPoolHandle redisPoolHandle;
 
 
     /**
@@ -104,7 +104,7 @@ public class TokenInjectAop {
         if (arg.getUser() != null) {
             userEntity = arg.getUser();
         } else {
-            userEntity = redisPoolUtil.getUser(token);
+            userEntity = redisPoolHandle.getUser(token);
         }
         if (userEntity == null) {
             return ServiceResult.buildLoginOutResult(arg);
