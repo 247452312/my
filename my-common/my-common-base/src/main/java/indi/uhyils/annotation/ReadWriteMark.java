@@ -1,5 +1,6 @@
 package indi.uhyils.annotation;
 
+import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 
 import java.lang.annotation.*;
@@ -29,17 +30,16 @@ public @interface ReadWriteMark {
 
     /**
      * 此接口影响的tables
+     * 如果类与方法上的注解均有此属性,则将此属性合并为同一个
      */
     String[] tables() default {};
 
 
     /**
      * 缓存类型
-     * 1->可以进入缓存,同角色都可以查询
-     * 2->可以进入缓存,同部门都可以查询
-     * 3->不能进入缓存
+     * 如果注解在方法上,则优先级要高于类上的同此属性
      */
-    int cacheType() default 3;
+    CacheTypeEnum cacheType() default CacheTypeEnum.NOT_TYPE;
 
 
 }

@@ -39,9 +39,14 @@ spring:
       enabled: ALWAYS
 
 redis:
-  ip: 192.168.1.101
-  port: 6379
-  password: uhyils
+  normal:
+    ip: 192.168.1.101
+    port: 6379
+    password: uhyils
+  hotspot:
+    hosts: 192.168.1.101:26380;192.168.1.101:26381;192.168.1.101:26382
+    password: uhyils
+    sentinels: mymaster
 
 rabbit:
   host: 192.168.1.101

@@ -31,6 +31,7 @@ import java.util.List;
  * @date 文件创建日期 2020年05月27日 16时28分
  */
 @Service(group = "${spring.profiles.active}")
+@ReadWriteMark(tables = {"sys_dept"})
 public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implements DeptService {
     @Autowired
     private DeptDao dao;
@@ -42,7 +43,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     private RoleDao roleDao;
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) {
         dao.deleteDeptPowerMiddleByDeptId(request.getDeptId());
         String deptId = request.getDeptId();
@@ -55,14 +56,14 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public ServiceResult<Boolean> deleteDeptPower(IdsRequest idsRequest) {
         dao.deleteDeptPower(idsRequest.getIds());
         return ServiceResult.buildSuccessResult("删除成功", true, idsRequest);
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public ServiceResult<Boolean> putMenusToDept(PutMenusToDeptsRequest request) {
         List<DeptMenuMiddle> build = DeptMenuMiddle.build(request.getDeptId(), request.getMenuIds());
@@ -78,7 +79,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public ServiceResult<Boolean> putDeptsToMenu(PutDeptsToMenuRequest request) {
         String menuId = request.getMenuId();
@@ -99,19 +100,21 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(tables = {"sys_dept_menu","sys_menu"})
     public ServiceResult<ArrayList<GetAllMenuWithHaveMarkResponse>> getAllMenuWithHaveMark(IdRequest request) {
         ArrayList<GetAllMenuWithHaveMarkResponse> list = menuDao.getAllMenuWithHaveMark(request.getId());
         return ServiceResult.buildSuccessResult("查询菜单(包含羁绊)成功", list, request);
     }
 
     @Override
+    @ReadWriteMark(tables = {"sys_dept_power","sys_power"})
     public ServiceResult<ArrayList<GetAllPowerWithHaveMarkResponse>> getAllPowerWithHaveMark(IdRequest request) {
         ArrayList<GetAllPowerWithHaveMarkResponse> list = dao.getAllPowerWithHaveMark(request.getId());
         return ServiceResult.buildSuccessResult("查询权限(包含羁绊)成功", list, request);
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept", "sys_dept_power", "sys_dept_menu", "sys_role_dept"})
     public ServiceResult<Boolean> deleteDept(IdRequest request) {
         DeptEntity t = getDao().getById(request.getId());
         if (t == null) {

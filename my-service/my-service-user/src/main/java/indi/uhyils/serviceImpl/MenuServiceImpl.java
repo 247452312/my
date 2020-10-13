@@ -4,10 +4,13 @@ import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.*;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.*;
-import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
-import indi.uhyils.pojo.response.*;
+import indi.uhyils.pojo.response.GetDeptsByMenuIdResponse;
+import indi.uhyils.pojo.response.IndexMenuTreeResponse;
+import indi.uhyils.pojo.response.MenuHtmlTreeResponse;
+import indi.uhyils.pojo.response.QuickStartResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.response.info.IndexMenuInfo;
 import indi.uhyils.pojo.response.info.MenuHomeInfo;
@@ -33,6 +36,7 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2020年05月28日 12时48分
  */
 @Service(group = "${spring.profiles.active}")
+@ReadWriteMark(tables = {"sys_menu"})
 public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implements MenuService {
 
     /**
@@ -77,6 +81,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(tables = {"sys_menu", "sys_content", "sys_dept", "sys_role_dept"})
     public ServiceResult<IndexMenuTreeResponse> getIndexMenu(DefaultRequest request) {
         ContentEntity indexIframe = contentDao.getByName("indexIframe");
         /* 1. 全取出来 */
@@ -127,6 +132,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(tables = {"sys_menu", "sys_content", "sys_dept", "sys_role_dept"})
     public ServiceResult<MenuHtmlTreeResponse> getMenuTree(GetByIFrameAndDeptsRequest request) {
         /* 1. 全取出来 */
         List<MenuEntity> byIFrame = dao.getByIFrame(1);
@@ -165,7 +171,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
 
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public ServiceResult<Boolean> deleteMenu(IdRequest req) {
         /* 注:开启了事务 即@Transactional 参数propagation->事务传播类型,其中Propagation.REQUIRED为如果事务不存在,则创建新事物,如果事务存在,则加入
@@ -190,12 +196,14 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu", "sys_dept"})
     public ServiceResult<ArrayList<GetDeptsByMenuIdResponse>> getDeptsByMenuId(IdRequest req) {
         ArrayList<GetDeptsByMenuIdResponse> list = deptDao.getByMenuId(req.getId());
         return ServiceResult.buildSuccessResult("查询成功", list, req);
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict", "sys_dict_item"})
     public ServiceResult<QuickStartResponse> getQuickStartResponse(DefaultRequest request) {
         // TODO 快捷入口应该去缓存里
         String idByCode = dictDao.getIdByCode(QUICK_START_CODE);

@@ -26,6 +26,7 @@ import java.util.Map;
  * @date 文件创建日期 2020年05月27日 16时28分
  */
 @Service(group = "${spring.profiles.active}")
+@ReadWriteMark
 public class ServiceControlServiceImpl implements ServiceControlService {
 
     @Autowired

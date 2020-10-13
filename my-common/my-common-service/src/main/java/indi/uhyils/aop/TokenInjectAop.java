@@ -2,6 +2,7 @@ package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.NoToken;
+import indi.uhyils.content.Content;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
@@ -113,6 +114,7 @@ public class TokenInjectAop {
         /* 查询是否有权限 */
         // 超级管理员直接放行
         if (ADMIN.equals(userEntity.getUserName())) {
+            userEntity.setRoleId(Content.ADMIN_ROLE_ID);
             arg.setUser(userEntity);
             //执行方法
             return pjp.proceed(new DefaultRequest[]{arg});

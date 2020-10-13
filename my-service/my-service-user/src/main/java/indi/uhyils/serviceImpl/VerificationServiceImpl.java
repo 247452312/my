@@ -27,6 +27,7 @@ import java.util.UUID;
  * @date 文件创建日期 2020年09月14日 06时34分
  */
 @Service(group = "${spring.profiles.active}")
+@ReadWriteMark
 public class VerificationServiceImpl implements VerificationService {
 
     @Autowired

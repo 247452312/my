@@ -4,6 +4,7 @@ import indi.uhyils.annotation.NoToken;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.UserDao;
+import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
@@ -18,10 +19,10 @@ import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.LoginResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
-import indi.uhyils.redis.RedisPoolHandle;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +39,7 @@ import java.util.Random;
  * @date 文件创建日期 2020年04月20日 11时51分
  */
 @Service(group = "${spring.profiles.active}")
+@ReadWriteMark(tables = {"sys_user"})
 public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implements UserService {
 
 
@@ -55,6 +57,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
+    @ReadWriteMark(tables = {"sys_user", "sys_role", "sys_dept", "sys_role_dept", "sys_power", "sys_dept_power"})
     public ServiceResult<UserEntity> getUserById(IdRequest idRequest) {
 
         //缓存
@@ -88,6 +91,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     @NoToken
+    @ReadWriteMark(cacheType = CacheTypeEnum.NOT_TYPE)
     public ServiceResult<String> getUserToken(IdRequest request) {
         String token = getToken(request.getId());
         return ServiceResult.buildSuccessResult("token生成成功", token, request);

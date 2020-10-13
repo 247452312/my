@@ -1,20 +1,20 @@
 package indi.uhyils.serviceImpl;
 
-import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
-import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.annotation.NoToken;
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.PowerDao;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.PowerSimpleEntity;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
-import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.GetMethodNameByInterfaceNameRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.PowerService;
 import indi.uhyils.util.ApiPowerInitUtil;
 import indi.uhyils.util.LogUtil;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 文件创建日期 2020年05月27日 16时28分
  */
 @Service(group = "${spring.profiles.active}")
+@ReadWriteMark(tables = {"sys_power"})
 public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implements PowerService {
 
 
@@ -49,6 +50,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
 
     @Override
     @NoToken
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_user", "sys_role", "sys_role_dept", "sys_dept", "sys_dept_power", "sys_power"})
     public ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerRequest request) {
         Integer count = dao.checkUserHavePower(request.getUserId(), request.getInterfaceName(), request.getMethodName());
         boolean havePower;
@@ -62,7 +64,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public ServiceResult<Boolean> deletePower(IdRequest request) {
         PowerEntity powerEntity = getDao().getById(request.getId());
         if (powerEntity == null) {
@@ -78,17 +80,19 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_power"})
     public ServiceResult<ArrayList<String>> getInterfaces(DefaultRequest request) {
         return ServiceResult.buildSuccessResult("查询成功", dao.getInterfaces(), request);
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_power"})
     public ServiceResult<ArrayList<String>> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameRequest request) {
         return ServiceResult.buildSuccessResult("查询成功", dao.getMethodNameByInterfaceName(request.getInterfaceName()), request);
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_power"})
     public ServiceResult<Integer> initPowerInProStart(DefaultRequest request) {
         List<PowerSimpleEntity> powersSingle;
         try {

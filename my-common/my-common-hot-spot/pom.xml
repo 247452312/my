@@ -9,42 +9,26 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>my-common-service</artifactId>
-
+    <artifactId>my-common-hot-spot</artifactId>
     <dependencies>
-        <!--引入AOP依赖-->
+        <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
         </dependency>
-
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-common-base</artifactId>
         </dependency>
         <dependency>
             <groupId>indi.uhyils</groupId>
-            <artifactId>my-common-hot-spot</artifactId>
-            <version>${project.version}</version>
+            <artifactId>my-common-data-redis</artifactId>
         </dependency>
-
+        <!--引入AOP依赖-->
         <dependency>
-            <groupId>com.rabbitmq</groupId>
-            <artifactId>amqp-client</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-
-        <!-- druid连接池 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-        </dependency>
-
-
-
     </dependencies>
 
 </project>

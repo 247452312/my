@@ -35,6 +35,11 @@ public class Content {
     public static final String ADMIN_USER_ID = "49ba59abbe56e057";
 
     /**
+     * 超级管理员的角色id
+     */
+    public static final String ADMIN_ROLE_ID = "8c77ce2fa1a0c960";
+
+    /**
      * 登录过期分钟
      */
     public static final Integer LOGIN_TIME_OUT_MIN = 30;

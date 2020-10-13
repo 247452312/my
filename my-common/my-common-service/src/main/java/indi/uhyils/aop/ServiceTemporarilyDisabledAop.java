@@ -43,7 +43,7 @@ public class ServiceTemporarilyDisabledAop {
     }
 
     @Around("serviceTemporarilyDisabledAspectPoint()")
-    public Object exceptionAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
+    public Object serviceTemporarilyDisabledAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
         Class<?> targetClass = pjp.getTarget().getClass();
         String name = pjp.getSignature().getName();
         List<Class> classList = new ArrayList<>();
@@ -70,11 +70,13 @@ public class ServiceTemporarilyDisabledAop {
             return pjp.proceed();
         }
         ReadWriteTypeEnum methodType = null;
+        ReadWriteMark readWriteMark = null;
 
         // 先找类上的注解,如果有,则设置
         ReadWriteMark declaredAnnotation = targetClass.getDeclaredAnnotation(ReadWriteMark.class);
         if (declaredAnnotation != null) {
             methodType = declaredAnnotation.type();
+            readWriteMark = declaredAnnotation;
         }
 
         // 找方法上的对应注解,如果有,则覆盖类上的方法
@@ -82,12 +84,15 @@ public class ServiceTemporarilyDisabledAop {
         ReadWriteMark methodDeclaredAnnotation = declaredMethod.getDeclaredAnnotation(ReadWriteMark.class);
         if (methodDeclaredAnnotation != null) {
             methodType = methodDeclaredAnnotation.type();
+            readWriteMark = methodDeclaredAnnotation;
         }
 
         // 如果方法和类上都没有,则默认为读接口
         if (methodType == null) {
             methodType = ReadWriteTypeEnum.READ;
         }
+
+
         Boolean allowRun = redisPoolHandle.checkMethodDisable(targetClass, declaredMethod, methodType == ReadWriteTypeEnum.READ ? 1 : 2);
         if (allowRun) {
             return pjp.proceed();
