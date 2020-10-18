@@ -47,7 +47,7 @@ redis:
   normal:
     ip: 192.168.1.101
     port: 6379
-    password: uhyils
+    password: uhyils-single
   hotspot:
     hosts: 192.168.1.101:26380;192.168.1.101:26381;192.168.1.101:26382
     password: uhyils

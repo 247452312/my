@@ -1,6 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.annotation.ReadWriteMark;
+import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.annotation.NoToken;
@@ -24,6 +25,7 @@ import java.util.Map;
  * @date 文件创建日期 2020年05月27日 16时28分
  */
 @Service(group = "${spring.profiles.active}")
+@ReadWriteMark(tables = {"sys_log"})
 public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements LogService {
 
     @Autowired
@@ -58,6 +60,7 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ,cacheType = CacheTypeEnum.ALL_TYPE)
     public ServiceResult<ArrayList<Map<String, Object>>> getLogTypes(DefaultRequest request) {
         ArrayList<Map<String, Object>> enumList = EnumUtils.getEnumList(ServiceCode.class);
         return ServiceResult.buildSuccessResult("成功获取所有的日志类型", enumList, request);

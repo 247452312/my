@@ -12,6 +12,7 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.redis.util.ObjectByteUtil;
+import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.MD5Util;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -86,7 +87,15 @@ public class HotSpotAop {
         }
         Method declaredMethod = null;
         for (Class clazz : classList) {
-            declaredMethod = clazz.getDeclaredMethod(methodName, pjp.getArgs()[0].getClass());
+            Method[] declaredMethods = clazz.getDeclaredMethods();
+            for (Method method : declaredMethods) {
+                String name = method.getName();
+                if (name.equals(methodName)) {
+                    declaredMethod = method;
+                    break;
+                }
+            }
+//            declaredMethod = clazz.getDeclaredMethod(methodName, pjp.getArgs()[0].getClass());
             if (declaredMethod != null) {
                 break;
             }
@@ -162,7 +171,7 @@ public class HotSpotAop {
         }
         Jedis jedis = hotSpotRedisPool.getJedis();
         try {
-            jedis.eval(WRITE_LUA, tables, null);
+            jedis.eval(WRITE_LUA, tables, new ArrayList<>());
         } finally {
             jedis.close();
         }
@@ -225,6 +234,7 @@ public class HotSpotAop {
                 jedis.eval(UPDATE_CACHE.getBytes(StandardCharsets.UTF_8), updateKeys, updateArgv);
                 return proceed;
             }
+            LogUtil.info(HotSpotAop.class, String.format("接口<%s> 读取redis中的缓存热点数据", methodName));
             byte[] hget = jedis.hget(format.getBytes(StandardCharsets.UTF_8), HotSpotContent.HOTSPOT_HASH_DATA_KEY.getBytes(StandardCharsets.UTF_8));
             return ObjectByteUtil.toObject(hget, ServiceResult.class);
         } finally {

@@ -3,6 +3,7 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.JobDao;
+import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.JobEntity;
 import indi.uhyils.pojo.model.UserEntity;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 文件创建日期 2020年06月25日 13时30分
  */
 @Service(group = "${spring.profiles.active}")
+@ReadWriteMark(tables = {"sys_job"}, cacheType = CacheTypeEnum.ALL_TYPE)
 public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements JobService {
 
     @Autowired
@@ -101,7 +103,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
         byId.setUserEntity(userEntity);
         dao.start(id);
         boolean add = scheduledManager.resumeJob(byId);
-        if (add ) {
+        if (add) {
             return ServiceResult.buildSuccessResult("开启成功", true, request);
         }
         return ServiceResult.buildFailedResult("开启失败", false, request);
