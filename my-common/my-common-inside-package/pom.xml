@@ -81,6 +81,11 @@
             <artifactId>my-api-provider-smart-home</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-work-orders-and-documents</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     </dependencyManagement>

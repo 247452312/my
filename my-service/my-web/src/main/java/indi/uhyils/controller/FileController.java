@@ -50,7 +50,7 @@ public class FileController {
             requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
             requestLink.put("data", "页面请求");
             args.put("requestLink", requestLink);
-            serviceResult = DubboApiUtil.dubboApiTool(INTERFACE, METHOD_NAME, new DefaultRequest(), args);
+            serviceResult = DubboApiUtil.dubboApiTool(INTERFACE, METHOD_NAME, args);
             link = serviceResult.getRequestLink();
             LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {

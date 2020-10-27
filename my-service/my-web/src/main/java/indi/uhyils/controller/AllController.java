@@ -25,6 +25,9 @@ import java.util.HashMap;
 public class AllController {
 
 
+    /**
+     * 用户登录时携带的token的名称
+     */
     private static final String TOKEN = "token";
 
     /**
@@ -34,18 +37,24 @@ public class AllController {
      * @param httpServletRequest 请求,暂时没用,日后或许有用
      * @return 向界面返回的值
      */
-    @RequestMapping("action")
+    @PostMapping("action")
     public WebResponse action(@RequestBody Action action, HttpServletRequest httpServletRequest) {
+        //错误日志
         String eMsg = null;
+        // 链路跟踪
         LinkNode<String> link = null;
+        // 服务返回信息
         ServiceResult serviceResult = null;
 
         // 发送前处理
         dealActionBeforeCall(action);
         try {
             serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+
+            /* 打印链路跟踪 */
             link = serviceResult.getRequestLink();
             LogUtil.linkPrint(link);
+
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 eMsg = serviceResult.getServiceMessage();
             }

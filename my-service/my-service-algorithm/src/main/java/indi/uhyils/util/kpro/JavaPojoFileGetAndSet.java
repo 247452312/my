@@ -19,13 +19,17 @@ public class JavaPojoFileGetAndSet {
      */
     private String setString;
 
-    public JavaPojoFileGetAndSet(String fieldName, String fieldType) {
+    public JavaPojoFileGetAndSet(String fieldName, String fieldType, String remark) {
         String big = KproStringUtil.dealDbNameToJavaFileName(fieldName);
         String smallFieldName = big.substring(0, 1).toLowerCase() + big.substring(1);
         StringBuilder sb = new StringBuilder();
 
+        // 注释string
+        sb.append("/**\n");
+        sb.append("    * ").append(remark).append("\n");
+        sb.append("    */\n ");
         // 字段string
-        sb.append("private ");
+        sb.append("\tprivate ");
         sb.append(fieldType);
         sb.append(" ");
         sb.append(smallFieldName);

@@ -8,7 +8,7 @@ import java.util.Map;
  * http://(web服务地址:端口)/action
  * 请求附带参数:
  * token            如果没有,则不传
- * interfaceName    请求指向的服务名
+ * interfaceName    请求指向的接口名
  * methodName       请求指向的方法名
  *
  * @author uhyils <247452312@qq.com>
@@ -17,7 +17,7 @@ import java.util.Map;
 public class Action {
 
     /**
-     * 请求指向的服务名
+     * 请求指向的接口名
      */
     private String interfaceName;
 

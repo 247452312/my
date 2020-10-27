@@ -365,7 +365,7 @@ public class KproUtil {
             String dataType = value.getDataType();
             // 转换后的字段类型
             String type = typeConvertor.databaseType2JavaType(dataType);
-            JavaPojoFileGetAndSet javaPojoFileGetAndSet = new JavaPojoFileGetAndSet(filedName, type);
+            JavaPojoFileGetAndSet javaPojoFileGetAndSet = new JavaPojoFileGetAndSet(filedName, type, stringColumnInfoEntry.getValue().getRemark());
             list.add(javaPojoFileGetAndSet);
         }
         //package
@@ -380,7 +380,7 @@ public class KproUtil {
                 " */\n");
         sb.append("public class ");
         sb.append(className);
-        sb.append("Entity {\n\n");
+        sb.append("Entity extends BaseVoEntity {\n\n");
         for (JavaPojoFileGetAndSet javaPojoFileGetAndSet : list) {
             String filedString = javaPojoFileGetAndSet.getFieldString();
             sb.append("\t");

@@ -68,19 +68,29 @@ class my_request {
 
 function getAttrBySession(attrName) {
     var result = {};
+    // let cookie = getCookie(attrName);
+    // debugger
+    // if (cookie != null && cookie != "") {
+    //     return cookie;
+    // }
     $.ajax({
         url: "/getSession",
         type: "POST",
+        async: false,
         xhrFields: {withCredentials: true},
         data: JSON.stringify({
             "attrName": attrName
         }),
         async: false,
-        contentType: "application/json;charset=UTF-8"
-    }).done(function (data) {
-        console.log("获取session: " + JSON.stringify(data))
-        result = data;
+        contentType: "application/json;charset=UTF-8",
+        success: function (data) {
+            console.log("获取session: " + JSON.stringify(data))
+            result = data;
+        }
     });
+    // if (attrName == 'token') {
+    //     setCookie(attrName, result, 1.0 / 24);
+    // }
     return result;
 }
 

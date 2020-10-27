@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.DocumentDao">
+
+
+    <sql id="columnList">
+		a.update_user as updateUser,
+		a.enclosure_id as enclosureId,
+		a.parent_id as parentId,
+		a.remark as remark,
+		a.id as id,
+		a.create_user as createUser,
+		a.create_date as createDate,
+		a.delete_flag as deleteFlag,
+		a.title as title,
+		a.update_date as updateDate,
+		a.content as content
+    </sql>
+
+    <select id="getById" resultType="indi.uhyils.pojo.model.DocumentEntity">
+        select
+        <include refid="columnList"/>
+        from sys_document a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.DocumentEntity">
+        select
+        <include refid="columnList"/>
+        from sys_document a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.DocumentEntity">
+        select
+        <include refid="columnList"/>
+        from sys_document a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${page * size}
+        </if>
+
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.DocumentEntity">
+        insert sys_document(update_user,
+		enclosure_id,
+		parent_id,
+		remark,
+		id,
+		create_user,
+		create_date,
+		delete_flag,
+		title,
+		update_date,
+		content)
+        values (#{updateUser},
+		#{enclosureId},
+		#{parentId},
+		#{remark},
+		#{id},
+		#{createUser},
+		#{createDate},
+		#{deleteFlag},
+		#{title},
+		#{updateDate},
+		#{content})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.DocumentEntity">
+        update sys_document set
+        <if test="updateUser != null and updateUser != ''">
+            ,update_user = #{updateUser}
+        </if>
+        <if test="enclosureId != null and enclosureId != ''">
+            ,enclosure_id = #{enclosureId}
+        </if>
+        <if test="parentId != null and parentId != ''">
+            ,parent_id = #{parentId}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="createUser != null and createUser != ''">
+            ,create_user = #{createUser}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            ,create_date = #{createDate}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="title != null and title != ''">
+            ,title = #{title}
+        </if>
+        <if test="updateDate != null and updateDate != ''">
+            ,update_date = #{updateDate}
+        </if>
+        <if test="content != null and content != ''">
+            ,content = #{content}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_document a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_document a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_document a
+        where ${columnName} = #{value}
+    </select>
+
+
+</mapper>
