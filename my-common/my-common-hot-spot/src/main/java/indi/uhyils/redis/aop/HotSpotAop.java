@@ -188,10 +188,16 @@ public class HotSpotAop {
         }
 
         Object arg = pjp.getArgs()[0];
-        String simpleName = arg.getClass().getSimpleName();
+        Class<?> aClass = arg.getClass();
+        String simpleName = aClass.getSimpleName();
         String format;
         if (!DefaultRequest.class.getSimpleName().equals(simpleName)) {
-            Field[] fields = arg.getClass().getDeclaredFields();
+
+            List<Field> fields = new ArrayList<>(Arrays.asList(aClass.getDeclaredFields()));
+            while (aClass.getSuperclass() != Object.class) {
+                aClass = aClass.getSuperclass();
+                fields.addAll(Arrays.asList(aClass.getDeclaredFields()));
+            }
             StringBuilder sb = new StringBuilder();
             for (Field field : fields) {
                 field.setAccessible(true);
@@ -210,7 +216,7 @@ public class HotSpotAop {
             keys.add(format);
             //此处返回true为未更新,表示可以取缓存
             Object eval = jedis.eval(CHECK_TABLE_UPDATE, keys, tables);
-            Boolean canGetCache = (Long) eval == 1L;
+            boolean canGetCache = (Long) eval == 1L;
             // 如果检查redis中的table更新了
             if (!canGetCache) {
                 Object proceed = pjp.proceed();
