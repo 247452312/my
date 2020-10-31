@@ -5,16 +5,18 @@
 
 
     <sql id="columnList">
-		a.update_user as updateUser,
-		a.enclosure_id as enclosureId,
-		a.parent_id as parentId,
-		a.remark as remark,
-		a.id as id,
+        a.id as id,
 		a.create_user as createUser,
 		a.create_date as createDate,
-		a.delete_flag as deleteFlag,
-		a.title as title,
+		a.update_user as updateUser,
 		a.update_date as updateDate,
+		a.delete_flag as deleteFlag,
+		a.remark as remark,
+
+		a.parent_id as parentId,
+		a.enclosure_id as enclosureId,
+		a.title as title,
+		a.iframe as iframe,
 		a.content as content
     </sql>
 
@@ -54,27 +56,27 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.DocumentEntity">
         insert sys_document(update_user,
-		enclosure_id,
-		parent_id,
-		remark,
-		id,
-		create_user,
-		create_date,
-		delete_flag,
-		title,
-		update_date,
-		content)
+                            enclosure_id,
+                            parent_id,
+                            remark,
+                            id,
+                            create_user,
+                            create_date,
+                            delete_flag,
+                            title,
+                            update_date,
+                            content)
         values (#{updateUser},
-		#{enclosureId},
-		#{parentId},
-		#{remark},
-		#{id},
-		#{createUser},
-		#{createDate},
-		#{deleteFlag},
-		#{title},
-		#{updateDate},
-		#{content})
+                #{enclosureId},
+                #{parentId},
+                #{remark},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{title},
+                #{updateDate},
+                #{content})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.DocumentEntity">
@@ -131,6 +133,26 @@
         select count(*)
         from sys_document a
         where ${columnName} = #{value}
+    </select>
+
+
+    <select id="getDocumentRootByIframe" parameterType="java.lang.Integer"
+            resultType="indi.uhyils.pojo.model.DocumentEntity">
+        select
+        <include refid="columnList"/>
+        from sys_document a
+        where delete_flag = 0
+        and a.parent_id = '0'
+        and a.iframe = #{iframe}
+    </select>
+
+    <select id="getChildensById" parameterType="java.lang.String"
+            resultType="indi.uhyils.pojo.model.DocumentEntity">
+        select
+        <include refid="columnList"/>
+        from sys_document a
+        where delete_flag = 0
+        and a.parent_id = #{id}
     </select>
 
 

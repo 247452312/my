@@ -1,5 +1,5 @@
 server:
-  port: 8010
+  port: 8011
 dubbo:
   metadata-report:
     address: nacos://172.26.59.129:8848
@@ -8,34 +8,33 @@ dubbo:
     address: nacos://172.26.59.129:8848
   protocol:
     name: dubbo
-    port: 20810
+    port: 20811
     threadpool: cached
+    accepts: 200
   application:
-    name: provider-myOrderAndDocument
+    name: provider-order-and-document
   consumer:
     timeout: 3000
     group: ${spring.profiles.active}
+    check: false
   provider:
     timeout: 3000
     group: ${spring.profiles.active}
 
 log-out:
-  path: D:/my/logs
-  dir-name: myOrderAndDocument
+  path: /my/logs
+  dir-name: order-and-document
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: indi.uhyils.dao
-logging:
-  level:
-    indi.uhyils.dao: DEBUG
 token:
   salt: my
   encodeRules: my
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.1.101:3306/my_order_and_document
+    url: jdbc:mysql://172.26.59.129:3306/my_order_and_document
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
@@ -80,11 +79,15 @@ spring:
     freemarker:
       cache: false    #页面不加载缓存，修改即时生效
 
+## 这是druid能打印sql日志的前提，必须设置为debug等级
+logging:
+  level:
+    indi.uhyils.dao: DEBUG
+
 redis:
   ip: 172.26.59.129
   port: 6379
   password: uhyils
-
 rabbit:
   host: 172.26.59.129
   port: 5672

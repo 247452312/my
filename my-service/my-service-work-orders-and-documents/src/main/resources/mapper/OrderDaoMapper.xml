@@ -5,7 +5,7 @@
 
 
     <sql id="columnList">
-		a.update_user as updateUser,
+        a.update_user as updateUser,
 		a.enclosure_id as enclosureId,
 		a.remark as remark,
 		a.id as id,
@@ -55,29 +55,29 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderEntity">
         insert sys_order(update_user,
-		enclosure_id,
-		remark,
-		id,
-		create_user,
-		create_date,
-		delete_flag,
-		title,
-		priority,
-		update_date,
-		content,
-		status)
+                         enclosure_id,
+                         remark,
+                         id,
+                         create_user,
+                         create_date,
+                         delete_flag,
+                         title,
+                         priority,
+                         update_date,
+                         content,
+                         status)
         values (#{updateUser},
-		#{enclosureId},
-		#{remark},
-		#{id},
-		#{createUser},
-		#{createDate},
-		#{deleteFlag},
-		#{title},
-		#{priority},
-		#{updateDate},
-		#{content},
-		#{status})
+                #{enclosureId},
+                #{remark},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{title},
+                #{priority},
+                #{updateDate},
+                #{content},
+                #{status})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderEntity">

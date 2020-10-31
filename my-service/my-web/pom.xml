@@ -5,11 +5,11 @@
     <parent>
         <artifactId>my-service</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.1.1-my-SNAPSHOT</version>
+        <version>0.1.2-my-SNAPSHOT</version>
     </parent>
     <artifactId>my-web</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.1-my-SNAPSHOT</version>
+    <version>0.1.2-my-SNAPSHOT</version>
     <name>my-web</name>
     <description>Demo project for Spring Boot</description>
 
@@ -73,6 +73,12 @@
             <groupId>indi.uhyils</groupId>
             <artifactId>my-api-provider-smart-home</artifactId>
         </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-work-orders-and-documents</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

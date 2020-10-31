@@ -5,7 +5,7 @@
 
 
     <sql id="columnList">
-		a.necessary as necessary,
+        a.necessary as necessary,
 		a.enclosure_id as enclosureId,
 		a.remark as remark,
 		a.update_date as updateDate,
@@ -56,31 +56,31 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderFlowNodeEntity">
         insert sys_order_flow_node(necessary,
-		enclosure_id,
-		remark,
-		update_date,
-		result,
-		update_user,
-		id,
-		create_user,
-		create_date,
-		delete_flag,
-		response_user_id,
-		order_id,
-		status)
+                                   enclosure_id,
+                                   remark,
+                                   update_date,
+                                   result,
+                                   update_user,
+                                   id,
+                                   create_user,
+                                   create_date,
+                                   delete_flag,
+                                   response_user_id,
+                                   order_id,
+                                   status)
         values (#{necessary},
-		#{enclosureId},
-		#{remark},
-		#{updateDate},
-		#{result},
-		#{updateUser},
-		#{id},
-		#{createUser},
-		#{createDate},
-		#{deleteFlag},
-		#{responseUserId},
-		#{orderId},
-		#{status})
+                #{enclosureId},
+                #{remark},
+                #{updateDate},
+                #{result},
+                #{updateUser},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{responseUserId},
+                #{orderId},
+                #{status})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderFlowNodeEntity">

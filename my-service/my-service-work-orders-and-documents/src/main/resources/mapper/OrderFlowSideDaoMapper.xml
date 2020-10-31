@@ -5,7 +5,7 @@
 
 
     <sql id="columnList">
-		a.update_user as updateUser,
+        a.update_user as updateUser,
 		a.remark as remark,
 		a.next_node_id as nextNodeId,
 		a.id as id,
@@ -53,25 +53,25 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderFlowSideEntity">
         insert sys_order_flow_side(update_user,
-		remark,
-		next_node_id,
-		id,
-		create_user,
-		create_date,
-		delete_flag,
-		order_id,
-		update_date,
-		node_id)
+                                   remark,
+                                   next_node_id,
+                                   id,
+                                   create_user,
+                                   create_date,
+                                   delete_flag,
+                                   order_id,
+                                   update_date,
+                                   node_id)
         values (#{updateUser},
-		#{remark},
-		#{nextNodeId},
-		#{id},
-		#{createUser},
-		#{createDate},
-		#{deleteFlag},
-		#{orderId},
-		#{updateDate},
-		#{nodeId})
+                #{remark},
+                #{nextNodeId},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{orderId},
+                #{updateDate},
+                #{nodeId})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderFlowSideEntity">

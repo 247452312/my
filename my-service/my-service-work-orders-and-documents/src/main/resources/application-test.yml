@@ -1,5 +1,5 @@
 server:
-  port: 8060
+  port: 8061
 dubbo:
   metadata-report:
     address: nacos://192.168.1.101:8848
@@ -8,27 +8,26 @@ dubbo:
     address: nacos://192.168.1.101:8848
   protocol:
     name: dubbo
-    port: 20860
+    port: 20861
     threadpool: cached
+    accepts: 200
   application:
-    name: provider-myOrderAndDocument
+    name: provider-order-and-document
   consumer:
     timeout: 3000
     group: ${spring.profiles.active}
+    check: false
   provider:
     timeout: 3000
     group: ${spring.profiles.active}
 
 log-out:
   path: D:/my/logs
-  dir-name: myOrderAndDocument
+  dir-name: order-and-document
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: indi.uhyils.dao
-logging:
-  level:
-    indi.uhyils.dao: DEBUG
 token:
   salt: my
   encodeRules: my
@@ -80,11 +79,20 @@ spring:
     freemarker:
       cache: false    #页面不加载缓存，修改即时生效
 
-redis:
-  ip: 192.168.1.101
-  port: 6379
-  password: uhyils
+## 这是druid能打印sql日志的前提，必须设置为debug等级
+logging:
+  level:
+    indi.uhyils.dao: DEBUG
 
+redis:
+  normal:
+    ip: 192.168.1.101
+    port: 6379
+    password: uhyils-single
+  hotspot:
+    hosts: 192.168.1.101:26380;192.168.1.101:26381;192.168.1.101:26382
+    password: uhyils
+    sentinels: mymaster
 rabbit:
   host: 192.168.1.101
   port: 5672
