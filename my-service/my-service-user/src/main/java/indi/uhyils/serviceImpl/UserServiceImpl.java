@@ -182,6 +182,15 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
     @Override
+    public ServiceResult<Boolean> logout(DefaultRequest request) {
+        Boolean result = redisPoolHandle.removeByKey(request.getToken());
+        if (result) {
+            result = redisPoolHandle.removeByKey(request.getUser().getId());
+        }
+        return ServiceResult.buildSuccessResult("登出结束", result, request);
+    }
+
+    @Override
     public ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request) {
         ArrayList<UserEntity> all = dao.getAll();
         all.forEach(t -> {

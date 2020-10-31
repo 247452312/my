@@ -349,4 +349,17 @@ public class RedisPoolHandle {
             jedis.close();
         }
     }
+
+    public Boolean removeByKey(String key) {
+        Redisable jedis = redisPool.getJedis();
+
+        try {
+            if (jedis.exists(key)) {
+                jedis.del(key);
+            }
+        } finally {
+            jedis.close();
+        }
+        return true;
+    }
 }

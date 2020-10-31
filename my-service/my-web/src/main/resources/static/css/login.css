@@ -253,7 +253,6 @@
 }
 
 
-
 .login-submit-button:hover {
     -webkit-animation-name: bluePulse;
     -webkit-animation-duration: 1s;
@@ -292,4 +291,17 @@
     position: absolute;
     left: 11px;
     top: 2px;
+}
+
+.login-input-username-empty {
+    height: 20px;
+    width: 10px;
+    position: relative;
+    margin: 0px;
+    top: -36px;
+    left: 285px;
+    color: #727272;
+    display: none;
+    cursor: pointer;
+    
 }

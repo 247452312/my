@@ -65,6 +65,14 @@ public interface UserService extends DefaultEntityService<UserEntity> {
     ServiceResult<LoginResponse> login(LoginRequest userRequest);
 
     /**
+     * 登出(删除redis中的用户)
+     *
+     * @param request 无参数
+     * @return 是否登出成功
+     */
+    ServiceResult<Boolean> logout(DefaultRequest request);
+
+    /**
      * 获取全部用户
      *
      * @param request 默认请求

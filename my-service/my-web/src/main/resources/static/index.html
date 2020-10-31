@@ -175,9 +175,16 @@
 
 
         $('.login-out').on("click", function () {
-            layer.msg('退出登录成功', function () {
-                window.location = 'page/login-1.html';
-            });
+            pushRequest('UserService', 'logout', {}, function (data) {
+                if (data === true) {
+                    layer.msg('退出登录成功', function () {
+                        window.location = '/login.html';
+                    });
+                } else {
+                    layer.msg('退出登录失败');
+                }
+            })
+
         });
     });
 </script>
