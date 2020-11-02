@@ -119,12 +119,12 @@
         <repository>
             <id>releases</id>
             <name>maven-my-releases</name>
-            <url>http://39.98.164.91:8081/repository/maven-my-releases/</url>
+            <url>http://8.131.77.8:8081/repository/maven-my-releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id> <!-- 选择settings文件中的快照版本的id-->
             <name>maven-my-snapshots</name>
-            <url>http://39.98.164.91:8081/repository/maven-my-snapshots/</url><!-- 私服地址-->
+            <url>http://8.131.77.8:8081/repository/maven-my-snapshots/</url><!-- 私服地址-->
         </snapshotRepository>
     </distributionManagement>
 
@@ -141,7 +141,7 @@
         <repository>
             <id>nexus</id>
             <name>nexus-my</name>
-            <url>http://39.98.164.91:8081/repository/nexus-my/</url>
+            <url>http://8.131.77.8:8081/repository/nexus-my/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
