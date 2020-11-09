@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <title>分步表单</title>
-    <meta name="renderer" content="webkit">
+    <meta content="webkit" name="renderer">
     <!--设置1个小时的缓存-->
-    <meta http-equiv="Cache-Control" content="max-age=3200"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../css/public.css" media="all">
-    <link rel="stylesheet" href="../js/lay-module/step-lay/step.css" media="all">
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../css/public.css" media="all" rel="stylesheet">
+    <link href="../js/lay-module/step-lay/step.css" media="all" rel="stylesheet">
 </head>
 <body>
 <div class="layuimini-container">
@@ -26,21 +26,23 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">游戏ID:</label>
                                         <div class="layui-input-block">
-                                            <input type="text" placeholder="请填写入款人游戏ID" class="layui-input" lay-verify="number" required />
+                                            <input class="layui-input" lay-verify="number" placeholder="请填写入款人游戏ID"
+                                                   required type="text"/>
 
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">入款金额:</label>
                                         <div class="layui-input-block">
-                                            <input type="number" placeholder="请填写入款金额" value="" class="layui-input" lay-verify="number" required>
+                                            <input class="layui-input" lay-verify="number" placeholder="请填写入款金额" required
+                                                   type="number" value="">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">入款类型:</label>
                                         <div class="layui-input-block">
                                             <select lay-verify="required">
-                                                <option value="1" selected>保险箱</option>
+                                                <option selected value="1">保险箱</option>
                                                 <option value="2">现金</option>
                                             </select>
                                         </div>
@@ -49,7 +51,7 @@
                                         <label class="layui-form-label">入款方式:</label>
                                         <div class="layui-input-block">
                                             <select lay-verify="required">
-                                                <option value="1" selected>人工入款</option>
+                                                <option selected value="1">人工入款</option>
                                                 <option value="2">修正</option>
                                                 <option value="3">活动</option>
                                                 <option value="4">佣金</option>
@@ -59,12 +61,12 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">备注说明:</label>
                                         <div class="layui-input-block">
-                                            <textarea placeholder="入款备注" value="" class="layui-textarea"></textarea>
+                                            <textarea class="layui-textarea" placeholder="入款备注" value=""></textarea>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
-                                            <button class="layui-btn" lay-submit lay-filter="formStep">
+                                            <button class="layui-btn" lay-filter="formStep" lay-submit>
                                                 &emsp;下一步&emsp;
                                             </button>
                                         </div>
@@ -113,8 +115,8 @@
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
-                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
-                                            <button class="layui-btn" lay-submit lay-filter="formStep2">
+                                            <button class="layui-btn layui-btn-primary pre" type="button">上一步</button>
+                                            <button class="layui-btn" lay-filter="formStep2" lay-submit>
                                                 &emsp;确认入款&emsp;
                                             </button>
                                         </div>
@@ -151,10 +153,10 @@
 
     </div>
 </div>
-<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
+<script charset="utf-8" src="../js/lay-config.js?v=1.0.4"></script>
 <script>
-    layui.use([ 'form', 'step'], function () {
+    layui.use(['form', 'step'], function () {
         var $ = layui.$,
             form = layui.form,
             step = layui.step;

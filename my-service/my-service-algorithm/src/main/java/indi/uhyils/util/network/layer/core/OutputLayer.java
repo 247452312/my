@@ -1,7 +1,5 @@
 package indi.uhyils.util.network.layer.core;
 
-import indi.uhyils.util.network.core.Layer;
-
 /**
  * 输出层
  *

@@ -23,6 +23,31 @@ import java.util.ArrayList;
 @Component
 public class RedisPoolHandle {
 
+    /**
+     * impl
+     */
+    private static final String IMPL = "Impl";
+    /**
+     * 检查方法是否允许执行所需要执行的lua脚本
+     */
+    private static String checkMethodDisableLua = "if redis.call(\"HEXISTS\",KEYS[2]) then\n" +
+            "    return redis.call(\"HGET\",KEYS[2])\n" +
+            "elseif redis.call(\"HEXISTS\",KEYS[1]) then\n" +
+            "    local classType = redis.call(\"HGET\",KEYS[1])\n" +
+            "    if classType == 0 then\n" +
+            "\n" +
+            "    elseif classType == 1 then\n" +
+            "        if KEYS[3] == 1 then\n" +
+            "            return 1\n" +
+            "    elseif classType == 2 then\n" +
+            "        if KEYS[3] == 2 then\n" +
+            "            return 1\n" +
+            "    elseif classType == 3 then\n" +
+            "        return 1\n" +
+            "    end\n" +
+            "else\n" +
+            "    return 0\n" +
+            "end\n";
     @Autowired
     private RedisPool redisPool;
 
@@ -144,19 +169,17 @@ public class RedisPoolHandle {
         return true;
     }
 
-
     public RedisPool getRedisPool() {
         return redisPool;
-    }
-
-    public Redisable getJedis() {
-        return redisPool.getJedis();
     }
 
     public void setRedisPool(RedisPool redisPool) {
         this.redisPool = redisPool;
     }
 
+    public Redisable getJedis() {
+        return redisPool.getJedis();
+    }
 
     /**
      * 分布式锁,key为lock + lockName,value为 "持有此锁的线程的名称 : 此微服务的名称"
@@ -168,7 +191,6 @@ public class RedisPoolHandle {
         return new RedisLock("lock_" + lockName, redisPool, thread);
 
     }
-
 
     public Long exists(String... keys) {
         Redisable jedis = redisPool.getJedis();
@@ -257,35 +279,6 @@ public class RedisPoolHandle {
             jedis.close();
         }
     }
-
-
-    /**
-     * 检查方法是否允许执行所需要执行的lua脚本
-     */
-    private static String checkMethodDisableLua = "if redis.call(\"HEXISTS\",KEYS[2]) then\n" +
-            "    return redis.call(\"HGET\",KEYS[2])\n" +
-            "elseif redis.call(\"HEXISTS\",KEYS[1]) then\n" +
-            "    local classType = redis.call(\"HGET\",KEYS[1])\n" +
-            "    if classType == 0 then\n" +
-            "\n" +
-            "    elseif classType == 1 then\n" +
-            "        if KEYS[3] == 1 then\n" +
-            "            return 1\n" +
-            "    elseif classType == 2 then\n" +
-            "        if KEYS[3] == 2 then\n" +
-            "            return 1\n" +
-            "    elseif classType == 3 then\n" +
-            "        return 1\n" +
-            "    end\n" +
-            "else\n" +
-            "    return 0\n" +
-            "end\n";
-
-
-    /**
-     * impl
-     */
-    private static final String IMPL = "Impl";
 
     /**
      * 检查方法是否允许执行

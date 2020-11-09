@@ -44,16 +44,12 @@ public class RabbitMqContent {
      * 数据库中默认假想超时时间比例系数 设置假想结束时间=JVM上次发送状态时间+ OUT_TIME*比例系数
      */
     public static final double OUT_TIME_PRO = 1.1;
-
-
+    public static final String IP;
+    public static final Long START_TIME;
     /**
      * log服务是否在线
      */
     private static volatile Boolean logServiceOnLine = false;
-
-
-    public static final String IP;
-    public static final Long START_TIME;
 
     static {
         IP = IpUtil.getIp();

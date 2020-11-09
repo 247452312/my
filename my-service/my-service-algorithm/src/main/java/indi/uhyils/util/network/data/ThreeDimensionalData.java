@@ -16,13 +16,13 @@ public class ThreeDimensionalData<T> implements Datable<T> {
         return data;
     }
 
+    public void setData(T[][][] data) {
+        this.data = data;
+    }
+
     @Override
     public int[] getSize() {
         return new int[]{data.length, data[0].length, data[0][0].length};
-    }
-
-    public void setData(T[][][] data) {
-        this.data = data;
     }
 
 }

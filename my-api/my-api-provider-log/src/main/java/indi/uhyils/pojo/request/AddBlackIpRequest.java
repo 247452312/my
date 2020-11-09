@@ -14,17 +14,17 @@ public class AddBlackIpRequest extends DefaultRequest {
      */
     private String ip;
 
+    public static AddBlackIpRequest build(String ip) {
+        AddBlackIpRequest build = new AddBlackIpRequest();
+        build.ip = ip;
+        return build;
+    }
+
     public String getIp() {
         return ip;
     }
 
     public void setIp(String ip) {
         this.ip = ip;
-    }
-
-    public static AddBlackIpRequest build(String ip) {
-        AddBlackIpRequest build = new AddBlackIpRequest();
-        build.ip = ip;
-        return build;
     }
 }

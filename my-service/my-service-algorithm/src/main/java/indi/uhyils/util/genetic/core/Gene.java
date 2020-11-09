@@ -27,14 +27,6 @@ public class Gene implements Cloneable {
     public Gene() {
     }
 
-    public Boolean getDominance() {
-        return dominance;
-    }
-
-    public void setDominance(Boolean dominance) {
-        this.dominance = dominance;
-    }
-
     public static Boolean getRandomBool() {
         int i = random.nextInt(2);
         if (i == 0) {
@@ -47,6 +39,14 @@ public class Gene implements Cloneable {
         double v = random.nextDouble();
         return min + (max - min) * v;
 
+    }
+
+    public Boolean getDominance() {
+        return dominance;
+    }
+
+    public void setDominance(Boolean dominance) {
+        this.dominance = dominance;
     }
 
     public Double getValue() {

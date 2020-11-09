@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <title>layui</title>
-    <meta name="renderer" content="webkit">
+    <meta content="webkit" name="renderer">
     <!--设置1个小时的缓存-->
-    <meta http-equiv="Cache-Control" content="max-age=3200"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
     <style>
         body {
             background-color: #ffffff;
@@ -23,47 +23,49 @@
 <body>
 <div class="layui-form layuimini-form">
     <!--  父id    -->
-    <input type="text" name="id" value="" style="display:none;">
+    <input name="id" style="display:none;" type="text" value="">
 
     <div class="layui-form-item">
         <label class="layui-form-label required">指令描述</label>
         <div class="layui-input-block">
-            <input type="text" name="instructionsDescribe" lay-verify="required" placeholder="请输入指令描述" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="instructionsDescribe" placeholder="请输入指令描述" type="text"
+                   value="">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">指令代码(与程序中的enum相对应)</label>
         <div class="layui-input-block">
-            <input type="text" name="instructionsTypeCode" lay-verify="required" placeholder="请输入指令代码(与程序中的enum相对应)" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="instructionsTypeCode" placeholder="请输入指令代码(与程序中的enum相对应)"
+                   type="text"
+                   value="">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">被动方设备id</label>
         <div class="layui-input-block">
-            <input type="text" name="passiveDeviceId" lay-verify="required" placeholder="请输入被动方设备id" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="passiveDeviceId" placeholder="请输入被动方设备id" type="text"
+                   value="">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">传递中介(路由器 or 红外线发射器)</label>
         <div class="layui-input-block">
-            <input type="text" name="transmissionIntermediary" lay-verify="required" placeholder="请输入传递中介(路由器 or 红外线发射器)" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="transmissionIntermediary"
+                   placeholder="请输入传递中介(路由器 or 红外线发射器)" type="text"
+                   value="">
         </div>
     </div>
 
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button class="layui-btn layui-btn-normal" lay-filter="saveBtn" lay-submit>确认保存</button>
         </div>
     </div>
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/my.js"></script>
-<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script charset="utf-8" src="../../lib/layui-v2.5.5/layui.js"></script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form,

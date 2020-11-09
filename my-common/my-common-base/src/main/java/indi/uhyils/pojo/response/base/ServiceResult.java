@@ -73,9 +73,9 @@ public class ServiceResult<T extends Serializable> implements Serializable {
     /**
      * 构建一个逻辑成功的返回
      *
-     * @param t               请求返回值
-     * @param req             请求(链路跟踪用)
-     * @param <T>             请求返回值
+     * @param t   请求返回值
+     * @param req 请求(链路跟踪用)
+     * @param <T> 请求返回值
      * @return 一个code是200 代表成功的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildSuccessResult(T t, DefaultRequest req) {

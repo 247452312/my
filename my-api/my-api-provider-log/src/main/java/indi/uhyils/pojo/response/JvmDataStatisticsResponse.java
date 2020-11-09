@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.response;
 
 import indi.uhyils.enum_.ServiceQualityEnum;
-import indi.uhyils.pojo.model.MonitorDO;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -41,6 +40,25 @@ public class JvmDataStatisticsResponse implements Serializable {
      */
     private Integer interfaceCellCount;
 
+    public static JvmDataStatisticsResponse build(Integer serviceOnlineCount, HashMap<String, List<ServiceQualityEnum>> serviceMap, Integer webRequestCount, Integer interfaceCellCount) {
+        JvmDataStatisticsResponse jvmDataStatisticsResponse = new JvmDataStatisticsResponse();
+        jvmDataStatisticsResponse.setServiceOnlineCount(serviceOnlineCount);
+        jvmDataStatisticsResponse.setServiceMap(serviceMap);
+        jvmDataStatisticsResponse.setWebRequestCount(webRequestCount);
+        jvmDataStatisticsResponse.setInterfaceCellCount(interfaceCellCount);
+        // 默认是好的
+        boolean serviceOperationQuality = true;
+        for (Map.Entry<String, List<ServiceQualityEnum>> entity : serviceMap.entrySet()) {
+            List<ServiceQualityEnum> value = entity.getValue();
+            if (value.size() != 1 || !value.get(0).equals(ServiceQualityEnum.GOOD)) {
+                serviceOperationQuality = false;
+                break;
+            }
+        }
+        jvmDataStatisticsResponse.setServiceOperationQuality(serviceOperationQuality);
+        return jvmDataStatisticsResponse;
+    }
+
     public Integer getServiceOnlineCount() {
         return serviceOnlineCount;
     }
@@ -65,7 +83,6 @@ public class JvmDataStatisticsResponse implements Serializable {
         this.webRequestCount = webRequestCount;
     }
 
-
     public HashMap<String, List<ServiceQualityEnum>> getServiceMap() {
         return serviceMap;
     }
@@ -80,24 +97,5 @@ public class JvmDataStatisticsResponse implements Serializable {
 
     public void setInterfaceCellCount(Integer interfaceCellCount) {
         this.interfaceCellCount = interfaceCellCount;
-    }
-
-    public static JvmDataStatisticsResponse build(Integer serviceOnlineCount, HashMap<String, List<ServiceQualityEnum>> serviceMap, Integer webRequestCount, Integer interfaceCellCount) {
-        JvmDataStatisticsResponse jvmDataStatisticsResponse = new JvmDataStatisticsResponse();
-        jvmDataStatisticsResponse.setServiceOnlineCount(serviceOnlineCount);
-        jvmDataStatisticsResponse.setServiceMap(serviceMap);
-        jvmDataStatisticsResponse.setWebRequestCount(webRequestCount);
-        jvmDataStatisticsResponse.setInterfaceCellCount(interfaceCellCount);
-        // 默认是好的
-        boolean serviceOperationQuality = true;
-        for (Map.Entry<String, List<ServiceQualityEnum>> entity : serviceMap.entrySet()) {
-            List<ServiceQualityEnum> value = entity.getValue();
-            if (value.size() != 1 || !value.get(0).equals(ServiceQualityEnum.GOOD)) {
-                serviceOperationQuality = false;
-                break;
-            }
-        }
-        jvmDataStatisticsResponse.setServiceOperationQuality(serviceOperationQuality);
-        return jvmDataStatisticsResponse;
     }
 }

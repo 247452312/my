@@ -15,6 +15,7 @@ public interface DictDao extends DefaultDao<DictEntity> {
 
     /**
      * 根据字典code获取字典id
+     *
      * @param code code
      * @return
      */

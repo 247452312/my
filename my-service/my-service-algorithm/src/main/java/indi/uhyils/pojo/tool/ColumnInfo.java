@@ -38,24 +38,33 @@ public class ColumnInfo {
      */
     private String remark;
 
+    public ColumnInfo(String dataType, int keyType, String name) {
+        this.dataType = dataType;
+        this.keyType = keyType;
+        this.name = name;
+    }
+
+    public ColumnInfo() {
+    }
+
     public String getDataType() {
         return dataType;
-    }
-
-    public int getKeyType() {
-        return keyType;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setDataType(String dataType) {
         this.dataType = dataType;
     }
 
+    public int getKeyType() {
+        return keyType;
+    }
+
     public void setKeyType(int keyType) {
         this.keyType = keyType;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
@@ -84,15 +93,6 @@ public class ColumnInfo {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public ColumnInfo(String dataType, int keyType, String name) {
-        this.dataType = dataType;
-        this.keyType = keyType;
-        this.name = name;
-    }
-
-    public ColumnInfo() {
     }
 
 

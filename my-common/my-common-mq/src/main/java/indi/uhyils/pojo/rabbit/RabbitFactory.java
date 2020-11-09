@@ -21,6 +21,13 @@ public class RabbitFactory extends ConnectionFactory {
 
     private volatile Connection connection;
 
+    private RabbitFactory(String host, Integer port, String username, String password) {
+        setHost(host);
+        setPort(port);
+        setUsername(username);
+        setPassword(password);
+    }
+
     /**
      * 双重检测锁
      *
@@ -36,14 +43,6 @@ public class RabbitFactory extends ConnectionFactory {
         }
         return factory;
     }
-
-    private RabbitFactory(String host, Integer port, String username, String password) {
-        setHost(host);
-        setPort(port);
-        setUsername(username);
-        setPassword(password);
-    }
-
 
     public Connection getConn() throws IOException, TimeoutException {
         if (null == connection) {

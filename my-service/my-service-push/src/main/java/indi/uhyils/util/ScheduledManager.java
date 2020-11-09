@@ -22,7 +22,6 @@ import static org.quartz.TriggerBuilder.newTrigger;
 public class ScheduledManager {
 
 
-
     @Resource
     private Scheduler scheduler;
 

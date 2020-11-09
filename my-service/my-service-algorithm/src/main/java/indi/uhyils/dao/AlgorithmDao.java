@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.pojo.model.AlgorithmEntity;
 import indi.uhyils.dao.base.DefaultDao;
+import indi.uhyils.pojo.model.AlgorithmEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 

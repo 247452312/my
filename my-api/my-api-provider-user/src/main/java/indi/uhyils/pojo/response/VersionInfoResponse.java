@@ -18,18 +18,18 @@ public class VersionInfoResponse implements Serializable {
      */
     List<DictItemEntity> infos;
 
+    public static VersionInfoResponse build(List<DictItemEntity> infos) {
+        VersionInfoResponse versionInfoResponse = new VersionInfoResponse();
+        versionInfoResponse.setInfos(infos);
+        return versionInfoResponse;
+
+    }
+
     public List<DictItemEntity> getInfos() {
         return infos;
     }
 
     public void setInfos(List<DictItemEntity> infos) {
         this.infos = infos;
-    }
-
-    public static VersionInfoResponse build(List<DictItemEntity> infos){
-        VersionInfoResponse versionInfoResponse = new VersionInfoResponse();
-        versionInfoResponse.setInfos(infos);
-        return versionInfoResponse;
-
     }
 }

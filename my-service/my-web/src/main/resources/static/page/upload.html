@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <title>zyupload上传实例</title>
     <!--设置1个小时的缓存-->
-    <meta http-equiv="Cache-Control" content="max-age=3200"/>
-    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../lib/jq-module/zyupload/zyupload-1.0.0.min.css" media="all">
-    <link rel="stylesheet" href="../css/public.css" media="all">
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <link href="../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../lib/jq-module/zyupload/zyupload-1.0.0.min.css" media="all" rel="stylesheet">
+    <link href="../css/public.css" media="all" rel="stylesheet">
 </head>
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
         <blockquote class="layui-elem-quote">
             上传组件使用开源项目：zyupload<br>
-            <a href="http://www.jq22.com/jquery-info14213" target="_blank" class="layui-btn layui-btn-danger">zyupload</a>
+            <a class="layui-btn layui-btn-danger" href="http://www.jq22.com/jquery-info14213"
+               target="_blank">zyupload</a>
         </blockquote>
-        <div id="zyupload" class="zyupload"></div>
+        <div class="zyupload" id="zyupload"></div>
         <pre class="layui-code">
         // 初始化插件
         $("#zyupload").zyUpload({
@@ -60,9 +61,9 @@
         </pre>
     </div>
 </div>
-<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
-<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../lib/jq-module/zyupload/zyupload-1.0.0.min.js" charset="utf-8"></script>
+<script charset="utf-8" src="../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
+<script charset="utf-8" src="../lib/jq-module/zyupload/zyupload-1.0.0.min.js"></script>
 <script type="text/javascript">
     $(function () {
         // 初始化插件

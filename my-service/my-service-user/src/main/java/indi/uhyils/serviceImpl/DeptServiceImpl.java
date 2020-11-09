@@ -100,14 +100,14 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     }
 
     @Override
-    @ReadWriteMark(tables = {"sys_dept_menu","sys_menu"})
+    @ReadWriteMark(tables = {"sys_dept_menu", "sys_menu"})
     public ServiceResult<ArrayList<GetAllMenuWithHaveMarkResponse>> getAllMenuWithHaveMark(IdRequest request) {
         ArrayList<GetAllMenuWithHaveMarkResponse> list = menuDao.getAllMenuWithHaveMark(request.getId());
         return ServiceResult.buildSuccessResult("查询菜单(包含羁绊)成功", list, request);
     }
 
     @Override
-    @ReadWriteMark(tables = {"sys_dept_power","sys_power"})
+    @ReadWriteMark(tables = {"sys_dept_power", "sys_power"})
     public ServiceResult<ArrayList<GetAllPowerWithHaveMarkResponse>> getAllPowerWithHaveMark(IdRequest request) {
         ArrayList<GetAllPowerWithHaveMarkResponse> list = dao.getAllPowerWithHaveMark(request.getId());
         return ServiceResult.buildSuccessResult("查询权限(包含羁绊)成功", list, request);

@@ -14,22 +14,22 @@ public abstract class AbstractsInitialization implements DataInitialization<DnaD
 
     protected Random random = new Random();
     /**
-     * 多远距离算同一个点
-     */
-    private Double distance;
-    /**
      * 随机因子
      */
     protected Double[] range;
-
-    @Override
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
+    /**
+     * 多远距离算同一个点
+     */
+    private Double distance;
 
     @Override
     public Double getDistance() {
         return distance;
+    }
+
+    @Override
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     @Override

@@ -20,14 +20,6 @@ public enum DbTypeEnum {
         this.typeCode = typeCode;
     }
 
-    public Integer getTypeCode() {
-        return typeCode;
-    }
-
-    public void setTypeCode(Integer typeCode) {
-        this.typeCode = typeCode;
-    }
-
     public static DbTypeEnum prase(Integer code) {
         switch (code) {
             case 1:
@@ -39,5 +31,13 @@ public enum DbTypeEnum {
             default:
                 return null;
         }
+    }
+
+    public Integer getTypeCode() {
+        return typeCode;
+    }
+
+    public void setTypeCode(Integer typeCode) {
+        this.typeCode = typeCode;
     }
 }

@@ -23,6 +23,10 @@ public class PythonCellUtil {
      * 寻找python源文件在哪里
      */
     private static final String PYTHON_PATH;
+    /**
+     * python文件的名称
+     */
+    private static final String PYTHON_FILE_NAME = "python.exe";
 
     static {
         PYTHON_PATH = getPythonPath(System.getenv("PYTHON_HOME"), System.getenv("path"));
@@ -73,12 +77,6 @@ public class PythonCellUtil {
     public static String cellPython(String pythonPath, List<String> args) throws Exception {
         return cellPython(PYTHON_PATH, pythonPath, args);
     }
-
-
-    /**
-     * python文件的名称
-     */
-    private static final String PYTHON_FILE_NAME = "python.exe";
 
     private static String getPythonPath(String... pythonHome) {
         List<String> paths = new ArrayList<>();

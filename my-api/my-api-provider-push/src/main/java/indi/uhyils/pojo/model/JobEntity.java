@@ -59,16 +59,16 @@ public class JobEntity extends BaseVoEntity {
         return interfaceName;
     }
 
+    public void setInterfaceName(String interfaceName) {
+        this.interfaceName = interfaceName;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setInterfaceName(String interfaceName) {
-        this.interfaceName = interfaceName;
     }
 
     public String getMethodName() {

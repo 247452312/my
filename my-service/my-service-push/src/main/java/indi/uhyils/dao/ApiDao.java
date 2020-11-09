@@ -32,6 +32,7 @@ public interface ApiDao extends DefaultDao<ApiEntity> {
 
     /**
      * 删除所有
+     *
      * @param byId
      * @return
      */

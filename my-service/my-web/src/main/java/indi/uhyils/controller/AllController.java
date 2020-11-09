@@ -10,7 +10,10 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -29,6 +32,18 @@ public class AllController {
      * 用户登录时携带的token的名称
      */
     private static final String TOKEN = "token";
+
+    /**
+     * action 添加链路跟踪起点
+     *
+     * @param action
+     */
+    public static void actionAddRequestLink(Action action) {
+        HashMap<String, Object> requestLink = new HashMap<>(2);
+        requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
+        requestLink.put("data", "页面请求");
+        action.getArgs().put("requestLink", requestLink);
+    }
 
     /**
      * 默认返回所有的方法
@@ -99,19 +114,6 @@ public class AllController {
         HttpSession session = request.getSession();
         session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
         return true;
-    }
-
-
-    /**
-     * action 添加链路跟踪起点
-     *
-     * @param action
-     */
-    public static void actionAddRequestLink(Action action) {
-        HashMap<String, Object> requestLink = new HashMap<>(2);
-        requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
-        requestLink.put("data", "页面请求");
-        action.getArgs().put("requestLink", requestLink);
     }
 
 }

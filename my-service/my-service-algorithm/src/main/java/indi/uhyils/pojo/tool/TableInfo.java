@@ -33,6 +33,23 @@ public class TableInfo {
      */
     private ColumnInfo onlyKey;
 
+    public TableInfo(String tableName, Map<String, ColumnInfo> colums,
+                     ColumnInfo onlyKey) {
+        this.tableName = tableName;
+        this.colums = colums;
+        this.onlyKey = onlyKey;
+    }
+
+    public TableInfo(String tableName, String tableComment, Map<String, ColumnInfo> colums, ColumnInfo onlyKey) {
+        this.tableName = tableName;
+        this.tableComment = tableComment;
+        this.colums = colums;
+        this.onlyKey = onlyKey;
+    }
+
+    public TableInfo() {
+    }
+
     public String getTableName() {
         return tableName;
     }
@@ -63,23 +80,6 @@ public class TableInfo {
 
     public void setTableComment(String tableComment) {
         this.tableComment = tableComment;
-    }
-
-    public TableInfo(String tableName, Map<String, ColumnInfo> colums,
-                     ColumnInfo onlyKey) {
-        this.tableName = tableName;
-        this.colums = colums;
-        this.onlyKey = onlyKey;
-    }
-
-    public TableInfo(String tableName, String tableComment, Map<String, ColumnInfo> colums, ColumnInfo onlyKey) {
-        this.tableName = tableName;
-        this.tableComment = tableComment;
-        this.colums = colums;
-        this.onlyKey = onlyKey;
-    }
-
-    public TableInfo() {
     }
 
 

@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <title>登录页</title>
     <!--设置1个小时的缓存-->
-    <meta http-equiv="Cache-Control" content="max-age=3200"/>
-    <link rel="bookmark" type="image/x-icon" href="/pic/lxh_icon/icon11.png"/>
-    <link rel="shortcut icon" href="/pic/lxh_icon/icon11.png">
-    <link rel="stylesheet" href="/css/my.css">
-    <link rel="stylesheet" href="/lib/layui-v2.5.5/css/modules/layer/default/layer.css">
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <link href="/pic/lxh_icon/icon11.png" rel="bookmark" type="image/x-icon"/>
+    <link href="/pic/lxh_icon/icon11.png" rel="shortcut icon">
+    <link href="/css/my.css" rel="stylesheet">
+    <link href="/lib/layui-v2.5.5/css/modules/layer/default/layer.css" rel="stylesheet">
     <script src="js/jquery.min.js"></script>
     <script src="lib/layui-v2.5.5/lay/modules/layer.js"></script>
     <script src="js/my.js"></script>
-    <link rel="stylesheet" href="/css/login.css">
+    <link href="/css/login.css" rel="stylesheet">
     <script>
         $.fn.serializeObject = function () {
             var o = {};
@@ -49,21 +49,21 @@
 <div class="login-background">
     <div class="login-middle">
         <div class="login-middle-top-logo">
-            <img src="/pic/logo.gif" alt>
+            <img alt src="/pic/logo.gif">
         </div>
         <div class="login-middle-top-title">my框架 v 0.0.3</div>
         <div class="login-middle-login-border">
             <!-- 登录框↓↓↓  -->
             <form class="login-form login-submit-target" onsubmit="return false;">
                 <div class="login-form-line username-login-form-line">
-                    <input type="text" name="username" autocomplete="off" placeholder="请输入用户名">
+                    <input autocomplete="off" name="username" placeholder="请输入用户名" type="text">
                     <span class="input-prefix-username">
                         <img class="input-prefix-username-icon" src="/pic/login_username.svg"/>
                     </span>
                     <div class="login-input-username-empty">x</div>
                 </div>
                 <div class="login-form-line">
-                    <input type="password" name="password" autocomplete="off" placeholder="请输入密码">
+                    <input autocomplete="off" name="password" placeholder="请输入密码" type="password">
                     <span class="input-suffix-username">
                         <img class="input-suffix-username-icon" src="/pic/login_password.svg"/>
                     </span>

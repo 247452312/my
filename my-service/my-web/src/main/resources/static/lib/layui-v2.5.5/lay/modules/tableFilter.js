@@ -82,7 +82,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
             if (typeof myTable === 'string') {
                 myTable = table_cache[myTable]
             }
-            if (!where_cache[myTable.id] || !where_cache[myTable.id].filterSos  || where_cache[myTable.id].filterSos === "{}") {
+            if (!where_cache[myTable.id] || !where_cache[myTable.id].filterSos || where_cache[myTable.id].filterSos === "{}") {
                 return;
             }
             delete where_cache[myTable.id]
@@ -98,7 +98,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                 $fixedRigthTableHead = $table.next().children('.layui-table-box').children('.layui-table-fixed-r').children('.layui-table-header').children('table'),
                 tableId = myTable.id,
                 columns = _this.getCompleteCols(myTable.cols),
-                filterItems = myTable.filter?myTable.filter.items||['column','data','condition','editCondition','excel']:['column','data','condition','editCondition','excel'],
+                filterItems = myTable.filter ? myTable.filter.items || ['column', 'data', 'condition', 'editCondition', 'excel'] : ['column', 'data', 'condition', 'editCondition', 'excel'],
                 needFilter = false, // 是否存在筛选列需要进行初始化
                 initFilter = false, // 是否为第一次筛选
                 mainExcel = typeof myTable.excel === 'undefined' || ((myTable.excel && (typeof myTable.excel.on === 'undefined' || myTable.excel.on)) ? myTable.excel : false),
@@ -107,41 +107,46 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
             for (i = 0; i < columns.length; i++) {
                 if (columns[i].field && columns[i].filter) {
                     needFilter = true;
-                    if ($tableHead.find('th[data-field="'+columns[i].field+'"]').children().children('.soul-table-filter').length===0) {
+                    if ($tableHead.find('th[data-field="' + columns[i].field + '"]').children().children('.soul-table-filter').length === 0) {
                         initFilter = true;
-                        if ($tableHead.find('th[data-field="'+columns[i].field+'"]').children().children('.layui-table-sort').length>0) {
-                            $tableHead.find('th[data-field="'+columns[i].field+'"]').children().children('.layui-table-sort').hide()
-                            $tableHead.find('th[data-field="'+columns[i].field+'"]').children().append('<span class="layui-table-sort soul-table-filter layui-inline" data-column="'+columns[i].field+'" lay-sort="'+$tableHead.find('th[data-field="'+columns[i].field+'"]').children().children('.layui-table-sort').attr('lay-sort')+'" '+(typeof columns[i].filter.split === 'undefined'?'':'data-split="'+columns[i].filter.split+'"')+'><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
+                        if ($tableHead.find('th[data-field="' + columns[i].field + '"]').children().children('.layui-table-sort').length > 0) {
+                            $tableHead.find('th[data-field="' + columns[i].field + '"]').children().children('.layui-table-sort').hide()
+                            $tableHead.find('th[data-field="' + columns[i].field + '"]').children().append('<span class="layui-table-sort soul-table-filter layui-inline" data-column="' + columns[i].field + '" lay-sort="' + $tableHead.find('th[data-field="' + columns[i].field + '"]').children().children('.layui-table-sort').attr('lay-sort') + '" ' + (typeof columns[i].filter.split === 'undefined' ? '' : 'data-split="' + columns[i].filter.split + '"') + '><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
                         } else {
-                            $tableHead.find('th[data-field="'+columns[i].field+'"]').children().append('<span class="soul-table-filter layui-inline" data-column="'+columns[i].field+'" '+(typeof columns[i].filter.split === 'undefined'?'':'data-split="'+columns[i].filter.split+'"')+'><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
+                            $tableHead.find('th[data-field="' + columns[i].field + '"]').children().append('<span class="soul-table-filter layui-inline" data-column="' + columns[i].field + '" ' + (typeof columns[i].filter.split === 'undefined' ? '' : 'data-split="' + columns[i].filter.split + '"') + '><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
                         }
-                        if ($fixedLeftTableHead.find('th[data-field="'+columns[i].field+'"]').children().children('.layui-table-sort').length>0) {
-                            $fixedLeftTableHead.find('th[data-field="'+columns[i].field+'"]').children().children('.layui-table-sort').hide()
-                            $fixedLeftTableHead.find('th[data-field="'+columns[i].field+'"]').children().append('<span class="layui-table-sort soul-table-filter layui-inline" data-column="'+columns[i].field+'" lay-sort="'+$fixedLeftTableHead.find('th[data-field="'+columns[i].field+'"]').children().children('.layui-table-sort').attr('lay-sort')+'" '+(typeof columns[i].filter.split === 'undefined'?'':'data-split="'+columns[i].filter.split+'"')+'><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
+                        if ($fixedLeftTableHead.find('th[data-field="' + columns[i].field + '"]').children().children('.layui-table-sort').length > 0) {
+                            $fixedLeftTableHead.find('th[data-field="' + columns[i].field + '"]').children().children('.layui-table-sort').hide()
+                            $fixedLeftTableHead.find('th[data-field="' + columns[i].field + '"]').children().append('<span class="layui-table-sort soul-table-filter layui-inline" data-column="' + columns[i].field + '" lay-sort="' + $fixedLeftTableHead.find('th[data-field="' + columns[i].field + '"]').children().children('.layui-table-sort').attr('lay-sort') + '" ' + (typeof columns[i].filter.split === 'undefined' ? '' : 'data-split="' + columns[i].filter.split + '"') + '><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
                         } else {
-                            $fixedLeftTableHead.find('th[data-field="'+columns[i].field+'"]').children().append('<span class="soul-table-filter layui-inline" data-column="'+columns[i].field+'" '+(typeof columns[i].filter.split === 'undefined'?'':'data-split="'+columns[i].filter.split+'"')+'><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
+                            $fixedLeftTableHead.find('th[data-field="' + columns[i].field + '"]').children().append('<span class="soul-table-filter layui-inline" data-column="' + columns[i].field + '" ' + (typeof columns[i].filter.split === 'undefined' ? '' : 'data-split="' + columns[i].filter.split + '"') + '><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
                         }
-                        if ($fixedRigthTableHead.find('th[data-field="'+columns[i].field+'"]').children().children('.layui-table-sort').length>0) {
-                            $fixedRigthTableHead.find('th[data-field="'+columns[i].field+'"]').children().children('.layui-table-sort').hide()
-                            $fixedRigthTableHead.find('th[data-field="'+columns[i].field+'"]').children().append('<span class="layui-table-sort soul-table-filter layui-inline" data-column="'+columns[i].field+'" lay-sort="'+$fixedRigthTableHead.find('th[data-field="'+columns[i].field+'"]').children().children('.layui-table-sort').attr('lay-sort')+'" '+(typeof columns[i].filter.split === 'undefined'?'':'data-split="'+columns[i].filter.split+'"')+'><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
+                        if ($fixedRigthTableHead.find('th[data-field="' + columns[i].field + '"]').children().children('.layui-table-sort').length > 0) {
+                            $fixedRigthTableHead.find('th[data-field="' + columns[i].field + '"]').children().children('.layui-table-sort').hide()
+                            $fixedRigthTableHead.find('th[data-field="' + columns[i].field + '"]').children().append('<span class="layui-table-sort soul-table-filter layui-inline" data-column="' + columns[i].field + '" lay-sort="' + $fixedRigthTableHead.find('th[data-field="' + columns[i].field + '"]').children().children('.layui-table-sort').attr('lay-sort') + '" ' + (typeof columns[i].filter.split === 'undefined' ? '' : 'data-split="' + columns[i].filter.split + '"') + '><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
                         } else {
-                            $fixedRigthTableHead.find('th[data-field="'+columns[i].field+'"]').children().append('<span class="soul-table-filter layui-inline" data-column="'+columns[i].field+'" '+(typeof columns[i].filter.split === 'undefined'?'':'data-split="'+columns[i].filter.split+'"')+'><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
+                            $fixedRigthTableHead.find('th[data-field="' + columns[i].field + '"]').children().append('<span class="soul-table-filter layui-inline" data-column="' + columns[i].field + '" ' + (typeof columns[i].filter.split === 'undefined' ? '' : 'data-split="' + columns[i].filter.split + '"') + '><i class="soul-icon soul-icon-filter"></i><i class="soul-icon soul-icon-filter-asc"></i><i class="soul-icon soul-icon-filter-desc"></i></span>')
                         }
                     }
                 }
             }
             table_cache[myTable.id] = myTable // 缓存table配置
             isFilterCache[myTable.id] = needFilter;
-            if (!needFilter) {return;} //如果没筛选列，直接退出
+            if (!needFilter) {
+                return;
+            } //如果没筛选列，直接退出
 
             // 渲染底部筛选条件
             if (!(myTable.filter && typeof myTable.filter.bottom !== 'undefined' && !myTable.filter.bottom) && $table.next().children('.soul-bottom-contion').length === 0) {
                 $table.next().children('.layui-table-box').after('<div class="soul-bottom-contion"><div class="condition-items"></div><div class="editCondtion"><a class="layui-btn layui-btn-primary">编辑筛选条件</a></div></div>')
                 var changeHeight = $table.next().children('.layui-table-box').children('.layui-table-body').outerHeight() - $table.next().children('.soul-bottom-contion').outerHeight();
-                if (myTable.page && $table.next().children('.layui-table-page').hasClass('layui-hide')) {changeHeight += $table.next().children('.layui-table-page').outerHeight()}
+                if (myTable.page && $table.next().children('.layui-table-page').hasClass('layui-hide')) {
+                    changeHeight += $table.next().children('.layui-table-page').outerHeight()
+                }
                 $table.next().children('.layui-table-box').children('.layui-table-body').css('height', changeHeight)
-                var fixHeight = changeHeight-_this.getScrollWidth($tableMain[0]), layMainTableHeight = $tableMain.children('table').height()
-                $table.next().children('.layui-table-box').children('.layui-table-fixed').children('.layui-table-body').css('height',layMainTableHeight >= fixHeight ? fixHeight : 'auto')
+                var fixHeight = changeHeight - _this.getScrollWidth($tableMain[0]),
+                    layMainTableHeight = $tableMain.children('table').height()
+                $table.next().children('.layui-table-box').children('.layui-table-fixed').children('.layui-table-body').css('height', layMainTableHeight >= fixHeight ? fixHeight : 'auto')
                 $table.next().children('.soul-bottom-contion').children('.condition-items').css('width', ($table.next().children('.soul-bottom-contion').width() - $table.next().children('.soul-bottom-contion').children('.editCondtion').width()) + 'px');
                 $table.next().children('.soul-bottom-contion').children('.editCondtion').children('a').on('click', function () {
                     _this.showConditionBoard(myTable);
@@ -159,7 +164,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
             } else {
                 if (!myTable.url && myTable.page && myTable.data && myTable.data.length > myTable.limit) {
                     // 前端分页大于一页，修复 index （用于排序恢复时需要通过这个排序）
-                    layui.each(myTable.data, function(index, item){
+                    layui.each(myTable.data, function (index, item) {
                         item[myTable.indexName] = index;
                     })
                 }
@@ -174,7 +179,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                 }
 
                 if (myTable.filter && myTable.filter.clearFilter) {
-                    if (myTable.where && myTable.where.filterSos && JSON.parse(myTable.where.filterSos).length>0) {
+                    if (myTable.where && myTable.where.filterSos && JSON.parse(myTable.where.filterSos).length > 0) {
                         // 重新查询新数据
                         myTable.where.filterSos = '[]';
                         where_cache[myTable.id] = myTable.where || {}
@@ -183,7 +188,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     } else {
                         where_cache[myTable.id] = myTable.where || {}
                     }
-                } else if ((typeof myTable.url !== 'undefined' && myTable.page ? typeof myTable.where.filterSos === 'undefined' : true) && where_cache[myTable.id] && JSON.parse(where_cache[myTable.id].filterSos || '[]').length>0) {
+                } else if ((typeof myTable.url !== 'undefined' && myTable.page ? typeof myTable.where.filterSos === 'undefined' : true) && where_cache[myTable.id] && JSON.parse(where_cache[myTable.id].filterSos || '[]').length > 0) {
                     myTable.where['filterSos'] = where_cache[myTable.id].filterSos
                     where_cache[myTable.id] = myTable.where;
                     _this.soulReload(myTable, false);
@@ -206,7 +211,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                             where_cache[myTable.id].field = obj.field;
                             where_cache[myTable.id].order = obj.type;
                             isFilterReload[myTable.id] = true;
-                            table.render($.extend(myTable,{
+                            table.render($.extend(myTable, {
                                 initSort: obj
                                 , where: where_cache[myTable.id]
                                 , page: {
@@ -214,15 +219,15 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                                 }
                             }));
                         } else if (!myTable.url && myTable.page) {
-                            if(obj.type === 'asc'){ //升序
+                            if (obj.type === 'asc') { //升序
                                 cache[myTable.id] = layui.sort(cache[myTable.id], obj.field)
-                            } else if(obj.type === 'desc'){ //降序
+                            } else if (obj.type === 'desc') { //降序
                                 cache[myTable.id] = layui.sort(cache[myTable.id], obj.field, true)
                             } else { //清除排序
                                 cache[myTable.id] = layui.sort(cache[myTable.id], myTable.indexName)
                             }
                             myTable.initSort = obj;
-                            myTable.page = { curr: 1};
+                            myTable.page = {curr: 1};
                             _this.soulReload(myTable, false)
                         }
                     });
@@ -241,7 +246,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                 soulFilterList.push('<li class="soul-sort" data-value="asc" ><i class="soul-icon soul-icon-asc"></i> 升序排列 </li>');
                 soulFilterList.push('<li class="soul-sort" data-value="desc"  style="border-bottom: 1px solid #e6e6e6"><i class="soul-icon soul-icon-desc"></i> 降序排列 </li>');
                 for (i = 0; i < filterItems.length; i++) {
-                    if (filterItems[i]==='excel' && !mainExcel){
+                    if (filterItems[i] === 'excel' && !mainExcel) {
                         continue
                     }
                     soulFilterList.push(filterItemsHtml[filterItems[i]]);
@@ -255,7 +260,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                         soulFilterList.push('<li class="layui-hide"><input type="checkbox" title="' + columns[i].title + '" /></li>')
                         continue;
                     }
-                    soulFilterList.push('<li data-value="' + columns[i].field + '" data-key="'+ i +'"><input type="checkbox" value="' + (columns[i].field || i) + '" title="' + columns[i].title + '" data-fixed="' + (columns[i].fixed || "") + '" lay-skin="primary" lay-filter="changeColumns' + tableId + '" ' + (columns[i].hide ? '' : 'checked') + '></li>');
+                    soulFilterList.push('<li data-value="' + columns[i].field + '" data-key="' + i + '"><input type="checkbox" value="' + (columns[i].field || i) + '" title="' + columns[i].title + '" data-fixed="' + (columns[i].fixed || "") + '" lay-skin="primary" lay-filter="changeColumns' + tableId + '" ' + (columns[i].hide ? '' : 'checked') + '></li>');
 
                     //存储过滤数据的类型
                     if (columns[i].filter && columns[i].filter.type) {
@@ -392,7 +397,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     }
 
                     $('#soulDropList' + tableId).find('.' + field + 'DropList li input[type=checkbox]:checked').prop('checked', false);
-                    var where = where_cache[myTable.id]||{},
+                    var where = where_cache[myTable.id] || {},
                         filterSos = JSON.parse(where.filterSos ? where.filterSos : null),
                         id = '', prefix = '';
                     if (filterSos) {
@@ -460,7 +465,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     }
 
                     var filterSo, conditionHtml = [],
-                        where = where_cache[myTable.id]||{},
+                        where = where_cache[myTable.id] || {},
                         filterSos = JSON.parse(where.filterSos ? where.filterSos : null);
                     if (filterSos) {
                         for (i = 0; i < filterSos.length; i++) {
@@ -628,7 +633,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                         function updateTrWhere($tr) {
                             var id = $tr.data('id'),
                                 groupId = $('#soul-condition' + tableId).data('id'),
-                                prefix = $tr.find('input[lay-filter="soul-coondition-switch"]:checked').prop('checked')?'and':'or',
+                                prefix = $tr.find('input[lay-filter="soul-coondition-switch"]:checked').prop('checked') ? 'and' : 'or',
                                 type = $tr.find('select').val(),
                                 value = $tr.find('.value').val(),
                                 head = $('#soul-condition' + tableId).data('head');
@@ -802,7 +807,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                         columnField.push($(this).data('column'));
                     }
                 });
-                if (filterItems.indexOf('data')!==-1) {
+                if (filterItems.indexOf('data') !== -1) {
                     if (typeof myTable.url !== 'undefined' && myTable.page) {
                         var datas = JSON.parse(JSON.stringify(myTable.where)), url = myTable.url;
                         datas['columns'] = JSON.stringify(columnField);
@@ -838,8 +843,8 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                                                     list = tempList;
                                                 }
                                                 list.sort(function (a, b) {
-                                                    if (isNaN(a)||isNaN(b)) {
-                                                        return String(a)>=String(b)
+                                                    if (isNaN(a) || isNaN(b)) {
+                                                        return String(a) >= String(b)
                                                     } else {
                                                         return Number(a) - Number(b)
                                                     }
@@ -894,7 +899,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                                     for (i = 0; i < list.length; i++) {
                                         var tempList2 = String(list[i]).split(columnsConfigs[j].filter.split);
                                         for (var k = 0; k < tempList2.length; k++) {
-                                            if (tempList.indexOf(tempList2[k])===-1) {
+                                            if (tempList.indexOf(tempList2[k]) === -1) {
                                                 tempList.push(tempList2[k])
                                             }
                                         }
@@ -902,8 +907,8 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                                     list = tempList;
                                 }
                                 list.sort(function (a, b) {
-                                    if (isNaN(a)||isNaN(b)) {
-                                        return String(a)>=String(b)
+                                    if (isNaN(a) || isNaN(b)) {
+                                        return String(a) >= String(b)
                                     } else {
                                         return Number(a) - Number(b)
                                     }
@@ -935,7 +940,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
         showConditionBoard: function (myTable) {
             var _this = this,
                 tableId = myTable.id,
-                where = where_cache[myTable.id]||{},
+                where = where_cache[myTable.id] || {},
                 tableFilterTypes = where.tableFilterType ? JSON.parse(where.tableFilterType) : {},
                 filterSos = where.filterSos ? JSON.parse(where.filterSos) : [],
                 filterBoard = [], fieldMap = {}, firstColumn,
@@ -1152,7 +1157,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     prefix = $(obj).parent().data('prefix'),
                     value = $(obj).parent().data('value'),
                     refresh = $('.soul-edit-out .out_auto').prop('checked'),
-                    where = where_cache[myTable.id]||{},
+                    where = where_cache[myTable.id] || {},
                     filterSos = where.filterSos ? JSON.parse(where.filterSos) : [];
 
                 switch (mode) {
@@ -1452,7 +1457,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                 _this.hideCondition(myTable, false);
                 $('[id^=main-list]').hide();
 
-                $('#main-list' + tableId).data({'field': $that.data('column'),'split':$that.data('split')});
+                $('#main-list' + tableId).data({'field': $that.data('column'), 'split': $that.data('split')});
 
                 $('#soul-columns' + tableId + ' [type=checkbox]').attr('disabled', false);
                 // if (myTable.cols[0][0].type=='checkbox') {
@@ -1471,14 +1476,14 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     clearTimeout(mainListTimeOut)
                 }
                 var left, animate;
-                if ($that.offset().left + $('#main-list'+tableId).outerWidth() < document.body.clientWidth) {
+                if ($that.offset().left + $('#main-list' + tableId).outerWidth() < document.body.clientWidth) {
                     left = $that.offset().left + 10;
                     animate = 'fadeInLeft';
                 } else {
-                    left = $that.offset().left - $('#main-list'+tableId).outerWidth();
+                    left = $that.offset().left - $('#main-list' + tableId).outerWidth();
                     animate = 'fadeInRight';
                 }
-                $('#main-list' + tableId).data('type',myTable.where.tableFilterType?JSON.parse(myTable.where.tableFilterType)[$that.data('column')]||'':'').hide().css({
+                $('#main-list' + tableId).data('type', myTable.where.tableFilterType ? JSON.parse(myTable.where.tableFilterType)[$that.data('column')] || '' : '').hide().css({
                     'top': $that.offset().top + 10,
                     'left': left
                 }).show().removeClass().addClass(animate + ' animated');
@@ -1513,7 +1518,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
             })
 
             // 表头样式
-            var where = where_cache[myTable.id]||{},
+            var where = where_cache[myTable.id] || {},
                 filterSos = JSON.parse(where.filterSos ? where.filterSos : '[]');
 
             for (var i = 0; i < filterSos.length; i++) {
@@ -1549,26 +1554,27 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                 $tableMain = $table.next().children('.layui-table-box').children('.layui-table-main');
             table.resize(myTable.id);
             // 减去底部筛选的高度
-            if ($table.next().children('.soul-bottom-contion').length>0) {
+            if ($table.next().children('.soul-bottom-contion').length > 0) {
                 // setTimeout(function () {
-                    $table.next().children('.soul-bottom-contion').children('.condition-items').css('width', $table.next().children('.soul-bottom-contion').width()-$table.next().children('.soul-bottom-contion').children('.editCondtion').outerWidth());
+                $table.next().children('.soul-bottom-contion').children('.condition-items').css('width', $table.next().children('.soul-bottom-contion').width() - $table.next().children('.soul-bottom-contion').children('.editCondtion').outerWidth());
 
-                    var bodyHeight = $table.next().height() - $table.next().children('.soul-bottom-contion').outerHeight()
-                    if ($table.next().children('.layui-table-tool').length>0) {
-                        bodyHeight = bodyHeight - $table.next().children('.layui-table-tool').outerHeight();
-                    }
-                    if ($table.next().children('.layui-table-total').length>0) {
-                        bodyHeight = bodyHeight - $table.next().children('.layui-table-total').outerHeight();
-                    }
-                    if ($table.next().children('.layui-table-page').length>0) {
-                        bodyHeight = bodyHeight - $table.next().children('.layui-table-page').outerHeight();
-                    }
+                var bodyHeight = $table.next().height() - $table.next().children('.soul-bottom-contion').outerHeight()
+                if ($table.next().children('.layui-table-tool').length > 0) {
+                    bodyHeight = bodyHeight - $table.next().children('.layui-table-tool').outerHeight();
+                }
+                if ($table.next().children('.layui-table-total').length > 0) {
+                    bodyHeight = bodyHeight - $table.next().children('.layui-table-total').outerHeight();
+                }
+                if ($table.next().children('.layui-table-page').length > 0) {
+                    bodyHeight = bodyHeight - $table.next().children('.layui-table-page').outerHeight();
+                }
 
-                    bodyHeight = bodyHeight - $table.next().children('.layui-table-box').children('.layui-table-header').outerHeight();
+                bodyHeight = bodyHeight - $table.next().children('.layui-table-box').children('.layui-table-header').outerHeight();
 
-                    $table.next().children('.layui-table-box').children('.layui-table-body').height(bodyHeight)
-                    var fixHeight = bodyHeight - _this.getScrollWidth($tableMain[0]), layMainTableHeight = $tableMain.children('table').height()
-                    $table.next().children('.layui-table-box').children('.layui-table-fixed').children('.layui-table-body').height(layMainTableHeight >= fixHeight ? fixHeight : 'auto')
+                $table.next().children('.layui-table-box').children('.layui-table-body').height(bodyHeight)
+                var fixHeight = bodyHeight - _this.getScrollWidth($tableMain[0]),
+                    layMainTableHeight = $tableMain.children('table').height()
+                $table.next().children('.layui-table-box').children('.layui-table-fixed').children('.layui-table-body').height(layMainTableHeight >= fixHeight ? fixHeight : 'auto')
                 // }, 300)
             }
         }
@@ -1635,7 +1641,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
          */
         , updateWhere: function (myTable, filterSo) {
             var _this = this,
-                where = where_cache[myTable.id]||{},
+                where = where_cache[myTable.id] || {},
                 filterSos = JSON.parse(where.filterSos ? where.filterSos : '[]');
 
             if (filterSo.id || filterSo.groupId) {
@@ -1696,7 +1702,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                 $table = $(myTable.elem),
                 scrollLeft = $table.next().children('.layui-table-box').children('.layui-table-main').scrollLeft();
 
-            isFilterReload[myTable.id]= typeof isr === 'undefined' ? true : isr;
+            isFilterReload[myTable.id] = typeof isr === 'undefined' ? true : isr;
             if (typeof myTable.url !== 'undefined' && myTable.page) {
                 $table.data('scrollLeft', scrollLeft);
                 /**
@@ -1796,7 +1802,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                 case "in":
                     if (filterSo.values && filterSo.values.length > 0) {
                         if (filterSo.split) {
-                            var tempList = (item[field]+'').split(filterSo.split);
+                            var tempList = (item[field] + '').split(filterSo.split);
                             var tempStatus = false;
                             for (var i = 0; i < tempList.length; i++) {
                                 if (filterSo.values.indexOf(tempList[i]) !== -1) {
@@ -1805,7 +1811,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                             }
                             status = tempStatus;
                         } else {
-                            status = filterSo.values.indexOf(item[field]+'') !== -1
+                            status = filterSo.values.indexOf(item[field] + '') !== -1
                         }
                     } else {
                         return show;
@@ -1817,35 +1823,35 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     }
                     switch (filterSo.type) {
                         case "eq":
-                            status = isNaN(item[field])||isNaN(value) ? item[field] === value : Number(item[field]) === Number(value);
+                            status = isNaN(item[field]) || isNaN(value) ? item[field] === value : Number(item[field]) === Number(value);
                             break;
                         case "ne":
-                            status = isNaN(item[field])||isNaN(value) ? item[field] !== value : Number(item[field]) !== Number(value);
+                            status = isNaN(item[field]) || isNaN(value) ? item[field] !== value : Number(item[field]) !== Number(value);
                             break;
                         case "gt":
-                            status = isNaN(item[field])||isNaN(value) ? item[field] > value : Number(item[field]) > Number(value);
+                            status = isNaN(item[field]) || isNaN(value) ? item[field] > value : Number(item[field]) > Number(value);
                             break;
                         case "ge":
-                            status = isNaN(item[field])||isNaN(value) ? item[field] >= value : Number(item[field]) >= Number(value);
+                            status = isNaN(item[field]) || isNaN(value) ? item[field] >= value : Number(item[field]) >= Number(value);
                             break;
                         case "lt":
-                            status = isNaN(item[field])||isNaN(value) ? item[field] < value : Number(item[field]) < Number(value);
+                            status = isNaN(item[field]) || isNaN(value) ? item[field] < value : Number(item[field]) < Number(value);
                             break;
                         case "le":
-                            status = isNaN(item[field])||isNaN(value) ? item[field] <= value : Number(item[field]) <= Number(value);
+                            status = isNaN(item[field]) || isNaN(value) ? item[field] <= value : Number(item[field]) <= Number(value);
                             break;
                         case "contain":
-                            status = (item[field]+'').indexOf(value) !== -1;
+                            status = (item[field] + '').indexOf(value) !== -1;
                             break;
                         case "notContain":
-                            status = (item[field]+'').indexOf(value) === -1;
+                            status = (item[field] + '').indexOf(value) === -1;
                             break;
                         case "start":
-                            status = (item[field]+'').indexOf(value) === 0;
+                            status = (item[field] + '').indexOf(value) === 0;
                             break;
                         case "end":
-                            var d = (item[field]+'').length - (value+'').length;
-                            status = d >= 0 && (item[field]+'').lastIndexOf(value) === d;
+                            var d = (item[field] + '').length - (value + '').length;
+                            status = d >= 0 && (item[field] + '').lastIndexOf(value) === d;
                             break;
                         case "null":
                             status = typeof item[field] === 'undefined' || item[field] === '' || item[field] === null;
@@ -1862,61 +1868,68 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                             status = true;
                             break;
                         case 'yesterday':
-                            status = item[field] && isBetween(dateVal,getToday()-1, getToday()-86400);
+                            status = item[field] && isBetween(dateVal, getToday() - 1, getToday() - 86400);
                             break;
                         case 'thisWeek':
-                            status = item[field] && isBetween(dateVal,getFirstDayOfWeek(), getFirstDayOfWeek()+86400*7-1);
+                            status = item[field] && isBetween(dateVal, getFirstDayOfWeek(), getFirstDayOfWeek() + 86400 * 7 - 1);
                             break;
                         case 'lastWeek':
-                            status = item[field] && isBetween(dateVal,getFirstDayOfWeek()-86400*7, getFirstDayOfWeek()-1);
+                            status = item[field] && isBetween(dateVal, getFirstDayOfWeek() - 86400 * 7, getFirstDayOfWeek() - 1);
                             break;
                         case 'thisMonth':
-                            status = item[field] && isBetween(dateVal,getFirstDayOfMonth(), getCurrentMonthLast());
+                            status = item[field] && isBetween(dateVal, getFirstDayOfMonth(), getCurrentMonthLast());
                             break;
                         case 'thisYear':
-                            status = item[field] && isBetween(dateVal,new Date(new Date().getFullYear(), 1, 1)/1000, new Date(new Date().getFullYear()+1, 1, 1)/1000-1);
+                            status = item[field] && isBetween(dateVal, new Date(new Date().getFullYear(), 1, 1) / 1000, new Date(new Date().getFullYear() + 1, 1, 1) / 1000 - 1);
                             break;
                         case 'specific':
                             var dateFormat = dateVal.getFullYear();
-                            dateFormat += '-'+(timeAdd0(dateVal.getMonth()+1));
-                            dateFormat += '-'+timeAdd0(dateVal.getDate());
+                            dateFormat += '-' + (timeAdd0(dateVal.getMonth() + 1));
+                            dateFormat += '-' + timeAdd0(dateVal.getDate());
                             status = item[field] && dateFormat === value
                             break;
                     }
                     break;
             }
+
             // 今天凌晨
             function getToday() {
                 return new Date().setHours(0, 0, 0, 0) / 1000;
             }
+
             // 本周第一天
             function getFirstDayOfWeek() {
                 var now = new Date();
-                var weekday = now.getDay()||7; //获取星期几,getDay()返回值是 0（周日） 到 6（周六） 之间的一个整数。0||7为7，即weekday的值为1-7
-                return new Date(now.setDate(now.getDate()-weekday+1)).setHours(0, 0, 0, 0) / 1000;//往前算（weekday-1）天，年份、月份会自动变化
+                var weekday = now.getDay() || 7; //获取星期几,getDay()返回值是 0（周日） 到 6（周六） 之间的一个整数。0||7为7，即weekday的值为1-7
+                return new Date(now.setDate(now.getDate() - weekday + 1)).setHours(0, 0, 0, 0) / 1000;//往前算（weekday-1）天，年份、月份会自动变化
             }
+
             //获取当月第一天
-            function getFirstDayOfMonth () {
+            function getFirstDayOfMonth() {
                 return new Date(new Date().setDate(1)).setHours(0, 0, 0, 0) / 1000;
             }
+
             //获取当月最后一天最后一秒
-            function getCurrentMonthLast(){
-                var date=new Date();
-                var currentMonth=date.getMonth();
-                var nextMonth=++currentMonth;
-                var nextMonthFirstDay=new Date(date.getFullYear(),nextMonth,1);
-                return nextMonthFirstDay/1000 -1;
+            function getCurrentMonthLast() {
+                var date = new Date();
+                var currentMonth = date.getMonth();
+                var nextMonth = ++currentMonth;
+                var nextMonthFirstDay = new Date(date.getFullYear(), nextMonth, 1);
+                return nextMonthFirstDay / 1000 - 1;
             }
-            function isBetween(v , a , b) {
-                return (v.getTime()/1000)>=a&&(v.getTime()/1000)<=b;
+
+            function isBetween(v, a, b) {
+                return (v.getTime() / 1000) >= a && (v.getTime() / 1000) <= b;
             }
+
             function timeAdd0(str) {
                 str += "";
-                if(str.length<=1){
-                    str='0'+str;
+                if (str.length <= 1) {
+                    str = '0' + str;
                 }
                 return str
             }
+
             return isOr ? show || status : show && status;
         }
         , getDifId: function () {
@@ -2084,14 +2097,14 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
         }
         , renderBottomCondition: function (myTable) {
             var _this = this,
-                where = where_cache[myTable.id]||{},
+                where = where_cache[myTable.id] || {},
                 filterSos = where.filterSos ? JSON.parse(where.filterSos) : [],
                 tableFilterTypes = where.tableFilterType ? JSON.parse(where.tableFilterType) : {},
                 $table = $(myTable.elem),
                 tableId = myTable.id,
                 $bottomCondition = $table.next().children('.soul-bottom-contion'),
                 fieldMap = {}, bcHtml = [],
-                filterItems = myTable.filter?myTable.filter.items||['column','data','condition','editCondition','excel']:['column','data','condition','editCondition','excel'],
+                filterItems = myTable.filter ? myTable.filter.items || ['column', 'data', 'condition', 'editCondition', 'excel'] : ['column', 'data', 'condition', 'editCondition', 'excel'],
                 columns = _this.getCompleteCols(myTable.cols);
             for (var i = 0; i < columns.length; i++) {
                 if (columns[i].field && columns[i].filter) {
@@ -2130,10 +2143,10 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
             // 3. 条件选择
             if ($('#soul-bf-type' + tableId).length === 0) {
                 bcHtml.push('<div id="soul-bf-type' + tableId + '" style="display: none;"><ul>')
-                if (filterItems.indexOf('data')!==-1) {
+                if (filterItems.indexOf('data') !== -1) {
                     bcHtml.push('<li data-value="in" data-mode="in">筛选数据</li>')
                 }
-                if (filterItems.indexOf('condition')!==-1) {
+                if (filterItems.indexOf('condition') !== -1) {
                     bcHtml.push('<li data-value="all" data-mode="date">选择日期</li>')
                     for (var key in conditionChangeItems) {
                         bcHtml.push('<li data-value="' + key + '" data-mode="condition">' + conditionChangeItems[key] + '</li>')
@@ -2490,14 +2503,14 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
             }
             var loading = layer.msg('文件下载中', {
                 icon: 16
-                ,time: -1
-                ,anim: -1
-                ,fixed: false
+                , time: -1
+                , anim: -1
+                , fixed: false
             });
             var cols = this.deepClone(myTable.cols)
-                ,style = myTable.elem.next().find('style')[0]
-                ,sheet = style.sheet || style.styleSheet || {}
-                ,rules = sheet.cssRules || sheet.rules;
+                , style = myTable.elem.next().find('style')[0]
+                , sheet = style.sheet || style.styleSheet || {}
+                , rules = sheet.cssRules || sheet.rules;
 
             layui.each(rules, function (i, item) {
                 if (item.style.width) {
@@ -2515,17 +2528,17 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                 $tableBody = $table.next().children('.layui-table-box').children('.layui-table-body').children('table'),
                 mainExcel = typeof myTable.excel === 'undefined' || ((myTable.excel && (typeof myTable.excel.on === 'undefined' || myTable.excel.on)) ? myTable.excel : false);
 
-                mainExcel = mainExcel === true ? {} : mainExcel || {};
-                curExcel = curExcel || {};
+            mainExcel = mainExcel === true ? {} : mainExcel || {};
+            curExcel = curExcel || {};
 
-                var filename = curExcel.filename?(typeof curExcel.filename === 'function'?curExcel.filename.call(this):curExcel.filename)
-                    : mainExcel.filename?(typeof mainExcel.filename === 'function'?mainExcel.filename.call(this):mainExcel.filename)
-                        : '表格数据.xlsx',
-                    checked = curExcel.checked === true ? true : mainExcel.checked === true,
-                    customColumns = curExcel.columns || mainExcel.columns,
-                    type = filename.substring(filename.lastIndexOf('.') + 1, filename.length),
-                    tableStartIndex = mainExcel.add && mainExcel.add.top && Array.isArray(mainExcel.add.top.data) ? mainExcel.add.top.data.length + 1 : 1,  //表格内容从哪一行开始
-                    bottomLength = mainExcel.add && mainExcel.add.bottom && Array.isArray(mainExcel.add.bottom.data) ? mainExcel.add.bottom.data.length : 0;// 底部自定义行数
+            var filename = curExcel.filename ? (typeof curExcel.filename === 'function' ? curExcel.filename.call(this) : curExcel.filename)
+                : mainExcel.filename ? (typeof mainExcel.filename === 'function' ? mainExcel.filename.call(this) : mainExcel.filename)
+                    : '表格数据.xlsx',
+                checked = curExcel.checked === true ? true : mainExcel.checked === true,
+                customColumns = curExcel.columns || mainExcel.columns,
+                type = filename.substring(filename.lastIndexOf('.') + 1, filename.length),
+                tableStartIndex = mainExcel.add && mainExcel.add.top && Array.isArray(mainExcel.add.top.data) ? mainExcel.add.top.data.length + 1 : 1,  //表格内容从哪一行开始
+                bottomLength = mainExcel.add && mainExcel.add.bottom && Array.isArray(mainExcel.add.bottom.data) ? mainExcel.add.bottom.data.length : 0;// 底部自定义行数
 
             if (checked) { // 获取选中行数据
                 data = table.checkStatus(myTable.id).data;
@@ -2541,13 +2554,13 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     headers: myTable.headers || {},
                     contentType: myTable.contentType,
                     success: function (res) {
-                        if(typeof myTable.parseData === 'function'){
+                        if (typeof myTable.parseData === 'function') {
                             res = myTable.parseData(res) || res;
                         }
                         data = res.data
                     },
                     error: function (res) {
-                        layer.msg('请求异常！',{icon:2,anim:6});
+                        layer.msg('请求异常！', {icon: 2, anim: 6});
                         ajaxStatus = false;
                     }
                 })
@@ -2573,22 +2586,22 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
             }
 
             // 制定显示列和顺序
-            var i,j,k, tempArray, cloneCol, columnsMap = [];
+            var i, j, k, tempArray, cloneCol, columnsMap = [];
             for (i = 0; i < cols.length; i++) {
                 for (j = 0; j < cols[i].length; j++) {
                     if (!cols[i][j].exportHandled) {
                         if (cols[i][j].rowspan > 1) {
-                            mergeArrays.push([numberToLetter(j+1)+(i+tableStartIndex), numberToLetter(j+1)+(i+parseInt(cols[i][j].rowspan) + tableStartIndex - 1)])
+                            mergeArrays.push([numberToLetter(j + 1) + (i + tableStartIndex), numberToLetter(j + 1) + (i + parseInt(cols[i][j].rowspan) + tableStartIndex - 1)])
                             cloneCol = this.deepClone(cols[i][j])
                             cloneCol.exportHandled = true;
-                            k = i+1;
+                            k = i + 1;
                             while (k < cols.length) {
                                 cols[k].splice(j, 0, cloneCol)
                                 k++
                             }
                         }
                         if (cols[i][j].colspan > 1) {
-                            mergeArrays.push([numberToLetter(j+1)+(i+tableStartIndex), numberToLetter(j+parseInt(cols[i][j].colspan))+(i+tableStartIndex)])
+                            mergeArrays.push([numberToLetter(j + 1) + (i + tableStartIndex), numberToLetter(j + parseInt(cols[i][j].colspan)) + (i + tableStartIndex)])
                             cloneCol = this.deepClone(cols[i][j])
                             cloneCol.exportHandled = true;
                             for (k = 1; k < cols[i][j].colspan; k++) {
@@ -2599,7 +2612,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     }
                 }
             }
-            var columns = cols[cols.length-1];
+            var columns = cols[cols.length - 1];
             if (customColumns && Array.isArray(customColumns)) {
                 var tempCustomColumns = [];
                 tempArray = {};
@@ -2623,8 +2636,8 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     columnsMap[i] = {}
                     tempArray = {}
                     for (j = 0; j < cols[i].length; j++) {
-                        columnsMap[i][cols[i][j].type === 'numbers' ? 'LAY_TABLE_INDEX' : cols[cols.length-1][j].field] = cols[i][j];
-                        tempArray[cols[i][j].type === 'numbers' ? 'LAY_TABLE_INDEX' : cols[cols.length-1][j].field] = cols[i][j].title
+                        columnsMap[i][cols[i][j].type === 'numbers' ? 'LAY_TABLE_INDEX' : cols[cols.length - 1][j].field] = cols[i][j];
+                        tempArray[cols[i][j].type === 'numbers' ? 'LAY_TABLE_INDEX' : cols[cols.length - 1][j].field] = cols[i][j].title
                     }
                     data.splice(i, 0, tempArray)
                 }
@@ -2636,13 +2649,13 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     addBottom = mainExcel.add.bottom,
                     startPos, endPos, jumpColsNum;
 
-                if (addTop && Array.isArray(addTop.data) && addTop.data.length>0) {
+                if (addTop && Array.isArray(addTop.data) && addTop.data.length > 0) {
 
                     for (i = 0; i < addTop.data.length; i++) {
                         tempArray = {}, jumpColsNum = 0;
-                        for (j = 0; j < (addTop.data[i].length>columns.length?addTop.data[i].length:columns.length); j++) {
+                        for (j = 0; j < (addTop.data[i].length > columns.length ? addTop.data[i].length : columns.length); j++) {
                             if ((columns[j].field || columns[j].type === 'numbers') && !columns[j].hide) {
-                                tempArray[columns[j] ? columns[j].type === 'numbers' ? 'LAY_TABLE_INDEX' : columns[j].field : j+''] = addTop.data[i][j - jumpColsNum] || ''
+                                tempArray[columns[j] ? columns[j].type === 'numbers' ? 'LAY_TABLE_INDEX' : columns[j].field : j + ''] = addTop.data[i][j - jumpColsNum] || ''
                             } else {
                                 jumpColsNum++
                             }
@@ -2650,29 +2663,29 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                         data.splice(i, 0, tempArray);
                     }
 
-                    if (Array.isArray(addTop.heights) && addTop.heights.length>0) {
+                    if (Array.isArray(addTop.heights) && addTop.heights.length > 0) {
                         for (i = 0; i < addTop.heights.length; i++) {
                             heightConfig[i] = addTop.heights[i]
                         }
                     }
 
-                    if (Array.isArray(addTop.merge) && addTop.merge.length>0) {
+                    if (Array.isArray(addTop.merge) && addTop.merge.length > 0) {
                         for (i = 0; i < addTop.merge.length; i++) {
                             if (addTop.merge[i].length === 2) {
                                 startPos = addTop.merge[i][0].split(',');
                                 endPos = addTop.merge[i][1].split(',');
-                                mergeArrays.push([numberToLetter(startPos[1])+startPos[0], numberToLetter(endPos[1])+endPos[0]])
+                                mergeArrays.push([numberToLetter(startPos[1]) + startPos[0], numberToLetter(endPos[1]) + endPos[0]])
                             }
 
                         }
                     }
                 }
-                if (addBottom && Array.isArray(addBottom.data) && addBottom.data.length>0) {
+                if (addBottom && Array.isArray(addBottom.data) && addBottom.data.length > 0) {
                     for (i = 0; i < addBottom.data.length; i++) {
                         tempArray = {}, jumpColsNum = 0;
-                        for (j = 0; j < (addBottom.data[i].length>columns.length?addBottom.data[i].length:columns.length); j++) {
+                        for (j = 0; j < (addBottom.data[i].length > columns.length ? addBottom.data[i].length : columns.length); j++) {
                             if ((columns[j].field || columns[j].type === 'numbers') && !columns[j].hide) {
-                                tempArray[columns[j] ? columns[j].type === 'numbers' ? 'LAY_TABLE_INDEX' : columns[j].field : j+''] = addBottom.data[i][j - jumpColsNum] || ''
+                                tempArray[columns[j] ? columns[j].type === 'numbers' ? 'LAY_TABLE_INDEX' : columns[j].field : j + ''] = addBottom.data[i][j - jumpColsNum] || ''
                             } else {
                                 jumpColsNum++
                             }
@@ -2680,25 +2693,26 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                         data.push(tempArray);
                     }
 
-                    if (Array.isArray(addBottom.heights) && addBottom.heights.length>0) {
+                    if (Array.isArray(addBottom.heights) && addBottom.heights.length > 0) {
                         for (i = 0; i < addBottom.heights.length; i++) {
                             heightConfig[data.length - addBottom.data.length + i] = addBottom.heights[i]
                         }
                     }
 
-                    if (Array.isArray(addBottom.merge) && addBottom.merge.length>0) {
+                    if (Array.isArray(addBottom.merge) && addBottom.merge.length > 0) {
                         for (i = 0; i < addBottom.merge.length; i++) {
                             if (addBottom.merge[i].length === 2) {
                                 startPos = addBottom.merge[i][0].split(',');
                                 endPos = addBottom.merge[i][1].split(',');
-                                mergeArrays.push([numberToLetter(startPos[1])+(data.length - addBottom.data.length + parseInt(startPos[0])), numberToLetter(endPos[1])+(data.length - addBottom.data.length + parseInt(endPos[0]))])
+                                mergeArrays.push([numberToLetter(startPos[1]) + (data.length - addBottom.data.length + parseInt(startPos[0])), numberToLetter(endPos[1]) + (data.length - addBottom.data.length + parseInt(endPos[0]))])
                             }
                         }
                     }
                 }
             }
 
-            var index = 0, alignTrans = {'left':'top', 'center':'center', 'right': 'bottom'}, borderTypes=['top','bottom', 'left', 'right'];
+            var index = 0, alignTrans = {'left': 'top', 'center': 'center', 'right': 'bottom'},
+                borderTypes = ['top', 'bottom', 'left', 'right'];
             for (i = 0; i < columns.length; i++) {
                 if ((columns[i].field || columns[i].type === 'numbers') && !columns[i].hide) {
                     if (columns[i].width) {
@@ -2736,7 +2750,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                                 }
                             }
                         }
-                        if (curIndex < tableStartIndex -1 || curIndex >= data.length - bottomLength) {
+                        if (curIndex < tableStartIndex - 1 || curIndex >= data.length - bottomLength) {
                             return {
                                 v: line[field] || '',
                                 s: {// s 代表样式
@@ -2791,7 +2805,7 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                                 }
                             }
                             if (columnsMap[columnsMap.length - 1][field].excel) {
-                                var colExcel = typeof columnsMap[columnsMap.length - 1][field].excel === 'function' ? columnsMap[columnsMap.length - 1][field].excel.call(this, line, bodyIndex, data.length - cols.length - tableStartIndex + 1 - bottomLength ) : columnsMap[columnsMap.length - 1][field].excel
+                                var colExcel = typeof columnsMap[columnsMap.length - 1][field].excel === 'function' ? columnsMap[columnsMap.length - 1][field].excel.call(this, line, bodyIndex, data.length - cols.length - tableStartIndex + 1 - bottomLength) : columnsMap[columnsMap.length - 1][field].excel
                                 if (colExcel) {
                                     bgColor = colExcel.bgColor || bgColor;
                                     color = colExcel.color || color;
@@ -2817,12 +2831,12 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                         return {
                             v: bodyIndex >= 0 && columnsMap[columnsMap.length - 1][field].templet ?
                                 typeof columnsMap[columnsMap.length - 1][field].templet === 'function' ?
-                                    $('<div>' + columnsMap[columnsMap.length - 1][field].templet(line) + '</div>').find(':input').length===0?$('<div>' + columnsMap[columnsMap.length - 1][field].templet(line) + '</div>').text():$tableBody.children('tbody').children('tr[data-index='+bodyIndex+']').children('td[data-field="'+field+'"]').find(':input').val() || line[field] || ''
-                                    : $('<div>'+laytpl($(columnsMap[columnsMap.length - 1][field].templet).html() || String(columnsMap[columnsMap.length - 1][field].templet)).render(line)+'</div>').find(':input').length===0?$('<div>'+laytpl($(columnsMap[columnsMap.length - 1][field].templet).html() || String(columnsMap[columnsMap.length - 1][field].templet)).render(line)+'</div>').text():$tableBody.children('tbody').children('tr[data-index='+bodyIndex+']').children('td[data-field="'+field+'"]').find(':input').val() || line[field] || ''
-                                : bodyIndex >=0 && field === 'LAY_TABLE_INDEX' ? bodyIndex+1 : line[field] || '',// v 代表单元格的值
+                                    $('<div>' + columnsMap[columnsMap.length - 1][field].templet(line) + '</div>').find(':input').length === 0 ? $('<div>' + columnsMap[columnsMap.length - 1][field].templet(line) + '</div>').text() : $tableBody.children('tbody').children('tr[data-index=' + bodyIndex + ']').children('td[data-field="' + field + '"]').find(':input').val() || line[field] || ''
+                                    : $('<div>' + laytpl($(columnsMap[columnsMap.length - 1][field].templet).html() || String(columnsMap[columnsMap.length - 1][field].templet)).render(line) + '</div>').find(':input').length === 0 ? $('<div>' + laytpl($(columnsMap[columnsMap.length - 1][field].templet).html() || String(columnsMap[columnsMap.length - 1][field].templet)).render(line) + '</div>').text() : $tableBody.children('tbody').children('tr[data-index=' + bodyIndex + ']').children('td[data-field="' + field + '"]').find(':input').val() || line[field] || ''
+                                : bodyIndex >= 0 && field === 'LAY_TABLE_INDEX' ? bodyIndex + 1 : line[field] || '',// v 代表单元格的值
                             s: {// s 代表样式
                                 alignment: {
-                                    horizontal: columnsMap[bodyIndex<-1 ? curIndex - tableStartIndex + 1 : columnsMap.length - 1][field].align ? alignTrans[columnsMap[bodyIndex<-1 ? curIndex - tableStartIndex + 1 : columnsMap.length - 1][field].align] : 'top',
+                                    horizontal: columnsMap[bodyIndex < -1 ? curIndex - tableStartIndex + 1 : columnsMap.length - 1][field].align ? alignTrans[columnsMap[bodyIndex < -1 ? curIndex - tableStartIndex + 1 : columnsMap.length - 1][field].align] : 'top',
                                     vertical: 'center'
                                 },
                                 font: {name: family, sz: size, color: {rgb: color}},
@@ -2852,13 +2866,14 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
             function handleRgb(rgb) {
                 return rgb ? {rgb: rgb} : rgb
             }
-            function numberToLetter(num){
+
+            function numberToLetter(num) {
                 var result = [];
-                while(num){
+                while (num) {
                     var t = num % 26;
-                    if(!t){
+                    if (!t) {
                         t = 26;
-                        -- num;
+                        --num;
                     }
                     result.push(String.fromCodePoint(t + 64));
                     num = ~~(num / 26);
@@ -2866,38 +2881,38 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                 return result.reverse().join('');
             }
         },
-        startsWith: function(content, str) {
+        startsWith: function (content, str) {
             var reg = new RegExp("^" + str);
             return content && reg.test(content);
         },
         // 深度克隆
         deepClone: function (obj) {
-          return this.deepParse(this.deepStringify(obj))
+            return this.deepParse(this.deepStringify(obj))
         },
         deepStringify: function (obj) {
             var JSON_SERIALIZE_FIX = {
-                PREFIX : "[[JSON_FUN_PREFIX_",
-                SUFFIX : "_JSON_FUN_SUFFIX]]"
+                PREFIX: "[[JSON_FUN_PREFIX_",
+                SUFFIX: "_JSON_FUN_SUFFIX]]"
             };
-            return JSON.stringify(obj,function(key, value){
-                if(typeof value === 'function'){
-                    return JSON_SERIALIZE_FIX.PREFIX+value.toString()+JSON_SERIALIZE_FIX.SUFFIX;
+            return JSON.stringify(obj, function (key, value) {
+                if (typeof value === 'function') {
+                    return JSON_SERIALIZE_FIX.PREFIX + value.toString() + JSON_SERIALIZE_FIX.SUFFIX;
                 }
                 return value;
             });
         },
         deepParse: function (str) {
             var JSON_SERIALIZE_FIX = {
-                PREFIX : "[[JSON_FUN_PREFIX_",
-                SUFFIX : "_JSON_FUN_SUFFIX]]"
+                PREFIX: "[[JSON_FUN_PREFIX_",
+                SUFFIX: "_JSON_FUN_SUFFIX]]"
             };
-            return JSON.parse(str,function(key, value){
-                if(typeof value === 'string' &&
-                    value.indexOf(JSON_SERIALIZE_FIX.SUFFIX)>0 && value.indexOf(JSON_SERIALIZE_FIX.PREFIX)===0){
-                    return eval("("+value.replace(JSON_SERIALIZE_FIX.PREFIX,"").replace(JSON_SERIALIZE_FIX.SUFFIX,"")+")");
+            return JSON.parse(str, function (key, value) {
+                if (typeof value === 'string' &&
+                    value.indexOf(JSON_SERIALIZE_FIX.SUFFIX) > 0 && value.indexOf(JSON_SERIALIZE_FIX.PREFIX) === 0) {
+                    return eval("(" + value.replace(JSON_SERIALIZE_FIX.PREFIX, "").replace(JSON_SERIALIZE_FIX.SUFFIX, "") + ")");
                 }
                 return value;
-            })||{};
+            }) || {};
         },
         /* layui table 中原生的方法 */
         getScrollWidth: function (elem) {
@@ -2916,16 +2931,16 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
             }
             return width;
         }
-        ,getCompleteCols: function (origin) {
+        , getCompleteCols: function (origin) {
             var cols = this.deepParse(this.deepStringify(origin));
-            var i,j,k, cloneCol;
+            var i, j, k, cloneCol;
             for (i = 0; i < cols.length; i++) {
                 for (j = 0; j < cols[i].length; j++) {
                     if (!cols[i][j].exportHandled) {
                         if (cols[i][j].rowspan > 1) {
                             cloneCol = this.deepClone(cols[i][j])
                             cloneCol.exportHandled = true;
-                            k = i+1;
+                            k = i + 1;
                             while (k < cols.length) {
                                 cols[k].splice(j, 0, cloneCol)
                                 k++
@@ -2942,9 +2957,9 @@ layui.define(['table', 'form', 'laydate', 'util', 'excel', 'laytpl'], function (
                     }
                 }
             }
-            return cols[cols.length-1];
+            return cols[cols.length - 1];
         }
-        ,cache: cache
+        , cache: cache
     };
 
     // 输出

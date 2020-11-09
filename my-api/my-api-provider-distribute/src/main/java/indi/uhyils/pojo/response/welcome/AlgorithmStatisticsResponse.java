@@ -15,18 +15,18 @@ public class AlgorithmStatisticsResponse implements Serializable {
      */
     private List<String> list;
 
+    public static AlgorithmStatisticsResponse build(List<String> list) {
+        AlgorithmStatisticsResponse build = new AlgorithmStatisticsResponse();
+        build.setList(list);
+        return build;
+
+    }
+
     public List<String> getList() {
         return list;
     }
 
     public void setList(List<String> list) {
         this.list = list;
-    }
-
-    public static AlgorithmStatisticsResponse build(List<String> list) {
-        AlgorithmStatisticsResponse build = new AlgorithmStatisticsResponse();
-        build.setList(list);
-        return build;
-
     }
 }

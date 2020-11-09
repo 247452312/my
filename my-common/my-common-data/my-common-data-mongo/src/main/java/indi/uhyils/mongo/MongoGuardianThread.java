@@ -11,17 +11,15 @@ import java.util.List;
  */
 public class MongoGuardianThread implements Runnable {
 
-    private MongoConnPool pool;
-
-    /**
-     * 保持启动
-     */
-    private volatile Boolean alive;
-
     /**
      * 睡眠时间 1分钟
      */
     private static final Long SLEEP_TIME = 1000L * 60;
+    private MongoConnPool pool;
+    /**
+     * 保持启动
+     */
+    private volatile Boolean alive;
 
     public MongoGuardianThread(MongoConnPool pool) {
         alive = true;

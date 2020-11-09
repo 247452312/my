@@ -30,14 +30,12 @@ import java.util.UUID;
 @ReadWriteMark
 public class VerificationServiceImpl implements VerificationService {
 
-    @Autowired
-    private RedisPoolHandle redisPool;
-
-
     /**
      * 验证码有效期
      */
     private static final Integer VERIFICATION_TIME_OUT = 30;
+    @Autowired
+    private RedisPoolHandle redisPool;
 
     @Override
     @NoToken

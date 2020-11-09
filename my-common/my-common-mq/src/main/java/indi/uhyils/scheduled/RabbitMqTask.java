@@ -41,6 +41,43 @@ public class RabbitMqTask {
 
     private Channel statusChannel;
 
+    /**
+     * 发送JVM start信息 并且发送第一次JVM状态信息
+     *
+     * @param channel       管道
+     * @param jvmUniqueMark JVM唯一标示
+     */
+    public static void sendJvmStartInfo(Channel channel, JvmUniqueMark jvmUniqueMark) {
+        if (channel == null) {
+            return;
+        }
+        try {
+            JvmStartInfo jvmStartInfo = JvmUtil.getJvmStartInfo(jvmUniqueMark);
+            String s = JSON.toJSONString(jvmStartInfo);
+            channel.basicPublish(RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.JVM_START_QUEUE_NAME, null, s.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            LogUtil.error(RabbitMqTask.class, e);
+        }
+    }
+
+    /**
+     * 发送JVM状态信息
+     *
+     * @param channel MQ管道
+     */
+    public static void sendJvmStatusInfo(Channel channel, JvmUniqueMark jvmUniqueMark) {
+        if (channel == null) {
+            return;
+        }
+        try {
+            JvmStatusInfo jvmStatusInfo = JvmUtil.getJvmStatusInfo(jvmUniqueMark);
+            String s = JSON.toJSONString(jvmStatusInfo);
+            channel.basicPublish(RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.JVM_STATUS_QUEUE_NAME, null, s.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            LogUtil.error(RabbitMqTask.class, e);
+        }
+
+    }
 
     /**
      * 从程序启动开始 每半小时执行一次
@@ -130,51 +167,11 @@ public class RabbitMqTask {
         }
     }
 
-
     public JvmUniqueMark getJvmUniqueMark() {
         return jvmUniqueMark;
     }
 
     public void setJvmUniqueMark(JvmUniqueMark jvmUniqueMark) {
         this.jvmUniqueMark = jvmUniqueMark;
-    }
-
-
-    /**
-     * 发送JVM start信息 并且发送第一次JVM状态信息
-     *
-     * @param channel       管道
-     * @param jvmUniqueMark JVM唯一标示
-     */
-    public static void sendJvmStartInfo(Channel channel, JvmUniqueMark jvmUniqueMark) {
-        if (channel == null) {
-            return;
-        }
-        try {
-            JvmStartInfo jvmStartInfo = JvmUtil.getJvmStartInfo(jvmUniqueMark);
-            String s = JSON.toJSONString(jvmStartInfo);
-            channel.basicPublish(RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.JVM_START_QUEUE_NAME, null, s.getBytes(StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            LogUtil.error(RabbitMqTask.class, e);
-        }
-    }
-
-    /**
-     * 发送JVM状态信息
-     *
-     * @param channel MQ管道
-     */
-    public static void sendJvmStatusInfo(Channel channel, JvmUniqueMark jvmUniqueMark) {
-        if (channel == null) {
-            return;
-        }
-        try {
-            JvmStatusInfo jvmStatusInfo = JvmUtil.getJvmStatusInfo(jvmUniqueMark);
-            String s = JSON.toJSONString(jvmStatusInfo);
-            channel.basicPublish(RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.JVM_STATUS_QUEUE_NAME, null, s.getBytes(StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            LogUtil.error(RabbitMqTask.class, e);
-        }
-
     }
 }

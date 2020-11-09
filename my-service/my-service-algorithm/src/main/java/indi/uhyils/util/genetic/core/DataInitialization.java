@@ -10,13 +10,6 @@ package indi.uhyils.util.genetic.core;
 public interface DataInitialization<T extends Data> {
 
     /**
-     * 设置离得近的个体可以看做一个个体的最小值
-     *
-     * @param distance
-     */
-    void setDistance(Double distance);
-
-    /**
      * 获取设置好的欧氏距离
      *
      * @return
@@ -24,12 +17,18 @@ public interface DataInitialization<T extends Data> {
     Double getDistance();
 
     /**
+     * 设置离得近的个体可以看做一个个体的最小值
+     *
+     * @param distance
+     */
+    void setDistance(Double distance);
+
+    /**
      * 随机初始化种群
      *
      * @return 随机出来的一个东西
      */
     T random();
-
 
 
     /**

@@ -15,6 +15,12 @@ public class ConcurrentInfo implements Serializable {
      */
     private Long concurrentNumber;
 
+    public static ConcurrentInfo build(Long concurrentNumber) {
+        ConcurrentInfo build = new ConcurrentInfo();
+        build.concurrentNumber = concurrentNumber;
+        return build;
+
+    }
 
     public Long getConcurrentNumber() {
         return concurrentNumber;
@@ -22,12 +28,5 @@ public class ConcurrentInfo implements Serializable {
 
     public void setConcurrentNumber(Long concurrentNumber) {
         this.concurrentNumber = concurrentNumber;
-    }
-
-    public static ConcurrentInfo build(Long concurrentNumber) {
-        ConcurrentInfo build = new ConcurrentInfo();
-        build.concurrentNumber = concurrentNumber;
-        return build;
-
     }
 }

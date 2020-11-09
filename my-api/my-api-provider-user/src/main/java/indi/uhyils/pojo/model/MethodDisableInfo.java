@@ -26,6 +26,16 @@ public class MethodDisableInfo implements Serializable {
      */
     private Integer disableType;
 
+    public static MethodDisableInfo build(String className, String methodName, Integer disableType) {
+        MethodDisableInfo build = new MethodDisableInfo();
+        build.className = className;
+        build.methodName = methodName;
+        build.disableType = disableType;
+
+        return build;
+
+    }
+
     public String getClassName() {
         return className;
     }
@@ -48,15 +58,5 @@ public class MethodDisableInfo implements Serializable {
 
     public void setDisableType(Integer disableType) {
         this.disableType = disableType;
-    }
-
-    public static MethodDisableInfo build(String className, String methodName, Integer disableType) {
-        MethodDisableInfo build = new MethodDisableInfo();
-        build.className = className;
-        build.methodName = methodName;
-        build.disableType = disableType;
-
-        return build;
-
     }
 }

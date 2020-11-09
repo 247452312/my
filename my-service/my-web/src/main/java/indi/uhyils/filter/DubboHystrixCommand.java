@@ -91,6 +91,19 @@ public class DubboHystrixCommand extends HystrixCommand<Result> {
         }
     }
 
+    @Override
+    protected Result run() throws Exception {
+        Result result = invoker.invoke(invocation);
+        // 如果远程调用异常，抛出异常就会调用getFallback()方法去执行降级逻辑
+        if (result.hasException()) {
+            throw new HystrixRuntimeException(HystrixRuntimeException.FailureType.COMMAND_EXCEPTION,
+                    DubboHystrixCommand.class, result.getException().getMessage(),
+                    result.getException(), null);
+        }
+
+        return result;
+    }
+
     class MyAppResponse extends AppResponse {
 
         private Object result;
@@ -108,19 +121,5 @@ public class DubboHystrixCommand extends HystrixCommand<Result> {
         public Result whenCompleteWithContext(BiConsumer<Result, Throwable> fn) {
             return this;
         }
-    }
-
-
-    @Override
-    protected Result run() throws Exception {
-        Result result = invoker.invoke(invocation);
-        // 如果远程调用异常，抛出异常就会调用getFallback()方法去执行降级逻辑
-        if (result.hasException()) {
-            throw new HystrixRuntimeException(HystrixRuntimeException.FailureType.COMMAND_EXCEPTION,
-                    DubboHystrixCommand.class, result.getException().getMessage(),
-                    result.getException(), null);
-        }
-
-        return result;
     }
 }

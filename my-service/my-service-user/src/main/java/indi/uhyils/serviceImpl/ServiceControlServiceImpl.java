@@ -29,13 +29,12 @@ import java.util.Map;
 @ReadWriteMark
 public class ServiceControlServiceImpl implements ServiceControlService {
 
-    @Autowired
-    private RedisPoolHandle redisPoolHandle;
-
     /**
      * 接口连接方法的分隔符
      */
     private static final String METHOD_LINK_CLASS_SYMBOL = "#";
+    @Autowired
+    private RedisPoolHandle redisPoolHandle;
 
     @Override
     public ServiceResult<Boolean> getMethodDisable(GetMethodDisableRequest request) {

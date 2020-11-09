@@ -104,6 +104,7 @@ public interface EsDao {
      * @return
      */
     String getById(String index, String type, String id) throws IOException;
+
     /**
      * 获取String
      *

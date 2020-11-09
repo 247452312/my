@@ -18,6 +18,13 @@ public class VerificationRequest extends DefaultRequest {
      */
     private String key;
 
+    public static VerificationRequest build(String code, String key) {
+        VerificationRequest build = new VerificationRequest();
+        build.setCode(code);
+        build.setKey(key);
+        return build;
+
+    }
 
     public String getCode() {
         return code;
@@ -33,13 +40,5 @@ public class VerificationRequest extends DefaultRequest {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public static VerificationRequest build(String code, String key) {
-        VerificationRequest build = new VerificationRequest();
-        build.setCode(code);
-        build.setKey(key);
-        return build;
-
     }
 }

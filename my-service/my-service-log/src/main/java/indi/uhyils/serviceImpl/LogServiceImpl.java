@@ -1,12 +1,11 @@
 package indi.uhyils.serviceImpl;
 
-import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.enum_.CacheTypeEnum;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
-import org.apache.dubbo.config.annotation.Service;
 import indi.uhyils.annotation.NoToken;
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.LogDao;
+import indi.uhyils.enum_.CacheTypeEnum;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.LogEntity;
 import indi.uhyils.pojo.model.UserEntity;
@@ -15,6 +14,7 @@ import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.LogService;
 import indi.uhyils.util.EnumUtils;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.READ,cacheType = CacheTypeEnum.ALL_TYPE)
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, cacheType = CacheTypeEnum.ALL_TYPE)
     public ServiceResult<ArrayList<Map<String, Object>>> getLogTypes(DefaultRequest request) {
         ArrayList<Map<String, Object>> enumList = EnumUtils.getEnumList(ServiceCode.class);
         return ServiceResult.buildSuccessResult("成功获取所有的日志类型", enumList, request);

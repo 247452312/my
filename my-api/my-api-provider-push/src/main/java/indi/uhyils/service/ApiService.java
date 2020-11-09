@@ -6,8 +6,6 @@ import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
 
-import java.util.ArrayList;
-
 /**
  * 外界api调用表
  *

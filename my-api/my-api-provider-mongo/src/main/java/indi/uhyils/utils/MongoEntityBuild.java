@@ -2,9 +2,6 @@ package indi.uhyils.utils;
 
 import indi.uhyils.pojo.model.MongoEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月02日 16时47分

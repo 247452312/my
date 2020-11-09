@@ -18,6 +18,14 @@ public class VerificationGetResponse implements Serializable {
      */
     private String picBase64;
 
+    public static VerificationGetResponse build(String base64, String key) {
+        VerificationGetResponse build = new VerificationGetResponse();
+        build.setPicBase64(base64);
+        build.setKey(key);
+        return build;
+
+    }
+
     public String getKey() {
         return key;
     }
@@ -32,13 +40,5 @@ public class VerificationGetResponse implements Serializable {
 
     public void setPicBase64(String picBase64) {
         this.picBase64 = picBase64;
-    }
-
-    public static VerificationGetResponse build(String base64, String key) {
-        VerificationGetResponse build = new VerificationGetResponse();
-        build.setPicBase64(base64);
-        build.setKey(key);
-        return build;
-
     }
 }

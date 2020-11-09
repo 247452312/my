@@ -53,6 +53,16 @@ public class MongoConn {
      */
     private MongoConnPool pool;
 
+    public static MongoConn build(MongoClient mongoClient, MongoCollection<Document> mongoCollection, MongoConnPool pool) {
+        MongoConn build = new MongoConn();
+        build.mongoCollection = mongoCollection;
+        build.mongoClient = mongoClient;
+        build.pool = pool;
+        build.createTime = System.currentTimeMillis();
+        build.haveUse = false;
+        return build;
+    }
+
     public MongoClient getMongoClient() {
         return mongoClient;
     }
@@ -91,16 +101,6 @@ public class MongoConn {
 
     public void setCreateTime(long createTime) {
         this.createTime = createTime;
-    }
-
-    public static MongoConn build(MongoClient mongoClient, MongoCollection<Document> mongoCollection, MongoConnPool pool) {
-        MongoConn build = new MongoConn();
-        build.mongoCollection = mongoCollection;
-        build.mongoClient = mongoClient;
-        build.pool = pool;
-        build.createTime = System.currentTimeMillis();
-        build.haveUse = false;
-        return build;
     }
 
     /**

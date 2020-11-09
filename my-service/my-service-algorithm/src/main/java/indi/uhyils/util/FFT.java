@@ -5,10 +5,10 @@ package indi.uhyils.util;
  * @date 文件创建日期 2020年07月25日 14时18分
  */
 public final class FFT {
-    public int logm;
     final int MAXLOGM = 20; /* max FFT length 2^MAXLOGM */
     final double TWOPI = 6.28318530717958647692;
     final double SQHALF = 0.707106781186547524401;
+    public int logm;
     int brseed[] = new int[4048];
     float tab[][];
 

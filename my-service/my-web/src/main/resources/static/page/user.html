@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>menu</title>
     <!--设置1个小时的缓存-->
-    <meta http-equiv="Cache-Control" content="max-age=3200"/>
-    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../css/public.css" media="all">
-    <link rel="stylesheet" href="../css/my.css" media="all">
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <link href="../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../css/public.css" media="all" rel="stylesheet">
+    <link href="../css/my.css" media="all" rel="stylesheet">
 
     <style>
         .layui-btn:not(.layui-btn-lg ):not(.layui-btn-sm):not(.layui-btn-xs) {
@@ -24,12 +24,12 @@
             主页用户<br>
         </blockquote>
         <div>
-            <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
+            <table class="layui-table" id="munu-table" lay-filter="munu-table"></table>
         </div>
     </div>
 </div>
 
-<script type="text/html" id="toolbarDemo">
+<script id="toolbarDemo" type="text/html">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
@@ -38,15 +38,15 @@
     </div>
 </script>
 
-<script type="text/html" id="barDemo">
+<script id="barDemo" type="text/html">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
-<script src="/js/jquery.min.js" charset="UTF-8"></script>
-<script src="/js/my.js" charset="UTF-8"></script>
+<script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
+<script charset="utf-8" src="../js/lay-config.js?v=1.0.4"></script>
+<script charset="UTF-8" src="/js/jquery.min.js"></script>
+<script charset="UTF-8" src="/js/my.js"></script>
 <script>
     layui.use(['table', 'layer'], function () {
         var $ = layui.jquery;

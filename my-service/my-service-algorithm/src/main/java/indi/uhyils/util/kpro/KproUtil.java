@@ -20,6 +20,19 @@ import java.util.*;
  * @date 文件创建日期 2020年07月27日 07时19分
  */
 public class KproUtil {
+    private static List<String> fatherFiled = new ArrayList<>();
+
+    static {
+        fatherFiled.add("id");
+        fatherFiled.add("create_date");
+        fatherFiled.add("create_user");
+        fatherFiled.add("delete_flag");
+        fatherFiled.add("remark");
+        fatherFiled.add("update_date");
+        fatherFiled.add("update_user");
+
+    }
+
     /**
      * 生成mysql项目
      *
@@ -330,19 +343,6 @@ public class KproUtil {
         sb.append("        where ").append(tableInfo.getOnlyKey().getName()).append(" = #{").append(tableInfo.getOnlyKey().getSmallName()).append("}\n    </update>\n\n    <select id=\"count\" resultType=\"java.lang.Integer\">\n        select count(*)\n        from ").append(tableInfo.getTableName()).append(" a\n        where delete_flag = 0;\n    </select>\n\n    <select id=\"countByArgs\" resultType=\"java.lang.Integer\">\n        select count(*)\n        from ").append(tableInfo.getTableName()).append(" a\n        where delete_flag = 0\n        <foreach item=\"arg\" index=\"index\" collection=\"args\">\n            and ${arg.name} ${arg.symbol} #{arg.data}\n        </foreach>\n    </select>\n\n    <select id=\"checkRepeat\" resultType=\"java.lang.Integer\">\n        select count(*)\n        from ").append(tableInfo.getTableName()).append(" a\n        where ${columnName} = #{value}\n    </select>\n\n\n</mapper>\n");
         result.put(fileAllName, sb.toString());
         return result;
-    }
-
-    private static List<String> fatherFiled = new ArrayList<>();
-
-    static {
-        fatherFiled.add("id");
-        fatherFiled.add("create_date");
-        fatherFiled.add("create_user");
-        fatherFiled.add("delete_flag");
-        fatherFiled.add("remark");
-        fatherFiled.add("update_date");
-        fatherFiled.add("update_user");
-
     }
 
     private static Map<String, String> createPojo(String filepath, String className, TableInfo tableInfo, String dateFormat, DbTypeEnum typeEnum) {

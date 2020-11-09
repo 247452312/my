@@ -16,6 +16,24 @@ import java.io.Serializable;
 public class JvmUniqueMark implements Serializable {
 
     private static JvmUniqueMark jvmUniqueMark;
+    /**
+     * 服务名称
+     */
+    @Value("${dubbo.application.name}")
+    private String serviceName;
+    /**
+     * 服务所在ip -> 区分集群信息
+     */
+    private String ip;
+    /**
+     * 时间戳 --> 区分同一服务的另一个时间戳
+     */
+    private Long time;
+
+    private JvmUniqueMark() {
+        this.ip = RabbitMqContent.IP;
+        this.time = RabbitMqContent.START_TIME;
+    }
 
     public static JvmUniqueMark getInstance() {
         if (null == jvmUniqueMark) {
@@ -26,27 +44,6 @@ public class JvmUniqueMark implements Serializable {
             }
         }
         return jvmUniqueMark;
-    }
-
-    /**
-     * 服务名称
-     */
-    @Value("${dubbo.application.name}")
-    private String serviceName;
-
-    /**
-     * 服务所在ip -> 区分集群信息
-     */
-    private String ip;
-
-    /**
-     * 时间戳 --> 区分同一服务的另一个时间戳
-     */
-    private Long time;
-
-    private JvmUniqueMark() {
-        this.ip = RabbitMqContent.IP;
-        this.time = RabbitMqContent.START_TIME;
     }
 
     public String getServiceName() {

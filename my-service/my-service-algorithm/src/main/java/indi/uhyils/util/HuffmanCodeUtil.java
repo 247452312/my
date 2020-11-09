@@ -54,6 +54,73 @@ public class HuffmanCodeUtil {
         return code;
     }
 
+    private static Node create(List<Node> nodes) {
+        while (nodes.size() > 1) {
+            Node n1;
+            Node n2;
+            if (nodes.get(0).getValue() > nodes.get(1).getValue()) {
+                n1 = nodes.get(1);
+                n2 = nodes.get(0);
+            } else {
+                n1 = nodes.get(0);
+                n2 = nodes.get(1);
+            }
+            Double per1 = n1.getValue();
+            Double per2 = n2.getValue();
+
+
+            for (int i = 2; i < nodes.size(); i++) {
+                Node node = nodes.get(i);
+                if (node.getValue() < per1) {
+                    n2 = n1;
+                    per2 = per1;
+                    n1 = node;
+                    per1 = node.getValue();
+                }
+            }
+
+            assert n1 != null && n2 != null;
+            nodes.remove(n1);
+            nodes.remove(n2);
+            Node node = new Node(per1 + per2);
+            node.left = n1;
+            node.right = n2;
+            nodes.add(node);
+        }
+        return nodes.get(0);
+    }
+
+    private static HashMap<String, Integer> getCode(Node root, Integer size) {
+        HashMap<String, String> temp = new HashMap<>(size);
+        ergodic(root, temp, "1");
+        HashMap<String, Integer> result = new HashMap<>(size);
+        for (Map.Entry<String, String> entry : temp.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            int i = Integer.parseInt(value, 2);
+            result.put(key, i);
+        }
+        return result;
+    }
+
+    private static void ergodic(Node root, HashMap<String, String> result, String parentStr) {
+        // 如果是中间结点
+        if (root.getPh()) {
+            ergodic(root.left, result, parentStr + "0");
+            ergodic(root.right, result, parentStr + "1");
+        } else {
+            result.put(root.getKey(), parentStr);
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        HashMap<String, Integer> huffmanCodeUtilOnFile = getHuffmanCodeUtilOnFile("D:\\share\\ideaSrc\\speechRecognition\\data\\data_thchs30\\data");
+        for (Map.Entry<String, Integer> entry : huffmanCodeUtilOnFile.entrySet()) {
+            System.out.printf(entry.getKey() + " " + entry.getValue());
+            System.out.printf(";");
+        }
+    }
+
     private static class Node {
         private String key;
         private Double value;
@@ -125,74 +192,6 @@ public class HuffmanCodeUtil {
 
         public void setPh(Boolean ph) {
             this.ph = ph;
-        }
-    }
-
-    private static Node create(List<Node> nodes) {
-        while (nodes.size() > 1) {
-            Node n1;
-            Node n2;
-            if (nodes.get(0).getValue() > nodes.get(1).getValue()) {
-                n1 = nodes.get(1);
-                n2 = nodes.get(0);
-            } else {
-                n1 = nodes.get(0);
-                n2 = nodes.get(1);
-            }
-            Double per1 = n1.getValue();
-            Double per2 = n2.getValue();
-
-
-            for (int i = 2; i < nodes.size(); i++) {
-                Node node = nodes.get(i);
-                if (node.getValue() < per1) {
-                    n2 = n1;
-                    per2 = per1;
-                    n1 = node;
-                    per1 = node.getValue();
-                }
-            }
-
-            assert n1 != null && n2 != null;
-            nodes.remove(n1);
-            nodes.remove(n2);
-            Node node = new Node(per1 + per2);
-            node.left = n1;
-            node.right = n2;
-            nodes.add(node);
-        }
-        return nodes.get(0);
-    }
-
-    private static HashMap<String, Integer> getCode(Node root, Integer size) {
-        HashMap<String, String> temp = new HashMap<>(size);
-        ergodic(root, temp, "1");
-        HashMap<String, Integer> result = new HashMap<>(size);
-        for (Map.Entry<String, String> entry : temp.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            int i = Integer.parseInt(value, 2);
-            result.put(key, i);
-        }
-        return result;
-    }
-
-    private static void ergodic(Node root, HashMap<String, String> result, String parentStr) {
-        // 如果是中间结点
-        if (root.getPh()) {
-            ergodic(root.left, result, parentStr + "0");
-            ergodic(root.right, result, parentStr + "1");
-        } else {
-            result.put(root.getKey(), parentStr);
-        }
-    }
-
-
-    public static void main(String[] args) throws Exception {
-        HashMap<String, Integer> huffmanCodeUtilOnFile = getHuffmanCodeUtilOnFile("D:\\share\\ideaSrc\\speechRecognition\\data\\data_thchs30\\data");
-        for (Map.Entry<String, Integer> entry : huffmanCodeUtilOnFile.entrySet()) {
-            System.out.printf(entry.getKey() + " " + entry.getValue());
-            System.out.printf(";");
         }
     }
 

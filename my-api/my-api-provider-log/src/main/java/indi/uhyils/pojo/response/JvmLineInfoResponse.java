@@ -26,6 +26,15 @@ public class JvmLineInfoResponse implements Serializable {
      */
     private List<Double> data;
 
+    public static JvmLineInfoResponse build(String name, List<Double> data) {
+        JvmLineInfoResponse build = new JvmLineInfoResponse();
+        build.setName(name);
+        build.setType("line");
+        build.setData(data);
+        return build;
+
+    }
+
     public String getName() {
         return name;
     }
@@ -48,15 +57,6 @@ public class JvmLineInfoResponse implements Serializable {
 
     public void setData(List<Double> data) {
         this.data = data;
-    }
-
-    public static JvmLineInfoResponse build(String name, List<Double> data) {
-        JvmLineInfoResponse build = new JvmLineInfoResponse();
-        build.setName(name);
-        build.setType("line");
-        build.setData(data);
-        return build;
-
     }
 
 

@@ -28,19 +28,15 @@ import java.util.ArrayList;
 public class ConcurrentNumberTask {
 
 
-    @Autowired
-    private LogDao logDao;
-
-    @Reference(group = "${spring.profiles.active}", check = false)
-    private DictService dictService;
-
     private static final Double RECOVERY_PRE = 0.8;
-
     /**
      * 低级服务是否降级(默认没有降级)
      */
     private volatile static Boolean degradation = false;
-
+    @Autowired
+    private LogDao logDao;
+    @Reference(group = "${spring.profiles.active}", check = false)
+    private DictService dictService;
 
     @Scheduled(cron = "*/2 * * * * ?")
     public void demoSchedule() {

@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2020年07月25日 10时38分
  */
 public class InputDataDealUtil {
+    static final int MAX = 1 << 30;
+
     /**
      * 获取图像数据
      *
@@ -119,8 +121,6 @@ public class InputDataDealUtil {
         return twoDimensionalData;
 
     }
-
-    static final int MAX = 1 << 30;
 
     /**
      * Returns a power of two size for the given target capacity.

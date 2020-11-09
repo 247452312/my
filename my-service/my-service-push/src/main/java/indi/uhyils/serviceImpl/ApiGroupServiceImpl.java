@@ -6,7 +6,6 @@ import indi.uhyils.dao.ApiGroupDao;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.ApiEntity;
 import indi.uhyils.pojo.model.ApiGroupEntity;
-import indi.uhyils.pojo.request.SubscribeRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;

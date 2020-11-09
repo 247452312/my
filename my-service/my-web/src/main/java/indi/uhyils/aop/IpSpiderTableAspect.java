@@ -41,22 +41,12 @@ import java.util.concurrent.CompletableFuture;
 @Aspect
 public class IpSpiderTableAspect {
 
-    @Reference(group = "${spring.profiles.active}", check = false)
-    private LogService logService;
-    @Reference(group = "${spring.profiles.active}", check = false)
-    private BlackListService blackListService;
-
-    @Autowired
-    private RedisPoolHandle redisPoolHandle;
-
     /**
      * 黑名单 在redis中的key
      *
      * @ps 在redis中 黑名单是set格式的
      */
     private static final String IP_BLACK_REDIS_KEY = "ip_black_redis_key";
-
-
     /**
      * 临时冻结等级 在redis中的key
      *
@@ -69,19 +59,16 @@ public class IpSpiderTableAspect {
      * @ps hash结构 key为ip value为冻结开始时间
      */
     private static final String IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY = "ip_black_temp_frozen_time_out_redis_key";
-
     /**
      * 错误次数
      *
      * @ps hash结构 key:ip,value:count
      */
     private static final String IP_TEMP_RECORD_KEY_COUNT = "ip_temp_record_key_count";
-
     /**
      * 最大错误次数
      */
     private static final Integer WRONG_COUNT = 3;
-
     /**
      * 首次被冻结时间
      */
@@ -90,15 +77,16 @@ public class IpSpiderTableAspect {
      * 第二次冻结时间
      */
     private static final Long SECOND_FROZEN_TIME = 60 * 60 * 1000L;
-
     /**
-     * 定义切入点，切入点为 {@link indi.uhyils.controller.AllController#action(Action, HttpServletRequest)}
-     * 通过@Pointcut注解声明频繁使用的切点表达式
+     * 最大冻结次数 如果第三次冻结,则清除冻结次数并加入永久黑名单
      */
-    @Pointcut("execution(public * indi.uhyils.controller.AllController.action(..)))")
-    public void ipSpiderTableAspectPoint() {
-    }
-
+    private static final Long MAX_FROZEN_COUNT = 2L;
+    @Reference(group = "${spring.profiles.active}", check = false)
+    private LogService logService;
+    @Reference(group = "${spring.profiles.active}", check = false)
+    private BlackListService blackListService;
+    @Autowired
+    private RedisPoolHandle redisPoolHandle;
     /**
      * 黑名单是否初始化
      */
@@ -108,6 +96,14 @@ public class IpSpiderTableAspect {
      * 是否可以初始化
      */
     private volatile Boolean canInit = true;
+
+    /**
+     * 定义切入点，切入点为 {@link indi.uhyils.controller.AllController#action(Action, HttpServletRequest)}
+     * 通过@Pointcut注解声明频繁使用的切点表达式
+     */
+    @Pointcut("execution(public * indi.uhyils.controller.AllController.action(..)))")
+    public void ipSpiderTableAspectPoint() {
+    }
 
     /**
      * 初始化redis中的黑名单
@@ -250,11 +246,6 @@ public class IpSpiderTableAspect {
             jedis.close();
         }
     }
-
-    /**
-     * 最大冻结次数 如果第三次冻结,则清除冻结次数并加入永久黑名单
-     */
-    private static final Long MAX_FROZEN_COUNT = 2L;
 
     /**
      * 输入了错误的验证码 或者根本就没有输入验证码

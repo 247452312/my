@@ -1,11 +1,8 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.ApiEntity;
 import indi.uhyils.pojo.model.MsgEntity;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
 
 
 /**

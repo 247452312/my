@@ -16,13 +16,13 @@ public class OneDimensionalData<T> implements Datable<T> {
         return data;
     }
 
+    public void setData(T[] data) {
+        this.data = data;
+    }
+
     @Override
     public int[] getSize() {
         return new int[]{data.length};
-    }
-
-    public void setData(T[] data) {
-        this.data = data;
     }
 
 }

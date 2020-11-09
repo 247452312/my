@@ -36,13 +36,13 @@ public class KproServiceImpl implements KproService {
             Integer type = dbInformation.getType();
             switch (Objects.requireNonNull(DbTypeEnum.prase(type))) {
                 case MYSQL:
-                    resultList.add(KproUtil.getMySqlKpro(dbInformation,dateFormat));
+                    resultList.add(KproUtil.getMySqlKpro(dbInformation, dateFormat));
                     break;
                 case ORACLE:
-                    resultList.add(KproUtil.getOracleKpro(dbInformation,dateFormat));
+                    resultList.add(KproUtil.getOracleKpro(dbInformation, dateFormat));
                     break;
                 case SQLITE:
-                    resultList.add(KproUtil.getSqliteKpro(dbInformation,dateFormat));
+                    resultList.add(KproUtil.getSqliteKpro(dbInformation, dateFormat));
                     break;
                 default:
                     return ServiceResult.buildFailedResult("暂时不支持数据库类型", null, request);

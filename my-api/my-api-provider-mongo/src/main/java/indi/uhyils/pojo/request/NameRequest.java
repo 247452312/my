@@ -14,18 +14,18 @@ public class NameRequest extends DefaultRequest {
      */
     private String name;
 
+    public static NameRequest build(String name) {
+        NameRequest build = new NameRequest();
+        build.name = name;
+        return build;
+
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public static NameRequest build(String name) {
-        NameRequest build = new NameRequest();
-        build.name = name;
-        return build;
-
     }
 }

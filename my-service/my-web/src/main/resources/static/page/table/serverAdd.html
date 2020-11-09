@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <title>layui</title>
-    <meta name="renderer" content="webkit">
+    <meta content="webkit" name="renderer">
     <!--设置1个小时的缓存-->
-    <meta http-equiv="Cache-Control" content="max-age=3200"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
     <style>
         body {
             background-color: #ffffff;
@@ -23,49 +23,49 @@
 <body>
 <div class="layui-form layuimini-form">
     <!--  父id    -->
-    <input type="text" name="id" value="" style="display:none;">
+    <input name="id" style="display:none;" type="text" value="">
 
     <div class="layui-form-item">
         <label class="layui-form-label required">服务器IP</label>
         <div class="layui-input-block">
-            <input type="text" name="ip" lay-verify="required" placeholder="请输入服务器ip" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="ip" placeholder="请输入服务器ip" type="text"
+                   value="">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label required">ssh端口</label>
         <div class="layui-input-block">
-            <input type="text" name="port" lay-verify="required" placeholder="请输入端口号" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="port" placeholder="请输入端口号" type="text"
+                   value="">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label required">服务器名称</label>
         <div class="layui-input-block">
-            <input type="text" name="name" lay-verify="required" placeholder="请输入服务器名称" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="name" placeholder="请输入服务器名称" type="text"
+                   value="">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">用户名</label>
         <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" placeholder="请输入用户名" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="username" placeholder="请输入用户名" type="text"
+                   value="">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">密码</label>
         <div class="layui-input-block">
-            <input type="password" name="password" lay-verify="required" placeholder="请输入密码" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="password" placeholder="请输入密码" type="password"
+                   value="">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">服务器类型</label>
         <div class="layui-input-block">
-            <select name="type" lay-filter="aihao">
+            <select lay-filter="aihao" name="type">
                 <option value="">请选择</option>
                 <option value="1">windows_10</option>
                 <option value="2">centos_7</option>
@@ -76,15 +76,15 @@
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button class="layui-btn layui-btn-normal" lay-filter="saveBtn" lay-submit>确认保存</button>
 
-            <button class="layui-btn layui-btn-warm" lay-submit lay-filter="testConn">测试连接</button>
+            <button class="layui-btn layui-btn-warm" lay-filter="testConn" lay-submit>测试连接</button>
         </div>
     </div>
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/my.js"></script>
-<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script charset="utf-8" src="../../lib/layui-v2.5.5/layui.js"></script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form,

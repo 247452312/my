@@ -35,7 +35,6 @@ public class ResponseEntity extends BaseVoEntity {
     private Integer manual;
 
 
-
     public Integer getTriggerType() {
         return triggerType;
     }

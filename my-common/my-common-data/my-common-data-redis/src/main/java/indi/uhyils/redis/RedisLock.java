@@ -41,20 +41,6 @@ public class RedisLock {
      */
     private Long lockTime = 3 * 60L;
 
-    public String getLockName() {
-        return lockName;
-    }
-
-    public RedisPool getPool() {
-        return pool;
-    }
-
-
-    public Thread getThread() {
-        return thread;
-    }
-
-
     /**
      * @param lockName 分布式锁名称
      * @param pool     redis线程池
@@ -74,7 +60,20 @@ public class RedisLock {
         this.lockTime = lockTime;
     }
 
+
     public RedisLock() {
+    }
+
+    public String getLockName() {
+        return lockName;
+    }
+
+    public RedisPool getPool() {
+        return pool;
+    }
+
+    public Thread getThread() {
+        return thread;
     }
 
     /**

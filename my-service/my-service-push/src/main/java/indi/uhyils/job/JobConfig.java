@@ -27,6 +27,18 @@ public class JobConfig {
      * 定时任务的key
      */
     public static final String JOB_KEY = "uhyils";
+
+    @Bean
+    public Scheduler scheduler(AdaptableJobFactory quartzJobFactory) throws Exception {
+        SchedulerFactoryBean factoryBean = new SchedulerFactoryBean();
+        factoryBean.setJobFactory(quartzJobFactory);
+        factoryBean.afterPropertiesSet();
+        Scheduler scheduler = factoryBean.getScheduler();
+        scheduler.start();
+        return scheduler;
+
+    }
+
     /**
      * 解决Job中注入Spring Bean为null的问题
      */
@@ -43,16 +55,5 @@ public class JobConfig {
             capableBeanFactory.autowireBean(jobInstance);
             return jobInstance;
         }
-    }
-
-    @Bean
-    public Scheduler scheduler(AdaptableJobFactory quartzJobFactory) throws Exception {
-        SchedulerFactoryBean factoryBean = new SchedulerFactoryBean();
-        factoryBean.setJobFactory(quartzJobFactory);
-        factoryBean.afterPropertiesSet();
-        Scheduler scheduler = factoryBean.getScheduler();
-        scheduler.start();
-        return scheduler;
-
     }
 }

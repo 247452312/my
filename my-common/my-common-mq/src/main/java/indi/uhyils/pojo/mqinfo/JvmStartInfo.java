@@ -51,6 +51,14 @@ public class JvmStartInfo implements Serializable {
      */
     private List<JvmStatusInfo> jvmStatusInfos;
 
+    public static List<JvmStatusInfo> getStatusInfos() {
+        return statusInfos;
+    }
+
+    public static void setStatusInfos(List<JvmStatusInfo> statusInfos) {
+        JvmStartInfo.statusInfos = statusInfos;
+    }
+
     public Double getJvmTotalMem() {
         return jvmTotalMem;
     }
@@ -99,20 +107,11 @@ public class JvmStartInfo implements Serializable {
         this.jvmUniqueMark = jvmUniqueMark;
     }
 
-
     public List<JvmStatusInfo> getJvmStatusInfos() {
         return jvmStatusInfos;
     }
 
     public void setJvmStatusInfos(List<JvmStatusInfo> jvmStatusInfos) {
         this.jvmStatusInfos = jvmStatusInfos;
-    }
-
-    public static List<JvmStatusInfo> getStatusInfos() {
-        return statusInfos;
-    }
-
-    public static void setStatusInfos(List<JvmStatusInfo> statusInfos) {
-        JvmStartInfo.statusInfos = statusInfos;
     }
 }

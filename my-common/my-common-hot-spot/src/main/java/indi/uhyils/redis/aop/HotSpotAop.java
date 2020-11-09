@@ -42,9 +42,36 @@ import java.util.List;
 public class HotSpotAop {
 
 
+    /**
+     * redis写脚本
+     */
+    private static final String WRITE_LUA = "local keys = KEYS\n\nfor i, v in ipairs(keys) do\n   redis.call('HINCRBY','" + HotSpotContent.TABLES_HASH_KEY + "', keys[i], 1)\nend\nreturn true";
+    /**
+     * 检查缓存表是否更新
+     */
+    private static final String CHECK_TABLE_UPDATE = "local keys,val = KEYS,ARGV\n" +
+            "for i, v in ipairs(val) do\n" +
+            "\tredis.call('hsetnx','" + HotSpotContent.TABLES_HASH_KEY + "',v,'1')\n" +
+            "end\n" +
+            "local k = 0\n" +
+            "for i, v in ipairs(val) do\n" +
+            "\tlocal table_version = redis.call('HGET',keys[1], v)\n" +
+            "\tlocal real_table_version = redis.call('HGET','" + HotSpotContent.TABLES_HASH_KEY + "',v)\n" +
+            "\tif not(real_table_version) or table_version ~= real_table_version then\n" +
+            "\t\tk = 1\n" +
+            "\tend\n" +
+            "end  \n" +
+            "if k == 0 then    \n" +
+            "\treturn 1    \n" +
+            "else    \n" +
+            "\treturn 0    \n" +
+            "end";
+    /**
+     * 更新缓存的lua脚本
+     */
+    private static final String UPDATE_CACHE = "local keys,val = KEYS,ARGV\n\nredis.call('hset',keys[1],keys[2],val[2])\nredis.call('hset',keys[1],keys[3],val[3])\n\nfor i, v in ipairs(redis.call('hkeys',val[1])) do\n\tredis.call('hset',keys[1],v,redis.call('hget',val[1],v))\nend";
     @Autowired
     private RedisPoolHandle redisPoolHandle;
-
     @Autowired
     private HotSpotRedisPool hotSpotRedisPool;
 
@@ -129,37 +156,6 @@ public class HotSpotAop {
             }
         }
     }
-
-    /**
-     * redis写脚本
-     */
-    private static final String WRITE_LUA = "local keys = KEYS\n\nfor i, v in ipairs(keys) do\n   redis.call('HINCRBY','" + HotSpotContent.TABLES_HASH_KEY + "', keys[i], 1)\nend\nreturn true";
-
-    /**
-     * 检查缓存表是否更新
-     */
-    private static final String CHECK_TABLE_UPDATE = "local keys,val = KEYS,ARGV\n" +
-            "for i, v in ipairs(val) do\n" +
-            "\tredis.call('hsetnx','" + HotSpotContent.TABLES_HASH_KEY + "',v,'1')\n" +
-            "end\n" +
-            "local k = 0\n" +
-            "for i, v in ipairs(val) do\n" +
-            "\tlocal table_version = redis.call('HGET',keys[1], v)\n" +
-            "\tlocal real_table_version = redis.call('HGET','" + HotSpotContent.TABLES_HASH_KEY + "',v)\n" +
-            "\tif not(real_table_version) or table_version ~= real_table_version then\n" +
-            "\t\tk = 1\n" +
-            "\tend\n" +
-            "end  \n" +
-            "if k == 0 then    \n" +
-            "\treturn 1    \n" +
-            "else    \n" +
-            "\treturn 0    \n" +
-            "end";
-
-    /**
-     * 更新缓存的lua脚本
-     */
-    private static final String UPDATE_CACHE = "local keys,val = KEYS,ARGV\n\nredis.call('hset',keys[1],keys[2],val[2])\nredis.call('hset',keys[1],keys[3],val[3])\n\nfor i, v in ipairs(redis.call('hkeys',val[1])) do\n\tredis.call('hset',keys[1],v,redis.call('hget',val[1],v))\nend";
 
     /**
      * 写接口应该做的方法

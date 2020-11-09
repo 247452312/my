@@ -26,8 +26,19 @@ import org.springframework.transaction.annotation.Transactional;
 @ReadWriteMark(tables = {"sys_job"}, cacheType = CacheTypeEnum.ALL_TYPE)
 public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements JobService {
 
+    /**
+     * 工具entity, 插入日志时用来插入登录日志
+     */
+    private final UserEntity userEntity = new UserEntity();
     @Autowired
     private JobDao dao;
+    @Autowired
+    private ScheduledManager scheduledManager;
+
+    {
+        // 日志的创建用户一定是超级管理员
+        userEntity.setId(Content.ADMIN_USER_ID);
+    }
 
     public JobDao getDao() {
         return dao;
@@ -35,18 +46,6 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
 
     public void setDao(JobDao dao) {
         this.dao = dao;
-    }
-
-    @Autowired
-    private ScheduledManager scheduledManager;
-    /**
-     * 工具entity, 插入日志时用来插入登录日志
-     */
-    private final UserEntity userEntity = new UserEntity();
-
-    {
-        // 日志的创建用户一定是超级管理员
-        userEntity.setId(Content.ADMIN_USER_ID);
     }
 
     @Override

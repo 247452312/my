@@ -51,18 +51,14 @@ public class MFCC {
      * m_dlogFilterOutputFloor = 0 and this value is used here.
      */
     private final double m_dlogFilterOutputFloor = 0.0;
+    private final double[] m_nlifteringMultiplicationFactor;
+    // things to be calculated just once:
+    private final double m_dscalingFactor;
     private int[][] m_nboundariesDFTBins;
     private double[][] m_dweights;
     private FFT m_fft;
     private double[][] m_ddCTMatrix;
-
-
     private double[] m_dfilterOutput;
-    private final double[] m_nlifteringMultiplicationFactor;
-
-
-    // things to be calculated just once:
-    private final double m_dscalingFactor;
 
 
     /**
@@ -158,21 +154,6 @@ public class MFCC {
         }
     }
 
-
-    /**
-     * Initializes the DCT matrix.
-     */
-    private void initializeDCTMatrix() {
-        m_ddCTMatrix = new double[m_nnumberOfParameters][m_nnumberOfFilters];
-        for (int i = 0; i < m_nnumberOfParameters; i++) {
-            for (int j = 0; j < m_nnumberOfFilters; j++) {
-                m_ddCTMatrix[i][j] = Math.cos((i + 1.0) * (j + 1.0 - 0.5)
-                        * (Math.PI / m_nnumberOfFilters));
-            }
-        }
-    }
-
-
     /**
      * Converts frequencies in Hz to mel scale according to mel frequency = 2595
      * log(1 + (f/700)), where log is base 10 and f is the frequency in Hz.
@@ -187,6 +168,18 @@ public class MFCC {
         return dmelFrequencies;
     }
 
+    /**
+     * Initializes the DCT matrix.
+     */
+    private void initializeDCTMatrix() {
+        m_ddCTMatrix = new double[m_nnumberOfParameters][m_nnumberOfFilters];
+        for (int i = 0; i < m_nnumberOfParameters; i++) {
+            for (int j = 0; j < m_nnumberOfFilters; j++) {
+                m_ddCTMatrix[i][j] = Math.cos((i + 1.0) * (j + 1.0 - 0.5)
+                        * (Math.PI / m_nnumberOfFilters));
+            }
+        }
+    }
 
     /**
      * Calculates triangular filters. 三角带通滤波器（Triangular Bandpass

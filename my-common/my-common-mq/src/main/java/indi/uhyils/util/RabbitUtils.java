@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets;
 public class RabbitUtils {
 
 
-
     public static void sendInterfaceCallInfo(InterfaceCallInfo interfaceCallInfo, Channel channel) {
         if (!RabbitMqContent.getLogServiceOnLine()) {
             LogUtil.warn(RabbitUtils.class, "log微服务没有启动");

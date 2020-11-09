@@ -23,14 +23,6 @@ public enum CodeEnum {
         this.code = code;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public static CodeEnum prase(String code) {
         if (UTF_8.code.equalsIgnoreCase(code)) {
             return UTF_8;
@@ -38,5 +30,13 @@ public enum CodeEnum {
             return UNICODE;
         }
         return null;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

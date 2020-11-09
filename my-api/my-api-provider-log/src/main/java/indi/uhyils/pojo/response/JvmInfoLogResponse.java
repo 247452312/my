@@ -29,31 +29,6 @@ public class JvmInfoLogResponse implements Serializable {
      */
     private String defaultData;
 
-
-    public Integer getMaxY() {
-        return maxY;
-    }
-
-    public void setMaxY(Integer maxY) {
-        this.maxY = maxY;
-    }
-
-    public HashMap<String, List> getData() {
-        return data;
-    }
-
-    public void setData(HashMap<String, List> data) {
-        this.data = data;
-    }
-
-    public String getDefaultData() {
-        return defaultData;
-    }
-
-    public void setDefaultData(String defaultData) {
-        this.defaultData = defaultData;
-    }
-
     /**
      * 创建JVM显示信息
      *
@@ -102,5 +77,29 @@ public class JvmInfoLogResponse implements Serializable {
 
         return build;
 
+    }
+
+    public Integer getMaxY() {
+        return maxY;
+    }
+
+    public void setMaxY(Integer maxY) {
+        this.maxY = maxY;
+    }
+
+    public HashMap<String, List> getData() {
+        return data;
+    }
+
+    public void setData(HashMap<String, List> data) {
+        this.data = data;
+    }
+
+    public String getDefaultData() {
+        return defaultData;
+    }
+
+    public void setDefaultData(String defaultData) {
+        this.defaultData = defaultData;
     }
 }

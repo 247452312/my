@@ -1,7 +1,9 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.DeptEntity;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.PutDeptsToMenuRequest;
+import indi.uhyils.pojo.request.PutMenusToDeptsRequest;
+import indi.uhyils.pojo.request.PutPowersToDeptRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;

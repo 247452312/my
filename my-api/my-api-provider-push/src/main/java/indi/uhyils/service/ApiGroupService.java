@@ -1,7 +1,6 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.ApiGroupEntity;
-import indi.uhyils.pojo.request.SubscribeRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -32,7 +31,6 @@ public interface ApiGroupService extends DefaultEntityService<ApiGroupEntity> {
      * @return 可以被订阅的api群
      */
     ServiceResult<ArrayList<ApiGroupEntity>> getCanBeSubscribed(DefaultRequest request);
-
 
 
 }

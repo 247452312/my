@@ -21,8 +21,8 @@ layui.define(['table'], function (exports) {
                 $fixRight = $(tableBox.children('.layui-table-fixed-r').children('.layui-table-body').children('table').children('tbody').children('tr').toArray().reverse()),
                 mergeRecord = {};
 
-            layui.each(myTable.cols, function(i1, item1){
-                layui.each(item1, function(i2, item2){
+            layui.each(myTable.cols, function (i1, item1) {
+                layui.each(item1, function (i2, item2) {
                     if (item2.merge && item2.field) {
                         var mergeField = [item2.field];
                         if (item2.merge !== true) {
@@ -32,7 +32,7 @@ layui.define(['table'], function (exports) {
                                 mergeField = item2.merge
                             }
                         }
-                        mergeRecord[myTable.index + '-' + i1 + '-' + i2] = {mergeField: mergeField, rowspan:1}
+                        mergeRecord[myTable.index + '-' + i1 + '-' + i2] = {mergeField: mergeField, rowspan: 1}
                     }
                 })
             })
@@ -40,29 +40,52 @@ layui.define(['table'], function (exports) {
             $main.each(function (i) {
 
                 for (var item in mergeRecord) {
-                    if (i===$main.length-1 || isMaster(i, item)) {
-                        var tdHeight = $(this).children('[data-key="'+item+'"]').outerHeight(), patchHeight = 0; // 获取td高度
-                        if ($main.eq(i).data('index') === 0) {patchHeight = 1}
-                        $(this).children('[data-key="'+item+'"]').attr('rowspan', mergeRecord[item].rowspan).css({'position': 'static', 'height': tdHeight*mergeRecord[item].rowspan + patchHeight}).children().css({height: 'auto', 'white-space': 'normal', 'max-height': tdHeight*mergeRecord[item].rowspan + patchHeight - 10});
-                        $fixLeft.eq(i).children('[data-key="'+item+'"]').attr('rowspan', mergeRecord[item].rowspan).css({'position': 'static', 'height': tdHeight*mergeRecord[item].rowspan + patchHeight}).children().css({height: 'auto', 'white-space': 'normal', 'max-height': tdHeight*mergeRecord[item].rowspan + patchHeight - 10});
-                        $fixRight.eq(i).children('[data-key="'+item+'"]').attr('rowspan', mergeRecord[item].rowspan).css({'position': 'static', 'height': tdHeight*mergeRecord[item].rowspan + patchHeight}).children().css({height: 'auto', 'white-space': 'normal', 'max-height': tdHeight*mergeRecord[item].rowspan + patchHeight - 10});
+                    if (i === $main.length - 1 || isMaster(i, item)) {
+                        var tdHeight = $(this).children('[data-key="' + item + '"]').outerHeight(), patchHeight = 0; // 获取td高度
+                        if ($main.eq(i).data('index') === 0) {
+                            patchHeight = 1
+                        }
+                        $(this).children('[data-key="' + item + '"]').attr('rowspan', mergeRecord[item].rowspan).css({
+                            'position': 'static',
+                            'height': tdHeight * mergeRecord[item].rowspan + patchHeight
+                        }).children().css({
+                            height: 'auto',
+                            'white-space': 'normal',
+                            'max-height': tdHeight * mergeRecord[item].rowspan + patchHeight - 10
+                        });
+                        $fixLeft.eq(i).children('[data-key="' + item + '"]').attr('rowspan', mergeRecord[item].rowspan).css({
+                            'position': 'static',
+                            'height': tdHeight * mergeRecord[item].rowspan + patchHeight
+                        }).children().css({
+                            height: 'auto',
+                            'white-space': 'normal',
+                            'max-height': tdHeight * mergeRecord[item].rowspan + patchHeight - 10
+                        });
+                        $fixRight.eq(i).children('[data-key="' + item + '"]').attr('rowspan', mergeRecord[item].rowspan).css({
+                            'position': 'static',
+                            'height': tdHeight * mergeRecord[item].rowspan + patchHeight
+                        }).children().css({
+                            height: 'auto',
+                            'white-space': 'normal',
+                            'max-height': tdHeight * mergeRecord[item].rowspan + patchHeight - 10
+                        });
                         mergeRecord[item].rowspan = 1;
                     } else {
-                        $(this).children('[data-key="'+item+'"]').remove();
-                        $fixLeft.eq(i).children('[data-key="'+item+'"]').remove();
-                        $fixRight.eq(i).children('[data-key="'+item+'"]').remove();
-                        mergeRecord[item].rowspan +=1;
+                        $(this).children('[data-key="' + item + '"]').remove();
+                        $fixLeft.eq(i).children('[data-key="' + item + '"]').remove();
+                        $fixRight.eq(i).children('[data-key="' + item + '"]').remove();
+                        mergeRecord[item].rowspan += 1;
                     }
                 }
             })
 
-            function isMaster (index, item) {
+            function isMaster(index, item) {
                 var mergeField = mergeRecord[item].mergeField;
                 var dataLength = layui.table.cache[myTable.id].length;
-                for (var i=0; i<mergeField.length; i++) {
+                for (var i = 0; i < mergeField.length; i++) {
 
-                    if (layui.table.cache[myTable.id][dataLength-2-index][mergeField[i]]
-                        !== layui.table.cache[myTable.id][dataLength-1-index][mergeField[i]]) {
+                    if (layui.table.cache[myTable.id][dataLength - 2 - index][mergeField[i]]
+                        !== layui.table.cache[myTable.id][dataLength - 1 - index][mergeField[i]]) {
                         return true;
                     }
                 }
