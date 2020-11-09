@@ -18,9 +18,8 @@
 		a.create_user as createUser,
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
-		a.desc as
-        desc,
-            a.status as status
+		a.desc,
+        a.status as status
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderInfoEntity">

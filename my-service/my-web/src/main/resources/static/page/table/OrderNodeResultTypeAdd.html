@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <!--设置1个小时的缓存-->
+    <meta http-equiv="Cache-Control" content="max-age=3200"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .layui-transfer-box {
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <!--  父id    -->
+    <input type="text" name="id" value="" style="display:none;">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">节点id</label>
+        <div class="layui-input-block">
+            <input type="text" name="baseNodeId" lay-verify="required" placeholder="请输入节点id" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">处理结果名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="dealResultName" lay-verify="required" placeholder="请输入处理结果名称" value=""
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">处理结果</label>
+        <div class="layui-input-block">
+            <input type="text" name="dealResult" lay-verify="required" placeholder="请输入处理结果" value=""
+                   class="layui-input">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/my.js"></script>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        };
+        let id = $.getUrlParam('id');
+        let func = $.getUrlParam('func');
+
+        if (func == 'edit') { // 这是修改
+            pushRequest("OrderNodeResultTypeService", "getById", {
+                id: id
+            }, function (data) {
+                $('[name="id"]').attr('value', data.id);
+                $('[name="baseNodeId"]').attr('value', data.baseNodeId);
+                $('[name="dealResultName"]').attr('value', data.dealResultName);
+                $('[name="dealResult"]').attr('value', data.dealResult);
+                form.render();
+            })
+        }
+
+        var closeAndReload = function () {
+            var iframeIndex = parent.layer.getFrameIndex(window.name);
+            parent.$.reloadTable();
+            parent.layer.close(iframeIndex);
+        };
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+                // 关闭弹出层
+                layer.close(index);
+                if (func === 'add') {
+                    pushRequest("OrderNodeResultTypeService", "insert", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                } else if (func === 'edit') {
+                    pushRequest("OrderNodeResultTypeService", "update", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

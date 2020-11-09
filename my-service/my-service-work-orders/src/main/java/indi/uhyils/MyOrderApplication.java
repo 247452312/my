@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class MyOrderApplication {
     public static void main(String[] args) {
-
         ApplicationContext act = SpringApplication.run(MyOrderApplication.class, args);
         SpringUtil.setApplicationContext(act);
     }

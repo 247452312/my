@@ -27,8 +27,7 @@
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
 		a.send_sms as sendSms,
-		a.desc as
-        desc
+		a.desc
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeEntity">

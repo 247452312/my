@@ -7,11 +7,11 @@
     <sql id="columnList">
         a.value_type as valueType,
 		a.edit as edit,
-		a.devault_value as devaultValue,
+		a.default_value as defaultValue,
 		a.remark as remark,
 		a.type as type,
 		a.update_date as updateDate,
-		a.empty as empty,
+		a.empty,
 		a.update_user as updateUser,
 		a.name as name,
 		a.id as id,
@@ -19,8 +19,7 @@
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
 		a.base_order_id as baseOrderId,
-		a.desc as
-        desc
+		a.desc
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeFieldEntity">
@@ -60,7 +59,7 @@
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeFieldEntity">
         insert sys_order_node_field(value_type,
                                     edit,
-                                    devault_value,
+                                    default_value,
                                     remark,
                                     type,
                                     update_date,
@@ -75,7 +74,7 @@
                                     desc)
         values (#{valueType},
                 #{edit},
-                #{devaultValue},
+                #{defaultValue},
                 #{remark},
                 #{type},
                 #{updateDate},
@@ -98,8 +97,8 @@
         <if test="edit != null and edit != ''">
             ,edit = #{edit}
         </if>
-        <if test="devaultValue != null and devaultValue != ''">
-            ,devault_value = #{devaultValue}
+        <if test="defaultValue != null and defaultValue != ''">
+            ,default_value = #{defaultValue}
         </if>
         <if test="remark != null and remark != ''">
             ,remark = #{remark}
