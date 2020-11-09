@@ -22,7 +22,7 @@
         <module>my-service-mongo</module>
         <module>my-service-algorithm</module>
         <module>my-service-smart-home</module>
-        <module>my-service-work-orders-and-documents</module>
+        <module>my-service-work-orders</module>
     </modules>
 
 

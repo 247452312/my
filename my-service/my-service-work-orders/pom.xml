@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>my-service</artifactId>
         <groupId>indi.uhyils</groupId>
         <version>0.1.2-my-SNAPSHOT</version>
     </parent>
-    <artifactId>my-web</artifactId>
-    <packaging>jar</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>my-service-work-orders</artifactId>
     <version>0.1.2-my-SNAPSHOT</version>
-    <name>my-web</name>
-    <description>Demo project for Spring Boot</description>
-
-
+    <packaging>jar</packaging>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -28,6 +26,7 @@
     </dependencyManagement>
 
     <dependencies>
+
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-common-base</artifactId>
@@ -36,53 +35,26 @@
             <groupId>indi.uhyils</groupId>
             <artifactId>my-common-service</artifactId>
         </dependency>
-        <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-common-mq</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-api-provider-user</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-api-provider-log</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-api-provider-software</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-api-provider-distribute</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-api-provider-push</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-api-provider-mongo</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-api-provider-algorithm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-api-provider-smart-home</artifactId>
-        </dependency>
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-api-provider-work-orders</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-user</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
         <dependency>
@@ -90,13 +62,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--        &lt;!&ndash; 热部署 &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-devtools</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--            <scope>true</scope>-->
-        <!--        </dependency>-->
+
 
         <dependency>
             <groupId>com.alibaba.boot</groupId>
@@ -118,14 +84,8 @@
             <artifactId>dubbo</artifactId>
         </dependency>
 
-        <!-- hystrix-core 熔断 -->
-        <dependency>
-            <groupId>com.netflix.hystrix</groupId>
-            <artifactId>hystrix-core</artifactId>
-        </dependency>
 
-
-        <!--zookeeper-->
+        <!--curator-->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
@@ -149,16 +109,7 @@
             <artifactId>nacos-client</artifactId>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
-        <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-        </dependency>
-
-
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -166,7 +117,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>indi.uhyils.WebApplication</mainClass>
+                    <mainClass>indi.uhyils.MyOrderApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -187,4 +138,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

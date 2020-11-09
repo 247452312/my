@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.OrderBaseNodeRouteDao">
+
+
+    <sql id="columnList">
+		a.prev_node_id as prevNodeId,
+		a.result_type as resultType,
+		a.update_user as updateUser,
+		a.remark as remark,
+		a.next_node_id as nextNodeId,
+		a.id as id,
+		a.create_user as createUser,
+		a.create_date as createDate,
+		a.delete_flag as deleteFlag,
+		a.update_date as updateDate
+    </sql>
+
+    <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseNodeRouteEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node_route a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderBaseNodeRouteEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node_route a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderBaseNodeRouteEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node_route a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${page * size}
+        </if>
+
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeRouteEntity">
+        insert sys_order_base_node_route(prev_node_id,
+		result_type,
+		update_user,
+		remark,
+		next_node_id,
+		id,
+		create_user,
+		create_date,
+		delete_flag,
+		update_date)
+        values (#{prevNodeId},
+		#{resultType},
+		#{updateUser},
+		#{remark},
+		#{nextNodeId},
+		#{id},
+		#{createUser},
+		#{createDate},
+		#{deleteFlag},
+		#{updateDate})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeRouteEntity">
+        update sys_order_base_node_route set
+        <if test="prevNodeId != null and prevNodeId != ''">
+            ,prev_node_id = #{prevNodeId}
+        </if>
+        <if test="resultType != null and resultType != ''">
+            ,result_type = #{resultType}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+            ,update_user = #{updateUser}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="nextNodeId != null and nextNodeId != ''">
+            ,next_node_id = #{nextNodeId}
+        </if>
+        <if test="createUser != null and createUser != ''">
+            ,create_user = #{createUser}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            ,create_date = #{createDate}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="updateDate != null and updateDate != ''">
+            ,update_date = #{updateDate}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_base_node_route a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_base_node_route a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_base_node_route a
+        where ${columnName} = #{value}
+    </select>
+
+
+</mapper>

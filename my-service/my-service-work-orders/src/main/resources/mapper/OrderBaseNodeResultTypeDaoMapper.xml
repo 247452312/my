@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.OrderBaseNodeResultTypeDao">
+
+
+    <sql id="columnList">
+		a.update_user as updateUser,
+		a.base_node_id as baseNodeId,
+		a.deal_result_name as dealResultName,
+		a.remark as remark,
+		a.deal_result as dealResult,
+		a.id as id,
+		a.create_user as createUser,
+		a.create_date as createDate,
+		a.delete_flag as deleteFlag,
+		a.update_date as updateDate
+    </sql>
+
+    <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node_result_type a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node_result_type a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node_result_type a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${page * size}
+        </if>
+
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity">
+        insert sys_order_base_node_result_type(update_user,
+		base_node_id,
+		deal_result_name,
+		remark,
+		deal_result,
+		id,
+		create_user,
+		create_date,
+		delete_flag,
+		update_date)
+        values (#{updateUser},
+		#{baseNodeId},
+		#{dealResultName},
+		#{remark},
+		#{dealResult},
+		#{id},
+		#{createUser},
+		#{createDate},
+		#{deleteFlag},
+		#{updateDate})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity">
+        update sys_order_base_node_result_type set
+        <if test="updateUser != null and updateUser != ''">
+            ,update_user = #{updateUser}
+        </if>
+        <if test="baseNodeId != null and baseNodeId != ''">
+            ,base_node_id = #{baseNodeId}
+        </if>
+        <if test="dealResultName != null and dealResultName != ''">
+            ,deal_result_name = #{dealResultName}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="dealResult != null and dealResult != ''">
+            ,deal_result = #{dealResult}
+        </if>
+        <if test="createUser != null and createUser != ''">
+            ,create_user = #{createUser}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            ,create_date = #{createDate}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="updateDate != null and updateDate != ''">
+            ,update_date = #{updateDate}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_base_node_result_type a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_base_node_result_type a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_base_node_result_type a
+        where ${columnName} = #{value}
+    </select>
+
+
+</mapper>
