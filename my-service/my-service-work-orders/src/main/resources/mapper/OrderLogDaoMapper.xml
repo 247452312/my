@@ -5,7 +5,7 @@
 
 
     <sql id="columnList">
-		a.deal_user_id as dealUserId,
+        a.deal_user_id as dealUserId,
 		a.remark as remark,
 		a.update_date as updateDate,
 		a.fault_info as faultInfo,
@@ -56,31 +56,31 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderLogEntity">
         insert sys_order_log(deal_user_id,
-		remark,
-		update_date,
-		fault_info,
-		update_user,
-		result_status,
-		monitor_user_id,
-		info_id,
-		id,
-		create_user,
-		create_date,
-		delete_flag,
-		node_id)
+                             remark,
+                             update_date,
+                             fault_info,
+                             update_user,
+                             result_status,
+                             monitor_user_id,
+                             info_id,
+                             id,
+                             create_user,
+                             create_date,
+                             delete_flag,
+                             node_id)
         values (#{dealUserId},
-		#{remark},
-		#{updateDate},
-		#{faultInfo},
-		#{updateUser},
-		#{resultStatus},
-		#{monitorUserId},
-		#{infoId},
-		#{id},
-		#{createUser},
-		#{createDate},
-		#{deleteFlag},
-		#{nodeId})
+                #{remark},
+                #{updateDate},
+                #{faultInfo},
+                #{updateUser},
+                #{resultStatus},
+                #{monitorUserId},
+                #{infoId},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{nodeId})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderLogEntity">

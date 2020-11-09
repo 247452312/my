@@ -5,7 +5,7 @@
 
 
     <sql id="columnList">
-		a.remark as remark,
+        a.remark as remark,
 		a.priority as priority,
 		a.update_date as updateDate,
 		a.query_user_ids as queryUserIds,
@@ -18,8 +18,9 @@
 		a.create_user as createUser,
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
-		a.desc as desc,
-		a.status as status
+		a.desc as
+        desc,
+            a.status as status
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
@@ -58,35 +59,35 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
         insert sys_order_base_info(remark,
-		priority,
-		update_date,
-		query_user_ids,
-		limit_time,
-		update_user,
-		son,
-		monitor_user_id,
-		name,
-		id,
-		create_user,
-		create_date,
-		delete_flag,
-		desc,
-		status)
+                                   priority,
+                                   update_date,
+                                   query_user_ids,
+                                   limit_time,
+                                   update_user,
+                                   son,
+                                   monitor_user_id,
+                                   name,
+                                   id,
+                                   create_user,
+                                   create_date,
+                                   delete_flag,
+                                   desc,
+                                   status)
         values (#{remark},
-		#{priority},
-		#{updateDate},
-		#{queryUserIds},
-		#{limitTime},
-		#{updateUser},
-		#{son},
-		#{monitorUserId},
-		#{name},
-		#{id},
-		#{createUser},
-		#{createDate},
-		#{deleteFlag},
-		#{desc},
-		#{status})
+                #{priority},
+                #{updateDate},
+                #{queryUserIds},
+                #{limitTime},
+                #{updateUser},
+                #{son},
+                #{monitorUserId},
+                #{name},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{desc},
+                #{status})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseInfoEntity">

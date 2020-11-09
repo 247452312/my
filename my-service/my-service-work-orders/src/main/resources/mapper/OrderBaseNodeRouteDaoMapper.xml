@@ -5,7 +5,7 @@
 
 
     <sql id="columnList">
-		a.prev_node_id as prevNodeId,
+        a.prev_node_id as prevNodeId,
 		a.result_type as resultType,
 		a.update_user as updateUser,
 		a.remark as remark,
@@ -53,25 +53,25 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeRouteEntity">
         insert sys_order_base_node_route(prev_node_id,
-		result_type,
-		update_user,
-		remark,
-		next_node_id,
-		id,
-		create_user,
-		create_date,
-		delete_flag,
-		update_date)
+                                         result_type,
+                                         update_user,
+                                         remark,
+                                         next_node_id,
+                                         id,
+                                         create_user,
+                                         create_date,
+                                         delete_flag,
+                                         update_date)
         values (#{prevNodeId},
-		#{resultType},
-		#{updateUser},
-		#{remark},
-		#{nextNodeId},
-		#{id},
-		#{createUser},
-		#{createDate},
-		#{deleteFlag},
-		#{updateDate})
+                #{resultType},
+                #{updateUser},
+                #{remark},
+                #{nextNodeId},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{updateDate})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeRouteEntity">
