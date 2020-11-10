@@ -26,7 +26,7 @@ public class OrderInfoEntity extends BaseVoEntity {
     /**
      * 是否是子流程 0->不是 1->是
      */
-    private Integer son;
+    private Boolean son;
 
     /**
      * 监管人id
@@ -73,11 +73,11 @@ public class OrderInfoEntity extends BaseVoEntity {
         this.limitTime = limitTime;
     }
 
-    public Integer getSon() {
+    public Boolean getSon() {
         return son;
     }
 
-    public void setSon(Integer son) {
+    public void setSon(Boolean son) {
         this.son = son;
     }
 

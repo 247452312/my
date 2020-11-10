@@ -127,5 +127,13 @@
         where ${columnName} = #{value}
     </select>
 
+    <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.model.OrderBaseNodeRouteEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node_route a
+        where delete_flag = 0
+        and prev_node_id = #{nodeId}
+    </select>
+
 
 </mapper>

@@ -44,14 +44,19 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
     private Integer sync;
 
     /**
+     * 节点状态 0->未开始 1->等待开始 2->处理中 3->结束
+     */
+    private Integer status;
+
+    /**
      * 限时(分钟)
      */
     private Integer limitTime;
 
     /**
-     * 处理结果
+     * 处理结果id
      */
-    private String result;
+    private String resultId;
 
     /**
      * 抄送人id
@@ -153,12 +158,12 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
         this.limitTime = limitTime;
     }
 
-    public String getResult() {
-        return result;
+    public String getResultId() {
+        return resultId;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setResultId(String resultId) {
+        this.resultId = resultId;
     }
 
     public String getNoticeUserId() {
@@ -183,6 +188,14 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
 
     public void setRunDealUserId(String runDealUserId) {
         this.runDealUserId = runDealUserId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getName() {

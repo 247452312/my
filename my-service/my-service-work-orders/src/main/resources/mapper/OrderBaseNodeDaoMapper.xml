@@ -205,5 +205,12 @@
         where ${columnName} = #{value}
     </select>
 
+    <select id="getByOrderId" resultType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node a
+        where delete_flag = 0
+        and base_info_id = #{baseInfoId}
+    </select>
 
 </mapper>
