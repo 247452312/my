@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时30分
@@ -30,7 +32,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
      * 工具entity, 插入日志时用来插入登录日志
      */
     private final UserEntity userEntity = new UserEntity();
-    @Autowired
+    @Resource
     private JobDao dao;
     @Autowired
     private ScheduledManager scheduledManager;

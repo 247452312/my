@@ -4,7 +4,8 @@ import indi.uhyils.dao.DeviceArgDao;
 import indi.uhyils.pojo.model.DeviceArgEntity;
 import indi.uhyils.service.DeviceArgService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Service(group = "${spring.profiles.active}")
 public class DeviceArgServiceImpl extends BaseDefaultServiceImpl<DeviceArgEntity> implements DeviceArgService {
-    @Autowired
+    @Resource
     private DeviceArgDao dao;
 
     public DeviceArgDao getDao() {

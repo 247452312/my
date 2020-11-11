@@ -8,7 +8,8 @@ import indi.uhyils.pojo.response.CellAlgorithmResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.AlgorithmService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 /**
  * 算法类
@@ -19,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service(group = "${spring.profiles.active}")
 public class AlgorithmServiceImpl implements AlgorithmService {
 
-    @Autowired
+    @Resource
     AlgorithmDao dao;
 
     @Override

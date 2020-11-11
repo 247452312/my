@@ -15,8 +15,8 @@ import indi.uhyils.service.PowerService;
 import indi.uhyils.util.ApiPowerInitUtil;
 import indi.uhyils.util.LogUtil;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implements PowerService {
 
 
-    @Autowired
+    @Resource
     private PowerDao dao;
 
 

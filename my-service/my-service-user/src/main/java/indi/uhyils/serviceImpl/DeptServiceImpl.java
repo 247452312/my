@@ -18,11 +18,11 @@ import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.DeptService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +33,13 @@ import java.util.List;
 @Service(group = "${spring.profiles.active}")
 @ReadWriteMark(tables = {"sys_dept"})
 public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implements DeptService {
-    @Autowired
+    @Resource
     private DeptDao dao;
 
-    @Autowired
+    @Resource
     private MenuDao menuDao;
 
-    @Autowired
+    @Resource
     private RoleDao roleDao;
 
     @Override

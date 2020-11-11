@@ -4,7 +4,8 @@ import indi.uhyils.dao.OrderNodeRouteDao;
 import indi.uhyils.pojo.model.OrderNodeRouteEntity;
 import indi.uhyils.service.OrderNodeRouteService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service(group = "${spring.profiles.active}")
 public class OrderNodeRouteServiceImpl extends BaseDefaultServiceImpl<OrderNodeRouteEntity> implements OrderNodeRouteService {
 
-    @Autowired
+    @Resource
     private OrderNodeRouteDao dao;
 
 

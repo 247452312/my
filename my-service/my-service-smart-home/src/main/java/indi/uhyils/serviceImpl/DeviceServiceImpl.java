@@ -4,7 +4,8 @@ import indi.uhyils.dao.DeviceDao;
 import indi.uhyils.pojo.model.DeviceEntity;
 import indi.uhyils.service.DeviceService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Service(group = "${spring.profiles.active}")
 public class DeviceServiceImpl extends BaseDefaultServiceImpl<DeviceEntity> implements DeviceService {
-    @Autowired
+    @Resource
     private DeviceDao dao;
 
     public DeviceDao getDao() {

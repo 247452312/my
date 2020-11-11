@@ -20,11 +20,11 @@ import indi.uhyils.util.ContentUtil;
 import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -54,21 +54,21 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
      */
     private static final String QUICK_START_CODE = "quickStart";
 
-    @Autowired
+    @Resource
     private MenuDao dao;
 
-    @Autowired
+    @Resource
     private ContentDao contentDao;
 
-    @Autowired
+    @Resource
     private DeptDao deptDao;
 
-    @Autowired
+    @Resource
     private UserDao userDao;
 
-    @Autowired
+    @Resource
     private DictDao dictDao;
-    @Autowired
+    @Resource
     private DictItemDao dictItemDao;
 
 

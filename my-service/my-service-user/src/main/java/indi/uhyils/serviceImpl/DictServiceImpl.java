@@ -19,8 +19,8 @@ import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.DictService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,10 +50,10 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     private static final String MENU_ICON_CLASS_CODE = "icon-class";
 
 
-    @Autowired
+    @Resource
     private DictDao dao;
 
-    @Autowired
+    @Resource
     private DictItemDao dictItemDao;
 
     @Override

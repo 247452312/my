@@ -8,8 +8,8 @@ import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.ApiService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 @Service(group = "${spring.profiles.active}")
 public class ApiServiceImpl extends BaseDefaultServiceImpl<ApiEntity> implements ApiService {
 
-    @Autowired
+    @Resource
     private ApiDao dao;
 
     public ApiDao getDao() {

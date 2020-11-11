@@ -4,7 +4,8 @@ import indi.uhyils.dao.OrderApiDao;
 import indi.uhyils.pojo.model.OrderApiEntity;
 import indi.uhyils.service.OrderApiService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service(group = "${spring.profiles.active}")
 public class OrderApiServiceImpl extends BaseDefaultServiceImpl<OrderApiEntity> implements OrderApiService {
 
-    @Autowired
+    @Resource
     private OrderApiDao dao;
 
 

@@ -4,7 +4,8 @@ import indi.uhyils.dao.MsgDao;
 import indi.uhyils.pojo.model.MsgEntity;
 import indi.uhyils.service.MsgService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service(group = "${spring.profiles.active}")
 public class MsgServiceImpl extends BaseDefaultServiceImpl<MsgEntity> implements MsgService {
 
-    @Autowired
+    @Resource
     private MsgDao dao;
 
     public MsgDao getDao() {

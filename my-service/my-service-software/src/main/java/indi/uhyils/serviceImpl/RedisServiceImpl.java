@@ -23,10 +23,10 @@ import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SshUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Client;
 import redis.clients.jedis.Jedis;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -58,10 +58,10 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
      */
     private static final Integer CONFIG_GET_SIZE = 2;
 
-    @Autowired
+    @Resource
     private RedisDao dao;
 
-    @Autowired
+    @Resource
     private ServerDao serverDao;
 
     public RedisDao getDao() {

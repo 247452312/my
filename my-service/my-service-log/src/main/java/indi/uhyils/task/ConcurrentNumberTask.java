@@ -12,10 +12,10 @@ import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.NacosUtil;
 import org.apache.dubbo.config.annotation.Reference;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 
 /**
@@ -33,7 +33,7 @@ public class ConcurrentNumberTask {
      * 低级服务是否降级(默认没有降级)
      */
     private volatile static Boolean degradation = false;
-    @Autowired
+    @Resource
     private LogDao logDao;
     @Reference(group = "${spring.profiles.active}", check = false)
     private DictService dictService;

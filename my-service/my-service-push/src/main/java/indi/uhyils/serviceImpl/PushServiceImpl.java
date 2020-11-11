@@ -21,8 +21,8 @@ import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.PushUtils;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,12 +35,12 @@ import java.util.stream.Collectors;
 public class PushServiceImpl implements PushService {
 
 
-    @Autowired
+    @Resource
     ApiSubscribeDao apiSubscribeDao;
 
-    @Autowired
+    @Resource
     ApiDao apiDao;
-    @Autowired
+    @Resource
     ApiGroupDao apiGroupDao;
 
     @Override

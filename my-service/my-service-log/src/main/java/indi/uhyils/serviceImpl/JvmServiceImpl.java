@@ -14,8 +14,8 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.JvmService;
 import indi.uhyils.util.JvmStatusAnalysisUtil;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,13 +30,13 @@ import java.util.List;
 @Service(group = "${spring.profiles.active}")
 public class JvmServiceImpl implements JvmService {
 
-    @Autowired
+    @Resource
     private MonitorDao monitorDao;
-    @Autowired
+    @Resource
     private MonitorInterfaceDetailDao monitorInterfaceDetailDao;
-    @Autowired
+    @Resource
     private MonitorJvmStatusDetailDao monitorJvmStatusDetailDao;
-    @Autowired
+    @Resource
     private LogDao logDao;
 
 

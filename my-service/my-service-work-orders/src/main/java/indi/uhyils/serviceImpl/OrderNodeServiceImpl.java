@@ -4,7 +4,8 @@ import indi.uhyils.dao.OrderNodeDao;
 import indi.uhyils.pojo.model.OrderNodeEntity;
 import indi.uhyils.service.OrderNodeService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service(group = "${spring.profiles.active}")
 public class OrderNodeServiceImpl extends BaseDefaultServiceImpl<OrderNodeEntity> implements OrderNodeService {
 
-    @Autowired
+    @Resource
     private OrderNodeDao dao;
 
 

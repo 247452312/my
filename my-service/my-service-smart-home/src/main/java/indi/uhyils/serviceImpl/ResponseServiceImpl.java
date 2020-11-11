@@ -4,7 +4,8 @@ import indi.uhyils.dao.ResponseDao;
 import indi.uhyils.pojo.model.ResponseEntity;
 import indi.uhyils.service.ResponseService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Service(group = "${spring.profiles.active}")
 public class ResponseServiceImpl extends BaseDefaultServiceImpl<ResponseEntity> implements ResponseService {
-    @Autowired
+    @Resource
     private ResponseDao dao;
 
     public ResponseDao getDao() {

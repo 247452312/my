@@ -9,9 +9,9 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.BlackListService;
 import indi.uhyils.util.LogUtil;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
      * 很久很久以前 (3分钟)
      */
     private static final Long LONG_TIME_AGO = 3 * 60 * 1000L;
-    @Autowired
+    @Resource
     private BlackListDao dao;
     /**
      * 可以评价的最小 ip访问次数

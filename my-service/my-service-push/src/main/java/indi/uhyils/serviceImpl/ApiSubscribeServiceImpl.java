@@ -8,7 +8,8 @@ import indi.uhyils.pojo.request.SubscribeRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.ApiSubscribeService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -17,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service(group = "${spring.profiles.active}")
 public class ApiSubscribeServiceImpl extends BaseDefaultServiceImpl<ApiSubscribeEntity> implements ApiSubscribeService {
 
-    @Autowired
+    @Resource
     private ApiSubscribeDao dao;
 
     public ApiSubscribeDao getDao() {

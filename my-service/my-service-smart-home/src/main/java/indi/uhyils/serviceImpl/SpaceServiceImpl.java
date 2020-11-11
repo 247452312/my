@@ -4,7 +4,8 @@ import indi.uhyils.dao.SpaceDao;
 import indi.uhyils.pojo.model.SpaceEntity;
 import indi.uhyils.service.SpaceService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Service(group = "${spring.profiles.active}")
 public class SpaceServiceImpl extends BaseDefaultServiceImpl<SpaceEntity> implements SpaceService {
-    @Autowired
+    @Resource
     private SpaceDao dao;
 
     public SpaceDao getDao() {

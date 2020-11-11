@@ -15,8 +15,8 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.LogService;
 import indi.uhyils.util.EnumUtils;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ import java.util.Map;
 @ReadWriteMark(tables = {"sys_log"})
 public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements LogService {
 
-    @Autowired
+    @Resource
     private LogDao dao;
     /**
      * 工具entity, 插入日志时用来插入登录日志

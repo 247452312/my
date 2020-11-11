@@ -4,7 +4,8 @@ import indi.uhyils.dao.DeviceCallbackDao;
 import indi.uhyils.pojo.model.DeviceCallbackEntity;
 import indi.uhyils.service.DeviceCallbackService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Service(group = "${spring.profiles.active}")
 public class DeviceCallbackServiceImpl extends BaseDefaultServiceImpl<DeviceCallbackEntity> implements DeviceCallbackService {
-    @Autowired
+    @Resource
     private DeviceCallbackDao dao;
 
     public DeviceCallbackDao getDao() {

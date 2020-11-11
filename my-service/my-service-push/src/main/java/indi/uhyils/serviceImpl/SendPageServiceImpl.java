@@ -4,7 +4,8 @@ import indi.uhyils.dao.SendPageDao;
 import indi.uhyils.pojo.model.SendPageEntity;
 import indi.uhyils.service.SendPageService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 /**
  * 页面推送消息接口
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service(group = "${spring.profiles.active}")
 public class SendPageServiceImpl extends BaseDefaultServiceImpl<SendPageEntity> implements SendPageService {
 
-    @Autowired
+    @Resource
     private SendPageDao dao;
 
     public SendPageDao getDao() {

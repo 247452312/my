@@ -4,7 +4,8 @@ import indi.uhyils.dao.InstructionsDao;
 import indi.uhyils.pojo.model.InstructionsEntity;
 import indi.uhyils.service.InstructionsService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Service(group = "${spring.profiles.active}")
 public class InstructionsServiceImpl extends BaseDefaultServiceImpl<InstructionsEntity> implements InstructionsService {
-    @Autowired
+    @Resource
     private InstructionsDao dao;
 
     public InstructionsDao getDao() {

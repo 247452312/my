@@ -4,7 +4,8 @@ import indi.uhyils.dao.OrderInfoDao;
 import indi.uhyils.pojo.model.OrderInfoEntity;
 import indi.uhyils.service.OrderInfoService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service(group = "${spring.profiles.active}")
 public class OrderInfoServiceImpl extends BaseDefaultServiceImpl<OrderInfoEntity> implements OrderInfoService {
 
-    @Autowired
+    @Resource
     private OrderInfoDao dao;
 
 

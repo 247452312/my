@@ -8,9 +8,9 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.OrderService;
 import indi.uhyils.util.OrderBuilder;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,34 +25,34 @@ import java.util.stream.Collectors;
 @Transactional(rollbackFor = Exception.class)
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
+    @Resource
     private OrderBaseInfoDao orderBaseInfoDao;
 
-    @Autowired
+    @Resource
     private OrderBaseNodeDao orderBaseNodeDao;
 
-    @Autowired
+    @Resource
     private OrderBaseNodeFieldDao orderBaseNodeFieldDao;
 
-    @Autowired
+    @Resource
     private OrderBaseNodeResultTypeDao orderBaseNodeResultTypeDao;
 
-    @Autowired
+    @Resource
     private OrderBaseNodeRouteDao orderBaseNodeRouteDao;
 
-    @Autowired
+    @Resource
     private OrderNodeDao orderNodeDao;
-    @Autowired
+    @Resource
     private OrderNodeFieldDao orderNodeFieldDao;
 
-    @Autowired
+    @Resource
     private OrderNodeResultTypeDao orderNodeResultTypeDao;
 
-    @Autowired
+    @Resource
     private OrderNodeRouteDao orderNodeRouteDao;
 
 
-    @Autowired
+    @Resource
     private OrderInfoDao orderInfoDao;
 
     @Override

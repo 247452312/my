@@ -17,8 +17,8 @@ import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.RoleService;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 
 /**
@@ -30,13 +30,13 @@ import java.util.ArrayList;
 public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implements RoleService {
 
 
-    @Autowired
+    @Resource
     private RoleDao dao;
 
-    @Autowired
+    @Resource
     private UserDao userDao;
 
-    @Autowired
+    @Resource
     private MenuDao menuDao;
 
 

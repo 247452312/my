@@ -10,8 +10,8 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.ServerService;
 import indi.uhyils.util.SshUtils;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 @Service(group = "${spring.profiles.active}")
 public class ServerServiceImpl extends BaseDefaultServiceImpl<ServerEntity> implements ServerService {
 
-    @Autowired
+    @Resource
     private ServerDao dao;
 
     public ServerDao getDao() {

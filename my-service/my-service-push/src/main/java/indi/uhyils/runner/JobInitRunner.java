@@ -9,6 +9,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class JobInitRunner implements ApplicationRunner {
     @Autowired
     private ScheduledManager scheduledManager;
 
-    @Autowired
+    @Resource
     private JobDao jobDao;
 
     @Override
