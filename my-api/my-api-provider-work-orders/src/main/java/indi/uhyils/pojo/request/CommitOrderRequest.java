@@ -11,6 +11,11 @@ import java.util.Map;
 public class CommitOrderRequest extends DefaultRequest {
 
     /**
+     * 工单的id
+     */
+    private String orderId;
+
+    /**
      * 真实值
      * <real_value表id,对应值>
      */
@@ -31,6 +36,14 @@ public class CommitOrderRequest extends DefaultRequest {
      * 每一步的抄送人
      */
     private Map<String, String> noticeUserIds;
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 
     public Map<String, String> getValue() {
         return value;

@@ -3,117 +3,42 @@ package indi.uhyils.pojo.model;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 /**
- * 订单节点属性真实值表
+ * 订单节点属性真实值表(OrderNodeFieldValue)表 数据库实体类
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年11月09日 10时11分
+ * @date 文件创建日期 2020年11月15日 16时18分51秒
  */
 public class OrderNodeFieldValueEntity extends BaseVoEntity {
 
-    /**
-     * 节点id
-     */
-    private String baseOrderId;
+    private static final long serialVersionUID = -40521694532478838L;
+
 
     /**
-     * 属性名称
+     * 对应节点属性的id
      */
-    private String name;
+    private String nodeFieldId;
 
     /**
-     * 属性备注
+     * 真实值
      */
-    private String desc;
-
-    /**
-     * 默认值
-     */
-    private String defaultValue;
-
-    /**
-     * 是否可以为空
-     */
-    private Integer empty;
-
-    /**
-     * 是否可编辑
-     */
-    private Integer edit;
-
-    /**
-     * 字段类型{@link indi.uhyils.enum_.NodeFieldTypeEnum}
-     */
-    private Integer type;
-
-    /**
-     * 数值类型 {@link indi.uhyils.enum_.NodeFieldValueTypeEnum}
-     */
-    private Integer valueType;
+    private String realValue;
 
 
-    public Integer getValueType() {
-        return valueType;
+
+    public String getNodeFieldId() {
+        return nodeFieldId;
     }
 
-    public void setValueType(Integer valueType) {
-        this.valueType = valueType;
+    public void setNodeFieldId(String nodeFieldId) {
+        this.nodeFieldId = nodeFieldId;
     }
 
-    public Integer getEdit() {
-        return edit;
+    public String getRealValue() {
+        return realValue;
     }
 
-    public void setEdit(Integer edit) {
-        this.edit = edit;
+    public void setRealValue(String realValue) {
+        this.realValue = realValue;
     }
-
-    public String getDefaultValue() {
-        return defaultValue;
-    }
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getEmpty() {
-        return empty;
-    }
-
-    public void setEmpty(Integer empty) {
-        this.empty = empty;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getBaseOrderId() {
-        return baseOrderId;
-    }
-
-    public void setBaseOrderId(String baseOrderId) {
-        this.baseOrderId = baseOrderId;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
 
 }

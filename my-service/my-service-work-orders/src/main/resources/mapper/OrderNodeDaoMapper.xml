@@ -37,6 +37,16 @@
         where delete_flag = 0
         and id = #{id}
     </select>
+    <select id="getByIds" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node a
+        where delete_flag = 0
+        and id in
+        <foreach collection="nodeIds" index="nodeId" open="(" close=")" separator=",">
+            #{nodeId}
+        </foreach>
+    </select>
 
     <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
         select

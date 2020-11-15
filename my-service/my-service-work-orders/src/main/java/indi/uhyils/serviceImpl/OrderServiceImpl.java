@@ -1,5 +1,6 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.builder.OrderNodeFieldValueBuilder;
 import indi.uhyils.dao.*;
 import indi.uhyils.enum_.NodeTypeEnum;
 import indi.uhyils.pojo.model.*;
@@ -13,10 +14,7 @@ import org.apache.dubbo.config.annotation.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -56,6 +54,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private OrderInfoDao orderInfoDao;
+
+    @Resource
+    private OrderNodeFieldValueDao orderNodeFieldValueDao;
 
     @Override
     public ServiceResult<InsertOrderResponse> insertOrder(IdRequest request) {
@@ -128,7 +129,52 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ServiceResult<Boolean> commitOrder(CommitOrderRequest request) {
-        return null;
+        Map<String, String> value = request.getValue();
+        List<OrderNodeFieldValueEntity> orderNodeFieldValueEntities = OrderNodeFieldValueBuilder.buildOrderNodeFieldValues(value);
+        /*添加首节点的真实值*/
+        orderNodeFieldValueEntities.forEach(t -> {
+            t.preInsert(request);
+            orderNodeFieldValueDao.insert(t);
+        });
+        /*更新主表的监管人*/
+        OrderInfoEntity orderInfo = orderInfoDao.getById(request.getOrderId());
+        String monitorUserId = orderInfo.getMonitorUserId();
+        if (monitorUserId == null || !monitorUserId.equals(request.getMonitorUserId())) {
+            orderInfo.setMonitorUserId(request.getMonitorUserId());
+            orderInfo.preUpdate(request);
+            orderInfoDao.update(orderInfo);
+        }
+
+        /*更新节点表的处理人,抄送人*/
+        Map<String, String> dealUserIds = request.getDealUserIds();
+        Map<String, String> noticeUserIds = request.getNoticeUserIds();
+        Set<String> nodeIds = new HashSet<>();
+        nodeIds.addAll(dealUserIds.keySet());
+        nodeIds.addAll(noticeUserIds.keySet());
+        List<OrderNodeEntity> orderNodeEntities = orderNodeDao.getByIds(nodeIds);
+        for (OrderNodeEntity orderNodeEntity : orderNodeEntities) {
+            boolean update = false;
+            String orderDealUserId = dealUserIds.get(orderNodeEntity.getId());
+            String noticeUserId = noticeUserIds.get(orderNodeEntity.getId());
+            if (orderNodeEntity.getRunDealUserId() == null || !orderNodeEntity.getRunDealUserId().equals(orderDealUserId)) {
+                orderNodeEntity.setRunDealUserId(orderDealUserId);
+                orderNodeEntity.preUpdate(request);
+                update = true;
+            }
+            if (orderNodeEntity.getNoticeUserId() == null || !orderNodeEntity.getNoticeUserId().equals(noticeUserId)) {
+                orderNodeEntity.setNoticeUserId(noticeUserId);
+                if (!update) {
+                    orderNodeEntity.preUpdate(request);
+                    update = true;
+                }
+            }
+            if (update) {
+                orderNodeDao.update(orderNodeEntity);
+            }
+
+        }
+
+        return ServiceResult.buildSuccessResult("提交成功", true, request);
     }
 
     @Override
