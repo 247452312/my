@@ -16,13 +16,12 @@ public class OrderNodeRouteEntity extends BaseVoEntity {
     /**
      * 对应结果类型(单个)
      */
-    private Integer resultType;
+    private String resultId;
 
     /**
      * 下一个节点id
      */
     private String nextNodeId;
-
 
     public String getPrevNodeId() {
         return prevNodeId;
@@ -32,12 +31,12 @@ public class OrderNodeRouteEntity extends BaseVoEntity {
         this.prevNodeId = prevNodeId;
     }
 
-    public Integer getResultType() {
-        return resultType;
+    public String getResultId() {
+        return resultId;
     }
 
-    public void setResultType(Integer resultType) {
-        this.resultType = resultType;
+    public void setResultId(String resultId) {
+        this.resultId = resultId;
     }
 
     public String getNextNodeId() {

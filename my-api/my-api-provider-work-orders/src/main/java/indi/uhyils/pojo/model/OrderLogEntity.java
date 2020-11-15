@@ -9,26 +9,6 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
 public class OrderLogEntity extends BaseVoEntity {
 
     /**
-     * 处理人id(冗余)
-     */
-    private String dealUserId;
-
-    /**
-     * 错误原因(只要不是处理成功就要填写此列)
-     */
-    private String faultInfo;
-
-    /**
-     * 处理结果0->处理成功 1->处理失败 2->处理终止 3->已转交
-     */
-    private Integer resultStatus;
-
-    /**
-     * 监管人id(冗余)
-     */
-    private String monitorUserId;
-
-    /**
      * 主表id
      */
     private String infoId;
@@ -37,6 +17,26 @@ public class OrderLogEntity extends BaseVoEntity {
      * 节点id
      */
     private String nodeId;
+
+    /**
+     * 处理人id(冗余)
+     */
+    private String dealUserId;
+
+    /**
+     * 监管人id(冗余)
+     */
+    private String monitorUserId;
+
+    /**
+     * 处理结果0->处理成功 1->处理失败 2->处理终止 3->已转交
+     */
+    private Integer resultStatus;
+    
+    /**
+     * 错误原因(只要不是处理成功就要填写此列)
+     */
+    private String faultInfo;
 
 
     public String getDealUserId() {

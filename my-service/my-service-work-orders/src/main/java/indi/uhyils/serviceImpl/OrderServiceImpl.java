@@ -1,9 +1,11 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.*;
+import indi.uhyils.enum_.NodeTypeEnum;
 import indi.uhyils.pojo.model.*;
 import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.response.InsertOrderResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.OrderService;
 import indi.uhyils.util.OrderBuilder;
@@ -56,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderInfoDao orderInfoDao;
 
     @Override
-    public ServiceResult<String> insertOrder(IdRequest request) {
+    public ServiceResult<InsertOrderResponse> insertOrder(IdRequest request) {
         //插入order基础信息
         String baseInfoId = request.getId();
         OrderBaseInfoEntity baseInfo = orderBaseInfoDao.getById(baseInfoId);
@@ -72,32 +74,46 @@ public class OrderServiceImpl implements OrderService {
         List<OrderNodeRouteEntity> allRouteEntities = new ArrayList<>();
         // 报存所有的新老node对应关系
         Map<String, String> oldToNew = new HashMap<>(nodeList.size());
+        // 创建之后的首节点的属性(返回给前台用)
+        ArrayList<OrderNodeFieldEntity> orderNodeField = new ArrayList<>();
+        // 每个节点的处理人(返回给前台用)
+        HashMap<String, String> dealUserIds = new HashMap<>(nodeList.size());
+        // 每个节点的抄送人(返回给前台用)
+        HashMap<String, String> noticeUserIds = new HashMap<>(nodeList.size());
 
         //获取基础节点对应的所有信息(属性,结果类型,路由) 并转换成实例信息插入实例表
         nodeList.forEach(node -> {
+
+            Boolean isStartNode = NodeTypeEnum.START.getCode().equals(node.getType());
 
             //转换节点本身
             OrderNodeEntity orderNodeEntity = OrderBuilder.transBaseNode2Node(node, infoId);
             orderNodeEntity.preInsert(request);
             orderNodeDao.insert(orderNodeEntity);
 
+            // 填充默认处理人与抄送人
+            dealUserIds.put(orderNodeEntity.getId(), orderNodeEntity.getRunDealUserId());
+            noticeUserIds.put(orderNodeEntity.getId(), orderNodeEntity.getNoticeUserId());
+
             oldToNew.put(node.getId(), orderNodeEntity.getId());
-            //获取节点相关的所有东西
-            List<OrderBaseNodeFieldEntity> nodeFieldEntity = orderBaseNodeFieldDao.getByOrderNodeId(node.getId());
-            List<OrderBaseNodeResultTypeEntity> nodeResultTypeEntity = orderBaseNodeResultTypeDao.getByOrderNodeId(node.getId());
-            List<OrderBaseNodeRouteEntity> routeEntity = orderBaseNodeRouteDao.getByOrderNodeId(node.getId());
+            //获取节点相关的所有东西(属性,结果类型,路由)
+            List<OrderBaseNodeFieldEntity> baseNodeFieldEntity = orderBaseNodeFieldDao.getByOrderNodeId(node.getId());
+            List<OrderBaseNodeResultTypeEntity> baseNodeResultTypeEntity = orderBaseNodeResultTypeDao.getByOrderNodeId(node.getId());
+            List<OrderBaseNodeRouteEntity> baseRouteEntity = orderBaseNodeRouteDao.getByOrderNodeId(node.getId());
 
             String id = orderNodeEntity.getId();
-            //转换节点相关的东西
-            nodeFieldEntity.stream().map(field -> OrderBuilder.transBaseField2Field(field, id)).forEach(field -> {
+            baseNodeFieldEntity.stream().map(field -> OrderBuilder.transBaseField2Field(field, id)).forEach(field -> {
+                if (isStartNode) {
+                    orderNodeField.add(field);
+                }
                 field.preInsert(request);
                 orderNodeFieldDao.insert(field);
             });
-            nodeResultTypeEntity.stream().map(resultType -> OrderBuilder.transBaseResultType2ResultType(resultType, id)).forEach(resultType -> {
+            baseNodeResultTypeEntity.stream().map(resultType -> OrderBuilder.transBaseResultType2ResultType(resultType, id)).forEach(resultType -> {
                 resultType.preInsert(request);
                 orderNodeResultTypeDao.insert(resultType);
             });
-            allRouteEntities.addAll(routeEntity.stream().map(route -> OrderBuilder.transBaseRoute2Route(route, id)).collect(Collectors.toList()));
+            allRouteEntities.addAll(baseRouteEntity.stream().map(route -> OrderBuilder.transBaseRoute2Route(route, id)).collect(Collectors.toList()));
         });
         allRouteEntities.forEach(t -> {
             t.setPrevNodeId(oldToNew.get(t.getPrevNodeId()));
@@ -106,17 +122,8 @@ public class OrderServiceImpl implements OrderService {
             orderNodeRouteDao.insert(t);
         });
 
-        return ServiceResult.buildSuccessResult("插入成功", infoId, request);
-    }
-
-    @Override
-    public ServiceResult<String> insertOrderNode(InsertOrderNodeRequest request) {
-        return null;
-    }
-
-    @Override
-    public ServiceResult<Boolean> insertRoute(InsertRouteRequest request) {
-        return null;
+        InsertOrderResponse build = InsertOrderResponse.build(infoId, orderNodeField, baseInfo.getMonitorUserId(), dealUserIds, noticeUserIds);
+        return ServiceResult.buildSuccessResult("插入成功", build, request);
     }
 
     @Override

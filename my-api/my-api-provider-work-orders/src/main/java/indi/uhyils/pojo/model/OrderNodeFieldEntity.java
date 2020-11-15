@@ -9,29 +9,9 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
 public class OrderNodeFieldEntity extends BaseVoEntity {
 
     /**
-     * 数值类型 {@link indi.uhyils.enum_.NodeFieldValueTypeEnum}
+     * 节点id
      */
-    private Integer valueType;
-
-    /**
-     * 是否可编辑
-     */
-    private Integer edit;
-
-    /**
-     * 默认值
-     */
-    private String defaultValue;
-
-    /**
-     * 字段类型{@link indi.uhyils.enum_.NodeFieldTypeEnum}
-     */
-    private Integer type;
-
-    /**
-     * 是否可以为空
-     */
-    private Integer empty;
+    private String baseOrderId;
 
     /**
      * 属性名称
@@ -39,14 +19,34 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
     private String name;
 
     /**
-     * 节点id
-     */
-    private String baseOrderId;
-
-    /**
      * 属性备注
      */
     private String desc;
+
+    /**
+     * 默认值
+     */
+    private String defaultValue;
+
+    /**
+     * 是否可以为空
+     */
+    private Integer empty;
+
+    /**
+     * 是否可编辑
+     */
+    private Integer edit;
+
+    /**
+     * 字段类型{@link indi.uhyils.enum_.NodeFieldTypeEnum}
+     */
+    private Integer type;
+
+    /**
+     * 数值类型 {@link indi.uhyils.enum_.NodeFieldValueTypeEnum}
+     */
+    private Integer valueType;
 
 
     public Integer getValueType() {

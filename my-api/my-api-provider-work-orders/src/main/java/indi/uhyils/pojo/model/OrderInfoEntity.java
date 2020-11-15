@@ -9,19 +9,19 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
 public class OrderInfoEntity extends BaseVoEntity {
 
     /**
+     * 工单名称
+     */
+    private String name;
+
+    /**
+     * 工单描述
+     */
+    private String desc;
+
+    /**
      * 优先级 {@link indi.uhyils.enum_.PriorityEnum}
      */
     private Integer priority;
-
-    /**
-     * 可查询人id
-     */
-    private String queryUserIds;
-
-    /**
-     * 运行时限(分钟)
-     */
-    private Integer limitTime;
 
     /**
      * 是否是子流程 0->不是 1->是
@@ -34,19 +34,22 @@ public class OrderInfoEntity extends BaseVoEntity {
     private String monitorUserId;
 
     /**
-     * 工单名称
+     * 可查询人id
      */
-    private String name;
-
-    /**
-     * 工单描述
-     */
-    private String desc;
+    private String queryUserIds;
 
     /**
      * 运行状态{@link indi.uhyils.enum_.OrderStatusEnum}
      */
     private Integer status;
+
+    /**
+     * 运行时限(分钟)
+     */
+    private Integer limitTime;
+
+
+
 
 
     public Integer getPriority() {

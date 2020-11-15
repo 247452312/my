@@ -2,6 +2,7 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.response.InsertOrderResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
 
@@ -13,28 +14,12 @@ import indi.uhyils.service.base.BaseService;
  */
 public interface OrderService extends BaseService {
     /**
-     * 添加工单本体
+     * 复制基础工单到工单
      *
      * @param request 工单本体
      * @return 插入后的id
      */
-    ServiceResult<String> insertOrder(IdRequest request);
-
-    /**
-     * 向工单插入工单节点
-     *
-     * @param request 工单节点,带有field的工单节点
-     * @return 插入后的id
-     */
-    ServiceResult<String> insertOrderNode(InsertOrderNodeRequest request);
-
-    /**
-     * 向工单中插入路由
-     *
-     * @param request
-     * @return
-     */
-    ServiceResult<Boolean> insertRoute(InsertRouteRequest request);
+    ServiceResult<InsertOrderResponse> insertOrder(IdRequest request);
 
     /**
      * 提交工单

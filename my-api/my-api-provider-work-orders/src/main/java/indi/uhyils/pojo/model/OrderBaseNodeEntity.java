@@ -9,24 +9,29 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
 public class OrderBaseNodeEntity extends BaseVoEntity {
 
     /**
-     * 保存执行事件id
+     * 基础表id
      */
-    private String saveApiId;
+    private String baseInfoId;
 
     /**
-     * 处理结果类型 {@link indi.uhyils.enum_.NodeResultTypeEnum}
+     * 节点名称
      */
-    private Integer resultType;
+    private String name;
 
     /**
-     * 节点初始化事件id
+     * 节点描述
      */
-    private String initApiId;
+    private String desc;
 
     /**
-     * 是否发送邮件
+     * 处理人id
      */
-    private Integer sendEmail;
+    private String runDealUserId;
+
+    /**
+     * 抄送人id
+     */
+    private String noticeUserId;
 
     /**
      * 处理类型 {@link indi.uhyils.enum_.NodeRunTypeEnum}
@@ -39,44 +44,14 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
     private Integer type;
 
     /**
-     * 是否同步
-     */
-    private Integer sync;
-
-    /**
-     * 节点状态 0->未开始 1->等待开始 2->处理中 3->结束
-     */
-    private Integer status;
-
-    /**
      * 限时(分钟)
      */
     private Integer limitTime;
 
     /**
-     * 处理结果id
+     * 节点初始化事件id
      */
-    private String resultId;
-
-    /**
-     * 抄送人id
-     */
-    private String noticeUserId;
-
-    /**
-     * 基础表id
-     */
-    private String baseInfoId;
-
-    /**
-     * 处理人id
-     */
-    private String runDealUserId;
-
-    /**
-     * 节点名称
-     */
-    private String name;
+    private String initApiId;
 
     /**
      * 节点执行事件id
@@ -84,14 +59,19 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
     private String runApiId;
 
     /**
-     * 是否发送短信
+     * 保存执行事件id
      */
-    private Integer sendSms;
+    private String saveApiId;
 
     /**
-     * 节点描述
+     * 流转执行事件id
      */
-    private String desc;
+    private String transApiId;
+
+    /**
+     * 是否同步
+     */
+    private Integer sync;
 
 
     public String getSaveApiId() {
@@ -102,14 +82,6 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
         this.saveApiId = saveApiId;
     }
 
-    public Integer getResultType() {
-        return resultType;
-    }
-
-    public void setResultType(Integer resultType) {
-        this.resultType = resultType;
-    }
-
     public String getInitApiId() {
         return initApiId;
     }
@@ -118,13 +90,6 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
         this.initApiId = initApiId;
     }
 
-    public Integer getSendEmail() {
-        return sendEmail;
-    }
-
-    public void setSendEmail(Integer sendEmail) {
-        this.sendEmail = sendEmail;
-    }
 
     public Integer getRunType() {
         return runType;
@@ -158,13 +123,6 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
         this.limitTime = limitTime;
     }
 
-    public String getResultId() {
-        return resultId;
-    }
-
-    public void setResultId(String resultId) {
-        this.resultId = resultId;
-    }
 
     public String getNoticeUserId() {
         return noticeUserId;
@@ -190,13 +148,6 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
         this.runDealUserId = runDealUserId;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
 
     public String getName() {
         return name;
@@ -214,12 +165,12 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
         this.runApiId = runApiId;
     }
 
-    public Integer getSendSms() {
-        return sendSms;
+    public String getTransApiId() {
+        return transApiId;
     }
 
-    public void setSendSms(Integer sendSms) {
-        this.sendSms = sendSms;
+    public void setTransApiId(String transApiId) {
+        this.transApiId = transApiId;
     }
 
     public String getDesc() {

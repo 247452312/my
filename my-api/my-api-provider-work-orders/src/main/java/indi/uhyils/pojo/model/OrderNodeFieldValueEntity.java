@@ -3,10 +3,12 @@ package indi.uhyils.pojo.model;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 /**
+ * 订单节点属性真实值表
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
  */
-public class OrderBaseNodeFieldEntity extends BaseVoEntity {
+public class OrderNodeFieldValueEntity extends BaseVoEntity {
 
     /**
      * 节点id
@@ -34,19 +36,20 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
     private Integer empty;
 
     /**
-     * 字段类型{@link indi.uhyils.enum_.NodeFieldTypeEnum}
-     */
-    private Integer type;
-
-    /**
      * 是否可编辑
      */
     private Integer edit;
 
     /**
-     * 数值类型{@link indi.uhyils.enum_.NodeFieldValueTypeEnum}
+     * 字段类型{@link indi.uhyils.enum_.NodeFieldTypeEnum}
+     */
+    private Integer type;
+
+    /**
+     * 数值类型 {@link indi.uhyils.enum_.NodeFieldValueTypeEnum}
      */
     private Integer valueType;
+
 
     public Integer getValueType() {
         return valueType;
@@ -62,6 +65,14 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
 
     public void setEdit(Integer edit) {
         this.edit = edit;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     public Integer getType() {
@@ -102,14 +113,6 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public String getDefaultValue() {
-        return defaultValue;
-    }
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
     }
 
 

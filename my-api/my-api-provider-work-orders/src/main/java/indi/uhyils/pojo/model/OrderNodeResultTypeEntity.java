@@ -18,12 +18,6 @@ public class OrderNodeResultTypeEntity extends BaseVoEntity {
      */
     private String dealResultName;
 
-    /**
-     * 处理结果
-     */
-    private String dealResult;
-
-
     public String getBaseNodeId() {
         return baseNodeId;
     }
@@ -38,14 +32,6 @@ public class OrderNodeResultTypeEntity extends BaseVoEntity {
 
     public void setDealResultName(String dealResultName) {
         this.dealResultName = dealResultName;
-    }
-
-    public String getDealResult() {
-        return dealResult;
-    }
-
-    public void setDealResult(String dealResult) {
-        this.dealResult = dealResult;
     }
 
 

@@ -9,69 +9,9 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
 public class OrderNodeEntity extends BaseVoEntity {
 
     /**
-     * 保存执行事件id
-     */
-    private String saveApiId;
-
-    /**
-     * 处理结果类型 {@link indi.uhyils.enum_.NodeResultTypeEnum}
-     */
-    private Integer resultType;
-
-    /**
-     * 节点初始化事件id
-     */
-    private String initApiId;
-
-    /**
-     * 是否发送邮件
-     */
-    private Integer sendEmail;
-
-    /**
-     * 处理类型 {@link indi.uhyils.enum_.NodeRunTypeEnum}
-     */
-    private Integer runType;
-
-    /**
-     * 节点类型 {@link indi.uhyils.enum_.NodeTypeEnum}
-     */
-    private Integer type;
-
-    /**
-     * 是否同步
-     */
-    private Integer sync;
-
-    /**
-     * 限时(分钟)
-     */
-    private Integer limitTime;
-
-    /**
-     * 处理结果id
-     */
-    private String resultId;
-
-    /**
-     * 抄送人id
-     */
-    private String noticeUserId;
-
-    /**
      * 基础表id
      */
     private String baseInfoId;
-
-    /**
-     * 节点状态 0->未开始 1->等待开始 2->处理中 3->结束
-     */
-    private Integer status;
-
-    /**
-     * 处理人id
-     */
-    private String runDealUserId;
 
     /**
      * 节点名称
@@ -79,19 +19,81 @@ public class OrderNodeEntity extends BaseVoEntity {
     private String name;
 
     /**
+     * 节点描述
+     */
+    private String desc;
+
+    /**
+     * 处理人id
+     */
+    private String runDealUserId;
+
+    /**
+     * 抄送人id
+     */
+    private String noticeUserId;
+
+    /**
+     * 处理类型 {@link indi.uhyils.enum_.NodeRunTypeEnum}
+     */
+    private Integer runType;
+
+    /**
+     * 节点状态 {@link indi.uhyils.enum_.NodeStatusEnum}
+     */
+    private Integer status;
+
+    /**
+     * 节点类型 {@link indi.uhyils.enum_.NodeTypeEnum}
+     */
+    private Integer type;
+
+    /**
+     * 限时(分钟)
+     */
+    private Integer limitTime;
+
+    /**
+     * 节点初始化事件id
+     */
+    private String initApiId;
+
+    /**
      * 节点执行事件id
      */
     private String runApiId;
 
     /**
-     * 是否发送短信
+     * 保存执行事件id
      */
-    private Integer sendSms;
+    private String saveApiId;
 
     /**
-     * 节点描述
+     * 流转事件的id
      */
-    private String desc;
+    private String transApiId;
+
+    /**
+     * 处理结果类型 {@link indi.uhyils.enum_.NodeResultTypeEnum}
+     */
+    private Integer resultType;
+
+    /**
+     * 处理结果id
+     */
+    private String resultId;
+
+
+    /**
+     * 是否同步
+     */
+    private Integer sync;
+
+
+    /**
+     * 处理人建议
+     */
+    private String suggest;
 
 
     public Integer getStatus() {
@@ -124,14 +126,6 @@ public class OrderNodeEntity extends BaseVoEntity {
 
     public void setInitApiId(String initApiId) {
         this.initApiId = initApiId;
-    }
-
-    public Integer getSendEmail() {
-        return sendEmail;
-    }
-
-    public void setSendEmail(Integer sendEmail) {
-        this.sendEmail = sendEmail;
     }
 
     public Integer getRunType() {
@@ -214,14 +208,6 @@ public class OrderNodeEntity extends BaseVoEntity {
         this.runApiId = runApiId;
     }
 
-    public Integer getSendSms() {
-        return sendSms;
-    }
-
-    public void setSendSms(Integer sendSms) {
-        this.sendSms = sendSms;
-    }
-
     public String getDesc() {
         return desc;
     }
@@ -230,5 +216,19 @@ public class OrderNodeEntity extends BaseVoEntity {
         this.desc = desc;
     }
 
+    public String getTransApiId() {
+        return transApiId;
+    }
 
+    public void setTransApiId(String transApiId) {
+        this.transApiId = transApiId;
+    }
+
+    public String getSuggest() {
+        return suggest;
+    }
+
+    public void setSuggest(String suggest) {
+        this.suggest = suggest;
+    }
 }

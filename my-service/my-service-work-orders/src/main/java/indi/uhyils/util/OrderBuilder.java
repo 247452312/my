@@ -1,5 +1,6 @@
 package indi.uhyils.util;
 
+import indi.uhyils.enum_.NodeStatusEnum;
 import indi.uhyils.pojo.model.*;
 
 import java.io.Serializable;
@@ -34,21 +35,18 @@ public class OrderBuilder implements Serializable {
     public static OrderNodeEntity transBaseNode2Node(OrderBaseNodeEntity node, String infoId) {
         OrderNodeEntity nodeEntity = new OrderNodeEntity();
         nodeEntity.setSaveApiId(node.getSaveApiId());
-        nodeEntity.setResultType(node.getResultType());
         nodeEntity.setInitApiId(node.getInitApiId());
-        nodeEntity.setSendEmail(node.getSendEmail());
         nodeEntity.setRunType(node.getRunType());
         nodeEntity.setType(node.getType());
-        nodeEntity.setStatus(node.getStatus());
+        // 默认开始时是未开始的状态
+        nodeEntity.setStatus(NodeStatusEnum.WAIT_STATUS.getCode());
         nodeEntity.setSync(node.getSync());
         nodeEntity.setLimitTime(node.getLimitTime());
-        nodeEntity.setResultId(node.getResultId());
         nodeEntity.setNoticeUserId(node.getNoticeUserId());
         nodeEntity.setBaseInfoId(infoId);
         nodeEntity.setRunDealUserId(node.getRunDealUserId());
         nodeEntity.setName(node.getName());
         nodeEntity.setRunApiId(node.getRunApiId());
-        nodeEntity.setSendSms(node.getSendSms());
         nodeEntity.setDesc(node.getDesc());
         return nodeEntity;
     }
@@ -71,7 +69,6 @@ public class OrderBuilder implements Serializable {
         OrderNodeResultTypeEntity orderNodeResultTypeEntity = new OrderNodeResultTypeEntity();
         orderNodeResultTypeEntity.setBaseNodeId(nodeId);
         orderNodeResultTypeEntity.setDealResultName(orderBaseNodeResultTypeEntity.getDealResultName());
-        orderNodeResultTypeEntity.setDealResult(orderBaseNodeResultTypeEntity.getDealResult());
 
         return orderNodeResultTypeEntity;
     }
@@ -79,7 +76,6 @@ public class OrderBuilder implements Serializable {
     public static OrderNodeRouteEntity transBaseRoute2Route(OrderBaseNodeRouteEntity orderBaseNodeRouteEntity, String nodeId) {
         OrderNodeRouteEntity orderNodeRouteEntity = new OrderNodeRouteEntity();
         orderNodeRouteEntity.setPrevNodeId(nodeId);
-        orderNodeRouteEntity.setResultType(orderBaseNodeRouteEntity.getResultType());
         orderNodeRouteEntity.setNextNodeId(orderBaseNodeRouteEntity.getNextNodeId());
         return orderNodeRouteEntity;
     }
