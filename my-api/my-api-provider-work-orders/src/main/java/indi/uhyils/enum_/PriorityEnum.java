@@ -37,4 +37,16 @@ public enum PriorityEnum {
     public void setCode(Integer code) {
         this.code = code;
     }
+
+    public static PriorityEnum parse(Integer code) {
+        switch (code) {
+            case 0:
+                return NORMAL;
+            case 1:
+                return URGENT;
+            default:
+                return null;
+        }
+
+    }
 }

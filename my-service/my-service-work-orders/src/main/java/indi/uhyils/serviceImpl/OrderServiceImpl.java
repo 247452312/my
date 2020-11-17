@@ -2,13 +2,14 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.builder.OrderNodeFieldValueBuilder;
 import indi.uhyils.dao.*;
-import indi.uhyils.enum_.NodeTypeEnum;
+import indi.uhyils.enum_.*;
 import indi.uhyils.pojo.model.*;
 import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.InsertOrderResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.OrderService;
+import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.OrderBuilder;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -177,29 +178,44 @@ public class OrderServiceImpl implements OrderService {
         return ServiceResult.buildSuccessResult("提交成功", true, request);
     }
 
+
     @Override
-    public ServiceResult<Boolean> updateTempOrder(UpdateTempOrderReqeust request) {
-        return null;
+    public ServiceResult<Boolean> recallOrder(RecallOrderRequest request) {
+        Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.WITHDRAWING);
+        if (result) {
+            /*工单状态修改完成后通知工单监管人,进行审批处理,是否予以撤回,注意,此处返回值为是否发送申请成功*/
+            boolean b = noticeMonitorUserIdAboutBackOrder(request);
+            if (!b) {
+                return ServiceResult.buildFailedResult("操作失败,推送系统异常", false, request);
+            }
+            return ServiceResult.buildSuccessResult("操作成功,等待审批人审批", true, request);
+        }
+        return ServiceResult.buildFailedResult("操作失败", false, request);
     }
 
     @Override
-    public ServiceResult<Boolean> recallOrder(RecallOrderReqeust request) {
-        return null;
+    public ServiceResult<Boolean> agreeRecallOrder(AgreeRecallOrderRequest request) {
+        Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.WITHDRAWED);
+        return ServiceResult.buildSuccessResult("操作成功", result, request);
     }
 
     @Override
     public ServiceResult<Boolean> frozenOrder(FrozenOrderRequest request) {
-        return null;
+        Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.STOP);
+        return ServiceResult.buildSuccessResult("操作成功", result, request);
     }
+
 
     @Override
     public ServiceResult<Boolean> restartOrder(RestartOrderRequest request) {
-        return null;
+        Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.START, OrderStatusEnum.STOP);
+        return ServiceResult.buildSuccessResult("操作成功", result, request);
     }
 
     @Override
     public ServiceResult<Boolean> failOrderNode(FailOrderNodeRequest request) {
-        return null;
+        orderNodeDao.makeOrderFault(request.getOrderNodeId(), NodeStatusEnum.FAULT.getCode(), NodeResultTypeEnum.FAULT.getCode(), request.getMsg());
+        return ServiceResult.buildSuccessResult("处理成功", true, request);
     }
 
     @Override
@@ -210,5 +226,44 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) {
         return null;
+    }
+
+    /**
+     * 通知工单监管人,进行审批处理,是否予以撤回
+     *
+     * @param request
+     * @return
+     */
+    private boolean noticeMonitorUserIdAboutBackOrder(RecallOrderRequest request) {
+        OrderInfoEntity byId = orderInfoDao.getById(request.getOrderId());
+        String monitorUserId = byId.getMonitorUserId();
+        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, monitorUserId, PushTypeEnum.EMAIL.getCode(), "工单撤回申请", request.getOrderId() + "工单申请撤回,请尽快审批,工单优先度:" + PriorityEnum.parse(byId.getPriority()).getName());
+        ServiceResult serviceResult = DubboApiUtil.dubboApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
+        if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean changeOrderStatus(String orderId, OrderStatusEnum orderStatusEnum, OrderStatusEnum orderLastStatusEnum) {
+        /*1.将总工单状态置为冻结*/
+        Integer orderStatus = orderInfoDao.getOrderStatusById(orderId);
+        // 只有状态为指定的状态的工单才能进行操作,否则操作失败
+        if (orderLastStatusEnum.getCode().equals(orderStatus)) {
+            orderInfoDao.changeOrderStatus(orderId, orderStatusEnum.getCode());
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean changeOrderStatus(String orderId, OrderStatusEnum orderStatusEnum) {
+        /*1.将总工单状态置为冻结*/
+        Integer orderStatus = orderInfoDao.getOrderStatusById(orderId);
+        // 只有状态为指定的状态的工单才能进行操作,否则操作失败
+        if (OrderStatusEnum.START.getCode().equals(orderStatus)) {
+            orderInfoDao.changeOrderStatus(orderId, orderStatusEnum.getCode());
+            return true;
+        }
+        return false;
     }
 }

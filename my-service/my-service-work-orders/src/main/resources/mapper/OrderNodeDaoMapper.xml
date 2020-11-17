@@ -47,6 +47,12 @@
             #{nodeId}
         </foreach>
     </select>
+    <update id="makeOrderFault">
+        update sys_order_node
+        set status      = #{orderStatus},
+            result_type = #{orderResultType}
+        where id = #{orderNodeId}
+    </update>
 
     <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
         select

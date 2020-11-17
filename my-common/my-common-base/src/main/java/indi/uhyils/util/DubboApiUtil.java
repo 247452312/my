@@ -74,6 +74,19 @@ public class DubboApiUtil {
         return getServiceResult(interfaceName, methodName, args, request, true, "dubbo");
     }
 
+    /**
+     * dubbo泛化接口调用类(异步)
+     *
+     * @param interfaceName 接口的名字,可以用全名或者接口名
+     * @param methodName    方法名
+     * @param args          方法参数
+     * @param request       请求
+     * @return 方法返回值
+     */
+    public static ServiceResult dubboApiToolAsync(String interfaceName, String methodName, Object args, DefaultRequest request) {
+        return getServiceResult(interfaceName, methodName, Arrays.asList(args), request, true, "dubbo");
+    }
+
     private static ServiceResult getServiceResult(String interfaceName, String methodName, List<Object> args, DefaultRequest request, boolean async, String procotol) {
         try {
             if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {

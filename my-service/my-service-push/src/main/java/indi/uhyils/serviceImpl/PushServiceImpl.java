@@ -14,6 +14,7 @@ import indi.uhyils.pojo.model.ApiSubscribeEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.BaseIdEntity;
 import indi.uhyils.pojo.request.CronRequest;
+import indi.uhyils.pojo.request.PushMsgToSomeoneRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.PushService;
@@ -24,7 +25,10 @@ import org.apache.dubbo.config.annotation.Service;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -72,11 +76,8 @@ public class PushServiceImpl implements PushService {
 
             String userId = apiSubscribeEntity.getUserId();
             /* 获取user */
-            List args = new ArrayList();
-            IdRequest build = IdRequest.build(userId);
-            build.setUser(request.getUser());
-            args.add(build);
-            ServiceResult serviceResult = DubboApiUtil.dubboApiTool("UserService", "getById", args, request);
+            IdRequest build = IdRequest.build(request, userId);
+            ServiceResult serviceResult = DubboApiUtil.dubboApiTool("UserService", "getById", build);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 return serviceResult;
             }
@@ -97,5 +98,27 @@ public class PushServiceImpl implements PushService {
         }
         LogUtil.info(this, "定时推送任务结束: " + cron);
         return ServiceResult.buildSuccessResult("定时任务执行成功", result, request);
+    }
+
+    @Override
+    public ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request) {
+        ServiceResult serviceResult = DubboApiUtil.dubboApiTool("UserService", "getById", IdRequest.build(request, request.getUserId()));
+        if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
+            return serviceResult;
+        }
+        JSONObject jsonObject = (JSONObject) serviceResult.getData();
+        UserEntity userEntity = jsonObject.toJavaObject(UserEntity.class);
+        boolean result = true;
+        switch (Objects.requireNonNull(PushTypeEnum.prase(request.getType()))) {
+            case PAGE:
+                result = PushUtils.pagePush(userEntity, request.getTitle(), request.getMsg());
+                break;
+            case EMAIL:
+                result = PushUtils.emailPush(userEntity, request.getTitle(), request.getMsg());
+                break;
+            default:
+                break;
+        }
+        return ServiceResult.buildSuccessResult("执行成功", result, request);
     }
 }

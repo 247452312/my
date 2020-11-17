@@ -30,20 +30,20 @@ public interface OrderService extends BaseService {
     ServiceResult<Boolean> commitOrder(CommitOrderRequest request);
 
     /**
-     * 修改临时节点(转交或者修改节点内容)
-     *
-     * @param request
-     * @return 是否成功
-     */
-    ServiceResult<Boolean> updateTempOrder(UpdateTempOrderReqeust request);
-
-    /**
      * 撤回工单
      *
      * @param request
      * @return 是否成功
      */
-    ServiceResult<Boolean> recallOrder(RecallOrderReqeust request);
+    ServiceResult<Boolean> recallOrder(RecallOrderRequest request);
+
+    /**
+     * 同意撤回工单
+     *
+     * @param request
+     * @return
+     */
+    ServiceResult<Boolean> agreeRecallOrder(AgreeRecallOrderRequest request);
 
     /**
      * 冻结工单(审批人才能操作)
@@ -62,7 +62,7 @@ public interface OrderService extends BaseService {
     ServiceResult<Boolean> restartOrder(RestartOrderRequest request);
 
     /**
-     * 工单节点失败
+     * 工单节点失败(主动将工单节点置为失败)(处理人员经过核实,客观上不能完成此操作,例:审批时客户填写不合格)
      *
      * @param request
      * @return

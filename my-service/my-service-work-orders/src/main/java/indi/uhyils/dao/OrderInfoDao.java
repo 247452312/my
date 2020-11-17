@@ -3,6 +3,7 @@ package indi.uhyils.dao;
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.OrderInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -12,4 +13,19 @@ import org.apache.ibatis.annotations.Mapper;
 public interface OrderInfoDao extends DefaultDao<OrderInfoEntity> {
 
 
+    /**
+     * 获取一个工单的状态
+     *
+     * @param orderId
+     * @return
+     */
+    Integer getOrderStatusById(String orderId);
+
+    /**
+     * 修改工单状态为等待撤回
+     *
+     * @param orderId
+     * @param code
+     */
+    void changeOrderStatus(@Param("orderId") String orderId, @Param("code") Integer code);
 }

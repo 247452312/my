@@ -7,4 +7,18 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @date 文件创建日期 2020年11月09日 19时30分
  */
 public class RestartOrderRequest extends DefaultRequest {
+
+    /**
+     * 工单id
+     */
+    private String orderId;
+
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 }

@@ -14,11 +14,24 @@ public class IdRequest extends DefaultRequest {
         return idRequest;
     }
 
+    public static IdRequest build(DefaultRequest request, String id) {
+        IdRequest idRequest = new IdRequest(request);
+        idRequest.setId(id);
+        return idRequest;
+    }
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public IdRequest() {
+    }
+
+    public IdRequest(DefaultRequest request) {
+        super(request);
     }
 }

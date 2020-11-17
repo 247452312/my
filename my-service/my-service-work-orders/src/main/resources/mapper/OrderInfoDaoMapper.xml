@@ -29,6 +29,17 @@
         where delete_flag = 0
         and id = #{id}
     </select>
+    <select id="getOrderStatusById">
+        select a.status
+        from sys_order_info a
+        where delete_flag = 0
+          and id = #{orderId}
+    </select>
+    <update id="changeOrderStatus">
+        update sys_order_info
+        set status = #{code}
+        where id = #{orderId}
+    </update>
 
     <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderInfoEntity">
         select

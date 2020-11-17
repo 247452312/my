@@ -1,6 +1,7 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.request.CronRequest;
+import indi.uhyils.pojo.request.PushMsgToSomeoneRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
 
@@ -19,4 +20,12 @@ public interface PushService extends BaseService {
      * @return 是否成功
      */
     ServiceResult<Boolean> push(CronRequest request);
+
+    /**
+     * 主动向某人推送一条消息
+     *
+     * @param request
+     * @return
+     */
+    ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request);
 }
