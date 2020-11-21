@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  indi.uhyils.mq.aop.InterfaceCellAop,\
+  indi.uhyils.mq.config.MqConfig,\
+  indi.uhyils.mq.runner.SaveStartTimeRunner,\
+  indi.uhyils.mq.scheduled.RabbitMqTask
+

@@ -32,7 +32,7 @@ public class OrderLogEntity extends BaseVoEntity {
      * 处理结果0->处理成功 1->处理失败 2->处理终止 3->已转交
      */
     private Integer resultStatus;
-    
+
     /**
      * 错误原因(只要不是处理成功就要填写此列)
      */

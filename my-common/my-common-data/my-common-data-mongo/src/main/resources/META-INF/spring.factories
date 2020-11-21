@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  indi.uhyils.mongo.MongoBeanConfig,\
+  indi.uhyils.mongo.MongoConfig,\
+  indi.uhyils.mongo.MongoConnPool,\
+  indi.uhyils.mongo.MongoManager

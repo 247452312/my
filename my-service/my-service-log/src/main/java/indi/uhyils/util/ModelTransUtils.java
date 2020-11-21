@@ -1,13 +1,13 @@
 package indi.uhyils.util;
 
-import indi.uhyils.content.RabbitMqContent;
+import indi.uhyils.mq.content.RabbitMqContent;
+import indi.uhyils.mq.pojo.mqinfo.InterfaceCallInfo;
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfo;
+import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
+import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.model.MonitorDO;
 import indi.uhyils.pojo.model.MonitorInterfaceDetailDO;
 import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
-import indi.uhyils.pojo.mqinfo.InterfaceCallInfo;
-import indi.uhyils.pojo.mqinfo.JvmStartInfo;
-import indi.uhyils.pojo.mqinfo.JvmStatusInfo;
-import indi.uhyils.pojo.mqinfo.JvmUniqueMark;
 
 import java.util.List;
 import java.util.stream.Collectors;

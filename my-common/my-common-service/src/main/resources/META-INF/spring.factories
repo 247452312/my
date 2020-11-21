@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  indi.uhyils.aop.ExceptionAop,\
+  indi.uhyils.aop.ServiceTemporarilyDisabledAop,\
+  indi.uhyils.aop.TimeLogAop,\
+  indi.uhyils.aop.TokenInjectAop,\
+  indi.uhyils.druid.config.DruidConfig

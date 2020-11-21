@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  indi.uhyils.redis.OffLineJedis,\
+  indi.uhyils.redis.OffLineRedisAop,\
+  indi.uhyils.redis.RedisPool,\
+  indi.uhyils.redis.RedisPoolHandle

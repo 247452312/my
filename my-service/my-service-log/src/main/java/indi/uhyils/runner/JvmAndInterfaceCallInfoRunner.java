@@ -2,8 +2,8 @@ package indi.uhyils.runner;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import indi.uhyils.content.RabbitMqContent;
-import indi.uhyils.pojo.rabbit.RabbitFactory;
+import indi.uhyils.mq.content.RabbitMqContent;
+import indi.uhyils.mq.pojo.rabbit.RabbitFactory;
 import indi.uhyils.pojo.rabbit.RabbitInterfaceCallInfoConsumer;
 import indi.uhyils.pojo.rabbit.RabbitJvmStartInfoConsumer;
 import indi.uhyils.pojo.rabbit.RabbitJvmStatusInfoConsumer;
