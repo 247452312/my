@@ -7,4 +7,17 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @date 文件创建日期 2020年11月09日 19时30分
  */
 public class DealOrderNodeRequest extends DefaultRequest {
+
+    /**
+     * 工单节点类型id
+     */
+    private String orderNodeResultTypeId;
+
+    public String getOrderNodeResultTypeId() {
+        return orderNodeResultTypeId;
+    }
+
+    public void setOrderNodeResultTypeId(String orderNodeResultTypeId) {
+        this.orderNodeResultTypeId = orderNodeResultTypeId;
+    }
 }

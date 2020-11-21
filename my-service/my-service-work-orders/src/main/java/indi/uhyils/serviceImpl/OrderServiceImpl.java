@@ -220,6 +220,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ServiceResult<Boolean> dealOrderNode(DealOrderNodeRequest request) {
+        /*前提:判断节点值是否允许*/
+
+        /*1.结束当前工单节点(节点状态),处理结果类型->处理成功,处理结果id选择,处理人建议*/
+        /*2.填充对应节点所需的属性值,*/
+        /*3.将下一节点置为等待开始(并通知自动处理模块检测是否为自动处理模块)*/
         return null;
     }
 
