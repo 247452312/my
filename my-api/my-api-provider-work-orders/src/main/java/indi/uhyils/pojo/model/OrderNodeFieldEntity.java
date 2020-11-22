@@ -2,6 +2,8 @@ package indi.uhyils.pojo.model;
 
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 
+import java.util.Objects;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
@@ -31,12 +33,12 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
     /**
      * 是否可以为空
      */
-    private Integer empty;
+    private Boolean empty;
 
     /**
      * 是否可编辑
      */
-    private Integer edit;
+    private Boolean edit;
 
     /**
      * 字段类型{@link indi.uhyils.enum_.NodeFieldTypeEnum}
@@ -57,11 +59,15 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
         this.valueType = valueType;
     }
 
-    public Integer getEdit() {
+    public void setEmpty(Boolean empty) {
+        this.empty = empty;
+    }
+
+    public Boolean getEdit() {
         return edit;
     }
 
-    public void setEdit(Integer edit) {
+    public void setEdit(Boolean edit) {
         this.edit = edit;
     }
 
@@ -81,12 +87,8 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
         this.type = type;
     }
 
-    public Integer getEmpty() {
+    public Boolean getEmpty() {
         return empty;
-    }
-
-    public void setEmpty(Integer empty) {
-        this.empty = empty;
     }
 
     public String getName() {
@@ -113,5 +115,24 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
         this.desc = desc;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        OrderNodeFieldEntity that = (OrderNodeFieldEntity) o;
+        return Objects.equals(getId(), that.getId());
 
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), baseOrderId, name, desc, defaultValue, empty, edit, type, valueType);
+    }
 }

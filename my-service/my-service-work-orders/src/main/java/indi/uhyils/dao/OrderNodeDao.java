@@ -33,4 +33,13 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
      * @param msg             失败信息
      */
     void makeOrderFault(@Param("orderNodeId") String orderNodeId, @Param("orderStatus") Integer orderStatus, @Param("orderResultType") Integer orderResultType, @Param("msg") String msg);
+
+    /**
+     * 根据上一个节点和结果获取下一节点
+     *
+     * @param nodeId
+     * @param resultId
+     * @return
+     */
+    OrderNodeEntity getNextNodeByNodeAndResult(@Param("nodeId") String nodeId, @Param("resultId") String resultId);
 }

@@ -1,13 +1,17 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.builder.OrderNodeFieldValueBuilder;
+import indi.uhyils.content.Content;
 import indi.uhyils.dao.*;
 import indi.uhyils.enum_.*;
 import indi.uhyils.pojo.model.*;
+import indi.uhyils.pojo.model.base.BaseIdEntity;
 import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.response.DealOrderNodeResponse;
 import indi.uhyils.pojo.response.InsertOrderResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.pojo.temp.CheckNodeFieldResultTemporary;
 import indi.uhyils.service.OrderService;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.OrderBuilder;
@@ -219,14 +223,54 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ServiceResult<Boolean> dealOrderNode(DealOrderNodeRequest request) {
+    public ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) {
         /*前提:判断节点值是否允许*/
-
+        CheckNodeFieldResultTemporary checkNodeFieldResult = checkNodeAllow(request.getOrderNodeFieldValueMap());
+        if (!checkNodeFieldResult.getAllow()) {
+            return ServiceResult.buildFailedResult("节点值判断出错", DealOrderNodeResponse.buildCheckFaild(checkNodeFieldResult.getAllow(), checkNodeFieldResult.getDetailResult()), request);
+        }
         /*1.结束当前工单节点(节点状态),处理结果类型->处理成功,处理结果id选择,处理人建议*/
+        String nodeId = request.getNodeId();
+        OrderNodeEntity orderNode = orderNodeDao.getById(nodeId);
+        orderNode.setStatus(NodeStatusEnum.OVER.getCode());
+        orderNode.setResultType(NodeResultTypeEnum.SUCCESS.getCode());
+        orderNode.setResultId(request.getResultId());
+        orderNode.setSuggest(request.getSuggest());
+        orderNode.preUpdate(request);
+        orderNodeDao.update(orderNode);
         /*2.填充对应节点所需的属性值,*/
+        Map<String, Object> orderNodeFieldValueMap = request.getOrderNodeFieldValueMap();
+        for (Map.Entry<String, Object> entry : orderNodeFieldValueMap.entrySet()) {
+            OrderNodeFieldValueEntity t = new OrderNodeFieldValueEntity();
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            t.setNodeFieldId(key);
+            t.setRealValue(String.valueOf(value));
+            t.preInsert(request);
+            orderNodeFieldValueDao.insert(t);
+        }
         /*3.将下一节点置为等待开始(并通知自动处理模块检测是否为自动处理模块)*/
-        return null;
+        OrderNodeEntity nextNode = orderNodeDao.getNextNodeByNodeAndResult(request.getNodeId(), request.getResultId());
+        nextNode.setStatus(NodeStatusEnum.WAIT_STATUS.getCode());
+        nextNode.preUpdate(request);
+        orderNodeDao.update(nextNode);
+        Integer runType = nextNode.getRunType();
+        if (NodeRunTypeEnum.AUTO.getCode().equals(runType)) {
+            noticeAutoDealOrder(nextNode.getId(), request.getNodeId());
+        }
+        return ServiceResult.buildSuccessResult("处理成功", DealOrderNodeResponse.buildSuccess(), request);
     }
+
+    /**
+     * 通知下一个节点
+     *
+     * @param nextNodeId
+     * @param nodeId
+     */
+    private void noticeAutoDealOrder(String nextNodeId, String nodeId) {
+        // todo 等待自动处理模块完成
+    }
+
 
     @Override
     public ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) {
@@ -250,6 +294,14 @@ public class OrderServiceImpl implements OrderService {
         return false;
     }
 
+    /**
+     * 修改工单状态(带有检查)
+     *
+     * @param orderId             工单id
+     * @param orderStatusEnum     工单要修改的状态
+     * @param orderLastStatusEnum 工单原本状态
+     * @return
+     */
     private Boolean changeOrderStatus(String orderId, OrderStatusEnum orderStatusEnum, OrderStatusEnum orderLastStatusEnum) {
         /*1.将总工单状态置为冻结*/
         Integer orderStatus = orderInfoDao.getOrderStatusById(orderId);
@@ -261,6 +313,13 @@ public class OrderServiceImpl implements OrderService {
         return false;
     }
 
+    /**
+     * 修改工单状态(带有检查,默认原本状态为启动)
+     *
+     * @param orderId         工单id
+     * @param orderStatusEnum 工单要修改的状态
+     * @return
+     */
     private Boolean changeOrderStatus(String orderId, OrderStatusEnum orderStatusEnum) {
         /*1.将总工单状态置为冻结*/
         Integer orderStatus = orderInfoDao.getOrderStatusById(orderId);
@@ -270,5 +329,58 @@ public class OrderServiceImpl implements OrderService {
             return true;
         }
         return false;
+    }
+
+
+    /**
+     * 检查输入值是否符合要求
+     *
+     * @param orderNodeFieldValueMap
+     * @return
+     */
+    private CheckNodeFieldResultTemporary checkNodeAllow(Map<String, Object> orderNodeFieldValueMap) {
+        CheckNodeFieldResultTemporary result = new CheckNodeFieldResultTemporary();
+        result.setDetailResult(new HashMap<>(orderNodeFieldValueMap.size()));
+        //默认正确
+        result.setAllow(true);
+
+        Set<String> fieldIds = orderNodeFieldValueMap.keySet();
+        List<OrderNodeFieldEntity> fieldList = orderNodeFieldDao.getByIds(fieldIds);
+        Map<String, OrderNodeFieldEntity> fieldMap = fieldList.stream().collect(Collectors.toMap(BaseIdEntity::getId, t -> t));
+        for (Map.Entry<String, Object> entry : orderNodeFieldValueMap.entrySet()) {
+            String orderNodeFieldId = entry.getKey();
+            Object value = entry.getValue();
+            OrderNodeFieldEntity orderNodeFieldEntity = fieldMap.get(orderNodeFieldId);
+            // 如果前台没有传值,则使用默认值
+            if (value == null) {
+                orderNodeFieldValueMap.put(orderNodeFieldId, orderNodeFieldEntity.getDefaultValue());
+                result.put(orderNodeFieldEntity, true);
+                continue;
+            }
+            // 如果不能为空 并且传入值为空了,就错了
+            if (Content.BLACK.equals(value) && !orderNodeFieldEntity.getEmpty()) {
+                result.put(orderNodeFieldEntity, false);
+            }
+            switch (NodeFieldValueTypeEnum.parse(orderNodeFieldEntity.getType())) {
+                case STRING:
+                    result.put(orderNodeFieldEntity, true);
+                    continue;
+                case EMAIL:
+                    result.put(orderNodeFieldEntity, String.valueOf(value).matches(Content.EMAIL_REGEX));
+                    continue;
+                case DATE:
+                    result.put(orderNodeFieldEntity, String.valueOf(value).matches(Content.DATE_REGEX));
+                    continue;
+                case VALUE:
+                    result.put(orderNodeFieldEntity, String.valueOf(value).matches(Content.VALUE_REGEX));
+                    continue;
+                case ENGLISH:
+                    result.put(orderNodeFieldEntity, String.valueOf(value).matches(Content.ENGLISH_REGEX));
+                    continue;
+                default:
+                    result.put(orderNodeFieldEntity, false);
+            }
+        }
+        return result;
     }
 }

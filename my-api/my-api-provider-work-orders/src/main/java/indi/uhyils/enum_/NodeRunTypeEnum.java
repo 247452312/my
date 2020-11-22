@@ -37,4 +37,14 @@ public enum NodeRunTypeEnum {
     public void setCode(Integer code) {
         this.code = code;
     }
+
+    public static NodeRunTypeEnum parse(Integer code) {
+        switch (code) {
+            case 0:
+                return AUTO;
+            case 1:
+            default:
+                return MANUAL;
+        }
+    }
 }

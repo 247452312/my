@@ -45,6 +45,23 @@ public class Content {
     public static final Integer LOGIN_TIME_OUT_MIN = 30;
 
     /**
+     * email正则匹配
+     */
+    public static final String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
+    /**
+     * date正则匹配(yyyy-MM-dd)
+     */
+    public static final String DATE_REGEX = "^\\d{4}(-)(1[0-2]|0?\\d)\1([0-2]\\d|\\d|30|31)$";
+    /**
+     * 数值正则匹配
+     */
+    public static final String VALUE_REGEX = "^\\d+\\.\\d+$";
+    /**
+     * 英文正则匹配
+     */
+    public static final String ENGLISH_REGEX = "^[a-zA-Z]+$";
+
+    /**
      * 验证码验证接口名称
      */
     public static final String VERIFICATION_CODE_INTERFACE = "VerificationService";

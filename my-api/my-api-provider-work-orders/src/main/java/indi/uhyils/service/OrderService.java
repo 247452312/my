@@ -2,6 +2,7 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.response.DealOrderNodeResponse;
 import indi.uhyils.pojo.response.InsertOrderResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
@@ -76,7 +77,7 @@ public interface OrderService extends BaseService {
      * @param request
      * @return
      */
-    ServiceResult<Boolean> dealOrderNode(DealOrderNodeRequest request);
+    ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request);
 
     /**
      * 审批工单

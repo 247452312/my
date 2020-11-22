@@ -31,7 +31,7 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
     /**
      * 是否可以为空
      */
-    private Integer empty;
+    private Boolean empty;
 
     /**
      * 字段类型{@link indi.uhyils.enum_.NodeFieldTypeEnum}
@@ -41,7 +41,7 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
     /**
      * 是否可编辑
      */
-    private Integer edit;
+    private Boolean edit;
 
     /**
      * 数值类型{@link indi.uhyils.enum_.NodeFieldValueTypeEnum}
@@ -56,11 +56,15 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
         this.valueType = valueType;
     }
 
-    public Integer getEdit() {
+    public void setEmpty(Boolean empty) {
+        this.empty = empty;
+    }
+
+    public Boolean getEdit() {
         return edit;
     }
 
-    public void setEdit(Integer edit) {
+    public void setEdit(Boolean edit) {
         this.edit = edit;
     }
 
@@ -72,12 +76,8 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
         this.type = type;
     }
 
-    public Integer getEmpty() {
+    public Boolean getEmpty() {
         return empty;
-    }
-
-    public void setEmpty(Integer empty) {
-        this.empty = empty;
     }
 
     public String getName() {

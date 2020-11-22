@@ -40,4 +40,21 @@ public enum NodeFieldValueTypeEnum {
     public void setCode(Integer code) {
         this.code = code;
     }
+
+    public static NodeFieldValueTypeEnum parse(Integer code) {
+        switch (code) {
+
+            case 2:
+                return VALUE;
+            case 3:
+                return ENGLISH;
+            case 4:
+                return EMAIL;
+            case 5:
+                return DATE;
+            case 1:
+            default:
+                return STRING;
+        }
+    }
 }
