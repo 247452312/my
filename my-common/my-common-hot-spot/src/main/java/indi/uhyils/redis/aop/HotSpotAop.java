@@ -11,7 +11,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
-import indi.uhyils.redis.util.ObjectByteUtil;
+import indi.uhyils.util.ObjectByteUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.MD5Util;
 import org.aspectj.lang.ProceedingJoinPoint;

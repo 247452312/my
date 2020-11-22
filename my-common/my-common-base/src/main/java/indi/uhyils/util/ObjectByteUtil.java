@@ -1,4 +1,4 @@
-package indi.uhyils.redis.util;
+package indi.uhyils.util;
 
 import java.io.*;
 

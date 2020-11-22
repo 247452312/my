@@ -7,6 +7,9 @@ import indi.uhyils.pojo.response.InsertOrderResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
 
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
 /**
  * 工单
  *
@@ -77,7 +80,7 @@ public interface OrderService extends BaseService {
      * @param request
      * @return
      */
-    ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request);
+    ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) throws IOException, TimeoutException;
 
     /**
      * 审批工单

@@ -2,8 +2,10 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.builder.OrderNodeFieldValueBuilder;
 import indi.uhyils.content.Content;
+import indi.uhyils.content.OrderContent;
 import indi.uhyils.dao.*;
 import indi.uhyils.enum_.*;
+import indi.uhyils.mq.util.MqUtil;
 import indi.uhyils.pojo.model.*;
 import indi.uhyils.pojo.model.base.BaseIdEntity;
 import indi.uhyils.pojo.request.*;
@@ -12,6 +14,7 @@ import indi.uhyils.pojo.response.DealOrderNodeResponse;
 import indi.uhyils.pojo.response.InsertOrderResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.temp.CheckNodeFieldResultTemporary;
+import indi.uhyils.pojo.temp.InitApiRequestTemporary;
 import indi.uhyils.service.OrderService;
 import indi.uhyils.util.DubboApiUtil;
 import indi.uhyils.util.OrderBuilder;
@@ -19,7 +22,9 @@ import org.apache.dubbo.config.annotation.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 /**
@@ -223,7 +228,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) {
+    public ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) throws IOException, TimeoutException {
         /*前提:判断节点值是否允许*/
         CheckNodeFieldResultTemporary checkNodeFieldResult = checkNodeAllow(request.getOrderNodeFieldValueMap());
         if (!checkNodeFieldResult.getAllow()) {
@@ -262,13 +267,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 通知下一个节点
+     * 通知下一个节点(通过MQ)
      *
      * @param nextNodeId
      * @param nodeId
      */
-    private void noticeAutoDealOrder(String nextNodeId, String nodeId) {
-        // todo 等待自动处理模块完成
+    private void noticeAutoDealOrder(String nextNodeId, String nodeId) throws IOException, TimeoutException {
+        InitApiRequestTemporary msg = new InitApiRequestTemporary();
+        msg.setOrderNodeId(nextNodeId);
+        msg.setPervOrderNodeId(nodeId);
+        MqUtil.sendMsg(OrderContent.ORDER_EXCHANGE, OrderContent.ORDER_AUTO_NODE_SEND_QUEUE, msg);
     }
 
 
