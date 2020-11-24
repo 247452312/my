@@ -13,10 +13,6 @@ public class OrderApiEntity extends BaseVoEntity {
      */
     private String beanName;
 
-    /**
-     * 方法名称
-     */
-    private String methodName;
 
 
     public String getBeanName() {
@@ -25,14 +21,6 @@ public class OrderApiEntity extends BaseVoEntity {
 
     public void setBeanName(String beanName) {
         this.beanName = beanName;
-    }
-
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
     }
 
 

@@ -1,34 +1,38 @@
 package indi.uhyils.pojo.temp;
 
+import indi.uhyils.pojo.model.OrderNodeEntity;
+
+import java.io.Serializable;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月22日 17时12分
  */
-public class InitApiRequestTemporary {
+public class InitApiRequestTemporary implements Serializable {
 
     /**
-     * 工单节点id
+     * 工单节点
      */
-    private String orderNodeId;
+    private OrderNodeEntity orderNode;
 
     /**
-     * 上一个节点的id
+     * 上一个工单节点
      */
-    private String pervOrderNodeId;
+    private OrderNodeEntity pervOrderNode;
 
-    public String getOrderNodeId() {
-        return orderNodeId;
+    public OrderNodeEntity getOrderNode() {
+        return orderNode;
     }
 
-    public void setOrderNodeId(String orderNodeId) {
-        this.orderNodeId = orderNodeId;
+    public void setOrderNode(OrderNodeEntity orderNode) {
+        this.orderNode = orderNode;
     }
 
-    public String getPervOrderNodeId() {
-        return pervOrderNodeId;
+    public OrderNodeEntity getPervOrderNode() {
+        return pervOrderNode;
     }
 
-    public void setPervOrderNodeId(String pervOrderNodeId) {
-        this.pervOrderNodeId = pervOrderNodeId;
+    public void setPervOrderNode(OrderNodeEntity pervOrderNode) {
+        this.pervOrderNode = pervOrderNode;
     }
 }

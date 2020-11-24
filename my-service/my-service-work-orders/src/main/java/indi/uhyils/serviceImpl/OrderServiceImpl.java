@@ -274,8 +274,8 @@ public class OrderServiceImpl implements OrderService {
      */
     private void noticeAutoDealOrder(String nextNodeId, String nodeId) throws IOException, TimeoutException {
         InitApiRequestTemporary msg = new InitApiRequestTemporary();
-        msg.setOrderNodeId(nextNodeId);
-        msg.setPervOrderNodeId(nodeId);
+        msg.setOrderNode(orderNodeDao.getById(nextNodeId));
+        msg.setPervOrderNode(orderNodeDao.getById(nodeId));
         MqUtil.sendMsg(OrderContent.ORDER_EXCHANGE, OrderContent.ORDER_AUTO_NODE_SEND_QUEUE, msg);
     }
 
