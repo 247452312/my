@@ -101,7 +101,7 @@
         where id = #{id}
     </update>
 
-    <select id="getIdByJvmUniqueMark" parameterType="indi.uhyils.pojo.mqinfo.JvmUniqueMark"
+    <select id="getIdByJvmUniqueMark" parameterType="indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark"
             resultType="java.lang.String">
         select id
         from sys_log_monitor
@@ -116,7 +116,7 @@
         where end_time > #{time}
     </select>
 
-    <select id="checkMonitorRepeat" parameterType="indi.uhyils.pojo.mqinfo.JvmUniqueMark"
+    <select id="checkMonitorRepeat" parameterType="indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark"
             resultType="java.lang.Integer">
         select count(*)
         from sys_log_monitor

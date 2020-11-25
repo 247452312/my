@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月08日 13时56分
  */
-
-
 @SpringBootApplication
 @EnableDubbo
 @EnableTransactionManagement
