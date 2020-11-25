@@ -279,6 +279,10 @@ public class OrderServiceImpl implements OrderService {
         MqUtil.sendMsg(OrderContent.ORDER_EXCHANGE, OrderContent.ORDER_AUTO_NODE_SEND_QUEUE, msg);
     }
 
+    @Override
+    public ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeRequest request) {
+        return null;
+    }
 
     @Override
     public ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) {
