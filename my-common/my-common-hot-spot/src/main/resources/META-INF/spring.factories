@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  indi.uhyils.redis.aop.HotSpotAop,\
-  indi.uhyils.redis.hotspot.HotSpotRedisPool

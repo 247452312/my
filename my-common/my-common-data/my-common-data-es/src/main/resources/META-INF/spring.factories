@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  indi.uhyils.es.config.EsConfig,\
-  indi.uhyils.es.dao.impl.EsDaoImpl
