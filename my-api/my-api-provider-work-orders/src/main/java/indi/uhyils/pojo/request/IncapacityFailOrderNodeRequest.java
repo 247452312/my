@@ -11,6 +11,10 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 public class IncapacityFailOrderNodeRequest extends DefaultRequest {
 
     /**
+     * 节点id
+     */
+    private String orderNodeId;
+    /**
      * 失败原因
      */
     private String reasons;
@@ -20,6 +24,13 @@ public class IncapacityFailOrderNodeRequest extends DefaultRequest {
      */
     private String recommendUserId;
 
+    public String getOrderNodeId() {
+        return orderNodeId;
+    }
+
+    public void setOrderNodeId(String orderNodeId) {
+        this.orderNodeId = orderNodeId;
+    }
 
     public String getReasons() {
         return reasons;

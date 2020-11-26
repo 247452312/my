@@ -9,7 +9,6 @@
 		a.base_node_id as baseNodeId,
 		a.deal_result_name as dealResultName,
 		a.remark as remark,
-		a.deal_result as dealResult,
 		a.id as id,
 		a.create_user as createUser,
 		a.create_date as createDate,
@@ -56,7 +55,6 @@
                                           base_node_id,
                                           deal_result_name,
                                           remark,
-                                          deal_result,
                                           id,
                                           create_user,
                                           create_date,
@@ -66,7 +64,6 @@
                 #{baseNodeId},
                 #{dealResultName},
                 #{remark},
-                #{dealResult},
                 #{id},
                 #{createUser},
                 #{createDate},
@@ -87,9 +84,6 @@
         </if>
         <if test="remark != null and remark != ''">
             ,remark = #{remark}
-        </if>
-        <if test="dealResult != null and dealResult != ''">
-            ,deal_result = #{dealResult}
         </if>
         <if test="createUser != null and createUser != ''">
             ,create_user = #{createUser}
@@ -125,6 +119,13 @@
         select count(*)
         from sys_order_node_result_type a
         where ${columnName} = #{value}
+    </select>
+    <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_result_type a
+        where delete_flag = 0
+        and base_node_id = #{orderNodeId}
     </select>
 
 

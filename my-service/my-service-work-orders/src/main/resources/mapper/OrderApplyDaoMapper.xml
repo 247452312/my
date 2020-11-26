@@ -14,6 +14,7 @@
         <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
         <result property="orderNodeId" column="order_node_id" jdbcType="VARCHAR"/>
         <result property="monitorUserId" column="monitor_user_id" jdbcType="VARCHAR"/>
+        <result property="targetUserId" column="target_user_id" jdbcType="VARCHAR"/>
         <result property="type" column="type" jdbcType="INTEGER"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
     </resultMap>
@@ -31,6 +32,7 @@
                order_id,
                order_node_id,
                monitor_user_id,
+               target_user_id,
                type,
                status
         from my_order.sys_order_apply
@@ -41,7 +43,8 @@
     <!--根据某些字段获取实例(不分页)-->
     <select id="getByArgsNoPage" resultMap="OrderApplyMap">
         select
-        id, create_date, create_user, delete_flag, remark, update_date, update_user, apply_user_id, order_id,
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, apply_user_id,
+        order_id,target_user_id,
         order_node_id, monitor_user_id, type, status
         from my_order.sys_order_apply
         where delete_flag = 0
@@ -55,7 +58,8 @@
     <!--根据某些字段获取实例(分页)-->
     <select id="getByArgs" resultMap="OrderApplyMap">
         select
-        id, create_date, create_user, delete_flag, remark, update_date, update_user, apply_user_id, order_id,
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, apply_user_id,
+        order_id,target_user_id,
         order_node_id, monitor_user_id, type, status
         from my_order.sys_order_apply
         where delete_flag = 0
@@ -75,9 +79,10 @@
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderApplyEntity">
         insert into my_order.sys_order_apply(id, create_date, create_user, delete_flag, remark, update_date,
                                              update_user, apply_user_id, order_id, order_node_id, monitor_user_id, type,
+                                             target_user_id,
                                              status)
         values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser},
-                #{applyUserId}, #{orderId}, #{orderNodeId}, #{monitorUserId}, #{type}, #{status})
+                #{applyUserId}, #{orderId}, #{orderNodeId}, #{monitorUserId}, #{type}, #{targetUserId}, #{status})
     </insert>
 
     <!--通过主键修改数据-->
@@ -87,40 +92,43 @@
         update_date = #{updateDate}
         ,update_user = #{updateUser}
         <if test="createDate != null">
-            create_date = #{createDate},
+            ,create_date = #{createDate}
         </if>
         <if test="createUser != null and createUser != ''">
-            create_user = #{createUser},
+            ,create_user = #{createUser}
         </if>
         <if test="deleteFlag != null">
-            delete_flag = #{deleteFlag},
+            ,delete_flag = #{deleteFlag}
         </if>
         <if test="remark != null and remark != ''">
-            remark = #{remark},
+            ,remark = #{remark}
         </if>
         <if test="updateDate != null">
-            update_date = #{updateDate},
+            ,update_date = #{updateDate}
         </if>
         <if test="updateUser != null and updateUser != ''">
-            update_user = #{updateUser},
+            ,update_user = #{updateUser}
         </if>
         <if test="applyUserId != null and applyUserId != ''">
-            apply_user_id = #{applyUserId},
+            ,apply_user_id = #{applyUserId}
         </if>
         <if test="orderId != null and orderId != ''">
-            order_id = #{orderId},
+            ,order_id = #{orderId}
         </if>
         <if test="orderNodeId != null and orderNodeId != ''">
-            order_node_id = #{orderNodeId},
+            ,order_node_id = #{orderNodeId}
         </if>
         <if test="monitorUserId != null and monitorUserId != ''">
-            monitor_user_id = #{monitorUserId},
+            ,monitor_user_id = #{monitorUserId}
+        </if>
+        <if test="targetUserId != null and targetUserId != ''">
+            ,target_user_id = #{targetUserId}
         </if>
         <if test="type != null">
-            type = #{type},
+            ,type = #{type}
         </if>
         <if test="status != null">
-            status = #{status},
+            ,status = #{status}
         </if>
         where id = #{id}
     </update>

@@ -28,14 +28,19 @@ public class OrderApplyEntity extends BaseVoEntity {
     private String monitorUserId;
 
     /**
+     * 目标人id
+     */
+    private String targetUserId;
+
+    /**
      * 申请类型
      */
-    private String type;
+    private Integer type;
 
     /**
      * 申请状态
      */
-    private String status;
+    private Integer status;
 
 
     public String getApplyUserId() {
@@ -70,19 +75,27 @@ public class OrderApplyEntity extends BaseVoEntity {
         this.monitorUserId = monitorUserId;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getTargetUserId() {
+        return targetUserId;
+    }
+
+    public void setTargetUserId(String targetUserId) {
+        this.targetUserId = targetUserId;
     }
 }

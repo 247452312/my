@@ -18,7 +18,7 @@
 		a.create_user as createUser,
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
-		a.base_order_id as baseOrderId,
+		a.base_order_node_id as baseOrderNodeId,
 		a.desc
     </sql>
 
@@ -28,6 +28,17 @@
         from sys_order_node_field a
         where delete_flag = 0
         and id = #{id}
+    </select>
+
+    <select id="getByIds" resultType="indi.uhyils.pojo.model.OrderNodeFieldEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_field a
+        where delete_flag = 0
+        and id in
+        <foreach collection="fieldIds" item="fieldId" open="(" separator="," close=")">
+            #{fieldId}
+        </foreach>
     </select>
 
     <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderNodeFieldEntity">
@@ -70,7 +81,7 @@
                                     create_user,
                                     create_date,
                                     delete_flag,
-                                    base_order_id,
+                                    base_order_node_id,
                                     desc)
         values (#{valueType},
                 #{edit},
@@ -85,7 +96,7 @@
                 #{createUser},
                 #{createDate},
                 #{deleteFlag},
-                #{baseOrderId},
+                #{baseOrderNodeId},
                 #{desc})
     </insert>
 
@@ -127,8 +138,8 @@
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
         </if>
-        <if test="baseOrderId != null and baseOrderId != ''">
-            ,base_order_id = #{baseOrderId}
+        <if test="baseOrderNodeId != null and baseOrderNodeId != ''">
+            ,base_order_node_id = #{baseOrderNodeId}
         </if>
         <if test="desc != null and desc != ''">
             ,desc = #{desc}
@@ -155,6 +166,13 @@
         select count(*)
         from sys_order_node_field a
         where ${columnName} = #{value}
+    </select>
+    <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.model.OrderNodeFieldEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_field a
+        where delete_flag = 0
+        and base_order_node_id = #{orderNodeId}
     </select>
 
 

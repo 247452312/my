@@ -6,7 +6,6 @@
 
     <sql id="columnList">
         a.prev_node_id as prevNodeId,
-		a.result_type as resultType,
 		a.update_user as updateUser,
 		a.remark as remark,
 		a.next_node_id as nextNodeId,
@@ -53,7 +52,6 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeRouteEntity">
         insert sys_order_node_route(prev_node_id,
-                                    result_type,
                                     update_user,
                                     remark,
                                     next_node_id,
@@ -63,7 +61,6 @@
                                     delete_flag,
                                     update_date)
         values (#{prevNodeId},
-                #{resultType},
                 #{updateUser},
                 #{remark},
                 #{nextNodeId},
@@ -78,9 +75,6 @@
         update sys_order_node_route set
         <if test="prevNodeId != null and prevNodeId != ''">
             ,prev_node_id = #{prevNodeId}
-        </if>
-        <if test="resultType != null and resultType != ''">
-            ,result_type = #{resultType}
         </if>
         <if test="updateUser != null and updateUser != ''">
             ,update_user = #{updateUser}
@@ -125,6 +119,13 @@
         select count(*)
         from sys_order_node_route a
         where ${columnName} = #{value}
+    </select>
+    <select id="getByPrevOrderNodeId" resultType="indi.uhyils.pojo.model.OrderNodeRouteEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_route a
+        where delete_flag = 0
+        and prev_node_id = #{prevOrderNodeId}
     </select>
 
 

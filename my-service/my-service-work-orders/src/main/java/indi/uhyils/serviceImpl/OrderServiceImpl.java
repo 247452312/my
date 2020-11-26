@@ -1,6 +1,9 @@
 package indi.uhyils.serviceImpl;
 
+import indi.uhyils.builder.OrderApplyBuilder;
 import indi.uhyils.builder.OrderNodeFieldValueBuilder;
+import indi.uhyils.builder.OrderNodeResultTypeBuilder;
+import indi.uhyils.builder.OrderNodeRouteBuilder;
 import indi.uhyils.content.Content;
 import indi.uhyils.content.OrderContent;
 import indi.uhyils.dao.*;
@@ -284,22 +287,93 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeRequest request) {
+        String orderNodeId = request.getOrderNodeId();
+        OrderNodeEntity orderNode = orderNodeDao.getById(orderNodeId);
         /*1.将节点状态置为转交中*/
+        orderNode.setStatus(NodeStatusEnum.TRANSFER.getCode());
+        orderNode.preUpdate(request);
+        orderNodeDao.update(orderNode);
         /*2.插入申请表*/
+        OrderInfoEntity order = orderInfoDao.getById(orderNode.getBaseInfoId());
+        OrderApplyEntity orderApply = OrderApplyBuilder.buildTransApplyByOrderNode(orderNode, order.getMonitorUserId());
+        orderApply.preInsert(request);
+        orderApplyDao.insert(orderApply);
         /*3.通知审批人*/
-        return null;
+        ServiceResult<String> userName = DubboApiUtil.dubboApiTool("UserService", "getNameById", IdRequest.build(request, request.getRecommendUserId()));
+        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, order.getMonitorUserId(), PushTypeEnum.EMAIL.getCode(), "工单节点转交申请", order.getId() + "工单转交撤回,请尽快审批,转交目标人:" + userName.getData().toString());
+        DubboApiUtil.dubboApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
+        return ServiceResult.buildSuccessResult(true, request);
     }
 
     @Override
     public ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) {
+        String orderApplyId = request.getOrderApplyId();
+        OrderApplyEntity orderApply = orderApplyDao.getById(orderApplyId);
+
         /*0.将此节点状态置位已转交*/
-        /*1.新增下一节点,状制此节点的参数,状态置位未开始*/
+        String orderNodeId = orderApply.getOrderNodeId();
+        OrderNodeEntity orderNode = orderNodeDao.getById(orderNodeId);
+        orderNode.setStatus(NodeStatusEnum.TRANSFERRED.getCode());
+        orderNode.preUpdate(request);
+        orderNodeDao.update(orderNode);
+        String lastOrderNodeId = orderNode.getId();
+
+        /*1.新增下一节点,复制此节点的参数,状态置为停用*/
+        orderNode.setStatus(OrderStatusEnum.STOP.getCode());
+        orderNode.setName(orderNode.getName() + "(转交)");
+        orderNode.setRunDealUserId(orderApply.getTargetUserId());
+        orderNode.preInsert(request);
+
+        String newOrderNodeId = orderNode.getId();
+
         /*2.将此节点的属性,结果,路由复制到下一个节点上去*/
+        // 属性
+        List<OrderNodeFieldEntity> orderNodeFields = orderNodeFieldDao.getByOrderNodeId(lastOrderNodeId);
+        for (OrderNodeFieldEntity orderNodeField : orderNodeFields) {
+            orderNodeField.setBaseOrderNodeId(newOrderNodeId);
+            orderNodeField.preInsert(request);
+            orderNodeFieldDao.insert(orderNodeField);
+        }
+
+        //结果
+        List<OrderNodeResultTypeEntity> orderNodeResultTypes = orderNodeResultTypeDao.getByOrderNodeId(lastOrderNodeId);
+        for (OrderNodeResultTypeEntity orderNodeResultType : orderNodeResultTypes) {
+            orderNodeResultType.setBaseNodeId(newOrderNodeId);
+            orderNodeResultType.preInsert(request);
+            orderNodeResultTypeDao.insert(orderNodeResultType);
+        }
+
+        // 路由
+        List<OrderNodeRouteEntity> orderNodeRoutes = orderNodeRouteDao.getByPrevOrderNodeId(lastOrderNodeId);
+        for (OrderNodeRouteEntity orderNodeRoute : orderNodeRoutes) {
+            orderNodeRoute.setPrevNodeId(newOrderNodeId);
+            orderNodeRoute.preInsert(request);
+            orderNodeRouteDao.insert(orderNodeRoute);
+        }
+
         /*3.新增此节点已转交的'结果'并将此节点的'结果'置位此结果*/
+        OrderNodeResultTypeEntity transResult = OrderNodeResultTypeBuilder.build(lastOrderNodeId, "转交");
+        transResult.preInsert(request);
+        orderNodeResultTypeDao.insert(transResult);
+        orderNode.setResultId(transResult.getId());
+        orderNode.setResultType(NodeResultTypeEnum.TRANSFER.getCode());
+
         /*4.新增此节点到下一节点的路由*/
+        OrderNodeRouteEntity newOrderNodeRoute = OrderNodeRouteBuilder.build(orderNodeId, transResult.getId(), newOrderNodeId);
+        newOrderNodeRoute.preInsert(request);
+        orderNodeRouteDao.insert(newOrderNodeRoute);
+
         /*5.将下一节点置位等待开始*/
+        orderNode.setStatus(NodeStatusEnum.WAIT_STATUS.getCode());
+        // 新节点插入后置
+        orderNodeDao.insert(orderNode);
+
         /*6.通知下一节点处理人*/
-        return null;
+        String targetUserId = orderApply.getTargetUserId();
+        OrderInfoEntity orderInfo = orderInfoDao.getById(orderNode.getBaseInfoId());
+        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, targetUserId, PushTypeEnum.EMAIL.getCode(), "工单流转事务提示", orderNodeId + "工单已转交到你手,审批人通过,请尽快处理,工单优先度:" + PriorityEnum.parse(orderInfo.getPriority()).getName());
+        DubboApiUtil.dubboApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
+        return ServiceResult.buildSuccessResult("审批成功", true, request);
     }
 
     /**

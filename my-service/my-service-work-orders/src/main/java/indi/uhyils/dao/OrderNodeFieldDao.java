@@ -22,4 +22,12 @@ public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldEntity> {
      * @return
      */
     List<OrderNodeFieldEntity> getByIds(Set<String> fieldIds);
+
+    /**
+     * 根据工单节点id获取此节点的属性们
+     *
+     * @param orderNodeId
+     * @return
+     */
+    List<OrderNodeFieldEntity> getByOrderNodeId(String orderNodeId);
 }

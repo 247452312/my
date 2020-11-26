@@ -1,7 +1,7 @@
 package indi.uhyils.enum_;
 
 /**
- * 节点状态 0->未开始 1->等待开始 2->处理中 3->结束 4->失败
+ * 节点状态
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月14日 18时35分
@@ -14,7 +14,9 @@ public enum NodeStatusEnum {
     WAIT_STATUS("等待开始", 1),
     IN_START("处理中", 2),
     OVER("结束", 3),
-    FAULT("失败", 4);
+    FAULT("失败", 4),
+    TRANSFER("转交中", 6),
+    TRANSFERRED("已转交", 7);
 
     NodeStatusEnum(String name, Integer code) {
         this.name = name;

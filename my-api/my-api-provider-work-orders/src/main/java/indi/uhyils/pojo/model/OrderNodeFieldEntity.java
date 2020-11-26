@@ -13,7 +13,7 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
     /**
      * 节点id
      */
-    private String baseOrderId;
+    private String baseOrderNodeId;
 
     /**
      * 属性名称
@@ -99,12 +99,12 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
         this.name = name;
     }
 
-    public String getBaseOrderId() {
-        return baseOrderId;
+    public String getBaseOrderNodeId() {
+        return baseOrderNodeId;
     }
 
-    public void setBaseOrderId(String baseOrderId) {
-        this.baseOrderId = baseOrderId;
+    public void setBaseOrderNodeId(String baseOrderNodeId) {
+        this.baseOrderNodeId = baseOrderNodeId;
     }
 
     public String getDesc() {
@@ -133,6 +133,6 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), baseOrderId, name, desc, defaultValue, empty, edit, type, valueType);
+        return Objects.hash(super.hashCode(), baseOrderNodeId, name, desc, defaultValue, empty, edit, type, valueType);
     }
 }
