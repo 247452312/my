@@ -1,6 +1,6 @@
 package indi.uhyils.util;
 
-import indi.uhyils.enum_.NodeStatusEnum;
+import indi.uhyils.enum_.OrderNodeStatusEnum;
 import indi.uhyils.pojo.model.*;
 
 import java.io.Serializable;
@@ -39,7 +39,7 @@ public class OrderBuilder implements Serializable {
         nodeEntity.setRunType(node.getRunType());
         nodeEntity.setType(node.getType());
         // 默认开始时是未开始的状态
-        nodeEntity.setStatus(NodeStatusEnum.WAIT_STATUS.getCode());
+        nodeEntity.setStatus(OrderNodeStatusEnum.WAIT_STATUS.getCode());
         nodeEntity.setSync(node.getSync());
         nodeEntity.setLimitTime(node.getLimitTime());
         nodeEntity.setNoticeUserId(node.getNoticeUserId());

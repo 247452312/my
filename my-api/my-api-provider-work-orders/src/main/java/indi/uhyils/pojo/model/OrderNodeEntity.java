@@ -1,5 +1,9 @@
 package indi.uhyils.pojo.model;
 
+import indi.uhyils.enum_.OrderNodeResultTypeEnum;
+import indi.uhyils.enum_.OrderNodeRunTypeEnum;
+import indi.uhyils.enum_.OrderNodeStatusEnum;
+import indi.uhyils.enum_.OrderNodeTypeEnum;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 /**
@@ -34,17 +38,17 @@ public class OrderNodeEntity extends BaseVoEntity {
     private String noticeUserId;
 
     /**
-     * 处理类型 {@link indi.uhyils.enum_.NodeRunTypeEnum}
+     * 处理类型 {@link OrderNodeRunTypeEnum}
      */
     private Integer runType;
 
     /**
-     * 节点状态 {@link indi.uhyils.enum_.NodeStatusEnum}
+     * 节点状态 {@link OrderNodeStatusEnum}
      */
     private Integer status;
 
     /**
-     * 节点类型 {@link indi.uhyils.enum_.NodeTypeEnum}
+     * 节点类型 {@link OrderNodeTypeEnum}
      */
     private Integer type;
 
@@ -74,7 +78,7 @@ public class OrderNodeEntity extends BaseVoEntity {
     private String transApiId;
 
     /**
-     * 处理结果类型 {@link indi.uhyils.enum_.NodeResultTypeEnum}
+     * 处理结果类型 {@link OrderNodeResultTypeEnum}
      */
     private Integer resultType;
 

@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.model;
 
+import indi.uhyils.enum_.OrderNodeRunTypeEnum;
+import indi.uhyils.enum_.OrderNodeTypeEnum;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 /**
@@ -34,12 +36,12 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
     private String noticeUserId;
 
     /**
-     * 处理类型 {@link indi.uhyils.enum_.NodeRunTypeEnum}
+     * 处理类型 {@link OrderNodeRunTypeEnum}
      */
     private Integer runType;
 
     /**
-     * 节点类型 {@link indi.uhyils.enum_.NodeTypeEnum}
+     * 节点类型 {@link OrderNodeTypeEnum}
      */
     private Integer type;
 

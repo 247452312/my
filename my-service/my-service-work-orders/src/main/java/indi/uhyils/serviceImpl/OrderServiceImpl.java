@@ -101,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
         //获取基础节点对应的所有信息(属性,结果类型,路由) 并转换成实例信息插入实例表
         nodeList.forEach(node -> {
 
-            Boolean isStartNode = NodeTypeEnum.START.getCode().equals(node.getType());
+            Boolean isStartNode = OrderNodeTypeEnum.START.getCode().equals(node.getType());
 
             //转换节点本身
             OrderNodeEntity orderNodeEntity = OrderBuilder.transBaseNode2Node(node, infoId);
@@ -229,7 +229,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ServiceResult<Boolean> failOrderNode(FailOrderNodeRequest request) {
-        orderNodeDao.makeOrderFault(request.getOrderNodeId(), NodeStatusEnum.FAULT.getCode(), NodeResultTypeEnum.FAULT.getCode(), request.getMsg());
+        orderNodeDao.makeOrderFault(request.getOrderNodeId(), OrderNodeStatusEnum.FAULT.getCode(), OrderNodeResultTypeEnum.FAULT.getCode(), request.getMsg());
         return ServiceResult.buildSuccessResult("处理成功", true, request);
     }
 
@@ -243,8 +243,8 @@ public class OrderServiceImpl implements OrderService {
         /*1.结束当前工单节点(节点状态),处理结果类型->处理成功,处理结果id选择,处理人建议*/
         String nodeId = request.getNodeId();
         OrderNodeEntity orderNode = orderNodeDao.getById(nodeId);
-        orderNode.setStatus(NodeStatusEnum.OVER.getCode());
-        orderNode.setResultType(NodeResultTypeEnum.SUCCESS.getCode());
+        orderNode.setStatus(OrderNodeStatusEnum.OVER.getCode());
+        orderNode.setResultType(OrderNodeResultTypeEnum.SUCCESS.getCode());
         orderNode.setResultId(request.getResultId());
         orderNode.setSuggest(request.getSuggest());
         orderNode.preUpdate(request);
@@ -262,11 +262,11 @@ public class OrderServiceImpl implements OrderService {
         }
         /*3.将下一节点置为等待开始(并通知自动处理模块检测是否为自动处理模块)*/
         OrderNodeEntity nextNode = orderNodeDao.getNextNodeByNodeAndResult(request.getNodeId(), request.getResultId());
-        nextNode.setStatus(NodeStatusEnum.WAIT_STATUS.getCode());
+        nextNode.setStatus(OrderNodeStatusEnum.WAIT_STATUS.getCode());
         nextNode.preUpdate(request);
         orderNodeDao.update(nextNode);
         Integer runType = nextNode.getRunType();
-        if (NodeRunTypeEnum.AUTO.getCode().equals(runType)) {
+        if (OrderNodeRunTypeEnum.AUTO.getCode().equals(runType)) {
             noticeAutoDealOrder(nextNode.getId(), request.getNodeId());
         }
         return ServiceResult.buildSuccessResult("处理成功", DealOrderNodeResponse.buildSuccess(), request);
@@ -290,7 +290,7 @@ public class OrderServiceImpl implements OrderService {
         String orderNodeId = request.getOrderNodeId();
         OrderNodeEntity orderNode = orderNodeDao.getById(orderNodeId);
         /*1.将节点状态置为转交中*/
-        orderNode.setStatus(NodeStatusEnum.TRANSFER.getCode());
+        orderNode.setStatus(OrderNodeStatusEnum.TRANSFER.getCode());
         orderNode.preUpdate(request);
         orderNodeDao.update(orderNode);
         /*2.插入申请表*/
@@ -313,7 +313,7 @@ public class OrderServiceImpl implements OrderService {
         /*0.将此节点状态置位已转交*/
         String orderNodeId = orderApply.getOrderNodeId();
         OrderNodeEntity orderNode = orderNodeDao.getById(orderNodeId);
-        orderNode.setStatus(NodeStatusEnum.TRANSFERRED.getCode());
+        orderNode.setStatus(OrderNodeStatusEnum.TRANSFERRED.getCode());
         orderNode.preUpdate(request);
         orderNodeDao.update(orderNode);
         String lastOrderNodeId = orderNode.getId();
@@ -356,7 +356,7 @@ public class OrderServiceImpl implements OrderService {
         transResult.preInsert(request);
         orderNodeResultTypeDao.insert(transResult);
         orderNode.setResultId(transResult.getId());
-        orderNode.setResultType(NodeResultTypeEnum.TRANSFER.getCode());
+        orderNode.setResultType(OrderNodeResultTypeEnum.TRANSFER.getCode());
 
         /*4.新增此节点到下一节点的路由*/
         OrderNodeRouteEntity newOrderNodeRoute = OrderNodeRouteBuilder.build(orderNodeId, transResult.getId(), newOrderNodeId);
@@ -364,14 +364,14 @@ public class OrderServiceImpl implements OrderService {
         orderNodeRouteDao.insert(newOrderNodeRoute);
 
         /*5.将下一节点置位等待开始*/
-        orderNode.setStatus(NodeStatusEnum.WAIT_STATUS.getCode());
+        orderNode.setStatus(OrderNodeStatusEnum.WAIT_STATUS.getCode());
         // 新节点插入后置
         orderNodeDao.insert(orderNode);
 
         /*6.通知下一节点处理人*/
         String targetUserId = orderApply.getTargetUserId();
         OrderInfoEntity orderInfo = orderInfoDao.getById(orderNode.getBaseInfoId());
-        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, targetUserId, PushTypeEnum.EMAIL.getCode(), "工单流转事务提示", orderNodeId + "工单已转交到你手,审批人通过,请尽快处理,工单优先度:" + PriorityEnum.parse(orderInfo.getPriority()).getName());
+        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, targetUserId, PushTypeEnum.EMAIL.getCode(), "工单流转事务提示", orderNodeId + "工单已转交到你手,审批人通过,请尽快处理,工单优先度:" + OrderPriorityEnum.parse(orderInfo.getPriority()).getName());
         DubboApiUtil.dubboApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         return ServiceResult.buildSuccessResult("审批成功", true, request);
     }
@@ -385,7 +385,7 @@ public class OrderServiceImpl implements OrderService {
     private boolean noticeMonitorUserIdAboutBackOrder(RecallOrderRequest request) {
         OrderInfoEntity byId = orderInfoDao.getById(request.getOrderId());
         String monitorUserId = byId.getMonitorUserId();
-        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, monitorUserId, PushTypeEnum.EMAIL.getCode(), "工单撤回申请", request.getOrderId() + "工单申请撤回,请尽快审批,工单优先度:" + PriorityEnum.parse(byId.getPriority()).getName());
+        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, monitorUserId, PushTypeEnum.EMAIL.getCode(), "工单撤回申请", request.getOrderId() + "工单申请撤回,请尽快审批,工单优先度:" + OrderPriorityEnum.parse(byId.getPriority()).getName());
         ServiceResult serviceResult = DubboApiUtil.dubboApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             return true;
@@ -460,7 +460,7 @@ public class OrderServiceImpl implements OrderService {
             if (Content.BLACK.equals(value) && !orderNodeFieldEntity.getEmpty()) {
                 result.put(orderNodeFieldEntity, false);
             }
-            switch (NodeFieldValueTypeEnum.parse(orderNodeFieldEntity.getType())) {
+            switch (OrderNodeFieldValueTypeEnum.parse(orderNodeFieldEntity.getType())) {
                 case STRING:
                     result.put(orderNodeFieldEntity, true);
                     continue;

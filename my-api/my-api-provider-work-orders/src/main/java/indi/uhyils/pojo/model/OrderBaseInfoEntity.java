@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.model;
 
+import indi.uhyils.enum_.OrderPriorityEnum;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 /**
@@ -9,7 +10,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
 public class OrderBaseInfoEntity extends BaseVoEntity {
 
     /**
-     * 优先级{@link indi.uhyils.enum_.PriorityEnum}
+     * 优先级{@link OrderPriorityEnum}
      */
     private Integer priority;
 

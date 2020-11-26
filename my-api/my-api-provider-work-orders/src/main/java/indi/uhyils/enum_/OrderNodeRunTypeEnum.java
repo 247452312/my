@@ -1,23 +1,23 @@
 package indi.uhyils.enum_;
 
 /**
- * 优先级
+ * 节点处理类型
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 11时32分
  */
-public enum PriorityEnum {
+public enum OrderNodeRunTypeEnum {
     /**
      * 同name
      */
-    NORMAL("正常", 0),
-    URGENT("紧急", 1);
+    AUTO("自动处理", 0),
+    MANUAL("人工处理", 1);
 
 
     private String name;
     private Integer code;
 
-    PriorityEnum(String name, Integer code) {
+    OrderNodeRunTypeEnum(String name, Integer code) {
         this.name = name;
         this.code = code;
     }
@@ -38,15 +38,13 @@ public enum PriorityEnum {
         this.code = code;
     }
 
-    public static PriorityEnum parse(Integer code) {
+    public static OrderNodeRunTypeEnum parse(Integer code) {
         switch (code) {
             case 0:
-                return NORMAL;
+                return AUTO;
             case 1:
-                return URGENT;
             default:
-                return null;
+                return MANUAL;
         }
-
     }
 }

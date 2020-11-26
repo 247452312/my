@@ -6,7 +6,7 @@ package indi.uhyils.enum_;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月14日 18时35分
  */
-public enum NodeStatusEnum {
+public enum OrderNodeStatusEnum {
     /**
      * 作用同name
      */
@@ -18,7 +18,7 @@ public enum NodeStatusEnum {
     TRANSFER("转交中", 6),
     TRANSFERRED("已转交", 7);
 
-    NodeStatusEnum(String name, Integer code) {
+    OrderNodeStatusEnum(String name, Integer code) {
         this.name = name;
         this.code = code;
     }

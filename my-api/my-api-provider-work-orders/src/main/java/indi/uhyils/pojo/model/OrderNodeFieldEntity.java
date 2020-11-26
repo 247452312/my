@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.model;
 
+import indi.uhyils.enum_.OrderNodeFieldTypeEnum;
+import indi.uhyils.enum_.OrderNodeFieldValueTypeEnum;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 import java.util.Objects;
@@ -41,12 +43,12 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
     private Boolean edit;
 
     /**
-     * 字段类型{@link indi.uhyils.enum_.NodeFieldTypeEnum}
+     * 字段类型{@link OrderNodeFieldTypeEnum}
      */
     private Integer type;
 
     /**
-     * 数值类型 {@link indi.uhyils.enum_.NodeFieldValueTypeEnum}
+     * 数值类型 {@link OrderNodeFieldValueTypeEnum}
      */
     private Integer valueType;
 

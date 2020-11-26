@@ -6,7 +6,7 @@ package indi.uhyils.enum_;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 11时32分
  */
-public enum NodeFieldValueTypeEnum {
+public enum OrderNodeFieldValueTypeEnum {
     /**
      * 同name
      */
@@ -20,7 +20,7 @@ public enum NodeFieldValueTypeEnum {
     private String name;
     private Integer code;
 
-    NodeFieldValueTypeEnum(String name, Integer code) {
+    OrderNodeFieldValueTypeEnum(String name, Integer code) {
         this.name = name;
         this.code = code;
     }
@@ -41,7 +41,7 @@ public enum NodeFieldValueTypeEnum {
         this.code = code;
     }
 
-    public static NodeFieldValueTypeEnum parse(Integer code) {
+    public static OrderNodeFieldValueTypeEnum parse(Integer code) {
         switch (code) {
 
             case 2:
