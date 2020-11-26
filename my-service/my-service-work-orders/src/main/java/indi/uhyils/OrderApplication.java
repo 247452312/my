@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableDubbo
 @EnableTransactionManagement
-public class MyOrderApplication {
+public class OrderApplication {
     public static void main(String[] args) {
-        ApplicationContext act = SpringApplication.run(MyOrderApplication.class, args);
+        ApplicationContext act = SpringApplication.run(OrderApplication.class, args);
         SpringUtil.setApplicationContext(act);
     }
 }
