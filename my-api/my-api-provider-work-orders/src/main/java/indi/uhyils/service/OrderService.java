@@ -83,7 +83,7 @@ public interface OrderService extends BaseService {
     ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) throws IOException, TimeoutException;
 
     /**
-     * 工单节点失败(因处理人员无能力完成此节点,申请转交给其他人,则可以进行主动失败)
+     * 工单节点(转交)失败(因处理人员无能力完成此节点,申请转交给其他人,则可以进行主动失败)
      *
      * @param request
      * @return

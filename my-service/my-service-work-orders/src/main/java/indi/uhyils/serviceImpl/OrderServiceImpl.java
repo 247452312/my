@@ -66,6 +66,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderInfoDao orderInfoDao;
 
     @Resource
+    private OrderApplyDao orderApplyDao;
+
+    @Resource
     private OrderNodeFieldValueDao orderNodeFieldValueDao;
 
     @Override
@@ -281,11 +284,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeRequest request) {
+        /*1.将节点状态置为转交中*/
+        /*2.插入申请表*/
+        /*3.通知审批人*/
         return null;
     }
 
     @Override
     public ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) {
+        /*0.将此节点状态置位已转交*/
+        /*1.新增下一节点,状制此节点的参数,状态置位未开始*/
+        /*2.将此节点的属性,结果,路由复制到下一个节点上去*/
+        /*3.新增此节点已转交的'结果'并将此节点的'结果'置位此结果*/
+        /*4.新增此节点到下一节点的路由*/
+        /*5.将下一节点置位等待开始*/
+        /*6.通知下一节点处理人*/
         return null;
     }
 
