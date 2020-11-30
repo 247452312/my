@@ -44,10 +44,6 @@ public class OrderBaseInfoEntity extends BaseVoEntity {
      */
     private String desc;
 
-    /**
-     * 运行状态{@link indi.uhyils.enum_.OrderStatusEnum}
-     */
-    private Integer status;
 
 
     public Integer getPriority() {
@@ -104,14 +100,6 @@ public class OrderBaseInfoEntity extends BaseVoEntity {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
 

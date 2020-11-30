@@ -18,8 +18,7 @@
 		a.create_user as createUser,
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
-		a.desc,
-        a.status as status
+		a.desc
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
@@ -70,8 +69,7 @@
                                    create_user,
                                    create_date,
                                    delete_flag,
-                                   desc,
-                                   status)
+                                   desc)
         values (#{remark},
                 #{priority},
                 #{updateDate},
@@ -85,8 +83,7 @@
                 #{createUser},
                 #{createDate},
                 #{deleteFlag},
-                #{desc},
-                #{status})
+                #{desc})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
@@ -129,9 +126,6 @@
         </if>
         <if test="desc != null and desc != ''">
             ,desc = #{desc}
-        </if>
-        <if test="status != null and status != ''">
-            ,status = #{status}
         </if>
         where id = #{id}
     </update>

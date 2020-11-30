@@ -1,6 +1,7 @@
 package indi.uhyils.util;
 
 import indi.uhyils.enum_.OrderNodeStatusEnum;
+import indi.uhyils.enum_.OrderStatusEnum;
 import indi.uhyils.pojo.model.*;
 
 import java.io.Serializable;
@@ -28,7 +29,7 @@ public class OrderBuilder implements Serializable {
         orderInfoEntity.setMonitorUserId(baseInfo.getMonitorUserId());
         orderInfoEntity.setName(baseInfo.getName());
         orderInfoEntity.setDesc(baseInfo.getDesc());
-        orderInfoEntity.setStatus(baseInfo.getStatus());
+        orderInfoEntity.setStatus(OrderStatusEnum.START.getCode());
         return orderInfoEntity;
     }
 
