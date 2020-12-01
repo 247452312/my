@@ -7,7 +7,6 @@
     <sql id="columnList">
         a.bean_name as beanName,
 		a.update_user as updateUser,
-		a.method_name as methodName,
 		a.remark as remark,
 		a.id as id,
 		a.create_user as createUser,
@@ -53,7 +52,6 @@
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderApiEntity">
         insert sys_order_api(bean_name,
                              update_user,
-                             method_name,
                              remark,
                              id,
                              create_user,
@@ -62,7 +60,6 @@
                              update_date)
         values (#{beanName},
                 #{updateUser},
-                #{methodName},
                 #{remark},
                 #{id},
                 #{createUser},
@@ -73,14 +70,13 @@
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderApiEntity">
         update sys_order_api set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
         <if test="beanName != null and beanName != ''">
             ,bean_name = #{beanName}
         </if>
         <if test="updateUser != null and updateUser != ''">
             ,update_user = #{updateUser}
-        </if>
-        <if test="methodName != null and methodName != ''">
-            ,method_name = #{methodName}
         </if>
         <if test="remark != null and remark != ''">
             ,remark = #{remark}

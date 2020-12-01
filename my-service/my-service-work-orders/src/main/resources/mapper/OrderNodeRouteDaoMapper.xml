@@ -73,6 +73,8 @@
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeRouteEntity">
         update sys_order_node_route set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
         <if test="prevNodeId != null and prevNodeId != ''">
             ,prev_node_id = #{prevNodeId}
         </if>

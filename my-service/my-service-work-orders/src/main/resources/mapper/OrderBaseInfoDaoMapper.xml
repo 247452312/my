@@ -88,6 +88,8 @@
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
         update sys_order_base_info set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
         <if test="remark != null and remark != ''">
             ,remark = #{remark}
         </if>

@@ -102,6 +102,8 @@
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeFieldEntity">
         update sys_order_node_field set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
         <if test="valueType != null and valueType != ''">
             ,value_type = #{valueType}
         </if>

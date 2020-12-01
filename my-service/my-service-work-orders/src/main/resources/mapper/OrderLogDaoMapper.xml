@@ -85,6 +85,8 @@
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderLogEntity">
         update sys_order_log set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
         <if test="dealUserId != null and dealUserId != ''">
             ,deal_user_id = #{dealUserId}
         </if>

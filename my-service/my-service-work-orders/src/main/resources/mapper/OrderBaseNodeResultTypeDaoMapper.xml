@@ -9,7 +9,6 @@
 		a.base_node_id as baseNodeId,
 		a.deal_result_name as dealResultName,
 		a.remark as remark,
-		a.deal_result as dealResult,
 		a.id as id,
 		a.create_user as createUser,
 		a.create_date as createDate,
@@ -74,6 +73,8 @@
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity">
         update sys_order_base_node_result_type set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
         <if test="updateUser != null and updateUser != ''">
             ,update_user = #{updateUser}
         </if>
@@ -85,9 +86,6 @@
         </if>
         <if test="remark != null and remark != ''">
             ,remark = #{remark}
-        </if>
-        <if test="dealResult != null and dealResult != ''">
-            ,deal_result = #{dealResult}
         </if>
         <if test="createUser != null and createUser != ''">
             ,create_user = #{createUser}

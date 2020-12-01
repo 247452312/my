@@ -73,6 +73,8 @@
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
         update sys_order_node_result_type set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
         <if test="updateUser != null and updateUser != ''">
             ,update_user = #{updateUser}
         </if>

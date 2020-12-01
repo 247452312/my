@@ -123,6 +123,8 @@
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeEntity">
         update sys_order_node set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
         <if test="saveApiId != null and saveApiId != ''">
             ,save_api_id = #{saveApiId}
         </if>
