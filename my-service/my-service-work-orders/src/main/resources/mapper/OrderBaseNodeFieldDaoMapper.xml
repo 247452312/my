@@ -19,7 +19,7 @@
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
 		a.base_order_id as baseOrderId,
-		a.desc
+		a.`desc`
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseNodeFieldEntity">
@@ -63,7 +63,7 @@
                                          remark,
                                          type,
                                          update_date,
-                                         empty,
+                                         `empty`,
                                          update_user,
                                          name,
                                          id,
@@ -71,7 +71,7 @@
                                          create_date,
                                          delete_flag,
                                          base_order_id,
-                                         desc)
+                                         `desc`)
         values (#{valueType},
                 #{edit},
                 #{defaultValue},
@@ -110,7 +110,7 @@
             ,update_date = #{updateDate}
         </if>
         <if test="empty != null and empty != ''">
-            ,empty = #{empty}
+            ,`empty` = #{empty}
         </if>
         <if test="updateUser != null and updateUser != ''">
             ,update_user = #{updateUser}
@@ -131,7 +131,7 @@
             ,base_order_id = #{baseOrderId}
         </if>
         <if test="desc != null and desc != ''">
-            ,desc = #{desc}
+            ,`desc` = #{desc}
         </if>
         where id = #{id}
     </update>

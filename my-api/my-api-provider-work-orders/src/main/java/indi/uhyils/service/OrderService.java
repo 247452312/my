@@ -37,7 +37,7 @@ public interface OrderService extends BaseService {
      * 撤回工单
      *
      * @param request
-     * @return 是否成功
+     * @return 是否发送信息到审批人成功
      */
     ServiceResult<Boolean> recallOrder(RecallOrderRequest request);
 

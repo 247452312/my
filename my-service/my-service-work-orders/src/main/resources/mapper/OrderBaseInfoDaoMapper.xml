@@ -18,7 +18,7 @@
 		a.create_user as createUser,
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
-		a.desc
+		a.`desc`
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
@@ -69,7 +69,7 @@
                                    create_user,
                                    create_date,
                                    delete_flag,
-                                   desc)
+                                   `desc`)
         values (#{remark},
                 #{priority},
                 #{updateDate},
@@ -125,7 +125,7 @@
             ,delete_flag = #{deleteFlag}
         </if>
         <if test="desc != null and desc != ''">
-            ,desc = #{desc}
+            ,`desc` = #{desc}
         </if>
         where id = #{id}
     </update>

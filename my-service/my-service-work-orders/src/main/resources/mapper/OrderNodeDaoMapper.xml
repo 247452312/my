@@ -8,14 +8,12 @@
         a.save_api_id as saveApiId,
 		a.result_type as resultType,
 		a.init_api_id as initApiId,
-		a.send_email as sendEmail,
 		a.remark as remark,
 		a.run_type as runType,
 		a.type as type,
 		a.sync as sync,
 		a.update_date as updateDate,
 		a.limit_time as limitTime,
-		a.result as result,
 		a.notice_user_id as noticeUserId,
 		a.update_user as updateUser,
 		a.base_info_id as baseInfoId,
@@ -26,8 +24,7 @@
 		a.create_user as createUser,
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
-		a.send_sms as sendSms,
-		a.desc
+		a.`desc`
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
@@ -85,14 +82,12 @@
         insert sys_order_node(save_api_id,
                               result_type,
                               init_api_id,
-                              send_email,
                               remark,
                               run_type,
                               type,
                               sync,
                               update_date,
                               limit_time,
-                              result,
                               notice_user_id,
                               update_user,
                               base_info_id,
@@ -103,19 +98,16 @@
                               create_user,
                               create_date,
                               delete_flag,
-                              send_sms,
-                              desc)
+                              `desc`)
         values (#{saveApiId},
                 #{resultType},
                 #{initApiId},
-                #{sendEmail},
                 #{remark},
                 #{runType},
                 #{type},
                 #{sync},
                 #{updateDate},
                 #{limitTime},
-                #{result},
                 #{noticeUserId},
                 #{updateUser},
                 #{baseInfoId},
@@ -126,7 +118,6 @@
                 #{createUser},
                 #{createDate},
                 #{deleteFlag},
-                #{sendSms},
                 #{desc})
     </insert>
 
@@ -140,9 +131,6 @@
         </if>
         <if test="initApiId != null and initApiId != ''">
             ,init_api_id = #{initApiId}
-        </if>
-        <if test="sendEmail != null and sendEmail != ''">
-            ,send_email = #{sendEmail}
         </if>
         <if test="remark != null and remark != ''">
             ,remark = #{remark}
@@ -161,9 +149,6 @@
         </if>
         <if test="limitTime != null and limitTime != ''">
             ,limit_time = #{limitTime}
-        </if>
-        <if test="result != null and result != ''">
-            ,result = #{result}
         </if>
         <if test="noticeUserId != null and noticeUserId != ''">
             ,notice_user_id = #{noticeUserId}
@@ -192,11 +177,8 @@
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
         </if>
-        <if test="sendSms != null and sendSms != ''">
-            ,send_sms = #{sendSms}
-        </if>
         <if test="desc != null and desc != ''">
-            ,desc = #{desc}
+            ,`desc` = #{desc}
         </if>
         where id = #{id}
     </update>

@@ -6,16 +6,13 @@
 
     <sql id="columnList">
         a.save_api_id as saveApiId,
-		a.result_type as resultType,
 		a.init_api_id as initApiId,
-		a.send_email as sendEmail,
 		a.remark as remark,
 		a.run_type as runType,
 		a.type as type,
 		a.sync as sync,
 		a.update_date as updateDate,
 		a.limit_time as limitTime,
-		a.result as result,
 		a.notice_user_id as noticeUserId,
 		a.update_user as updateUser,
 		a.base_info_id as baseInfoId,
@@ -26,8 +23,8 @@
 		a.create_user as createUser,
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
-		a.send_sms as sendSms,
-		a.desc
+		a.trans_api_id as transApiId,
+		a.`desc`
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
@@ -66,16 +63,13 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
         insert sys_order_base_node(save_api_id,
-                                   result_type,
                                    init_api_id,
-                                   send_email,
                                    remark,
                                    run_type,
                                    type,
                                    sync,
                                    update_date,
                                    limit_time,
-                                   result,
                                    notice_user_id,
                                    update_user,
                                    base_info_id,
@@ -86,19 +80,16 @@
                                    create_user,
                                    create_date,
                                    delete_flag,
-                                   send_sms,
-                                   desc)
+                                   trans_api_id,
+                                   `desc`)
         values (#{saveApiId},
-                #{resultType},
                 #{initApiId},
-                #{sendEmail},
                 #{remark},
                 #{runType},
                 #{type},
                 #{sync},
                 #{updateDate},
                 #{limitTime},
-                #{result},
                 #{noticeUserId},
                 #{updateUser},
                 #{baseInfoId},
@@ -109,7 +100,7 @@
                 #{createUser},
                 #{createDate},
                 #{deleteFlag},
-                #{sendSms},
+                #{transApiId},
                 #{desc})
     </insert>
 
@@ -118,14 +109,11 @@
         <if test="saveApiId != null and saveApiId != ''">
             ,save_api_id = #{saveApiId}
         </if>
-        <if test="resultType != null and resultType != ''">
-            ,result_type = #{resultType}
-        </if>
         <if test="initApiId != null and initApiId != ''">
             ,init_api_id = #{initApiId}
         </if>
-        <if test="sendEmail != null and sendEmail != ''">
-            ,send_email = #{sendEmail}
+        <if test="transApiId != null and transApiId != ''">
+            ,trans_api_id = #{transApiId}
         </if>
         <if test="remark != null and remark != ''">
             ,remark = #{remark}
@@ -144,9 +132,6 @@
         </if>
         <if test="limitTime != null and limitTime != ''">
             ,limit_time = #{limitTime}
-        </if>
-        <if test="result != null and result != ''">
-            ,result = #{result}
         </if>
         <if test="noticeUserId != null and noticeUserId != ''">
             ,notice_user_id = #{noticeUserId}
@@ -175,11 +160,8 @@
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
         </if>
-        <if test="sendSms != null and sendSms != ''">
-            ,send_sms = #{sendSms}
-        </if>
         <if test="desc != null and desc != ''">
-            ,desc = #{desc}
+            ,`desc` = #{desc}
         </if>
         where id = #{id}
     </update>

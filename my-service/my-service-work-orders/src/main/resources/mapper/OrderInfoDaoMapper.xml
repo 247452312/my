@@ -18,7 +18,7 @@
 		a.create_user as createUser,
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
-		a.desc,
+		a.`desc`,
         a.status as status
     </sql>
 
@@ -81,7 +81,7 @@
                               create_user,
                               create_date,
                               delete_flag,
-                              desc,
+                              `desc`,
                               status)
         values (#{remark},
                 #{priority},
@@ -139,7 +139,7 @@
             ,delete_flag = #{deleteFlag}
         </if>
         <if test="desc != null and desc != ''">
-            ,desc = #{desc}
+            ,`desc` = #{desc}
         </if>
         <if test="status != null and status != ''">
             ,status = #{status}
