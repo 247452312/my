@@ -69,6 +69,15 @@
             laypage = layui.laypage,
             layer = layui.layer,
             table = layui.table;
+        let orderPriorityMap = pushRequest("DictService", "getByCode", {
+            "code": "OrderPriority"
+        }, function (data) {
+            var map = {};
+            for (let i = 0; i < data.length; i++) {
+                map[data[i].value] = data[i].text;
+            }
+            return map;
+        })
 
         $.reloadTable = function () {
             var reload = function (page, size, args) {
@@ -86,11 +95,19 @@
                         page: false,
                         cols: [[
                             {type: "numbers", title: '序号'},
-                            {field: 'priority', title: '优先级'},
-                            {field: 'queryUserIds', title: '可查询人id'},
+                            {
+                                title: '优先级', templet: function (d) {
+                                    return orderPriorityMap[d.priority];
+                                }
+                            },
+                            // {field: 'queryUserIds', title: '可查询人id'},
                             {field: 'limitTime', title: '运行时限(分钟)'},
-                            {field: 'son', title: '是否是子流程'},
-                            {field: 'monitorUserId', title: '监管人id'},
+                            {
+                                field: 'son', title: '是否是子流程', templet: function (d) {
+                                    return d.son === 0 ? "是" : "不是";
+                                }
+                            },
+                            // {field: 'monitorUserId', title: '监管人id'},
                             {field: 'name', title: '工单名称'},
                             {field: 'desc', title: '工单描述'},
                             {fixed: 'right', title: '操作', minWidth: 255, toolbar: '#barDemo'}
