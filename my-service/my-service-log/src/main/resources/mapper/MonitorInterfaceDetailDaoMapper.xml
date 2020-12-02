@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        id
-        ,
+        a.id,
         a.fid,
         a.interface_name as interfaceName,
         a.method_name as methodName,

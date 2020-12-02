@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        id
-        ,
+        a.id,
         a.ip,
         a.service_name as serviceName,
         a.time,

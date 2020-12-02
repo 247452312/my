@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        prev_node_id
-        as prevNodeId,
+        a.prev_node_id as prevNodeId,
 		a.update_user as updateUser,
 		a.remark as remark,
 		a.next_node_id as nextNodeId,

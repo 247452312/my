@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        value_type
-        as valueType,
+        a.value_type as valueType,
 		a.edit as edit,
 		a.default_value as defaultValue,
 		a.remark as remark,
@@ -29,7 +26,7 @@
         update_date = #{updateDate}
         ,update_user = #{updateUser}
         ,delete_flag = 1
-        where base_order_id in
+        where base_order_node_id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>

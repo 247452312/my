@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        save_api_id
-        as saveApiId,
+        a.save_api_id as saveApiId,
 		a.init_api_id as initApiId,
 		a.remark as remark,
 		a.run_type as runType,

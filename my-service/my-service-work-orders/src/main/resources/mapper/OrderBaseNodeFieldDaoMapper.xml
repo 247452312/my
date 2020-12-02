@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        value_type
-        as valueType,
+        a.value_type as valueType,
 		a.edit as edit,
 		a.default_value as defaultValue,
 		a.remark as remark,
@@ -60,8 +57,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeFieldEntity">
-        insert
-        sys_order_base_node_field(value_type,
+        insert sys_order_base_node_field(value_type,
                                          edit,
                                          default_value,
                                          remark,
@@ -76,23 +72,21 @@
                                          delete_flag,
                                          base_order_id,
                                          `desc`)
-        values (
-        #{valueType},
-        #{edit},
-        #{defaultValue},
-        #{remark},
-        #{type},
-        #{updateDate},
-        #{empty},
-        #{updateUser},
-        #{name},
-        #{id},
-        #{createUser},
-        #{createDate},
-        #{deleteFlag},
-        #{baseOrderId},
-        #{desc}
-        )
+        values (#{valueType},
+                #{edit},
+                #{defaultValue},
+                #{remark},
+                #{type},
+                #{updateDate},
+                #{empty},
+                #{updateUser},
+                #{name},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{baseOrderId},
+                #{desc})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeFieldEntity">

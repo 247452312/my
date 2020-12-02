@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        id
-        ,
+        a.id,
         a.create_date as createDate,
         a.create_user as createUser,
         a.delete_flag as deleteFlag,

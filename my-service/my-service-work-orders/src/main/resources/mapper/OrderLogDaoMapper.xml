@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        deal_user_id
-        as dealUserId,
+        a.deal_user_id as dealUserId,
 		a.remark as remark,
 		a.update_date as updateDate,
 		a.fault_info as faultInfo,

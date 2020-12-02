@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        id
-        ,
+        a.id,
         a.fid,
         a.time,
         a.heap_use_mem as heapUseMem,

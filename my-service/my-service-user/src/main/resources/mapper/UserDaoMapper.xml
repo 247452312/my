@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        id
-        ,
+        a.id,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -24,10 +21,7 @@
         a.role_id as roleId
     </sql>
     <sql id="deptColumnList">
-        a
-        .
-        id
-        ,
+        a.id,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -38,10 +32,7 @@
         a.name
     </sql>
     <sql id="powerColumnList">
-        a
-        .
-        id
-        ,
+        a.id,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -53,10 +44,7 @@
         a.method_name as methodName
     </sql>
     <sql id="roleColumnList">
-        a
-        .
-        id
-        ,
+        a.id,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',

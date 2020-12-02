@@ -5,10 +5,7 @@
 
 
     <sql id="columnList">
-        a
-        .
-        remark
-        as remark,
+        a.remark as remark,
 		a.priority as priority,
 		a.update_date as updateDate,
 		a.query_user_ids as queryUserIds,
