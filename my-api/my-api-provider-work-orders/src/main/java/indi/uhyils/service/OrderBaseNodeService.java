@@ -1,6 +1,8 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.OrderBaseNodeEntity;
+import indi.uhyils.pojo.request.base.IdsRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
 
 /**
@@ -10,4 +12,11 @@ import indi.uhyils.service.base.DefaultEntityService;
 public interface OrderBaseNodeService extends DefaultEntityService<OrderBaseNodeEntity> {
 
 
+    /**
+     * 批量删除,删除工单时用
+     *
+     * @param request
+     * @return
+     */
+    ServiceResult<Boolean> deleteByIds(IdsRequest request);
 }

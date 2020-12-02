@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.value_type as valueType,
+        a
+        .
+        value_type
+        as valueType,
 		a.edit as edit,
 		a.default_value as defaultValue,
 		a.remark as remark,
@@ -21,6 +24,16 @@
 		a.base_order_node_id as baseOrderNodeId,
 		a.`desc`
     </sql>
+    <update id="deleteByNodeIds">
+        update sys_order_node_field set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        ,delete_flag = 1
+        where base_order_id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeFieldEntity">
         select
@@ -68,7 +81,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeFieldEntity">
-        insert sys_order_node_field(value_type,
+        insert
+        sys_order_node_field(value_type,
                                     edit,
                                     default_value,
                                     remark,
@@ -83,21 +97,23 @@
                                     delete_flag,
                                     base_order_node_id,
                                     `desc`)
-        values (#{valueType},
-                #{edit},
-                #{defaultValue},
-                #{remark},
-                #{type},
-                #{updateDate},
-                #{empty},
-                #{updateUser},
-                #{name},
-                #{id},
-                #{createUser},
-                #{createDate},
-                #{deleteFlag},
-                #{baseOrderNodeId},
-                #{desc})
+        values (
+        #{valueType},
+        #{edit},
+        #{defaultValue},
+        #{remark},
+        #{type},
+        #{updateDate},
+        #{empty},
+        #{updateUser},
+        #{name},
+        #{id},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{baseOrderNodeId},
+        #{desc}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeFieldEntity">

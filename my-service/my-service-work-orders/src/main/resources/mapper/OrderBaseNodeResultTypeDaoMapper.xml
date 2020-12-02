@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.update_user as updateUser,
+        a
+        .
+        update_user
+        as updateUser,
 		a.base_node_id as baseNodeId,
 		a.deal_result_name as dealResultName,
 		a.remark as remark,
@@ -15,6 +18,16 @@
 		a.delete_flag as deleteFlag,
 		a.update_date as updateDate
     </sql>
+    <update id="deleteByNodeIds">
+        update sys_order_base_node_result_type set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        ,delete_flag = 1
+        where base_node_id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity">
         select
@@ -51,7 +64,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity">
-        insert sys_order_base_node_result_type(update_user,
+        insert
+        sys_order_base_node_result_type(update_user,
                                                base_node_id,
                                                deal_result_name,
                                                remark,
@@ -60,15 +74,17 @@
                                                create_date,
                                                delete_flag,
                                                update_date)
-        values (#{updateUser},
-                #{baseNodeId},
-                #{dealResultName},
-                #{remark},
-                #{id},
-                #{createUser},
-                #{createDate},
-                #{deleteFlag},
-                #{updateDate})
+        values (
+        #{updateUser},
+        #{baseNodeId},
+        #{dealResultName},
+        #{remark},
+        #{id},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{updateDate}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity">

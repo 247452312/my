@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as createDate,
         a.create_user as createUser,
         a.delete_flag as deleteFlag,
@@ -63,7 +66,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.ApiEntity">
-        insert sys_api(id,
+        insert
+        sys_api(id,
                        create_date,
                        create_user,
                        delete_flag,
@@ -79,22 +83,24 @@
                        result_code,
                        type,
                        url)
-        values (#{id},
-                #{createDate},
-                #{createUser},
-                0,
-                #{remark},
-                #{updateDate},
-                #{updateUser},
-                #{apiGroupId},
-                #{apiOrder},
-                #{frequency},
-                #{head},
-                #{needRepeat},
-                #{param},
-                #{resultCode},
-                #{type},
-                #{url})
+        values (
+        #{id},
+        #{createDate},
+        #{createUser},
+        0,
+        #{remark},
+        #{updateDate},
+        #{updateUser},
+        #{apiGroupId},
+        #{apiOrder},
+        #{frequency},
+        #{head},
+        #{needRepeat},
+        #{param},
+        #{resultCode},
+        #{type},
+        #{url}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.ApiEntity">

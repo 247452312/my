@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -21,7 +24,10 @@
         a.role_id as roleId
     </sql>
     <sql id="deptColumnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -32,7 +38,10 @@
         a.name
     </sql>
     <sql id="powerColumnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -44,7 +53,10 @@
         a.method_name as methodName
     </sql>
     <sql id="roleColumnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -112,10 +124,26 @@
     </select>
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.UserEntity">
-        insert sys_user(id, nick_name,mail,phone,head_portrait, username, password,role_id, create_date, create_user, update_date, update_user,
-                    delete_flag, remark)
-        values (#{id}, #{nickName},#{mail},#{phone},#{headPortrait},#{userName},#{password},#{roleId},#{createDate}, #{createUser}, #{updateDate},
-                #{updateUser}, 0, #{remark})
+        insert
+        sys_user(id, nick_name, mail, phone, head_portrait, username, password, role_id, create_date,
+                        create_user, update_date, update_user,
+                        delete_flag, remark)
+        values (
+        #{id},
+        #{nickName},
+        #{mail},
+        #{phone},
+        #{headPortrait},
+        #{userName},
+        #{password},
+        #{roleId},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{remark}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.UserEntity">
@@ -181,9 +209,15 @@
     </select>
 
     <select id="checkUserPassword" resultType="java.lang.Integer">
-        select count(*) from sys_user where delete_flag=0 and passowrd = #{passowrd} and id = #{id}
+        select count(*)
+        from sys_user
+        where delete_flag = 0
+          and passowrd = #{passowrd}
+          and id = #{id}
     </select>
     <select id="getNameById" resultType="java.lang.String">
-        select nick_name from sys_user where id = #{id}
+        select nick_name
+        from sys_user
+        where id = #{id}
     </select>
 </mapper>

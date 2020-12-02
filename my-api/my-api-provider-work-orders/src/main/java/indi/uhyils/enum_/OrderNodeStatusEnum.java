@@ -18,11 +18,6 @@ public enum OrderNodeStatusEnum {
     TRANSFER("转交中", 6),
     TRANSFERRED("已转交", 7);
 
-    OrderNodeStatusEnum(String name, Integer code) {
-        this.name = name;
-        this.code = code;
-    }
-
     /**
      * 名称
      */
@@ -32,6 +27,10 @@ public enum OrderNodeStatusEnum {
      */
     private Integer code;
 
+    OrderNodeStatusEnum(String name, Integer code) {
+        this.name = name;
+        this.code = code;
+    }
 
     public String getName() {
         return name;

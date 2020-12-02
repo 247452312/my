@@ -14,7 +14,6 @@ public class OrderApiEntity extends BaseVoEntity {
     private String beanName;
 
 
-
     public String getBeanName() {
         return beanName;
     }

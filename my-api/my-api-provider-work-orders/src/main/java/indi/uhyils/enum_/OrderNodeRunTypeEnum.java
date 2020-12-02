@@ -22,6 +22,16 @@ public enum OrderNodeRunTypeEnum {
         this.code = code;
     }
 
+    public static OrderNodeRunTypeEnum parse(Integer code) {
+        switch (code) {
+            case 0:
+                return AUTO;
+            case 1:
+            default:
+                return MANUAL;
+        }
+    }
+
     public String getName() {
         return name;
     }
@@ -36,15 +46,5 @@ public enum OrderNodeRunTypeEnum {
 
     public void setCode(Integer code) {
         this.code = code;
-    }
-
-    public static OrderNodeRunTypeEnum parse(Integer code) {
-        switch (code) {
-            case 0:
-                return AUTO;
-            case 1:
-            default:
-                return MANUAL;
-        }
     }
 }

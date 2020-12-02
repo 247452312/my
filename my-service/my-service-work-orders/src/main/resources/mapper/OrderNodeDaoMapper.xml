@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.save_api_id as saveApiId,
+        a
+        .
+        save_api_id
+        as saveApiId,
 		a.result_type as resultType,
 		a.init_api_id as initApiId,
 		a.remark as remark,
@@ -26,6 +29,16 @@
 		a.delete_flag as deleteFlag,
 		a.`desc`
     </sql>
+    <update id="deleteByIds">
+        update sys_order_node set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        ,delete_flag = 1
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
         select
@@ -79,7 +92,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeEntity">
-        insert sys_order_node(save_api_id,
+        insert
+        sys_order_node(save_api_id,
                               result_type,
                               init_api_id,
                               remark,
@@ -99,26 +113,28 @@
                               create_date,
                               delete_flag,
                               `desc`)
-        values (#{saveApiId},
-                #{resultType},
-                #{initApiId},
-                #{remark},
-                #{runType},
-                #{type},
-                #{sync},
-                #{updateDate},
-                #{limitTime},
-                #{noticeUserId},
-                #{updateUser},
-                #{baseInfoId},
-                #{runDealUserId},
-                #{name},
-                #{runApiId},
-                #{id},
-                #{createUser},
-                #{createDate},
-                #{deleteFlag},
-                #{desc})
+        values (
+        #{saveApiId},
+        #{resultType},
+        #{initApiId},
+        #{remark},
+        #{runType},
+        #{type},
+        #{sync},
+        #{updateDate},
+        #{limitTime},
+        #{noticeUserId},
+        #{updateUser},
+        #{baseInfoId},
+        #{runDealUserId},
+        #{name},
+        #{runApiId},
+        #{id},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{desc}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeEntity">

@@ -24,7 +24,6 @@ public class OrderNodeFieldValueEntity extends BaseVoEntity {
     private String realValue;
 
 
-
     public String getNodeFieldId() {
         return nodeFieldId;
     }

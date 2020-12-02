@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.ip,
         a.service_name as serviceName,
         a.time,
@@ -53,7 +56,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.MonitorDO">
-        insert sys_log_monitor(id,
+        insert
+        sys_log_monitor(id,
                                ip,
                                service_name,
                                time,
@@ -63,16 +67,18 @@
                                no_heap_init_mem,
                                no_heap_total_mem,
                                end_time)
-        values (#{id},
-                #{ip},
-                #{serviceName},
-                #{time},
-                #{jvmTotalMem},
-                #{heapInitMem},
-                #{heapTotalMem},
-                #{noHeapInitMem},
-                #{noHeapTotalMem},
-                #{endTime})
+        values (
+        #{id},
+        #{ip},
+        #{serviceName},
+        #{time},
+        #{jvmTotalMem},
+        #{heapInitMem},
+        #{heapTotalMem},
+        #{noHeapInitMem},
+        #{noHeapTotalMem},
+        #{endTime}
+        )
     </insert>
 
     <select id="count" resultType="java.lang.Integer">

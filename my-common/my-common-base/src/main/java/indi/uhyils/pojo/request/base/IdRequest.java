@@ -8,6 +8,13 @@ public class IdRequest extends DefaultRequest {
 
     private String id;
 
+    public IdRequest() {
+    }
+
+    public IdRequest(DefaultRequest request) {
+        super(request);
+    }
+
     public static IdRequest build(String id) {
         IdRequest idRequest = new IdRequest();
         idRequest.setId(id);
@@ -26,12 +33,5 @@ public class IdRequest extends DefaultRequest {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public IdRequest() {
-    }
-
-    public IdRequest(DefaultRequest request) {
-        super(request);
     }
 }

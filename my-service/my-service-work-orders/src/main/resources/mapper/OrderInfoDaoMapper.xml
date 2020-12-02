@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.remark as remark,
+        a
+        .
+        remark
+        as remark,
 		a.priority as priority,
 		a.update_date as updateDate,
 		a.query_user_ids as queryUserIds,
@@ -68,7 +71,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderInfoEntity">
-        insert sys_order_info(remark,
+        insert
+        sys_order_info(remark,
                               priority,
                               update_date,
                               query_user_ids,
@@ -83,21 +87,23 @@
                               delete_flag,
                               `desc`,
                               status)
-        values (#{remark},
-                #{priority},
-                #{updateDate},
-                #{queryUserIds},
-                #{limitTime},
-                #{updateUser},
-                #{son},
-                #{monitorUserId},
-                #{name},
-                #{id},
-                #{createUser},
-                #{createDate},
-                #{deleteFlag},
-                #{desc},
-                #{status})
+        values (
+        #{remark},
+        #{priority},
+        #{updateDate},
+        #{queryUserIds},
+        #{limitTime},
+        #{updateUser},
+        #{son},
+        #{monitorUserId},
+        #{name},
+        #{id},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{desc},
+        #{status}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderInfoEntity">

@@ -3,6 +3,7 @@ package indi.uhyils.dao;
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,4 +22,14 @@ public interface OrderBaseNodeResultTypeDao extends DefaultDao<OrderBaseNodeResu
      * @return
      */
     List<OrderBaseNodeResultTypeEntity> getByOrderNodeId(String nodeId);
+
+    /**
+     * 根据节点id删除所有结果类型
+     *
+     * @param ids
+     * @param updateUser
+     * @param updateDate
+     * @return
+     */
+    Integer deleteByNodeIds(@Param("ids") List<String> ids, String updateUser, Integer updateDate);
 }

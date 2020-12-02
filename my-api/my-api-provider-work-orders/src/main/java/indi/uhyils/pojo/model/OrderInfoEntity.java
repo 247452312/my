@@ -50,9 +50,6 @@ public class OrderInfoEntity extends BaseVoEntity {
     private Integer limitTime;
 
 
-
-
-
     public Integer getPriority() {
         return priority;
     }

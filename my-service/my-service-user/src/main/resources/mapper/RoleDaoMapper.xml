@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -50,7 +53,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.RoleEntity">
-        insert sys_role(id,
+        insert
+        sys_role(id,
                         create_date,
                         create_user,
                         update_date,
@@ -58,7 +62,16 @@
                         delete_flag,
                         name,
                         level)
-        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{name}, #{level})
+        values (
+        #{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{name},
+        #{level}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.RoleEntity">

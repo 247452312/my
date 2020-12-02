@@ -20,6 +20,18 @@ public class ApiDealDto implements Serializable {
      */
     private Object result;
 
+    public static ApiDealDto build(ApiCodeEnum code, Object result) {
+        ApiDealDto build = new ApiDealDto();
+        build.code = code;
+        build.result = result;
+        return build;
+    }
+
+    public static ApiDealDto build(ApiCodeEnum code) {
+        ApiDealDto build = new ApiDealDto();
+        build.code = code;
+        return build;
+    }
 
     public ApiCodeEnum getCode() {
         return code;
@@ -35,20 +47,6 @@ public class ApiDealDto implements Serializable {
 
     public void setResult(Object result) {
         this.result = result;
-    }
-
-
-    public static ApiDealDto build(ApiCodeEnum code, Object result) {
-        ApiDealDto build = new ApiDealDto();
-        build.code = code;
-        build.result = result;
-        return build;
-    }
-
-    public static ApiDealDto build(ApiCodeEnum code) {
-        ApiDealDto build = new ApiDealDto();
-        build.code = code;
-        return build;
     }
 
 

@@ -26,6 +26,14 @@ public class InitToRunApiTemporary implements Serializable {
      */
     private ApiDealDto apiDealDto;
 
+    public static InitToRunApiTemporary build(OrderNodeEntity orderNode, OrderNodeEntity pervOrderNode, ApiDealDto apiDealDto) {
+        InitToRunApiTemporary build = new InitToRunApiTemporary();
+        build.orderNode = orderNode;
+        build.pervOrderNode = pervOrderNode;
+        build.apiDealDto = apiDealDto;
+        return build;
+    }
+
     public OrderNodeEntity getOrderNode() {
         return orderNode;
     }
@@ -48,13 +56,5 @@ public class InitToRunApiTemporary implements Serializable {
 
     public void setApiDealDto(ApiDealDto apiDealDto) {
         this.apiDealDto = apiDealDto;
-    }
-
-    public static InitToRunApiTemporary build(OrderNodeEntity orderNode, OrderNodeEntity pervOrderNode, ApiDealDto apiDealDto) {
-        InitToRunApiTemporary build = new InitToRunApiTemporary();
-        build.orderNode = orderNode;
-        build.pervOrderNode = pervOrderNode;
-        build.apiDealDto = apiDealDto;
-        return build;
     }
 }

@@ -25,6 +25,14 @@ public class RunToSaveApiTemporary implements Serializable {
      */
     private ApiDealDto apiDealDto;
 
+    public static RunToSaveApiTemporary build(OrderNodeEntity orderNode, OrderNodeEntity pervOrderNode, ApiDealDto apiDealDto) {
+        RunToSaveApiTemporary build = new RunToSaveApiTemporary();
+        build.orderNode = orderNode;
+        build.pervOrderNode = pervOrderNode;
+        build.apiDealDto = apiDealDto;
+        return build;
+    }
+
     public OrderNodeEntity getOrderNode() {
         return orderNode;
     }
@@ -47,13 +55,5 @@ public class RunToSaveApiTemporary implements Serializable {
 
     public void setApiDealDto(ApiDealDto apiDealDto) {
         this.apiDealDto = apiDealDto;
-    }
-
-    public static RunToSaveApiTemporary build(OrderNodeEntity orderNode, OrderNodeEntity pervOrderNode, ApiDealDto apiDealDto) {
-        RunToSaveApiTemporary build = new RunToSaveApiTemporary();
-        build.orderNode = orderNode;
-        build.pervOrderNode = pervOrderNode;
-        build.apiDealDto = apiDealDto;
-        return build;
     }
 }

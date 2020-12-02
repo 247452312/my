@@ -15,15 +15,13 @@ import java.util.Map;
 public class InsertOrderResponse implements Serializable {
 
     /**
-     * 新生成的工单的id
-     */
-    private String newOrderId;
-
-    /**
      * 工单初始节点需要填写的属性
      */
     List<OrderNodeFieldEntity> orderNodeField;
-
+    /**
+     * 新生成的工单的id
+     */
+    private String newOrderId;
     /**
      * 工单监管人
      */
@@ -40,6 +38,28 @@ public class InsertOrderResponse implements Serializable {
      */
     private Map<String, String> noticeUserIds;
 
+
+    public InsertOrderResponse() {
+    }
+
+    public InsertOrderResponse(String newOrderId, List<OrderNodeFieldEntity> orderNodeField, String monitorUserId, Map<String, String> dealUserIds, Map<String, String> noticeUserIds) {
+        this.newOrderId = newOrderId;
+        this.orderNodeField = orderNodeField;
+        this.monitorUserId = monitorUserId;
+        this.dealUserIds = dealUserIds;
+        this.noticeUserIds = noticeUserIds;
+    }
+
+    public static InsertOrderResponse build(String newOrderId, List<OrderNodeFieldEntity> orderNodeField, String monitorUserId, Map<String, String> dealUserIds, Map<String, String> noticeUserIds) {
+        InsertOrderResponse build = new InsertOrderResponse();
+        build.setNewOrderId(newOrderId);
+        build.setOrderNodeField(orderNodeField);
+        build.setMonitorUserId(monitorUserId);
+        build.setDealUserIds(dealUserIds);
+        build.setNoticeUserIds(noticeUserIds);
+        return build;
+
+    }
 
     public String getNewOrderId() {
         return newOrderId;
@@ -79,27 +99,5 @@ public class InsertOrderResponse implements Serializable {
 
     public void setNoticeUserIds(Map<String, String> noticeUserIds) {
         this.noticeUserIds = noticeUserIds;
-    }
-
-    public InsertOrderResponse() {
-    }
-
-    public InsertOrderResponse(String newOrderId, List<OrderNodeFieldEntity> orderNodeField, String monitorUserId, Map<String, String> dealUserIds, Map<String, String> noticeUserIds) {
-        this.newOrderId = newOrderId;
-        this.orderNodeField = orderNodeField;
-        this.monitorUserId = monitorUserId;
-        this.dealUserIds = dealUserIds;
-        this.noticeUserIds = noticeUserIds;
-    }
-
-    public static InsertOrderResponse build(String newOrderId, List<OrderNodeFieldEntity> orderNodeField, String monitorUserId, Map<String, String> dealUserIds, Map<String, String> noticeUserIds) {
-        InsertOrderResponse build = new InsertOrderResponse();
-        build.setNewOrderId(newOrderId);
-        build.setOrderNodeField(orderNodeField);
-        build.setMonitorUserId(monitorUserId);
-        build.setDealUserIds(dealUserIds);
-        build.setNoticeUserIds(noticeUserIds);
-        return build;
-
     }
 }

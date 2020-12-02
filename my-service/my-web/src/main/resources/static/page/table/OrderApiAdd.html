@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <title>layui</title>
-    <meta name="renderer" content="webkit">
+    <meta content="webkit" name="renderer">
     <!--设置1个小时的缓存-->
-    <meta http-equiv="Cache-Control" content="max-age=3200"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
     <style>
         body {
             background-color: #ffffff;
@@ -23,33 +23,33 @@
 <body>
 <div class="layui-form layuimini-form">
     <!--  父id    -->
-    <input type="text" name="id" value="" style="display:none;">
+    <input name="id" style="display:none;" type="text" value="">
 
     <div class="layui-form-item">
         <label class="layui-form-label required">bean名称</label>
         <div class="layui-input-block">
-            <input type="text" name="beanName" lay-verify="required" placeholder="请输入bean名称" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="beanName" placeholder="请输入bean名称" type="text"
+                   value="">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">方法名称</label>
         <div class="layui-input-block">
-            <input type="text" name="methodName" lay-verify="required" placeholder="请输入方法名称" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="methodName" placeholder="请输入方法名称" type="text"
+                   value="">
         </div>
     </div>
 
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button class="layui-btn layui-btn-normal" lay-filter="saveBtn" lay-submit>确认保存</button>
         </div>
     </div>
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/my.js"></script>
-<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script charset="utf-8" src="../../lib/layui-v2.5.5/layui.js"></script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form,

@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -51,7 +54,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.PowerEntity">
-        insert sys_power(id,
+        insert
+        sys_power(id,
                          create_date,
                          create_user,
                          update_date,
@@ -59,7 +63,16 @@
                          delete_flag,
                          interface_name,
                          method_name)
-        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{interfaceName}, #{methodName})
+        values (
+        #{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{interfaceName},
+        #{methodName}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.PowerEntity">

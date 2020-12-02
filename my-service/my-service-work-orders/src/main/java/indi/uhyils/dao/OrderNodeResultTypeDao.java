@@ -21,4 +21,14 @@ public interface OrderNodeResultTypeDao extends DefaultDao<OrderNodeResultTypeEn
      * @return
      */
     List<OrderNodeResultTypeEntity> getByOrderNodeId(String orderNodeId);
+
+    /**
+     * 根据节点id删除所有结果类型
+     *
+     * @param ids
+     * @param updateUser
+     * @param updateDate
+     * @return
+     */
+    Integer deleteByNodeIds(List<String> ids, String updateUser, Integer updateDate);
 }

@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.prev_node_id as prevNodeId,
+        a
+        .
+        prev_node_id
+        as prevNodeId,
 		a.update_user as updateUser,
 		a.remark as remark,
 		a.next_node_id as nextNodeId,
@@ -15,6 +18,16 @@
 		a.delete_flag as deleteFlag,
 		a.update_date as updateDate
     </sql>
+    <update id="deleteByNodeIds">
+        update sys_order_node_route set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        ,delete_flag = 1
+        where prev_node_id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeRouteEntity">
         select
@@ -51,7 +64,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeRouteEntity">
-        insert sys_order_node_route(prev_node_id,
+        insert
+        sys_order_node_route(prev_node_id,
                                     update_user,
                                     remark,
                                     next_node_id,
@@ -60,15 +74,17 @@
                                     create_date,
                                     delete_flag,
                                     update_date)
-        values (#{prevNodeId},
-                #{updateUser},
-                #{remark},
-                #{nextNodeId},
-                #{id},
-                #{createUser},
-                #{createDate},
-                #{deleteFlag},
-                #{updateDate})
+        values (
+        #{prevNodeId},
+        #{updateUser},
+        #{remark},
+        #{nextNodeId},
+        #{id},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{updateDate}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeRouteEntity">

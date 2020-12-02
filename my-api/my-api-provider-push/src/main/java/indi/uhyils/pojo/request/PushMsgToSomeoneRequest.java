@@ -34,6 +34,16 @@ public class PushMsgToSomeoneRequest extends DefaultRequest {
         super(request);
     }
 
+    public static PushMsgToSomeoneRequest build(DefaultRequest request, String userId, Integer type, String title, String msg) {
+        PushMsgToSomeoneRequest build = new PushMsgToSomeoneRequest(request);
+        build.setUserId(userId);
+        build.setType(type);
+        build.setTitle(title);
+        build.setMsg(msg);
+        return build;
+
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -64,15 +74,5 @@ public class PushMsgToSomeoneRequest extends DefaultRequest {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public static PushMsgToSomeoneRequest build(DefaultRequest request, String userId, Integer type, String title, String msg) {
-        PushMsgToSomeoneRequest build = new PushMsgToSomeoneRequest(request);
-        build.setUserId(userId);
-        build.setType(type);
-        build.setTitle(title);
-        build.setMsg(msg);
-        return build;
-
     }
 }

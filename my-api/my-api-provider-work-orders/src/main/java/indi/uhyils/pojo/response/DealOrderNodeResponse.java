@@ -20,23 +20,6 @@ public class DealOrderNodeResponse implements Serializable {
      */
     private Map<OrderNodeFieldEntity, Boolean> detailResult;
 
-
-    public Boolean getAllow() {
-        return allow;
-    }
-
-    public void setAllow(Boolean allow) {
-        this.allow = allow;
-    }
-
-    public Map<OrderNodeFieldEntity, Boolean> getDetailResult() {
-        return detailResult;
-    }
-
-    public void setDetailResult(Map<OrderNodeFieldEntity, Boolean> detailResult) {
-        this.detailResult = detailResult;
-    }
-
     /**
      * 出错时返回
      *
@@ -59,5 +42,21 @@ public class DealOrderNodeResponse implements Serializable {
         DealOrderNodeResponse build = new DealOrderNodeResponse();
         build.setAllow(true);
         return build;
+    }
+
+    public Boolean getAllow() {
+        return allow;
+    }
+
+    public void setAllow(Boolean allow) {
+        this.allow = allow;
+    }
+
+    public Map<OrderNodeFieldEntity, Boolean> getDetailResult() {
+        return detailResult;
+    }
+
+    public void setDetailResult(Map<OrderNodeFieldEntity, Boolean> detailResult) {
+        this.detailResult = detailResult;
     }
 }

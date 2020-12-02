@@ -21,4 +21,14 @@ public interface OrderBaseNodeDao extends DefaultDao<OrderBaseNodeEntity> {
      * @return orderNode
      */
     List<OrderBaseNodeEntity> getByOrderId(String baseInfoId);
+
+    /**
+     * 根据id批量删除
+     *
+     * @param ids
+     * @param updateUser
+     * @param updateDate
+     * @return
+     */
+    Integer deleteByIds(List<String> ids, String updateUser, Integer updateDate);
 }

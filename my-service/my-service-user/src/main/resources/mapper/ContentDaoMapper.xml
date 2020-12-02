@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -62,7 +65,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.ContentEntity">
-        insert sys_content(id,
+        insert
+        sys_content(id,
                            create_date,
                            create_user,
                            update_date,
@@ -81,19 +85,27 @@
                            var4,
                            var5,
                            var6)
-        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{name},
-                #{title1},
-                #{title2},
-                #{title3},
-                #{title4},
-                #{title5},
-                #{title6},
-                #{var1},
-                #{var2},
-                #{var3},
-                #{var4},
-                #{var5},
-                #{var6})
+        values (
+        #{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{name},
+        #{title1},
+        #{title2},
+        #{title3},
+        #{title4},
+        #{title5},
+        #{title6},
+        #{var1},
+        #{var2},
+        #{var3},
+        #{var4},
+        #{var5},
+        #{var6}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.ContentEntity">

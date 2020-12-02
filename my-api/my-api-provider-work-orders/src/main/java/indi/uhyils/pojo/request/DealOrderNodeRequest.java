@@ -11,25 +11,21 @@ import java.util.Map;
 public class DealOrderNodeRequest extends DefaultRequest {
 
     /**
+     * 填充的节点属性值<节点属性id,真实值>
+     */
+    Map<String, Object> orderNodeFieldValueMap;
+    /**
      * 节点id
      */
     private String nodeId;
-
     /**
      * 处理结果id
      */
     private String resultId;
-
     /**
      * 处理人建议
      */
     private String suggest;
-
-    /**
-     * 填充的节点属性值<节点属性id,真实值>
-     */
-    Map<String, Object> orderNodeFieldValueMap;
-
 
     public String getNodeId() {
         return nodeId;

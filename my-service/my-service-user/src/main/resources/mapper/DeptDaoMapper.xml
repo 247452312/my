@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -50,14 +53,23 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.DeptEntity">
-        insert sys_dept(id,
+        insert
+        sys_dept(id,
                         create_date,
                         create_user,
                         update_date,
                         update_user,
                         delete_flag,
                         name)
-        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{name})
+        values (
+        #{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{name}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.DeptEntity">

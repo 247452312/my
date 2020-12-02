@@ -22,4 +22,13 @@ public interface OrderNodeRouteDao extends DefaultDao<OrderNodeRouteEntity> {
      */
     List<OrderNodeRouteEntity> getByPrevOrderNodeId(String prevOrderNodeId);
 
+    /**
+     * 根据节点id批量删除路由
+     *
+     * @param ids
+     * @param updateUser
+     * @param updateDate
+     * @return
+     */
+    Integer deleteByNodeIds(List<String> ids, String updateUser, Integer updateDate);
 }

@@ -22,6 +22,18 @@ public enum OrderPriorityEnum {
         this.code = code;
     }
 
+    public static OrderPriorityEnum parse(Integer code) {
+        switch (code) {
+            case 0:
+                return NORMAL;
+            case 1:
+                return URGENT;
+            default:
+                return null;
+        }
+
+    }
+
     public String getName() {
         return name;
     }
@@ -36,17 +48,5 @@ public enum OrderPriorityEnum {
 
     public void setCode(Integer code) {
         this.code = code;
-    }
-
-    public static OrderPriorityEnum parse(Integer code) {
-        switch (code) {
-            case 0:
-                return NORMAL;
-            case 1:
-                return URGENT;
-            default:
-                return null;
-        }
-
     }
 }

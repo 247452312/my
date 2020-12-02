@@ -28,6 +28,16 @@ public class DefaultRequest implements BaseRequest {
      */
     private LinkNode<String> requestLink;
 
+    public DefaultRequest(DefaultRequest request) {
+        this.token = request.token;
+        this.user = request.user;
+        this.idempotentId = request.idempotentId;
+        this.requestLink = request.requestLink;
+    }
+
+    public DefaultRequest() {
+    }
+
     public String getToken() {
         return token;
     }
@@ -58,15 +68,5 @@ public class DefaultRequest implements BaseRequest {
 
     public void setIdempotentId(String idempotentId) {
         this.idempotentId = idempotentId;
-    }
-
-    public DefaultRequest(DefaultRequest request) {
-        this.token = request.token;
-        this.user = request.user;
-        this.idempotentId = request.idempotentId;
-        this.requestLink = request.requestLink;
-    }
-
-    public DefaultRequest() {
     }
 }

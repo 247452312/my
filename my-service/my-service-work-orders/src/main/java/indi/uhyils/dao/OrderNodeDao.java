@@ -42,4 +42,14 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
      * @return
      */
     OrderNodeEntity getNextNodeByNodeAndResult(@Param("nodeId") String nodeId, @Param("resultId") String resultId);
+
+    /**
+     * 根据id批量删除
+     *
+     * @param ids
+     * @param updateUser
+     * @param updateDate
+     * @return
+     */
+    Integer deleteByIds(List<String> ids, String updateUser, Integer updateDate);
 }

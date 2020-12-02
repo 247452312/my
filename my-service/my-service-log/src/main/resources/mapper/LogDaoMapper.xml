@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -62,7 +65,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.LogEntity">
-        insert sys_log(id,
+        insert
+        sys_log(id,
                        create_date,
                        create_user,
                        update_date,
@@ -77,16 +81,23 @@
                        time,
                        user_id,
                        link)
-        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0,
-                #{exceptionDetail},
-                #{interfaceName},
-                #{ip},
-                #{logType},
-                #{methodName},
-                #{params},
-                #{time},
-                #{userId},
-                #{link})
+        values (
+        #{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{exceptionDetail},
+        #{interfaceName},
+        #{ip},
+        #{logType},
+        #{methodName},
+        #{params},
+        #{time},
+        #{userId},
+        #{link}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.LogEntity">

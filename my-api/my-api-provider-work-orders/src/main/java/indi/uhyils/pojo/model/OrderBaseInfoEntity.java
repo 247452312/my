@@ -45,7 +45,6 @@ public class OrderBaseInfoEntity extends BaseVoEntity {
     private String desc;
 
 
-
     public Integer getPriority() {
         return priority;
     }

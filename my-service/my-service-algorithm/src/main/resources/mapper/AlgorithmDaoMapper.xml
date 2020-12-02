@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -58,7 +61,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.AlgorithmEntity">
-        insert sys_algorithm(id,
+        insert
+        sys_algorithm(id,
                              create_date,
                              create_user,
                              delete_flag,
@@ -71,16 +75,17 @@
                              in_param_size,
                              out_param_size)
         values (#{id,
-                   #{createDate},
-                   #{createUser},
-                   #{updateDate},
-                   #{updateUser},
-                   #{deleteFlag},
-                   #{remark},
-                   #{modelFilePath},
-                   #{accuracy},
-                   #{inParamSize},
-                   #{outParamSize})
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        #{deleteFlag},
+        #{remark},
+        #{modelFilePath},
+        #{accuracy},
+        #{inParamSize},
+        #{outParamSize}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.AlgorithmEntity">

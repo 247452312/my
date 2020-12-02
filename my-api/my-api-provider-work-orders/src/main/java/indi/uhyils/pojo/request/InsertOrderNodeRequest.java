@@ -9,5 +9,4 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 public class InsertOrderNodeRequest extends DefaultRequest {
 
 
-
 }

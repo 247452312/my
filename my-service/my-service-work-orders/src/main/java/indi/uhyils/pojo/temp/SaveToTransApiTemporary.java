@@ -25,6 +25,15 @@ public class SaveToTransApiTemporary implements Serializable {
      */
     private ApiDealDto apiDealDto;
 
+    public static SaveToTransApiTemporary build(OrderNodeEntity orderNode, OrderNodeEntity pervOrderNode, ApiDealDto apiDealDto) {
+        SaveToTransApiTemporary build = new SaveToTransApiTemporary();
+        build.orderNode = orderNode;
+        build.pervOrderNode = pervOrderNode;
+        build.apiDealDto = apiDealDto;
+        return build;
+
+    }
+
     public OrderNodeEntity getOrderNode() {
         return orderNode;
     }
@@ -47,15 +56,5 @@ public class SaveToTransApiTemporary implements Serializable {
 
     public void setApiDealDto(ApiDealDto apiDealDto) {
         this.apiDealDto = apiDealDto;
-    }
-
-
-    public static SaveToTransApiTemporary build(OrderNodeEntity orderNode, OrderNodeEntity pervOrderNode, ApiDealDto apiDealDto) {
-        SaveToTransApiTemporary build = new SaveToTransApiTemporary();
-        build.orderNode = orderNode;
-        build.pervOrderNode = pervOrderNode;
-        build.apiDealDto = apiDealDto;
-        return build;
-
     }
 }

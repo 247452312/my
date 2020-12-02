@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as createDate,
         a.create_user as createUser,
         a.delete_flag as deleteFlag,
@@ -57,7 +60,8 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.SendPageEntity">
-        insert sys_push_page_msg(id,
+        insert
+        sys_push_page_msg(id,
                                  create_date,
                                  create_user,
                                  delete_flag,
@@ -68,17 +72,19 @@
                                  title,
                                  user_id,
                                  view)
-        values (#{id},
-                #{createDate},
-                #{createUser},
-                0,
-                #{remark},
-                #{updateDate},
-                #{updateUser},
-                #{content},
-                #{title},
-                #{userId},
-                #{view})
+        values (
+        #{id},
+        #{createDate},
+        #{createUser},
+        0,
+        #{remark},
+        #{updateDate},
+        #{updateUser},
+        #{content},
+        #{title},
+        #{userId},
+        #{view}
+        )
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.SendPageEntity">

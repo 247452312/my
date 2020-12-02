@@ -30,4 +30,14 @@ public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldEntity> {
      * @return
      */
     List<OrderNodeFieldEntity> getByOrderNodeId(String orderNodeId);
+
+    /**
+     * 根据节点id批量删除指定的节点属性
+     *
+     * @param ids
+     * @param updateUser
+     * @param updateDate
+     * @return
+     */
+    Integer deleteByNodeIds(List<String> ids, String updateUser, Integer updateDate);
 }

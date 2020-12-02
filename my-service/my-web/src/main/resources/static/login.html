@@ -12,7 +12,7 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/lib/layui-v2.5.5/lay/modules/layer.js"></script>
     <script src="/js/my.js"></script>
-    <script type="text/javascript" src="/js/dat.gui.min.js"></script>
+    <script src="/js/dat.gui.min.js" type="text/javascript"></script>
     <link href="/css/login.css" rel="stylesheet">
     <script>
 
@@ -100,8 +100,8 @@
                         <img class="input-suffix-username-icon" src="/pic/login_password.svg"/>
                     </span>
             </div>
-            <input id="save-user" type="checkbox" class="login-save-user"/><label for="save-user"
-                                                                                  class="login-save-user-text">
+            <input class="login-save-user" id="save-user" type="checkbox"/><label class="login-save-user-text"
+                                                                                  for="save-user">
             7天免登陆</label>
             <div class="login-form-line">
                 <button class="button login-submit-button" onclick="login()">登录</button>
