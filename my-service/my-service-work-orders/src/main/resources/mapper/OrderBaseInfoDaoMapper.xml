@@ -96,17 +96,11 @@
         <if test="priority != null and priority != ''">
             ,priority = #{priority}
         </if>
-        <if test="updateDate != null and updateDate != ''">
-            ,update_date = #{updateDate}
-        </if>
         <if test="queryUserIds != null and queryUserIds != ''">
             ,query_user_ids = #{queryUserIds}
         </if>
         <if test="limitTime != null and limitTime != ''">
             ,limit_time = #{limitTime}
-        </if>
-        <if test="updateUser != null and updateUser != ''">
-            ,update_user = #{updateUser}
         </if>
         <if test="son != null and son != ''">
             ,son = #{son}

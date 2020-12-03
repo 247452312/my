@@ -91,9 +91,6 @@
         <if test="prevNodeId != null and prevNodeId != ''">
             ,prev_node_id = #{prevNodeId}
         </if>
-        <if test="updateUser != null and updateUser != ''">
-            ,update_user = #{updateUser}
-        </if>
         <if test="remark != null and remark != ''">
             ,remark = #{remark}
         </if>
@@ -108,9 +105,6 @@
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
-        </if>
-        <if test="updateDate != null and updateDate != ''">
-            ,update_date = #{updateDate}
         </if>
         where id = #{id}
     </update>

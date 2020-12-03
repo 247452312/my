@@ -33,12 +33,12 @@ public class OrderApplyEntity extends BaseVoEntity {
     private String targetUserId;
 
     /**
-     * 申请类型
+     * 申请类型{@link indi.uhyils.enum_.OrderApplyTypeEnum}
      */
     private Integer type;
 
     /**
-     * 申请状态
+     * 申请状态{@link indi.uhyils.enum_.OrderApplyStatusEnum}
      */
     private Integer status;
 

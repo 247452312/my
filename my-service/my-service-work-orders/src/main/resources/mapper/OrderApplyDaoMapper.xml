@@ -103,12 +103,6 @@
         <if test="remark != null and remark != ''">
             ,remark = #{remark}
         </if>
-        <if test="updateDate != null">
-            ,update_date = #{updateDate}
-        </if>
-        <if test="updateUser != null and updateUser != ''">
-            ,update_user = #{updateUser}
-        </if>
         <if test="applyUserId != null and applyUserId != ''">
             ,apply_user_id = #{applyUserId}
         </if>

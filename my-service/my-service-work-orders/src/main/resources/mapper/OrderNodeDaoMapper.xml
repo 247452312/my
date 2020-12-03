@@ -159,17 +159,11 @@
         <if test="sync != null and sync != ''">
             ,sync = #{sync}
         </if>
-        <if test="updateDate != null and updateDate != ''">
-            ,update_date = #{updateDate}
-        </if>
         <if test="limitTime != null and limitTime != ''">
             ,limit_time = #{limitTime}
         </if>
         <if test="noticeUserId != null and noticeUserId != ''">
             ,notice_user_id = #{noticeUserId}
-        </if>
-        <if test="updateUser != null and updateUser != ''">
-            ,update_user = #{updateUser}
         </if>
         <if test="baseInfoId != null and baseInfoId != ''">
             ,base_info_id = #{baseInfoId}

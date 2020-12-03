@@ -87,12 +87,6 @@
         <if test="remark != null and remark != ''">
             remark = #{remark},
         </if>
-        <if test="updateDate != null">
-            update_date = #{updateDate},
-        </if>
-        <if test="updateUser != null and updateUser != ''">
-            update_user = #{updateUser},
-        </if>
         <if test="nodeFieldId != null and nodeFieldId != ''">
             node_field_id = #{nodeFieldId},
         </if>

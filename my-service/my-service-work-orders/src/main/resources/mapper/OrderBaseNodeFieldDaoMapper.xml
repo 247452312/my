@@ -108,14 +108,8 @@
         <if test="type != null and type != ''">
             ,type = #{type}
         </if>
-        <if test="updateDate != null and updateDate != ''">
-            ,update_date = #{updateDate}
-        </if>
         <if test="empty != null and empty != ''">
             ,`empty` = #{empty}
-        </if>
-        <if test="updateUser != null and updateUser != ''">
-            ,update_user = #{updateUser}
         </if>
         <if test="name != null and name != ''">
             ,name = #{name}

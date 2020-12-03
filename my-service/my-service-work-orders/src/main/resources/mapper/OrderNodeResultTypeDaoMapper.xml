@@ -88,9 +88,6 @@
         update sys_order_node_result_type set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
-        <if test="updateUser != null and updateUser != ''">
-            ,update_user = #{updateUser}
-        </if>
         <if test="baseNodeId != null and baseNodeId != ''">
             ,base_node_id = #{baseNodeId}
         </if>
@@ -108,9 +105,6 @@
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
-        </if>
-        <if test="updateDate != null and updateDate != ''">
-            ,update_date = #{updateDate}
         </if>
         where id = #{id}
     </update>
