@@ -84,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
         orderInfoDao.insert(orderInfoEntity);
 
         // 获取基础表对应的所有节点
-        List<OrderBaseNodeEntity> nodeList = orderBaseNodeDao.getByOrderId(baseInfoId);
+        List<OrderBaseNodeEntity> nodeList = orderBaseNodeDao.getNoHiddenByOrderId(baseInfoId);
 
         String infoId = orderInfoEntity.getId();
         // 保存所有的路由, 路由比较特殊 需要改node的id

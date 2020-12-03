@@ -24,6 +24,7 @@
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
 		a.trans_api_id as transApiId,
+		a.hidden,
 		a.`desc`
     </sql>
     <update id="deleteByIds">
@@ -72,8 +73,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
-        insert
-        sys_order_base_node(save_api_id,
+        insert sys_order_base_node(save_api_id,
                                    init_api_id,
                                    remark,
                                    run_type,
@@ -88,33 +88,33 @@
                                    name,
                                    run_api_id,
                                    id,
+                                   hidden,
                                    create_user,
                                    create_date,
                                    delete_flag,
                                    trans_api_id,
                                    `desc`)
-        values (
-        #{saveApiId},
-        #{initApiId},
-        #{remark},
-        #{runType},
-        #{type},
-        #{sync},
-        #{updateDate},
-        #{limitTime},
-        #{noticeUserId},
-        #{updateUser},
-        #{baseInfoId},
-        #{runDealUserId},
-        #{name},
-        #{runApiId},
-        #{id},
-        #{createUser},
-        #{createDate},
-        #{deleteFlag},
-        #{transApiId},
-        #{desc}
-        )
+        values (#{saveApiId},
+                #{initApiId},
+                #{remark},
+                #{runType},
+                #{type},
+                #{sync},
+                #{updateDate},
+                #{limitTime},
+                #{noticeUserId},
+                #{updateUser},
+                #{baseInfoId},
+                #{runDealUserId},
+                #{name},
+                #{runApiId},
+                #{id},
+                #{hidden},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{transApiId},
+                #{desc})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
@@ -157,6 +157,9 @@
         <if test="name != null and name != ''">
             ,name = #{name}
         </if>
+        <if test="hidden != null and hidden != ''">
+            ,hidden = #{hidden}
+        </if>
         <if test="runApiId != null and runApiId != ''">
             ,run_api_id = #{runApiId}
         </if>
@@ -196,7 +199,7 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getByOrderId" resultType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
+    <select id="getNoHiddenByOrderId" resultType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
         select
         <include refid="columnList"/>
         from sys_order_base_node a

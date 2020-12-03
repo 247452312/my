@@ -17,7 +17,7 @@ public class InsertOrderResponse implements Serializable {
     /**
      * 工单初始节点需要填写的属性
      */
-    List<OrderNodeFieldEntity> orderNodeField;
+    private List<OrderNodeFieldEntity> orderNodeField;
     /**
      * 新生成的工单的id
      */

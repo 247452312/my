@@ -75,6 +75,11 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
      */
     private Integer sync;
 
+    /**
+     * 是否隐藏,如果隐藏,则在创建项目时不自动添加此节点
+     */
+    private Boolean hidden;
+
 
     public String getSaveApiId() {
         return saveApiId;
@@ -183,5 +188,11 @@ public class OrderBaseNodeEntity extends BaseVoEntity {
         this.desc = desc;
     }
 
+    public Boolean getHidden() {
+        return hidden;
+    }
 
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
+    }
 }

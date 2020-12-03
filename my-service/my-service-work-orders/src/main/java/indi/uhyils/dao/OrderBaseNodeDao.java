@@ -20,7 +20,7 @@ public interface OrderBaseNodeDao extends DefaultDao<OrderBaseNodeEntity> {
      * @param baseInfoId 主表id
      * @return orderNode
      */
-    List<OrderBaseNodeEntity> getByOrderId(String baseInfoId);
+    List<OrderBaseNodeEntity> getNoHiddenByOrderId(String baseInfoId);
 
     /**
      * 根据id批量删除
