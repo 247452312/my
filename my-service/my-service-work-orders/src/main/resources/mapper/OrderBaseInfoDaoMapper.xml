@@ -18,6 +18,7 @@
 		a.create_user as createUser,
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
+		a.type,
 		a.`desc`
     </sql>
 
@@ -66,6 +67,7 @@
                                    monitor_user_id,
                                    name,
                                    id,
+                                   type,
                                    create_user,
                                    create_date,
                                    delete_flag,
@@ -80,6 +82,7 @@
                 #{monitorUserId},
                 #{name},
                 #{id},
+                #{type},
                 #{createUser},
                 #{createDate},
                 #{deleteFlag},
@@ -119,6 +122,9 @@
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="type != null and type != ''">
+            ,type = #{type}
         </if>
         <if test="desc != null and desc != ''">
             ,`desc` = #{desc}

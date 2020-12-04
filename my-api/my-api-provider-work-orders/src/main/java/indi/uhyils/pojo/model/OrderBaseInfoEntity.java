@@ -44,6 +44,11 @@ public class OrderBaseInfoEntity extends BaseVoEntity {
      */
     private String desc;
 
+    /**
+     * 类型 从 字典中的OrderType中去找
+     */
+    private Integer type;
+
 
     public Integer getPriority() {
         return priority;
@@ -101,5 +106,11 @@ public class OrderBaseInfoEntity extends BaseVoEntity {
         this.desc = desc;
     }
 
+    public Integer getType() {
+        return type;
+    }
 
+    public void setType(Integer type) {
+        this.type = type;
+    }
 }

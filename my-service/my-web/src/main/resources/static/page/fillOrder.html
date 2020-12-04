@@ -45,7 +45,48 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/my.js"></script>
 <script charset="utf-8" src="../../lib/layui-v2.5.5/layui.js"></script>
+<script charset="utf-8" src="../js/lay-config.js?v=1.0.4"></script>
 <script>
+    function getTargetOptionList(dataSources, relationId) {
+        switch (dataSources) {
+            default:
+            case 1: // 这里是字典
+                return pushRequest("DictService", "getByCode", {code: relationId}, function (data) {
+                    let result = [];
+                    for (let i = 0; i < data.length; i++) {
+                        let resultItem = {};
+                        resultItem.id = data[i].id;
+                        resultItem.name = data[i].text;
+                        result.push(resultItem);
+                    }
+                    return result;
+                });
+            case 2: // 用户
+                return pushRequest("UserService", "getUsers", {}, function (data) {
+                    let result = [];
+                    for (let i = 0; i < data.length; i++) {
+                        let resultItem = {};
+                        resultItem.id = data[i].id;
+                        resultItem.name = data[i].nickName;
+                        result.push(resultItem);
+                    }
+                    return result;
+                });
+            case 3: // 其他工单
+                return pushRequest("OrderService", "getAllOrder", {type: relationId}, function (data) {
+                    let result = [];
+                    for (let i = 0; i < data.length; i++) {
+                        let resultItem = {};
+                        resultItem.id = data[i].id;
+                        resultItem.name = data[i].name;
+                        result.push(resultItem);
+                    }
+                    return result;
+                });
+        }
+
+    }
+
     layui.use(['form'], function () {
         var form = layui.form,
             layer = layui.layer,
@@ -72,14 +113,68 @@
                         $("#target-input").append('<div class="layui-form-item"><label class="layui-form-label ' + tempRequired + '">' + orderNodeField[i].name + '</label><div class="layui-input-block"><input class="layui-input" lay-verify="' + tempRequired + '" name="value.' + orderNodeField[i].id + '" placeholder="' + orderNodeField[i].desc + '" type="text" value=""></div></div>');
                         break;
                     case 2:
+                        var dataSources = orderNodeField[i].dataSources;
+                        var relationId = orderNodeField[i].relationId;
+                        var optionList = getTargetOptionList(dataSources, relationId);
+                        var options = '';
+                        for (let j = 0; j < optionList.length; j++) {
+                            let id = optionList[j].id;
+                            let name = optionList[j].name;
+                            options = options + '<input type="radio" name="' + orderNodeField[i].id + '" value="' + id + '" title="' + name + '">'
+                        }
+                        var $options = $('<div class="layui-form-item">\n' +
+                            '        <label class="layui-form-label required">'+orderNodeField[i].name+'</label>\n' +
+                            '        <div class="layui-input-block">\n' +
+                            options +
+                            '        </div>\n' +
+                            '    </div>');
+                        $("#target-input").append($options);
                         break;
                     case 3:
+                        var dataSources = orderNodeField[i].dataSources;
+                        var relationId = orderNodeField[i].relationId;
+                        var optionList = getTargetOptionList(dataSources, relationId);
+                        var options = '';
+                        for (let j = 0; j < optionList.length; j++) {
+                            let id = optionList[j].id;
+                            let name = optionList[j].name;
+                            options = options + '<input type="checkbox" name="like[' + id + ']" title="' + name + '">'
+                        }
+                        var $options = $('<div class="layui-form-item">\n' +
+                            '        <label class="layui-form-label required">'+orderNodeField[i].name+'</label>\n' +
+                            '        <div class="layui-input-block">\n' +
+                            options +
+                            '        </div>\n' +
+                            '    </div>');
+                        $("#target-input").append($options);
                         break;
                     case 4:
+                        var dataSources = orderNodeField[i].dataSources;
+                        var relationId = orderNodeField[i].relationId;
+                        var optionList = getTargetOptionList(dataSources, relationId);
+                        var options = '<option value="">请选择参数类型</option>';
+                        for (let j = 0; j < optionList.length; j++) {
+                            let id = optionList[j].id;
+                            let name = optionList[j].name;
+                            options = options + '<option value="' + id + '">' + name + '</option>'
+                        }
+                        var $options = $('<div class="layui-form-item">\n' +
+                            '        <label class="layui-form-label required">'+orderNodeField[i].name+'</label>\n' +
+                            '        <div class="layui-input-block">\n' +
+                            '            <select lay-filter="aihao" name="' + orderNodeField[i].id + '">\n' +
+                            options +
+                            '            </select>\n' +
+                            '        </div>\n' +
+                            '    </div>');
+                        $("#target-input").append($options);
                         break;
                     case 5:
+                        var tempRequired = '';
+                        if (!orderNodeField[i].empty) {
+                            tempRequired = 'required';
+                        }
+                        $("#target-input").append('<div class="layui-form-item"><label class="layui-form-label ' + tempRequired + '">' + orderNodeField[i].name + '</label><div class="layui-input-block"><textarea placeholder="" name="' + orderNodeField[i].id + '" class="layui-textarea"></textarea></div></div>');
                         break;
-
                 }
             }
         });

@@ -5,6 +5,8 @@ import indi.uhyils.pojo.model.OrderInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
@@ -28,4 +30,12 @@ public interface OrderInfoDao extends DefaultDao<OrderInfoEntity> {
      * @param code
      */
     void changeOrderStatus(@Param("orderId") String orderId, @Param("code") Integer code);
+
+    /**
+     * 根据类型获取其他工单
+     *
+     * @param type
+     * @return
+     */
+    ArrayList<OrderInfoEntity> getOrderByType(Integer type);
 }

@@ -18,6 +18,7 @@
 		a.create_user as createUser,
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
+		a.type,
 		a.`desc`,
         a.status as status
     </sql>
@@ -29,7 +30,7 @@
         where delete_flag = 0
         and id = #{id}
     </select>
-    <select id="getOrderStatusById">
+    <select id="getOrderStatusById" resultType="java.lang.Integer">
         select a.status
         from sys_order_info a
         where delete_flag = 0
@@ -68,8 +69,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderInfoEntity">
-        insert
-        sys_order_info(remark,
+        insert sys_order_info(remark,
                               priority,
                               update_date,
                               query_user_ids,
@@ -79,28 +79,28 @@
                               monitor_user_id,
                               name,
                               id,
+                              type,
                               create_user,
                               create_date,
                               delete_flag,
                               `desc`,
                               status)
-        values (
-        #{remark},
-        #{priority},
-        #{updateDate},
-        #{queryUserIds},
-        #{limitTime},
-        #{updateUser},
-        #{son},
-        #{monitorUserId},
-        #{name},
-        #{id},
-        #{createUser},
-        #{createDate},
-        #{deleteFlag},
-        #{desc},
-        #{status}
-        )
+        values (#{remark},
+                #{priority},
+                #{updateDate},
+                #{queryUserIds},
+                #{limitTime},
+                #{updateUser},
+                #{son},
+                #{monitorUserId},
+                #{name},
+                #{id},
+                #{type},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{desc},
+                #{status})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderInfoEntity">
@@ -121,6 +121,9 @@
         </if>
         <if test="son != null and son != ''">
             ,son = #{son}
+        </if>
+        <if test="type != null and type != ''">
+            ,type = #{type}
         </if>
         <if test="monitorUserId != null and monitorUserId != ''">
             ,monitor_user_id = #{monitorUserId}
@@ -165,6 +168,13 @@
         select count(*)
         from sys_order_info a
         where ${columnName} = #{value}
+    </select>
+    <select id="getOrderByType" resultType="indi.uhyils.pojo.model.OrderInfoEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_info a
+        where delete_flag = 0
+        and type = #{type}
     </select>
 
 

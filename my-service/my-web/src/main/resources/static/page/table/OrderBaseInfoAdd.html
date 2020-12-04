@@ -26,42 +26,6 @@
     <input name="id" style="display:none;" type="text" value="">
 
     <div class="layui-form-item">
-        <label class="layui-form-label required">优先级</label>
-        <div class="layui-input-block">
-            <input class="layui-input" lay-verify="required" name="priority" placeholder="请输入优先级 0->普通 1->加急"
-                   type="text"
-                   value="">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">可查询人id</label>
-        <div class="layui-input-block">
-            <input class="layui-input" lay-verify="required" name="queryUserIds" placeholder="请输入可查询人id" type="text"
-                   value="">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">运行时限(分钟)</label>
-        <div class="layui-input-block">
-            <input class="layui-input" lay-verify="required" name="limitTime" placeholder="请输入运行时限(分钟)" type="text"
-                   value="">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">是否是子流程 </label>
-        <div class="layui-input-block">
-            <input class="layui-input" lay-verify="required" name="son" placeholder="请输入是否是子流程 0->不是 1->是" type="text"
-                   value="">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">监管人id</label>
-        <div class="layui-input-block">
-            <input class="layui-input" lay-verify="required" name="monitorUserId" placeholder="请输入监管人id" type="text"
-                   value="">
-        </div>
-    </div>
-    <div class="layui-form-item">
         <label class="layui-form-label required">工单名称</label>
         <div class="layui-input-block">
             <input class="layui-input" lay-verify="required" name="name" placeholder="请输入工单名称" type="text"
@@ -71,11 +35,56 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">工单描述</label>
         <div class="layui-input-block">
-            <input class="layui-input" lay-verify="required" name="desc" placeholder="请输入工单描述" type="text"
-                   value="">
+            <textarea placeholder="请输入工单描述" name="desc" lay-verify="required" class="layui-textarea"></textarea>
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label required">优先级</label>
+        <div class="layui-input-block">
+            <input type="radio" name="priority" value="0" title="普通" checked="">
+            <input type="radio" name="priority" value="1" title="加急">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">是否是子流程 </label>
+        <div class="layui-input-block">
+            <input type="radio" name="son" value="0" title="不是" checked="">
+            <input type="radio" name="son" value="1" title="是">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">监管人id</label>
+        <div class="layui-input-block">
+            <select name="monitorUserId" lay-filter="aihao">
+                <option value="">请选择工单默认监管人</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">可查询人id</label>
+        <div class="layui-input-block">
+            <input autocomplete="off" class="layui-input" id="demo" placeholder="请输入"
+                   ts-selected="" type="text" value="">
+            <input type="hidden" name="queryUserIds">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">类型</label>
+        <div class="layui-input-block">
+
+            <select name="type" lay-filter="aihao">
+                <option value="">请选择类型</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">运行时限(分钟)</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="number" name="limitTime" placeholder="请输入运行时限(分钟)" type="text"
+                   value="">
+        </div>
+    </div>
 
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -86,11 +95,60 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/my.js"></script>
 <script charset="utf-8" src="../../lib/layui-v2.5.5/layui.js"></script>
+<script charset="utf-8" src="../../js/lay-config.js?v=1.0.4"></script>
 <script>
-    layui.use(['form'], function () {
+    layui.use(['form', 'tableSelect'], function () {
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
+        let users = pushRequest("UserService", "getUsers", {}, function (data) {
+            let result = [];
+            for (let i = 0; i < data.length; i++) {
+                let resultItem = {};
+                resultItem.id = data[i].id;
+                resultItem.name = data[i].nickName;
+                result.push(resultItem);
+            }
+            return result;
+        });
+        for (let i = 0; i < users.length; i++) {
+            $('[name=monitorUserId]').append('<option value="' + users[i].id + '">' + users[i].name + '</option>')
+        }
+        pushRequest("DictService", "getByCode", {code: 'OrderType'}, function (data) {
+            for (let i = 0; i < data.length; i++) {
+                $('[name=type]').append('<option value="' + data[i].value + '">' + data[i].text + '</option>');
+            }
+        });
+        form.render('select');
+        //开始使用
+        var tableSelect = layui.tableSelect;
+        tableSelect.render({
+            elem: '#demo',	//定义输入框input对象 必填
+            checkedKey: 'id', //表格的唯一建值，非常重要，影响到选中状态 必填
+            searchKey: 'name',	//搜索输入框的name值 默认keyword
+            searchPlaceholder: '关键词搜索',	//搜索输入框的提示文字 默认关键词搜索
+            height: '400',  //自定义高度
+            width: '900',  //自定义宽度
+            table: {	//定义表格参数，与LAYUI的TABLE模块一致，只是无需再定义表格elem
+                data: users,
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'id', title: 'id'},
+                    {field: 'name', title: '名称'}
+                ]]
+            },
+            done: function (elem, data) {
+                var NEWJSON = []
+                var newId = []
+                layui.each(data.data, function (index, item) {
+                    NEWJSON.push(item.name)
+                    newId.push(item.id)
+                })
+                elem.val(NEWJSON.join(","))
+                $('[name=queryUserIds]').val(newId.join(","));
+            }
+        })
+
 
         $.getUrlParam = function (name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");

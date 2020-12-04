@@ -69,14 +69,6 @@ public class InsertOrderResponse implements Serializable {
         this.newOrderId = newOrderId;
     }
 
-    public List<OrderNodeFieldEntity> getOrderNodeField() {
-        return orderNodeField;
-    }
-
-    public void setOrderNodeField(List<OrderNodeFieldEntity> orderNodeField) {
-        this.orderNodeField = orderNodeField;
-    }
-
     public String getMonitorUserId() {
         return monitorUserId;
     }
@@ -99,5 +91,13 @@ public class InsertOrderResponse implements Serializable {
 
     public void setNoticeUserIds(Map<String, String> noticeUserIds) {
         this.noticeUserIds = noticeUserIds;
+    }
+
+    public List<OrderNodeFieldEntity> getOrderNodeField() {
+        return orderNodeField;
+    }
+
+    public void setOrderNodeField(List<OrderNodeFieldEntity> orderNodeField) {
+        this.orderNodeField = orderNodeField;
     }
 }

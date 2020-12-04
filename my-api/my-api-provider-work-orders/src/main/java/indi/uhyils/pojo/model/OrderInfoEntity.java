@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.model;
 
+import indi.uhyils.enum_.OrderNodeFieldSourceEnum;
 import indi.uhyils.enum_.OrderPriorityEnum;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 
@@ -48,6 +49,11 @@ public class OrderInfoEntity extends BaseVoEntity {
      * 运行时限(分钟)
      */
     private Integer limitTime;
+
+    /**
+     * 类型 从 字典中的OrderType中去找
+     */
+    private Integer type;
 
 
     public Integer getPriority() {
@@ -114,5 +120,11 @@ public class OrderInfoEntity extends BaseVoEntity {
         this.status = status;
     }
 
+    public Integer getType() {
+        return type;
+    }
 
+    public void setType(Integer type) {
+        this.type = type;
+    }
 }

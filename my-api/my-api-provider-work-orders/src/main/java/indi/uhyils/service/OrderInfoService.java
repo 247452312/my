@@ -1,7 +1,11 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.OrderInfoEntity;
+import indi.uhyils.pojo.request.GetAllOrderRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
+
+import java.util.ArrayList;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -9,5 +13,11 @@ import indi.uhyils.service.base.DefaultEntityService;
  */
 public interface OrderInfoService extends DefaultEntityService<OrderInfoEntity> {
 
-
+    /**
+     * 根据类型获取全部工单
+     *
+     * @param request
+     * @return
+     */
+    ServiceResult<ArrayList<OrderInfoEntity>> getAllOrder(GetAllOrderRequest request);
 }

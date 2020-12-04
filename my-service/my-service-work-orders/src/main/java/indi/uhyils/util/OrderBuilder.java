@@ -62,6 +62,8 @@ public class OrderBuilder implements Serializable {
         orderNodeFieldEntity.setEmpty(orderBaseNodeFieldEntity.getEmpty());
         orderNodeFieldEntity.setName(orderBaseNodeFieldEntity.getName());
         orderNodeFieldEntity.setBaseOrderNodeId(nodeId);
+        orderNodeFieldEntity.setDataSources(orderBaseNodeFieldEntity.getDataSources());
+        orderNodeFieldEntity.setRelationId(orderBaseNodeFieldEntity.getRelationId());
         orderNodeFieldEntity.setDesc(orderBaseNodeFieldEntity.getDesc());
         return orderNodeFieldEntity;
     }

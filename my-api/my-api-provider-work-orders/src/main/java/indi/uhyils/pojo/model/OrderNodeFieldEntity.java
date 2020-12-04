@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.model;
 
+import indi.uhyils.enum_.OrderNodeFieldSourceEnum;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 import java.util.Objects;
@@ -49,6 +50,16 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
      * 数值类型 {@link indi.uhyils.enum_.OrderNodeFieldValueTypeEnum}
      */
     private Integer valueType;
+
+    /**
+     * 数据来源{@link OrderNodeFieldSourceEnum}
+     */
+    private Integer dataSources;
+
+    /**
+     * 如果是单选,多选,下拉框,那么具体的值去对应id中去找
+     */
+    private String relationId;
 
 
     public Integer getValueType() {
@@ -115,6 +126,22 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
         this.desc = desc;
     }
 
+    public Integer getDataSources() {
+        return dataSources;
+    }
+
+    public void setDataSources(Integer dataSources) {
+        this.dataSources = dataSources;
+    }
+
+    public String getRelationId() {
+        return relationId;
+    }
+
+    public void setRelationId(String relationId) {
+        this.relationId = relationId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -127,12 +154,11 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
             return false;
         }
         OrderNodeFieldEntity that = (OrderNodeFieldEntity) o;
-        return Objects.equals(getId(), that.getId());
-
+        return Objects.equals(baseOrderNodeId, that.baseOrderNodeId) && Objects.equals(name, that.name) && Objects.equals(desc, that.desc) && Objects.equals(defaultValue, that.defaultValue) && Objects.equals(empty, that.empty) && Objects.equals(edit, that.edit) && Objects.equals(type, that.type) && Objects.equals(valueType, that.valueType) && Objects.equals(dataSources, that.dataSources) && Objects.equals(relationId, that.relationId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), baseOrderNodeId, name, desc, defaultValue, empty, edit, type, valueType);
+        return Objects.hash(super.hashCode(), baseOrderNodeId, name, desc, defaultValue, empty, edit, type, valueType, dataSources, relationId);
     }
 }
