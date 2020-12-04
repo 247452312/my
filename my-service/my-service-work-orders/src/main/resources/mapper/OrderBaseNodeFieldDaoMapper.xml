@@ -19,6 +19,8 @@
 		a.create_date as createDate,
 		a.delete_flag as deleteFlag,
 		a.base_order_id as baseOrderId,
+		a.data_sources as dataSources,
+		a.relation_id as relationId,
 		a.`desc`
     </sql>
 
@@ -71,6 +73,8 @@
                                          create_date,
                                          delete_flag,
                                          base_order_id,
+                                         data_sources,
+                                         relation_id,
                                          `desc`)
         values (#{valueType},
                 #{edit},
@@ -86,6 +90,8 @@
                 #{createDate},
                 #{deleteFlag},
                 #{baseOrderId},
+                #{dataSources},
+                #{relationId},
                 #{desc})
     </insert>
 
@@ -125,6 +131,12 @@
         </if>
         <if test="baseOrderId != null and baseOrderId != ''">
             ,base_order_id = #{baseOrderId}
+        </if>
+        <if test="dataSources != null and dataSources != ''">
+            ,data_sources = #{dataSources}
+        </if>
+        <if test="relationId != null and relationId != ''">
+            ,relation_id = #{relationId}
         </if>
         <if test="desc != null and desc != ''">
             ,`desc` = #{desc}

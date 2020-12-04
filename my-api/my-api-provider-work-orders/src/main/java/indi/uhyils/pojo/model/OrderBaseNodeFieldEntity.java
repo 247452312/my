@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.model;
 
+import indi.uhyils.enum_.OrderNodeFieldSourceEnum;
 import indi.uhyils.enum_.OrderNodeFieldTypeEnum;
 import indi.uhyils.enum_.OrderNodeFieldValueTypeEnum;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
@@ -49,6 +50,16 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
      * 数值类型{@link OrderNodeFieldValueTypeEnum}
      */
     private Integer valueType;
+
+    /**
+     * 数据来源{@link OrderNodeFieldSourceEnum}
+     */
+    private Integer dataSources;
+
+    /**
+     * 如果是单选,多选,下拉框,那么具体的值去对应id中去找
+     */
+    private String relationId;
 
     public Integer getValueType() {
         return valueType;
@@ -114,5 +125,19 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
         this.defaultValue = defaultValue;
     }
 
+    public Integer getDataSources() {
+        return dataSources;
+    }
 
+    public void setDataSources(Integer dataSources) {
+        this.dataSources = dataSources;
+    }
+
+    public String getRelationId() {
+        return relationId;
+    }
+
+    public void setRelationId(String relationId) {
+        this.relationId = relationId;
+    }
 }
