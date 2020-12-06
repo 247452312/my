@@ -33,9 +33,9 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label required">对应结果类型(单个)</label>
+        <label class="layui-form-label required">对应结果id(单个)</label>
         <div class="layui-input-block">
-            <input class="layui-input" lay-verify="required" name="resultType" placeholder="请输入对应结果类型(单个)" type="text"
+            <input class="layui-input" lay-verify="required" name="resultId" placeholder="请输入对应结果类型(单个)" type="text"
                    value="">
         </div>
     </div>
@@ -78,7 +78,7 @@
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
                 $('[name="prevNodeId"]').attr('value', data.prevNodeId);
-                $('[name="resultType"]').attr('value', data.resultType);
+                $('[name="resultId"]').attr('value', data.resultId);
                 $('[name="nextNodeId"]').attr('value', data.nextNodeId);
                 form.render();
             })

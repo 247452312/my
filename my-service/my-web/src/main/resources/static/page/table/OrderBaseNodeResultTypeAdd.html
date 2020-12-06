@@ -39,13 +39,6 @@
                    value="">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">处理结果</label>
-        <div class="layui-input-block">
-            <input class="layui-input" lay-verify="required" name="dealResult" placeholder="请输入处理结果" type="text"
-                   value="">
-        </div>
-    </div>
 
 
     <div class="layui-form-item">
@@ -79,7 +72,6 @@
                 $('[name="id"]').attr('value', data.id);
                 $('[name="baseNodeId"]').attr('value', data.baseNodeId);
                 $('[name="dealResultName"]').attr('value', data.dealResultName);
-                $('[name="dealResult"]').attr('value', data.dealResult);
                 form.render();
             })
         }
