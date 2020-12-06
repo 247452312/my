@@ -6,31 +6,31 @@ package indi.uhyils.content;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年10月11日 14时45分
  */
-public class HotSpotContent {
+public interface HotSpotContent {
 
     /**
      * 热点缓存中的tables_hash_key
      */
-    public static final String TABLES_HASH_KEY = "TABLES_HASH_KEY";
+    String TABLES_HASH_KEY = "TABLES_HASH_KEY";
 
     /**
      * 初始化时的表
      */
-    public static final String INIT_TABLE_NAME = "sys_dict";
+    String INIT_TABLE_NAME = "sys_dict";
 
     /**
      * 热点缓存中的热点hashkey规则, 接口名称:方法名称:参数MD5
      */
-    public static final String HOTSPOT_HASH_KEY_ROLE = "%s:%s:%s";
+    String HOTSPOT_HASH_KEY_ROLE = "%s:%s:%s";
 
 
     /**
      * 热点中的真实值
      */
-    public static final String HOTSPOT_HASH_DATA_KEY = "data";
+    String HOTSPOT_HASH_DATA_KEY = "data";
 
     /**
      * 缓存中的类型标记
      */
-    public static final String CACHE_TYPE_MARK = "cache_type_mark";
+    String CACHE_TYPE_MARK = "cache_type_mark";
 }
