@@ -62,7 +62,7 @@ public class HotSpotRedisPool {
     private String sentinels;
 
 
-    private Boolean initPool() {
+    public Boolean initPool() {
         initMark = new Object();
         try {
             JedisPoolConfig config = new JedisPoolConfig();

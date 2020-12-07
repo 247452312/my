@@ -76,6 +76,15 @@ public class HotSpotAop {
     private HotSpotRedisPool hotSpotRedisPool;
 
     /**
+     * 上次尝试的时间
+     */
+    private Long lastTryTime;
+    /**
+     * 重试的间隔(ms)
+     */
+    private static final Long RETRY_INTERVAL = 1000L * 10;
+
+    /**
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
@@ -85,8 +94,25 @@ public class HotSpotAop {
 
     @Around("hotSpotAspectPoint()")
     public Object hotSpotAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
+        // 如果 热点集群redis没有加载成功,则一段时间后自动重试一次
         if (!HotSpotRedisPool.initTypeIsRedis) {
-            return pjp.proceed();
+            long lastTryTime = System.currentTimeMillis();
+            if (this.lastTryTime == null) {
+                // 失败后第一次调用
+                this.lastTryTime = lastTryTime;
+                return pjp.proceed();
+            } else {
+                // 判断是否超过一秒
+                if (lastTryTime - this.lastTryTime > RETRY_INTERVAL) {
+                    this.lastTryTime = lastTryTime;
+                    Boolean initSuccess = hotSpotRedisPool.initPool();
+                    if (!initSuccess) {
+                        return pjp.proceed();
+                    }
+                } else {
+                    return pjp.proceed();
+                }
+            }
         }
         //此接口的读写类型
         ReadWriteTypeEnum mark = null;
