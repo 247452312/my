@@ -1,6 +1,8 @@
 package indi.uhyils.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.SessionRequest;
@@ -73,6 +75,8 @@ public class AllController {
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 eMsg = serviceResult.getServiceMessage();
             }
+            // 修改字段类型为String,因为前端大数会失去精度
+            changeFieldTypeToString((JSONObject) serviceResult.getData());
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
             // 如果失败,就返回微服务传回来的错误信息与提示
@@ -87,6 +91,39 @@ public class AllController {
                     LogUtil.error(this, e);
                 }
 
+            }
+        }
+    }
+
+    private void changeFieldTypeToString(JSONObject data) {
+        // 因前端大数会失去精度, 所以要转变类型,全部转换为String类型的
+        if (data != null) {
+            for (String s : data.keySet()) {
+                Object value = data.get(s);
+                if (value instanceof JSONObject) {
+                    changeFieldTypeToString((JSONObject) value);
+                } else if (value instanceof JSONArray) {
+                    changeFieldTypeToString((JSONArray) value);
+                } else {
+                    value = value.toString();
+                }
+                data.put(s, value);
+            }
+        }
+    }
+
+    private void changeFieldTypeToString(JSONArray data) {
+        // 因前端大数会失去精度, 所以要转变类型,全部转换为String类型的
+        if (data != null) {
+            for (int i = 0; i < data.size(); i++) {
+                Object o = data.get(i);
+                if (o instanceof JSONArray) {
+                    changeFieldTypeToString((JSONArray) o);
+                } else if (o instanceof JSONObject) {
+                    changeFieldTypeToString((JSONObject) o);
+                } else {
+                    data.set(i, o.toString());
+                }
             }
         }
     }
