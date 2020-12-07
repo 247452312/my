@@ -85,6 +85,9 @@ public class HotSpotAop {
 
     @Around("hotSpotAspectPoint()")
     public Object hotSpotAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
+        if (!HotSpotRedisPool.initTypeIsRedis) {
+            return pjp.proceed();
+        }
         //此接口的读写类型
         ReadWriteTypeEnum mark = null;
         //此接口指向的数据库表

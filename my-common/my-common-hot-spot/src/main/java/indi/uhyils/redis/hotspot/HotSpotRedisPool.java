@@ -32,7 +32,7 @@ public class HotSpotRedisPool {
     /**
      * 初始化类型是否是正常的redis
      */
-    private static Boolean initTypeIsRedis = true;
+    public static volatile Boolean initTypeIsRedis = true;
     /**
      * 最大连接数
      */
@@ -109,9 +109,11 @@ public class HotSpotRedisPool {
                     initPool();
                 }
             }
-
         }
-        return pool.getResource();
+        if (initTypeIsRedis) {
+            return pool.getResource();
+        }
+        return null;
     }
 
 }
