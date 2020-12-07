@@ -14,7 +14,7 @@ public class ApiEntity extends BaseVoEntity {
     /**
      * api所在组(群)
      */
-    private String apiGroupId;
+    private Long apiGroupId;
     /**
      * 调用顺位
      */
@@ -55,11 +55,11 @@ public class ApiEntity extends BaseVoEntity {
      */
     private String resultCode;
 
-    public String getApiGroupId() {
+    public Long getApiGroupId() {
         return apiGroupId;
     }
 
-    public void setApiGroupId(String apiGroupId) {
+    public void setApiGroupId(Long apiGroupId) {
         this.apiGroupId = apiGroupId;
     }
 

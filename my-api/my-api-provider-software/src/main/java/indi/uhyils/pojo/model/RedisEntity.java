@@ -24,7 +24,7 @@ public class RedisEntity extends BaseVoEntity {
     /**
      * 服务器id
      */
-    private String serverId;
+    private Long serverId;
 
     /**
      * 开启服务命令
@@ -72,11 +72,11 @@ public class RedisEntity extends BaseVoEntity {
         this.port = port;
     }
 
-    public String getServerId() {
+    public Long getServerId() {
         return serverId;
     }
 
-    public void setServerId(String serverId) {
+    public void setServerId(Long serverId) {
         this.serverId = serverId;
     }
 

@@ -23,7 +23,7 @@ public interface OrderService extends BaseService {
      * @param request 工单本体
      * @return 插入后的id
      */
-    ServiceResult<InsertOrderResponse> insertOrder(IdRequest request);
+    ServiceResult<InsertOrderResponse> insertOrder(IdRequest request) throws Exception;
 
     /**
      * 提交工单
@@ -80,7 +80,7 @@ public interface OrderService extends BaseService {
      * @param request
      * @return
      */
-    ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) throws IOException, TimeoutException;
+    ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) throws Exception;
 
     /**
      * 工单节点(转交)失败(因处理人员无能力完成此节点,申请转交给其他人,则可以进行主动失败)
@@ -88,7 +88,7 @@ public interface OrderService extends BaseService {
      * @param request
      * @return
      */
-    ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeRequest request);
+    ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeRequest request) throws Exception;
 
     /**
      * 审批工单
@@ -96,6 +96,6 @@ public interface OrderService extends BaseService {
      * @param request
      * @return
      */
-    ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request);
+    ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) throws Exception;
 
 }

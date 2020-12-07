@@ -27,7 +27,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * @param request 将权限授予权限集的请求
      * @return
      */
-    ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request);
+    ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) throws Exception;
 
     /**
      * 删除 -> 真删. 不是假删

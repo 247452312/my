@@ -81,5 +81,5 @@ public interface MonitorJvmStatusDetailDao extends BaseDao {
      * @param id 主表id
      * @return 主表id对应的分表数据
      */
-    List<MonitorJvmStatusDetailDO> getByMonitorId(String id);
+    List<MonitorJvmStatusDetailDO> getByMonitorId(Long id);
 }

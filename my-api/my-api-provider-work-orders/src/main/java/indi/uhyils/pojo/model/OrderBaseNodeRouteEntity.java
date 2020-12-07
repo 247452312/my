@@ -11,42 +11,40 @@ public class OrderBaseNodeRouteEntity extends BaseVoEntity {
     /**
      * 上一个节点id
      */
-    private String prevNodeId;
+    private Long prevNodeId;
 
     /**
      * 对应结果类型(单个)
      */
-    private String resultId;
+    private Long resultId;
 
     /**
      * 下一个节点id
      */
-    private String nextNodeId;
+    private Long nextNodeId;
 
 
-    public String getPrevNodeId() {
+    public Long getPrevNodeId() {
         return prevNodeId;
     }
 
-    public void setPrevNodeId(String prevNodeId) {
+    public void setPrevNodeId(Long prevNodeId) {
         this.prevNodeId = prevNodeId;
     }
 
-    public String getResultId() {
+    public Long getResultId() {
         return resultId;
     }
 
-    public void setResultId(String resultId) {
+    public void setResultId(Long resultId) {
         this.resultId = resultId;
     }
 
-    public String getNextNodeId() {
+    public Long getNextNodeId() {
         return nextNodeId;
     }
 
-    public void setNextNodeId(String nextNodeId) {
+    public void setNextNodeId(Long nextNodeId) {
         this.nextNodeId = nextNodeId;
     }
-
-
 }

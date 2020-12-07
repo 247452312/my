@@ -21,7 +21,7 @@ public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldEntity> {
      * @param fieldIds
      * @return
      */
-    List<OrderNodeFieldEntity> getByIds(Set<String> fieldIds);
+    List<OrderNodeFieldEntity> getByIds(Set<Long> fieldIds);
 
     /**
      * 根据工单节点id获取此节点的属性们
@@ -29,7 +29,7 @@ public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldEntity> {
      * @param orderNodeId
      * @return
      */
-    List<OrderNodeFieldEntity> getByOrderNodeId(String orderNodeId);
+    List<OrderNodeFieldEntity> getByOrderNodeId(Long orderNodeId);
 
     /**
      * 根据节点id批量删除指定的节点属性
@@ -39,5 +39,5 @@ public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldEntity> {
      * @param updateDate
      * @return
      */
-    Integer deleteByNodeIds(List<String> ids, String updateUser, Integer updateDate);
+    Integer deleteByNodeIds(List<Long> ids, Long updateUser, Integer updateDate);
 }

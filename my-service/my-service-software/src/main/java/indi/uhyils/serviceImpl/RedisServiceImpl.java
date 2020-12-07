@@ -74,7 +74,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Integer> insert(ObjRequest<RedisEntity> insert) {
+    public ServiceResult<Integer> insert(ObjRequest<RedisEntity> insert) throws Exception {
         RedisEntity redisEntity = insert.getData();
         ServerEntity serverEntity = serverDao.getById(redisEntity.getServerId());
         if (serverEntity == null) {
@@ -91,12 +91,12 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
     @Override
     public ServiceResult<RedisEntity> reload(IdRequest request) {
-        String id = request.getId();
+        Long id = request.getId();
         RedisEntity redisEntity = dao.getById(id);
         if (redisEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null, request);
         }
-        String serverId = redisEntity.getServerId();
+        Long serverId = redisEntity.getServerId();
         ServerEntity serverEntity = serverDao.getById(serverId);
         if (serverEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null, request);
@@ -114,7 +114,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     public ServiceResult<OperateSoftwareResponse> start(IdRequest request) {
         OperateSoftwareResponse operateSoftwareResponse = new OperateSoftwareResponse();
         RedisEntity redisEntity = dao.getById(request.getId());
-        String serverId = redisEntity.getServerId();
+        Long serverId = redisEntity.getServerId();
         ServerEntity serverEntity = serverDao.getById(serverId);
         Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
         if (SoftwareStatusEnum.RUNNING.getStatus().equals(redisNewStatus)) {
@@ -136,7 +136,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     public ServiceResult<OperateSoftwareResponse> stop(IdRequest request) {
         OperateSoftwareResponse operateSoftwareResponse = new OperateSoftwareResponse();
         RedisEntity redisEntity = dao.getById(request.getId());
-        String serverId = redisEntity.getServerId();
+        Long serverId = redisEntity.getServerId();
         ServerEntity serverEntity = serverDao.getById(serverId);
         Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
         if (SoftwareStatusEnum.STOP.getStatus().equals(redisNewStatus)) {
@@ -156,7 +156,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deleteManyRedis(IdsRequest request) {
-        List<String> ids = request.getIds();
+        List<Long> ids = request.getIds();
         List<RedisEntity> collect = ids.stream().map(t -> dao.getById(t)).collect(Collectors.toList());
         AtomicBoolean b = new AtomicBoolean(true);
         collect.forEach(t -> {
@@ -173,12 +173,12 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> reloadManyRedis(IdsRequest request) {
-        List<String> ids = request.getIds();
+        List<Long> ids = request.getIds();
         AtomicBoolean b = new AtomicBoolean(true);
         ids.forEach(id -> {
             try {
                 RedisEntity redisEntity = dao.getById(id);
-                String serverId = redisEntity.getServerId();
+                Long serverId = redisEntity.getServerId();
                 ServerEntity serverEntity = serverDao.getById(serverId);
                 redisEntity.setStatus(getRedisNewStatus(redisEntity, serverEntity));
                 String redisVersion = getRedisNewVersion(redisEntity, serverEntity);
@@ -198,11 +198,11 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> startManyRedis(IdsRequest request) {
-        List<String> ids = request.getIds();
+        List<Long> ids = request.getIds();
         AtomicBoolean b = new AtomicBoolean(true);
         ids.forEach(id -> {
             RedisEntity redisEntity = dao.getById(id);
-            String serverId = redisEntity.getServerId();
+            Long serverId = redisEntity.getServerId();
             ServerEntity serverEntity = serverDao.getById(serverId);
             Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
             if (SoftwareStatusEnum.RUNNING.getStatus().equals(redisNewStatus)) {
@@ -224,7 +224,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         AtomicBoolean b = new AtomicBoolean(true);
         request.getIds().forEach(id -> {
             RedisEntity redisEntity = dao.getById(id);
-            String serverId = redisEntity.getServerId();
+            Long serverId = redisEntity.getServerId();
             ServerEntity serverEntity = serverDao.getById(serverId);
             Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
             if (SoftwareStatusEnum.STOP.getStatus().equals(redisNewStatus)) {
@@ -244,7 +244,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @Override
     public ServiceResult<ArrayList<RedisKeyResponse>> getRedisKeys(GetRedisKeysRequest request) {
         Integer db = request.getDb();
-        String id = request.getRedisId();
+        Long id = request.getRedisId();
         Jedis jedis = getJedis(id);
         jedis.select(db);
 
@@ -260,7 +260,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
     @Override
     public ServiceResult<Integer> getRedisDB(IdRequest request) {
-        String id = request.getId();
+        Long id = request.getId();
         Jedis jedis = getJedis(id);
         List<String> databases = jedis.configGet("databases");
         jedis.close();
@@ -277,7 +277,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> addKey(ObjRequest<RedisKeyAndValue> request) {
         RedisKeyAndValue data = request.getData();
-        String redisId = data.getRedisId();
+        Long redisId = data.getRedisId();
         Jedis jedis = getJedis(redisId);
         jedis.select(data.getDb());
         String s = jedis.get(data.getKey());
@@ -296,7 +296,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> addKeyCover(ObjRequest<RedisKeyAndValue> request) {
         RedisKeyAndValue data = request.getData();
-        String redisId = data.getRedisId();
+        Long redisId = data.getRedisId();
         Jedis jedis = getJedis(redisId);
         jedis.append(data.getKey(), data.getValue());
         jedis.close();
@@ -307,7 +307,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> updateKey(ObjRequest<RedisKeyAndValue> request) {
         RedisKeyAndValue data = request.getData();
-        String redisId = data.getRedisId();
+        Long redisId = data.getRedisId();
         Jedis jedis = getJedis(redisId);
         String s = jedis.get(data.getKey());
         // 如果是空,则说明修改没有
@@ -333,7 +333,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deleteRedisByKey(ObjRequest<RedisKeyAndValue> request) {
         RedisKeyAndValue data = request.getData();
-        String redisId = data.getRedisId();
+        Long redisId = data.getRedisId();
         Jedis jedis = getJedis(redisId);
         jedis.del(data.getKey());
         jedis.close();
@@ -342,7 +342,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
     @Override
     public ServiceResult<ArrayList<GetInfosResponse>> getInfos(IdRequest request) {
-        String id = request.getId();
+        Long id = request.getId();
         Jedis jedis = getJedis(id);
         Client client = jedis.getClient();
         client.info();
@@ -377,9 +377,9 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         }
     }
 
-    private Jedis getJedis(String id) {
+    private Jedis getJedis(Long id) {
         RedisEntity redisEntity = dao.getById(id);
-        String serverId = redisEntity.getServerId();
+        Long serverId = redisEntity.getServerId();
         ServerEntity serverEntity = serverDao.getById(serverId);
         Jedis jedis = new Jedis(serverEntity.getIp(), redisEntity.getPort());
         if (!StringUtils.isEmpty(redisEntity.getPassword())) {

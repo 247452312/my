@@ -49,7 +49,7 @@ public class PushServiceImpl implements PushService {
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Boolean> push(CronRequest request) {
+    public ServiceResult<Boolean> push(CronRequest request) throws Exception {
         Boolean result = true;
         String cron = request.getCron();
         LogUtil.info(this, "定时推送任务启动: " + cron);
@@ -57,7 +57,7 @@ public class PushServiceImpl implements PushService {
         List<ApiGroupEntity> apiGroups = apiGroupDao.getAll();
         List<ApiEntity> apis = apiDao.getAll();
         HashMap<String, ApiGroupEntity> apiMaps = new HashMap<>(apiGroups.size());
-        Map<String, ApiGroupEntity> collect = apiGroups.stream().collect(Collectors.toMap(BaseIdEntity::getId, value -> value));
+        Map<Long, ApiGroupEntity> collect = apiGroups.stream().collect(Collectors.toMap(BaseIdEntity::getId, value -> value));
         for (ApiEntity api : apis) {
             if (collect.containsKey(api.getApiGroupId())) {
                 apiMaps.get(api.getApiGroupId()).getApis().add(api);
@@ -67,14 +67,14 @@ public class PushServiceImpl implements PushService {
         /* 获取订阅 */
         List<ApiSubscribeEntity> list = apiSubscribeDao.getByCron(cron);
         for (ApiSubscribeEntity apiSubscribeEntity : list) {
-            String apiGroupId = apiSubscribeEntity.getApiGroupId();
+            Long apiGroupId = apiSubscribeEntity.getApiGroupId();
             // 获取对应的api,如果没有,则跳过(可能api下线了)
             ApiGroupEntity apiGroupEntity = apiMaps.get(apiGroupId);
             if (apiGroupEntity == null || apiGroupEntity.getApis().size() == 0) {
                 continue;
             }
 
-            String userId = apiSubscribeEntity.getUserId();
+            Long userId = apiSubscribeEntity.getUserId();
             /* 获取user */
             IdRequest build = IdRequest.build(request, userId);
             ServiceResult serviceResult = DubboApiUtil.dubboApiTool("UserService", "getById", build);
@@ -101,7 +101,7 @@ public class PushServiceImpl implements PushService {
     }
 
     @Override
-    public ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request) {
+    public ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request) throws Exception {
         ServiceResult serviceResult = DubboApiUtil.dubboApiTool("UserService", "getById", IdRequest.build(request, request.getUserId()));
         if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             return serviceResult;

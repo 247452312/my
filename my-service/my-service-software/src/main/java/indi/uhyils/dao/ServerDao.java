@@ -26,5 +26,5 @@ public interface ServerDao extends DefaultDao<ServerEntity> {
      * @param id id
      * @return 名称
      */
-    String getNameById(String id);
+    String getNameById(Long id);
 }

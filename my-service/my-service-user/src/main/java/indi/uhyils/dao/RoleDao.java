@@ -31,7 +31,7 @@ public interface RoleDao extends DefaultDao<RoleEntity> {
      * @param ids 中间表id
      * @return 删除个数
      */
-    Integer deleteRoleDept(List<String> ids);
+    Integer deleteRoleDept(List<Long> ids);
 
     /**
      * 获取所有的角色
@@ -46,7 +46,7 @@ public interface RoleDao extends DefaultDao<RoleEntity> {
      * @param id 角色id
      * @return 所有权限集以及角色是否有此权限集的标记
      */
-    ArrayList<GetAllDeptWithHaveMarkResponse> getAllDeptWithHaveMark(String id);
+    ArrayList<GetAllDeptWithHaveMarkResponse> getAllDeptWithHaveMark(Long id);
 
     /**
      * 删除角色对应的所有权限集羁绊
@@ -54,7 +54,7 @@ public interface RoleDao extends DefaultDao<RoleEntity> {
      * @param roleId
      * @return
      */
-    Integer deleteRoleDeptMiddleByRoleId(String roleId);
+    Integer deleteRoleDeptMiddleByRoleId(Long roleId);
 
 
     /**
@@ -63,5 +63,5 @@ public interface RoleDao extends DefaultDao<RoleEntity> {
      * @param id 角色id
      * @return 更新数量
      */
-    Integer updateUserRoleToNullByRoleId(String id);
+    Integer updateUserRoleToNullByRoleId(Long id);
 }

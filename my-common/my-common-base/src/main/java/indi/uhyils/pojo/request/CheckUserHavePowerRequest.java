@@ -22,9 +22,9 @@ public class CheckUserHavePowerRequest extends DefaultRequest {
     /**
      * 用户id
      */
-    private String userId;
+    private Long userId;
 
-    public static CheckUserHavePowerRequest build(String interfaceName, String methodName, String userId) {
+    public static CheckUserHavePowerRequest build(String interfaceName, String methodName, Long userId) {
         CheckUserHavePowerRequest checkUserHavePowerRequest = new CheckUserHavePowerRequest();
         checkUserHavePowerRequest.setInterfaceName(interfaceName);
         checkUserHavePowerRequest.setMethodName(methodName);
@@ -48,11 +48,11 @@ public class CheckUserHavePowerRequest extends DefaultRequest {
         this.methodName = methodName;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }

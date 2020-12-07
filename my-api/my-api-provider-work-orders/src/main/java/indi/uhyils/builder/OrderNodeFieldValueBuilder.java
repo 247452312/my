@@ -19,7 +19,7 @@ public class OrderNodeFieldValueBuilder {
      * @param value        用户填写的值
      * @return
      */
-    public static OrderNodeFieldValueEntity buildOrderNodeFieldValue(String orderFieldId, String value) {
+    public static OrderNodeFieldValueEntity buildOrderNodeFieldValue(Long orderFieldId, String value) {
         OrderNodeFieldValueEntity fieldValue = new OrderNodeFieldValueEntity();
         fieldValue.setNodeFieldId(orderFieldId);
         fieldValue.setRealValue(value);
@@ -32,9 +32,9 @@ public class OrderNodeFieldValueBuilder {
      * @param map [工单节点属性的id,用户填写的值]
      * @return
      */
-    public static List<OrderNodeFieldValueEntity> buildOrderNodeFieldValues(Map<String, String> map) {
+    public static List<OrderNodeFieldValueEntity> buildOrderNodeFieldValues(Map<Long, String> map) {
         List<OrderNodeFieldValueEntity> result = new ArrayList<>(map.size());
-        for (Map.Entry<String, String> entry : map.entrySet()) {
+        for (Map.Entry<Long, String> entry : map.entrySet()) {
             result.add(buildOrderNodeFieldValue(entry.getKey(), entry.getValue()));
         }
         return result;

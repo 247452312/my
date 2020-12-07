@@ -21,7 +21,7 @@ public interface OrderInfoDao extends DefaultDao<OrderInfoEntity> {
      * @param orderId
      * @return
      */
-    Integer getOrderStatusById(String orderId);
+    Integer getOrderStatusById(Long orderId);
 
     /**
      * 修改工单状态为等待撤回
@@ -29,7 +29,7 @@ public interface OrderInfoDao extends DefaultDao<OrderInfoEntity> {
      * @param orderId
      * @param code
      */
-    void changeOrderStatus(@Param("orderId") String orderId, @Param("code") Integer code);
+    void changeOrderStatus(@Param("orderId") Long orderId, @Param("code") Integer code);
 
     /**
      * 根据类型获取其他工单

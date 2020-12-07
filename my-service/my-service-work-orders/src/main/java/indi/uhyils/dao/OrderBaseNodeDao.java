@@ -20,7 +20,7 @@ public interface OrderBaseNodeDao extends DefaultDao<OrderBaseNodeEntity> {
      * @param baseInfoId 主表id
      * @return orderNode
      */
-    List<OrderBaseNodeEntity> getNoHiddenByOrderId(String baseInfoId);
+    List<OrderBaseNodeEntity> getNoHiddenByOrderId(Long baseInfoId);
 
     /**
      * 根据id批量删除
@@ -30,5 +30,5 @@ public interface OrderBaseNodeDao extends DefaultDao<OrderBaseNodeEntity> {
      * @param updateDate
      * @return
      */
-    Integer deleteByIds(List<String> ids, String updateUser, Integer updateDate);
+    Integer deleteByIds(List<Long> ids, Long updateUser, Integer updateDate);
 }

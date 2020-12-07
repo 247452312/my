@@ -18,7 +18,7 @@ public class SendPageBuild {
      * @param content 内容
      * @return 页面推送
      */
-    public static SendPageEntity buildSendPage(String userId, String title, String content) {
+    public static SendPageEntity buildSendPage(Long userId, String title, String content) {
         SendPageEntity sendPageEntity = new SendPageEntity();
         sendPageEntity.setContent(content);
         sendPageEntity.setTitle(title);

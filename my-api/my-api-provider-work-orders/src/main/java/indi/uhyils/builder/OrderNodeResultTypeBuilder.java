@@ -15,7 +15,7 @@ public class OrderNodeResultTypeBuilder {
      * @param msg
      * @return
      */
-    public static OrderNodeResultTypeEntity build(String orderNodeId, String msg) {
+    public static OrderNodeResultTypeEntity build(Long orderNodeId, String msg) {
         OrderNodeResultTypeEntity orderNodeResultTypeEntity = new OrderNodeResultTypeEntity();
         orderNodeResultTypeEntity.setBaseNodeId(orderNodeId);
         orderNodeResultTypeEntity.setDealResultName(msg);

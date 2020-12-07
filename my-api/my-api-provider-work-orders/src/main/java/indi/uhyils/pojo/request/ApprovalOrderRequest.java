@@ -11,14 +11,14 @@ public class ApprovalOrderRequest extends DefaultRequest {
     /**
      * 申请id
      */
-    private String orderApplyId;
+    private Long orderApplyId;
 
 
-    public String getOrderApplyId() {
+    public Long getOrderApplyId() {
         return orderApplyId;
     }
 
-    public void setOrderApplyId(String orderApplyId) {
+    public void setOrderApplyId(Long orderApplyId) {
         this.orderApplyId = orderApplyId;
     }
 }

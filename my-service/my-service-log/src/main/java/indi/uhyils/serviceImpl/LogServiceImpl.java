@@ -51,7 +51,7 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
     @Override
     @NoToken
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Boolean> pushRequestLog(ObjRequest<LogEntity> request) {
+    public ServiceResult<Boolean> pushRequestLog(ObjRequest<LogEntity> request) throws Exception {
         LogEntity data = request.getData();
         request.setUser(userEntity);
         data.preInsert(request);

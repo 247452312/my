@@ -25,7 +25,7 @@ public class SceneEntity extends BaseVoEntity {
     /**
      * 其他: 气氛 天气 动作等场景的模型id
      */
-    private String otherModelId;
+    private Long otherModelId;
 
 
     public Integer getType() {
@@ -44,12 +44,12 @@ public class SceneEntity extends BaseVoEntity {
         this.value = value;
     }
 
-    public String getOtherModelId() {
+
+    public Long getOtherModelId() {
         return otherModelId;
     }
 
-    public void setOtherModelId(String otherModelId) {
+    public void setOtherModelId(Long otherModelId) {
         this.otherModelId = otherModelId;
     }
-
 }

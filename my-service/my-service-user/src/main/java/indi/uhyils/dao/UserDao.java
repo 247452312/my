@@ -24,7 +24,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param roleId 角色id
      * @return 角色实例
      */
-    RoleEntity getUserRoleById(String roleId);
+    RoleEntity getUserRoleById(Long roleId);
 
     /**
      * 根据角色id获取用户的权限集
@@ -32,7 +32,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param roleId 角色id
      * @return 用户的权限集
      */
-    ArrayList<DeptEntity> getUserDeptsByRoleId(String roleId);
+    ArrayList<DeptEntity> getUserDeptsByRoleId(Long roleId);
 
 
     /**
@@ -41,7 +41,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param deptId 权限集id
      * @return 用户的权限
      */
-    List<PowerEntity> getUserPowerByDeptId(String deptId);
+    List<PowerEntity> getUserPowerByDeptId(Long deptId);
 
     /**
      * 获取全部用户
@@ -57,7 +57,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param oldPassword 旧密码
      * @return 是否正确
      */
-    Integer checkUserPassword(@Param("id") String id, @Param("password") String oldPassword);
+    Integer checkUserPassword(@Param("id") Long id, @Param("password") String oldPassword);
 
     /**
      * 获取用户名称
@@ -65,5 +65,5 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param id id
      * @return 用户名称
      */
-    String getNameById(String id);
+    String getNameById(Long id);
 }

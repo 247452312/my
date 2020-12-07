@@ -14,7 +14,7 @@ public class MonitorInterfaceDetailDO extends BaseIdEntity {
     /**
      * 见{@link MonitorDO}
      */
-    private String fid;
+    private Long fid;
 
     /**
      * 用户调用的接口名称
@@ -41,11 +41,11 @@ public class MonitorInterfaceDetailDO extends BaseIdEntity {
      */
     private Long runTime;
 
-    public String getFid() {
+    public Long getFid() {
         return fid;
     }
 
-    public void setFid(String fid) {
+    public void setFid(Long fid) {
         this.fid = fid;
     }
 

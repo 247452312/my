@@ -83,7 +83,7 @@ public interface MonitorDao extends BaseDao {
      * @param endTime 要改成的时间
      * @return
      */
-    Boolean changeEndTime(@Param("id") String id, @Param("endTime") long endTime);
+    Boolean changeEndTime(@Param("id") Long id, @Param("endTime") long endTime);
 
     /**
      * 根据JVM唯一标识 获取主表主键
@@ -91,7 +91,7 @@ public interface MonitorDao extends BaseDao {
      * @param jvmUniqueMark
      * @return
      */
-    String getIdByJvmUniqueMark(JvmUniqueMark jvmUniqueMark);
+    Long getIdByJvmUniqueMark(JvmUniqueMark jvmUniqueMark);
 
     /**
      * 获取现在正在运行中的服务数量

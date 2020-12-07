@@ -11,18 +11,18 @@ public class OrderNodeResultTypeEntity extends BaseVoEntity {
     /**
      * 节点id
      */
-    private String baseNodeId;
+    private Long baseNodeId;
 
     /**
      * 处理结果名称
      */
     private String dealResultName;
 
-    public String getBaseNodeId() {
+    public Long getBaseNodeId() {
         return baseNodeId;
     }
 
-    public void setBaseNodeId(String baseNodeId) {
+    public void setBaseNodeId(Long baseNodeId) {
         this.baseNodeId = baseNodeId;
     }
 

@@ -29,7 +29,7 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      * @param request 字典项
      * @return
      */
-    ServiceResult<Boolean> insertItem(ObjRequest<DictItemEntity> request);
+    ServiceResult<Boolean> insertItem(ObjRequest<DictItemEntity> request) throws Exception;
 
 
     /**
@@ -107,7 +107,7 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      * @param request 默认请求
      * @return 图标class
      */
-    ServiceResult<ArrayList<String>> getAllMenuIcon(DefaultRequest request);
+    ServiceResult<ArrayList<Object>> getAllMenuIcon(DefaultRequest request);
 
 
     /**

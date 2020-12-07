@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class RedisKeyAndValue implements Serializable {
 
-    private String redisId;
+    private Long redisId;
     /**
      * redis 数据库
      */
@@ -26,11 +26,11 @@ public class RedisKeyAndValue implements Serializable {
      */
     private String value;
 
-    public String getRedisId() {
+    public Long getRedisId() {
         return redisId;
     }
 
-    public void setRedisId(String redisId) {
+    public void setRedisId(Long redisId) {
         this.redisId = redisId;
     }
 

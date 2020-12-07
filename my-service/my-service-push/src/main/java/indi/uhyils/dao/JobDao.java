@@ -27,7 +27,7 @@ public interface JobDao extends DefaultDao<JobEntity> {
      * @param id
      * @return
      */
-    Integer pause(String id);
+    Integer pause(Long id);
 
     /**
      * 开启
@@ -35,5 +35,5 @@ public interface JobDao extends DefaultDao<JobEntity> {
      * @param id id
      * @return 个数
      */
-    Integer start(String id);
+    Integer start(Long id);
 }

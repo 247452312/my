@@ -16,7 +16,7 @@ public class OrderNodeFieldValueEntity extends BaseVoEntity {
     /**
      * 对应节点属性的id
      */
-    private String nodeFieldId;
+    private Long nodeFieldId;
 
     /**
      * 真实值
@@ -24,11 +24,11 @@ public class OrderNodeFieldValueEntity extends BaseVoEntity {
     private String realValue;
 
 
-    public String getNodeFieldId() {
+    public Long getNodeFieldId() {
         return nodeFieldId;
     }
 
-    public void setNodeFieldId(String nodeFieldId) {
+    public void setNodeFieldId(Long nodeFieldId) {
         this.nodeFieldId = nodeFieldId;
     }
 

@@ -16,7 +16,7 @@ public class MsgEntity extends BaseVoEntity {
     /**
      * 目标userId
      */
-    private String target;
+    private Long target;
 
     /**
      * 标题
@@ -41,11 +41,11 @@ public class MsgEntity extends BaseVoEntity {
         this.type = type;
     }
 
-    public String getTarget() {
+    public Long getTarget() {
         return target;
     }
 
-    public void setTarget(String target) {
+    public void setTarget(Long target) {
         this.target = target;
     }
 

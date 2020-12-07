@@ -10,23 +10,23 @@ import java.util.List;
  */
 public class PutDeptsToRoleRequest extends DefaultRequest {
 
-    private String roleId;
+    private Long roleId;
 
-    private List<String> deptIds;
+    private List<Long> deptIds;
 
-    public String getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
-    public List<String> getDeptIds() {
+    public List<Long> getDeptIds() {
         return deptIds;
     }
 
-    public void setDeptIds(List<String> deptIds) {
+    public void setDeptIds(List<Long> deptIds) {
         this.deptIds = deptIds;
     }
 }

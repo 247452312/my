@@ -16,7 +16,7 @@ public class InstructionsEntity extends BaseVoEntity {
     /**
      * 被动方设备id
      */
-    private String passiveDeviceId;
+    private Long passiveDeviceId;
 
     /**
      * 传递中介(路由器 or 红外线发射器)
@@ -34,11 +34,15 @@ public class InstructionsEntity extends BaseVoEntity {
     private String instructionsDescribe;
 
 
-    public String getPassiveDeviceId() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getPassiveDeviceId() {
         return passiveDeviceId;
     }
 
-    public void setPassiveDeviceId(String passiveDeviceId) {
+    public void setPassiveDeviceId(Long passiveDeviceId) {
         this.passiveDeviceId = passiveDeviceId;
     }
 

@@ -12,13 +12,13 @@ public class GetByItemArgsRequest extends ArgsRequest {
     /**
      * 字典id
      */
-    private String dictId;
+    private Long dictId;
 
-    public String getDictId() {
+    public Long getDictId() {
         return dictId;
     }
 
-    public void setDictId(String dictId) {
+    public void setDictId(Long dictId) {
         this.dictId = dictId;
     }
 }

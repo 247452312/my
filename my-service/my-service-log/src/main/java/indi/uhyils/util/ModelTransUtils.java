@@ -39,7 +39,7 @@ public class ModelTransUtils {
         return monitorDO;
     }
 
-    public static MonitorJvmStatusDetailDO transJvmStatusInfoToMonitorJvmStatusDetailDO(JvmStatusInfo jvmStatusInfo, String fid) {
+    public static MonitorJvmStatusDetailDO transJvmStatusInfoToMonitorJvmStatusDetailDO(JvmStatusInfo jvmStatusInfo, Long fid) {
         MonitorJvmStatusDetailDO monitorJvmStatusDetailDO = new MonitorJvmStatusDetailDO();
         monitorJvmStatusDetailDO.setFid(fid);
         monitorJvmStatusDetailDO.setHeapUseMem(jvmStatusInfo.getHeapUseMem());
@@ -49,11 +49,11 @@ public class ModelTransUtils {
         return monitorJvmStatusDetailDO;
     }
 
-    public static List<MonitorJvmStatusDetailDO> transJvmStatusInfosToMonitorJvmStatusDetailDOs(List<JvmStatusInfo> jvmStatusInfos, String fid) {
+    public static List<MonitorJvmStatusDetailDO> transJvmStatusInfosToMonitorJvmStatusDetailDOs(List<JvmStatusInfo> jvmStatusInfos, Long fid) {
         return jvmStatusInfos.stream().map(jvmStatusInfo -> transJvmStatusInfoToMonitorJvmStatusDetailDO(jvmStatusInfo, fid)).collect(Collectors.toList());
     }
 
-    public static MonitorInterfaceDetailDO transInterfaceCallInfoToMonitorInterfaceDetailDO(InterfaceCallInfo interfaceCallInfo, String fid) {
+    public static MonitorInterfaceDetailDO transInterfaceCallInfoToMonitorInterfaceDetailDO(InterfaceCallInfo interfaceCallInfo, Long fid) {
         MonitorInterfaceDetailDO monitorInterfaceDetailDO = new MonitorInterfaceDetailDO();
         monitorInterfaceDetailDO.setFid(fid);
         monitorInterfaceDetailDO.setInterfaceName(interfaceCallInfo.getInterfaceName());

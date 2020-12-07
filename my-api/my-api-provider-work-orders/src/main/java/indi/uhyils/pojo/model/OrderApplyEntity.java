@@ -11,26 +11,26 @@ public class OrderApplyEntity extends BaseVoEntity {
     /**
      * 申请人id
      */
-    private String applyUserId;
+    private Long applyUserId;
 
     /**
      * 工单id
      */
-    private String orderId;
+    private Long orderId;
     /**
      * 工单节点id
      */
-    private String orderNodeId;
+    private Long orderNodeId;
 
     /**
      * 监管人id
      */
-    private String monitorUserId;
+    private Long monitorUserId;
 
     /**
      * 目标人id
      */
-    private String targetUserId;
+    private Long targetUserId;
 
     /**
      * 申请类型{@link indi.uhyils.enum_.OrderApplyTypeEnum}
@@ -43,36 +43,44 @@ public class OrderApplyEntity extends BaseVoEntity {
     private Integer status;
 
 
-    public String getApplyUserId() {
+    public Long getApplyUserId() {
         return applyUserId;
     }
 
-    public void setApplyUserId(String applyUserId) {
+    public void setApplyUserId(Long applyUserId) {
         this.applyUserId = applyUserId;
     }
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public String getOrderNodeId() {
+    public Long getOrderNodeId() {
         return orderNodeId;
     }
 
-    public void setOrderNodeId(String orderNodeId) {
+    public void setOrderNodeId(Long orderNodeId) {
         this.orderNodeId = orderNodeId;
     }
 
-    public String getMonitorUserId() {
+    public Long getMonitorUserId() {
         return monitorUserId;
     }
 
-    public void setMonitorUserId(String monitorUserId) {
+    public void setMonitorUserId(Long monitorUserId) {
         this.monitorUserId = monitorUserId;
+    }
+
+    public Long getTargetUserId() {
+        return targetUserId;
+    }
+
+    public void setTargetUserId(Long targetUserId) {
+        this.targetUserId = targetUserId;
     }
 
     public Integer getType() {
@@ -89,13 +97,5 @@ public class OrderApplyEntity extends BaseVoEntity {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getTargetUserId() {
-        return targetUserId;
-    }
-
-    public void setTargetUserId(String targetUserId) {
-        this.targetUserId = targetUserId;
     }
 }

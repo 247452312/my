@@ -12,7 +12,7 @@ public class DictItemEntity extends BaseVoEntity {
     /**
      * 字典id
      */
-    private String dictId;
+    private Long dictId;
     /**
      * 文本
      */
@@ -20,7 +20,7 @@ public class DictItemEntity extends BaseVoEntity {
     /**
      * 值
      */
-    private String value;
+    private Object value;
 
     /**
      * 描述
@@ -32,11 +32,11 @@ public class DictItemEntity extends BaseVoEntity {
      */
     private Integer sortOrder;
 
-    public String getDictId() {
+    public Long getDictId() {
         return dictId;
     }
 
-    public void setDictId(String dictId) {
+    public void setDictId(Long dictId) {
         this.dictId = dictId;
     }
 
@@ -48,11 +48,11 @@ public class DictItemEntity extends BaseVoEntity {
         this.text = text;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 

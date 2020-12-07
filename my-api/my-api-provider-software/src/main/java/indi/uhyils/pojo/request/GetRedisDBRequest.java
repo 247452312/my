@@ -13,13 +13,13 @@ public class GetRedisDBRequest extends DefaultRequest {
     /**
      * redis ID
      */
-    private String redisId;
+    private Long redisId;
 
-    public String getRedisId() {
+    public Long getRedisId() {
         return redisId;
     }
 
-    public void setRedisId(String redisId) {
+    public void setRedisId(Long redisId) {
         this.redisId = redisId;
     }
 }

@@ -14,7 +14,7 @@ public class ApiSubscribeEntity extends BaseVoEntity {
     /**
      * 订阅用户id
      */
-    private String userId;
+    private Long userId;
 
     /**
      * 发送类型 邮箱 短信,页面推送
@@ -24,7 +24,7 @@ public class ApiSubscribeEntity extends BaseVoEntity {
     /**
      * api 组的id
      */
-    private String apiGroupId;
+    private Long apiGroupId;
 
     /**
      * 时间
@@ -40,12 +40,16 @@ public class ApiSubscribeEntity extends BaseVoEntity {
         return apiSubscribeEntity;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public void setApiGroupId(Long apiGroupId) {
+        this.apiGroupId = apiGroupId;
     }
 
     public Integer getType() {
@@ -56,12 +60,8 @@ public class ApiSubscribeEntity extends BaseVoEntity {
         this.type = type;
     }
 
-    public String getApiGroupId() {
+    public Long getApiGroupId() {
         return apiGroupId;
-    }
-
-    public void setApiGroupId(String apiGroupId) {
-        this.apiGroupId = apiGroupId;
     }
 
     public String getCron() {

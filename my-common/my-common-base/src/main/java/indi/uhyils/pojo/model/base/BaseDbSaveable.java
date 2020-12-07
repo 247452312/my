@@ -16,7 +16,7 @@ public interface BaseDbSaveable extends Serializable {
      *
      * @param request 请求
      */
-    void preInsert(DefaultRequest request);
+    void preInsert(DefaultRequest request) throws Exception;
 
     /**
      * 修改前时使用的方法

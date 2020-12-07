@@ -15,18 +15,19 @@ public class SpaceEntity extends BaseVoEntity {
     /**
      * 父空间id
      */
-    private String fid;
+    private Long fid;
 
     /**
      * 空间坐标集 json point集合形式
      */
     private String points;
 
-    public String getFid() {
+
+    public Long getFid() {
         return fid;
     }
 
-    public void setFid(String fid) {
+    public void setFid(Long fid) {
         this.fid = fid;
     }
 

@@ -45,10 +45,14 @@ public class RabbitJvmStatusInfoConsumer extends DefaultConsumer {
         LogUtil.info(this, "接收到JVM状态信息");
         LogUtil.info(this, text);
         JvmStatusInfo jvmStatusInfo = JSONObject.parseObject(text, JvmStatusInfo.class);
-        String id = monitorDao.getIdByJvmUniqueMark(jvmStatusInfo.getJvmUniqueMark());
+        Long id = monitorDao.getIdByJvmUniqueMark(jvmStatusInfo.getJvmUniqueMark());
         MonitorJvmStatusDetailDO monitorJvmStatusDetailDO = ModelTransUtils.transJvmStatusInfoToMonitorJvmStatusDetailDO(jvmStatusInfo, id);
         // 保存状态信息
-        monitorJvmStatusDetailDO.preInsert(null);
+        try {
+            monitorJvmStatusDetailDO.preInsert(null);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+        }
         monitorJvmStatusDetailDao.insert(monitorJvmStatusDetailDO);
         Long time = monitorJvmStatusDetailDO.getTime();
         Double v = time + RabbitMqContent.OUT_TIME * 60 * 1000 * RabbitMqContent.OUT_TIME_PRO;

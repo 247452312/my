@@ -13,7 +13,7 @@ public class IncapacityFailOrderNodeRequest extends DefaultRequest {
     /**
      * 节点id
      */
-    private String orderNodeId;
+    private Long orderNodeId;
     /**
      * 失败原因
      */
@@ -22,13 +22,13 @@ public class IncapacityFailOrderNodeRequest extends DefaultRequest {
     /**
      * 推荐人id
      */
-    private String recommendUserId;
+    private Long recommendUserId;
 
-    public String getOrderNodeId() {
+    public Long getOrderNodeId() {
         return orderNodeId;
     }
 
-    public void setOrderNodeId(String orderNodeId) {
+    public void setOrderNodeId(Long orderNodeId) {
         this.orderNodeId = orderNodeId;
     }
 
@@ -40,11 +40,11 @@ public class IncapacityFailOrderNodeRequest extends DefaultRequest {
         this.reasons = reasons;
     }
 
-    public String getRecommendUserId() {
+    public Long getRecommendUserId() {
         return recommendUserId;
     }
 
-    public void setRecommendUserId(String recommendUserId) {
+    public void setRecommendUserId(Long recommendUserId) {
         this.recommendUserId = recommendUserId;
     }
 }

@@ -21,7 +21,7 @@ public interface OrderBaseNodeRouteDao extends DefaultDao<OrderBaseNodeRouteEnti
      * @param nodeId 节点id
      * @return
      */
-    List<OrderBaseNodeRouteEntity> getByOrderNodeId(String nodeId);
+    List<OrderBaseNodeRouteEntity> getByOrderNodeId(Long nodeId);
 
     /**
      * 根据节点id批量删除路由
@@ -31,5 +31,5 @@ public interface OrderBaseNodeRouteDao extends DefaultDao<OrderBaseNodeRouteEnti
      * @param updateDate
      * @return
      */
-    Integer deleteByNodeIds(@Param("ids") List<String> ids, String updateUser, Integer updateDate);
+    Integer deleteByNodeIds(@Param("ids") List<Long> ids, Long updateUser, Integer updateDate);
 }

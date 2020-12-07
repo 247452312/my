@@ -21,7 +21,7 @@ public interface OrderBaseNodeFieldDao extends DefaultDao<OrderBaseNodeFieldEnti
      * @param nodeId 节点id
      * @return
      */
-    List<OrderBaseNodeFieldEntity> getByOrderNodeId(String nodeId);
+    List<OrderBaseNodeFieldEntity> getByOrderNodeId(Long nodeId);
 
     /**
      * 根据节点id批量删除指定的节点属性
@@ -31,5 +31,5 @@ public interface OrderBaseNodeFieldDao extends DefaultDao<OrderBaseNodeFieldEnti
      * @param updateDate
      * @return
      */
-    Integer deleteByNodeIds(@Param("ids") List<String> ids, @Param("updateUser") String updateUser, @Param("updateDate") Integer updateDate);
+    Integer deleteByNodeIds(@Param("ids") List<Long> ids, @Param("updateUser") Long updateUser, @Param("updateDate") Integer updateDate);
 }

@@ -50,7 +50,7 @@ public abstract class BaseDefaultServiceImpl<T extends BaseVoEntity> implements 
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Integer> insert(ObjRequest<T> insert) {
+    public ServiceResult<Integer> insert(ObjRequest<T> insert) throws Exception {
         T data = insert.getData();
         data.preInsert(insert);
         int count = getDao().insert(data);

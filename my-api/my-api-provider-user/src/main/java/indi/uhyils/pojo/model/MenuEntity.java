@@ -38,7 +38,7 @@ public class MenuEntity extends BaseVoEntity {
     /**
      * 父节点id
      */
-    private String fid;
+    private Long fid;
     /**
      * 菜单名称
      */
@@ -86,11 +86,11 @@ public class MenuEntity extends BaseVoEntity {
         this.type = type;
     }
 
-    public String getFid() {
+    public Long getFid() {
         return fid;
     }
 
-    public void setFid(String fid) {
+    public void setFid(Long fid) {
         this.fid = fid;
     }
 

@@ -55,7 +55,7 @@ public class ConcurrentNumberTask {
         }
         ArrayList<DictItemEntity> data = byCode.getData();
         DictItemEntity dictItemEntity = data.get(0);
-        Long concurrentNumberSetable = Long.valueOf(dictItemEntity.getValue());
+        Long concurrentNumberSetable = Long.parseLong(dictItemEntity.getValue().toString());
 
 
         //如果已经降级过了

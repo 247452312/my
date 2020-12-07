@@ -20,7 +20,7 @@ public interface DictItemDao extends DefaultDao<DictItemEntity> {
      * @param id 字典id
      * @return 删除的个数
      */
-    Integer deleteByDictId(String id);
+    Integer deleteByDictId(Long id);
 
     /**
      * 获取某个字典的所有字典项
@@ -28,7 +28,7 @@ public interface DictItemDao extends DefaultDao<DictItemEntity> {
      * @param id 字典id
      * @return 某个字典的所有字典项
      */
-    ArrayList<DictItemEntity> getByDictId(String id);
+    ArrayList<DictItemEntity> getByDictId(Long id);
 
     /**
      * 根据字典code获取字典项

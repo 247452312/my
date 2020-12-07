@@ -6,7 +6,7 @@ package indi.uhyils.pojo.request.base;
  */
 public class IdRequest extends DefaultRequest {
 
-    private String id;
+    private Long id;
 
     public IdRequest() {
     }
@@ -15,23 +15,23 @@ public class IdRequest extends DefaultRequest {
         super(request);
     }
 
-    public static IdRequest build(String id) {
+    public static IdRequest build(Long id) {
         IdRequest idRequest = new IdRequest();
         idRequest.setId(id);
         return idRequest;
     }
 
-    public static IdRequest build(DefaultRequest request, String id) {
+    public static IdRequest build(DefaultRequest request, Long id) {
         IdRequest idRequest = new IdRequest(request);
         idRequest.setId(id);
         return idRequest;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

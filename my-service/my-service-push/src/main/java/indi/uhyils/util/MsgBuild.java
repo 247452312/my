@@ -18,7 +18,7 @@ public class MsgBuild {
      * @param type    类型
      * @return 成功的消息
      */
-    public static MsgEntity buildSuccessMsg(String userId, String title, String content, PushTypeEnum type) {
+    public static MsgEntity buildSuccessMsg(Long userId, String title, String content, PushTypeEnum type) {
         MsgEntity msgEntity = new MsgEntity();
         msgEntity.setContent(content);
         msgEntity.setSuccess(true);
@@ -37,7 +37,7 @@ public class MsgBuild {
      * @param type    类型
      * @return 成功的消息
      */
-    public static MsgEntity buildFaultMsg(String userId, String title, String content, PushTypeEnum type) {
+    public static MsgEntity buildFaultMsg(Long userId, String title, String content, PushTypeEnum type) {
         MsgEntity msgEntity = new MsgEntity();
         msgEntity.setContent(content);
         msgEntity.setSuccess(false);

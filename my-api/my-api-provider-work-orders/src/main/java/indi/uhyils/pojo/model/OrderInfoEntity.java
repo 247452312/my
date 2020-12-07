@@ -1,6 +1,5 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.enum_.OrderNodeFieldSourceEnum;
 import indi.uhyils.enum_.OrderPriorityEnum;
 import indi.uhyils.pojo.model.base.BaseVoEntity;
 
@@ -33,12 +32,12 @@ public class OrderInfoEntity extends BaseVoEntity {
     /**
      * 监管人id
      */
-    private String monitorUserId;
+    private Long monitorUserId;
 
     /**
      * 可查询人id
      */
-    private String queryUserIds;
+    private Long queryUserIds;
 
     /**
      * 运行状态{@link indi.uhyils.enum_.OrderStatusEnum}
@@ -56,46 +55,6 @@ public class OrderInfoEntity extends BaseVoEntity {
     private Integer type;
 
 
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
-
-    public String getQueryUserIds() {
-        return queryUserIds;
-    }
-
-    public void setQueryUserIds(String queryUserIds) {
-        this.queryUserIds = queryUserIds;
-    }
-
-    public Integer getLimitTime() {
-        return limitTime;
-    }
-
-    public void setLimitTime(Integer limitTime) {
-        this.limitTime = limitTime;
-    }
-
-    public Boolean getSon() {
-        return son;
-    }
-
-    public void setSon(Boolean son) {
-        this.son = son;
-    }
-
-    public String getMonitorUserId() {
-        return monitorUserId;
-    }
-
-    public void setMonitorUserId(String monitorUserId) {
-        this.monitorUserId = monitorUserId;
-    }
-
     public String getName() {
         return name;
     }
@@ -112,12 +71,52 @@ public class OrderInfoEntity extends BaseVoEntity {
         this.desc = desc;
     }
 
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public Boolean getSon() {
+        return son;
+    }
+
+    public void setSon(Boolean son) {
+        this.son = son;
+    }
+
+    public Long getMonitorUserId() {
+        return monitorUserId;
+    }
+
+    public void setMonitorUserId(Long monitorUserId) {
+        this.monitorUserId = monitorUserId;
+    }
+
+    public Long getQueryUserIds() {
+        return queryUserIds;
+    }
+
+    public void setQueryUserIds(Long queryUserIds) {
+        this.queryUserIds = queryUserIds;
+    }
+
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getLimitTime() {
+        return limitTime;
+    }
+
+    public void setLimitTime(Integer limitTime) {
+        this.limitTime = limitTime;
     }
 
     public Integer getType() {

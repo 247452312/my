@@ -19,5 +19,5 @@ public interface ApiSubscribeService extends DefaultEntityService<ApiSubscribeEn
      * @param request 订阅请求
      * @return 是否订阅成功
      */
-    ServiceResult<Boolean> subscribe(SubscribeRequest request);
+    ServiceResult<Boolean> subscribe(SubscribeRequest request) throws Exception;
 }

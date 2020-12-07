@@ -13,33 +13,33 @@ public class RoleDeptMiddle extends BaseMiddleEntity {
     /**
      * 角色id
      */
-    private String roleId;
+    private Long roleId;
 
     /**
      * 权限集id
      */
-    private String deptId;
+    private Long deptId;
 
-    public static RoleDeptMiddle build(String roleId, String deptId) {
+    public static RoleDeptMiddle build(Long roleId, Long deptId) {
         RoleDeptMiddle roleDeptMiddle = new RoleDeptMiddle();
         roleDeptMiddle.setRoleId(roleId);
         roleDeptMiddle.setDeptId(deptId);
         return roleDeptMiddle;
     }
 
-    public String getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
-    public String getDeptId() {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(String deptId) {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 }

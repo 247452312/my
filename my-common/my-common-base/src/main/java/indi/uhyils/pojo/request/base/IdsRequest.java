@@ -13,13 +13,13 @@ public class IdsRequest extends DefaultRequest {
     /**
      * id们
      */
-    private List<String> ids;
+    private List<Long> ids;
 
-    public List<String> getIds() {
+    public List<Long> getIds() {
         return ids;
     }
 
-    public void setIds(List<String> ids) {
+    public void setIds(List<Long> ids) {
         this.ids = ids;
     }
 }

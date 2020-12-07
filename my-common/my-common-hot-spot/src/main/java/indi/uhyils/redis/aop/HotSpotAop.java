@@ -228,7 +228,7 @@ public class HotSpotAop {
                 updateArgv.add(HotSpotContent.TABLES_HASH_KEY.getBytes(StandardCharsets.UTF_8));
 
                 updateKeys.add(HotSpotContent.CACHE_TYPE_MARK.getBytes(StandardCharsets.UTF_8));
-                updateArgv.add(user.getRoleId().getBytes(StandardCharsets.UTF_8));
+                updateArgv.add(user.getRoleId().toString().getBytes(StandardCharsets.UTF_8));
 
                 updateKeys.add(HotSpotContent.HOTSPOT_HASH_DATA_KEY.getBytes(StandardCharsets.UTF_8));
                 updateArgv.add(data);

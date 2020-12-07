@@ -13,7 +13,7 @@ public class SubscribeRequest extends DefaultRequest {
     /**
      * api群id
      */
-    private String apiGroup;
+    private Long apiGroup;
 
     /**
      * 发送类型
@@ -25,11 +25,11 @@ public class SubscribeRequest extends DefaultRequest {
      */
     private String cron;
 
-    public String getApiGroup() {
+    public Long getApiGroup() {
         return apiGroup;
     }
 
-    public void setApiGroup(String apiGroup) {
+    public void setApiGroup(Long apiGroup) {
         this.apiGroup = apiGroup;
     }
 

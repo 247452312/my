@@ -23,7 +23,7 @@ public interface LogService extends DefaultEntityService<LogEntity> {
      * @param request 请求
      * @return 是否成功
      */
-    ServiceResult<Boolean> pushRequestLog(ObjRequest<LogEntity> request);
+    ServiceResult<Boolean> pushRequestLog(ObjRequest<LogEntity> request) throws Exception;
 
     /**
      * 获取所有的日志类型 -- > 这个应该不用访问数据库

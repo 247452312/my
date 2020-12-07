@@ -11,7 +11,7 @@ public class PushMsgToSomeoneRequest extends DefaultRequest {
     /**
      * 接收人id
      */
-    private String userId;
+    private Long userId;
 
     /**
      * 推送方式{@link indi.uhyils.enum_.PushTypeEnum}
@@ -34,7 +34,7 @@ public class PushMsgToSomeoneRequest extends DefaultRequest {
         super(request);
     }
 
-    public static PushMsgToSomeoneRequest build(DefaultRequest request, String userId, Integer type, String title, String msg) {
+    public static PushMsgToSomeoneRequest build(DefaultRequest request, Long userId, Integer type, String title, String msg) {
         PushMsgToSomeoneRequest build = new PushMsgToSomeoneRequest(request);
         build.setUserId(userId);
         build.setType(type);
@@ -44,11 +44,11 @@ public class PushMsgToSomeoneRequest extends DefaultRequest {
 
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

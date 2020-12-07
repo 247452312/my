@@ -13,67 +13,67 @@ public class CommitOrderRequest extends DefaultRequest {
     /**
      * 工单的id
      */
-    private String orderId;
+    private Long orderId;
 
     /**
      * 真实值
      * <real_value表id,对应值>
      */
-    private Map<String, String> value;
+    private Map<Long, String> value;
 
     /**
      * 工单监管人
      */
-    private String monitorUserId;
+    private Long monitorUserId;
 
 
     /**
      * 每一步的处理人
      */
-    private Map<String, String> dealUserIds;
+    private Map<Long, Long> dealUserIds;
 
     /**
      * 每一步的抄送人
      */
-    private Map<String, String> noticeUserIds;
+    private Map<Long, Long> noticeUserIds;
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public Map<String, String> getValue() {
+    public Map<Long, String> getValue() {
         return value;
     }
 
-    public void setValue(Map<String, String> value) {
+    public void setValue(Map<Long, String> value) {
         this.value = value;
     }
 
-    public String getMonitorUserId() {
+    public Long getMonitorUserId() {
         return monitorUserId;
     }
 
-    public void setMonitorUserId(String monitorUserId) {
+    public void setMonitorUserId(Long monitorUserId) {
         this.monitorUserId = monitorUserId;
     }
 
-    public Map<String, String> getDealUserIds() {
+    public Map<Long, Long> getDealUserIds() {
         return dealUserIds;
     }
 
-    public void setDealUserIds(Map<String, String> dealUserIds) {
+    public void setDealUserIds(Map<Long, Long> dealUserIds) {
         this.dealUserIds = dealUserIds;
     }
 
-    public Map<String, String> getNoticeUserIds() {
+    public Map<Long, Long> getNoticeUserIds() {
         return noticeUserIds;
     }
 
-    public void setNoticeUserIds(Map<String, String> noticeUserIds) {
+    public void setNoticeUserIds(Map<Long, Long> noticeUserIds) {
         this.noticeUserIds = noticeUserIds;
     }
 }

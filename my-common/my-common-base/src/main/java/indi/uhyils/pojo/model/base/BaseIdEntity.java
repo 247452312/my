@@ -1,10 +1,10 @@
 package indi.uhyils.pojo.model.base;
 
 import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.util.MD5Util;
+import indi.uhyils.util.IdUtil;
+import indi.uhyils.util.SpringUtil;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * 以id为主键的类都应该继承这个类
@@ -16,14 +16,14 @@ public class BaseIdEntity implements BaseDbSaveable {
     /**
      * id 一定是uuid的格式
      */
-    private String id;
+    private Long id;
 
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -31,9 +31,9 @@ public class BaseIdEntity implements BaseDbSaveable {
      * 插入之前执行方法，需要手动调用
      */
     @Override
-    public void preInsert(DefaultRequest request) {
-        String uuid = UUID.randomUUID().toString();
-        this.id = MD5Util.MD5Encode(uuid);
+    public void preInsert(DefaultRequest request) throws Exception {
+        IdUtil bean = SpringUtil.getBean(IdUtil.class);
+        id = bean.newId();
     }
 
     @Override
@@ -43,12 +43,8 @@ public class BaseIdEntity implements BaseDbSaveable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         BaseIdEntity that = (BaseIdEntity) o;
         return Objects.equals(id, that.id);
     }

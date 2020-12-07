@@ -17,7 +17,7 @@ public class BaseVoEntity extends BaseIdEntity {
     /**
      * 创建人
      */
-    private String createUser;
+    private Long createUser;
 
     /**
      * 最后更新时间
@@ -27,7 +27,7 @@ public class BaseVoEntity extends BaseIdEntity {
     /**
      * 更新人
      */
-    private String updateUser;
+    private Long updateUser;
     /**
      * 删除标志 默认为0
      */
@@ -42,7 +42,7 @@ public class BaseVoEntity extends BaseIdEntity {
      * 插入之前执行方法，需要手动调用
      */
     @Override
-    public void preInsert(DefaultRequest request) {
+    public void preInsert(DefaultRequest request) throws Exception {
         // 这里生成了id
         super.preInsert(request);
         this.createDate = new Long(System.currentTimeMillis() / 1000).intValue();
@@ -71,11 +71,11 @@ public class BaseVoEntity extends BaseIdEntity {
         this.createDate = createDate;
     }
 
-    public String getCreateUser() {
+    public Long getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(String createUser) {
+    public void setCreateUser(Long createUser) {
         this.createUser = createUser;
     }
 
@@ -87,11 +87,11 @@ public class BaseVoEntity extends BaseIdEntity {
         this.updateDate = updateDate;
     }
 
-    public String getUpdateUser() {
+    public Long getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(String updateUser) {
+    public void setUpdateUser(Long updateUser) {
         this.updateUser = updateUser;
     }
 

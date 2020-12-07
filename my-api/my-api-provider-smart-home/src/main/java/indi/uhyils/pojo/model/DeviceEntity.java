@@ -21,7 +21,7 @@ public class DeviceEntity extends BaseVoEntity {
     /**
      * 空间表id(代表此空间的定位)
      */
-    private String spaceId;
+    private Long spaceId;
 
     /**
      * 设备类型 1->观察设备 2->接受设备 3->观察接受设备
@@ -47,11 +47,12 @@ public class DeviceEntity extends BaseVoEntity {
         this.name = name;
     }
 
-    public String getSpaceId() {
+
+    public Long getSpaceId() {
         return spaceId;
     }
 
-    public void setSpaceId(String spaceId) {
+    public void setSpaceId(Long spaceId) {
         this.spaceId = spaceId;
     }
 

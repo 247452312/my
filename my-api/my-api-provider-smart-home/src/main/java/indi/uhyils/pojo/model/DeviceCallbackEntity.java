@@ -15,7 +15,7 @@ public class DeviceCallbackEntity extends BaseVoEntity {
     /**
      * 有回调的设备id
      */
-    private String deviceId;
+    private Long deviceId;
 
     /**
      * 回调url
@@ -27,11 +27,15 @@ public class DeviceCallbackEntity extends BaseVoEntity {
      */
     private String meaning;
 
-    public String getDeviceId() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(String deviceId) {
+    public void setDeviceId(Long deviceId) {
         this.deviceId = deviceId;
     }
 

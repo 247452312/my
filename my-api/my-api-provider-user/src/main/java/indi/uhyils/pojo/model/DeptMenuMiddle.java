@@ -13,37 +13,37 @@ import java.util.stream.Collectors;
  */
 public class DeptMenuMiddle extends BaseMiddleEntity {
 
-    private String deptId;
-    private String menuId;
+    private Long deptId;
+    private Long menuId;
 
-    public static DeptMenuMiddle build(String deptId, String menuId) {
+    public static DeptMenuMiddle build(Long deptId, Long menuId) {
         DeptMenuMiddle deptMenuMiddle = new DeptMenuMiddle();
         deptMenuMiddle.setDeptId(deptId);
         deptMenuMiddle.setMenuId(menuId);
         return deptMenuMiddle;
     }
 
-    public static List<DeptMenuMiddle> build(String deptId, List<String> menuIds) {
+    public static List<DeptMenuMiddle> build(Long deptId, List<Long> menuIds) {
         return menuIds.stream().map(t -> build(deptId, t)).collect(Collectors.toList());
     }
 
-    public static List<DeptMenuMiddle> build(List<String> deptIds, String menuId) {
+    public static List<DeptMenuMiddle> build(List<Long> deptIds, Long menuId) {
         return deptIds.stream().map(t -> build(t, menuId)).collect(Collectors.toList());
     }
 
-    public String getDeptId() {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(String deptId) {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 
-    public String getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(String menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 }

@@ -19,5 +19,5 @@ public interface DictDao extends DefaultDao<DictEntity> {
      * @param code code
      * @return
      */
-    String getIdByCode(String code);
+    Long getIdByCode(String code);
 }

@@ -11,18 +11,18 @@ public class FailOrderNodeRequest extends DefaultRequest {
     /**
      * 工单节点失败
      */
-    private String orderNodeId;
+    private Long orderNodeId;
 
     /**
      * 失败原因
      */
     private String msg;
 
-    public String getOrderNodeId() {
+    public Long getOrderNodeId() {
         return orderNodeId;
     }
 
-    public void setOrderNodeId(String orderNodeId) {
+    public void setOrderNodeId(Long orderNodeId) {
         this.orderNodeId = orderNodeId;
     }
 

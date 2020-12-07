@@ -99,7 +99,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
     @Override
-    public ServiceResult<Integer> insert(ObjRequest<UserEntity> insert) {
+    public ServiceResult<Integer> insert(ObjRequest<UserEntity> insert) throws Exception {
         UserEntity data = insert.getData();
         data.preInsert(insert);
         data.setPassword(MD5Util.MD5Encode(data.getPassword()));
@@ -122,7 +122,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         String random = tokenInfoString.substring(8, 10);
 
 
-        String userId = tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length());
+        long userId = Long.parseLong(tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length()));
 
         TokenInfo tokenInfo = new TokenInfo();
         tokenInfo.setDay(Integer.parseInt(day));
@@ -186,7 +186,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     public ServiceResult<Boolean> logout(DefaultRequest request) {
         Boolean result = redisPoolHandle.removeByKey(request.getToken());
         if (result) {
-            result = redisPoolHandle.removeByKey(request.getUser().getId());
+            result = redisPoolHandle.removeByKey(request.getUser().getId().toString());
         }
         return ServiceResult.buildSuccessResult("登出结束", result, request);
     }
@@ -195,7 +195,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     public ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request) {
         ArrayList<UserEntity> all = dao.getAll();
         all.forEach(t -> {
-            String roleId = t.getRoleId();
+            Long roleId = t.getRoleId();
             RoleEntity userRoleById = dao.getUserRoleById(roleId);
             t.setRole(userRoleById);
         });
@@ -212,7 +212,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     public ServiceResult<String> updatePassword(UpdatePasswordRequest request) {
         String oldPassword = request.getOldPassword();
         UserEntity user = request.getUser();
-        String userId = user.getId();
+        Long userId = user.getId();
         Integer passwordIsTrue = dao.checkUserPassword(userId, MD5Util.MD5Encode(oldPassword));
         // 不为1 说明不正确
         if (passwordIsTrue != 1) {
@@ -249,7 +249,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
 
-    private String getToken(String userId) {
+    private String getToken(Long userId) {
         StringBuilder sb = new StringBuilder(26 + salt.length());
 
         //生成日期部分 8位
@@ -262,8 +262,16 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         //两位随机数 两位
         sb.append(randomNum);
 
-        // 用户id 16位
-        sb.append(userId);
+        // 用户id 19位
+        String str = userId.toString();
+        long i = 19L - str.length();
+        // long 最大19位 如果不够 最高位补0
+        StringBuilder sbTemp = new StringBuilder(19);
+        for (int j = 0; j < i; j++) {
+            sbTemp.append("0");
+        }
+        sbTemp.append(str);
+        sb.append(sbTemp);
         //盐 x位
         sb.append(salt);
 

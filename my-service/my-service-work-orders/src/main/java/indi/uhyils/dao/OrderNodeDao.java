@@ -22,7 +22,7 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
      * @param nodeIds
      * @return
      */
-    List<OrderNodeEntity> getByIds(Set<String> nodeIds);
+    List<OrderNodeEntity> getByIds(Set<Long> nodeIds);
 
     /**
      * 将工单节点置为失败
@@ -32,7 +32,7 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
      * @param orderResultType 工单结果类型
      * @param msg             失败信息
      */
-    void makeOrderFault(@Param("orderNodeId") String orderNodeId, @Param("orderStatus") Integer orderStatus, @Param("orderResultType") Integer orderResultType, @Param("msg") String msg);
+    void makeOrderFault(@Param("orderNodeId") Long orderNodeId, @Param("orderStatus") Integer orderStatus, @Param("orderResultType") Integer orderResultType, @Param("msg") String msg);
 
     /**
      * 根据上一个节点和结果获取下一节点
@@ -41,7 +41,7 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
      * @param resultId
      * @return
      */
-    OrderNodeEntity getNextNodeByNodeAndResult(@Param("nodeId") String nodeId, @Param("resultId") String resultId);
+    OrderNodeEntity getNextNodeByNodeAndResult(@Param("nodeId") Long nodeId, @Param("resultId") Long resultId);
 
     /**
      * 根据id批量删除
@@ -51,5 +51,5 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
      * @param updateDate
      * @return
      */
-    Integer deleteByIds(List<String> ids, String updateUser, Integer updateDate);
+    Integer deleteByIds(List<Long> ids, Long updateUser, Integer updateDate);
 }

@@ -13,7 +13,7 @@ public class SendPageEntity extends BaseVoEntity {
     /**
      * 用户
      */
-    private String userId;
+    private Long userId;
     /**
      * 是否观看
      */
@@ -29,11 +29,11 @@ public class SendPageEntity extends BaseVoEntity {
      */
     private String title;
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

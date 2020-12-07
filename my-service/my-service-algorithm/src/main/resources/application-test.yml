@@ -46,8 +46,15 @@ redis:
     hosts: 192.168.1.101:26380;192.168.1.101:26381;192.168.1.101:26382
     password: uhyils
     sentinels: mymaster
+
 rabbit:
   host: 192.168.1.101
   port: 5672
   username: uhyils
   password: 123456
+
+id:
+  organization:
+    # 机构代码
+    code: 1
+

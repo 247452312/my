@@ -9,7 +9,7 @@ import indi.uhyils.pojo.model.OrderNodeRouteEntity;
 public class OrderNodeRouteBuilder {
 
 
-    public static OrderNodeRouteEntity build(String prevNodeId, String resultId, String nextNodeId) {
+    public static OrderNodeRouteEntity build(Long prevNodeId, Long resultId, Long nextNodeId) {
         OrderNodeRouteEntity orderNodeRouteEntity = new OrderNodeRouteEntity();
         orderNodeRouteEntity.setPrevNodeId(prevNodeId);
         orderNodeRouteEntity.setResultId(resultId);

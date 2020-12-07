@@ -38,7 +38,7 @@ public class TokenInfo implements Serializable {
     /**
      * 用户id
      */
-    private String userId;
+    private Long userId;
 
     /**
      * 是否超时
@@ -85,12 +85,11 @@ public class TokenInfo implements Serializable {
         this.random = random;
     }
 
-
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

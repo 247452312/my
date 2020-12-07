@@ -67,5 +67,5 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * @param request 权限集
      * @return 添加的权限
      */
-    ServiceResult<Integer> initPowerInProStart(DefaultRequest request);
+    ServiceResult<Integer> initPowerInProStart(DefaultRequest request) throws Exception;
 }

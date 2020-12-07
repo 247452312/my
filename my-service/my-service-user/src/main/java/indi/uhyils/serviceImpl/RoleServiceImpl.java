@@ -52,11 +52,11 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept", "sys_role_dept"})
-    public ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleRequest request) {
+    public ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleRequest request) throws Exception {
 
-        String roleId = request.getRoleId();
+        Long roleId = request.getRoleId();
         dao.deleteRoleDeptMiddleByRoleId(roleId);
-        for (String deptId : request.getDeptIds()) {
+        for (Long deptId : request.getDeptIds()) {
             RoleDeptMiddle build = RoleDeptMiddle.build(roleId, deptId);
             build.preInsert(request);
             dao.insertRoleDept(build);

@@ -44,7 +44,7 @@ public class UserEntity extends BaseVoEntity {
     /**
      * 用户角色
      */
-    private String roleId;
+    private Long roleId;
 
     /**
      * 用户角色(实体)
@@ -76,14 +76,13 @@ public class UserEntity extends BaseVoEntity {
         this.password = password;
     }
 
-    public String getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
-
 
     public RoleEntity getRole() {
         return role;

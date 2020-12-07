@@ -32,12 +32,12 @@ public interface Content {
     /**
      * 超级管理员的id
      */
-    String ADMIN_USER_ID = "49ba59abbe56e057";
+    Long ADMIN_USER_ID = 0L;
 
     /**
      * 超级管理员的角色id
      */
-    String ADMIN_ROLE_ID = "8c77ce2fa1a0c960";
+    Long ADMIN_ROLE_ID = 0L;
 
     /**
      * 登录过期分钟
@@ -104,6 +104,21 @@ public interface Content {
     Long TIME_MASK = (1L << TIME_BIT) - 1L;
     /*时间end*/
 
+    /*序列位start*/
+    /**
+     * 序列位位数
+     */
+    Long SEQUENCE_BIT = 10L;
+    /**
+     * 序列位位移
+     */
+    Long SEQUENCE_DISPLACEMENT = TIME_DISPLACEMENT - SEQUENCE_BIT;
+    /**
+     * 序列位掩码
+     */
+    Long SEQUENCE_MASK = (1L << SEQUENCE_BIT) - 1L;
+    /*序列位end*/
+
     /*分布式编码start*/
     /**
      * 分布式编码位数
@@ -112,27 +127,14 @@ public interface Content {
     /**
      * 分布式编码位移
      */
-    Long DISTRIBUTED_DISPLACEMENT = TIME_DISPLACEMENT - DISTRIBUTED_BIT;
+    Long DISTRIBUTED_DISPLACEMENT = SEQUENCE_DISPLACEMENT - DISTRIBUTED_BIT;
     /**
      * 分布式编码掩码
      */
     Long DISTRIBUTED_MASK = (1L << DISTRIBUTED_BIT) - 1L;
     /*分布式编码end*/
 
-    /*随机位start*/
-    /**
-     * 随机位位数
-     */
-    Long RANDOM_BIT = 10L;
-    /**
-     * 随机位位移
-     */
-    Long RANDOM_DISPLACEMENT = DISTRIBUTED_DISPLACEMENT - RANDOM_BIT;
-    /**
-     * 随机位掩码
-     */
-    Long RANDOM_MASK = (1L << RANDOM_BIT) - 1L;
-    /*随机位end*/
+
     /*预留5位其他业务,请自行添加*/
 
 }

@@ -93,7 +93,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_power"})
-    public ServiceResult<Integer> initPowerInProStart(DefaultRequest request) {
+    public ServiceResult<Integer> initPowerInProStart(DefaultRequest request) throws Exception {
         List<PowerSimpleEntity> powersSingle;
         try {
             powersSingle = ApiPowerInitUtil.getPowersSingle();

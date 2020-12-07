@@ -53,7 +53,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Integer> insert(ObjRequest<JobEntity> insert) {
+    public ServiceResult<Integer> insert(ObjRequest<JobEntity> insert) throws Exception {
         JobEntity data = insert.getData();
         data.preInsert(insert);
         int count = dao.insert(data);
@@ -85,7 +85,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> pause(IdRequest request) throws ClassNotFoundException {
-        String id = request.getId();
+        Long id = request.getId();
         JobEntity byId = dao.getById(id);
         byId.setUserEntity(userEntity);
         dao.pause(id);
@@ -99,7 +99,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> start(IdRequest request) {
-        String id = request.getId();
+        Long id = request.getId();
         JobEntity byId = dao.getById(id);
         byId.setUserEntity(userEntity);
         dao.start(id);

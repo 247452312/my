@@ -22,7 +22,7 @@ public interface DefaultDao<T extends Serializable> extends BaseDao {
      * @param id id
      * @return 实例
      */
-    T getById(String id);
+    T getById(Long id);
 
     /**
      * 根据某些字段获取实例(不分页)

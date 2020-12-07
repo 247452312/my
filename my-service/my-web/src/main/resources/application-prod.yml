@@ -44,3 +44,8 @@ rabbit:
   username: uhyils
   password: 123456
 
+
+id:
+  organization:
+    # 机构代码
+    code: 1

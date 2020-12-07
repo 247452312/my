@@ -17,7 +17,7 @@ public class OrderBaseInfoEntity extends BaseVoEntity {
     /**
      * 可查询人id
      */
-    private String queryUserIds;
+    private Long queryUserIds;
 
     /**
      * 运行时限(分钟)
@@ -32,7 +32,7 @@ public class OrderBaseInfoEntity extends BaseVoEntity {
     /**
      * 监管人id
      */
-    private String monitorUserId;
+    private Long monitorUserId;
 
     /**
      * 工单名称
@@ -58,11 +58,11 @@ public class OrderBaseInfoEntity extends BaseVoEntity {
         this.priority = priority;
     }
 
-    public String getQueryUserIds() {
+    public Long getQueryUserIds() {
         return queryUserIds;
     }
 
-    public void setQueryUserIds(String queryUserIds) {
+    public void setQueryUserIds(Long queryUserIds) {
         this.queryUserIds = queryUserIds;
     }
 
@@ -82,11 +82,11 @@ public class OrderBaseInfoEntity extends BaseVoEntity {
         this.son = son;
     }
 
-    public String getMonitorUserId() {
+    public Long getMonitorUserId() {
         return monitorUserId;
     }
 
-    public void setMonitorUserId(String monitorUserId) {
+    public void setMonitorUserId(Long monitorUserId) {
         this.monitorUserId = monitorUserId;
     }
 

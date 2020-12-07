@@ -15,7 +15,7 @@ public class OrderNodeEntity extends BaseVoEntity {
     /**
      * 基础表id
      */
-    private String baseInfoId;
+    private Long baseInfoId;
 
     /**
      * 节点名称
@@ -30,12 +30,12 @@ public class OrderNodeEntity extends BaseVoEntity {
     /**
      * 处理人id
      */
-    private String runDealUserId;
+    private Long runDealUserId;
 
     /**
      * 抄送人id
      */
-    private String noticeUserId;
+    private Long noticeUserId;
 
     /**
      * 处理类型 {@link OrderNodeRunTypeEnum}
@@ -60,22 +60,22 @@ public class OrderNodeEntity extends BaseVoEntity {
     /**
      * 节点初始化事件id
      */
-    private String initApiId;
+    private Long initApiId;
 
     /**
      * 节点执行事件id
      */
-    private String runApiId;
+    private Long runApiId;
 
     /**
      * 保存执行事件id
      */
-    private String saveApiId;
+    private Long saveApiId;
 
     /**
      * 流转事件的id
      */
-    private String transApiId;
+    private Long transApiId;
 
     /**
      * 处理结果类型 {@link OrderNodeResultTypeEnum}
@@ -85,7 +85,7 @@ public class OrderNodeEntity extends BaseVoEntity {
     /**
      * 处理结果id
      */
-    private String resultId;
+    private Long resultId;
 
 
     /**
@@ -100,100 +100,12 @@ public class OrderNodeEntity extends BaseVoEntity {
     private String suggest;
 
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getSaveApiId() {
-        return saveApiId;
-    }
-
-    public void setSaveApiId(String saveApiId) {
-        this.saveApiId = saveApiId;
-    }
-
-    public Integer getResultType() {
-        return resultType;
-    }
-
-    public void setResultType(Integer resultType) {
-        this.resultType = resultType;
-    }
-
-    public String getInitApiId() {
-        return initApiId;
-    }
-
-    public void setInitApiId(String initApiId) {
-        this.initApiId = initApiId;
-    }
-
-    public Integer getRunType() {
-        return runType;
-    }
-
-    public void setRunType(Integer runType) {
-        this.runType = runType;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getSync() {
-        return sync;
-    }
-
-    public void setSync(Integer sync) {
-        this.sync = sync;
-    }
-
-    public Integer getLimitTime() {
-        return limitTime;
-    }
-
-    public void setLimitTime(Integer limitTime) {
-        this.limitTime = limitTime;
-    }
-
-    public String getResultId() {
-        return resultId;
-    }
-
-    public void setResultId(String resultId) {
-        this.resultId = resultId;
-    }
-
-    public String getNoticeUserId() {
-        return noticeUserId;
-    }
-
-    public void setNoticeUserId(String noticeUserId) {
-        this.noticeUserId = noticeUserId;
-    }
-
-    public String getBaseInfoId() {
+    public Long getBaseInfoId() {
         return baseInfoId;
     }
 
-    public void setBaseInfoId(String baseInfoId) {
+    public void setBaseInfoId(Long baseInfoId) {
         this.baseInfoId = baseInfoId;
-    }
-
-    public String getRunDealUserId() {
-        return runDealUserId;
-    }
-
-    public void setRunDealUserId(String runDealUserId) {
-        this.runDealUserId = runDealUserId;
     }
 
     public String getName() {
@@ -204,14 +116,6 @@ public class OrderNodeEntity extends BaseVoEntity {
         this.name = name;
     }
 
-    public String getRunApiId() {
-        return runApiId;
-    }
-
-    public void setRunApiId(String runApiId) {
-        this.runApiId = runApiId;
-    }
-
     public String getDesc() {
         return desc;
     }
@@ -220,12 +124,108 @@ public class OrderNodeEntity extends BaseVoEntity {
         this.desc = desc;
     }
 
-    public String getTransApiId() {
+    public Long getRunDealUserId() {
+        return runDealUserId;
+    }
+
+    public void setRunDealUserId(Long runDealUserId) {
+        this.runDealUserId = runDealUserId;
+    }
+
+    public Long getNoticeUserId() {
+        return noticeUserId;
+    }
+
+    public void setNoticeUserId(Long noticeUserId) {
+        this.noticeUserId = noticeUserId;
+    }
+
+    public Integer getRunType() {
+        return runType;
+    }
+
+    public void setRunType(Integer runType) {
+        this.runType = runType;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getLimitTime() {
+        return limitTime;
+    }
+
+    public void setLimitTime(Integer limitTime) {
+        this.limitTime = limitTime;
+    }
+
+    public Long getInitApiId() {
+        return initApiId;
+    }
+
+    public void setInitApiId(Long initApiId) {
+        this.initApiId = initApiId;
+    }
+
+    public Long getRunApiId() {
+        return runApiId;
+    }
+
+    public void setRunApiId(Long runApiId) {
+        this.runApiId = runApiId;
+    }
+
+    public Long getSaveApiId() {
+        return saveApiId;
+    }
+
+    public void setSaveApiId(Long saveApiId) {
+        this.saveApiId = saveApiId;
+    }
+
+    public Long getTransApiId() {
         return transApiId;
     }
 
-    public void setTransApiId(String transApiId) {
+    public void setTransApiId(Long transApiId) {
         this.transApiId = transApiId;
+    }
+
+    public Integer getResultType() {
+        return resultType;
+    }
+
+    public void setResultType(Integer resultType) {
+        this.resultType = resultType;
+    }
+
+    public Long getResultId() {
+        return resultId;
+    }
+
+    public void setResultId(Long resultId) {
+        this.resultId = resultId;
+    }
+
+    public Integer getSync() {
+        return sync;
+    }
+
+    public void setSync(Integer sync) {
+        this.sync = sync;
     }
 
     public String getSuggest() {

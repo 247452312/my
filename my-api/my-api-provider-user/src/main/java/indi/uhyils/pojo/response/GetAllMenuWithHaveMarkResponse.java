@@ -13,7 +13,7 @@ public class GetAllMenuWithHaveMarkResponse implements Serializable {
     /**
      * 菜单id
      */
-    private String menuId;
+    private Long menuId;
     /**
      * 菜单名称
      */
@@ -24,11 +24,11 @@ public class GetAllMenuWithHaveMarkResponse implements Serializable {
      */
     private Boolean mark;
 
-    public String getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(String menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 

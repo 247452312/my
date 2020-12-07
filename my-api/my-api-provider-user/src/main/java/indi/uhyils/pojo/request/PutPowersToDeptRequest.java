@@ -12,23 +12,23 @@ import java.util.List;
  */
 public class PutPowersToDeptRequest extends DefaultRequest {
 
-    private String deptId;
+    private Long deptId;
 
-    private List<String> powerIds;
+    private List<Long> powerIds;
 
-    public String getDeptId() {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(String deptId) {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 
-    public List<String> getPowerIds() {
+    public List<Long> getPowerIds() {
         return powerIds;
     }
 
-    public void setPowerIds(List<String> powerIds) {
+    public void setPowerIds(List<Long> powerIds) {
         this.powerIds = powerIds;
     }
 }

@@ -20,7 +20,7 @@ public interface OrderNodeResultTypeDao extends DefaultDao<OrderNodeResultTypeEn
      * @param orderNodeId
      * @return
      */
-    List<OrderNodeResultTypeEntity> getByOrderNodeId(String orderNodeId);
+    List<OrderNodeResultTypeEntity> getByOrderNodeId(Long orderNodeId);
 
     /**
      * 根据节点id删除所有结果类型
@@ -30,5 +30,5 @@ public interface OrderNodeResultTypeDao extends DefaultDao<OrderNodeResultTypeEn
      * @param updateDate
      * @return
      */
-    Integer deleteByNodeIds(List<String> ids, String updateUser, Integer updateDate);
+    Integer deleteByNodeIds(List<Long> ids, Long updateUser, Integer updateDate);
 }

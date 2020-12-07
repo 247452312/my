@@ -15,7 +15,7 @@ import indi.uhyils.util.SpringUtil;
  * @date 文件创建日期 2020年06月29日 08时22分
  */
 public class SendPage {
-    public static Boolean send(String userId, String title, String sendContent) {
+    public static Boolean send(Long userId, String title, String sendContent) throws Exception {
         // 获取dao
         SendPageDao bean = SpringUtil.getBean(SendPageDao.class);
         // 获取要插入的bean

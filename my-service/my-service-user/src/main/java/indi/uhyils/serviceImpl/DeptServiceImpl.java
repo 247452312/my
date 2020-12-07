@@ -17,6 +17,7 @@ import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.DeptService;
+import indi.uhyils.util.LogUtil;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -44,10 +45,10 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
-    public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) {
+    public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) throws Exception {
         dao.deleteDeptPowerMiddleByDeptId(request.getDeptId());
-        String deptId = request.getDeptId();
-        for (String powerId : request.getPowerIds()) {
+        Long deptId = request.getDeptId();
+        for (Long powerId : request.getPowerIds()) {
             DeptPowerMiddle middle = DeptPowerMiddle.build(deptId, powerId);
             middle.preInsert(request);
             dao.insertDeptPower(middle);
@@ -67,12 +68,16 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public ServiceResult<Boolean> putMenusToDept(PutMenusToDeptsRequest request) {
         List<DeptMenuMiddle> build = DeptMenuMiddle.build(request.getDeptId(), request.getMenuIds());
-        String deptId = request.getDeptId();
-        List<String> deptIds = new ArrayList<>(1);
+        Long deptId = request.getDeptId();
+        List<Long> deptIds = new ArrayList<>(1);
         deptIds.add(deptId);
         menuDao.deleteDeptMenuByDeptIds(deptIds);
         build.forEach(t -> {
-            t.preInsert(request);
+            try {
+                t.preInsert(request);
+            } catch (Exception e) {
+                LogUtil.error(this, e);
+            }
             dao.insertDeptMenu(t);
         });
         return ServiceResult.buildSuccessResult("赋权成功", true, request);
@@ -82,13 +87,17 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public ServiceResult<Boolean> putDeptsToMenu(PutDeptsToMenuRequest request) {
-        String menuId = request.getMenuId();
-        List<String> menuIds = new ArrayList<>(1);
+        Long menuId = request.getMenuId();
+        List<Long> menuIds = new ArrayList<>(1);
         menuIds.add(menuId);
         menuDao.deleteDeptMenuByMenuIds(menuIds);
         List<DeptMenuMiddle> build = DeptMenuMiddle.build(request.getDeptIds(), request.getMenuId());
         build.forEach(t -> {
-            t.preInsert(request);
+            try {
+                t.preInsert(request);
+            } catch (Exception e) {
+                LogUtil.error(this, e);
+            }
             dao.insertDeptMenu(t);
         });
         return ServiceResult.buildSuccessResult("赋权成功", true, request);

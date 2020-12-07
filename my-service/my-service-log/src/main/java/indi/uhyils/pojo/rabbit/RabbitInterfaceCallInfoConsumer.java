@@ -45,9 +45,13 @@ public class RabbitInterfaceCallInfoConsumer extends DefaultConsumer {
         LogUtil.info(this, "接收到接口调用信息");
         LogUtil.info(this, text);
         InterfaceCallInfo interfaceCallInfo = JSONObject.parseObject(text, InterfaceCallInfo.class);
-        String id = monitorDao.getIdByJvmUniqueMark(interfaceCallInfo.getJvmUniqueMark());
+        Long id = monitorDao.getIdByJvmUniqueMark(interfaceCallInfo.getJvmUniqueMark());
         MonitorInterfaceDetailDO monitorInterfaceDetailDO = ModelTransUtils.transInterfaceCallInfoToMonitorInterfaceDetailDO(interfaceCallInfo, id);
-        monitorInterfaceDetailDO.preInsert(null);
+        try {
+            monitorInterfaceDetailDO.preInsert(null);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+        }
         monitorInterfaceDetailDao.insert(monitorInterfaceDetailDO);
     }
 }

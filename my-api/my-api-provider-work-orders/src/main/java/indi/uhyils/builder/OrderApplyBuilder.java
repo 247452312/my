@@ -17,7 +17,7 @@ public class OrderApplyBuilder {
      * @param orderNode
      * @return
      */
-    public static OrderApplyEntity buildTransApplyByOrderNode(OrderNodeEntity orderNode, String monitorUserId) {
+    public static OrderApplyEntity buildTransApplyByOrderNode(OrderNodeEntity orderNode, Long monitorUserId) {
         OrderApplyEntity orderApplyEntity = new OrderApplyEntity();
         orderApplyEntity.setApplyUserId(orderNode.getNoticeUserId());
         orderApplyEntity.setOrderId(orderNode.getBaseInfoId());

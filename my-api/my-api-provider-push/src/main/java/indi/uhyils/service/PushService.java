@@ -19,7 +19,7 @@ public interface PushService extends BaseService {
      * @param request cron请求
      * @return 是否成功
      */
-    ServiceResult<Boolean> push(CronRequest request);
+    ServiceResult<Boolean> push(CronRequest request) throws Exception;
 
     /**
      * 主动向某人推送一条消息
@@ -27,5 +27,5 @@ public interface PushService extends BaseService {
      * @param request
      * @return
      */
-    ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request);
+    ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request) throws Exception;
 }

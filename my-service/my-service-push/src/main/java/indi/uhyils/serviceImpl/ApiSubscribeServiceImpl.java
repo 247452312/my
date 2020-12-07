@@ -31,7 +31,7 @@ public class ApiSubscribeServiceImpl extends BaseDefaultServiceImpl<ApiSubscribe
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Boolean> subscribe(SubscribeRequest request) {
+    public ServiceResult<Boolean> subscribe(SubscribeRequest request) throws Exception {
         ApiSubscribeEntity entity = ApiSubscribeEntity.build(request);
         /*查重-> 同一个用户,同一个api就算做重复*/
         int repeat = dao.checkSubscribeRepeat(entity);

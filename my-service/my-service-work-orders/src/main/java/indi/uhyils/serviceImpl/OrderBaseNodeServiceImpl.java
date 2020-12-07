@@ -40,7 +40,7 @@ public class OrderBaseNodeServiceImpl extends BaseDefaultServiceImpl<OrderBaseNo
     @Override
     public ServiceResult<Boolean> deleteByIds(IdsRequest request) {
         Integer updateDate = new Long(System.currentTimeMillis() / 1000).intValue();
-        String updateUser = request.getUser().getId();
+        Long updateUser = request.getUser().getId();
 
         /*删除属性*/
         boolean deleteFieldByNodeIds = orderBaseNodeFieldDao.deleteByNodeIds(request.getIds(), updateUser, updateDate) != 0;

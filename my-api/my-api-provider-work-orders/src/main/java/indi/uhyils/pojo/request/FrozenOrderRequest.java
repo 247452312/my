@@ -11,14 +11,14 @@ public class FrozenOrderRequest extends DefaultRequest {
     /**
      * 工单id
      */
-    private String orderId;
+    private Long orderId;
 
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 }

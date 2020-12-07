@@ -13,34 +13,33 @@ public class DeptPowerMiddle extends BaseMiddleEntity {
     /**
      * 权限集id
      */
-    private String deptId;
+    private Long deptId;
 
     /**
      * 权限id
      */
-    private String powerId;
+    private Long powerId;
 
-    public static DeptPowerMiddle build(String deptId, String powerId) {
+    public static DeptPowerMiddle build(Long deptId, Long powerId) {
         DeptPowerMiddle deptPowerMiddle = new DeptPowerMiddle();
         deptPowerMiddle.setDeptId(deptId);
         deptPowerMiddle.setPowerId(powerId);
         return deptPowerMiddle;
     }
 
-    public String getDeptId() {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(String deptId) {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 
-    public String getPowerId() {
+    public Long getPowerId() {
         return powerId;
     }
 
-    public void setPowerId(String powerId) {
+    public void setPowerId(Long powerId) {
         this.powerId = powerId;
     }
-
 }

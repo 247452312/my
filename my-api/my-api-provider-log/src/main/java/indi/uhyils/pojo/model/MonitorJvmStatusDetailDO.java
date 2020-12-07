@@ -16,7 +16,7 @@ import indi.uhyils.pojo.model.base.BaseIdEntity;
  */
 public class MonitorJvmStatusDetailDO extends BaseIdEntity {
 
-    private String fid;
+    private Long fid;
 
     /**
      * 已使用总内存
@@ -38,11 +38,11 @@ public class MonitorJvmStatusDetailDO extends BaseIdEntity {
      */
     private Long time;
 
-    public String getFid() {
+    public Long getFid() {
         return fid;
     }
 
-    public void setFid(String fid) {
+    public void setFid(Long fid) {
         this.fid = fid;
     }
 

@@ -18,7 +18,7 @@ public class GetRedisKeysRequest extends DefaultRequest {
     /**
      * redis Id
      */
-    private String redisId;
+    private Long redisId;
 
     public Integer getDb() {
         return db;
@@ -28,11 +28,11 @@ public class GetRedisKeysRequest extends DefaultRequest {
         this.db = db;
     }
 
-    public String getRedisId() {
+    public Long getRedisId() {
         return redisId;
     }
 
-    public void setRedisId(String redisId) {
+    public void setRedisId(Long redisId) {
         this.redisId = redisId;
     }
 }

@@ -40,7 +40,7 @@ public interface DefaultEntityService<T extends BaseVoEntity> extends BaseServic
      * @param insert 插入信息,要求是entity
      * @return 插入条数
      */
-    ServiceResult<Integer> insert(ObjRequest<T> insert);
+    ServiceResult<Integer> insert(ObjRequest<T> insert) throws Exception;
 
     /**
      * 修改

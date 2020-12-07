@@ -14,7 +14,7 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
     /**
      * 节点id
      */
-    private String baseOrderNodeId;
+    private Long baseOrderNodeId;
 
     /**
      * 属性名称
@@ -59,7 +59,7 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
     /**
      * 如果是单选,多选,下拉框,那么具体的值去对应id中去找
      */
-    private String relationId;
+    private Long relationId;
 
 
     public Integer getValueType() {
@@ -110,13 +110,6 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
         this.name = name;
     }
 
-    public String getBaseOrderNodeId() {
-        return baseOrderNodeId;
-    }
-
-    public void setBaseOrderNodeId(String baseOrderNodeId) {
-        this.baseOrderNodeId = baseOrderNodeId;
-    }
 
     public String getDesc() {
         return desc;
@@ -134,11 +127,19 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
         this.dataSources = dataSources;
     }
 
-    public String getRelationId() {
+    public Long getBaseOrderNodeId() {
+        return baseOrderNodeId;
+    }
+
+    public void setBaseOrderNodeId(Long baseOrderNodeId) {
+        this.baseOrderNodeId = baseOrderNodeId;
+    }
+
+    public Long getRelationId() {
         return relationId;
     }
 
-    public void setRelationId(String relationId) {
+    public void setRelationId(Long relationId) {
         this.relationId = relationId;
     }
 

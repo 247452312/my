@@ -13,15 +13,15 @@ public class CellAlgorithmRequest extends DefaultRequest {
     /**
      * 算法id
      */
-    private String algorithmId;
+    private Long algorithmId;
     /**
      * 此次请求id
      */
-    private String requestId;
+    private Long requestId;
     /**
      * 上一个请求的id
      */
-    private String lastRequestId;
+    private Long lastRequestId;
     /**
      * 请求体
      */
@@ -31,27 +31,27 @@ public class CellAlgorithmRequest extends DefaultRequest {
      */
     private String base64;
 
-    public String getAlgorithmId() {
+    public Long getAlgorithmId() {
         return algorithmId;
     }
 
-    public void setAlgorithmId(String algorithmId) {
+    public void setAlgorithmId(Long algorithmId) {
         this.algorithmId = algorithmId;
     }
 
-    public String getRequestId() {
+    public Long getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(String requestId) {
+    public void setRequestId(Long requestId) {
         this.requestId = requestId;
     }
 
-    public String getLastRequestId() {
+    public Long getLastRequestId() {
         return lastRequestId;
     }
 
-    public void setLastRequestId(String lastRequestId) {
+    public void setLastRequestId(Long lastRequestId) {
         this.lastRequestId = lastRequestId;
     }
 

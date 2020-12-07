@@ -15,7 +15,7 @@ public class DeviceArgEntity extends BaseVoEntity {
     /**
      * 设备id
      */
-    private String deviceId;
+    private Long deviceId;
 
     /**
      * 与水平夹角(下为负 上为正)
@@ -37,11 +37,15 @@ public class DeviceArgEntity extends BaseVoEntity {
      */
     private Object canRotate;
 
-    public String getDeviceId() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(String deviceId) {
+    public void setDeviceId(Long deviceId) {
         this.deviceId = deviceId;
     }
 

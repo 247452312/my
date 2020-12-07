@@ -14,7 +14,7 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
     /**
      * 节点id
      */
-    private String baseOrderId;
+    private Long baseOrderId;
 
     /**
      * 属性名称
@@ -59,38 +59,14 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
     /**
      * 如果是单选,多选,下拉框,那么具体的值去对应id中去找
      */
-    private String relationId;
+    private Long relationId;
 
-    public Integer getValueType() {
-        return valueType;
+    public Long getBaseOrderId() {
+        return baseOrderId;
     }
 
-    public void setValueType(Integer valueType) {
-        this.valueType = valueType;
-    }
-
-    public Boolean getEdit() {
-        return edit;
-    }
-
-    public void setEdit(Boolean edit) {
-        this.edit = edit;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Boolean getEmpty() {
-        return empty;
-    }
-
-    public void setEmpty(Boolean empty) {
-        this.empty = empty;
+    public void setBaseOrderId(Long baseOrderId) {
+        this.baseOrderId = baseOrderId;
     }
 
     public String getName() {
@@ -99,14 +75,6 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getBaseOrderId() {
-        return baseOrderId;
-    }
-
-    public void setBaseOrderId(String baseOrderId) {
-        this.baseOrderId = baseOrderId;
     }
 
     public String getDesc() {
@@ -125,6 +93,38 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
         this.defaultValue = defaultValue;
     }
 
+    public Boolean getEmpty() {
+        return empty;
+    }
+
+    public void setEmpty(Boolean empty) {
+        this.empty = empty;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Boolean getEdit() {
+        return edit;
+    }
+
+    public void setEdit(Boolean edit) {
+        this.edit = edit;
+    }
+
+    public Integer getValueType() {
+        return valueType;
+    }
+
+    public void setValueType(Integer valueType) {
+        this.valueType = valueType;
+    }
+
     public Integer getDataSources() {
         return dataSources;
     }
@@ -133,11 +133,11 @@ public class OrderBaseNodeFieldEntity extends BaseVoEntity {
         this.dataSources = dataSources;
     }
 
-    public String getRelationId() {
+    public Long getRelationId() {
         return relationId;
     }
 
-    public void setRelationId(String relationId) {
+    public void setRelationId(Long relationId) {
         this.relationId = relationId;
     }
 }

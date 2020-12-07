@@ -5,7 +5,10 @@
 
 
     <sql id="columnList">
-        a.id,
+        a
+        .
+        id
+        ,
         a.create_date as 'createDate',
         a.create_user as createUser,
         a.update_date as 'updateDate',
@@ -71,7 +74,8 @@
                              accuracy,
                              in_param_size,
                              out_param_size)
-        values (#{id,
+        values (
+        #{id},
         #{createDate},
         #{createUser},
         #{updateDate},

@@ -21,28 +21,28 @@ public class InsertOrderResponse implements Serializable {
     /**
      * 新生成的工单的id
      */
-    private String newOrderId;
+    private Long newOrderId;
     /**
      * 工单监管人
      */
-    private String monitorUserId;
+    private Long monitorUserId;
 
 
     /**
      * 每一步的处理人
      */
-    private Map<String, String> dealUserIds;
+    private Map<Long, Long> dealUserIds;
 
     /**
      * 每一步的抄送人
      */
-    private Map<String, String> noticeUserIds;
+    private Map<Long, Long> noticeUserIds;
 
 
     public InsertOrderResponse() {
     }
 
-    public InsertOrderResponse(String newOrderId, List<OrderNodeFieldEntity> orderNodeField, String monitorUserId, Map<String, String> dealUserIds, Map<String, String> noticeUserIds) {
+    public InsertOrderResponse(Long newOrderId, List<OrderNodeFieldEntity> orderNodeField, Long monitorUserId, Map<Long, Long> dealUserIds, Map<Long, Long> noticeUserIds) {
         this.newOrderId = newOrderId;
         this.orderNodeField = orderNodeField;
         this.monitorUserId = monitorUserId;
@@ -50,7 +50,7 @@ public class InsertOrderResponse implements Serializable {
         this.noticeUserIds = noticeUserIds;
     }
 
-    public static InsertOrderResponse build(String newOrderId, List<OrderNodeFieldEntity> orderNodeField, String monitorUserId, Map<String, String> dealUserIds, Map<String, String> noticeUserIds) {
+    public static InsertOrderResponse build(Long newOrderId, List<OrderNodeFieldEntity> orderNodeField, Long monitorUserId, Map<Long, Long> dealUserIds, Map<Long, Long> noticeUserIds) {
         InsertOrderResponse build = new InsertOrderResponse();
         build.setNewOrderId(newOrderId);
         build.setOrderNodeField(orderNodeField);
@@ -61,43 +61,43 @@ public class InsertOrderResponse implements Serializable {
 
     }
 
-    public String getNewOrderId() {
-        return newOrderId;
-    }
-
-    public void setNewOrderId(String newOrderId) {
-        this.newOrderId = newOrderId;
-    }
-
-    public String getMonitorUserId() {
-        return monitorUserId;
-    }
-
-    public void setMonitorUserId(String monitorUserId) {
-        this.monitorUserId = monitorUserId;
-    }
-
-    public Map<String, String> getDealUserIds() {
-        return dealUserIds;
-    }
-
-    public void setDealUserIds(Map<String, String> dealUserIds) {
-        this.dealUserIds = dealUserIds;
-    }
-
-    public Map<String, String> getNoticeUserIds() {
-        return noticeUserIds;
-    }
-
-    public void setNoticeUserIds(Map<String, String> noticeUserIds) {
-        this.noticeUserIds = noticeUserIds;
-    }
-
     public List<OrderNodeFieldEntity> getOrderNodeField() {
         return orderNodeField;
     }
 
     public void setOrderNodeField(List<OrderNodeFieldEntity> orderNodeField) {
         this.orderNodeField = orderNodeField;
+    }
+
+    public Long getNewOrderId() {
+        return newOrderId;
+    }
+
+    public void setNewOrderId(Long newOrderId) {
+        this.newOrderId = newOrderId;
+    }
+
+    public Long getMonitorUserId() {
+        return monitorUserId;
+    }
+
+    public void setMonitorUserId(Long monitorUserId) {
+        this.monitorUserId = monitorUserId;
+    }
+
+    public Map<Long, Long> getDealUserIds() {
+        return dealUserIds;
+    }
+
+    public void setDealUserIds(Map<Long, Long> dealUserIds) {
+        this.dealUserIds = dealUserIds;
+    }
+
+    public Map<Long, Long> getNoticeUserIds() {
+        return noticeUserIds;
+    }
+
+    public void setNoticeUserIds(Map<Long, Long> noticeUserIds) {
+        this.noticeUserIds = noticeUserIds;
     }
 }

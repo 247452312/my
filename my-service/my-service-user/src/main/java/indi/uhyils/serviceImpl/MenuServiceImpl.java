@@ -18,7 +18,6 @@ import indi.uhyils.pojo.response.info.MenuLogoInfo;
 import indi.uhyils.service.MenuService;
 import indi.uhyils.util.ContentUtil;
 import indi.uhyils.util.LogUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -47,7 +46,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     /**
      * 最高一级菜单的fid
      */
-    private static final String NONE = "";
+    private static final Long NONE = 0L;
 
     /**
      * 首页下一步计划展示 字典code
@@ -88,10 +87,10 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         String indexIframe1 = ContentUtil.getContentVarByTitle(indexIframe, "indexIframe");
         assert indexIframe1 != null;
         List<MenuEntity> byIFrame = dao.getByIFrame(Integer.parseInt(indexIframe1));
-        Map<String, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
+        Map<Long, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
         Set<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
-        if (user.getRole() == null && StringUtils.isEmpty(user.getRoleId())) {
+        if (user.getRole() == null && user.getRoleId() == null) {
             return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
         }
         List<DeptEntity> depts;
@@ -100,9 +99,9 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         } else {
             depts = user.getRole().getDepts();
         }
-        List<String> deptIds = depts.stream().map(DeptEntity::getId).collect(Collectors.toList());
+        List<Long> deptIds = depts.stream().map(DeptEntity::getId).collect(Collectors.toList());
         // 准备获取权限内的子节点
-        List<String> level;
+        List<Long> level;
         // 超级管理员 就是牛逼
         if (user.getUserName().equals(ADMIN_USER_NAME)) {
             level = byIFrame.stream().map(MenuEntity::getId).collect(Collectors.toList());
@@ -111,7 +110,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         }
 
         /* 2. 只取出来有用的 */
-        for (String id : level) {
+        for (Long id : level) {
             if (map.containsKey(id)) {
                 MenuEntity e = map.get(id);
                 set.add(e);
@@ -135,31 +134,32 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     @ReadWriteMark(tables = {"sys_menu", "sys_content", "sys_dept", "sys_role_dept"})
     public ServiceResult<MenuHtmlTreeResponse> getMenuTree(GetByIFrameAndDeptsRequest request) {
         /* 1. 全取出来 */
-        List<MenuEntity> byIFrame = dao.getByIFrame(1);
-        Map<String, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
+        List<MenuEntity> byIFrame = dao.getByIFrame(request.getiFrame());
+        Map<Long, MenuEntity> map = byIFrame.stream().collect(Collectors.toMap(MenuEntity::getId, Function.identity(), (k1, k2) -> k1));
         HashSet<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
-        if (user.getRole() == null && StringUtils.isEmpty(user.getRoleId())) {
+        if (user.getRole() == null && user.getRoleId() == null) {
             return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
         }
         List<DeptEntity> depts;
-        if (user.getRole() == null) {
-            depts = userDao.getUserDeptsByRoleId(user.getRoleId());
-        } else {
-            depts = user.getRole().getDepts();
-        }
-        List<String> deptIds = depts.stream().map(DeptEntity::getId).collect(Collectors.toList());
+
         // 准备获取权限内的子节点
-        List<String> level;
+        List<Long> level;
         // 超级管理员 就是牛逼
         if (user.getUserName().equals(ADMIN_USER_NAME)) {
             level = byIFrame.stream().map(MenuEntity::getId).collect(Collectors.toList());
         } else {
+            if (user.getRole() == null) {
+                depts = userDao.getUserDeptsByRoleId(user.getRoleId());
+            } else {
+                depts = user.getRole().getDepts();
+            }
+            List<Long> deptIds = depts.stream().map(DeptEntity::getId).collect(Collectors.toList());
             level = dao.getByDeptIds(deptIds);
         }
 
         /* 2. 只取出来有用的 */
-        for (String id : level) {
+        for (Long id : level) {
             if (map.containsKey(id)) {
                 MenuEntity e = map.get(id);
                 set.add(e);
@@ -178,7 +178,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
            isolation事务隔离级别 Isolation.DEFAULT默认隔离级别 */
 
         /* 1.删除所有对应子节点 */
-        String menuId = req.getId();
+        Long menuId = req.getId();
         MenuEntity menuEntity = dao.getById(menuId);
         if (menuEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null, req);
@@ -188,7 +188,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         HashSet<MenuEntity> menuEntityHashSet = new HashSet<>();
         menuEntityHashSet.add(menuEntity);
         addWillDeleteChild(menuEntity, menuEntityHashSet, byIFrame);
-        List<String> menuIds = menuEntityHashSet.stream().map(MenuEntity::getId).collect(Collectors.toList());
+        List<Long> menuIds = menuEntityHashSet.stream().map(MenuEntity::getId).collect(Collectors.toList());
         dao.deleteByIds(menuIds);
         /* 2.删除连接表节点 */
         dao.deleteDeptMenuByMenuIds(menuIds);
@@ -206,10 +206,10 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict", "sys_dict_item"})
     public ServiceResult<QuickStartResponse> getQuickStartResponse(DefaultRequest request) {
         // TODO 快捷入口应该去缓存里
-        String idByCode = dictDao.getIdByCode(QUICK_START_CODE);
+        Long idByCode = dictDao.getIdByCode(QUICK_START_CODE);
         ArrayList<DictItemEntity> byDictId = dictItemDao.getByDictId(idByCode);
         ArrayList<MenuEntity> collect = (ArrayList<MenuEntity>) byDictId.stream().map(t -> {
-            String menuId = t.getValue();
+            Long menuId = (Long) t.getValue();
             MenuEntity byId = dao.getById(menuId);
             if (byId.getType() == false) {
                 try {
@@ -248,9 +248,9 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
      * @param set 已有节点集
      * @param map 全部节点
      */
-    private void getParents(MenuEntity e, Set<MenuEntity> set, Map<String, MenuEntity> map) {
-        String fid = e.getFid();
-        if (StringUtils.isEmpty(fid)) {
+    private void getParents(MenuEntity e, Set<MenuEntity> set, Map<Long, MenuEntity> map) {
+        Long fid = e.getFid();
+        if (fid == null || fid == 0L) {
             return;
         }
         MenuEntity father = map.get(fid);

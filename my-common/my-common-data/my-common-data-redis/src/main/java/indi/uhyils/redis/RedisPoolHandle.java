@@ -65,8 +65,8 @@ public class RedisPoolHandle {
             jedis.append(token, value);
             //半个小时
             jedis.expire(token, 60 * Content.LOGIN_TIME_OUT_MIN);
-            jedis.append(user.getId(), token);
-            jedis.expire(user.getId(), 60 * Content.LOGIN_TIME_OUT_MIN);
+            jedis.append(user.getId().toString(), token);
+            jedis.expire(user.getId().toString(), 60 * Content.LOGIN_TIME_OUT_MIN);
 
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
@@ -91,7 +91,7 @@ public class RedisPoolHandle {
             }
             UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
             jedis.expire(token, 60 * Content.LOGIN_TIME_OUT_MIN);
-            jedis.expire(userEntity.getId(), 60 * Content.LOGIN_TIME_OUT_MIN);
+            jedis.expire(userEntity.getId().toString(), 60 * Content.LOGIN_TIME_OUT_MIN);
             return userEntity;
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
@@ -122,10 +122,10 @@ public class RedisPoolHandle {
 
     }
 
-    public Boolean haveUserId(String userId) {
+    public Boolean haveUserId(Long userId) {
         Redisable jedis = redisPool.getJedis();
         try {
-            Boolean exists = jedis.exists(userId);
+            Boolean exists = jedis.exists(userId.toString());
             return exists;
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
@@ -136,11 +136,12 @@ public class RedisPoolHandle {
 
     }
 
-    public boolean removeUserById(String userId) {
+    public boolean removeUserById(Long userId) {
         Redisable jedis = redisPool.getJedis();
         try {
-            String token = jedis.get(userId);
-            Long del = jedis.del(userId, token);
+            String key = userId.toString();
+            String token = jedis.get(key);
+            Long del = jedis.del(key, token);
             return del != 0;
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
@@ -158,8 +159,8 @@ public class RedisPoolHandle {
                 return true;
             }
             UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
-            String id = userEntity.getId();
-            Long del = jedis.del(id, token);
+            Long id = userEntity.getId();
+            Long del = jedis.del(id.toString(), token);
             return del != 0;
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);

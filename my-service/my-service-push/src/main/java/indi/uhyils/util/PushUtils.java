@@ -30,7 +30,7 @@ public class PushUtils {
      * @param sendContent 发送内容
      * @return
      */
-    public static Boolean emailPush(UserEntity userEntity, String title, String sendContent) {
+    public static Boolean emailPush(UserEntity userEntity, String title, String sendContent) throws Exception {
         String mail = userEntity.getMail();
         Boolean send = SendMail.send(mail, title, sendContent);
         saveMsg(userEntity, title, sendContent, PushTypeEnum.EMAIL, send);
@@ -47,8 +47,8 @@ public class PushUtils {
      * @param sendContent 发送内容
      * @return
      */
-    public static Boolean pagePush(UserEntity userEntity, String title, String sendContent) {
-        String userId = userEntity.getId();
+    public static Boolean pagePush(UserEntity userEntity, String title, String sendContent) throws Exception {
+        Long userId = userEntity.getId();
         Boolean send = SendPage.send(userId, title, sendContent);
         saveMsg(userEntity, title, sendContent, PushTypeEnum.PAGE, send);
         LogUtil.info(PushUtils.class, "向" + userEntity.getNickName() + " 页面推送");
@@ -82,7 +82,7 @@ public class PushUtils {
      * @param sendContent 内容
      * @param type        类型
      */
-    private static void saveMsg(UserEntity userEntity, String title, String sendContent, PushTypeEnum type, Boolean success) {
+    private static void saveMsg(UserEntity userEntity, String title, String sendContent, PushTypeEnum type, Boolean success) throws Exception {
         MsgDao bean = SpringUtil.getBean(MsgDao.class);
         MsgEntity t;
         if (success) {

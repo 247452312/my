@@ -34,7 +34,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * @param request 角色id 和 权限集们
      * @return 是否成功
      */
-    ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleRequest request);
+    ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleRequest request) throws Exception;
 
     /**
      * 删除 -> 真删. 不是假删

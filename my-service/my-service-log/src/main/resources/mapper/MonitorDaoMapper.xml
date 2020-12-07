@@ -105,7 +105,7 @@
     </update>
 
     <select id="getIdByJvmUniqueMark" parameterType="indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark"
-            resultType="java.lang.String">
+            resultType="java.lang.Long">
         select id
         from sys_log_monitor
         where service_name = #{serviceName}

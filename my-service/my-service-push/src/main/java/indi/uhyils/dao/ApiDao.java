@@ -21,7 +21,7 @@ public interface ApiDao extends DefaultDao<ApiEntity> {
      * @param apiGroup api群名称
      * @return apis
      */
-    List<ApiEntity> getGroupByGroupId(String apiGroup);
+    List<ApiEntity> getGroupByGroupId(Long apiGroup);
 
     /**
      * 获取全部api

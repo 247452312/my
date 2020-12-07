@@ -46,7 +46,7 @@ public class JvmServiceImpl implements JvmService {
         List<MonitorDO> monitorDOList = monitorDao.getOnlineService(System.currentTimeMillis());
         Integer onlineServiceCount = monitorDOList.size();
         /* 获取服务运行质量(以外关闭的系统,内存溢出风险的系统) */
-        HashMap<String, List<ServiceQualityEnum>> map = new HashMap<>(monitorDOList.size());
+        HashMap<Long, List<ServiceQualityEnum>> map = new HashMap<>(monitorDOList.size());
         for (MonitorDO monitorDO : monitorDOList) {
             List<MonitorJvmStatusDetailDO> list = monitorJvmStatusDetailDao.getByMonitorId(monitorDO.getId());
             List<ServiceQualityEnum> analysis = JvmStatusAnalysisUtil.analysis(monitorDO, list);

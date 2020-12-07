@@ -59,7 +59,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict", "sys_dict_item"})
     public ServiceResult<Integer> delete(IdRequest idRequest) {
-        String id = idRequest.getId();
+        Long id = idRequest.getId();
         DictEntity dictEntity = dao.getById(id);
         if (dictEntity == null) {
             return ServiceResult.buildFailedResult("查无此字典", null, idRequest);
@@ -89,7 +89,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
-    public ServiceResult<Boolean> insertItem(ObjRequest<DictItemEntity> request) {
+    public ServiceResult<Boolean> insertItem(ObjRequest<DictItemEntity> request) throws Exception {
         DictItemEntity data = request.getData();
         data.preInsert(request);
         dictItemDao.insert(data);
@@ -115,7 +115,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
     public ServiceResult<Boolean> deleteItem(IdRequest request) {
-        String itemId = request.getId();
+        Long itemId = request.getId();
         DictItemEntity dictItemEntity = dictItemDao.getById(itemId);
         dictItemEntity.preUpdate(request);
         dictItemEntity.setDeleteFlag(true);
@@ -168,7 +168,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public ServiceResult<VersionInfoResponse> getVersionInfoResponse(DefaultRequest request) {
         // TODO 版本信息应该加入在缓存里
-        String dictId = dao.getIdByCode(VERSION_CODE);
+        Long dictId = dao.getIdByCode(VERSION_CODE);
         ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
         VersionInfoResponse build = VersionInfoResponse.build(infos);
         return ServiceResult.buildSuccessResult("查询成功", build, request);
@@ -178,7 +178,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public ServiceResult<LastPlanResponse> getLastPlanResponse(DefaultRequest request) {
         // TODO 下一步计划应该在缓存里
-        String dictId = dao.getIdByCode(LAST_PLAN_CODE);
+        Long dictId = dao.getIdByCode(LAST_PLAN_CODE);
         ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
         LastPlanResponse build = LastPlanResponse.build(infos);
         return ServiceResult.buildSuccessResult("查询成功", build, request);
@@ -186,10 +186,10 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
-    public ServiceResult<ArrayList<String>> getAllMenuIcon(DefaultRequest request) {
-        String dictId = dao.getIdByCode(MENU_ICON_CLASS_CODE);
+    public ServiceResult<ArrayList<Object>> getAllMenuIcon(DefaultRequest request) {
+        Long dictId = dao.getIdByCode(MENU_ICON_CLASS_CODE);
         ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
-        ArrayList<String> collect = (ArrayList<String>) infos.stream().map(DictItemEntity::getValue).collect(Collectors.toList());
+        ArrayList<Object> collect = (ArrayList<Object>) infos.stream().map(DictItemEntity::getValue).collect(Collectors.toList());
         return ServiceResult.buildSuccessResult("查询成功", collect, request);
     }
 

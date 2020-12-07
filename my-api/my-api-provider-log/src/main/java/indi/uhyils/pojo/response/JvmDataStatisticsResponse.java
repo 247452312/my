@@ -29,7 +29,7 @@ public class JvmDataStatisticsResponse implements Serializable {
     /**
      * 服务运行质量详情
      */
-    private HashMap<String, List<ServiceQualityEnum>> serviceMap;
+    private HashMap<Long, List<ServiceQualityEnum>> serviceMap;
     /**
      * 前台请求次数
      */
@@ -40,7 +40,7 @@ public class JvmDataStatisticsResponse implements Serializable {
      */
     private Integer interfaceCellCount;
 
-    public static JvmDataStatisticsResponse build(Integer serviceOnlineCount, HashMap<String, List<ServiceQualityEnum>> serviceMap, Integer webRequestCount, Integer interfaceCellCount) {
+    public static JvmDataStatisticsResponse build(Integer serviceOnlineCount, HashMap<Long, List<ServiceQualityEnum>> serviceMap, Integer webRequestCount, Integer interfaceCellCount) {
         JvmDataStatisticsResponse jvmDataStatisticsResponse = new JvmDataStatisticsResponse();
         jvmDataStatisticsResponse.setServiceOnlineCount(serviceOnlineCount);
         jvmDataStatisticsResponse.setServiceMap(serviceMap);
@@ -48,7 +48,7 @@ public class JvmDataStatisticsResponse implements Serializable {
         jvmDataStatisticsResponse.setInterfaceCellCount(interfaceCellCount);
         // 默认是好的
         boolean serviceOperationQuality = true;
-        for (Map.Entry<String, List<ServiceQualityEnum>> entity : serviceMap.entrySet()) {
+        for (Map.Entry<Long, List<ServiceQualityEnum>> entity : serviceMap.entrySet()) {
             List<ServiceQualityEnum> value = entity.getValue();
             if (value.size() != 1 || !value.get(0).equals(ServiceQualityEnum.GOOD)) {
                 serviceOperationQuality = false;
@@ -83,11 +83,11 @@ public class JvmDataStatisticsResponse implements Serializable {
         this.webRequestCount = webRequestCount;
     }
 
-    public HashMap<String, List<ServiceQualityEnum>> getServiceMap() {
+    public HashMap<Long, List<ServiceQualityEnum>> getServiceMap() {
         return serviceMap;
     }
 
-    public void setServiceMap(HashMap<String, List<ServiceQualityEnum>> serviceMap) {
+    public void setServiceMap(HashMap<Long, List<ServiceQualityEnum>> serviceMap) {
         this.serviceMap = serviceMap;
     }
 

@@ -18,7 +18,7 @@ public interface KproService extends BaseService {
      * 项目生成接口
      *
      * @param request 项目生成请求
-     * @return 请求
+     * @return map<文件名,内容>
      */
     ServiceResult<HashMap<String, String>> projectGenerate(ProjectGenerateRequest request);
 }

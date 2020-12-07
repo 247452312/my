@@ -20,12 +20,12 @@ public class ResponseEntity extends BaseVoEntity {
     /**
      * 触发场景id
      */
-    private String tiggerSceneId;
+    private Long tiggerSceneId;
 
     /**
      * 指令id
      */
-    private String instructionsId;
+    private Long instructionsId;
 
     /**
      * 1->人工设置
@@ -43,19 +43,20 @@ public class ResponseEntity extends BaseVoEntity {
         this.triggerType = triggerType;
     }
 
-    public String getTiggerSceneId() {
+
+    public Long getTiggerSceneId() {
         return tiggerSceneId;
     }
 
-    public void setTiggerSceneId(String tiggerSceneId) {
+    public void setTiggerSceneId(Long tiggerSceneId) {
         this.tiggerSceneId = tiggerSceneId;
     }
 
-    public String getInstructionsId() {
+    public Long getInstructionsId() {
         return instructionsId;
     }
 
-    public void setInstructionsId(String instructionsId) {
+    public void setInstructionsId(Long instructionsId) {
         this.instructionsId = instructionsId;
     }
 

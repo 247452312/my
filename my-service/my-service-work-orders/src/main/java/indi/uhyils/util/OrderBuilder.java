@@ -33,7 +33,7 @@ public class OrderBuilder implements Serializable {
         return orderInfoEntity;
     }
 
-    public static OrderNodeEntity transBaseNode2Node(OrderBaseNodeEntity node, String infoId) {
+    public static OrderNodeEntity transBaseNode2Node(OrderBaseNodeEntity node, Long infoId) {
         OrderNodeEntity nodeEntity = new OrderNodeEntity();
         nodeEntity.setSaveApiId(node.getSaveApiId());
         nodeEntity.setInitApiId(node.getInitApiId());
@@ -53,7 +53,7 @@ public class OrderBuilder implements Serializable {
     }
 
 
-    public static OrderNodeFieldEntity transBaseField2Field(OrderBaseNodeFieldEntity orderBaseNodeFieldEntity, String nodeId) {
+    public static OrderNodeFieldEntity transBaseField2Field(OrderBaseNodeFieldEntity orderBaseNodeFieldEntity, Long nodeId) {
         OrderNodeFieldEntity orderNodeFieldEntity = new OrderNodeFieldEntity();
         orderNodeFieldEntity.setValueType(orderBaseNodeFieldEntity.getValueType());
         orderNodeFieldEntity.setEdit(orderBaseNodeFieldEntity.getEdit());
@@ -68,7 +68,7 @@ public class OrderBuilder implements Serializable {
         return orderNodeFieldEntity;
     }
 
-    public static OrderNodeResultTypeEntity transBaseResultType2ResultType(OrderBaseNodeResultTypeEntity orderBaseNodeResultTypeEntity, String nodeId) {
+    public static OrderNodeResultTypeEntity transBaseResultType2ResultType(OrderBaseNodeResultTypeEntity orderBaseNodeResultTypeEntity, Long nodeId) {
         OrderNodeResultTypeEntity orderNodeResultTypeEntity = new OrderNodeResultTypeEntity();
         orderNodeResultTypeEntity.setBaseNodeId(nodeId);
         orderNodeResultTypeEntity.setDealResultName(orderBaseNodeResultTypeEntity.getDealResultName());
@@ -76,7 +76,7 @@ public class OrderBuilder implements Serializable {
         return orderNodeResultTypeEntity;
     }
 
-    public static OrderNodeRouteEntity transBaseRoute2Route(OrderBaseNodeRouteEntity orderBaseNodeRouteEntity, String nodeId) {
+    public static OrderNodeRouteEntity transBaseRoute2Route(OrderBaseNodeRouteEntity orderBaseNodeRouteEntity, Long nodeId) {
         OrderNodeRouteEntity orderNodeRouteEntity = new OrderNodeRouteEntity();
         orderNodeRouteEntity.setPrevNodeId(nodeId);
         orderNodeRouteEntity.setNextNodeId(orderBaseNodeRouteEntity.getNextNodeId());

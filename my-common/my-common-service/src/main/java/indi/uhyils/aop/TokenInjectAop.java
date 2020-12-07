@@ -147,7 +147,7 @@ public class TokenInjectAop {
      * @param methodName    权限方法名
      * @return 是否有权限
      */
-    private ServiceResult<JSONObject> checkUserHavePower(UserEntity userEntity, String id, String interfaceName, String methodName, String token, DefaultRequest request) {
+    private ServiceResult<JSONObject> checkUserHavePower(UserEntity userEntity, Long id, String interfaceName, String methodName, String token, DefaultRequest request) {
         CheckUserHavePowerRequest build = CheckUserHavePowerRequest.build(interfaceName, methodName, id);
         build.setToken(token);
         build.setRequestLink(request.getRequestLink());

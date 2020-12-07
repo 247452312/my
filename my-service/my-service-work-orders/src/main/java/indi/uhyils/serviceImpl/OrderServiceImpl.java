@@ -21,6 +21,7 @@ import indi.uhyils.pojo.temp.CheckNodeFieldResultTemporary;
 import indi.uhyils.pojo.temp.InitApiRequestTemporary;
 import indi.uhyils.service.OrderService;
 import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.OrderBuilder;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,9 +77,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderNodeFieldValueDao orderNodeFieldValueDao;
 
     @Override
-    public ServiceResult<InsertOrderResponse> insertOrder(IdRequest request) {
+    public ServiceResult<InsertOrderResponse> insertOrder(IdRequest request) throws Exception {
         //插入order基础信息
-        String baseInfoId = request.getId();
+        Long baseInfoId = request.getId();
         OrderBaseInfoEntity baseInfo = orderBaseInfoDao.getById(baseInfoId);
         OrderInfoEntity orderInfoEntity = OrderBuilder.transBaseInfo2Info(baseInfo);
         orderInfoEntity.preInsert(request);
@@ -87,17 +88,17 @@ public class OrderServiceImpl implements OrderService {
         // 获取基础表对应的所有节点
         List<OrderBaseNodeEntity> nodeList = orderBaseNodeDao.getNoHiddenByOrderId(baseInfoId);
 
-        String infoId = orderInfoEntity.getId();
+        Long infoId = orderInfoEntity.getId();
         // 保存所有的路由, 路由比较特殊 需要改node的id
         List<OrderNodeRouteEntity> allRouteEntities = new ArrayList<>();
         // 报存所有的新老node对应关系
-        Map<String, String> oldToNew = new HashMap<>(nodeList.size());
+        Map<Long, Long> oldToNew = new HashMap<>(nodeList.size());
         // 创建之后的首节点的属性(返回给前台用)
         ArrayList<OrderNodeFieldEntity> orderNodeField = new ArrayList<>();
         // 每个节点的处理人(返回给前台用)
-        HashMap<String, String> dealUserIds = new HashMap<>(nodeList.size());
+        HashMap<Long, Long> dealUserIds = new HashMap<>(nodeList.size());
         // 每个节点的抄送人(返回给前台用)
-        HashMap<String, String> noticeUserIds = new HashMap<>(nodeList.size());
+        HashMap<Long, Long> noticeUserIds = new HashMap<>(nodeList.size());
 
         //获取基础节点对应的所有信息(属性,结果类型,路由) 并转换成实例信息插入实例表
         nodeList.forEach(node -> {
@@ -106,7 +107,11 @@ public class OrderServiceImpl implements OrderService {
 
             //转换节点本身
             OrderNodeEntity orderNodeEntity = OrderBuilder.transBaseNode2Node(node, infoId);
-            orderNodeEntity.preInsert(request);
+            try {
+                orderNodeEntity.preInsert(request);
+            } catch (Exception e) {
+                LogUtil.error(this, e);
+            }
             orderNodeDao.insert(orderNodeEntity);
 
             // 填充默认处理人与抄送人
@@ -119,16 +124,24 @@ public class OrderServiceImpl implements OrderService {
             List<OrderBaseNodeResultTypeEntity> baseNodeResultTypeEntity = orderBaseNodeResultTypeDao.getByOrderNodeId(node.getId());
             List<OrderBaseNodeRouteEntity> baseRouteEntity = orderBaseNodeRouteDao.getByOrderNodeId(node.getId());
 
-            String id = orderNodeEntity.getId();
+            Long id = orderNodeEntity.getId();
             baseNodeFieldEntity.stream().map(field -> OrderBuilder.transBaseField2Field(field, id)).forEach(field -> {
                 if (isStartNode) {
                     orderNodeField.add(field);
                 }
-                field.preInsert(request);
+                try {
+                    field.preInsert(request);
+                } catch (Exception e) {
+                    LogUtil.error(this, e);
+                }
                 orderNodeFieldDao.insert(field);
             });
             baseNodeResultTypeEntity.stream().map(resultType -> OrderBuilder.transBaseResultType2ResultType(resultType, id)).forEach(resultType -> {
-                resultType.preInsert(request);
+                try {
+                    resultType.preInsert(request);
+                } catch (Exception e) {
+                    LogUtil.error(this, e);
+                }
                 orderNodeResultTypeDao.insert(resultType);
             });
             allRouteEntities.addAll(baseRouteEntity.stream().map(route -> OrderBuilder.transBaseRoute2Route(route, id)).collect(Collectors.toList()));
@@ -136,7 +149,11 @@ public class OrderServiceImpl implements OrderService {
         allRouteEntities.forEach(t -> {
             t.setPrevNodeId(oldToNew.get(t.getPrevNodeId()));
             t.setNextNodeId(oldToNew.get(t.getNextNodeId()));
-            t.preInsert(request);
+            try {
+                t.preInsert(request);
+            } catch (Exception e) {
+                LogUtil.error(this, e);
+            }
             orderNodeRouteDao.insert(t);
         });
 
@@ -146,16 +163,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ServiceResult<Boolean> commitOrder(CommitOrderRequest request) {
-        Map<String, String> value = request.getValue();
+        Map<Long, String> value = request.getValue();
         List<OrderNodeFieldValueEntity> orderNodeFieldValueEntities = OrderNodeFieldValueBuilder.buildOrderNodeFieldValues(value);
         /*添加首节点的真实值*/
         orderNodeFieldValueEntities.forEach(t -> {
-            t.preInsert(request);
+            try {
+                t.preInsert(request);
+            } catch (Exception e) {
+                LogUtil.error(this, e);
+            }
             orderNodeFieldValueDao.insert(t);
         });
         /*更新主表的监管人*/
         OrderInfoEntity orderInfo = orderInfoDao.getById(request.getOrderId());
-        String monitorUserId = orderInfo.getMonitorUserId();
+        Long monitorUserId = orderInfo.getMonitorUserId();
         if (monitorUserId == null || !monitorUserId.equals(request.getMonitorUserId())) {
             orderInfo.setMonitorUserId(request.getMonitorUserId());
             orderInfo.preUpdate(request);
@@ -163,16 +184,16 @@ public class OrderServiceImpl implements OrderService {
         }
 
         /*更新节点表的处理人,抄送人*/
-        Map<String, String> dealUserIds = request.getDealUserIds();
-        Map<String, String> noticeUserIds = request.getNoticeUserIds();
-        Set<String> nodeIds = new HashSet<>();
+        Map<Long, Long> dealUserIds = request.getDealUserIds();
+        Map<Long, Long> noticeUserIds = request.getNoticeUserIds();
+        Set<Long> nodeIds = new HashSet<>();
         nodeIds.addAll(dealUserIds.keySet());
         nodeIds.addAll(noticeUserIds.keySet());
         List<OrderNodeEntity> orderNodeEntities = orderNodeDao.getByIds(nodeIds);
         for (OrderNodeEntity orderNodeEntity : orderNodeEntities) {
             boolean update = false;
-            String orderDealUserId = dealUserIds.get(orderNodeEntity.getId());
-            String noticeUserId = noticeUserIds.get(orderNodeEntity.getId());
+            Long orderDealUserId = dealUserIds.get(orderNodeEntity.getId());
+            Long noticeUserId = noticeUserIds.get(orderNodeEntity.getId());
             if (orderNodeEntity.getRunDealUserId() == null || !orderNodeEntity.getRunDealUserId().equals(orderDealUserId)) {
                 orderNodeEntity.setRunDealUserId(orderDealUserId);
                 orderNodeEntity.preUpdate(request);
@@ -235,14 +256,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) throws IOException, TimeoutException {
+    public ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) throws Exception {
         /*前提:判断节点值是否允许*/
         CheckNodeFieldResultTemporary checkNodeFieldResult = checkNodeAllow(request.getOrderNodeFieldValueMap());
         if (!checkNodeFieldResult.getAllow()) {
             return ServiceResult.buildFailedResult("节点值判断出错", DealOrderNodeResponse.buildCheckFaild(checkNodeFieldResult.getAllow(), checkNodeFieldResult.getDetailResult()), request);
         }
         /*1.结束当前工单节点(节点状态),处理结果类型->处理成功,处理结果id选择,处理人建议*/
-        String nodeId = request.getNodeId();
+        Long nodeId = request.getNodeId();
         OrderNodeEntity orderNode = orderNodeDao.getById(nodeId);
         orderNode.setStatus(OrderNodeStatusEnum.OVER.getCode());
         orderNode.setResultType(OrderNodeResultTypeEnum.SUCCESS.getCode());
@@ -251,10 +272,10 @@ public class OrderServiceImpl implements OrderService {
         orderNode.preUpdate(request);
         orderNodeDao.update(orderNode);
         /*2.填充对应节点所需的属性值,*/
-        Map<String, Object> orderNodeFieldValueMap = request.getOrderNodeFieldValueMap();
-        for (Map.Entry<String, Object> entry : orderNodeFieldValueMap.entrySet()) {
+        Map<Long, Object> orderNodeFieldValueMap = request.getOrderNodeFieldValueMap();
+        for (Map.Entry<Long, Object> entry : orderNodeFieldValueMap.entrySet()) {
             OrderNodeFieldValueEntity t = new OrderNodeFieldValueEntity();
-            String key = entry.getKey();
+            Long key = entry.getKey();
             Object value = entry.getValue();
             t.setNodeFieldId(key);
             t.setRealValue(String.valueOf(value));
@@ -279,7 +300,7 @@ public class OrderServiceImpl implements OrderService {
      * @param nextNodeId
      * @param nodeId
      */
-    private void noticeAutoDealOrder(String nextNodeId, String nodeId) throws IOException, TimeoutException {
+    private void noticeAutoDealOrder(Long nextNodeId, Long nodeId) throws IOException, TimeoutException {
         InitApiRequestTemporary msg = new InitApiRequestTemporary();
         msg.setOrderNode(orderNodeDao.getById(nextNodeId));
         msg.setPervOrderNode(orderNodeDao.getById(nodeId));
@@ -287,8 +308,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeRequest request) {
-        String orderNodeId = request.getOrderNodeId();
+    public ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeRequest request) throws Exception {
+        Long orderNodeId = request.getOrderNodeId();
         OrderNodeEntity orderNode = orderNodeDao.getById(orderNodeId);
         /*1.将节点状态置为转交中*/
         orderNode.setStatus(OrderNodeStatusEnum.TRANSFER.getCode());
@@ -307,17 +328,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) {
-        String orderApplyId = request.getOrderApplyId();
+    public ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) throws Exception {
+        Long orderApplyId = request.getOrderApplyId();
         OrderApplyEntity orderApply = orderApplyDao.getById(orderApplyId);
 
         /*0.将此节点状态置位已转交*/
-        String orderNodeId = orderApply.getOrderNodeId();
+        Long orderNodeId = orderApply.getOrderNodeId();
         OrderNodeEntity orderNode = orderNodeDao.getById(orderNodeId);
         orderNode.setStatus(OrderNodeStatusEnum.TRANSFERRED.getCode());
         orderNode.preUpdate(request);
         orderNodeDao.update(orderNode);
-        String lastOrderNodeId = orderNode.getId();
+        Long lastOrderNodeId = orderNode.getId();
 
         /*1.新增下一节点,复制此节点的参数,状态置为停用*/
         orderNode.setStatus(OrderStatusEnum.STOP.getCode());
@@ -325,7 +346,7 @@ public class OrderServiceImpl implements OrderService {
         orderNode.setRunDealUserId(orderApply.getTargetUserId());
         orderNode.preInsert(request);
 
-        String newOrderNodeId = orderNode.getId();
+        Long newOrderNodeId = orderNode.getId();
 
         /*2.将此节点的属性,结果,路由复制到下一个节点上去*/
         // 属性
@@ -370,7 +391,7 @@ public class OrderServiceImpl implements OrderService {
         orderNodeDao.insert(orderNode);
 
         /*6.通知下一节点处理人*/
-        String targetUserId = orderApply.getTargetUserId();
+        Long targetUserId = orderApply.getTargetUserId();
         OrderInfoEntity orderInfo = orderInfoDao.getById(orderNode.getBaseInfoId());
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, targetUserId, PushTypeEnum.EMAIL.getCode(), "工单流转事务提示", orderNodeId + "工单已转交到你手,审批人通过,请尽快处理,工单优先度:" + OrderPriorityEnum.parse(orderInfo.getPriority()).getName());
         DubboApiUtil.dubboApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
@@ -385,7 +406,7 @@ public class OrderServiceImpl implements OrderService {
      */
     private boolean noticeMonitorUserIdAboutBackOrder(RecallOrderRequest request) {
         OrderInfoEntity byId = orderInfoDao.getById(request.getOrderId());
-        String monitorUserId = byId.getMonitorUserId();
+        Long monitorUserId = byId.getMonitorUserId();
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, monitorUserId, PushTypeEnum.EMAIL.getCode(), "工单撤回申请", request.getOrderId() + "工单申请撤回,请尽快审批,工单优先度:" + OrderPriorityEnum.parse(byId.getPriority()).getName());
         ServiceResult serviceResult = DubboApiUtil.dubboApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
@@ -402,7 +423,7 @@ public class OrderServiceImpl implements OrderService {
      * @param orderLastStatusEnum 工单原本状态
      * @return
      */
-    private Boolean changeOrderStatus(String orderId, OrderStatusEnum orderStatusEnum, OrderStatusEnum orderLastStatusEnum) {
+    private Boolean changeOrderStatus(Long orderId, OrderStatusEnum orderStatusEnum, OrderStatusEnum orderLastStatusEnum) {
         /*1.将总工单状态置为冻结*/
         Integer orderStatus = orderInfoDao.getOrderStatusById(orderId);
         // 只有状态为指定的状态的工单才能进行操作,否则操作失败
@@ -420,7 +441,7 @@ public class OrderServiceImpl implements OrderService {
      * @param orderStatusEnum 工单要修改的状态
      * @return
      */
-    private Boolean changeOrderStatus(String orderId, OrderStatusEnum orderStatusEnum) {
+    private Boolean changeOrderStatus(Long orderId, OrderStatusEnum orderStatusEnum) {
         /*1.将总工单状态置为冻结*/
         Integer orderStatus = orderInfoDao.getOrderStatusById(orderId);
         // 只有状态为指定的状态的工单才能进行操作,否则操作失败
@@ -438,17 +459,17 @@ public class OrderServiceImpl implements OrderService {
      * @param orderNodeFieldValueMap
      * @return
      */
-    private CheckNodeFieldResultTemporary checkNodeAllow(Map<String, Object> orderNodeFieldValueMap) {
+    private CheckNodeFieldResultTemporary checkNodeAllow(Map<Long, Object> orderNodeFieldValueMap) {
         CheckNodeFieldResultTemporary result = new CheckNodeFieldResultTemporary();
         result.setDetailResult(new HashMap<>(orderNodeFieldValueMap.size()));
         //默认正确
         result.setAllow(true);
 
-        Set<String> fieldIds = orderNodeFieldValueMap.keySet();
+        Set<Long> fieldIds = orderNodeFieldValueMap.keySet();
         List<OrderNodeFieldEntity> fieldList = orderNodeFieldDao.getByIds(fieldIds);
-        Map<String, OrderNodeFieldEntity> fieldMap = fieldList.stream().collect(Collectors.toMap(BaseIdEntity::getId, t -> t));
-        for (Map.Entry<String, Object> entry : orderNodeFieldValueMap.entrySet()) {
-            String orderNodeFieldId = entry.getKey();
+        Map<Long, OrderNodeFieldEntity> fieldMap = fieldList.stream().collect(Collectors.toMap(BaseIdEntity::getId, t -> t));
+        for (Map.Entry<Long, Object> entry : orderNodeFieldValueMap.entrySet()) {
+            Long orderNodeFieldId = entry.getKey();
             Object value = entry.getValue();
             OrderNodeFieldEntity orderNodeFieldEntity = fieldMap.get(orderNodeFieldId);
             // 如果前台没有传值,则使用默认值
