@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -76,7 +77,12 @@ public class AllController {
                 eMsg = serviceResult.getServiceMessage();
             }
             // 修改字段类型为String,因为前端大数会失去精度
-            changeFieldTypeToString((JSONObject) serviceResult.getData());
+            Serializable data = serviceResult.getData();
+            if (data instanceof JSONObject) {
+                changeFieldTypeToString((JSONObject) data);
+            } else if (data instanceof JSONArray) {
+                changeFieldTypeToString((JSONArray) data);
+            }
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
             // 如果失败,就返回微服务传回来的错误信息与提示
@@ -104,7 +110,7 @@ public class AllController {
                     changeFieldTypeToString((JSONObject) value);
                 } else if (value instanceof JSONArray) {
                     changeFieldTypeToString((JSONArray) value);
-                } else {
+                } else if (value instanceof Long) {
                     value = value.toString();
                 }
                 data.put(s, value);
@@ -121,9 +127,10 @@ public class AllController {
                     changeFieldTypeToString((JSONArray) o);
                 } else if (o instanceof JSONObject) {
                     changeFieldTypeToString((JSONObject) o);
-                } else {
-                    data.set(i, o.toString());
+                } else if (o instanceof Long) {
+                    o = o.toString();
                 }
+                data.set(i, o);
             }
         }
     }

@@ -66,6 +66,7 @@
         var layer = layui.layer;
         $.reloadTable = function () {
             pushRequest("MenuService", "getMenuTree", {iFrame: 1}, function (data) {
+                debugger;
                 // 渲染表格
                 layer.load(2);
                 treetable.render({

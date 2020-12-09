@@ -60,4 +60,31 @@ public class IdUtil {
 
         return timeResult | sqResult | distributedResult;
     }
+
+    public static void main(String[] args) throws InterruptedException {
+        for (int i = 0; i < 100; i++) {
+            extracted();
+            Thread.sleep(1L);
+        }
+    }
+
+    private static void extracted() {
+        // 生成时间
+        long time = System.currentTimeMillis();
+
+        // 获取序列号
+        long sq = 0L;
+
+        // 从配置文件中获取 代表学校码
+        long distributedResult = (1 & Content.DISTRIBUTED_MASK) << Content.DISTRIBUTED_DISPLACEMENT;
+
+        //时间戳
+        long timeResult = (time & Content.TIME_MASK) << Content.TIME_DISPLACEMENT;
+
+        // 序列数
+        long sqResult = (sq & Content.SEQUENCE_MASK) << Content.SEQUENCE_DISPLACEMENT;
+
+        long l = timeResult | sqResult | distributedResult;
+        System.out.println(l);
+    }
 }

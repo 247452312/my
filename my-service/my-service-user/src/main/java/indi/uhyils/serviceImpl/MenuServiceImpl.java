@@ -209,7 +209,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         Long idByCode = dictDao.getIdByCode(QUICK_START_CODE);
         ArrayList<DictItemEntity> byDictId = dictItemDao.getByDictId(idByCode);
         ArrayList<MenuEntity> collect = (ArrayList<MenuEntity>) byDictId.stream().map(t -> {
-            Long menuId = (Long) t.getValue();
+            Long menuId = Long.valueOf(t.getValue().toString());
             MenuEntity byId = dao.getById(menuId);
             if (byId.getType() == false) {
                 try {
