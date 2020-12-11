@@ -97,14 +97,14 @@
                             {type: "numbers", title: '序号'},
                             {
                                 title: '优先级', templet: function (d) {
-                                    return orderPriorityMap[d.priority];
+                                    return d.priority === 0 ? "普通" : "紧急";
                                 }
                             },
                             // {field: 'queryUserIds', title: '可查询人id'},
                             {field: 'limitTime', title: '运行时限(分钟)'},
                             {
-                                field: 'son', title: '是否是子流程', templet: function (d) {
-                                    return d.son === 0 ? "是" : "不是";
+                                title: '是否是子流程', templet: function (d) {
+                                    return d.son === true ? "是" : "不是";
                                 }
                             },
                             // {field: 'monitorUserId', title: '监管人id'},

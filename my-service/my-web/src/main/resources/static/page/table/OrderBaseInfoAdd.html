@@ -167,9 +167,10 @@
                 $('[name="queryUserIds"]').attr('value', data.queryUserIds);
                 $('[name="limitTime"]').attr('value', data.limitTime);
                 $('[name="son"]').attr('value', data.son);
-                $('[name="monitorUserId"]').attr('value', data.monitorUserId);
+                let s = '[name="monitorUserId"] option[value="' + data.monitorUserId + '"]';
+                $(s).attr("selected", true);
                 $('[name="name"]').attr('value', data.name);
-                $('[name="desc"]').attr('value', data.desc);
+                $('[name="desc"]').html('value', data.desc);
                 $('[name="status"]').attr('value', data.status);
                 form.render();
             })

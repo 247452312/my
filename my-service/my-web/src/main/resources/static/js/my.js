@@ -377,6 +377,13 @@ function dealResponse(res, success, target = false) {
                     layer.close(index);
                     top.window.location.href = "/login.html";
                 });
+
+                layer.msg(res.msg + ", 即将返回登录页", {
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                    top.window.location.href = "/login.html";
+                });
                 break;
             case 401:
                 // 代表没有权限

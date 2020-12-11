@@ -51,6 +51,7 @@ public class HotSpotAop {
      */
     private static final String CHECK_TABLE_UPDATE = "local keys,val = KEYS,ARGV\n" +
             "for i, v in ipairs(val) do\n" +
+            // 这里是防止不存在,给hashTable里赋初值为1
             "\tredis.call('hsetnx','" + HotSpotContent.TABLES_HASH_KEY + "',v,'1')\n" +
             "end\n" +
             "local k = 0\n" +
@@ -151,7 +152,6 @@ public class HotSpotAop {
                     break;
                 }
             }
-//            declaredMethod = clazz.getDeclaredMethod(methodName, pjp.getArgs()[0].getClass());
             if (declaredMethod != null) {
                 break;
             }
