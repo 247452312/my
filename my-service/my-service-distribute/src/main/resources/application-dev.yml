@@ -1,65 +1,10 @@
 server:
   port: 8005
 dubbo:
-  metadata-report:
-    address: nacos://192.168.1.101:8848
-  registry:
-    client: curator
-    address: nacos://192.168.1.101:8848
   protocol:
-    name: dubbo
     port: 20805
-    threadpool: cached
-    accepts: 200
   application:
     name: provider-distribute
-  consumer:
-    timeout: 5000
-    group: ${spring.profiles.active}
-    check: false
-  provider:
-    timeout: 5000
-    group: ${spring.profiles.active}
-
-logging:
-  level:
-    indi.uhyils.dao: trace
 
 log-out:
-  path: D:/my/logs
   dir-name: distribute
-
-spring:
-  output:
-    ansi:
-      enabled: ALWAYS
-  devtools:
-    restart:
-      enabled: true  #设置开启热部署
-      additional-paths: src/main/java #重启目录
-      exclude: WEB-INF/**
-    freemarker:
-      cache: false    #页面不加载缓存，修改即时生效
-
-redis:
-  normal:
-    ip: 192.168.1.101
-    port: 6379
-    password: uhyils-single
-  hotspot:
-    hosts: 192.168.1.101:26380;192.168.1.101:26381;192.168.1.101:26382
-    password: uhyils
-    sentinels: mymaster
-
-
-rabbit:
-  host: 192.168.1.101
-  port: 5672
-  username: uhyils
-  password: 123456
-
-id:
-  organization:
-    # 机构代码
-    code: 1
-

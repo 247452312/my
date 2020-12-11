@@ -3,38 +3,14 @@ server:
   port: 8008
 
 dubbo:
-  # dubbo元数据
-  metadata-report:
-    address: nacos://192.168.1.101:8848
-  # dubbo 注册中心
-  registry:
-    client: curator
-    address: nacos://192.168.1.101:8848
   protocol:
-    name: dubbo
     port: 20808
-    threadpool: cached
-    accepts: 200
   application:
     name: provider-algorithm
-  consumer:
-    timeout: 5000
-    group: ${spring.profiles.active}
-    check: false
-  provider:
-    timeout: 5000
-    group: ${spring.profiles.active}
 
 # 日志输出文件配置
 log-out:
-  path: D:/my/logs
   dir-name: algorithm
-
-#sql日志配置
-logging:
-  level:
-    indi.uhyils.dao: trace
-
 
 spring:
   datasource:
@@ -73,38 +49,6 @@ spring:
     use-global-data-source-stat: true
     # 通过connectProperties属性来打开mergeSql(Sql合并)功能；慢SQL记录(配置超过5秒就是慢，默认是3秒)
     connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-  output:
-    ansi:
-      enabled: ALWAYS
-  devtools:
-    restart:
-      enabled: true  #设置开启热部署
-      additional-paths: src/main/java #重启目录
-      exclude: WEB-INF/**
-    freemarker:
-      cache: false    #页面不加载缓存，修改即时生效
-redis:
-  normal:
-    ip: 192.168.1.101
-    port: 6379
-    password: uhyils-single
-  hotspot:
-    hosts: 192.168.1.101:26380;192.168.1.101:26381;192.168.1.101:26382
-    password: uhyils
-    sentinels: mymaster
-
-
-rabbit:
-  host: 192.168.1.101
-  port: 5672
-  username: uhyils
-  password: 123456
-
-id:
-  organization:
-    # 机构代码
-    code: 1
-
 
 tencent:
   voice:
