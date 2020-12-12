@@ -121,6 +121,16 @@
         from my_order.sys_order_node_field_value
         where ${columnName} = #{value}
     </select>
+    <select id="getByOrderFieldIds" resultMap="OrderNodeFieldValueMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, node_field_id, real_value
+        from my_order.sys_order_node_field_value
+        where delete_flag = 0
+        and node_field_id in
+        <foreach collection="fieldIds" item="fieldId" open="(" separator="," close=")">
+            #{fieldId}
+        </foreach>
+    </select>
 
 
 </mapper>

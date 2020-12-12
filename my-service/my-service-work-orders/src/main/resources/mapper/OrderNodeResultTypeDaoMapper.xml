@@ -136,6 +136,16 @@
         where delete_flag = 0
         and base_node_id = #{orderNodeId}
     </select>
+    <select id="getByOrderNodeIds" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_result_type a
+        where delete_flag = 0
+        and base_node_id in
+        <foreach collection="orderNodeIds" item="fieldId" open="(" separator="," close=")">
+            #{fieldId}
+        </foreach>
+    </select>
 
 
 </mapper>

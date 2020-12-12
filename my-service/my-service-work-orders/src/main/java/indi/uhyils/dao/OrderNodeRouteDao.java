@@ -3,6 +3,7 @@ package indi.uhyils.dao;
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.OrderNodeRouteEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -31,4 +32,12 @@ public interface OrderNodeRouteDao extends DefaultDao<OrderNodeRouteEntity> {
      * @return
      */
     Integer deleteByNodeIds(List<Long> ids, Long updateUser, Integer updateDate);
+
+    /**
+     * 根据工单节点们获取对应的路由
+     *
+     * @param orderNodeIds
+     * @return
+     */
+    List<OrderNodeRouteEntity> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);
 }

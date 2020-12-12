@@ -3,6 +3,7 @@ package indi.uhyils.dao;
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.OrderNodeFieldEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -40,4 +41,12 @@ public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldEntity> {
      * @return
      */
     Integer deleteByNodeIds(List<Long> ids, Long updateUser, Integer updateDate);
+
+    /**
+     * 根据工单节点们获取全部的工单节点属性
+     *
+     * @param orderNodeIds
+     * @return
+     */
+    List<OrderNodeFieldEntity> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);
 }

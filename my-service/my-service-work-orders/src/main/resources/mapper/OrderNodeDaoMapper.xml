@@ -89,8 +89,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeEntity">
-        insert
-        sys_order_node(save_api_id,
+        insert sys_order_node(save_api_id,
                               result_type,
                               init_api_id,
                               remark,
@@ -110,28 +109,26 @@
                               create_date,
                               delete_flag,
                               `desc`)
-        values (
-        #{saveApiId},
-        #{resultType},
-        #{initApiId},
-        #{remark},
-        #{runType},
-        #{type},
-        #{sync},
-        #{updateDate},
-        #{limitTime},
-        #{noticeUserId},
-        #{updateUser},
-        #{baseInfoId},
-        #{runDealUserId},
-        #{name},
-        #{runApiId},
-        #{id},
-        #{createUser},
-        #{createDate},
-        #{deleteFlag},
-        #{desc}
-        )
+        values (#{saveApiId},
+                #{resultType},
+                #{initApiId},
+                #{remark},
+                #{runType},
+                #{type},
+                #{sync},
+                #{updateDate},
+                #{limitTime},
+                #{noticeUserId},
+                #{updateUser},
+                #{baseInfoId},
+                #{runDealUserId},
+                #{name},
+                #{runApiId},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{desc})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeEntity">
@@ -220,6 +217,13 @@
         and id =
         (select next_node_id from sys_order_node_route
         where prev_node_id = #{nodeId} and result_id = #{resultId})
+    </select>
+    <select id="getByOrderId" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node a
+        where delete_flag = 0
+        and base_info_id = #{id}
     </select>
 
 

@@ -32,4 +32,13 @@ public interface OrderBaseNodeFieldDao extends DefaultDao<OrderBaseNodeFieldEnti
      * @return
      */
     Integer deleteByNodeIds(@Param("ids") List<Long> ids, @Param("updateUser") Long updateUser, @Param("updateDate") Integer updateDate);
+
+    /**
+     * 根据工单节点的id们获取所有的工单属性
+     *
+     * @param orderNodeIds
+     * @return
+     */
+    List<OrderBaseNodeFieldEntity> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);
+
 }

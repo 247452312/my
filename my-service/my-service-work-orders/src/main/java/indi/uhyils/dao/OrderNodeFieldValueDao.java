@@ -3,6 +3,9 @@ package indi.uhyils.dao;
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.OrderNodeFieldValueEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 订单节点属性真实值表(OrderNodeFieldValue)表 数据库访问层
@@ -14,4 +17,11 @@ import org.apache.ibatis.annotations.Mapper;
 public interface OrderNodeFieldValueDao extends DefaultDao<OrderNodeFieldValueEntity> {
 
 
+    /**
+     * 根据工单节点id们获取对应的所有属性的值
+     *
+     * @param fieldIds
+     * @return
+     */
+    List<OrderNodeFieldValueEntity> getByOrderFieldIds(@Param("fieldIds") List<Long> fieldIds);
 }

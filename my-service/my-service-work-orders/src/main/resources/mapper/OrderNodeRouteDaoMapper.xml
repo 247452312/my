@@ -61,8 +61,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeRouteEntity">
-        insert
-        sys_order_node_route(prev_node_id,
+        insert sys_order_node_route(prev_node_id,
                                     update_user,
                                     remark,
                                     next_node_id,
@@ -71,17 +70,15 @@
                                     create_date,
                                     delete_flag,
                                     update_date)
-        values (
-        #{prevNodeId},
-        #{updateUser},
-        #{remark},
-        #{nextNodeId},
-        #{id},
-        #{createUser},
-        #{createDate},
-        #{deleteFlag},
-        #{updateDate}
-        )
+        values (#{prevNodeId},
+                #{updateUser},
+                #{remark},
+                #{nextNodeId},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{updateDate})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeRouteEntity">
@@ -135,6 +132,16 @@
         from sys_order_node_route a
         where delete_flag = 0
         and prev_node_id = #{prevOrderNodeId}
+    </select>
+    <select id="getByOrderNodeIds" resultType="indi.uhyils.pojo.model.OrderNodeRouteEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_route a
+        where delete_flag = 0
+        and prev_node_id in
+        <foreach collection="orderNodeIds" item="fieldId" open="(" separator="," close=")">
+            #{fieldId}
+        </foreach>
     </select>
 
 
