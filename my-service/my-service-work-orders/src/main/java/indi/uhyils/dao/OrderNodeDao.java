@@ -22,7 +22,7 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
      * @param nodeIds
      * @return
      */
-    List<OrderNodeEntity> getByIds(Set<Long> nodeIds);
+    List<OrderNodeEntity> getByIds(@Param("nodeIds") Set<Long> nodeIds);
 
     /**
      * 将工单节点置为失败

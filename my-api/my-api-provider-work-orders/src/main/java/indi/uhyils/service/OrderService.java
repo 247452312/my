@@ -3,12 +3,9 @@ package indi.uhyils.service;
 import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.DealOrderNodeResponse;
-import indi.uhyils.pojo.response.InsertOrderResponse;
+import indi.uhyils.pojo.response.InitOrderResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
-
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 /**
  * 工单
@@ -23,7 +20,7 @@ public interface OrderService extends BaseService {
      * @param request 工单本体
      * @return 插入后的id
      */
-    ServiceResult<InsertOrderResponse> insertOrder(IdRequest request) throws Exception;
+    ServiceResult<InitOrderResponse> initOrder(IdRequest request) throws Exception;
 
     /**
      * 提交工单

@@ -23,18 +23,24 @@
 <body>
 <div class="layui-form layuimini-form">
     <!--  父id    -->
-    <input name="id" style="display:none;" type="text" value="">
+    <input name="orderId" style="display:none;" type="text" value="">
     <div class="layui-row" id="target-input">
 
     </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>工单监管人</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">监管人</label>
+        <div class="layui-input-block">
+            <select name="monitorUserId"></select>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>工单流程</legend>
+    </fieldset>
+    <ul class="layui-timeline" id="technological-process"></ul>
 
-    <!--    <div class="layui-form-item">
-            <label class="layui-form-label required">名称</label>
-            <div class="layui-input-block">
-                <input class="layui-input" lay-verify="required" name="name" placeholder="请输入字典名称" type="text"
-                       value="">
-            </div>
-        </div>-->
 
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -99,102 +105,182 @@
             return null;
         };
         let orderId = $.getUrlParam('id');
-        pushRequest("OrderService", "insertOrder", {id: orderId}, function (data) {
-            let orderNodeField = data.orderNodeField;
-            for (let i = 0; i < orderNodeField.length; i++) {
-                let type = orderNodeField[i].type;
-                switch (type) {
-                    default:
-                    case 1:
-                        var tempRequired = '';
-                        if (!orderNodeField[i].empty) {
-                            tempRequired = 'required';
-                        }
-                        $("#target-input").append('<div class="layui-form-item"><label class="layui-form-label ' + tempRequired + '">' + orderNodeField[i].name + '</label><div class="layui-input-block"><input class="layui-input" lay-verify="' + tempRequired + '" name="value.' + orderNodeField[i].id + '" placeholder="' + orderNodeField[i].desc + '" type="text" value=""></div></div>');
-                        break;
-                    case 2:
-                        var dataSources = orderNodeField[i].dataSources;
-                        var relationId = orderNodeField[i].relationId;
-                        var optionList = getTargetOptionList(dataSources, relationId);
-                        var options = '';
-                        for (let j = 0; j < optionList.length; j++) {
-                            let id = optionList[j].id;
-                            let name = optionList[j].name;
-                            options = options + '<input type="radio" name="' + orderNodeField[i].id + '" value="' + id + '" title="' + name + '">'
-                        }
-                        var $options = $('<div class="layui-form-item">\n' +
-                            '        <label class="layui-form-label required">'+orderNodeField[i].name+'</label>\n' +
-                            '        <div class="layui-input-block">\n' +
-                            options +
-                            '        </div>\n' +
-                            '    </div>');
-                        $("#target-input").append($options);
-                        break;
-                    case 3:
-                        var dataSources = orderNodeField[i].dataSources;
-                        var relationId = orderNodeField[i].relationId;
-                        var optionList = getTargetOptionList(dataSources, relationId);
-                        var options = '';
-                        for (let j = 0; j < optionList.length; j++) {
-                            let id = optionList[j].id;
-                            let name = optionList[j].name;
-                            options = options + '<input type="checkbox" name="like[' + id + ']" title="' + name + '">'
-                        }
-                        var $options = $('<div class="layui-form-item">\n' +
-                            '        <label class="layui-form-label required">'+orderNodeField[i].name+'</label>\n' +
-                            '        <div class="layui-input-block">\n' +
-                            options +
-                            '        </div>\n' +
-                            '    </div>');
-                        $("#target-input").append($options);
-                        break;
-                    case 4:
-                        var dataSources = orderNodeField[i].dataSources;
-                        var relationId = orderNodeField[i].relationId;
-                        var optionList = getTargetOptionList(dataSources, relationId);
-                        var options = '<option value="">请选择参数类型</option>';
-                        for (let j = 0; j < optionList.length; j++) {
-                            let id = optionList[j].id;
-                            let name = optionList[j].name;
-                            options = options + '<option value="' + id + '">' + name + '</option>'
-                        }
-                        var $options = $('<div class="layui-form-item">\n' +
-                            '        <label class="layui-form-label required">'+orderNodeField[i].name+'</label>\n' +
-                            '        <div class="layui-input-block">\n' +
-                            '            <select lay-filter="aihao" name="' + orderNodeField[i].id + '">\n' +
-                            options +
-                            '            </select>\n' +
-                            '        </div>\n' +
-                            '    </div>');
-                        $("#target-input").append($options);
-                        break;
-                    case 5:
-                        var tempRequired = '';
-                        if (!orderNodeField[i].empty) {
-                            tempRequired = 'required';
-                        }
-                        $("#target-input").append('<div class="layui-form-item"><label class="layui-form-label ' + tempRequired + '">' + orderNodeField[i].name + '</label><div class="layui-input-block"><textarea placeholder="" name="' + orderNodeField[i].id + '" class="layui-textarea"></textarea></div></div>');
-                        break;
+        pushRequest("UserService", "getUsers", {}, function (userData) {
+            pushRequest("OrderService", "initOrder", {id: orderId}, function (data) {
+                $('[name="orderId"]').val(data.newOrderId);
+
+                let orderNodeField = data.orderNodeField;
+                for (let i = 0; i < orderNodeField.length; i++) {
+                    let type = orderNodeField[i].type;
+                    switch (type) {
+                        default:
+                        case 1:
+                            var tempRequired = '';
+                            if (!orderNodeField[i].empty) {
+                                tempRequired = 'required';
+                            }
+                            $("#target-input").append('<div class="layui-form-item"><label class="layui-form-label ' + tempRequired + '">' + orderNodeField[i].name + '</label><div class="layui-input-block"><input class="layui-input" lay-verify="' + tempRequired + '" name="value.' + orderNodeField[i].id + '" placeholder="' + orderNodeField[i].desc + '" type="text" value=""></div></div>');
+                            break;
+                        case 2:
+                            var dataSources = orderNodeField[i].dataSources;
+                            var relationId = orderNodeField[i].relationId;
+                            var optionList = getTargetOptionList(dataSources, relationId);
+                            var options = '';
+                            for (let j = 0; j < optionList.length; j++) {
+                                let id = optionList[j].id;
+                                let name = optionList[j].name;
+                                options = options + '<input type="radio" name="value.' + orderNodeField[i].id + '" value="' + id + '" title="' + name + '">'
+                            }
+                            var $options = $('<div class="layui-form-item">\n' +
+                                '        <label class="layui-form-label required">' + orderNodeField[i].name + '</label>\n' +
+                                '        <div class="layui-input-block">\n' +
+                                options +
+                                '        </div>\n' +
+                                '    </div>');
+                            $("#target-input").append($options);
+                            break;
+                        case 3:
+                            var dataSources = orderNodeField[i].dataSources;
+                            var relationId = orderNodeField[i].relationId;
+                            var optionList = getTargetOptionList(dataSources, relationId);
+                            var options = '';
+                            for (let j = 0; j < optionList.length; j++) {
+                                let id = optionList[j].id;
+                                let name = optionList[j].name;
+                                options = options + '<input type="checkbox" name="value.' + id + '" title="' + name + '">'
+                            }
+                            var $options = $('<div class="layui-form-item">\n' +
+                                '        <label class="layui-form-label required">' + orderNodeField[i].name + '</label>\n' +
+                                '        <div class="layui-input-block">\n' +
+                                options +
+                                '        </div>\n' +
+                                '    </div>');
+                            $("#target-input").append($options);
+                            break;
+                        case 4:
+                            var dataSources = orderNodeField[i].dataSources;
+                            var relationId = orderNodeField[i].relationId;
+                            var optionList = getTargetOptionList(dataSources, relationId);
+                            var options = '<option value="">请选择参数类型</option>';
+                            for (let j = 0; j < optionList.length; j++) {
+                                let id = optionList[j].id;
+                                let name = optionList[j].name;
+                                options = options + '<option value="' + id + '">' + name + '</option>'
+                            }
+                            var $options = $('<div class="layui-form-item">\n' +
+                                '        <label class="layui-form-label required">' + orderNodeField[i].name + '</label>\n' +
+                                '        <div class="layui-input-block">\n' +
+                                '            <select lay-filter="aihao" name="value.' + orderNodeField[i].id + '">\n' +
+                                options +
+                                '            </select>\n' +
+                                '        </div>\n' +
+                                '    </div>');
+                            $("#target-input").append($options);
+                            break;
+                        case 5:
+                            var tempRequired = '';
+                            if (!orderNodeField[i].empty) {
+                                tempRequired = 'required';
+                            }
+                            $("#target-input").append('<div class="layui-form-item"><label class="layui-form-label ' + tempRequired + '">' + orderNodeField[i].name + '</label><div class="layui-input-block"><textarea placeholder="" name="value.' + orderNodeField[i].id + '" class="layui-textarea"></textarea></div></div>');
+                            break;
+                    }
                 }
-            }
+
+
+                let find = $('[name="monitorUserId"]');
+                for (let i = 0; i < userData.length; i++) {
+                    find.append('<option value="' + userData[i].id + '">' + userData[i].nickName + '</option>');
+                }
+                find.find('[value="' + data.monitorUserId + '"]').attr("selected", true);
+
+
+                let dealUserIds = data.dealUserIds;
+                let noticeUserIds = data.noticeUserIds;
+                let nodes = $('#technological-process');
+                let index = 0;
+                for (let key in dealUserIds) {
+                    let value = dealUserIds[key];
+                    let userSelect = $('<div class="layui-inline">\n' +
+                        '      <label class="layui-form-label">处理人</label>\n' +
+                        '      <div class="layui-input-inline">\n' +
+                        '        <select name="dealUserIds.' + key + '"></select>' +
+                        '      </div>\n' +
+                        '    </div> ');
+                    let find1 = userSelect.find('.layui-input-inline select');
+                    for (let i = 0; i < userData.length; i++) {
+                        find1.append('<option value="' + userData[i].id + '">' + userData[i].nickName + '</option>');
+                    }
+                    find1.find('[value="' + value + '"]').attr("selected", true);
+
+                    let noValue = noticeUserIds[key];
+                    let noUserSelect = $('<div class="layui-inline">\n' +
+                        '      <label class="layui-form-label">抄送人</label>\n' +
+                        '      <div class="layui-input-inline">\n' +
+                        '        <select name="noticeUserIds.' + key + '"></select>' +
+                        '      </div>\n' +
+                        '    </div> ');
+                    let noFind1 = noUserSelect.find('.layui-input-inline select');
+                    for (let i = 0; i < userData.length; i++) {
+                        noFind1.append('<option value="' + userData[i].id + '">' + userData[i].nickName + '</option>');
+                    }
+                    noFind1.find('[value="' + noValue + '"]').attr("selected", true);
+
+
+                    let itemSelect = $('<li class="layui-timeline-item">\n' +
+                        '    <i class="layui-icon layui-timeline-axis"></i>\n' +
+                        '    <div class="layui-timeline-content layui-text">\n' +
+                        '      <h3 class="layui-timeline-title">第' + index + '节点</h3>\n' +
+                        '<div class="layui-input-block">\n' +
+                        '        </div>' +
+                        '    </div>\n' +
+                        '  </li>');
+                    itemSelect.find(".layui-input-block").append(userSelect);
+                    itemSelect.find(".layui-input-block").append(noUserSelect);
+                    nodes.append(itemSelect);
+                    index = index + 1;
+                }
+            });
         });
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
+            let field = data.field;
+            let result = {};
+            result.orderId = field.orderId;
+            result.monitorUserId = field.monitorUserId;
+            for (let key in field) {
+                if (key.indexOf('.') === -1) {
+                    continue;
+                }
+                let keySplit = key.split(".");
+                let itemValue = result;
+                let length = keySplit.length;
+                for (let i = 0; i < keySplit.length; i++) {
+                    // 如果是最后一个
+                    if (length - 1 === i) {
+                        itemValue[keySplit[i]] = field[key];
+                    } else {
+                        if (itemValue[keySplit[i]] == null) {
+                            itemValue[keySplit[i]] = {};
+                        }
+                        itemValue = itemValue[keySplit[i]];
+                    }
+                }
+            }
+            let index = layer.alert(JSON.stringify(result), {
                 title: '最终的提交信息'
             }, function () {
                 // 关闭弹出层
                 layer.close(index);
-                if (func === 'add') {
-                    pushRequest("DictService", "insert", {data: data.field}, function () {
-                    });
-                    closeAndReload();
-                } else if (func === 'edit') {
-                    pushRequest("DictService", "update", {data: data.field}, function () {
-                    });
-                    closeAndReload();
-                }
+                pushRequest("OrderService", "commitOrder", result, function (data) {
+                    if (data) {
+                        layer.msg("成功");
+                    } else {
+                        layer.msg("失败");
+                    }
+                });
+
             });
             return false;
         });

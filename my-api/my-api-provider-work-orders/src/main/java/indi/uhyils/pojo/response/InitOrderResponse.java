@@ -12,7 +12,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月15日 10时05分
  */
-public class InsertOrderResponse implements Serializable {
+public class InitOrderResponse implements Serializable {
 
     /**
      * 工单初始节点需要填写的属性
@@ -39,10 +39,10 @@ public class InsertOrderResponse implements Serializable {
     private Map<Long, Long> noticeUserIds;
 
 
-    public InsertOrderResponse() {
+    public InitOrderResponse() {
     }
 
-    public InsertOrderResponse(Long newOrderId, List<OrderNodeFieldEntity> orderNodeField, Long monitorUserId, Map<Long, Long> dealUserIds, Map<Long, Long> noticeUserIds) {
+    public InitOrderResponse(Long newOrderId, List<OrderNodeFieldEntity> orderNodeField, Long monitorUserId, Map<Long, Long> dealUserIds, Map<Long, Long> noticeUserIds) {
         this.newOrderId = newOrderId;
         this.orderNodeField = orderNodeField;
         this.monitorUserId = monitorUserId;
@@ -50,8 +50,8 @@ public class InsertOrderResponse implements Serializable {
         this.noticeUserIds = noticeUserIds;
     }
 
-    public static InsertOrderResponse build(Long newOrderId, List<OrderNodeFieldEntity> orderNodeField, Long monitorUserId, Map<Long, Long> dealUserIds, Map<Long, Long> noticeUserIds) {
-        InsertOrderResponse build = new InsertOrderResponse();
+    public static InitOrderResponse build(Long newOrderId, List<OrderNodeFieldEntity> orderNodeField, Long monitorUserId, Map<Long, Long> dealUserIds, Map<Long, Long> noticeUserIds) {
+        InitOrderResponse build = new InitOrderResponse();
         build.setNewOrderId(newOrderId);
         build.setOrderNodeField(orderNodeField);
         build.setMonitorUserId(monitorUserId);
