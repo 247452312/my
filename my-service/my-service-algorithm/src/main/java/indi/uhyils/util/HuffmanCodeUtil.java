@@ -21,7 +21,7 @@ public class HuffmanCodeUtil {
         if (dir.exists() && dir.isFile()) {
             throw new Exception("参数不是文件夹");
         }
-        HashMap<String, Integer> temp = new HashMap<>();
+        HashMap<String, Integer> temp = new HashMap<>(16);
         Integer count = 0;
         File[] files = dir.listFiles();
         for (File file : files) {
@@ -69,7 +69,8 @@ public class HuffmanCodeUtil {
             Double per2 = n2.getValue();
 
 
-            for (int i = 2; i < nodes.size(); i++) {
+            int second = 2;
+            for (int i = second; i < nodes.size(); i++) {
                 Node node = nodes.get(i);
                 if (node.getValue() < per1) {
                     n2 = n1;

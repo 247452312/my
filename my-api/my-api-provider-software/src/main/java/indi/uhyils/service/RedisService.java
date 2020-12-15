@@ -97,7 +97,7 @@ public interface RedisService extends DefaultEntityService<RedisEntity> {
      * @param request 请求
      * @return 仓库名称
      */
-    ServiceResult<Integer> getRedisDB(IdRequest request);
+    ServiceResult<Integer> getRedisDb(IdRequest request);
 
     /**
      * 添加新的key 如果成功返回1 如果有重复 返回2

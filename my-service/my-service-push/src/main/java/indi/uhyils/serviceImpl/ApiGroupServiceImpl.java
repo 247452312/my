@@ -43,7 +43,7 @@ public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> 
     public ServiceResult<String> test(IdRequest request) {
         ApiGroupEntity apiGroupEntity = dao.getById(request.getId());
         List<ApiEntity> groupByGroupId = apiDao.getGroupByGroupId(apiGroupEntity.getId());
-        HashMap<String, String> parameter = new HashMap<>();
+        HashMap<String, String> parameter = new HashMap<>(16);
         ApiUtils.callApi(groupByGroupId, request.getUser(), parameter);
         String resultFormat = apiGroupEntity.getResultFormat();
         resultFormat = ApiUtils.replaceString(parameter, resultFormat);

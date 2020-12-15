@@ -48,7 +48,7 @@ public class KproServiceImpl implements KproService {
                     return ServiceResult.buildFailedResult("暂时不支持数据库类型", null, request);
             }
         }
-        HashMap<String, String> result = new HashMap<>();
+        HashMap<String, String> result = new HashMap<>(16);
         for (HashMap<String, String> stringStringHashMap : resultList) {
             result.putAll(stringStringHashMap);
         }

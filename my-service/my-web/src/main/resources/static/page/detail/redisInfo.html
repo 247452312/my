@@ -738,7 +738,7 @@
         let id = $.getUrlParam('id');
 
         /*获取redis的数据库*/
-        pushRequest("RedisService", "getRedisDB", {id: id}, function (data) {
+        pushRequest("RedisService", "getRedisDb", {id: id}, function (data) {
             for (let i = 0; i < data; i++) {
                 $("#redis-db").append("<option value='" + i + "'>db" + i + "</option>")
             }

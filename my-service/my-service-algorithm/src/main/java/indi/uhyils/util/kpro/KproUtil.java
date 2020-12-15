@@ -74,7 +74,7 @@ public class KproUtil {
      * @return map<相对路径 + 名称, 文件内容>
      */
     private static HashMap<String, String> getFileHashMapByTableInfos(HashMap<String, TableInfo> tableInfos, DbInformation dbInformation, String dateFormat, DbTypeEnum typeEnum) {
-        HashMap<String, String> result = new HashMap<>();
+        HashMap<String, String> result = new HashMap<>(16);
         String apiPath = "my-api/my-api-provider-" + dbInformation.getSmallProjectName();
         String servicePath = "my-service/my-service-" + dbInformation.getSmallProjectName();
         for (Map.Entry<String, TableInfo> stringTableInfoEntry : tableInfos.entrySet()) {
@@ -437,7 +437,7 @@ public class KproUtil {
      * @return
      */
     public static Map<String, String> getOtherKpro() {
-        return new HashMap<>();
+        return new HashMap<>(16);
     }
 
     /**
@@ -450,7 +450,7 @@ public class KproUtil {
      */
     private static HashMap<String, TableInfo> getStringTableInfoHashMap(DbInformation dbInformation, Connection conn) throws SQLException {
         DatabaseMetaData dmd;
-        HashMap<String, TableInfo> stringTableInfoHashMap = new HashMap<>();
+        HashMap<String, TableInfo> stringTableInfoHashMap = new HashMap<>(16);
         /*获取数据库表们的信息*/
         dmd = conn.getMetaData();
         // 这里table可以使用正则,只要getTables允许
@@ -463,7 +463,7 @@ public class KproUtil {
                     continue;
                 }
                 /*获取table信息*/
-                TableInfo ti = new TableInfo(tableName, tableComment, new HashMap<>(), new ColumnInfo());
+                TableInfo ti = new TableInfo(tableName, tableComment, new HashMap<>(16), new ColumnInfo());
                 stringTableInfoHashMap.put(tableName, ti);
                 ResultSet rs2 = dmd.getColumns(null, "%", tableName, "%");
                 while (rs2.next()) {

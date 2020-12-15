@@ -136,7 +136,7 @@ public class ApiUtils {
                 String text = sb.toString();
                 switch (Objects.requireNonNull(CodeEnum.prase(api.getResultCode()))) {
                     case UTF_8:
-                        text = StringEncodingUtils.decodeUTF8tring(text);
+                        text = StringEncodingUtils.decodeUTF8String(text);
                         break;
                     case UNICODE:
                         text = StringEncodingUtils.decodeUnicodeString(text);

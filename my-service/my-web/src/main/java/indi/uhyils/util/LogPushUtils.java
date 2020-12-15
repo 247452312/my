@@ -49,7 +49,7 @@ public class LogPushUtils {
         jsonObject.put("methodName", methodName);
         jsonObject.put("params", JSONObject.toJSONString(params));
         jsonObject.put("time", System.currentTimeMillis());
-        jsonObject.put("ip", getIPAddress(request));
+        jsonObject.put("ip", getIpAddress(request));
         jsonObject.put("userId", token);
         jsonObject.put("link", parseString(link));
 
@@ -57,7 +57,7 @@ public class LogPushUtils {
         producer.onData(json, token);
     }
 
-    public static String getIPAddress(HttpServletRequest request) {
+    public static String getIpAddress(HttpServletRequest request) {
         String ip = null;
 
         //X-Forwarded-For：Squid 服务代理

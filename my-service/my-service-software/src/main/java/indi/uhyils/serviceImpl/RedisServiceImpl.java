@@ -259,7 +259,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
 
     @Override
-    public ServiceResult<Integer> getRedisDB(IdRequest request) {
+    public ServiceResult<Integer> getRedisDb(IdRequest request) {
         Long id = request.getId();
         Jedis jedis = getJedis(id);
         List<String> databases = jedis.configGet("databases");

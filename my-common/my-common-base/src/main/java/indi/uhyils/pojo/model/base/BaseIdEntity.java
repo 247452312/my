@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.model.base;
 
+import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.SpringUtil;
@@ -31,7 +32,7 @@ public class BaseIdEntity implements BaseDbSaveable {
      * 插入之前执行方法，需要手动调用
      */
     @Override
-    public void preInsert(DefaultRequest request) throws Exception {
+    public void preInsert(DefaultRequest request) throws IdGenerationException, InterruptedException {
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         id = bean.newId();
     }
@@ -43,8 +44,12 @@ public class BaseIdEntity implements BaseDbSaveable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         BaseIdEntity that = (BaseIdEntity) o;
         return Objects.equals(id, that.id);
     }

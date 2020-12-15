@@ -125,7 +125,7 @@ public class ShowDocUtil {
     private static void sendHttpToShowDoc(JSONObject data) throws Exception {
 
         String url = "http://39.98.164.91:4999/server/index.php?s=/api/item/updateByApi";
-        HashMap<String, Object> head = new HashMap<>();
+        HashMap<String, Object> head = new HashMap<>(1);
         head.put("ContentType", "application/json");
         Object o = HttpUtil.sendHttpPost(url, head, data);
         System.out.println(o.toString());

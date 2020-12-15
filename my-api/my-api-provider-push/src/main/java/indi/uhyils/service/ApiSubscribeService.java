@@ -1,5 +1,6 @@
 package indi.uhyils.service;
 
+import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.model.ApiSubscribeEntity;
 import indi.uhyils.pojo.request.SubscribeRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -18,6 +19,8 @@ public interface ApiSubscribeService extends DefaultEntityService<ApiSubscribeEn
      *
      * @param request 订阅请求
      * @return 是否订阅成功
+     * @throws IdGenerationException 见{@link indi.uhyils.pojo.model.base.BaseDbSaveable#preInsert}
+     * @throws InterruptedException
      */
-    ServiceResult<Boolean> subscribe(SubscribeRequest request) throws Exception;
+    ServiceResult<Boolean> subscribe(SubscribeRequest request) throws IdGenerationException, InterruptedException;
 }

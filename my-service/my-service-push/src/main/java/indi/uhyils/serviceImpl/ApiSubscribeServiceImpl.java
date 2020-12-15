@@ -3,6 +3,7 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.ApiSubscribeDao;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
+import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.model.ApiSubscribeEntity;
 import indi.uhyils.pojo.request.SubscribeRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -31,7 +32,7 @@ public class ApiSubscribeServiceImpl extends BaseDefaultServiceImpl<ApiSubscribe
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Boolean> subscribe(SubscribeRequest request) throws Exception {
+    public ServiceResult<Boolean> subscribe(SubscribeRequest request) throws IdGenerationException, InterruptedException {
         ApiSubscribeEntity entity = ApiSubscribeEntity.build(request);
         /*查重-> 同一个用户,同一个api就算做重复*/
         int repeat = dao.checkSubscribeRepeat(entity);

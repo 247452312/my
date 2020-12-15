@@ -9,8 +9,8 @@ public final class FFT {
     final double TWOPI = 6.28318530717958647692;
     final double SQHALF = 0.707106781186547524401;
     public int logm;
-    int brseed[] = new int[4048];
-    float tab[][];
+    int[] brseed = new int[4048];
+    float[][] tab;
 
 
     public FFT(int nlength) {
@@ -30,7 +30,7 @@ public final class FFT {
      * Calculates the magnitude spectrum of a real signal. The returned vector
      * contains only the positive frequencies.
      */
-    public float[] calculateFFTMagnitude(float x[]) {
+    public float[] calculateFFTMagnitude(float[] x) {
         int i, n;
         n = 1 << this.logm;
 
@@ -54,9 +54,6 @@ public final class FFT {
         mag[n / 2] = (float) Math.abs(x[n / 2]); // pi (meaning: fs / 2)
 
 
-        // System.out.println("FFT before magnitude");
-        // IO.DisplayVector(x);
-
 
         for (i = 1; i < n / 2; i++) {
             mag[i] = (float) Math.sqrt(x[i] * x[i] + x[n - i] * x[n - i]);
@@ -64,7 +61,6 @@ public final class FFT {
         }
 
 
-        // IO.DisplayVector(mag);
         return mag;
     }
 
@@ -73,7 +69,7 @@ public final class FFT {
      * Calculates the magnitude spectrum of a real signal. The returned vector
      * contains only the positive frequencies.
      */
-    public double[] calculateFFTMagnitude(double inputData[]) {
+    public double[] calculateFFTMagnitude(double[] inputData) {
         int i, n;
         n = 1 << this.logm;
         if (inputData.length > n) {
@@ -82,10 +78,6 @@ public final class FFT {
                     + " samples!");
         }
 
-
-        // System.out.println("magnitude test");
-        // double[] dtest = DSP.DFTMagnitude(inputData);
-        // IO.DisplayVector(dtest);
 
 
         float[] x = new float[n];
@@ -96,9 +88,6 @@ public final class FFT {
 
         rsfft(x);
 
-
-        // System.out.println("FFT before magnitude");
-        // IO.DisplayVector(x);
 
 
         double[] mag = new double[n / 2 + 1];
@@ -113,11 +102,8 @@ public final class FFT {
 
         for (i = 1; i < n / 2; i++) {
             mag[i] = Math.sqrt(x[i] * x[i] + x[n - i] * x[n - i]);
-            // System.out.println(mag[i] + " " + x[i] + " " + x[n-i]);
         }
 
-
-        // IO.DisplayVector(mag);
         return mag;
     }
 
@@ -126,14 +112,9 @@ public final class FFT {
      * Calculates the power (magnitude squared) spectrum of a real signal. The
      * returned vector contains only the positive frequencies.
      */
-    public double[] calculateFFTPower(double inputData[]) {
+    public double[] calculateFFTPower(double[] inputData) {
         int i, n;
         n = 1 << this.logm;
-
-
-        // System.out.println("magnitude test");
-        // double[] dtest = DSP.DFTMagnitude(inputData);
-        // IO.DisplayVector(dtest);
 
 
         float[] x = new float[n];
@@ -144,9 +125,6 @@ public final class FFT {
 
         rsfft(x);
 
-
-        // System.out.println("FFT before magnitude");
-        // IO.DisplayVector(x);
 
 
         double[] mag = new double[n / 2 + 1];
@@ -161,12 +139,8 @@ public final class FFT {
 
         for (i = 1; i < n / 2; i++) {
             mag[i] = x[i] * x[i] + x[n - i] * x[n - i];
-            // mag[i] = Math.sqrt(x[i]*x[i]+x[n-i]*x[n-i]);
-            // System.out.println(mag[i] + " " + x[i] + " " + x[n-i]);
         }
 
-
-        // IO.DisplayVector(mag);
         return mag;
     }
 
@@ -174,7 +148,7 @@ public final class FFT {
     /**
      * In place calculation of FFT magnitude.
      */
-    public void FFTMagnitude(float x[]) {
+    public void FFTMagnitude(float[] x) {
         int i, n;
         rsfft(x);
         n = 1 << this.logm;
@@ -190,7 +164,7 @@ public final class FFT {
     }
 
 
-    void rsfft(float x[]) {
+    void rsfft(float[] x) {
         /* creat table */
         // if(logm>=4) creattab(logm);
         /* Call recursive routine */
@@ -214,7 +188,7 @@ public final class FFT {
      */
 
 
-    void rsifft(float x[]) {
+    void rsifft(float[] x) {
         int i, m;
         float fac;
         int xp;
@@ -308,7 +282,7 @@ public final class FFT {
      */
 
 
-    void rsrec(float x[], int logm) {
+    void rsrec(float[] x, int logm) {
         int m, m2, m4, m8, nel, n;
         int x0 = 0;
         int xr1, xr2, xi1;
@@ -337,7 +311,8 @@ public final class FFT {
 
 
         if (logm < 2) {
-            if (logm == 1) { /* length m = 2 */
+            /* length m = 2 */
+            if (logm == 1) {
                 xr2 = x0 + 1;
                 tmp1 = x[x0] + x[xr2];
                 x[xr2] = x[x0] - x[xr2];
@@ -355,36 +330,6 @@ public final class FFT {
         m4 = m2 / 2;
         m8 = m4 / 2;
 
-
-        /* Build tables of butterfly coefficients, if necessary */
-        // if ((logm >= 4) && (tab[logm-4][0] == 0)) {
-
-
-        /* Allocate memory for tables */
-        // nel = m4 - 2;
-
-
-        /*
-         * if ((tab[logm-4] = (float *) calloc(3 * nel, sizeof(float))) == NULL)
-         * { printf("Error : RSFFT : not enough memory for cosine tables.\n");
-         * error_exit(); }
-         */
-
-
-        /* Initialize pointers */
-        // tabi=logm-4;
-        // cn =0; spcn = cn + nel; smcn = spcn + nel;
-
-
-        /* Compute tables */
-        /*
-         * for (n = 1; n < m4; n++) { if (n == m8) continue; ang = n *
-         * (float)TWOPI / m; c = Math.cos(ang); s = Math.sin(ang);
-         * tab[tabi][cn++] = (float)c; tab[tabi][spcn++] = (float)(- (s + c));
-         * tab[tabi][smcn++] =(float)( s - c); } }
-         *
-         * /* Step 1
-         */
         xr1 = x0;
         xr2 = xr1 + m2;
         for (n = 0; n < m2; n++) {
@@ -482,7 +427,7 @@ public final class FFT {
      */
 
 
-    void rsirec(float x[], int logm) {
+    void rsirec(float[] x, int logm) {
         int m, m2, m4, m8, nel, n;
         int xr1, xr2, xi1;
         int x0 = 0;
@@ -643,7 +588,7 @@ public final class FFT {
      */
 
 
-    void srrec(float x[], int xr, int xi, int logm) {
+    void srrec(float[] x, int xr, int xi, int logm) {
         int m, m2, m4, m8, nel, n;
         // int x0=0;
         int xr1, xr2, xi1, xi2;
@@ -891,7 +836,7 @@ public final class FFT {
     }
 
 
-    void BR_permute(float x[], int logm) {
+    void BR_permute(float[] x, int logm) {
         int i, j, imax, lg2, n;
         int off, fj, gno;
         float tmp;

@@ -168,7 +168,7 @@ public class IpSpiderTableAspect {
         }
         try {
             // 获取设备的ip
-            String ip = LogPushUtils.getIPAddress(request);
+            String ip = LogPushUtils.getIpAddress(request);
 
             /*检查临时冻结列表 以及黑名单列表*/
             // 是否在黑名单中

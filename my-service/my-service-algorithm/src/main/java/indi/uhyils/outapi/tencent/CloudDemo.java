@@ -127,36 +127,36 @@ public class CloudDemo {
     }
 
     private static class RasResponse {
-        private Data Data;
+        private CloudDemo.Data data;
 
-        private String RequestId;
+        private String requestId;
 
         public CloudDemo.Data getData() {
-            return Data;
+            return data;
         }
 
         public void setData(CloudDemo.Data data) {
-            Data = data;
+            this.data = data;
         }
 
         public String getRequestId() {
-            return RequestId;
+            return requestId;
         }
 
         public void setRequestId(String requestId) {
-            RequestId = requestId;
+            this.requestId = requestId;
         }
     }
 
     private static class Data {
-        private Long TaskId;
+        private Long taskId;
 
         public Long getTaskId() {
-            return TaskId;
+            return taskId;
         }
 
         public void setTaskId(Long taskId) {
-            TaskId = taskId;
+            this.taskId = taskId;
         }
     }
 }

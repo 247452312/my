@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.model.base;
 
+import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 
 /**
@@ -42,7 +43,7 @@ public class BaseVoEntity extends BaseIdEntity {
      * 插入之前执行方法，需要手动调用
      */
     @Override
-    public void preInsert(DefaultRequest request) throws Exception {
+    public void preInsert(DefaultRequest request) throws IdGenerationException, InterruptedException {
         // 这里生成了id
         super.preInsert(request);
         this.createDate = new Long(System.currentTimeMillis() / 1000).intValue();

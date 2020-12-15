@@ -192,7 +192,7 @@ public class GeneticAlgorithm {
     public HashMap<DnaData, Integer> getResult() {
         // 排序
         Collections.sort(data, Comparator.comparing(o -> fitnessFunction.getFitness(o)));
-        HashMap<DnaData, Integer> result = new HashMap<>();
+        HashMap<DnaData, Integer> result = new HashMap<>(16);
         for (DnaData datum : data) {
             // 默认里面没有datum相近的点
             Boolean b = true;

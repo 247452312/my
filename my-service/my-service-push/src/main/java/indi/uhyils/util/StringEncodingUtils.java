@@ -29,7 +29,7 @@ public class StringEncodingUtils {
      * @param text
      * @return
      */
-    public static String decodeUTF8tring(String text) {
+    public static String decodeUTF8String(String text) {
         return text;
     }
 }

@@ -5,8 +5,10 @@ package indi.uhyils.util;
  * @date 文件创建日期 2020年07月25日 14时53分
  */
 public class MFCC {
-    // parameter USEPOWER in HTK, where default is false
-    private static final boolean m_ousePowerInsteadOfMagnitude = false;
+    /**
+     * parameter USEPOWER in HTK, where default is false
+     */
+    private static final boolean M_OUSE_POWER_INSTEAD_OF_MAGNITUDE = false;
 
 
     // Number of MFCCs per speech frame.
@@ -298,7 +300,7 @@ public class MFCC {
             m_dfilterOutput[i] = 0.0;
             // Notice that the FFT samples at 0 (DC) and fs/2 are not considered
             // on this calculation
-            if (m_ousePowerInsteadOfMagnitude) {
+            if (M_OUSE_POWER_INSTEAD_OF_MAGNITUDE) {
                 double[] fpowerSpectrum = m_fft.calculateFFTPower(fspeechFrame);
                 for (int j = m_nboundariesDFTBins[i][0], k = 0; j <= m_nboundariesDFTBins[i][1]; j++, k++) {
                     m_dfilterOutput[i] += fpowerSpectrum[j] * m_dweights[i][k];
@@ -359,18 +361,6 @@ public class MFCC {
             dMFCCParameters[i] *= m_dscalingFactor;
         }
 
-
-        // debugging purposes
-        // System.out.println("Windowed speech");
-        // IO.DisplayVector(fspeechFrame);
-        // System.out.println("FFT spectrum");
-        // IO.DisplayVector(fspectrumMagnitude);
-        // System.out.println("Filter output in dB");
-        // IO.DisplayVector(dfilterOutput);
-        // System.out.println("DCT matrix");
-        // IO.DisplayMatrix(m_ddCTMatrix);
-        // System.out.println("MFCC before liftering");
-        // IO.DisplayVector(dMFCCParameters);
 
 
         if (m_oisLifteringEnabled) {
@@ -437,11 +427,11 @@ public class MFCC {
 
     public double[] getFilterBankOutputs(double[] fspeechFrame) {
         // use mel filter bank
-        double dfilterOutput[] = new double[m_nnumberOfFilters];
+        double[] dfilterOutput = new double[m_nnumberOfFilters];
         for (int i = 0; i < m_nnumberOfFilters; i++) {
             // Notice that the FFT samples at 0 (DC) and fs/2 are not considered
             // on this calculation
-            if (m_ousePowerInsteadOfMagnitude) {
+            if (M_OUSE_POWER_INSTEAD_OF_MAGNITUDE) {
                 double[] fpowerSpectrum = m_fft.calculateFFTPower(fspeechFrame);
                 for (int j = m_nboundariesDFTBins[i][0], k = 0; j <= m_nboundariesDFTBins[i][1]; j++, k++) {
                     dfilterOutput[i] += fpowerSpectrum[j] * m_dweights[i][k];

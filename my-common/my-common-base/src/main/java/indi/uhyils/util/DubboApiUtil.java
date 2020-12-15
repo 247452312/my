@@ -32,6 +32,20 @@ public class DubboApiUtil {
     public static final String INTERFACE_NAME_PACKAGE_SEPARATOR = ".";
 
     /**
+     * 泛型T
+     */
+    private static final String PARADIGM_STRING = "T";
+    /**
+     * 泛型左括号
+     */
+    private static final String GENERIC_LEFT_BRACKET = "<";
+
+    /**
+     * 泛型右括号
+     */
+    private static final String GENERIC_RIGHT_BRACKET = ">";
+
+    /**
      * ReferenceConfig缓存(重量级, 不缓存太慢了, 但是还没有考虑微服务过多的情况)
      */
     private static final HashMap<String, GenericService> MAP = new HashMap<>();
@@ -167,14 +181,12 @@ public class DubboApiUtil {
             Type[] genericInterfaces = method.getGenericParameterTypes();
             Type genericSuperclass = genericInterfaces[0];
             String className = genericSuperclass.getTypeName();
-            String brackets = "<";
-            String lastBrackets = ">";
-            if (className.contains(brackets)) {
-                String substring = className.substring(className.indexOf(brackets) + 1, className.lastIndexOf(lastBrackets));
-                if ("T".equals(substring)) {
+            if (className.contains(GENERIC_LEFT_BRACKET)) {
+                String substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
+                if (PARADIGM_STRING.equals(substring)) {
                     Type genericInterface = interfaceClass.getGenericInterfaces()[0];
                     className = genericInterface.getTypeName();
-                    substring = className.substring(className.indexOf(brackets) + 1, className.lastIndexOf(lastBrackets));
+                    substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
                 }
                 String json = JSON.toJSONString(temp);
                 if (objRequestEquals) {

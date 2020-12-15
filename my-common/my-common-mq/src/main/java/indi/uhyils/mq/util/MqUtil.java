@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class MqUtil {
 
-    private static final Map<MqQueueInfo, Channel> channelMap = new HashMap<>();
+    private static final Map<MqQueueInfo, Channel> CHANNEL_MAP = new HashMap<>();
 
     /**
      * 推送信息到mq
@@ -32,8 +32,8 @@ public class MqUtil {
     public static void sendMsg(String exchange, String queue, byte[] bytes) throws IOException, TimeoutException {
         Channel channel;
         MqQueueInfo key = new MqQueueInfo(exchange, queue);
-        if (channelMap.containsKey(key)) {
-            channel = channelMap.get(key);
+        if (CHANNEL_MAP.containsKey(key)) {
+            channel = CHANNEL_MAP.get(key);
         } else {
             RabbitFactory factory = SpringUtil.getBean(RabbitFactory.class);
             channel = factory.getConn().createChannel();
@@ -43,7 +43,7 @@ public class MqUtil {
             channel.queueDeclare(queue, false, false, false, null);
             //绑定exchange和queue
             channel.queueBind(queue, exchange, queue);
-            channelMap.put(key, channel);
+            CHANNEL_MAP.put(key, channel);
         }
         channel.basicPublish(exchange, queue, null, bytes);
 

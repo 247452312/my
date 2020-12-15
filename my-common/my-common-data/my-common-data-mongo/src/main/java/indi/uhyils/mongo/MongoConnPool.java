@@ -58,6 +58,7 @@ public class MongoConnPool {
         // TODO 修改为线程池
         Thread thread = new Thread(guardianThread);
         thread.setDaemon(true);
+        thread.setName("mongo线程池守护线程");
         thread.start();
     }
 
