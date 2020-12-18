@@ -103,7 +103,7 @@ public class JvmServiceImpl implements JvmService {
                 BigDecimal heapUseMem = BigDecimal.valueOf(monitorStatus.getHeapUseMem());
                 heapMem.add(heapUseMem.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
             }
-            List list = new ArrayList();
+            List<List<?>> list = new ArrayList();
             list.add(xAxix);
             list.add(noHeapMem);
             list.add(heapMem);

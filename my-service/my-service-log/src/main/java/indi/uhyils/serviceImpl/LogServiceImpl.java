@@ -33,7 +33,7 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
     /**
      * 工具entity, 插入日志时用来插入登录日志
      */
-    private UserEntity userEntity = new UserEntity();
+    private final UserEntity userEntity = new UserEntity();
 
     {
         // 日志的创建用户一定是超级管理员

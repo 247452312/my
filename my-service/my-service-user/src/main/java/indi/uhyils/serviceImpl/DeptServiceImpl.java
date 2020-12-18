@@ -40,9 +40,6 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     @Resource
     private MenuDao menuDao;
 
-    @Resource
-    private RoleDao roleDao;
-
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) throws Exception {

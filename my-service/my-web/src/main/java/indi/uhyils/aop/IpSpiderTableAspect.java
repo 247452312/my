@@ -2,6 +2,7 @@ package indi.uhyils.aop;
 
 import indi.uhyils.content.Content;
 import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.AddBlackIpRequest;
@@ -253,7 +254,7 @@ public class IpSpiderTableAspect {
      * @param ip ip
      * @return 返回前端的东西
      */
-    private Object faultVerification(Redisable jedis, String ip) {
+    private Object faultVerification(Redisable jedis, String ip) throws IdGenerationException, InterruptedException {
         // 获取自增后的验证码输入错误的次数
         Long count = jedis.hincrby(IP_TEMP_RECORD_KEY_COUNT, ip);
         // 错误超过一定的次数

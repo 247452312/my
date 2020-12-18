@@ -1,5 +1,6 @@
 package indi.uhyils.service;
 
+import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.model.BlackListEntity;
 import indi.uhyils.pojo.request.AddBlackIpRequest;
 import indi.uhyils.pojo.request.GetLogIntervalByIpRequest;
@@ -35,9 +36,10 @@ public interface BlackListService extends DefaultEntityService<BlackListEntity> 
 
     /**
      * 添加黑名单
-     *
-     * @param request
-     * @return
+     * @param request ip
+     * @return 是否成功
+     * @throws IdGenerationException
+     * @throws InterruptedException
      */
-    ServiceResult<Boolean> addBlackIp(AddBlackIpRequest request);
+    ServiceResult<Boolean> addBlackIp(AddBlackIpRequest request) throws IdGenerationException, InterruptedException;
 }
