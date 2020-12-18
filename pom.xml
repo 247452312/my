@@ -56,6 +56,7 @@
         <asr.version>1.0</asr.version>
         <hystrix.version>1.5.18</hystrix.version>
         <es.version>7.9.1</es.version>
+        <netty.version>4.1.54.Final</netty.version>
 
     </properties>
 
@@ -342,6 +343,13 @@
                 <groupId>com.tencent</groupId>
                 <artifactId>asr-sdk</artifactId>
                 <version>${asr.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
             </dependency>
 
 
