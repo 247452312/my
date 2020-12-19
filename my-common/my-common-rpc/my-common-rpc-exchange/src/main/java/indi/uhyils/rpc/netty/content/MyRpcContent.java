@@ -6,10 +6,13 @@ package indi.uhyils.rpc.netty.content;
  */
 public class MyRpcContent {
     /**
+     * rpc版本
+     */
+    public static final int VERSION = 1;
+    /**
      * rpc标志
      */
     private static final int AGREEMENT_START_INT = 0x929d;
-
     /**
      * rpc标志,两字节占用
      */
@@ -17,10 +20,5 @@ public class MyRpcContent {
             (byte) (AGREEMENT_START_INT >> 8 & 0xff),
             (byte) (AGREEMENT_START_INT & 0xff)
     };
-
-    /**
-     * rpc版本
-     */
-    public static final int VERSION = 1;
 
 }

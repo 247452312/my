@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.rpc.netty.exception.ContentArrayQuantityMismatchException;
 import indi.uhyils.rpc.netty.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.RpcContent;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,9 @@ public class RpcRequestContentFactory {
         List<Object> args = new ArrayList<>();
         for (int i = 0; i < methodParamterTypes.length; i++) {
             String classPath = methodParamterTypes[i];
+            if (StringUtils.isEmpty(classPath)) {
+                continue;
+            }
             Class<?> clazz = Class.forName(classPath);
             Object o = JSON.parseObject(argsMap.get(i).toString(), clazz);
             args.add(o);

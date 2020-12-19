@@ -2,8 +2,6 @@ package indi.uhyils.rpc.netty.pojo.request;
 
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 
-import java.util.Objects;
-
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 11时03分
@@ -45,14 +43,26 @@ public class RpcNormalRequestContent implements RpcRequestContent {
         return serviceName;
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     @Override
     public String getServiceVersion() {
         return serviceVersion;
     }
 
+    public void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
+    }
+
     @Override
     public String getMethodName() {
         return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
     }
 
     @Override
@@ -65,32 +75,20 @@ public class RpcNormalRequestContent implements RpcRequestContent {
         return args;
     }
 
+    public void setArgs(Object[] args) {
+        this.args = args;
+    }
+
     @Override
     public Object[] getOthers() {
         return others;
     }
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public void setServiceVersion(String serviceVersion) {
-        this.serviceVersion = serviceVersion;
-    }
-
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
+    public void setOthers(Object[] others) {
+        this.others = others;
     }
 
     public void setMethodParamterTypes(String[] methodParamterTypes) {
         this.methodParamterTypes = methodParamterTypes;
-    }
-
-    public void setArgs(Object[] args) {
-        this.args = args;
-    }
-
-    public void setOthers(Object[] others) {
-        this.others = others;
     }
 }

@@ -14,6 +14,9 @@ public class RpcNormalResponse extends RpcResponse {
         super(data);
     }
 
+    public RpcNormalResponse() {
+    }
+
     @Override
     protected void initContent() throws RpcException {
         this.content = RpcResponseContentFactory.createByContentArray(this.contentArray);

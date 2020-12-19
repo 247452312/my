@@ -13,4 +13,12 @@ public interface RpcContent {
      * @return
      */
     Integer type();
+
+    /**
+     * 重写toString方法
+     *
+     * @return
+     */
+    @Override
+    String toString();
 }

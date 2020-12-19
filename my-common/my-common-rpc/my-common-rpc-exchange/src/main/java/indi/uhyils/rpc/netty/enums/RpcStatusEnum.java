@@ -46,11 +46,11 @@ public enum RpcStatusEnum {
      */
     SERVER_THREADPOOL_EXHAUSTED_ERROR(100);
 
+    private Integer code;
+
     RpcStatusEnum(Integer code) {
         this.code = code;
     }
-
-    private Integer code;
 
     public Integer getCode() {
         return code;

@@ -2,12 +2,9 @@ package indi.uhyils.rpc.netty.pojo.request;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import indi.uhyils.rpc.netty.content.MyRpcContent;
 import indi.uhyils.rpc.netty.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.RpcContent;
 import indi.uhyils.rpc.netty.pojo.RpcHeader;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * rpc正常请求体
@@ -19,6 +16,9 @@ public class RpcNormalRequest extends RpcRequest {
 
     public RpcNormalRequest(byte[] data) throws RpcException, ClassNotFoundException {
         super(data);
+    }
+
+    public RpcNormalRequest() {
     }
 
     @Override
@@ -85,4 +85,6 @@ public class RpcNormalRequest extends RpcRequest {
         }
         return sb.toString();
     }
+
+
 }

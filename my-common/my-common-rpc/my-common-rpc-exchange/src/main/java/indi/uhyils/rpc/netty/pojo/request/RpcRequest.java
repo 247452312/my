@@ -17,4 +17,7 @@ public abstract class RpcRequest extends AbstractRpcData {
         super(data);
         this.type = RpcTypeEnum.REQUEST.getCode();
     }
+
+    public RpcRequest() {
+    }
 }

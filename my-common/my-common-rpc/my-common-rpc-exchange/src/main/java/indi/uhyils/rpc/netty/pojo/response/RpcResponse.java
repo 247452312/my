@@ -1,10 +1,7 @@
 package indi.uhyils.rpc.netty.pojo.response;
 
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
-import indi.uhyils.rpc.netty.exception.ContentArrayQuantityMismatchException;
-import indi.uhyils.rpc.netty.exception.NoMyRpcException;
 import indi.uhyils.rpc.netty.exception.RpcException;
-import indi.uhyils.rpc.netty.exception.VersionNotSupportedException;
 import indi.uhyils.rpc.netty.pojo.AbstractRpcData;
 
 /**
@@ -18,5 +15,8 @@ public abstract class RpcResponse extends AbstractRpcData {
     public RpcResponse(byte[] data) throws RpcException, ClassNotFoundException {
         super(data);
         this.type = RpcTypeEnum.RESPONSE.getCode();
+    }
+
+    public RpcResponse() {
     }
 }

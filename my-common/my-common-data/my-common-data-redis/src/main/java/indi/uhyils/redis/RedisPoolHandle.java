@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.content.Content;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.util.LogUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -86,7 +87,7 @@ public class RedisPoolHandle {
         Redisable jedis = redisPool.getJedis();
         try {
             String userJson = jedis.get(token);
-            if (userJson == null || "".equals(userJson)) {
+            if (StringUtils.isEmpty(userJson)) {
                 return null;
             }
             UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
@@ -155,7 +156,7 @@ public class RedisPoolHandle {
         Redisable jedis = redisPool.getJedis();
         try {
             String userJson = jedis.get(token);
-            if (userJson == null || "".equals(userJson)) {
+            if (StringUtils.isEmpty(userJson)) {
                 return true;
             }
             UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);

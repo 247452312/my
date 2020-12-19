@@ -9,6 +9,7 @@ import indi.uhyils.util.disruptor.JsonEvent;
 import indi.uhyils.util.disruptor.JsonEventConsumer;
 import indi.uhyils.util.disruptor.JsonEventFactory;
 import indi.uhyils.util.disruptor.JsonEventProducerWithTranslator;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.Executors;
@@ -38,7 +39,7 @@ public class LogPushUtils {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("class", "indi.uhyils.pojo.model.LogEntity");
         // 说明有错误信息,类型是错误
-        if (exceptionDetail != null && !"".equals(exceptionDetail)) {
+        if (StringUtils.isNotEmpty(exceptionDetail)) {
             jsonObject.put("logType", serviceCode);
             jsonObject.put("exceptionDetail", exceptionDetail);
         } else {

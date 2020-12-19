@@ -2,8 +2,6 @@ package indi.uhyils.rpc.netty.pojo.request;
 
 import indi.uhyils.rpc.netty.pojo.RpcContent;
 
-import java.util.Objects;
-
 /**
  * rpc请求内容抽象类,包含请求接口名称,接口版本等信息
  *

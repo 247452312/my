@@ -63,6 +63,27 @@ public abstract class AbstractRpcData implements RpcData {
         initContent();
     }
 
+    public AbstractRpcData() {
+    }
+
+    public static RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {
+        int type = (data[2] & 0b10) >> 1;
+        RpcTypeEnum parse = RpcTypeEnum.parse(type);
+        assert parse != null;
+        RpcFactory rpcFactory;
+        switch (parse) {
+            case REQUEST:
+                rpcFactory = RpcRequestFactory.getInstance();
+                break;
+            case RESPONSE:
+                rpcFactory = RpcResponseFactory.getInstance();
+                break;
+            default:
+                throw new RuntimeException();
+        }
+        return rpcFactory.createByBytes(data);
+    }
+
     /**
      * 初始化内容
      *
@@ -121,24 +142,6 @@ public abstract class AbstractRpcData implements RpcData {
         this.contentArray = contentStr.toString().split("\n");
     }
 
-    public static RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {
-        int type = (data[2] & 0b10) >> 1;
-        RpcTypeEnum parse = RpcTypeEnum.parse(type);
-        assert parse != null;
-        RpcFactory rpcFactory;
-        switch (parse) {
-            case REQUEST:
-                rpcFactory = RpcRequestFactory.getInstance();
-                break;
-            case RESPONSE:
-                rpcFactory = RpcResponseFactory.getInstance();
-                break;
-            default:
-                throw new RuntimeException();
-        }
-        return rpcFactory.createByBytes(data);
-    }
-
     @Override
     public byte[] toBytes() {
         byte[] previousBytes = new byte[7];
@@ -158,5 +161,54 @@ public abstract class AbstractRpcData implements RpcData {
         System.arraycopy(strBytes, 0, result, previousBytes.length, strBytes.length);
 
         return result;
+    }
+
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public RpcHeader[] getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(RpcHeader[] headers) {
+        this.headers = headers;
+    }
+
+    public String[] getContentArray() {
+        return contentArray;
+    }
+
+    public void setContentArray(String[] contentArray) {
+        this.contentArray = contentArray;
+    }
+
+    public RpcContent getContent() {
+        return content;
+    }
+
+    public void setContent(RpcContent content) {
+        this.content = content;
     }
 }

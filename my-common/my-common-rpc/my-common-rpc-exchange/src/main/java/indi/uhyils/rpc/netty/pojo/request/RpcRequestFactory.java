@@ -1,11 +1,13 @@
 package indi.uhyils.rpc.netty.pojo.request;
 
-import indi.uhyils.rpc.netty.exception.ContentArrayQuantityMismatchException;
-import indi.uhyils.rpc.netty.exception.NoMyRpcException;
+import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 import indi.uhyils.rpc.netty.exception.RpcException;
-import indi.uhyils.rpc.netty.exception.VersionNotSupportedException;
+import indi.uhyils.rpc.netty.pojo.RpcContent;
 import indi.uhyils.rpc.netty.pojo.RpcData;
 import indi.uhyils.rpc.netty.pojo.RpcFactory;
+import indi.uhyils.rpc.netty.pojo.RpcHeader;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -13,15 +15,10 @@ import indi.uhyils.rpc.netty.pojo.RpcFactory;
  */
 public class RpcRequestFactory implements RpcFactory {
 
-    @Override
-    public RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {
-        return new RpcNormalRequest(data);
-    }
+    public volatile static RpcFactory instance;
 
     private RpcRequestFactory() {
     }
-
-    public volatile static RpcFactory instance;
 
     public static RpcFactory getInstance() {
         if (null == instance) {
@@ -32,5 +29,23 @@ public class RpcRequestFactory implements RpcFactory {
             }
         }
         return instance;
+    }
+
+    @Override
+    public RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {
+        return new RpcNormalRequest(data);
+    }
+
+    @Override
+    public RpcData createByInfo(Integer rpcVersion, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException {
+        RpcNormalRequest rpcNormalRequest = new RpcNormalRequest();
+        rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
+        rpcNormalRequest.setVersion(rpcVersion);
+        rpcNormalRequest.setHeaders(rpcHeaders);
+        rpcNormalRequest.setContentArray(contentArray);
+        RpcContent content = RpcRequestContentFactory.createByContentArray(contentArray);
+        rpcNormalRequest.setContent(content);
+        rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
+        return rpcNormalRequest;
     }
 }

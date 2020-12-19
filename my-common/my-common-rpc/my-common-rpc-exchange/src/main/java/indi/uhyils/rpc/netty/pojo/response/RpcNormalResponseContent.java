@@ -33,12 +33,11 @@ public class RpcNormalResponseContent implements RpcResponseContent {
         return responseContent;
     }
 
+    public void setResponseContent(String responseContent) {
+        this.responseContent = responseContent;
+    }
 
     public void setResponseType(Integer responseType) {
         this.responseType = responseType;
-    }
-
-    public void setResponseContent(String responseContent) {
-        this.responseContent = responseContent;
     }
 }
