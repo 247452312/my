@@ -112,26 +112,23 @@
     </select>
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.UserEntity">
-        insert
-        sys_user(id, nick_name, mail, phone, head_portrait, username, password, role_id, create_date,
+        insert sys_user(id, nick_name, mail, phone, head_portrait, username, password, role_id, create_date,
                         create_user, update_date, update_user,
                         delete_flag, remark)
-        values (
-        #{id},
-        #{nickName},
-        #{mail},
-        #{phone},
-        #{headPortrait},
-        #{userName},
-        #{password},
-        #{roleId},
-        #{createDate},
-        #{createUser},
-        #{updateDate},
-        #{updateUser},
-        0,
-        #{remark}
-        )
+        values (#{id},
+                #{nickName},
+                #{mail},
+                #{phone},
+                #{headPortrait},
+                #{userName},
+                #{password},
+                #{roleId},
+                #{createDate},
+                #{createUser},
+                #{updateDate},
+                #{updateUser},
+                0,
+                #{remark})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.UserEntity">

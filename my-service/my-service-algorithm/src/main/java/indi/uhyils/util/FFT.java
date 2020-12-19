@@ -54,7 +54,6 @@ public final class FFT {
         mag[n / 2] = (float) Math.abs(x[n / 2]); // pi (meaning: fs / 2)
 
 
-
         for (i = 1; i < n / 2; i++) {
             mag[i] = (float) Math.sqrt(x[i] * x[i] + x[n - i] * x[n - i]);
             // System.out.println(mag[i] + " " + x[i] + " " + x[n-i]);
@@ -79,7 +78,6 @@ public final class FFT {
         }
 
 
-
         float[] x = new float[n];
         for (i = 0; i < inputData.length; i++) {
             x[i] = (float) inputData[i];
@@ -87,7 +85,6 @@ public final class FFT {
 
 
         rsfft(x);
-
 
 
         double[] mag = new double[n / 2 + 1];
@@ -124,7 +121,6 @@ public final class FFT {
 
 
         rsfft(x);
-
 
 
         double[] mag = new double[n / 2 + 1];

@@ -36,6 +36,7 @@ public interface BlackListService extends DefaultEntityService<BlackListEntity> 
 
     /**
      * 添加黑名单
+     *
      * @param request ip
      * @return 是否成功
      * @throws IdGenerationException

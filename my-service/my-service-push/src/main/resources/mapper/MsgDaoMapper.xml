@@ -58,8 +58,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.MsgEntity">
-        insert
-        sys_push_msg(id,
+        insert sys_push_msg(id,
                             create_date,
                             create_user,
                             delete_flag,
@@ -71,20 +70,18 @@
                             target,
                             title,
                             type)
-        values (
-        #{id},
-        #{createDate},
-        #{createUser},
-        0,
-        #{remark},
-        #{updateDate},
-        #{updateUser},
-        #{content},
-        #{success},
-        #{target},
-        #{title},
-        #{type}
-        )
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                0,
+                #{remark},
+                #{updateDate},
+                #{updateUser},
+                #{content},
+                #{success},
+                #{target},
+                #{title},
+                #{type})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.MsgEntity">

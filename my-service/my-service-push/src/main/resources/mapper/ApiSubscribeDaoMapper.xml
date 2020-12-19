@@ -57,8 +57,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.ApiSubscribeEntity">
-        insert
-        sys_api_subscribe(id,
+        insert sys_api_subscribe(id,
                                  create_date,
                                  create_user,
                                  delete_flag,
@@ -69,19 +68,17 @@
                                  cron,
                                  type,
                                  user_id)
-        values (
-        #{id},
-        #{createDate},
-        #{createUser},
-        0,
-        #{remark},
-        #{updateDate},
-        #{updateUser},
-        #{apiGroupId},
-        #{cron},
-        #{type},
-        #{userId}
-        )
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                0,
+                #{remark},
+                #{updateDate},
+                #{updateUser},
+                #{apiGroupId},
+                #{cron},
+                #{type},
+                #{userId})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.ApiSubscribeEntity">

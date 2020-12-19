@@ -61,8 +61,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
-        insert
-        sys_order_node_result_type(update_user,
+        insert sys_order_node_result_type(update_user,
                                           base_node_id,
                                           deal_result_name,
                                           remark,
@@ -71,17 +70,15 @@
                                           create_date,
                                           delete_flag,
                                           update_date)
-        values (
-        #{updateUser},
-        #{baseNodeId},
-        #{dealResultName},
-        #{remark},
-        #{id},
-        #{createUser},
-        #{createDate},
-        #{deleteFlag},
-        #{updateDate}
-        )
+        values (#{updateUser},
+                #{baseNodeId},
+                #{dealResultName},
+                #{remark},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{updateDate})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">

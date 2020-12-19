@@ -362,7 +362,6 @@ public class MFCC {
         }
 
 
-
         if (m_oisLifteringEnabled) {
             // Implements liftering to smooth the cepstral coefficients
             // according to

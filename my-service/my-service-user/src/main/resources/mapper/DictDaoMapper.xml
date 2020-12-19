@@ -55,8 +55,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.DictEntity">
-        insert
-        sys_dict(id,
+        insert sys_dict(id,
                         create_date,
                         create_user,
                         update_date,
@@ -66,18 +65,16 @@
                         description,
                         name,
                         type)
-        values (
-        #{id},
-        #{createDate},
-        #{createUser},
-        #{updateDate},
-        #{updateUser},
-        0,
-        #{code},
-        #{description},
-        #{name},
-        #{type}
-        )
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                #{updateDate},
+                #{updateUser},
+                0,
+                #{code},
+                #{description},
+                #{name},
+                #{type})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.DictEntity">

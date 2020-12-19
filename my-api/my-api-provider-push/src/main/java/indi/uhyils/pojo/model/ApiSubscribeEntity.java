@@ -48,10 +48,6 @@ public class ApiSubscribeEntity extends BaseVoEntity {
         this.userId = userId;
     }
 
-    public void setApiGroupId(Long apiGroupId) {
-        this.apiGroupId = apiGroupId;
-    }
-
     public Integer getType() {
         return type;
     }
@@ -62,6 +58,10 @@ public class ApiSubscribeEntity extends BaseVoEntity {
 
     public Long getApiGroupId() {
         return apiGroupId;
+    }
+
+    public void setApiGroupId(Long apiGroupId) {
+        this.apiGroupId = apiGroupId;
     }
 
     public String getCron() {

@@ -35,6 +35,7 @@ public interface OrderBaseNodeResultTypeDao extends DefaultDao<OrderBaseNodeResu
 
     /**
      * 根据所有的工单节点id们获取所有的结果类型
+     *
      * @param orderNodeIds
      * @return
      */

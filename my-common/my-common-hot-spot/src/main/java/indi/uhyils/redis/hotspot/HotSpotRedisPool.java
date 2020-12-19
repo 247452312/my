@@ -21,6 +21,10 @@ import java.util.Set;
 public class HotSpotRedisPool {
 
     /**
+     * 初始化类型是否是正常的redis
+     */
+    public static volatile Boolean initTypeIsRedis = true;
+    /**
      * jedis连接池
      */
     private static JedisSentinelPool pool;
@@ -28,11 +32,6 @@ public class HotSpotRedisPool {
      * 是否初始化的标志 如果此类已经初始化,则表示整个类已经初始化过
      */
     private static Object initMark;
-
-    /**
-     * 初始化类型是否是正常的redis
-     */
-    public static volatile Boolean initTypeIsRedis = true;
     /**
      * 最大连接数
      */

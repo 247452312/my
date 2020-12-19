@@ -20,6 +20,14 @@ public class GetOneOrderResponse implements Serializable {
      */
     private List<OrderNodeAboutResponse> orderNodes;
 
+    public static GetOneOrderResponse build(OrderInfoEntity info, List<OrderNodeAboutResponse> orderNodes) {
+        GetOneOrderResponse build = new GetOneOrderResponse();
+        build.setInfo(info);
+        build.setOrderNodes(orderNodes);
+        return build;
+
+    }
+
     public OrderInfoEntity getInfo() {
         return info;
     }
@@ -34,14 +42,5 @@ public class GetOneOrderResponse implements Serializable {
 
     public void setOrderNodes(List<OrderNodeAboutResponse> orderNodes) {
         this.orderNodes = orderNodes;
-    }
-
-
-    public static GetOneOrderResponse build(OrderInfoEntity info, List<OrderNodeAboutResponse> orderNodes) {
-        GetOneOrderResponse build = new GetOneOrderResponse();
-        build.setInfo(info);
-        build.setOrderNodes(orderNodes);
-        return build;
-
     }
 }

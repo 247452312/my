@@ -62,8 +62,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeRouteEntity">
-        insert
-        sys_order_base_node_route(prev_node_id,
+        insert sys_order_base_node_route(prev_node_id,
                                          update_user,
                                          remark,
                                          next_node_id,
@@ -73,18 +72,16 @@
                                          create_date,
                                          delete_flag,
                                          update_date)
-        values (
-        #{prevNodeId},
-        #{updateUser},
-        #{remark},
-        #{nextNodeId},
-        #{resultId},
-        #{id},
-        #{createUser},
-        #{createDate},
-        #{deleteFlag},
-        #{updateDate}
-        )
+        values (#{prevNodeId},
+                #{updateUser},
+                #{remark},
+                #{nextNodeId},
+                #{resultId},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{updateDate})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeRouteEntity">

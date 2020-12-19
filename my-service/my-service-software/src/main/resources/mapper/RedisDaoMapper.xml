@@ -61,8 +61,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.RedisEntity">
-        insert
-        sys_software(id,
+        insert sys_software(id,
                             create_date,
                             create_user,
                             update_date,
@@ -78,24 +77,22 @@
                             stop_sh,
                             version,
                             other_1)
-        values (
-        #{id},
-        #{createDate},
-        #{createUser},
-        #{updateDate},
-        #{updateUser},
-        0,
-        1,
-        #{password},
-        #{port},
-        #{serverId},
-        #{startSh},
-        #{status},
-        #{statusSh},
-        #{stopSh},
-        #{version},
-        #{dockerName}
-        )
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                #{updateDate},
+                #{updateUser},
+                0,
+                1,
+                #{password},
+                #{port},
+                #{serverId},
+                #{startSh},
+                #{status},
+                #{statusSh},
+                #{stopSh},
+                #{version},
+                #{dockerName})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.RedisEntity">

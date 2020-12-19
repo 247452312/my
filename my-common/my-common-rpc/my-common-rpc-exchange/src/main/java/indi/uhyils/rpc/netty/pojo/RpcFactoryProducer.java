@@ -5,10 +5,12 @@ import indi.uhyils.rpc.netty.pojo.request.RpcRequestFactory;
 import indi.uhyils.rpc.netty.pojo.response.RpcResponseFactory;
 
 /**
+ * Rpc工厂生成器
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月19日 10时07分
  */
-public class RpcFactoryBuilder {
+public class RpcFactoryProducer {
 
     public static RpcFactory build(RpcTypeEnum rpcTypeEnum) {
         switch (rpcTypeEnum) {

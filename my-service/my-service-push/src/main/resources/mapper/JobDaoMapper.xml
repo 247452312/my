@@ -59,8 +59,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.JobEntity">
-        insert
-        sys_job(id,
+        insert sys_job(id,
                        create_date,
                        create_user,
                        delete_flag,
@@ -74,22 +73,20 @@
                        param_type,
                        params,
                        pause)
-        values (
-        #{id},
-        #{createDate},
-        #{createUser},
-        0,
-        #{remark},
-        #{updateDate},
-        #{updateUser},
-        #{cron},
-        #{interfaceName},
-        #{methodName},
-        #{name},
-        #{paramType},
-        #{params},
-        #{pause}
-        )
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                0,
+                #{remark},
+                #{updateDate},
+                #{updateUser},
+                #{cron},
+                #{interfaceName},
+                #{methodName},
+                #{name},
+                #{paramType},
+                #{params},
+                #{pause})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.JobEntity">

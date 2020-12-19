@@ -71,19 +71,18 @@ public class HotSpotAop {
      * 更新缓存的lua脚本
      */
     private static final String UPDATE_CACHE = "local keys,val = KEYS,ARGV\n\nredis.call('hset',keys[1],keys[2],val[2])\nredis.call('hset',keys[1],keys[3],val[3])\n\nfor i, v in ipairs(redis.call('hkeys',val[1])) do\n\tredis.call('hset',keys[1],v,redis.call('hget',val[1],v))\nend";
-    @Autowired
-    private RedisPoolHandle redisPoolHandle;
-    @Autowired
-    private HotSpotRedisPool hotSpotRedisPool;
-
-    /**
-     * 上次尝试的时间
-     */
-    private Long lastTryTime;
     /**
      * 重试的间隔(ms)
      */
     private static final Long RETRY_INTERVAL = 1000L * 10;
+    @Autowired
+    private RedisPoolHandle redisPoolHandle;
+    @Autowired
+    private HotSpotRedisPool hotSpotRedisPool;
+    /**
+     * 上次尝试的时间
+     */
+    private Long lastTryTime;
 
     /**
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数

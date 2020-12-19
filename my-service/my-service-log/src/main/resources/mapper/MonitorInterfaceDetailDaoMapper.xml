@@ -51,23 +51,20 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.MonitorInterfaceDetailDO">
-        insert
-        sys_log_monitor_interface_call(id,
+        insert sys_log_monitor_interface_call(id,
                                               fid,
                                               interface_name,
                                               method_name,
                                               run_time,
                                               success,
                                               time)
-        values (
-        #{id},
-        #{fid},
-        #{interfaceName},
-        #{methodName},
-        #{runTime},
-        #{success},
-        #{time}
-        )
+        values (#{id},
+                #{fid},
+                #{interfaceName},
+                #{methodName},
+                #{runTime},
+                #{success},
+                #{time})
     </insert>
 
     <select id="count" resultType="java.lang.Integer">

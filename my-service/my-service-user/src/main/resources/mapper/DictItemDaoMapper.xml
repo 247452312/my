@@ -58,8 +58,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.DictItemEntity">
-        insert
-        sys_dict_item(id,
+        insert sys_dict_item(id,
                              create_date,
                              create_user,
                              update_date,
@@ -70,19 +69,17 @@
                              sort_order,
                              text,
                              value)
-        values (
-        #{id},
-        #{createDate},
-        #{createUser},
-        #{updateDate},
-        #{updateUser},
-        0,
-        #{description},
-        #{dictId},
-        #{sortOrder},
-        #{text},
-        #{value}
-        )
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                #{updateDate},
+                #{updateUser},
+                0,
+                #{description},
+                #{dictId},
+                #{sortOrder},
+                #{text},
+                #{value})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.DictItemEntity">

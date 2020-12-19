@@ -57,30 +57,27 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.MenuEntity">
-        insert
-        sys_menu(id,
+        insert sys_menu(id,
                         create_date,
                         create_user,
                         update_date,
                         update_user,
                         delete_flag,
                         fid, i_frame, icon, name, target, sort, type, url)
-        values (
-        #{id},
-        #{createDate},
-        #{createUser},
-        #{updateDate},
-        #{updateUser},
-        0,
-        #{fid},
-        #{iFrame},
-        #{icon},
-        #{name},
-        #{target},
-        #{sort},
-        #{type},
-        #{url}
-        )
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                #{updateDate},
+                #{updateUser},
+                0,
+                #{fid},
+                #{iFrame},
+                #{icon},
+                #{name},
+                #{target},
+                #{sort},
+                #{type},
+                #{url})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.MenuEntity">

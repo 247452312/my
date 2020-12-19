@@ -34,6 +34,14 @@ public class OrderBaseNodeAboutResponse implements Serializable {
      */
     private List<OrderBaseNodeRouteEntity> orderBaseNodeRoutes;
 
+    public static OrderBaseNodeAboutResponse build(OrderBaseNodeEntity orderBaseNode, List<OrderBaseNodeFieldEntity> orderBaseNodeFields, List<OrderBaseNodeResultTypeEntity> orderBaseNodeResultTypes, List<OrderBaseNodeRouteEntity> orderBaseNodeRoutes) {
+        OrderBaseNodeAboutResponse build = new OrderBaseNodeAboutResponse();
+        build.setOrderBaseNode(orderBaseNode);
+        build.setOrderBaseNodeFields(orderBaseNodeFields);
+        build.setOrderBaseNodeResultTypes(orderBaseNodeResultTypes);
+        build.setOrderBaseNodeRoutes(orderBaseNodeRoutes);
+        return build;
+    }
 
     public OrderBaseNodeEntity getOrderBaseNode() {
         return orderBaseNode;
@@ -65,14 +73,5 @@ public class OrderBaseNodeAboutResponse implements Serializable {
 
     public void setOrderBaseNodeRoutes(List<OrderBaseNodeRouteEntity> orderBaseNodeRoutes) {
         this.orderBaseNodeRoutes = orderBaseNodeRoutes;
-    }
-
-    public static OrderBaseNodeAboutResponse build(OrderBaseNodeEntity orderBaseNode, List<OrderBaseNodeFieldEntity> orderBaseNodeFields, List<OrderBaseNodeResultTypeEntity> orderBaseNodeResultTypes, List<OrderBaseNodeRouteEntity> orderBaseNodeRoutes) {
-        OrderBaseNodeAboutResponse build = new OrderBaseNodeAboutResponse();
-        build.setOrderBaseNode(orderBaseNode);
-        build.setOrderBaseNodeFields(orderBaseNodeFields);
-        build.setOrderBaseNodeResultTypes(orderBaseNodeResultTypes);
-        build.setOrderBaseNodeRoutes(orderBaseNodeRoutes);
-        return build;
     }
 }

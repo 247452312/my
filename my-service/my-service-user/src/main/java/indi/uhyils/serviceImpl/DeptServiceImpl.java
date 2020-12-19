@@ -3,7 +3,6 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.DeptDao;
 import indi.uhyils.dao.MenuDao;
-import indi.uhyils.dao.RoleDao;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.DeptMenuMiddle;

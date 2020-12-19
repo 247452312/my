@@ -28,12 +28,12 @@ import java.util.Map;
 @ReadWriteMark(tables = {"sys_log"})
 public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements LogService {
 
-    @Resource
-    private LogDao dao;
     /**
      * 工具entity, 插入日志时用来插入登录日志
      */
     private final UserEntity userEntity = new UserEntity();
+    @Resource
+    private LogDao dao;
 
     {
         // 日志的创建用户一定是超级管理员

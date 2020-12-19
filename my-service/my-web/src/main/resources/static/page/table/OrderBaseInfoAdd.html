@@ -35,28 +35,28 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">工单描述</label>
         <div class="layui-input-block">
-            <textarea placeholder="请输入工单描述" name="desc" lay-verify="required" class="layui-textarea"></textarea>
+            <textarea class="layui-textarea" lay-verify="required" name="desc" placeholder="请输入工单描述"></textarea>
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label required">优先级</label>
         <div class="layui-input-block">
-            <input type="radio" name="priority" value="0" title="普通" checked="">
-            <input type="radio" name="priority" value="1" title="加急">
+            <input checked="" name="priority" title="普通" type="radio" value="0">
+            <input name="priority" title="加急" type="radio" value="1">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">是否是子流程 </label>
         <div class="layui-input-block">
-            <input type="radio" name="son" value="0" title="不是" checked="">
-            <input type="radio" name="son" value="1" title="是">
+            <input checked="" name="son" title="不是" type="radio" value="0">
+            <input name="son" title="是" type="radio" value="1">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">监管人id</label>
         <div class="layui-input-block">
-            <select name="monitorUserId" lay-filter="aihao">
+            <select lay-filter="aihao" name="monitorUserId">
                 <option value="">请选择工单默认监管人</option>
             </select>
         </div>
@@ -66,13 +66,13 @@
         <div class="layui-input-block">
             <input autocomplete="off" class="layui-input" id="demo" placeholder="请输入"
                    ts-selected="" type="text" value="">
-            <input type="hidden" name="queryUserIds">
+            <input name="queryUserIds" type="hidden">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">类型</label>
         <div class="layui-input-block">
-            <select name="type" lay-filter="aihao">
+            <select lay-filter="aihao" name="type">
                 <option value="">请选择类型</option>
             </select>
         </div>

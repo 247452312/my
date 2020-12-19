@@ -55,8 +55,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderLogEntity">
-        insert
-        sys_order_log(deal_user_id,
+        insert sys_order_log(deal_user_id,
                              remark,
                              update_date,
                              fault_info,
@@ -69,21 +68,19 @@
                              create_date,
                              delete_flag,
                              node_id)
-        values (
-        #{dealUserId},
-        #{remark},
-        #{updateDate},
-        #{faultInfo},
-        #{updateUser},
-        #{resultStatus},
-        #{monitorUserId},
-        #{infoId},
-        #{id},
-        #{createUser},
-        #{createDate},
-        #{deleteFlag},
-        #{nodeId}
-        )
+        values (#{dealUserId},
+                #{remark},
+                #{updateDate},
+                #{faultInfo},
+                #{updateUser},
+                #{resultStatus},
+                #{monitorUserId},
+                #{infoId},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{nodeId})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderLogEntity">

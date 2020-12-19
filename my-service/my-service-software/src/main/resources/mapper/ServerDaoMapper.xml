@@ -55,8 +55,7 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.ServerEntity">
-        insert
-        sys_server(id,
+        insert sys_server(id,
                           create_date,
                           create_user,
                           update_date,
@@ -68,20 +67,18 @@
                           username,
                           type,
                           port)
-        values (
-        #{id},
-        #{createDate},
-        #{createUser},
-        #{updateDate},
-        #{updateUser},
-        0,
-        #{ip},
-        #{name},
-        #{password},
-        #{username},
-        #{type},
-        #{port}
-        )
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                #{updateDate},
+                #{updateUser},
+                0,
+                #{ip},
+                #{name},
+                #{password},
+                #{username},
+                #{type},
+                #{port})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.ServerEntity">

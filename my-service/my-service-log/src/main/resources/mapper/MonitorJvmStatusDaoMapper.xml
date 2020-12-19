@@ -50,21 +50,18 @@
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.MonitorJvmStatusDetailDO">
-        insert
-        sys_log_monitor_jvm_status(id,
+        insert sys_log_monitor_jvm_status(id,
                                           fid,
                                           time,
                                           heap_use_mem,
                                           no_heap_use_mem,
                                           use_mem)
-        values (
-        #{id},
-        #{fid},
-        #{time},
-        #{heapUseMem},
-        #{noHeapUseMem},
-        #{useMem}
-        )
+        values (#{id},
+                #{fid},
+                #{time},
+                #{heapUseMem},
+                #{noHeapUseMem},
+                #{useMem})
     </insert>
 
 
