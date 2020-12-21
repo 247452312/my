@@ -1,9 +1,7 @@
 package indi.uhyils.rpc.netty.provider;
 
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
-import indi.uhyils.rpc.netty.handler.RpcDealHandler;
-import indi.uhyils.rpc.netty.handler.RpcPrintInHandler;
-import indi.uhyils.rpc.netty.handler.RpcPrintOutHandler;
+import indi.uhyils.rpc.netty.handler.DubboRequestDecoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -46,10 +44,7 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast(new RpcPrintInHandler());
-                            p.addLast(new RpcPrintOutHandler());
-                            p.addLast(new RpcDealHandler());
-
+                            p.addLast(new DubboRequestDecoder());
                         }
                     });
 

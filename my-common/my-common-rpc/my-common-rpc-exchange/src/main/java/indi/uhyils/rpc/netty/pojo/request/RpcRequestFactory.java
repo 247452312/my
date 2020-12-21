@@ -2,10 +2,7 @@ package indi.uhyils.rpc.netty.pojo.request;
 
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 import indi.uhyils.rpc.netty.exception.RpcException;
-import indi.uhyils.rpc.netty.pojo.RpcContent;
-import indi.uhyils.rpc.netty.pojo.RpcData;
-import indi.uhyils.rpc.netty.pojo.RpcFactory;
-import indi.uhyils.rpc.netty.pojo.RpcHeader;
+import indi.uhyils.rpc.netty.pojo.*;
 
 import java.nio.charset.StandardCharsets;
 
@@ -13,7 +10,7 @@ import java.nio.charset.StandardCharsets;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 12时38分
  */
-public class RpcRequestFactory implements RpcFactory {
+public class RpcRequestFactory extends AbstractRpcFactory {
 
     public volatile static RpcFactory instance;
 
@@ -47,5 +44,10 @@ public class RpcRequestFactory implements RpcFactory {
         rpcNormalRequest.setContent(content);
         rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
         return rpcNormalRequest;
+    }
+
+    @Override
+    protected RpcTypeEnum getRpcType() {
+        return RpcTypeEnum.REQUEST;
     }
 }

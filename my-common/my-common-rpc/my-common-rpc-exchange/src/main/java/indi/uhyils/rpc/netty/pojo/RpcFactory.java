@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.netty.pojo;
 
 import indi.uhyils.rpc.netty.exception.RpcException;
+import io.netty.buffer.ByteBuf;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -17,6 +18,16 @@ public interface RpcFactory {
      * @throws ClassNotFoundException
      */
     RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException;
+
+    /**
+     * 根据数据流新建一个rpc体
+     *
+     * @param data
+     * @return
+     * @throws RpcException
+     * @throws ClassNotFoundException
+     */
+    RpcData createByByteBuf(ByteBuf data) throws RpcException, ClassNotFoundException;
 
     /**
      * 根据一些必要的信息创建RPC体

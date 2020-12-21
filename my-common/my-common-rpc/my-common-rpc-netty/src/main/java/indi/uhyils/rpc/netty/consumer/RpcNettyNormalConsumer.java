@@ -1,8 +1,7 @@
 package indi.uhyils.rpc.netty.consumer;
 
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
-import indi.uhyils.rpc.netty.handler.RpcPrintInHandler;
-import indi.uhyils.rpc.netty.handler.RpcPrintOutHandler;
+import indi.uhyils.rpc.netty.handler.DubboResponseDecoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -41,8 +40,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
-                        p.addLast(new RpcPrintInHandler());
-                        p.addLast(new RpcPrintOutHandler());
+                        p.addLast(new DubboResponseDecoder());
                     }
                 });
 
