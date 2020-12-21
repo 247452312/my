@@ -8,18 +8,13 @@ import indi.uhyils.rpc.netty.pojo.RpcHeader;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 13时34分
  */
-public class RpcNormalResponse extends RpcResponse {
+public class RpcNormalResponse extends AbstractRpcResponse {
 
     public RpcNormalResponse(byte[] data) throws RpcException, ClassNotFoundException {
         super(data);
     }
 
     public RpcNormalResponse() {
-    }
-
-    @Override
-    public void setStatus(byte status) {
-        this.status = status;
     }
 
     @Override

@@ -13,15 +13,15 @@ import java.nio.charset.StandardCharsets;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 12时23分
  */
-public abstract class RpcRequest extends AbstractRpcData {
+public abstract class AbstractRpcRequest extends AbstractRpcData {
 
 
-    public RpcRequest(byte[] data) throws RpcException, ClassNotFoundException {
+    public AbstractRpcRequest(byte[] data) throws RpcException, ClassNotFoundException {
         super(data);
         this.type = RpcTypeEnum.REQUEST.getCode();
     }
 
-    public RpcRequest() {
+    public AbstractRpcRequest() {
     }
 
     @Override

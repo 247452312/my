@@ -11,8 +11,10 @@ public interface RpcFactory {
     /**
      * 使用数据流新建一个rpc体
      *
-     * @param data
-     * @return
+     * @param data 数据流
+     * @return 创建之后的pojo
+     * @throws RpcException
+     * @throws ClassNotFoundException
      */
     RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException;
 
@@ -24,6 +26,8 @@ public interface RpcFactory {
      * @param others       其他
      * @param contentArray rpc内容体以及其他内容
      * @return
+     * @throws RpcException
+     * @throws ClassNotFoundException
      */
     RpcData createByInfo(Integer rpcVersion, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException;
 

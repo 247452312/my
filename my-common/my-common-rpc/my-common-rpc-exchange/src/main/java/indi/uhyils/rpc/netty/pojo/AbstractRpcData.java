@@ -90,6 +90,11 @@ public abstract class AbstractRpcData implements RpcData {
      */
     protected abstract void initContent() throws RpcException, ClassNotFoundException;
 
+    /**
+     * 获取content的size所在的字段
+     *
+     * @return
+     */
     protected abstract int getSizeStartIndex();
 
     private void doInit(byte[] data) throws RpcException {

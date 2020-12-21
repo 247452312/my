@@ -12,7 +12,7 @@ import indi.uhyils.rpc.netty.pojo.RpcHeader;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 10时52分
  */
-public class RpcNormalRequest extends RpcRequest {
+public class RpcNormalRequest extends AbstractRpcRequest {
 
     public RpcNormalRequest(byte[] data) throws RpcException, ClassNotFoundException {
         super(data);

@@ -13,19 +13,19 @@ import java.nio.charset.StandardCharsets;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 12时23分
  */
-public abstract class RpcResponse extends AbstractRpcData {
+public abstract class AbstractRpcResponse extends AbstractRpcData {
 
     /**
      * 状态
      */
     protected byte status;
 
-    public RpcResponse(byte[] data) throws RpcException, ClassNotFoundException {
+    public AbstractRpcResponse(byte[] data) throws RpcException, ClassNotFoundException {
         super(data);
         this.type = RpcTypeEnum.RESPONSE.getCode();
     }
 
-    public RpcResponse() {
+    public AbstractRpcResponse() {
     }
 
     @Override
@@ -43,7 +43,14 @@ public abstract class RpcResponse extends AbstractRpcData {
         return status;
     }
 
-    public abstract void setStatus(byte status);
+    /**
+     * 设置状态
+     *
+     * @param status
+     */
+    public void setStatus(byte status) {
+        this.status = status;
+    }
 
     @Override
     public byte[] toBytes() {
