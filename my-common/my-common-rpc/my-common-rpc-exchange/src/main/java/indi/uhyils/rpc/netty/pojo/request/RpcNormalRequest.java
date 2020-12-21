@@ -23,7 +23,7 @@ public class RpcNormalRequest extends AbstractRpcRequest {
 
     @Override
     protected void initContent() throws RpcException, ClassNotFoundException {
-        this.content = RpcRequestContentFactory.createByContentArray(this.contentArray);
+        this.content = RpcRequestContentFactory.createByContentArray(this, this.contentArray);
     }
 
 

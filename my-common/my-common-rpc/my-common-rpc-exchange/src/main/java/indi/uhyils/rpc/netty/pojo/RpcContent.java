@@ -21,4 +21,26 @@ public interface RpcContent {
      */
     @Override
     String toString();
+
+    /**
+     * JSON
+     *
+     * @return
+     */
+    String execute();
+
+    /**
+     * 获取第x行
+     *
+     * @param line
+     * @return
+     */
+    String getLine(Integer line);
+
+    /**
+     * 观察者模式,获取父级
+     *
+     * @return
+     */
+    RpcData getRpcData();
 }

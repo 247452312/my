@@ -19,7 +19,7 @@ public class RpcNormalResponse extends AbstractRpcResponse {
 
     @Override
     protected void initContent() throws RpcException {
-        this.content = RpcResponseContentFactory.createByContentArray(this.contentArray);
+        this.content = RpcResponseContentFactory.createByContentArray(this,this.contentArray);
     }
 
     @Override

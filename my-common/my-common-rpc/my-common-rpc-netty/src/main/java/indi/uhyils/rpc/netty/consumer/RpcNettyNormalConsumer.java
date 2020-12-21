@@ -12,7 +12,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.util.ReferenceCountUtil;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -83,17 +82,11 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
 
     @Override
     public Boolean sendMsg(byte[] bytes) {
-        ByteBuf buf = null;
-        try {
-            ChannelFuture channelFuture = getChannelFuture();
-            buf = Unpooled.buffer();
-            buf.writeBytes(bytes);
-            channelFuture.channel().writeAndFlush(buf);
-        } finally {
-            if (buf != null) {
-                ReferenceCountUtil.release(buf);
-            }
-        }
+        ChannelFuture channelFuture = getChannelFuture();
+        ByteBuf buf = Unpooled.buffer();
+        buf.writeBytes(bytes);
+        channelFuture.channel().writeAndFlush(buf);
+
         return true;
     }
 }

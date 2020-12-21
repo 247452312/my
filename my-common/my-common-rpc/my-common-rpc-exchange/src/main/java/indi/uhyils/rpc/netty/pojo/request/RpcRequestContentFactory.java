@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.rpc.netty.exception.ContentArrayQuantityMismatchException;
 import indi.uhyils.rpc.netty.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.RpcContent;
+import indi.uhyils.rpc.netty.pojo.RpcData;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -21,11 +22,11 @@ public class RpcRequestContentFactory {
      */
     private static final Integer CONTENT_MIN_SIZE = 5;
 
-    public static RpcContent createByContentArray(String[] contentArray) throws ClassNotFoundException, RpcException {
+    public static RpcContent createByContentArray(RpcData rpcData, String[] contentArray) throws ClassNotFoundException, RpcException {
         if (contentArray.length < CONTENT_MIN_SIZE) {
             throw new ContentArrayQuantityMismatchException(contentArray.length, CONTENT_MIN_SIZE);
         }
-        RpcNormalRequestContent content = new RpcNormalRequestContent();
+        RpcNormalRequestContent content = new RpcNormalRequestContent(rpcData);
         content.setServiceName(contentArray[0]);
         content.setServiceVersion(contentArray[1]);
         content.setMethodName(contentArray[2]);

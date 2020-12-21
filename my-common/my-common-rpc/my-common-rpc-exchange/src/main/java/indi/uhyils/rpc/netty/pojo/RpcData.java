@@ -72,4 +72,11 @@ public interface RpcData {
      */
     void dealOtherThing(Object o);
 
+    /**
+     * 获取rpc内容体的行
+     *
+     * @return
+     */
+    String[] getContentArray();
+
 }
