@@ -2,7 +2,6 @@ package indi.uhyils.rpc.netty.pojo;
 
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 import indi.uhyils.rpc.netty.exception.RpcException;
-import indi.uhyils.rpc.netty.util.BytesUtils;
 import io.netty.buffer.ByteBuf;
 
 import java.util.HashMap;
@@ -26,25 +25,9 @@ public abstract class AbstractRpcFactory implements RpcFactory {
 
     @Override
     public RpcData createByByteBuf(ByteBuf in) throws RpcException, ClassNotFoundException {
-        RpcTypeEnum rpcType = getRpcType();
-        Integer headLength = RPC_HEADER_SIZE.get(rpcType);
-        byte[] lastBytes = new byte[headLength];
-        byte[] startMsg = BytesUtils.getRpcHeadByByteBuf(in, headLength);
-        if (startMsg == null) {
-            return null;
-        }
-        System.arraycopy(startMsg, startMsg.length, lastBytes, 0, startMsg.length);
-        byte[] headByteExceptStartMsg = in.readBytes(headLength - 2).array();
-        System.arraycopy(headByteExceptStartMsg, headByteExceptStartMsg.length, lastBytes, startMsg.length, headByteExceptStartMsg.length);
-        //取后四位组成一个int
-        int size = lastBytes[--headLength] + (lastBytes[--headLength] << 8) + (lastBytes[--headLength] << 16) + (lastBytes[--headLength] << 24);
-        ByteBuf contentByteBuf = in.readBytes(size);
-        byte[] array = contentByteBuf.array();
-        // 合并消息头和消息体
-        byte[] data = BytesUtils.concat(lastBytes, array);
-        // 回收已读字节
-        in.discardReadBytes();
-        return createByBytes(data);
+        byte[] bytes = new byte[in.readableBytes()];
+        in.readBytes(bytes);
+        return createByBytes(bytes);
     }
 
     /**

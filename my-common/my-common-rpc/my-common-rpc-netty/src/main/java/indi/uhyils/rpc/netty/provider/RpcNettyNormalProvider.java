@@ -1,7 +1,7 @@
 package indi.uhyils.rpc.netty.provider;
 
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
-import indi.uhyils.rpc.netty.handler.DubboRequestDecoder;
+import indi.uhyils.rpc.netty.handler.DubboRequestInHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -10,10 +10,13 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 /**
+ * netty服务提供者
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月20日 13时42分
  */
@@ -44,7 +47,8 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast(new DubboRequestDecoder());
+                            p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 0, 0));
+                            p.addLast("byte-to-object", new DubboRequestInHandler());
                         }
                     });
 

@@ -1,7 +1,7 @@
 package indi.uhyils.rpc.netty.consumer;
 
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
-import indi.uhyils.rpc.netty.handler.DubboResponseDecoder;
+import indi.uhyils.rpc.netty.handler.DubboResponseInHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -11,6 +11,8 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.util.ReferenceCountUtil;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -40,7 +42,8 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
-                        p.addLast(new DubboResponseDecoder());
+                        p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 4, 4, 0, 0));
+                        p.addLast("byte-to-object", new DubboResponseInHandler());
                     }
                 });
 
@@ -80,10 +83,17 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
 
     @Override
     public Boolean sendMsg(byte[] bytes) {
-        ChannelFuture channelFuture = getChannelFuture();
-        ByteBuf buf = Unpooled.buffer();
-        buf.writeBytes(bytes);
-        channelFuture.channel().writeAndFlush(buf);
+        ByteBuf buf = null;
+        try {
+            ChannelFuture channelFuture = getChannelFuture();
+            buf = Unpooled.buffer();
+            buf.writeBytes(bytes);
+            channelFuture.channel().writeAndFlush(buf);
+        } finally {
+            if (buf != null) {
+                ReferenceCountUtil.release(buf);
+            }
+        }
         return true;
     }
 }
