@@ -8,7 +8,6 @@ import indi.uhyils.rpc.netty.exception.VersionNotSupportedException;
 import indi.uhyils.rpc.netty.pojo.request.RpcRequestFactory;
 import indi.uhyils.rpc.netty.pojo.response.RpcResponseFactory;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,14 +19,13 @@ import java.util.Objects;
  */
 public abstract class AbstractRpcData implements RpcData {
     /**
+     * 换行符
+     */
+    protected static final byte ENTER = '\n';
+    /**
      * 此类支持的最大版本
      */
     private static final Integer MAX_VERSION = 1;
-    /**
-     * 换行符
-     */
-    private static final byte ENTER = '\n';
-
     /**
      * 版本
      */
@@ -92,6 +90,8 @@ public abstract class AbstractRpcData implements RpcData {
      */
     protected abstract void initContent() throws RpcException, ClassNotFoundException;
 
+    protected abstract int getSizeStartIndex();
+
     private void doInit(byte[] data) throws RpcException {
         // 判断是不是myRpc的协议
         byte[] bytes = Arrays.copyOfRange(data, 0, MyRpcContent.AGREEMENT_START.length);
@@ -106,15 +106,14 @@ public abstract class AbstractRpcData implements RpcData {
             throw new VersionNotSupportedException(version, MAX_VERSION);
         }
         this.version = version;
-
-        this.size = (data[3] << 24) + (data[4] << 16) + (data[5] << 8) + data[6];
+        initSize(data);
 
         // 获取header
         boolean lastByteIsEnter = false;
         List<RpcHeader> rpcHeaders = new ArrayList<>();
         StringBuilder headerStr = new StringBuilder();
         int headerEnd = 0;
-        for (int i = 7; i < data.length; i++) {
+        for (int i = getSizeStartIndex(); i < data.length; i++) {
             if (Objects.equals(data[i], ENTER)) {
                 if (lastByteIsEnter) {
                     headerEnd = i;
@@ -140,27 +139,8 @@ public abstract class AbstractRpcData implements RpcData {
             contentStr.append((char) data[i]);
         }
         this.contentArray = contentStr.toString().split("\n");
-    }
-
-    @Override
-    public byte[] toBytes() {
-        byte[] previousBytes = new byte[7];
-        previousBytes[0] = MyRpcContent.AGREEMENT_START[0];
-        previousBytes[1] = MyRpcContent.AGREEMENT_START[1];
-        previousBytes[2] = (byte) ((version << 2) + (type << 1));
-
-        byte[] strBytes = getContentString().getBytes(StandardCharsets.UTF_8);
-        int i = strBytes.length;
-        //由高位到低位
-        previousBytes[3] = (byte) ((i >> 24) & 0xFF);
-        previousBytes[4] = (byte) ((i >> 16) & 0xFF);
-        previousBytes[5] = (byte) ((i >> 8) & 0xFF);
-        previousBytes[6] = (byte) (i & 0xFF);
-        byte[] result = new byte[7 + strBytes.length];
-        System.arraycopy(previousBytes, 0, result, 0, previousBytes.length);
-        System.arraycopy(strBytes, 0, result, previousBytes.length, strBytes.length);
-
-        return result;
+        // 处理其他事情
+        dealOtherThing(data);
     }
 
 

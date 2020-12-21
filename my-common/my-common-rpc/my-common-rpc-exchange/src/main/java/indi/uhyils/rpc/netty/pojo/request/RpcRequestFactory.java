@@ -37,7 +37,7 @@ public class RpcRequestFactory implements RpcFactory {
     }
 
     @Override
-    public RpcData createByInfo(Integer rpcVersion, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException {
+    public RpcData createByInfo(Integer rpcVersion, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException {
         RpcNormalRequest rpcNormalRequest = new RpcNormalRequest();
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(rpcVersion);

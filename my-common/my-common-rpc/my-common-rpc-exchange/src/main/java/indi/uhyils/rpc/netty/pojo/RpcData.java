@@ -57,4 +57,19 @@ public interface RpcData {
      */
     String getContentString();
 
+    /**
+     * 获取类型
+     *
+     * @param data
+     */
+    void initSize(byte[] data);
+
+
+    /**
+     * 处理其他事情
+     *
+     * @param o
+     */
+    void dealOtherThing(Object o);
+
 }

@@ -18,6 +18,11 @@ public class RpcNormalResponse extends RpcResponse {
     }
 
     @Override
+    public void setStatus(byte status) {
+        this.status = status;
+    }
+
+    @Override
     protected void initContent() throws RpcException {
         this.content = RpcResponseContentFactory.createByContentArray(this.contentArray);
     }
@@ -63,5 +68,10 @@ public class RpcNormalResponse extends RpcResponse {
         sb.append(content.getResponseContent());
         sb.append("\n");
         return sb.toString();
+    }
+
+    @Override
+    public void initSize(byte[] data) {
+        this.size = (data[4] << 24) + (data[5] << 16) + (data[6] << 8) + data[7];
     }
 }

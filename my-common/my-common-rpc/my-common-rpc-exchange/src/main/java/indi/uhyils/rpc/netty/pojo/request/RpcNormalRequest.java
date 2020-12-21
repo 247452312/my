@@ -86,5 +86,10 @@ public class RpcNormalRequest extends RpcRequest {
         return sb.toString();
     }
 
+    @Override
+    public void initSize(byte[] data) {
+        this.size = (data[3] << 24) + (data[4] << 16) + (data[5] << 8) + data[6];
+    }
+
 
 }
