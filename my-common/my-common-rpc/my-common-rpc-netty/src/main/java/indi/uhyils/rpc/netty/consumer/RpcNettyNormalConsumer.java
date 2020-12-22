@@ -41,7 +41,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
-                        p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 4, 4, 0, 0));
+                        p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
                         p.addLast("byte-to-object", new DubboResponseInHandler());
                     }
                 });

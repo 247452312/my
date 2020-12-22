@@ -47,7 +47,7 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 0, 0));
+                            p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
                             p.addLast("byte-to-object", new DubboRequestInHandler());
                         }
                     });
