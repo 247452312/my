@@ -38,6 +38,7 @@ public class RpcResponseFactory extends AbstractRpcFactory {
         rpcNormalRequest.setHeaders(rpcHeaders);
         rpcNormalRequest.setContentArray(contentArray);
         rpcNormalRequest.setStatus((Byte) others[0]);
+        rpcNormalRequest.setUnique(9L);
 
         RpcContent content = RpcResponseContentFactory.createByContentArray(rpcNormalRequest, contentArray);
         rpcNormalRequest.setContent(content);

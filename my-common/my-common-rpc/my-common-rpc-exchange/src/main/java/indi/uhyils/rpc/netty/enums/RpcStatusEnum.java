@@ -6,6 +6,10 @@ package indi.uhyils.rpc.netty.enums;
  */
 public enum RpcStatusEnum {
     /**
+     * 无
+     */
+    NULL((byte) 0),
+    /**
      * 成功
      */
     OK((byte) 20),

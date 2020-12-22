@@ -14,7 +14,7 @@ public abstract class AbstractRpcObserverAdapter implements RpcContent {
 
     @Override
     public String getLine(Integer line) {
-        return this.rpcData.getContentArray()[line];
+        return this.rpcData.contentArray()[line];
     }
 
     @Override
@@ -24,5 +24,10 @@ public abstract class AbstractRpcObserverAdapter implements RpcContent {
 
     protected void setRpcData(RpcData rpcData) {
         this.rpcData = rpcData;
+    }
+
+    @Override
+    public String toString() {
+        return this.rpcData.contentString();
     }
 }

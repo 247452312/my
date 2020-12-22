@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty.pojo.request;
 
+import indi.uhyils.rpc.netty.enums.RpcStatusEnum;
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 import indi.uhyils.rpc.netty.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.*;
@@ -40,6 +41,8 @@ public class RpcRequestFactory extends AbstractRpcFactory {
         rpcNormalRequest.setVersion(rpcVersion);
         rpcNormalRequest.setHeaders(rpcHeaders);
         rpcNormalRequest.setContentArray(contentArray);
+        rpcNormalRequest.setStatus(RpcStatusEnum.NULL.getCode());
+        rpcNormalRequest.setUnique(9L);
         RpcContent content = RpcRequestContentFactory.createByContentArray(rpcNormalRequest, contentArray);
         rpcNormalRequest.setContent(content);
         rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);

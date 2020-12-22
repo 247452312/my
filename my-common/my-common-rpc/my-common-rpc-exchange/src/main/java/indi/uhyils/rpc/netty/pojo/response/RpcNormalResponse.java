@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty.pojo.response;
 
+import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 import indi.uhyils.rpc.netty.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.RpcContent;
 import indi.uhyils.rpc.netty.pojo.RpcHeader;
@@ -19,7 +20,7 @@ public class RpcNormalResponse extends AbstractRpcResponse {
 
     @Override
     protected void initContent() throws RpcException {
-        this.content = RpcResponseContentFactory.createByContentArray(this,this.contentArray);
+        this.content = RpcResponseContentFactory.createByContentArray(this, this.contentArray);
     }
 
     @Override
@@ -29,7 +30,7 @@ public class RpcNormalResponse extends AbstractRpcResponse {
 
     @Override
     public Integer type() {
-        return this.type;
+        return RpcTypeEnum.RESPONSE.getCode();
     }
 
     @Override
@@ -49,7 +50,7 @@ public class RpcNormalResponse extends AbstractRpcResponse {
 
 
     @Override
-    public String getContentString() {
+    public String contentString() {
         StringBuilder sb = new StringBuilder();
         for (RpcHeader rpcHeader : rpcHeaders()) {
             sb.append("\n");
@@ -65,8 +66,4 @@ public class RpcNormalResponse extends AbstractRpcResponse {
         return sb.toString();
     }
 
-    @Override
-    public void initSize(byte[] data) {
-        this.size = (data[4] << 24) + (data[5] << 16) + (data[6] << 8) + data[7];
-    }
 }

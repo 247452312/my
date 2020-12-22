@@ -23,6 +23,13 @@ public interface RpcData {
     Integer type();
 
     /**
+     * 获取唯一标识
+     *
+     * @return
+     */
+    Long unique();
+
+    /**
      * RPC内容的size,最大值{@link Integer#MAX_VALUE}
      *
      * @return
@@ -55,28 +62,14 @@ public interface RpcData {
      *
      * @return
      */
-    String getContentString();
+    String contentString();
 
-    /**
-     * 获取类型
-     *
-     * @param data
-     */
-    void initSize(byte[] data);
-
-
-    /**
-     * 处理其他事情
-     *
-     * @param o
-     */
-    void dealOtherThing(Object o);
 
     /**
      * 获取rpc内容体的行
      *
      * @return
      */
-    String[] getContentArray();
+    String[] contentArray();
 
 }

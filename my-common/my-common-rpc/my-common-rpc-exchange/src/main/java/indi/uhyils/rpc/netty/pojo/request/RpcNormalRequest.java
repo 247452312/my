@@ -2,6 +2,7 @@ package indi.uhyils.rpc.netty.pojo.request;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 import indi.uhyils.rpc.netty.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.RpcContent;
 import indi.uhyils.rpc.netty.pojo.RpcHeader;
@@ -34,7 +35,7 @@ public class RpcNormalRequest extends AbstractRpcRequest {
 
     @Override
     public Integer type() {
-        return this.type;
+        return RpcTypeEnum.REQUEST.getCode();
     }
 
     @Override
@@ -54,7 +55,7 @@ public class RpcNormalRequest extends AbstractRpcRequest {
 
 
     @Override
-    public String getContentString() {
+    public String contentString() {
         StringBuilder sb = new StringBuilder();
         for (RpcHeader rpcHeader : rpcHeaders()) {
             sb.append("\n");
@@ -84,11 +85,6 @@ public class RpcNormalRequest extends AbstractRpcRequest {
             sb.append("\n");
         }
         return sb.toString();
-    }
-
-    @Override
-    public void initSize(byte[] data) {
-        this.size = (data[3] << 24) + (data[4] << 16) + (data[5] << 8) + data[6];
     }
 
 
