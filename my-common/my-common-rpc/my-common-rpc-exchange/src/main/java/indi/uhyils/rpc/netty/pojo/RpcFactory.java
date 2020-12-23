@@ -32,7 +32,6 @@ public interface RpcFactory {
     /**
      * 根据一些必要的信息创建RPC体
      *
-     * @param rpcVersion   rpc版本
      * @param rpcHeaders   rpc头
      * @param others       其他
      * @param contentArray rpc内容体以及其他内容
@@ -40,6 +39,6 @@ public interface RpcFactory {
      * @throws RpcException
      * @throws ClassNotFoundException
      */
-    RpcData createByInfo(Integer rpcVersion, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException;
+    RpcData createByInfo(Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException;
 
 }

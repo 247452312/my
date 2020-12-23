@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty.pojo.response;
 
+import indi.uhyils.rpc.netty.content.MyRpcContent;
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 import indi.uhyils.rpc.netty.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.*;
@@ -31,10 +32,10 @@ public class RpcResponseFactory extends AbstractRpcFactory {
     }
 
     @Override
-    public RpcData createByInfo(Integer rpcVersion, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException {
+    public RpcData createByInfo(Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException {
         RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
         rpcNormalRequest.setType(RpcTypeEnum.RESPONSE.getCode());
-        rpcNormalRequest.setVersion(rpcVersion);
+        rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);
         rpcNormalRequest.setContentArray(contentArray);
         rpcNormalRequest.setStatus((Byte) others[0]);

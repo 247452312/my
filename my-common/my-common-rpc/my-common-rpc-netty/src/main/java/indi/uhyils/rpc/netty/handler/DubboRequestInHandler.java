@@ -4,7 +4,6 @@ import indi.uhyils.rpc.netty.content.MyRpcContent;
 import indi.uhyils.rpc.netty.enums.RpcStatusEnum;
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 import indi.uhyils.rpc.netty.pojo.*;
-import indi.uhyils.rpc.netty.pojo.request.RpcNormalRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,10 +27,11 @@ public class DubboRequestInHandler extends SimpleChannelInboundHandler<ByteBuf> 
         /*解析*/
         RpcFactory build = RpcFactoryProducer.build(RpcTypeEnum.REQUEST);
         // 获取到的Request
-        RpcNormalRequest request = (RpcNormalRequest) build.createByBytes(bytes);
-        Integer version = request.getVersion();
+        assert build != null;
+        RpcData request = build.createByBytes(bytes);
+        Integer version = request.rpcVersion();
         if (version <= MyRpcContent.VERSION) {
-            RpcContent content = request.getContent();
+            RpcContent content = request.content();
             String execute = content.execute();
 
             RpcFactory responseFactory = RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
@@ -46,7 +46,7 @@ public class DubboRequestInHandler extends SimpleChannelInboundHandler<ByteBuf> 
             } else {
                 responseType = "1";
             }
-            RpcData byInfo = responseFactory.createByInfo(MyRpcContent.VERSION, new Object[]{RpcStatusEnum.OK.getCode()}, rpcHeaders, responseType, execute);
+            RpcData byInfo = responseFactory.createByInfo(new Object[]{RpcStatusEnum.OK.getCode()}, rpcHeaders, responseType, execute);
             ByteBuf buf = Unpooled.buffer();
             buf.writeBytes(byInfo.toBytes());
             ctx.channel().writeAndFlush(buf);

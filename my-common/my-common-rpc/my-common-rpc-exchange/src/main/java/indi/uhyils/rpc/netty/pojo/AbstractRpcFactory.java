@@ -12,16 +12,6 @@ import java.util.Map;
  * @date 文件创建日期 2020年12月21日 10时07分
  */
 public abstract class AbstractRpcFactory implements RpcFactory {
-    /**
-     * response和request的标准RPC头大小
-     */
-    private static final Map<RpcTypeEnum, Integer> RPC_HEADER_SIZE;
-
-    static {
-        RPC_HEADER_SIZE = new HashMap<>(2);
-        RPC_HEADER_SIZE.put(RpcTypeEnum.REQUEST, 7);
-        RPC_HEADER_SIZE.put(RpcTypeEnum.RESPONSE, 8);
-    }
 
     @Override
     public RpcData createByByteBuf(ByteBuf in) throws RpcException, ClassNotFoundException {

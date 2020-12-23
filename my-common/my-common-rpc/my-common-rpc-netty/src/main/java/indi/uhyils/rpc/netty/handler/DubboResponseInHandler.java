@@ -24,6 +24,7 @@ public class DubboResponseInHandler extends SimpleChannelInboundHandler<ByteBuf>
         ReferenceCountUtil.release(msg);
 
         RpcFactory build = RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
+        assert build != null;
         RpcData byBytes = build.createByBytes(bytes);
         RpcContent content = byBytes.content();
         String responseData = content.getLine(1);
