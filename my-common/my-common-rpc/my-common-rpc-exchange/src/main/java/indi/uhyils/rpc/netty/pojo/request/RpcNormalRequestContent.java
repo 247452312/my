@@ -48,25 +48,6 @@ public class RpcNormalRequestContent extends AbstractRpcObserverAdapter implemen
     }
 
     @Override
-    public String execute() {
-        try {
-            Class<?> clazz = Class.forName(serviceName);
-//            Object bean = SpringUtil.getBean(clazz);这里之后会改
-            Object bean = clazz.newInstance();
-            Class[] methodClass = new Class[methodParamterTypes.length];
-            for (int i = 0; i < methodParamterTypes.length; i++) {
-                methodClass[i] = Class.forName(methodParamterTypes[i]);
-            }
-            Method declaredMethod = clazz.getDeclaredMethod(methodName, methodClass);
-            Object invoke = declaredMethod.invoke(bean, args);
-            return JSON.toJSONString(invoke);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            e.printStackTrace();
-            return "{\"error\":\" " + serviceName + " 找不到\"}";
-        }
-    }
-
-    @Override
     public String getServiceName() {
         return serviceName;
     }

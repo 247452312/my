@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.netty.factory;
 
 import indi.uhyils.rpc.netty.RpcNetty;
+import indi.uhyils.rpc.netty.callback.RpcRequestCallback;
 import indi.uhyils.rpc.netty.consumer.RpcNettyNormalConsumer;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.netty.provider.RpcNettyNormalProvider;
@@ -16,10 +17,10 @@ public class RpcNettyFactory {
      * @param type
      * @return
      */
-    public static RpcNetty createNetty(RpcNettyTypeEnum type, String host, Integer port) {
+    public static RpcNetty createNetty(RpcNettyTypeEnum type, String host, Integer port, RpcRequestCallback callback) {
         switch (type) {
             case PROVIDER:
-                return createProvider(host, port);
+                return createProvider(host, port, callback);
             case CONSUMER:
                 return createConsumer(host, port);
             default:
@@ -47,8 +48,8 @@ public class RpcNettyFactory {
      * @param port
      * @return
      */
-    private static RpcNetty createProvider(String host, Integer port) {
-        RpcNetty rpcNettyNormalProvider = new RpcNettyNormalProvider();
+    private static RpcNetty createProvider(String host, Integer port, RpcRequestCallback callback) {
+        RpcNetty rpcNettyNormalProvider = new RpcNettyNormalProvider(callback);
         rpcNettyNormalProvider.init(host, port);
         return rpcNettyNormalProvider;
     }

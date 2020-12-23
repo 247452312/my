@@ -1,15 +1,16 @@
 package indi.uhyils.rpc.netty.handler;
 
+import indi.uhyils.rpc.netty.callback.RpcRequestCallback;
 import indi.uhyils.rpc.netty.content.MyRpcContent;
-import indi.uhyils.rpc.netty.enums.RpcStatusEnum;
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
-import indi.uhyils.rpc.netty.pojo.*;
+import indi.uhyils.rpc.netty.pojo.RpcData;
+import indi.uhyils.rpc.netty.pojo.RpcFactory;
+import indi.uhyils.rpc.netty.pojo.RpcFactoryProducer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -17,6 +18,15 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class DubboRequestInHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
+
+    /**
+     * 回调
+     */
+    private final RpcRequestCallback callback;
+
+    public DubboRequestInHandler(RpcRequestCallback callback) {
+        this.callback = callback;
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
@@ -31,24 +41,9 @@ public class DubboRequestInHandler extends SimpleChannelInboundHandler<ByteBuf> 
         RpcData request = build.createByBytes(bytes);
         Integer version = request.rpcVersion();
         if (version <= MyRpcContent.VERSION) {
-            RpcContent content = request.content();
-            String execute = content.execute();
-
-            RpcFactory responseFactory = RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
-            RpcHeader rpcHeader = new RpcHeader();
-            rpcHeader.setName("default-value");
-            rpcHeader.setValue("value");
-            RpcHeader[] rpcHeaders = {rpcHeader};
-            assert responseFactory != null;
-            String responseType;
-            if (StringUtils.isEmpty(execute)) {
-                responseType = "2";
-            } else {
-                responseType = "1";
-            }
-            RpcData byInfo = responseFactory.createByInfo(new Object[]{RpcStatusEnum.OK.getCode()}, rpcHeaders, responseType, execute);
+            RpcData invoke = callback.invoke(request.content());
             ByteBuf buf = Unpooled.buffer();
-            buf.writeBytes(byInfo.toBytes());
+            buf.writeBytes(invoke.toBytes());
             ctx.channel().writeAndFlush(buf);
 
         }

@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.netty.provider;
 
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
+import indi.uhyils.rpc.netty.callback.RpcRequestCallback;
 import indi.uhyils.rpc.netty.handler.DubboRequestInHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -22,6 +23,10 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class RpcNettyNormalProvider extends AbstractRpcNetty {
     /**
+     * 回调
+     */
+    private final RpcRequestCallback callback;
+    /**
      * 主线程,单线程
      */
     private EventLoopGroup bossGroup;
@@ -30,6 +35,9 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
      */
     private EventLoopGroup workerGroup;
 
+    public RpcNettyNormalProvider(RpcRequestCallback callback) {
+        this.callback = callback;
+    }
 
     @Override
     public Boolean init(String host, Integer port) {
@@ -48,7 +56,7 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
                             p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
-                            p.addLast("byte-to-object", new DubboRequestInHandler());
+                            p.addLast("byte-to-object", new DubboRequestInHandler(callback));
                         }
                     });
 

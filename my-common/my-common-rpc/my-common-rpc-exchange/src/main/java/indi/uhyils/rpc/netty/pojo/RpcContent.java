@@ -22,12 +22,6 @@ public interface RpcContent {
     @Override
     String toString();
 
-    /**
-     * JSON
-     *
-     * @return
-     */
-    String execute();
 
     /**
      * 获取第x行

@@ -1,8 +1,8 @@
 package indi.uhyils.rpc.netty.pojo.response;
 
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
-import indi.uhyils.rpc.netty.pojo.RpcData;
 import indi.uhyils.rpc.netty.pojo.AbstractRpcObserverAdapter;
+import indi.uhyils.rpc.netty.pojo.RpcData;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -28,12 +28,6 @@ public class RpcNormalResponseContent extends AbstractRpcObserverAdapter impleme
     public Integer type() {
         return RpcTypeEnum.REQUEST.getCode();
     }
-
-    @Override
-    public String execute() {
-        throw new RuntimeException("response不能进行执行操作");
-    }
-
 
     @Override
     public Integer responseType() {
