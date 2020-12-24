@@ -35,6 +35,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     private PowerDao dao;
 
 
+    @Override
     public PowerDao getDao() {
         return dao;
     }

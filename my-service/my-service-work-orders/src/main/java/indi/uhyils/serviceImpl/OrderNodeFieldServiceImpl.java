@@ -18,6 +18,7 @@ public class OrderNodeFieldServiceImpl extends BaseDefaultServiceImpl<OrderNodeF
     private OrderNodeFieldDao dao;
 
 
+    @Override
     public OrderNodeFieldDao getDao() {
         return dao;
     }

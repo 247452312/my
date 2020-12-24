@@ -136,6 +136,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     }
 
 
+    @Override
     public DeptDao getDao() {
         return dao;
     }

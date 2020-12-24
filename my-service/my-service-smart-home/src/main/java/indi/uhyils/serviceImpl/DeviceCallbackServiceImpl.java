@@ -19,6 +19,7 @@ public class DeviceCallbackServiceImpl extends BaseDefaultServiceImpl<DeviceCall
     @Resource
     private DeviceCallbackDao dao;
 
+    @Override
     public DeviceCallbackDao getDao() {
         return this.dao;
     }

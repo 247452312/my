@@ -71,6 +71,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     private DictItemDao dictItemDao;
 
 
+    @Override
     public MenuDao getDao() {
         return dao;
     }

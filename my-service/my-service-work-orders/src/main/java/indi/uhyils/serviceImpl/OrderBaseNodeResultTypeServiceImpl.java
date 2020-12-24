@@ -18,6 +18,7 @@ public class OrderBaseNodeResultTypeServiceImpl extends BaseDefaultServiceImpl<O
     private OrderBaseNodeResultTypeDao dao;
 
 
+    @Override
     public OrderBaseNodeResultTypeDao getDao() {
         return dao;
     }

@@ -18,6 +18,7 @@ public class OrderApiServiceImpl extends BaseDefaultServiceImpl<OrderApiEntity> 
     private OrderApiDao dao;
 
 
+    @Override
     public OrderApiDao getDao() {
         return dao;
     }

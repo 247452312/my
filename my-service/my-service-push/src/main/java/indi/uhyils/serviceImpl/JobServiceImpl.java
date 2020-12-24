@@ -42,6 +42,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
         userEntity.setId(Content.ADMIN_USER_ID);
     }
 
+    @Override
     public JobDao getDao() {
         return dao;
     }

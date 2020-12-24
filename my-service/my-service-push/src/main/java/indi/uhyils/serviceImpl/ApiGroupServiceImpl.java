@@ -31,6 +31,7 @@ public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> 
     @Resource
     private ApiDao apiDao;
 
+    @Override
     public ApiGroupDao getDao() {
         return dao;
     }

@@ -22,6 +22,7 @@ public class ApiSubscribeServiceImpl extends BaseDefaultServiceImpl<ApiSubscribe
     @Resource
     private ApiSubscribeDao dao;
 
+    @Override
     public ApiSubscribeDao getDao() {
         return dao;
     }

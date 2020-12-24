@@ -40,6 +40,7 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
         userEntity.setId(Content.ADMIN_USER_ID);
     }
 
+    @Override
     public LogDao getDao() {
         return dao;
     }

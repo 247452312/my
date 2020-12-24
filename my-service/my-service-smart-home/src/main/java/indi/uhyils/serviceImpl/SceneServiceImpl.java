@@ -19,6 +19,7 @@ public class SceneServiceImpl extends BaseDefaultServiceImpl<SceneEntity> implem
     @Resource
     private SceneDao dao;
 
+    @Override
     public SceneDao getDao() {
         return this.dao;
     }

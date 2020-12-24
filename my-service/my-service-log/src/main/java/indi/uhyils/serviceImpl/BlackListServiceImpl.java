@@ -47,6 +47,7 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
     @Value("${black-list.spider.frequency}")
     private Integer frequency;
 
+    @Override
     public BlackListDao getDao() {
         return this.dao;
     }

@@ -64,6 +64,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @Resource
     private ServerDao serverDao;
 
+    @Override
     public RedisDao getDao() {
         return dao;
     }

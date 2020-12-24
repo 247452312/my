@@ -23,6 +23,7 @@ public class ApiServiceImpl extends BaseDefaultServiceImpl<ApiEntity> implements
     @Resource
     private ApiDao dao;
 
+    @Override
     public ApiDao getDao() {
         return dao;
     }

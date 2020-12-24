@@ -71,6 +71,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         return ServiceResult.buildSuccessResult("删除字典以及字典项成功", 1, idRequest);
     }
 
+    @Override
     public DictDao getDao() {
         return dao;
     }

@@ -107,6 +107,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     }
 
 
+    @Override
     public RoleDao getDao() {
         return dao;
     }

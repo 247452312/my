@@ -19,6 +19,7 @@ public class InstructionsServiceImpl extends BaseDefaultServiceImpl<Instructions
     @Resource
     private InstructionsDao dao;
 
+    @Override
     public InstructionsDao getDao() {
         return this.dao;
     }

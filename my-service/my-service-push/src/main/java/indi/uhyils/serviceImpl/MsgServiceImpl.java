@@ -17,6 +17,7 @@ public class MsgServiceImpl extends BaseDefaultServiceImpl<MsgEntity> implements
     @Resource
     private MsgDao dao;
 
+    @Override
     public MsgDao getDao() {
         return dao;
     }

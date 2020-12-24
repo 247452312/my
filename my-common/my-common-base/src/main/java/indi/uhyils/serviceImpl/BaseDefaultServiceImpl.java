@@ -11,10 +11,7 @@ import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
-import indi.uhyils.util.LogUtil;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,13 +95,10 @@ public abstract class BaseDefaultServiceImpl<T extends BaseVoEntity> implements 
     }
 
 
-    private DefaultDao<T> getDao() {
-        try {
-            Method declaredMethod = getClass().getDeclaredMethod("getDao");
-            return (DefaultDao<T>) declaredMethod.invoke(this);
-        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            LogUtil.error(this, e);
-        }
-        return null;
-    }
+    /**
+     * 获取dao
+     *
+     * @return
+     */
+    protected abstract DefaultDao<T> getDao();
 }

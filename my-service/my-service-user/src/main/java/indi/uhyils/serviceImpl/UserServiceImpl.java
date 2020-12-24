@@ -279,6 +279,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
 
+    @Override
     public UserDao getDao() {
         return dao;
     }

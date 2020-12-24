@@ -18,6 +18,7 @@ public class OrderApplyServiceImpl extends BaseDefaultServiceImpl<OrderApplyEnti
     private OrderApplyDao dao;
 
 
+    @Override
     public OrderApplyDao getDao() {
         return dao;
     }

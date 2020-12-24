@@ -19,6 +19,7 @@ public class ResponseServiceImpl extends BaseDefaultServiceImpl<ResponseEntity> 
     @Resource
     private ResponseDao dao;
 
+    @Override
     public ResponseDao getDao() {
         return this.dao;
     }

@@ -48,6 +48,7 @@ public class OrderInfoServiceImpl extends BaseDefaultServiceImpl<OrderInfoEntity
     private OrderNodeFieldValueDao orderNodeFieldValueDao;
 
 
+    @Override
     public OrderInfoDao getDao() {
         return dao;
     }

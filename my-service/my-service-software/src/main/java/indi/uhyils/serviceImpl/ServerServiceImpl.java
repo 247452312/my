@@ -26,6 +26,7 @@ public class ServerServiceImpl extends BaseDefaultServiceImpl<ServerEntity> impl
     @Resource
     private ServerDao dao;
 
+    @Override
     public ServerDao getDao() {
         return dao;
     }

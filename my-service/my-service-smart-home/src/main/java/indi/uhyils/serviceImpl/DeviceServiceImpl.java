@@ -19,6 +19,7 @@ public class DeviceServiceImpl extends BaseDefaultServiceImpl<DeviceEntity> impl
     @Resource
     private DeviceDao dao;
 
+    @Override
     public DeviceDao getDao() {
         return this.dao;
     }

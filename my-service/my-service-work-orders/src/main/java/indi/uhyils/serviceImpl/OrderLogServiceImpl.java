@@ -18,6 +18,7 @@ public class OrderLogServiceImpl extends BaseDefaultServiceImpl<OrderLogEntity> 
     private OrderLogDao dao;
 
 
+    @Override
     public OrderLogDao getDao() {
         return dao;
     }

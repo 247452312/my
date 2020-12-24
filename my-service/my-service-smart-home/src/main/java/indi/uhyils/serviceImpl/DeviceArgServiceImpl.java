@@ -19,6 +19,7 @@ public class DeviceArgServiceImpl extends BaseDefaultServiceImpl<DeviceArgEntity
     @Resource
     private DeviceArgDao dao;
 
+    @Override
     public DeviceArgDao getDao() {
         return this.dao;
     }

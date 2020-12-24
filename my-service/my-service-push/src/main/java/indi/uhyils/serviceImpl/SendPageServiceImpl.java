@@ -19,6 +19,7 @@ public class SendPageServiceImpl extends BaseDefaultServiceImpl<SendPageEntity> 
     @Resource
     private SendPageDao dao;
 
+    @Override
     public SendPageDao getDao() {
         return dao;
     }

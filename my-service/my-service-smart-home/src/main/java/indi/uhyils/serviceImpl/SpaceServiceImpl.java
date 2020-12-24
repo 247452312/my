@@ -19,6 +19,7 @@ public class SpaceServiceImpl extends BaseDefaultServiceImpl<SpaceEntity> implem
     @Resource
     private SpaceDao dao;
 
+    @Override
     public SpaceDao getDao() {
         return this.dao;
     }

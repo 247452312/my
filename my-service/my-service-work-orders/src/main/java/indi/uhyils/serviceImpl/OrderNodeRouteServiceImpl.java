@@ -18,6 +18,7 @@ public class OrderNodeRouteServiceImpl extends BaseDefaultServiceImpl<OrderNodeR
     private OrderNodeRouteDao dao;
 
 
+    @Override
     public OrderNodeRouteDao getDao() {
         return dao;
     }
