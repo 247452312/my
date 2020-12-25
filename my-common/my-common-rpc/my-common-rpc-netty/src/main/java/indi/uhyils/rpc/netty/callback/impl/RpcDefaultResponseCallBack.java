@@ -17,12 +17,17 @@ import indi.uhyils.rpc.netty.pojo.response.RpcResponseContent;
  */
 public class RpcDefaultResponseCallBack implements RpcCallBack {
     @Override
-    public RpcContent getContent(byte[] data) throws RpcException, ClassNotFoundException {
+    public RpcData getRpcData(byte[] data) throws RpcException, ClassNotFoundException {
         /*解析*/
         RpcFactory build = RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
         // 获取到的Request
         assert build != null;
-        RpcData request = build.createByBytes(data);
+        return build.createByBytes(data);
+    }
+
+    @Override
+    public RpcContent getContent(byte[] data) throws RpcException, ClassNotFoundException {
+        RpcData request = getRpcData(data);
         return request.content();
     }
 

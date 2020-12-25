@@ -31,7 +31,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
     /**
      * 一个公平的可重入锁
      */
-    private static final ReentrantLock REENTRANT_LOCK = new ReentrantLock(true);
+    private final ReentrantLock REENTRANT_LOCK = new ReentrantLock(true);
     /**
      * 客户端
      */
@@ -56,7 +56,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
     /**
      * 超时的记录在这里,防止返回值的内存溢出
      */
-    private FixedLengthQueue<Long> timeOut = new FixedLengthQueue<>(200);
+    private FixedLengthQueue<Long> timeOut = new FixedLengthQueue<>(200, Long.class);
 
     public RpcNettyNormalConsumer(Long outTime, RpcCallBack callBack) {
         super(outTime);
@@ -135,8 +135,13 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
         Condition condition = REENTRANT_LOCK.newCondition();
         // 等待第一次
         waitLock.put(unique, condition);
-        //阻塞
-        condition.await(getTimeOut(), TimeUnit.MILLISECONDS);
+        REENTRANT_LOCK.lock();
+        try {
+            //阻塞
+            condition.await(getTimeOut(), TimeUnit.MILLISECONDS);
+        } finally {
+            REENTRANT_LOCK.unlock();
+        }
 
         //查询第二次是否存在
         if (rpcResponseMap.containsKey(unique)) {
@@ -152,8 +157,16 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
     public void awaken(Long unique) {
         if (waitLock.containsKey(unique)) {
             Condition condition = waitLock.get(unique);
+
             waitLock.remove(unique);
-            condition.signal();
+            REENTRANT_LOCK.lock();
+            try {
+                //唤醒
+                condition.signal();
+            } finally {
+                REENTRANT_LOCK.unlock();
+            }
+
         }
     }
 

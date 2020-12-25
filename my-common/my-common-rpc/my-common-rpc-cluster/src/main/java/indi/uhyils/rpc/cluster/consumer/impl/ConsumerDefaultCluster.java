@@ -19,17 +19,17 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
     /**
      * 需要负载均衡的netty们
      */
-    private Map<NettyInfo, RpcNetty> nettyMap;
+    private final Map<NettyInfo, RpcNetty> nettyMap;
 
     /**
      * 负载均衡策略
      */
-    private LoadBalanceEnum loadBalanceType;
+    private final LoadBalanceEnum loadBalanceType;
 
     /**
      * 如果是轮询时的标记
      */
-    private volatile AtomicInteger pollingMark = new AtomicInteger(0);
+    private final AtomicInteger pollingMark = new AtomicInteger(0);
 
     /**
      * 权重分配的标记
@@ -40,6 +40,10 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
     public ConsumerDefaultCluster(Map<NettyInfo, RpcNetty> nettyMap, LoadBalanceEnum loadBalanceType) {
         this.nettyMap = nettyMap;
         this.loadBalanceType = loadBalanceType;
+    }
+
+    public ConsumerDefaultCluster(Map<NettyInfo, RpcNetty> nettyMap) {
+        this(nettyMap, LoadBalanceEnum.RANDOM);
     }
 
     @Override
@@ -79,6 +83,7 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
         //todo 暂时没有实现最少活跃
         switch (loadBalanceType) {
             case LEAST_ACTIVE:
+                // 这里需要修改为:n秒内调用成功次数
             case RANDOM:
                 return randomSend(rpcData);
             case IP_HASH:
@@ -171,9 +176,10 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
     private RpcData sendByIndex(RpcData rpcData, int i) throws InterruptedException {
         i = i % nettyMap.size();
         Object o = nettyMap.keySet().toArray()[i];
-        Boolean aBoolean = nettyMap.get(o).sendMsg(rpcData.toBytes());
+        RpcNetty rpcNetty = nettyMap.get(o);
+        Boolean aBoolean = rpcNetty.sendMsg(rpcData.toBytes());
         if (aBoolean) {
-            return nettyMap.get(o).wait(rpcData.unique());
+            return rpcNetty.wait(rpcData.unique());
         }
         return null;
     }

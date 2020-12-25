@@ -30,6 +30,16 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
      */
     private LoadBalanceEnum loadBalanceType;
 
+    public ProviderDefaultCluster(NettyInfo nettyInfo, RpcNetty netty, LoadBalanceEnum loadBalanceType) {
+        this.nettyInfo = nettyInfo;
+        this.netty = netty;
+        this.loadBalanceType = loadBalanceType;
+    }
+
+    public ProviderDefaultCluster(NettyInfo nettyInfo, RpcNetty netty) {
+        this(nettyInfo, netty, LoadBalanceEnum.RANDOM);
+    }
+
     @Override
     public LoadBalanceEnum getTypeOfLoadBalance() {
         return loadBalanceType;
@@ -47,7 +57,7 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
 
     @Override
     public Map<NettyInfo, RpcNetty> getAllNetty() {
-        Map<NettyInfo, RpcNetty> nettyInfoRpcNettyMap = new HashMap<>();
+        Map<NettyInfo, RpcNetty> nettyInfoRpcNettyMap = new HashMap<>(1);
         nettyInfoRpcNettyMap.put(nettyInfo, netty);
         return nettyInfoRpcNettyMap;
     }

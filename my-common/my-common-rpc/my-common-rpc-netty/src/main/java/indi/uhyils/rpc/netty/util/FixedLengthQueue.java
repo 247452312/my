@@ -3,6 +3,7 @@ package indi.uhyils.rpc.netty.util;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -27,13 +28,14 @@ public class FixedLengthQueue<T> implements Serializable {
      */
     private volatile AtomicInteger readWritePosition;
 
-    public FixedLengthQueue() {
-        this(8);
+    public FixedLengthQueue(Class<T> clazz) {
+        this(8, clazz);
     }
 
-    public FixedLengthQueue(Integer length) {
+    public FixedLengthQueue(Integer length, Class<T> clazz) {
         this.length = length;
         readWritePosition = new AtomicInteger(0);
+        data = (T[]) Array.newInstance(clazz, length);
     }
 
     public FixedLengthQueue(T[] data) {

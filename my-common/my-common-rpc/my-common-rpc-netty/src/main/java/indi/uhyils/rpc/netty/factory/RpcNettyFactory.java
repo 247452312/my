@@ -18,15 +18,25 @@ public class RpcNettyFactory {
      * @param type
      * @return
      */
-    public static RpcNetty createNetty(RpcNettyTypeEnum type, NettyInitDto nettyInit) {
+    public static RpcNetty createNetty(RpcNettyTypeEnum type, NettyInitDto nettyInit, Long outTime) {
         switch (type) {
             case PROVIDER:
-                return createProvider(nettyInit.getHost(), nettyInit.getPort(), nettyInit.getCallback());
+                return createProvider(nettyInit.getHost(), nettyInit.getPort(), nettyInit.getCallback(), outTime);
             case CONSUMER:
-                return createConsumer(nettyInit.getHost(), nettyInit.getPort(), nettyInit.getCallback());
+                return createConsumer(nettyInit.getHost(), nettyInit.getPort(), nettyInit.getCallback(), outTime);
             default:
                 return null;
         }
+    }
+
+    /**
+     * 创建一个netty
+     *
+     * @param type
+     * @return
+     */
+    public static RpcNetty createNetty(RpcNettyTypeEnum type, NettyInitDto nettyInit) {
+        return createNetty(type, nettyInit, 3000L);
     }
 
     /**
@@ -36,8 +46,8 @@ public class RpcNettyFactory {
      * @param port
      * @return
      */
-    private static RpcNetty createConsumer(String host, Integer port, RpcCallBack callBack) {
-        RpcNetty rpcNettyNormalConsumer = new RpcNettyNormalConsumer(callBack);
+    private static RpcNetty createConsumer(String host, Integer port, RpcCallBack callBack, Long outTime) {
+        RpcNetty rpcNettyNormalConsumer = new RpcNettyNormalConsumer(outTime, callBack);
         rpcNettyNormalConsumer.init(host, port);
         return rpcNettyNormalConsumer;
     }
@@ -49,8 +59,8 @@ public class RpcNettyFactory {
      * @param port
      * @return
      */
-    private static RpcNetty createProvider(String host, Integer port, RpcCallBack callback) {
-        RpcNetty rpcNettyNormalProvider = new RpcNettyNormalProvider(callback);
+    private static RpcNetty createProvider(String host, Integer port, RpcCallBack callback, Long outTime) {
+        RpcNetty rpcNettyNormalProvider = new RpcNettyNormalProvider(outTime, callback);
         rpcNettyNormalProvider.init(host, port);
         return rpcNettyNormalProvider;
     }

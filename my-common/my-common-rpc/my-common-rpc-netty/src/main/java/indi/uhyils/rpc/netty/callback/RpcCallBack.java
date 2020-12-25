@@ -12,6 +12,16 @@ public interface RpcCallBack {
 
 
     /**
+     * 获取rpc数据
+     *
+     * @param data
+     * @return
+     * @throws RpcException
+     * @throws ClassNotFoundException
+     */
+    RpcData getRpcData(byte[] data) throws RpcException, ClassNotFoundException;
+
+    /**
      * 获取rpc体
      *
      * @param data

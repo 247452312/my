@@ -17,10 +17,15 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-common-rpc-netty</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

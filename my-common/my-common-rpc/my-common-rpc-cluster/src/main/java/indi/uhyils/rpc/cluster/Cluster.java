@@ -56,7 +56,9 @@ public interface Cluster {
      * 发送信息
      *
      * @param rpcData
+     * @param info
      * @return
+     * @throws InterruptedException
      */
     RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException;
 
@@ -65,6 +67,7 @@ public interface Cluster {
      *
      * @param unique
      * @return
+     * @throws InterruptedException
      */
     RpcData wait(Long unique) throws InterruptedException;
 

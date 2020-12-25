@@ -33,6 +33,7 @@ public class DubboRequestInHandler extends SimpleChannelInboundHandler<ByteBuf> 
         ReferenceCountUtil.release(msg);
         RpcContent content = callback.getContent(bytes);
         String resultJson = callback.invoke(content);
+        System.out.println("--------------------------------------------------" + resultJson);
         RpcData assembly = callback.assembly(resultJson);
 
         ByteBuf buf = Unpooled.buffer();

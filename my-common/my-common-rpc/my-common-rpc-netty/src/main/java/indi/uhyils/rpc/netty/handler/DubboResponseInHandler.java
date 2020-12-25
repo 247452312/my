@@ -2,7 +2,7 @@ package indi.uhyils.rpc.netty.handler;
 
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
 import indi.uhyils.rpc.netty.consumer.RpcNettyNormalConsumer;
-import indi.uhyils.rpc.netty.pojo.RpcContent;
+import indi.uhyils.rpc.netty.pojo.RpcData;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -36,8 +36,10 @@ public class DubboResponseInHandler extends SimpleChannelInboundHandler<ByteBuf>
         msg.readBytes(bytes);
         ReferenceCountUtil.release(msg);
 
-        RpcContent content1 = callBack.getContent(bytes);
-        String invoke = callBack.invoke(content1);
+        RpcData rpcData = callBack.getRpcData(bytes);
+        String invoke = callBack.invoke(rpcData.content());
+        netty.awaken(rpcData.unique());
+
         System.out.println(invoke);
     }
 
