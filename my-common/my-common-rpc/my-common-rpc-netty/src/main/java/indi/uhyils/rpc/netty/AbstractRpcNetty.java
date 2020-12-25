@@ -10,9 +10,17 @@ import io.netty.channel.Channel;
 public abstract class AbstractRpcNetty implements RpcNetty {
 
     /**
+     * 超时时间
+     */
+    protected Long timeOut;
+    /**
      * bootstrap
      */
     protected AbstractBootstrap<?, ? extends Channel> bootstrap;
+
+    public AbstractRpcNetty(Long timeOut) {
+        this.timeOut = timeOut;
+    }
 
     @Override
     public AbstractBootstrap<?, ? extends Channel> getBootstrap() {
@@ -22,5 +30,13 @@ public abstract class AbstractRpcNetty implements RpcNetty {
     @Override
     public void setBootstrap(AbstractBootstrap<?, ? extends Channel> bootstrap) {
         this.bootstrap = bootstrap;
+    }
+
+    public Long getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(Long timeOut) {
+        this.timeOut = timeOut;
     }
 }

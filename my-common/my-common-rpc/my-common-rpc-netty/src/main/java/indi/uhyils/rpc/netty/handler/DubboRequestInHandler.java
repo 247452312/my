@@ -1,11 +1,8 @@
 package indi.uhyils.rpc.netty.handler;
 
-import indi.uhyils.rpc.netty.callback.RpcRequestCallback;
-import indi.uhyils.rpc.netty.content.MyRpcContent;
-import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
+import indi.uhyils.rpc.netty.callback.RpcCallBack;
+import indi.uhyils.rpc.netty.pojo.RpcContent;
 import indi.uhyils.rpc.netty.pojo.RpcData;
-import indi.uhyils.rpc.netty.pojo.RpcFactory;
-import indi.uhyils.rpc.netty.pojo.RpcFactoryProducer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,9 +19,9 @@ public class DubboRequestInHandler extends SimpleChannelInboundHandler<ByteBuf> 
     /**
      * 回调
      */
-    private final RpcRequestCallback callback;
+    private final RpcCallBack callback;
 
-    public DubboRequestInHandler(RpcRequestCallback callback) {
+    public DubboRequestInHandler(RpcCallBack callback) {
         this.callback = callback;
     }
 
@@ -34,19 +31,13 @@ public class DubboRequestInHandler extends SimpleChannelInboundHandler<ByteBuf> 
         byte[] bytes = new byte[msg.readableBytes()];
         msg.readBytes(bytes);
         ReferenceCountUtil.release(msg);
-        /*解析*/
-        RpcFactory build = RpcFactoryProducer.build(RpcTypeEnum.REQUEST);
-        // 获取到的Request
-        assert build != null;
-        RpcData request = build.createByBytes(bytes);
-        Integer version = request.rpcVersion();
-        if (version <= MyRpcContent.VERSION) {
-            RpcData invoke = callback.invoke(request.content());
-            ByteBuf buf = Unpooled.buffer();
-            buf.writeBytes(invoke.toBytes());
-            ctx.channel().writeAndFlush(buf);
+        RpcContent content = callback.getContent(bytes);
+        String resultJson = callback.invoke(content);
+        RpcData assembly = callback.assembly(resultJson);
 
-        }
+        ByteBuf buf = Unpooled.buffer();
+        buf.writeBytes(assembly.toBytes());
+        ctx.channel().writeAndFlush(buf);
     }
 
     @Override

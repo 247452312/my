@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty;
 
+import indi.uhyils.rpc.netty.pojo.RpcData;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.Channel;
 
@@ -48,4 +49,19 @@ public interface RpcNetty {
      * @return
      */
     Boolean sendMsg(byte[] bytes);
+
+    /**
+     * 等待执行long类型的回应
+     *
+     * @param unique
+     * @return
+     */
+    RpcData wait(Long unique) throws InterruptedException;
+
+    /**
+     * 唤醒
+     *
+     * @param unique
+     */
+    void awaken(Long unique);
 }

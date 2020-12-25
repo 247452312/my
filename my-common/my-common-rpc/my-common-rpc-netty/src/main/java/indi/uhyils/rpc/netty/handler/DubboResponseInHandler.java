@@ -1,10 +1,8 @@
 package indi.uhyils.rpc.netty.handler;
 
-import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
+import indi.uhyils.rpc.netty.callback.RpcCallBack;
+import indi.uhyils.rpc.netty.consumer.RpcNettyNormalConsumer;
 import indi.uhyils.rpc.netty.pojo.RpcContent;
-import indi.uhyils.rpc.netty.pojo.RpcData;
-import indi.uhyils.rpc.netty.pojo.RpcFactory;
-import indi.uhyils.rpc.netty.pojo.RpcFactoryProducer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -17,19 +15,30 @@ import io.netty.util.ReferenceCountUtil;
 public class DubboResponseInHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
 
+    /**
+     * 回调
+     */
+    private RpcCallBack callBack;
+    /**
+     * 观察者模式
+     */
+    private RpcNettyNormalConsumer netty;
+
+
+    public DubboResponseInHandler(RpcCallBack callBack, RpcNettyNormalConsumer netty) {
+        this.callBack = callBack;
+        this.netty = netty;
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         byte[] bytes = new byte[msg.readableBytes()];
         msg.readBytes(bytes);
         ReferenceCountUtil.release(msg);
 
-        RpcFactory build = RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
-        assert build != null;
-        RpcData byBytes = build.createByBytes(bytes);
-        RpcContent content = byBytes.content();
-        String responseData = content.getLine(1);
-
-        System.out.println(responseData);
+        RpcContent content1 = callBack.getContent(bytes);
+        String invoke = callBack.invoke(content1);
+        System.out.println(invoke);
     }
 
     @Override

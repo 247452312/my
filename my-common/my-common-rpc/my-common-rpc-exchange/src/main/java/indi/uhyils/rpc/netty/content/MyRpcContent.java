@@ -1,5 +1,9 @@
 package indi.uhyils.rpc.netty.content;
 
+import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
+import indi.uhyils.rpc.netty.pojo.RpcData;
+import indi.uhyils.rpc.netty.pojo.RpcFactoryProducer;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 09时23分
@@ -45,6 +49,10 @@ public class MyRpcContent {
             (byte) (AGREEMENT_START_INT >> 8 & 0xff),
             (byte) (AGREEMENT_START_INT & 0xff)
     };
+    /**
+     * rpc心跳请求
+     */
+    public static final RpcData RPC_HEALTH_DATA = RpcFactoryProducer.build(RpcTypeEnum.REQUEST).getHealth();
 
 
 }

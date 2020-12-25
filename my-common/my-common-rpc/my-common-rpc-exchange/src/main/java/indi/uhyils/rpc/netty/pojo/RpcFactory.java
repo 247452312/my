@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty.pojo;
 
+import indi.uhyils.rpc.netty.content.MyRpcContent;
 import indi.uhyils.rpc.netty.exception.RpcException;
 import io.netty.buffer.ByteBuf;
 
@@ -41,4 +42,14 @@ public interface RpcFactory {
      */
     RpcData createByInfo(Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException;
 
+    /**
+     * 获取RPC心跳包
+     *
+     * @return
+     * @throws RpcException
+     * @throws ClassNotFoundException
+     */
+    default RpcData getHealth() {
+        return MyRpcContent.RPC_HEALTH_DATA;
+    }
 }

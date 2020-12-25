@@ -54,4 +54,6 @@ public class RpcRequestFactory extends AbstractRpcFactory {
     protected RpcTypeEnum getRpcType() {
         return RpcTypeEnum.REQUEST;
     }
+
+
 }

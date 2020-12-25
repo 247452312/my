@@ -1,9 +1,10 @@
 package indi.uhyils.rpc.netty.factory;
 
 import indi.uhyils.rpc.netty.RpcNetty;
-import indi.uhyils.rpc.netty.callback.RpcRequestCallback;
+import indi.uhyils.rpc.netty.callback.RpcCallBack;
 import indi.uhyils.rpc.netty.consumer.RpcNettyNormalConsumer;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
+import indi.uhyils.rpc.netty.pojo.NettyInitDto;
 import indi.uhyils.rpc.netty.provider.RpcNettyNormalProvider;
 
 /**
@@ -17,12 +18,12 @@ public class RpcNettyFactory {
      * @param type
      * @return
      */
-    public static RpcNetty createNetty(RpcNettyTypeEnum type, String host, Integer port, RpcRequestCallback callback) {
+    public static RpcNetty createNetty(RpcNettyTypeEnum type, NettyInitDto nettyInit) {
         switch (type) {
             case PROVIDER:
-                return createProvider(host, port, callback);
+                return createProvider(nettyInit.getHost(), nettyInit.getPort(), nettyInit.getCallback());
             case CONSUMER:
-                return createConsumer(host, port);
+                return createConsumer(nettyInit.getHost(), nettyInit.getPort(), nettyInit.getCallback());
             default:
                 return null;
         }
@@ -35,8 +36,8 @@ public class RpcNettyFactory {
      * @param port
      * @return
      */
-    private static RpcNetty createConsumer(String host, Integer port) {
-        RpcNetty rpcNettyNormalConsumer = new RpcNettyNormalConsumer();
+    private static RpcNetty createConsumer(String host, Integer port, RpcCallBack callBack) {
+        RpcNetty rpcNettyNormalConsumer = new RpcNettyNormalConsumer(callBack);
         rpcNettyNormalConsumer.init(host, port);
         return rpcNettyNormalConsumer;
     }
@@ -48,7 +49,7 @@ public class RpcNettyFactory {
      * @param port
      * @return
      */
-    private static RpcNetty createProvider(String host, Integer port, RpcRequestCallback callback) {
+    private static RpcNetty createProvider(String host, Integer port, RpcCallBack callback) {
         RpcNetty rpcNettyNormalProvider = new RpcNettyNormalProvider(callback);
         rpcNettyNormalProvider.init(host, port);
         return rpcNettyNormalProvider;

@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>my-common</artifactId>
+        <artifactId>my-common-rpc</artifactId>
         <groupId>indi.uhyils</groupId>
         <version>0.2.0-my-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>my-common-rpc</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>my-common-rpc-exchange</module>
-        <module>my-common-rpc-netty</module>
-        <module>my-common-rpc-cluster</module>
-    </modules>
+    <artifactId>my-common-rpc-cluster</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-rpc-netty</artifactId>
+        </dependency>
+    </dependencies>
 </project>

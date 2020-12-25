@@ -1,8 +1,12 @@
 package indi.uhyils.rpc.netty.provider;
 
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
-import indi.uhyils.rpc.netty.callback.RpcRequestCallback;
+import indi.uhyils.rpc.netty.callback.RpcCallBack;
+import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 import indi.uhyils.rpc.netty.handler.DubboRequestInHandler;
+import indi.uhyils.rpc.netty.pojo.RpcData;
+import indi.uhyils.rpc.netty.pojo.RpcFactory;
+import indi.uhyils.rpc.netty.pojo.RpcFactoryProducer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -25,7 +29,7 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
     /**
      * 回调
      */
-    private final RpcRequestCallback callback;
+    private final RpcCallBack callback;
     /**
      * 主线程,单线程
      */
@@ -35,7 +39,8 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
      */
     private EventLoopGroup workerGroup;
 
-    public RpcNettyNormalProvider(RpcRequestCallback callback) {
+    public RpcNettyNormalProvider(Long outTime, RpcCallBack callback) {
+        super(outTime);
         this.callback = callback;
     }
 
@@ -89,4 +94,16 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
     public Boolean sendMsg(byte[] bytes) {
         return true;
     }
+
+    @Override
+    public RpcData wait(Long unique) {
+        //服务提供者不跑这玩意
+        return null;
+    }
+
+    @Override
+    public void awaken(Long unique) {
+        //服务提供者不跑这玩意
+    }
+
 }
