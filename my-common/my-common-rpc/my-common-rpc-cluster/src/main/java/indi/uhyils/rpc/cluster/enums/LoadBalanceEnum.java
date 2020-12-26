@@ -8,26 +8,44 @@ public enum LoadBalanceEnum {
     /**
      * 根据ip
      */
-    IP_HASH,
+    IP_HASH(0),
     /**
      * 手动分配权重
      */
-    MANUAL_ASSIGNMENT,
+    MANUAL_ASSIGNMENT(1),
     /**
      * 随机
      */
-    RANDOM,
+    RANDOM(2),
     /**
      * 轮询
      */
-    POLLING,
+    POLLING(3),
     /**
      * 最少活跃
      */
-    LEAST_ACTIVE,
+    LEAST_ACTIVE(4),
     /**
      * 最快返回速度
      */
-    FASTEST_RETURN_SPEED
+    FASTEST_RETURN_SPEED(5);
 
+
+    /**
+     * 负责均衡对应的code
+     */
+    private Integer code;
+
+
+    LoadBalanceEnum(Integer code) {
+        this.code = code;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
 }

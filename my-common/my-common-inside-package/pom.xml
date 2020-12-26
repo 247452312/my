@@ -49,6 +49,16 @@
                 <artifactId>my-common-rpc-netty</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-common-rpc-cluster</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-common-rpc-registry</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 
             <dependency>
