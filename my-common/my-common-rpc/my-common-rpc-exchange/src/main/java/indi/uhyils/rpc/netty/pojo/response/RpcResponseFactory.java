@@ -32,14 +32,14 @@ public class RpcResponseFactory extends AbstractRpcFactory {
     }
 
     @Override
-    public RpcData createByInfo(Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException {
+    public RpcData createByInfo(Long unique, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException {
         RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
         rpcNormalRequest.setType(RpcTypeEnum.RESPONSE.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);
         rpcNormalRequest.setContentArray(contentArray);
         rpcNormalRequest.setStatus((Byte) others[0]);
-        rpcNormalRequest.setUnique(9L);
+        rpcNormalRequest.setUnique(unique);
 
         RpcContent content = RpcResponseContentFactory.createByContentArray(rpcNormalRequest, contentArray);
         rpcNormalRequest.setContent(content);

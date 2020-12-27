@@ -41,7 +41,7 @@ public class RpcDefaultResponseCallBack implements RpcCallBack {
     }
 
     @Override
-    public RpcData assembly(String result) {
+    public RpcData assembly(Long unique, String result) {
         return null;
     }
 

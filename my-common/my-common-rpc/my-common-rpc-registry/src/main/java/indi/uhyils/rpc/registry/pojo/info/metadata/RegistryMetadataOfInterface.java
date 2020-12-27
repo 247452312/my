@@ -11,11 +11,6 @@ import java.io.Serializable;
 public class RegistryMetadataOfInterface implements Serializable {
 
     /**
-     * 接口名称
-     */
-    private String name;
-
-    /**
      * 服务名称
      */
     private String serviceName;
@@ -30,14 +25,6 @@ public class RegistryMetadataOfInterface implements Serializable {
      */
     private Integer loadBalance;
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getServiceName() {
         return serviceName;

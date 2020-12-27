@@ -56,7 +56,7 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
     }
 
     @Override
-    public RpcData assembly(String result) throws RpcException, ClassNotFoundException {
+    public RpcData assembly(Long unique, String result) throws RpcException, ClassNotFoundException {
         RpcHeader rpcHeader = new RpcHeader();
         rpcHeader.setName("default-value");
         rpcHeader.setValue("value");
@@ -70,7 +70,7 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
             responseType = RpcResponseTypeEnum.STRING_BACK.getCode().toString();
         }
         return Objects.requireNonNull(RpcFactoryProducer.build(RpcTypeEnum.RESPONSE))
-                .createByInfo(new Object[]{RpcStatusEnum.OK.getCode()}, rpcHeaders, responseType, result);
+                .createByInfo(unique, new Object[]{RpcStatusEnum.OK.getCode()}, rpcHeaders, responseType, result);
     }
 
     /**

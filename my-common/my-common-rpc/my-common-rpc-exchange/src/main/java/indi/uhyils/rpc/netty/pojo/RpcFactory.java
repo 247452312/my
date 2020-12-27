@@ -34,13 +34,14 @@ public interface RpcFactory {
      * 根据一些必要的信息创建RPC体
      *
      * @param rpcHeaders   rpc头
+     * @param unique       唯一标示
      * @param others       其他
      * @param contentArray rpc内容体以及其他内容
      * @return
      * @throws RpcException
      * @throws ClassNotFoundException
      */
-    RpcData createByInfo(Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException;
+    RpcData createByInfo(Long unique, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException;
 
     /**
      * 获取RPC心跳包

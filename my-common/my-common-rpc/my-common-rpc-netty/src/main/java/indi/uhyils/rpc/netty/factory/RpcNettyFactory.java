@@ -36,7 +36,7 @@ public class RpcNettyFactory {
      * @return
      */
     public static RpcNetty createNetty(RpcNettyTypeEnum type, NettyInitDto nettyInit) {
-        return createNetty(type, nettyInit, 3000L);
+        return createNetty(type, nettyInit, 6000L);
     }
 
     /**

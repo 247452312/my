@@ -1,7 +1,6 @@
 package indi.uhyils.rpc.netty.handler;
 
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
-import indi.uhyils.rpc.netty.pojo.RpcContent;
 import indi.uhyils.rpc.netty.pojo.RpcData;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -31,10 +30,10 @@ public class DubboRequestInHandler extends SimpleChannelInboundHandler<ByteBuf> 
         byte[] bytes = new byte[msg.readableBytes()];
         msg.readBytes(bytes);
         ReferenceCountUtil.release(msg);
-        RpcContent content = callback.getContent(bytes);
-        String resultJson = callback.invoke(content);
+        RpcData rpcData = callback.getRpcData(bytes);
+        String resultJson = callback.invoke(rpcData.content());
         System.out.println("--------------------------------------------------" + resultJson);
-        RpcData assembly = callback.assembly(resultJson);
+        RpcData assembly = callback.assembly(rpcData.unique(), resultJson);
 
         ByteBuf buf = Unpooled.buffer();
         buf.writeBytes(assembly.toBytes());

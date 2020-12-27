@@ -14,15 +14,6 @@ public class RegistryMetadataOfMethod implements Serializable {
      */
     private String name;
 
-    /**
-     * 对应接口名称
-     */
-    private String interfaceName;
-
-    /**
-     * 对应服务名称
-     */
-    private String serviceName;
 
     /**
      * 方法参数类型
@@ -51,22 +42,6 @@ public class RegistryMetadataOfMethod implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getInterfaceName() {
-        return interfaceName;
-    }
-
-    public void setInterfaceName(String interfaceName) {
-        this.interfaceName = interfaceName;
-    }
-
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
     }
 
     public String[] getMethodParamTypes() {

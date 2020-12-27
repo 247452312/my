@@ -38,7 +38,7 @@ public class DubboResponseInHandler extends SimpleChannelInboundHandler<ByteBuf>
 
         RpcData rpcData = callBack.getRpcData(bytes);
         String invoke = callBack.invoke(rpcData.content());
-        netty.awaken(rpcData.unique());
+        netty.put(rpcData);
 
         System.out.println(invoke);
     }

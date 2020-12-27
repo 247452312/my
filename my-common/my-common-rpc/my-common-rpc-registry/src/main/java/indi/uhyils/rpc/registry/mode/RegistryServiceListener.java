@@ -2,13 +2,15 @@ package indi.uhyils.rpc.registry.mode;
 
 import indi.uhyils.rpc.cluster.Cluster;
 
+import java.util.Map;
+
 /**
  * 监听器
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月26日 18时45分
  */
-public interface RegistryListener {
+public interface RegistryServiceListener {
 
     /**
      * 方法改变的时候
@@ -21,12 +23,6 @@ public interface RegistryListener {
     void onInterfaceChange();
 
     /**
-     * 方法改变的时候
-     */
-    void onServiceChange();
-
-
-    /**
      * 在一个集群新服务上线的时候
      */
     void onServiceOnLine();
@@ -37,7 +33,15 @@ public interface RegistryListener {
     void onServiceOffline();
 
     /**
-     * 设置目标
+     * 解析
+     *
+     * @param content
+     * @return
+     */
+    Map<String, Object> parseListenerInfo(String content);
+
+    /**
+     * 设置集群
      *
      * @param cluster
      */

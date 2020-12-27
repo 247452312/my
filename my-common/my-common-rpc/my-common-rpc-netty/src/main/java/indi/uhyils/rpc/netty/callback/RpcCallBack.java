@@ -43,9 +43,10 @@ public interface RpcCallBack {
     /**
      * 组装返回值
      *
+     * @param unique
      * @param result
      * @return
      */
-    RpcData assembly(String result) throws RpcException, ClassNotFoundException;
+    RpcData assembly(Long unique, String result) throws RpcException, ClassNotFoundException;
 
 }

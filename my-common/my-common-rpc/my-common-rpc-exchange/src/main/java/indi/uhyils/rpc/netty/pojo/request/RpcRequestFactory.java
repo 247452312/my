@@ -36,14 +36,14 @@ public class RpcRequestFactory extends AbstractRpcFactory {
     }
 
     @Override
-    public RpcData createByInfo( Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException {
+    public RpcData createByInfo(Long unique, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException {
         RpcNormalRequest rpcNormalRequest = new RpcNormalRequest();
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);
         rpcNormalRequest.setContentArray(contentArray);
         rpcNormalRequest.setStatus(RpcStatusEnum.NULL.getCode());
-        rpcNormalRequest.setUnique(9L);
+        rpcNormalRequest.setUnique(unique);
         RpcContent content = RpcRequestContentFactory.createByContentArray(rpcNormalRequest, contentArray);
         rpcNormalRequest.setContent(content);
         rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);

@@ -6,10 +6,6 @@ package indi.uhyils.rpc.registry.pojo.info;
  */
 public class RegistryProviderNecessaryInfo implements RegistryNecessaryInfo {
 
-    /**
-     * 要注册的服务的名称
-     */
-    private String serviceName;
 
     /**
      * 接口名称
@@ -24,20 +20,27 @@ public class RegistryProviderNecessaryInfo implements RegistryNecessaryInfo {
     /**
      * 此服务的端口
      */
-    private String port;
+    private Integer port;
 
     /**
      * rpc版本
      */
-    private String rpcVersion;
+    private Integer rpcVersion;
 
-    public String getServiceName() {
-        return serviceName;
-    }
+    /**
+     * 是否需要健康检查
+     */
+    private Boolean health;
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
+    /**
+     * 所在集群名称
+     */
+    private String clusterName;
+
+    /**
+     * 权重
+     */
+    private Double weight = 20D;
 
     public String getHost() {
         return host;
@@ -47,19 +50,19 @@ public class RegistryProviderNecessaryInfo implements RegistryNecessaryInfo {
         this.host = host;
     }
 
-    public String getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
-    public String getRpcVersion() {
+    public Integer getRpcVersion() {
         return rpcVersion;
     }
 
-    public void setRpcVersion(String rpcVersion) {
+    public void setRpcVersion(Integer rpcVersion) {
         this.rpcVersion = rpcVersion;
     }
 
@@ -69,5 +72,29 @@ public class RegistryProviderNecessaryInfo implements RegistryNecessaryInfo {
 
     public void setInterfaceName(String interfaceName) {
         this.interfaceName = interfaceName;
+    }
+
+    public Boolean getHealth() {
+        return health;
+    }
+
+    public void setHealth(Boolean health) {
+        this.health = health;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public String getClusterName() {
+        return clusterName;
+    }
+
+    public void setClusterName(String clusterName) {
+        this.clusterName = clusterName;
     }
 }
