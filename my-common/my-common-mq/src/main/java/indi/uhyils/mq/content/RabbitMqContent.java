@@ -1,7 +1,7 @@
 package indi.uhyils.mq.content;
 
 
-import indi.uhyils.mq.util.IpUtil;
+import indi.uhyils.util.IpUtil;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;

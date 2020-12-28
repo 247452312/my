@@ -6,7 +6,6 @@ import indi.uhyils.rpc.netty.pojo.RpcData;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.ReferenceCountUtil;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -34,17 +33,7 @@ public class DubboResponseInHandler extends SimpleChannelInboundHandler<ByteBuf>
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         byte[] bytes = new byte[msg.readableBytes()];
         msg.readBytes(bytes);
-        ReferenceCountUtil.release(msg);
-
         RpcData rpcData = callBack.getRpcData(bytes);
-        String invoke = callBack.invoke(rpcData.content());
         netty.put(rpcData);
-
-        System.out.println(invoke);
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        // fixme 这里报错就不管了??
     }
 }

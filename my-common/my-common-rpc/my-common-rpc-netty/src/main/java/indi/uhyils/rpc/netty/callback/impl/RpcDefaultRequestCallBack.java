@@ -82,6 +82,7 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
     private String execute(RpcRequestContent requestContent) {
         try {
             Class<?> clazz = Class.forName(requestContent.getServiceName());
+            // todo 执行方法. 应该是从dubbo启动时扫描的@RpcService中获取,而不是去newInstance()
             Object bean = clazz.newInstance();
             String[] methodParameterTypes = requestContent.getMethodParameterTypes();
             Class[] methodClass = new Class[methodParameterTypes.length];

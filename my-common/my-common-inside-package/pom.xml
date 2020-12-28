@@ -59,6 +59,11 @@
                 <artifactId>my-common-rpc-registry</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-common-rpc-proxy</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 
             <dependency>

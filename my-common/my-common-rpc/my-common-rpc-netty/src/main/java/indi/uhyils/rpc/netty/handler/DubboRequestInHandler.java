@@ -6,7 +6,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.ReferenceCountUtil;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -29,7 +28,6 @@ public class DubboRequestInHandler extends SimpleChannelInboundHandler<ByteBuf> 
         /*接收并释放byteBuf*/
         byte[] bytes = new byte[msg.readableBytes()];
         msg.readBytes(bytes);
-        ReferenceCountUtil.release(msg);
         RpcData rpcData = callback.getRpcData(bytes);
         String resultJson = callback.invoke(rpcData.content());
         System.out.println("--------------------------------------------------" + resultJson);
@@ -38,10 +36,5 @@ public class DubboRequestInHandler extends SimpleChannelInboundHandler<ByteBuf> 
         ByteBuf buf = Unpooled.buffer();
         buf.writeBytes(assembly.toBytes());
         ctx.channel().writeAndFlush(buf);
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        // fixme 这里报错就不管了??
     }
 }
