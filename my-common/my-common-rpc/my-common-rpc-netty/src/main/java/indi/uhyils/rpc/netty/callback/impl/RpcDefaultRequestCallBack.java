@@ -2,12 +2,12 @@ package indi.uhyils.rpc.netty.callback.impl;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.exception.RpcBeanNotFoundException;
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
 import indi.uhyils.rpc.netty.content.MyRpcContent;
 import indi.uhyils.rpc.netty.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.netty.enums.RpcStatusEnum;
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
-import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.exception.RpcVersionNotSupportedException;
 import indi.uhyils.rpc.netty.pojo.*;
 import indi.uhyils.rpc.netty.pojo.request.RpcRequestContent;
@@ -29,9 +29,9 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
     /**
      * Rpc的bean们
      */
-    private Map<String, Object> beans;
+    private Map<Class<?>, Object> beans;
 
-    public RpcDefaultRequestCallBack(Map<String, Object> beans) {
+    public RpcDefaultRequestCallBack(Map<Class<?>, Object> beans) {
         this.beans = beans;
     }
 
@@ -94,17 +94,24 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
     private String execute(RpcRequestContent requestContent) {
         try {
             Class<?> clazz = Class.forName(requestContent.getServiceName());
-            if (!beans.containsKey(clazz.getName())) {
+            Object targetClass = null;
+            for (Class<?> beanClass : beans.keySet()) {
+                if (clazz.isAssignableFrom(beanClass)) {
+                    targetClass = beans.get(beanClass);
+                    break;
+                }
+            }
+
+            if (targetClass == null) {
                 throw new RpcBeanNotFoundException(clazz);
             }
-            Object bean = beans.get(clazz.getName());
             String[] methodParameterTypes = requestContent.getMethodParameterTypes();
             Class[] methodClass = new Class[methodParameterTypes.length];
             for (int i = 0; i < methodParameterTypes.length; i++) {
                 methodClass[i] = Class.forName(methodParameterTypes[i]);
             }
             Method declaredMethod = clazz.getDeclaredMethod(requestContent.getMethodName(), methodClass);
-            Object invoke = declaredMethod.invoke(bean, requestContent.getArgs());
+            Object invoke = declaredMethod.invoke(targetClass, requestContent.getArgs());
             return invoke == null ? "" : JSON.toJSONString(invoke);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | RpcBeanNotFoundException e) {
             e.printStackTrace();

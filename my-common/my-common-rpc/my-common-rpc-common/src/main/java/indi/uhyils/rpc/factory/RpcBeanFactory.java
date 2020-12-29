@@ -2,6 +2,7 @@ package indi.uhyils.rpc.factory;
 
 import indi.uhyils.rpc.annotation.MyRpc;
 import indi.uhyils.rpc.annotation.RpcReference;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.rpc.exception.ClassNotRpcBeanException;
 import indi.uhyils.rpc.util.PackageUtils;
 
@@ -33,7 +34,7 @@ public class RpcBeanFactory {
     /**
      * rpc所在的bean
      */
-    private Map<String, Object> rpcBeans = new HashMap<>();
+    private Map<Class<?>, Object> rpcBeans = new HashMap<>();
 
     private RpcBeanFactory(Class<?> mainClass) throws Exception {
         // 如果没有启动类的注解,则表示此次启动不使用Rpc,将初始化标志赋值为false,表示不初始化,此类禁止使用
@@ -48,7 +49,7 @@ public class RpcBeanFactory {
         // 将bean初始化
         initBean(classByPackageName);
 
-        for (Map.Entry<String, Object> entry : rpcBeans.entrySet()) {
+        for (Map.Entry<Class<?>, Object> entry : rpcBeans.entrySet()) {
             Object bean = entry.getValue();
             Class<?> clazz = bean.getClass();
             // 先注入field
@@ -171,7 +172,7 @@ public class RpcBeanFactory {
         // 首先将bean 全部初始化
         for (Class<?> clazz : classByPackageName) {
             Object o = clazz.newInstance();
-            rpcBeans.put(clazz.getName(), o);
+            rpcBeans.put(clazz, o);
         }
     }
 
@@ -192,10 +193,17 @@ public class RpcBeanFactory {
         }
         // mainClass本身所在的包
         classByPackageName.addAll(PackageUtils.getClassByPackageName(mainClass.getPackage().getName(), excludePackage, true));
-        return classByPackageName;
+        Set<Class<?>> result = new HashSet<>();
+        for (Class<?> clazz : classByPackageName) {
+            RpcService rpcService = clazz.getAnnotation(RpcService.class);
+            if (rpcService != null) {
+                result.add(clazz);
+            }
+        }
+        return result;
     }
 
-    public Map<String, Object> getRpcBeans() {
+    public Map<Class<?>, Object> getRpcBeans() {
         return rpcBeans;
     }
 }

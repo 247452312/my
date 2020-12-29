@@ -81,7 +81,16 @@ public class PackageUtils {
             } else {
                 String childFilePath = childFile.getPath();
                 if (childFilePath.endsWith(".class")) {
-                    childFilePath = childFilePath.substring(childFilePath.indexOf("/classes/") + 9, childFilePath.lastIndexOf("."));
+                    childFilePath = childFilePath.replace("\\", "/");
+                    int packageStartIndex = 0;
+                    int classIndex = childFilePath.lastIndexOf("/classes/");
+                    int testClassIndex = childFilePath.lastIndexOf("/test-classes/");
+                    if (classIndex > testClassIndex) {
+                        packageStartIndex = classIndex + 9;
+                    } else {
+                        packageStartIndex = testClassIndex + 14;
+                    }
+                    childFilePath = childFilePath.substring(packageStartIndex, childFilePath.lastIndexOf("."));
                     childFilePath = childFilePath.replace("/", ".");
                     myClassName.add(Class.forName(childFilePath));
                 }

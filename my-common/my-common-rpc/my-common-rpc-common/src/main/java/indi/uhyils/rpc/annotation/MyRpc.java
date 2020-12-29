@@ -15,12 +15,12 @@ public @interface MyRpc {
      *
      * @return
      */
-    String[] baseScanPackage();
+    String[] baseScanPackage() default {};
 
     /**
      * 排除的包
      *
      * @return
      */
-    String[] excludePackage();
+    String[] excludePackage() default {};
 }
