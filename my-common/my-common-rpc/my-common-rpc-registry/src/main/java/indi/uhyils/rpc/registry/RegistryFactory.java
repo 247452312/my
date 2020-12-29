@@ -59,8 +59,8 @@ public class RegistryFactory {
      * @param <T>
      * @return
      */
-    public static <T> Registry<T> createProvider(String serviceName, Class<T> clazz, String host, Integer port, RegistryMode mode) throws Exception {
-        Cluster providerCluster = ClusterFactory.createDefaultProviderCluster(host, port);
+    public static <T> Registry<T> createProvider(String serviceName, Class<T> clazz, String host, Integer port, Class<?> mainClass, RegistryMode mode) throws Exception {
+        Cluster providerCluster = ClusterFactory.createDefaultProviderCluster(host, port, mainClass);
         RegistryInfo info = new RegistryInfo();
         RegistryProviderNecessaryInfo necessaryInfo = new RegistryProviderNecessaryInfo();
         necessaryInfo.setHost(host);

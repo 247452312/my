@@ -2,7 +2,7 @@ package indi.uhyils.rpc.netty.callback.impl;
 
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
-import indi.uhyils.rpc.netty.exception.RpcException;
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.RpcContent;
 import indi.uhyils.rpc.netty.pojo.RpcData;
 import indi.uhyils.rpc.netty.pojo.RpcFactory;

@@ -1,6 +1,6 @@
 package indi.uhyils.rpc.registry.exception;
 
-import indi.uhyils.rpc.netty.exception.RpcException;
+import indi.uhyils.rpc.exception.RpcException;
 
 /**
  * @author uhyils <247452312@qq.com>

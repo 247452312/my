@@ -17,6 +17,7 @@
         <module>my-common-rpc-cluster</module>
         <module>my-common-rpc-registry</module>
         <module>my-common-rpc-proxy</module>
+        <module>my-common-rpc-common</module>
     </modules>
 
     <properties>

@@ -1,6 +1,6 @@
 package indi.uhyils.rpc.registry;
 
-import indi.uhyils.rpc.netty.exception.RpcException;
+import indi.uhyils.rpc.exception.RpcException;
 
 /**
  * 这里的T指service

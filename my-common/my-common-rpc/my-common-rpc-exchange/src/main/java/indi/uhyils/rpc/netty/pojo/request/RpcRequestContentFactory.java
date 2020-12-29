@@ -3,7 +3,7 @@ package indi.uhyils.rpc.netty.pojo.request;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.rpc.netty.exception.ContentArrayQuantityMismatchException;
-import indi.uhyils.rpc.netty.exception.RpcException;
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.RpcContent;
 import indi.uhyils.rpc.netty.pojo.RpcData;
 import org.apache.commons.lang3.StringUtils;

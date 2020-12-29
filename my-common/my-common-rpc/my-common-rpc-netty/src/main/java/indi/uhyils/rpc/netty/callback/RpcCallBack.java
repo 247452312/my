@@ -1,6 +1,6 @@
 package indi.uhyils.rpc.netty.callback;
 
-import indi.uhyils.rpc.netty.exception.RpcException;
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.RpcContent;
 import indi.uhyils.rpc.netty.pojo.RpcData;
 

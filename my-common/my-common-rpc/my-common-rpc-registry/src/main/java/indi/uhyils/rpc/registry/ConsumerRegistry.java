@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
-import indi.uhyils.rpc.netty.exception.RpcException;
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.RpcData;
 import indi.uhyils.rpc.netty.pojo.RpcFactory;
 import indi.uhyils.rpc.netty.pojo.RpcFactoryProducer;

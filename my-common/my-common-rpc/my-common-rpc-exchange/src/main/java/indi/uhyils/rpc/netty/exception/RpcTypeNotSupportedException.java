@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty.exception;
 
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
 
 import java.util.Objects;

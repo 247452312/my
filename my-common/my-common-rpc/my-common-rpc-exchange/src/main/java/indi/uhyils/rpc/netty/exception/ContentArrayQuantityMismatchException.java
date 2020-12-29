@@ -1,5 +1,7 @@
 package indi.uhyils.rpc.netty.exception;
 
+import indi.uhyils.rpc.exception.RpcException;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 14时58分

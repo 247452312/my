@@ -3,7 +3,7 @@ package indi.uhyils.rpc.netty.pojo.request;
 import indi.uhyils.rpc.netty.content.MyRpcContent;
 import indi.uhyils.rpc.netty.enums.RpcStatusEnum;
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
-import indi.uhyils.rpc.netty.exception.RpcException;
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.pojo.*;
 
 import java.nio.charset.StandardCharsets;

@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.netty.exception;
+package indi.uhyils.rpc.exception;
 
 /**
  * @author uhyils <247452312@qq.com>

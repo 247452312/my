@@ -1,7 +1,7 @@
 package indi.uhyils.rpc.netty.pojo;
 
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
-import indi.uhyils.rpc.netty.exception.RpcException;
 import io.netty.buffer.ByteBuf;
 
 import java.util.HashMap;
