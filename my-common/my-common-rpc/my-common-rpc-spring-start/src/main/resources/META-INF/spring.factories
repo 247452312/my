@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  indi.uhyils.rpc.configuration.ConfigConfiguretion,\
+  indi.uhyils.rpc.configuration.RpcBeanConfiguretion
+

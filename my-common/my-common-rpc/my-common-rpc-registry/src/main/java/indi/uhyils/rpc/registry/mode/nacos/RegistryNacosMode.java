@@ -37,11 +37,11 @@ public class RegistryNacosMode implements RegistryMode {
     /**
      * nacos的Config
      */
-    private ConfigService nacosConfig;
+    private final ConfigService nacosConfig;
     /**
      * nacos的naming
      */
-    private NamingService nacosNaming;
+    private final NamingService nacosNaming;
 
     /**
      * @param host nacos所在的host

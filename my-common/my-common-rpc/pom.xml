@@ -18,6 +18,7 @@
         <module>my-common-rpc-registry</module>
         <module>my-common-rpc-proxy</module>
         <module>my-common-rpc-common</module>
+        <module>my-common-rpc-spring-start</module>
     </modules>
 
     <properties>

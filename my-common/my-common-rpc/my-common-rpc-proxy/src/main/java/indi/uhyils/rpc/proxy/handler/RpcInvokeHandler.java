@@ -34,12 +34,10 @@ public class RpcInvokeHandler implements InvocationHandler {
      */
     private Integer registryPort;
 
-    public RpcInvokeHandler(Class clazz) {
-//        ApplicationContext applicationContext = SpringUtil.getApplicationContext();
+    public RpcInvokeHandler(Class clazz, String registryHost, Integer registryPort) {
         this.serviceName = RegistryContent.DEFAULT_REGISTRY_GROUP_NAME;
-//        String[] property = applicationContext.getEnvironment().getProperty("dubbo.registry.address").split(":");
-        this.registryHost = "192.168.1.101";
-        this.registryPort = 8848;
+        this.registryHost = registryHost;
+        this.registryPort = registryPort;
         RegistryNacosMode mode = null;
         try {
             mode = new RegistryNacosMode(this.registryHost, this.registryPort);

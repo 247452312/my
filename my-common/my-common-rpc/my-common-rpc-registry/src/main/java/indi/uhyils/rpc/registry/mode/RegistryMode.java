@@ -1,6 +1,5 @@
 package indi.uhyils.rpc.registry.mode;
 
-import com.alibaba.nacos.api.naming.listener.EventListener;
 import indi.uhyils.rpc.registry.exception.RegistryException;
 import indi.uhyils.rpc.registry.exception.RegistryTypeException;
 import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;

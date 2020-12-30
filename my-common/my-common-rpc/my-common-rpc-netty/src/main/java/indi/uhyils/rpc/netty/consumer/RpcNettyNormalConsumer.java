@@ -15,6 +15,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -77,6 +79,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
                         ChannelPipeline p = ch.pipeline();
                         p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
                         p.addLast("byte-to-object", new DubboResponseInHandler(callBack, RpcNettyNormalConsumer.this));
+                        p.addLast("logging", new LoggingHandler(LogLevel.INFO));
                     }
                 });
 

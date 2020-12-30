@@ -9,6 +9,7 @@ import indi.uhyils.rpc.netty.callback.impl.RpcDefaultRequestCallBack;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.netty.factory.RpcNettyFactory;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
+import indi.uhyils.util.IpUtil;
 
 import java.util.HashMap;
 
@@ -18,15 +19,32 @@ import java.util.HashMap;
  */
 public class ClusterFactory {
 
-    public static Cluster createDefaultProviderCluster(String host, Integer port, Class<?> mainClass) throws Exception {
-        NettyInitDto nettyInit = new NettyInitDto();
-        nettyInit.setCallback(new RpcDefaultRequestCallBack(RpcBeanFactory.getInstance(mainClass).getRpcBeans()));
-        nettyInit.setHost(host);
-        nettyInit.setPort(port);
-        RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.PROVIDER, nettyInit);
-        NettyInfo nettyInfo = new NettyInfo();
-        nettyInfo.setIndexInColony(1);
-        return new ProviderDefaultCluster(nettyInfo, netty);
+    private volatile static Cluster instance;
+
+    /**
+     * 如果在同一个服务中,那么共用同一个ProviderCluster
+     *
+     * @param port
+     * @param mainClass
+     * @return
+     * @throws Exception
+     */
+    public static Cluster createDefaultProviderCluster( Integer port, Class<?> mainClass) throws Exception {
+        if (instance == null) {
+            synchronized (ClusterFactory.class) {
+                if (instance == null) {
+                    NettyInitDto nettyInit = new NettyInitDto();
+                    nettyInit.setCallback(new RpcDefaultRequestCallBack(RpcBeanFactory.getInstance(mainClass).getRpcBeans()));
+                    nettyInit.setHost(IpUtil.getIp());
+                    nettyInit.setPort(port);
+                    RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.PROVIDER, nettyInit);
+                    NettyInfo nettyInfo = new NettyInfo();
+                    nettyInfo.setIndexInColony(1);
+                    instance = new ProviderDefaultCluster(nettyInfo, netty);
+                }
+            }
+        }
+        return instance;
     }
 
 

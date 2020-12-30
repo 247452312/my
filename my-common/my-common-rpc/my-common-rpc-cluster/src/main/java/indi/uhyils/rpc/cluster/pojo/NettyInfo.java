@@ -23,6 +23,16 @@ public class NettyInfo {
      */
     private Long lastFiveSendAvgTime;
 
+    /**
+     * 这个netty的host
+     */
+    private String host;
+
+    /**
+     * 这个netty的端口
+     */
+    private Integer port;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -32,12 +42,28 @@ public class NettyInfo {
             return false;
         }
         NettyInfo nettyInfo = (NettyInfo) o;
-        return Objects.equals(indexInColony, nettyInfo.indexInColony) && Objects.equals(weight, nettyInfo.weight);
+        return Objects.equals(indexInColony, nettyInfo.indexInColony) && Objects.equals(weight, nettyInfo.weight) && Objects.equals(host, nettyInfo.host) && Objects.equals(port, nettyInfo.port);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(indexInColony, weight);
+        return Objects.hash(indexInColony, weight, host, port);
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public Long getLastFiveSendAvgTime() {

@@ -16,8 +16,6 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
-import java.util.Map;
-
 /**
  * netty服务提供者
  *
@@ -37,7 +35,6 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
      * 工作线程,多线程
      */
     private EventLoopGroup workerGroup;
-
 
 
     public RpcNettyNormalProvider(Long outTime, RpcCallBack callback) {
@@ -63,6 +60,7 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
                             ChannelPipeline p = ch.pipeline();
                             p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
                             p.addLast("byte-to-object", new DubboRequestInHandler(callback));
+                            p.addLast("logging", new LoggingHandler(LogLevel.INFO));
                         }
                     });
 

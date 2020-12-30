@@ -12,6 +12,7 @@ import indi.uhyils.rpc.registry.pojo.info.RegistryProviderNecessaryInfo;
 import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadata;
 import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadataOfInterface;
 import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadataOfMethod;
+import indi.uhyils.util.IpUtil;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -59,11 +60,11 @@ public class RegistryFactory {
      * @param <T>
      * @return
      */
-    public static <T> Registry<T> createProvider(String serviceName, Class<T> clazz, String host, Integer port, Class<?> mainClass, RegistryMode mode) throws Exception {
-        Cluster providerCluster = ClusterFactory.createDefaultProviderCluster(host, port, mainClass);
+    public static <T> Registry<T> createProvider(String serviceName, Class<T> clazz, Integer port, Class<?> mainClass, RegistryMode mode) throws Exception {
+        Cluster providerCluster = ClusterFactory.createDefaultProviderCluster(port, mainClass);
         RegistryInfo info = new RegistryInfo();
         RegistryProviderNecessaryInfo necessaryInfo = new RegistryProviderNecessaryInfo();
-        necessaryInfo.setHost(host);
+        necessaryInfo.setHost(IpUtil.getIp());
         necessaryInfo.setPort(port);
         necessaryInfo.setRpcVersion(MyRpcContent.VERSION);
         necessaryInfo.setInterfaceName(clazz.getName());

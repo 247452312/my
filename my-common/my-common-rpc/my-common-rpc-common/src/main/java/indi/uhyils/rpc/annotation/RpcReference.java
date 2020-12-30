@@ -1,5 +1,7 @@
 package indi.uhyils.rpc.annotation;
 
+import jdk.nashorn.internal.ir.annotations.Reference;
+
 import java.lang.annotation.*;
 
 /**
@@ -9,5 +11,6 @@ import java.lang.annotation.*;
 @Documented
 @Target(value = {ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Reference
 public @interface RpcReference {
 }

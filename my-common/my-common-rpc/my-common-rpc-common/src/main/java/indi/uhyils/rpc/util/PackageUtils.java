@@ -9,6 +9,7 @@ import java.net.URLDecoder;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -36,6 +37,8 @@ public class PackageUtils {
      */
     public static Set<Class<?>> getClassByPackageName(String packageName, String[] excludePackage, Boolean recursiveSubpackage) throws IOException, ClassNotFoundException {
 
+        List<String> excludePackagePaths = Arrays.stream(excludePackage).map(t -> t.replace(".", "/")).collect(Collectors.toList());
+
         Set<Class<?>> fileNames = new HashSet<>();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         String packagePath = packageName.replace(".", "/");
@@ -45,6 +48,10 @@ public class PackageUtils {
             if (url == null) {
                 continue;
             }
+            if (!checkExclude(excludePackagePaths, url)) {
+                continue;
+            }
+
             String type = url.getProtocol();
             if (FILE.equals(type)) {
                 fileNames.addAll(getClassNameByFile(url.getPath(), recursiveSubpackage));
@@ -54,6 +61,15 @@ public class PackageUtils {
         }
         fileNames.addAll(getClassNameByJars(((URLClassLoader) loader).getURLs(), packagePath, recursiveSubpackage));
         return fileNames;
+    }
+
+    private static Boolean checkExclude(List<String> excludePackagePaths, URL url) {
+        for (String excludePackagePath : excludePackagePaths) {
+            if (url.getPath().contains(excludePackagePath)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
