@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @DubboComponentScan(basePackages = "indi.uhyils.serviceImpl")
 public class SoftwareApplication {
     public static void main(String[] args) {
-        ApplicationContext act = SpringApplication.run(SoftwareApplication.class, args);
-        SpringUtil.setApplicationContext(act);
+        SpringApplication.run(SoftwareApplication.class, args);
     }
 }

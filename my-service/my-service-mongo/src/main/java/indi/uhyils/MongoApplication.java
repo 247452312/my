@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class MongoApplication {
     public static void main(String[] args) {
-        ApplicationContext act = SpringApplication.run(MongoApplication.class, args);
-        SpringUtil.setApplicationContext(act);
+        SpringApplication.run(MongoApplication.class, args);
     }
 }

@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class SmartHomeApplication {
 
     public static void main(String[] args) {
-        ApplicationContext act = SpringApplication.run(SmartHomeApplication.class, args);
-        SpringUtil.setApplicationContext(act);
+        SpringApplication.run(SmartHomeApplication.class, args);
     }
 }

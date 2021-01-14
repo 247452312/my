@@ -19,6 +19,8 @@ package indi.uhyils.util;
 
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * 存储spring上下文缓存的地方
@@ -26,7 +28,7 @@ import org.springframework.context.ApplicationContext;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月27日 16时46分
  */
-public class SpringUtil {
+public class SpringUtil implements ApplicationContextInitializer {
 
     private static ApplicationContext applicationContext = null;
 
@@ -39,13 +41,6 @@ public class SpringUtil {
         return applicationContext;
     }
 
-    public static void setApplicationContext(ApplicationContext applicationContext) {
-        if (SpringUtil.applicationContext == null) {
-            LogUtil.info(SpringUtil.class, "set applicationcontext");
-            SpringUtil.applicationContext = applicationContext;
-        }
-
-    }
 
     /**
      * 通过name获取 Bean.
@@ -91,4 +86,12 @@ public class SpringUtil {
         return getApplicationContext().getEnvironment().getProperty(key);
     }
 
+
+    @Override
+    public void initialize(ConfigurableApplicationContext applicationContext) {
+        if (SpringUtil.applicationContext == null) {
+            LogUtil.info(SpringUtil.class, "set applicationContext");
+            SpringUtil.applicationContext = applicationContext;
+        }
+    }
 }

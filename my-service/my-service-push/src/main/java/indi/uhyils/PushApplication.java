@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class PushApplication {
     public static void main(String[] args) {
-        ApplicationContext act = SpringApplication.run(PushApplication.class, args);
-        SpringUtil.setApplicationContext(act);
+        SpringApplication.run(PushApplication.class, args);
     }
 }

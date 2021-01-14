@@ -21,8 +21,7 @@ import org.springframework.context.ApplicationContext;
 public class WebApplication {
 
     public static void main(String[] args) throws Exception {
-        ApplicationContext act = SpringApplication.run(WebApplication.class, args);
-        SpringUtil.setApplicationContext(act);
+        SpringApplication.run(WebApplication.class, args);
     }
 
 

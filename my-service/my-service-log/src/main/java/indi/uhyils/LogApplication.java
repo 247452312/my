@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableScheduling
 public class LogApplication {
     public static void main(String[] args) {
-        ApplicationContext act = SpringApplication.run(LogApplication.class, args);
-        SpringUtil.setApplicationContext(act);
+        SpringApplication.run(LogApplication.class, args);
     }
 }

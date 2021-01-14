@@ -17,7 +17,6 @@ import org.springframework.context.ApplicationContext;
 @EnableDubbo
 public class AlgorithmApplication {
     public static void main(String[] args) {
-        ApplicationContext act = SpringApplication.run(AlgorithmApplication.class, args);
-        SpringUtil.setApplicationContext(act);
+        SpringApplication.run(AlgorithmApplication.class, args);
     }
 }
