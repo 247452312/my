@@ -13,7 +13,7 @@ import java.util.Objects;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月23日 14时23分
  */
-public class BaseIdEntity implements BaseDbSaveable {
+public abstract class BaseIdEntity implements BaseDbSaveable {
     /**
      * id 一定是uuid的格式
      */

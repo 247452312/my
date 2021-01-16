@@ -12,6 +12,7 @@ import indi.uhyils.rpc.netty.pojo.NettyInitDto;
 import indi.uhyils.util.IpUtil;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -25,16 +26,16 @@ public class ClusterFactory {
      * 如果在同一个服务中,那么共用同一个ProviderCluster
      *
      * @param port
-     * @param mainClass
+     * @param beans
      * @return
      * @throws Exception
      */
-    public static Cluster createDefaultProviderCluster( Integer port, Class<?> mainClass) throws Exception {
+    public static Cluster createDefaultProviderCluster(Integer port, Map<String,Object> beans) throws Exception {
         if (instance == null) {
             synchronized (ClusterFactory.class) {
                 if (instance == null) {
                     NettyInitDto nettyInit = new NettyInitDto();
-                    nettyInit.setCallback(new RpcDefaultRequestCallBack(RpcBeanFactory.getInstance(mainClass).getRpcBeans()));
+                    nettyInit.setCallback(new RpcDefaultRequestCallBack(RpcBeanFactory.getInstance(beans).getRpcBeans()));
                     nettyInit.setHost(IpUtil.getIp());
                     nettyInit.setPort(port);
                     RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.PROVIDER, nettyInit);

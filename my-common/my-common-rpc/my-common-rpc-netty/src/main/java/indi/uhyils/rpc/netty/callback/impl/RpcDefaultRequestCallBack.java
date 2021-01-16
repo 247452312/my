@@ -31,8 +31,12 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
      */
     private Map<Class<?>, Object> beans;
 
-    public RpcDefaultRequestCallBack(Map<Class<?>, Object> beans) {
-        this.beans = beans;
+    public RpcDefaultRequestCallBack(Map<String, Object> beans) throws ClassNotFoundException {
+        for (Map.Entry<String, Object> entity : beans.entrySet()) {
+            String beanName = entity.getKey();
+            Object bean = entity.getValue();
+            this.beans.put(Class.forName(beanName), bean);
+        }
     }
 
     @Override

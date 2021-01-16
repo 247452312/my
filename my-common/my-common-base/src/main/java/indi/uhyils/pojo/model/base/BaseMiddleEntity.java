@@ -6,7 +6,7 @@ package indi.uhyils.pojo.model.base;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 08时28分
  */
-public class BaseMiddleEntity extends BaseIdEntity {
+public abstract class BaseMiddleEntity extends BaseIdEntity {
 
 
 }
