@@ -70,11 +70,11 @@ public abstract class AbstractRpcData implements RpcData {
      */
     protected RpcContent content;
 
-    public AbstractRpcData(final byte[] data) throws RpcException, ClassNotFoundException {
+    protected AbstractRpcData(final byte[] data) throws RpcException, ClassNotFoundException {
         doInit(data);
     }
 
-    public AbstractRpcData() {
+    protected AbstractRpcData() {
     }
 
     public static RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {
@@ -142,17 +142,15 @@ public abstract class AbstractRpcData implements RpcData {
         System.arraycopy(src, 0, previousBytes, andAdd, MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_VERSION_REQ_RES_INDEX]);
 
         //写入size,并获取head 和 content 的数组
-        String s = contentString();
+        final String s = contentString();
         byte[] headAndContent = s.getBytes(StandardCharsets.UTF_8);
         System.arraycopy(BytesUtils.changeIntegerToByte(headAndContent.length), 0, previousBytes, writeIndex.getAndAdd(MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_SIZE_INDEX]), MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_SIZE_INDEX]);
 
         // 写入状态
-        byte status = getStatus();
-        previousBytes[writeIndex.getAndAdd(1)] = status;
+        previousBytes[writeIndex.getAndAdd(1)] = getStatus();
 
         //写入唯一标示
-        Long unique = getUnique();
-        byte[] uniqueBytes = BytesUtils.changeLongToByte(unique);
+        byte[] uniqueBytes = BytesUtils.changeLongToByte(getUnique());
         System.arraycopy(uniqueBytes,
                 0,
                 previousBytes,

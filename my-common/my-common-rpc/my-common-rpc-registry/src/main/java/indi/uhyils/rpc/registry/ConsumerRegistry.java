@@ -35,7 +35,7 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
         rpcHeader.setValue("value");
         assert build != null;
         StringBuilder sb = new StringBuilder();
-        for (Class paramTypeClass : paramType) {
+        for (Class<?> paramTypeClass : paramType) {
             sb.append(paramTypeClass.getName());
             sb.append(";");
         }

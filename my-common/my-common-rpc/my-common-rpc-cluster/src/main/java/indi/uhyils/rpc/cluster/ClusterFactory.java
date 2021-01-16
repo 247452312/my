@@ -22,6 +22,9 @@ public class ClusterFactory {
 
     private volatile static Cluster instance;
 
+    private ClusterFactory() {
+    }
+
     /**
      * 如果在同一个服务中,那么共用同一个ProviderCluster
      *
@@ -30,7 +33,7 @@ public class ClusterFactory {
      * @return
      * @throws Exception
      */
-    public static Cluster createDefaultProviderCluster(Integer port, Map<String,Object> beans) throws Exception {
+    public static Cluster createDefaultProviderCluster(Integer port, Map<String, Object> beans) throws Exception {
         if (instance == null) {
             synchronized (ClusterFactory.class) {
                 if (instance == null) {
@@ -47,7 +50,6 @@ public class ClusterFactory {
         }
         return instance;
     }
-
 
     public static Cluster createDefaultConsumerCluster(NettyInitDto nettyInit) {
 

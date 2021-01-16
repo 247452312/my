@@ -10,6 +10,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
  * @date 文件创建日期 2020年05月12日 09时52分
  */
 public class AopUtil {
+    private AopUtil() {
+    }
 
     /**
      * 从切点中获取defaultRequest

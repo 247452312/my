@@ -16,12 +16,12 @@ import java.nio.charset.StandardCharsets;
 public abstract class AbstractRpcResponse extends AbstractRpcData {
 
 
-    public AbstractRpcResponse(byte[] data) throws RpcException, ClassNotFoundException {
+    protected AbstractRpcResponse(byte[] data) throws RpcException, ClassNotFoundException {
         super(data);
         this.type = RpcTypeEnum.RESPONSE.getCode();
     }
 
-    public AbstractRpcResponse() {
+    protected AbstractRpcResponse() {
     }
 
 }

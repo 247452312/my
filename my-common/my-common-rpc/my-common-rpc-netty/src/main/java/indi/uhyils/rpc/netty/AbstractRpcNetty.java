@@ -18,7 +18,7 @@ public abstract class AbstractRpcNetty implements RpcNetty {
      */
     protected AbstractBootstrap<?, ? extends Channel> bootstrap;
 
-    public AbstractRpcNetty(Long timeOut) {
+    protected AbstractRpcNetty(Long timeOut) {
         this.timeOut = timeOut;
     }
 

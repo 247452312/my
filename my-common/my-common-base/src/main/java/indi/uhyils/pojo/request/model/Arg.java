@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.request.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时57分
  */
-public class Arg {
+public class Arg implements Serializable {
 
     /**
      * 字段名称
@@ -39,7 +40,7 @@ public class Arg {
         List<Arg> list = new ArrayList<>();
         Arg e = new Arg();
         e.setName(name);
-        e.setSymbol("=");
+        e.setSymbol(symbol);
         e.setData(data);
         list.add(e);
         return list;

@@ -5,7 +5,6 @@ package indi.uhyils.rpc.netty.util;
  * @date 文件创建日期 2020年12月21日 09时54分
  */
 public class BytesUtils {
-
     /**
      * int型占4位
      */
@@ -18,6 +17,8 @@ public class BytesUtils {
      * 1byte占8bit
      */
     private static final Integer BYTE_TO_BIT_SIZE = 8;
+    private BytesUtils() {
+    }
 
     public static byte[] concat(byte[] a, byte[] b) {
         byte[] c = new byte[a.length + b.length];

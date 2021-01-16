@@ -46,6 +46,11 @@ public class DubboApiUtil {
     private static final String GENERIC_RIGHT_BRACKET = ">";
 
     /**
+     * 默认的协议
+     */
+    private static final String DEFAULT_PROCOTOL = "dubbo";
+
+    /**
      * ReferenceConfig缓存(重量级, 不缓存太慢了, 但是还没有考虑微服务过多的情况)
      */
     private static final HashMap<String, GenericService> MAP = new HashMap<>();
@@ -60,7 +65,7 @@ public class DubboApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
-        return getServiceResult(interfaceName, methodName, args, request, false, "dubbo");
+        return getServiceResult(interfaceName, methodName, args, request, false, DEFAULT_PROCOTOL);
     }
 
     /**
@@ -72,7 +77,7 @@ public class DubboApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult dubboApiTool(String interfaceName, String methodName, Object... args) {
-        return getServiceResult(interfaceName, methodName, Arrays.asList(args), new DefaultRequest(), false, "dubbo");
+        return getServiceResult(interfaceName, methodName, Arrays.asList(args), new DefaultRequest(), false, DEFAULT_PROCOTOL);
     }
 
     /**
@@ -85,7 +90,7 @@ public class DubboApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult dubboApiToolAsync(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
-        return getServiceResult(interfaceName, methodName, args, request, true, "dubbo");
+        return getServiceResult(interfaceName, methodName, args, request, true, DEFAULT_PROCOTOL);
     }
 
     /**
@@ -98,7 +103,7 @@ public class DubboApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult dubboApiToolAsync(String interfaceName, String methodName, Object args, DefaultRequest request) {
-        return getServiceResult(interfaceName, methodName, Arrays.asList(args), request, true, "dubbo");
+        return getServiceResult(interfaceName, methodName, Arrays.asList(args), request, true, DEFAULT_PROCOTOL);
     }
 
     private static ServiceResult getServiceResult(String interfaceName, String methodName, List<Object> args, DefaultRequest request, boolean async, String procotol) {

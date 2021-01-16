@@ -46,7 +46,7 @@ public abstract class BaseVoEntity extends BaseIdEntity {
     public void preInsert(DefaultRequest request) throws IdGenerationException, InterruptedException {
         // 这里生成了id
         super.preInsert(request);
-        this.createDate = new Long(System.currentTimeMillis() / 1000).intValue();
+        this.createDate = (int) System.currentTimeMillis() / 1000;
         this.createUser = request.getUser().getId();
         this.updateDate = this.createDate;
         this.updateUser = this.createUser;
@@ -60,7 +60,7 @@ public abstract class BaseVoEntity extends BaseIdEntity {
     @Override
     public void preUpdate(DefaultRequest request) {
         super.preUpdate(request);
-        this.updateDate = new Long(System.currentTimeMillis() / 1000).intValue();
+        this.updateDate = (int) System.currentTimeMillis() / 1000;
         this.updateUser = request.getUser().getId();
     }
 
