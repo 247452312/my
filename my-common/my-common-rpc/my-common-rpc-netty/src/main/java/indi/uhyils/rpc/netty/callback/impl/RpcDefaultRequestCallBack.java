@@ -17,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 这个只是一个样例,具体如何执行要看下一级
@@ -29,13 +30,14 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
     /**
      * Rpc的bean们
      */
-    private Map<Class<?>, Object> beans;
+    private Map<Class<?>, Object> beans = new ConcurrentHashMap<>();
 
     public RpcDefaultRequestCallBack(Map<String, Object> beans) throws ClassNotFoundException {
         for (Map.Entry<String, Object> entity : beans.entrySet()) {
             String beanName = entity.getKey();
             Object bean = entity.getValue();
-            this.beans.put(Class.forName(beanName), bean);
+            Class<?> key = Class.forName(beanName);
+            this.beans.put(key, bean);
         }
     }
 
