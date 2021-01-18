@@ -57,13 +57,18 @@ public class RpcExtensionLoader {
         Map<String, Class<?>> classMap = cacheClass.get(clazz);
         LinkedList<Object> linkedList = new LinkedList<>();
         try {
-            for (Class<?> value : classMap.values()) {
-                RpcSpi annotation = value.getAnnotation(RpcSpi.class);
+            ArrayList<Class<?>> list = new ArrayList(classMap.values());
+            Collections.sort(list, (o1, o2) -> {
+                int o1Order = o1.getAnnotation(RpcSpi.class).order();
+                int o2Order = o2.getAnnotation(RpcSpi.class).order();
+                return o1Order - o2Order;
+            });
+            for (Class<?> value : list) {
                 Constructor<?> constructor = value.getConstructor();
                 if (constructor == null) {
                     throw new IllegalStateException(clazz.getName() + " 必须要空构造器");
                 }
-                linkedList.add(annotation.order(), clazz.newInstance());
+                linkedList.add(value.newInstance());
             }
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException e) {
             LogUtil.error(e);
@@ -117,7 +122,11 @@ public class RpcExtensionLoader {
     private void loadDirs(Map<String, Class<?>> extensions, String dir, String name) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         try {
-            Enumeration<URL> resources = classLoader.getResources(dir + name);
+            String fileName = dir + name;
+            Enumeration<URL> resources = classLoader.getResources(fileName);
+            if (!resources.hasMoreElements()) {
+                resources = ClassLoader.getSystemResources(fileName);
+            }
             if (resources != null) {
                 while (resources.hasMoreElements()) {
                     URL url = resources.nextElement();
@@ -180,8 +189,8 @@ public class RpcExtensionLoader {
                 if (StringUtils.isEmpty(name)) {
                     throw new IllegalStateException("读取扩展配置文件时找不到name:" + clazz.getName());
                 }
-                extensions.put(name, clazz);
             }
+            extensions.put(name, clazz);
         }
     }
 
