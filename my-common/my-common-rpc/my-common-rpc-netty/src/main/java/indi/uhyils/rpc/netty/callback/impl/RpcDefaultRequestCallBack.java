@@ -4,13 +4,13 @@ import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.exception.RpcBeanNotFoundException;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
-import indi.uhyils.rpc.netty.content.MyRpcContent;
-import indi.uhyils.rpc.netty.enums.RpcResponseTypeEnum;
-import indi.uhyils.rpc.netty.enums.RpcStatusEnum;
-import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
-import indi.uhyils.rpc.netty.exception.RpcVersionNotSupportedException;
-import indi.uhyils.rpc.netty.pojo.*;
-import indi.uhyils.rpc.netty.pojo.request.RpcRequestContent;
+import indi.uhyils.rpc.content.MyRpcContent;
+import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
+import indi.uhyils.rpc.enums.RpcStatusEnum;
+import indi.uhyils.rpc.enums.RpcTypeEnum;
+import indi.uhyils.rpc.exception.RpcVersionNotSupportedException;
+import indi.uhyils.rpc.pojo.*;
+import indi.uhyils.rpc.pojo.request.RpcRequestContent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -101,9 +101,9 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
         try {
             Class<?> clazz = Class.forName(requestContent.getServiceName());
             Object targetClass = null;
-            for (Class<?> beanClass : beans.keySet()) {
-                if (clazz.isAssignableFrom(beanClass)) {
-                    targetClass = beans.get(beanClass);
+            for (Map.Entry<Class<?>, Object> entry : beans.entrySet()) {
+                if (clazz.isAssignableFrom(entry.getKey())) {
+                    targetClass = entry.getValue();
                     break;
                 }
             }

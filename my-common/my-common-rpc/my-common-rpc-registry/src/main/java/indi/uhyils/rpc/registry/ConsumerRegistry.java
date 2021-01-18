@@ -3,13 +3,13 @@ package indi.uhyils.rpc.registry;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
-import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
+import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
-import indi.uhyils.rpc.netty.pojo.RpcData;
-import indi.uhyils.rpc.netty.pojo.RpcFactory;
-import indi.uhyils.rpc.netty.pojo.RpcFactoryProducer;
-import indi.uhyils.rpc.netty.pojo.RpcHeader;
-import indi.uhyils.rpc.netty.pojo.response.RpcNormalResponseContent;
+import indi.uhyils.rpc.pojo.RpcData;
+import indi.uhyils.rpc.pojo.RpcFactory;
+import indi.uhyils.rpc.pojo.RpcFactoryProducer;
+import indi.uhyils.rpc.pojo.RpcHeader;
+import indi.uhyils.rpc.pojo.response.RpcNormalResponseContent;
 
 /**
  * @author uhyils <247452312@qq.com>

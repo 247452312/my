@@ -2,8 +2,8 @@ package indi.uhyils.rpc.netty.consumer;
 
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
-import indi.uhyils.rpc.netty.handler.DubboResponseInHandler;
-import indi.uhyils.rpc.netty.pojo.RpcData;
+import indi.uhyils.rpc.netty.handler.RpcResponseInHandler;
+import indi.uhyils.rpc.pojo.RpcData;
 import indi.uhyils.rpc.netty.util.FixedLengthQueue;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -78,7 +78,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
                         p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
-                        p.addLast("byte-to-object", new DubboResponseInHandler(callBack, RpcNettyNormalConsumer.this));
+                        p.addLast("byte-to-object", new RpcResponseInHandler(callBack, RpcNettyNormalConsumer.this));
                         p.addLast("logging", new LoggingHandler(LogLevel.INFO));
                     }
                 });

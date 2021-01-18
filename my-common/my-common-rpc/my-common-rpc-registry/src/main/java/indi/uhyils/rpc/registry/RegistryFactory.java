@@ -4,7 +4,7 @@ import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.ClusterFactory;
 import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
 import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
-import indi.uhyils.rpc.netty.content.MyRpcContent;
+import indi.uhyils.rpc.content.MyRpcContent;
 import indi.uhyils.rpc.netty.function.FunctionOne;
 import indi.uhyils.rpc.netty.function.FunctionOneInterface;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;

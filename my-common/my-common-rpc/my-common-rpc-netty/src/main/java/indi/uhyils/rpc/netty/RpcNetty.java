@@ -1,6 +1,6 @@
 package indi.uhyils.rpc.netty;
 
-import indi.uhyils.rpc.netty.pojo.RpcData;
+import indi.uhyils.rpc.pojo.RpcData;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.Channel;
 

@@ -1,8 +1,8 @@
 package indi.uhyils.rpc.netty.callback;
 
 import indi.uhyils.rpc.exception.RpcException;
-import indi.uhyils.rpc.netty.pojo.RpcContent;
-import indi.uhyils.rpc.netty.pojo.RpcData;
+import indi.uhyils.rpc.pojo.RpcContent;
+import indi.uhyils.rpc.pojo.RpcData;
 
 /**
  * @author uhyils <247452312@qq.com>

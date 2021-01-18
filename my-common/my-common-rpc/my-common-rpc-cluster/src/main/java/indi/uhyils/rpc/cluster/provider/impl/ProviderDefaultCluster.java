@@ -5,7 +5,7 @@ import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.cluster.provider.AbstractProviderCluster;
 import indi.uhyils.rpc.netty.RpcNetty;
-import indi.uhyils.rpc.netty.pojo.RpcData;
+import indi.uhyils.rpc.pojo.RpcData;
 
 import java.util.HashMap;
 import java.util.Map;

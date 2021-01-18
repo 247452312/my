@@ -3,8 +3,8 @@ package indi.uhyils.rpc.cluster.consumer;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.netty.RpcNetty;
-import indi.uhyils.rpc.netty.pojo.RpcData;
-import indi.uhyils.rpc.netty.pojo.response.RpcResponseContent;
+import indi.uhyils.rpc.pojo.RpcData;
+import indi.uhyils.rpc.pojo.response.RpcResponseContent;
 
 /**
  * @author uhyils <247452312@qq.com>

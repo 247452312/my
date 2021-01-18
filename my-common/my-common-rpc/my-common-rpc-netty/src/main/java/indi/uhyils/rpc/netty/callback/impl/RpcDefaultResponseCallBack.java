@@ -1,13 +1,13 @@
 package indi.uhyils.rpc.netty.callback.impl;
 
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
-import indi.uhyils.rpc.netty.enums.RpcTypeEnum;
+import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
-import indi.uhyils.rpc.netty.pojo.RpcContent;
-import indi.uhyils.rpc.netty.pojo.RpcData;
-import indi.uhyils.rpc.netty.pojo.RpcFactory;
-import indi.uhyils.rpc.netty.pojo.RpcFactoryProducer;
-import indi.uhyils.rpc.netty.pojo.response.RpcResponseContent;
+import indi.uhyils.rpc.pojo.RpcContent;
+import indi.uhyils.rpc.pojo.RpcData;
+import indi.uhyils.rpc.pojo.RpcFactory;
+import indi.uhyils.rpc.pojo.RpcFactoryProducer;
+import indi.uhyils.rpc.pojo.response.RpcResponseContent;
 
 /**
  * 这个只是一个样例,具体如何执行要看下一级
