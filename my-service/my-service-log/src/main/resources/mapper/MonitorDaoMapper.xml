@@ -46,7 +46,7 @@
         </foreach>
         order by time desc
         <if test="page != null and page != ''">
-            limit ${(page-1) * size},${size}
+            limit #{(page-1) * size},#{size}
         </if>
 
     </select>

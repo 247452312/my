@@ -94,12 +94,24 @@ public class LogUtil {
         writeLog(Thread.currentThread().getName(), msg, null, LogTypeEnum.ERROR);
     }
 
+    public static void error(Throwable e) {
+        writeLog(Thread.currentThread().getName(), null, e, LogTypeEnum.ERROR);
+    }
+
     public static void error(Class<?> cls, Throwable e) {
         writeLog(cls.getSimpleName(), null, e, LogTypeEnum.ERROR);
     }
 
+    public static void error(Class<?> cls, Throwable e, String msg) {
+        writeLog(cls.getSimpleName(), msg, e, LogTypeEnum.ERROR);
+    }
+
     public static void error(Object obj, String msg) {
         error(obj.getClass(), msg);
+    }
+
+    public static void error(Throwable e, String msg) {
+        writeLog(Thread.currentThread().getName(), msg, e, LogTypeEnum.ERROR);
     }
 
     public static void error(Object obj, Throwable e) {

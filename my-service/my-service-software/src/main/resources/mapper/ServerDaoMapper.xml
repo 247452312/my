@@ -49,7 +49,7 @@
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
         <if test="page != null and page != ''">
-            limit ${(page-1) * size},${size}
+            limit #{(page-1) * size},#{size}
         </if>
     </select>
 

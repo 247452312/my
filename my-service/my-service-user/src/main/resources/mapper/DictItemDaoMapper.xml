@@ -52,7 +52,7 @@
         </foreach>
         order by sort_order
         <if test="page != null and page != ''">
-            limit ${(page-1) * size},${size}
+            limit #{(page-1) * size},#{size}
         </if>
     </select>
 
