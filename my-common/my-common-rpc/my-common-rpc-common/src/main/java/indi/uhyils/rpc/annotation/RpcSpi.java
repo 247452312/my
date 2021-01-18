@@ -17,4 +17,10 @@ public @interface RpcSpi {
      * @return
      */
     int order() default 50;
+
+    /**
+     * 此扩展点的名称
+     * @return
+     */
+    String name() default "";
 }

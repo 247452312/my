@@ -79,7 +79,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
                         ChannelPipeline p = ch.pipeline();
                         p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
                         p.addLast("byte-to-object", new RpcResponseInHandler(callBack, RpcNettyNormalConsumer.this));
-                        p.addLast("logging", new LoggingHandler(LogLevel.INFO));
+//                        p.addLast("logging", new LoggingHandler(LogLevel.INFO));
                     }
                 });
 

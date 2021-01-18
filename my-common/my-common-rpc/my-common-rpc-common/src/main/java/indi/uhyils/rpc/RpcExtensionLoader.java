@@ -1,36 +1,77 @@
 package indi.uhyils.rpc;
 
 import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.filter.base.RpcFilter;
 import indi.uhyils.util.LogUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月18日 11时20分
  */
-public class RpcExtensionLoader<T> {
+public class RpcExtensionLoader {
     /**
      * 加载扩展点时的路径
      */
     public static final String RPC_EXTENSION_PATH = "META-INF/rpc/";
     /**
+     * 已加载的所有扩展点类型
+     */
+    private static Map<Class<?>, Map<String, Class<?>>> cacheClass = new HashMap<>();
+    /**
      * 已加载的所有扩展点类型,缓存,注,此处list是有order的,所以在使用时用LinkedList
      */
-    private static Map<Class<?>, List<?>> cache = new HashMap<>();
+    private static Map<Class<?>, List<?>> cacheExtensionPath = new HashMap<>();
+
+    static {
+        RpcExtensionLoader rpcExtensionLoader = new RpcExtensionLoader(RpcFilter.class);
+        Map<String, Class<?>> load = rpcExtensionLoader.load();
+        cacheClass.put(RpcFilter.class, load);
+    }
+
     /**
      * 此次加载的扩展点类型
      */
-    private Class<T> type;
+    private Class<?> type;
+
+    public RpcExtensionLoader(Class<?> type) {
+        this.type = type;
+    }
+
+    public static List getExtensionByClass(Class clazz) {
+        if (cacheExtensionPath.containsKey(clazz)) {
+            return cacheExtensionPath.get(clazz);
+        }
+        if (!cacheClass.containsKey(clazz)) {
+            return new ArrayList();
+        }
+
+        Map<String, Class<?>> classMap = cacheClass.get(clazz);
+        LinkedList<Object> linkedList = new LinkedList<>();
+        try {
+            for (Class<?> value : classMap.values()) {
+                RpcSpi annotation = value.getAnnotation(RpcSpi.class);
+                Constructor<?> constructor = value.getConstructor();
+                if (constructor == null) {
+                    throw new IllegalStateException(clazz.getName() + " 必须要空构造器");
+                }
+                linkedList.add(annotation.order(), clazz.newInstance());
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException e) {
+            LogUtil.error(e);
+        }
+
+        return linkedList;
+    }
+
 
     /**
      * 判断clazz是否是
@@ -39,17 +80,29 @@ public class RpcExtensionLoader<T> {
      * @return
      */
     private static boolean haveSpi(Class<?> clazz) {
-        Annotation[] annotations = clazz.getAnnotations();
-        for (Annotation annotation : annotations) {
-            if (annotation instanceof RpcSpi) {
-                return true;
-            }
-        }
-        return false;
+        return clazz.getAnnotation(RpcSpi.class) != null;
     }
 
-    public Map<String, Class<T>> load() {
-        Map<String, Class<T>> extensions = new HashMap<>(16);
+    /**
+     * 查询className
+     *
+     * @param clazz
+     * @return
+     */
+    private String findClassName(Class<?> clazz) {
+        RpcSpi annotation = clazz.getAnnotation(RpcSpi.class);
+        if (annotation == null || StringUtils.isEmpty(annotation.name())) {
+            String name = clazz.getSimpleName();
+            if (name.endsWith(type.getSimpleName())) {
+                name = name.substring(0, name.length() - type.getSimpleName().length());
+            }
+            return name.toLowerCase();
+        }
+        return annotation.name();
+    }
+
+    public Map<String, Class<?>> load() {
+        Map<String, Class<?>> extensions = new HashMap<>(16);
         loadDirs(extensions, RPC_EXTENSION_PATH, type.getName());
         return extensions;
     }
@@ -61,7 +114,7 @@ public class RpcExtensionLoader<T> {
      * @param dir
      * @param name
      */
-    private void loadDirs(Map<String, Class<T>> extensions, String dir, String name) {
+    private void loadDirs(Map<String, Class<?>> extensions, String dir, String name) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         try {
             Enumeration<URL> resources = classLoader.getResources(dir + name);
@@ -83,7 +136,7 @@ public class RpcExtensionLoader<T> {
      * @param classLoader
      * @param url
      */
-    private void loadResources(Map<String, Class<T>> extensions, ClassLoader classLoader, URL url) {
+    private void loadResources(Map<String, Class<?>> extensions, ClassLoader classLoader, URL url) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -116,12 +169,19 @@ public class RpcExtensionLoader<T> {
      * @param clazz
      * @param name
      */
-    private void loadClass(Map<String, Class<T>> extensions, Class<?> clazz, String name) {
+    private void loadClass(Map<String, Class<?>> extensions, Class<?> clazz, String name) {
         if (!type.isAssignableFrom(clazz)) {
             throw new IllegalStateException(clazz.getName() + " 不是 " + type.getName());
         }
         if (haveSpi(clazz)) {
-            // todo 暂停.提交一下子,然后继续写
+            // 要注入了
+            if (name == null) {
+                name = findClassName(clazz);
+                if (StringUtils.isEmpty(name)) {
+                    throw new IllegalStateException("读取扩展配置文件时找不到name:" + clazz.getName());
+                }
+                extensions.put(name, clazz);
+            }
         }
     }
 
