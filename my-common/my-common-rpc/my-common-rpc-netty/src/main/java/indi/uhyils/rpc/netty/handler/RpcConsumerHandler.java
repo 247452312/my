@@ -6,6 +6,8 @@ import indi.uhyils.rpc.netty.extension.filter.FilterContext;
 import indi.uhyils.rpc.netty.extension.filter.filter.InvokerChainBuilder;
 import indi.uhyils.rpc.netty.extension.filter.invoker.LastDefaultConsumerInvoker;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcInvoker;
+import indi.uhyils.rpc.netty.extension.filter.invoker.RpcResult;
+import indi.uhyils.rpc.pojo.RpcData;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -34,8 +36,9 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-        LastDefaultConsumerInvoker invoker = new LastDefaultConsumerInvoker(callBack, netty, ctx, msg);
+        LastDefaultConsumerInvoker invoker = new LastDefaultConsumerInvoker(callBack, ctx, msg);
         RpcInvoker rpcInvoker = InvokerChainBuilder.buildConsumerInvokerChain(invoker);
-        rpcInvoker.invoke(new FilterContext());
+        RpcResult invoke = rpcInvoker.invoke(new FilterContext());
+        netty.put((RpcData) invoke.get());
     }
 }

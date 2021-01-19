@@ -1,10 +1,9 @@
 package indi.uhyils.rpc.netty.extension.filter.invoker;
 
-import indi.uhyils.rpc.netty.extension.RpcExtensionLoader;
-import indi.uhyils.rpc.netty.extension.RpcExtensionLoaderTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
-import indi.uhyils.rpc.netty.consumer.RpcNettyNormalConsumer;
+import indi.uhyils.rpc.netty.extension.RpcExtensionLoader;
+import indi.uhyils.rpc.netty.extension.RpcExtensionLoaderTypeEnum;
 import indi.uhyils.rpc.netty.extension.filter.FilterContext;
 import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseByteExtension;
 import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseDataExtension;
@@ -36,20 +35,23 @@ public class LastDefaultConsumerInvoker implements RpcInvoker {
 
     private ChannelHandlerContext ctx;
     private ByteBuf msg;
-    private RpcNettyNormalConsumer netty;
 
 
-    public LastDefaultConsumerInvoker(RpcCallBack callback, RpcNettyNormalConsumer netty, ChannelHandlerContext ctx, ByteBuf msg) {
+    public LastDefaultConsumerInvoker(RpcCallBack callback, ChannelHandlerContext ctx, ByteBuf msg) {
         this.callback = callback;
         this.ctx = ctx;
         this.msg = msg;
-        this.netty = netty;
-        consumerResponseByteFilters = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_FILTER, ConsumerResponseByteExtension.class);
-        consumerResponseDataFilters = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_FILTER, ConsumerResponseDataExtension.class);
+        consumerResponseByteFilters = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_STEP, ConsumerResponseByteExtension.class);
+        consumerResponseDataFilters = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_STEP, ConsumerResponseDataExtension.class);
     }
 
     @Override
-    public void invoke(FilterContext context) throws RpcException, ClassNotFoundException {
+    public RpcResult invoke(FilterContext context) throws RpcException, ClassNotFoundException {
+        RpcResult rpcResult = context.getRpcResult();
+        if (rpcResult == null) {
+            context.setRpcResult(new RpcResultImpl());
+        }
+
         byte[] bytes = new byte[msg.readableBytes()];
         msg.readBytes(bytes);
         // ConsumerResponseByteFilter
@@ -61,7 +63,9 @@ public class LastDefaultConsumerInvoker implements RpcInvoker {
         for (ConsumerResponseDataExtension filter : consumerResponseDataFilters) {
             rpcData = filter.doFilter(rpcData);
         }
-        netty.put(rpcData);
+        rpcResult = context.getRpcResult();
+        rpcResult.set(rpcData);
+        return rpcResult;
     }
 
 }

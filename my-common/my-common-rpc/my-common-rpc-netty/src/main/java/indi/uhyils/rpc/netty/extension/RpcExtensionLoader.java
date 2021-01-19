@@ -56,7 +56,7 @@ public class RpcExtensionLoader {
         if (cacheExtensionPath.containsKey(root.getRootClass())) {
             rootExtensions = cacheExtensionPath.get(root.getRootClass());
         } else {
-            Map<String, Class<?>> classMap = cacheClass.get(root);
+            Map<String, Class<?>> classMap = cacheClass.get(root.getRootClass());
             LinkedList<Object> linkedList = new LinkedList<>();
             try {
                 ArrayList<Class<?>> list = new ArrayList(classMap.values());

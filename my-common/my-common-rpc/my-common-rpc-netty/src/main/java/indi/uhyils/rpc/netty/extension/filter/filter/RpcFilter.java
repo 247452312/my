@@ -1,9 +1,10 @@
 package indi.uhyils.rpc.netty.extension.filter.filter;
 
 import indi.uhyils.rpc.exception.RpcException;
+import indi.uhyils.rpc.netty.extension.RpcExtension;
 import indi.uhyils.rpc.netty.extension.filter.FilterContext;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcInvoker;
-import indi.uhyils.rpc.netty.extension.RpcExtension;
+import indi.uhyils.rpc.netty.extension.filter.invoker.RpcResult;
 
 /**
  * handler中执行类
@@ -22,5 +23,5 @@ public interface RpcFilter extends RpcExtension {
      * @throws RpcException
      * @throws ClassNotFoundException
      */
-    void invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException;
+    RpcResult invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException;
 }

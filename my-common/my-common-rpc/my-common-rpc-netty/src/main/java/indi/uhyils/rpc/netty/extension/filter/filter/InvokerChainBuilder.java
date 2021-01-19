@@ -16,10 +16,10 @@ public class InvokerChainBuilder {
 
     public static RpcInvoker buildProviderInvokerChain(LastDefaultProviderInvoker lastDefaultInvoker) {
         RpcInvoker last = lastDefaultInvoker;
-        List<ProviderFilter> chain = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_FILTER, ProviderFilter.class);
+        List<ProviderRequestFilter> chain = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_FILTER, ProviderRequestFilter.class);
 
         for (int i = chain.size() - 1; i >= 0; i--) {
-            final ProviderFilter providerInvoker = chain.get(i);
+            final ProviderRequestFilter providerInvoker = chain.get(i);
             final RpcInvoker next = last;
             last = context -> providerInvoker.invoke(next, context);
         }
@@ -28,11 +28,12 @@ public class InvokerChainBuilder {
 
     public static RpcInvoker buildConsumerInvokerChain(LastDefaultConsumerInvoker lastDefaultInvoker) {
         RpcInvoker last = lastDefaultInvoker;
-        List<ConsumerFilter> chain = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_FILTER, ConsumerFilter.class);
+        List<ConsumerResponseFilter> chain = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_FILTER, ConsumerResponseFilter.class);
         for (int i = chain.size() - 1; i >= 0; i--) {
-            final ConsumerFilter providerInvoker = chain.get(i);
+            final ConsumerResponseFilter providerInvoker = chain.get(i);
             final RpcInvoker next = last;
-            last = context -> providerInvoker.invoke(next, context);
+            RpcInvoker rpcInvoker = context -> providerInvoker.invoke(next, context);
+            last = rpcInvoker;
         }
         return last;
     }

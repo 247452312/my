@@ -1,5 +1,7 @@
 package indi.uhyils.rpc.netty.extension.filter;
 
+import indi.uhyils.rpc.netty.extension.filter.invoker.RpcResult;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -11,6 +13,8 @@ import java.util.Set;
  * @date 文件创建日期 2021年01月19日 07时21分
  */
 public class FilterContext {
+
+    private RpcResult rpcResult;
 
     private Map<String, Object> info = new HashMap<>();
 
@@ -30,4 +34,11 @@ public class FilterContext {
         return info.entrySet();
     }
 
+    public RpcResult getRpcResult() {
+        return rpcResult;
+    }
+
+    public void setRpcResult(RpcResult rpcResult) {
+        this.rpcResult = rpcResult;
+    }
 }
