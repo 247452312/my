@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.filter.base;
+package indi.uhyils.rpc.netty.extension;
 
 /**
  * rpc的拦截器,可扩展
@@ -6,5 +6,5 @@ package indi.uhyils.rpc.filter.base;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月18日 08时04分
  */
-public interface RpcFilter {
+public interface RpcExtension {
 }

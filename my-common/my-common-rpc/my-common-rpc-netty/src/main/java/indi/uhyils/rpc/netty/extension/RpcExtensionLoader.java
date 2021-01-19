@@ -1,7 +1,6 @@
-package indi.uhyils.rpc;
+package indi.uhyils.rpc.netty.extension;
 
 import indi.uhyils.rpc.annotation.RpcSpi;
-import indi.uhyils.rpc.filter.base.RpcFilter;
 import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,9 +31,12 @@ public class RpcExtensionLoader {
     private static Map<Class<?>, List<?>> cacheExtensionPath = new HashMap<>();
 
     static {
-        RpcExtensionLoader rpcExtensionLoader = new RpcExtensionLoader(RpcFilter.class);
-        Map<String, Class<?>> load = rpcExtensionLoader.load();
-        cacheClass.put(RpcFilter.class, load);
+        // 遍历RpcExtensionLoaderTypeEnum中所有的根Class(即遍历所有扩展点类型)
+        for (RpcExtensionLoaderTypeEnum value : RpcExtensionLoaderTypeEnum.values()) {
+            RpcExtensionLoader rpcExtensionLoader = new RpcExtensionLoader(value.getRootClass());
+            Map<String, Class<?>> load = rpcExtensionLoader.load();
+            cacheClass.put(value.getRootClass(), load);
+        }
     }
 
     /**
@@ -46,35 +48,42 @@ public class RpcExtensionLoader {
         this.type = type;
     }
 
-    public static List getExtensionByClass(Class clazz) {
-        if (cacheExtensionPath.containsKey(clazz)) {
-            return cacheExtensionPath.get(clazz);
-        }
-        if (!cacheClass.containsKey(clazz)) {
+    public static <T> List<T> getExtensionByClass(RpcExtensionLoaderTypeEnum root, Class<T> targetClass) {
+        if (!cacheClass.containsKey(root.getRootClass())) {
             return new ArrayList();
         }
-
-        Map<String, Class<?>> classMap = cacheClass.get(clazz);
-        LinkedList<Object> linkedList = new LinkedList<>();
-        try {
-            ArrayList<Class<?>> list = new ArrayList(classMap.values());
-            Collections.sort(list, (o1, o2) -> {
-                int o1Order = o1.getAnnotation(RpcSpi.class).order();
-                int o2Order = o2.getAnnotation(RpcSpi.class).order();
-                return o1Order - o2Order;
-            });
-            for (Class<?> value : list) {
-                Constructor<?> constructor = value.getConstructor();
-                if (constructor == null) {
-                    throw new IllegalStateException(clazz.getName() + " 必须要空构造器");
+        List<?> rootExtensions;
+        if (cacheExtensionPath.containsKey(root.getRootClass())) {
+            rootExtensions = cacheExtensionPath.get(root.getRootClass());
+        } else {
+            Map<String, Class<?>> classMap = cacheClass.get(root);
+            LinkedList<Object> linkedList = new LinkedList<>();
+            try {
+                ArrayList<Class<?>> list = new ArrayList(classMap.values());
+                Collections.sort(list, (o1, o2) -> {
+                    int o1Order = o1.getAnnotation(RpcSpi.class).order();
+                    int o2Order = o2.getAnnotation(RpcSpi.class).order();
+                    return o1Order - o2Order;
+                });
+                for (Class<?> value : list) {
+                    Constructor<?> constructor = value.getConstructor();
+                    if (constructor == null) {
+                        throw new IllegalStateException(root.getRootClass().getName() + " 必须要空构造器");
+                    }
+                    linkedList.add(value.newInstance());
                 }
-                linkedList.add(value.newInstance());
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException e) {
+                LogUtil.error(e);
             }
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-            LogUtil.error(e);
+            rootExtensions = linkedList;
         }
-
-        return linkedList;
+        List<T> result = new LinkedList<>();
+        for (Object rootExtension : rootExtensions) {
+            if (targetClass.isAssignableFrom(rootExtension.getClass())) {
+                result.add((T) rootExtension);
+            }
+        }
+        return result;
     }
 
 

@@ -2,7 +2,7 @@ package indi.uhyils.rpc.netty.consumer;
 
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
-import indi.uhyils.rpc.netty.handler.RpcResponseInHandler;
+import indi.uhyils.rpc.netty.handler.RpcConsumerHandler;
 import indi.uhyils.rpc.pojo.RpcData;
 import indi.uhyils.rpc.netty.util.FixedLengthQueue;
 import io.netty.bootstrap.Bootstrap;
@@ -15,8 +15,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -78,7 +76,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
                     protected void initChannel(NioSocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
                         p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
-                        p.addLast("byte-to-object", new RpcResponseInHandler(callBack, RpcNettyNormalConsumer.this));
+                        p.addLast("byte-to-object", new RpcConsumerHandler(callBack, RpcNettyNormalConsumer.this));
 //                        p.addLast("logging", new LoggingHandler(LogLevel.INFO));
                     }
                 });

@@ -8,51 +8,54 @@ public enum RpcStatusEnum {
     /**
      * 无
      */
-    NULL((byte) 0),
+    NULL("无",(byte) 0),
     /**
      * 成功
      */
-    OK((byte) 20),
+    OK("成功",(byte) 20),
     /**
      * 客户端超时
      */
-    CLIENT_TIMEOUT((byte) 30),
+    CLIENT_TIMEOUT("客户端超时",(byte) 30),
     /**
      * 服务端超时
      */
-    SERVER_TIMEOUT((byte) 31),
+    SERVER_TIMEOUT("服务端超时",(byte) 31),
     /**
      * 请求失败
      */
-    BAD_REQUEST((byte) 40),
+    BAD_REQUEST("请求失败",(byte) 40),
     /**
      * 回应失败
      */
-    BAD_RESPONSE((byte) 50),
+    BAD_RESPONSE("回应失败",(byte) 50),
     /**
      * 未找到接口
      */
-    SERVICE_NOT_FOUND((byte) 60),
+    SERVICE_NOT_FOUND("未找到接口",(byte) 60),
     /**
      * 接口错误
      */
-    SERVICE_ERROR((byte) 70),
+    SERVICE_ERROR("接口错误",(byte) 70),
     /**
-     * 服务端错误
+     * 生产者错误
      */
-    SERVER_ERROR((byte) 80),
+    PROVIDER_ERROR("生产者错误",(byte) 80),
     /**
-     * 客户端错误
+     * 消费者错误
      */
-    CLIENT_ERROR((byte) 90),
+    CONSUMER_ERROR("消费者错误",(byte) 90),
     /**
      * 服务器线程池已耗尽错误
      */
-    SERVER_THREADPOOL_EXHAUSTED_ERROR((byte) 100);
+    SERVER_THREADPOOL_EXHAUSTED_ERROR("服务器线程池已耗尽错误",(byte) 100);
 
+    private String name;
     private byte code;
 
-    RpcStatusEnum(byte code) {
+
+    RpcStatusEnum(String name, byte code) {
+        this.name = name;
         this.code = code;
     }
 
@@ -62,5 +65,13 @@ public enum RpcStatusEnum {
 
     public void setCode(byte code) {
         this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

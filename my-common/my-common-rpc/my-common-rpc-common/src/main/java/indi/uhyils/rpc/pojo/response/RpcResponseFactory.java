@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.pojo.response;
 
 import indi.uhyils.rpc.content.MyRpcContent;
+import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.pojo.*;
@@ -13,9 +14,9 @@ import java.nio.charset.StandardCharsets;
  */
 public class RpcResponseFactory extends AbstractRpcFactory {
 
-    public volatile static RpcFactory instance;
+    public volatile static RpcResponseFactory instance;
 
-    public static RpcFactory getInstance() {
+    public static RpcResponseFactory getInstance() {
         if (null == instance) {
             synchronized (RpcResponseFactory.class) {
                 if (null == instance) {
@@ -45,6 +46,23 @@ public class RpcResponseFactory extends AbstractRpcFactory {
         rpcNormalRequest.setContent(content);
         rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
         return rpcNormalRequest;
+    }
+
+    public RpcData createErrorResponse(Long unique, Throwable e, RpcHeader[] rpcHeaders) throws RpcException {
+        RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
+        rpcNormalRequest.setType(RpcTypeEnum.RESPONSE.getCode());
+        rpcNormalRequest.setVersion(MyRpcContent.VERSION);
+        rpcNormalRequest.setHeaders(rpcHeaders);
+        String[] contentArray = new String[]{e == null ? RpcStatusEnum.PROVIDER_ERROR.getName() : e.getMessage()};
+        rpcNormalRequest.setContentArray(contentArray);
+        rpcNormalRequest.setStatus(RpcStatusEnum.PROVIDER_ERROR.getCode());
+        rpcNormalRequest.setUnique(unique);
+
+        RpcContent content = RpcResponseContentFactory.createByContentArray(rpcNormalRequest, contentArray);
+        rpcNormalRequest.setContent(content);
+        rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
+        return rpcNormalRequest;
+
     }
 
     @Override

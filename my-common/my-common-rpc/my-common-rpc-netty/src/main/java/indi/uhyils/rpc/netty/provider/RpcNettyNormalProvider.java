@@ -2,7 +2,7 @@ package indi.uhyils.rpc.netty.provider;
 
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
-import indi.uhyils.rpc.netty.handler.RpcRequestInHandler;
+import indi.uhyils.rpc.netty.handler.RpcProviderHandler;
 import indi.uhyils.rpc.pojo.RpcData;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -59,7 +59,7 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
                             p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
-                            p.addLast("byte-to-object", new RpcRequestInHandler(callback));
+                            p.addLast("byte-to-object", new RpcProviderHandler(callback));
 //                            p.addLast("logging", new LoggingHandler(LogLevel.INFO));
                         }
                     });
