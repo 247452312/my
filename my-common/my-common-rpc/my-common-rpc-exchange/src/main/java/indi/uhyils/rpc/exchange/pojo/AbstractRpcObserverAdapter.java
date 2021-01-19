@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.pojo;
+package indi.uhyils.rpc.exchange.pojo;
 
 /**
  * @author uhyils <247452312@qq.com>

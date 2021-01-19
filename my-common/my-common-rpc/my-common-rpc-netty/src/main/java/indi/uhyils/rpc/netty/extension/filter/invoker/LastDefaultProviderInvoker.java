@@ -9,8 +9,8 @@ import indi.uhyils.rpc.netty.extension.step.template.ProviderRequestByteExtensio
 import indi.uhyils.rpc.netty.extension.step.template.ProviderRequestDataExtension;
 import indi.uhyils.rpc.netty.extension.step.template.ProviderResponseByteExtension;
 import indi.uhyils.rpc.netty.extension.step.template.ProviderResponseDataExtension;
-import indi.uhyils.rpc.pojo.RpcData;
-import indi.uhyils.rpc.pojo.response.RpcResponseFactory;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.response.RpcResponseFactory;
 import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

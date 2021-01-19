@@ -1,10 +1,8 @@
-package indi.uhyils.rpc.pojo;
+package indi.uhyils.rpc.exchange.pojo;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.pojo.request.RpcRequestFactory;
-import indi.uhyils.rpc.pojo.response.RpcResponseFactory;
-
-import static indi.uhyils.rpc.enums.RpcTypeEnum.*;
+import indi.uhyils.rpc.exchange.pojo.request.RpcRequestFactory;
+import indi.uhyils.rpc.exchange.pojo.response.RpcResponseFactory;
 
 /**
  * Rpc工厂生成器

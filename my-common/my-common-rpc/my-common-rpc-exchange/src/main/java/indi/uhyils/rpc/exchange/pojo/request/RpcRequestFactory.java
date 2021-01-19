@@ -1,10 +1,10 @@
-package indi.uhyils.rpc.pojo.request;
+package indi.uhyils.rpc.exchange.pojo.request;
 
-import indi.uhyils.rpc.content.MyRpcContent;
+import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
-import indi.uhyils.rpc.pojo.*;
+import indi.uhyils.rpc.exchange.pojo.*;
 
 import java.nio.charset.StandardCharsets;
 

@@ -3,7 +3,7 @@ package indi.uhyils.rpc.netty.extension.step.template;
 import indi.uhyils.rpc.netty.extension.step.base.RpcConsumerExtension;
 import indi.uhyils.rpc.netty.extension.step.base.RpcDataExtension;
 import indi.uhyils.rpc.netty.extension.step.base.RpcResponseExtension;
-import indi.uhyils.rpc.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
 
 /**
  * @author uhyils <247452312@qq.com>

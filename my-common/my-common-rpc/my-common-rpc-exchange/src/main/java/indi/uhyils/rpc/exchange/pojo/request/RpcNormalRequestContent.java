@@ -1,8 +1,8 @@
-package indi.uhyils.rpc.pojo.request;
+package indi.uhyils.rpc.exchange.pojo.request;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.pojo.RpcData;
-import indi.uhyils.rpc.pojo.AbstractRpcObserverAdapter;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.AbstractRpcObserverAdapter;
 
 /**
  * @author uhyils <247452312@qq.com>

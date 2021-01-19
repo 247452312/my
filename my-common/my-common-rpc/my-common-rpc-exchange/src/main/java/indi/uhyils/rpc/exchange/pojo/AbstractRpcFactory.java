@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.pojo;
+package indi.uhyils.rpc.exchange.pojo;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;

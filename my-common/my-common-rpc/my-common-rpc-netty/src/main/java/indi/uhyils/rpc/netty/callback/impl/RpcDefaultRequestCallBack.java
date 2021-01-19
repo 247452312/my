@@ -3,14 +3,14 @@ package indi.uhyils.rpc.netty.callback.impl;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.exception.RpcBeanNotFoundException;
 import indi.uhyils.rpc.exception.RpcException;
+import indi.uhyils.rpc.exchange.pojo.*;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
-import indi.uhyils.rpc.content.MyRpcContent;
+import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcVersionNotSupportedException;
-import indi.uhyils.rpc.pojo.*;
-import indi.uhyils.rpc.pojo.request.RpcRequestContent;
+import indi.uhyils.rpc.exchange.pojo.request.RpcRequestContent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;

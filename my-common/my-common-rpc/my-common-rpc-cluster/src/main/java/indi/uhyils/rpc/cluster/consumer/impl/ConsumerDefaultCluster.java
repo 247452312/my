@@ -4,8 +4,9 @@ import indi.uhyils.rpc.cluster.consumer.AbstractConsumerCluster;
 import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
 import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
+import indi.uhyils.rpc.exception.RpcException;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.RpcNetty;
-import indi.uhyils.rpc.pojo.RpcData;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.Map;
@@ -79,7 +80,7 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
     }
 
     @Override
-    public RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException {
+    public RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException, RpcException {
         //todo 暂时没有实现最少活跃
         switch (loadBalanceType) {
             case LEAST_ACTIVE:
@@ -158,7 +159,7 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
         return null;
     }
 
-    private RpcData sendByPolling(RpcData rpcData) throws InterruptedException {
+    private RpcData sendByPolling(RpcData rpcData) throws InterruptedException, RpcException {
         int pollIndex = pollingMark.getAndAdd(1);
         if (pollIndex > nettyMap.size()) {
             pollingMark.set(0);
@@ -168,12 +169,15 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
         }
     }
 
-    private RpcData randomSend(RpcData rpcData) throws InterruptedException {
+    private RpcData randomSend(RpcData rpcData) throws InterruptedException, RpcException {
         int i = RandomUtils.nextInt(0, nettyMap.size());
         return sendByIndex(rpcData, i);
     }
 
-    private RpcData sendByIndex(RpcData rpcData, int i) throws InterruptedException {
+    private RpcData sendByIndex(RpcData rpcData, int i) throws InterruptedException, RpcException {
+        if (nettyMap.size() == 0) {
+            throw new RpcException("指定的服务端不存在");
+        }
         i = i % nettyMap.size();
         Object o = nettyMap.keySet().toArray()[i];
         RpcNetty rpcNetty = nettyMap.get(o);

@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.pojo;
+package indi.uhyils.rpc.exchange.pojo;
 
 import org.apache.commons.lang3.StringUtils;
 

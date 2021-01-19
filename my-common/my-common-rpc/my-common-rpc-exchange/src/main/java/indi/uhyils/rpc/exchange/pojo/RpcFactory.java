@@ -1,6 +1,6 @@
-package indi.uhyils.rpc.pojo;
+package indi.uhyils.rpc.exchange.pojo;
 
-import indi.uhyils.rpc.content.MyRpcContent;
+import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.exception.RpcException;
 import io.netty.buffer.ByteBuf;
 

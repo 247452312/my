@@ -1,7 +1,7 @@
 package indi.uhyils.rpc.netty.extension.step.base;
 
 import indi.uhyils.rpc.netty.extension.step.RpcStepExtension;
-import indi.uhyils.rpc.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
 
 /**
  * @author uhyils <247452312@qq.com>

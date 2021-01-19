@@ -1,11 +1,11 @@
-package indi.uhyils.rpc.pojo.request;
+package indi.uhyils.rpc.exchange.pojo.request;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
-import indi.uhyils.rpc.pojo.RpcContent;
-import indi.uhyils.rpc.pojo.RpcHeader;
+import indi.uhyils.rpc.exchange.pojo.RpcContent;
+import indi.uhyils.rpc.exchange.pojo.RpcHeader;
 
 /**
  * rpc正常请求体

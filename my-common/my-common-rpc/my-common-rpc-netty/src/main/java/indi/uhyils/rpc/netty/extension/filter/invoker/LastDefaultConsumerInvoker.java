@@ -7,7 +7,7 @@ import indi.uhyils.rpc.netty.extension.RpcExtensionLoaderTypeEnum;
 import indi.uhyils.rpc.netty.extension.filter.FilterContext;
 import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseByteExtension;
 import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseDataExtension;
-import indi.uhyils.rpc.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 

@@ -1,13 +1,13 @@
-package indi.uhyils.rpc.pojo;
+package indi.uhyils.rpc.exchange.pojo;
 
-import indi.uhyils.rpc.content.MyRpcContent;
+import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.NoMyRpcException;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exception.RpcTypeNotSupportedException;
 import indi.uhyils.rpc.exception.RpcVersionNotSupportedException;
-import indi.uhyils.rpc.pojo.request.RpcRequestFactory;
-import indi.uhyils.rpc.pojo.response.RpcResponseFactory;
+import indi.uhyils.rpc.exchange.pojo.request.RpcRequestFactory;
+import indi.uhyils.rpc.exchange.pojo.response.RpcResponseFactory;
 import indi.uhyils.rpc.util.BytesUtils;
 
 import java.nio.charset.StandardCharsets;

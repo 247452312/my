@@ -1,6 +1,6 @@
-package indi.uhyils.rpc.pojo.response;
+package indi.uhyils.rpc.exchange.pojo.response;
 
-import indi.uhyils.rpc.pojo.RpcContent;
+import indi.uhyils.rpc.exchange.pojo.RpcContent;
 
 /**
  * rpc请求内容抽象类,包含回应值类型,回应值信息

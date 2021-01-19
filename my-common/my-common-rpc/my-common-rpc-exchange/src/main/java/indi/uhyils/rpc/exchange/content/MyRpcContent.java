@@ -1,8 +1,8 @@
-package indi.uhyils.rpc.content;
+package indi.uhyils.rpc.exchange.content;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.pojo.RpcData;
-import indi.uhyils.rpc.pojo.RpcFactoryProducer;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.RpcFactoryProducer;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -39,6 +39,10 @@ public class MyRpcContent {
      */
     public static final int RPC_DATA_UNIQUE_INDEX = 4;
     /**
+     * rpc心跳请求
+     */
+    public static final RpcData RPC_HEALTH_DATA = RpcFactoryProducer.build(RpcTypeEnum.REQUEST).getHealth();
+    /**
      * rpc标志
      */
     private static final int AGREEMENT_START_INT = 0x929d;
@@ -49,10 +53,6 @@ public class MyRpcContent {
             (byte) (AGREEMENT_START_INT >> 8 & 0xff),
             (byte) (AGREEMENT_START_INT & 0xff)
     };
-    /**
-     * rpc心跳请求
-     */
-    public static final RpcData RPC_HEALTH_DATA = RpcFactoryProducer.build(RpcTypeEnum.REQUEST).getHealth();
 
 
 }

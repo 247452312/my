@@ -7,7 +7,7 @@ import indi.uhyils.rpc.netty.extension.filter.filter.InvokerChainBuilder;
 import indi.uhyils.rpc.netty.extension.filter.invoker.LastDefaultConsumerInvoker;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcInvoker;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcResult;
-import indi.uhyils.rpc.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

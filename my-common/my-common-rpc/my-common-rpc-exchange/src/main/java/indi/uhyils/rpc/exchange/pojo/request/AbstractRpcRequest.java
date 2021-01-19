@@ -1,8 +1,8 @@
-package indi.uhyils.rpc.pojo.request;
+package indi.uhyils.rpc.exchange.pojo.request;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
-import indi.uhyils.rpc.pojo.AbstractRpcData;
+import indi.uhyils.rpc.exchange.pojo.AbstractRpcData;
 
 /**
  * rpc请求体
