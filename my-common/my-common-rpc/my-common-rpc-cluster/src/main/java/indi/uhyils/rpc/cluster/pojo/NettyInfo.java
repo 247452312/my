@@ -42,12 +42,12 @@ public class NettyInfo {
             return false;
         }
         NettyInfo nettyInfo = (NettyInfo) o;
-        return Objects.equals(indexInColony, nettyInfo.indexInColony) && Objects.equals(weight, nettyInfo.weight) && Objects.equals(host, nettyInfo.host) && Objects.equals(port, nettyInfo.port);
+        return Objects.equals(weight, nettyInfo.weight) && Objects.equals(host, nettyInfo.host) && Objects.equals(port, nettyInfo.port);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(indexInColony, weight, host, port);
+        return Objects.hash(weight, host, port);
     }
 
     public Integer getPort() {

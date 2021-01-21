@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.registry;
 
 import indi.uhyils.rpc.cluster.Cluster;
+import indi.uhyils.rpc.registry.mode.RegistryMode;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -13,6 +14,11 @@ public abstract class AbstractRegistry<T> implements Registry<T> {
     protected Cluster cluster;
 
     /**
+     * 和nacos连接的东西
+     */
+    protected RegistryMode mode;
+
+    /**
      * 代表的service的类
      */
     protected Class<T> serviceClass;
@@ -20,6 +26,14 @@ public abstract class AbstractRegistry<T> implements Registry<T> {
     public AbstractRegistry(Cluster cluster, Class<T> serviceClass) {
         this.cluster = cluster;
         this.serviceClass = serviceClass;
+    }
+
+    public RegistryMode getMode() {
+        return mode;
+    }
+
+    public void setMode(RegistryMode mode) {
+        this.mode = mode;
     }
 
     public Cluster getCluster() {

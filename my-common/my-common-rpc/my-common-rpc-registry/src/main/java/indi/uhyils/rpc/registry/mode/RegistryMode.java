@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.registry.mode;
 
+import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.registry.exception.RegistryException;
 import indi.uhyils.rpc.registry.exception.RegistryTypeException;
 import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
@@ -91,7 +92,7 @@ public interface RegistryMode {
      * @param listener
      * @throws Exception
      */
-    void addServiceListener(String interfaceName, RegistryServiceListener listener) throws Exception;
+    void addServiceListener(String interfaceName,String groupName, RegistryServiceListener listener) throws Exception;
 
     /**
      * 删除服务监听
@@ -101,4 +102,11 @@ public interface RegistryMode {
      * @throws Exception
      */
     void removeServiceListener(String interfaceName, RegistryServiceListener listener) throws Exception;
+
+    /**
+     * 设置此nacos连接的类型
+     *
+     * @param type
+     */
+    void setType(RpcNettyTypeEnum type);
 }

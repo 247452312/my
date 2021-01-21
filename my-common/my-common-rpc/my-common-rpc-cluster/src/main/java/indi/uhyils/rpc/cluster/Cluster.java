@@ -4,9 +4,11 @@ import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
 import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.exception.RpcException;
-import indi.uhyils.rpc.netty.RpcNetty;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.netty.RpcNetty;
+import indi.uhyils.rpc.netty.pojo.NettyInitDto;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,6 +73,14 @@ public interface Cluster {
      * @throws InterruptedException
      */
     RpcData wait(Long unique) throws InterruptedException;
+
+    /**
+     * 服务数量改变时->生产者不需要关心自己的上下线,所以只有消费者需要完成逻辑
+     *
+     * @param nettyInfos
+     * @return
+     */
+    Boolean onServiceStatusChange(List<NettyInfo> nettyInfos);
 
 
 }

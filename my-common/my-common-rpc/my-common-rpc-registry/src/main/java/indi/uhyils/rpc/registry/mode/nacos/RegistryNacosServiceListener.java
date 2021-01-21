@@ -4,10 +4,13 @@ import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.naming.listener.Event;
 import com.alibaba.nacos.api.naming.listener.EventListener;
 import com.alibaba.nacos.api.naming.listener.NamingEvent;
-import indi.uhyils.rpc.cluster.Cluster;
-import indi.uhyils.rpc.registry.mode.RegistryServiceListener;
+import com.alibaba.nacos.api.naming.pojo.Instance;
+import indi.uhyils.rpc.cluster.pojo.NettyInfo;
+import indi.uhyils.rpc.registry.mode.AbstractRegistryServiceListener;
+import indi.uhyils.util.LogUtil;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 
 /**
@@ -16,45 +19,41 @@ import java.util.concurrent.Executor;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月26日 18时49分
  */
-public class RegistryNacosServiceListener implements RegistryServiceListener, EventListener, Listener {
-    @Override
-    public void onMethodChange() {
-
-    }
-
-    @Override
-    public void onInterfaceChange() {
-
-    }
-
-    @Override
-    public void onServiceOnLine() {
-
-    }
-
-    @Override
-    public void onServiceOffline() {
-
-    }
-
-    @Override
-    public Map<String, Object> parseListenerInfo(String content) {
-        return null;
-    }
-
-    @Override
-    public void setCluster(Cluster cluster) {
-
-    }
+public class RegistryNacosServiceListener extends AbstractRegistryServiceListener implements EventListener, Listener {
 
     @Override
     public void onEvent(Event event) {
-        if (event instanceof NamingEvent) {
-            NamingEvent namingEvent = (NamingEvent) event;
-            System.out.println(namingEvent.getServiceName());
-            System.out.println(namingEvent.getGroupName());
-            System.out.println(namingEvent.getClusters());
+        if (event != null) {
+            String name = event.getClass().getName();
+            LogUtil.info("name!!!!!!!!!!!!!!!!");
+            LogUtil.info(name);
+            if (event instanceof NamingEvent) {
+                doServiceEvent((NamingEvent) event);
+            }
         }
+    }
+
+    /**
+     * service的event
+     *
+     * @param event
+     */
+    private void doServiceEvent(NamingEvent event) {
+        List<Instance> instances = event.getInstances();
+        ArrayList<NettyInfo> nettyInfos = new ArrayList<>();
+        for (int i = 0; i < instances.size(); i++) {
+            Instance instance = instances.get(i);
+            if (!instance.isEnabled()) {
+                continue;
+            }
+            NettyInfo nettyInfo = new NettyInfo();
+            nettyInfo.setIndexInColony(i);
+            nettyInfo.setHost(instance.getIp());
+            nettyInfo.setPort(instance.getPort());
+            nettyInfo.setWeight((int) instance.getWeight());
+            nettyInfos.add(nettyInfo);
+        }
+        cluster.onServiceStatusChange(nettyInfos);
     }
 
     @Override
@@ -64,6 +63,7 @@ public class RegistryNacosServiceListener implements RegistryServiceListener, Ev
 
     @Override
     public void receiveConfigInfo(String configInfo) {
-
+        LogUtil.info("configInfo!!!!!!!!!!!!!!!");
+        LogUtil.info(configInfo);
     }
 }

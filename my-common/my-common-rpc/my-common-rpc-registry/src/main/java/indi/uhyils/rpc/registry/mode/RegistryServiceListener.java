@@ -13,34 +13,6 @@ import java.util.Map;
 public interface RegistryServiceListener {
 
     /**
-     * 方法改变的时候
-     */
-    void onMethodChange();
-
-    /**
-     * 接口改变的时候
-     */
-    void onInterfaceChange();
-
-    /**
-     * 在一个集群新服务上线的时候
-     */
-    void onServiceOnLine();
-
-    /**
-     * 在一个集群服务下线的时候
-     */
-    void onServiceOffline();
-
-    /**
-     * 解析
-     *
-     * @param content
-     * @return
-     */
-    Map<String, Object> parseListenerInfo(String content);
-
-    /**
      * 设置集群
      *
      * @param cluster

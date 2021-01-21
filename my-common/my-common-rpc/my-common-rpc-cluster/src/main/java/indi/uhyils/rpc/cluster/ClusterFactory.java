@@ -69,7 +69,6 @@ public class ClusterFactory {
             nettyInfo.setIndexInColony(i);
             nettyMap.put(nettyInfo, netty);
         }
-
         return new ConsumerDefaultCluster(nettyMap);
     }
 

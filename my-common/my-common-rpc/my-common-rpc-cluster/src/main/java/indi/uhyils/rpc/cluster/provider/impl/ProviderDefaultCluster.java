@@ -6,8 +6,10 @@ import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.cluster.provider.AbstractProviderCluster;
 import indi.uhyils.rpc.netty.RpcNetty;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.netty.pojo.NettyInitDto;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,6 +82,11 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
     @Override
     public RpcData wait(Long unique) throws InterruptedException {
         return netty.wait(unique);
+    }
+
+    @Override
+    public Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) {
+        return true;
     }
 
     @Override

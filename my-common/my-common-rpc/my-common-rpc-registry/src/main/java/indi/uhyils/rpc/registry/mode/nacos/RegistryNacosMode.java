@@ -7,6 +7,7 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.registry.content.RegistryContent;
 import indi.uhyils.rpc.registry.exception.RegistryException;
 import indi.uhyils.rpc.registry.exception.RegistryTypeException;
@@ -42,6 +43,11 @@ public class RegistryNacosMode implements RegistryMode {
      * nacos的naming
      */
     private final NamingService nacosNaming;
+
+    /**
+     * 此nacos连接的类型
+     */
+    private RpcNettyTypeEnum type;
 
     /**
      * @param host nacos所在的host
@@ -132,16 +138,21 @@ public class RegistryNacosMode implements RegistryMode {
 
     @Override
     public void removeInstance(String interfaceName, String ip, int port) throws NacosException, RegistryTypeException, RegistryException {
-        nacosNaming.registerInstance(interfaceName, ip, port);
+        nacosNaming.deregisterInstance(interfaceName, ip, port);
     }
 
     @Override
-    public void addServiceListener(String interfaceName, RegistryServiceListener listener) throws NacosException {
-        nacosNaming.subscribe(interfaceName, (RegistryNacosServiceListener) listener);
+    public void addServiceListener(String interfaceName, String groupName, RegistryServiceListener listener) throws NacosException {
+        nacosNaming.subscribe(interfaceName, groupName, (RegistryNacosServiceListener) listener);
     }
 
     @Override
     public void removeServiceListener(String interfaceName, RegistryServiceListener listener) throws NacosException {
         nacosNaming.unsubscribe(interfaceName, (RegistryNacosServiceListener) listener);
+    }
+
+    @Override
+    public void setType(RpcNettyTypeEnum type) {
+        this.type = type;
     }
 }

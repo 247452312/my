@@ -7,9 +7,16 @@ import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.RpcNetty;
+import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
+import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
+import indi.uhyils.rpc.netty.factory.RpcNettyFactory;
+import indi.uhyils.rpc.netty.pojo.NettyInitDto;
 import org.apache.commons.lang3.RandomUtils;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -81,6 +88,9 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
 
     @Override
     public RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException, RpcException {
+        if (nettyMap.size() == 0) {
+            throw new RpcException("指定的服务端不存在");
+        }
         //todo 暂时没有实现最少活跃
         switch (loadBalanceType) {
             case LEAST_ACTIVE:
@@ -175,9 +185,6 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
     }
 
     private RpcData sendByIndex(RpcData rpcData, int i) throws InterruptedException, RpcException {
-        if (nettyMap.size() == 0) {
-            throw new RpcException("指定的服务端不存在");
-        }
         i = i % nettyMap.size();
         Object o = nettyMap.keySet().toArray()[i];
         RpcNetty rpcNetty = nettyMap.get(o);
@@ -191,6 +198,36 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
     @Override
     public RpcData wait(Long unique) throws InterruptedException {
         return null;
+    }
+
+    @Override
+    public Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) {
+        // 筛选出没有的,移出->下线
+        Set<NettyInfo> set = new HashSet<>();
+        for (NettyInfo nettyInfo : nettyMap.keySet()) {
+            if (!nettyInfos.contains(nettyInfo)) {
+                set.add(nettyInfo);
+            }
+        }
+        for (NettyInfo nettyInfo : set) {
+            RpcNetty rpcNetty = nettyMap.get(nettyInfo);
+            rpcNetty.shutdown();
+            nettyMap.remove(nettyInfo);
+        }
+        // 筛选不存在的,添加->上线
+        for (int i = 0; i < nettyInfos.size(); i++) {
+            NettyInfo nettyInfo = nettyInfos.get(i);
+            if (nettyMap.containsKey(nettyInfo)) {
+                continue;
+            }
+            NettyInitDto nettyInit = new NettyInitDto();
+            nettyInit.setHost(nettyInfo.getHost());
+            nettyInit.setPort(nettyInfo.getPort());
+            nettyInit.setCallback(new RpcDefaultResponseCallBack());
+            RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
+            nettyMap.put(nettyInfo, netty);
+        }
+        return true;
     }
 
     @Override

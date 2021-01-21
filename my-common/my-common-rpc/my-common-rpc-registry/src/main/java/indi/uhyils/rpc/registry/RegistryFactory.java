@@ -3,8 +3,8 @@ package indi.uhyils.rpc.registry;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.ClusterFactory;
 import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
-import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
+import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
 import indi.uhyils.rpc.netty.function.FunctionOne;
 import indi.uhyils.rpc.netty.function.FunctionOneInterface;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
@@ -52,7 +52,7 @@ public class RegistryFactory {
             nettyInitDtos[i] = nettyInitDto;
         }
         Cluster defaultConsumerCluster = ClusterFactory.createDefaultConsumerCluster(nettyInitDtos);
-        return new ConsumerRegistry<>(defaultConsumerCluster, clazz, host);
+        return new ConsumerRegistry<>(defaultConsumerCluster, clazz, host, mode);
     }
 
     /**
@@ -63,7 +63,7 @@ public class RegistryFactory {
      * @param <T>
      * @return
      */
-    public static <T> Registry<T> createProvider(String serviceName, Class<T> clazz, Integer port,  RegistryMode mode) throws Exception {
+    public static <T> Registry<T> createProvider(String serviceName, Class<T> clazz, Integer port, RegistryMode mode) throws Exception {
         HashMap<String, Object> beans = new HashMap<>();
         FunctionOneInterface functionOneInterface = new FunctionOne();
         beans.put(functionOneInterface.getClass().getName(), functionOneInterface);
@@ -98,6 +98,6 @@ public class RegistryFactory {
         metadata.setServiceInfo(serviceInfo);
         info.setMetadata(metadata);
         mode.registry(info);
-        return new ProviderRegistry<>(providerCluster, clazz);
+        return new ProviderRegistry<>(providerCluster, clazz, mode);
     }
 }
