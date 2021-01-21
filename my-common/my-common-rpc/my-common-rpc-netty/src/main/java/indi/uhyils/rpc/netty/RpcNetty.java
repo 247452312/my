@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty;
 
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.Channel;
@@ -48,7 +49,7 @@ public interface RpcNetty {
      * @param bytes
      * @return
      */
-    Boolean sendMsg(byte[] bytes);
+    Boolean sendMsg(byte[] bytes) throws RpcException, ClassNotFoundException;
 
     /**
      * 等待执行long类型的回应

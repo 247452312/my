@@ -3,7 +3,7 @@ package indi.uhyils.rpc.netty.handler;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
 import indi.uhyils.rpc.netty.extension.filter.FilterContext;
 import indi.uhyils.rpc.netty.extension.filter.filter.InvokerChainBuilder;
-import indi.uhyils.rpc.netty.extension.filter.invoker.LastDefaultProviderInvoker;
+import indi.uhyils.rpc.netty.extension.filter.invoker.LastProviderInvoker;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcInvoker;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcResult;
 import io.netty.buffer.ByteBuf;
@@ -31,8 +31,8 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-        LastDefaultProviderInvoker invoker = new LastDefaultProviderInvoker(callback, ctx, msg);
-        RpcInvoker rpcInvoker = InvokerChainBuilder.buildProviderInvokerChain(invoker);
+        LastProviderInvoker invoker = new LastProviderInvoker(callback, ctx, msg);
+        RpcInvoker rpcInvoker = InvokerChainBuilder.buildProviderAroundInvokerChain(invoker);
         RpcResult invoke = rpcInvoker.invoke(new FilterContext());
         send(ctx, (byte[]) invoke.get());
     }

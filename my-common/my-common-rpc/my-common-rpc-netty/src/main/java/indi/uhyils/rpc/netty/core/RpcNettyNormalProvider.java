@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.netty.provider;
+package indi.uhyils.rpc.netty.core;
 
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.exchange.pojo.RpcData;

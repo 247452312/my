@@ -17,7 +17,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月19日 07时27分
  */
-public class LastDefaultConsumerInvoker implements RpcInvoker {
+public class LastConsumerResponseInvoker implements RpcInvoker {
 
     /**
      * 回调
@@ -37,7 +37,7 @@ public class LastDefaultConsumerInvoker implements RpcInvoker {
     private ByteBuf msg;
 
 
-    public LastDefaultConsumerInvoker(RpcCallBack callback, ChannelHandlerContext ctx, ByteBuf msg) {
+    public LastConsumerResponseInvoker(RpcCallBack callback, ChannelHandlerContext ctx, ByteBuf msg) {
         this.callback = callback;
         this.ctx = ctx;
         this.msg = msg;

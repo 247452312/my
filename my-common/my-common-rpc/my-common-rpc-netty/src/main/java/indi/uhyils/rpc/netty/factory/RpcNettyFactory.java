@@ -3,10 +3,10 @@ package indi.uhyils.rpc.netty.factory;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.netty.RpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
-import indi.uhyils.rpc.netty.consumer.RpcNettyNormalConsumer;
+import indi.uhyils.rpc.netty.core.RpcNettyNormalConsumer;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
-import indi.uhyils.rpc.netty.provider.RpcNettyNormalProvider;
+import indi.uhyils.rpc.netty.core.RpcNettyNormalProvider;
 
 /**
  * @author uhyils <247452312@qq.com>

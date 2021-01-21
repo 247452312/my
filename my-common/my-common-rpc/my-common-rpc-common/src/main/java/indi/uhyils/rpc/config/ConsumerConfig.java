@@ -11,6 +11,11 @@ public class ConsumerConfig {
      */
     private Boolean check = Boolean.TRUE;
 
+    /**
+     * 超时
+     */
+    private Long timeOut = 3000L;
+
 
     public Boolean getCheck() {
         return check;
@@ -18,5 +23,13 @@ public class ConsumerConfig {
 
     public void setCheck(Boolean check) {
         this.check = check;
+    }
+
+    public Long getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(Long timeOut) {
+        this.timeOut = timeOut;
     }
 }

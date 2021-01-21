@@ -1,14 +1,17 @@
-package indi.uhyils.rpc.netty.consumer;
+package indi.uhyils.rpc.netty.core;
 
 import indi.uhyils.rpc.config.RpcConfig;
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
+import indi.uhyils.rpc.netty.extension.filter.FilterContext;
+import indi.uhyils.rpc.netty.extension.filter.filter.InvokerChainBuilder;
+import indi.uhyils.rpc.netty.extension.filter.invoker.LastConsumerRequestInvoker;
+import indi.uhyils.rpc.netty.extension.filter.invoker.RpcInvoker;
 import indi.uhyils.rpc.netty.handler.RpcConsumerHandler;
 import indi.uhyils.rpc.netty.util.FixedLengthQueue;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -60,7 +63,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
     private FixedLengthQueue<Long> timeOut = new FixedLengthQueue<>(200, Long.class);
 
     public RpcNettyNormalConsumer(RpcConfig rpcConfig, Long outTime, RpcCallBack callBack) {
-        super(rpcConfig,outTime);
+        super(rpcConfig, outTime);
         this.callBack = callBack;
 
     }
@@ -118,12 +121,10 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
     }
 
     @Override
-    public Boolean sendMsg(byte[] bytes) {
+    public Boolean sendMsg(byte[] bytes) throws RpcException, ClassNotFoundException {
         ChannelFuture channelFuture = getChannelFuture();
-        ByteBuf buf = Unpooled.buffer();
-        buf.writeBytes(bytes);
-        channelFuture.channel().writeAndFlush(buf);
-
+        RpcInvoker rpcInvoker = InvokerChainBuilder.buildConsumerSendInvokerChain(new LastConsumerRequestInvoker(bytes, channelFuture));
+        rpcInvoker.invoke(new FilterContext());
         return true;
     }
 

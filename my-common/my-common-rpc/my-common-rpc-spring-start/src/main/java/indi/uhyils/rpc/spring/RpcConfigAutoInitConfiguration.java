@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.spring;
 
 import indi.uhyils.rpc.config.RpcConfig;
+import indi.uhyils.rpc.config.RpcConfigWarehouse;
 import indi.uhyils.util.LogUtil;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -26,6 +27,8 @@ public class RpcConfigAutoInitConfiguration {
     @ConfigurationProperties(prefix = "rpc")
     public RpcConfig rpcConfig() {
         LogUtil.info("rpcConfig init!!");
-        return new RpcConfig();
+        RpcConfig rpcConfig = new RpcConfig();
+        RpcConfigWarehouse.setRpcConfig(rpcConfig);
+        return rpcConfig;
     }
 }
