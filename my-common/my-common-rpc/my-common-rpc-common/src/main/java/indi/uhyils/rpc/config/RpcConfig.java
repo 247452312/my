@@ -8,27 +8,27 @@ public class RpcConfig {
     /**
      * 服务配置
      */
-    private ApplicationConfig application;
+    private ApplicationConfig application = new ApplicationConfig();
 
     /**
      * 注册中心配置
      */
-    private RegistryConfig registry;
+    private RegistryConfig registry = new RegistryConfig();
 
     /**
      * 远程连接配置
      */
-    private ProtocolConfig protocol;
+    private ProtocolConfig protocol = new ProtocolConfig();
 
     /**
      * 服务提供者配置
      */
-    private ProviderConfig provider;
+    private ProviderConfig provider = new ProviderConfig();
 
     /**
      * 消费者配置
      */
-    private ConsumerConfig consumer;
+    private ConsumerConfig consumer = new ConsumerConfig();
 
     public ApplicationConfig getApplication() {
         return application;

@@ -1,9 +1,10 @@
 package indi.uhyils.rpc.netty.consumer;
 
+import indi.uhyils.rpc.config.RpcConfig;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
 import indi.uhyils.rpc.netty.handler.RpcConsumerHandler;
-import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.util.FixedLengthQueue;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -58,9 +59,10 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
      */
     private FixedLengthQueue<Long> timeOut = new FixedLengthQueue<>(200, Long.class);
 
-    public RpcNettyNormalConsumer(Long outTime, RpcCallBack callBack) {
-        super(outTime);
+    public RpcNettyNormalConsumer(RpcConfig rpcConfig, Long outTime, RpcCallBack callBack) {
+        super(rpcConfig,outTime);
         this.callBack = callBack;
+
     }
 
     @Override

@@ -58,11 +58,10 @@ public interface RegistryMode {
     /**
      * 获取目标接口的信息(无配置)
      *
-     * @param serviceName
      * @param interfaceName
      * @return
      */
-    List<RegistryInfo> getTargetInterfaceInfo(String serviceName, String interfaceName) throws Exception;
+    List<RegistryInfo> getTargetInterfaceInfo(String interfaceName) throws Exception;
 
     /**
      * 服务端注册
@@ -83,7 +82,7 @@ public interface RegistryMode {
      * @throws RegistryTypeException
      * @throws RegistryException
      */
-    void removeInstance(String interfaceName, String ip, int port) throws Exception, RegistryTypeException, RegistryException;
+    void removeInstance(String interfaceName, String ip, int port) throws Exception;
 
     /**
      * 添加服务监听
@@ -92,7 +91,7 @@ public interface RegistryMode {
      * @param listener
      * @throws Exception
      */
-    void addServiceListener(String interfaceName,String groupName, RegistryServiceListener listener) throws Exception;
+    void addServiceListener(String interfaceName, String groupName, RegistryServiceListener listener) throws Exception;
 
     /**
      * 删除服务监听

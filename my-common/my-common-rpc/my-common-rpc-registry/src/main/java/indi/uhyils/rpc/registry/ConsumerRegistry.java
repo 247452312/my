@@ -3,6 +3,7 @@ package indi.uhyils.rpc.registry;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
+import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
@@ -27,8 +28,8 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
      */
     private String selfIp;
 
-    public ConsumerRegistry(Cluster cluster, Class<T> serviceClass, String selfIp, RegistryMode mode) {
-        super(cluster, serviceClass);
+    public ConsumerRegistry(Cluster cluster, Class<T> serviceClass, String selfIp, RegistryMode mode, RpcConfig config) {
+        super(cluster, serviceClass, config);
         this.selfIp = selfIp;
         this.mode = mode;
         mode.setType(RpcNettyTypeEnum.CONSUMER);

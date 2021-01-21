@@ -7,6 +7,10 @@ package indi.uhyils.rpc.config;
 public class ProviderConfig {
 
     /**
+     * 是否开启生产者
+     */
+    private boolean enable = false;
+    /**
      * rpc端口
      */
     private Integer port;
@@ -18,5 +22,10 @@ public class ProviderConfig {
 
     public void setPort(Integer port) {
         this.port = port;
+        enable = true;
+    }
+
+    public boolean isEnable() {
+        return enable;
     }
 }

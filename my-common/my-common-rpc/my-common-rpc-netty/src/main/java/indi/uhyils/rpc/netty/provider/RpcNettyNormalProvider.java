@@ -1,9 +1,10 @@
 package indi.uhyils.rpc.netty.provider;
 
+import indi.uhyils.rpc.config.RpcConfig;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
 import indi.uhyils.rpc.netty.handler.RpcProviderHandler;
-import indi.uhyils.rpc.exchange.pojo.RpcData;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -37,9 +38,10 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
     private EventLoopGroup workerGroup;
 
 
-    public RpcNettyNormalProvider(Long outTime, RpcCallBack callback) {
-        super(outTime);
+    public RpcNettyNormalProvider(RpcConfig rpcConfig, Long outTime, RpcCallBack callback) {
+        super(rpcConfig, outTime);
         this.callback = callback;
+        this.config = rpcConfig;
     }
 
     @Override

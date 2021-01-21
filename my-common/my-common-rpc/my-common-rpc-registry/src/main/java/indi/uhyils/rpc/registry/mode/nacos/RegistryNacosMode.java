@@ -7,6 +7,8 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import indi.uhyils.rpc.config.RegistryConfig;
+import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.registry.content.RegistryContent;
 import indi.uhyils.rpc.registry.exception.RegistryException;
@@ -50,12 +52,22 @@ public class RegistryNacosMode implements RegistryMode {
     private RpcNettyTypeEnum type;
 
     /**
-     * @param host nacos所在的host
-     * @param port nacos所在的port
+     * 服务地址
+     */
+    private String serverAddr;
+
+    /**
+     * 配置
+     */
+    private RpcConfig config;
+
+    /**
      * @throws NacosException
      */
-    public RegistryNacosMode(String host, Integer port) throws NacosException {
-        String serverAddr = host + ":" + port;
+    public RegistryNacosMode(RpcConfig rpcConfig) throws NacosException {
+        this.config = rpcConfig;
+        RegistryConfig registry = rpcConfig.getRegistry();
+        this.serverAddr = registry.getHost() + ":" + registry.getPort();
         nacosConfig = ConfigFactory.createConfigService(serverAddr);
         nacosNaming = NamingFactory.createNamingService(serverAddr);
     }
@@ -86,7 +98,7 @@ public class RegistryNacosMode implements RegistryMode {
     }
 
     @Override
-    public List<RegistryInfo> getTargetInterfaceInfo(String serviceName, String interfaceName) throws NacosException {
+    public List<RegistryInfo> getTargetInterfaceInfo(String interfaceName) throws NacosException {
         List<Instance> allInstances = nacosNaming.getAllInstances(interfaceName, RegistryContent.DEFAULT_REGISTRY_GROUP_NAME);
         List<RegistryInfo> result = new ArrayList<>(allInstances.size());
         for (Instance instance : allInstances) {
@@ -137,7 +149,7 @@ public class RegistryNacosMode implements RegistryMode {
     }
 
     @Override
-    public void removeInstance(String interfaceName, String ip, int port) throws NacosException, RegistryTypeException, RegistryException {
+    public void removeInstance(String interfaceName, String ip, int port) throws NacosException {
         nacosNaming.deregisterInstance(interfaceName, ip, port);
     }
 

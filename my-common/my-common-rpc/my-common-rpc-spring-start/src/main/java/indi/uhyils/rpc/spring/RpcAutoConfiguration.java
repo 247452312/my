@@ -3,7 +3,6 @@ package indi.uhyils.rpc.spring;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.ClusterFactory;
-import indi.uhyils.rpc.config.ProviderConfig;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.registry.Registry;
 import indi.uhyils.rpc.registry.RegistryFactory;
@@ -73,11 +72,11 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
     @Bean("providerCluster")
     @DependsOn({"rpcConfig", RPC_CONFIGURER})
     public Cluster createProviderCluster(RpcConfig rpcConfig) {
-        LogUtil.info("Provider Cluster init!!");
-        ProviderConfig provider = rpcConfig.getProvider();
-        if (provider == null) {
+        if (!rpcConfig.getProvider().isEnable()) {
             return null;
         }
+        LogUtil.info("Provider Cluster init!!");
+
         Map<String, Object> springBeans = applicationContext.getBeansWithAnnotation(RpcService.class);
         Map<String, Object> beans = new HashMap<>(springBeans.size());
         for (Map.Entry<String, Object> entity : springBeans.entrySet()) {
@@ -90,13 +89,13 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
         }
         Cluster providerCluster = null;
         try {
-            providerCluster = ClusterFactory.createDefaultProviderCluster(provider.getPort(), beans);
+            providerCluster = ClusterFactory.createDefaultProviderCluster(rpcConfig, rpcConfig.getProvider().getPort(), beans);
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
         try {
             registries = new ArrayList<>(beans.size());
-            RegistryNacosMode mode = new RegistryNacosMode(rpcConfig.getRegistry().getHost(), rpcConfig.getRegistry().getPort());
+            RegistryNacosMode mode = new RegistryNacosMode(rpcConfig);
             for (Map.Entry<String, Object> entry : beans.entrySet()) {
                 Object bean = entry.getValue();
                 Class<?> clazz = bean.getClass();
@@ -104,7 +103,7 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
                     Class<?>[] interfaces = clazz.getInterfaces();
                     clazz = interfaces[0];
                 }
-                registries.add(RegistryFactory.createProvider(rpcConfig.getApplication().getName(), clazz, rpcConfig.getProvider().getPort(), mode));
+                registries.add(RegistryFactory.createProvider(rpcConfig, clazz, mode));
 
             }
         } catch (Exception e) {

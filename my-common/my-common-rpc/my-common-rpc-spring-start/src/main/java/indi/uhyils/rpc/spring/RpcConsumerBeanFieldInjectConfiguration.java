@@ -49,8 +49,8 @@ public class RpcConsumerBeanFieldInjectConfiguration implements ApplicationConte
 
     /**
      * 通过方法注入, 方法入参要同时为远程方法
-     *  @param bean      类实例
      *
+     * @param bean 类实例
      */
     private void methodInject(Object bean) {
         Method[] declaredMethods = bean.getClass().getDeclaredMethods();
@@ -78,8 +78,8 @@ public class RpcConsumerBeanFieldInjectConfiguration implements ApplicationConte
 
     /**
      * 通过属性进行注入
-     *  @param bean      类实例
      *
+     * @param bean 类实例
      */
     private void fieldInject(Object bean) {
         Field[] declaredFields = bean.getClass().getDeclaredFields();
@@ -115,7 +115,7 @@ public class RpcConsumerBeanFieldInjectConfiguration implements ApplicationConte
         if (consumerRegistryCache.get(type.getName()) == null) {
             synchronized (consumerRegistryCache) {
                 if (consumerRegistryCache.get(type.getName()) == null) {
-                    Object o = RpcProxyFactory.newProxy(type, rpcConfig.getRegistry().getHost(), rpcConfig.getRegistry().getPort());
+                    Object o = RpcProxyFactory.newProxy(type, rpcConfig);
                     consumerRegistryCache.put(type.getName(), o);
                 }
             }

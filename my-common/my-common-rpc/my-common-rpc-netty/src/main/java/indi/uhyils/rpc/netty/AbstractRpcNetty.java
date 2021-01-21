@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty;
 
+import indi.uhyils.rpc.config.RpcConfig;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.Channel;
 
@@ -14,11 +15,16 @@ public abstract class AbstractRpcNetty implements RpcNetty {
      */
     protected Long timeOut;
     /**
+     * 配置
+     */
+    protected RpcConfig config;
+    /**
      * bootstrap
      */
     protected AbstractBootstrap<?, ? extends Channel> bootstrap;
 
-    protected AbstractRpcNetty(Long timeOut) {
+    protected AbstractRpcNetty(RpcConfig rpcConfig, Long timeOut) {
+        this.config = rpcConfig;
         this.timeOut = timeOut;
     }
 
@@ -38,5 +44,13 @@ public abstract class AbstractRpcNetty implements RpcNetty {
 
     public void setTimeOut(Long timeOut) {
         this.timeOut = timeOut;
+    }
+
+    public RpcConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(RpcConfig config) {
+        this.config = config;
     }
 }

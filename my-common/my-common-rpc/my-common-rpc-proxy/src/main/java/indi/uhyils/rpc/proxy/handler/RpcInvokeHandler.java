@@ -1,9 +1,10 @@
 package indi.uhyils.rpc.proxy.handler;
 
 import com.alibaba.fastjson.JSON;
+import indi.uhyils.rpc.config.ConsumerConfig;
+import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.registry.Registry;
 import indi.uhyils.rpc.registry.RegistryFactory;
-import indi.uhyils.rpc.registry.content.RegistryContent;
 import indi.uhyils.rpc.registry.mode.nacos.RegistryNacosMode;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
@@ -17,38 +18,53 @@ import java.lang.reflect.Method;
  */
 public class RpcInvokeHandler implements InvocationHandler {
     private static final String TO_STRING = "toString";
+
     /**
-     * 服务名称
+     * 配置
      */
-    private String serviceName;
+    private RpcConfig rpcConfig;
+    /**
+     * 这个handler代理的类
+     */
+    private Class<?> type;
+
     /**
      * 注册类
      */
     private Registry registry;
-    /**
-     * 注册中心的host
-     */
-    private String registryHost;
-    /**
-     * 注册中心的端口
-     */
-    private Integer registryPort;
 
-    public RpcInvokeHandler(Class clazz, String registryHost, Integer registryPort) {
-        this.serviceName = RegistryContent.DEFAULT_REGISTRY_GROUP_NAME;
-        this.registryHost = registryHost;
-        this.registryPort = registryPort;
-        RegistryNacosMode mode = null;
-        try {
-            mode = new RegistryNacosMode(this.registryHost, this.registryPort);
-            this.registry = RegistryFactory.createConsumer(serviceName, clazz, IpUtil.getIp(), mode);
-        } catch (Exception e) {
-            LogUtil.error(this, e);
+
+    public RpcInvokeHandler(Class<?> clazz, RpcConfig rpcConfig) {
+        this.rpcConfig = rpcConfig;
+        this.type = clazz;
+        // 如果懒加载,那么就不加载
+        if (isCheck()) {
+            RegistryNacosMode mode;
+            try {
+                this.registry = RegistryFactory.createConsumer(rpcConfig, clazz, IpUtil.getIp());
+            } catch (Exception e) {
+                LogUtil.error(this, e);
+            }
         }
+
+    }
+
+    private boolean isCheck() {
+        ConsumerConfig consumer = this.rpcConfig.getConsumer();
+        return consumer.getCheck();
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        if (registry == null) {
+            RegistryNacosMode mode;
+            try {
+
+                this.registry = RegistryFactory.createConsumer(rpcConfig, type, IpUtil.getIp());
+            } catch (Exception e) {
+                LogUtil.error(this, e);
+            }
+        }
 //        IdUtil bean = SpringUtil.getBean(IdUtil.class);
 
         if (TO_STRING.equals(method.getName())) {

@@ -25,7 +25,6 @@ public class NettyInitDto implements Serializable {
      */
     private RpcCallBack callback;
 
-
     public Integer getPort() {
         return port;
     }
