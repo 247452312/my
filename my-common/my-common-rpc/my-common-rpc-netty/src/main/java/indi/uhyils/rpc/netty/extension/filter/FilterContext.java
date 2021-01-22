@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.netty.extension.filter;
 
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcResult;
+import indi.uhyils.rpc.netty.extension.filter.invoker.RpcResultImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,17 @@ import java.util.Set;
  */
 public class FilterContext {
 
-    private RpcResult rpcResult;
+    /**
+     * netty的key
+     */
+    public static final String NETTY_KEY = "netty";
+
+    /**
+     * 生产者需要存储结果的key
+     */
+    public static final String RESULT_KEY = "result";
+
+    private RpcResult rpcResult = new RpcResultImpl();
 
     private Map<String, Object> info = new HashMap<>();
 

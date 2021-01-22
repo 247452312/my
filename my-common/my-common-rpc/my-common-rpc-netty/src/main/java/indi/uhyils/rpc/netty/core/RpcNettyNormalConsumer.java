@@ -5,13 +5,15 @@ import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
+import indi.uhyils.rpc.netty.core.handler.RpcConsumerHandler;
 import indi.uhyils.rpc.netty.extension.filter.FilterContext;
 import indi.uhyils.rpc.netty.extension.filter.filter.InvokerChainBuilder;
-import indi.uhyils.rpc.netty.extension.filter.invoker.LastConsumerRequestInvoker;
+import indi.uhyils.rpc.netty.extension.filter.invoker.LastConsumerInvoker;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcInvoker;
-import indi.uhyils.rpc.netty.handler.RpcConsumerHandler;
 import indi.uhyils.rpc.netty.util.FixedLengthQueue;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -60,7 +62,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
     /**
      * 超时的记录在这里,防止返回值的内存溢出
      */
-    private FixedLengthQueue<Long> timeOut = new FixedLengthQueue<>(200, Long.class);
+    private FixedLengthQueue<Long> timeOutUnique = new FixedLengthQueue<>(200, Long.class);
 
     public RpcNettyNormalConsumer(RpcConfig rpcConfig, Long outTime, RpcCallBack callBack) {
         super(rpcConfig, outTime);
@@ -71,10 +73,10 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
     @Override
     public Boolean init(String host, Integer port) {
         Bootstrap client = new Bootstrap();
-        EventLoopGroup group = new NioEventLoopGroup();
-        this.group = group;
+        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
+        this.group = eventLoopGroup;
         setBootstrap(client);
-        client.group(group)
+        client.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
                 .handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
@@ -82,7 +84,6 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
                         ChannelPipeline p = ch.pipeline();
                         p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
                         p.addLast("byte-to-object", new RpcConsumerHandler(callBack, RpcNettyNormalConsumer.this));
-//                        p.addLast("logging", new LoggingHandler(LogLevel.INFO));
                     }
                 });
 
@@ -120,15 +121,13 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
         }
     }
 
-    @Override
-    public Boolean sendMsg(byte[] bytes) throws RpcException, ClassNotFoundException {
-        ChannelFuture channelFuture = getChannelFuture();
-        RpcInvoker rpcInvoker = InvokerChainBuilder.buildConsumerSendInvokerChain(new LastConsumerRequestInvoker(bytes, channelFuture));
-        rpcInvoker.invoke(new FilterContext());
+    public Boolean sendMsg(byte[] bytes) {
+        ByteBuf buf = Unpooled.buffer();
+        buf.writeBytes(bytes);
+        channelFuture.channel().writeAndFlush(buf);
         return true;
     }
 
-    @Override
     public RpcData wait(Long unique) throws InterruptedException {
         // 请求第一次
         if (rpcResponseMap.containsKey(unique)) {
@@ -153,12 +152,20 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
             rpcResponseMap.remove(unique);
             return rpcData;
         }
-        timeOut.add(unique);
+        timeOutUnique.add(unique);
         return null;
     }
 
     @Override
-    public void awaken(Long unique) {
+    public RpcData sendMsg(RpcData rpcData) throws RpcException, ClassNotFoundException, InterruptedException {
+        LastConsumerInvoker lastConsumerInvoker = new LastConsumerInvoker(this);
+        RpcInvoker rpcInvoker = InvokerChainBuilder.buildConsumerSendInvokerChain(lastConsumerInvoker);
+        FilterContext context = new FilterContext();
+        context.getRpcResult().set(rpcData);
+        return rpcInvoker.invoke(context).get();
+    }
+
+    private void awaken(Long unique) {
         if (waitLock.containsKey(unique)) {
             Condition condition = waitLock.get(unique);
 
@@ -182,7 +189,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
     public void put(RpcData rpcData) {
         Long unique = rpcData.unique();
         // 先判断是否曾经执行过并且超时了
-        Boolean contain = timeOut.contain(unique);
+        Boolean contain = timeOutUnique.contain(unique);
         if (contain) {
             return;
         }

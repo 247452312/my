@@ -1,6 +1,6 @@
 package indi.uhyils.rpc.cluster.consumer.impl;
 
-import indi.uhyils.rpc.cluster.consumer.AbstractConsumerCluster;
+import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
 import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月25日 12时23分
  */
-public class ConsumerDefaultCluster extends AbstractConsumerCluster {
+public class ConsumerDefaultCluster implements Cluster {
     /**
      * 需要负载均衡的netty们
      */
@@ -93,7 +93,7 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
     }
 
     @Override
-    public RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException, RpcException {
+    public RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException, RpcException, ClassNotFoundException {
         if (nettyMap.size() == 0) {
             throw new RpcException("指定的服务端不存在");
         }
@@ -117,7 +117,7 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
     }
 
 
-    private RpcData sendByFastestReturnSpeed(RpcData rpcData) throws InterruptedException {
+    private RpcData sendByFastestReturnSpeed(RpcData rpcData) throws InterruptedException, RpcException, ClassNotFoundException {
         NettyInfo fastNettyInfo = null;
         long minTime = 0;
         for (NettyInfo nettyInfo : nettyMap.keySet()) {
@@ -135,22 +135,18 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
         assert fastNettyInfo != null;
         long startTime = System.currentTimeMillis();
         RpcNetty rpcNetty = nettyMap.get(fastNettyInfo);
-        Boolean aBoolean = rpcNetty.sendMsg(rpcData.toBytes());
-        if (aBoolean) {
-            RpcData wait = rpcNetty.wait(rpcData.unique());
-            long runTime = System.currentTimeMillis() - startTime;
-            Long lastFiveSendAvgTime = fastNettyInfo.getLastFiveSendAvgTime();
-            if (lastFiveSendAvgTime == null) {
-                lastFiveSendAvgTime = runTime;
-            }
-            long lastTime = (lastFiveSendAvgTime * 5 + runTime) / 6L;
-            fastNettyInfo.setLastFiveSendAvgTime(lastTime);
-            return wait;
+        RpcData wait = rpcNetty.sendMsg(rpcData);
+        long runTime = System.currentTimeMillis() - startTime;
+        Long lastFiveSendAvgTime = fastNettyInfo.getLastFiveSendAvgTime();
+        if (lastFiveSendAvgTime == null) {
+            lastFiveSendAvgTime = runTime;
         }
-        return null;
+        long lastTime = (lastFiveSendAvgTime * 5 + runTime) / 6L;
+        fastNettyInfo.setLastFiveSendAvgTime(lastTime);
+        return wait;
     }
 
-    private RpcData manualAssignmentByWeight(RpcData rpcData) throws InterruptedException {
+    private RpcData manualAssignmentByWeight(RpcData rpcData) throws InterruptedException, RpcException, ClassNotFoundException {
         if (weightArrayForManualAssignment == null) {
             Integer length = 0;
             for (NettyInfo nettyInfo : nettyMap.keySet()) {
@@ -168,14 +164,10 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
 
         int i = RandomUtils.nextInt(0, weightArrayForManualAssignment.length);
         RpcNetty rpcNetty = nettyMap.get(weightArrayForManualAssignment[i]);
-        Boolean aBoolean = rpcNetty.sendMsg(rpcData.toBytes());
-        if (aBoolean) {
-            return rpcNetty.wait(rpcData.unique());
-        }
-        return null;
+        return rpcNetty.sendMsg(rpcData);
     }
 
-    private RpcData sendByPolling(RpcData rpcData) throws InterruptedException, RpcException {
+    private RpcData sendByPolling(RpcData rpcData) throws InterruptedException, RpcException, ClassNotFoundException {
         int pollIndex = pollingMark.getAndAdd(1);
         if (pollIndex > nettyMap.size()) {
             pollingMark.set(0);
@@ -185,26 +177,18 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
         }
     }
 
-    private RpcData randomSend(RpcData rpcData) throws InterruptedException, RpcException {
+    private RpcData randomSend(RpcData rpcData) throws InterruptedException, RpcException, ClassNotFoundException {
         int i = RandomUtils.nextInt(0, nettyMap.size());
         return sendByIndex(rpcData, i);
     }
 
-    private RpcData sendByIndex(RpcData rpcData, int i) throws InterruptedException, RpcException {
+    private RpcData sendByIndex(RpcData rpcData, int i) throws InterruptedException, RpcException, ClassNotFoundException {
         i = i % nettyMap.size();
         Object o = nettyMap.keySet().toArray()[i];
         RpcNetty rpcNetty = nettyMap.get(o);
-        Boolean aBoolean = rpcNetty.sendMsg(rpcData.toBytes());
-        if (aBoolean) {
-            return rpcNetty.wait(rpcData.unique());
-        }
-        return null;
+        return rpcNetty.sendMsg(rpcData);
     }
 
-    @Override
-    public RpcData wait(Long unique) throws InterruptedException {
-        return null;
-    }
 
     @Override
     public Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) {
@@ -234,10 +218,5 @@ public class ConsumerDefaultCluster extends AbstractConsumerCluster {
             nettyMap.put(nettyInfo, netty);
         }
         return true;
-    }
-
-    @Override
-    public <T> T invoke(RpcData rpcData, Class<T> targetClass) {
-        return null;
     }
 }

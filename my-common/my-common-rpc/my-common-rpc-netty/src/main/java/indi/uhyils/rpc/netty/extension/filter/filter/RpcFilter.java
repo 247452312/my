@@ -23,5 +23,5 @@ public interface RpcFilter extends RpcExtension {
      * @throws RpcException
      * @throws ClassNotFoundException
      */
-    RpcResult invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException;
+    RpcResult invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException;
 }

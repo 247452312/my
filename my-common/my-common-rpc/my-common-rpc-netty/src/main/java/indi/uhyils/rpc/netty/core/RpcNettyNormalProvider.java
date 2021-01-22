@@ -4,7 +4,7 @@ import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
-import indi.uhyils.rpc.netty.handler.RpcProviderHandler;
+import indi.uhyils.rpc.netty.core.handler.RpcProviderHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -46,10 +46,8 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
 
     @Override
     public Boolean init(String host, Integer port) {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-        this.bossGroup = bossGroup;
-        this.workerGroup = workerGroup;
+        bossGroup = new NioEventLoopGroup(1);
+        workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
@@ -62,7 +60,6 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
                             ChannelPipeline p = ch.pipeline();
                             p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
                             p.addLast("byte-to-object", new RpcProviderHandler(callback));
-//                            p.addLast("logging", new LoggingHandler(LogLevel.INFO));
                         }
                     });
 
@@ -92,19 +89,8 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
     }
 
     @Override
-    public Boolean sendMsg(byte[] bytes) {
-        return true;
-    }
-
-    @Override
-    public RpcData wait(Long unique) {
-        //服务提供者不跑这玩意
+    public RpcData sendMsg(RpcData rpcData) {
         return null;
-    }
-
-    @Override
-    public void awaken(Long unique) {
-        //服务提供者不跑这玩意
     }
 
 }

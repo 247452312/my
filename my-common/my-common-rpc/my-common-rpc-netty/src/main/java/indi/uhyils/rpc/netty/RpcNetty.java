@@ -44,25 +44,10 @@ public interface RpcNetty {
     Boolean shutdown();
 
     /**
-     * 发送信息
+     * 发送信息 等待回应
      *
-     * @param bytes
+     * @param rpcData
      * @return
      */
-    Boolean sendMsg(byte[] bytes) throws RpcException, ClassNotFoundException;
-
-    /**
-     * 等待执行long类型的回应
-     *
-     * @param unique
-     * @return
-     */
-    RpcData wait(Long unique) throws InterruptedException;
-
-    /**
-     * 唤醒
-     *
-     * @param unique
-     */
-    void awaken(Long unique);
+    RpcData sendMsg(RpcData rpcData) throws RpcException, ClassNotFoundException, InterruptedException;
 }

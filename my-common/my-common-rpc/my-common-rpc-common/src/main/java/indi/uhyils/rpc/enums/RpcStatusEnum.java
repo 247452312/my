@@ -14,13 +14,13 @@ public enum RpcStatusEnum {
      */
     OK("成功",(byte) 20),
     /**
-     * 客户端超时
+     * 消费者超时
      */
-    CLIENT_TIMEOUT("客户端超时",(byte) 30),
+    CONSUMER_TIMEOUT("消费者超时",(byte) 30),
     /**
-     * 服务端超时
+     * 生产者超时
      */
-    SERVER_TIMEOUT("服务端超时",(byte) 31),
+    PROVIDER_TIMEOUT("生产者超时",(byte) 31),
     /**
      * 请求失败
      */

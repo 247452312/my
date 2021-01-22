@@ -15,6 +15,11 @@ public class ProviderConfig {
      */
     private Integer port;
 
+    /**
+     * 超时时间
+     */
+    private Long timeout = 3000L;
+
 
     public Integer getPort() {
         return port;
@@ -22,6 +27,15 @@ public class ProviderConfig {
 
     public void setPort(Integer port) {
         this.port = port;
+        enable = true;
+    }
+
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
         enable = true;
     }
 

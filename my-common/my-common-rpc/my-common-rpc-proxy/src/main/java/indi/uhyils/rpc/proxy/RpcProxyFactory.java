@@ -1,7 +1,7 @@
 package indi.uhyils.rpc.proxy;
 
 import indi.uhyils.rpc.config.RpcConfig;
-import indi.uhyils.rpc.proxy.handler.RpcInvokeHandler;
+import indi.uhyils.rpc.proxy.handler.RpcProxyHandler;
 import indi.uhyils.rpc.registry.exception.RegistryException;
 
 import java.lang.reflect.Proxy;
@@ -12,6 +12,10 @@ import java.lang.reflect.Proxy;
  */
 public class RpcProxyFactory {
 
+    private RpcProxyFactory() {
+
+    }
+
     public static <T> T newProxy(Class<T> clazz, RpcConfig rpcConfig) throws RegistryException {
         if (!clazz.isInterface()) {
             throw new RegistryException("必须使用接口,您使用的是: " + clazz.getName());
@@ -21,7 +25,7 @@ public class RpcProxyFactory {
         Class<?>[] classes = new Class[interfaces.length + 1];
         System.arraycopy(interfaces, 0, classes, 0, interfaces.length);
         classes[classes.length - 1] = clazz;
-        Object o = Proxy.newProxyInstance(clazz.getClassLoader(), classes, new RpcInvokeHandler(clazz, rpcConfig));
+        Object o = Proxy.newProxyInstance(clazz.getClassLoader(), classes, new RpcProxyHandler(clazz, rpcConfig));
         return (T) o;
     }
 }

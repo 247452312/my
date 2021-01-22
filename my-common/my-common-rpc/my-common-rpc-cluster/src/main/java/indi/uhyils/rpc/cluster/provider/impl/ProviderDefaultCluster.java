@@ -4,6 +4,7 @@ import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
 import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.cluster.provider.AbstractProviderCluster;
+import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.RpcNetty;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
@@ -70,19 +71,10 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
     }
 
     @Override
-    public RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException {
-        Boolean aBoolean = netty.sendMsg(rpcData.toBytes());
-        if (aBoolean) {
-            return netty.wait(rpcData.unique());
-        } else {
-            return null;
-        }
+    public RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException, RpcException, ClassNotFoundException {
+        return netty.sendMsg(rpcData);
     }
 
-    @Override
-    public RpcData wait(Long unique) throws InterruptedException {
-        return netty.wait(unique);
-    }
 
     @Override
     public Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) {

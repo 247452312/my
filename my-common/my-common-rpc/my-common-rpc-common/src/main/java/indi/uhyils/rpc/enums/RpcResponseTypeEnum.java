@@ -27,6 +27,18 @@ public enum RpcResponseTypeEnum {
         this.code = code;
     }
 
+    public static RpcResponseTypeEnum parse(Integer responseType) {
+        switch (responseType) {
+            case 0:
+                return NULL_BACK;
+            case 1:
+                return STRING_BACK;
+            default:
+            case 2:
+                return EXCEPTION;
+        }
+    }
+
     public Integer getCode() {
         return code;
     }

@@ -1,7 +1,7 @@
 package indi.uhyils.rpc.exchange.pojo;
 
-import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.exception.RpcException;
+import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -44,7 +44,16 @@ public interface RpcFactory {
     RpcData createByInfo(Long unique, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException;
 
     /**
-     * 获取RPC心跳包
+     * 创建一个超时的rpc返回体
+     *
+     * @param request 请求
+     * @param timeout 超时时间
+     * @return
+     */
+    RpcData createTimeoutResponse(RpcData request, Long timeout) throws RpcException;
+
+    /**
+     * 获取RPC心跳包请求
      *
      * @return
      * @throws RpcException

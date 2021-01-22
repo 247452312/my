@@ -1,5 +1,7 @@
 package indi.uhyils.rpc.netty.extension.filter.invoker;
 
+import indi.uhyils.rpc.exchange.pojo.RpcData;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月19日 11时10分
@@ -11,7 +13,7 @@ public interface RpcResult {
      *
      * @return
      */
-    Object get();
+    RpcData get();
 
     /**
      * 设置其中的数据
@@ -19,5 +21,5 @@ public interface RpcResult {
      * @param obj
      * @return
      */
-    Object set(Object obj);
+    RpcData set(RpcData obj);
 }

@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月28日 06时47分
  */
-public class RpcInvokeHandler implements InvocationHandler {
+public class RpcProxyHandler implements InvocationHandler {
     private static final String TO_STRING = "toString";
 
     /**
@@ -34,7 +34,7 @@ public class RpcInvokeHandler implements InvocationHandler {
     private Registry registry;
 
 
-    public RpcInvokeHandler(Class<?> clazz, RpcConfig rpcConfig) {
+    public RpcProxyHandler(Class<?> clazz, RpcConfig rpcConfig) {
         this.rpcConfig = rpcConfig;
         this.type = clazz;
         // 如果懒加载,那么就不加载
@@ -65,7 +65,6 @@ public class RpcInvokeHandler implements InvocationHandler {
                 LogUtil.error(this, e);
             }
         }
-//        IdUtil bean = SpringUtil.getBean(IdUtil.class);
 
         if (TO_STRING.equals(method.getName())) {
             return "this is the interface,it`s name is " + proxy.getClass().getSimpleName();

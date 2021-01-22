@@ -1,28 +1,33 @@
-package indi.uhyils.rpc.netty.extension.filter.invoker;
+package indi.uhyils.rpc.netty.core.handler;
 
-import indi.uhyils.rpc.exception.RpcException;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
+import indi.uhyils.rpc.netty.core.RpcNettyNormalConsumer;
 import indi.uhyils.rpc.netty.extension.RpcExtensionLoader;
 import indi.uhyils.rpc.netty.extension.RpcExtensionLoaderTypeEnum;
-import indi.uhyils.rpc.netty.extension.filter.FilterContext;
 import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseByteExtension;
 import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseDataExtension;
-import indi.uhyils.rpc.exchange.pojo.RpcData;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2021年01月19日 07时27分
+ * @date 文件创建日期 2020年12月21日 10时58分
  */
-public class LastConsumerResponseInvoker implements RpcInvoker {
+public class RpcConsumerHandler extends SimpleChannelInboundHandler<ByteBuf> {
+
 
     /**
      * 回调
      */
-    private final RpcCallBack callback;
+    private RpcCallBack callBack;
+    /**
+     * 观察者模式
+     */
+    private RpcNettyNormalConsumer netty;
 
     /**
      * 消费者接收回复byte拦截器
@@ -33,39 +38,27 @@ public class LastConsumerResponseInvoker implements RpcInvoker {
      */
     private List<ConsumerResponseDataExtension> consumerResponseDataFilters;
 
-    private ChannelHandlerContext ctx;
-    private ByteBuf msg;
-
-
-    public LastConsumerResponseInvoker(RpcCallBack callback, ChannelHandlerContext ctx, ByteBuf msg) {
-        this.callback = callback;
-        this.ctx = ctx;
-        this.msg = msg;
+    public RpcConsumerHandler(RpcCallBack callBack, RpcNettyNormalConsumer netty) {
+        this.callBack = callBack;
+        this.netty = netty;
         consumerResponseByteFilters = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_STEP, ConsumerResponseByteExtension.class);
         consumerResponseDataFilters = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_STEP, ConsumerResponseDataExtension.class);
+
     }
 
     @Override
-    public RpcResult invoke(FilterContext context) throws RpcException, ClassNotFoundException {
-        RpcResult rpcResult = context.getRpcResult();
-        if (rpcResult == null) {
-            context.setRpcResult(new RpcResultImpl());
-        }
-
+    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         byte[] bytes = new byte[msg.readableBytes()];
         msg.readBytes(bytes);
         // ConsumerResponseByteFilter
         for (ConsumerResponseByteExtension filter : consumerResponseByteFilters) {
             bytes = filter.doFilter(bytes);
         }
-        RpcData rpcData = callback.getRpcData(bytes);
+        RpcData rpcData = callBack.getRpcData(bytes);
         // ConsumerResponseDataFilter
         for (ConsumerResponseDataExtension filter : consumerResponseDataFilters) {
             rpcData = filter.doFilter(rpcData);
         }
-        rpcResult = context.getRpcResult();
-        rpcResult.set(rpcData);
-        return rpcResult;
+        netty.put(rpcData);
     }
-
 }

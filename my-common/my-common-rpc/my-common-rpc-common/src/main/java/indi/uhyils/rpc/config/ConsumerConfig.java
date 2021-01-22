@@ -12,9 +12,9 @@ public class ConsumerConfig {
     private Boolean check = Boolean.TRUE;
 
     /**
-     * 超时
+     * 超时 默认10秒
      */
-    private Long timeOut = 3000L;
+    private Long timeout = 10000L;
 
 
     public Boolean getCheck() {
@@ -25,11 +25,11 @@ public class ConsumerConfig {
         this.check = check;
     }
 
-    public Long getTimeOut() {
-        return timeOut;
+    public Long getTimeout() {
+        return timeout;
     }
 
-    public void setTimeOut(Long timeOut) {
-        this.timeOut = timeOut;
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
     }
 }

@@ -1,10 +1,13 @@
 package indi.uhyils.rpc.exchange.pojo.request;
 
-import indi.uhyils.rpc.exchange.content.MyRpcContent;
+import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
+import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.exchange.pojo.*;
+import indi.uhyils.rpc.exchange.pojo.response.RpcNormalResponse;
+import indi.uhyils.rpc.exchange.pojo.response.RpcResponseContentFactory;
 
 import java.nio.charset.StandardCharsets;
 
@@ -45,6 +48,28 @@ public class RpcRequestFactory extends AbstractRpcFactory {
         rpcNormalRequest.setStatus(RpcStatusEnum.NULL.getCode());
         rpcNormalRequest.setUnique(unique);
         RpcContent content = RpcRequestContentFactory.createByContentArray(rpcNormalRequest, contentArray);
+        rpcNormalRequest.setContent(content);
+        rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
+        return rpcNormalRequest;
+    }
+
+    /**
+     * 客户端超时
+     *
+     * @param request 请求
+     * @return
+     */
+    @Override
+    public RpcData createTimeoutResponse(RpcData request, Long timeout) throws RpcException {
+        RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
+        rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
+        rpcNormalRequest.setVersion(MyRpcContent.VERSION);
+        rpcNormalRequest.setHeaders(request.rpcHeaders());
+        String[] contentArray = {String.valueOf(RpcResponseTypeEnum.EXCEPTION.getCode()), "消费者超时:" + timeout};
+        rpcNormalRequest.setContentArray(contentArray);
+        rpcNormalRequest.setStatus(RpcStatusEnum.CONSUMER_TIMEOUT.getCode());
+        rpcNormalRequest.setUnique(request.unique());
+        RpcContent content = RpcResponseContentFactory.createByContentArray(rpcNormalRequest, contentArray);
         rpcNormalRequest.setContent(content);
         rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
         return rpcNormalRequest;

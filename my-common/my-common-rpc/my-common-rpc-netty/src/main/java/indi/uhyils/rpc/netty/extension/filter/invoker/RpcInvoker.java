@@ -16,5 +16,5 @@ public interface RpcInvoker {
      * @throws RpcException
      * @throws ClassNotFoundException
      */
-    RpcResult invoke(FilterContext context) throws RpcException, ClassNotFoundException;
+    RpcResult invoke(FilterContext context) throws RpcException, ClassNotFoundException, InterruptedException;
 }

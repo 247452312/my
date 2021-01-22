@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.config.RpcConfig;
+import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
@@ -42,13 +43,6 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
         }
     }
 
-    private String getConfigListenerName(Class<T> serviceClass) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(serviceClass.getSimpleName());
-        sb.append("ConfigListener");
-        return sb.toString();
-    }
-
     @Override
     public String invoke(Long unique, String methodName, Class[] paramType, Object[] args) throws RpcException, ClassNotFoundException, InterruptedException {
         RpcFactory build = RpcFactoryProducer.build(RpcTypeEnum.REQUEST);
@@ -69,6 +63,13 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
 
         RpcData rpcData = cluster.sendMsg(getHeader, info);
         RpcNormalResponseContent content = (RpcNormalResponseContent) rpcData.content();
+        Integer responseType = content.responseType();
+        RpcResponseTypeEnum type = RpcResponseTypeEnum.parse(responseType);
+        if (type == RpcResponseTypeEnum.EXCEPTION) {
+            throw new RpcException("请求出错:" + content.getResponseContent());
+        } else if (type == RpcResponseTypeEnum.NULL_BACK) {
+            return null;
+        }
         return content.getResponseContent();
     }
 }
