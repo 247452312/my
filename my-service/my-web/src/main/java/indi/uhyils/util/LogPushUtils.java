@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 public class LogPushUtils {
 
 
-    private static JsonEventProducerWithTranslator producer;
+    private static final JsonEventProducerWithTranslator producer;
 
     static {
         JsonEventFactory factory = new JsonEventFactory();

@@ -20,6 +20,7 @@ public @interface RpcSpi {
 
     /**
      * 此扩展点的名称
+     *
      * @return
      */
     String name() default "";

@@ -41,8 +41,8 @@ public class DubboHystrixCommand extends HystrixCommand<Result> {
      */
     private static final int ERROR_RATE = 50;
 
-    private Invoker<?> invoker;
-    private Invocation invocation;
+    private final Invoker<?> invoker;
+    private final Invocation invocation;
 
     public DubboHystrixCommand(Invoker<?> invoker, Invocation invocation) {
         super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(invoker.getInterface().getName()))

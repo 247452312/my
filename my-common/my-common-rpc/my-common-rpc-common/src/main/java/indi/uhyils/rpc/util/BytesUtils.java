@@ -17,6 +17,7 @@ public class BytesUtils {
      * 1byte占8bit
      */
     private static final Integer BYTE_TO_BIT_SIZE = 8;
+
     private BytesUtils() {
     }
 

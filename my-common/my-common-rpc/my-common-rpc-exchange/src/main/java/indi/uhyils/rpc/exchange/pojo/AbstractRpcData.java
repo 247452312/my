@@ -1,11 +1,11 @@
 package indi.uhyils.rpc.exchange.pojo;
 
-import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.NoMyRpcException;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exception.RpcTypeNotSupportedException;
 import indi.uhyils.rpc.exception.RpcVersionNotSupportedException;
+import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.exchange.pojo.request.RpcRequestFactory;
 import indi.uhyils.rpc.exchange.pojo.response.RpcResponseFactory;
 import indi.uhyils.rpc.util.BytesUtils;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static indi.uhyils.rpc.enums.RpcTypeEnum.*;
+import static indi.uhyils.rpc.enums.RpcTypeEnum.parse;
 
 /**
  * @author uhyils <247452312@qq.com>

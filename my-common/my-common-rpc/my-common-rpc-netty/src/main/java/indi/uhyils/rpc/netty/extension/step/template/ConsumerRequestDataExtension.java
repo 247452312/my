@@ -1,9 +1,9 @@
 package indi.uhyils.rpc.netty.extension.step.template;
 
+import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.extension.step.base.RpcConsumerExtension;
 import indi.uhyils.rpc.netty.extension.step.base.RpcDataExtension;
 import indi.uhyils.rpc.netty.extension.step.base.RpcRequestExtension;
-import indi.uhyils.rpc.exchange.pojo.RpcData;
 
 /**
  * 消费者,请求,RpcData类型

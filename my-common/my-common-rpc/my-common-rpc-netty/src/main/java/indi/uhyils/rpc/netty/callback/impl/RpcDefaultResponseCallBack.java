@@ -1,6 +1,5 @@
 package indi.uhyils.rpc.netty.callback.impl;
 
-import indi.uhyils.rpc.netty.callback.RpcCallBack;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
@@ -8,6 +7,7 @@ import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.RpcFactory;
 import indi.uhyils.rpc.exchange.pojo.RpcFactoryProducer;
 import indi.uhyils.rpc.exchange.pojo.response.RpcResponseContent;
+import indi.uhyils.rpc.netty.callback.RpcCallBack;
 
 /**
  * 这个只是一个样例,具体如何执行要看下一级

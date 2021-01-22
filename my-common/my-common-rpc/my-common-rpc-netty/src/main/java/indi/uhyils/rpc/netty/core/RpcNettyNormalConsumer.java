@@ -121,7 +121,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
         }
     }
 
-    public Boolean sendMsg(byte[] bytes) {
+    public boolean sendMsg(byte[] bytes) {
         ByteBuf buf = Unpooled.buffer();
         buf.writeBytes(bytes);
         channelFuture.channel().writeAndFlush(buf);

@@ -1,8 +1,8 @@
 package indi.uhyils.util;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 public class ByteBufferUtils {
 
     public static String decodeKey(ByteBuffer bytes) {
-        Charset charset = Charset.forName("utf-8");
+        Charset charset = StandardCharsets.UTF_8;
         return charset.decode(bytes).toString();
     }
 
@@ -23,12 +23,7 @@ public class ByteBufferUtils {
     }
 
     public static ByteBuffer encodeKey(String key) {
-        try {
-            return ByteBuffer.wrap(key.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            LogUtil.error(ByteBufferUtils.class, e);
-        }
-        return ByteBuffer.wrap(key.getBytes());
+        return ByteBuffer.wrap(key.getBytes(StandardCharsets.UTF_8));
     }
 
     public static ByteBuffer encodeValue(byte[] value) {

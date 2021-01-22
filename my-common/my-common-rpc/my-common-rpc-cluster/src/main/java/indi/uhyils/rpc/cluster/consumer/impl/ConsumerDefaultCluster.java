@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -40,10 +41,14 @@ public class ConsumerDefaultCluster implements Cluster {
      */
     private final AtomicInteger pollingMark = new AtomicInteger(0);
 
+//    /**
+//     * 权重分配的标记
+//     */
+//    private volatile NettyInfo[] weightArrayForManualAssignment;
     /**
      * 权重分配的标记
      */
-    private volatile NettyInfo[] weightArrayForManualAssignment;
+    private AtomicReferenceArray<NettyInfo> weightArrayForManualAssignment;
 
     /**
      * 配置
@@ -84,7 +89,7 @@ public class ConsumerDefaultCluster implements Cluster {
     public Boolean shutdown() {
         boolean result = true;
         for (Map.Entry<NettyInfo, RpcNetty> nettyInfoRpcNettyEntry : nettyMap.entrySet()) {
-            Boolean shutdown = nettyInfoRpcNettyEntry.getValue().shutdown();
+            boolean shutdown = nettyInfoRpcNettyEntry.getValue().shutdown();
             if (!shutdown) {
                 result = false;
             }
@@ -152,18 +157,18 @@ public class ConsumerDefaultCluster implements Cluster {
             for (NettyInfo nettyInfo : nettyMap.keySet()) {
                 length += nettyInfo.getWeight();
             }
-            weightArrayForManualAssignment = new NettyInfo[length];
+            weightArrayForManualAssignment = new AtomicReferenceArray<>(length);
             int writeIndex = 0;
             for (NettyInfo nettyInfo : nettyMap.keySet()) {
                 Integer weight = nettyInfo.getWeight();
                 for (int i = 0; i < weight; i++, writeIndex++) {
-                    weightArrayForManualAssignment[writeIndex] = nettyInfo;
+                    weightArrayForManualAssignment.set(writeIndex, nettyInfo);
                 }
             }
         }
 
-        int i = RandomUtils.nextInt(0, weightArrayForManualAssignment.length);
-        RpcNetty rpcNetty = nettyMap.get(weightArrayForManualAssignment[i]);
+        int i = RandomUtils.nextInt(0, weightArrayForManualAssignment.length());
+        RpcNetty rpcNetty = nettyMap.get(weightArrayForManualAssignment.get(i));
         return rpcNetty.sendMsg(rpcData);
     }
 
