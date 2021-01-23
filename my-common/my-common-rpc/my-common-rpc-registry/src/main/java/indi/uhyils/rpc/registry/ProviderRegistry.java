@@ -12,8 +12,8 @@ import indi.uhyils.rpc.registry.mode.RegistryMode;
  */
 public class ProviderRegistry<T> extends AbstractRegistry<T> {
 
-    public ProviderRegistry(RpcConfig rpcConfig, Cluster cluster, Class<T> serviceClass, RegistryMode mode) {
-        super(cluster, serviceClass, rpcConfig);
+    public ProviderRegistry( Cluster cluster, Class<T> serviceClass, RegistryMode mode) {
+        super(cluster, serviceClass);
         this.mode = mode;
         mode.setType(RpcNettyTypeEnum.PROVIDER);
     }

@@ -4,6 +4,7 @@ import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.ClusterFactory;
 import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
 import indi.uhyils.rpc.config.RpcConfig;
+import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
 import indi.uhyils.rpc.netty.factory.NettyInitDtoFactory;
@@ -41,8 +42,8 @@ public class RegistryFactory {
      * @param <T>
      * @return
      */
-    public static <T> Registry<T> createConsumer(RpcConfig rpcConfig, Class<T> clazz, String host) throws Exception {
-        RegistryMode mode = new RegistryNacosMode(rpcConfig);
+    public static <T> Registry<T> createConsumer(Class<T> clazz, String host) throws Exception {
+        RegistryMode mode = new RegistryNacosMode();
         List<RegistryInfo> targetInterfaceInfo = mode.getTargetInterfaceInfo(clazz.getName());
         NettyInitDto[] nettyInitDtos = new NettyInitDto[targetInterfaceInfo.size()];
         for (int i = 0; i < targetInterfaceInfo.size(); i++) {
@@ -53,24 +54,24 @@ public class RegistryFactory {
                     necessaryInfo.getPort(),
                     new RpcDefaultResponseCallBack());
         }
-        Cluster defaultConsumerCluster = ClusterFactory.createDefaultConsumerCluster(rpcConfig, nettyInitDtos);
-        return new ConsumerRegistry<>(defaultConsumerCluster, clazz, host, mode, rpcConfig);
+        Cluster defaultConsumerCluster = ClusterFactory.createDefaultConsumerCluster(nettyInitDtos);
+        return new ConsumerRegistry<>(defaultConsumerCluster, clazz, host, mode);
     }
 
     /**
      * 创建一个生产者的注册层
      *
-     * @param serviceName 服务名称
-     * @param clazz       某个接口的数据
+     * @param clazz 某个接口的数据
      * @param <T>
      * @return
      */
-    public static <T> Registry<T> createProvider(RpcConfig config, Class<T> clazz, RegistryMode mode) throws Exception {
+    public static <T> Registry<T> createProvider(Class<T> clazz, RegistryMode mode) throws Exception {
+        RpcConfig config = RpcConfigFactory.getInstance();
         Integer port = config.getProvider().getPort();
         HashMap<String, Object> beans = new HashMap<>();
         FunctionOneInterface functionOneInterface = new FunctionOne();
         beans.put(functionOneInterface.getClass().getName(), functionOneInterface);
-        Cluster providerCluster = ClusterFactory.createDefaultProviderCluster(config, port, beans);
+        Cluster providerCluster = ClusterFactory.createDefaultProviderCluster(port, beans);
         RegistryInfo info = new RegistryInfo();
         RegistryProviderNecessaryInfo necessaryInfo = new RegistryProviderNecessaryInfo();
         necessaryInfo.setHost(IpUtil.getIp());
@@ -101,6 +102,6 @@ public class RegistryFactory {
         metadata.setServiceInfo(serviceInfo);
         info.setMetadata(metadata);
         mode.registry(info);
-        return new ProviderRegistry<>(config, providerCluster, clazz, mode);
+        return new ProviderRegistry<>(providerCluster, clazz, mode);
     }
 }

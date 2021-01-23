@@ -3,7 +3,6 @@ package indi.uhyils.rpc.cluster;
 import indi.uhyils.rpc.cluster.consumer.impl.ConsumerDefaultCluster;
 import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.cluster.provider.impl.ProviderDefaultCluster;
-import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.factory.RpcBeanFactory;
 import indi.uhyils.rpc.netty.RpcNetty;
 import indi.uhyils.rpc.netty.callback.impl.RpcDefaultRequestCallBack;
@@ -34,7 +33,7 @@ public class ClusterFactory {
      * @return
      * @throws Exception
      */
-    public static Cluster createDefaultProviderCluster(RpcConfig config, Integer port, Map<String, Object> beans) throws Exception {
+    public static Cluster createDefaultProviderCluster(Integer port, Map<String, Object> beans) throws Exception {
         if (instance == null) {
             synchronized (ClusterFactory.class) {
                 if (instance == null) {
@@ -42,7 +41,7 @@ public class ClusterFactory {
                     nettyInit.setCallback(new RpcDefaultRequestCallBack(RpcBeanFactory.getInstance(beans).getRpcBeans()));
                     nettyInit.setHost(IpUtil.getIp());
                     nettyInit.setPort(port);
-                    RpcNetty netty = RpcNettyFactory.createNetty(config, RpcNettyTypeEnum.PROVIDER, nettyInit);
+                    RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.PROVIDER, nettyInit);
                     NettyInfo nettyInfo = new NettyInfo();
                     nettyInfo.setIndexInColony(1);
                     instance = new ProviderDefaultCluster(nettyInfo, netty);
@@ -52,25 +51,25 @@ public class ClusterFactory {
         return instance;
     }
 
-    public static Cluster createDefaultConsumerCluster(RpcConfig config, NettyInitDto nettyInit) {
+    public static Cluster createDefaultConsumerCluster(NettyInitDto nettyInit) {
 
-        RpcNetty netty = RpcNettyFactory.createNetty(config, RpcNettyTypeEnum.CONSUMER, nettyInit);
+        RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
         NettyInfo nettyInfo = new NettyInfo();
         nettyInfo.setIndexInColony(1);
         HashMap<NettyInfo, RpcNetty> nettyMap = new HashMap<>(1);
         nettyMap.put(nettyInfo, netty);
-        return new ConsumerDefaultCluster(config, nettyMap);
+        return new ConsumerDefaultCluster(nettyMap);
     }
 
-    public static Cluster createDefaultConsumerCluster(RpcConfig rpcConfig, NettyInitDto... nettyInit) {
+    public static Cluster createDefaultConsumerCluster(NettyInitDto... nettyInit) {
         HashMap<NettyInfo, RpcNetty> nettyMap = new HashMap<>(nettyInit.length);
         for (int i = 0; i < nettyInit.length; i++) {
-            RpcNetty netty = RpcNettyFactory.createNetty(rpcConfig, RpcNettyTypeEnum.CONSUMER, nettyInit[i]);
+            RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit[i]);
             NettyInfo nettyInfo = new NettyInfo();
             nettyInfo.setIndexInColony(i);
             nettyMap.put(nettyInfo, netty);
         }
-        return new ConsumerDefaultCluster(rpcConfig, nettyMap);
+        return new ConsumerDefaultCluster(nettyMap);
     }
 
 

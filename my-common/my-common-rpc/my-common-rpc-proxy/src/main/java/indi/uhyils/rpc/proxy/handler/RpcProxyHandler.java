@@ -3,6 +3,7 @@ package indi.uhyils.rpc.proxy.handler;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.config.ConsumerConfig;
 import indi.uhyils.rpc.config.RpcConfig;
+import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.registry.Registry;
 import indi.uhyils.rpc.registry.RegistryFactory;
 import indi.uhyils.rpc.registry.mode.nacos.RegistryNacosMode;
@@ -18,11 +19,6 @@ import java.lang.reflect.Method;
  */
 public class RpcProxyHandler implements InvocationHandler {
     private static final String TO_STRING = "toString";
-
-    /**
-     * 配置
-     */
-    private RpcConfig rpcConfig;
     /**
      * 这个handler代理的类
      */
@@ -34,14 +30,13 @@ public class RpcProxyHandler implements InvocationHandler {
     private Registry registry;
 
 
-    public RpcProxyHandler(Class<?> clazz, RpcConfig rpcConfig) {
-        this.rpcConfig = rpcConfig;
+    public RpcProxyHandler(Class<?> clazz) {
         this.type = clazz;
         // 如果懒加载,那么就不加载
         if (isCheck()) {
             RegistryNacosMode mode;
             try {
-                this.registry = RegistryFactory.createConsumer(rpcConfig, clazz, IpUtil.getIp());
+                this.registry = RegistryFactory.createConsumer(clazz, IpUtil.getIp());
             } catch (Exception e) {
                 LogUtil.error(this, e);
             }
@@ -50,7 +45,8 @@ public class RpcProxyHandler implements InvocationHandler {
     }
 
     private boolean isCheck() {
-        ConsumerConfig consumer = this.rpcConfig.getConsumer();
+        RpcConfig instance = RpcConfigFactory.getInstance();
+        ConsumerConfig consumer = instance.getConsumer();
         return consumer.getCheck();
     }
 
@@ -60,7 +56,7 @@ public class RpcProxyHandler implements InvocationHandler {
             RegistryNacosMode mode;
             try {
 
-                this.registry = RegistryFactory.createConsumer(rpcConfig, type, IpUtil.getIp());
+                this.registry = RegistryFactory.createConsumer(type, IpUtil.getIp());
             } catch (Exception e) {
                 LogUtil.error(this, e);
             }

@@ -9,6 +9,7 @@ import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import indi.uhyils.rpc.config.RegistryConfig;
 import indi.uhyils.rpc.config.RpcConfig;
+import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.registry.content.RegistryContent;
 import indi.uhyils.rpc.registry.exception.RegistryException;
@@ -56,16 +57,12 @@ public class RegistryNacosMode implements RegistryMode {
      */
     private String serverAddr;
 
-    /**
-     * 配置
-     */
-    private RpcConfig config;
 
     /**
      * @throws NacosException
      */
-    public RegistryNacosMode(RpcConfig rpcConfig) throws NacosException {
-        this.config = rpcConfig;
+    public RegistryNacosMode() throws NacosException {
+        RpcConfig rpcConfig = RpcConfigFactory.getInstance();
         RegistryConfig registry = rpcConfig.getRegistry();
         this.serverAddr = registry.getHost() + ":" + registry.getPort();
         nacosConfig = ConfigFactory.createConfigService(serverAddr);

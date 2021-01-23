@@ -24,15 +24,10 @@ public abstract class AbstractRegistry<T> implements Registry<T> {
      */
     protected Class<T> serviceClass;
 
-    /**
-     * 配置类
-     */
-    protected RpcConfig config;
 
-    public AbstractRegistry(Cluster cluster, Class<T> serviceClass, RpcConfig config) {
+    public AbstractRegistry(Cluster cluster, Class<T> serviceClass) {
         this.cluster = cluster;
         this.serviceClass = serviceClass;
-        this.config = config;
     }
 
     public RegistryMode getMode() {
@@ -59,11 +54,4 @@ public abstract class AbstractRegistry<T> implements Registry<T> {
         this.serviceClass = serviceClass;
     }
 
-    public RpcConfig getConfig() {
-        return config;
-    }
-
-    public void setConfig(RpcConfig config) {
-        this.config = config;
-    }
 }

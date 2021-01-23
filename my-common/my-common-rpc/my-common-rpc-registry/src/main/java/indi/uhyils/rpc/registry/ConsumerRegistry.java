@@ -30,8 +30,8 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
      */
     private String selfIp;
 
-    public ConsumerRegistry(Cluster cluster, Class<T> serviceClass, String selfIp, RegistryMode mode, RpcConfig config) {
-        super(cluster, serviceClass, config);
+    public ConsumerRegistry(Cluster cluster, Class<T> serviceClass, String selfIp, RegistryMode mode) {
+        super(cluster, serviceClass);
         this.selfIp = selfIp;
         this.mode = mode;
         mode.setType(RpcNettyTypeEnum.CONSUMER);

@@ -64,8 +64,8 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
      */
     private FixedLengthQueue<Long> timeOutUnique = new FixedLengthQueue<>(200, Long.class);
 
-    public RpcNettyNormalConsumer(RpcConfig rpcConfig, Long outTime, RpcCallBack callBack) {
-        super(rpcConfig, outTime);
+    public RpcNettyNormalConsumer( Long outTime, RpcCallBack callBack) {
+        super( outTime);
         this.callBack = callBack;
 
     }

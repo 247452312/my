@@ -4,7 +4,6 @@ import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
 import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
-import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.RpcNetty;
@@ -50,19 +49,14 @@ public class ConsumerDefaultCluster implements Cluster {
      */
     private AtomicReferenceArray<NettyInfo> weightArrayForManualAssignment;
 
-    /**
-     * 配置
-     */
-    private RpcConfig config;
 
-    public ConsumerDefaultCluster(RpcConfig config, Map<NettyInfo, RpcNetty> nettyMap, LoadBalanceEnum loadBalanceType) {
-        this.config = config;
+    public ConsumerDefaultCluster(Map<NettyInfo, RpcNetty> nettyMap, LoadBalanceEnum loadBalanceType) {
         this.nettyMap = nettyMap;
         this.loadBalanceType = loadBalanceType;
     }
 
-    public ConsumerDefaultCluster(RpcConfig config, Map<NettyInfo, RpcNetty> nettyMap) {
-        this(config, nettyMap, LoadBalanceEnum.RANDOM);
+    public ConsumerDefaultCluster(Map<NettyInfo, RpcNetty> nettyMap) {
+        this(nettyMap, LoadBalanceEnum.RANDOM);
     }
 
     @Override
@@ -219,7 +213,7 @@ public class ConsumerDefaultCluster implements Cluster {
             nettyInit.setHost(nettyInfo.getHost());
             nettyInit.setPort(nettyInfo.getPort());
             nettyInit.setCallback(new RpcDefaultResponseCallBack());
-            RpcNetty netty = RpcNettyFactory.createNetty(this.config, RpcNettyTypeEnum.CONSUMER, nettyInit);
+            RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
             nettyMap.put(nettyInfo, netty);
         }
         return true;

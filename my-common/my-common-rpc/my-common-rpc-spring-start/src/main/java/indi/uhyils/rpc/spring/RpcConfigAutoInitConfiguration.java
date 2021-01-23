@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Primary;
  * @date 文件创建日期 2021年01月17日 11时12分
  */
 @Configuration
-@AutoConfigureBefore(RpcAutoConfiguration.class)
 public class RpcConfigAutoInitConfiguration {
 
     /**

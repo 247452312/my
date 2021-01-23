@@ -38,10 +38,9 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
     private EventLoopGroup workerGroup;
 
 
-    public RpcNettyNormalProvider(RpcConfig rpcConfig, Long outTime, RpcCallBack callback) {
-        super(rpcConfig, outTime);
+    public RpcNettyNormalProvider( Long outTime, RpcCallBack callback) {
+        super(outTime);
         this.callback = callback;
-        this.config = rpcConfig;
     }
 
     @Override

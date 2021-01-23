@@ -1,7 +1,6 @@
 package indi.uhyils.rpc.spring;
 
 import indi.uhyils.rpc.annotation.RpcReference;
-import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.proxy.RpcProxyFactory;
 import indi.uhyils.rpc.registry.exception.RegistryException;
 import indi.uhyils.util.LogUtil;
@@ -61,8 +60,7 @@ public class RpcConsumerBeanFieldInjectConfiguration implements ApplicationConte
                 try {
                     Class<?>[] parameterTypes = declaredMethod.getParameterTypes();
                     for (Class<?> type : parameterTypes) {
-                        RpcConfig rpcConfig = applicationContext.getBean(RpcConfig.class);
-                        initConsumerByType(rpcConfig, type);
+                        initConsumerByType(type);
                     }
                     Object[] params = new Object[parameterTypes.length];
                     for (int i = 0; i < parameterTypes.length; i++) {
@@ -89,8 +87,7 @@ public class RpcConsumerBeanFieldInjectConfiguration implements ApplicationConte
             if (isHaveInitProxy(declaredAnnotations)) {
                 try {
                     Class<?> type = declaredField.getType();
-                    RpcConfig rpcConfig = applicationContext.getBean(RpcConfig.class);
-                    initConsumerByType(rpcConfig, type);
+                    initConsumerByType(type);
                     declaredField.set(bean, consumerRegistryCache.get(type.getName()));
 
                 } catch (RegistryException | IllegalAccessException e) {
@@ -111,11 +108,11 @@ public class RpcConsumerBeanFieldInjectConfiguration implements ApplicationConte
         return haveInitProxy;
     }
 
-    private void initConsumerByType(RpcConfig rpcConfig, Class<?> type) throws RegistryException {
+    private void initConsumerByType(Class<?> type) throws RegistryException {
         if (consumerRegistryCache.get(type.getName()) == null) {
             synchronized (consumerRegistryCache) {
                 if (consumerRegistryCache.get(type.getName()) == null) {
-                    Object o = RpcProxyFactory.newProxy(type, rpcConfig);
+                    Object o = RpcProxyFactory.newProxy(type);
                     consumerRegistryCache.put(type.getName(), o);
                 }
             }
