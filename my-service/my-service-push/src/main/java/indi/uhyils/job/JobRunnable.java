@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.rpc.spring.util.RpcApiUtil;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
@@ -55,7 +55,7 @@ public class JobRunnable implements Callable {
         defaultRequest.setRequestLink(new LinkNode<>());
         ArrayList<Object> list = new ArrayList<>(1);
         list.add(defaultRequest);
-        DubboApiUtil.dubboApiToolAsync(interfaceName, methodName, list, new DefaultRequest());
+        RpcApiUtil.rpcApiToolAsync(interfaceName, methodName, list, new DefaultRequest());
         return true;
     }
 }

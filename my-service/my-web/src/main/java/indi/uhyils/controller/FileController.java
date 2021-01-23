@@ -7,7 +7,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -50,7 +50,7 @@ public class FileController {
             requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
             requestLink.put("data", "页面请求");
             args.put("requestLink", requestLink);
-            serviceResult = DubboApiUtil.dubboApiTool(INTERFACE, METHOD_NAME, args);
+            serviceResult = RpcApiUtil.rpcApiTool(INTERFACE, METHOD_NAME, args);
             link = serviceResult.getRequestLink();
             LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
@@ -91,7 +91,7 @@ public class FileController {
             action.getArgs().put("token", action.getToken());
             List<Object> list = new ArrayList();
             list.add(action.getArgs());
-            serviceResult = DubboApiUtil.dubboApiTool(INTERFACE, methodName, list, new DefaultRequest());
+            serviceResult = RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultRequest());
             link = serviceResult.getRequestLink();
             LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {

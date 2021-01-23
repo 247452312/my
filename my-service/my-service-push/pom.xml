@@ -55,14 +55,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--        &lt;!&ndash; 热部署 &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-devtools</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--            <scope>true</scope>-->
-        <!--        </dependency>-->
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -74,12 +66,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.alibaba.boot</groupId>
-            <artifactId>velocity-spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>
@@ -99,23 +85,11 @@
             <artifactId>spring-context-support</artifactId>
         </dependency>
 
-        <!-- dubbo -->
         <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo</artifactId>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-rpc-spring-start</artifactId>
         </dependency>
 
-
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-common &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>org.apache.dubbo</groupId>-->
-        <!--<artifactId>dubbo-common</artifactId>-->
-        <!--<version>${org.dubbo.version}</version>-->
-        <!--</dependency>-->
 
         <!--zookeeper-->
         <dependency>
@@ -131,15 +105,6 @@
             <artifactId>fastjson</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-registry-nacos</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>nacos-client</artifactId>
-        </dependency>
 
         <!--工具包-->
         <dependency>

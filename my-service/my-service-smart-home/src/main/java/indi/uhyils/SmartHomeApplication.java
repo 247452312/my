@@ -1,6 +1,6 @@
 package indi.uhyils;
 
-import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import indi.uhyils.rpc.annotation.MyRpc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @date 文件创建日期 2020年08月29日 10时47分55秒
  */
 @SpringBootApplication
-@EnableDubbo
+@MyRpc
 @EnableTransactionManagement
 public class SmartHomeApplication {
 

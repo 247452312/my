@@ -1,7 +1,7 @@
 server:
   port: 8001
-dubbo:
-  protocol:
+rpc:
+  provider:
     port: 20801
   application:
     name: consumer-web

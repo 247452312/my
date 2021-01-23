@@ -1,7 +1,7 @@
 server:
   port: 8010
-dubbo:
-  protocol:
+rpc:
+  provider:
     port: 20810
   application:
     name: provider-smart-home

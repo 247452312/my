@@ -7,11 +7,11 @@ import indi.uhyils.pojo.model.DictItemEntity;
 import indi.uhyils.pojo.request.GetByCodeRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.service.DictService;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.NacosUtil;
-import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +35,7 @@ public class ConcurrentNumberTask {
     private volatile static Boolean degradation = false;
     @Resource
     private LogDao logDao;
-    @Reference(group = "${spring.profiles.active}", check = false)
+    @RpcReference
     private DictService dictService;
 
     @Scheduled(cron = "*/2 * * * * ?")

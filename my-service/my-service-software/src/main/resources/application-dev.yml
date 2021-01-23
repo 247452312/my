@@ -1,7 +1,7 @@
 server:
   port: 8004
-dubbo:
-  protocol:
+rpc:
+  provider:
     port: 20804
   application:
     name: provider-software

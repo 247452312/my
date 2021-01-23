@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.lmax.disruptor.EventHandler;
 import indi.uhyils.pojo.model.LogEntity;
 import indi.uhyils.pojo.request.base.ObjRequest;
+import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.service.LogService;
-import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class JsonEventConsumer implements EventHandler<JsonEvent> {
-    @Reference(group = "${spring.profiles.active}", check = false)
+    @RpcReference
     private LogService logService;
 
     public LogService getLogService() {

@@ -1,8 +1,8 @@
 server:
   port: 8002
 
-dubbo:
-  protocol:
+rpc:
+  provider:
     port: 20802
   application:
     name: provider-user

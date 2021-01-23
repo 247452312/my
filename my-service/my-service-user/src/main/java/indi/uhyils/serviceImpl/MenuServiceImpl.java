@@ -15,10 +15,10 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.response.info.IndexMenuInfo;
 import indi.uhyils.pojo.response.info.MenuHomeInfo;
 import indi.uhyils.pojo.response.info.MenuLogoInfo;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.MenuService;
 import indi.uhyils.util.ContentUtil;
 import indi.uhyils.util.LogUtil;
-import org.apache.dubbo.config.annotation.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月28日 12时48分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 @ReadWriteMark(tables = {"sys_menu"})
 public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implements MenuService {
 

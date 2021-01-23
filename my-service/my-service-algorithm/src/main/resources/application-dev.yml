@@ -2,8 +2,8 @@
 server:
   port: 8008
 
-dubbo:
-  protocol:
+rpc:
+  provider:
     port: 20808
   application:
     name: provider-algorithm

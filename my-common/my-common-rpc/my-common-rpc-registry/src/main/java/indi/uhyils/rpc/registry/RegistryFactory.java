@@ -49,12 +49,14 @@ public class RegistryFactory {
         for (int i = 0; i < targetInterfaceInfo.size(); i++) {
             RegistryInfo registryInfo = targetInterfaceInfo.get(i);
             RegistryProviderNecessaryInfo necessaryInfo = (RegistryProviderNecessaryInfo) registryInfo.getNecessaryInfo();
+            double weight = necessaryInfo.getWeight();
             nettyInitDtos[i] = NettyInitDtoFactory.createNettyInitDto(
                     necessaryInfo.getHost(),
                     necessaryInfo.getPort(),
+                    (int) weight,
                     new RpcDefaultResponseCallBack());
         }
-        Cluster defaultConsumerCluster = ClusterFactory.createDefaultConsumerCluster(nettyInitDtos);
+        Cluster defaultConsumerCluster = ClusterFactory.createDefaultConsumerCluster(clazz, nettyInitDtos);
         return new ConsumerRegistry<>(defaultConsumerCluster, clazz, host, mode);
     }
 

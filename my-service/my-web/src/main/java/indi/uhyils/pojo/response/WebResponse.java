@@ -6,7 +6,7 @@ import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.util.DefaultRequestBuildUtil;
-import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.rpc.spring.util.RpcApiUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class WebResponse<T extends Serializable> implements Serializable {
 
             List args = new ArrayList();
             args.add(DefaultRequestBuildUtil.getAdminDefaultRequest());
-            ServiceResult<JSONObject> serviceResult = DubboApiUtil.dubboApiTool(Content.VERIFICATION_CODE_INTERFACE, Content.GET_VERIFICATION_CODE_METHOD, args, new DefaultRequest());
+            ServiceResult<JSONObject> serviceResult = RpcApiUtil.rpcApiTool(Content.VERIFICATION_CODE_INTERFACE, Content.GET_VERIFICATION_CODE_METHOD, args, new DefaultRequest());
             JSONObject verification = serviceResult.getData();
             VerificationGetResponse verificationGetResponse = verification.toJavaObject(VerificationGetResponse.class);
             serializableWebResponse.setData(verificationGetResponse);

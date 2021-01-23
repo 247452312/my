@@ -18,11 +18,11 @@ import indi.uhyils.pojo.response.GetInfosResponse;
 import indi.uhyils.pojo.response.OperateSoftwareResponse;
 import indi.uhyils.pojo.response.RedisKeyResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.RedisService;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SshUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.dubbo.config.annotation.Service;
 import redis.clients.jedis.Client;
 import redis.clients.jedis.Jedis;
 
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 12时55分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implements RedisService {
 
     /**

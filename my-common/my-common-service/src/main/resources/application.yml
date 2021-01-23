@@ -13,23 +13,17 @@ spring:
         cache: false    #页面不加载缓存，修改即时生效
 
 
-dubbo:
+rpc:
   metadata-report:
     address: nacos://192.168.1.101:8848
   registry:
-    client: curator
-    address: nacos://192.168.1.101:8848
-  protocol:
-    name: dubbo
-    threadpool: cached
-    accepts: 200
+    host: 192.168.1.101
+    port: 8848
   consumer:
     timeout: 5000
-    group: ${spring.profiles.active}
     check: false
   provider:
     timeout: 5000
-    group: ${spring.profiles.active}
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

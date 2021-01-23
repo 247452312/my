@@ -19,10 +19,10 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.temp.CheckNodeFieldResultTemporary;
 import indi.uhyils.pojo.temp.InitApiRequestTemporary;
 import indi.uhyils.service.OrderService;
-import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.OrderBuilder;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 19时34分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 @Transactional(rollbackFor = Exception.class)
 public class OrderServiceImpl implements OrderService {
 
@@ -320,9 +320,9 @@ public class OrderServiceImpl implements OrderService {
         orderApply.preInsert(request);
         orderApplyDao.insert(orderApply);
         /*3.通知审批人*/
-        ServiceResult<String> userName = DubboApiUtil.dubboApiTool("UserService", "getNameById", IdRequest.build(request, request.getRecommendUserId()));
+        ServiceResult<String> userName = RpcApiUtil.rpcApiTool("UserService", "getNameById", IdRequest.build(request, request.getRecommendUserId()));
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, order.getMonitorUserId(), PushTypeEnum.EMAIL.getCode(), "工单节点转交申请", order.getId() + "工单转交撤回,请尽快审批,转交目标人:" + userName.getData().toString());
-        DubboApiUtil.dubboApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
+        RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         return ServiceResult.buildSuccessResult(true, request);
     }
 
@@ -393,7 +393,7 @@ public class OrderServiceImpl implements OrderService {
         Long targetUserId = orderApply.getTargetUserId();
         OrderInfoEntity orderInfo = orderInfoDao.getById(orderNode.getBaseInfoId());
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, targetUserId, PushTypeEnum.EMAIL.getCode(), "工单流转事务提示", orderNodeId + "工单已转交到你手,审批人通过,请尽快处理,工单优先度:" + OrderPriorityEnum.parse(orderInfo.getPriority()).getName());
-        DubboApiUtil.dubboApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
+        RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         return ServiceResult.buildSuccessResult("审批成功", true, request);
     }
 
@@ -407,7 +407,7 @@ public class OrderServiceImpl implements OrderService {
         OrderInfoEntity byId = orderInfoDao.getById(request.getOrderId());
         Long monitorUserId = byId.getMonitorUserId();
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, monitorUserId, PushTypeEnum.EMAIL.getCode(), "工单撤回申请", request.getOrderId() + "工单申请撤回,请尽快审批,工单优先度:" + OrderPriorityEnum.parse(byId.getPriority()).getName());
-        ServiceResult serviceResult = DubboApiUtil.dubboApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
+        ServiceResult serviceResult = RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             return true;
         }

@@ -18,10 +18,10 @@ import indi.uhyils.pojo.request.PushMsgToSomeoneRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.PushService;
-import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.PushUtils;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时30分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class PushServiceImpl implements PushService {
 
 
@@ -77,7 +77,7 @@ public class PushServiceImpl implements PushService {
             Long userId = apiSubscribeEntity.getUserId();
             /* 获取user */
             IdRequest build = IdRequest.build(request, userId);
-            ServiceResult serviceResult = DubboApiUtil.dubboApiTool("UserService", "getById", build);
+            ServiceResult serviceResult = RpcApiUtil.rpcApiTool("UserService", "getById", build);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 return serviceResult;
             }
@@ -102,7 +102,7 @@ public class PushServiceImpl implements PushService {
 
     @Override
     public ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request) throws Exception {
-        ServiceResult serviceResult = DubboApiUtil.dubboApiTool("UserService", "getById", IdRequest.build(request, request.getUserId()));
+        ServiceResult serviceResult = RpcApiUtil.rpcApiTool("UserService", "getById", IdRequest.build(request, request.getUserId()));
         if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             return serviceResult;
         }

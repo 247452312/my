@@ -11,10 +11,10 @@ import indi.uhyils.pojo.request.GetMethodNameByInterfaceNameRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.PowerService;
 import indi.uhyils.util.ApiPowerInitUtil;
 import indi.uhyils.util.LogUtil;
-import org.apache.dubbo.config.annotation.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时28分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 @ReadWriteMark(tables = {"sys_power"})
 public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implements PowerService {
 

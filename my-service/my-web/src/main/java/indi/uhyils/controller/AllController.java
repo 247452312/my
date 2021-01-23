@@ -9,7 +9,7 @@ import indi.uhyils.pojo.request.SessionRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -67,7 +67,7 @@ public class AllController {
         // 发送前处理
         dealActionBeforeCall(action);
         try {
-            serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+            serviceResult = RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
 
             /* 打印链路跟踪 */
             link = serviceResult.getRequestLink();

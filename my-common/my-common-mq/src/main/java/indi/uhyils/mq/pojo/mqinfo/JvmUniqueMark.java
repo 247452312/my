@@ -19,7 +19,7 @@ public class JvmUniqueMark implements Serializable {
     /**
      * 服务名称
      */
-    @Value("${dubbo.application.name}")
+    @Value("${rpc.application.name}")
     private String serviceName;
     /**
      * 服务所在ip -> 区分集群信息

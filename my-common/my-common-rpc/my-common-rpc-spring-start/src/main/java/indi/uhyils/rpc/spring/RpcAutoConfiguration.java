@@ -8,12 +8,15 @@ import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.registry.Registry;
 import indi.uhyils.rpc.registry.RegistryFactory;
 import indi.uhyils.rpc.registry.mode.nacos.RegistryNacosMode;
+import indi.uhyils.util.ClassUtil;
 import indi.uhyils.util.LogUtil;
+import org.springframework.aop.framework.AdvisedSupport;
+import org.springframework.aop.framework.AopProxy;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +78,7 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
      */
     @Bean("providerCluster")
     @DependsOn({"rpcConfig", RPC_CONFIGURER})
-    public Cluster createProviderCluster() {
+    public Cluster createProviderCluster() throws Exception {
         RpcConfig instance = RpcConfigFactory.getInstance();
         if (!instance.getProvider().isEnable()) {
             return null;
@@ -84,12 +88,13 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
         Map<String, Object> springBeans = applicationContext.getBeansWithAnnotation(RpcService.class);
         Map<String, Object> beans = new HashMap<>(springBeans.size());
         for (Map.Entry<String, Object> entity : springBeans.entrySet()) {
-            Class<?> clazz = entity.getValue().getClass();
+            Object value = entity.getValue();
+            Class<?> clazz = ClassUtil.getRealClass(value);
             if (!clazz.isInterface()) {
                 Class<?>[] interfaces = clazz.getInterfaces();
                 clazz = interfaces[0];
             }
-            beans.put(clazz.getName(), entity.getValue());
+            beans.put(clazz.getName(), value);
         }
         Cluster providerCluster = null;
         try {
@@ -97,12 +102,13 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
+        // 创建生产者的registries
         try {
             registries = new ArrayList<>(beans.size());
             RegistryNacosMode mode = new RegistryNacosMode();
             for (Map.Entry<String, Object> entry : beans.entrySet()) {
                 Object bean = entry.getValue();
-                Class<?> clazz = bean.getClass();
+                Class<?> clazz = ClassUtil.getRealClass(bean);
                 if (!clazz.isInterface()) {
                     Class<?>[] interfaces = clazz.getInterfaces();
                     clazz = interfaces[0];

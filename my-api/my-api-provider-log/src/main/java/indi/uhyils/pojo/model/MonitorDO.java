@@ -12,7 +12,7 @@ import indi.uhyils.pojo.model.base.BaseIdEntity;
 public class MonitorDO extends BaseIdEntity {
 
     /**
-     * 微服务的名称 名称与微服务dubbo的applicationName相同
+     * 微服务的名称 名称与微服务rpc的applicationName相同
      */
     private String serviceName;
 

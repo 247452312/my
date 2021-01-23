@@ -6,7 +6,7 @@ import indi.uhyils.util.WaveFileReader;
 import indi.uhyils.util.network.core.Datable;
 import indi.uhyils.util.network.data.ThreeDimensionalData;
 import indi.uhyils.util.network.data.TwoDimensionalData;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

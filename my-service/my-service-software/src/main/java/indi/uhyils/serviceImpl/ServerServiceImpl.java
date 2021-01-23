@@ -7,9 +7,9 @@ import indi.uhyils.pojo.request.TestConnByDataRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.ServerService;
 import indi.uhyils.util.SshUtils;
-import org.apache.dubbo.config.annotation.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 13时34分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class ServerServiceImpl extends BaseDefaultServiceImpl<ServerEntity> implements ServerService {
 
     @Resource

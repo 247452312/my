@@ -74,7 +74,7 @@ public class BytesUtils {
         int shift = BYTE_TO_BIT_SIZE * LONG_BYTE_SIZE;
         for (int i = 0; i < LONG_BYTE_SIZE; i++) {
             shift -= BYTE_TO_BIT_SIZE;
-            result[i] = (byte) ((data >> shift) & 0b11111111);
+            result[i] = (byte) ((data >>> shift) & 0b11111111);
         }
         return result;
     }
@@ -90,11 +90,18 @@ public class BytesUtils {
             throw new ArrayIndexOutOfBoundsException(String.format("long需要%d位数组,您传入了%d位数组", LONG_BYTE_SIZE, data.length));
         }
         long result = 0;
-        int shiftLeftSize = 0;
-        for (int i = data.length - 1; i >= 0; i--) {
-            result += (long) data[i] << shiftLeftSize;
-            shiftLeftSize += BYTE_TO_BIT_SIZE;
+        for (int i = 0; i < LONG_BYTE_SIZE; ++i) {
+            result <<= BYTE_TO_BIT_SIZE;
+            result |= (data[i] & 0xff);
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Long data = 1689661040771465280L;
+        System.out.println(Long.toBinaryString(data));
+        byte[] bytes = changeLongToByte(data);
+        Long aLong = changeByteToLong(bytes);
+        System.out.println(Long.toBinaryString(aLong));
     }
 }

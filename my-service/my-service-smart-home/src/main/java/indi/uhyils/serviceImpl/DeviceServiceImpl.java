@@ -2,8 +2,8 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.DeviceDao;
 import indi.uhyils.pojo.model.DeviceEntity;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.DeviceService;
-import org.apache.dubbo.config.annotation.Service;
 
 import javax.annotation.Resource;
 
@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月29日 10时47分40秒
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class DeviceServiceImpl extends BaseDefaultServiceImpl<DeviceEntity> implements DeviceService {
     @Resource
     private DeviceDao dao;

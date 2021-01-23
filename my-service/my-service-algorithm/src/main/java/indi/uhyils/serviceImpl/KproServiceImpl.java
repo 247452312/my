@@ -7,7 +7,7 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.KproService;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.kpro.KproUtil;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -21,7 +21,7 @@ import java.util.*;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月04日 18时31分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class KproServiceImpl implements KproService {
 
 

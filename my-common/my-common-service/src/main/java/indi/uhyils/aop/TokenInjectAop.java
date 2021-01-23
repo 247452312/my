@@ -10,8 +10,8 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.util.AopUtil;
-import indi.uhyils.util.DubboApiUtil;
-import org.apache.dubbo.common.utils.StringUtils;
+import indi.uhyils.rpc.spring.util.RpcApiUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -154,6 +154,6 @@ public class TokenInjectAop {
         build.setUser(userEntity);
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        return DubboApiUtil.dubboApiTool("PowerService", "checkUserHavePower", args, request);
+        return RpcApiUtil.rpcApiTool("PowerService", "checkUserHavePower", args, request);
     }
 }

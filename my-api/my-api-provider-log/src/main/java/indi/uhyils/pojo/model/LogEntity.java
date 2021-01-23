@@ -23,12 +23,12 @@ public class LogEntity extends BaseVoEntity {
     private Integer logType;
 
     /**
-     * 前端或外界进行api调用时的接口名称 也是dubbo泛化调用的依据 另一个需要关注的应该是{@link this#methodName}
+     * 前端或外界进行api调用时的接口名称 也是rpc泛化调用的依据 另一个需要关注的应该是{@link this#methodName}
      */
     private String interfaceName;
 
     /**
-     * 前端或外界进行api调用时的方法名称 也是dubbo泛化调用的依据 另一个需要关注的应该是{@link this#interfaceName}
+     * 前端或外界进行api调用时的方法名称 也是rpc泛化调用的依据 另一个需要关注的应该是{@link this#interfaceName}
      * 商业互吹?
      */
     private String methodName;

@@ -14,10 +14,11 @@ public class NettyInitDtoFactory {
      *
      * @return
      */
-    public static NettyInitDto createNettyInitDto(String host, Integer port, RpcCallBack callBack) {
+    public static NettyInitDto createNettyInitDto(String host, Integer port, Integer weight, RpcCallBack callBack) {
         NettyInitDto nettyInitDto = new NettyInitDto();
         nettyInitDto.setHost(host);
         nettyInitDto.setPort(port);
+        nettyInitDto.setWeight(weight);
         nettyInitDto.setCallback(callBack);
         return nettyInitDto;
     }

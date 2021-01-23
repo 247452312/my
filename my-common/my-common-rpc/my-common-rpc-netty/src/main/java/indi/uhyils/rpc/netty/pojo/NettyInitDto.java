@@ -25,6 +25,11 @@ public class NettyInitDto implements Serializable {
      */
     private RpcCallBack callback;
 
+    /**
+     * 权重
+     */
+    private Integer weight;
+
     public Integer getPort() {
         return port;
     }
@@ -47,5 +52,13 @@ public class NettyInitDto implements Serializable {
 
     public void setCallback(RpcCallBack callback) {
         this.callback = callback;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 }

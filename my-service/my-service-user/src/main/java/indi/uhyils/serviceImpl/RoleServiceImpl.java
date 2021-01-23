@@ -15,8 +15,8 @@ import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.RoleService;
-import org.apache.dubbo.config.annotation.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时27分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 @ReadWriteMark(tables = {"sys_role"})
 public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implements RoleService {
 

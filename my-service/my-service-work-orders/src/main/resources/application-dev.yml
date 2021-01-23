@@ -1,7 +1,7 @@
 server:
   port: 8011
-dubbo:
-  protocol:
+rpc:
+  provider:
     port: 20811
   application:
     name: provider-order

@@ -10,7 +10,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.BlackListService;
 import indi.uhyils.util.LogUtil;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;
@@ -24,7 +24,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月24日 06时40分49秒
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity> implements BlackListService {
     /**
      * 最大时间跨度 1秒

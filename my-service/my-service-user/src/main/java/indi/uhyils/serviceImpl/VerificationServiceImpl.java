@@ -9,8 +9,8 @@ import indi.uhyils.pojo.response.VerificationGetResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.VerificationService;
-import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Base64Utils;
 
@@ -26,7 +26,7 @@ import java.util.UUID;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年09月14日 06时34分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 @ReadWriteMark
 public class VerificationServiceImpl implements VerificationService {
 

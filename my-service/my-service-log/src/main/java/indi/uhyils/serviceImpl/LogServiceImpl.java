@@ -14,7 +14,7 @@ import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.LogService;
 import indi.uhyils.util.EnumUtils;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时28分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 @ReadWriteMark(tables = {"sys_log"})
 public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements LogService {
 

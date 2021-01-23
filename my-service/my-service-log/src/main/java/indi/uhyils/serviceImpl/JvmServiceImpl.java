@@ -13,7 +13,7 @@ import indi.uhyils.pojo.response.JvmInfoLogResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.JvmService;
 import indi.uhyils.util.JvmStatusAnalysisUtil;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -27,7 +27,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时28分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class JvmServiceImpl implements JvmService {
 
     @Resource

@@ -19,7 +19,6 @@ import indi.uhyils.util.LogUtil;
 @RpcSpi(order = Integer.MAX_VALUE)
 public class ConsumerTimeOutFilter extends TimeOutFilter implements ConsumerFilter {
     public ConsumerTimeOutFilter() {
-        LogUtil.info("ConsumerTimeOutFilter");
     }
 
     @Override

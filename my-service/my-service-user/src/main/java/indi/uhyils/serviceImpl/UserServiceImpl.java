@@ -20,10 +20,10 @@ import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.LoginResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
-import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -39,7 +39,7 @@ import java.util.Random;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月20日 11时51分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 @ReadWriteMark(tables = {"sys_user"})
 public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implements UserService {
 

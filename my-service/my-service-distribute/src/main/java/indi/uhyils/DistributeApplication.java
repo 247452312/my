@@ -1,6 +1,6 @@
 package indi.uhyils;
 
-import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import indi.uhyils.rpc.annotation.MyRpc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-@EnableDubbo
+@MyRpc
 @EnableTransactionManagement
 public class DistributeApplication {
     public static void main(String[] args) {

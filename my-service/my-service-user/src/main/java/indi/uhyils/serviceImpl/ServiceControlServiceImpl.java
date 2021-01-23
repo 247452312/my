@@ -12,10 +12,10 @@ import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.ServiceControlService;
-import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时28分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 @ReadWriteMark
 public class ServiceControlServiceImpl implements ServiceControlService {
 
@@ -40,7 +40,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
     public ServiceResult<Boolean> getMethodDisable(GetMethodDisableRequest request) {
 
         String className = request.getClassName();
-        if (!className.contains(DubboApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
+        if (!className.contains(RpcApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
             className = Content.SERVICE_PACKAGE_PREFIX + className;
         }
         Boolean enable = redisPoolHandle.checkMethodDisable(className, className + METHOD_LINK_CLASS_SYMBOL + request.getMethodName(), request.getMethodType());
@@ -82,7 +82,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
         AddOrEditMethodDisable data = request.getData();
         try {
             String className = data.getClassName();
-            if (className != null && !className.contains(DubboApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
+            if (className != null && !className.contains(RpcApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 className = Content.SERVICE_PACKAGE_PREFIX + className;
             }
             String methodName = data.getMethodName();
@@ -107,7 +107,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
         try {
             String key = null;
             String className = request.getClassName();
-            if (className != null && !className.contains(DubboApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
+            if (className != null && !className.contains(RpcApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 key = Content.SERVICE_PACKAGE_PREFIX + className;
             } else {
                 key = className;

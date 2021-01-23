@@ -1,4 +1,4 @@
-package indi.uhyils.util;
+package indi.uhyils.rpc.spring.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -6,11 +6,10 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.request.base.ObjsRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import org.apache.dubbo.config.ApplicationConfig;
-import org.apache.dubbo.config.ConsumerConfig;
-import org.apache.dubbo.config.ReferenceConfig;
-import org.apache.dubbo.config.RegistryConfig;
-import org.apache.dubbo.rpc.service.GenericService;
+import indi.uhyils.rpc.proxy.generic.GenericService;
+import indi.uhyils.rpc.spring.RpcConsumerBeanFieldInjectConfiguration;
+import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.SpringUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -18,12 +17,12 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 /**
- * dubbo 泛化接口
+ * rpc 泛化接口
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月24日 17时29分
  */
-public class DubboApiUtil {
+public class RpcApiUtil {
 
 
     /**
@@ -56,7 +55,7 @@ public class DubboApiUtil {
     private static final HashMap<String, GenericService> MAP = new HashMap<>();
 
     /**
-     * dubbo泛化接口调用类
+     * rpc泛化接口调用类
      *
      * @param interfaceName 接口的名字,可以用全名或者接口名
      * @param methodName    方法名
@@ -64,24 +63,24 @@ public class DubboApiUtil {
      * @param request       请求
      * @return 方法返回值
      */
-    public static ServiceResult dubboApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
+    public static ServiceResult rpcApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
         return getServiceResult(interfaceName, methodName, args, request, false, DEFAULT_PROCOTOL);
     }
 
     /**
-     * dubbo泛化接口调用类
+     * rpc泛化接口调用类
      *
      * @param interfaceName 接口的名字,可以用全名或者接口名
      * @param methodName    方法名
      * @param args          方法参数
      * @return 方法返回值
      */
-    public static ServiceResult dubboApiTool(String interfaceName, String methodName, Object... args) {
+    public static ServiceResult rpcApiTool(String interfaceName, String methodName, Object... args) {
         return getServiceResult(interfaceName, methodName, Arrays.asList(args), new DefaultRequest(), false, DEFAULT_PROCOTOL);
     }
 
     /**
-     * dubbo泛化接口调用类(异步)
+     * rpc泛化接口调用类(异步)
      *
      * @param interfaceName 接口的名字,可以用全名或者接口名
      * @param methodName    方法名
@@ -89,12 +88,12 @@ public class DubboApiUtil {
      * @param request       请求
      * @return 方法返回值
      */
-    public static ServiceResult dubboApiToolAsync(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
+    public static ServiceResult rpcApiToolAsync(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
         return getServiceResult(interfaceName, methodName, args, request, true, DEFAULT_PROCOTOL);
     }
 
     /**
-     * dubbo泛化接口调用类(异步)
+     * rpc泛化接口调用类(异步)
      *
      * @param interfaceName 接口的名字,可以用全名或者接口名
      * @param methodName    方法名
@@ -102,7 +101,7 @@ public class DubboApiUtil {
      * @param request       请求
      * @return 方法返回值
      */
-    public static ServiceResult dubboApiToolAsync(String interfaceName, String methodName, Object args, DefaultRequest request) {
+    public static ServiceResult rpcApiToolAsync(String interfaceName, String methodName, Object args, DefaultRequest request) {
         return getServiceResult(interfaceName, methodName, Arrays.asList(args), request, true, DEFAULT_PROCOTOL);
     }
 
@@ -125,19 +124,25 @@ public class DubboApiUtil {
             Method[] methods = Class.forName(interfaceName).getMethods();
             //获取指定方法
             Method method = Arrays.stream(methods).filter(m -> methodName.equalsIgnoreCase(m.getName()) && args.size() == m.getParameterTypes().length).findFirst().get();
-            // 获取第一个参数(my所有dubbo接口只有一个参数)
+            // 获取第一个参数(my所有rpc接口只有一个参数)
             Class params = method.getParameterTypes()[0];
             Object[] arg = args.toArray(new Object[0]);
             // 检测参数中有没有泛型,如果有,则直接将hashMap转为对应类实例
             arg[0] = changeObjRequestParadigm(arg[0], params, Class.forName(interfaceName), method);
             String parameterTypes = params.getName();
             if (genericService == null) {
-                GenericService value = getGenericServiceReferenceConfig(interfaceName, async, procotol).get();
+                GenericService value = getGenericServiceReferenceConfig(interfaceName, async, procotol);
                 genericService = value;
                 MAP.put(interfaceName, value);
             }
-            ServiceResult<Serializable> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.$invoke(methodName, new String[]{parameterTypes}, arg)), ServiceResult.class);
-
+            System.out.println(interfaceName);
+            System.out.println(methodName);
+            ServiceResult<Serializable> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.invoke(methodName, new String[]{parameterTypes}, arg)), ServiceResult.class);
+            if (serviceResult != null) {
+                System.out.println(serviceResult.getRequestLink());
+            } else {
+                System.out.println("返回值为空");
+            }
             if (async == false) {
                 // 添加链路
                 request.setRequestLink(serviceResult.getRequestLink());
@@ -145,7 +150,7 @@ public class DubboApiUtil {
 
             return serviceResult;
         } catch (Exception e) {
-            LogUtil.error(DubboApiUtil.class, e);
+            LogUtil.error(RpcApiUtil.class, e);
             return ServiceResult.buildErrorResult("远程调用错误,具体见日志", request);
         }
     }
@@ -158,18 +163,18 @@ public class DubboApiUtil {
      * @param procotol
      * @return
      */
-    private static GenericService getGenericService(String interfaceName, boolean ansyn, String procotol) {
-        // 用org.apache.dubbo.rpc.service.GenericService可以替代所有接口引用
+    private static GenericService getGenericService(String interfaceName, boolean ansyn, String procotol) throws Exception {
+        // 用GenericService可以替代所有接口引用
         GenericService genericService;
         if (MAP.containsKey(interfaceName)) {
             genericService = MAP.get(interfaceName);
             if (genericService == null) {
                 MAP.remove(interfaceName);
-                genericService = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol).get();
+                genericService = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol);
                 MAP.put(interfaceName, genericService);
             }
         } else {
-            genericService = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol).get();
+            genericService = getGenericServiceReferenceConfig(interfaceName, ansyn, procotol);
             MAP.put(interfaceName, genericService);
         }
         return genericService;
@@ -214,22 +219,10 @@ public class DubboApiUtil {
         return request;
     }
 
-    private static ReferenceConfig<GenericService> getGenericServiceReferenceConfig(String interfaceName, Boolean async, String procotol) {
-        ReferenceConfig<GenericService> reference;
-        reference = new ReferenceConfig<>();
-        // 弱类型接口名
-        reference.setInterface(interfaceName);
-        // 设置分组名称
-        reference.setGroup(SpringUtil.getApplicationContext().getEnvironment().getActiveProfiles()[0]);
-        // 设置同步异步
-        reference.setAsync(async);
-        // 声明为泛化接口
-        reference.setGeneric("true");
-        reference.setApplication(SpringUtil.getBean(ApplicationConfig.class));
-        reference.setRegistry(SpringUtil.getBean(RegistryConfig.class));
-        reference.setConsumer(SpringUtil.getBean(ConsumerConfig.class));
-        reference.setProtocol(procotol);
-        return reference;
+    private static GenericService getGenericServiceReferenceConfig(String interfaceName, boolean ansyn, String procotol) throws Exception {
+        RpcConsumerBeanFieldInjectConfiguration bean = SpringUtil.getBean(RpcConsumerBeanFieldInjectConfiguration.class);
+        Object registryOnCache = bean.getRegistryOnCache(interfaceName);
+        return new GenericService(registryOnCache);
     }
 
 

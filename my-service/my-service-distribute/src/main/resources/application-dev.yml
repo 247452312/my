@@ -1,7 +1,7 @@
 server:
   port: 8005
-dubbo:
-  protocol:
+rpc:
+  provider:
     port: 20805
   application:
     name: provider-distribute

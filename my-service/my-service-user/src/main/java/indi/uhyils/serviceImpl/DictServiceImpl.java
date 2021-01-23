@@ -17,8 +17,8 @@ import indi.uhyils.pojo.response.LastPlanResponse;
 import indi.uhyils.pojo.response.VersionInfoResponse;
 import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.DictService;
-import org.apache.dubbo.config.annotation.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时28分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 @ReadWriteMark(tables = {"sys_dict"}, cacheType = CacheTypeEnum.ALL_TYPE)
 public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implements DictService {
 

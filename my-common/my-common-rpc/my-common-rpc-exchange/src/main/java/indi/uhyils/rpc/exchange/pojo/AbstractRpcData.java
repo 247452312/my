@@ -212,11 +212,13 @@ public abstract class AbstractRpcData implements RpcData {
     }
 
     private void initContentArray(byte[] data, AtomicInteger readIndex) {
-        StringBuilder contentStr = new StringBuilder();
-        for (int i = readIndex.get(); i < data.length; i++) {
-            contentStr.append((char) data[i]);
-        }
-        this.contentArray = contentStr.toString().split("\n");
+        byte[] bytes = Arrays.copyOfRange(data, readIndex.get(), data.length);
+//        StringBuilder contentStr = new StringBuilder();
+//        for (int i = readIndex.get(); i < data.length; i++) {
+//            contentStr.append((char) data[i]);
+//        }
+        String contentStr = new String(bytes, StandardCharsets.UTF_8);
+        this.contentArray = contentStr.split("\n");
     }
 
     private void initHeader(byte[] data, AtomicInteger readIndex) {

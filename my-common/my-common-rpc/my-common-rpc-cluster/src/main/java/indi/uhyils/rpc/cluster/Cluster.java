@@ -16,6 +16,12 @@ import java.util.Map;
  */
 public interface Cluster {
 
+    /**
+     * 获取接口名称
+     *
+     * @return
+     */
+    String getInterfaceName();
 
     /**
      * 获取负载均衡方式

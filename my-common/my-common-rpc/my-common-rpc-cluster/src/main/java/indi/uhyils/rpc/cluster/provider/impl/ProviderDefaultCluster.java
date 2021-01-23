@@ -43,6 +43,11 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
     }
 
     @Override
+    public String getInterfaceName() {
+        return null;
+    }
+
+    @Override
     public LoadBalanceEnum getTypeOfLoadBalance() {
         return loadBalanceType;
     }

@@ -11,7 +11,7 @@ import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.ApiGroupService;
 import indi.uhyils.util.ApiUtils;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时30分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> implements ApiGroupService {
 
     @Resource

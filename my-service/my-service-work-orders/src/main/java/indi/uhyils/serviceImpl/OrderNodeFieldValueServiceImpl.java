@@ -3,7 +3,7 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.dao.OrderNodeFieldValueDao;
 import indi.uhyils.pojo.model.OrderNodeFieldValueEntity;
 import indi.uhyils.service.OrderNodeFieldValueService;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月15日 16时15分56秒
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class OrderNodeFieldValueServiceImpl extends BaseDefaultServiceImpl<OrderNodeFieldValueEntity> implements OrderNodeFieldValueService {
     @Autowired
     private OrderNodeFieldValueDao dao;

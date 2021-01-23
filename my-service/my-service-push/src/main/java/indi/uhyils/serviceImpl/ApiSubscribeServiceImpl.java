@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.ApiSubscribeEntity;
 import indi.uhyils.pojo.request.SubscribeRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.ApiSubscribeService;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 
 import javax.annotation.Resource;
 
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时30分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class ApiSubscribeServiceImpl extends BaseDefaultServiceImpl<ApiSubscribeEntity> implements ApiSubscribeService {
 
     @Resource

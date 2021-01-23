@@ -8,7 +8,7 @@ import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.MongoService;
 import indi.uhyils.util.MD5Util;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
@@ -17,7 +17,7 @@ import java.util.UUID;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月01日 07时08分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 public class MongoServiceImpl implements MongoService {
 
     @Autowired

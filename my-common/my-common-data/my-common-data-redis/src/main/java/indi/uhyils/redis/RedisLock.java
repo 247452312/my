@@ -1,8 +1,8 @@
 package indi.uhyils.redis;
 
+import indi.uhyils.rpc.config.ApplicationConfig;
+import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.util.LogUtil;
-import indi.uhyils.util.SpringUtil;
-import org.apache.dubbo.config.ApplicationConfig;
 
 /**
  * redis实现的分布式锁
@@ -50,8 +50,8 @@ public class RedisLock {
         this.lockName = lockName;
         this.pool = pool;
         this.thread = thread;
-        ApplicationConfig bean = SpringUtil.getBean(ApplicationConfig.class);
-        this.value = thread.getName() + ":" + bean.getName();
+        ApplicationConfig application = RpcConfigFactory.getInstance().getApplication();
+        this.value = thread.getName() + ":" + application.getName();
         this.lockCountName = lockName + "_count";
     }
 

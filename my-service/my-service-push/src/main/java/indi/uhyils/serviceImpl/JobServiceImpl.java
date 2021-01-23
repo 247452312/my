@@ -12,7 +12,7 @@ import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.JobService;
 import indi.uhyils.util.ScheduledManager;
-import org.apache.dubbo.config.annotation.Service;
+import indi.uhyils.rpc.annotation.RpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,7 +24,7 @@ import javax.annotation.Resource;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时30分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
 @ReadWriteMark(tables = {"sys_job"}, cacheType = CacheTypeEnum.ALL_TYPE)
 public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements JobService {
 
