@@ -1,7 +1,7 @@
 package indi.uhyils.rpc.netty.extension.timeout;
 
 import indi.uhyils.rpc.annotation.RpcSpi;
-import indi.uhyils.rpc.config.RpcConfigWarehouse;
+import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
@@ -35,6 +35,6 @@ public class ProviderTimeOutFilter extends TimeOutFilter implements ProviderFilt
 
     @Override
     protected Long getTimeout() {
-        return RpcConfigWarehouse.getRpcConfig().getProvider().getTimeout();
+        return RpcConfigFactory.getInstance().getProvider().getTimeout();
     }
 }

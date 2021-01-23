@@ -8,6 +8,7 @@ import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.exchange.pojo.*;
 import indi.uhyils.rpc.exchange.pojo.response.RpcNormalResponse;
 import indi.uhyils.rpc.exchange.pojo.response.RpcResponseContentFactory;
+import indi.uhyils.util.LogUtil;
 
 import java.nio.charset.StandardCharsets;
 
@@ -72,6 +73,25 @@ public class RpcRequestFactory extends AbstractRpcFactory {
         RpcContent content = RpcResponseContentFactory.createByContentArray(rpcNormalRequest, contentArray);
         rpcNormalRequest.setContent(content);
         rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
+        return rpcNormalRequest;
+    }
+
+    public RpcData createRetriesError(RpcData request, Throwable th) {
+        RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
+        rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
+        rpcNormalRequest.setVersion(MyRpcContent.VERSION);
+        rpcNormalRequest.setHeaders(request.rpcHeaders());
+        String[] contentArray = {String.valueOf(RpcResponseTypeEnum.EXCEPTION.getCode()), "错误: " + th.getMessage()};
+        rpcNormalRequest.setContentArray(contentArray);
+        rpcNormalRequest.setStatus(RpcStatusEnum.CONSUMER_TIMEOUT.getCode());
+        rpcNormalRequest.setUnique(request.unique());
+        try {
+            RpcContent content = RpcResponseContentFactory.createByContentArray(rpcNormalRequest, contentArray);
+            rpcNormalRequest.setContent(content);
+            rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
+        } catch (RpcException e) {
+            LogUtil.error(this, e);
+        }
         return rpcNormalRequest;
     }
 

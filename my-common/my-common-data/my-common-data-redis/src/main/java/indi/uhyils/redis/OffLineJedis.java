@@ -4,10 +4,7 @@ import indi.uhyils.util.LogUtil;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -24,7 +21,7 @@ public class OffLineJedis implements Redisable {
     /**
      * 缓存
      */
-    private static final Map<String, String> CACHE = new HashMap<>();
+    private static final Map<String, String> CACHE = new WeakHashMap<>();
 
     /**
      * 时间

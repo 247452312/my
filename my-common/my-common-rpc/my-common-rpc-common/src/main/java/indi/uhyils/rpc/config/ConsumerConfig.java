@@ -14,7 +14,12 @@ public class ConsumerConfig {
     /**
      * 超时 默认10秒
      */
-    private Long timeout = 10000L;
+    private Long timeout = 1000L;
+
+    /**
+     * 重试次数
+     */
+    private Integer retries = 3;
 
 
     public Boolean getCheck() {
@@ -31,5 +36,13 @@ public class ConsumerConfig {
 
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
+    }
+
+    public Integer getRetries() {
+        return retries;
+    }
+
+    public void setRetries(Integer retries) {
+        this.retries = retries;
     }
 }

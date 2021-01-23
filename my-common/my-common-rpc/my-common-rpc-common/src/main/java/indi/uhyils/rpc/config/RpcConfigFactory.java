@@ -8,6 +8,11 @@ import indi.uhyils.rpc.constant.RpcConstant;
  */
 public class RpcConfigFactory {
 
+    /**
+     * 唯一实例
+     */
+    private static RpcConfig config;
+
     public static RpcConfig newDefault() {
         RpcConfig rpcConfig = new RpcConfig();
         rpcConfig.getApplication().setName(RpcConstant.RPC_PREFIX);
@@ -17,6 +22,14 @@ public class RpcConfigFactory {
         registry.setHost("192.168.1.101");
         registry.setPort(8848);
         return rpcConfig;
+    }
+
+    public static RpcConfig getInstance() {
+        return config;
+    }
+
+    public static void setRpcConfig(RpcConfig config) {
+        RpcConfigFactory.config = config;
     }
 
 }

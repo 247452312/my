@@ -48,8 +48,4 @@ public class FilterContext {
     public RpcResult getRpcResult() {
         return rpcResult;
     }
-
-    public void setRpcResult(RpcResult rpcResult) {
-        this.rpcResult = rpcResult;
-    }
 }

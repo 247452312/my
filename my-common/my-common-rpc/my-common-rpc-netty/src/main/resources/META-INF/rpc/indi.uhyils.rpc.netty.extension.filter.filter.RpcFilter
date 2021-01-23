@@ -1,2 +1,3 @@
 consumerTimeoutFilter=indi.uhyils.rpc.netty.extension.timeout.ConsumerTimeOutFilter
 providerTimeoutFilter=indi.uhyils.rpc.netty.extension.timeout.ProviderTimeOutFilter
+retryFilter=indi.uhyils.rpc.netty.extension.retry.RetryFilter

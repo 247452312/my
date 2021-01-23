@@ -14,12 +14,11 @@ public class RpcFactoryProducer {
 
     public static RpcFactory build(RpcTypeEnum rpcTypeEnum) {
         switch (rpcTypeEnum) {
+            default:
             case REQUEST:
                 return RpcRequestFactory.getInstance();
             case RESPONSE:
                 return RpcResponseFactory.getInstance();
-            default:
-                return null;
         }
 
     }

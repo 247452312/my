@@ -61,9 +61,7 @@ public class LastProviderInvoker implements RpcInvoker {
     @Override
     public RpcResult invoke(FilterContext context) throws RpcException, ClassNotFoundException {
         RpcResult rpcResult = context.getRpcResult();
-        if (rpcResult == null) {
-            context.setRpcResult(new RpcResultImpl());
-        }
+
         byte[] bytes = receiveByte(msg);
         // ProviderRequestByteFilter
         for (ProviderRequestByteExtension filter : providerRequestByteFilters) {
@@ -88,14 +86,14 @@ public class LastProviderInvoker implements RpcInvoker {
             }
             context.put("result", result);
             RpcData byBytes = RpcFactoryProducer.build(RpcTypeEnum.RESPONSE).createByBytes(result);
-            context.getRpcResult().set(byBytes);
+            rpcResult.set(byBytes);
         } catch (ClassNotFoundException e) {
             LogUtil.error(this, e);
             RpcData assembly = RpcResponseFactory.getInstance().createErrorResponse(rpcData.unique(), e, null);
             context.put("result", assembly.toBytes());
-            context.getRpcResult().set(assembly);
+            rpcResult.set(assembly);
         }
-        return context.getRpcResult();
+        return rpcResult;
     }
 
     private byte[] receiveByte(ByteBuf msg) {

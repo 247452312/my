@@ -18,7 +18,7 @@ public class ProviderConfig {
     /**
      * 超时时间
      */
-    private Long timeout = 3000L;
+    private Long timeout = 1000L;
 
 
     public Integer getPort() {
