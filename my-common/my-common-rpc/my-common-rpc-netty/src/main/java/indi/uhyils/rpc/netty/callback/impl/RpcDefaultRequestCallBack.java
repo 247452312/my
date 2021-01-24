@@ -116,7 +116,7 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
             for (int i = 0; i < methodParameterTypes.length; i++) {
                 methodClass[i] = Class.forName(methodParameterTypes[i]);
             }
-            Method declaredMethod = clazz.getDeclaredMethod(requestContent.getMethodName(), methodClass);
+            Method declaredMethod = clazz.getMethod(requestContent.getMethodName(), methodClass);
             Object invoke = declaredMethod.invoke(targetClass, requestContent.getArgs());
             return invoke == null ? "" : JSON.toJSONString(invoke);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | RpcBeanNotFoundException e) {
