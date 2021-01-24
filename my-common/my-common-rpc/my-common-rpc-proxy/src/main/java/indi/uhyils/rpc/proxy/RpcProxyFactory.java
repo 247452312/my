@@ -21,12 +21,14 @@ public class RpcProxyFactory {
         if (!clazz.isInterface()) {
             throw new RegistryException("必须使用接口,您使用的是: " + clazz.getName());
         }
-        Class<?>[] interfaces = clazz.getInterfaces();
+//        Class<?>[] interfaces = clazz.getInterfaces();
 
-        Class<?>[] classes = new Class[interfaces.length + 1];
-        System.arraycopy(interfaces, 0, classes, 0, interfaces.length);
-        classes[classes.length - 1] = clazz;
-        Object o = Proxy.newProxyInstance(clazz.getClassLoader(), classes, new RpcProxyHandler(clazz));
+//        Class<?>[] classes = new Class[interfaces.length + 1];
+//        System.arraycopy(interfaces, 0, classes, 0, interfaces.length);
+//        classes[classes.length - 1] = clazz;
+        Class<?>[] interfaces = new Class[1];
+        interfaces[0] = clazz;
+        Object o = Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, new RpcProxyHandler(clazz));
         return (T) o;
     }
 
@@ -38,7 +40,7 @@ public class RpcProxyFactory {
      * @return
      * @throws RegistryException
      */
-    public static Object newProxy(Class<?> clazz,  boolean generic) throws RegistryException {
+    public static Object newProxy(Class<?> clazz,  boolean generic) throws Exception {
         Object service = newProxy(clazz);
         return generic ? new GenericService(service) : service;
     }

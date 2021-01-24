@@ -7,6 +7,9 @@ import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.registry.mode.AbstractRegistryServiceListener;
+import indi.uhyils.rpc.registry.mode.RegistryMode;
+import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
+import indi.uhyils.rpc.registry.pojo.info.RegistryProviderNecessaryInfo;
 import indi.uhyils.util.LogUtil;
 
 import java.util.ArrayList;
@@ -21,13 +24,28 @@ import java.util.concurrent.Executor;
  */
 public class RegistryNacosServiceListener extends AbstractRegistryServiceListener implements EventListener, Listener {
 
+    /**
+     * 接口名称
+     */
+    private String interfaceName;
+
+
+    /**
+     * 验证用注册中心
+     */
+    private RegistryMode mode;
+
+
+    public RegistryNacosServiceListener(RegistryMode mode, String interfaceName) {
+        this.interfaceName = interfaceName;
+        this.mode = mode;
+    }
+
     @Override
     public void onEvent(Event event) {
         if (event != null) {
-            String name = event.getClass().getName();
-            LogUtil.info("name!!!!!!!!!!!!!!!!");
-            LogUtil.info(name);
             if (event instanceof NamingEvent) {
+                LogUtil.info("name!!!!!!!!!!!!!!!!");
                 doServiceEvent((NamingEvent) event);
             }
         }
@@ -39,8 +57,12 @@ public class RegistryNacosServiceListener extends AbstractRegistryServiceListene
      * @param event
      */
     private void doServiceEvent(NamingEvent event) {
-        List<Instance> instances = event.getInstances();
         ArrayList<NettyInfo> nettyInfos = new ArrayList<>();
+        List<Instance> instances = event.getInstances();
+        if (instances.isEmpty()) {
+            verificationService(nettyInfos);
+            return;
+        }
         for (int i = 0; i < instances.size(); i++) {
             Instance instance = instances.get(i);
             if (!instance.isEnabled()) {
@@ -54,6 +76,26 @@ public class RegistryNacosServiceListener extends AbstractRegistryServiceListene
             nettyInfos.add(nettyInfo);
         }
         cluster.onServiceStatusChange(nettyInfos);
+    }
+
+    private void verificationService(ArrayList<NettyInfo> nettyInfos) {
+        try {
+            List<RegistryInfo> targetInterfaceInfo = mode.getTargetInterfaceInfo(interfaceName);
+            for (int i = 0; i < targetInterfaceInfo.size(); i++) {
+                RegistryInfo registryInfo = targetInterfaceInfo.get(i);
+                NettyInfo nettyInfo = new NettyInfo();
+                RegistryProviderNecessaryInfo necessaryInfo = (RegistryProviderNecessaryInfo) registryInfo.getNecessaryInfo();
+                nettyInfo.setIndexInColony(i);
+                nettyInfo.setHost(necessaryInfo.getHost());
+                nettyInfo.setPort(necessaryInfo.getPort());
+                double weight = necessaryInfo.getWeight();
+                nettyInfo.setWeight((int) weight);
+                nettyInfos.add(nettyInfo);
+            }
+            cluster.onServiceStatusChange(nettyInfos);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+        }
     }
 
     @Override

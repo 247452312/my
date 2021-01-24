@@ -51,25 +51,23 @@ public class ClusterFactory {
         return instance;
     }
 
-    public static Cluster createDefaultConsumerCluster(NettyInitDto nettyInit) {
-
-        RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
-        NettyInfo nettyInfo = new NettyInfo();
-        nettyInfo.setIndexInColony(1);
-        HashMap<NettyInfo, RpcNetty> nettyMap = new HashMap<>(1);
-        nettyMap.put(nettyInfo, netty);
-        return new ConsumerDefaultCluster(nettyMap);
+    public static Cluster createDefaultConsumerCluster(Class<?> clazz, NettyInitDto nettyInit) {
+        return createDefaultConsumerCluster(clazz, new NettyInitDto[]{nettyInit});
     }
 
-    public static Cluster createDefaultConsumerCluster(NettyInitDto... nettyInit) {
-        HashMap<NettyInfo, RpcNetty> nettyMap = new HashMap<>(nettyInit.length);
-        for (int i = 0; i < nettyInit.length; i++) {
-            RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit[i]);
+    public static Cluster createDefaultConsumerCluster(Class<?> clazz, NettyInitDto... nettyInits) {
+        HashMap<NettyInfo, RpcNetty> nettyMap = new HashMap<>(nettyInits.length);
+        for (int i = 0; i < nettyInits.length; i++) {
+            NettyInitDto nettyInit = nettyInits[i];
+            RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
             NettyInfo nettyInfo = new NettyInfo();
+            nettyInfo.setHost(nettyInit.getHost());
+            nettyInfo.setPort(nettyInit.getPort());
+            nettyInfo.setWeight(nettyInit.getWeight());
             nettyInfo.setIndexInColony(i);
             nettyMap.put(nettyInfo, netty);
         }
-        return new ConsumerDefaultCluster(nettyMap);
+        return new ConsumerDefaultCluster(clazz, nettyMap);
     }
 
 

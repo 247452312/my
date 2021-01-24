@@ -11,6 +11,7 @@ import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.netty.factory.RpcNettyFactory;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
+import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.HashSet;
@@ -36,6 +37,11 @@ public class ConsumerDefaultCluster implements Cluster {
     private final LoadBalanceEnum loadBalanceType;
 
     /**
+     * 接口名称
+     */
+    private final Class<?> target;
+
+    /**
      * 如果是轮询时的标记
      */
     private final AtomicInteger pollingMark = new AtomicInteger(0);
@@ -50,13 +56,19 @@ public class ConsumerDefaultCluster implements Cluster {
     private AtomicReferenceArray<NettyInfo> weightArrayForManualAssignment;
 
 
-    public ConsumerDefaultCluster(Map<NettyInfo, RpcNetty> nettyMap, LoadBalanceEnum loadBalanceType) {
+    public ConsumerDefaultCluster(Class<?> clazz, Map<NettyInfo, RpcNetty> nettyMap, LoadBalanceEnum loadBalanceType) {
         this.nettyMap = nettyMap;
         this.loadBalanceType = loadBalanceType;
+        this.target = clazz;
     }
 
-    public ConsumerDefaultCluster(Map<NettyInfo, RpcNetty> nettyMap) {
-        this(nettyMap, LoadBalanceEnum.RANDOM);
+    public ConsumerDefaultCluster(Class<?> clazz, Map<NettyInfo, RpcNetty> nettyMap) {
+        this(clazz, nettyMap, LoadBalanceEnum.RANDOM);
+    }
+
+    @Override
+    public String getInterfaceName() {
+        return this.target.getName();
     }
 
     @Override
@@ -93,9 +105,11 @@ public class ConsumerDefaultCluster implements Cluster {
 
     @Override
     public RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException, RpcException, ClassNotFoundException {
-        if (nettyMap.size() == 0) {
-            throw new RpcException("指定的服务端不存在");
+        if (nettyMap.isEmpty()) {
+            String interfaceName = getInterfaceName();
+            throw new RpcException("指定的服务端" + interfaceName + "不存在");
         }
+
         //todo 暂时没有实现最少活跃
         switch (loadBalanceType) {
             case LEAST_ACTIVE:

@@ -6,8 +6,11 @@ import indi.uhyils.rpc.exception.ContentArrayQuantityMismatchException;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,14 +37,25 @@ public class RpcRequestContentFactory {
         content.setMethodParamterTypes(methodParamterTypes);
         JSONArray argsMap = JSON.parseArray(contentArray[4]);
         List<Object> args = new ArrayList<>();
+        Class<?> serviceClass = Class.forName(content.getServiceName());
+        Class<?>[] methodParamterClass = new Class[methodParamterTypes.length];
         for (int i = 0; i < methodParamterTypes.length; i++) {
             String classPath = methodParamterTypes[i];
             if (StringUtils.isEmpty(classPath)) {
                 continue;
             }
             Class<?> clazz = Class.forName(classPath);
-            Object o = JSON.parseObject(argsMap.get(i).toString(), clazz);
-            args.add(o);
+            methodParamterClass[i] = clazz;
+        }
+        try {
+            Method method = serviceClass.getMethod(content.getMethodName(), methodParamterClass);
+            Type[] genericParameterTypes = method.getGenericParameterTypes();
+            for (int i = 0; i < genericParameterTypes.length; i++) {
+                Object o = JSON.parseObject(argsMap.get(i).toString(), genericParameterTypes[i]);
+                args.add(o);
+            }
+        } catch (NoSuchMethodException e) {
+            LogUtil.error(e);
         }
         content.setArgs(args.toArray());
 

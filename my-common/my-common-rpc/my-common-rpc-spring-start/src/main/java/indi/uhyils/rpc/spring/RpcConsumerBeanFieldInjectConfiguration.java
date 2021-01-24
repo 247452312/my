@@ -4,10 +4,7 @@ import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.rpc.proxy.RpcProxyFactory;
 import indi.uhyils.rpc.registry.exception.RegistryException;
 import indi.uhyils.util.LogUtil;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -20,16 +17,27 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月17日 09时55分
  */
-public class RpcConsumerBeanFieldInjectConfiguration implements ApplicationContextAware, InstantiationAwareBeanPostProcessor {
+public class RpcConsumerBeanFieldInjectConfiguration implements InstantiationAwareBeanPostProcessor {
     /**
      * 注册类的缓存
      */
     private volatile static Map<String, Object> consumerRegistryCache = new ConcurrentHashMap<>();
-    private ApplicationContext applicationContext;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    public Object getRegistryOnCache(Class<?> clazz) throws RegistryException {
+        try {
+            return getRegistryOnCache(clazz.getName());
+        } catch (ClassNotFoundException e) {
+            LogUtil.error(this, e);
+        }
+        return null;
+    }
+
+    public Object getRegistryOnCache(String clazzName) throws ClassNotFoundException, RegistryException {
+        if (consumerRegistryCache.containsKey(clazzName)) {
+            return consumerRegistryCache.get(clazzName);
+        }
+        initConsumerByType(clazzName);
+        return getRegistryOnCache(clazzName);
     }
 
     /**
@@ -117,6 +125,10 @@ public class RpcConsumerBeanFieldInjectConfiguration implements ApplicationConte
                 }
             }
         }
+    }
+
+    private void initConsumerByType(String typeName) throws RegistryException, ClassNotFoundException {
+        initConsumerByType(Class.forName(typeName));
     }
 
 }

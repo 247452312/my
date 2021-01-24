@@ -36,7 +36,7 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
         this.mode = mode;
         mode.setType(RpcNettyTypeEnum.CONSUMER);
         try {
-            RegistryNacosServiceListener listener = new RegistryNacosServiceListener();
+            RegistryNacosServiceListener listener = new RegistryNacosServiceListener(mode,cluster.getInterfaceName());
             listener.setCluster(cluster);
             mode.addServiceListener(serviceClass.getName(), RegistryContent.DEFAULT_REGISTRY_GROUP_NAME, listener);
         } catch (Exception e) {

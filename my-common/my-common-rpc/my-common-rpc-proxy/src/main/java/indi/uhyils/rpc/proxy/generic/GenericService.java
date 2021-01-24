@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.proxy.generic;
 
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.util.LogUtil;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,7 +19,7 @@ public class GenericService<T> {
      */
     private final T service;
 
-    public GenericService(T service) {
+    public GenericService(T service) throws Exception {
         this.service = service;
     }
 
@@ -26,20 +27,21 @@ public class GenericService<T> {
         return service;
     }
 
-    public Object invoke(String method, Class[] parameterTypes, Object[] args) {
+    public Object invoke(String method, Class[] parameterTypes, Object[] args) throws InvocationTargetException {
         try {
             Method targetMethod = service.getClass().getMethod(method, parameterTypes);
+            targetMethod.setAccessible(true);
+            for (int i = 0; i < parameterTypes.length; i++) {
+                args[i] = JSONObject.parseObject(JSONObject.toJSONString(args[i]), parameterTypes[i]);
+            }
             return targetMethod.invoke(service, args);
         } catch (NoSuchMethodException | IllegalAccessException e) {
             LogUtil.error(this, e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
         }
         return null;
-
     }
 
-    public Object invoke(String method, String[] parameterTypes, Object[] args) {
+    public Object invoke(String method, String[] parameterTypes, Object[] args) throws InvocationTargetException {
         Class[] parameterTypesClass = new Class[parameterTypes.length];
         try {
             for (int i = 0; i < parameterTypes.length; i++) {
@@ -51,8 +53,15 @@ public class GenericService<T> {
         return invoke(method, parameterTypesClass, args);
     }
 
-    public CompletableFuture<Object> $invokeAsync(String method, String[] parameterTypes, Object[] args) {
-        return CompletableFuture.supplyAsync(() -> invoke(method, parameterTypes, args));
+    public CompletableFuture<Object> invokeAsync(String method, String[] parameterTypes, Object[] args) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return invoke(method, parameterTypes, args);
+            } catch (InvocationTargetException e) {
+                LogUtil.error(this, e);
+            }
+            return null;
+        });
     }
 
 }

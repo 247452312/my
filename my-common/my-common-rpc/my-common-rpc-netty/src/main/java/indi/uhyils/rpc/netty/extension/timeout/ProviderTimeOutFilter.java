@@ -20,7 +20,6 @@ import indi.uhyils.util.LogUtil;
 public class ProviderTimeOutFilter extends TimeOutFilter implements ProviderFilter {
 
     public ProviderTimeOutFilter() {
-        LogUtil.info("ProviderTimeOutFilter");
     }
 
     @Override
