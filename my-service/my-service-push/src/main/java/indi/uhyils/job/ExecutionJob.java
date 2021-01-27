@@ -49,7 +49,7 @@ public class ExecutionJob extends QuartzJobBean {
             LogUtil.error(this, e);
             quartzJob.setPause(false);
             //更新状态
-            dao.update(quartzJob);
+            dao.updateById(quartzJob);
             manager.deleteJob(quartzJob);
         }
     }

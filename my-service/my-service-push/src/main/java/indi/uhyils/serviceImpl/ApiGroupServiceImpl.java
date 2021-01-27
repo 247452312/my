@@ -42,7 +42,7 @@ public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> 
 
     @Override
     public ServiceResult<String> test(IdRequest request) {
-        ApiGroupEntity apiGroupEntity = dao.getById(request.getId());
+        ApiGroupEntity apiGroupEntity = dao.selectById(request.getId());
         List<ApiEntity> groupByGroupId = apiDao.getGroupByGroupId(apiGroupEntity.getId());
         HashMap<String, String> parameter = new HashMap<>(16);
         ApiUtils.callApi(groupByGroupId, request.getUser(), parameter);
@@ -60,13 +60,13 @@ public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> delete(IdRequest idRequest) {
-        ApiGroupEntity byId = getDao().getById(idRequest.getId());
+        ApiGroupEntity byId = getDao().selectById(idRequest.getId());
         if (byId == null) {
             return ServiceResult.buildFailedResult("查无此服务", null, idRequest);
         }
         byId.setDeleteFlag(true);
         byId.preUpdate(idRequest);
-        getDao().update(byId);
+        getDao().updateById(byId);
         int apiDelete = apiDao.deleteAllByGroup(byId);
         return ServiceResult.buildSuccessResult("删除成功", apiDelete, idRequest);
     }

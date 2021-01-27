@@ -180,7 +180,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
 
         /* 1.删除所有对应子节点 */
         Long menuId = req.getId();
-        MenuEntity menuEntity = dao.getById(menuId);
+        MenuEntity menuEntity = dao.selectById(menuId);
         if (menuEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null, req);
         }
@@ -211,7 +211,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         ArrayList<DictItemEntity> byDictId = dictItemDao.getByDictId(idByCode);
         ArrayList<MenuEntity> collect = (ArrayList<MenuEntity>) byDictId.stream().map(t -> {
             Long menuId = Long.valueOf(t.getValue().toString());
-            MenuEntity byId = dao.getById(menuId);
+            MenuEntity byId = dao.selectById(menuId);
             if (byId.getType() == false) {
                 try {
                     throw new Exception("服务字典中快捷入口(" + byId.getName() + ") 不是叶子结点");

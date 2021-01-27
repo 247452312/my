@@ -25,9 +25,18 @@ rpc:
   provider:
     timeout: 5000
 
-mybatis:
+mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
+  # 别名包设置，在mapper.xml中可直接用类名
   type-aliases-package: indi.uhyils.dao
+  global-config:
+    db-config:
+      ## 生成ID方式： AUTO 数据库自增  INPUT 自己输入  ASSIGN_UUID 默认生成器
+      id-type: input
+      logic-delete-field: deleteFlag  # 全局逻辑删除的实体字段名
+      logic-delete-value: true # 逻辑已删除值
+      logic-not-delete-value: false # 逻辑未删除值
+
 logging:
   level:
     indi.uhyils.dao: DEBUG

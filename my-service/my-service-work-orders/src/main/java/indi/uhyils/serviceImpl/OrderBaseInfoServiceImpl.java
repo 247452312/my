@@ -58,7 +58,7 @@ public class OrderBaseInfoServiceImpl extends BaseDefaultServiceImpl<OrderBaseIn
     @Override
     public ServiceResult<GetOneBaseOrderResponse> getOneOrder(IdRequest request) {
         Long id = request.getId();
-        OrderBaseInfoEntity byId = dao.getById(id);
+        OrderBaseInfoEntity byId = dao.selectById(id);
         List<OrderBaseNodeEntity> orderBaseNodes = orderBaseNodeDao.getNoHiddenByOrderId(id);
         List<Long> orderNodeIds = orderBaseNodes.stream().map(BaseIdEntity::getId).collect(Collectors.toList());
         Map<Long, List<OrderBaseNodeFieldEntity>> orderBaseFieldMap = orderBaseNodeFieldDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderBaseNodeFieldEntity::getBaseOrderId));

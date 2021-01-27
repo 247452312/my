@@ -20,25 +20,25 @@ public class Page<T extends Serializable> implements Serializable {
     /**
      * 页面大小
      */
-    private Integer size;
+    private Long size;
 
     /**
      * 页码
      */
-    private Integer pageNum;
+    private Long pageNum;
 
 
     /**
      * 总条数
      */
-    private Integer count;
+    private Long count;
 
     /**
      * 总页数.
      */
-    private Integer totalPage;
+    private Long totalPage;
 
-    public Page(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
+    public Page(List<T> list, Long size, Long pageNum, Long count, Long totalPage) {
         this.list = list;
         this.size = size;
         this.pageNum = pageNum;
@@ -49,7 +49,7 @@ public class Page<T extends Serializable> implements Serializable {
     public Page() {
     }
 
-    public static <T extends Serializable> Page<T> build(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
+    public static <T extends Serializable> Page<T> build(List<T> list, Long size, Long pageNum, Long count, Long totalPage) {
         return new Page(list, size, pageNum, count, totalPage);
     }
 
@@ -63,12 +63,12 @@ public class Page<T extends Serializable> implements Serializable {
      * @param <T>         查询结果类
      * @return 包含分页信息的返回集
      */
-    public static <T extends Serializable> Page<T> build(DefaultPageRequest pageRequest, List<T> list, Integer count, Integer totalPage) {
+    public static <T extends Serializable> Page<T> build(DefaultPageRequest pageRequest, List<T> list, Long count, Long totalPage) {
         //代表分页
-        if (pageRequest.getPaging() == true) {
+        if (pageRequest.getPaging()) {
             return build(list, pageRequest.getSize(), pageRequest.getPage(), count, totalPage);
         } else {
-            return build(list, count, 1, count, 1);
+            return build(list, count, 1L, count, 1L);
         }
     }
 
@@ -80,35 +80,35 @@ public class Page<T extends Serializable> implements Serializable {
         this.list = list;
     }
 
-    public Integer getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
-    public Integer getPageNum() {
+    public Long getPageNum() {
         return pageNum;
     }
 
-    public void setPageNum(Integer pageNum) {
+    public void setPageNum(Long pageNum) {
         this.pageNum = pageNum;
     }
 
-    public Integer getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
-    public Integer getTotalPage() {
+    public Long getTotalPage() {
         return totalPage;
     }
 
-    public void setTotalPage(Integer totalPage) {
+    public void setTotalPage(Long totalPage) {
         this.totalPage = totalPage;
     }
 }

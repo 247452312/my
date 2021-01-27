@@ -56,116 +56,6 @@
         a.level
     </sql>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.UserEntity">
-        select
-        <include refid="columnList"/>
-        from sys_user a
-        where delete_flag = 0
-
-        <foreach item="item" index="index" collection="args">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
-        <if test="page != null and page != ''">
-            limit ${(page-1) * size},${size}
-        </if>
-    </select>
-
-
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.UserEntity">
-        select
-        <include refid="columnList"/>
-        from sys_user a
-        where delete_flag = 0
-        <foreach item="item" index="index" collection="list">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
-    </select>
-
-
-    <select id="getById" resultType="indi.uhyils.pojo.model.UserEntity">
-        select
-        <include refid="columnList"/>
-        from sys_user a
-        where delete_flag = 0
-        and id = #{id}
-    </select>
-
-    <select id="count" resultType="java.lang.Integer">
-        select count(*)
-        from sys_user a
-        where delete_flag = 0;
-    </select>
-
-    <select id="countByArgs" resultType="java.lang.Integer">
-        select count(*)
-        from sys_user a
-        where delete_flag = 0
-        <foreach item="item" index="index" collection="args">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
-    </select>
-
-    <select id="checkRepeat" resultType="java.lang.Integer">
-        select count(*)
-        from sys_user a
-        where ${columnName} = #{value}
-    </select>
-
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.UserEntity">
-        insert sys_user(id, nick_name, mail, phone, head_portrait, username, password, role_id, create_date,
-                        create_user, update_date, update_user,
-                        delete_flag, remark)
-        values (#{id},
-                #{nickName},
-                #{mail},
-                #{phone},
-                #{headPortrait},
-                #{userName},
-                #{password},
-                #{roleId},
-                #{createDate},
-                #{createUser},
-                #{updateDate},
-                #{updateUser},
-                0,
-                #{remark})
-    </insert>
-
-    <update id="update" parameterType="indi.uhyils.pojo.model.UserEntity">
-        update sys_user set
-        update_date = #{updateDate}
-        ,update_user = #{updateUser}
-        <if test="nickName != null and nickName != ''">
-            ,nick_name = #{nickName}
-        </if>
-        <if test="userName != null and userName != ''">
-            ,username = #{userName}
-        </if>
-        <if test="password != null and password != ''">
-            ,password = #{password}
-        </if>
-        <if test="mail != null">
-            ,mail = #{mail}
-        </if>
-        <if test="phone != null">
-            ,phone = #{phone}
-        </if>
-        <if test="headPortrait != null and headPortrait != ''">
-            ,head_portrait = #{headPortrait}
-        </if>
-        <if test="roleId != null ">
-            ,role_id = #{roleId}
-        </if>
-        <if test="deleteFlag != null and deleteFlag != ''">
-            ,delete_flag = #{deleteFlag}
-        </if>
-        <if test="remark != null ">
-            ,remark = #{remark}
-        </if>
-        where id = #{id}
-    </update>
-
-
     <select id="getUserRoleById" resultType="indi.uhyils.pojo.model.RoleEntity">
         select
         <include refid="roleColumnList"/>
@@ -186,12 +76,6 @@
         from sys_power a right join sys_dept_power b on a.id = b.power_id where b.dept_id = #{deptId}
     </select>
 
-    <select id="getAll" resultType="indi.uhyils.pojo.model.UserEntity">
-        select
-        <include refid="columnList"/>
-        from sys_user a
-        where delete_flag = 0
-    </select>
 
     <select id="checkUserPassword" resultType="java.lang.Integer">
         select count(*)

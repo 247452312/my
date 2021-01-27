@@ -50,12 +50,6 @@ public interface DeptDao extends DefaultDao<DeptEntity> {
      */
     ArrayList<GetDeptsByMenuIdResponse> getByMenuId(Long id);
 
-    /**
-     * 获取全部
-     *
-     * @return 全部权限集
-     */
-    ArrayList<DeptEntity> getAll();
 
     /**
      * 根据权限集id删除所有权限集-菜单中间表

@@ -14,10 +14,7 @@ import indi.uhyils.util.LogUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
@@ -124,7 +121,8 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
     public boolean sendMsg(byte[] bytes) {
         ByteBuf buf = Unpooled.buffer();
         buf.writeBytes(bytes);
-        channelFuture.channel().writeAndFlush(buf);
+        Channel channel = channelFuture.channel();
+        channel.writeAndFlush(buf);
         return true;
     }
 

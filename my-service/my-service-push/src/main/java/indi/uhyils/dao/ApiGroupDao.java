@@ -16,13 +16,6 @@ import java.util.List;
 public interface ApiGroupDao extends DefaultDao<ApiGroupEntity> {
 
     /**
-     * 获取全部
-     *
-     * @return
-     */
-    List<ApiGroupEntity> getAll();
-
-    /**
      * 获取所有可以被订阅的api群
      *
      * @return 可以被订阅的api群

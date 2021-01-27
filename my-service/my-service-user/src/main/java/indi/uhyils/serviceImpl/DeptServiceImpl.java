@@ -101,7 +101,8 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
 
     @Override
     public ServiceResult<ArrayList<DeptEntity>> getDepts(PutDeptsToMenuRequest request) {
-        return ServiceResult.buildSuccessResult("获取成功", dao.getAll(), request);
+        ArrayList<DeptEntity> deptEntities = (ArrayList<DeptEntity>) dao.selectList(null);
+        return ServiceResult.buildSuccessResult("获取成功", deptEntities, request);
     }
 
     @Override
@@ -121,13 +122,13 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept", "sys_dept_power", "sys_dept_menu", "sys_role_dept"})
     public ServiceResult<Boolean> deleteDept(IdRequest request) {
-        DeptEntity t = getDao().getById(request.getId());
+        DeptEntity t = getDao().selectById(request.getId());
         if (t == null) {
             return ServiceResult.buildFailedResult("查无此人", null, request);
         }
         t.setDeleteFlag(true);
         t.preUpdate(request);
-        getDao().update(t);
+        dao.updateById(t);
         dao.deleteDeptPowerMiddleByDeptId(request.getId());
         dao.deleteDeptMenuMiddleByDeptId(request.getId());
         dao.deleteRoleDeptMiddleByDeptId(request.getId());

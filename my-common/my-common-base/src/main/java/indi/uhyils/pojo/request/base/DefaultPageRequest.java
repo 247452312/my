@@ -12,12 +12,12 @@ public class DefaultPageRequest extends DefaultRequest {
     /**
      * 页码 下标从1开始 sql中会主动减去1
      */
-    private Integer page;
+    private Long page;
 
     /**
      * 每页大小
      */
-    private Integer size;
+    private Long size;
 
     /**
      * 是否分页
@@ -33,19 +33,19 @@ public class DefaultPageRequest extends DefaultRequest {
         this.paging = paging;
     }
 
-    public Integer getPage() {
+    public Long getPage() {
         return page;
     }
 
-    public void setPage(Integer page) {
+    public void setPage(Long page) {
         this.page = page;
     }
 
-    public Integer getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 }

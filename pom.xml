@@ -12,6 +12,7 @@
         <module>my-api</module>
         <module>my-service</module>
         <module>my-common</module>
+        <module>test</module>
     </modules>
 
     <properties>
@@ -215,6 +216,12 @@
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>
                 <version>${mybatis.version}</version>
+            </dependency>
+            <!-- mybatis-plus-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
 
             <dependency>

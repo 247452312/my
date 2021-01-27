@@ -41,16 +41,6 @@ public class ApiServiceImpl extends BaseDefaultServiceImpl<ApiEntity> implements
         e.setSymbol("=");
         e.setData(request.getGroupId());
         args.add(e);
-        if (paging) {
-            ArrayList<ApiEntity> byArgs = getDao().getByArgs(args, request.getPage(), request.getSize());
-            int count = getDao().countByArgs(request.getArgs());
-            Page<ApiEntity> build = Page.build(request, byArgs, count, (count / request.getSize()) + 1);
-            return ServiceResult.buildSuccessResult("查询成功", build, request);
-        } else {
-            ArrayList<ApiEntity> byArgs = getDao().getByArgsNoPage(args);
-            int count = getDao().countByArgs(request.getArgs());
-            Page<ApiEntity> build = Page.build(request, byArgs, count, null);
-            return ServiceResult.buildSuccessResult("查询成功", build, request);
-        }
+        return super.getByArgs(request);
     }
 }

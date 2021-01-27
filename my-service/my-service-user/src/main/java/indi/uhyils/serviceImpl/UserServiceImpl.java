@@ -66,7 +66,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         if (user != null) {
             return ServiceResult.buildSuccessResult("查询成功", user, idRequest);
         }
-        UserEntity userEntity = dao.getById(idRequest.getId());
+        UserEntity userEntity = dao.selectById(idRequest.getId());
         if (userEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null, idRequest);
         }
@@ -161,7 +161,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         ArrayList<Arg> objects = new ArrayList<>();
         objects.add(new Arg("username", "=", userRequest.getUsername()));
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
-        ArrayList<UserEntity> byArgsNoPage = dao.getByArgsNoPage(objects);
+        List<UserEntity> byArgsNoPage = dao.selectList(getQueryWrapper(objects));
         if (byArgsNoPage.size() != 1) {
             return ServiceResult.buildFailedResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail(), userRequest);
         }
@@ -193,7 +193,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Override
     public ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request) {
-        ArrayList<UserEntity> all = dao.getAll();
+        ArrayList<UserEntity> all = (ArrayList<UserEntity>) dao.selectList(null);
         all.forEach(t -> {
             Long roleId = t.getRoleId();
             RoleEntity userRoleById = dao.getUserRoleById(roleId);
@@ -218,10 +218,10 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         if (passwordIsTrue != 1) {
             return ServiceResult.buildFailedResult("密码不正确", "密码不正确", request);
         }
-        UserEntity byId = dao.getById(userId);
+        UserEntity byId = dao.selectById(userId);
         byId.setPassword(request.getNewPassword());
         byId.preUpdate(request);
-        dao.update(byId);
+        dao.updateById(byId);
         return ServiceResult.buildSuccessResult("修改密码成功", "true", request);
     }
 

@@ -14,12 +14,6 @@ import java.util.List;
 @Mapper
 public interface JobDao extends DefaultDao<JobEntity> {
 
-    /**
-     * 获取全部
-     *
-     * @return
-     */
-    List<JobEntity> getAll();
 
     /**
      * 暂停一个任务

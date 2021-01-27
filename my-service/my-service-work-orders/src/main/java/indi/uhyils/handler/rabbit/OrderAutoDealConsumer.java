@@ -53,22 +53,22 @@ public class OrderAutoDealConsumer extends DefaultConsumer {
         OrderNodeEntity orderNodeEntity = initApiRequestTemporary.getOrderNode();
 
         // 初始化方法
-        OrderApiEntity initApiEntity = orderApiDao.getById(orderNodeEntity.getInitApiId());
+        OrderApiEntity initApiEntity = orderApiDao.selectById(orderNodeEntity.getInitApiId());
         InitApiHandler initHandler = applicationContext.getBean(initApiEntity.getBeanName(), InitApiHandler.class);
         InitToRunApiTemporary init = initHandler.init(initApiRequestTemporary);
 
         // 运行方法
-        OrderApiEntity runApiEntity = orderApiDao.getById(orderNodeEntity.getRunApiId());
+        OrderApiEntity runApiEntity = orderApiDao.selectById(orderNodeEntity.getRunApiId());
         RunApiHandler runHandler = applicationContext.getBean(runApiEntity.getBeanName(), RunApiHandler.class);
         RunToSaveApiTemporary run = runHandler.run(init);
 
         // 保存方法
-        OrderApiEntity saveApiEntity = orderApiDao.getById(orderNodeEntity.getSaveApiId());
+        OrderApiEntity saveApiEntity = orderApiDao.selectById(orderNodeEntity.getSaveApiId());
         SaveApiHandler saveHandler = applicationContext.getBean(saveApiEntity.getBeanName(), SaveApiHandler.class);
         SaveToTransApiTemporary save = saveHandler.save(run);
 
         // 运行方法
-        OrderApiEntity transApiEntity = orderApiDao.getById(orderNodeEntity.getTransApiId());
+        OrderApiEntity transApiEntity = orderApiDao.selectById(orderNodeEntity.getTransApiId());
         TransApiHandler transHandler = applicationContext.getBean(transApiEntity.getBeanName(), TransApiHandler.class);
         transHandler.trans(save);
 

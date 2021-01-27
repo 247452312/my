@@ -23,12 +23,6 @@ public interface ApiDao extends DefaultDao<ApiEntity> {
      */
     List<ApiEntity> getGroupByGroupId(Long apiGroup);
 
-    /**
-     * 获取全部api
-     *
-     * @return 全部api
-     */
-    List<ApiEntity> getAll();
 
     /**
      * 删除所有

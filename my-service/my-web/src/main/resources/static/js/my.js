@@ -37,9 +37,9 @@ function getCookie(cname) {
  * @param interfaceName
  * @param methodName
  * @param data 向后台发送的数据
- * @param success 成功后执行的方法
+ * @param successCallBack 成功后执行的方法
  */
-function pushRequest(interfaceName, methodName, data, success, target = false) {
+function pushRequest(interfaceName, methodName, data, successCallBack, target = false) {
     let result = null;
     let json = JSON.stringify(new my_request(getAttrBySession("token").token, interfaceName, methodName, data));
     console.log("发送");
@@ -51,7 +51,7 @@ function pushRequest(interfaceName, methodName, data, success, target = false) {
         contentType: "application/json;charset=utf8",
         async: false,
         success: function (data) {
-            result = dealResponse(data, success, target);
+            result = dealResponse(data, successCallBack, target);
         }
     });
     return result;
@@ -316,17 +316,17 @@ function bandUpFile(element, success) {
 /**
  * 处理返回值
  * @param res 返回值
- * @param success 成功后回调方法
+ * @param successCallBack 成功后回调方法
  * @param target 成功后是否显示信息
  * @returns {null}
  */
-function dealResponse(res, success, target = false) {
+function dealResponse(res, successCallBack, target = false) {
     let result = null;
     if (res.code >= 200 && res.code < 300) {
         if (target) {
             layer.msg(res.msg);
         }
-        result = success(res.data);
+        result = successCallBack(res.data);
     } else {
         // code不为200
         switch (res.code) {

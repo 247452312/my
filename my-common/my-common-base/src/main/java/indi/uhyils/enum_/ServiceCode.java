@@ -28,7 +28,7 @@ public enum ServiceCode {
     /**
      * 未登录
      */
-    NO_LOGIN__ERROR(403, "未登录"),
+    NO_LOGIN_ERROR(403, "未登录"),
 
     /**
      * 爬虫验证
