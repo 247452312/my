@@ -23,6 +23,131 @@
 
     </sql>
 
+    <select id="getById" resultType="indi.uhyils.pojo.model.JobEntity">
+        select
+        <include refid="columnList"/>
+        from sys_job a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.JobEntity">
+        select
+        <include refid="columnList"/>
+        from sys_job a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.JobEntity">
+        select
+        <include refid="columnList"/>
+        from sys_job a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${size}
+        </if>
+
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.JobEntity">
+        insert sys_job(id,
+                       create_date,
+                       create_user,
+                       delete_flag,
+                       remark,
+                       update_date,
+                       update_user,
+                       cron,
+                       interface_name,
+                       method_name,
+                       name,
+                       param_type,
+                       params,
+                       pause)
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                0,
+                #{remark},
+                #{updateDate},
+                #{updateUser},
+                #{cron},
+                #{interfaceName},
+                #{methodName},
+                #{name},
+                #{paramType},
+                #{params},
+                #{pause})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.JobEntity">
+        update sys_job set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+
+        <if test="methodName != null and methodName != ''">
+            ,method_name = #{methodName}
+        </if>
+        <if test="cron != null and cron != ''">
+            ,cron = #{cron}
+        </if>
+        <if test="name != null and name != ''">
+            ,name = #{name}
+        </if>
+        <if test="params != null and params != ''">
+            ,params = #{params}
+        </if>
+        <if test="pause != null and pause != ''">
+            ,pause = #{pause}
+        </if>
+        <if test="interfaceName != null and interfaceName != ''">
+            ,interface_name = #{interfaceName}
+        </if>
+        <if test="paramType != null and paramType != ''">
+            ,param_type = #{paramType}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_job a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_job a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_job a
+        where ${columnName} = #{value}
+    </select>
+
+    <select id="getAll" resultType="indi.uhyils.pojo.model.JobEntity">
+        select
+        <include refid="columnList"/>
+        from sys_job a
+        where delete_flag = 0
+    </select>
 
     <select id="pause" resultType="java.lang.Integer">
         update sys_job

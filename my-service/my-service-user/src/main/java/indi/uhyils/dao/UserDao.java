@@ -43,6 +43,12 @@ public interface UserDao extends DefaultDao<UserEntity> {
      */
     List<PowerEntity> getUserPowerByDeptId(Long deptId);
 
+    /**
+     * 获取全部用户
+     *
+     * @return 全部用户
+     */
+    ArrayList<UserEntity> getAll();
 
     /**
      * 对比密码是否和数据库中的相同

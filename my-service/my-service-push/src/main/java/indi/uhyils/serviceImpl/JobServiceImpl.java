@@ -72,7 +72,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     public ServiceResult<Integer> update(ObjRequest<JobEntity> update) {
         JobEntity data = update.getData();
         data.preUpdate(update);
-        int count = getDao().updateById(data);
+        int count = getDao().update(data);
         data.setUserEntity(userEntity);
         boolean remove = scheduledManager.deleteJob(data);
         boolean add = scheduledManager.addJob(data);
@@ -87,7 +87,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> pause(IdRequest request) throws ClassNotFoundException {
         Long id = request.getId();
-        JobEntity byId = dao.selectById(id);
+        JobEntity byId = dao.getById(id);
         byId.setUserEntity(userEntity);
         dao.pause(id);
         boolean remove = scheduledManager.pauseJob(byId);
@@ -101,7 +101,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> start(IdRequest request) {
         Long id = request.getId();
-        JobEntity byId = dao.selectById(id);
+        JobEntity byId = dao.getById(id);
         byId.setUserEntity(userEntity);
         dao.start(id);
         boolean add = scheduledManager.resumeJob(byId);
@@ -113,7 +113,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
 
     @Override
     public ServiceResult<Boolean> test(IdRequest request) throws ClassNotFoundException {
-        JobEntity byId = dao.selectById(request.getId());
+        JobEntity byId = dao.getById(request.getId());
         byId.setUserEntity(request.getUser());
         boolean test = scheduledManager.runJobNow(byId);
         if (test) {

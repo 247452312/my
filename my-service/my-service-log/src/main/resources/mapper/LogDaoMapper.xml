@@ -25,6 +25,134 @@
         a.link
     </sql>
 
+    <select id="getById" resultType="indi.uhyils.pojo.model.LogEntity">
+        select
+        <include refid="columnList"/>
+        from sys_log a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.LogEntity">
+        select
+        <include refid="columnList"/>
+        from sys_log a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        order by time desc
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.LogEntity">
+        select
+        <include refid="columnList"/>
+        from sys_log a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        order by time desc
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${size}
+        </if>
+
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.LogEntity">
+        insert sys_log(id,
+                       create_date,
+                       create_user,
+                       update_date,
+                       update_user,
+                       delete_flag,
+                       exception_detail,
+                       interface_name,
+                       ip,
+                       log_type,
+                       method_name,
+                       params,
+                       time,
+                       user_id,
+                       link)
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                #{updateDate},
+                #{updateUser},
+                0,
+                #{exceptionDetail},
+                #{interfaceName},
+                #{ip},
+                #{logType},
+                #{methodName},
+                #{params},
+                #{time},
+                #{userId},
+                #{link})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.LogEntity">
+        update sys_log set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+
+        <if test="exceptionDetail != null and exceptionDetail != ''">
+            ,exception_detail = #{exceptionDetail}
+        </if>
+        <if test="interfaceName != null and interfaceName != ''">
+            ,interface_name = #{interfaceName}
+        </if>
+        <if test="ip != null and ip != ''">
+            ,ip = #{ip}
+        </if>
+        <if test="logType != null and logType != ''">
+            ,log_type = #{logType}
+        </if>
+        <if test="methodName != null and methodName != ''">
+            ,method_name = #{methodName}
+        </if>
+        <if test="params != null and params != ''">
+            ,params = #{params}
+        </if>
+        <if test="time != null and time != ''">
+            ,time = #{time}
+        </if>
+        <if test="userId != null and userId != ''">
+            ,user_id = #{userId}
+        </if>
+        <if test="link != null and link != ''">
+            ,link = #{link}
+        </if>
+
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_log a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_log a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_log a
+        where ${columnName} = #{value}
+    </select>
     <select id="getCountByStartTime" resultType="java.lang.Integer" parameterType="java.lang.Long">
         select count(*)
         from sys_log

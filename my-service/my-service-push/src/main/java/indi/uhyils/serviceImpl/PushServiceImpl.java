@@ -17,11 +17,11 @@ import indi.uhyils.pojo.request.CronRequest;
 import indi.uhyils.pojo.request.PushMsgToSomeoneRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.rpc.annotation.RpcService;
-import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import indi.uhyils.service.PushService;
+import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.PushUtils;
+import indi.uhyils.rpc.annotation.RpcService;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
@@ -54,8 +54,8 @@ public class PushServiceImpl implements PushService {
         String cron = request.getCron();
         LogUtil.info(this, "定时推送任务启动: " + cron);
         /* 获取api群 */
-        List<ApiGroupEntity> apiGroups = apiGroupDao.selectList(null);
-        List<ApiEntity> apis = apiDao.selectList(null);
+        List<ApiGroupEntity> apiGroups = apiGroupDao.getAll();
+        List<ApiEntity> apis = apiDao.getAll();
         HashMap<String, ApiGroupEntity> apiMaps = new HashMap<>(apiGroups.size());
         Map<Long, ApiGroupEntity> collect = apiGroups.stream().collect(Collectors.toMap(BaseIdEntity::getId, value -> value));
         for (ApiEntity api : apis) {

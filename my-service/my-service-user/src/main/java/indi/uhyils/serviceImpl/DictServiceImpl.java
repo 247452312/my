@@ -1,6 +1,5 @@
 package indi.uhyils.serviceImpl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.DictDao;
 import indi.uhyils.dao.DictItemDao;
@@ -61,13 +60,13 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict", "sys_dict_item"})
     public ServiceResult<Integer> delete(IdRequest idRequest) {
         Long id = idRequest.getId();
-        DictEntity dictEntity = dao.selectById(id);
+        DictEntity dictEntity = dao.getById(id);
         if (dictEntity == null) {
             return ServiceResult.buildFailedResult("查无此字典", null, idRequest);
         }
         dictEntity.setDeleteFlag(true);
         dictEntity.preUpdate(idRequest);
-        dao.updateById(dictEntity);
+        dao.update(dictEntity);
         dictItemDao.deleteByDictId(id);
         return ServiceResult.buildSuccessResult("删除字典以及字典项成功", 1, idRequest);
     }
@@ -110,7 +109,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     public ServiceResult<Boolean> updateItem(ObjRequest<DictItemEntity> request) {
         DictItemEntity data = request.getData();
         data.preUpdate(request);
-        dictItemDao.updateById(data);
+        dictItemDao.update(data);
         return ServiceResult.buildSuccessResult("修改成功", true, request);
     }
 
@@ -118,10 +117,10 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
     public ServiceResult<Boolean> deleteItem(IdRequest request) {
         Long itemId = request.getId();
-        DictItemEntity dictItemEntity = dictItemDao.selectById(itemId);
+        DictItemEntity dictItemEntity = dictItemDao.getById(itemId);
         dictItemEntity.preUpdate(request);
         dictItemEntity.setDeleteFlag(true);
-        dictItemDao.updateById(dictItemEntity);
+        dictItemDao.update(dictItemEntity);
         return ServiceResult.buildSuccessResult("删除成功", true, request);
     }
 
@@ -132,7 +131,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         items.forEach(item -> {
             item.setDeleteFlag(true);
             item.preUpdate(request);
-            dictItemDao.updateById(item);
+            dictItemDao.update(item);
         });
         return ServiceResult.buildSuccessResult("清理成功", true, request);
     }
@@ -140,7 +139,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public ServiceResult<DictItemEntity> getItemById(IdRequest request) {
-        return ServiceResult.buildSuccessResult("查询成功", dictItemDao.selectById(request.getId()), request);
+        return ServiceResult.buildSuccessResult("查询成功", dictItemDao.getById(request.getId()), request);
     }
 
     @Override
@@ -148,22 +147,22 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     public ServiceResult<Page<DictItemEntity>> getByItemArgs(GetByItemArgsRequest request) {
         List<Arg> args = request.getArgs();
         Boolean paging = request.getPaging();
-        Page<DictItemEntity> build;
         Arg arg = new Arg();
         arg.setName("dict_id");
         arg.setSymbol("=");
         arg.setData(request.getDictId());
         args.add(arg);
-        QueryWrapper<DictItemEntity> queryWrapper = getQueryWrapper(request.getArgs(),DictItemEntity.class);
         if (paging) {
-            com.baomidou.mybatisplus.extension.plugins.pagination.Page<DictItemEntity> tPage = dictItemDao.selectPage(new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(request.getPage(), request.getSize()), queryWrapper);
-            build = Page.build(request, tPage.getRecords(), tPage.getTotal(), tPage.getTotal() / tPage.getSize());
+            ArrayList<DictItemEntity> byArgs = dictItemDao.getByArgs(args, request.getPage(), request.getSize());
+            int count = dictItemDao.countByArgs(request.getArgs());
+            Page<DictItemEntity> build = Page.build(request, byArgs, count, (count / request.getSize()) + 1);
+            return ServiceResult.buildSuccessResult("查询成功", build, request);
         } else {
-            List<DictItemEntity> ts = dictItemDao.selectList(queryWrapper);
-            Integer integer = dictItemDao.selectCount(queryWrapper);
-            build = Page.build(request, ts, integer.longValue(), null);
+            ArrayList<DictItemEntity> byArgs = dictItemDao.getByArgsNoPage(args);
+            int count = dictItemDao.countByArgs(request.getArgs());
+            Page<DictItemEntity> build = Page.build(request, byArgs, count, null);
+            return ServiceResult.buildSuccessResult("查询成功", build, request);
         }
-        return ServiceResult.buildSuccessResult("查询成功", build, request);
     }
 
     @Override

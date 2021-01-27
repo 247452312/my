@@ -14,6 +14,12 @@ import java.util.ArrayList;
 @Mapper
 public interface PowerDao extends DefaultDao<PowerEntity> {
 
+    /**
+     * 获取所有表权限
+     *
+     * @return 所有表权限
+     */
+    ArrayList<PowerEntity> getAll();
 
     /**
      * 查询该用户是否有这个权限

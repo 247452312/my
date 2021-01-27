@@ -144,7 +144,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @return 一个code是403 代表登录问题的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildNoLoginResult(DefaultRequest req) {
-        return buildResultByServiceCode(ServiceCode.NO_LOGIN_ERROR, req);
+        return buildResultByServiceCode(ServiceCode.NO_LOGIN__ERROR, req);
     }
 
     /**

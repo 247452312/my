@@ -17,6 +17,103 @@
         a.method_name as methodName
     </sql>
 
+    <select id="getById" resultType="indi.uhyils.pojo.model.PowerEntity">
+        select
+        <include refid="columnList"/>
+        from sys_power a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.PowerEntity">
+        select
+        <include refid="columnList"/>
+        from sys_power a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.PowerEntity">
+        select
+        <include refid="columnList"/>
+        from sys_power a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${size}
+        </if>
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.PowerEntity">
+        insert sys_power(id,
+                         create_date,
+                         create_user,
+                         update_date,
+                         update_user,
+                         delete_flag,
+                         interface_name,
+                         method_name)
+        values (#{id},
+                #{createDate},
+                #{createUser},
+                #{updateDate},
+                #{updateUser},
+                0,
+                #{interfaceName},
+                #{methodName})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.PowerEntity">
+        update sys_power set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="interfaceName != null and interfaceName != ''">
+            ,interface_name = #{interfaceName}
+        </if>
+        <if test="methodName != null and methodName != ''">
+            ,method_name = #{methodName}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_power a
+        where delete_flag = 0
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_power a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_power a
+        where ${columnName} = #{value}
+    </select>
+
+    <select id="getAll" resultType="indi.uhyils.pojo.model.PowerEntity">
+        select
+        <include refid="columnList"/>
+        from sys_power a
+        where delete_flag = 0
+        ORDER BY interface_name,method_name
+    </select>
+
     <select id="checkUserHavePower" resultType="java.lang.Integer">
         select count(*)
         from sys_user

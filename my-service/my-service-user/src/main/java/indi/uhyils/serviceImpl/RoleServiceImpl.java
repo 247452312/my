@@ -20,7 +20,6 @@ import indi.uhyils.service.RoleService;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -44,7 +43,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     @Override
     @NoToken
     public ServiceResult<RoleEntity> getRoleByRoleId(IdRequest request) {
-        RoleEntity byId = dao.selectById(request.getId());
+        RoleEntity byId = dao.getById(request.getId());
         if (byId == null) {
             return ServiceResult.buildFailedResult("查询失败", null, request);
         }
@@ -74,8 +73,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
 
     @Override
     public ServiceResult<ArrayList<RoleEntity>> getRoles(DefaultRequest request) {
-        ArrayList<RoleEntity> roleEntities = (ArrayList<RoleEntity>) dao.selectList(null);
-        return ServiceResult.buildSuccessResult("查询成功", roleEntities, request);
+        return ServiceResult.buildSuccessResult("查询成功", dao.getAll(), request);
     }
 
     @Override
@@ -94,13 +92,13 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept", "sys_user"})
     public ServiceResult<Boolean> deleteRole(IdRequest request) {
-        RoleEntity t = getDao().selectById(request.getId());
+        RoleEntity t = getDao().getById(request.getId());
         if (t == null) {
             return ServiceResult.buildFailedResult("查询失败", null, request);
         }
         t.setDeleteFlag(true);
         t.preUpdate(request);
-        dao.updateById(t);
+        dao.update(t);
         dao.deleteRoleDeptMiddleByRoleId(request.getId());
         dao.updateUserRoleToNullByRoleId(request.getId());
 

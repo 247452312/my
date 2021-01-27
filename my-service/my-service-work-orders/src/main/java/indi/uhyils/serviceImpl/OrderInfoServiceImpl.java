@@ -66,7 +66,7 @@ public class OrderInfoServiceImpl extends BaseDefaultServiceImpl<OrderInfoEntity
     @Override
     public ServiceResult<GetOneOrderResponse> getOneOrder(IdRequest request) {
         Long id = request.getId();
-        OrderInfoEntity byId = dao.selectById(id);
+        OrderInfoEntity byId = dao.getById(id);
         List<OrderNodeEntity> orderNodes = orderNodeDao.getByOrderId(id);
         List<Long> orderNodeIds = orderNodes.stream().map(BaseIdEntity::getId).collect(Collectors.toList());
         List<OrderNodeFieldEntity> orderFields = orderNodeFieldDao.getByOrderNodeIds(orderNodeIds);

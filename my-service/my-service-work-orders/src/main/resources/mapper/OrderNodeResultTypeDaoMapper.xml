@@ -26,6 +26,106 @@
         </foreach>
     </update>
 
+    <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_result_type a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_result_type a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_result_type a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${size}
+        </if>
+
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+        insert sys_order_node_result_type(update_user,
+                                          base_node_id,
+                                          deal_result_name,
+                                          remark,
+                                          id,
+                                          create_user,
+                                          create_date,
+                                          delete_flag,
+                                          update_date)
+        values (#{updateUser},
+                #{baseNodeId},
+                #{dealResultName},
+                #{remark},
+                #{id},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{updateDate})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+        update sys_order_node_result_type set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="baseNodeId != null and baseNodeId != ''">
+            ,base_node_id = #{baseNodeId}
+        </if>
+        <if test="dealResultName != null and dealResultName != ''">
+            ,deal_result_name = #{dealResultName}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="createUser != null and createUser != ''">
+            ,create_user = #{createUser}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            ,create_date = #{createDate}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_node_result_type a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_node_result_type a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_node_result_type a
+        where ${columnName} = #{value}
+    </select>
     <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
         select
         <include refid="columnList"/>

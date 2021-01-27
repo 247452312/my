@@ -28,9 +28,9 @@ public class JobInitRunner implements ApplicationRunner {
     private JobDao jobDao;
 
     @Override
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws Exception {
 
-        List<JobEntity> list = jobDao.selectList(null);
+        List<JobEntity> list = jobDao.getAll();
         list.forEach(t -> {
             if (t.getPause() != true) {
                 scheduledManager.addJob(t);

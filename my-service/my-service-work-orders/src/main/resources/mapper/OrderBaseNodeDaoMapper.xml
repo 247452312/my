@@ -38,6 +38,166 @@
         </foreach>
     </update>
 
+    <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_base_node a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${size}
+        </if>
+
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
+        insert sys_order_base_node(save_api_id,
+                                   init_api_id,
+                                   remark,
+                                   run_type,
+                                   type,
+                                   sync,
+                                   update_date,
+                                   limit_time,
+                                   notice_user_id,
+                                   update_user,
+                                   base_info_id,
+                                   run_deal_user_id,
+                                   name,
+                                   run_api_id,
+                                   id,
+                                   hidden,
+                                   create_user,
+                                   create_date,
+                                   delete_flag,
+                                   trans_api_id,
+                                   `desc`)
+        values (#{saveApiId},
+                #{initApiId},
+                #{remark},
+                #{runType},
+                #{type},
+                #{sync},
+                #{updateDate},
+                #{limitTime},
+                #{noticeUserId},
+                #{updateUser},
+                #{baseInfoId},
+                #{runDealUserId},
+                #{name},
+                #{runApiId},
+                #{id},
+                #{hidden},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag},
+                #{transApiId},
+                #{desc})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
+        update sys_order_base_node set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="saveApiId != null and saveApiId != ''">
+            ,save_api_id = #{saveApiId}
+        </if>
+        <if test="initApiId != null and initApiId != ''">
+            ,init_api_id = #{initApiId}
+        </if>
+        <if test="transApiId != null and transApiId != ''">
+            ,trans_api_id = #{transApiId}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="runType != null and runType != ''">
+            ,run_type = #{runType}
+        </if>
+        <if test="type != null and type != ''">
+            ,type = #{type}
+        </if>
+        <if test="sync != null and sync != ''">
+            ,sync = #{sync}
+        </if>
+        <if test="limitTime != null and limitTime != ''">
+            ,limit_time = #{limitTime}
+        </if>
+        <if test="noticeUserId != null and noticeUserId != ''">
+            ,notice_user_id = #{noticeUserId}
+        </if>
+        <if test="baseInfoId != null and baseInfoId != ''">
+            ,base_info_id = #{baseInfoId}
+        </if>
+        <if test="runDealUserId != null and runDealUserId != ''">
+            ,run_deal_user_id = #{runDealUserId}
+        </if>
+        <if test="name != null and name != ''">
+            ,name = #{name}
+        </if>
+        <if test="hidden != null and hidden != ''">
+            ,hidden = #{hidden}
+        </if>
+        <if test="runApiId != null and runApiId != ''">
+            ,run_api_id = #{runApiId}
+        </if>
+        <if test="createUser != null and createUser != ''">
+            ,create_user = #{createUser}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            ,create_date = #{createDate}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="desc != null and desc != ''">
+            ,`desc` = #{desc}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_base_node a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_base_node a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_base_node a
+        where ${columnName} = #{value}
+    </select>
 
     <select id="getNoHiddenByOrderId" resultType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
         select

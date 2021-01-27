@@ -43,7 +43,7 @@ public class ServerServiceImpl extends BaseDefaultServiceImpl<ServerEntity> impl
 
     @Override
     public ServiceResult<Boolean> testConnById(IdRequest request) {
-        ServerEntity serverEntity = dao.selectById(request.getId());
+        ServerEntity serverEntity = dao.getById(request.getId());
         if (serverEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null, request);
         }

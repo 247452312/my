@@ -33,6 +33,12 @@ public interface RoleDao extends DefaultDao<RoleEntity> {
      */
     Integer deleteRoleDept(List<Long> ids);
 
+    /**
+     * 获取所有的角色
+     *
+     * @return 所有角色
+     */
+    ArrayList<RoleEntity> getAll();
 
     /**
      * 获取所有权限集以及角色是否有此权限集的标记

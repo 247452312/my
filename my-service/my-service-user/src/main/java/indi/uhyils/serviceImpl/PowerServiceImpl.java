@@ -46,8 +46,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
 
     @Override
     public ServiceResult<ArrayList<PowerEntity>> getPowers(DefaultRequest request) {
-        ArrayList<PowerEntity> powerEntities = (ArrayList<PowerEntity>) dao.selectList(null);
-        return ServiceResult.buildSuccessResult("获取成功", powerEntities, request);
+        return ServiceResult.buildSuccessResult("获取成功", dao.getAll(), request);
     }
 
     @Override
@@ -68,13 +67,13 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public ServiceResult<Boolean> deletePower(IdRequest request) {
-        PowerEntity powerEntity = getDao().selectById(request.getId());
+        PowerEntity powerEntity = getDao().getById(request.getId());
         if (powerEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null, request);
         }
         powerEntity.setDeleteFlag(true);
         powerEntity.preUpdate(request);
-        dao.updateById(powerEntity);
+        dao.update(powerEntity);
 
         dao.deleteDeptPowerMiddleByPowerId(request.getId());
 
