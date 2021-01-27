@@ -5,9 +5,9 @@ import indi.uhyils.mq.pojo.mqinfo.InterfaceCallInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmStartInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
-import indi.uhyils.pojo.model.MonitorDO;
-import indi.uhyils.pojo.model.MonitorInterfaceDetailDO;
-import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
+import indi.uhyils.pojo.model.LogMonitorEntity;
+import indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,47 +20,47 @@ import java.util.stream.Collectors;
  */
 public class ModelTransUtils {
 
-    public static MonitorDO transJvmStartInfoToMonitorDO(JvmStartInfo jvmStartInfo) {
-        MonitorDO monitorDO = new MonitorDO();
+    public static LogMonitorEntity transJvmStartInfoToMonitorDO(JvmStartInfo jvmStartInfo) {
+        LogMonitorEntity logMonitorEntity = new LogMonitorEntity();
         JvmUniqueMark jvmUniqueMark = jvmStartInfo.getJvmUniqueMark();
-        monitorDO.setIp(jvmUniqueMark.getIp());
-        monitorDO.setServiceName(jvmUniqueMark.getServiceName());
+        logMonitorEntity.setIp(jvmUniqueMark.getIp());
+        logMonitorEntity.setServiceName(jvmUniqueMark.getServiceName());
         Long time = jvmUniqueMark.getTime();
-        monitorDO.setTime(time);
+        logMonitorEntity.setTime(time);
 
         //设置假想结束时间=JVM上次发送状态时间+ OUT_TIME*比例系数
         double v = time + RabbitMqContent.OUT_TIME * 60 * 1000 * RabbitMqContent.OUT_TIME_PRO;
-        monitorDO.setEndTime(new Double(v).longValue());
-        monitorDO.setJvmTotalMem(jvmStartInfo.getJvmTotalMem());
-        monitorDO.setHeapTotalMem(jvmStartInfo.getHeapTotalMem());
-        monitorDO.setHeapInitMem(jvmStartInfo.getHeapInitMem());
-        monitorDO.setNoHeapTotalMem(jvmStartInfo.getNoHeapTotalMem());
-        monitorDO.setNoHeapInitMem(jvmStartInfo.getNoHeapInitMem());
-        return monitorDO;
+        logMonitorEntity.setEndTime(new Double(v).longValue());
+        logMonitorEntity.setJvmTotalMem(jvmStartInfo.getJvmTotalMem());
+        logMonitorEntity.setHeapTotalMem(jvmStartInfo.getHeapTotalMem());
+        logMonitorEntity.setHeapInitMem(jvmStartInfo.getHeapInitMem());
+        logMonitorEntity.setNoHeapTotalMem(jvmStartInfo.getNoHeapTotalMem());
+        logMonitorEntity.setNoHeapInitMem(jvmStartInfo.getNoHeapInitMem());
+        return logMonitorEntity;
     }
 
-    public static MonitorJvmStatusDetailDO transJvmStatusInfoToMonitorJvmStatusDetailDO(JvmStatusInfo jvmStatusInfo, Long fid) {
-        MonitorJvmStatusDetailDO monitorJvmStatusDetailDO = new MonitorJvmStatusDetailDO();
-        monitorJvmStatusDetailDO.setFid(fid);
-        monitorJvmStatusDetailDO.setHeapUseMem(jvmStatusInfo.getHeapUseMem());
-        monitorJvmStatusDetailDO.setNoHeapUseMem(jvmStatusInfo.getNoHeapUseMem());
-        monitorJvmStatusDetailDO.setTime(jvmStatusInfo.getTime());
-        monitorJvmStatusDetailDO.setUseMem(jvmStatusInfo.getTotalUseMem());
-        return monitorJvmStatusDetailDO;
+    public static LogMonitorJvmStatusEntity transJvmStatusInfoToMonitorJvmStatusDetailDO(JvmStatusInfo jvmStatusInfo, Long fid) {
+        LogMonitorJvmStatusEntity logMonitorJvmStatusEntity = new LogMonitorJvmStatusEntity();
+        logMonitorJvmStatusEntity.setFid(fid);
+        logMonitorJvmStatusEntity.setHeapUseMem(jvmStatusInfo.getHeapUseMem());
+        logMonitorJvmStatusEntity.setNoHeapUseMem(jvmStatusInfo.getNoHeapUseMem());
+        logMonitorJvmStatusEntity.setTime(jvmStatusInfo.getTime());
+        logMonitorJvmStatusEntity.setUseMem(jvmStatusInfo.getTotalUseMem());
+        return logMonitorJvmStatusEntity;
     }
 
-    public static List<MonitorJvmStatusDetailDO> transJvmStatusInfosToMonitorJvmStatusDetailDOs(List<JvmStatusInfo> jvmStatusInfos, Long fid) {
+    public static List<LogMonitorJvmStatusEntity> transJvmStatusInfosToMonitorJvmStatusDetailDOs(List<JvmStatusInfo> jvmStatusInfos, Long fid) {
         return jvmStatusInfos.stream().map(jvmStatusInfo -> transJvmStatusInfoToMonitorJvmStatusDetailDO(jvmStatusInfo, fid)).collect(Collectors.toList());
     }
 
-    public static MonitorInterfaceDetailDO transInterfaceCallInfoToMonitorInterfaceDetailDO(InterfaceCallInfo interfaceCallInfo, Long fid) {
-        MonitorInterfaceDetailDO monitorInterfaceDetailDO = new MonitorInterfaceDetailDO();
-        monitorInterfaceDetailDO.setFid(fid);
-        monitorInterfaceDetailDO.setInterfaceName(interfaceCallInfo.getInterfaceName());
-        monitorInterfaceDetailDO.setMethodName(interfaceCallInfo.getMethodName());
-        monitorInterfaceDetailDO.setRunTime(interfaceCallInfo.getRunTime());
-        monitorInterfaceDetailDO.setSuccess(interfaceCallInfo.getSuccess());
-        monitorInterfaceDetailDO.setTime(interfaceCallInfo.getTime());
-        return monitorInterfaceDetailDO;
+    public static LogMonitorInterfaceCallEntity transInterfaceCallInfoToMonitorInterfaceDetailDO(InterfaceCallInfo interfaceCallInfo, Long fid) {
+        LogMonitorInterfaceCallEntity logMonitorInterfaceCallEntity = new LogMonitorInterfaceCallEntity();
+        logMonitorInterfaceCallEntity.setFid(fid);
+        logMonitorInterfaceCallEntity.setInterfaceName(interfaceCallInfo.getInterfaceName());
+        logMonitorInterfaceCallEntity.setMethodName(interfaceCallInfo.getMethodName());
+        logMonitorInterfaceCallEntity.setRunTime(interfaceCallInfo.getRunTime());
+        logMonitorInterfaceCallEntity.setSuccess(interfaceCallInfo.getSuccess());
+        logMonitorInterfaceCallEntity.setTime(interfaceCallInfo.getTime());
+        return logMonitorInterfaceCallEntity;
     }
 }

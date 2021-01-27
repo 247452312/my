@@ -10,8 +10,9 @@ import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.JvmStartInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
-import indi.uhyils.pojo.model.MonitorDO;
-import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
+import indi.uhyils.pojo.model.LogMonitorEntity;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
+import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ModelTransUtils;
 import org.springframework.context.ApplicationContext;
@@ -55,19 +56,19 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
             /* 新增JVM启动信息 */
             LogUtil.info(this, "接收到JVM启动信息");
             LogUtil.info(this, text);
-            MonitorDO monitorDO = ModelTransUtils.transJvmStartInfoToMonitorDO(jvmStartInfo);
+            LogMonitorEntity logMonitorEntity = ModelTransUtils.transJvmStartInfoToMonitorDO(jvmStartInfo);
             try {
-                monitorDO.preInsert(null);
+                logMonitorEntity.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());
             } catch (Exception e) {
                 LogUtil.error(this, e);
             }
-            monitorDao.insert(monitorDO);
+            monitorDao.insert(logMonitorEntity);
             List<JvmStatusInfo> jvmStatusInfos = jvmStartInfo.getJvmStatusInfos();
-            List<MonitorJvmStatusDetailDO> monitorJvmStatusDetailDos = ModelTransUtils.transJvmStatusInfosToMonitorJvmStatusDetailDOs(jvmStatusInfos, monitorDO.getId());
+            List<LogMonitorJvmStatusEntity> logMonitorJvmStatusEntities = ModelTransUtils.transJvmStatusInfosToMonitorJvmStatusDetailDOs(jvmStatusInfos, logMonitorEntity.getId());
             final Long[] endTime = {0L};
-            monitorJvmStatusDetailDos.forEach(t -> {
+            logMonitorJvmStatusEntities.forEach(t -> {
                 try {
-                    t.preInsert(null);
+                    t.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());
                 } catch (Exception e) {
                     LogUtil.error(this, e);
                 }
@@ -79,7 +80,7 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
             });
             // 修改结束时间为假想时间
             Double v = endTime[0] + RabbitMqContent.OUT_TIME * 60 * 1000 * RabbitMqContent.OUT_TIME_PRO;
-            monitorDao.changeEndTime(monitorDO.getId(), v.longValue());
+            monitorDao.changeEndTime(logMonitorEntity.getId(), v.longValue());
         }
         // 获取tag(队列中的唯一标示)
         long deliveryTag = envelope.getDeliveryTag();

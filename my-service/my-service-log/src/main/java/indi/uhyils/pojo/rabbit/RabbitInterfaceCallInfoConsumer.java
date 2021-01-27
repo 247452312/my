@@ -8,7 +8,8 @@ import com.rabbitmq.client.Envelope;
 import indi.uhyils.dao.MonitorDao;
 import indi.uhyils.dao.MonitorInterfaceDetailDao;
 import indi.uhyils.mq.pojo.mqinfo.InterfaceCallInfo;
-import indi.uhyils.pojo.model.MonitorInterfaceDetailDO;
+import indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity;
+import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ModelTransUtils;
 import org.springframework.context.ApplicationContext;
@@ -46,12 +47,12 @@ public class RabbitInterfaceCallInfoConsumer extends DefaultConsumer {
         LogUtil.info(this, text);
         InterfaceCallInfo interfaceCallInfo = JSONObject.parseObject(text, InterfaceCallInfo.class);
         Long id = monitorDao.getIdByJvmUniqueMark(interfaceCallInfo.getJvmUniqueMark());
-        MonitorInterfaceDetailDO monitorInterfaceDetailDO = ModelTransUtils.transInterfaceCallInfoToMonitorInterfaceDetailDO(interfaceCallInfo, id);
+        LogMonitorInterfaceCallEntity logMonitorInterfaceCallEntity = ModelTransUtils.transInterfaceCallInfoToMonitorInterfaceDetailDO(interfaceCallInfo, id);
         try {
-            monitorInterfaceDetailDO.preInsert(null);
+            logMonitorInterfaceCallEntity.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
-        monitorInterfaceDetailDao.insert(monitorInterfaceDetailDO);
+        monitorInterfaceDetailDao.insert(logMonitorInterfaceCallEntity);
     }
 }

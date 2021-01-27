@@ -9,7 +9,8 @@ import indi.uhyils.dao.MonitorDao;
 import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
-import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
+import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ModelTransUtils;
 import org.springframework.context.ApplicationContext;
@@ -46,15 +47,15 @@ public class RabbitJvmStatusInfoConsumer extends DefaultConsumer {
         LogUtil.info(this, text);
         JvmStatusInfo jvmStatusInfo = JSONObject.parseObject(text, JvmStatusInfo.class);
         Long id = monitorDao.getIdByJvmUniqueMark(jvmStatusInfo.getJvmUniqueMark());
-        MonitorJvmStatusDetailDO monitorJvmStatusDetailDO = ModelTransUtils.transJvmStatusInfoToMonitorJvmStatusDetailDO(jvmStatusInfo, id);
+        LogMonitorJvmStatusEntity logMonitorJvmStatusEntity = ModelTransUtils.transJvmStatusInfoToMonitorJvmStatusDetailDO(jvmStatusInfo, id);
         // 保存状态信息
         try {
-            monitorJvmStatusDetailDO.preInsert(null);
+            logMonitorJvmStatusEntity.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
-        monitorJvmStatusDetailDao.insert(monitorJvmStatusDetailDO);
-        Long time = monitorJvmStatusDetailDO.getTime();
+        monitorJvmStatusDetailDao.insert(logMonitorJvmStatusEntity);
+        Long time = logMonitorJvmStatusEntity.getTime();
         Double v = time + RabbitMqContent.OUT_TIME * 60 * 1000 * RabbitMqContent.OUT_TIME_PRO;
         // 修改主类假想结束时间
         monitorDao.changeEndTime(id, v.longValue());

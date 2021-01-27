@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseIdEntity;
+import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 /**
  * 每一个 -->微服务的集群<-- 中的每一个 -->微服务<-- 都会有这么一条JVM监控信息数据
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.model.base.BaseIdEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时06分
  */
-public class MonitorDO extends BaseIdEntity {
+public class LogMonitorEntity extends BaseVoEntity {
 
     /**
      * 微服务的名称 名称与微服务rpc的applicationName相同

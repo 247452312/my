@@ -1,13 +1,11 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.dao.base.BaseDao;
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
-import indi.uhyils.pojo.model.MonitorDO;
-import indi.uhyils.pojo.request.model.Arg;
+import indi.uhyils.pojo.model.LogMonitorEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,66 +13,7 @@ import java.util.List;
  * @date 文件创建日期 2020年06月19日 14时55分
  */
 @Mapper
-public interface MonitorDao extends BaseDao {
-
-    /**
-     * 获根据id获取监控信息
-     *
-     * @param id 监控信息id
-     * @return 监控信息
-     */
-    MonitorDO getById(String id);
-
-    /**
-     * 根据条件不分页查询
-     *
-     * @param args 条件
-     * @return 实例
-     */
-    ArrayList<MonitorDO> getByArgsNoPage(List<Arg> args);
-
-    /**
-     * 根据某些字段获取实例(分页)
-     *
-     * @param args 字段名称以及内容
-     * @param page 分页页码
-     * @param size 分页大小
-     * @return 实例
-     */
-    ArrayList<MonitorDO> getByArgs(@Param("args") List<Arg> args, @Param("page") Integer page, @Param("size") Integer size);
-
-    /**
-     * 插入
-     *
-     * @param monitorDO 实例
-     * @return 插入个数
-     */
-    int insert(MonitorDO monitorDO);
-
-    /**
-     * 获取全表大小
-     *
-     * @return 全表大小
-     */
-    Integer count();
-
-
-    /**
-     * 根据条件查询个数
-     *
-     * @param args 条件
-     * @return 个数
-     */
-    Integer countByArgs(@Param("args") List<Arg> args);
-
-    /**
-     * 查询重复
-     *
-     * @param columnName 字段名称
-     * @param value      数值
-     * @return 重复个数
-     */
-    int checkRepeat(@Param("columnName") String columnName, @Param("value") Object value);
+public interface MonitorDao extends DefaultDao<LogMonitorEntity> {
 
     /**
      * 修改结束时间
@@ -99,7 +38,7 @@ public interface MonitorDao extends BaseDao {
      * @param time 现在时间
      * @return 现在正在运行中的服务数量
      */
-    List<MonitorDO> getOnlineService(long time);
+    List<LogMonitorEntity> getOnlineService(long time);
 
     /**
      * 查询监控主表是否重复

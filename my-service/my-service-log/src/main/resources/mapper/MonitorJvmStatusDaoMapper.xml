@@ -10,18 +10,24 @@
         a.time,
         a.heap_use_mem as heapUseMem,
         a.no_heap_use_mem as noHeapUseMem,
-        a.use_mem as useMem
+        a.use_mem as useMem,
+        a.create_date as createDate,
+        a.create_user as createUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+        a.update_date as updateDate,
+        a.update_user as updateUser
 
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.MonitorJvmStatusDetailDO">
+    <select id="getById" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">
         select
         <include refid="columnList"/>
         from sys_log_monitor_jvm_status a
         where id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.MonitorJvmStatusDetailDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">
         select
         <include refid="columnList"/>
         from sys_log_monitor_jvm_status a
@@ -32,7 +38,7 @@
         order by time desc
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.MonitorJvmStatusDetailDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">
         select
         <include refid="columnList"/>
         from sys_log_monitor_jvm_status a
@@ -49,19 +55,31 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.MonitorJvmStatusDetailDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">
         insert sys_log_monitor_jvm_status(id,
                                           fid,
                                           time,
                                           heap_use_mem,
                                           no_heap_use_mem,
-                                          use_mem)
+                                          use_mem,
+                                        create_date,
+                                        create_user,
+                                        delete_flag,
+                                        remark,
+                                        update_date,
+                                        update_user)
         values (#{id},
                 #{fid},
                 #{time},
                 #{heapUseMem},
                 #{noHeapUseMem},
-                #{useMem})
+                #{useMem},
+                #{createDate},
+                #{createUser},
+                #{deleteFlag},
+                #{remark},
+                #{updateDate},
+                #{updateUser})
     </insert>
 
 
@@ -85,7 +103,7 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getByMonitorId" resultType="indi.uhyils.pojo.model.MonitorJvmStatusDetailDO">
+    <select id="getByMonitorId" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">
         select
         <include refid="columnList"/>
         from sys_log_monitor_jvm_status a

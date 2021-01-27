@@ -5,7 +5,8 @@
 
 
     <sql id="columnList">
-        a.id,
+        a.
+        id,
         a.ip,
         a.service_name as serviceName,
         a.time,
@@ -14,18 +15,25 @@
         a.heap_total_mem as heapTotalMem,
         a.no_heap_init_mem as noHeapInitMem,
         a.no_heap_total_mem as noHeapTotalMem,
-        a.end_time as endTime
+        a.end_time as endTime,
+        a.create_date as createDate,
+        a.create_user as createUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+        a.update_date as updateDate,
+        a.update_user as updateUser
+
 
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.MonitorDO">
+    <select id="getById" resultType="indi.uhyils.pojo.model.LogMonitorEntity">
         select
         <include refid="columnList"/>
         from sys_log_monitor a
         where id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.MonitorDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.LogMonitorEntity">
         select
         <include refid="columnList"/>
         from sys_log_monitor a
@@ -36,7 +44,7 @@
         order by time desc
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.MonitorDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.LogMonitorEntity">
         select
         <include refid="columnList"/>
         from sys_log_monitor a
@@ -52,27 +60,43 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.MonitorDO">
-        insert sys_log_monitor(id,
-                               ip,
-                               service_name,
-                               time,
-                               jvm_total_mem,
-                               heap_init_mem,
-                               heap_total_mem,
-                               no_heap_init_mem,
-                               no_heap_total_mem,
-                               end_time)
-        values (#{id},
-                #{ip},
-                #{serviceName},
-                #{time},
-                #{jvmTotalMem},
-                #{heapInitMem},
-                #{heapTotalMem},
-                #{noHeapInitMem},
-                #{noHeapTotalMem},
-                #{endTime})
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.LogMonitorEntity">
+        insert
+        sys_log_monitor(id,
+            ip,
+            service_name,
+            time,
+            jvm_total_mem,
+            heap_init_mem,
+            heap_total_mem,
+            no_heap_init_mem,
+            no_heap_total_mem,
+            end_time,
+            create_date,
+            create_user,
+            delete_flag,
+            remark,
+            update_date,
+            update_user
+        )
+        values (
+        #{id},
+        #{ip},
+        #{serviceName},
+        #{time},
+        #{jvmTotalMem},
+        #{heapInitMem},
+        #{heapTotalMem},
+        #{noHeapInitMem},
+        #{noHeapTotalMem},
+        #{endTime},
+        #{createDate},
+        #{createUser},
+        #{deleteFlag},
+        #{remark},
+        #{updateDate},
+        #{updateUser}
+        )
     </insert>
 
     <select id="count" resultType="java.lang.Integer">
@@ -109,7 +133,7 @@
           and time = #{time}
           and ip = #{ip}
     </select>
-    <select id="getOnlineService" resultType="indi.uhyils.pojo.model.MonitorDO" parameterType="java.lang.Long">
+    <select id="getOnlineService" resultType="indi.uhyils.pojo.model.LogMonitorEntity" parameterType="java.lang.Long">
         select
         <include refid="columnList"/>
         from sys_log_monitor a

@@ -1,8 +1,8 @@
 package indi.uhyils.util;
 
 import indi.uhyils.enum_.ServiceQualityEnum;
-import indi.uhyils.pojo.model.MonitorDO;
-import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
+import indi.uhyils.pojo.model.LogMonitorEntity;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +24,11 @@ public class JvmStatusAnalysisUtil {
     /**
      * 分析jvm运行信息 TODO 这个应该移到智能模块中去
      *
-     * @param monitorDO 初始内存
+     * @param logMonitorEntity 初始内存
      * @param statuses  状态们
      * @return 是否健康
      */
-    public static List<ServiceQualityEnum> analysis(MonitorDO monitorDO, List<MonitorJvmStatusDetailDO> statuses) {
+    public static List<ServiceQualityEnum> analysis(LogMonitorEntity logMonitorEntity, List<LogMonitorJvmStatusEntity> statuses) {
         List<ServiceQualityEnum> list = new ArrayList<>();
         if (statuses.size() < STATUS_SIZE_MIN) {
             // 如果状态信息没有超过6个 也就是系统没有运行超过3个小时 没有分析的必要 直接返回正常
@@ -68,27 +68,27 @@ public class JvmStatusAnalysisUtil {
         int heapMemLowCount = 0;
         // 非堆内存超出次数
         int noHeapLowCount = 0;
-        for (MonitorJvmStatusDetailDO status : statuses) {
+        for (LogMonitorJvmStatusEntity status : statuses) {
             // 总内存超出
-            if (status.getUseMem() > monitorDO.getJvmTotalMem() * outMaxPro) {
+            if (status.getUseMem() > logMonitorEntity.getJvmTotalMem() * outMaxPro) {
                 allMemOutCount++;
-            } else if (status.getUseMem() < (monitorDO.getHeapInitMem() + monitorDO.getNoHeapInitMem()) * lowMinPro) {
+            } else if (status.getUseMem() < (logMonitorEntity.getHeapInitMem() + logMonitorEntity.getNoHeapInitMem()) * lowMinPro) {
                 // 总内存太多
                 allMemLowCount++;
             }
 
             // 堆内存超出
-            if (status.getHeapUseMem() > monitorDO.getHeapTotalMem() * outMaxPro) {
+            if (status.getHeapUseMem() > logMonitorEntity.getHeapTotalMem() * outMaxPro) {
                 heapMemOutCount++;
-            } else if (status.getHeapUseMem() < monitorDO.getHeapInitMem() * lowMinPro) {
+            } else if (status.getHeapUseMem() < logMonitorEntity.getHeapInitMem() * lowMinPro) {
                 // 堆内存太多
                 heapMemLowCount++;
             }
 
             //非堆内存超出(注,非堆内存取得的值一般都是0或者-1 不能作逻辑处理,这里将初始化内存作为阈值)
-            if (status.getNoHeapUseMem() > monitorDO.getNoHeapInitMem() * outMaxPro) {
+            if (status.getNoHeapUseMem() > logMonitorEntity.getNoHeapInitMem() * outMaxPro) {
                 noHeapOutCount++;
-            } else if (status.getNoHeapUseMem() < monitorDO.getNoHeapInitMem() * lowMinPro) {
+            } else if (status.getNoHeapUseMem() < logMonitorEntity.getNoHeapInitMem() * lowMinPro) {
                 // 非堆内存太多
                 noHeapLowCount++;
             }
