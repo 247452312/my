@@ -1,21 +1,25 @@
 package indi.uhyils.serviceImpl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import indi.uhyils.builder.BlackListBuilder;
 import indi.uhyils.dao.BlackListDao;
+import indi.uhyils.dao.LogDao;
 import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.model.BlackListEntity;
+import indi.uhyils.pojo.model.LogEntity;
 import indi.uhyils.pojo.request.AddBlackIpRequest;
 import indi.uhyils.pojo.request.GetLogIntervalByIpRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BlackListService;
 import indi.uhyils.util.LogUtil;
-import indi.uhyils.rpc.annotation.RpcService;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -36,6 +40,8 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
     private static final Long LONG_TIME_AGO = 3 * 60 * 1000L;
     @Resource
     private BlackListDao dao;
+    @Resource
+    private LogDao logDao;
     /**
      * 可以评价的最小 ip访问次数
      */
@@ -60,7 +66,9 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
     public ServiceResult<Boolean> getLogIntervalByIp(GetLogIntervalByIpRequest request) {
         String ip = request.getIp();
         //取指定ip最近的{canEvaluateMinSize}次访问时间节点
-        List<Long> realTimes = dao.getTimeByIp(ip, canEvaluateMinSize);
+        QueryWrapper<LogEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("time").eq("ip", ip).orderByDesc("time").last("limit " + canEvaluateMinSize);
+        List<Long> realTimes = logDao.selectList(queryWrapper).stream().map(LogEntity::getTime).collect(Collectors.toList());
         // 如果次数不够,代表不能判断,返回不是爬虫的判断
         if (realTimes.size() < canEvaluateMinSize) {
             return ServiceResult.buildSuccessResult(null, false, request);
@@ -107,7 +115,10 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
 
     @Override
     public ServiceResult<ArrayList<String>> getAllIpBlackList(DefaultRequest request) {
-        return ServiceResult.buildSuccessResult(dao.getAllIpBlackList(), request);
+        QueryWrapper<BlackListEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("ip");
+        ArrayList<String> result = (ArrayList<String>) dao.selectList(queryWrapper).stream().map(BlackListEntity::getIp).collect(Collectors.toList());
+        return ServiceResult.buildSuccessResult(result, request);
     }
 
     @Override

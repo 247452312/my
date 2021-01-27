@@ -36,8 +36,12 @@ public class PackageUtils {
      * @return
      */
     public static Set<Class<?>> getClassByPackageName(String packageName, String[] excludePackage, Boolean recursiveSubpackage) throws IOException, ClassNotFoundException {
-
-        List<String> excludePackagePaths = Arrays.stream(excludePackage).map(t -> t.replace(".", "/")).collect(Collectors.toList());
+        List<String> excludePackagePaths;
+        if (excludePackage == null) {
+            excludePackagePaths = new ArrayList<>(0);
+        } else {
+            excludePackagePaths = Arrays.stream(excludePackage).map(t -> t.replace(".", "/")).collect(Collectors.toList());
+        }
 
         Set<Class<?>> fileNames = new HashSet<>();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.LogMonitorJvmStatusDetailDao">
+
+
+    <sql id="columnList">
+        a.id,
+        a.fid,
+        a.time,
+        a.heap_use_mem as heapUseMem,
+        a.no_heap_use_mem as noHeapUseMem,
+        a.use_mem as useMem
+
+    </sql>
+
+
+
+</mapper>

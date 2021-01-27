@@ -1,14 +1,17 @@
 package indi.uhyils.pojo.rabbit;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import indi.uhyils.dao.MonitorDao;
-import indi.uhyils.dao.MonitorInterfaceDetailDao;
+import indi.uhyils.dao.LogMonitorDao;
+import indi.uhyils.dao.LogMonitorInterfaceDetailDao;
 import indi.uhyils.mq.pojo.mqinfo.InterfaceCallInfo;
-import indi.uhyils.pojo.model.MonitorInterfaceDetailDO;
+import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
+import indi.uhyils.pojo.model.LogMonitorEntity;
+import indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ModelTransUtils;
 import org.springframework.context.ApplicationContext;
@@ -22,9 +25,9 @@ import java.nio.charset.StandardCharsets;
  */
 public class RabbitInterfaceCallInfoConsumer extends DefaultConsumer {
 
-    private MonitorInterfaceDetailDao monitorInterfaceDetailDao;
+    private LogMonitorInterfaceDetailDao monitorInterfaceDetailDao;
 
-    private MonitorDao monitorDao;
+    private LogMonitorDao monitorDao;
 
 
     /**
@@ -35,8 +38,8 @@ public class RabbitInterfaceCallInfoConsumer extends DefaultConsumer {
      */
     public RabbitInterfaceCallInfoConsumer(Channel channel, ApplicationContext applicationContext) {
         super(channel);
-        monitorInterfaceDetailDao = applicationContext.getBean(MonitorInterfaceDetailDao.class);
-        monitorDao = applicationContext.getBean(MonitorDao.class);
+        monitorInterfaceDetailDao = applicationContext.getBean(LogMonitorInterfaceDetailDao.class);
+        monitorDao = applicationContext.getBean(LogMonitorDao.class);
     }
 
     @Override
@@ -45,8 +48,14 @@ public class RabbitInterfaceCallInfoConsumer extends DefaultConsumer {
         LogUtil.info(this, "接收到接口调用信息");
         LogUtil.info(this, text);
         InterfaceCallInfo interfaceCallInfo = JSONObject.parseObject(text, InterfaceCallInfo.class);
-        Long id = monitorDao.getIdByJvmUniqueMark(interfaceCallInfo.getJvmUniqueMark());
-        MonitorInterfaceDetailDO monitorInterfaceDetailDO = ModelTransUtils.transInterfaceCallInfoToMonitorInterfaceDetailDO(interfaceCallInfo, id);
+        QueryWrapper<LogMonitorEntity> queryWrapper = new QueryWrapper<>();
+        JvmUniqueMark jvmUniqueMark = interfaceCallInfo.getJvmUniqueMark();
+        queryWrapper.select("id")
+                .eq("service_name", jvmUniqueMark.getServiceName())
+                .eq("time", jvmUniqueMark.getTime())
+                .eq("ip", jvmUniqueMark.getIp());
+        LogMonitorEntity logMonitorEntity = monitorDao.selectOne(queryWrapper);
+        LogMonitorInterfaceCallEntity monitorInterfaceDetailDO = ModelTransUtils.transInterfaceCallInfoToMonitorInterfaceDetailDO(interfaceCallInfo, logMonitorEntity.getId());
         try {
             monitorInterfaceDetailDO.preInsert(null);
         } catch (Exception e) {

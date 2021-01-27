@@ -14,23 +14,5 @@
     </resultMap>
 
 
-    <!--获取指定ip用户访问的前size个时间-->
-    <select id="getTimeByIp" resultType="java.lang.Long">
-        select time
-        from my_log.sys_log
-        where ip = #{ip}
-          and delete_flag = 0
-
-        order by time desc
-        limit #{size}
-    </select>
-
-    <!--获取所有的ip黑名单-->
-    <select id="getAllIpBlackList" resultType="java.lang.String">
-        select ip
-        from my_log.sys_black_list
-        where delete_flag = 0
-    </select>
-
 
 </mapper>

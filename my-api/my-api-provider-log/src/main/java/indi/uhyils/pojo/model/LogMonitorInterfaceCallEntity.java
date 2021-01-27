@@ -1,18 +1,18 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseIdEntity;
+import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 /**
- * 接口调用监控信息 和{@link MonitorDO}是多对一的关系,记录了每一次的接口调用的信息 拟将此数据库代替log数据库,但是没有解决无法获取用户ip的痛点
+ * 接口调用监控信息 和{@link LogMonitorEntity}是多对一的关系,记录了每一次的接口调用的信息 拟将此数据库代替log数据库,但是没有解决无法获取用户ip的痛点
  * {@db sys_monitorInterfaceDetailDO}
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时22分
  */
-public class MonitorInterfaceDetailDO extends BaseIdEntity {
+public class LogMonitorInterfaceCallEntity extends BaseVoEntity {
 
     /**
-     * 见{@link MonitorDO}
+     * 见{@link LogMonitorEntity}
      */
     private Long fid;
 

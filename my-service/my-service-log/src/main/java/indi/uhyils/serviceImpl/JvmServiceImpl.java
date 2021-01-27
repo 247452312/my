@@ -1,19 +1,22 @@
 package indi.uhyils.serviceImpl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import indi.uhyils.dao.LogDao;
-import indi.uhyils.dao.MonitorDao;
-import indi.uhyils.dao.MonitorInterfaceDetailDao;
-import indi.uhyils.dao.MonitorJvmStatusDetailDao;
+import indi.uhyils.dao.LogMonitorDao;
+import indi.uhyils.dao.LogMonitorInterfaceDetailDao;
+import indi.uhyils.dao.LogMonitorJvmStatusDetailDao;
 import indi.uhyils.enum_.ServiceQualityEnum;
-import indi.uhyils.pojo.model.MonitorDO;
-import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
+import indi.uhyils.pojo.model.LogEntity;
+import indi.uhyils.pojo.model.LogMonitorEntity;
+import indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.JvmDataStatisticsResponse;
 import indi.uhyils.pojo.response.JvmInfoLogResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.JvmService;
 import indi.uhyils.util.JvmStatusAnalysisUtil;
-import indi.uhyils.rpc.annotation.RpcService;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -31,11 +34,11 @@ import java.util.List;
 public class JvmServiceImpl implements JvmService {
 
     @Resource
-    private MonitorDao monitorDao;
+    private LogMonitorDao monitorDao;
     @Resource
-    private MonitorInterfaceDetailDao monitorInterfaceDetailDao;
+    private LogMonitorInterfaceDetailDao monitorInterfaceDetailDao;
     @Resource
-    private MonitorJvmStatusDetailDao monitorJvmStatusDetailDao;
+    private LogMonitorJvmStatusDetailDao monitorJvmStatusDetailDao;
     @Resource
     private LogDao logDao;
 
@@ -43,27 +46,35 @@ public class JvmServiceImpl implements JvmService {
     @Override
     public ServiceResult<JvmDataStatisticsResponse> getJvmDataStatisticsResponse(DefaultRequest request) {
         /* 获取服务在线数量 */
-        List<MonitorDO> monitorDOList = monitorDao.getOnlineService(System.currentTimeMillis());
-        Integer onlineServiceCount = monitorDOList.size();
+        QueryWrapper<LogMonitorEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.gt("end_time", System.currentTimeMillis());
+        List<LogMonitorEntity> logMonitorEntities = monitorDao.selectList(queryWrapper);
+        Integer onlineServiceCount = logMonitorEntities.size();
         /* 获取服务运行质量(以外关闭的系统,内存溢出风险的系统) */
-        HashMap<Long, List<ServiceQualityEnum>> map = new HashMap<>(monitorDOList.size());
-        for (MonitorDO monitorDO : monitorDOList) {
-            List<MonitorJvmStatusDetailDO> list = monitorJvmStatusDetailDao.getByMonitorId(monitorDO.getId());
+        HashMap<Long, List<ServiceQualityEnum>> map = new HashMap<>(logMonitorEntities.size());
+        for (LogMonitorEntity monitorDO : logMonitorEntities) {
+            QueryWrapper<LogMonitorJvmStatusEntity> selectList = new QueryWrapper<>();
+            selectList.eq("fid", monitorDO.getId()).orderByAsc("time");
+            List<LogMonitorJvmStatusEntity> list = monitorJvmStatusDetailDao.selectList(selectList);
             List<ServiceQualityEnum> analysis = JvmStatusAnalysisUtil.analysis(monitorDO, list);
             map.put(monitorDO.getId(), analysis);
         }
         // 由于无法分辨前台发送请求是哪一个服务的 所以这里以现在正在运行的jvm最早启动时间为开始时间
         /* 获取前台请求次数 */
         Long firstStartTile = System.currentTimeMillis();
-        for (MonitorDO monitorDO : monitorDOList) {
+        for (LogMonitorEntity monitorDO : logMonitorEntities) {
             if (monitorDO.getTime() < firstStartTile) {
                 firstStartTile = monitorDO.getTime();
 
             }
         }
-        Integer webRequestCount = logDao.getCountByStartTime(firstStartTile);
+        QueryWrapper<LogEntity> logEntityQueryWrapper = new QueryWrapper<>();
+        logEntityQueryWrapper.gt("time", firstStartTile);
+        Integer webRequestCount = logDao.selectCount(logEntityQueryWrapper);
         /* 获取接口调用次数 */
-        Integer interfaceCellCount = monitorInterfaceDetailDao.getCountByStartTime(firstStartTile);
+        QueryWrapper<LogMonitorInterfaceCallEntity> countWrapper = new QueryWrapper<>();
+        countWrapper.gt("time", firstStartTile);
+        Integer interfaceCellCount = monitorInterfaceDetailDao.selectCount(countWrapper);
 
         return ServiceResult.buildSuccessResult("查询数据统计JVM部分信息成功", JvmDataStatisticsResponse.build(onlineServiceCount, map, webRequestCount, interfaceCellCount), request);
     }
@@ -72,15 +83,19 @@ public class JvmServiceImpl implements JvmService {
     public ServiceResult<JvmInfoLogResponse> getJvmInfoLogResponse(DefaultRequest request) {
         /*1.获取所有的活着的服务的监控信息*/
         long now = System.currentTimeMillis();
-        List<MonitorDO> onlineService = monitorDao.getOnlineService(now);
-        HashMap<String, List> map = new HashMap<>(onlineService.size());
-        for (MonitorDO monitorDO : onlineService) {
+        QueryWrapper<LogMonitorEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.gt("end_time", now);
+        List<LogMonitorEntity> logMonitorEntities = monitorDao.selectList(queryWrapper);
+        HashMap<String, List> map = new HashMap<>(logMonitorEntities.size());
+        for (LogMonitorEntity monitorDO : logMonitorEntities) {
             /*2.获取每一个服务的详细信息 -> List*/
-            List<MonitorJvmStatusDetailDO> monitorStatuses = monitorJvmStatusDetailDao.getByMonitorId(monitorDO.getId());
+            QueryWrapper<LogMonitorJvmStatusEntity> selectList = new QueryWrapper<>();
+            selectList.eq("fid", monitorDO.getId()).orderByAsc("time");
+            List<LogMonitorJvmStatusEntity> monitorStatuses = monitorJvmStatusDetailDao.selectList(selectList);
             assert monitorStatuses.size() > 0;
             /*获取开始时间*/
 
-            MonitorJvmStatusDetailDO monitorJvmStatusDetailDO = monitorStatuses.get(0);
+            LogMonitorJvmStatusEntity monitorJvmStatusDetailDO = monitorStatuses.get(0);
             Long startTime = monitorJvmStatusDetailDO.getTime();
 
             SimpleDateFormat simpleDateFormat;
@@ -94,7 +109,7 @@ public class JvmServiceImpl implements JvmService {
             List<String> xAxix = new ArrayList<>();
             List<Double> noHeapMem = new ArrayList<>();
             List<Double> heapMem = new ArrayList<>();
-            for (MonitorJvmStatusDetailDO monitorStatus : monitorStatuses) {
+            for (LogMonitorJvmStatusEntity monitorStatus : monitorStatuses) {
                 Long time = monitorStatus.getTime();
                 String format = simpleDateFormat.format(new Date(time));
                 xAxix.add(format);

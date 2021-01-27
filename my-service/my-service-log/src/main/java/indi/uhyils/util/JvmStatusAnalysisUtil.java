@@ -1,8 +1,8 @@
 package indi.uhyils.util;
 
 import indi.uhyils.enum_.ServiceQualityEnum;
-import indi.uhyils.pojo.model.MonitorDO;
-import indi.uhyils.pojo.model.MonitorJvmStatusDetailDO;
+import indi.uhyils.pojo.model.LogMonitorEntity;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class JvmStatusAnalysisUtil {
      * @param statuses  状态们
      * @return 是否健康
      */
-    public static List<ServiceQualityEnum> analysis(MonitorDO monitorDO, List<MonitorJvmStatusDetailDO> statuses) {
+    public static List<ServiceQualityEnum> analysis(LogMonitorEntity monitorDO, List<LogMonitorJvmStatusEntity> statuses) {
         List<ServiceQualityEnum> list = new ArrayList<>();
         if (statuses.size() < STATUS_SIZE_MIN) {
             // 如果状态信息没有超过6个 也就是系统没有运行超过3个小时 没有分析的必要 直接返回正常
@@ -68,7 +68,7 @@ public class JvmStatusAnalysisUtil {
         int heapMemLowCount = 0;
         // 非堆内存超出次数
         int noHeapLowCount = 0;
-        for (MonitorJvmStatusDetailDO status : statuses) {
+        for (LogMonitorJvmStatusEntity status : statuses) {
             // 总内存超出
             if (status.getUseMem() > monitorDO.getJvmTotalMem() * outMaxPro) {
                 allMemOutCount++;

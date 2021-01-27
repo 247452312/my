@@ -26,6 +26,9 @@ rpc:
     timeout: 5000
 
 mybatis-plus:
+  configuration:
+    # 是否将sql打印到控制面板(该配置会将sql语句和查询的结果都打印到控制台)
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
   # 别名包设置，在mapper.xml中可直接用类名
   type-aliases-package: indi.uhyils.dao

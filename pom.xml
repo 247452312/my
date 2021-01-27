@@ -58,6 +58,7 @@
         <hystrix.version>1.5.18</hystrix.version>
         <es.version>7.9.1</es.version>
         <netty.version>4.1.54.Final</netty.version>
+        <mybatis-plus.version>3.4.2</mybatis-plus.version>
 
     </properties>
 
@@ -370,7 +371,12 @@
                 <artifactId>netty-all</artifactId>
                 <version>${netty.version}</version>
             </dependency>
-
+            <!--mybatis-plus-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -399,31 +405,31 @@
 
 
     <!--这里留着这个写法.. 万一以后用到了. 不用再上网找了-->
-<!--    <distributionManagement>-->
-<!--        <repository>-->
-<!--            <id>releases</id>-->
-<!--            <name>maven-my-releases</name>-->
-<!--            <url>http://xx.xx.xx.xx:8081/repository/maven-my-releases/</url>-->
-<!--        </repository>-->
-<!--        <snapshotRepository>-->
-<!--            <id>snapshots</id> &lt;!&ndash; 选择settings文件中的快照版本的id&ndash;&gt;-->
-<!--            <name>maven-my-snapshots</name>-->
-<!--            <url>http://xx.xx.xx.xx:8081/repository/maven-my-snapshots/</url>&lt;!&ndash; 私服地址&ndash;&gt;-->
-<!--        </snapshotRepository>-->
-<!--    </distributionManagement>-->
+    <!--    <distributionManagement>-->
+    <!--        <repository>-->
+    <!--            <id>releases</id>-->
+    <!--            <name>maven-my-releases</name>-->
+    <!--            <url>http://xx.xx.xx.xx:8081/repository/maven-my-releases/</url>-->
+    <!--        </repository>-->
+    <!--        <snapshotRepository>-->
+    <!--            <id>snapshots</id> &lt;!&ndash; 选择settings文件中的快照版本的id&ndash;&gt;-->
+    <!--            <name>maven-my-snapshots</name>-->
+    <!--            <url>http://xx.xx.xx.xx:8081/repository/maven-my-snapshots/</url>&lt;!&ndash; 私服地址&ndash;&gt;-->
+    <!--        </snapshotRepository>-->
+    <!--    </distributionManagement>-->
 
-<!--    &lt;!&ndash; 仓库地址 组&ndash;&gt;-->
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>nexus</id>-->
-<!--            <name>nexus-my</name>-->
-<!--            <url>http://xx.xx.xx.xx:8081/repository/nexus-my/</url>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <!--    &lt;!&ndash; 仓库地址 组&ndash;&gt;-->
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>nexus</id>-->
+    <!--            <name>nexus-my</name>-->
+    <!--            <url>http://xx.xx.xx.xx:8081/repository/nexus-my/</url>-->
+    <!--            <releases>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </releases>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
 </project>
