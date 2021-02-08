@@ -69,7 +69,6 @@ public class LastProviderInvoker implements RpcInvoker {
         }
 
         RpcData rpcData = callback.getRpcData(bytes);
-        LogUtil.warn("生产者收到消息: " + rpcData.unique());
         try {
             // ProviderRequestDataFilter
             for (ProviderRequestDataExtension filter : providerRequestDataFilters) {

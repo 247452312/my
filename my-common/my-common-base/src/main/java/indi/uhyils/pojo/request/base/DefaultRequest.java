@@ -20,7 +20,7 @@ public class DefaultRequest implements BaseRequest {
     /**
      * 保证请求幂等性, 不会在前一个相同幂等id执行结束前执行方法
      */
-    private String idempotentId;
+    private Long idempotentId;
 
 
     /**
@@ -62,11 +62,11 @@ public class DefaultRequest implements BaseRequest {
         this.requestLink = requestLink;
     }
 
-    public String getIdempotentId() {
+    public Long getIdempotentId() {
         return idempotentId;
     }
 
-    public void setIdempotentId(String idempotentId) {
+    public void setIdempotentId(Long idempotentId) {
         this.idempotentId = idempotentId;
     }
 }

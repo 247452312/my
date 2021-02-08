@@ -18,6 +18,10 @@ public enum RpcStatusEnum {
      */
     CONSUMER_TIMEOUT("消费者超时", (byte) 30),
     /**
+     * 消费者熔断
+     */
+    CONSUMER_FUSING("消费者熔断", (byte) 32),
+    /**
      * 生产者超时
      */
     PROVIDER_TIMEOUT("生产者超时", (byte) 31),

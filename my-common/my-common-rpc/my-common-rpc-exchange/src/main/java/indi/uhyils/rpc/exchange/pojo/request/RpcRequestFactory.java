@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.exchange.pojo.request;
 
+import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
@@ -83,7 +84,26 @@ public class RpcRequestFactory extends AbstractRpcFactory {
         rpcNormalRequest.setHeaders(request.rpcHeaders());
         String[] contentArray = {String.valueOf(RpcResponseTypeEnum.EXCEPTION.getCode()), "错误: " + th.getMessage()};
         rpcNormalRequest.setContentArray(contentArray);
-        rpcNormalRequest.setStatus(RpcStatusEnum.CONSUMER_TIMEOUT.getCode());
+        rpcNormalRequest.setStatus(RpcStatusEnum.BAD_REQUEST.getCode());
+        rpcNormalRequest.setUnique(request.unique());
+        try {
+            RpcContent content = RpcResponseContentFactory.createByContentArray(rpcNormalRequest, contentArray);
+            rpcNormalRequest.setContent(content);
+            rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
+        } catch (RpcException e) {
+            LogUtil.error(this, e);
+        }
+        return rpcNormalRequest;
+    }
+
+    public RpcData createFallback(RpcData request,Object response) {
+        RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
+        rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
+        rpcNormalRequest.setVersion(MyRpcContent.VERSION);
+        rpcNormalRequest.setHeaders(request.rpcHeaders());
+        String[] contentArray = {String.valueOf(RpcResponseTypeEnum.STRING_BACK.getCode()), JSON.toJSONString(response)};
+        rpcNormalRequest.setContentArray(contentArray);
+        rpcNormalRequest.setStatus(RpcStatusEnum.CONSUMER_FUSING.getCode());
         rpcNormalRequest.setUnique(request.unique());
         try {
             RpcContent content = RpcResponseContentFactory.createByContentArray(rpcNormalRequest, contentArray);

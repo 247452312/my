@@ -160,13 +160,11 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
 
     @Override
     public RpcData sendMsg(RpcData rpcData) throws RpcException, ClassNotFoundException, InterruptedException {
-        LogUtil.warn("发送信息: " + rpcData.unique());
         LastConsumerInvoker lastConsumerInvoker = new LastConsumerInvoker(this);
         RpcInvoker rpcInvoker = InvokerChainBuilder.buildConsumerSendInvokerChain(lastConsumerInvoker);
         FilterContext context = new FilterContext();
         context.getRpcResult().set(rpcData);
         RpcData response = rpcInvoker.invoke(context).get();
-        LogUtil.warn("返回信息: " + response.unique());
         return response;
     }
 
@@ -190,7 +188,6 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
      * @param rpcData
      */
     public void put(RpcData rpcData) {
-        LogUtil.warn("收到信息: " + rpcData.unique());
         Long unique = rpcData.unique();
         // 先判断是否曾经执行过并且超时了
         Boolean contain = timeOutUnique.contain(unique);

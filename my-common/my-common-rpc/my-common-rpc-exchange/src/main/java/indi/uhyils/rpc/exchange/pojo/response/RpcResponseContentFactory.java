@@ -2,6 +2,7 @@ package indi.uhyils.rpc.exchange.pojo.response;
 
 import indi.uhyils.rpc.exception.ContentArrayQuantityMismatchException;
 import indi.uhyils.rpc.exception.RpcException;
+import indi.uhyils.rpc.exchange.enum_.RpcResponseContentEnum;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 
@@ -21,9 +22,9 @@ public class RpcResponseContentFactory {
             throw new ContentArrayQuantityMismatchException(contentArray.length, CONTENT_SIZE);
         }
         RpcNormalResponseContent content = new RpcNormalResponseContent(rpcData);
-        int type = Integer.parseInt(contentArray[0]);
+        int type = Integer.parseInt(contentArray[RpcResponseContentEnum.TYPE.getLine()]);
         content.setResponseType(type);
-        content.setResponseContent(contentArray[1]);
+        content.setResponseContent(contentArray[RpcResponseContentEnum.RESPONSE_CONTENT.getLine()]);
         return content;
     }
 }

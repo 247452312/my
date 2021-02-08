@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.rpc.exception.ContentArrayQuantityMismatchException;
 import indi.uhyils.rpc.exception.RpcException;
+import indi.uhyils.rpc.exchange.enum_.RpcRequestContentEnum;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.util.LogUtil;
@@ -30,12 +31,12 @@ public class RpcRequestContentFactory {
             throw new ContentArrayQuantityMismatchException(contentArray.length, CONTENT_MIN_SIZE);
         }
         RpcNormalRequestContent content = new RpcNormalRequestContent(rpcData);
-        content.setServiceName(contentArray[0]);
-        content.setServiceVersion(contentArray[1]);
-        content.setMethodName(contentArray[2]);
-        String[] methodParamterTypes = contentArray[3].split(";");
+        content.setServiceName(contentArray[RpcRequestContentEnum.SERVICE_NAME.getLine()]);
+        content.setServiceVersion(contentArray[RpcRequestContentEnum.SERVICE_VERSION.getLine()]);
+        content.setMethodName(contentArray[RpcRequestContentEnum.METHOD_NAME.getLine()]);
+        String[] methodParamterTypes = contentArray[RpcRequestContentEnum.METHOD_PARAM_TYPE.getLine()].split(";");
         content.setMethodParamterTypes(methodParamterTypes);
-        JSONArray argsMap = JSON.parseArray(contentArray[4]);
+        JSONArray argsMap = JSON.parseArray(contentArray[RpcRequestContentEnum.ARG_MAP.getLine()]);
         List<Object> args = new ArrayList<>();
         Class<?> serviceClass = Class.forName(content.getServiceName());
         Class<?>[] methodParamterClass = new Class[methodParamterTypes.length];

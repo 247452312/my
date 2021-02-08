@@ -3,8 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>欢迎来到罗小黑的主页</title>
-    <meta content="layuimini基于layui的轻量级前端后台管理框架，最简洁、易用的后台框架模板，面向所有层次的前后端程序,只需提供一个接口就直接初始化整个框架，无需复杂操作。"
-          name="description">
     <!--    控制浏览器内核-->
     <meta content="webkit" name="renderer">
     <!--    Edge模式告诉IE以最高级 模式渲染文档，也就是任何IE版本都以当前版本所支持的最高级标准模式渲染，避免版本升级造成的影响。-->
@@ -145,10 +143,10 @@
 <script src="js/my.js"></script>
 <script src="js/mouse.min.js"></script>
 <script>
-    $.shuicheMouse({
-        type: 11,
-        color: "rgb(0,0,0)"
-    });
+    // $.shuicheMouse({
+    //     type: 11,
+    //     color: "rgb(0,0,0)"
+    // });
     pushRequest("UserService", "getUserByToken", {}, function (data) {
         let base = download(data.headPortrait);
         $("#head").append("<img style='border-radius: 10px;width: 50px;height: 50px;' src='" + base + "'>")
