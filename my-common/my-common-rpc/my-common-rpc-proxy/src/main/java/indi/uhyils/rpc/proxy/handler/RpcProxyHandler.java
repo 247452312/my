@@ -1,14 +1,14 @@
 package indi.uhyils.rpc.proxy.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.TypeReference;
 import indi.uhyils.rpc.config.ConsumerConfig;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
+import indi.uhyils.rpc.netty.extension.RpcExtensionLoader;
+import indi.uhyils.rpc.netty.extension.RpcExtensionLoaderTypeEnum;
+import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseObjectExtension;
 import indi.uhyils.rpc.registry.Registry;
 import indi.uhyils.rpc.registry.RegistryFactory;
-import indi.uhyils.rpc.registry.mode.nacos.RegistryNacosMode;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
@@ -16,7 +16,7 @@ import indi.uhyils.util.SpringUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -34,6 +34,11 @@ public class RpcProxyHandler implements InvocationHandler {
      */
     private Registry registry;
 
+    /**
+     * 消费者接收回复Object拦截器
+     */
+    private List<ConsumerResponseObjectExtension> consumerResponseObjectExtensions;
+
 
     public RpcProxyHandler(Class<?> clazz) {
         this.type = clazz;
@@ -45,6 +50,7 @@ public class RpcProxyHandler implements InvocationHandler {
                 LogUtil.error(this, e);
             }
         }
+        consumerResponseObjectExtensions = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_STEP, ConsumerResponseObjectExtension.class);
 
     }
 
@@ -72,6 +78,10 @@ public class RpcProxyHandler implements InvocationHandler {
         }
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         String invoke = registry.invoke(bean.newId(), method.getName(), method.getParameterTypes(), args);
-        return JSON.parseObject(invoke, method.getGenericReturnType());
+        Object o = JSON.parseObject(invoke, method.getGenericReturnType());
+        for (ConsumerResponseObjectExtension consumerResponseObjectExtension : consumerResponseObjectExtensions) {
+            o = consumerResponseObjectExtension.doFilter(o, invoke);
+        }
+        return o;
     }
 }

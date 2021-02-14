@@ -8,6 +8,7 @@ import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.response.HotSpotResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
@@ -217,6 +218,7 @@ public class HotSpotAop {
         String format;
         if (!DefaultRequest.class.getSimpleName().equals(simpleName)) {
 
+            // Arrays.asList()不能add和addAll所以要new ArrayList()
             List<Field> fields = new ArrayList<>(Arrays.asList(aClass.getDeclaredFields()));
             while (aClass.getSuperclass() != Object.class) {
                 aClass = aClass.getSuperclass();
@@ -224,6 +226,10 @@ public class HotSpotAop {
             }
             StringBuilder sb = new StringBuilder();
             for (Field field : fields) {
+                // key中除去唯一标示,防止热点不起作用
+                if ("unique".equals(field.getName())) {
+                    continue;
+                }
                 field.setAccessible(true);
                 sb.append(JSON.toJSONString(field.get(arg)));
             }
@@ -265,8 +271,10 @@ public class HotSpotAop {
                 return proceed;
             }
             LogUtil.info(HotSpotAop.class, String.format("接口<%s> 读取redis中的缓存热点数据", methodName));
-            byte[] hget = jedis.hget(format.getBytes(StandardCharsets.UTF_8), HotSpotContent.HOTSPOT_HASH_DATA_KEY.getBytes(StandardCharsets.UTF_8));
-            return ObjectByteUtil.toObject(hget, ServiceResult.class);
+            ServiceResult<HotSpotResponse> hotSpotResponse = ServiceResult.buildHotSpotHaveResult(format, HotSpotContent.HOTSPOT_HASH_DATA_KEY, (DefaultRequest) pjp.getArgs()[0]);
+//            byte[] hget = jedis.hget(format.getBytes(StandardCharsets.UTF_8), HotSpotContent.HOTSPOT_HASH_DATA_KEY.getBytes(StandardCharsets.UTF_8));
+//            return ObjectByteUtil.toObject(hget, ServiceResult.class);
+            return hotSpotResponse;
         } finally {
             jedis.close();
         }

@@ -11,6 +11,11 @@ public enum ServiceCode {
     SUCCESS(200, "操作成功"),
 
     /**
+     * 操作成功,返回值缓存在redis中
+     */
+    SUCCESS_REDIS(201, "操作成功,返回值缓存在redis中"),
+
+    /**
      * 前台传值错误
      */
     REQUEST_PARAM_ERROR(400, "前台传值错误"),

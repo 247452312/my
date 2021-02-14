@@ -14,7 +14,6 @@ import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.ServiceControlService;
-import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,6 +32,10 @@ public class ServiceControlServiceImpl implements ServiceControlService {
      * 接口连接方法的分隔符
      */
     private static final String METHOD_LINK_CLASS_SYMBOL = "#";
+    /**
+     * 接口名称包分隔符
+     */
+    public static final String INTERFACE_NAME_PACKAGE_SEPARATOR = ".";
     @Autowired
     private RedisPoolHandle redisPoolHandle;
 
@@ -40,7 +43,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
     public ServiceResult<Boolean> getMethodDisable(GetMethodDisableRequest request) {
 
         String className = request.getClassName();
-        if (!className.contains(RpcApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
+        if (!className.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
             className = Content.SERVICE_PACKAGE_PREFIX + className;
         }
         Boolean enable = redisPoolHandle.checkMethodDisable(className, className + METHOD_LINK_CLASS_SYMBOL + request.getMethodName(), request.getMethodType());
@@ -82,7 +85,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
         AddOrEditMethodDisable data = request.getData();
         try {
             String className = data.getClassName();
-            if (className != null && !className.contains(RpcApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
+            if (className != null && !className.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 className = Content.SERVICE_PACKAGE_PREFIX + className;
             }
             String methodName = data.getMethodName();
@@ -105,9 +108,9 @@ public class ServiceControlServiceImpl implements ServiceControlService {
     public ServiceResult<Boolean> delMethodDisable(DelMethodDisableRequest request) {
         Redisable jedis = redisPoolHandle.getJedis();
         try {
-            String key = null;
+            String key;
             String className = request.getClassName();
-            if (className != null && !className.contains(RpcApiUtil.INTERFACE_NAME_PACKAGE_SEPARATOR)) {
+            if (className != null && !className.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 key = Content.SERVICE_PACKAGE_PREFIX + className;
             } else {
                 key = className;

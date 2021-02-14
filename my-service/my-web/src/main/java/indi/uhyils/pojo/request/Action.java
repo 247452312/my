@@ -33,6 +33,11 @@ public class Action {
     private String token;
 
     /**
+     * 保证请求幂等性, 不会在前一个相同幂等id执行结束前执行方法
+     */
+    private Long unique;
+
+    /**
      * 携带参数
      */
     private Map<String, Object> args;
@@ -68,5 +73,13 @@ public class Action {
 
     public void setArgs(Map<String, Object> args) {
         this.args = args;
+    }
+
+    public Long getUnique() {
+        return unique;
+    }
+
+    public void setUnique(Long unique) {
+        this.unique = unique;
     }
 }

@@ -9,9 +9,11 @@ import indi.uhyils.pojo.request.SessionRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,11 +32,19 @@ import java.util.HashMap;
 @CrossOrigin
 public class AllController {
 
-
     /**
      * 用户登录时携带的token的名称
      */
     private static final String TOKEN = "token";
+    /**
+     * 保证请求幂等性, 不会在前一个相同幂等id执行结束前执行方法
+     */
+    private static final String UNIQUE = "unique";
+    /**
+     * 热点缓存
+     */
+    @Autowired
+    private HotSpotRedisPool redisPool;
 
     /**
      * action 添加链路跟踪起点
@@ -100,6 +110,7 @@ public class AllController {
             }
         }
     }
+
 
     private void changeFieldTypeToString(JSONObject data) {
         // 因前端大数会失去精度, 所以要转变类型,全部转换为String类型的

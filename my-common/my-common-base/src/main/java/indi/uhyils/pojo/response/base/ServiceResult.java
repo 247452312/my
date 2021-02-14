@@ -3,6 +3,7 @@ package indi.uhyils.pojo.response.base;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
+import indi.uhyils.pojo.response.HotSpotResponse;
 
 import java.io.Serializable;
 
@@ -15,6 +16,7 @@ import java.io.Serializable;
 public class ServiceResult<T extends Serializable> implements Serializable {
 
 
+    private static final long serialVersionUID = -4154566267377974875L;
     /**
      * 返回的类型
      */
@@ -156,6 +158,19 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      */
     public static <T extends Serializable> ServiceResult<T> buildResultByServiceCode(ServiceCode code, DefaultRequest req) {
         return new ServiceResult(null, code.getText(), code.getMsg(), req);
+    }
+
+    /**
+     * 创建一个结果在redis中的返回
+     *
+     * @param key  redis中的key
+     * @param hkey redis中hash内的key
+     * @param req  请求
+     * @return
+     */
+    public static ServiceResult<HotSpotResponse> buildHotSpotHaveResult(String key, String hkey, DefaultRequest req) {
+        HotSpotResponse build = HotSpotResponse.build(key, hkey);
+        return new ServiceResult(build, ServiceCode.SUCCESS_REDIS.getText(), null, req);
     }
 
     public T getData() {

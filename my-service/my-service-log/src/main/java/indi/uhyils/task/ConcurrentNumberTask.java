@@ -50,7 +50,7 @@ public class ConcurrentNumberTask {
         request.setCode(Content.CONCURRENT_NUM_DICT_CODE);
         ServiceResult<ArrayList<DictItemEntity>> byCode = dictService.getByCode(request);
         if (byCode == null || !byCode.getServiceCode().equals(ServiceCode.SUCCESS.getText()) || byCode.getData().size() == 0) {
-            LogUtil.warn("获取服务字典中的并发数错误,请检查");
+            LogUtil.warn("获取服务字典中的并发数错误,请检查" + byCode.getServiceMessage());
             return;
         }
         ArrayList<DictItemEntity> data = byCode.getData();

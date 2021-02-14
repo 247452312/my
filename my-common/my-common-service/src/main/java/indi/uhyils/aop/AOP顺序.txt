@@ -1,6 +1,6 @@
-顺序由上往下
-10.服务禁用
-20.token
-30.异常
-40.日志
+aop顺序由上往下
+10.服务禁用 ServiceTemporarilyDisabledAop
+20.token TokenInjectAop
+30.异常 ExceptionAop
+40.日志 TimeLogAop
 50.热点

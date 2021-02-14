@@ -47,7 +47,7 @@ public class HystrixFilter implements ConsumerFilter {
         DefaultRequest defaultRequest = o.toJavaObject(DefaultRequest.class);
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         try {
-            defaultRequest.setIdempotentId(bean.newId());
+            defaultRequest.setUnique(bean.newId());
             List<DefaultRequest> defaultRequests = Arrays.asList(defaultRequest);
             rpcData.contentArray()[RpcRequestContentEnum.ARG_MAP.getLine()] = JSON.toJSONString(defaultRequests);
         } catch (IdGenerationException e) {

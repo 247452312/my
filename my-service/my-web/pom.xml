@@ -77,7 +77,10 @@
             <groupId>indi.uhyils</groupId>
             <artifactId>my-api-provider-work-orders</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-hot-spot</artifactId>
+        </dependency>
 
 
         <dependency>

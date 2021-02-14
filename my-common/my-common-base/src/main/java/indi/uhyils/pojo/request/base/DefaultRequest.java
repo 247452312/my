@@ -10,6 +10,7 @@ import indi.uhyils.pojo.request.model.LinkNode;
  * @date 文件创建日期 2020年04月23日 14时04分
  */
 public class DefaultRequest implements BaseRequest {
+    private static final long serialVersionUID = 5644347874561939629L;
     /**
      * token
      */
@@ -19,8 +20,10 @@ public class DefaultRequest implements BaseRequest {
 
     /**
      * 保证请求幂等性, 不会在前一个相同幂等id执行结束前执行方法
+     * <p>
+     * 此标记只是防止请求的超时重发等操作,并不是业务上的幂等,业务上的幂等在业务上实现
      */
-    private Long idempotentId;
+    private Long unique;
 
 
     /**
@@ -31,7 +34,7 @@ public class DefaultRequest implements BaseRequest {
     public DefaultRequest(DefaultRequest request) {
         this.token = request.token;
         this.user = request.user;
-        this.idempotentId = request.idempotentId;
+        this.unique = request.unique;
         this.requestLink = request.requestLink;
     }
 
@@ -62,11 +65,11 @@ public class DefaultRequest implements BaseRequest {
         this.requestLink = requestLink;
     }
 
-    public Long getIdempotentId() {
-        return idempotentId;
+    public Long getUnique() {
+        return unique;
     }
 
-    public void setIdempotentId(Long idempotentId) {
-        this.idempotentId = idempotentId;
+    public void setUnique(Long unique) {
+        this.unique = unique;
     }
 }

@@ -74,6 +74,11 @@
                 <artifactId>my-common-rpc-spring-start</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-common-hot-spot</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 
             <dependency>
