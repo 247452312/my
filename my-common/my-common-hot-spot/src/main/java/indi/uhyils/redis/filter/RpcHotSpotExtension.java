@@ -15,6 +15,8 @@ import redis.clients.jedis.Jedis;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * 如果返回值是缓存信息,那么应该获取真实的数据 然后返回
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年02月14日 12时21分
  */
