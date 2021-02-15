@@ -16,7 +16,6 @@ import java.util.Set;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月04日 11时53分
  */
-//@Lazy
 @Component
 public class HotSpotRedisPool {
 

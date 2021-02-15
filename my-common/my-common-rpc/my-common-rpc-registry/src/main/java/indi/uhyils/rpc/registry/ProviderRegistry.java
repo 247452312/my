@@ -1,7 +1,6 @@
 package indi.uhyils.rpc.registry;
 
 import indi.uhyils.rpc.cluster.Cluster;
-import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.registry.mode.RegistryMode;
@@ -12,7 +11,7 @@ import indi.uhyils.rpc.registry.mode.RegistryMode;
  */
 public class ProviderRegistry<T> extends AbstractRegistry<T> {
 
-    public ProviderRegistry( Cluster cluster, Class<T> serviceClass, RegistryMode mode) {
+    public ProviderRegistry(Cluster cluster, Class<T> serviceClass, RegistryMode mode) {
         super(cluster, serviceClass);
         this.mode = mode;
         mode.setType(RpcNettyTypeEnum.PROVIDER);

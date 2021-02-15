@@ -1,6 +1,5 @@
 package indi.uhyils.rpc.netty.core;
 
-import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
@@ -38,7 +37,7 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
     private EventLoopGroup workerGroup;
 
 
-    public RpcNettyNormalProvider( Long outTime, RpcCallBack callback) {
+    public RpcNettyNormalProvider(Long outTime, RpcCallBack callback) {
         super(outTime);
         this.callback = callback;
     }

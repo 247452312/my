@@ -26,6 +26,14 @@ public class JavaCompilerResult {
      */
     private String outPrint;
 
+    public static JavaCompilerResult build(Object result, long compilerTime, long runTime, String outPrint) {
+        JavaCompilerResult build = new JavaCompilerResult();
+        build.setResult(result);
+        build.setCompilerTime(compilerTime);
+        build.setRunTime(runTime);
+        build.setOutPrint(outPrint);
+        return build;
+    }
 
     public Object getResult() {
         return result;
@@ -57,15 +65,5 @@ public class JavaCompilerResult {
 
     public void setOutPrint(String outPrint) {
         this.outPrint = outPrint;
-    }
-
-
-    public static JavaCompilerResult build(Object result, long compilerTime, long runTime, String outPrint){
-        JavaCompilerResult build = new JavaCompilerResult();
-        build.setResult(result);
-        build.setCompilerTime(compilerTime);
-        build.setRunTime(runTime);
-        build.setOutPrint(outPrint);
-        return build;
     }
 }

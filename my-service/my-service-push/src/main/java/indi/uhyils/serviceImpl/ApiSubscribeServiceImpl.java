@@ -7,8 +7,8 @@ import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.model.ApiSubscribeEntity;
 import indi.uhyils.pojo.request.SubscribeRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.ApiSubscribeService;
 import indi.uhyils.rpc.annotation.RpcService;
+import indi.uhyils.service.ApiSubscribeService;
 
 import javax.annotation.Resource;
 

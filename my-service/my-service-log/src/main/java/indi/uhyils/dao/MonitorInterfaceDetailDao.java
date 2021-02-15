@@ -2,12 +2,7 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity;
-import indi.uhyils.pojo.request.model.Arg;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>

@@ -10,7 +10,6 @@ import indi.uhyils.rpc.netty.extension.filter.FilterContext;
 import indi.uhyils.rpc.netty.extension.filter.filter.ConsumerFilter;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcInvoker;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcResult;
-import indi.uhyils.util.LogUtil;
 
 /**
  * @author uhyils <247452312@qq.com>

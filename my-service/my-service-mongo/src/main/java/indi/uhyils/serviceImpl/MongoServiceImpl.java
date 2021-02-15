@@ -6,9 +6,9 @@ import indi.uhyils.mongo.MongoManager;
 import indi.uhyils.pojo.request.NameRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.MongoService;
 import indi.uhyils.util.MD5Util;
-import indi.uhyils.rpc.annotation.RpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;

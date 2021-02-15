@@ -17,7 +17,7 @@ public class StringJavaFileManage extends ForwardingJavaFileManager {
      */
     private Map<String, ByteJavaFileObject> javaFileObjectMap;
 
-    StringJavaFileManage(JavaFileManager fileManager,Map<String, ByteJavaFileObject> javaFileObjectMap) {
+    StringJavaFileManage(JavaFileManager fileManager, Map<String, ByteJavaFileObject> javaFileObjectMap) {
         super(fileManager);
         this.javaFileObjectMap = javaFileObjectMap;
     }

@@ -40,6 +40,14 @@ public class LogMonitorInterfaceCallEntity extends BaseVoEntity {
      * 执行时间跨度 时间戳类型
      */
     private Long runTime;
+    /**
+     * 请求大小
+     */
+    private Integer requestLength;
+    /**
+     * 返回值大小
+     */
+    private Integer responseLength;
 
     public Long getFid() {
         return fid;
@@ -89,11 +97,27 @@ public class LogMonitorInterfaceCallEntity extends BaseVoEntity {
         this.runTime = runTime;
     }
 
+    public Integer getRequestLength() {
+        return requestLength;
+    }
+
+    public void setRequestLength(Integer requestLength) {
+        this.requestLength = requestLength;
+    }
+
+    public Integer getResponseLength() {
+        return responseLength;
+    }
+
+    public void setResponseLength(Integer responseLength) {
+        this.responseLength = responseLength;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("{");
-        sb.append("            \"fid\":\"")
-                .append(fid).append('\"');
+        sb.append("            \"fid\":")
+                .append(fid);
         if (interfaceName != null) {
             sb.append(",            \"interfaceName\":\"")
                     .append(interfaceName).append('\"');
@@ -113,6 +137,14 @@ public class LogMonitorInterfaceCallEntity extends BaseVoEntity {
         if (runTime != null) {
             sb.append(",            \"runTime\":")
                     .append(runTime);
+        }
+        if (requestLength != null) {
+            sb.append(",            \"requestLength\":")
+                    .append(requestLength);
+        }
+        if (responseLength != null) {
+            sb.append(",            \"responseLength\":")
+                    .append(responseLength);
         }
         sb.append('}');
         return sb.toString();

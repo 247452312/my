@@ -4,10 +4,10 @@ import indi.uhyils.enum_.DbTypeEnum;
 import indi.uhyils.pojo.request.DbInformation;
 import indi.uhyils.pojo.request.ProjectGenerateRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.KproService;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.kpro.KproUtil;
-import indi.uhyils.rpc.annotation.RpcService;
 
 import java.io.File;
 import java.io.FileWriter;

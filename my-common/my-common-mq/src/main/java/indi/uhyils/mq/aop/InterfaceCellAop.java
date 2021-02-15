@@ -1,7 +1,6 @@
 package indi.uhyils.mq.aop;
 
 import com.rabbitmq.client.Channel;
-import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.InterfaceCallInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
@@ -70,7 +69,7 @@ public class InterfaceCellAop {
                 }
             }
         }
-        InterfaceCallInfo interfaceCallInfo = ServiceUtil.getInterfaceCallInfo(className, methodName, ServiceCode.SUCCESS.getText().equals(sr.getServiceCode()), runTime, jvmUniqueMark);
+        InterfaceCallInfo interfaceCallInfo = ServiceUtil.getInterfaceCallInfo(className, methodName, sr.getServiceCode(), runTime, sr, proceed, jvmUniqueMark);
         RabbitUtils.sendInterfaceCallInfo(interfaceCallInfo, channel);
 
         return proceed;

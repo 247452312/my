@@ -29,13 +29,13 @@ import java.util.Map;
 public class ServiceControlServiceImpl implements ServiceControlService {
 
     /**
-     * 接口连接方法的分隔符
-     */
-    private static final String METHOD_LINK_CLASS_SYMBOL = "#";
-    /**
      * 接口名称包分隔符
      */
     public static final String INTERFACE_NAME_PACKAGE_SEPARATOR = ".";
+    /**
+     * 接口连接方法的分隔符
+     */
+    private static final String METHOD_LINK_CLASS_SYMBOL = "#";
     @Autowired
     private RedisPoolHandle redisPoolHandle;
 

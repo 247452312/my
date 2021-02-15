@@ -11,9 +11,9 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.JvmDataStatisticsResponse;
 import indi.uhyils.pojo.response.JvmInfoLogResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.JvmService;
 import indi.uhyils.util.JvmStatusAnalysisUtil;
-import indi.uhyils.rpc.annotation.RpcService;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;

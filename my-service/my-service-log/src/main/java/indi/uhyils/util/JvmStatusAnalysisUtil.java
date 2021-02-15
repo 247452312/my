@@ -25,7 +25,7 @@ public class JvmStatusAnalysisUtil {
      * 分析jvm运行信息 TODO 这个应该移到智能模块中去
      *
      * @param logMonitorEntity 初始内存
-     * @param statuses  状态们
+     * @param statuses         状态们
      * @return 是否健康
      */
     public static List<ServiceQualityEnum> analysis(LogMonitorEntity logMonitorEntity, List<LogMonitorJvmStatusEntity> statuses) {

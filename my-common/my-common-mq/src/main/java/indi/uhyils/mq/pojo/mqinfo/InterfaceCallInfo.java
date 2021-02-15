@@ -40,6 +40,16 @@ public class InterfaceCallInfo implements Serializable {
      */
     private Long time;
 
+    /**
+     * 发送长度
+     */
+    private Integer requestLength;
+
+    /**
+     * 返回长度
+     */
+    private Integer responseLength;
+
 
     public String getInterfaceName() {
         return interfaceName;
@@ -87,5 +97,21 @@ public class InterfaceCallInfo implements Serializable {
 
     public void setJvmUniqueMark(JvmUniqueMark jvmUniqueMark) {
         this.jvmUniqueMark = jvmUniqueMark;
+    }
+
+    public Integer getRequestLength() {
+        return requestLength;
+    }
+
+    public void setRequestLength(Integer requestLength) {
+        this.requestLength = requestLength;
+    }
+
+    public Integer getResponseLength() {
+        return responseLength;
+    }
+
+    public void setResponseLength(Integer responseLength) {
+        this.responseLength = responseLength;
     }
 }

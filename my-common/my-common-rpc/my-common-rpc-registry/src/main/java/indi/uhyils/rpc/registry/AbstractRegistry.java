@@ -1,7 +1,6 @@
 package indi.uhyils.rpc.registry;
 
 import indi.uhyils.rpc.cluster.Cluster;
-import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.registry.mode.RegistryMode;
 
 /**

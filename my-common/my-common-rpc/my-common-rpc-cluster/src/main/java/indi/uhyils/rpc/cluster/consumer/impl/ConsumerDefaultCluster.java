@@ -11,7 +11,6 @@ import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.netty.factory.RpcNettyFactory;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
-import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.HashSet;

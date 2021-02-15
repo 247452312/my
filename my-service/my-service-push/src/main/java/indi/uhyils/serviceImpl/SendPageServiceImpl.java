@@ -2,8 +2,8 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.SendPageDao;
 import indi.uhyils.pojo.model.SendPageEntity;
-import indi.uhyils.service.SendPageService;
 import indi.uhyils.rpc.annotation.RpcService;
+import indi.uhyils.service.SendPageService;
 
 import javax.annotation.Resource;
 

@@ -8,9 +8,9 @@ import indi.uhyils.pojo.request.AddBlackIpRequest;
 import indi.uhyils.pojo.request.GetLogIntervalByIpRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BlackListService;
 import indi.uhyils.util.LogUtil;
-import indi.uhyils.rpc.annotation.RpcService;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;

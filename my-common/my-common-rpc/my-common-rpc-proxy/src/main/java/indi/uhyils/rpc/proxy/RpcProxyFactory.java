@@ -1,6 +1,5 @@
 package indi.uhyils.rpc.proxy;
 
-import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.proxy.generic.GenericService;
 import indi.uhyils.rpc.proxy.handler.RpcProxyHandler;
 import indi.uhyils.rpc.registry.exception.RegistryException;
@@ -35,12 +34,12 @@ public class RpcProxyFactory {
     /**
      * 获取泛化接口
      *
-     * @param clazz     对应的类
-     * @param generic   是否泛化接口
+     * @param clazz   对应的类
+     * @param generic 是否泛化接口
      * @return
      * @throws RegistryException
      */
-    public static Object newProxy(Class<?> clazz,  boolean generic) throws Exception {
+    public static Object newProxy(Class<?> clazz, boolean generic) throws Exception {
         Object service = newProxy(clazz);
         return generic ? new GenericService(service) : service;
     }

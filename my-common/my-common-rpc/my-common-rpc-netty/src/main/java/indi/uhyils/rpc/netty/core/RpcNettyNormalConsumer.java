@@ -128,7 +128,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
         return true;
     }
 
-    public RpcData wait(Long unique)  {
+    public RpcData wait(Long unique) {
         // 请求第一次
         if (rpcResponseMap.containsKey(unique)) {
             RpcData rpcData = rpcResponseMap.get(unique);

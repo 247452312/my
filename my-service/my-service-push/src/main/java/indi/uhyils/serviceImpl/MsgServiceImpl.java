@@ -2,8 +2,8 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.MsgDao;
 import indi.uhyils.pojo.model.MsgEntity;
-import indi.uhyils.service.MsgService;
 import indi.uhyils.rpc.annotation.RpcService;
+import indi.uhyils.service.MsgService;
 
 import javax.annotation.Resource;
 

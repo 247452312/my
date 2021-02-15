@@ -6,8 +6,8 @@ import indi.uhyils.pojo.request.CellAlgorithmRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.CellAlgorithmResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.AlgorithmService;
 import indi.uhyils.rpc.annotation.RpcService;
+import indi.uhyils.service.AlgorithmService;
 
 import javax.annotation.Resource;
 

@@ -61,6 +61,8 @@ public class ModelTransUtils {
         logMonitorInterfaceCallEntity.setRunTime(interfaceCallInfo.getRunTime());
         logMonitorInterfaceCallEntity.setSuccess(interfaceCallInfo.getSuccess());
         logMonitorInterfaceCallEntity.setTime(interfaceCallInfo.getTime());
+        logMonitorInterfaceCallEntity.setRequestLength(interfaceCallInfo.getRequestLength());
+        logMonitorInterfaceCallEntity.setResponseLength(interfaceCallInfo.getResponseLength());
         return logMonitorInterfaceCallEntity;
     }
 }

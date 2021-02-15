@@ -2,8 +2,8 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.OrderNodeResultTypeDao;
 import indi.uhyils.pojo.model.OrderNodeResultTypeEntity;
-import indi.uhyils.service.OrderNodeResultTypeService;
 import indi.uhyils.rpc.annotation.RpcService;
+import indi.uhyils.service.OrderNodeResultTypeService;
 
 import javax.annotation.Resource;
 

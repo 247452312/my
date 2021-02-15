@@ -12,9 +12,9 @@ import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.LogService;
 import indi.uhyils.util.EnumUtils;
-import indi.uhyils.rpc.annotation.RpcService;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;

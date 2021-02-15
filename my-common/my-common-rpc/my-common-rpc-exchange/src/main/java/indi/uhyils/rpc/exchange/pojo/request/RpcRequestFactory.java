@@ -96,7 +96,7 @@ public class RpcRequestFactory extends AbstractRpcFactory {
         return rpcNormalRequest;
     }
 
-    public RpcData createFallback(RpcData request,Object response) {
+    public RpcData createFallback(RpcData request, Object response) {
         RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
