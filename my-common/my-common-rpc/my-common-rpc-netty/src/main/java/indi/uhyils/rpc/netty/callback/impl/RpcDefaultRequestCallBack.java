@@ -11,6 +11,7 @@ import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.exchange.pojo.*;
 import indi.uhyils.rpc.exchange.pojo.request.RpcRequestContent;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
+import indi.uhyils.rpc.util.RpcObjectTransUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -117,7 +118,11 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
                 methodClass[i] = Class.forName(methodParameterTypes[i]);
             }
             Method declaredMethod = clazz.getMethod(requestContent.getMethodName(), methodClass);
-            Object invoke = declaredMethod.invoke(targetClass, requestContent.getArgs());
+            Object[] args = requestContent.getArgs();
+            for (int i = 0; i < args.length; i++) {
+                args[i] = RpcObjectTransUtil.changeObjRequestParadigm(args[i], clazz, declaredMethod);
+            }
+            Object invoke = declaredMethod.invoke(targetClass, args);
             return invoke == null ? "" : JSON.toJSONString(invoke);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | RpcBeanNotFoundException e) {
             e.printStackTrace();

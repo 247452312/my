@@ -1,0 +1,78 @@
+package indi.uhyils.rpc.util;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.pojo.request.base.ObjRequest;
+import indi.uhyils.pojo.request.base.ObjsRequest;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2021年02月16日 13时10分
+ */
+public class RpcObjectTransUtil {
+    /**
+     * 泛型T
+     */
+    private static final String PARADIGM_STRING = "T";
+    /**
+     * 泛型左括号
+     */
+    private static final String GENERIC_LEFT_BRACKET = "<";
+
+    /**
+     * 泛型右括号
+     */
+    private static final String GENERIC_RIGHT_BRACKET = ">";
+
+    /**
+     * 转换为指定接口的指定方法的类型
+     *
+     * @param arg            请求咱叔
+     * @param interfaceClass 接口class
+     * @param method         方法
+     * @return
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     */
+    public static Object changeObjRequestParadigm(Object arg, Class interfaceClass, Method method) throws ClassNotFoundException, NoSuchMethodException {
+        String requestJson = JSON.toJSONString(arg);
+        Class params = method.getParameterTypes()[0];
+        boolean objRequestEquals = params.equals(ObjRequest.class);
+        boolean objsRequestEquals = params.equals(ObjsRequest.class);
+        if (objRequestEquals || objsRequestEquals) {
+            Type[] genericInterfaces = method.getGenericParameterTypes();
+            Type genericSuperclass = genericInterfaces[0];
+            String className = genericSuperclass.getTypeName();
+            if (className.contains(GENERIC_LEFT_BRACKET)) {
+                String substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
+                if (PARADIGM_STRING.equals(substring)) {
+                    Type genericInterface = interfaceClass.getGenericInterfaces()[0];
+                    className = genericInterface.getTypeName();
+                    substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
+                }
+                if (objRequestEquals) {
+                    ObjRequest<Serializable> objRequest = JSONObject.parseObject(requestJson, ObjRequest.class);
+                    objRequest.setData((Serializable) JSONObject.parseObject(JSON.toJSONString(objRequest.getData()), Class.forName(substring)));
+                    return objRequest;
+
+                } else if (objsRequestEquals) {
+                    ObjsRequest<Serializable> objsRequest = JSONObject.parseObject(requestJson, ObjsRequest.class);
+                    List<Serializable> list = objsRequest.getList();
+                    List<Serializable> targetList = new ArrayList<>(list.size());
+                    for (Serializable serializable : list) {
+                        targetList.add((Serializable) JSONObject.parseObject(JSON.toJSONString(serializable), Class.forName(substring)));
+                    }
+                    objsRequest.setList(targetList);
+                    return objsRequest;
+                }
+            }
+        }
+        return arg;
+    }
+}

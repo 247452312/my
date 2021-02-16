@@ -1,10 +1,12 @@
 package indi.uhyils.rpc.proxy.generic;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.util.LogUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -32,7 +34,9 @@ public class GenericService<T> {
             Method targetMethod = service.getClass().getMethod(method, parameterTypes);
             targetMethod.setAccessible(true);
             for (int i = 0; i < parameterTypes.length; i++) {
-                args[i] = JSONObject.parseObject(JSONObject.toJSONString(args[i]), parameterTypes[i]);
+                if (args[i] instanceof JSONObject || args[i] instanceof JSONArray || args[i] instanceof Map) {
+                    args[i] = JSONObject.parseObject(JSONObject.toJSONString(args[i]), parameterTypes[i]);
+                }
             }
             return targetMethod.invoke(service, args);
         } catch (NoSuchMethodException | IllegalAccessException e) {

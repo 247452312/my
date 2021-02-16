@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.proxy.handler;
 
 import com.alibaba.fastjson.JSON;
+import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.config.ConsumerConfig;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
@@ -78,7 +79,7 @@ public class RpcProxyHandler implements InvocationHandler {
         }
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         String invoke = registry.invoke(bean.newId(), method.getName(), method.getParameterTypes(), args);
-        Object o = JSON.parseObject(invoke, method.getGenericReturnType());
+        Object o = JSON.parseObject(invoke, ServiceResult.class);
         for (ConsumerResponseObjectExtension consumerResponseObjectExtension : consumerResponseObjectExtensions) {
             o = consumerResponseObjectExtension.doFilter(o, invoke);
         }

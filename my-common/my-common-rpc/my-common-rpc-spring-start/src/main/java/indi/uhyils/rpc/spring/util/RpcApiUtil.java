@@ -1,20 +1,19 @@
 package indi.uhyils.rpc.spring.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.request.base.ObjRequest;
-import indi.uhyils.pojo.request.base.ObjsRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.proxy.generic.GenericService;
 import indi.uhyils.rpc.spring.RpcConsumerBeanFieldInjectConfiguration;
+import indi.uhyils.rpc.util.RpcObjectTransUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * rpc 泛化接口
@@ -30,19 +29,6 @@ public class RpcApiUtil {
      */
     public static final String INTERFACE_NAME_PACKAGE_SEPARATOR = ".";
 
-    /**
-     * 泛型T
-     */
-    private static final String PARADIGM_STRING = "T";
-    /**
-     * 泛型左括号
-     */
-    private static final String GENERIC_LEFT_BRACKET = "<";
-
-    /**
-     * 泛型右括号
-     */
-    private static final String GENERIC_RIGHT_BRACKET = ">";
 
     /**
      * 默认的协议
@@ -128,7 +114,7 @@ public class RpcApiUtil {
             Class params = method.getParameterTypes()[0];
             Object[] arg = args.toArray(new Object[0]);
             // 检测参数中有没有泛型,如果有,则直接将hashMap转为对应类实例
-            arg[0] = changeObjRequestParadigm(arg[0], params, Class.forName(interfaceName), method);
+            arg[0] = RpcObjectTransUtil.changeObjRequestParadigm(arg[0], Class.forName(interfaceName), method);
             String parameterTypes = params.getName();
             if (genericService == null) {
                 GenericService value = getGenericServiceReferenceConfig(interfaceName, async, procotol);
@@ -178,45 +164,6 @@ public class RpcApiUtil {
             MAP.put(interfaceName, genericService);
         }
         return genericService;
-    }
-
-    private static Object changeObjRequestParadigm(Object request, Class paramsClass, Class interfaceClass, Method method) throws ClassNotFoundException, NoSuchMethodException {
-        if (!(request instanceof Map)) {
-            return request;
-        }
-        Map<String, Object> temp = (Map<String, Object>) request;
-        boolean objRequestEquals = paramsClass.equals(ObjRequest.class);
-        boolean objsRequestEquals = paramsClass.equals(ObjsRequest.class);
-        if (objRequestEquals || objsRequestEquals) {
-            Type[] genericInterfaces = method.getGenericParameterTypes();
-            Type genericSuperclass = genericInterfaces[0];
-            String className = genericSuperclass.getTypeName();
-            if (className.contains(GENERIC_LEFT_BRACKET)) {
-                String substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
-                if (PARADIGM_STRING.equals(substring)) {
-                    Type genericInterface = interfaceClass.getGenericInterfaces()[0];
-                    className = genericInterface.getTypeName();
-                    substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
-                }
-                String json = JSON.toJSONString(temp);
-                if (objRequestEquals) {
-                    ObjRequest<Serializable> objRequest = JSONObject.parseObject(json, ObjRequest.class);
-                    objRequest.setData((Serializable) JSONObject.parseObject(JSON.toJSONString(objRequest.getData()), Class.forName(substring)));
-                    return objRequest;
-
-                } else if (objsRequestEquals) {
-                    ObjsRequest<Serializable> objsRequest = JSONObject.parseObject(json, ObjsRequest.class);
-                    List<Serializable> list = objsRequest.getList();
-                    List<Serializable> targetList = new ArrayList<>(list.size());
-                    for (Serializable serializable : list) {
-                        targetList.add((Serializable) JSONObject.parseObject(JSON.toJSONString(serializable), Class.forName(substring)));
-                    }
-                    objsRequest.setList(targetList);
-                    return objsRequest;
-                }
-            }
-        }
-        return request;
     }
 
     private static GenericService getGenericServiceReferenceConfig(String interfaceName, boolean ansyn, String procotol) throws Exception {
