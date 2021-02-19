@@ -19,11 +19,11 @@ public class JavaCompilerUtil {
     /**
      * 获取java的编译器
      */
-    private static JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+    private static final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
-    private static Pattern pattern = Pattern.compile("package\\s+\\S+\\s*;");
+    private static final Pattern pattern = Pattern.compile("package\\s+\\S+\\s*;");
 
-    private static Pattern classPattern = Pattern.compile("class\\s+\\S+\\s+\\{");
+    private static final Pattern classPattern = Pattern.compile("class\\s+\\S+\\s+\\{");
 
     public static JavaCompilerResult getResult(String resource, String methodName, String[] methodType, Object[] args) throws Exception {
         DiagnosticCollector<JavaFileObject> diagnosticsCollector = new DiagnosticCollector<>();
@@ -43,7 +43,7 @@ public class JavaCompilerUtil {
         if (!call) {
             throw new Exception("编译失败");
         }
-        System.out.println("编译用时: " + compilerTime + "ms");
+        LogUtil.info("编译用时: " + compilerTime + "ms");
 
         PrintStream out = System.out;
         long runTakeTime = 0;
@@ -79,9 +79,9 @@ public class JavaCompilerUtil {
         } finally {
             //还原默认打印的对象
             System.setOut(out);
-            System.out.println("运行耗时:" + runTakeTime + "ms");
-            System.out.println("输出: " + outPrint);
-            System.out.println("结果:" + invoke);
+            LogUtil.info("运行耗时:" + runTakeTime + "ms");
+            LogUtil.info("输出: " + outPrint);
+            LogUtil.info("结果:" + invoke);
         }
         return JavaCompilerResult.build(invoke, compilerTime, runTakeTime, outPrint);
     }
@@ -121,10 +121,10 @@ public class JavaCompilerUtil {
         pars[1] = 2;
 
         JavaCompilerResult add = JavaCompilerUtil.getResult(code, "add", new String[]{Integer.class.getName(), Integer.class.getName()}, pars);
-        System.out.println(add.getOutPrint());
-        System.out.println(add.getCompilerTime());
-        System.out.println(add.getRunTime());
-        System.out.println(add.getResult());
+        LogUtil.info(add.getOutPrint());
+        LogUtil.info(Long.toString(add.getCompilerTime()));
+        LogUtil.info(Long.toString(add.getRunTime()));
+        LogUtil.info(add.getResult().toString());
     }
 
 }

@@ -1,6 +1,8 @@
 package indi.uhyils.rpc.exchange.enum_;
 
 /**
+ * RpcData响应中的RpcContent结构 (例: "返回类型\n返回内容...") 中间拿\n隔开
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年02月06日 10时20分
  */

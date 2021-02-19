@@ -13,6 +13,8 @@ import indi.uhyils.rpc.exchange.pojo.RpcHeader;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * rpc响应体工厂
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 12时47分
  */

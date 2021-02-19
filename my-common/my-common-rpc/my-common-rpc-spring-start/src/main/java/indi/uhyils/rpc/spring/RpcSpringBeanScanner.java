@@ -8,6 +8,8 @@ import org.springframework.core.type.filter.AssignableTypeFilter;
 import java.lang.annotation.Annotation;
 
 /**
+ * 指定注解的扫描器,借鉴mybatis-spring-start,有filter,可以手动选中哪一种需要扫描,哪一种不需要扫描
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月15日 14时53分
  */

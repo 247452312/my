@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 注册类实例化后在的地方,包含了带有rpc注解的类的实例,类中如果带着RpcReference,那么动态注入rpc相关的类
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月17日 09时55分
  */

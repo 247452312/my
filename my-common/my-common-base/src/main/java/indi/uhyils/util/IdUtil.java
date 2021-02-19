@@ -48,7 +48,7 @@ public class IdUtil {
         long sqResult = (sq & Content.SEQUENCE_MASK) << Content.SEQUENCE_DISPLACEMENT;
 
         long l = timeResult | sqResult | distributedResult;
-        System.out.println(l);
+        LogUtil.info(Long.toString(l));
     }
 
     public long newId() throws IdGenerationException, InterruptedException {

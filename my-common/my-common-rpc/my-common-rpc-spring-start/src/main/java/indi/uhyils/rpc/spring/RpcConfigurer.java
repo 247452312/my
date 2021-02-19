@@ -12,6 +12,8 @@ import org.springframework.util.StringUtils;
 import java.lang.annotation.Annotation;
 
 /**
+ * rpc注解扫描类,负责扫描某一个包中的指定注解 加入spring bean
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月15日 15时39分
  */

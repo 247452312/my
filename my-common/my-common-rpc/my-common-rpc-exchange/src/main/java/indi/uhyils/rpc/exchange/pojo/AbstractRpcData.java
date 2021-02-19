@@ -20,6 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static indi.uhyils.rpc.enums.RpcTypeEnum.parse;
 
 /**
+ * rpc体模板,用来规定rpc应该有的东西
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 11时16分
  */

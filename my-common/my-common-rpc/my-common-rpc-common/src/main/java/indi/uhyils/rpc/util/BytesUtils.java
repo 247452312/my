@@ -1,5 +1,7 @@
 package indi.uhyils.rpc.util;
 
+import indi.uhyils.util.LogUtil;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月21日 09时54分
@@ -99,9 +101,9 @@ public class BytesUtils {
 
     public static void main(String[] args) {
         Long data = 1689661040771465280L;
-        System.out.println(Long.toBinaryString(data));
+        LogUtil.info(Long.toBinaryString(data));
         byte[] bytes = changeLongToByte(data);
         Long aLong = changeByteToLong(bytes);
-        System.out.println(Long.toBinaryString(aLong));
+        LogUtil.info(Long.toBinaryString(aLong));
     }
 }

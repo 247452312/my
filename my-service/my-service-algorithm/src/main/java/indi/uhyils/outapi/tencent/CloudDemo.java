@@ -6,6 +6,7 @@ import com.tencentcloudapi.asr.v20190614.models.*;
 import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
+import indi.uhyils.util.LogUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,9 +60,9 @@ public class CloudDemo {
 
             SentenceRecognitionResponse resp = client.SentenceRecognition(req);
 
-            System.out.println(SentenceRecognitionRequest.toJsonString(resp));
+            LogUtil.info(SentenceRecognitionRequest.toJsonString(resp));
         } catch (Exception e) {
-            System.out.println(e.toString());
+            LogUtil.error(e.toString());
         }
     }
 
@@ -84,9 +85,9 @@ public class CloudDemo {
 
             DescribeTaskStatusResponse resp = client.DescribeTaskStatus(req);
 
-            System.out.println(DescribeTaskStatusRequest.toJsonString(resp));
+            LogUtil.info(DescribeTaskStatusRequest.toJsonString(resp));
         } catch (Exception e) {
-            System.out.println(e.toString());
+            LogUtil.error(e.toString());
         }
     }
 
@@ -121,7 +122,7 @@ public class CloudDemo {
             Long taskId = rasResponse.getData().getTaskId();
             return taskId;
         } catch (Exception e) {
-            System.out.println(e.toString());
+            LogUtil.error(e.toString());
         }
         return null;
     }

@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 /**
+ * 初始化配置类(单独写一个是为了区分先后, 先加载配置
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月17日 11时12分
  */

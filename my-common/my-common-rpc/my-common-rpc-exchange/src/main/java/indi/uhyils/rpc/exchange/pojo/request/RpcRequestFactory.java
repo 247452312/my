@@ -14,6 +14,8 @@ import indi.uhyils.util.LogUtil;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * 组装请求工厂
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 12时38分
  */

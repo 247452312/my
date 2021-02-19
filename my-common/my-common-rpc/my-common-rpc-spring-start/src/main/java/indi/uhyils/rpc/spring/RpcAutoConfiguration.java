@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 初始化RPC需要的一些东西
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月15日 16时12分
  */
@@ -58,7 +60,7 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
      */
     @Bean(RPC_CONFIGURER)
     public RpcConfigurer createRpcConfigurer() {
-        // 获取所有的扫描包
+        // 获取所有的扫描包(spring自带)
         List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
         RpcConfigurer rpcConfigurer = new RpcConfigurer();
         rpcConfigurer.setBasePackage(StringUtils.collectionToCommaDelimitedString(packages));
@@ -75,14 +77,18 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
     @Bean("providerCluster")
     @DependsOn({"rpcConfig", RPC_CONFIGURER})
     public Cluster createProviderCluster() throws Exception {
+        // 获取配置
         RpcConfig instance = RpcConfigFactory.getInstance();
+        // 如果配置不加载服务生产者
         if (!instance.getProvider().isEnable()) {
             return null;
         }
         LogUtil.info("Provider Cluster init!!");
 
+        // 获取指定注解的已经加载为bean的值
         Map<String, Object> springBeans = applicationContext.getBeansWithAnnotation(RpcService.class);
         Map<String, Object> beans = new HashMap<>(springBeans.size());
+        // 遍历,获取实际的类,拿掉外层的AOP或代理类的外壳,获取第一个实例的接口父类
         for (Map.Entry<String, Object> entity : springBeans.entrySet()) {
             Object value = entity.getValue();
             Class<?> clazz = ClassUtil.getRealClass(value);
@@ -94,6 +100,11 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
         }
         Cluster providerCluster = null;
         try {
+            /*
+             * 创建生产者 负载均衡器(包含了底层的netty) 注意,正常的代理层下一层为注册层 , 注册层下一步才是负载均衡层,这里初始化单独初始化负载均衡器的原因为:
+             * 1.初始化需要获取spring中的bean,需要spring包的东西,在正常的注册层并没有引入spring包
+             * 2.生产者的注册机制是每一个接口都要注册一次,所以需要注册多遍,但是底层的netty只需要一个,所以在此加载负载均衡层
+             */
             providerCluster = ClusterFactory.createDefaultProviderCluster(instance.getProvider().getPort(), beans);
         } catch (Exception e) {
             LogUtil.error(this, e);
@@ -109,7 +120,7 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
                     Class<?>[] interfaces = clazz.getInterfaces();
                     clazz = interfaces[0];
                 }
-                registries.add(RegistryFactory.createProvider(clazz, mode));
+                registries.add(RegistryFactory.createProvider(clazz, beans.get(clazz.getName()), mode));
 
             }
         } catch (Exception e) {

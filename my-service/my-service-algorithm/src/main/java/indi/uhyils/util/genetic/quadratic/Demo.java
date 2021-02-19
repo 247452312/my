@@ -1,5 +1,6 @@
 package indi.uhyils.util.genetic.quadratic;
 
+import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.genetic.GeneticAlgorithm;
 import indi.uhyils.util.genetic.core.*;
 
@@ -86,7 +87,7 @@ public class Demo {
             DnaData point = (DnaData) datum;
             Double a = point.getA();
             Double b = point.getB();
-            System.out.println(String.format("%f,%f", a, b));
+            LogUtil.info(String.format("%f,%f", a, b));
         }
     }
 }

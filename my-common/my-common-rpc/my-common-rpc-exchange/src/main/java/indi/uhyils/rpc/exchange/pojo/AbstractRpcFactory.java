@@ -5,6 +5,8 @@ import indi.uhyils.rpc.exception.RpcException;
 import io.netty.buffer.ByteBuf;
 
 /**
+ * 抽象rpc体工厂
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月21日 10时07分
  */

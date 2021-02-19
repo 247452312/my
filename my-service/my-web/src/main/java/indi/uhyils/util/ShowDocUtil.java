@@ -128,7 +128,7 @@ public class ShowDocUtil {
         HashMap<String, Object> head = new HashMap<>(1);
         head.put("ContentType", "application/json");
         Object o = HttpUtil.sendHttpPost(url, head, data);
-        System.out.println(o.toString());
+        LogUtil.info(o.toString());
     }
 
     /**
@@ -165,7 +165,7 @@ public class ShowDocUtil {
                 list += String.format("| %s | %s | 无 |\n", entry.getKey(), type);
             }
         } catch (Exception e) {
-            System.out.println(paramJson);
+            LogUtil.info(paramJson);
             LogUtil.error(ShowDocUtil.class, e);
         }
 

@@ -1,14 +1,16 @@
 package indi.uhyils.rpc.exchange.pojo.request;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.exchange.pojo.AbstractRpcObserverAdapter;
+import indi.uhyils.rpc.exchange.pojo.AbstractRpcContentObserverAdapter;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 
 /**
+ * 请求体内容
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 11时03分
  */
-public class RpcNormalRequestContent extends AbstractRpcObserverAdapter implements RpcRequestContent {
+public class RpcNormalRequestContent extends AbstractRpcContentObserverAdapter implements RpcRequestContent {
     /**
      * 接口名称
      */

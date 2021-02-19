@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 请求内容装载工厂
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 14时09分
  */

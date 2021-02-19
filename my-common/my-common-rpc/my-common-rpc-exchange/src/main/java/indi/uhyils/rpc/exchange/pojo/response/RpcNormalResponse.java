@@ -6,6 +6,8 @@ import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcHeader;
 
 /**
+ * rpc正常响应
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 13时34分
  */

@@ -121,13 +121,11 @@ public class RpcApiUtil {
                 genericService = value;
                 MAP.put(interfaceName, value);
             }
-            System.out.println(interfaceName);
-            System.out.println(methodName);
             ServiceResult<Serializable> serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.invoke(methodName, new String[]{parameterTypes}, arg)), ServiceResult.class);
             if (serviceResult != null) {
-                System.out.println(serviceResult.getRequestLink());
+                LogUtil.info(serviceResult.getRequestLink().toString());
             } else {
-                System.out.println("返回值为空");
+                LogUtil.info("返回值为空");
             }
             if (async == false) {
                 // 添加链路

@@ -44,6 +44,6 @@ public class MD5Util {
 
     public static void main(String[] args) {
         String s = MD5Encode("123456");
-        System.out.println(s);
+        LogUtil.info(s);
     }
 }

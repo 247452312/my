@@ -8,8 +8,6 @@ import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
 import indi.uhyils.rpc.netty.factory.NettyInitDtoFactory;
-import indi.uhyils.rpc.netty.function.FunctionOne;
-import indi.uhyils.rpc.netty.function.FunctionOneInterface;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
 import indi.uhyils.rpc.registry.mode.RegistryMode;
 import indi.uhyils.rpc.registry.mode.nacos.RegistryNacosMode;
@@ -67,13 +65,13 @@ public class RegistryFactory {
      * @param <T>
      * @return
      */
-    public static <T> Registry<T> createProvider(Class<T> clazz, RegistryMode mode) throws Exception {
+    public static <T> Registry<T> createProvider(Class<T> clazz, Object bean, RegistryMode mode) throws Exception {
         RpcConfig config = RpcConfigFactory.getInstance();
         Integer port = config.getProvider().getPort();
-        HashMap<String, Object> beans = new HashMap<>();
-        FunctionOneInterface functionOneInterface = new FunctionOne();
-        beans.put(functionOneInterface.getClass().getName(), functionOneInterface);
+        HashMap<String, Object> beans = new HashMap<>(1);
+        beans.put(clazz.getName(), bean);
         Cluster providerCluster = ClusterFactory.createDefaultProviderCluster(port, beans);
+
         RegistryInfo info = new RegistryInfo();
         RegistryProviderNecessaryInfo necessaryInfo = new RegistryProviderNecessaryInfo();
         necessaryInfo.setHost(IpUtil.getIp());

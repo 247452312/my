@@ -7,6 +7,8 @@ import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 
 /**
+ * rpc响应内容工厂
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 14时09分
  */
