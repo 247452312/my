@@ -69,7 +69,7 @@ public class InterfaceCellAop {
                 }
             }
         }
-        InterfaceCallInfo interfaceCallInfo = ServiceUtil.getInterfaceCallInfo(className, methodName, sr.getServiceCode(), runTime, sr, proceed, jvmUniqueMark);
+        InterfaceCallInfo interfaceCallInfo = ServiceUtil.getInterfaceCallInfo(className, methodName, sr.getServiceCode(), runTime, pjp.getArgs()[0], proceed, jvmUniqueMark);
         RabbitUtils.sendInterfaceCallInfo(interfaceCallInfo, channel);
 
         return proceed;
