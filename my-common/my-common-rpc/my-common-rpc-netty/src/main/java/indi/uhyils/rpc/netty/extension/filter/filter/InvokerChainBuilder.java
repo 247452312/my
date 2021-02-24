@@ -18,7 +18,9 @@ public class InvokerChainBuilder {
     }
 
     public static RpcInvoker buildProviderAroundInvokerChain(LastProviderInvoker lastDefaultInvoker) {
+        // 最后一个连接器,系统类,必须执行
         RpcInvoker last = lastDefaultInvoker;
+        // 获取已经排序好的所有的拦截器
         List<ProviderFilter> chain = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_FILTER, ProviderFilter.class);
 
         for (int i = chain.size() - 1; i >= 0; i--) {
