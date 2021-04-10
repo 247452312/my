@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -115,8 +116,9 @@ public class AllController {
     private void changeFieldTypeToString(JSONObject data) {
         // 因前端大数会失去精度, 所以要转变类型,全部转换为String类型的
         if (data != null) {
-            for (String s : data.keySet()) {
-                Object value = data.get(s);
+            for (Map.Entry<String, Object> entry : data.entrySet()) {
+                String s = entry.getKey();
+                Object value = entry.getValue();
                 if (value instanceof JSONObject) {
                     changeFieldTypeToString((JSONObject) value);
                 } else if (value instanceof JSONArray) {

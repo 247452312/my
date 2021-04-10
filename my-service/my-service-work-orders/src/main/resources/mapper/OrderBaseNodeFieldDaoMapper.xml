@@ -2,26 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.OrderBaseNodeFieldDao">
-
-
     <sql id="columnList">
-        a.value_type as valueType,
-		a.edit as edit,
-		a.default_value as defaultValue,
-		a.remark as remark,
-		a.type as type,
-		a.update_date as updateDate,
-		a.empty,
-		a.update_user as updateUser,
-		a.name as name,
-		a.id as id,
-		a.create_user as createUser,
-		a.create_date as createDate,
-		a.delete_flag as deleteFlag,
-		a.base_order_id as baseOrderId,
-		a.data_sources as dataSources,
-		a.relation_id as relationId,
-		a.`desc`
+        a.value_type    as valueType,
+        a.edit          as edit,
+        a.default_value as defaultValue,
+        a.remark        as remark,
+        a.type          as type,
+        a.update_date   as updateDate,
+        a.empty,
+        a.update_user   as updateUser,
+        a.name          as name,
+        a.id            as id,
+        a.create_user   as createUser,
+        a.create_date   as createDate,
+        a.delete_flag   as deleteFlag,
+        a.base_order_id as baseOrderId,
+        a.data_sources  as dataSources,
+        a.relation_id   as relationId,
+        a.`desc`
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseNodeFieldEntity">
@@ -54,45 +52,44 @@
         <if test="page != null and page != ''">
             limit ${(page-1) * size},${size}
         </if>
-
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeFieldEntity">
         insert sys_order_base_node_field(value_type,
-                                         edit,
-                                         default_value,
-                                         remark,
-                                         type,
-                                         update_date,
-                                         `empty`,
-                                         update_user,
-                                         name,
-                                         id,
-                                         create_user,
-                                         create_date,
-                                         delete_flag,
-                                         base_order_id,
-                                         data_sources,
-                                         relation_id,
-                                         `desc`)
+        edit,
+        default_value,
+        remark,
+        type,
+        update_date,
+        `empty`,
+        update_user,
+        name,
+        id,
+        create_user,
+        create_date,
+        delete_flag,
+        base_order_id,
+        data_sources,
+        relation_id,
+        `desc`)
         values (#{valueType},
-                #{edit},
-                #{defaultValue},
-                #{remark},
-                #{type},
-                #{updateDate},
-                #{empty},
-                #{updateUser},
-                #{name},
-                #{id},
-                #{createUser},
-                #{createDate},
-                #{deleteFlag},
-                #{baseOrderId},
-                #{dataSources},
-                #{relationId},
-                #{desc})
+        #{edit},
+        #{defaultValue},
+        #{remark},
+        #{type},
+        #{updateDate},
+        #{empty},
+        #{updateUser},
+        #{name},
+        #{id},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{baseOrderId},
+        #{dataSources},
+        #{relationId},
+        #{desc})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeFieldEntity">
@@ -191,5 +188,4 @@
             #{id}
         </foreach>
     </update>
-
 </mapper>

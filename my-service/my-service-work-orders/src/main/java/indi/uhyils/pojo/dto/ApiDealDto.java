@@ -18,9 +18,9 @@ public class ApiDealDto implements Serializable {
     /**
      * 下一节点需要的信息
      */
-    private Object result;
+    private Serializable result;
 
-    public static ApiDealDto build(ApiCodeEnum code, Object result) {
+    public static ApiDealDto build(ApiCodeEnum code, Serializable result) {
         ApiDealDto build = new ApiDealDto();
         build.code = code;
         build.result = result;
@@ -41,11 +41,11 @@ public class ApiDealDto implements Serializable {
         this.code = code;
     }
 
-    public Object getResult() {
+    public Serializable getResult() {
         return result;
     }
 
-    public void setResult(Object result) {
+    public void setResult(Serializable result) {
         this.result = result;
     }
 

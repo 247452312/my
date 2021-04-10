@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.SendPageDao">
-
-
     <sql id="columnList">
         a.id,
         a.create_date as createDate,
@@ -15,10 +13,8 @@
 
         a.content,
         a.title,
-        a.user_id as userId,
+        a.user_id     as userId,
         a.view
-
-
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.SendPageEntity">
@@ -52,33 +48,32 @@
         <if test="page != null and page != ''">
             limit ${(page-1) * size},${size}
         </if>
-
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.SendPageEntity">
         insert sys_push_page_msg(id,
-                                 create_date,
-                                 create_user,
-                                 delete_flag,
-                                 remark,
-                                 update_date,
-                                 update_user,
-                                 content,
-                                 title,
-                                 user_id,
-                                 view)
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user,
+        content,
+        title,
+        user_id,
+        view)
         values (#{id},
-                #{createDate},
-                #{createUser},
-                0,
-                #{remark},
-                #{updateDate},
-                #{updateUser},
-                #{content},
-                #{title},
-                #{userId},
-                #{view})
+        #{createDate},
+        #{createUser},
+        0,
+        #{remark},
+        #{updateDate},
+        #{updateUser},
+        #{content},
+        #{title},
+        #{userId},
+        #{view})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.SendPageEntity">
@@ -125,6 +120,4 @@
         from sys_push_page_msg a
         where ${columnName} = #{value}
     </select>
-
-
 </mapper>

@@ -15,30 +15,30 @@
     <!--查询单个-->
     <select id="getById" resultMap="BlackListMap">
         select id,
-               create_date,
-               create_user,
-               delete_flag,
-               remark,
-               update_date,
-               update_user,
-               ip
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user,
+        ip
         from my_log.sys_black_list
         where delete_flag = 0
-          and id = #{id}
+        and id = #{id}
     </select>
 
     <!--根据某些字段获取实例(不分页)-->
     <select id="getByArgsNoPage" resultMap="BlackListMap">
         select id,
-               create_date,
-               create_user,
-               delete_flag,
-               remark,
-               update_date,
-               update_user,
-               ip
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user,
+        ip
         from my_log.sys_black_list
-                where delete_flag = 0
+        where delete_flag = 0
         <if test="list != null">
             <foreach item="item" index="index" collection="list">
                 and ${item.name} ${item.symbol} #{item.data}
@@ -49,15 +49,15 @@
     <!--根据某些字段获取实例(分页)-->
     <select id="getByArgs" resultMap="BlackListMap">
         select id,
-               create_date,
-               create_user,
-               delete_flag,
-               remark,
-               update_date,
-               update_user,
-               ip
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user,
+        ip
         from my_log.sys_black_list
-                where delete_flag = 0
+        where delete_flag = 0
         <if test="args != null">
             <foreach item="item" index="index" collection="args">
                 and ${item.name} ${item.symbol} #{item.data}
@@ -73,15 +73,15 @@
     <!--新增所有列-->
     <insert id="insert" parameterType="indi.uhyils.pojo.model.BlackListEntity">
         insert into my_log.sys_black_list(id, create_date, create_user, delete_flag, remark, update_date, update_user,
-                                          ip)
+        ip)
         values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser}, #{ip})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update" parameterType="indi.uhyils.pojo.model.BlackListEntity">
         update my_log.sys_black_list
-                set update_date = #{updateDate}
-                  , update_user = #{updateUser}
+        set update_date = #{updateDate}
+        , update_user = #{updateUser}
         <if test="createDate != null">
             , create_date = #{createDate}
         </if>
@@ -117,7 +117,7 @@
     <select id="countByArgs" resultType="java.lang.Integer">
         select count(*)
         from my_log.sys_black_list
-                where delete_flag = 0
+        where delete_flag = 0
         <if test="args != null">
             <foreach item="item" index="index" collection="args">
                 and ${item.name} ${item.symbol} #{item.data}
@@ -137,7 +137,7 @@
         select time
         from my_log.sys_log
         where ip = #{ip}
-          and delete_flag = 0
+        and delete_flag = 0
 
         order by time desc
         limit #{size}

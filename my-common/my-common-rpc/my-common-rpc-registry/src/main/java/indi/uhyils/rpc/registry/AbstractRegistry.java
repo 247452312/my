@@ -24,7 +24,7 @@ public abstract class AbstractRegistry<T> implements Registry<T> {
     protected Class<T> serviceClass;
 
 
-    public AbstractRegistry(Cluster cluster, Class<T> serviceClass) {
+    protected AbstractRegistry(Cluster cluster, Class<T> serviceClass) {
         this.cluster = cluster;
         this.serviceClass = serviceClass;
     }

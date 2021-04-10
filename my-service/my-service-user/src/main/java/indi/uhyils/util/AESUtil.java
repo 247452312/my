@@ -113,8 +113,8 @@ public class AESUtil {
         String mmm = "uhyils";
         String role = "rrr";
         String s = AESEncode(role, mmm);
-        System.out.println(s);
+        LogUtil.info(s);
         String s1 = AESDecode(role, s);
-        System.out.println(s1);
+        LogUtil.info(s1);
     }
 }

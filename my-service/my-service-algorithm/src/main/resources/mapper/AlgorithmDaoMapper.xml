@@ -2,28 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.AlgorithmDao">
-
-
     <sql id="columnList">
         a
-        .
-        id
-        ,
-        a.create_date as 'createDate',
-        a.create_user as createUser,
-        a.update_date as 'updateDate',
-        a.update_user as updateUser,
-        a.delete_flag as deleteFlag,
+                .
+                id
+                ,
+        a.create_date     as 'createDate',
+        a.create_user     as createUser,
+        a.update_date     as 'updateDate',
+        a.update_user     as updateUser,
+        a.delete_flag     as deleteFlag,
         a.remark,
-
 
 
         a.name,
         a.model_file_path as modelFilePath,
         a.accuracy,
-        a.in_param_size as inParamSize,
-        a.out_param_size as outParamSize
-
+        a.in_param_size   as inParamSize,
+        a.out_param_size  as outParamSize
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.AlgorithmEntity">
@@ -56,24 +52,23 @@
         <if test="page != null and page != ''">
             limit ${(page-1) * size},${size}
         </if>
-
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.AlgorithmEntity">
         insert
         sys_algorithm(id,
-                             create_date,
-                             create_user,
-                             delete_flag,
-                             remark,
-                             update_date,
-                             update_user,
-                             name,
-                             model_file_path,
-                             accuracy,
-                             in_param_size,
-                             out_param_size)
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user,
+        name,
+        model_file_path,
+        accuracy,
+        in_param_size,
+        out_param_size)
         values (
         #{id},
         #{createDate},
@@ -137,6 +132,4 @@
         from sys_algorithm a
         where ${columnName} = #{value}
     </select>
-
-
 </mapper>

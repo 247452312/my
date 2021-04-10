@@ -2,18 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.OrderNodeResultTypeDao">
-
-
     <sql id="columnList">
-        a.update_user as updateUser,
-		a.base_node_id as baseNodeId,
-		a.deal_result_name as dealResultName,
-		a.remark as remark,
-		a.id as id,
-		a.create_user as createUser,
-		a.create_date as createDate,
-		a.delete_flag as deleteFlag,
-		a.update_date as updateDate
+        a.update_user      as updateUser,
+        a.base_node_id     as baseNodeId,
+        a.deal_result_name as dealResultName,
+        a.remark           as remark,
+        a.id               as id,
+        a.create_user      as createUser,
+        a.create_date      as createDate,
+        a.delete_flag      as deleteFlag,
+        a.update_date      as updateDate
     </sql>
     <update id="deleteByNodeIds">
         update sys_order_node_result_type set
@@ -56,29 +54,28 @@
         <if test="page != null and page != ''">
             limit ${(page-1) * size},${size}
         </if>
-
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
         insert sys_order_node_result_type(update_user,
-                                          base_node_id,
-                                          deal_result_name,
-                                          remark,
-                                          id,
-                                          create_user,
-                                          create_date,
-                                          delete_flag,
-                                          update_date)
+        base_node_id,
+        deal_result_name,
+        remark,
+        id,
+        create_user,
+        create_date,
+        delete_flag,
+        update_date)
         values (#{updateUser},
-                #{baseNodeId},
-                #{dealResultName},
-                #{remark},
-                #{id},
-                #{createUser},
-                #{createDate},
-                #{deleteFlag},
-                #{updateDate})
+        #{baseNodeId},
+        #{dealResultName},
+        #{remark},
+        #{id},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{updateDate})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
@@ -143,6 +140,4 @@
             #{fieldId}
         </foreach>
     </select>
-
-
 </mapper>

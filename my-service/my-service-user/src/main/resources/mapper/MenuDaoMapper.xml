@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.MenuDao">
-
-
     <sql id="columnList">
         a.id,
         a.create_date as 'createDate',
@@ -14,7 +12,7 @@
         a.remark,
 
         a.fid,
-        a.i_frame as iFrame,
+        a.i_frame     as iFrame,
         a.target,
         a.icon,
         a.name,
@@ -58,26 +56,26 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.MenuEntity">
         insert sys_menu(id,
-                        create_date,
-                        create_user,
-                        update_date,
-                        update_user,
-                        delete_flag,
-                        fid, i_frame, icon, name, target, sort, type, url)
+        create_date,
+        create_user,
+        update_date,
+        update_user,
+        delete_flag,
+        fid, i_frame, icon, name, target, sort, type, url)
         values (#{id},
-                #{createDate},
-                #{createUser},
-                #{updateDate},
-                #{updateUser},
-                0,
-                #{fid},
-                #{iFrame},
-                #{icon},
-                #{name},
-                #{target},
-                #{sort},
-                #{type},
-                #{url})
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{fid},
+        #{iFrame},
+        #{icon},
+        #{name},
+        #{target},
+        #{sort},
+        #{type},
+        #{url})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.MenuEntity">
@@ -90,7 +88,7 @@
         <if test="iFrame != null and iFrame != ''">
             ,i_frame = #{iFrame}
         </if>
-        <if test="icon != null ">
+        <if test="icon != null">
             ,icon = #{icon}
         </if>
         <if test="name != null and name != ''">
@@ -170,14 +168,11 @@
     </delete>
 
     <select id="getAllMenuWithHaveMark" resultType="indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse">
-        select a.id                                                                                     menuId,
-               a.name                                                                                   menuName,
-               (select count(*) = 1 from sys_dept_menu where dept_id = #{deptId} and menu_id = a.id) as mark
+        select a.id menuId,
+        a.name menuName,
+        (select count(*) = 1 from sys_dept_menu where dept_id = #{deptId} and menu_id = a.id) as mark
         from sys_menu a
         where delete_flag = 0
-          and type = 1;
-
+        and type = 1;
     </select>
-
-
 </mapper>

@@ -4,15 +4,43 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+
     <groupId>indi.uhyils</groupId>
     <artifactId>my</artifactId>
     <packaging>pom</packaging>
     <version>0.3.0-my-SNAPSHOT</version>
+    <name>my</name>
+
+    <scm>
+        <connection>scm:git:git@github.com:247452312/my.git</connection>
+        <developerConnection>scm:git:git@github.com:247452312/my.git</developerConnection>
+        <url>https://github.com/247452312/my</url>
+    </scm>
+
+    <!--项目开发者列表-->
+    <developers>
+        <!--某个项目开发者的信息-->
+        <developer>
+            <!--SCM里项目开发者的唯一标识符-->
+            <id>uhyils</id>
+            <!--项目开发者的全名-->
+            <name>uhyils</name>
+            <!--项目开发者的email-->
+            <email>uhyils@qq.com</email>
+
+            <!--项目开发者所在时区， -11到12范围内的整数。-->
+            <timezone>8</timezone>
+        </developer>
+    </developers>
+
+    <url>https://github.com/247452312/my</url>
+
     <modules>
         <module>my-api</module>
         <module>my-service</module>
         <module>my-common</module>
     </modules>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -392,31 +420,31 @@
 
 
     <!--这里留着这个写法.. 万一以后用到了. 不用再上网找了-->
-<!--    <distributionManagement>-->
-<!--        <repository>-->
-<!--            <id>releases</id>-->
-<!--            <name>maven-my-releases</name>-->
-<!--            <url>http://xx.xx.xx.xx:8081/repository/maven-my-releases/</url>-->
-<!--        </repository>-->
-<!--        <snapshotRepository>-->
-<!--            <id>snapshots</id> &lt;!&ndash; 选择settings文件中的快照版本的id&ndash;&gt;-->
-<!--            <name>maven-my-snapshots</name>-->
-<!--            <url>http://xx.xx.xx.xx:8081/repository/maven-my-snapshots/</url>&lt;!&ndash; 私服地址&ndash;&gt;-->
-<!--        </snapshotRepository>-->
-<!--    </distributionManagement>-->
+    <!--    <distributionManagement>-->
+    <!--        <repository>-->
+    <!--            <id>releases</id>-->
+    <!--            <name>maven-my-releases</name>-->
+    <!--            <url>http://xx.xx.xx.xx:8081/repository/maven-my-releases/</url>-->
+    <!--        </repository>-->
+    <!--        <snapshotRepository>-->
+    <!--            <id>snapshots</id> &lt;!&ndash; 选择settings文件中的快照版本的id&ndash;&gt;-->
+    <!--            <name>maven-my-snapshots</name>-->
+    <!--            <url>http://xx.xx.xx.xx:8081/repository/maven-my-snapshots/</url>&lt;!&ndash; 私服地址&ndash;&gt;-->
+    <!--        </snapshotRepository>-->
+    <!--    </distributionManagement>-->
 
-<!--    &lt;!&ndash; 仓库地址 组&ndash;&gt;-->
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>nexus</id>-->
-<!--            <name>nexus-my</name>-->
-<!--            <url>http://xx.xx.xx.xx:8081/repository/nexus-my/</url>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <!--    &lt;!&ndash; 仓库地址 组&ndash;&gt;-->
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>nexus</id>-->
+    <!--            <name>nexus-my</name>-->
+    <!--            <url>http://xx.xx.xx.xx:8081/repository/nexus-my/</url>-->
+    <!--            <releases>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </releases>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
 </project>

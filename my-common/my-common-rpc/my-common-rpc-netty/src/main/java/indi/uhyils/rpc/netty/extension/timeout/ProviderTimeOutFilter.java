@@ -16,7 +16,7 @@ import indi.uhyils.rpc.netty.extension.filter.invoker.RpcResult;
  * @date 文件创建日期 2021年01月22日 21时11分
  */
 @RpcSpi(order = Integer.MAX_VALUE)
-public class ProviderTimeOutFilter extends TimeOutFilter implements ProviderFilter {
+public class ProviderTimeOutFilter extends AbstractTimeOutFilter implements ProviderFilter {
 
     public ProviderTimeOutFilter() {
     }

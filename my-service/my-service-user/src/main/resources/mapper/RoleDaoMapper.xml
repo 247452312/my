@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.RoleDao">
-
-
     <sql id="columnList">
         a.id,
         a.create_date as 'createDate',
@@ -51,21 +49,21 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.RoleEntity">
         insert sys_role(id,
-                        create_date,
-                        create_user,
-                        update_date,
-                        update_user,
-                        delete_flag,
-                        name,
-                        level)
+        create_date,
+        create_user,
+        update_date,
+        update_user,
+        delete_flag,
+        name,
+        level)
         values (#{id},
-                #{createDate},
-                #{createUser},
-                #{updateDate},
-                #{updateUser},
-                0,
-                #{name},
-                #{level})
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{name},
+        #{level})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.RoleEntity">
@@ -125,9 +123,9 @@
     </select>
 
     <select id="getAllDeptWithHaveMark" resultType="indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse">
-        select a.id                                                                                 deptId,
-               a.name                                                                               deptName,
-               (select count(*) = 1 from sys_role_dept where role_id = #{id} and dept_id = a.id) as mark
+        select a.id deptId,
+        a.name deptName,
+        (select count(*) = 1 from sys_role_dept where role_id = #{id} and dept_id = a.id) as mark
         from sys_dept a
         where delete_flag = 0
     </select>
@@ -143,6 +141,4 @@
         set role_id = null
         where role_id = #{id}
     </update>
-
-
 </mapper>

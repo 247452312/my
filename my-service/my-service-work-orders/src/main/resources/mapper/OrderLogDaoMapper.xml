@@ -2,22 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.OrderLogDao">
-
-
     <sql id="columnList">
-        a.deal_user_id as dealUserId,
-		a.remark as remark,
-		a.update_date as updateDate,
-		a.fault_info as faultInfo,
-		a.update_user as updateUser,
-		a.result_status as resultStatus,
-		a.monitor_user_id as monitorUserId,
-		a.info_id as infoId,
-		a.id as id,
-		a.create_user as createUser,
-		a.create_date as createDate,
-		a.delete_flag as deleteFlag,
-		a.node_id as nodeId
+        a.deal_user_id    as dealUserId,
+        a.remark          as remark,
+        a.update_date     as updateDate,
+        a.fault_info      as faultInfo,
+        a.update_user     as updateUser,
+        a.result_status   as resultStatus,
+        a.monitor_user_id as monitorUserId,
+        a.info_id         as infoId,
+        a.id              as id,
+        a.create_user     as createUser,
+        a.create_date     as createDate,
+        a.delete_flag     as deleteFlag,
+        a.node_id         as nodeId
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.OrderLogEntity">
@@ -50,37 +48,36 @@
         <if test="page != null and page != ''">
             limit ${(page-1) * size},${size}
         </if>
-
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderLogEntity">
         insert sys_order_log(deal_user_id,
-                             remark,
-                             update_date,
-                             fault_info,
-                             update_user,
-                             result_status,
-                             monitor_user_id,
-                             info_id,
-                             id,
-                             create_user,
-                             create_date,
-                             delete_flag,
-                             node_id)
+        remark,
+        update_date,
+        fault_info,
+        update_user,
+        result_status,
+        monitor_user_id,
+        info_id,
+        id,
+        create_user,
+        create_date,
+        delete_flag,
+        node_id)
         values (#{dealUserId},
-                #{remark},
-                #{updateDate},
-                #{faultInfo},
-                #{updateUser},
-                #{resultStatus},
-                #{monitorUserId},
-                #{infoId},
-                #{id},
-                #{createUser},
-                #{createDate},
-                #{deleteFlag},
-                #{nodeId})
+        #{remark},
+        #{updateDate},
+        #{faultInfo},
+        #{updateUser},
+        #{resultStatus},
+        #{monitorUserId},
+        #{infoId},
+        #{id},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{nodeId})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderLogEntity">
@@ -140,6 +137,4 @@
         from sys_order_log a
         where ${columnName} = #{value}
     </select>
-
-
 </mapper>

@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.DictDao">
-
-
     <sql id="columnList">
         a.id,
         a.create_date as 'createDate',
@@ -17,8 +15,6 @@
         a.description,
         a.name,
         a.type
-
-
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.DictEntity">
@@ -56,25 +52,25 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.DictEntity">
         insert sys_dict(id,
-                        create_date,
-                        create_user,
-                        update_date,
-                        update_user,
-                        delete_flag,
-                        code,
-                        description,
-                        name,
-                        type)
+        create_date,
+        create_user,
+        update_date,
+        update_user,
+        delete_flag,
+        code,
+        description,
+        name,
+        type)
         values (#{id},
-                #{createDate},
-                #{createUser},
-                #{updateDate},
-                #{updateUser},
-                0,
-                #{code},
-                #{description},
-                #{name},
-                #{type})
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{code},
+        #{description},
+        #{name},
+        #{type})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.DictEntity">
@@ -128,6 +124,4 @@
         from sys_dict
         where code = #{code}
     </select>
-
-
 </mapper>

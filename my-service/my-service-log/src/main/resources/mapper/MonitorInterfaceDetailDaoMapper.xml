@@ -31,7 +31,7 @@
         select
         <include refid="columnList"/>
         from sys_log_monitor_interface_call a
-                where 1 = 1
+        where 1 = 1
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
@@ -42,7 +42,7 @@
         select
         <include refid="columnList"/>
         from sys_log_monitor_interface_call a
-                where 1 = 1
+        where 1 = 1
 
         <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
@@ -56,35 +56,35 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity">
         insert sys_log_monitor_interface_call(id,
-                                              fid,
-                                              interface_name,
-                                              method_name,
-                                              run_time,
-                                              request_length,
-                                              response_length,
-                                              success,
-                                              time,
-                                              create_date,
-                                              create_user,
-                                              delete_flag,
-                                              remark,
-                                              update_date,
-                                              update_user)
+        fid,
+        interface_name,
+        method_name,
+        run_time,
+        request_length,
+        response_length,
+        success,
+        time,
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user)
         values (#{id},
-                #{fid},
-                #{interfaceName},
-                #{methodName},
-                #{runTime},
-                #{requestLength},
-                #{responseLength},
-                #{success},
-                #{time},
-                #{createDate},
-                #{createUser},
-                #{deleteFlag},
-                #{remark},
-                #{updateDate},
-                #{updateUser})
+        #{fid},
+        #{interfaceName},
+        #{methodName},
+        #{runTime},
+        #{requestLength},
+        #{responseLength},
+        #{success},
+        #{time},
+        #{createDate},
+        #{createUser},
+        #{deleteFlag},
+        #{remark},
+        #{updateDate},
+        #{updateUser})
     </insert>
 
     <select id="count" resultType="java.lang.Integer">
@@ -95,7 +95,7 @@
     <select id="countByArgs" resultType="java.lang.Integer">
         select count(*)
         from sys_log_monitor_interface_call a
-                where 1 = 1
+        where 1 = 1
         <foreach item="arg" index="index" collection="args">
             and ${arg.name} ${arg.symbol} #{arg.data}
         </foreach>

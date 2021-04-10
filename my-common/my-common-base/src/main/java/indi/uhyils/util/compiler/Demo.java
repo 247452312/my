@@ -1,5 +1,7 @@
 package indi.uhyils.util.compiler;
 
+import indi.uhyils.util.LogUtil;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,12 +13,12 @@ import java.util.Map;
  */
 public class Demo {
 
-    private static String H = "public class H {\n" +
+    private static String s = "public class H {\n" +
             "    public int add(int a, int b) {\n" +
             "        return a + b;\n" +
             "    }\n" +
             "}";
-    private static String C = "public class C {\n" +
+    private static String c = "public class C {\n" +
             "\n" +
             "    public int add(int a, int b) {\n" +
             "        H h = new H();\n" +
@@ -27,8 +29,8 @@ public class Demo {
     public static void main(String[] args) throws Exception {
         JavaStringCompiler javaStringCompiler = new JavaStringCompiler();
         HashMap<String, String> fileSourceMap = new HashMap<>(2);
-        fileSourceMap.put("H.java", H);
-        fileSourceMap.put("C.java", C);
+        fileSourceMap.put("H.java", s);
+        fileSourceMap.put("C.java", c);
         Map<String, byte[]> compile = javaStringCompiler.compile(fileSourceMap);
         Class<?> c = javaStringCompiler.loadClass("C", compile);
         Object o = c.newInstance();
@@ -36,7 +38,7 @@ public class Demo {
         Method add = declaredMethods[0];
         add.setAccessible(true);
         Object invoke = add.invoke(o, 1, 2);
-        System.out.println(invoke);
+        LogUtil.info(invoke.toString());
     }
 
 }

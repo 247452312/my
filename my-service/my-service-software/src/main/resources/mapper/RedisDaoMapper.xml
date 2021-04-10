@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.RedisDao">
-
-
     <sql id="columnList">
         a.id,
         a.create_date as 'createDate',
@@ -14,17 +12,15 @@
         a.remark,
 
 
-
         a.password,
         a.port,
-        a.server_id as serverId,
-        a.start_sh as startSh,
+        a.server_id   as serverId,
+        a.start_sh    as startSh,
         a.status,
-        a.status_sh as statusSh,
-        a.stop_sh as stopSh,
-        a.other_1 as dockerName,
+        a.status_sh   as statusSh,
+        a.stop_sh     as stopSh,
+        a.other_1     as dockerName,
         a.version
-
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.RedisEntity">
@@ -62,37 +58,37 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.RedisEntity">
         insert sys_software(id,
-                            create_date,
-                            create_user,
-                            update_date,
-                            update_user,
-                            delete_flag,
-                            type,
-                            password,
-                            port,
-                            server_id,
-                            start_sh,
-                            status,
-                            status_sh,
-                            stop_sh,
-                            version,
-                            other_1)
+        create_date,
+        create_user,
+        update_date,
+        update_user,
+        delete_flag,
+        type,
+        password,
+        port,
+        server_id,
+        start_sh,
+        status,
+        status_sh,
+        stop_sh,
+        version,
+        other_1)
         values (#{id},
-                #{createDate},
-                #{createUser},
-                #{updateDate},
-                #{updateUser},
-                0,
-                1,
-                #{password},
-                #{port},
-                #{serverId},
-                #{startSh},
-                #{status},
-                #{statusSh},
-                #{stopSh},
-                #{version},
-                #{dockerName})
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        1,
+        #{password},
+        #{port},
+        #{serverId},
+        #{startSh},
+        #{status},
+        #{statusSh},
+        #{stopSh},
+        #{version},
+        #{dockerName})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.RedisEntity">
@@ -100,7 +96,7 @@
         update_date = #{updateDate}
         ,update_user = #{updateUser}
 
-        <if test="password != null ">
+        <if test="password != null">
             ,password = #{password}
         </if>
         <if test="port != null and port != ''">
@@ -124,7 +120,7 @@
         <if test="version != null and version != ''">
             ,version = #{version}
         </if>
-        <if test="dockerName != null ">
+        <if test="dockerName != null">
             ,other_1 = #{dockerName}
         </if>
 
@@ -156,6 +152,4 @@
         from sys_software a
         where ${columnName} = #{value}
     </select>
-
-
 </mapper>

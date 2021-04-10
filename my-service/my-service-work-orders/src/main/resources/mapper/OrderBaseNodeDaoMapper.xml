@@ -2,30 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.OrderBaseNodeDao">
-
-
     <sql id="columnList">
-        a.save_api_id as saveApiId,
-		a.init_api_id as initApiId,
-		a.remark as remark,
-		a.run_type as runType,
-		a.type as type,
-		a.sync as sync,
-		a.update_date as updateDate,
-		a.limit_time as limitTime,
-		a.notice_user_id as noticeUserId,
-		a.update_user as updateUser,
-		a.base_info_id as baseInfoId,
-		a.run_deal_user_id as runDealUserId,
-		a.name as name,
-		a.run_api_id as runApiId,
-		a.id as id,
-		a.create_user as createUser,
-		a.create_date as createDate,
-		a.delete_flag as deleteFlag,
-		a.trans_api_id as transApiId,
-		a.hidden,
-		a.`desc`
+        a.save_api_id      as saveApiId,
+        a.init_api_id      as initApiId,
+        a.remark           as remark,
+        a.run_type         as runType,
+        a.type             as type,
+        a.sync             as sync,
+        a.update_date      as updateDate,
+        a.limit_time       as limitTime,
+        a.notice_user_id   as noticeUserId,
+        a.update_user      as updateUser,
+        a.base_info_id     as baseInfoId,
+        a.run_deal_user_id as runDealUserId,
+        a.name             as name,
+        a.run_api_id       as runApiId,
+        a.id               as id,
+        a.create_user      as createUser,
+        a.create_date      as createDate,
+        a.delete_flag      as deleteFlag,
+        a.trans_api_id     as transApiId,
+        a.hidden,
+        a.`desc`
     </sql>
     <update id="deleteByIds">
         update sys_order_base_node_route set
@@ -68,53 +66,52 @@
         <if test="page != null and page != ''">
             limit ${(page-1) * size},${size}
         </if>
-
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
         insert sys_order_base_node(save_api_id,
-                                   init_api_id,
-                                   remark,
-                                   run_type,
-                                   type,
-                                   sync,
-                                   update_date,
-                                   limit_time,
-                                   notice_user_id,
-                                   update_user,
-                                   base_info_id,
-                                   run_deal_user_id,
-                                   name,
-                                   run_api_id,
-                                   id,
-                                   hidden,
-                                   create_user,
-                                   create_date,
-                                   delete_flag,
-                                   trans_api_id,
-                                   `desc`)
+        init_api_id,
+        remark,
+        run_type,
+        type,
+        sync,
+        update_date,
+        limit_time,
+        notice_user_id,
+        update_user,
+        base_info_id,
+        run_deal_user_id,
+        name,
+        run_api_id,
+        id,
+        hidden,
+        create_user,
+        create_date,
+        delete_flag,
+        trans_api_id,
+        `desc`)
         values (#{saveApiId},
-                #{initApiId},
-                #{remark},
-                #{runType},
-                #{type},
-                #{sync},
-                #{updateDate},
-                #{limitTime},
-                #{noticeUserId},
-                #{updateUser},
-                #{baseInfoId},
-                #{runDealUserId},
-                #{name},
-                #{runApiId},
-                #{id},
-                #{hidden},
-                #{createUser},
-                #{createDate},
-                #{deleteFlag},
-                #{transApiId},
-                #{desc})
+        #{initApiId},
+        #{remark},
+        #{runType},
+        #{type},
+        #{sync},
+        #{updateDate},
+        #{limitTime},
+        #{noticeUserId},
+        #{updateUser},
+        #{baseInfoId},
+        #{runDealUserId},
+        #{name},
+        #{runApiId},
+        #{id},
+        #{hidden},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{transApiId},
+        #{desc})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeEntity">
@@ -206,5 +203,4 @@
         where delete_flag = 0
         and base_info_id = #{baseInfoId}
     </select>
-
 </mapper>

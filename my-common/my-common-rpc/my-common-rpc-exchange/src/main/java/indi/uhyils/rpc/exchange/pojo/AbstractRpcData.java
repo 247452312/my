@@ -94,7 +94,7 @@ public abstract class AbstractRpcData implements RpcData {
                 rpcFactory = RpcResponseFactory.getInstance();
                 break;
             default:
-                throw new RuntimeException();
+                throw new RpcException("rpc类型错误");
         }
         return rpcFactory.createByBytes(data);
     }
@@ -207,18 +207,14 @@ public abstract class AbstractRpcData implements RpcData {
         final int statusSize = MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_STATUS_INDEX];
         assert statusSize == 1;
         final int startIndex = readIndex.get();
-        byte[] status = Arrays.copyOfRange(data, startIndex, startIndex + statusSize);
+        final byte[] dataStatus = Arrays.copyOfRange(data, startIndex, startIndex + statusSize);
         // 先这么搞..
-        this.status = status[0];
+        this.setStatus(dataStatus[0]);
         readIndex.addAndGet(statusSize);
     }
 
     private void initContentArray(byte[] data, AtomicInteger readIndex) {
         byte[] bytes = Arrays.copyOfRange(data, readIndex.get(), data.length);
-//        StringBuilder contentStr = new StringBuilder();
-//        for (int i = readIndex.get(); i < data.length; i++) {
-//            contentStr.append((char) data[i]);
-//        }
         String contentStr = new String(bytes, StandardCharsets.UTF_8);
         this.contentArray = contentStr.split("\n");
     }
@@ -257,15 +253,15 @@ public abstract class AbstractRpcData implements RpcData {
      * @throws RpcVersionNotSupportedException
      */
     private void initVersionAndType(byte[] data, AtomicInteger readIndex) throws RpcException {
-        int version = (data[readIndex.get()] >> 2) & 0b111111;
-        if (version > MAX_VERSION) {
-            throw new RpcVersionNotSupportedException(version, MAX_VERSION);
+        int dataVersion = (data[readIndex.get()] >> 2) & 0b111111;
+        if (dataVersion > MAX_VERSION) {
+            throw new RpcVersionNotSupportedException(dataVersion, MAX_VERSION);
         }
-        int type = (data[readIndex.get()] & 0b10) >> 1;
-        if (!Objects.equals(type, type())) {
-            throw new RpcTypeNotSupportedException(type, type());
+        int dataType = (data[readIndex.get()] & 0b10) >> 1;
+        if (!Objects.equals(dataType, type())) {
+            throw new RpcTypeNotSupportedException(dataType, type());
         }
-        this.version = version;
+        this.version = dataVersion;
         readIndex.addAndGet(MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_VERSION_REQ_RES_INDEX]);
 
     }

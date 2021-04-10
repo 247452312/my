@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -18,6 +20,13 @@ import java.util.concurrent.TimeoutException;
 public class MqUtil {
 
     private static final Map<MqQueueInfo, Channel> CHANNEL_MAP = new HashMap<>();
+    /**
+     * 创建channel时的锁
+     */
+    private static Lock newChannelLock = new ReentrantLock();
+
+    private MqUtil() {
+    }
 
     /**
      * 推送信息到mq
@@ -35,15 +44,24 @@ public class MqUtil {
         if (CHANNEL_MAP.containsKey(key)) {
             channel = CHANNEL_MAP.get(key);
         } else {
-            RabbitFactory factory = SpringUtil.getBean(RabbitFactory.class);
-            channel = factory.getConn().createChannel();
-            //创建exchange
-            channel.exchangeDeclare(exchange, "direct", false, false, null);
-            //创建队列
-            channel.queueDeclare(queue, false, false, false, null);
-            //绑定exchange和queue
-            channel.queueBind(queue, exchange, queue);
-            CHANNEL_MAP.put(key, channel);
+            newChannelLock.lock();
+            try {
+                if (!CHANNEL_MAP.containsKey(key)) {
+                    RabbitFactory factory = SpringUtil.getBean(RabbitFactory.class);
+                    channel = factory.getConn().createChannel();
+                    //创建exchange
+                    channel.exchangeDeclare(exchange, "direct", false, false, null);
+                    //创建队列
+                    channel.queueDeclare(queue, false, false, false, null);
+                    //绑定exchange和queue
+                    channel.queueBind(queue, exchange, queue);
+                    CHANNEL_MAP.put(key, channel);
+                } else {
+                    channel = CHANNEL_MAP.get(key);
+                }
+            } finally {
+                newChannelLock.unlock();
+            }
         }
         channel.basicPublish(exchange, queue, null, bytes);
 

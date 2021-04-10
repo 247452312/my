@@ -2,23 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.ApiGroupDao">
-
-
     <sql id="columnList">
         a.id,
-        a.create_date as createDate,
-        a.create_user as createUser,
-        a.delete_flag as deleteFlag,
+        a.create_date   as createDate,
+        a.create_user   as createUser,
+        a.delete_flag   as deleteFlag,
         a.remark,
-        a.update_date as updateDate,
-        a.update_user as updateUser,
+        a.update_date   as updateDate,
+        a.update_user   as updateUser,
 
 
         a.name,
         a.result_format as resultFormat,
         a.subscribe
-
-
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.ApiGroupEntity">
@@ -52,31 +48,30 @@
         <if test="page != null and page != ''">
             limit ${(page-1) * size},${size}
         </if>
-
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.ApiGroupEntity">
         insert sys_api_group(id,
-                             create_date,
-                             create_user,
-                             delete_flag,
-                             remark,
-                             update_date,
-                             update_user,
-                             name,
-                             result_format,
-                             subscribe)
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user,
+        name,
+        result_format,
+        subscribe)
         values (#{id},
-                #{createDate},
-                #{createUser},
-                0,
-                #{remark},
-                #{updateDate},
-                #{updateUser},
-                #{name},
-                #{resultFormat},
-                #{subscribe})
+        #{createDate},
+        #{createUser},
+        0,
+        #{remark},
+        #{updateDate},
+        #{updateUser},
+        #{name},
+        #{resultFormat},
+        #{subscribe})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.ApiGroupEntity">
@@ -133,5 +128,4 @@
         from sys_api_group a
         where delete_flag = 0 and subscribe = 1
     </select>
-
 </mapper>

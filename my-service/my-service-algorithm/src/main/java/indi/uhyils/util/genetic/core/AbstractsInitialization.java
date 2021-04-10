@@ -87,21 +87,4 @@ public abstract class AbstractsInitialization implements DataInitialization<DnaD
         quadraticData.setGenes(result);
         return quadraticData;
     }
-
-    /**
-     * 在判断两个个体之间是不是一个点时计算的欧氏距离
-     *
-     * @return 两个点之间的距离
-     */
-    @Override
-    public abstract Double getDistance(DnaData one, DnaData tow);
-
-    /**
-     * 变异
-     *
-     * @param data                要变异的种群
-     * @param mutationProbability 变异概率
-     */
-    @Override
-    public abstract void variation(DnaData data, Double mutationProbability);
 }

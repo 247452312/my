@@ -12,7 +12,7 @@ import java.util.concurrent.*;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月22日 21时14分
  */
-public abstract class TimeOutFilter {
+public abstract class AbstractTimeOutFilter {
 
     private static ExecutorService es = new ThreadPoolExecutor(5, 100, 3000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10));
 

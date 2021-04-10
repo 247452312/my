@@ -19,6 +19,9 @@ import java.util.stream.Collectors;
 public class ApiPowerInitUtil {
 
 
+    private ApiPowerInitUtil() {
+    }
+
     /**
      * 此工具只在未打包时有用 获取所有接口的方法 TODO 此处需要修改
      *
