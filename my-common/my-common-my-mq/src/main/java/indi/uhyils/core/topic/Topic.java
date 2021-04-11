@@ -1,0 +1,50 @@
+package indi.uhyils.core.topic;
+
+import indi.uhyils.core.message.Message;
+
+/**
+ * 主题,一个MQ中存在多个主题,每个主题有可能是不同的类型,也有可能是相同的类型
+ *
+ * @Author uhyils <247452312@qq.com>
+ * @Date 文件创建日期 2021年04月11日 16时04分
+ * @Version 1.0
+ */
+public interface Topic {
+    /**
+     * 获取topic名称
+     *
+     * @return
+     */
+    String getName();
+
+    /**
+     * 获取类型
+     *
+     * @return
+     */
+    TopicType getTopicType();
+
+    /**
+     * 获取消费类型
+     *
+     * @return
+     */
+    PushType getPushType();
+
+    /**
+     * 获取消息接收类型
+     *
+     * @return
+     */
+    ReceiveType getReceiveType();
+
+    /**
+     * 保存消息
+     *
+     * @param message 消息
+     * @return
+     */
+    Boolean saveMessage(Message message);
+
+
+}
