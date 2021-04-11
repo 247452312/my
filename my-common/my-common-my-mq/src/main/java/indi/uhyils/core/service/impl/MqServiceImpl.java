@@ -43,6 +43,7 @@ public class MqServiceImpl implements MqService {
 
     @Override
     public Boolean registerProvider(RegisterProviderRequest request, String ip) {
+
         return null;
     }
 
