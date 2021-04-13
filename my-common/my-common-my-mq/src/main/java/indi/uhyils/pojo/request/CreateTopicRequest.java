@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.request;
 
-import indi.uhyils.core.topic.PushType;
-import indi.uhyils.core.topic.ReceiveType;
+import indi.uhyils.core.topic.OutDealTypeEnum;
 import indi.uhyils.core.topic.TopicType;
 
 import java.io.Serializable;
@@ -31,12 +30,12 @@ public class CreateTopicRequest implements Serializable {
     /**
      * 接收类型
      */
-    private ReceiveType receiveType;
+    private OutDealTypeEnum receiveType;
 
     /**
      * 推送类型
      */
-    private PushType pushType;
+    private OutDealTypeEnum pushType;
 
 
     public String getName() {
@@ -63,19 +62,19 @@ public class CreateTopicRequest implements Serializable {
         this.key = key;
     }
 
-    public ReceiveType getReceiveType() {
+    public OutDealTypeEnum getReceiveType() {
         return receiveType;
     }
 
-    public void setReceiveType(ReceiveType receiveType) {
+    public void setReceiveType(OutDealTypeEnum receiveType) {
         this.receiveType = receiveType;
     }
 
-    public PushType getPushType() {
+    public OutDealTypeEnum getPushType() {
         return pushType;
     }
 
-    public void setPushType(PushType pushType) {
+    public void setPushType(OutDealTypeEnum pushType) {
         this.pushType = pushType;
     }
 }

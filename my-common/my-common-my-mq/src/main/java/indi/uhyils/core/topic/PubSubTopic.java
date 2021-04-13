@@ -16,7 +16,7 @@ public class PubSubTopic extends AbstractTopic {
         super(name);
     }
 
-    public static PubSubTopic build(String name, PushType pushType, ReceiveType receiveType) {
+    public static PubSubTopic build(String name, OutDealTypeEnum pushType, OutDealTypeEnum receiveType) {
         PubSubTopic build = new PubSubTopic(name);
         build.setPushType(pushType);
         build.setReceiveType(receiveType);
@@ -34,12 +34,12 @@ public class PubSubTopic extends AbstractTopic {
     }
 
     @Override
-    public void setPushType(PushType pushType) {
+    public void setPushType(OutDealTypeEnum pushType) {
         this.pushType = pushType;
     }
 
     @Override
-    public void setReceiveType(ReceiveType receiveType) {
+    public void setReceiveType(OutDealTypeEnum receiveType) {
         this.receiveType = receiveType;
     }
 

@@ -22,12 +22,12 @@ public abstract class AbstractTopic implements Topic {
     /**
      * 推送类型
      */
-    protected PushType pushType;
+    protected OutDealTypeEnum pushType;
 
     /**
      * 接收类型
      */
-    protected ReceiveType receiveType;
+    protected OutDealTypeEnum receiveType;
 
     /**
      * 队列们
@@ -44,7 +44,7 @@ public abstract class AbstractTopic implements Topic {
     }
 
     @Override
-    public PushType getPushType() {
+    public OutDealTypeEnum getPushType() {
         return pushType;
     }
 
@@ -53,10 +53,10 @@ public abstract class AbstractTopic implements Topic {
      *
      * @param pushType
      */
-    public abstract void setPushType(PushType pushType);
+    public abstract void setPushType(OutDealTypeEnum pushType);
 
     @Override
-    public ReceiveType getReceiveType() {
+    public OutDealTypeEnum getReceiveType() {
         return receiveType;
     }
 
@@ -65,7 +65,7 @@ public abstract class AbstractTopic implements Topic {
      *
      * @param receiveType
      */
-    public abstract void setReceiveType(ReceiveType receiveType);
+    public abstract void setReceiveType(OutDealTypeEnum receiveType);
 
     public Map<String, Queue> getQueues() {
         return queues;

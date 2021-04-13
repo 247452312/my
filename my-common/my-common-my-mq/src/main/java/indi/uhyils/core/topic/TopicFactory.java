@@ -26,7 +26,7 @@ public class TopicFactory {
      * @throws UserException
      */
     public static Topic createOrGetTopic(SendMessageRequest request) throws UserException {
-        return createOrGetTopic(request.getTopic(), request.getType(), ReceiveType.PASSIVE, PushType.PASSIVE, null);
+        return createOrGetTopic(request.getTopic(), request.getType(), OutDealTypeEnum.PASSIVE, OutDealTypeEnum.PASSIVE, null);
     }
 
 
@@ -38,7 +38,7 @@ public class TopicFactory {
      */
 
     public static Topic createOrGetTopic(String topicName, TopicType userType, String key) throws UserException {
-        return createOrGetTopic(topicName, userType, ReceiveType.PASSIVE, PushType.PASSIVE, key);
+        return createOrGetTopic(topicName, userType, OutDealTypeEnum.PASSIVE, OutDealTypeEnum.PASSIVE, key);
     }
 
     /**
@@ -48,11 +48,11 @@ public class TopicFactory {
      * @return
      * @throws UserException
      */
-    public static Topic createOrGetTopic(SendMessageRequest request, ReceiveType receiveType, PushType pushType) throws UserException {
+    public static Topic createOrGetTopic(SendMessageRequest request, OutDealTypeEnum receiveType, OutDealTypeEnum pushType) throws UserException {
         return createOrGetTopic(request.getTopic(), request.getType(), receiveType, pushType, null);
     }
 
-    public static Topic createOrGetTopic(String topicName, TopicType userType, ReceiveType receiveType, PushType pushType, String key) throws UserException {
+    public static Topic createOrGetTopic(String topicName, TopicType userType, OutDealTypeEnum receiveType, OutDealTypeEnum pushType, String key) throws UserException {
 
         if (topicMap.containsKey(topicName)) {
             Topic topic = topicMap.get(topicName);
@@ -72,7 +72,7 @@ public class TopicFactory {
         return topic;
     }
 
-    private static Topic newTopic(String topic, TopicType type, ReceiveType receiveType, PushType pushType, String key) throws UserException {
+    private static Topic newTopic(String topic, TopicType type, OutDealTypeEnum receiveType, OutDealTypeEnum pushType, String key) throws UserException {
         switch (type) {
             case NORMAL_MSG:
                 return NormalTopic.build(topic, pushType, receiveType);

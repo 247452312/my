@@ -14,7 +14,7 @@ public class GlobalTopic extends AbstractTopic {
         super(name);
     }
 
-    public static GlobalTopic build(String name, PushType pushType, ReceiveType receiveType) {
+    public static GlobalTopic build(String name, OutDealTypeEnum pushType, OutDealTypeEnum receiveType) {
         GlobalTopic build = new GlobalTopic(name);
         build.setPushType(pushType);
         build.setReceiveType(receiveType);
@@ -32,12 +32,12 @@ public class GlobalTopic extends AbstractTopic {
     }
 
     @Override
-    public void setPushType(PushType pushType) {
+    public void setPushType(OutDealTypeEnum pushType) {
         this.pushType = pushType;
     }
 
     @Override
-    public void setReceiveType(ReceiveType receiveType) {
+    public void setReceiveType(OutDealTypeEnum receiveType) {
         this.receiveType = receiveType;
     }
 

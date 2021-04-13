@@ -2,8 +2,7 @@ package indi.uhyils.core.service.impl;
 
 import indi.uhyils.core.exception.UserException;
 import indi.uhyils.core.service.MqService;
-import indi.uhyils.core.topic.PushType;
-import indi.uhyils.core.topic.ReceiveType;
+import indi.uhyils.core.topic.OutDealTypeEnum;
 import indi.uhyils.core.topic.Topic;
 import indi.uhyils.core.topic.TopicFactory;
 import indi.uhyils.pojo.request.*;
@@ -28,14 +27,14 @@ public class MqServiceImpl implements MqService {
     @Override
     public Boolean createTopic(CreateTopicRequest request) throws UserException {
         // 接收默认值
-        ReceiveType receiveType = request.getReceiveType();
+        OutDealTypeEnum receiveType = request.getReceiveType();
         if (receiveType == null) {
-            receiveType = ReceiveType.PASSIVE;
+            receiveType = OutDealTypeEnum.PASSIVE;
         }
         // 推送默认值
-        PushType pushType = request.getPushType();
+        OutDealTypeEnum pushType = request.getPushType();
         if (pushType == null) {
-            pushType = PushType.PASSIVE;
+            pushType = OutDealTypeEnum.PASSIVE;
         }
         TopicFactory.createOrGetTopic(request.getName(), request.getType(), receiveType, pushType, request.getKey());
         return true;

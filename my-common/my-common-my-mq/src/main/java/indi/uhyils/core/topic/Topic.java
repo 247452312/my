@@ -29,14 +29,14 @@ public interface Topic {
      *
      * @return
      */
-    PushType getPushType();
+    OutDealTypeEnum getPushType();
 
     /**
      * 获取消息接收类型
      *
      * @return
      */
-    ReceiveType getReceiveType();
+    OutDealTypeEnum getReceiveType();
 
     /**
      * 保存消息

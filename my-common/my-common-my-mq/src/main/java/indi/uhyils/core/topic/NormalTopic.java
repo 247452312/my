@@ -16,7 +16,7 @@ public class NormalTopic extends AbstractTopic {
         super(name);
     }
 
-    public static NormalTopic build(String name, PushType pushType, ReceiveType receiveType) {
+    public static NormalTopic build(String name, OutDealTypeEnum pushType, OutDealTypeEnum receiveType) {
         NormalTopic build = new NormalTopic(name);
         build.setPushType(pushType);
         build.setReceiveType(receiveType);
@@ -25,12 +25,12 @@ public class NormalTopic extends AbstractTopic {
     }
 
     @Override
-    public void setPushType(PushType pushType) {
+    public void setPushType(OutDealTypeEnum pushType) {
         this.pushType = pushType;
     }
 
     @Override
-    public void setReceiveType(ReceiveType receiveType) {
+    public void setReceiveType(OutDealTypeEnum receiveType) {
         this.receiveType = receiveType;
     }
 

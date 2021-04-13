@@ -23,7 +23,7 @@ public class PartitionSequentialTopic extends AbstractTopic {
         this.key = key;
     }
 
-    public static PartitionSequentialTopic build(String name, String key, PushType pushType, ReceiveType receiveType) {
+    public static PartitionSequentialTopic build(String name, String key, OutDealTypeEnum pushType, OutDealTypeEnum receiveType) {
         PartitionSequentialTopic build = new PartitionSequentialTopic(name, key);
         build.setPushType(pushType);
         build.setReceiveType(receiveType);
@@ -31,12 +31,12 @@ public class PartitionSequentialTopic extends AbstractTopic {
     }
 
     @Override
-    public void setPushType(PushType pushType) {
+    public void setPushType(OutDealTypeEnum pushType) {
         this.pushType = pushType;
     }
 
     @Override
-    public void setReceiveType(ReceiveType receiveType) {
+    public void setReceiveType(OutDealTypeEnum receiveType) {
         this.receiveType = receiveType;
     }
 
