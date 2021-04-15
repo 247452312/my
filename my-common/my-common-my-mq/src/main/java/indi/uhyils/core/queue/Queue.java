@@ -4,11 +4,13 @@ import indi.uhyils.core.message.Message;
 import indi.uhyils.core.topic.Topic;
 
 /**
+ * 队列
+ *
  * @Author uhyils <247452312@qq.com>
  * @Date 文件创建日期 2021年04月11日 16时22分
  * @Version 1.0
  */
-public interface Queue {
+public interface Queue extends TopicObserver {
 
     /**
      * 默认队列名称
@@ -21,6 +23,7 @@ public interface Queue {
      *
      * @return
      */
+    @Override
     Topic getTopic();
 
     /**
