@@ -1,6 +1,11 @@
 package indi.uhyils.core.register;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 注册者管理者
@@ -11,59 +16,41 @@ import java.util.Objects;
  */
 public class RegisterKeeper {
 
-    public static class Register {
-        /**
-         * 注册者的ip
-         */
-        private String ip;
+    /**
+     * 注册的所有者
+     */
+    private static final Map<RegisterType, Collection<Register>> REGISTER_TYPE_COLLECTION_MAP = new HashMap<>();
 
-        /**
-         * 注册者的端口
-         */
-        private Integer port;
-
-        /**
-         * 注册者类型
-         */
-        private RegisterType type;
-
-        public Register(String ip, Integer port) {
-            this.ip = ip;
-            this.port = port;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Register register = (Register) o;
-            return Objects.equals(ip, register.ip) && Objects.equals(port, register.port);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(ip, port);
-        }
-
-        public String getIp() {
-            return ip;
-        }
-
-        public void setIp(String ip) {
-            this.ip = ip;
-        }
-
-        public Integer getPort() {
-            return port;
-        }
-
-        public void setPort(Integer port) {
-            this.port = port;
+    static {
+        // 初始化
+        for (RegisterType value : RegisterType.values()) {
+            REGISTER_TYPE_COLLECTION_MAP.put(value, new ArrayList<>());
         }
     }
+
+    public static Collection<Register> findRegister(RegisterType type, String ip, Integer port, String topicName) {
+        Collection<Register> basic = new ArrayList<>();
+        // 过滤类型
+        if (type == null) {
+            REGISTER_TYPE_COLLECTION_MAP.values().forEach(basic::addAll);
+        } else {
+            basic.addAll(REGISTER_TYPE_COLLECTION_MAP.get(type));
+        }
+        Stream<Register> basicStream = basic.stream();
+        // 过滤ip
+        if (ip != null) {
+            basicStream = basicStream.filter(t -> ip.equals(t.getIp()));
+        }
+        // 过滤端口
+        if (port != null) {
+            basicStream = basicStream.filter(t -> port.equals(t.getPort()));
+        }
+        // 过滤
+        if (topicName != null) {
+            basicStream = basicStream.filter(t -> topicName.equals(t.getTopicName()));
+        }
+        return basicStream.collect(Collectors.toSet());
+    }
+
 
 }

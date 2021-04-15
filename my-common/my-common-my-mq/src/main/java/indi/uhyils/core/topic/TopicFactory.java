@@ -1,7 +1,7 @@
 package indi.uhyils.core.topic;
 
 import indi.uhyils.core.exception.PartitionTopicNoKeyException;
-import indi.uhyils.core.exception.TopicTypeException;
+import indi.uhyils.core.exception.TopicTypeNoEqualException;
 import indi.uhyils.core.exception.TopicTypeNotFoundException;
 import indi.uhyils.core.exception.UserException;
 import indi.uhyils.pojo.request.SendMessageRequest;
@@ -59,7 +59,7 @@ public class TopicFactory {
             TopicType topicType = topic.getTopicType();
             // 判断已存在的主体类型和刚刚发送的主体是否相同
             if (topicType != userType) {
-                throw new TopicTypeException(userType, topicType);
+                throw new TopicTypeNoEqualException(userType, topicType);
             }
             return topic;
         }
