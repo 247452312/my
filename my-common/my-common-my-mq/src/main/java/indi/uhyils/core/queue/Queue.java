@@ -3,6 +3,8 @@ package indi.uhyils.core.queue;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.topic.Topic;
 
+import java.util.concurrent.Executor;
+
 /**
  * 队列
  *
@@ -62,6 +64,27 @@ public interface Queue extends TopicObserver {
      * @return
      */
     Boolean saveMessage(Message message);
+
+    /**
+     * 获取队列中有多少个
+     *
+     * @return
+     */
+    int size();
+
+    /**
+     * 获取此队列使用的线程池
+     *
+     * @return
+     */
+    Executor getExecutor();
+
+    /**
+     * 配置此队列使用的线程池
+     *
+     * @param executor
+     */
+    void setExecutor(Executor executor);
 
 
 }

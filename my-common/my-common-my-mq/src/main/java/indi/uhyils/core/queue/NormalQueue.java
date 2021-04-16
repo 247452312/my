@@ -5,6 +5,7 @@ import indi.uhyils.core.topic.Topic;
 
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -25,10 +26,16 @@ public class NormalQueue implements Queue {
      */
     private java.util.Queue<Message> queue;
 
-    public NormalQueue(Topic topic) {
+    /**
+     * 此队列使用的线程池
+     */
+    private Executor executor;
+
+    public NormalQueue(Topic topic, Executor executor) {
         this.topic = topic;
         // 默认使用阻塞链表队列
         this.queue = new LinkedBlockingQueue<>();
+        this.executor = executor;
     }
 
     @Override
@@ -42,7 +49,11 @@ public class NormalQueue implements Queue {
 
     @Override
     public Object getOne() {
-        return queue.poll();
+        if (queue.size() != 0) {
+            return queue.poll();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -69,6 +80,21 @@ public class NormalQueue implements Queue {
     @Override
     public Boolean saveMessage(Message message) {
         return queue.add(message);
+    }
+
+    @Override
+    public int size() {
+        return queue.size();
+    }
+
+    @Override
+    public Executor getExecutor() {
+        return this.executor;
+    }
+
+    @Override
+    public void setExecutor(Executor executor) {
+        this.executor = executor;
     }
 
     public java.util.Queue<Message> getQueue() {

@@ -1,6 +1,7 @@
 package indi.uhyils.core.topic;
 
 import indi.uhyils.core.message.Message;
+import indi.uhyils.core.register.Register;
 
 /**
  * 主题,一个MQ中存在多个主题,每个主题有可能是不同的类型,也有可能是相同的类型
@@ -45,6 +46,14 @@ public interface Topic {
      * @return
      */
     Boolean saveMessage(Message message);
+
+    /**
+     * 添加新的注册者到这个topic上
+     *
+     * @param register
+     * @return
+     */
+    Boolean addNewRegister(Register register);
 
 
 }
