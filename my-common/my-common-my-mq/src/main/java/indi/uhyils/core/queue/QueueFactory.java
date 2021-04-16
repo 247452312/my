@@ -28,17 +28,24 @@ public class QueueFactory {
     @Autowired
     private QueueFactoryConfig config;
 
-    public QueueFactory() {
-    }
+    public QueueFactory() {}
 
     @PostConstruct
     public void init() {
-        queueExecutor = new ThreadPoolExecutor(config.coreSize, config.maxSize, config.alive, config.timeUnit, new ArrayBlockingQueue<>(300), new QueueThreadFactory());
+        this.queueExecutor = new ThreadPoolExecutor(config.getCoresize(), config.getMaxsize(), config.getAlive(),
+            config.getTimeUnit(), new ArrayBlockingQueue<>(300), new QueueThreadFactory());
     }
 
-
+    /**
+     * 创建一个默认的队列
+     * 
+     * @param topic
+     * @return
+     */
     public Queue createNormalQueue(Topic topic) {
-        return new NormalQueue(topic, queueExecutor);
+        NormalQueue normalQueue = new NormalQueue(topic, queueExecutor);
+        normalQueue.startDistributeThread();
+        return normalQueue;
     }
 
     private class QueueThreadFactory implements ThreadFactory {

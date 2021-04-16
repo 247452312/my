@@ -1,10 +1,10 @@
 package indi.uhyils.pojo.request;
 
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.topic.TopicType;
 
 import java.io.Serializable;
-
 
 /**
  * @Author uhyils <247452312@qq.com>
@@ -14,9 +14,14 @@ import java.io.Serializable;
 public class SendMessageRequest implements Serializable {
 
     /**
-     * 消息
+     * 实际类型
      */
-    private Message message;
+    private JSONObject data;
+
+    /**
+     * key
+     */
+    private String key;
 
     /**
      * 主题
@@ -28,13 +33,20 @@ public class SendMessageRequest implements Serializable {
      */
     private TopicType type;
 
-
-    public Message getMessage() {
-        return message;
+    public JSONObject getData() {
+        return data;
     }
 
-    public void setMessage(Message message) {
-        this.message = message;
+    public void setData(JSONObject data) {
+        this.data = data;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getTopic() {

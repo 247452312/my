@@ -1,5 +1,6 @@
 package indi.uhyils.core.message;
 
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.core.topic.TopicType;
 
 /**
@@ -11,8 +12,8 @@ import indi.uhyils.core.topic.TopicType;
  */
 public class NormalMessage extends AbstractMessage {
 
-    public NormalMessage(String topic) {
-        super(topic);
+    public NormalMessage(JSONObject data, String topic) {
+        super(data, topic);
     }
 
     @Override

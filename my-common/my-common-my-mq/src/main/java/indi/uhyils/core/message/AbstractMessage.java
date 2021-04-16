@@ -5,6 +5,8 @@ import indi.uhyils.util.SequenceGenerationException;
 import indi.uhyils.util.SequenceUtil;
 
 /**
+ * 消息模板
+ * 
  * @Author uhyils <247452312@qq.com>
  * @Date 文件创建日期 2021年04月11日 20时30分
  * @Version 1.0
@@ -25,7 +27,8 @@ public abstract class AbstractMessage implements Message {
      */
     protected Long sequence;
 
-    protected AbstractMessage(String topic) {
+    protected AbstractMessage(JSONObject data, String topic) {
+        this.data = data;
         this.topic = topic;
         try {
             initSequence();
@@ -56,6 +59,5 @@ public abstract class AbstractMessage implements Message {
     private void initSequence() throws InterruptedException, SequenceGenerationException {
         this.sequence = SequenceUtil.newSequence();
     }
-
 
 }

@@ -6,6 +6,7 @@ import indi.uhyils.core.queue.QueueFactory;
 import indi.uhyils.core.register.Register;
 import indi.uhyils.core.register.RegisterType;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,11 +41,11 @@ public abstract class AbstractTopic implements Topic {
     /**
      * 接收者们
      */
-    protected Collection<Register> providers;
+    protected Collection<Register> providers = new ArrayList<>();
     /**
      * 推送者们
      */
-    protected Collection<Register> consumers;
+    protected Collection<Register> consumers = new ArrayList<>();
 
     /**
      * 创建队列的工厂
@@ -54,7 +55,6 @@ public abstract class AbstractTopic implements Topic {
     protected AbstractTopic(String name) {
         this.name = name;
     }
-
 
     public QueueFactory getQueueFactory() {
         return queueFactory;
@@ -119,7 +119,7 @@ public abstract class AbstractTopic implements Topic {
         if (queues == null) {
             synchronized (this) {
                 if (queues == null) {
-                    this.queues = new HashMap<>();
+                    this.queues = new HashMap<>(16);
                 }
             }
         }
@@ -170,5 +170,15 @@ public abstract class AbstractTopic implements Topic {
             }
         }
         return true;
+    }
+
+    @Override
+    public Collection<Register> getAllConsumer() {
+        return consumers;
+    }
+
+    @Override
+    public Boolean haveConsumer() {
+        return consumers.size() != 0;
     }
 }

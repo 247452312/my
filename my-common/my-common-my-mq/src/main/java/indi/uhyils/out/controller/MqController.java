@@ -54,7 +54,8 @@ public class MqController {
      * @return
      */
     @PostMapping("registerProvider")
-    public Boolean registerProvider(@RequestBody RegisterProviderRequest request, HttpServletRequest httpServletRequest) {
+    public Boolean registerProvider(@RequestBody RegisterProviderRequest request, HttpServletRequest httpServletRequest)
+        throws UserException {
         return service.registerProvider(request, IpUtil.getIP(httpServletRequest));
     }
 
@@ -66,7 +67,8 @@ public class MqController {
      * @return
      */
     @PostMapping("registerConsumer")
-    public Boolean registerConsumer(@RequestBody RegisterConsumerRequest request, HttpServletRequest httpServletRequest) {
+    public Boolean registerConsumer(@RequestBody RegisterConsumerRequest request, HttpServletRequest httpServletRequest)
+        throws UserException {
         return service.registerConsumer(request, IpUtil.getIP(httpServletRequest));
     }
 
@@ -78,7 +80,8 @@ public class MqController {
      * @return
      */
     @PostMapping("registerPublish")
-    public Boolean registerPublish(@RequestBody RegisterPublishRequest request, HttpServletRequest httpServletRequest) {
+    public Boolean registerPublish(@RequestBody RegisterPublishRequest request, HttpServletRequest httpServletRequest)
+        throws UserException {
         return service.registerPublish(request, IpUtil.getIP(httpServletRequest));
     }
 
@@ -90,7 +93,8 @@ public class MqController {
      * @return
      */
     @PostMapping("registerSubscriber")
-    public Boolean registerSubscriber(@RequestBody RegisterSubscriberReqeust request, HttpServletRequest httpServletRequest) {
+    public Boolean registerSubscriber(@RequestBody RegisterSubscriberReqeust request,
+        HttpServletRequest httpServletRequest) throws UserException {
         return service.registerSubscriber(request, IpUtil.getIP(httpServletRequest));
     }
 

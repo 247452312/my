@@ -1,7 +1,9 @@
 package indi.uhyils.core.register;
 
+import indi.uhyils.core.message.Message;
 import indi.uhyils.core.topic.OutDealTypeEnum;
 import indi.uhyils.core.topic.Topic;
+import indi.uhyils.util.PushUtil;
 
 /**
  * 注册者模板
@@ -32,17 +34,16 @@ public abstract class AbstractRegister implements Register {
      */
     protected OutDealTypeEnum outDealTypeEnum;
 
-    public AbstractRegister(String ip, Integer port) {
+    public AbstractRegister(String ip, Integer port,OutDealTypeEnum outDealTypeEnum) {
         this.ip = ip;
         this.port = port;
+        this.outDealTypeEnum = outDealTypeEnum;
     }
-
 
     @Override
     public String getIp() {
         return ip;
     }
-
 
     @Override
     public Integer getPort() {
@@ -68,5 +69,10 @@ public abstract class AbstractRegister implements Register {
     @Override
     public OutDealTypeEnum getBehaviorType() {
         return outDealTypeEnum;
+    }
+
+    @Override
+    public Boolean pushMessage(Message message) {
+        return PushUtil.push(this, message);
     }
 }

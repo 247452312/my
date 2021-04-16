@@ -7,60 +7,45 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
-
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author uhyils <247452312@qq.com>
  * @Date 文件创建日期 2021年04月11日 19时16分
  * @Version 1.0
  */
-public class NormalQueue implements Queue {
-
-    /**
-     * 主题
-     */
-    private Topic topic;
+public class NormalQueue extends AbstractQueue {
 
     /**
      * 队列
      */
-    private java.util.Queue<Message> queue;
-
-    /**
-     * 此队列使用的线程池
-     */
-    private Executor executor;
+    private final LinkedBlockingQueue<Message> queue;
 
     public NormalQueue(Topic topic, Executor executor) {
-        this.topic = topic;
+        super(topic, executor);
         // 默认使用阻塞链表队列
         this.queue = new LinkedBlockingQueue<>();
-        this.executor = executor;
     }
 
     @Override
-    public Topic getTopic() {
-        return topic;
-    }
-
-    public void setTopic(Topic topic) {
-        this.topic = topic;
-    }
-
-    @Override
-    public Object getOne() {
-        if (queue.size() != 0) {
-            return queue.poll();
-        } else {
+    public Message getOne() {
+        try {
+            return queue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
             return null;
         }
     }
 
     @Override
-    public Object[] getMany(Integer count) {
-        Object[] result = new Object[count];
-        for (int i = 0; i < count; i++) {
-            result[i] = queue.poll();
+    public Message[] getMany(Integer count) {
+        Message[] result = new Message[count];
+        try {
+            for (int i = 0; i < count; i++) {
+                result[i] = queue.poll(3L, TimeUnit.MINUTES);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -79,7 +64,13 @@ public class NormalQueue implements Queue {
 
     @Override
     public Boolean saveMessage(Message message) {
-        return queue.add(message);
+        try {
+            queue.put(message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -87,21 +78,7 @@ public class NormalQueue implements Queue {
         return queue.size();
     }
 
-    @Override
-    public Executor getExecutor() {
-        return this.executor;
-    }
-
-    @Override
-    public void setExecutor(Executor executor) {
-        this.executor = executor;
-    }
-
     public java.util.Queue<Message> getQueue() {
         return queue;
-    }
-
-    public void setQueue(java.util.Queue<Message> queue) {
-        this.queue = queue;
     }
 }

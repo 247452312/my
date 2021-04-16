@@ -1,5 +1,6 @@
 package indi.uhyils.core.register;
 
+import indi.uhyils.core.message.Message;
 import indi.uhyils.core.topic.OutDealTypeEnum;
 
 import java.io.Serializable;
@@ -46,4 +47,12 @@ public interface Register extends Serializable {
      * @return
      */
     OutDealTypeEnum getBehaviorType();
+
+    /**
+     * 推送信息
+     * 
+     * @param message
+     * @return
+     */
+    Boolean pushMessage(Message message);
 }

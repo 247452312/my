@@ -28,9 +28,13 @@ public class TopicFactory {
      * @throws UserException
      */
     public static Topic createOrGetTopic(SendMessageRequest request) throws UserException {
-        return createOrGetTopic(request.getTopic(), request.getType(), OutDealTypeEnum.PASSIVE, OutDealTypeEnum.PASSIVE, null);
+        return createOrGetTopic(request.getTopic(), request.getType(), OutDealTypeEnum.PASSIVE, OutDealTypeEnum.ACTIVE,
+            null);
     }
 
+    public static Topic getByTopicName(String topicName) {
+        return topicMap.get(topicName);
+    }
 
     /**
      * 根据消息创建或获取一个topic
@@ -50,11 +54,13 @@ public class TopicFactory {
      * @return
      * @throws UserException
      */
-    public static Topic createOrGetTopic(SendMessageRequest request, OutDealTypeEnum receiveType, OutDealTypeEnum pushType) throws UserException {
+    public static Topic createOrGetTopic(SendMessageRequest request, OutDealTypeEnum receiveType,
+        OutDealTypeEnum pushType) throws UserException {
         return createOrGetTopic(request.getTopic(), request.getType(), receiveType, pushType, null);
     }
 
-    public static Topic createOrGetTopic(String topicName, TopicType userType, OutDealTypeEnum receiveType, OutDealTypeEnum pushType, String key) throws UserException {
+    public static Topic createOrGetTopic(String topicName, TopicType userType, OutDealTypeEnum receiveType,
+        OutDealTypeEnum pushType, String key) throws UserException {
 
         if (topicMap.containsKey(topicName)) {
             Topic topic = topicMap.get(topicName);
@@ -74,7 +80,8 @@ public class TopicFactory {
         return topic;
     }
 
-    private static Topic newTopic(String topic, TopicType type, OutDealTypeEnum receiveType, OutDealTypeEnum pushType, String key) throws UserException {
+    private static Topic newTopic(String topic, TopicType type, OutDealTypeEnum receiveType, OutDealTypeEnum pushType,
+        String key) throws UserException {
         Topic result;
         switch (type) {
             case NORMAL_MSG:

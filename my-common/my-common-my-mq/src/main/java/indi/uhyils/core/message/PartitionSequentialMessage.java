@@ -1,5 +1,6 @@
 package indi.uhyils.core.message;
 
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.core.topic.TopicType;
 
 /**
@@ -14,10 +15,10 @@ public class PartitionSequentialMessage extends AbstractMessage {
     /**
      * 分区依赖
      */
-    private final String key;
+    private final Object key;
 
-    public PartitionSequentialMessage(String topic, String key) {
-        super(topic);
+    public PartitionSequentialMessage(JSONObject data, String topic, String key) {
+        super(data, topic);
         this.key = key;
     }
 
@@ -26,7 +27,7 @@ public class PartitionSequentialMessage extends AbstractMessage {
         return TopicType.GLOBAL_SEQUENTIAL_MSG;
     }
 
-    public String getKey() {
+    public Object getKey() {
         return key;
     }
 }

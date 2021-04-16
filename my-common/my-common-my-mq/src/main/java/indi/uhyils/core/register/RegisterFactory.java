@@ -2,6 +2,7 @@ package indi.uhyils.core.register;
 
 import indi.uhyils.core.exception.NotFoundRegisterTypeException;
 import indi.uhyils.core.exception.UserException;
+import indi.uhyils.core.topic.OutDealTypeEnum;
 import indi.uhyils.core.topic.Topic;
 
 import java.util.ArrayList;
@@ -42,23 +43,24 @@ public class RegisterFactory {
      * @return
      * @throws UserException
      */
-    public static Register createOrGetRegister(RegisterType type, String ip, Integer port, Topic topic) throws UserException {
+    public static Register createOrGetRegister(RegisterType type, String ip, Integer port, Topic topic,
+        OutDealTypeEnum outDealTypeEnum) throws UserException {
         Register oneRegister = findOneRegister(type, ip, port, topic.getName());
         if (oneRegister != null) {
             return oneRegister;
         }
         switch (type) {
             case PROVIDER:
-                oneRegister = createNewProvider(ip, port, topic);
+                oneRegister = createNewProvider(ip, port, topic, outDealTypeEnum);
                 break;
             case COMSUMER:
-                oneRegister = createNewConsumer(ip, port, topic);
+                oneRegister = createNewConsumer(ip, port, topic, outDealTypeEnum);
                 break;
             case PUBLISH:
-                oneRegister = createNewPublish(ip, port, topic);
+                oneRegister = createNewPublish(ip, port, topic, outDealTypeEnum);
                 break;
             case SUBSCRIBER:
-                oneRegister = createNewSubscriber(ip, port, topic);
+                oneRegister = createNewSubscriber(ip, port, topic, outDealTypeEnum);
                 break;
             default:
                 throw new NotFoundRegisterTypeException();
@@ -75,8 +77,8 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewProvider(String ip, Integer port, Topic topic) {
-        Provider provider = new Provider(ip, port);
+    private static Register createNewProvider(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) {
+        Provider provider = new Provider(ip, port, outDealTypeEnum);
         provider.setTopic(topic);
         topic.addNewRegister(provider);
         return provider;
@@ -90,8 +92,8 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewConsumer(String ip, Integer port, Topic topic) {
-        Consumer consumer = new Consumer(ip, port);
+    private static Register createNewConsumer(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) {
+        Consumer consumer = new Consumer(ip, port, outDealTypeEnum);
         consumer.setTopic(topic);
         topic.addNewRegister(consumer);
         return consumer;
@@ -105,8 +107,8 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewPublish(String ip, Integer port, Topic topic) {
-        Publish publish = new Publish(ip, port);
+    private static Register createNewPublish(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) {
+        Publish publish = new Publish(ip, port, outDealTypeEnum);
         publish.setTopic(topic);
         topic.addNewRegister(publish);
         return publish;
@@ -120,8 +122,8 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewSubscriber(String ip, Integer port, Topic topic) {
-        Subscriber subscriber = new Subscriber(ip, port);
+    private static Register createNewSubscriber(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) {
+        Subscriber subscriber = new Subscriber(ip, port, outDealTypeEnum);
         subscriber.setTopic(topic);
         topic.addNewRegister(subscriber);
         return subscriber;
@@ -178,6 +180,5 @@ public class RegisterFactory {
             return null;
         }
     }
-
 
 }

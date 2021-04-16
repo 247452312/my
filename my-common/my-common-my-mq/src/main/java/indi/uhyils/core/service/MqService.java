@@ -32,7 +32,7 @@ public interface MqService {
      * @param ip
      * @return
      */
-    Boolean registerProvider(RegisterProviderRequest request, String ip);
+    Boolean registerProvider(RegisterProviderRequest request, String ip) throws UserException;
 
     /**
      * 注册一个消费者
@@ -41,7 +41,7 @@ public interface MqService {
      * @param ip
      * @return
      */
-    Boolean registerConsumer(RegisterConsumerRequest request, String ip);
+    Boolean registerConsumer(RegisterConsumerRequest request, String ip) throws UserException;
 
     /**
      * 注册一个发布者
@@ -50,7 +50,7 @@ public interface MqService {
      * @param ip
      * @return
      */
-    Boolean registerPublish(RegisterPublishRequest request, String ip);
+    Boolean registerPublish(RegisterPublishRequest request, String ip) throws UserException;
 
     /**
      * 注册一个订阅者
@@ -59,5 +59,5 @@ public interface MqService {
      * @param ip
      * @return
      */
-    Boolean registerSubscriber(RegisterSubscriberReqeust request, String ip);
+    Boolean registerSubscriber(RegisterSubscriberReqeust request, String ip) throws UserException;
 }

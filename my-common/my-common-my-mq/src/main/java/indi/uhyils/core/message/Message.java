@@ -6,6 +6,8 @@ import indi.uhyils.core.topic.TopicType;
 import java.io.Serializable;
 
 /**
+ * 消息体
+ * 
  * @Author uhyils <247452312@qq.com>
  * @Date 文件创建日期 2021年04月11日 17时02分
  * @Version 1.0

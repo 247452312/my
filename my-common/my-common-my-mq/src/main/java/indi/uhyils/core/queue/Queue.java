@@ -19,7 +19,6 @@ public interface Queue extends TopicObserver {
      */
     String DEFAULT_QUEUE = "defaultQueue";
 
-
     /**
      * 获取队列所在topic
      *
@@ -33,7 +32,7 @@ public interface Queue extends TopicObserver {
      *
      * @return
      */
-    Object getOne();
+    Message getOne();
 
     /**
      * 获取n个
@@ -41,7 +40,7 @@ public interface Queue extends TopicObserver {
      * @param count
      * @return
      */
-    Object[] getMany(Integer count);
+    Message[] getMany(Integer count);
 
     /**
      * 获取此队列中的最大序列(最晚的一个)
@@ -86,5 +85,12 @@ public interface Queue extends TopicObserver {
      */
     void setExecutor(Executor executor);
 
+
+    /**
+     * 启动此队列分发线程
+     * 
+     * @return
+     */
+    Boolean startDistributeThread();
 
 }

@@ -3,6 +3,8 @@ package indi.uhyils.core.topic;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.QueueFactory;
 import indi.uhyils.core.register.Register;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 主题,一个MQ中存在多个主题,每个主题有可能是不同的类型,也有可能是相同的类型
@@ -43,7 +45,8 @@ public interface Topic {
     /**
      * 保存消息
      *
-     * @param message 消息
+     * @param message
+     *            消息
      * @return
      */
     Boolean saveMessage(Message message);
@@ -64,5 +67,17 @@ public interface Topic {
      */
     void setQueueFactory(QueueFactory factory);
 
+    /**
+     * 获取所有的
+     * 
+     * @return
+     */
+    Collection<Register> getAllConsumer();
 
+    /**
+     * 是否存在consumer
+     * 
+     * @return
+     */
+    Boolean haveConsumer();
 }
