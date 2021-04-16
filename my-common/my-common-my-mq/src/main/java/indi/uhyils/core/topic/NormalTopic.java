@@ -36,7 +36,7 @@ public class NormalTopic extends AbstractTopic {
 
     @Override
     protected Boolean saveMessage0(Message message) {
-        return createNewDefaultQueue().saveMessage(message);
+        return createOrGetDefaultQueue().saveMessage(message);
     }
 
     @Override

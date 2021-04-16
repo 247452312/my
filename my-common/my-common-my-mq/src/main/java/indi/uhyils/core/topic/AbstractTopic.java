@@ -3,7 +3,10 @@ package indi.uhyils.core.topic;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.Queue;
 import indi.uhyils.core.queue.QueueFactory;
+import indi.uhyils.core.register.Register;
+import indi.uhyils.core.register.RegisterType;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,8 +37,32 @@ public abstract class AbstractTopic implements Topic {
      */
     protected volatile Map<String, Queue> queues;
 
+    /**
+     * 接收者们
+     */
+    protected Collection<Register> providers;
+    /**
+     * 推送者们
+     */
+    protected Collection<Register> consumers;
+
+    /**
+     * 创建队列的工厂
+     */
+    private QueueFactory queueFactory;
+
     protected AbstractTopic(String name) {
         this.name = name;
+    }
+
+
+    public QueueFactory getQueueFactory() {
+        return queueFactory;
+    }
+
+    @Override
+    public void setQueueFactory(QueueFactory queueFactory) {
+        this.queueFactory = queueFactory;
     }
 
     @Override
@@ -103,9 +130,45 @@ public abstract class AbstractTopic implements Topic {
      *
      * @return
      */
-    protected Queue createNewDefaultQueue() {
-        Queue queue = QueueFactory.createNormalQueue(this);
+    private Queue createNewDefaultQueue() {
+        Queue queue = queueFactory.createNormalQueue(this);
         queues.put(Queue.DEFAULT_QUEUE, queue);
         return queue;
+    }
+
+    /**
+     * 如果已经存在默认队列,则获取
+     *
+     * @return
+     */
+    protected Queue createOrGetDefaultQueue() {
+        if (queues.containsKey(Queue.DEFAULT_QUEUE)) {
+            return queues.get(Queue.DEFAULT_QUEUE);
+        }
+        return createNewDefaultQueue();
+    }
+
+    @Override
+    public Boolean addNewRegister(Register register) {
+        OutDealTypeEnum behaviorType = register.getBehaviorType();
+        // 如果是发布订阅类的主题
+        if (this instanceof PubSubTopic) {
+            if (register.getRegisterType() == RegisterType.PUBLISH && behaviorType == receiveType) {
+                providers.add(register);
+            } else if (register.getRegisterType() == RegisterType.SUBSCRIBER && behaviorType == pushType) {
+                consumers.add(register);
+            } else {
+                return false;
+            }
+        } else {
+            if (register.getRegisterType() == RegisterType.PROVIDER && behaviorType == receiveType) {
+                providers.add(register);
+            } else if (register.getRegisterType() == RegisterType.COMSUMER && behaviorType == pushType) {
+                consumers.add(register);
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 }

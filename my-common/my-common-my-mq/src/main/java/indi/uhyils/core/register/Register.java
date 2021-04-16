@@ -1,5 +1,7 @@
 package indi.uhyils.core.register;
 
+import indi.uhyils.core.topic.OutDealTypeEnum;
+
 import java.io.Serializable;
 
 /**
@@ -30,4 +32,18 @@ public interface Register extends Serializable {
      * @return
      */
     String getTopicName();
+
+    /**
+     * 获取注册者类型
+     *
+     * @return
+     */
+    RegisterType getRegisterType();
+
+    /**
+     * 获取行为类型
+     *
+     * @return
+     */
+    OutDealTypeEnum getBehaviorType();
 }

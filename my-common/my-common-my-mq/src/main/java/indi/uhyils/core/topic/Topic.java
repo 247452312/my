@@ -1,6 +1,7 @@
 package indi.uhyils.core.topic;
 
 import indi.uhyils.core.message.Message;
+import indi.uhyils.core.queue.QueueFactory;
 import indi.uhyils.core.register.Register;
 
 /**
@@ -54,6 +55,14 @@ public interface Topic {
      * @return
      */
     Boolean addNewRegister(Register register);
+
+    /**
+     * 设置队列工厂
+     *
+     * @param factory
+     * @return
+     */
+    void setQueueFactory(QueueFactory factory);
 
 
 }

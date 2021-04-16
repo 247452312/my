@@ -3,7 +3,6 @@ package indi.uhyils.core.topic;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.Queue;
-import indi.uhyils.core.queue.QueueFactory;
 
 
 /**
@@ -49,7 +48,7 @@ public class PartitionSequentialTopic extends AbstractTopic {
         if (getQueues().containsKey(keyObject.toString())) {
             markQueue = getQueues().get(keyObject.toString());
         } else {
-            markQueue = QueueFactory.createNormalQueue(this);
+            markQueue = this.getQueueFactory().createNormalQueue(this);
             getQueues().put(keyObject.toString(), markQueue);
         }
         return markQueue.saveMessage(message);

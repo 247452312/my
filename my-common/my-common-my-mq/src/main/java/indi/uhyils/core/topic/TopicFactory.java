@@ -4,7 +4,9 @@ import indi.uhyils.core.exception.PartitionTopicNoKeyException;
 import indi.uhyils.core.exception.TopicTypeNoEqualException;
 import indi.uhyils.core.exception.TopicTypeNotFoundException;
 import indi.uhyils.core.exception.UserException;
+import indi.uhyils.core.queue.QueueFactory;
 import indi.uhyils.pojo.request.SendMessageRequest;
+import indi.uhyils.util.SpringUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,17 +75,25 @@ public class TopicFactory {
     }
 
     private static Topic newTopic(String topic, TopicType type, OutDealTypeEnum receiveType, OutDealTypeEnum pushType, String key) throws UserException {
+        Topic result;
         switch (type) {
             case NORMAL_MSG:
-                return NormalTopic.build(topic, pushType, receiveType);
+                result = NormalTopic.build(topic, pushType, receiveType);
+                break;
             case GLOBAL_SEQUENTIAL_MSG:
-                return GlobalTopic.build(topic, pushType, receiveType);
+                result = GlobalTopic.build(topic, pushType, receiveType);
+                break;
             case PARTITION_ORDER_MSG:
-                return PartitionSequentialTopic.build(topic, key, pushType, receiveType);
+                result = PartitionSequentialTopic.build(topic, key, pushType, receiveType);
+                break;
             case PUB_SUB:
-                return PubSubTopic.build(topic, pushType, receiveType);
+                result = PubSubTopic.build(topic, pushType, receiveType);
+                break;
             default:
                 throw new TopicTypeNotFoundException();
         }
+        // 设置默认的队列工厂
+        result.setQueueFactory(SpringUtil.getBean(QueueFactory.class));
+        return result;
     }
 }

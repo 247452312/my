@@ -1,5 +1,6 @@
 package indi.uhyils.core.register;
 
+import indi.uhyils.core.topic.OutDealTypeEnum;
 import indi.uhyils.core.topic.Topic;
 
 /**
@@ -25,6 +26,11 @@ public abstract class AbstractRegister implements Register {
      * 注册者所在的topic
      */
     protected Topic topic;
+
+    /**
+     * 行为类型
+     */
+    protected OutDealTypeEnum outDealTypeEnum;
 
     public AbstractRegister(String ip, Integer port) {
         this.ip = ip;
@@ -59,10 +65,8 @@ public abstract class AbstractRegister implements Register {
         return topic.getName();
     }
 
-    /**
-     * 获取注册者的类型
-     *
-     * @return
-     */
-    public abstract RegisterType getRegisterType();
+    @Override
+    public OutDealTypeEnum getBehaviorType() {
+        return outDealTypeEnum;
+    }
 }

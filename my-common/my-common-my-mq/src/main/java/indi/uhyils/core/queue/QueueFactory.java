@@ -25,7 +25,6 @@ public class QueueFactory {
      * 队列使用的线程池
      */
     protected Executor queueExecutor;
-
     @Autowired
     private QueueFactoryConfig config;
 
@@ -43,6 +42,9 @@ public class QueueFactory {
     }
 
     private class QueueThreadFactory implements ThreadFactory {
+        /**
+         * thread prefix
+         */
         private static final String QUEUE_PREFIX_NAME = "queue_thread_";
 
         private final AtomicInteger q = new AtomicInteger(0);
