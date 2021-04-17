@@ -150,6 +150,9 @@ public abstract class AbstractTopic implements Topic {
 
     @Override
     public Boolean addNewRegister(Register register) {
+        if (register == null) {
+            return false;
+        }
         OutDealTypeEnum behaviorType = register.getBehaviorType();
         // 如果是发布订阅类的主题
         if (this instanceof PubSubTopic) {

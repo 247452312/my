@@ -49,6 +49,9 @@ public class MqServiceImpl implements MqService {
     @Override
     public Boolean registerProvider(RegisterProviderRequest request, String ip) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
+        if (topic == null) {
+            return false;
+        }
         topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PROVIDER, ip, request.getPort(), topic,
             request.getBehavior()));
         return true;
@@ -57,6 +60,9 @@ public class MqServiceImpl implements MqService {
     @Override
     public Boolean registerConsumer(RegisterConsumerRequest request, String ip) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
+        if (topic == null) {
+            return false;
+        }
         topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.COMSUMER, ip, request.getPort(), topic,
             request.getBehavior()));
         return true;
@@ -65,6 +71,9 @@ public class MqServiceImpl implements MqService {
     @Override
     public Boolean registerPublish(RegisterPublishRequest request, String ip) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
+        if (topic == null) {
+            return false;
+        }
         topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PUBLISH, ip, request.getPort(), topic,
             request.getBehavior()));
         return true;
@@ -73,6 +82,9 @@ public class MqServiceImpl implements MqService {
     @Override
     public Boolean registerSubscriber(RegisterSubscriberReqeust request, String ip) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
+        if (topic == null) {
+            return false;
+        }
         topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.SUBSCRIBER, ip, request.getPort(), topic,
             request.getBehavior()));
         return true;
