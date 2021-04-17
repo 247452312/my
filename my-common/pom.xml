@@ -17,7 +17,6 @@
         <module>my-common-data</module>
         <module>my-common-hot-spot</module>
         <module>my-common-rpc</module>
-        <module>my-common-my-mq</module>
     </modules>
     <packaging>pom</packaging>
 

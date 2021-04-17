@@ -23,6 +23,7 @@
         <module>my-service-algorithm</module>
         <module>my-service-smart-home</module>
         <module>my-service-work-orders</module>
+      <module>my-service-mq</module>
     </modules>
 
 

@@ -15,9 +15,9 @@ spring:
 
 rpc:
   metadata-report:
-    address: nacos://192.168.1.101:8848
+    address: nacos://8.131.77.8:8848
   registry:
-    host: 192.168.1.101
+    host: 8.131.77.8
     port: 8848
   consumer:
     timeout: 5000
@@ -38,7 +38,7 @@ log-out:
   path: D:/my/logs
 redis:
   normal:
-    ip: 192.168.1.101
+    ip: 8.131.77.8
     port: 6379
     password: uhyils-single
   hotspot:
@@ -48,7 +48,7 @@ redis:
 
 
 rabbit:
-  host: 192.168.1.101
+  host: 8.131.77.8
   port: 5672
   username: uhyils
   password: 123456

@@ -103,11 +103,6 @@
             <artifactId>hutool-all</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.tencent</groupId>
-            <artifactId>asr-sdk</artifactId>
-        </dependency>
-
     </dependencies>
     <build>
         <plugins>
