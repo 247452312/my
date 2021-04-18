@@ -1,10 +1,10 @@
 package indi.uhyils.core.register;
 
+import indi.uhyils.core.message.Message;
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.RegisterType;
-import java.io.Serializable;
 
-import indi.uhyils.core.message.Message;
+import java.io.Serializable;
 
 /**
  * 注册者
@@ -51,9 +51,17 @@ public interface Register extends Serializable {
 
     /**
      * 推送信息
-     * 
+     *
      * @param message
      * @return
      */
     Boolean pushMessage(Message message);
+
+
+    /**
+     * 获取表达式
+     *
+     * @return
+     */
+    String getExpression();
 }

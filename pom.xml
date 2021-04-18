@@ -265,6 +265,13 @@
                 <version>${quartz.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/junit/junit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
 
             <!-- dubbo -->
             <dependency>

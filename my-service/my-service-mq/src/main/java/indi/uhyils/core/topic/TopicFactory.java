@@ -1,17 +1,17 @@
 package indi.uhyils.core.topic;
 
+import indi.uhyils.core.queue.QueueFactory;
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.TopicType;
 import indi.uhyils.exception.PartitionTopicNoKeyException;
 import indi.uhyils.exception.TopicTypeNoEqualException;
 import indi.uhyils.exception.TopicTypeNotFoundException;
 import indi.uhyils.exception.UserException;
+import indi.uhyils.pojo.request.SendMessageRequest;
 import indi.uhyils.util.SpringUtil;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import indi.uhyils.core.queue.QueueFactory;
-import indi.uhyils.pojo.request.SendMessageRequest;
 
 /**
  * @Author uhyils <247452312@qq.com>
@@ -31,7 +31,7 @@ public class TopicFactory {
      */
     public static Topic createOrGetTopic(SendMessageRequest request) throws UserException {
         return createOrGetTopic(request.getTopic(), request.getType(), OutDealTypeEnum.PASSIVE, OutDealTypeEnum.ACTIVE,
-            null);
+                request.getKey());
     }
 
     public static Topic getByTopicName(String topicName) {
@@ -57,12 +57,23 @@ public class TopicFactory {
      * @throws UserException
      */
     public static Topic createOrGetTopic(SendMessageRequest request, OutDealTypeEnum receiveType,
-        OutDealTypeEnum pushType) throws UserException {
+                                         OutDealTypeEnum pushType) throws UserException {
         return createOrGetTopic(request.getTopic(), request.getType(), receiveType, pushType, null);
     }
 
+    /**
+     * 创建或者获取一个topic
+     *
+     * @param topicName   主题的名称
+     * @param userType    用户认为的主题的类型
+     * @param receiveType 主题接收消息的策略
+     * @param pushType    主题分发信息的策略
+     * @param key         如果是分区消息,则他的key
+     * @return
+     * @throws UserException
+     */
     public static Topic createOrGetTopic(String topicName, TopicType userType, OutDealTypeEnum receiveType,
-        OutDealTypeEnum pushType, String key) throws UserException {
+                                         OutDealTypeEnum pushType, String key) throws UserException {
 
         if (topicMap.containsKey(topicName)) {
             Topic topic = topicMap.get(topicName);
@@ -83,7 +94,7 @@ public class TopicFactory {
     }
 
     private static Topic newTopic(String topic, TopicType type, OutDealTypeEnum receiveType, OutDealTypeEnum pushType,
-        String key) throws UserException {
+                                  String key) throws UserException {
         Topic result;
         switch (type) {
             case NORMAL_MSG:

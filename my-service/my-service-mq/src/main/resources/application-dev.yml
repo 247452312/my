@@ -19,7 +19,7 @@ black-list:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://8.131.77.8:3306/my_mq
+    url: jdbc:mysql://prod:3306/my_mq
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource

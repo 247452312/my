@@ -34,7 +34,12 @@ public abstract class AbstractRegister implements Register {
      */
     protected OutDealTypeEnum outDealTypeEnum;
 
-    public AbstractRegister(String ip, Integer port,OutDealTypeEnum outDealTypeEnum) {
+    /**
+     * 规则表达式
+     */
+    protected String expression;
+
+    public AbstractRegister(String ip, Integer port, OutDealTypeEnum outDealTypeEnum) {
         this.ip = ip;
         this.port = port;
         this.outDealTypeEnum = outDealTypeEnum;
@@ -74,5 +79,14 @@ public abstract class AbstractRegister implements Register {
     @Override
     public Boolean pushMessage(Message message) {
         return PushUtil.push(this, message);
+    }
+
+    @Override
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
     }
 }

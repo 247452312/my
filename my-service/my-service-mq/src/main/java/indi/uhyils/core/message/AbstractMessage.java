@@ -8,7 +8,7 @@ import indi.uhyils.util.SpringUtil;
 
 /**
  * 消息模板
- * 
+ *
  * @Author uhyils <247452312@qq.com>
  * @Date 文件创建日期 2021年04月11日 20时30分
  * @Version 1.0

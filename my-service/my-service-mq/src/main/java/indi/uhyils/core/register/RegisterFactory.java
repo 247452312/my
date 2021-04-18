@@ -1,17 +1,18 @@
 package indi.uhyils.core.register;
 
+import indi.uhyils.core.topic.Topic;
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.RegisterType;
+import indi.uhyils.exception.ExpressionInvalidException;
 import indi.uhyils.exception.NotFoundRegisterTypeException;
 import indi.uhyils.exception.UserException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import indi.uhyils.core.topic.Topic;
 
 /**
  * 注册者管理者
@@ -45,7 +46,7 @@ public class RegisterFactory {
      * @throws UserException
      */
     public static Register createOrGetRegister(RegisterType type, String ip, Integer port, Topic topic,
-        OutDealTypeEnum outDealTypeEnum) throws UserException {
+                                               OutDealTypeEnum outDealTypeEnum) throws UserException {
         Register oneRegister = findOneRegister(type, ip, port, topic.getName());
         if (oneRegister != null) {
             return oneRegister;
@@ -78,7 +79,7 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewProvider(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) {
+    private static Register createNewProvider(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
         Provider provider = new Provider(ip, port, outDealTypeEnum);
         provider.setTopic(topic);
         topic.addNewRegister(provider);
@@ -93,7 +94,7 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewConsumer(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) {
+    private static Register createNewConsumer(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
         Consumer consumer = new Consumer(ip, port, outDealTypeEnum);
         consumer.setTopic(topic);
         topic.addNewRegister(consumer);
@@ -108,7 +109,7 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewPublish(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) {
+    private static Register createNewPublish(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
         Publish publish = new Publish(ip, port, outDealTypeEnum);
         publish.setTopic(topic);
         topic.addNewRegister(publish);
@@ -123,7 +124,7 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewSubscriber(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) {
+    private static Register createNewSubscriber(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
         Subscriber subscriber = new Subscriber(ip, port, outDealTypeEnum);
         subscriber.setTopic(topic);
         topic.addNewRegister(subscriber);

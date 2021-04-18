@@ -1,11 +1,11 @@
-package indi.uhyils.core.message.distribute;
-
-import java.util.Collection;
-import java.util.Optional;
+package indi.uhyils.core.queue.distribute;
 
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.Queue;
 import indi.uhyils.core.register.Register;
+
+import java.util.Collection;
+import java.util.Optional;
 
 /**
  * @Author uhyils <247452312@qq.com>

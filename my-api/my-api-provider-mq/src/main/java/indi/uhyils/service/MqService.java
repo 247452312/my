@@ -1,12 +1,8 @@
 package indi.uhyils.service;
 
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.exception.UserException;
-import indi.uhyils.pojo.request.CreateTopicRequest;
-import indi.uhyils.pojo.request.RegisterConsumerRequest;
-import indi.uhyils.pojo.request.RegisterProviderRequest;
-import indi.uhyils.pojo.request.RegisterPublishRequest;
-import indi.uhyils.pojo.request.RegisterSubscriberReqeust;
-import indi.uhyils.pojo.request.SendMessageRequest;
+import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
 
@@ -23,6 +19,14 @@ public interface MqService extends BaseService {
      * @return
      */
     ServiceResult<Boolean> sendMessage(SendMessageRequest request) throws UserException;
+
+    /**
+     * 获取消息
+     *
+     * @param request
+     * @return
+     */
+    ServiceResult<JSONObject> getMessage(GetMessageRequest request) throws UserException;
 
     /**
      * 创建主题

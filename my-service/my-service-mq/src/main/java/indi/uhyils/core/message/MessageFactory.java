@@ -1,7 +1,6 @@
 package indi.uhyils.core.message;
 
 import com.alibaba.fastjson.JSONObject;
-
 import indi.uhyils.core.topic.Topic;
 import indi.uhyils.enum_.TopicType;
 import indi.uhyils.exception.TopicTypeNotFoundException;

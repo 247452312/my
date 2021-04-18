@@ -1,12 +1,11 @@
 package indi.uhyils.core.topic;
 
-import indi.uhyils.enum_.OutDealTypeEnum;
-import indi.uhyils.enum_.TopicType;
-import java.util.Collection;
-
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.QueueFactory;
 import indi.uhyils.core.register.Register;
+import indi.uhyils.enum_.OutDealTypeEnum;
+import indi.uhyils.enum_.TopicType;
+import indi.uhyils.exception.ExpressionInvalidException;
 
 /**
  * 主题,一个MQ中存在多个主题,每个主题有可能是不同的类型,也有可能是相同的类型
@@ -47,11 +46,10 @@ public interface Topic {
     /**
      * 保存消息
      *
-     * @param message
-     *            消息
+     * @param message 消息
      * @return
      */
-    Boolean saveMessage(Message message);
+    Boolean saveMessage(Message message) throws ExpressionInvalidException;
 
     /**
      * 添加新的注册者到这个topic上
@@ -59,7 +57,7 @@ public interface Topic {
      * @param register
      * @return
      */
-    Boolean addNewRegister(Register register);
+    Boolean addNewRegister(Register register) throws ExpressionInvalidException;
 
     /**
      * 设置队列工厂
@@ -70,16 +68,10 @@ public interface Topic {
     void setQueueFactory(QueueFactory factory);
 
     /**
-     * 获取所有的
-     * 
+     * 获取一条信息
+     *
+     * @param key 如果存在则添加,如果不存在就为null
      * @return
      */
-    Collection<Register> getAllConsumer();
-
-    /**
-     * 是否存在consumer
-     * 
-     * @return
-     */
-    Boolean haveConsumer();
+    Message getMessage(String key) throws InterruptedException;
 }

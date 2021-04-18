@@ -1,9 +1,10 @@
 package indi.uhyils.core.queue;
 
-import java.util.concurrent.Executor;
-
 import indi.uhyils.core.message.Message;
-import indi.uhyils.core.topic.Topic;
+import indi.uhyils.core.register.Register;
+import indi.uhyils.exception.ExpressionInvalidException;
+
+import java.util.List;
 
 /**
  * 队列
@@ -20,19 +21,20 @@ public interface Queue extends TopicObserver {
     String DEFAULT_QUEUE = "defaultQueue";
 
     /**
-     * 获取队列所在topic
+     * 获取一个,如果是普通消息,则获取第一个 如果是全局顺序消息,则通知topic 获取全局第一个, 如果是分区顺序消息,则通知topic获取此区第一个
+     * 阻塞方法
      *
      * @return
      */
-    @Override
-    Topic getTopic();
+    Message takeOne();
 
     /**
      * 获取一个,如果是普通消息,则获取第一个 如果是全局顺序消息,则通知topic 获取全局第一个, 如果是分区顺序消息,则通知topic获取此区第一个
+     * 非阻塞方法
      *
      * @return
      */
-    Message getOne();
+    Message getOne() throws InterruptedException;
 
     /**
      * 获取n个
@@ -71,26 +73,19 @@ public interface Queue extends TopicObserver {
      */
     int size();
 
+
     /**
-     * 获取此队列使用的线程池
+     * 尝试将注册者注册到此队列
+     *
+     * @param register
+     * @return 是否可以注册
+     */
+    Boolean tryToRegister(Register register) throws ExpressionInvalidException;
+
+    /**
+     * 获取所有的注册到此队列上的consumer
      *
      * @return
      */
-    Executor getExecutor();
-
-    /**
-     * 配置此队列使用的线程池
-     *
-     * @param executor
-     */
-    void setExecutor(Executor executor);
-
-
-    /**
-     * 启动此队列分发线程
-     * 
-     * @return
-     */
-    Boolean startDistributeThread();
-
+    List<Register> getConsumer();
 }

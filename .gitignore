@@ -1,7 +1,6 @@
 database/
 !.mvn/wrapper/maven-wrapper.jar
 *.log
-**/test/**
 **/venv/**
 **/target/**
 

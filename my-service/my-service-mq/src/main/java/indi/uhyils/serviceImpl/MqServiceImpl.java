@@ -1,5 +1,6 @@
 package indi.uhyils.serviceImpl;
 
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.message.MessageFactory;
 import indi.uhyils.core.register.RegisterFactory;
@@ -8,15 +9,11 @@ import indi.uhyils.core.topic.TopicFactory;
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.RegisterType;
 import indi.uhyils.exception.UserException;
-import indi.uhyils.pojo.request.CreateTopicRequest;
-import indi.uhyils.pojo.request.RegisterConsumerRequest;
-import indi.uhyils.pojo.request.RegisterProviderRequest;
-import indi.uhyils.pojo.request.RegisterPublishRequest;
-import indi.uhyils.pojo.request.RegisterSubscriberReqeust;
-import indi.uhyils.pojo.request.SendMessageRequest;
+import indi.uhyils.pojo.request.*;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.MqService;
+import indi.uhyils.util.LogUtil;
 
 /**
  * @Author uhyils <247452312@qq.com>
@@ -32,6 +29,24 @@ public class MqServiceImpl implements MqService {
         Message message = MessageFactory.createMessage(request.getData(), request.getKey(), topic);
         // 保存消息到topic
         return ServiceResult.buildSuccessResult(topic.saveMessage(message), request);
+    }
+
+    @Override
+    public ServiceResult<JSONObject> getMessage(GetMessageRequest request) {
+        Topic topic = TopicFactory.getByTopicName(request.getTopicName());
+        if (topic == null) {
+            return ServiceResult.buildSuccessResult("不存在topic", null, request);
+        }
+        Message message = null;
+        try {
+            message = topic.getMessage(request.getKey());
+        } catch (InterruptedException e) {
+            LogUtil.error(this, e);
+        }
+        if (message == null) {
+            return ServiceResult.buildSuccessResult("不存在信息", null, request);
+        }
+        return ServiceResult.buildSuccessResult(message.getData(), request);
     }
 
     @Override
@@ -57,7 +72,7 @@ public class MqServiceImpl implements MqService {
             return ServiceResult.buildSuccessResult(false, request);
         }
         topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PROVIDER, ip, request.getPort(), topic,
-            request.getBehavior()));
+                request.getBehavior()));
         return ServiceResult.buildSuccessResult(true, request);
     }
 
@@ -68,7 +83,7 @@ public class MqServiceImpl implements MqService {
             return ServiceResult.buildSuccessResult(false, request);
         }
         topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.COMSUMER, ip, request.getPort(), topic,
-            request.getBehavior()));
+                request.getBehavior()));
         return ServiceResult.buildSuccessResult(true, request);
     }
 
@@ -79,19 +94,19 @@ public class MqServiceImpl implements MqService {
             return ServiceResult.buildSuccessResult(false, request);
         }
         topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PUBLISH, ip, request.getPort(), topic,
-            request.getBehavior()));
+                request.getBehavior()));
         return ServiceResult.buildSuccessResult(true, request);
     }
 
     @Override
     public ServiceResult<Boolean> registerSubscriber(RegisterSubscriberReqeust request, String ip)
-        throws UserException {
+            throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
             return ServiceResult.buildSuccessResult(false, request);
         }
         topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.SUBSCRIBER, ip, request.getPort(), topic,
-            request.getBehavior()));
+                request.getBehavior()));
         return ServiceResult.buildSuccessResult(true, request);
     }
 }

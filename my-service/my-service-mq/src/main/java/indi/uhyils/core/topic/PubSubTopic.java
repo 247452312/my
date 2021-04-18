@@ -3,6 +3,7 @@ package indi.uhyils.core.topic;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.TopicType;
+import indi.uhyils.exception.ExpressionInvalidException;
 
 /**
  * 发布订阅主题
@@ -30,7 +31,7 @@ public class PubSubTopic extends AbstractTopic {
     }
 
     @Override
-    protected Boolean saveMessage0(Message message) {
+    protected Boolean saveMessage0(Message message) throws ExpressionInvalidException {
         return createOrGetDefaultQueue().saveMessage(message);
     }
 

@@ -1,7 +1,6 @@
 package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSON;
-
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.register.Register;
 

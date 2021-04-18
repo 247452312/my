@@ -1,11 +1,8 @@
 package indi.uhyils;
 
+import indi.uhyils.rpc.annotation.MyRpc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import indi.uhyils.rpc.annotation.MyRpc;
 
 /**
  * @author uhyils <247452312@qq.com>

@@ -1,10 +1,10 @@
-package indi.uhyils.core.message.distribute;
-
-import java.util.Collection;
+package indi.uhyils.core.queue.distribute;
 
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.Queue;
 import indi.uhyils.core.register.Register;
+
+import java.util.Collection;
 
 /**
  * @Author uhyils <247452312@qq.com>
@@ -13,7 +13,7 @@ import indi.uhyils.core.register.Register;
  */
 public class AllPushMessageDistribute extends MessageDistributeRunnable {
 
-    public AllPushMessageDistribute( Queue queue) {
+    public AllPushMessageDistribute(Queue queue) {
         super(queue);
     }
 

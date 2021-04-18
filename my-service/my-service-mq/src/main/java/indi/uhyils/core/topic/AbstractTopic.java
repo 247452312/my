@@ -1,16 +1,17 @@
 package indi.uhyils.core.topic;
 
-import indi.uhyils.enum_.OutDealTypeEnum;
-import indi.uhyils.enum_.RegisterType;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.Queue;
 import indi.uhyils.core.queue.QueueFactory;
 import indi.uhyils.core.register.Register;
+import indi.uhyils.enum_.OutDealTypeEnum;
+import indi.uhyils.enum_.RegisterType;
+import indi.uhyils.exception.ExpressionInvalidException;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author uhyils <247452312@qq.com>
@@ -100,7 +101,8 @@ public abstract class AbstractTopic implements Topic {
     }
 
     @Override
-    public Boolean saveMessage(Message message) {
+    public Boolean saveMessage(Message message) throws ExpressionInvalidException {
+        // 保证保存队列的地方被初始化了
         initQueue();
         return saveMessage0(message);
     }
@@ -111,7 +113,7 @@ public abstract class AbstractTopic implements Topic {
      * @param message
      * @return
      */
-    protected abstract Boolean saveMessage0(Message message);
+    protected abstract Boolean saveMessage0(Message message) throws ExpressionInvalidException;
 
     /**
      * 初始化队列
@@ -131,8 +133,12 @@ public abstract class AbstractTopic implements Topic {
      *
      * @return
      */
-    private Queue createNewDefaultQueue() {
+    private Queue createNewDefaultQueue() throws ExpressionInvalidException {
         Queue queue = queueFactory.createNormalQueue(this);
+        //新队列,尝试注册所有的消费者
+        for (Register consumer : consumers) {
+            queue.tryToRegister(consumer);
+        }
         queues.put(Queue.DEFAULT_QUEUE, queue);
         return queue;
     }
@@ -142,7 +148,7 @@ public abstract class AbstractTopic implements Topic {
      *
      * @return
      */
-    protected Queue createOrGetDefaultQueue() {
+    protected Queue createOrGetDefaultQueue() throws ExpressionInvalidException {
         if (queues.containsKey(Queue.DEFAULT_QUEUE)) {
             return queues.get(Queue.DEFAULT_QUEUE);
         }
@@ -150,7 +156,7 @@ public abstract class AbstractTopic implements Topic {
     }
 
     @Override
-    public Boolean addNewRegister(Register register) {
+    public Boolean addNewRegister(final Register register) throws ExpressionInvalidException {
         if (register == null) {
             return false;
         }
@@ -161,6 +167,9 @@ public abstract class AbstractTopic implements Topic {
                 providers.add(register);
             } else if (register.getRegisterType() == RegisterType.SUBSCRIBER && behaviorType == pushType) {
                 consumers.add(register);
+                for (Queue t : getQueues().values()) {
+                    t.tryToRegister(register);
+                }
             } else {
                 return false;
             }
@@ -169,6 +178,9 @@ public abstract class AbstractTopic implements Topic {
                 providers.add(register);
             } else if (register.getRegisterType() == RegisterType.COMSUMER && behaviorType == pushType) {
                 consumers.add(register);
+                for (Queue t : getQueues().values()) {
+                    t.tryToRegister(register);
+                }
             } else {
                 return false;
             }
@@ -177,12 +189,9 @@ public abstract class AbstractTopic implements Topic {
     }
 
     @Override
-    public Collection<Register> getAllConsumer() {
-        return consumers;
-    }
-
-    @Override
-    public Boolean haveConsumer() {
-        return consumers.size() != 0;
+    public Message getMessage(String key) throws InterruptedException {
+        key = key != null ? key : Queue.DEFAULT_QUEUE;
+        Queue queue = queues.get(key);
+        return queue.getOne();
     }
 }
