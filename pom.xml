@@ -66,6 +66,7 @@
         <commons-logging.version>1.2</commons-logging.version>
         <commons-net.version>3.6</commons-net.version>
         <junit.version>4.13</junit.version>
+        <powermock.version>1.6.5</powermock.version>
         <jedis.version>3.2.0</jedis.version>
         <distrupter.version>3.4.2</distrupter.version>
         <ssh2.version>262</ssh2.version>
@@ -272,7 +273,18 @@
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
-
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4-legacy</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-api-mockito</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
             <!-- dubbo -->
             <dependency>
                 <groupId>org.apache.dubbo</groupId>
