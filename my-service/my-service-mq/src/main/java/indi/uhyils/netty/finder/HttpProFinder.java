@@ -212,7 +212,6 @@ public class HttpProFinder implements Finder {
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, value);
         response.content().writeBytes(buffer);
         buffer.release();
-        System.out.println(response);
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         return true;
     }
