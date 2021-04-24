@@ -17,6 +17,24 @@ import java.util.Map;
  */
 public class LogUtil {
 
+    public static Boolean isDebugEnabled(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        return isDebugEnabled(obj.getClass());
+    }
+
+    public static Boolean isDebugEnabled(Class obj) {
+        if (obj == null) {
+            return false;
+        }
+        String simpleName = obj.getSimpleName();
+        if (!loggerMap.containsKey(simpleName)) {
+            return false;
+        }
+        return loggerMap.get(simpleName).isDebugEnabled();
+    }
+
     /**
      * 日志文件缓存地
      */

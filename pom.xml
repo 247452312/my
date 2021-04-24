@@ -66,7 +66,8 @@
         <commons-logging.version>1.2</commons-logging.version>
         <commons-net.version>3.6</commons-net.version>
         <junit.version>4.13</junit.version>
-        <powermock.version>1.6.5</powermock.version>
+        <powermock.version>2.0.2</powermock.version>
+        <mockito.version>2.23.4</mockito.version>
         <jedis.version>3.2.0</jedis.version>
         <distrupter.version>3.4.2</distrupter.version>
         <ssh2.version>262</ssh2.version>
@@ -167,13 +168,7 @@
                 <artifactId>spring-boot-starter-aop</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring-boot.version}</version>
-                <scope>test</scope>
-            </dependency>
+
 
             <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
             <dependency>
@@ -266,25 +261,56 @@
                 <version>${quartz.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/junit/junit -->
+            <!-- 单元测试 -->
+            <!--junit-->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
+            <!--spring test-->
             <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-module-junit4-legacy</artifactId>
-                <version>${powermock.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.powermock</groupId>
-                <artifactId>powermock-api-mockito</artifactId>
+                <artifactId>powermock-api-mockito2</artifactId>
                 <version>${powermock.version}</version>
                 <scope>test</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-core</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4-rule</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+
             <!-- dubbo -->
             <dependency>
                 <groupId>org.apache.dubbo</groupId>

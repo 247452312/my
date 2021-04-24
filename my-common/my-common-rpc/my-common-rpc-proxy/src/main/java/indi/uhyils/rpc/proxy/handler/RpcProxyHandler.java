@@ -79,7 +79,7 @@ public class RpcProxyHandler implements InvocationHandler {
         }
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         String invoke = registry.invoke(bean.newId(), method.getName(), method.getParameterTypes(), args);
-        Object o = JSON.parseObject(invoke, ServiceResult.class);
+        Object o = JSON.parseObject(invoke, method.getGenericReturnType());
         for (ConsumerResponseObjectExtension consumerResponseObjectExtension : consumerResponseObjectExtensions) {
             o = consumerResponseObjectExtension.doFilter(o, invoke);
         }

@@ -1,12 +1,13 @@
 package indi.uhyils.netty.handler;
 
-import java.lang.reflect.Method;
-
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import indi.uhyils.service.MqService;
+import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+
+import java.lang.reflect.Method;
 
 /**
  * @Author uhyils <247452312@qq.com>
@@ -30,11 +31,9 @@ public class ServiceExecuteHandler extends SimpleChannelInboundHandler<ProtocolP
         Object[] params = ppm.getParams();
         Object returnObj = method.invoke(service, params);
         // 将返回值解析为正规的返回类型
-        Object obj = ppm.getFunction().apply(returnObj);
-        send(chx, obj);
-    }
-
-    private void send(ChannelHandlerContext ctx, Object responseBytes) {
-        ctx.channel().writeAndFlush(responseBytes);
+        Boolean responseStatus = ppm.getFunction().transformEntry(chx, returnObj);
+        if (responseStatus && LogUtil.isDebugEnabled(this)) {
+            LogUtil.debug(this, "消息接收 回应成功:" + ppm.getIp());
+        }
     }
 }

@@ -20,7 +20,7 @@ rpc:
     host: prod
     port: 8848
   consumer:
-    timeout: 5000
+    timeout: 10000
     check: false
   provider:
     timeout: 5000

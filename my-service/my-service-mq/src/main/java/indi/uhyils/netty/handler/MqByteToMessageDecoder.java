@@ -1,8 +1,5 @@
 package indi.uhyils.netty.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import indi.uhyils.exception.ProtocolNotFoundException;
 import indi.uhyils.netty.finder.Finder;
 import indi.uhyils.netty.finder.HttpProFinder;
@@ -11,6 +8,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * mq 各种支持的协议的解码器
@@ -50,13 +50,15 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
                     break;
                 }
             }
+
             if (finder == null) {
                 throw new ProtocolNotFoundException();
             }
+            //添加前置需要的handler
+            finder.addPrepositionHandler(ctx, in);
             ByteBuf byteBuf = finder.cutByteBuf(in);
             ProtocolParsingModel protocolParsingModel = finder.parsingByteBuf(ctx, byteBuf);
             out.add(protocolParsingModel);
         }
     }
-
 }

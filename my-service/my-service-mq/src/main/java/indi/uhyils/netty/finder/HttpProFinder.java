@@ -1,23 +1,23 @@
 package indi.uhyils.netty.finder;
 
-import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
-
-import org.apache.commons.lang3.math.NumberUtils;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-
 import indi.uhyils.netty.model.ProtocolParsingModel;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.*;
 import io.netty.util.ByteProcessor;
 import io.netty.util.CharsetUtil;
+import org.apache.commons.lang3.math.NumberUtils;
+
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
 /**
  * http协议发现者
@@ -41,11 +41,21 @@ public class HttpProFinder implements Finder {
      * http请求的开头
      */
     private static final String[] HTTP_TYPES =
-        new String[] {"GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "OPTIONS", "CONNECT"};
+            new String[]{"GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "OPTIONS", "CONNECT"};
+
+    /**
+     * 获取请求者的ip
+     *
+     * @param ctx
+     * @return
+     */
+    public static String getAddressStr(ChannelHandlerContext ctx) {
+        InetSocketAddress socket = (InetSocketAddress) ctx.channel().remoteAddress();
+        return socket.getAddress().getHostAddress();
+    }
 
     @Override
     public Boolean checkByteBuf(ByteBuf byteBuf) {
-
         boolean typeNameIsHttp = checkTypeNameIsHttp(byteBuf);
         if (!typeNameIsHttp) {
             return false;
@@ -102,9 +112,9 @@ public class HttpProFinder implements Finder {
         byteBuf.readerIndex(firstCr);
         int secondCr = -1;
         while (byteBuf.isReadable()) {
-            if (byteBuf.readByte() == (byte)'\r' && byteBuf.isReadable() && byteBuf.readByte() == (byte)'\n'
-                && byteBuf.isReadable() && byteBuf.readByte() == (byte)'\r' && byteBuf.isReadable()
-                && byteBuf.readByte() == (byte)'\n') {
+            if (byteBuf.readByte() == (byte) '\r' && byteBuf.isReadable() && byteBuf.readByte() == (byte) '\n'
+                    && byteBuf.isReadable() && byteBuf.readByte() == (byte) '\r' && byteBuf.isReadable()
+                    && byteBuf.readByte() == (byte) '\n') {
                 secondCr = byteBuf.readerIndex() - 4;
                 break;
             }
@@ -140,17 +150,21 @@ public class HttpProFinder implements Finder {
 
     @Override
     public ProtocolParsingModel parsingByteBuf(ChannelHandlerContext ctx, ByteBuf byteBuf) {
+        String http = new String(byteBuf.array(), StandardCharsets.UTF_8);
+        // 获取请求人的id
         String ip = getAddressStr(ctx);
-        byte[] httpByte = byteBuf.array();
-        String http = new String(httpByte, StandardCharsets.UTF_8);
+
         int firstSeparator = http.indexOf(SEPARATOR);
-        int headerAndBodySeparator = http.indexOf(SEPARATOR + SEPARATOR);
-        // 这个是header 可能之后能用到
-        String headerString = http.substring(firstSeparator, headerAndBodySeparator);
-        String substring = http.substring(headerAndBodySeparator);
-        JSONObject body = JSONObject.parseObject(substring);
+        String twoSeparator = SEPARATOR + SEPARATOR;
+        int headerAndBodySeparator = http.indexOf(twoSeparator);
+        // 获取header
+        String headerStr = http.substring(firstSeparator, headerAndBodySeparator);
+        // 获取body
+        String bodyStr = http.substring(headerAndBodySeparator + twoSeparator.length());
+        JSONObject body = JSONObject.parseObject(bodyStr);
+
         String methodName = body.getString(METHOD_NAME);
-        JSONArray methodType = body.getJSONArray(METHOD_TYPE);
+        JSONArray methodType = body.getJSONArray(PARAMS_TYPE);
         Class[] methodClassType = new Class[methodType.size()];
         try {
             for (int i = 0; i < methodType.size(); i++) {
@@ -166,27 +180,47 @@ public class HttpProFinder implements Finder {
             JSONObject o = dataArray.getJSONObject(i);
             Class aClass = methodClassType[i];
             data[i] = o.toJavaObject(aClass);
-
         }
+        if (data[0] instanceof DefaultRequest) {
+            actionAddRequestLink((DefaultRequest) data[0]);
+        }
+
         return ProtocolParsingModel.build(HTTP, ip, methodName, methodClassType, data,
-            this::packingByteToRightResponse);
+                this::packingByteToRightResponse);
     }
 
     /**
-     * 获取请求者的ip
-     * 
-     * @param ctx
-     * @return
+     * action 添加链路跟踪起点
+     *
+     * @param action
      */
-    private String getAddressStr(ChannelHandlerContext ctx) {
-        InetSocketAddress socket = (InetSocketAddress)ctx.channel().remoteAddress();
-        return socket.getAddress().getHostAddress();
+    public static void actionAddRequestLink(DefaultRequest action) {
+        LinkNode<String> link = new LinkNode<>();
+        link.setData("MQ请求");
+        action.setRequestLink(link);
     }
 
     @Override
-    public Object packingByteToRightResponse(Object returnObj) {
-        // 1.设置响应
-        return new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
-            Unpooled.copiedBuffer(JSONObject.toJSONString(returnObj), CharsetUtil.UTF_8));
+    public Boolean packingByteToRightResponse(ChannelHandlerContext ctx, Object returnObj) {
+
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/json;charset=UTF-8");
+        String string = JSONObject.toJSONString(returnObj);
+        ByteBuf buffer = Unpooled.copiedBuffer(string, CharsetUtil.UTF_8);
+        // 设置返回内容的长度
+        int value = buffer.readableBytes();
+        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, value);
+        response.content().writeBytes(buffer);
+        buffer.release();
+        System.out.println(response);
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+        return true;
     }
+
+    @Override
+    public void addPrepositionHandler(ChannelHandlerContext ctx, ByteBuf byteBuf) {
+        ctx.pipeline().addFirst("httpResponseEncoder", new HttpResponseEncoder());
+    }
+
+
 }

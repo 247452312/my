@@ -1,11 +1,14 @@
 package indi.uhyils.netty.model;
 
+import com.google.common.collect.Maps;
+import io.netty.channel.ChannelHandlerContext;
+
 import java.io.Serializable;
 import java.util.function.Function;
 
 /**
  * 协议解析生成的包
- * 
+ *
  * @Author uhyils <247452312@qq.com>
  * @Date 文件创建日期 2021年04月24日 09时41分
  * @Version 1.0
@@ -34,12 +37,11 @@ public class ProtocolParsingModel implements Serializable {
     private Object[] params;
 
     /**
-     * 解析
+     * 解析并发送
      */
-    private Function<Object, Object> function;
+    private Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> function;
 
-    public static ProtocolParsingModel build(String protocolName, String ip, String methodName, Class[] paramsType,
-        Object[] params, Function<Object, Object> function) {
+    public static ProtocolParsingModel build(String protocolName, String ip, String methodName, Class[] paramsType, Object[] params, Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> function) {
         ProtocolParsingModel build = new ProtocolParsingModel();
         build.protocolName = protocolName;
         build.ip = ip;
@@ -90,11 +92,11 @@ public class ProtocolParsingModel implements Serializable {
         this.params = params;
     }
 
-    public Function<Object, Object> getFunction() {
+    public Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> getFunction() {
         return function;
     }
 
-    public void setFunction(Function<Object, Object> function) {
+    public void setFunction(Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> function) {
         this.function = function;
     }
 }

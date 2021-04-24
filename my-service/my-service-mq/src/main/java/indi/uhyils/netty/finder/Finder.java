@@ -20,7 +20,7 @@ public interface Finder {
     /**
      * 入参类型
      */
-    String METHOD_TYPE = "methodType";
+    String PARAMS_TYPE = "paramsType";
     /**
      * 入参
      */
@@ -44,7 +44,7 @@ public interface Finder {
 
     /**
      * 解析byte to model
-     * 
+     *
      * @param ctx
      * @param byteBuf
      * @return
@@ -52,11 +52,17 @@ public interface Finder {
     ProtocolParsingModel parsingByteBuf(ChannelHandlerContext ctx, ByteBuf byteBuf);
 
     /**
-     * 将返回的obj包装为此协议正确的返回
-     * 
+     * 将返回的obj包装为此协议正确的返回并发送
+     *
+     * @param ctx
      * @param returnObj
-     * @return
+     * @return 是否发送成功
      */
-    Object packingByteToRightResponse(Object returnObj);
+    Boolean packingByteToRightResponse(ChannelHandlerContext ctx, Object returnObj);
+
+    /**
+     * 添加前置的handler,如果需要的话
+     */
+    void addPrepositionHandler(ChannelHandlerContext ctx, ByteBuf byteBuf);
 
 }
