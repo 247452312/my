@@ -2,8 +2,8 @@ package indi.uhyils.netty.handler;
 
 import indi.uhyils.exception.ProtocolNotFoundException;
 import indi.uhyils.netty.finder.Finder;
-import indi.uhyils.netty.finder.HttpProFinder;
-import indi.uhyils.netty.finder.MqttProFinder;
+import indi.uhyils.netty.finder.http.HttpProFinder;
+import indi.uhyils.netty.finder.mqtt.MqttProFinder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

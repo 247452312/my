@@ -1,5 +1,6 @@
-package indi.uhyils.netty.finder;
+package indi.uhyils.netty.finder.mqtt;
 
+import indi.uhyils.netty.finder.Finder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -33,7 +34,6 @@ public class MqttProFinder implements Finder {
                 mqttByte[i] = byteBuf.readByte();
             }
             byte[] bytes = Arrays.copyOfRange(mqttByte, 4, 8);
-            byte[] bytes1 = MQTT_NAME.getBytes(StandardCharsets.UTF_8);
             if (MQTT_NAME.equals(new String(bytes))) {
                 return true;
             }
