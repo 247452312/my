@@ -3,6 +3,7 @@ package indi.uhyils.netty.handler;
 import indi.uhyils.exception.ProtocolNotFoundException;
 import indi.uhyils.netty.finder.Finder;
 import indi.uhyils.netty.finder.HttpProFinder;
+import indi.uhyils.netty.finder.MqttProFinder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -34,6 +35,7 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
         // TODO 此处可以重构为spi机制
         finders = new ArrayList<>();
         finders.add(new HttpProFinder());
+        finders.add(new MqttProFinder());
     }
 
     @Override
