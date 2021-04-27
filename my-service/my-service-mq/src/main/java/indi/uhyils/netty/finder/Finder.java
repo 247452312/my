@@ -1,5 +1,6 @@
 package indi.uhyils.netty.finder;
 
+import indi.uhyils.exception.UserException;
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -49,7 +50,7 @@ public interface Finder {
      * @param byteBuf
      * @return
      */
-    ProtocolParsingModel parsingByteBuf(ChannelHandlerContext ctx, ByteBuf byteBuf);
+    ProtocolParsingModel parsingByteBuf(ChannelHandlerContext ctx, ByteBuf byteBuf) throws UserException;
 
     /**
      * 将返回的obj包装为此协议正确的返回并发送

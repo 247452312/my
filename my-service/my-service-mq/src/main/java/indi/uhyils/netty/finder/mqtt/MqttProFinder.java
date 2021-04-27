@@ -1,11 +1,13 @@
 package indi.uhyils.netty.finder.mqtt;
 
+import indi.uhyils.exception.MqttControlPacketTypeNotFoundException;
 import indi.uhyils.netty.finder.Finder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
+import indi.uhyils.netty.util.IpUtil;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -45,21 +47,42 @@ public class MqttProFinder implements Finder {
 
     @Override
     public ByteBuf cutByteBuf(ByteBuf byteBuf) {
-        byte first = byteBuf.readByte();
-        // 可变报头和负载部分的长度
+        int readerIndex = byteBuf.readerIndex();
+        // 读出第一个byte
+        byteBuf.readByte();
+        // 获取 可变报头和负载部分的长度
         byte remainingLength = byteBuf.readByte();
+        byteBuf.readerIndex(readerIndex);
         // 可变报头和负载获取 掩码.保证不受最高位影响
-        byte[] dst = new byte[remainingLength & 0b1111111];
-        byteBuf.readBytes(dst);
-        String s = new String(dst);
-        System.out.println(s);
-
-        return null;
+        int initialCapacity = remainingLength & 0b1111111 + 2;
+        ByteBuf buffer = Unpooled.buffer(initialCapacity);
+        byteBuf.readBytes(buffer);
+        // 将截取出来的buf写指针置位最后一位
+        buffer.writerIndex(initialCapacity);
+        return buffer;
     }
 
     @Override
-    public ProtocolParsingModel parsingByteBuf(ChannelHandlerContext ctx, ByteBuf byteBuf) {
-        return null;
+    public ProtocolParsingModel parsingByteBuf(ChannelHandlerContext ctx, ByteBuf byteBuf) throws MqttControlPacketTypeNotFoundException {
+        int allLength = byteBuf.readableBytes();
+        byte firstByte = byteBuf.readByte();
+        int length = byteBuf.readByte() & 0b1111111;
+        int flag = firstByte & 0b1111;
+        int mqttControlPacketType = (firstByte >> 4) & 0b111;
+        MqttControlPacketTypeEnum parsing = MqttControlPacketTypeEnum.parsing(mqttControlPacketType);
+        if (parsing.isServiceMethod()) {
+            // 只有publish特殊
+            if (parsing == MqttControlPacketTypeEnum.PUBLISH) {
+
+            } else {
+
+            }
+            return null;
+        } else {
+            byte[] dst = new byte[allLength];
+            byteBuf.getBytes(0, dst);
+            return ProtocolParsingModel.buildReturnModel(MQTT_NAME, IpUtil.getAddressStr(ctx), parsing.isKeepAlive(), () -> parsing.getFunction().apply(dst));
+        }
     }
 
     @Override

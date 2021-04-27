@@ -1,10 +1,10 @@
 package indi.uhyils.netty.model;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.Serializable;
-import java.util.function.Function;
 
 /**
  * 协议解析生成的包
@@ -41,15 +41,58 @@ public class ProtocolParsingModel implements Serializable {
      */
     private Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> function;
 
-    public static ProtocolParsingModel build(String protocolName, String ip, String methodName, Class[] paramsType, Object[] params, Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> function) {
+    /**
+     * 需要执行service
+     */
+    private Boolean needService;
+
+    /**
+     * 返回需要的值
+     */
+    private Supplier<byte[]> returnByteFunction;
+
+    /**
+     * 是否是长连接
+     */
+    private boolean keepAlive;
+
+    public static ProtocolParsingModel buildServiceModel(String protocolName, String ip, boolean keepAlive, String methodName, Class[] paramsType, Object[] params, Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> function) {
         ProtocolParsingModel build = new ProtocolParsingModel();
         build.protocolName = protocolName;
         build.ip = ip;
+        build.keepAlive = keepAlive;
         build.methodName = methodName;
         build.paramsType = paramsType;
         build.params = params;
         build.function = function;
+        build.needService = true;
         return build;
+    }
+
+    public static ProtocolParsingModel buildReturnModel(String protocolName, String ip, boolean keepAlive, Supplier<byte[]> returnByteFunction) {
+        ProtocolParsingModel build = new ProtocolParsingModel();
+        build.keepAlive = keepAlive;
+        build.protocolName = protocolName;
+        build.ip = ip;
+        build.needService = false;
+        build.returnByteFunction = returnByteFunction;
+        return build;
+    }
+
+    public Boolean getNeedService() {
+        return needService;
+    }
+
+    public void setNeedService(Boolean needService) {
+        this.needService = needService;
+    }
+
+    public Supplier<byte[]> getReturnByteFunction() {
+        return returnByteFunction;
+    }
+
+    public void setReturnByteFunction(Supplier<byte[]> returnByteFunction) {
+        this.returnByteFunction = returnByteFunction;
     }
 
     public String getProtocolName() {
@@ -98,5 +141,17 @@ public class ProtocolParsingModel implements Serializable {
 
     public void setFunction(Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> function) {
         this.function = function;
+    }
+
+    public boolean isKeepAlive() {
+        return keepAlive;
+    }
+
+    public boolean isNotKeepAlive() {
+        return !keepAlive;
+    }
+
+    public void setKeepAlive(boolean keepAlive) {
+        this.keepAlive = keepAlive;
     }
 }

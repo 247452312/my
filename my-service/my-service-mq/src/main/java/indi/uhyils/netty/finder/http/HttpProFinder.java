@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.netty.finder.Finder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
+import indi.uhyils.netty.util.IpUtil;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.util.LogUtil;
@@ -18,7 +19,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 
 /**
  * http协议发现者
@@ -44,15 +44,17 @@ public class HttpProFinder implements Finder {
     private static final String[] HTTP_TYPES =
             new String[]{"GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "OPTIONS", "CONNECT"};
 
+
+
     /**
-     * 获取请求者的ip
+     * action 添加链路跟踪起点
      *
-     * @param ctx
-     * @return
+     * @param action
      */
-    public static String getAddressStr(ChannelHandlerContext ctx) {
-        InetSocketAddress socket = (InetSocketAddress) ctx.channel().remoteAddress();
-        return socket.getAddress().getHostAddress();
+    public static void actionAddRequestLink(DefaultRequest action) {
+        LinkNode<String> link = new LinkNode<>();
+        link.setData("MQ请求");
+        action.setRequestLink(link);
     }
 
     @Override
@@ -153,7 +155,7 @@ public class HttpProFinder implements Finder {
     public ProtocolParsingModel parsingByteBuf(ChannelHandlerContext ctx, ByteBuf byteBuf) {
         String http = new String(byteBuf.array(), StandardCharsets.UTF_8);
         // 获取请求人的id
-        String ip = getAddressStr(ctx);
+        String ip = IpUtil.getAddressStr(ctx);
 
         int firstSeparator = http.indexOf(SEPARATOR);
         String twoSeparator = SEPARATOR + SEPARATOR;
@@ -186,19 +188,8 @@ public class HttpProFinder implements Finder {
             actionAddRequestLink((DefaultRequest) data[0]);
         }
 
-        return ProtocolParsingModel.build(HTTP, ip, methodName, methodClassType, data,
+        return ProtocolParsingModel.buildServiceModel(HTTP, ip, false, methodName, methodClassType, data,
                 this::packingByteToRightResponse);
-    }
-
-    /**
-     * action 添加链路跟踪起点
-     *
-     * @param action
-     */
-    public static void actionAddRequestLink(DefaultRequest action) {
-        LinkNode<String> link = new LinkNode<>();
-        link.setData("MQ请求");
-        action.setRequestLink(link);
     }
 
     @Override

@@ -60,7 +60,9 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
             finder.addPrepositionHandler(ctx, in);
             ByteBuf byteBuf = finder.cutByteBuf(in);
             ProtocolParsingModel protocolParsingModel = finder.parsingByteBuf(ctx, byteBuf);
-            out.add(protocolParsingModel);
+            if (protocolParsingModel != null) {
+                out.add(protocolParsingModel);
+            }
         }
     }
 }
