@@ -1,6 +1,5 @@
 package indi.uhyils.netty.handler;
 
-import indi.uhyils.exception.ProtocolNotFoundException;
 import indi.uhyils.netty.finder.Finder;
 import indi.uhyils.netty.finder.http.HttpProFinder;
 import indi.uhyils.netty.finder.mqtt.MqttProFinder;
@@ -35,7 +34,6 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
         // TODO 此处可以重构为spi机制
         finders = new ArrayList<>();
         finders.add(new HttpProFinder());
-        finders.add(new MqttProFinder());
     }
 
     @Override
@@ -43,6 +41,7 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
         // 注 因为内置了 字节缓冲,所以此处可以确认byteBuf的开头一定是某一个协议的开始
         while (in.isReadable()) {
             ByteBuf buffer = Unpooled.buffer();
+            //先拆出100位来进行判断是哪一个协议
             in.getBytes(in.readerIndex(), buffer, 0, TRY_FIND_BYTE_BUF_LENGTH);
             buffer.writerIndex(TRY_FIND_BYTE_BUF_LENGTH);
             Finder finder = null;
@@ -52,17 +51,19 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
                     break;
                 }
             }
-
             if (finder == null) {
-                throw new ProtocolNotFoundException();
+                break;
             }
+            buffer.release();
             //添加前置需要的handler
             finder.addPrepositionHandler(ctx, in);
             ByteBuf byteBuf = finder.cutByteBuf(in);
             ProtocolParsingModel protocolParsingModel = finder.parsingByteBuf(ctx, byteBuf);
+            byteBuf.release();
             if (protocolParsingModel != null) {
                 out.add(protocolParsingModel);
             }
         }
+
     }
 }

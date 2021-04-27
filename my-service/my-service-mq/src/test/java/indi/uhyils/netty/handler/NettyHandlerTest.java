@@ -3,10 +3,12 @@ package indi.uhyils.netty.handler;
 import indi.uhyils.netty.finder.Finder;
 import indi.uhyils.netty.finder.http.HttpProFinder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
+import indi.uhyils.netty.util.IpUtil;
 import indi.uhyils.pojo.request.SendMessageRequest;
 import indi.uhyils.util.SpringUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +29,7 @@ import static org.powermock.api.mockito.PowerMockito.*;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-        HttpProFinder.class,
+        IpUtil.class,
         ServiceExecuteHandler.class,
         SpringUtil.class
 })
@@ -61,15 +63,17 @@ public class NettyHandlerTest {
         Field finders = decoder.getClass().getDeclaredField("finders");
         finders.setAccessible(true);
         ArrayList<Finder> value = new ArrayList<>();
-        mockStatic(HttpProFinder.class);
-        when(HttpProFinder.getAddressStr(Mockito.any())).thenReturn("127.0.0.1");
+        mockStatic(IpUtil.class);
+        when(IpUtil.getAddressStr(Mockito.any())).thenReturn("127.0.0.1");
         HttpProFinder finder = new HttpProFinder();
         value.add(finder);
         finders.set(decoder, value);
         ArrayList<Object> out = new ArrayList<>();
         ByteBuf buffer = Unpooled.buffer();
         buffer.writeBytes(s.getBytes(StandardCharsets.UTF_8));
-        decoder.decode(null, buffer, out);
+        ChannelHandlerContext mock = mock(ChannelHandlerContext.class);
+
+        decoder.decode(mock, buffer, out);
         ProtocolParsingModel model = (ProtocolParsingModel) out.get(0);
         Assert.assertNotEquals(model, null);
         String ip = model.getIp();
