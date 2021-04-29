@@ -22,8 +22,8 @@ public enum MqttControlPacketTypeEnum {
     PUBLISH((byte) 3, "发布消息", true, "", new String[]{}),
 
     SUBSCRIBE((byte) 8, "客户端订阅请求", true, "", new String[]{}),
-    UNSUBSCRIBE((byte) 10, "客户端取消订阅请求", true,"",new String[]{}),
-    PINGREQ((byte) 12, "心跳请求", true,bytes -> bytes),
+    UNSUBSCRIBE((byte) 10, "客户端取消订阅请求", true, "", new String[]{}),
+    PINGREQ((byte) 12, "心跳请求", true, bytes -> bytes),
 
 
     CONNACK((byte) 2, "连接报文确认", true, bytes -> bytes),
@@ -31,10 +31,10 @@ public enum MqttControlPacketTypeEnum {
     PUBREC((byte) 5, "发布收到（保证交付第一步）", true, bytes -> bytes),
     PUBREL((byte) 6, "发布释放（保证交付第二步）", true, bytes -> bytes),
     PUBCOMP((byte) 7, "QoS 2消息发布完成（保证交互第三步）", true, bytes -> bytes),
-    SUBACK((byte) 9, "订阅请求报文确认", true,bytes -> bytes),
-    UNSUBACK((byte) 11, "取消订阅报文确认", true,bytes -> bytes),
-    PINGRESP((byte) 13, "心跳响应", true,bytes -> bytes),
-    DISCONNECT((byte) 14, "客户端断开连接", false,bytes -> bytes);
+    SUBACK((byte) 9, "订阅请求报文确认", true, bytes -> bytes),
+    UNSUBACK((byte) 11, "取消订阅报文确认", true, bytes -> bytes),
+    PINGRESP((byte) 13, "心跳响应", true, bytes -> bytes),
+    DISCONNECT((byte) 14, "客户端断开连接", false, bytes -> bytes);
 
 
     /**
@@ -181,5 +181,22 @@ public enum MqttControlPacketTypeEnum {
 
     public void setParamsType(String[] paramsType) {
         this.paramsType = paramsType;
+    }
+
+    /**
+     * 获取params的type
+     *
+     * @return
+     * @throws ClassNotFoundException
+     */
+    public Class[] getParamsTypes() throws ClassNotFoundException {
+        if (paramsType == null) {
+            return null;
+        }
+        Class[] result = new Class[paramsType.length];
+        for (int i = 0; i < paramsType.length; i++) {
+            result[i] = Class.forName(paramsType[i]);
+        }
+        return result;
     }
 }

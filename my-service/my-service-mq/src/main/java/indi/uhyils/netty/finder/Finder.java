@@ -50,7 +50,7 @@ public interface Finder {
      * @param byteBuf
      * @return
      */
-    ProtocolParsingModel parsingByteBuf(ChannelHandlerContext ctx, ByteBuf byteBuf) throws UserException;
+    ProtocolParsingModel parsingByteBuf(ChannelHandlerContext ctx, ByteBuf byteBuf) throws UserException, ClassNotFoundException;
 
     /**
      * 将返回的obj包装为此协议正确的返回并发送

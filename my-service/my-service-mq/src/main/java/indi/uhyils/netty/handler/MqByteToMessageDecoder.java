@@ -1,13 +1,15 @@
 package indi.uhyils.netty.handler;
 
+import indi.uhyils.netty.exception.ByteToMessageException;
 import indi.uhyils.netty.finder.Finder;
 import indi.uhyils.netty.finder.http.HttpProFinder;
-import indi.uhyils.netty.finder.mqtt.MqttProFinder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
+import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.util.ReferenceCountUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,16 +56,31 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
             if (finder == null) {
                 break;
             }
-            buffer.release();
+            ReferenceCountUtil.release(buffer);
             //添加前置需要的handler
             finder.addPrepositionHandler(ctx, in);
+            int readerIndex = in.readerIndex();
             ByteBuf byteBuf = finder.cutByteBuf(in);
+            if (byteBuf == null) {
+                in.readerIndex(readerIndex);
+                return;
+            }
+            in.readerIndex(readerIndex + byteBuf.readableBytes());
             ProtocolParsingModel protocolParsingModel = finder.parsingByteBuf(ctx, byteBuf);
-            byteBuf.release();
+            ReferenceCountUtil.release(byteBuf);
             if (protocolParsingModel != null) {
                 out.add(protocolParsingModel);
             }
         }
 
+        //半包处理
+        int canReadLength = in.readableBytes();
+        // 这里是不可能的,只要走到这里就说明有陌生的东西进来了
+        if (canReadLength > TRY_FIND_BYTE_BUF_LENGTH) {
+            // 把陌生的东西删掉
+            byte[] dst = new byte[canReadLength];
+            in.readBytes(dst);
+            LogUtil.error(new ByteToMessageException("错误,有一个信息MQ不能解析,请人工介入: 错误信息:" + new String(dst)));
+        }
     }
 }
