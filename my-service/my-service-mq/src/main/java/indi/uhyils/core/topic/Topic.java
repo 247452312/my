@@ -7,6 +7,8 @@ import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.TopicType;
 import indi.uhyils.exception.ExpressionInvalidException;
 
+import java.io.Serializable;
+
 /**
  * 主题,一个MQ中存在多个主题,每个主题有可能是不同的类型,也有可能是相同的类型
  *
@@ -14,7 +16,7 @@ import indi.uhyils.exception.ExpressionInvalidException;
  * @Date 文件创建日期 2021年04月11日 16时04分
  * @Version 1.0
  */
-public interface Topic {
+public interface Topic extends Serializable {
     /**
      * 获取topic名称
      *

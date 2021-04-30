@@ -5,10 +5,12 @@ import indi.uhyils.netty.finder.http.HttpProFinder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import indi.uhyils.netty.util.IpUtil;
 import indi.uhyils.pojo.request.SendMessageRequest;
+import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.HttpResponseEncoder;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +18,10 @@ import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.io.*;
 import java.lang.reflect.Field;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -83,5 +88,47 @@ public class NettyHandlerTest {
         Class aClass = model.getParamsType()[0];
         Assert.assertEquals(aClass, SendMessageRequest.class);
 
+    }
+
+
+    @Test
+    public void testSocketResponse() throws Exception {
+        String s =
+                "POST /test HTTP/1.1\r\n" +
+                        "Host: localhost:8080\r\n" +
+                        "Authorization: Bearer 9cf2c3cb-3d44-4618-9805-e62da8eb18f9\r\n" +
+                        "Content-Type: application/json\r\n" +
+                        "Content-Length: 285\r\n" +
+                        "\r\n" +
+                        "{\r\n" +
+                        "    \"methodName\": \"sendMessage\",\r\n" +
+                        "    \"paramsType\": [\r\n" +
+                        "        \"indi.uhyils.pojo.request.SendMessageRequest\"\r\n" +
+                        "    ],\r\n" +
+                        "    \"data\": [\r\n" +
+                        "        {\r\n" +
+                        "            \"data\": {},\r\n" +
+                        "            \"key\": \"key\",\r\n" +
+                        "            \"topic\": \"defualt\",\r\n" +
+                        "            \"type\": \"NORMAL_MSG\"\r\n" +
+                        "        }\r\n" +
+                        "    ]\r\n" +
+                        "}";
+        byte[] bytesa = s.getBytes(StandardCharsets.UTF_8);
+        Socket socket = new Socket();
+        socket.connect(new InetSocketAddress("127.0.0.1", 8080));
+        OutputStream outputStream = socket.getOutputStream();
+        outputStream.write(bytesa);
+        Thread.sleep(1000);
+        InputStream is = socket.getInputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] bytes = new byte[1024];
+        int len;
+        while ((len = is.read(bytes)) != -1) {
+            baos.write(bytes, 0, len);
+        }
+
+        LogUtil.info(baos.toString());
+        socket.close();
     }
 }

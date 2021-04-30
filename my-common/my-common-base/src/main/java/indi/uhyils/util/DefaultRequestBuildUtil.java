@@ -28,4 +28,17 @@ public class DefaultRequestBuildUtil {
         return defaultRequest;
     }
 
+    /**
+     * 用管理员身份填充一个请求
+     *
+     * @param t
+     * @param <T>
+     */
+    public static <T extends DefaultRequest> void fillRequestByAdminRequest(T t) {
+        DefaultRequest adminDefaultRequest = getAdminDefaultRequest();
+        t.setRequestLink(adminDefaultRequest.getRequestLink());
+        t.setUnique(adminDefaultRequest.getUnique());
+        t.setUser(adminDefaultRequest.getUser());
+    }
+
 }

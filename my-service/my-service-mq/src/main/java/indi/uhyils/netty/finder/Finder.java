@@ -61,9 +61,5 @@ public interface Finder {
      */
     Boolean packingByteToRightResponse(ChannelHandlerContext ctx, Object returnObj);
 
-    /**
-     * 添加前置的handler,如果需要的话
-     */
-    void addPrepositionHandler(ChannelHandlerContext ctx, ByteBuf byteBuf);
 
 }

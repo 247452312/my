@@ -57,14 +57,15 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
                 break;
             }
             ReferenceCountUtil.release(buffer);
-            //添加前置需要的handler
-            finder.addPrepositionHandler(ctx, in);
             int readerIndex = in.readerIndex();
             ByteBuf byteBuf = finder.cutByteBuf(in);
             if (byteBuf == null) {
                 in.readerIndex(readerIndex);
                 return;
             }
+            byte[] dst = new byte[byteBuf.readableBytes()];
+            byteBuf.getBytes(0, dst);
+            System.out.println(new String(dst));
             in.readerIndex(readerIndex + byteBuf.readableBytes());
             ProtocolParsingModel protocolParsingModel = finder.parsingByteBuf(ctx, byteBuf);
             ReferenceCountUtil.release(byteBuf);

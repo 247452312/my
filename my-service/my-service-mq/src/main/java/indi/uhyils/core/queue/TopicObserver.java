@@ -2,6 +2,9 @@ package indi.uhyils.core.queue;
 
 import indi.uhyils.core.topic.Topic;
 
+import java.beans.Transient;
+
+
 /**
  * topic观察者
  *
@@ -15,5 +18,6 @@ public interface TopicObserver {
      *
      * @return
      */
+    @Transient
     Topic getTopic();
 }

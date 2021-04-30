@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.netty.finder.Finder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
+import indi.uhyils.netty.util.HttpResponseUtil;
 import indi.uhyils.netty.util.IpUtil;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
@@ -12,12 +13,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.util.ByteProcessor;
-import io.netty.util.CharsetUtil;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -43,7 +42,10 @@ public class HttpProFinder implements Finder {
      */
     private static final String[] HTTP_TYPES =
             new String[]{"GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "OPTIONS", "CONNECT"};
-
+    /**
+     * 要添加的解析器名称
+     */
+    private static final String RESPONSE_ENCODER_NAME = "http_response_encoder";
 
 
     /**
@@ -144,7 +146,7 @@ public class HttpProFinder implements Finder {
                 ByteBuf httpBuffer = Unpooled.buffer(httpLength);
                 byteBuf.getBytes(readerIndexMark, httpBuffer, readerIndexMark, httpLength);
                 byteBuf.readerIndex(readerIndexMark + httpLength);
-
+                httpBuffer.writerIndex(httpLength);
                 return httpBuffer;
             }
         }
@@ -194,23 +196,14 @@ public class HttpProFinder implements Finder {
 
     @Override
     public Boolean packingByteToRightResponse(ChannelHandlerContext ctx, Object returnObj) {
-
-        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/json;charset=UTF-8");
-        String string = JSONObject.toJSONString(returnObj);
-        ByteBuf buffer = Unpooled.copiedBuffer(string, CharsetUtil.UTF_8);
-        // 设置返回内容的长度
-        int value = buffer.readableBytes();
-        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, value);
-        response.content().writeBytes(buffer);
-        buffer.release();
-        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+        FullHttpResponse response = HttpResponseUtil.getOkResponse(returnObj);
+        ByteBuf responseBuf = ctx.alloc().buffer(256);
+        HttpResponseUtil.msgToByte(responseBuf, response);
+        byte[] dst = new byte[responseBuf.readableBytes()];
+        responseBuf.getBytes(0, dst);
+        LogUtil.info(new String(dst));
+        ctx.writeAndFlush(responseBuf).addListener(ChannelFutureListener.CLOSE);
         return true;
-    }
-
-    @Override
-    public void addPrepositionHandler(ChannelHandlerContext ctx, ByteBuf byteBuf) {
-        ctx.pipeline().addFirst("httpResponseEncoder", new HttpResponseEncoder());
     }
 
 
