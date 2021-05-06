@@ -47,26 +47,29 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
             in.getBytes(in.readerIndex(), buffer, 0, TRY_FIND_BYTE_BUF_LENGTH);
             buffer.writerIndex(TRY_FIND_BYTE_BUF_LENGTH);
             Finder finder = null;
+            //筛选是否有合适的解析器
             for (Finder entry : finders) {
                 if (entry.checkByteBuf(buffer)) {
                     finder = entry;
                     break;
                 }
             }
+            // 如果没有合适的解析器,则跳出
             if (finder == null) {
                 break;
             }
             ReferenceCountUtil.release(buffer);
             int readerIndex = in.readerIndex();
+            // 将此次协议剪切下来
             ByteBuf byteBuf = finder.cutByteBuf(in);
+            // 如果剪切失败,则重置读指针,并且跳出方法,这样会将之后的信息重新拼接到下一个buf中去
             if (byteBuf == null) {
                 in.readerIndex(readerIndex);
                 return;
             }
-            byte[] dst = new byte[byteBuf.readableBytes()];
-            byteBuf.getBytes(0, dst);
-            System.out.println(new String(dst));
+            // 将读指针指向下一个协议的开头
             in.readerIndex(readerIndex + byteBuf.readableBytes());
+            // 解析剪切下来的协议
             ProtocolParsingModel protocolParsingModel = finder.parsingByteBuf(ctx, byteBuf);
             ReferenceCountUtil.release(byteBuf);
             if (protocolParsingModel != null) {

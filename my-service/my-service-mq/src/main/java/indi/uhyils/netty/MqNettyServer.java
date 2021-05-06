@@ -15,11 +15,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.nio.ByteBuffer;
-
 /**
  * @Author uhyils <247452312@qq.com>
  * @Date 文件创建日期 2021年04月24日 11时30分
@@ -27,21 +22,15 @@ import java.nio.ByteBuffer;
  */
 @Component
 public class MqNettyServer implements ApplicationRunner {
-    /**
-     * 主线程,单线程
-     */
-    private EventLoopGroup bossGroup;
-    /**
-     * 工作线程,多线程
-     */
-    private EventLoopGroup workerGroup;
 
     @Value("${spring.mq.server.port:8080}")
     private int port;
 
     private void init() {
-        bossGroup = new NioEventLoopGroup(1);
-        workerGroup = new NioEventLoopGroup();
+        // 主线程,单线程
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        // 工作线程,多线程
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 100)

@@ -16,7 +16,13 @@ black-list:
   spider:
     frequency: 10
 
+
+# mq的端口
 spring:
+  mq:
+    server:
+      port: 8746
+
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://prod:3306/my_mq

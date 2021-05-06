@@ -1,8 +1,8 @@
 package indi.uhyils.netty.handler;
 
 import indi.uhyils.netty.model.ProtocolParsingModel;
+import indi.uhyils.netty.util.NettyChannelUtil;
 import indi.uhyils.service.MqService;
-import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -26,6 +26,7 @@ public class ServiceExecuteHandler extends SimpleChannelInboundHandler<ProtocolP
 
     @Override
     protected void channelRead0(ChannelHandlerContext chx, ProtocolParsingModel ppm) throws Exception {
+        ChannelFuture channelFuture;
         // 如果需要service
         if (ppm.getNeedService()) {
             Class<? extends MqService> serviceClass = service.getClass();
@@ -35,17 +36,18 @@ public class ServiceExecuteHandler extends SimpleChannelInboundHandler<ProtocolP
             Object[] params = ppm.getParams();
             Object returnObj = method.invoke(service, params);
             // 将返回值解析为正规的返回类型
-            Boolean responseStatus = ppm.getFunction().transformEntry(chx, returnObj);
-            if (responseStatus && LogUtil.isDebugEnabled(this)) {
-                LogUtil.debug(this, "消息接收 回应成功:" + ppm.getIp());
-            }
+            channelFuture = ppm.getFunction().transformEntry(chx, returnObj);
         } else {
+            // 如果不需要service,则执行回调函数
             byte[] bytes = ppm.getReturnByteFunction().get();
-            ChannelFuture channelFuture = chx.writeAndFlush(bytes);
-            if (ppm.isKeepAlive()) {
-                channelFuture.addListener(ChannelFutureListener.CLOSE);
-            }
+            channelFuture = chx.writeAndFlush(bytes);
         }
-
+        if (ppm.isKeepAlive() && channelFuture != null) {
+            // 保存channel
+            NettyChannelUtil.addChannelIfNoContains(chx.channel());
+            channelFuture.addListener(ChannelFutureListener.CLOSE);
+        } else {
+            chx.close();
+        }
     }
 }

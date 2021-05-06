@@ -2,6 +2,7 @@ package indi.uhyils.netty.model;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.Serializable;
@@ -39,7 +40,7 @@ public class ProtocolParsingModel implements Serializable {
     /**
      * 解析并发送
      */
-    private Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> function;
+    private Maps.EntryTransformer<ChannelHandlerContext, Object, ChannelFuture> function;
 
     /**
      * 需要执行service
@@ -56,7 +57,7 @@ public class ProtocolParsingModel implements Serializable {
      */
     private boolean keepAlive;
 
-    public static ProtocolParsingModel buildServiceModel(String protocolName, String ip, boolean keepAlive, String methodName, Class[] paramsType, Object[] params, Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> function) {
+    public static ProtocolParsingModel buildServiceModel(String protocolName, String ip, boolean keepAlive, String methodName, Class[] paramsType, Object[] params, Maps.EntryTransformer<ChannelHandlerContext, Object, ChannelFuture> function) {
         ProtocolParsingModel build = new ProtocolParsingModel();
         build.protocolName = protocolName;
         build.ip = ip;
@@ -135,11 +136,11 @@ public class ProtocolParsingModel implements Serializable {
         this.params = params;
     }
 
-    public Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> getFunction() {
+    public Maps.EntryTransformer<ChannelHandlerContext, Object, ChannelFuture> getFunction() {
         return function;
     }
 
-    public void setFunction(Maps.EntryTransformer<ChannelHandlerContext, Object, Boolean> function) {
+    public void setFunction(Maps.EntryTransformer<ChannelHandlerContext, Object, ChannelFuture> function) {
         this.function = function;
     }
 

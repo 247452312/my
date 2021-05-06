@@ -3,6 +3,7 @@ package indi.uhyils.netty.finder;
 import indi.uhyils.exception.UserException;
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -57,9 +58,9 @@ public interface Finder {
      *
      * @param ctx
      * @param returnObj
-     * @return 是否发送成功
+     * @return channel的操作
      */
-    Boolean packingByteToRightResponse(ChannelHandlerContext ctx, Object returnObj);
+    ChannelFuture packingByteToRightResponse(ChannelHandlerContext ctx, Object returnObj);
 
 
 }

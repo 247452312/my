@@ -11,7 +11,7 @@ import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.util.ByteProcessor;
@@ -46,6 +46,16 @@ public class HttpProFinder implements Finder {
      * 要添加的解析器名称
      */
     private static final String RESPONSE_ENCODER_NAME = "http_response_encoder";
+
+    /**
+     * 是否保持长连接的名称
+     */
+    private static final String KEEP_ALIVE_NAME = "Connection";
+
+    /**
+     * 是否保持长连接的值
+     */
+    private static final String KEEP_ALIVE_VALUE = "keep-alive";
 
 
     /**
@@ -164,6 +174,18 @@ public class HttpProFinder implements Finder {
         int headerAndBodySeparator = http.indexOf(twoSeparator);
         // 获取header
         String headerStr = http.substring(firstSeparator, headerAndBodySeparator);
+        String[] split = headerStr.split("\r\n");
+        JSONObject header = new JSONObject();
+        for (String headerItem : split) {
+            String[] headerItemCombination = headerItem.split(": ");
+            String name = headerItemCombination[0];
+            String value = headerItemCombination[1];
+            header.put(name, value);
+        }
+        boolean keepAlive = false;
+        if (KEEP_ALIVE_VALUE.equals(header.get(KEEP_ALIVE_NAME))) {
+            keepAlive = true;
+        }
         // 获取body
         String bodyStr = http.substring(headerAndBodySeparator + twoSeparator.length());
         JSONObject body = JSONObject.parseObject(bodyStr);
@@ -190,20 +212,19 @@ public class HttpProFinder implements Finder {
             actionAddRequestLink((DefaultRequest) data[0]);
         }
 
-        return ProtocolParsingModel.buildServiceModel(HTTP, ip, false, methodName, methodClassType, data,
+        return ProtocolParsingModel.buildServiceModel(HTTP, ip, keepAlive, methodName, methodClassType, data,
                 this::packingByteToRightResponse);
     }
 
     @Override
-    public Boolean packingByteToRightResponse(ChannelHandlerContext ctx, Object returnObj) {
+    public ChannelFuture packingByteToRightResponse(ChannelHandlerContext ctx, Object returnObj) {
         FullHttpResponse response = HttpResponseUtil.getOkResponse(returnObj);
         ByteBuf responseBuf = ctx.alloc().buffer(256);
         HttpResponseUtil.msgToByte(responseBuf, response);
         byte[] dst = new byte[responseBuf.readableBytes()];
         responseBuf.getBytes(0, dst);
         LogUtil.info(new String(dst));
-        ctx.writeAndFlush(responseBuf).addListener(ChannelFutureListener.CLOSE);
-        return true;
+        return ctx.writeAndFlush(responseBuf);
     }
 
 
