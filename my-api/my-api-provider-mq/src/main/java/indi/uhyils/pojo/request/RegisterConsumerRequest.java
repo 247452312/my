@@ -5,21 +5,17 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 
 /**
  * 注册消费者
- * 
+ *
  * @Author uhyils <247452312@qq.com>
  * @Date 文件创建日期 2021年04月11日 21时21分
  * @Version 1.0
  */
-public class RegisterConsumerRequest extends DefaultRequest {
+public class RegisterConsumerRequest extends DefaultLinkRequest {
     /**
      * topic名称
      */
     private String topicName;
 
-    /**
-     * 端口
-     */
-    private Integer port;
 
     /**
      * 行为
@@ -42,11 +38,4 @@ public class RegisterConsumerRequest extends DefaultRequest {
         this.topicName = topicName;
     }
 
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
 }

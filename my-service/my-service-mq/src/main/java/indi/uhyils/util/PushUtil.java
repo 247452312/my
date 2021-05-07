@@ -10,6 +10,7 @@ import indi.uhyils.core.register.Register;
  * @Version 1.0
  */
 public class PushUtil {
+
     public static Boolean push(Register register, Message message) {
         // todo 推送消息
         System.out.println("推送消息,这里要改: " + JSON.toJSONString(message));

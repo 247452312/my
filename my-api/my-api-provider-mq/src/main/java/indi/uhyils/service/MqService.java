@@ -40,35 +40,31 @@ public interface MqService extends BaseService {
      * 注册一个生产者
      *
      * @param request
-     * @param ip
      * @return
      */
-    ServiceResult<Boolean> registerProvider(RegisterProviderRequest request, String ip) throws UserException;
+    ServiceResult<Boolean> registerProvider(RegisterProviderRequest request) throws UserException;
 
     /**
      * 注册一个消费者
      *
      * @param request
-     * @param ip
      * @return
      */
-    ServiceResult<Boolean> registerConsumer(RegisterConsumerRequest request, String ip) throws UserException;
+    ServiceResult<Boolean> registerConsumer(RegisterConsumerRequest request) throws UserException;
 
     /**
      * 注册一个发布者
      *
      * @param request
-     * @param ip
      * @return
      */
-    ServiceResult<Boolean> registerPublish(RegisterPublishRequest request, String ip) throws UserException;
+    ServiceResult<Boolean> registerPublish(RegisterPublishRequest request) throws UserException;
 
     /**
      * 注册一个订阅者
      *
      * @param request
-     * @param ip
      * @return
      */
-    ServiceResult<Boolean> registerSubscriber(RegisterSubscriberReqeust request, String ip) throws UserException;
+    ServiceResult<Boolean> registerSubscriber(RegisterSubscriberReqeust request) throws UserException;
 }

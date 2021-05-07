@@ -14,6 +14,7 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.MqService;
 import indi.uhyils.util.LogUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @Author uhyils <247452312@qq.com>
@@ -66,47 +67,69 @@ public class MqServiceImpl implements MqService {
     }
 
     @Override
-    public ServiceResult<Boolean> registerProvider(RegisterProviderRequest request, String ip) throws UserException {
+    public ServiceResult<Boolean> registerProvider(RegisterProviderRequest request) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
             return ServiceResult.buildSuccessResult(false, request);
         }
-        topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PROVIDER, ip, request.getPort(), topic,
-                request.getBehavior()));
+        if (StringUtils.isBlank(request.getChannelId())) {
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PROVIDER, request.getIp(), request.getPort(), topic,
+                    request.getBehavior()));
+        } else {
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PROVIDER, request.getChannelId(), topic, request.getBehavior()));
+        }
+
         return ServiceResult.buildSuccessResult(true, request);
     }
 
     @Override
-    public ServiceResult<Boolean> registerConsumer(RegisterConsumerRequest request, String ip) throws UserException {
+    public ServiceResult<Boolean> registerConsumer(RegisterConsumerRequest request) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
             return ServiceResult.buildSuccessResult(false, request);
         }
-        topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.COMSUMER, ip, request.getPort(), topic,
-                request.getBehavior()));
+        if (StringUtils.isBlank(request.getChannelId())) {
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.COMSUMER, request.getIp(), request.getPort(), topic,
+                    request.getBehavior()));
+        } else {
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.COMSUMER, request.getChannelId(), topic,
+                    request.getBehavior()));
+        }
         return ServiceResult.buildSuccessResult(true, request);
     }
 
     @Override
-    public ServiceResult<Boolean> registerPublish(RegisterPublishRequest request, String ip) throws UserException {
+    public ServiceResult<Boolean> registerPublish(RegisterPublishRequest request) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
             return ServiceResult.buildSuccessResult(false, request);
         }
-        topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PUBLISH, ip, request.getPort(), topic,
-                request.getBehavior()));
+        if (StringUtils.isBlank(request.getChannelId())) {
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PUBLISH, request.getIp(), request.getPort(), topic,
+                    request.getBehavior()));
+
+        } else {
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PUBLISH, request.getChannelId(), topic,
+                    request.getBehavior()));
+        }
         return ServiceResult.buildSuccessResult(true, request);
     }
 
     @Override
-    public ServiceResult<Boolean> registerSubscriber(RegisterSubscriberReqeust request, String ip)
+    public ServiceResult<Boolean> registerSubscriber(RegisterSubscriberReqeust request)
             throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
             return ServiceResult.buildSuccessResult(false, request);
         }
-        topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.SUBSCRIBER, ip, request.getPort(), topic,
-                request.getBehavior()));
+        if (StringUtils.isBlank(request.getChannelId())) {
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.SUBSCRIBER, request.getIp(), request.getPort(), topic,
+                    request.getBehavior()));
+
+        } else {
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.SUBSCRIBER, request.getChannelId(), topic,
+                    request.getBehavior()));
+        }
         return ServiceResult.buildSuccessResult(true, request);
     }
 }

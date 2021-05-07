@@ -11,7 +11,7 @@ import com.alibaba.fastjson.JSONObject;
  * @Date 文件创建日期 2021年04月11日 18时12分
  * @Version 1.0
  */
-public class SendMessageRequest extends DefaultRequest {
+public class SendMessageRequest extends DefaultLinkRequest {
 
     /**
      * 实际类型

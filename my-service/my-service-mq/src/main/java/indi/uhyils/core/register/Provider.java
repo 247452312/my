@@ -12,7 +12,11 @@ import indi.uhyils.enum_.RegisterType;
  */
 public class Provider extends AbstractRegister {
     public Provider(String ip, Integer port, OutDealTypeEnum outDealTypeEnum) {
-        super(ip, port, outDealTypeEnum);
+        super(ip, port, null, outDealTypeEnum);
+    }
+
+    public Provider(String channelId, OutDealTypeEnum outDealTypeEnum) {
+        super(null, null, channelId, outDealTypeEnum);
     }
 
     @Override

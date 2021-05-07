@@ -205,15 +205,14 @@ public class HttpProFinder implements Finder {
         Object[] data = new Object[dataArray.size()];
         for (int i = 0; i < dataArray.size(); i++) {
             JSONObject o = dataArray.getJSONObject(i);
-            Class aClass = methodClassType[i];
-            data[i] = o.toJavaObject(aClass);
+            Class clazz = methodClassType[i];
+            data[i] = o.toJavaObject(clazz);
         }
         if (data[0] instanceof DefaultRequest) {
             actionAddRequestLink((DefaultRequest) data[0]);
         }
 
-        return ProtocolParsingModel.buildServiceModel(HTTP, ip, keepAlive, methodName, methodClassType, data,
-                this::packingByteToRightResponse);
+        return ProtocolParsingModel.buildServiceModel(HTTP, ip, keepAlive, methodName, methodClassType, data, this::packingByteToRightResponse);
     }
 
     @Override
@@ -221,9 +220,6 @@ public class HttpProFinder implements Finder {
         FullHttpResponse response = HttpResponseUtil.getOkResponse(returnObj);
         ByteBuf responseBuf = ctx.alloc().buffer(256);
         HttpResponseUtil.msgToByte(responseBuf, response);
-        byte[] dst = new byte[responseBuf.readableBytes()];
-        responseBuf.getBytes(0, dst);
-        LogUtil.info(new String(dst));
         return ctx.writeAndFlush(responseBuf);
     }
 

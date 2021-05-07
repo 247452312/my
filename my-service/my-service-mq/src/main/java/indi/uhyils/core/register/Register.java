@@ -13,20 +13,7 @@ import java.io.Serializable;
  * @version 1.0
  * @date 文件创建日期 2021年04月15日 19时13分
  */
-public interface Register extends Serializable {
-    /**
-     * 获取注册者的ip
-     *
-     * @return
-     */
-    String getIp();
-
-    /**
-     * 获取注册者的端口
-     *
-     * @return
-     */
-    Integer getPort();
+public interface Register extends IpPortLinkable, ChannelIdLinkable, Serializable {
 
     /**
      * 获取注册者所在的topic

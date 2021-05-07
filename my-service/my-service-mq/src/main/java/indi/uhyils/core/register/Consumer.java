@@ -10,7 +10,11 @@ import indi.uhyils.enum_.RegisterType;
  */
 public class Consumer extends AbstractRegister {
     public Consumer(String ip, Integer port, OutDealTypeEnum outDealTypeEnum) {
-        super(ip, port, outDealTypeEnum);
+        super(ip, port, null, outDealTypeEnum);
+    }
+
+    public Consumer(String channelId, OutDealTypeEnum outDealTypeEnum) {
+        super(null, null, channelId, outDealTypeEnum);
     }
 
     @Override

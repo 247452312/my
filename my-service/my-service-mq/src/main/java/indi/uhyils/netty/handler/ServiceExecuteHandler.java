@@ -2,6 +2,7 @@ package indi.uhyils.netty.handler;
 
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import indi.uhyils.netty.util.NettyChannelUtil;
+import indi.uhyils.pojo.request.DefaultLinkRequest;
 import indi.uhyils.service.MqService;
 import indi.uhyils.util.SpringUtil;
 import io.netty.channel.ChannelFuture;
@@ -26,6 +27,10 @@ public class ServiceExecuteHandler extends SimpleChannelInboundHandler<ProtocolP
 
     @Override
     protected void channelRead0(ChannelHandlerContext chx, ProtocolParsingModel ppm) throws Exception {
+        if (ppm.isKeepAlive()) {
+            // 保存channel
+            NettyChannelUtil.addChannelIfNoContains(chx.channel());
+        }
         ChannelFuture channelFuture;
         // 如果需要service
         if (ppm.getNeedService()) {
@@ -34,6 +39,10 @@ public class ServiceExecuteHandler extends SimpleChannelInboundHandler<ProtocolP
             Class[] paramsType = ppm.getParamsType();
             Method method = serviceClass.getMethod(methodName, paramsType);
             Object[] params = ppm.getParams();
+            if (params[0] instanceof DefaultLinkRequest && ppm.isKeepAlive()) {
+                DefaultLinkRequest request = (DefaultLinkRequest) params[0];
+                request.setChannelId(chx.channel().id().asLongText());
+            }
             Object returnObj = method.invoke(service, params);
             // 将返回值解析为正规的返回类型
             channelFuture = ppm.getFunction().transformEntry(chx, returnObj);
@@ -43,8 +52,6 @@ public class ServiceExecuteHandler extends SimpleChannelInboundHandler<ProtocolP
             channelFuture = chx.writeAndFlush(bytes);
         }
         if (ppm.isKeepAlive() && channelFuture != null) {
-            // 保存channel
-            NettyChannelUtil.addChannelIfNoContains(chx.channel());
             channelFuture.addListener(ChannelFutureListener.CLOSE);
         } else {
             chx.close();

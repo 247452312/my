@@ -25,6 +25,11 @@ public abstract class AbstractRegister implements Register {
     protected final Integer port;
 
     /**
+     * netty连接句柄
+     */
+    protected final String channelId;
+
+    /**
      * 注册者所在的topic
      */
     protected Topic topic;
@@ -39,9 +44,10 @@ public abstract class AbstractRegister implements Register {
      */
     protected String expression;
 
-    public AbstractRegister(String ip, Integer port, OutDealTypeEnum outDealTypeEnum) {
+    public AbstractRegister(String ip, Integer port, String channelId, OutDealTypeEnum outDealTypeEnum) {
         this.ip = ip;
         this.port = port;
+        this.channelId = channelId;
         this.outDealTypeEnum = outDealTypeEnum;
     }
 
@@ -88,5 +94,10 @@ public abstract class AbstractRegister implements Register {
 
     public void setExpression(String expression) {
         this.expression = expression;
+    }
+
+    @Override
+    public String getChannelId() {
+        return channelId;
     }
 }

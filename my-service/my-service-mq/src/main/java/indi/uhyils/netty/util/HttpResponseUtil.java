@@ -123,19 +123,4 @@ public class HttpResponseUtil {
             buf.setCharSequence(offset, value, CharsetUtil.US_ASCII);
         }
     }
-
-
-    public static void main(String[] args) {
-        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/json;charset=UTF-8");
-        String string = "aaaa";
-        ByteBuf buffer = Unpooled.copiedBuffer(string, CharsetUtil.UTF_8);
-        // 设置返回内容的长度
-        int value = buffer.readableBytes();
-        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, value);
-        response.content().writeBytes(buffer);
-        HttpResponseStatus status = response.status();
-        System.out.println(status.toString());
-    }
-
 }

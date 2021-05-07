@@ -10,7 +10,11 @@ import indi.uhyils.enum_.RegisterType;
  */
 public class Publish extends AbstractRegister {
     public Publish(String ip, Integer port, OutDealTypeEnum outDealTypeEnum) {
-        super(ip, port, outDealTypeEnum);
+        super(ip, port, null, outDealTypeEnum);
+    }
+
+    public Publish(String channelId, OutDealTypeEnum outDealTypeEnum) {
+        super(null, null, channelId, outDealTypeEnum);
     }
 
     @Override

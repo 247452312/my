@@ -72,6 +72,40 @@ public class RegisterFactory {
     }
 
     /**
+     * 获取一个注册者,没有则创建
+     *
+     * @param type
+     * @param topic
+     * @return
+     * @throws UserException
+     */
+    public static Register createOrGetRegister(RegisterType type, String channelId, Topic topic,
+                                               OutDealTypeEnum outDealTypeEnum) throws UserException {
+        Register oneRegister = findOneRegister(type, channelId, topic.getName());
+        if (oneRegister != null) {
+            return oneRegister;
+        }
+        switch (type) {
+            case PROVIDER:
+                oneRegister = createNewProvider(channelId, topic, outDealTypeEnum);
+                break;
+            case COMSUMER:
+                oneRegister = createNewConsumer(channelId, topic, outDealTypeEnum);
+                break;
+            case PUBLISH:
+                oneRegister = createNewPublish(channelId, topic, outDealTypeEnum);
+                break;
+            case SUBSCRIBER:
+                oneRegister = createNewSubscriber(channelId, topic, outDealTypeEnum);
+                break;
+            default:
+                throw new NotFoundRegisterTypeException();
+        }
+        REGISTER_TYPE_COLLECTION_MAP.get(type).add(oneRegister);
+        return oneRegister;
+    }
+
+    /**
      * 创建一个新的消息提供者
      *
      * @param ip
@@ -81,6 +115,19 @@ public class RegisterFactory {
      */
     private static Register createNewProvider(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
         Provider provider = new Provider(ip, port, outDealTypeEnum);
+        provider.setTopic(topic);
+        topic.addNewRegister(provider);
+        return provider;
+    }
+
+    /**
+     * 创建一个新的消息提供者
+     *
+     * @param topic
+     * @return
+     */
+    private static Register createNewProvider(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+        Provider provider = new Provider(channelId, outDealTypeEnum);
         provider.setTopic(topic);
         topic.addNewRegister(provider);
         return provider;
@@ -102,6 +149,19 @@ public class RegisterFactory {
     }
 
     /**
+     * 创建一个新的消息消费者
+     *
+     * @param topic
+     * @return
+     */
+    private static Register createNewConsumer(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+        Consumer consumer = new Consumer(channelId, outDealTypeEnum);
+        consumer.setTopic(topic);
+        topic.addNewRegister(consumer);
+        return consumer;
+    }
+
+    /**
      * 创建一个新的消息发布者
      *
      * @param ip
@@ -117,6 +177,19 @@ public class RegisterFactory {
     }
 
     /**
+     * 创建一个新的消息发布者
+     *
+     * @param topic
+     * @return
+     */
+    private static Register createNewPublish(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+        Publish publish = new Publish(channelId, outDealTypeEnum);
+        publish.setTopic(topic);
+        topic.addNewRegister(publish);
+        return publish;
+    }
+
+    /**
      * 创建一个新的消息订阅者
      *
      * @param ip
@@ -126,6 +199,19 @@ public class RegisterFactory {
      */
     private static Register createNewSubscriber(String ip, Integer port, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
         Subscriber subscriber = new Subscriber(ip, port, outDealTypeEnum);
+        subscriber.setTopic(topic);
+        topic.addNewRegister(subscriber);
+        return subscriber;
+    }
+
+    /**
+     * 创建一个新的消息订阅者
+     *
+     * @param topic
+     * @return
+     */
+    private static Register createNewSubscriber(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+        Subscriber subscriber = new Subscriber(channelId, outDealTypeEnum);
         subscriber.setTopic(topic);
         topic.addNewRegister(subscriber);
         return subscriber;
@@ -165,6 +251,33 @@ public class RegisterFactory {
     }
 
     /**
+     * 通过指定参数获取某些注册者
+     *
+     * @param type
+     * @param topicName
+     * @return
+     */
+    public static Collection<Register> findRegister(RegisterType type, String channelId, String topicName) {
+        Collection<Register> basic = new ArrayList<>();
+        // 过滤类型
+        if (type == null) {
+            REGISTER_TYPE_COLLECTION_MAP.values().forEach(basic::addAll);
+        } else {
+            basic.addAll(REGISTER_TYPE_COLLECTION_MAP.get(type));
+        }
+        Stream<Register> basicStream = basic.stream();
+        // 过滤netty channelid
+        if (channelId != null) {
+            basicStream = basicStream.filter(t -> channelId.equals(t.getChannelId()));
+        }
+        // 过滤
+        if (topicName != null) {
+            basicStream = basicStream.filter(t -> topicName.equals(t.getTopicName()));
+        }
+        return basicStream.collect(Collectors.toSet());
+    }
+
+    /**
      * 获取一个符合条件的注册者(不是随机)
      *
      * @param type
@@ -176,6 +289,23 @@ public class RegisterFactory {
      */
     public static Register findOneRegister(RegisterType type, String ip, Integer port, String topicName) {
         Collection<Register> register = findRegister(type, ip, port, topicName);
+        if (register.size() >= 1) {
+            return register.iterator().next();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取一个符合条件的注册者(不是随机)
+     *
+     * @param type
+     * @param topicName
+     * @return
+     * @throws UserException
+     */
+    public static Register findOneRegister(RegisterType type, String channelId, String topicName) {
+        Collection<Register> register = findRegister(type, channelId, topicName);
         if (register.size() >= 1) {
             return register.iterator().next();
         } else {
