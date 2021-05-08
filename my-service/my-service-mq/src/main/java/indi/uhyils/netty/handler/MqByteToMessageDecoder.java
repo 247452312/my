@@ -69,6 +69,11 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
             }
             // 将读指针指向下一个协议的开头
             in.readerIndex(readerIndex + byteBuf.readableBytes());
+            if (LogUtil.isDebugEnabled(this)) {
+                byte[] dst = new byte[byteBuf.readableBytes()];
+                byteBuf.getBytes(0, dst);
+                LogUtil.debug(this, new String(dst));
+            }
             // 解析剪切下来的协议
             ProtocolParsingModel protocolParsingModel = finder.parsingByteBuf(ctx, byteBuf);
             ReferenceCountUtil.release(byteBuf);

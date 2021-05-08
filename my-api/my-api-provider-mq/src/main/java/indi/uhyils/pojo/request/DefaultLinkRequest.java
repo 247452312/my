@@ -13,35 +13,24 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 public class DefaultLinkRequest extends DefaultRequest {
 
     /**
-     * ip
+     * url
      */
-    private String ip;
+    private String url;
 
-    /**
-     * 端口
-     */
-    private Integer port;
 
     /**
      * netty连接句柄
      */
     private String channelId;
 
-    public String getIp() {
-        return ip;
+    public String getUrl() {
+        return url;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
 
     public String getChannelId() {
         return channelId;

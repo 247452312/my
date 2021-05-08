@@ -15,14 +15,10 @@ import indi.uhyils.util.PushUtil;
 public abstract class AbstractRegister implements Register {
 
     /**
-     * ip
+     * url
      */
-    protected final String ip;
+    protected final String url;
 
-    /**
-     * port
-     */
-    protected final Integer port;
 
     /**
      * netty连接句柄
@@ -44,26 +40,18 @@ public abstract class AbstractRegister implements Register {
      */
     protected String expression;
 
-    public AbstractRegister(String ip, Integer port, String channelId, OutDealTypeEnum outDealTypeEnum) {
-        this.ip = ip;
-        this.port = port;
+    protected AbstractRegister(String url, String channelId, OutDealTypeEnum outDealTypeEnum) {
+        this.url = url;
         this.channelId = channelId;
         this.outDealTypeEnum = outDealTypeEnum;
     }
 
-    @Override
-    public String getIp() {
-        return ip;
-    }
 
     @Override
-    public Integer getPort() {
-        return port;
+    public String getUrl() {
+        return url;
     }
 
-    public Topic getTopic() {
-        return topic;
-    }
 
     public void setTopic(Topic topic) {
         this.topic = topic;

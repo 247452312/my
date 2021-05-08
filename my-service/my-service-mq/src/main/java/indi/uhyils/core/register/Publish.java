@@ -9,16 +9,24 @@ import indi.uhyils.enum_.RegisterType;
  * @date 文件创建日期 2021年04月16日 09时05分
  */
 public class Publish extends AbstractRegister {
-    public Publish(String ip, Integer port, OutDealTypeEnum outDealTypeEnum) {
-        super(ip, port, null, outDealTypeEnum);
+    private Publish(String url, Integer port, OutDealTypeEnum outDealTypeEnum) {
+        super(url, null, outDealTypeEnum);
     }
 
-    public Publish(String channelId, OutDealTypeEnum outDealTypeEnum) {
-        super(null, null, channelId, outDealTypeEnum);
+    private Publish(String channelId, OutDealTypeEnum outDealTypeEnum) {
+        super(null, channelId, outDealTypeEnum);
     }
 
     @Override
     public RegisterType getRegisterType() {
         return RegisterType.PUBLISH;
+    }
+
+    public static Publish buildUrlRegister(String url, OutDealTypeEnum outDealTypeEnum) {
+        return new Publish(url, null, outDealTypeEnum);
+    }
+
+    public static Publish buildChannelRegister(String channelId, OutDealTypeEnum outDealTypeEnum) {
+        return new Publish(channelId, outDealTypeEnum);
     }
 }

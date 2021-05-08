@@ -7,21 +7,14 @@ package indi.uhyils.core.register;
  * @version 1.0
  * @date 文件创建日期 2021年05月07日 08时36分
  */
-public interface IpPortLinkable {
+public interface UrlLinkable {
 
 
     /**
-     * 获取ip
+     * 获取url
      *
      * @return
      */
-    String getIp();
-
-    /**
-     * 获取端口
-     *
-     * @return
-     */
-    Integer getPort();
+    String getUrl();
 
 }

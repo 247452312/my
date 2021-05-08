@@ -9,16 +9,24 @@ import indi.uhyils.enum_.RegisterType;
  * @date 文件创建日期 2021年04月16日 09时05分
  */
 public class Consumer extends AbstractRegister {
-    public Consumer(String ip, Integer port, OutDealTypeEnum outDealTypeEnum) {
-        super(ip, port, null, outDealTypeEnum);
+    private Consumer(String url, Integer port, OutDealTypeEnum outDealTypeEnum) {
+        super(url, null, outDealTypeEnum);
     }
 
-    public Consumer(String channelId, OutDealTypeEnum outDealTypeEnum) {
-        super(null, null, channelId, outDealTypeEnum);
+    private Consumer(String channelId, OutDealTypeEnum outDealTypeEnum) {
+        super(null, channelId, outDealTypeEnum);
     }
 
     @Override
     public RegisterType getRegisterType() {
         return RegisterType.COMSUMER;
+    }
+
+    public static Consumer buildUrlRegister(String url, OutDealTypeEnum outDealTypeEnum) {
+        return new Consumer(url, null, outDealTypeEnum);
+    }
+
+    public static Consumer buildChannelRegister(String channelId, OutDealTypeEnum outDealTypeEnum) {
+        return new Consumer(channelId, outDealTypeEnum);
     }
 }

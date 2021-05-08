@@ -1,6 +1,7 @@
 package indi.uhyils.util;
 
 
+import com.alibaba.fastjson.JSON;
 import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
@@ -17,6 +18,11 @@ import java.util.Map;
  */
 public class LogUtil {
 
+    /**
+     * 日志文件缓存地
+     */
+    private static Map<String, Logger> loggerMap = new HashMap<>();
+
     public static Boolean isDebugEnabled(Object obj) {
         if (obj == null) {
             return false;
@@ -28,21 +34,16 @@ public class LogUtil {
         if (obj == null) {
             return false;
         }
-        String simpleName = obj.getSimpleName();
+        String simpleName = obj.getName();
         if (!loggerMap.containsKey(simpleName)) {
-            return false;
+            Logger logger = LoggerFactory.getLogger(simpleName);
+            loggerMap.put(simpleName, logger);
         }
         return loggerMap.get(simpleName).isDebugEnabled();
     }
 
-    /**
-     * 日志文件缓存地
-     */
-    private static Map<String, Logger> loggerMap = new HashMap<>();
-
-
     public static void info(Class<?> cls, String msg) {
-        writeLog(cls.getSimpleName(), msg, null, LogTypeEnum.INFO);
+        writeLog(cls.getName(), msg, null, LogTypeEnum.INFO);
     }
 
     public static void info(String msg) {
@@ -50,7 +51,7 @@ public class LogUtil {
     }
 
     public static void info(Class<?> cls, Throwable e) {
-        writeLog(cls.getSimpleName(), null, e, LogTypeEnum.INFO);
+        writeLog(cls.getName(), null, e, LogTypeEnum.INFO);
     }
 
     public static void info(Object obj, String msg) {
@@ -63,7 +64,19 @@ public class LogUtil {
 
 
     public static void debug(Class<?> cls, String msg) {
-        writeLog(cls.getSimpleName(), msg, null, LogTypeEnum.DEBUG);
+        writeLog(cls.getName(), msg, null, LogTypeEnum.DEBUG);
+    }
+
+    public static void debug(Class<?> cls, String msg, String... param) {
+        debug(cls, String.format(msg, param));
+    }
+
+    public static void debug(Class<?> cls, String msg, Object... param) {
+        String[] paramStrs = new String[param.length];
+        for (int i = 0; i < param.length; i++) {
+            paramStrs[i] = JSON.toJSONString(param[i]);
+        }
+        debug(cls, msg, paramStrs);
     }
 
     public static void debug(String msg) {
@@ -71,7 +84,7 @@ public class LogUtil {
     }
 
     public static void debug(Class<?> cls, Throwable e) {
-        writeLog(cls.getSimpleName(), null, e, LogTypeEnum.DEBUG);
+        writeLog(cls.getName(), null, e, LogTypeEnum.DEBUG);
     }
 
     public static void debug(Object obj, String msg) {
@@ -84,7 +97,7 @@ public class LogUtil {
 
 
     public static void warn(Class<?> cls, String msg) {
-        writeLog(cls.getSimpleName(), msg, null, LogTypeEnum.WARN);
+        writeLog(cls.getName(), msg, null, LogTypeEnum.WARN);
     }
 
     public static void warn(String msg) {
@@ -92,7 +105,7 @@ public class LogUtil {
     }
 
     public static void warn(Class<?> cls, Throwable e) {
-        writeLog(cls.getSimpleName(), null, e, LogTypeEnum.WARN);
+        writeLog(cls.getName(), null, e, LogTypeEnum.WARN);
     }
 
     public static void warn(Object obj, String msg) {
@@ -105,7 +118,7 @@ public class LogUtil {
 
 
     public static void error(Class<?> cls, String msg) {
-        writeLog(cls.getSimpleName(), msg, null, LogTypeEnum.ERROR);
+        writeLog(cls.getName(), msg, null, LogTypeEnum.ERROR);
     }
 
     public static void error(String msg) {
@@ -117,11 +130,11 @@ public class LogUtil {
     }
 
     public static void error(Class<?> cls, Throwable e) {
-        writeLog(cls.getSimpleName(), null, e, LogTypeEnum.ERROR);
+        writeLog(cls.getName(), null, e, LogTypeEnum.ERROR);
     }
 
     public static void error(Class<?> cls, Throwable e, String msg) {
-        writeLog(cls.getSimpleName(), msg, e, LogTypeEnum.ERROR);
+        writeLog(cls.getName(), msg, e, LogTypeEnum.ERROR);
     }
 
     public static void error(Object obj, String msg) {

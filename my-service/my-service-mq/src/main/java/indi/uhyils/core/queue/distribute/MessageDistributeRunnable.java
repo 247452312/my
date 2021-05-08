@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 消息分发模板,只有主动的队列才会开启此模板
+ * 消息分发模板,只有主动的队列才会开启此模板,这里只是控制发送的行为逻辑.并不是发送本身,也就是说这里控制谁可以发送
  *
  * @Author uhyils <247452312@qq.com>
  * @Date 文件创建日期 2021年04月16日 20时55分

@@ -3,6 +3,11 @@ package indi.uhyils.util;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.register.Register;
+import indi.uhyils.netty.util.NettyChannelUtil;
+import indi.uhyils.netty.util.NettyMessageUtil;
+import io.netty.channel.Channel;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @Author uhyils <247452312@qq.com>
@@ -12,8 +17,19 @@ import indi.uhyils.core.register.Register;
 public class PushUtil {
 
     public static Boolean push(Register register, Message message) {
-        // todo 推送消息
-        System.out.println("推送消息,这里要改: " + JSON.toJSONString(message));
-        return true;
+        String channelId = register.getChannelId();
+        // 有channelId的情况下
+        if (StringUtils.isBlank(channelId)) {
+            Channel channel = NettyChannelUtil.getChannel(channelId);
+            channel.writeAndFlush(NettyMessageUtil.msgToByte(message));
+            return true;
+        } else {
+            RestTemplate bean = SpringUtil.getBean(RestTemplate.class);
+            Object response = bean.postForObject(register.getUrl(), message, Object.class);
+            if (LogUtil.isDebugEnabled(PushUtil.class)) {
+                LogUtil.debug(PushUtil.class, "\r\n发送消息为:\r\n%s\r\n接收消息为:\r\n %s", JSON.toJSONString(message), JSON.toJSONString(response));
+            }
+            return true;
+        }
     }
 }

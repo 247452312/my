@@ -9,6 +9,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
 
@@ -39,6 +40,9 @@ public class ServiceExecuteHandler extends SimpleChannelInboundHandler<ProtocolP
             Class[] paramsType = ppm.getParamsType();
             Method method = serviceClass.getMethod(methodName, paramsType);
             Object[] params = ppm.getParams();
+            //填充channelId
+            fileChannelId(chx, ppm, paramsType);
+
             if (params[0] instanceof DefaultLinkRequest && ppm.isKeepAlive()) {
                 DefaultLinkRequest request = (DefaultLinkRequest) params[0];
                 request.setChannelId(chx.channel().id().asLongText());
@@ -55,6 +59,25 @@ public class ServiceExecuteHandler extends SimpleChannelInboundHandler<ProtocolP
             channelFuture.addListener(ChannelFutureListener.CLOSE);
         } else {
             chx.close();
+        }
+    }
+
+    /**
+     * 填充channelId
+     *
+     * @param chx
+     * @param ppm
+     * @param paramsType
+     */
+    private void fileChannelId(ChannelHandlerContext chx, ProtocolParsingModel ppm, Class[] paramsType) {
+        if (paramsType != null && paramsType.length > 1) {
+            Class<?> clazz = paramsType[0];
+            if (DefaultLinkRequest.class.isAssignableFrom(clazz)) {
+                DefaultLinkRequest param = (DefaultLinkRequest) ppm.getParams()[0];
+                if (StringUtils.isBlank(param.getUrl())) {
+                    param.setChannelId(chx.channel().id().asLongText());
+                }
+            }
         }
     }
 }

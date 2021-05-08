@@ -73,12 +73,10 @@ public class MqServiceImpl implements MqService {
             return ServiceResult.buildSuccessResult(false, request);
         }
         if (StringUtils.isBlank(request.getChannelId())) {
-            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PROVIDER, request.getIp(), request.getPort(), topic,
-                    request.getBehavior()));
+            topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.PROVIDER, request.getUrl(), topic, request.getBehavior()));
         } else {
             topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PROVIDER, request.getChannelId(), topic, request.getBehavior()));
         }
-
         return ServiceResult.buildSuccessResult(true, request);
     }
 
@@ -89,11 +87,9 @@ public class MqServiceImpl implements MqService {
             return ServiceResult.buildSuccessResult(false, request);
         }
         if (StringUtils.isBlank(request.getChannelId())) {
-            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.COMSUMER, request.getIp(), request.getPort(), topic,
-                    request.getBehavior()));
+            topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.COMSUMER, request.getUrl(), topic, request.getBehavior()));
         } else {
-            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.COMSUMER, request.getChannelId(), topic,
-                    request.getBehavior()));
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.COMSUMER, request.getChannelId(), topic, request.getBehavior()));
         }
         return ServiceResult.buildSuccessResult(true, request);
     }
@@ -105,12 +101,9 @@ public class MqServiceImpl implements MqService {
             return ServiceResult.buildSuccessResult(false, request);
         }
         if (StringUtils.isBlank(request.getChannelId())) {
-            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PUBLISH, request.getIp(), request.getPort(), topic,
-                    request.getBehavior()));
-
+            topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.PUBLISH, request.getUrl(), topic, request.getBehavior()));
         } else {
-            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PUBLISH, request.getChannelId(), topic,
-                    request.getBehavior()));
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PUBLISH, request.getChannelId(), topic, request.getBehavior()));
         }
         return ServiceResult.buildSuccessResult(true, request);
     }
@@ -123,12 +116,9 @@ public class MqServiceImpl implements MqService {
             return ServiceResult.buildSuccessResult(false, request);
         }
         if (StringUtils.isBlank(request.getChannelId())) {
-            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.SUBSCRIBER, request.getIp(), request.getPort(), topic,
-                    request.getBehavior()));
-
+            topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.SUBSCRIBER, request.getUrl(), topic, request.getBehavior()));
         } else {
-            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.SUBSCRIBER, request.getChannelId(), topic,
-                    request.getBehavior()));
+            topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.SUBSCRIBER, request.getChannelId(), topic, request.getBehavior()));
         }
         return ServiceResult.buildSuccessResult(true, request);
     }

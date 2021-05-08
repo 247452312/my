@@ -15,6 +15,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.util.ByteProcessor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -177,6 +178,9 @@ public class HttpProFinder implements Finder {
         String[] split = headerStr.split("\r\n");
         JSONObject header = new JSONObject();
         for (String headerItem : split) {
+            if (StringUtils.isBlank(headerItem)) {
+                continue;
+            }
             String[] headerItemCombination = headerItem.split(": ");
             String name = headerItemCombination[0];
             String value = headerItemCombination[1];

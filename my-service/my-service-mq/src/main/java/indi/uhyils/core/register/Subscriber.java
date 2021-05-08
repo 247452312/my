@@ -11,16 +11,24 @@ import indi.uhyils.enum_.RegisterType;
  * @date 文件创建日期 2021年04月16日 09时02分
  */
 public class Subscriber extends AbstractRegister {
-    public Subscriber(String ip, Integer port, OutDealTypeEnum outDealTypeEnum) {
-        super(ip, port, null, outDealTypeEnum);
+    private Subscriber(String url, Integer port, OutDealTypeEnum outDealTypeEnum) {
+        super(url, null, outDealTypeEnum);
     }
 
-    public Subscriber(String channelId, OutDealTypeEnum outDealTypeEnum) {
-        super(null, null, channelId, outDealTypeEnum);
+    private Subscriber(String channelId, OutDealTypeEnum outDealTypeEnum) {
+        super(null, channelId, outDealTypeEnum);
     }
 
     @Override
     public RegisterType getRegisterType() {
         return RegisterType.SUBSCRIBER;
+    }
+
+    public static Subscriber buildUrlRegister(String url, OutDealTypeEnum outDealTypeEnum) {
+        return new Subscriber(url, null, outDealTypeEnum);
+    }
+
+    public static Subscriber buildChannelRegister(String channelId, OutDealTypeEnum outDealTypeEnum) {
+        return new Subscriber(channelId, outDealTypeEnum);
     }
 }

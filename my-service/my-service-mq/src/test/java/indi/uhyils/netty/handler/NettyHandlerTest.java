@@ -10,7 +10,6 @@ import indi.uhyils.util.SpringUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.HttpResponseEncoder;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +17,9 @@ import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -124,6 +125,61 @@ public class NettyHandlerTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] bytes = new byte[1024];
         int len;
+        while ((len = is.read(bytes)) != -1) {
+            baos.write(bytes, 0, len);
+        }
+
+        LogUtil.info(baos.toString());
+        socket.close();
+    }
+
+    @Test
+    public void testLongSocket() throws Exception {
+        String s =
+                "POST /test HTTP/1.1\r\n" +
+                        "Content-Type: application/json\r\n" +
+                        "User-Agent: PostmanRuntime/7.26.8\r\n" +
+                        "Accept: */*\r\n" +
+                        "Cache-Control: no-cache\r\n" +
+                        "Host: localhost:8746\r\n" +
+                        "Accept-Encoding: gzip, deflate, br\r\n" +
+                        "Connection: keep-alive\r\n" +
+                        "Content-Length: 338\r\n" +
+                        "\r\n" +
+                        "{\r\n" +
+                        "    \"methodName\": \"registerConsumer\",\r\n" +
+                        "    \"paramsType\": [\r\n" +
+                        "        \"indi.uhyils.pojo.request.RegisterConsumerRequest\"\r\n" +
+                        "    ],\r\n" +
+                        "    \"data\": [\r\n" +
+                        "        {\r\n" +
+                        "            \"topicName\": \"defualt\",\r\n" +
+                        "            \"behavior\": \"PASSIVE\",\r\n" +
+                        "            \"token\": \"um0SmbIeMpIxqmfMwSSGA8FDxmmQDtzHAkgogp4VydfX/2cFYevn+/U3BgwQYYP4\"\r\n" +
+                        "        }\r\n" +
+                        "    ]\r\n" +
+                        "}";
+        byte[] bytesa = s.getBytes(StandardCharsets.UTF_8);
+        Socket socket = new Socket();
+        socket.connect(new InetSocketAddress("127.0.0.1", 8746));
+        OutputStream outputStream = socket.getOutputStream();
+        outputStream.write(bytesa);
+        Thread.sleep(1000);
+        InputStream is = socket.getInputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] bytes = new byte[1024];
+        int len;
+        while ((len = is.read(bytes)) != -1) {
+            baos.write(bytes, 0, len);
+        }
+
+        LogUtil.info(baos.toString());
+        LogUtil.info("等待信息中!!!!!!!!!!!!!!!!!!!!!");
+        while ((len = is.read(bytes)) == -1) {
+            Thread.sleep(10L);
+        }
+        // 获取到第二次信息才会停
+        baos.write(bytes, 0, len);
         while ((len = is.read(bytes)) != -1) {
             baos.write(bytes, 0, len);
         }

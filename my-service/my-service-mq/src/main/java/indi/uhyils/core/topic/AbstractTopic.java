@@ -157,6 +157,7 @@ public abstract class AbstractTopic implements Topic {
 
     @Override
     public Boolean addNewRegister(final Register register) throws ExpressionInvalidException {
+        // todo 在register添加时要加入各个queue queue新建时也要初始化一遍
         if (register == null) {
             return false;
         }
