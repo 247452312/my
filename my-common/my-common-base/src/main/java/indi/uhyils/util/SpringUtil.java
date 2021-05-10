@@ -87,6 +87,31 @@ public class SpringUtil implements ApplicationContextInitializer {
     }
 
 
+    /**
+     * 通过key 查询是否存在bean
+     *
+     * @param beanName bean名称
+     * @return 是否存在
+     */
+    public static Boolean containsBean(String beanName) {
+        return getApplicationContext().containsBean(beanName);
+    }
+    /**
+     * 通过key 查询是否存在bean
+     *
+     * @param beanClass bean名称
+     * @return 是否存在
+     */
+    public static <T> Boolean containsBean(Class<T> beanClass) {
+        try {
+            getBean(beanClass);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
         if (SpringUtil.applicationContext == null) {

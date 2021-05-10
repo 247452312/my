@@ -1,9 +1,12 @@
 package indi.uhyils.rpc.spring;
 
 import indi.uhyils.rpc.annotation.RpcReference;
+import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.proxy.RpcProxyFactory;
 import indi.uhyils.rpc.registry.exception.RegistryException;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.SpringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 
 import java.lang.annotation.Annotation;
@@ -20,10 +23,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 文件创建日期 2021年01月17日 09时55分
  */
 public class RpcConsumerBeanFieldInjectConfiguration implements InstantiationAwareBeanPostProcessor {
+
     /**
      * 注册类的缓存
      */
     private volatile static Map<String, Object> consumerRegistryCache = new ConcurrentHashMap<>();
+    @Autowired
+    private RpcConfig config;
 
     public Object getRegistryOnCache(Class<?> clazz) throws RegistryException {
         try {
@@ -38,7 +44,7 @@ public class RpcConsumerBeanFieldInjectConfiguration implements InstantiationAwa
         if (consumerRegistryCache.containsKey(clazzName)) {
             return consumerRegistryCache.get(clazzName);
         }
-        initConsumerByType(clazzName);
+        initAndGetConsumerByType(clazzName, config.getConsumer().getInConnection());
         return getRegistryOnCache(clazzName);
     }
 
@@ -66,11 +72,12 @@ public class RpcConsumerBeanFieldInjectConfiguration implements InstantiationAwa
         for (Method declaredMethod : declaredMethods) {
             declaredMethod.setAccessible(true);
             Annotation[] declaredAnnotations = declaredMethod.getDeclaredAnnotations();
-            if (isHaveInitProxy(declaredAnnotations)) {
+            RpcReference haveInitProxy = isHaveInitProxy(declaredAnnotations);
+            if (haveInitProxy != null) {
                 try {
                     Class<?>[] parameterTypes = declaredMethod.getParameterTypes();
                     for (Class<?> type : parameterTypes) {
-                        initConsumerByType(type);
+                        initAndGetConsumerByType(type, haveInitProxy.inConnection());
                     }
                     Object[] params = new Object[parameterTypes.length];
                     for (int i = 0; i < parameterTypes.length; i++) {
@@ -94,10 +101,11 @@ public class RpcConsumerBeanFieldInjectConfiguration implements InstantiationAwa
         for (Field declaredField : declaredFields) {
             declaredField.setAccessible(true);
             Annotation[] declaredAnnotations = declaredField.getDeclaredAnnotations();
-            if (isHaveInitProxy(declaredAnnotations)) {
+            RpcReference reference = isHaveInitProxy(declaredAnnotations);
+            if (reference != null) {
                 try {
                     Class<?> type = declaredField.getType();
-                    initConsumerByType(type);
+                    initAndGetConsumerByType(type, reference.inConnection());
                     declaredField.set(bean, consumerRegistryCache.get(type.getName()));
 
                 } catch (RegistryException | IllegalAccessException e) {
@@ -107,30 +115,34 @@ public class RpcConsumerBeanFieldInjectConfiguration implements InstantiationAwa
         }
     }
 
-    private boolean isHaveInitProxy(Annotation[] declaredAnnotations) {
-        boolean haveInitProxy = false;
+    private RpcReference isHaveInitProxy(Annotation[] declaredAnnotations) {
         for (Annotation declaredAnnotation : declaredAnnotations) {
             if (declaredAnnotation instanceof RpcReference) {
-                haveInitProxy = true;
-                break;
+                return (RpcReference) declaredAnnotation;
             }
         }
-        return haveInitProxy;
+        return null;
     }
 
-    private void initConsumerByType(Class<?> type) throws RegistryException {
+    private void initAndGetConsumerByType(Class<?> type, boolean inConnection) throws RegistryException {
         if (consumerRegistryCache.get(type.getName()) == null) {
             synchronized (consumerRegistryCache) {
                 if (consumerRegistryCache.get(type.getName()) == null) {
-                    Object o = RpcProxyFactory.newProxy(type);
-                    consumerRegistryCache.put(type.getName(), o);
+                    Object consumer;
+                    // 如果在本项目内发现了bean,那么使用项目内部的bean
+                    if (inConnection && SpringUtil.containsBean(type)) {
+                        consumer = SpringUtil.getBean(type);
+                    } else {
+                        consumer = RpcProxyFactory.newProxy(type);
+                    }
+                    consumerRegistryCache.put(type.getName(), consumer);
                 }
             }
         }
     }
 
-    private void initConsumerByType(String typeName) throws RegistryException, ClassNotFoundException {
-        initConsumerByType(Class.forName(typeName));
+    private void initAndGetConsumerByType(String typeName, boolean inConnection) throws RegistryException, ClassNotFoundException {
+        initAndGetConsumerByType(Class.forName(typeName), inConnection);
     }
 
 }

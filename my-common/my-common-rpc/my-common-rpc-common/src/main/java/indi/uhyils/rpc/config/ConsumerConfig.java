@@ -21,6 +21,11 @@ public class ConsumerConfig {
      */
     private Integer retries = 3;
 
+    /**
+     * 集群是否内联,如果在自己项目中发现了有bean,则是否使用bean去加载
+     */
+    private Boolean inConnection = Boolean.FALSE;
+
 
     public Boolean getCheck() {
         return check;
@@ -44,5 +49,13 @@ public class ConsumerConfig {
 
     public void setRetries(Integer retries) {
         this.retries = retries;
+    }
+
+    public Boolean getInConnection() {
+        return inConnection;
+    }
+
+    public void setInConnection(Boolean inConnection) {
+        this.inConnection = inConnection;
     }
 }

@@ -10,4 +10,11 @@ import java.lang.annotation.*;
 @Target(value = {ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RpcReference {
+
+    /**
+     * 如果在集群中,consumer是否通过rpc连接本项目的集群中的其他项目
+     *
+     * @return
+     */
+    boolean inConnection() default false;
 }
