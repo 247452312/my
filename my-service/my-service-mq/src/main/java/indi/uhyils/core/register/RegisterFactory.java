@@ -5,6 +5,7 @@ import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.RegisterType;
 import indi.uhyils.exception.ExpressionInvalidException;
 import indi.uhyils.exception.NotFoundRegisterTypeException;
+import indi.uhyils.exception.RegisterTopicNotFoundException;
 import indi.uhyils.exception.UserException;
 
 import java.util.ArrayList;
@@ -111,10 +112,12 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewUrlProvider(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+    private static Register createNewUrlProvider(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
         Provider provider = Provider.buildUrlRegister(url, outDealTypeEnum);
         provider.setTopic(topic);
-        topic.addNewRegister(provider);
+        if (!topic.addNewRegister(provider)) {
+            throw new RegisterTopicNotFoundException(topic.getName(), topic.getReceiveType(), topic.getPushType(), provider.getBehaviorType(), provider.getBehaviorType());
+        }
         return provider;
     }
 
@@ -124,10 +127,12 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewProvider(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+    private static Register createNewProvider(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
         Provider provider = Provider.buildChannelRegister(channelId, outDealTypeEnum);
         provider.setTopic(topic);
-        topic.addNewRegister(provider);
+        if (!topic.addNewRegister(provider)) {
+            throw new RegisterTopicNotFoundException(topic.getName(), topic.getReceiveType(), topic.getPushType(), provider.getBehaviorType(), provider.getBehaviorType());
+        }
         return provider;
     }
 
@@ -138,10 +143,12 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewUrlConsumer(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+    private static Register createNewUrlConsumer(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
         Consumer consumer = Consumer.buildUrlRegister(url, outDealTypeEnum);
         consumer.setTopic(topic);
-        topic.addNewRegister(consumer);
+        if (!topic.addNewRegister(consumer)) {
+            throw new RegisterTopicNotFoundException(topic.getName(), topic.getReceiveType(), topic.getPushType(), consumer.getBehaviorType(), consumer.getBehaviorType());
+        }
         return consumer;
     }
 
@@ -151,10 +158,12 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewConsumer(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+    private static Register createNewConsumer(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
         Consumer consumer = Consumer.buildChannelRegister(channelId, outDealTypeEnum);
         consumer.setTopic(topic);
-        topic.addNewRegister(consumer);
+        if (!topic.addNewRegister(consumer)) {
+            throw new RegisterTopicNotFoundException(topic.getName(), topic.getReceiveType(), topic.getPushType(), consumer.getBehaviorType(), consumer.getBehaviorType());
+        }
         return consumer;
     }
 
@@ -165,10 +174,12 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewUrlPublish(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+    private static Register createNewUrlPublish(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
         Publish publish = Publish.buildUrlRegister(url, outDealTypeEnum);
         publish.setTopic(topic);
-        topic.addNewRegister(publish);
+        if (!topic.addNewRegister(publish)) {
+            throw new RegisterTopicNotFoundException(topic.getName(), topic.getReceiveType(), topic.getPushType(), publish.getBehaviorType(), publish.getBehaviorType());
+        }
         return publish;
     }
 
@@ -178,10 +189,12 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewPublish(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+    private static Register createNewPublish(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
         Publish publish = Publish.buildChannelRegister(channelId, outDealTypeEnum);
         publish.setTopic(topic);
-        topic.addNewRegister(publish);
+        if (!topic.addNewRegister(publish)) {
+            throw new RegisterTopicNotFoundException(topic.getName(), topic.getReceiveType(), topic.getPushType(), publish.getBehaviorType(), publish.getBehaviorType());
+        }
         return publish;
     }
 
@@ -192,10 +205,12 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewUrlSubscriber(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+    private static Register createNewUrlSubscriber(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
         Subscriber subscriber = Subscriber.buildUrlRegister(url, outDealTypeEnum);
         subscriber.setTopic(topic);
-        topic.addNewRegister(subscriber);
+        if (!topic.addNewRegister(subscriber)) {
+            throw new RegisterTopicNotFoundException(topic.getName(), topic.getReceiveType(), topic.getPushType(), subscriber.getBehaviorType(), subscriber.getBehaviorType());
+        }
         return subscriber;
     }
 
@@ -205,10 +220,12 @@ public class RegisterFactory {
      * @param topic
      * @return
      */
-    private static Register createNewSubscriber(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException {
+    private static Register createNewSubscriber(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
         Subscriber subscriber = Subscriber.buildChannelRegister(channelId, outDealTypeEnum);
         subscriber.setTopic(topic);
-        topic.addNewRegister(subscriber);
+        if (!topic.addNewRegister(subscriber)) {
+            throw new RegisterTopicNotFoundException(topic.getName(), topic.getReceiveType(), topic.getPushType(), subscriber.getBehaviorType(), subscriber.getBehaviorType());
+        }
         return subscriber;
     }
 

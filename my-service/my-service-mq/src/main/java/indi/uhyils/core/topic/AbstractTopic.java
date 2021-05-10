@@ -157,13 +157,13 @@ public abstract class AbstractTopic implements Topic {
 
     @Override
     public Boolean addNewRegister(final Register register) throws ExpressionInvalidException {
-        // todo 在register添加时要加入各个queue queue新建时也要初始化一遍
         if (register == null) {
             return false;
         }
         OutDealTypeEnum behaviorType = register.getBehaviorType();
         // 如果是发布订阅类的主题
         if (this instanceof PubSubTopic) {
+            // 注: 主动推送,被动推送,主动拉取,被动拉取都属于topic的属性,每一个topic都存在这种属性
             if (register.getRegisterType() == RegisterType.PUBLISH && behaviorType == receiveType) {
                 providers.add(register);
             } else if (register.getRegisterType() == RegisterType.SUBSCRIBER && behaviorType == pushType) {

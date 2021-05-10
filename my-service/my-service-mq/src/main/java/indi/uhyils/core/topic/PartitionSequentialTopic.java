@@ -3,8 +3,10 @@ package indi.uhyils.core.topic;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.Queue;
+import indi.uhyils.core.register.Register;
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.TopicType;
+import indi.uhyils.exception.ExpressionInvalidException;
 
 /**
  * @Author uhyils <247452312@qq.com>
@@ -41,7 +43,7 @@ public class PartitionSequentialTopic extends AbstractTopic {
     }
 
     @Override
-    protected Boolean saveMessage0(Message message) {
+    protected Boolean saveMessage0(Message message) throws ExpressionInvalidException {
         Queue markQueue;
         JSONObject data = message.getData();
         // 获取指定参数的对应值
@@ -51,6 +53,9 @@ public class PartitionSequentialTopic extends AbstractTopic {
             markQueue = getQueues().get(keyValue.toString());
         } else {
             markQueue = this.getQueueFactory().createPartitionQueue(this, key);
+            for (Register consumer : consumers) {
+                markQueue.tryToRegister(consumer);
+            }
             getQueues().put(keyValue.toString(), markQueue);
         }
         return markQueue.saveMessage(message);
