@@ -115,9 +115,9 @@
     </select>
 
     <update id="changeEndTime">
-        update sys_log_monitor
-        set end_time = #{endTime}
-        where id = #{id}
+        update sys_log_monitor a
+        set a.end_time = #{endTime}
+        where a.id = #{id}
     </update>
 
     <select id="getIdByJvmUniqueMark" parameterType="indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark"

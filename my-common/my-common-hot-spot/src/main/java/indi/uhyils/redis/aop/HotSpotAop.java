@@ -42,7 +42,6 @@ import java.util.List;
 @Order(50)
 public class HotSpotAop {
 
-
     /**
      * redis写脚本
      */
@@ -76,6 +75,10 @@ public class HotSpotAop {
      * 重试的间隔(ms)
      */
     private static final Long RETRY_INTERVAL = 1000L * 10;
+    /**
+     * 注解的ThreadLocal
+     */
+    private ThreadLocal<CacheTypeEnum> markThreadLocal = new ThreadLocal<>();
     @Autowired
     private RedisPoolHandle redisPoolHandle;
     @Autowired
@@ -177,8 +180,9 @@ public class HotSpotAop {
                     return doHotSpotRead(tables, className, methodName, cacheType, user, pjp);
                 //此处是写接口应该用到的方法
                 case WRITE:
+                    markThreadLocal.set(cacheType);
                     Object proceed = pjp.proceed();
-                    doHotSpotWrite(tables, cacheType);
+                    markThreadLocal.remove();
                     return proceed;
                 default:
                     return pjp.proceed();
@@ -189,7 +193,7 @@ public class HotSpotAop {
     /**
      * 写接口应该做的方法
      */
-    private void doHotSpotWrite(List<String> tables, CacheTypeEnum cacheType) {
+    public void doHotSpotWrite(List<String> tables, CacheTypeEnum cacheType) {
         //如果此接口不允许缓存
         if (CacheTypeEnum.NOT_TYPE.equals(cacheType)) {
             return;
@@ -278,4 +282,9 @@ public class HotSpotAop {
         }
 
     }
+
+    public ThreadLocal<CacheTypeEnum> getMarkThreadLocal() {
+        return markThreadLocal;
+    }
+
 }
