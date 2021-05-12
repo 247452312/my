@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 public class IdUtil {
 
+    // todo 这个code在RPC初始化时需要从nacos中获取
     @Value("${id.organization.code}")
     private Long code;
 
