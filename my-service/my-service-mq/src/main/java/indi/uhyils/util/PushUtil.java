@@ -22,14 +22,13 @@ public class PushUtil {
         if (StringUtils.isBlank(channelId)) {
             Channel channel = NettyChannelUtil.getChannel(channelId);
             channel.writeAndFlush(NettyMessageUtil.msgToByte(message));
-            return true;
         } else {
             RestTemplate bean = SpringUtil.getBean(RestTemplate.class);
             Object response = bean.postForObject(register.getUrl(), message, Object.class);
             if (LogUtil.isDebugEnabled(PushUtil.class)) {
                 LogUtil.debug(PushUtil.class, "\r\n发送消息为:\r\n%s\r\n接收消息为:\r\n %s", JSON.toJSONString(message), JSON.toJSONString(response));
             }
-            return true;
         }
+        return true;
     }
 }
