@@ -142,7 +142,7 @@
 
         var weChat = (/micromessenger/i).test(ua);
 
-        // Todo: clean this up with a better OS/browser seperation:
+        //: clean this up with a better OS/browser seperation:
         // - discern (more) between multiple browsers on android
         // - decide if kindle fire in silk mode is android or not
         // - Firefox on Android doesn't specify the Android version
@@ -437,7 +437,7 @@
         return document.createElement('canvas');
     };
 
-// FIXME
+//
     var _ctx;
 
     function getContext() {
@@ -1254,8 +1254,8 @@
         max: max
     });
 
-// TODO Draggable for group
-// FIXME Draggable on element which has parent rotation or scale
+// Draggable for group
+// Draggable on element which has parent rotation or scale
     function Draggable() {
 
         this.on('mousedown', this._dragStart, this);
@@ -1617,7 +1617,7 @@
             one: isOnce,
             query: query,
             ctx: context || eventful,
-            // FIXME
+            //
             // Do not publish this feature util it is proved that it makes sense.
             callAtLast: handler.zrEventfulCallAtLast
         };
@@ -2471,7 +2471,7 @@
             }
 
             if (eventControl !== 'no_globalout') {
-                // FIXME: if the pointer moving from the extra doms to realy "outside",
+                //: if the pointer moving from the extra doms to realy "outside",
                 // the `globalout` should have been triggered. But currently not.
                 !zrIsToLocalDOM && this.trigger('globalout', {type: 'globalout', event: event});
             }
@@ -2665,7 +2665,7 @@
             var isSilent;
             while (el) {
                 // If clipped by ancestor.
-                // FIXME: If clipPath has neither stroke nor fill,
+                //: If clipPath has neither stroke nor fill,
                 // el.clipPath.contain(x, y) will always return false.
                 if (el.clipPath && !el.clipPath.contain(x, y)) {
                     return false;
@@ -3023,7 +3023,7 @@
 
     transformableProto.setLocalTransform = function (m) {
         if (!m) {
-            // TODO return or set identity?
+            // return or set identity?
             return;
         }
         var sx = m[0] * m[0] + m[1] * m[1];
@@ -3518,7 +3518,7 @@
      * @config ondestroy(optional)
      * @config onrestart(optional)
      *
-     * TODO pause
+     * pause
      */
 
     function Clip(options) {
@@ -4001,7 +4001,7 @@
         // #abc and #abc123 syntax.
         if (str.charAt(0) === '#') {
             if (str.length === 4) {
-                var iv = parseInt(str.substr(1), 16);  // TODO(deanm): Stricter parsing.
+                var iv = parseInt(str.substr(1), 16);  //(deanm): Stricter parsing.
                 if (!(iv >= 0 && iv <= 0xfff)) {
                     setRgba(rgbaArr, 0, 0, 0, 1);
                     return;  // Covers NaN.
@@ -4015,7 +4015,7 @@
                 putToCache(colorStr, rgbaArr);
                 return rgbaArr;
             } else if (str.length === 7) {
-                var iv = parseInt(str.substr(1), 16);  // TODO(deanm): Stricter parsing.
+                var iv = parseInt(str.substr(1), 16);  //(deanm): Stricter parsing.
                 if (!(iv >= 0 && iv <= 0xffffff)) {
                     setRgba(rgbaArr, 0, 0, 0, 1);
                     return;  // Covers NaN.
@@ -4426,7 +4426,7 @@
         var arr0Len = arr0.length;
         var arr1Len = arr1.length;
         if (arr0Len !== arr1Len) {
-            // FIXME Not work for TypedArray
+            // Not work for TypedArray
             var isPreviousLarger = arr0Len > arr1Len;
             if (isPreviousLarger) {
                 // Cut the previous
@@ -5093,7 +5093,7 @@
                 el.dirty(animatingShape);
             })
                 .done(function () {
-                    // FIXME Animator will not be removed if use `Animator#stop` to stop animation
+                    // Animator will not be removed if use `Animator#stop` to stop animation
                     animators.splice(indexOf(animators, animator), 1);
                 });
 
@@ -5151,7 +5151,7 @@
          *      position: [10, 10]
          *  }, 100, 100, 'cubicOut', function () { // done })
          */
-        // TODO Return animation key
+        // Return animation key
         animateTo: function (target, time, delay, easing, callback, forceAnimate) {
             animateTo(this, target, time, delay, easing, callback, forceAnimate);
         },
@@ -5290,7 +5290,7 @@
 
     function setAttrByPath(el, path, name, value) {
         // Attr directly if not has property
-        // FIXME, if some property not needed for element ?
+        //, if some property not needed for element ?
         if (!path) {
             el.attr(name, value);
         } else {
@@ -6023,7 +6023,7 @@
          * @return {module:zrender/core/BoundingRect}
          */
         getBoundingRect: function (includeChildren) {
-            // TODO Caching
+            // Caching
             var rect = null;
             var tmpRect = new BoundingRect(0, 0, 0, 0);
             var children = includeChildren || this._children;
@@ -6037,7 +6037,7 @@
 
                 var childRect = child.getBoundingRect();
                 var transform = child.getLocalTransform(tmpMat);
-                // TODO
+                //
                 // The boundingRect cacluated by transforming original
                 // rect may be bigger than the actual bundingRect when rotation
                 // is used. (Consider a circle rotated aginst its center, where
@@ -6717,7 +6717,7 @@
         if (a.zlevel === b.zlevel) {
             if (a.z === b.z) {
                 // if (a.z2 === b.z2) {
-                //     // FIXME Slow has renderidx compare
+                //     // Slow has renderidx compare
                 //     // http://stackoverflow.com/questions/20883421/sorting-in-javascript-should-every-compare-function-have-a-return-0-statement
                 //     // https://github.com/v8/v8/blob/47cce544a31ed5577ffe2963f67acb4144ee0232/src/js/array.js#L1012
                 //     return a.__renderidx - b.__renderidx;
@@ -6811,7 +6811,7 @@
             var userSetClipPath = el.clipPath;
             if (userSetClipPath) {
 
-                // FIXME 效率影响
+                // 效率影响
                 if (clipPaths) {
                     clipPaths = clipPaths.slice();
                 } else {
@@ -6840,7 +6840,7 @@
                     var child = children[i];
 
                     // Force to mark as dirty if group is dirty
-                    // FIXME __dirtyPath ?
+                    // __dirtyPath ?
                     if (el.__dirty) {
                         child.__dirty = true;
                     }
@@ -7352,7 +7352,7 @@
                 var styleName = prop[0];
 
                 if (notCheckCache || style[styleName] !== prevStyle[styleName]) {
-                    // FIXME Invalid property value will cause style leak from previous element.
+                    // Invalid property value will cause style leak from previous element.
                     ctx[styleName] =
                         fixShadow(ctx, styleName, style[styleName] || prop[1]);
                 }
@@ -7916,7 +7916,7 @@
      * @return {number} Adjusted x.
      */
     function adjustTextX(x, width, textAlign) {
-        // FIXME Right to left language
+        // Right to left language
         if (textAlign === 'right') {
             x -= width;
         } else if (textAlign === 'center') {
@@ -8081,7 +8081,7 @@
         var textLines = (text + '').split('\n');
         options = prepareTruncateOptions(containerWidth, font, ellipsis, options);
 
-        // FIXME
+        //
         // It is not appropriate that every line has '...' when truncate multiple lines.
         for (var i = 0, len = textLines.length; i < len; i++) {
             textLines[i] = truncateSingleLine(textLines[i], options);
@@ -8097,10 +8097,10 @@
         var ellipsis = retrieve2(ellipsis, '...');
         options.maxIterations = retrieve2(options.maxIterations, 2);
         var minChar = options.minChar = retrieve2(options.minChar, 0);
-        // FIXME
+        //
         // Other languages?
         options.cnCharWidth = getWidth('国', font);
-        // FIXME
+        //
         // Consider proportional font?
         var ascCharWidth = options.ascCharWidth = getWidth('a', font);
         options.placeholder = retrieve2(options.placeholder, '');
@@ -8182,7 +8182,7 @@
      * @return {number} line height
      */
     function getLineHeight(font) {
-        // FIXME A rough approach.
+        // A rough approach.
         return getWidth('国', font);
     }
 
@@ -8242,7 +8242,7 @@
                     {minChar: truncate.minChar, placeholder: truncate.placeholder}
                 );
 
-                // FIXME
+                //
                 // It is not appropriate that every line has '...' when truncate multiple lines.
                 for (var i = 0, len = lines.length; i < len; i++) {
                     lines[i] = truncateSingleLine(lines[i], options);
@@ -8378,7 +8378,7 @@
                     if (tokenWidthNotSpecified) {
                         tokenWidth = token.textWidth;
 
-                        // FIXME: If image is not loaded and textWidth is not specified, calling
+                        //: If image is not loaded and textWidth is not specified, calling
                         // `getBoundingRect()` will not get correct result.
                         var textBackgroundColor = tokenStyle.textBackgroundColor;
                         var bgImg = textBackgroundColor && textBackgroundColor.image;
@@ -8489,7 +8489,7 @@
     }
 
     function makeFont(style) {
-        // FIXME in node-canvas fontWeight is before fontStyle
+        // in node-canvas fontWeight is before fontStyle
         // Use `fontSize` `fontFamily` to check whether font properties are defined.
         var font = (style.fontSize || style.fontFamily) && [
             style.fontStyle,
@@ -8587,7 +8587,7 @@
 
     var DEFAULT_FONT = DEFAULT_FONT$1;
 
-// TODO: Have not support 'start', 'end' yet.
+//: Have not support 'start', 'end' yet.
     var VALID_TEXT_ALIGN = {left: 1, right: 1, center: 1};
     var VALID_TEXT_VERTICAL_ALIGN = {top: 1, bottom: 1, middle: 1};
 // Different from `STYLE_COMMON_PROPS` of `graphic/Style`,
@@ -9111,7 +9111,7 @@
     function getStroke(stroke, lineWidth) {
         return (stroke == null || lineWidth <= 0 || stroke === 'transparent' || stroke === 'none')
             ? null
-            // TODO pattern and gradient?
+            // pattern and gradient?
             : (stroke.image || stroke.colorStops)
                 ? '#000'
                 : stroke;
@@ -9120,7 +9120,7 @@
     function getFill(fill) {
         return (fill == null || fill === 'none')
             ? null
-            // TODO pattern and gradient?
+            // pattern and gradient?
             : (fill.image || fill.colorStops)
                 ? '#000'
                 : fill;
@@ -9194,7 +9194,7 @@
                 return;
             }
 
-            // FIXME
+            //
             // Do not provide prevEl to `textHelper.renderText` for ctx prop cache,
             // but use `ctx.save()` and `ctx.restore()`. Because the cache for rect
             // text propably break the cache for its host elements.
@@ -9257,7 +9257,7 @@
         // because it is easy to only using null to check whether clipPaths changed.
         this.__clipPaths = null;
 
-        // FIXME Stateful must be mixined after style is setted
+        // Stateful must be mixined after style is setted
         // Stateful.call(this, opts);
     }
 
@@ -9434,7 +9434,7 @@
          * If displayable object binded any event
          * @return {boolean}
          */
-        // TODO, events bound by bind
+        //, events bound by bind
         // isSilent: function () {
         //     return !(
         //         this.hoverable || this.draggable
@@ -9806,7 +9806,7 @@
             var mainLayer = new Layer(root, this, this.dpr);
             mainLayer.__builtin__ = true;
             mainLayer.initContext();
-            // FIXME Use canvas width and height
+            // Use canvas width and height
             // mainLayer.resize(width, height);
             layers[CANVAS_ZLEVEL] = mainLayer;
             mainLayer.zlevel = CANVAS_ZLEVEL;
@@ -9938,7 +9938,7 @@
             sort(hoverElements, this.storage.displayableSortFunc);
 
             // Use a extream large zlevel
-            // FIXME?
+            //?
             if (!hoverLayer) {
                 hoverLayer = this._hoverlayer = this.getLayer(HOVER_LAYER_ZLEVEL);
             }
@@ -9959,7 +9959,7 @@
                 i++;
 
                 // Use transform
-                // FIXME style and shape ?
+                // style and shape ?
                 if (!originalEl.invisible) {
                     el.transform = originalEl.transform;
                     el.invTransform = originalEl.invTransform;
@@ -10314,7 +10314,7 @@
                 var zlevel = el.zlevel;
                 var layer;
                 // PENDING If change one incremental element style ?
-                // TODO Where there are non-incremental elements between incremental elements.
+                // Where there are non-incremental elements between incremental elements.
                 if (el.incremental) {
                     layer = this.getLayer(zlevel + INCREMENTAL_INC, this._needsManuallyCompositing);
                     layer.incremental = true;
@@ -10445,7 +10445,7 @@
                 this.getLayer(CANVAS_ZLEVEL).resize(width, height);
             } else {
                 var domRoot = this._domRoot;
-                // FIXME Why ?
+                // Why ?
                 domRoot.style.display = 'none';
 
                 // Save input w/h
@@ -10655,7 +10655,7 @@
      * @module zrender/animation/Animation
      * @author pissang(https://github.com/pissang)
      */
-// TODO Additive animation
+// Additive animation
 // http://iosoteric.com/additive-animations-animatewithduration-in-ios-8/
 // https://developer.apple.com/videos/wwdc2014/#236
 
@@ -10884,7 +10884,7 @@
          * @param  {Function} [options.setter=null] Set value to target.
          * @return {module:zrender/animation/Animation~Animator}
          */
-        // TODO Gap
+        // Gap
         animate: function (target, options) {
             options = options || {};
 
@@ -11168,7 +11168,7 @@
         },
 
         pointermove: function (event) {
-            // FIXME
+            //
             // pointermove is so sensitive that it always triggered when
             // tap(click) on touch screen, which affect some judgement in
             // upper application. So, we dont support mousemove on MS touch
@@ -11218,7 +11218,7 @@
     var globalDOMHandlers = {
 
         pointermove: function (event) {
-            // FIXME
+            //
             // pointermove is so sensitive that it always triggered when
             // tap(click) on touch screen, which affect some judgement in
             // upper application. So, we dont support mousemove on MS touch
@@ -11273,7 +11273,7 @@
                 });
             });
 
-            // FIXME
+            //
             // Note: MS Gesture require CSS touch-action set. But touch-action is not reliable,
             // which does not prevent defuault behavior occasionally (which may cause view port
             // zoomed in but use can not zoom it back). And event.preventDefault() does not work.
@@ -11562,7 +11562,7 @@
         var storage = new Storage();
 
         var rendererType = opts.renderer;
-        // TODO WebGL
+        // WebGL
         if (useVML) {
             if (!painterCtors.vml) {
                 throw new Error('You need to require \'zrender/vml/vml\' to support IE8');
@@ -11596,7 +11596,7 @@
         this._needsRefresh;
 
         // 修改 storage.delFromStorage, 每次删除元素之前删除动画
-        // FIXME 有点ugly
+        // 有点ugly
         var oldDelFromStorage = storage.delFromStorage;
         var oldAddToStorage = storage.addToStorage;
 
@@ -11995,7 +11995,7 @@
 // modelUtil.LABEL_OPTIONS = modelUtil.TEXT_STYLE_OPTIONS.concat([
 //     'position', 'offset', 'rotate', 'origin', 'show', 'distance', 'formatter',
 //     'fontStyle', 'fontWeight', 'fontSize', 'fontFamily',
-//     // FIXME: deprecated, check and remove it.
+//     //: deprecated, check and remove it.
 //     'textStyle'
 // ]);
 
@@ -12729,8 +12729,8 @@
 * under the License.
 */
 
-// TODO Parse shadow style
-// TODO Only shallow path support
+// Parse shadow style
+// Only shallow path support
     var makeStyleMapper = function (properties) {
         // Normalize
         for (var i = 0; i < properties.length; i++) {
@@ -13578,7 +13578,7 @@
      * @author Yi Shen (http://www.github.com/pissang)
      */
 
-// TODO getTotalLength, getPointAtLength
+// getTotalLength, getPointAtLength
 
     /* global Float32Array */
 
@@ -13807,7 +13807,7 @@
             return this;
         },
 
-        // TODO
+        //
         arcTo: function (x1, y1, x2, y2, radius) {
             if (this._ctx) {
                 this._ctx.arcTo(x1, y1, x2, y2, radius);
@@ -13815,7 +13815,7 @@
             return this;
         },
 
-        // TODO
+        //
         rect: function (x, y, w, h) {
             this._ctx && this._ctx.rect(x, y, w, h);
             this.addData(CMD.R, x, y, w, h);
@@ -14191,14 +14191,14 @@
                         yi = data[i++];
                         break;
                     case CMD.A:
-                        // TODO Arc 判断的开销比较大
+                        // Arc 判断的开销比较大
                         var cx = data[i++];
                         var cy = data[i++];
                         var rx = data[i++];
                         var ry = data[i++];
                         var startAngle = data[i++];
                         var endAngle = data[i++] + startAngle;
-                        // TODO Arc 旋转
+                        // Arc 旋转
                         i += 1;
                         var anticlockwise = 1 - data[i++];
 
@@ -14673,7 +14673,7 @@
         }
     }
 
-// TODO
+//
 // Arc 旋转
     function windingArc(
         cx, cy, r, startAngle, endAngle, anticlockwise, x, y
@@ -14828,14 +14828,14 @@
                     yi = data[i++];
                     break;
                 case CMD$1.A:
-                    // TODO Arc 判断的开销比较大
+                    // Arc 判断的开销比较大
                     var cx = data[i++];
                     var cy = data[i++];
                     var rx = data[i++];
                     var ry = data[i++];
                     var theta = data[i++];
                     var dTheta = data[i++];
-                    // TODO Arc 旋转
+                    // Arc 旋转
                     i += 1;
                     var anticlockwise = 1 - data[i++];
                     var x1 = Math.cos(theta) * rx + cx;
@@ -14882,7 +14882,7 @@
                             return true;
                         }
                     } else {
-                        // FIXME Clockwise ?
+                        // Clockwise ?
                         w += windingLine(x1, y0, x1, y1, x, y);
                         w += windingLine(x0, y1, x0, y0, x, y);
                     }
@@ -14898,7 +14898,7 @@
                         // Close a subpath
                         w += windingLine(xi, yi, x0, y0, x, y);
                         // 如果被任何一个 subpath 包含
-                        // FIXME subpaths may overlap
+                        // subpaths may overlap
                         // if (w !== 0) {
                         //     return true;
                         // }
@@ -15117,7 +15117,7 @@
                 var rectWithStroke = this._rectWithStroke || (this._rectWithStroke = rect.clone());
                 if (this.__dirty || needsUpdateRect) {
                     rectWithStroke.copy(rect);
-                    // FIXME Must after updateTransform
+                    // Must after updateTransform
                     var w = style.lineWidth;
                     // PENDING, Min line width is needed when line is horizontal or vertical
                     var lineScale = style.strokeNoScale ? this.getLineScale() : 1;
@@ -15208,7 +15208,7 @@
 
         // Overwrite attrKV
         attrKV: function (key, value) {
-            // FIXME
+            //
             if (key === 'shape') {
                 this.setShape(value);
                 this.__dirtyPath = true;
@@ -15291,7 +15291,7 @@
 
         inherits(Sub, Path);
 
-        // FIXME 不能 extend position, rotation 等引用对象
+        // 不能 extend position, rotation 等引用对象
         for (var name in defaults$$1) {
             // Extending prototype values and methods
             if (name !== 'style' && name !== 'shape') {
@@ -15357,7 +15357,7 @@
                     data[i] *= sy;
                     data[i++] += y;
                     // Scale rx and ry
-                    // FIXME Assume psi is 0 here
+                    // Assume psi is 0 here
                     data[i++] *= sx;
                     data[i++] *= sy;
 
@@ -15365,7 +15365,7 @@
                     data[i++] += angle;
                     // end angle
                     data[i++] += angle;
-                    // FIXME psi
+                    // psi
                     i += 2;
                     j = i;
                     break;
@@ -15751,7 +15751,7 @@
         return path;
     }
 
-// TODO Optimize double memory cost problem
+// Optimize double memory cost problem
     function createPathOptions(str, opts) {
         var pathProxy = createPathProxyFromString(str);
         opts = opts || {};
@@ -15798,9 +15798,9 @@
     /**
      * Merge multiple paths
      */
-// TODO Apply transform
-// TODO stroke dash
-// TODO Optimize double memory cost problem
+// Apply transform
+// stroke dash
+// Optimize double memory cost problem
     function mergePath$1(pathEls, opts) {
         var pathList = [];
         var len = pathEls.length;
@@ -16927,7 +16927,7 @@
      *
      * It use a not clearFlag to tell the painter don't clear the layer if it's the first element.
      */
-// TODO Style override ?
+// Style override ?
     function IncrementalDisplayble(opts) {
 
         Displayable.call(this, opts);
@@ -17494,7 +17494,7 @@
         hoverStl = el.__hoverStl = hoverStl !== false && (el.hoverStyle || hoverStl || {});
         el.__hoverStlDirty = true;
 
-        // FIXME
+        //
         // It is not completely right to save "normal"/"emphasis" flag on elements.
         // It probably should be saved on `data` of series. Consider the cases:
         // (1) A highlighted elements are moved out of the view port and re-enter
@@ -17601,7 +17601,7 @@
      *               on "emphasis" state.
      *        @param {string} toState Can be "normal" or "emphasis".
      *
-     *        FIXME
+     *
      *        CAUTION: Do not expose `highDownOnUpdate` outside echarts.
      *        Because it is not a complete solution. The update
      *        listener should not have been mount in element,
@@ -17888,7 +17888,7 @@
                     // Cascade is supported in rich.
                     var richTextStyle = textStyleModel.getModel(['rich', name]);
                     // In rich, never `disableBox`.
-                    // FIXME: consider `label: {formatter: '{a|xx}', color: 'blue', rich: {a: {}}}`,
+                    //: consider `label: {formatter: '{a|xx}', color: 'blue', rich: {a: {}}}`,
                     // the default color `'blue'` will not be adopted if no color declared in `rich`.
                     // That might confuses users. So probably we should put `textStyleModel` as the
                     // root ancestor of the `richTextStyle`. But that would be a break change.
@@ -18095,7 +18095,7 @@
     function getFont(opt, ecModel) {
         var gTextStyleModel = ecModel && ecModel.getModel('textStyle');
         return trim([
-            // FIXME in node-canvas fontWeight is before fontStyle
+            // in node-canvas fontWeight is before fontStyle
             opt.fontStyle || gTextStyleModel && gTextStyleModel.getShallow('fontStyle') || '',
             opt.fontWeight || gTextStyleModel && gTextStyleModel.getShallow('fontWeight') || '',
             (opt.fontSize || gTextStyleModel && gTextStyleModel.getShallow('fontSize') || 12) + 'px',
@@ -18303,7 +18303,7 @@
      * @return {Array.<Array.<number>>} A new clipped points.
      */
     function clipPointsByRect(points, rect) {
-        // FIXME: this way migth be incorrect when grpahic clipped by a corner.
+        //: this way migth be incorrect when grpahic clipped by a corner.
         // and when element have border.
         return map(points, function (point) {
             var x = point[0];
@@ -19938,14 +19938,14 @@
                 var moveX = rect.width + (nextChildRect ? (-nextChildRect.x + rect.x) : 0);
                 nextX = x + moveX;
                 // Wrap when width exceeds maxWidth or meet a `newline` group
-                // FIXME compare before adding gap?
+                // compare before adding gap?
                 if (nextX > maxWidth || child.newline) {
                     x = 0;
                     nextX = moveX;
                     y += currentLineMaxSize + gap;
                     currentLineMaxSize = rect.height;
                 } else {
-                    // FIXME: consider rect.y is not `0`?
+                    //: consider rect.y is not `0`?
                     currentLineMaxSize = Math.max(currentLineMaxSize, rect.height);
                 }
             } else {
@@ -20088,7 +20088,7 @@
             // 1. Graph should not exceeds the container
             // 2. Aspect must be keeped
             // 3. Graph should take the space as more as possible
-            // FIXME
+            //
             // Margin is not considered, because there is no case that both
             // using margin and aspect so far.
             if (isNaN(width) && isNaN(height)) {
@@ -20729,7 +20729,7 @@
 
     function getNearestColorPalette(colors, requestColorNum) {
         var paletteNum = colors.length;
-        // TODO colors must be in order
+        // colors must be in order
         for (var i = 0; i < paletteNum; i++) {
             if (colors[i].length > requestColorNum) {
                 return colors[i];
@@ -20991,7 +20991,7 @@
         if (isTypedArray(data)) {
             sourceFormat = SOURCE_FORMAT_TYPED_ARRAY;
         } else if (isArray(data)) {
-            // FIXME Whether tolerate null in top level array?
+            // Whether tolerate null in top level array?
             if (data.length === 0) {
                 sourceFormat = SOURCE_FORMAT_ARRAY_ROWS;
             }
@@ -21307,7 +21307,7 @@
         var datasetRecord = datasetMap.get(key)
             || datasetMap.set(key, {categoryWayDim: categoryWayValueDimStart, valueWayDim: 0});
 
-        // TODO
+        //
         // Auto detect first time axis and do arrangement.
         each$1(coordDimensions, function (coordDimInfo, coordDimIdx) {
             var coordDimName = coordDimInfo.name;
@@ -21320,7 +21320,6 @@
                 pushDim(encodeSeriesName, start, count);
                 datasetRecord.valueWayDim += count;
 
-                // ??? TODO give a better default series name rule?
                 // especially when encode x y specified.
                 // consider: when mutiple series share one dimension
                 // category axis, series name should better use
@@ -22059,7 +22058,7 @@
 
         /**
          * Get series list before filtered by type.
-         * FIXME: rename to getRawSeriesByType?
+         * : rename to getRawSeriesByType?
          *
          * @param {string} subType
          * @return {Array.<module:echarts/model/Series>}
@@ -22256,7 +22255,7 @@
 
         mergeTheme(baseOption, this._theme.option);
 
-        // TODO Needs clone when merging to the unexisted property
+        // Needs clone when merging to the unexisted property
         merge(baseOption, globalDefault, false);
 
         this.mergeOption(baseOption);
@@ -22594,7 +22593,7 @@
             // (create a new object when modify itself).
             rawOption = clone$3(rawOption);
 
-            // FIXME
+            //
             // 如果 timeline options 或者 media 中设置了某个属性，而baseOption中没有设置，则进行警告。
 
             var oldOptionBackup = this._optionBackup;
@@ -22632,7 +22631,7 @@
         mountOption: function (isRecreate) {
             var optionBackup = this._optionBackup;
 
-            // TODO
+            //
             // 如果没有reset功能则不clone。
 
             this._timelineOptions = map$1(optionBackup.timelineOptions, clone$3);
@@ -22697,7 +22696,7 @@
                 }
             }
 
-            // FIXME
+            //
             // 是否mediaDefault应该强制用户设置，否则可能修改不能回归。
             if (!indices.length && mediaDefault) {
                 indices = [-1];
@@ -23431,7 +23430,7 @@
 * under the License.
 */
 
-// TODO
+//
 // ??? refactor? check the outer usage of data provider.
 // merge with defaultDimValueGetter?
 
@@ -23448,7 +23447,6 @@
         var data = this._data = source.data;
         var sourceFormat = source.sourceFormat;
 
-        // Typed array. TODO IE10+?
         if (sourceFormat === SOURCE_FORMAT_TYPED_ARRAY) {
             if (__DEV__) {
                 if (dimSize == null) {
@@ -23479,7 +23477,7 @@
 // If data is persistent and will not be released after use.
     providerProto.persistent = true;
 
-// ???! FIXME legacy data provider do not has method getSource
+// ???!  legacy data provider do not has method getSource
     providerProto.getSource = function () {
         return this._source;
     };
@@ -23619,7 +23617,7 @@
         keyedColumns: getRawValueSimply,
 
         original: function (dataItem, dataIndex, dimIndex, dimName) {
-            // FIXME
+            //
             // In some case (markpoint in geo (geo-map.html)), dataItem
             // is {coord: [...]}
             var value = getDataItemValue(dataItem);
@@ -23712,13 +23710,13 @@
             : +value;
     }
 
-// ??? FIXME can these logic be more neat: getRawValue, getRawDataItem,
+// ???  can these logic be more neat: getRawValue, getRawDataItem,
 // Consider persistent.
 // Caution: why use raw value to display on label or tooltip?
 // A reason is to avoid format. For example time value we do not know
 // how to format is expected. More over, if stack is used, calculated
 // value may be 0.91000000001, which have brings trouble to display.
-// TODO: consider how to treat null/undefined/NaN when display?
+//: consider how to treat null/undefined/NaN when display?
     /**
      * @param {module:echarts/data/List} data
      * @param {number} dataIndex
@@ -23755,7 +23753,6 @@
      * data: [{name: 'xx', value: 5, selected: true}, ...]
      * where only sourceFormat is 'original' and 'objectRows' supported.
      *
-     * ??? TODO
      * Supported detail options in data item when using 'arrayRows'.
      *
      * @param {module:echarts/data/List} data
@@ -23985,7 +23982,7 @@
         var upTask = this._upstream;
         var skip = performArgs && performArgs.skip;
 
-        // TODO some refactor.
+        // some refactor.
         // Pull data. Must pull data each time, because context.data
         // may be updated by Series.setData.
         if (this._dirty && upTask) {
@@ -24437,8 +24434,8 @@
 
         fillDataTextStyle: function (data) {
             // Default data label emphasis `show`
-            // FIXME Tree structure data ?
-            // FIXME Performance ?
+            // Tree structure data ?
+            // Performance ?
             if (data && !isTypedArray(data)) {
                 var props = ['show'];
                 for (var i = 0; i < data.length; i++) {
@@ -24462,7 +24459,7 @@
          * @param {Array|TypedArray} params.data
          */
         appendData: function (params) {
-            // FIXME ???
+            // ???
             // (1) If data from dataset, forbidden append.
             // (2) support append data of dataset.
             var data = this.getRawData();
@@ -24545,7 +24542,7 @@
             return coordSys && coordSys.getBaseAxis && coordSys.getBaseAxis();
         },
 
-        // FIXME
+        //
         /**
          * Default tooltip formatter
          *
@@ -24569,7 +24566,6 @@
             var markerId = 0;
 
             function formatArrayValue(value) {
-                // ??? TODO refactor these logic.
                 // check: category-no-encode-has-axis-data in dataset.html
                 var vertially = reduce(value, function (vertially, val, idx) {
                     var dimItem = data.getDimensionInfo(idx);
@@ -24605,7 +24601,7 @@
                             ? dimHeadStr + encodeHTML(dimInfo.displayName || '-') + ': '
                             : ''
                         )
-                        // FIXME should not format time for raw data?
+                        // should not format time for raw data?
                         + encodeHTML(dimType === 'ordinal'
                             ? val + ''
                             : dimType === 'time'
@@ -24833,7 +24829,7 @@
         }
     }
 
-// TODO refactor
+// refactor
     function wrapData(data, seriesModel) {
         each$1(data.CHANGABLE_METHODS, function (methodName) {
             data.wrapMethod(methodName, curry(onDataSelfChange, seriesModel));
@@ -24968,7 +24964,7 @@
             var originalLarge = fields.large;
             var originalProgressive = fields.progressiveRender;
 
-            // FIXME: if the planner works on a filtered series, `pipelineContext` does not
+            //: if the planner works on a filtered series, `pipelineContext` does not
             // exists. See #11611 . Probably we need to modify this structure, see the comment
             // on `performRawSeries` in `Schedular.js`.
             var large = fields.large = pipelineContext && pipelineContext.large;
@@ -25447,7 +25443,7 @@
             // Default color
             if (!color || colorCallback) {
                 color = seriesModel.getColorFromPalette(
-                    // TODO series count changed.
+                    // series count changed.
                     seriesModel.name, null, ecModel.getSeriesCount()
                 );
             }
@@ -25947,7 +25943,7 @@
      * @param {Object} payload
      */
     proto.restoreData = function (ecModel, payload) {
-        // TODO: Only restroe needed series and components, but not all components.
+        //: Only restroe needed series and components, but not all components.
         // Currently `restoreData` of all of the series and component will be called.
         // But some independent components like `title`, `legend`, `graphic`, `toolbox`,
         // `tooltip`, `axisPointer`, etc, do not need series refresh when `setOption`,
@@ -25962,7 +25958,7 @@
         // We use `dependencies` to cover these issues.
         // (3) How to update target series when coordinate system related components modified.
 
-        // TODO: simply the dirty mechanism? Check whether only the case here can set tasks dirty,
+        //: simply the dirty mechanism? Check whether only the case here can set tasks dirty,
         // and this case all of the tasks will be set as dirty.
 
         ecModel.restoreData(payload);
@@ -26028,7 +26024,7 @@
 
         var large = seriesModel.get('large') && dataLen >= seriesModel.get('largeThreshold');
 
-        // TODO: modDataCount should not updated if `appendData`, otherwise cause whole repaint.
+        //: modDataCount should not updated if `appendData`, otherwise cause whole repaint.
         // see `test/candlestick-large3.html`
         var modDataCount = seriesModel.get('progressiveChunkMode') === 'mod' ? dataLen : null;
 
@@ -26141,7 +26137,7 @@
                         task.dirty();
                     }
                     var performArgs = scheduler.getPerformArgs(task, opt.block);
-                    // FIXME
+                    //
                     // if intending to decalare `performRawSeries` in handlers, only
                     // stream-independent (specifically, data item independent) operations can be
                     // performed. Because is a series is filtered, most of the tasks will not
@@ -26779,7 +26775,7 @@
         var viewBox = svg.getAttribute('viewBox') || '';
 
         // If width/height not specified, means "100%" of `opt.width/height`.
-        // TODO: Other percent value not supported yet.
+        //: Other percent value not supported yet.
         var width = parseFloat(svg.getAttribute('width') || opt.width);
         var height = parseFloat(svg.getAttribute('height') || opt.height);
         // If width/height not specified, set as null for output.
@@ -26851,7 +26847,7 @@
 
         var nodeName = xmlNode.nodeName.toLowerCase();
 
-        // TODO
+        //
         // support <style>...</style> in svg, where nodeName is 'style',
         // CSS classes is defined globally wherever the style tags are declared.
 
@@ -27090,7 +27086,7 @@
             return g;
         },
         'path': function (xmlNode, parentGroup) {
-            // TODO svg fill rule
+            // svg fill rule
             // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-rule
             // path.style.globalCompositeOperation = 'xor';
             var d = xmlNode.getAttribute('d') || '';
@@ -27195,7 +27191,7 @@
         var zrStyle = el.__inheritedStyle || {};
         var isTextEl = el.type === 'text';
 
-        // TODO Shadow
+        // Shadow
         if (xmlNode.nodeType === 1) {
             parseTransformAttribute(xmlNode, el);
 
@@ -27535,7 +27531,7 @@
     var PRIORITY_VISUAL_CHART = 3000;
     var PRIORITY_VISUAL_POST_CHART_LAYOUT = 3500;
     var PRIORITY_VISUAL_COMPONENT = 4000;
-// FIXME
+//
 // necessary?
     var PRIORITY_VISUAL_BRUSH = 5000;
 
@@ -28302,7 +28298,7 @@
 
             scheduler.performSeriesTasks(ecModel);
 
-            // TODO
+            //
             // Save total ecModel here for undo/redo (after restoring data and before processing data).
             // Undo (restoration of total ecModel) can be carried out in 'action' or outside API call.
 
@@ -28500,7 +28496,7 @@
 
         // broadcast
         if (!mainType) {
-            // FIXME
+            //
             // Chart will not be update directly here, except set dirty.
             // But there is no such scenario now.
             each(ecIns._componentsViews.concat(ecIns._chartsViews), callView);
@@ -28745,7 +28741,7 @@
         if (updateMethod !== 'none' && !isHighDown && !cptType) {
             // Still dirty
             if (this[OPTION_UPDATED]) {
-                // FIXME Pass payload ?
+                // Pass payload ?
                 prepare(this);
                 updateMethods.update.call(this, payload);
                 this[OPTION_UPDATED] = false;
@@ -29212,7 +29208,7 @@
             }
         }
         chartView.group.traverse(function (el) {
-            // FIXME marker and other components
+            // marker and other components
             if (!el.isGroup) {
                 // Only set if blendMode is changed. In case element is incremental and don't wan't to rerender.
                 if (el.style.blend !== blendMode) {
@@ -30124,7 +30120,7 @@
 
         notExtraCoordDimMap.each(function (v, coordDim) {
             var dimArr = encode[coordDim];
-            // ??? FIXME extra coord should not be set in dataDimsOnCoord.
+            // ???  extra coord should not be set in dataDimsOnCoord.
             // But should fix the case that radar axes: simplify the logic
             // of `completeDimension`, remove `extraPrefix`.
             encodeFirstDimNotExtra[coordDim] = dimArr[0];
@@ -30137,7 +30133,7 @@
         summary.encodeFirstDimNotExtra = encodeFirstDimNotExtra;
 
         var encodeLabel = encode.label;
-        // FIXME `encode.label` is not recommanded, because formatter can not be set
+        // `encode.label` is not recommanded, because formatter can not be set
         // in this way. Use label.formatter instead. May be remove this approach someday.
         if (encodeLabel && encodeLabel.length) {
             defaultedLabel = encodeLabel.slice();
@@ -30935,8 +30931,8 @@
                 val > dimRawExtent[1] && (dimRawExtent[1] = val);
             }
 
-            // ??? FIXME not check by pure but sourceFormat?
-            // TODO refactor these logic.
+            // ???  not check by pure but sourceFormat?
+            // refactor these logic.
             if (!rawData.pure) {
                 var name = nameList[idx];
 
@@ -31101,7 +31097,7 @@
         }
         var storage = this._storage;
         if (!storage[dim]) {
-            // TODO Warn ?
+            // Warn ?
             return NaN;
         }
 
@@ -31112,7 +31108,7 @@
 
         var chunkStore = storage[dim][chunkIndex];
         var value = chunkStore[chunkOffset];
-        // FIXME ordinal data type is not stackable
+        // ordinal data type is not stackable
         // if (stack) {
         //     var dimensionInfo = this._dimensionInfos[dim];
         //     if (dimensionInfo && dimensionInfo.stackable) {
@@ -31145,7 +31141,7 @@
         }
         var dimStore = this._storage[dim];
         if (!dimStore) {
-            // TODO Warn ?
+            // Warn ?
             return NaN;
         }
 
@@ -31156,7 +31152,7 @@
     };
 
     /**
-     * FIXME Use `get` on chrome maybe slow(in filterSelf and selectRange).
+     *  Use `get` on chrome maybe slow(in filterSelf and selectRange).
      * Hack a much simpler _getFast
      * @private
      */
@@ -31328,7 +31324,7 @@
             }
         });
 
-        // TODO
+        //
         // Use quick select?
 
         // immutability & sort
@@ -31352,7 +31348,7 @@
 //  */
 // Currently incorrect: should return dataIndex but not rawIndex.
 // Do not fix it until this method is to be used somewhere.
-// FIXME Precision of float value
+// Precision of float value
 // listProto.indexOf = function (dim, value) {
 //     var storage = this._storage;
 //     var dimData = storage[dim];
@@ -31561,7 +31557,7 @@
             id = getRawValueFromStore(list, list._idDimIdx, rawIndex);
         }
         if (id == null) {
-            // FIXME Check the usage in graph, should not use prefix.
+            // Check the usage in graph, should not use prefix.
             id = ID_PREFIX + rawIndex;
         }
         return id;
@@ -31888,7 +31884,7 @@
             map(allDimensions, original.getDimensionInfo, original),
             original.hostModel
         );
-        // FIXME If needs stackedOn, value may already been stacked
+        // If needs stackedOn, value may already been stacked
         transferProperties(list, original);
 
         var storage = list._storage = {};
@@ -32069,7 +32065,7 @@
      *
      * @param {number} idx
      */
-// FIXME Model proxy ?
+// Model proxy ?
     listProto.getItemModel = function (idx) {
         var hostModel = this.hostModel;
         return new Model(this.getRawDataItem(idx), hostModel, hostModel && hostModel.ecModel);
@@ -32293,7 +32289,7 @@
             list = new List(dimensionInfoList, this.hostModel);
         }
 
-        // FIXME
+        //
         list._storage = this._storage;
 
         transferProperties(list, this);
@@ -32512,7 +32508,7 @@
                     resultItem.name = resultItem.displayName = sysDimItemDimsDefItem.name;
                     resultItem.defaultTooltip = sysDimItemDimsDefItem.defaultTooltip;
                 }
-                // FIXME refactor, currently only used in case: {otherDims: {tooltip: false}}
+                // refactor, currently only used in case: {otherDims: {tooltip: false}}
                 sysDimItemOtherDims && defaults(resultItem.otherDims, sysDimItemOtherDims);
             });
         });
@@ -32584,7 +32580,6 @@
         return result;
     }
 
-// ??? TODO
 // Originally detect dimCount by data[0]. Should we
 // optimize it to only by sysDims and dimensions and encode.
 // So only necessary dims will be initialized.
@@ -32693,7 +32688,7 @@
      * There are many manners to refer axis/coordSys.
      */
 
-// TODO
+//
 // merge relevant logic to this file?
 // check: "modelHelper" of tooltip and "BrushTargetManager".
 
@@ -33484,7 +33479,7 @@
      * http://en.wikipedia.org/wiki/Level_of_measurement
      */
 
-// FIXME only one data
+// only one data
 
     var scaleProto = Scale.prototype;
 
@@ -33876,7 +33871,7 @@
                 return;
             }
             // User may set axis min 0 and data are all negative
-            // FIXME If it needs to reverse ?
+            // If it needs to reverse ?
             if (span < 0) {
                 span = -span;
                 extent.reverse();
@@ -34423,7 +34418,7 @@
         }, this);
     }
 
-// TODO: Do not support stack in large mode yet.
+//: Do not support stack in large mode yet.
     var largeLayout = {
 
         seriesType: 'bar',
@@ -34553,7 +34548,7 @@
     var ONE_HOUR = ONE_MINUTE * 60;
     var ONE_DAY = ONE_HOUR * 24;
 
-// FIXME 公用？
+// 公用？
     var bisect = function (a, x, lo, hi) {
         while (lo < hi) {
             var mid = lo + hi >>> 1;
@@ -34866,7 +34861,7 @@
          * @override
          */
         unionExtentFromData: function (data, dim) {
-            // TODO
+            //
             // filter value that <= 0
             this.unionExtent(data.getApproximateExtent(dim));
         },
@@ -35001,7 +34996,7 @@
         //      be the result that originalExtent enlarged by boundaryGap.
         // (3) If no data, it should be ensured that `scale.setBlank` is set.
 
-        // FIXME
+        //
         // (1) When min/max is 'dataMin' or 'dataMax', should boundaryGap be able to used?
         // (2) When `needCrossZero` and all data is positive/negative, should it be ensured
         // that the results processed by boundaryGap are positive/negative?
@@ -35058,7 +35053,7 @@
 
         // If bars are placed on a base axis of type time or interval account for axis boundary overflow and current axis
         // is base axis
-        // FIXME
+        //
         // (1) Consider support value axis, where below zero and axis `onZero` should be handled properly.
         // (2) Refactor the logic with `barGrid`. Is it not need to `makeBarWidthAndOffsetInfo` twice with different extent?
         //     Should not depend on series type `bar`?
@@ -35149,7 +35144,7 @@
         // is not good enough. He can specify the interval. It is often appeared
         // in angle axis with angle 0 - 360. Interval calculated in interval scale is hard
         // to be 60.
-        // FIXME
+        //
         var interval = model.get('interval');
         if (interval != null) {
             scale.setInterval && scale.setInterval(interval);
@@ -35601,7 +35596,7 @@
     var symbolShapeMakers = {
 
         line: function (x, y, w, h, shape) {
-            // FIXME
+            //
             shape.x1 = x;
             shape.y1 = y + h / 2;
             shape.x2 = x + w;
@@ -35721,7 +35716,7 @@
                 symbolStyle.stroke = color;
                 symbolStyle.fill = innerColor || '#fff';
             } else {
-                // FIXME 判断图形默认是填充还是描边，使用 onlyStroke ?
+                // 判断图形默认是填充还是描边，使用 onlyStroke ?
                 symbolStyle.fill && (symbolStyle.fill = color);
                 symbolStyle.stroke && (symbolStyle.stroke = color);
             }
@@ -35741,7 +35736,7 @@
      *                            for path and image only.
      */
     function createSymbol(symbolType, x, y, w, h, color, keepAspect) {
-        // TODO Support image object, DynamicImage.
+        // Support image object, DynamicImage.
 
         var isEmpty = symbolType.indexOf('empty') === 0;
         if (isEmpty) {
@@ -36500,7 +36495,7 @@
         var labelModel = axis.getLabelModel();
         var result = [];
 
-        // TODO: axisType: ordinalTime, pick the tick from each month/day/year/...
+        //: axisType: ordinalTime, pick the tick from each month/day/year/...
 
         var step = Math.max((categoryInterval || 0) + 1, 1);
         var startTick = ordinalExtent[0];
@@ -37254,7 +37249,7 @@
     };
 
     /**
-     * FIXME:
+     * :
      * Caution: This method breaks the encapsulation of this module,
      * but it indeed brings convenience. So do not use the method
      * unless you detailedly know all the implements of `Symbol`,
@@ -37497,7 +37492,7 @@
                     Math.max(scale[1] * 1.1, scale[1] + 3 * ratio)
                 ]
             };
-            // FIXME
+            //
             // modify it after support stop specified animation.
             // toState === fromState
             //     ? (this.stopAnimation(), this.attr(emphasisOpt))
@@ -37912,7 +37907,7 @@
 
         // convertToIntId(newIdList, oldIdList);
 
-        // // FIXME One data ?
+        // // One data ?
         // diff = arrayDiff(oldIdList, newIdList);
 
         var currPoints = [];
@@ -37932,7 +37927,7 @@
             var diffItem = diff[i];
             var pointAdded = true;
 
-            // FIXME, animation is not so perfect when dataZoom window moves fast
+            //, animation is not so perfect when dataZoom window moves fast
             // Which is in case remvoing or add more than one data in the tail or head
             switch (diffItem.cmd) {
                 case '=':
@@ -37972,7 +37967,6 @@
                     var idx = diffItem.idx;
                     var rawIndex = oldData.getRawIndex(idx);
                     // Data is replaced. In the case of dynamic data queue
-                    // FIXME FIXME FIXME
                     if (rawIndex !== idx) {
                         currPoints.push(oldData.getItemLayout(idx));
                         nextPoints.push(newCoordSys.dataToPoint([
@@ -38543,7 +38537,7 @@
 * under the License.
 */
 
-// FIXME step not support polar
+// step not support polar
 
     function isPointsSame(points1, points2) {
         if (points1.length !== points2.length) {
@@ -38863,7 +38857,7 @@
 
             group.add(lineGroup);
 
-            // FIXME step not support polar
+            // step not support polar
             var step = !isCoordSysPolar && seriesModel.get('step');
             var clipShapeForSymbol;
             if (coordSys && coordSys.getArea && seriesModel.get('clip', true)) {
@@ -38891,7 +38885,7 @@
                 });
 
                 if (step) {
-                    // TODO If stacked series is not step
+                    // If stacked series is not step
                     points = turnPointsIntoStep(points, coordSys, step);
                     stackedOnPoints = turnPointsIntoStep(stackedOnPoints, coordSys, step);
                 }
@@ -38928,7 +38922,7 @@
                 });
 
                 // Stop symbol animation and sync with line points
-                // FIXME performance?
+                // performance?
                 data.eachItemGraphicEl(function (el) {
                     el.stopAnimation(true);
                 });
@@ -38945,7 +38939,7 @@
                     } else {
                         // Not do it in update with animation
                         if (step) {
-                            // TODO If stacked series is not step
+                            // If stacked series is not step
                             points = turnPointsIntoStep(points, coordSys, step);
                             stackedOnPoints = turnPointsIntoStep(stackedOnPoints, coordSys, step);
                         }
@@ -39073,7 +39067,7 @@
                     }
                 }
             } else {
-                // FIXME
+                //
                 // can not downplay completely.
                 // Downplay whole series
                 Chart.prototype.downplay.call(
@@ -39139,7 +39133,7 @@
         /**
          * @private
          */
-        // FIXME Two value axis
+        // Two value axis
         _updateAnimation: function (data, stackedOnPoints, coordSys, api, step, valueOrigin) {
             var polyline = this._polyline;
             var polygon = this._polygon;
@@ -39157,7 +39151,7 @@
             var next = diff.next;
             var stackedOnNext = diff.stackedOnNext;
             if (step) {
-                // TODO If stacked series is not step
+                // If stacked series is not step
                 current = turnPointsIntoStep(diff.current, coordSys, step);
                 stackedOnCurrent = turnPointsIntoStep(diff.stackedOnCurrent, coordSys, step);
                 next = turnPointsIntoStep(diff.next, coordSys, step);
@@ -39465,7 +39459,7 @@
             // NaN will cause illegal axis extent.
             return isFinite(min) ? min : NaN;
         },
-        // TODO
+        //
         // Median
         nearest: function (frame) {
             return frame[0];
@@ -40057,7 +40051,7 @@
         // `GAP` can be an absolute pixel number (like `35`), or percent (like `'30%'`)
         boundaryGap: [0, 0],
 
-        // TODO
+        //
         // min/max: [30, datamin, 60] or [20, datamin] or [datamin, 60]
 
         // Min value of the axis. can be:
@@ -40151,7 +40145,7 @@
 * under the License.
 */
 
-// FIXME axisType is fixed ?
+// axisType is fixed ?
     var AXIS_TYPES = ['value', 'category', 'time', 'log'];
 
     /**
@@ -40204,7 +40198,7 @@
                  */
                 getCategories: function (rawData) {
                     var option = this.option;
-                    // FIXME
+                    //
                     // warning if called before all of 'getInitailData' finished.
                     if (option.type === 'category') {
                         if (rawData) {
@@ -40394,7 +40388,7 @@
     /**
      * Grid is a region which contains at most 4 cartesian systems
      *
-     * TODO Default cartesian
+     * Default cartesian
      */
 
 // Depends on GridModel, AxisModel, which performs preprocess.
@@ -40470,14 +40464,14 @@
         });
 
         // Resize again if containLabel is enabled
-        // FIXME It may cause getting wrong grid size in data processing stage
+        // It may cause getting wrong grid size in data processing stage
         this.resize(this.model, api);
     };
 
     function fixAxisOnZero(axesMap, otherAxisDim, axis, onZeroRecords) {
 
         axis.getAxesOnZeroOf = function () {
-            // TODO: onZero of multiple axes.
+            //: onZero of multiple axes.
             return otherAxisOnZeroOf ? [otherAxisOnZeroOf] : [];
         };
 
@@ -41081,7 +41075,7 @@
          */
         this.group = new Group();
 
-        // FIXME Not use a seperate text group?
+        // Not use a seperate text group?
         var dumbGroup = new Group({
             position: opt.position.slice(),
             rotation: opt.rotation
@@ -41303,7 +41297,7 @@
             var maxWidth = retrieve(
                 opt.nameTruncateMaxWidth, truncateOpt.maxWidth, axisNameAvailableWidth
             );
-            // FIXME
+            //
             // truncate rich text? (consider performance)
             var truncatedText = (ellipsis != null && maxWidth != null)
                 ? truncateText$1(
@@ -41361,7 +41355,7 @@
                 textEl.eventData.name = name;
             }
 
-            // FIXME
+            //
             this._dumbGroup.add(textEl);
             textEl.updateTransform();
 
@@ -41472,7 +41466,7 @@
         var showMinLabel = axisModel.get('axisLabel.showMinLabel');
         var showMaxLabel = axisModel.get('axisLabel.showMaxLabel');
 
-        // FIXME
+        //
         // Have not consider onBand yet, where tick els is more than label els.
 
         labelEls = labelEls || [];
@@ -41732,7 +41726,7 @@
                 textEl.eventData.value = rawLabel;
             }
 
-            // FIXME
+            //
             axisBuilder._dumbGroup.add(textEl);
             textEl.updateTransform();
 
@@ -42131,7 +42125,7 @@
          * @override
          */
         render: function (axisModel, ecModel, api, payload) {
-            // FIXME
+            //
             // This process should proformed after coordinate systems updated
             // (axis scale updated), and should be performed each time update.
             // So put it here temporarily, although it is not appropriate to
@@ -43073,7 +43067,7 @@
     var BAR_BORDER_WIDTH_QUERY = ['itemStyle', 'barBorderWidth'];
     var _eventPos = [0, 0];
 
-// FIXME
+//
 // Just for compatible with ec2.
     extend(Model.prototype, barItemStyle);
 
@@ -43569,7 +43563,7 @@
     });
 
     function createLarge(seriesModel, group, incremental) {
-        // TODO support polar
+        // support polar
         var data = seriesModel.getData();
         var startPoint = [];
         var baseDimIdx = data.getLayout('valueAxisHorizontal') ? 1 : 0;
@@ -44034,7 +44028,7 @@
         getDataParams: function (dataIndex) {
             var data = this.getData();
             var params = PieSeries.superCall(this, 'getDataParams', dataIndex);
-            // FIXME toFixed?
+            // toFixed?
 
             var valueList = [];
             data.each(data.mapDimension('value'), function (value) {
@@ -44711,7 +44705,7 @@
 
                     var itemModel;
                     if (!singleDataColor || !singleDataBorderColor) {
-                        // FIXME Performance
+                        // Performance
                         itemModel = dataAll.getItemModel(rawIdx);
                     }
 
@@ -44759,7 +44753,7 @@
 * under the License.
 */
 
-// FIXME emphasis label position is not same with normal label position
+// emphasis label position is not same with normal label position
 
     var RADIAN$1 = Math.PI / 180;
 
@@ -45185,7 +45179,7 @@
                     return;
                 }
 
-                // FIXME 兼容 2.0 但是 roseType 是 area 的时候才是这样？
+                // 兼容 2.0 但是 roseType 是 area 的时候才是这样？
                 if (roseType !== 'area') {
                     angle = (sum === 0 && stillShowZeroSum)
                         ? unitRadian : (value * unitRadian);
@@ -45452,7 +45446,7 @@
 
     /* global Float32Array */
 
-// TODO Batch by color
+// Batch by color
 
     var BOOST_SIZE_THRESHOLD = 4;
 
@@ -45533,7 +45527,7 @@
         },
 
         findDataIndex: function (x, y) {
-            // TODO ???
+            // ???
             // Consider transform
 
             var shape = this.shape;
@@ -45651,9 +45645,9 @@
         var hostModel = data.hostModel;
 
         opt = opt || {};
-        // TODO
+        //
         // if (data.hasItemVisual.symbolSize) {
-        //     // TODO typed array?
+        //     // typed array?
         //     symbolEl.setShape('sizes', data.mapArray(
         //         function (idx) {
         //             var size = data.getItemVisual(idx, 'symbolSize');
@@ -45742,7 +45736,7 @@
             var symbolDraw = this._updateSymbolDraw(data, seriesModel);
 
             symbolDraw.updateData(data, {
-                // TODO
+                //
                 // If this parameter should be a shape or a bounding volume
                 // shape will be more general.
                 // But bounding volume like bounding rect will be much faster in the contain calculation
@@ -45935,7 +45929,7 @@
 * under the License.
 */
 
-// TODO clockwise
+// clockwise
 
     function Radar(radarModel, ecModel, api) {
 
@@ -46015,7 +46009,7 @@
         var radian = Math.atan2(-dy, dx);
 
         // Find the closest angle
-        // FIXME index can calculated directly
+        // index can calculated directly
         var minRadianDiff = Infinity;
         var closestAxis;
         var closestAxisIdx = -1;
@@ -46116,7 +46110,7 @@
                     max = fixedMin + interval * splitNumber;
                     scale.setExtent(+fixedMin, max);
                     // Interval must been set after extent
-                    // FIXME
+                    //
                     scale.setInterval(interval);
 
                     interval = increaseInterval(interval);
@@ -46135,7 +46129,7 @@
                 if (nicedSplitNumber > splitNumber) {
                     interval = increaseInterval(interval);
                 }
-                // TODO
+                //
                 var max = Math.ceil(rawExtent[1] / interval) * interval;
                 var min = round$1(max - interval * splitNumber);
                 scale.setExtent(min, max);
@@ -46894,7 +46888,7 @@
 
             // Close polygon
             data.each(function (idx) {
-                // TODO
+                //
                 // Is it appropriate to connect to the next data when some data is missing?
                 // Or, should trade it like `connectNull` in line chart?
                 var firstPoint = find(points[idx], function (point) {
@@ -47465,7 +47459,7 @@
                 regions: regions,
                 regionsMap: regionsMap,
                 nameCoordMap: nameCoordMap,
-                // FIXME Always return new ?
+                // Always return new ?
                 boundingRect: boundingRect || new BoundingRect(0, 0, 0, 0)
             };
         },
@@ -47622,7 +47616,7 @@
 
         getRawValue: function (dataIndex) {
             // Use value stored in data instead because it is calculated from multiple series
-            // FIXME Provide all value of multiple series ?
+            // Provide all value of multiple series ?
             var data = this.getData();
             return data.get(data.mapDimension('value'), dataIndex);
         },
@@ -47643,7 +47637,7 @@
          * @param {number} dataIndex
          */
         formatTooltip: function (dataIndex) {
-            // FIXME orignalData and data is a bit confusing
+            // orignalData and data is a bit confusing
             var data = this.getData();
             var formattedValue = addCommas(this.getRawValue(dataIndex));
             var name = data.getName(dataIndex);
@@ -48031,7 +48025,7 @@
             // Mac and VM Windows on Mac: scroll up: zoom out.
             // Windows: scroll up: zoom in.
 
-            // FIXME: Should do more test in different environment.
+            //: Should do more test in different environment.
             // wheelDelta is too complicated in difference nvironment
             // (https://developer.mozilla.org/en-US/docs/Web/Events/mousewheel),
             // although it has been normallized by zrender.
@@ -48044,7 +48038,7 @@
         }
 
         if (shouldMove) {
-            // FIXME: Should do more test in different environment.
+            //: Should do more test in different environment.
             var absDelta = Math.abs(wheelDelta);
             // wheelDelta of mouse wheel is bigger than touch pad.
             var scrollDelta = (wheelDelta > 0 ? 1 : -1) * (absDelta > 3 ? 0.4 : absDelta > 1 ? 0.15 : 0.05);
@@ -48277,7 +48271,7 @@
     }
 
     function updateMapSelected(mapOrGeoModel, regionsGroup) {
-        // FIXME
+        //
         regionsGroup.eachChild(function (otherRegionEl) {
             each$1(otherRegionEl.__regions, function (region) {
                 otherRegionEl.trigger(mapOrGeoModel.isSelected(region.name) ? 'emphasis' : 'normal');
@@ -48499,7 +48493,7 @@
 
                     var textEl = new Text({
                         position: transformPoint(region.center.slice()),
-                        // FIXME
+                        //
                         // label rotation is not support yet in geo or regions of series-map
                         // that has no data. The rotation will be effected by this `scale`.
                         // So needed to change to RectText?
@@ -48779,7 +48773,7 @@
 
                     // `getFormattedLabel` needs to use `getData` inside. Here
                     // `mapModel.getData()` is shallow cloned from `mainSeries.getData()`.
-                    // FIXME
+                    //
                     // If this is not the `mainSeries`, the item model (like label formatter)
                     // set on original data item will never get. But it has been working
                     // like that from the begining, and this scenario is rarely encountered.
@@ -48818,7 +48812,7 @@
                         normalText: normalText
                     });
 
-                    // FIXME
+                    //
                     // Consider set option when emphasis.
                     enterRegionHighDown(highDownRecord, false);
                 }
@@ -49647,7 +49641,7 @@
         create: function (ecModel, api) {
             var geoList = [];
 
-            // FIXME Create each time may be slow
+            // Create each time may be slow
             ecModel.eachComponent('geo', function (geoModel, idx) {
                 var name = geoModel.get('map');
 
@@ -49880,7 +49874,7 @@
 * under the License.
 */
 
-// FIXME 公用？
+// 公用？
     /**
      * @param {Array.<module:echarts/data/List>} datas
      * @param {string} statisticType 'average' 'sum'
@@ -49945,7 +49939,7 @@
                 seriesList[i].originalData = seriesList[i].getData();
             }
 
-            // FIXME Put where?
+            // Put where?
             for (var i = 0; i < seriesList.length; i++) {
                 seriesList[i].seriesGroup = seriesList;
                 seriesList[i].needsDrawMap = i === 0 && !seriesList[i].getHostGeoModel();
@@ -52998,7 +52992,7 @@
         _giveContainerGroup: function (layoutInfo) {
             var containerGroup = this._containerGroup;
             if (!containerGroup) {
-                // FIXME
+                //
                 // 加一层containerGroup是为了clip，但是现在clip功能并没有实现。
                 containerGroup = this._containerGroup = new Group$2();
                 this._initEvents(containerGroup);
@@ -53388,7 +53382,7 @@
             if (!targetInfo) {
                 targetInfo = seriesModel.get('leafDepth', true) != null
                     ? {node: seriesModel.getViewRoot()}
-                    // FIXME
+                    //
                     // better way?
                     // Find breadcrumb tail on center of containerGroup.
                     : this.findTarget(api.getWidth() / 2, api.getHeight() / 2);
@@ -54418,7 +54412,7 @@
             var pieceValue = pieceList[i].value;
             if (pieceValue != null) {
                 if (pieceValue === value
-                    // FIXME
+                    //
                     // It is supposed to compare value according to value type of dimension,
                     // but currently value type can exactly be string or number.
                     // Compromise for numeric-like string (like '12'), especially
@@ -54813,7 +54807,7 @@
                 // layout should be cleared because using updateView but not update.
                 viewRoot.hostTree.clearLayouts();
 
-                // TODO
+                //
                 // optimize: if out of view clip, do not layout.
                 // But take care that if do not render node out of view clip,
                 // how to calculate start po
@@ -54846,7 +54840,7 @@
 
             seriesModel.setLayoutInfo(layoutInfo);
 
-            // FIXME
+            //
             // 现在没有clip功能，暂时取ec高宽。
             prunning(
                 treeRoot,
@@ -55626,7 +55620,7 @@
         }
     };
 
-// TODO
+//
 // graphProto.depthFirstTraverse = function (
 //     cb, startNode, direction, context
 // ) {
@@ -55878,7 +55872,6 @@
 */
 
     var createGraphFromNodeEdge = function (nodes, edges, seriesModel, directed, beforeLink) {
-        // ??? TODO
         // support dataset?
         var graph = new Graph(directed);
         for (var i = 0; i < nodes.length; i++) {
@@ -55911,7 +55904,7 @@
             var coordSysCtor = CoordinateSystemManager.get(coordSys);
             var coordDimensions = (coordSysCtor && coordSysCtor.type !== 'view')
                 ? (coordSysCtor.dimensions || []) : [];
-            // FIXME: Some geo do not need `value` dimenson, whereas `calendar` needs
+            //: Some geo do not need `value` dimenson, whereas `calendar` needs
             // `value` dimension, but graph need `value` dimension. It's better to
             // uniform this behavior.
             if (indexOf(coordDimensions, 'value') < 0) {
@@ -56400,7 +56393,7 @@
 
         var line = lineGroup.childOfName('line');
         // If line not changed
-        // FIXME Parent scale changed
+        // Parent scale changed
         if (!this.__dirty && !line.__dirty) {
             return;
         }
@@ -56563,7 +56556,7 @@
 
         var label = new Text({
             name: 'label',
-            // FIXME
+            //
             // Temporary solution for `focusNodeAdjacency`.
             // line label do not use the opacity of lineStyle.
             lineLabelOriginalOpacity: 1
@@ -56666,7 +56659,7 @@
         var defaultLabelColor;
         var baseText;
 
-        // FIXME: the logic below probably should be merged to `graphic.setLabelStyle`.
+        //: the logic below probably should be merged to `graphic.setLabelStyle`.
         if (showLabel || hoverShowLabel) {
             defaultLabelColor = visualColor || '#000';
 
@@ -57961,14 +57954,14 @@
      *     with the min value probably overlap even though there is enough
      *     space to layout them. So we only use this approach in the as the
      *     init layout of the force layout.
-     *     FIXME
+     *
      *     Probably we do not need this method any more but use
      *     `basedOn: 'symbolSize'` in force layout if
      *     delay its init operations to GraphView.
      * 'symbolSize':
      *     This approach work only if all of the symbol size calculated.
      *     That is, the progressive rendering is not applied to graph.
-     *     FIXME
+     *
      *     If progressive rendering is applied to graph some day,
      *     probably we have to use `basedOn: 'value'`.
      *
@@ -58431,7 +58424,7 @@
 * under the License.
 */
 
-// FIXME Where to create the simple view coordinate system
+// Where to create the simple view coordinate system
     function getViewRect$2(seriesModel, api, aspect) {
         var option = seriesModel.getBoxLayoutParams();
         option.aspect = aspect;
@@ -58468,7 +58461,7 @@
                     min[1] -= 1;
                 }
                 var aspect = (max[0] - min[0]) / (max[1] - min[1]);
-                // FIXME If get view rect after data processed?
+                // If get view rect after data processed?
                 var viewRect = getViewRect$2(seriesModel, api, aspect);
                 // Position may be NaN, use view rect instead
                 if (isNaN(aspect)) {
@@ -59096,7 +59089,7 @@
                     style: setTextStyle({}, titleModel, {
                         x: x,
                         y: y,
-                        // FIXME First data name ?
+                        // First data name ?
                         text: data.getName(0),
                         textAlign: 'center',
                         textVerticalAlign: 'middle'
@@ -59129,7 +59122,7 @@
                         x: x,
                         y: y,
                         text: formatLabel(
-                            // FIXME First data name ?
+                            // First data name ?
                             value, detailModel.get('formatter')
                         ),
                         textWidth: isNaN(width) ? null : width,
@@ -60300,10 +60293,10 @@
                 rotate(transform, transform, rotation);
                 translate(transform, transform, position);
 
-                // TODO
+                //
                 // tick等排布信息。
 
-                // TODO
+                //
                 // 根据axis order 更新 dimensions顺序。
 
                 this._axesLayout[dim] = {
@@ -60785,12 +60778,12 @@
 
             layout: 'horizontal',      // 'horizontal' or 'vertical'
 
-            // FIXME
+            //
             // naming?
             axisExpandable: false,
             axisExpandCenter: null,
             axisExpandCount: 0,
-            axisExpandWidth: 50,      // FIXME '10%' ?
+            axisExpandWidth: 50,      // '10%' ?
             axisExpandRate: 17,
             axisExpandDebounce: 50,
             // [out, in, jumpTarget]. In percentage. If use [null, 0.05], null means full.
@@ -62695,7 +62688,7 @@
 //     return false;
 // }
 
-// FIXME
+//
 // 公用方法?
     function isEmptyValue(val, axisType) {
         return axisType === 'category'
@@ -64107,7 +64100,7 @@
             var yAxisType = yAxisModel.get('type');
             var addOrdinal;
 
-            // FIXME
+            //
             // Consider time axis.
 
             if (xAxisType === 'category') {
@@ -64131,7 +64124,7 @@
             var otherAxisType = axisModels[1 - baseAxisDimIndex].get('type');
             var data = option.data;
 
-            // ??? FIXME make a stage to perform data transfrom.
+            // ???  make a stage to perform data transfrom.
             // MUST create a new data, consider setOption({}) again.
             if (data && addOrdinal) {
                 var newOptionData = [];
@@ -64215,7 +64208,7 @@
 
         dependencies: ['xAxis', 'yAxis', 'grid'],
 
-        // TODO
+        //
         // box width represents group size, so dimension should have 'size'.
 
         /**
@@ -64776,7 +64769,7 @@
                 color: '#c23531', // 阳线 positive
                 color0: '#314656', // 阴线 negative     '#c23531', '#314656'
                 borderWidth: 1,
-                // FIXME
+                //
                 // ec2中使用的是lineStyle.color 和 lineStyle.color0
                 borderColor: '#c23531',
                 borderColor0: '#314656'
@@ -65686,7 +65679,7 @@
             });
 
             var delay = -i / EFFECT_RIPPLE_NUMBER * effectCfg.period + effectCfg.effectOffset;
-            // TODO Configurable effectCfg.period
+            // Configurable effectCfg.period
             ripplePath.animate('', true)
                 .when(effectCfg.period, {
                     scale: [effectCfg.rippleScale / 2, effectCfg.rippleScale / 2]
@@ -66691,7 +66684,7 @@
 * under the License.
 */
 
-// TODO Batch by color
+// Batch by color
 
     var LargeLineShape = extendShape({
 
@@ -67037,7 +67030,7 @@
 
             var zr = api.getZr();
             // Avoid the drag cause ghost shadow
-            // FIXME Better way ?
+            // Better way ?
             // SVG doesn't support
             var isSvg = zr.painter.getType() === 'svg';
             if (!isSvg) {
@@ -67107,12 +67100,12 @@
             var pipelineContext = seriesModel.pipelineContext;
 
             if (!this._finished || pipelineContext.large || pipelineContext.progressiveRender) {
-                // TODO Don't have to do update in large mode. Only do it when there are millions of data.
+                // Don't have to do update in large mode. Only do it when there are millions of data.
                 return {
                     update: true
                 };
             } else {
-                // TODO Use same logic with ScatterView.
+                // Use same logic with ScatterView.
                 // Manually update layout
                 var res = linesLayout.reset(seriesModel);
                 if (res.progress) {
@@ -68335,7 +68328,7 @@
                 isUpdate
             );
 
-            // FIXME
+            //
             // If all emphasis/normal through action.
             path
                 .on('mouseover', onMouseOver)
@@ -69591,7 +69584,7 @@
             point = findPointFromSeries({
                 seriesIndex: finder.seriesIndex,
                 // Do not use dataIndexInside from other ec instance.
-                // FIXME: auto detect it?
+                //: auto detect it?
                 dataIndex: finder.dataIndex
             }, ecModel).point;
         }
@@ -69869,7 +69862,7 @@
     }
 
     function dispatchHighDownActually(axesInfo, dispatchAction, api) {
-        // FIXME
+        //
         // highlight status modification shoule be a stage of main process?
         // (Consider confilct (e.g., legend and axisPointer) and setOption)
 
@@ -70140,7 +70133,7 @@
             showTip: [],
             hideTip: []
         };
-        // FIXME
+        //
         // better approach?
         // 'showTip' and 'hideTip' can be triggered by axisPointer and tooltip,
         // which may be conflict, (axisPointer call showTip but tooltip call hideTip);
@@ -70848,7 +70841,7 @@
         elOption.label = {
             shape: {x: 0, y: 0, width: width, height: height, r: labelModel.get('borderRadius')},
             position: position.slice(),
-            // TODO: rich
+            //: rich
             style: {
                 text: text,
                 textFont: font,
@@ -71464,7 +71457,6 @@
                 return dataItem[2] !== undefined;
             });
 
-            // ??? TODO design a stage to transfer data for themeRiver and lines?
             var data = this.fixData(filterData || []);
             var nameList = [];
             var nameMap = this.nameMap = createHashMap();
@@ -74066,7 +74058,7 @@
             || (elOptionType === 'image'
                 && hasOwn(elOptionStyle, 'image') && elOptionStyle.image !== el.__customImagePath
             )
-            // FIXME test and remove this restriction?
+            // test and remove this restriction?
             || (elOptionType === 'text'
                 && hasOwn(elOptionShape, 'text') && elOptionStyle.text !== el.__customText
             )
@@ -74940,7 +74932,7 @@
             var minAngle = Math.min(extent[0], extent[1]);
             var maxAngle = Math.max(extent[0], extent[1]);
             // Fix fixed extent in polarCreator
-            // FIXME
+            //
             angleAxis.inverse
                 ? (minAngle = maxAngle - 360)
                 : (maxAngle = minAngle + 360);
@@ -75166,7 +75158,7 @@
 * under the License.
 */
 
-// TODO Axis scale
+// Axis scale
 
     /**
      * Resize method bound to the polar
@@ -77710,7 +77702,7 @@
             }, this);
         },
 
-        // FIXME
+        //
         // Pass to view using payload? setOption has a payload?
         useElOptionsToUpdate: function () {
             var els = this._elOptionsToUpdate;
@@ -78265,7 +78257,7 @@
             silent: true,
             z2: -1
         });
-        // FIXME
+        //
         // `subPixelOptimizeRect` may bring some gap between edge of viewpart
         // and background rect when setting like `left: 0`, `top: 0`.
         // graphic.subPixelOptimizeRect(rect);
@@ -78329,7 +78321,6 @@
                 var featureModel = new Model(featureOpt, toolboxModel, toolboxModel.ecModel);
                 var feature;
 
-                // FIX#11236, merge feature title from MagicType newOption. TODO: consider seriesIndex ?
                 if (payload && payload.newTitle != null) {
                     featureOpt.title = payload.newTitle;
                 }
@@ -78377,7 +78368,7 @@
                     var iconPaths = this.iconPaths;
                     option.iconStatus = option.iconStatus || {};
                     option.iconStatus[iconName] = status;
-                    // FIXME
+                    //
                     iconPaths[iconName] && iconPaths[iconName].trigger(status);
                 };
 
@@ -78490,7 +78481,7 @@
 
             layout$3(group, toolboxModel, api);
             // Render background after group is layout
-            // FIXME
+            //
             group.add(makeBackground(group.getBoundingRect(), toolboxModel));
 
             // Adjust icon title positions to avoid them out of screen
@@ -79327,7 +79318,7 @@
 
     var COORD_CONVERTS = ['dataToPoint', 'pointToData'];
 
-// FIXME
+//
 // how to genarialize to more coordinate systems.
     var INCLUDE_FINDER_MAIN_TYPES = [
         'grid', 'xAxis', 'yAxis', 'geo', 'graph',
@@ -80365,7 +80356,7 @@
                 return;
             }
 
-            // FIXME
+            //
             // Toolbox may has dataZoom injected. And if there are stacked bar chart
             // with NaN data, NaN will be filtered and stack will be wrong.
             // So we need to force the mode to be set empty.
@@ -80383,7 +80374,7 @@
             //     filterMode = 'empty';
             // }
 
-            // TODO
+            //
             // filterMode 'weakFilter' and 'empty' is not optimized for huge data yet.
 
             each$20(seriesModels, function (seriesModel) {
@@ -80777,7 +80768,7 @@
                         dimNames.name, axisIndex, this, ecModel
                     )
                 );
-                // FIXME
+                //
                 // dispose __dzAxisProxy
 
                 axisProxies[dimNames.name + '_' + axisIndex] = axisProxy;
@@ -80886,7 +80877,7 @@
             }
 
             if (autoAxisIndex) {
-                // FIXME
+                //
                 // 这里是兼容ec2的写法（没指定xAxisIndex和yAxisIndex时把scatter和双数值轴折柱纳入dataZoom控制），
                 // 但是实际是否需要Grid.js#getScaleByOption来判断（考虑time，log等axis type）？
 
@@ -80947,7 +80938,7 @@
          * @private
          */
         _isSeriesHasAllAxesTypeOf: function (seriesModel, axisType) {
-            // FIXME
+            //
             // 需要series的xAxisIndex和yAxisIndex都首先自动设置上。
             // 例如series.type === scatter时。
 
@@ -81709,7 +81700,7 @@
                     ? {
                         brushType: 'auto',
                         brushStyle: {
-                            // FIXME user customized?
+                            // user customized?
                             lineWidth: 0,
                             fill: 'rgba(0,0,0,0.2)'
                         }
@@ -81723,7 +81714,7 @@
 
 
 // Create special dataZoom option for select
-// FIXME consider the case of merge option, where axes options are not exists.
+// consider the case of merge option, where axes options are not exists.
     registerPreprocessor(function (option) {
         if (!option) {
             return;
@@ -81743,7 +81734,7 @@
 
             if (toolboxOpt && toolboxOpt.feature) {
                 var dataZoomOpt = toolboxOpt.feature.dataZoom;
-                // FIXME: If add dataZoom when setOption in merge mode,
+                //: If add dataZoom when setOption in merge mode,
                 // no axis info to be added. See `test/dataZoom-extreme.html`
                 addForAxis('xAxis', dataZoomOpt);
                 addForAxis('yAxis', dataZoomOpt);
@@ -81780,7 +81771,7 @@
                     // Id for merge mapping.
                     id: DATA_ZOOM_ID_BASE + axisName + axisIndex
                 };
-                // FIXME
+                //
                 // Only support one axis now.
                 newOpt[axisIndicesName] = axisIndex;
                 dataZoomOpts.push(newOpt);
@@ -81981,7 +81972,7 @@
                     width: 1,
                     type: 'dashed',
 
-                    // TODO formatter
+                    // formatter
                     textStyle: {}
                 }
 
@@ -82176,7 +82167,7 @@
          */
         this._hideTimeout;
 
-        // FIXME
+        //
         // Is it needed to trigger zr event manually if
         // the browser do not support `pointer-events: none`.
 
@@ -82228,7 +82219,7 @@
          * Update when tooltip is rendered
          */
         update: function () {
-            // FIXME
+            //
             // Move this logic to ec main?
             var container = this._container;
             var stl = container.currentStyle
@@ -82421,7 +82412,7 @@
                         textHeight: 4,
                         textBorderRadius: 2,
                         textBackgroundColor: markerRich[name],
-                        // TODO: textOffset is not implemented for rich text
+                        //: textOffset is not implemented for rich text
                         textOffset: [3, 0]
                     };
                 } else {
@@ -82658,7 +82649,7 @@
                 this._refreshUpdateTimeout = setTimeout(function () {
                     // Show tip next tick after other charts are rendered
                     // In case highlight action has wrong result
-                    // FIXME
+                    //
                     !api.isDisposed() && self.manuallyShowTip(tooltipModel, ecModel, api, {
                         x: self._lastX,
                         y: self._lastY
@@ -82681,7 +82672,6 @@
          *      dataIndex or dataIndexInside or name
          * });
          *
-         *  TODO Batch
          */
         manuallyShowTip: function (tooltipModel, ecModel, api, payload) {
             if (payload.from === this.uid || env$1.node) {
@@ -82733,7 +82723,7 @@
                     }, dispatchAction);
                 }
             } else if (payload.x != null && payload.y != null) {
-                // FIXME
+                //
                 // should wrap dispatchAction like `axisPointer/globalListener` ?
                 api.dispatchAction({
                     type: 'updateAxisPointer',
@@ -82920,7 +82910,7 @@
                     });
 
                     // Default tooltip content
-                    // FIXME
+                    //
                     // (1) shold be the first data which has name?
                     // (2) themeRiver, firstDataIndex is array, and first line is unnecessary.
                     var firstLine = valueLabel;
@@ -83008,7 +82998,7 @@
                 );
             });
 
-            // FIXME
+            //
             // duplicated showtip if manuallyShowTip is called from dispatchAction.
             dispatchAction({
                 type: 'showTip',
@@ -83165,7 +83155,7 @@
             content.moveTo(x, y);
         },
 
-        // FIXME
+        //
         // Should we remove this but leave this to user?
         _updateContentNotChangedOnAxis: function (dataByCoordSys) {
             var lastCoordSys = this._lastDataByCoordSys;
@@ -83207,7 +83197,7 @@
             // Do not directly hideLater here, because this behavior may be prevented
             // in dispatchAction when showTip is dispatched.
 
-            // FIXME
+            //
             // duplicated hideTip if manuallyHideTip is called from dispatchAction.
             this._lastDataByCoordSys = null;
             dispatchAction({
@@ -83346,7 +83336,7 @@
 * under the License.
 */
 
-// FIXME Better way to pack data in graphic element
+// Better way to pack data in graphic element
 
     /**
      * @action
@@ -84162,7 +84152,7 @@
                                      // If null, no throttle. Valid only in the first brush component
             throttleDelay: 0,        // Unit: ms, 0 means every event will be triggered.
 
-            // FIXME
+            //
             // 试验效果
             removeOnClick: true,
 
@@ -86097,7 +86087,7 @@
 
         symbol.attr(opt);
 
-        // FIXME
+        //
         // (1) When symbol.style.strokeNoScale is true and updateTransform is not performed,
         // getBoundingRect will return wrong result.
         // (This is supposed to be resolved in zrender, but it is a little difficult to
@@ -86237,7 +86227,7 @@
                             fillLabel(markerOpt);
                         }
                         each$1(markerOpt.data, function (item) {
-                            // FIXME Overwrite fillLabel method ?
+                            // Overwrite fillLabel method ?
                             if (item instanceof Array) {
                                 fillLabel(item[0]);
                                 fillLabel(item[1]);
@@ -86428,7 +86418,7 @@
     }
 
     var curry$5 = curry;
-// TODO Specified percent
+// Specified percent
     var markerTypeCalculator = {
         /**
          * @method
@@ -86497,7 +86487,7 @@
                 item.value = coordInfo[1];
 
             } else {
-                // FIXME Only has one of xAxis and yAxis.
+                // Only has one of xAxis and yAxis.
                 var coord = [
                     item.xAxis != null ? item.xAxis : item.radiusAxis,
                     item.yAxis != null ? item.yAxis : item.angleAxis
@@ -86727,7 +86717,7 @@
 
             var mpData = createList$1(coordSys, seriesModel, mpModel);
 
-            // FIXME
+            //
             mpModel.setData(mpData);
 
             updateMarkerLayout(mpModel.getData(), seriesModel, api);
@@ -86746,7 +86736,7 @@
                         symbol = symbol(rawIdx, dataParams);
                     }
                     if (isFnSymbolSize) {
-                        // FIXME 这里不兼容 ECharts 2.x，2.x 貌似参数是整个数据？
+                        // 这里不兼容 ECharts 2.x，2.x 貌似参数是整个数据？
                         symbolSize = symbolSize(rawIdx, dataParams);
                     }
                 }
@@ -86759,12 +86749,12 @@
                 });
             });
 
-            // TODO Text are wrong
+            // Text are wrong
             symbolDraw.updateData(mpData);
             this.group.add(symbolDraw.group);
 
             // Set host model for tooltip
-            // FIXME
+            //
             mpData.eachItemGraphicEl(function (el) {
                 el.traverse(function (child) {
                     child.dataModel = mpModel;
@@ -87194,7 +87184,7 @@
             lineDraw.updateData(lineData);
 
             // Set host model for tooltip
-            // FIXME
+            //
             mlData.line.eachItemGraphicEl(function (el, idx) {
                 el.traverse(function (child) {
                     child.dataModel = mlModel;
@@ -87384,14 +87374,14 @@
 * under the License.
 */
 
-// TODO Better on polar
+// Better on polar
 
     var markAreaTransform = function (seriesModel, coordSys, maModel, item) {
         var lt = dataTransform(seriesModel, item[0]);
         var rb = dataTransform(seriesModel, item[1]);
         var retrieve$$1 = retrieve;
 
-        // FIXME make sure lt is less than rb
+        // make sure lt is less than rb
         var ltCoord = lt.coord;
         var rbCoord = rb.coord;
         ltCoord[0] = retrieve$$1(ltCoord[0], -Infinity);
@@ -88394,7 +88384,7 @@
                                 selectMode
                             );
 
-                            // FIXME: consider different series has items with the same name.
+                            //: consider different series has items with the same name.
                             itemGroup.on('click', curry$6(dispatchSelectAction, null, name, api, excludeSeriesId))
                                 // Should not specify the series name, consider legend controls
                                 // more than one pie series.
@@ -88946,7 +88936,7 @@
 
             var controllerGroup = this._controllerGroup;
 
-            // FIXME: support be 'auto' adapt to size number text length,
+            //: support be 'auto' adapt to size number text length,
             // e.g., '3/12345' should not overlap with the control arrow button.
             var pageIconSize = legendModel.get('pageIconSize', true);
             if (!isArray(pageIconSize)) {
@@ -89322,7 +89312,7 @@
 
             contentGroup.eachChild(function (child, idx) {
                 var legendDataIdx = child.__legendDataIndex;
-                // FIXME
+                //
                 // If the given targetDataIndex (from model) is illegal,
                 // we use defualtIndex. But the index on the legend model and
                 // action payload is still illegal. That case will not be
@@ -89817,10 +89807,10 @@
                     return;
                 }
 
-                // FIXME
+                //
                 // Should consider axis.min/axis.max when drawing dataShadow.
 
-                // FIXME
+                //
                 // 应该使用统一的空判断？还是在list里进行空判断？
                 var isEmpty = value == null || isNaN(value) || value === '';
                 // See #4235.
@@ -90089,7 +90079,7 @@
             var orient = this._orient;
             var labelTexts = ['', ''];
 
-            // FIXME
+            //
             // date型，支持formatter，autoformatter（ec2 date.getAutoFormatter）
             if (dataZoomModel.get('showDetail')) {
                 var axisProxy = dataZoomModel.findRepresentativeAxisProxy();
@@ -90159,7 +90149,7 @@
 
             var valueStr = (value == null || isNaN(value))
                 ? ''
-                // FIXME Glue code
+                // Glue code
                 : (axis.type === 'category' || axis.type === 'time')
                     ? axis.scale.getLabel(Math.round(value))
                     // param of toFixed should less then 20.
@@ -90279,7 +90269,7 @@
     });
 
     function getOtherDim(thisDim) {
-        // FIXME
+        //
         // 这个逻辑和getOtherAxis里一致，但是写在这里是否不好
         var map$$1 = {x: 'y', y: 'x', radius: 'angle', angle: 'radius'};
         return map$$1[thisDim];
@@ -91036,7 +91026,7 @@
         }
     });
 
-// FIXME
+//
 // performance and export for heatmap?
 // value can be Infinity or -Infinity
     function getColorVisual(seriesModel, visualMapModel, value, valueState) {
@@ -91303,7 +91293,7 @@
         optionUpdated: function (newOption, isInit) {
             var thisOption = this.option;
 
-            // FIXME
+            //
             // necessary?
             // Disable realtime view update if canvas is not supported.
             if (!env$1.canvasSupported) {
@@ -91669,7 +91659,7 @@
         getValueState: noop$2,
 
         /**
-         * FIXME
+         *
          * Do not publish to thirt-part-dev temporarily
          * util the interface is stable. (Should it return
          * a function but not visual meta?)
@@ -91926,7 +91916,7 @@
 
         // When using colorHue mapping, it is not linear color any more.
         // Moreover, canvas gradient seems not to be accurate linear.
-        // FIXME
+        //
         // Should be arbitrary value 100? or based on pixel size?
         var count = 200;
         var step = (dataExtent[1] - dataExtent[0]) / count;
@@ -93050,7 +93040,7 @@
     var actionInfo$2 = {
         type: 'selectDataRange',
         event: 'dataRangeSelected',
-        // FIXME use updateView appears wrong
+        // use updateView appears wrong
         update: 'update'
     };
 
@@ -93205,7 +93195,7 @@
                     mappingOption.pieceList = map(this._pieceList, function (piece) {
                         var piece = clone(piece);
                         if (state !== 'inRange') {
-                            // FIXME
+                            //
                             // outOfRange do not support special visual in pieces.
                             piece.visual = null;
                         }
@@ -93516,7 +93506,7 @@
         categories: function () {
             var thisOption = this.option;
             each$1(thisOption.categories, function (cate) {
-                // FIXME category模式也使用pieceList，但在visualMapping中不是使用pieceList。
+                // category模式也使用pieceList，但在visualMapping中不是使用pieceList。
                 // 是否改一致。
                 this._pieceList.push({
                     text: this.formatValueText(cate, true),
@@ -93937,7 +93927,7 @@
     }
 
 // http://www.w3.org/TR/NOTE-VML
-// TODO Use proxy like svg instead of overwrite brush methods
+// Use proxy like svg instead of overwrite brush methods
 
     var CMD$3 = PathProxy.CMD;
     var round$3 = Math.round;
@@ -94016,7 +94006,7 @@
         };
 
         var updateFillNode = function (el, style, zrEl) {
-            // TODO pattern
+            // pattern
             var fill = style.fill;
             if (fill != null) {
                 // Modified from excanvas
@@ -94112,14 +94102,14 @@
                         // When colors attribute is used, the meanings of opacity and o:opacity2
                         // are reversed.
                         el.opacity = opacity2;
-                        // FIXME g_o_:opacity ?
+                        // g_o_:opacity ?
                         el.opacity2 = opacity1;
                     }
                     if (gradientType === 'radial') {
                         el.focusposition = focus.join(',');
                     }
                 } else {
-                    // FIXME Change from Gradient fill to color fill
+                    // Change from Gradient fill to color fill
                     setColorAndOpacity(el, fill, style.opacity);
                 }
             }
@@ -94149,7 +94139,7 @@
             // Stroke must have lineWidth
             if (style[type] != null && style[type] !== 'none' && (isFill || (!isFill && style.lineWidth))) {
                 vmlEl[isFill ? 'filled' : 'stroked'] = 'true';
-                // FIXME Remove before updating, or set `colors` will throw error
+                // Remove before updating, or set `colors` will throw error
                 if (style[type] instanceof Gradient) {
                     remove(vmlEl, el);
                 }
@@ -94256,7 +94246,7 @@
                         var ry = data[i++];
                         var startAngle = data[i++] + angle;
                         var endAngle = data[i++] + startAngle + angle;
-                        // FIXME
+                        //
                         // var psi = data[i++];
                         i++;
                         var clockwise = data[i++];
@@ -94337,7 +94327,7 @@
                         );
                         break;
                     case CMD$3.Z:
-                        // FIXME Update xi, yi
+                        // Update xi, yi
                         str.push(' x ');
                 }
 
@@ -94428,7 +94418,7 @@
          * IMAGE
          **************************************************/
         var isImage = function (img) {
-            // FIXME img instanceof Image 如果 img 是一个字符串的时候，IE8 下会报错
+            // img instanceof Image 如果 img 是一个字符串的时候，IE8 下会报错
             return (typeof img === 'object') && img.tagName && img.tagName.toUpperCase() === 'IMG';
             // return img instanceof Image;
         };
@@ -94493,7 +94483,7 @@
 
             var vmlEl = this._vmlEl;
             if (!vmlEl) {
-                // FIXME 使用 group 在 left, top 都不是 0 的时候就无法显示了。
+                // 使用 group 在 left, top 都不是 0 的时候就无法显示了。
                 // vmlEl = vmlCore.createNode('group');
                 vmlEl = doc.createElement('div');
                 initRootElStyle(vmlEl);
@@ -94540,7 +94530,7 @@
                     'Dy=', round$3(y * scaleY + m[5]));
 
                 vmlElStyle.padding = '0 ' + round$3(maxX) + 'px ' + round$3(maxY) + 'px 0';
-                // FIXME DXImageTransform 在 IE11 的兼容模式下不起作用
+                // DXImageTransform 在 IE11 的兼容模式下不起作用
                 vmlElStyle.filter = imageTransformPrefix + '.Matrix('
                     + transformFilter.join('') + ', SizingMethod=clip)';
 
@@ -94755,7 +94745,7 @@
             var verticalAlign = style.textVerticalAlign;
 
             var fontStyle = getFontStyle(style.font);
-            // FIXME encodeHtmlAttribute ?
+            // encodeHtmlAttribute ?
             var font = fontStyle.style + ' ' + fontStyle.variant + ' ' + fontStyle.weight + ' '
                 + fontStyle.size + 'px "' + fontStyle.family + '"';
 
@@ -94851,7 +94841,7 @@
                 textPathEl = createNode$$1('textpath');
                 skewEl = createNode$$1('skew');
 
-                // FIXME Why here is not cammel case
+                // Why here is not cammel case
                 // Align 'center' seems wrong
                 textPathEl.style['v-text-align'] = 'left';
 
@@ -94900,7 +94890,7 @@
             }
 
             textPathEl.string = encodeHtmlAttribute(text);
-            // TODO
+            //
             try {
                 textPathEl.style.font = font;
             }
@@ -95084,7 +95074,7 @@
                 // Detached from document at first time
                 // to avoid page refreshing too many times
 
-                // FIXME 如果每次都先 removeChild 可能会导致一些填充和描边的效果改变
+                // 如果每次都先 removeChild 可能会导致一些填充和描边的效果改变
                 this._vmlViewport.appendChild(vmlRoot);
                 this._firstPaint = false;
             }
@@ -95168,7 +95158,7 @@
         return document.createElementNS(svgURI, name);
     }
 
-// TODO
+//
 // 1. shadow
 // 2. Image: sx, sy, sw, sh
 
@@ -95320,7 +95310,7 @@
 
                     // It will not draw if start point and end point are exactly the same
                     // We need to shift the end point with a small value
-                    // FIXME A better way to draw circle ?
+                    // A better way to draw circle ?
                     if (isCircle) {
                         if (clockwise) {
                             dTheta = PI2$6 - 1e-4;
@@ -95343,7 +95333,7 @@
                     var x = round4(cx + rx * mathCos$3(theta + dTheta));
                     var y = round4(cy + ry * mathSin$3(theta + dTheta));
 
-                    // FIXME Ellipse
+                    // Ellipse
                     str.push('A', round4(rx), round4(ry),
                         mathRound(psi * degree), +large, +clockwise, x, y);
                     break;
@@ -95547,7 +95537,7 @@
         var textX = baseX;
         var textY = boxY;
 
-        // TODO needDrawBg
+        // needDrawBg
         if (textPadding) {
             textX = getTextXForPadding$1(baseX, textAlign, textPadding);
             textY += textPadding[0];
@@ -95558,7 +95548,7 @@
 
         bindStyle(textSvgEl, style, true, el);
 
-        // FIXME
+        //
         // Add a <style> to reset all of the text font as inherit?
         // otherwise the outer <style> may set the unexpected style.
 
@@ -95638,7 +95628,7 @@
         setTransform(textSvgEl, _tmpTextTransform);
     }
 
-// FIXME merge the same code with `helper/text.js#getTextXForPadding`;
+// merge the same code with `helper/text.js#getTextXForPadding`;
     function getTextXForPadding$1(x, textAlign, textPadding) {
         return textAlign === 'right'
             ? (x - textPadding[1])
@@ -96613,7 +96603,7 @@
         var scaleX = displayable.scale ? (displayable.scale[0] || 1) : 1;
         var scaleY = displayable.scale ? (displayable.scale[1] || 1) : 1;
 
-        // TODO: textBoxShadowBlur is not supported yet
+        //: textBoxShadowBlur is not supported yet
         var offsetX;
         var offsetY;
         var blur;
@@ -96670,7 +96660,7 @@
     };
 
     function hasShadow(style) {
-        // TODO: textBoxShadowBlur is not supported yet
+        //: textBoxShadowBlur is not supported yet
         return style
             && (style.shadowBlur || style.shadowOffsetX || style.shadowOffsetY
                 || style.textShadowBlur || style.textShadowOffsetX
@@ -96805,7 +96795,7 @@
         },
 
         setBackgroundColor: function (backgroundColor) {
-            // TODO gradient
+            // gradient
             this._viewport.style.background = backgroundColor;
         },
 
@@ -96968,7 +96958,7 @@
 
         resize: function (width, height) {
             var viewport = this._viewport;
-            // FIXME Why ?
+            // Why ?
             viewport.style.display = 'none';
 
             // Save input w/h
