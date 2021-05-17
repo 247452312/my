@@ -45,6 +45,7 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
     @Override
     public String invoke(Long unique, String methodName, Class[] paramType, Object[] args) throws RpcException, ClassNotFoundException, InterruptedException {
         RpcFactory build = RpcFactoryProducer.build(RpcTypeEnum.REQUEST);
+        // header具体发送什么还没有确定
         RpcHeader rpcHeader = new RpcHeader();
         rpcHeader.setName("default_value");
         rpcHeader.setValue("value");
