@@ -1,12 +1,16 @@
 package indi.uhyils.rpc.spring;
 
+import indi.uhyils.rpc.annotation.MyRpc;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.SpringUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+
+import java.util.Map;
 
 /**
  * 初始化配置类(单独写一个是为了区分先后, 先加载配置
@@ -16,6 +20,11 @@ import org.springframework.context.annotation.Primary;
  */
 @Configuration
 public class RpcConfigAutoInitConfiguration {
+
+    public static Boolean rpcActive() {
+        Map<String, Object> beans = SpringUtil.getBeansWithAnnotation(MyRpc.class);
+        return null;
+    }
 
     /**
      * 初始化配置类

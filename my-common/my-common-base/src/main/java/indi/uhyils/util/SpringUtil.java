@@ -22,6 +22,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.lang.annotation.Annotation;
+import java.util.Map;
+
 /**
  * 存储spring上下文缓存的地方
  *
@@ -41,6 +44,17 @@ public class SpringUtil implements ApplicationContextInitializer {
         return applicationContext;
     }
 
+
+    /**
+     * 根据指定的annotation获取beans
+     *
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public static <T extends Annotation> Map<String, Object> getBeansWithAnnotation(Class<T> clazz) {
+        return applicationContext.getBeansWithAnnotation(clazz);
+    }
 
     /**
      * 通过name获取 Bean.
@@ -96,6 +110,7 @@ public class SpringUtil implements ApplicationContextInitializer {
     public static Boolean containsBean(String beanName) {
         return getApplicationContext().containsBean(beanName);
     }
+
     /**
      * 通过key 查询是否存在bean
      *
