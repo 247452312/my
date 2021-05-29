@@ -137,6 +137,10 @@ public class LogUtil {
         writeLog(cls.getName(), msg, e, LogTypeEnum.ERROR);
     }
 
+    public static void error(Object cls, Throwable e, String msg) {
+        error(cls.getClass(), e, msg);
+    }
+
     public static void error(Object obj, String msg) {
         error(obj.getClass(), msg);
     }
