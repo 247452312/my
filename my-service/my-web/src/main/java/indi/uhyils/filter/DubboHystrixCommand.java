@@ -9,7 +9,7 @@ import indi.uhyils.rpc.exchange.enum_.RpcRequestContentEnum;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.RpcFactoryProducer;
 import indi.uhyils.rpc.exchange.pojo.request.RpcRequestFactory;
-import indi.uhyils.rpc.exchange.pojo.response.RpcResponseContent;
+import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContent;
 import indi.uhyils.rpc.netty.extension.filter.FilterContext;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcInvoker;
 import indi.uhyils.rpc.netty.extension.filter.invoker.RpcResult;

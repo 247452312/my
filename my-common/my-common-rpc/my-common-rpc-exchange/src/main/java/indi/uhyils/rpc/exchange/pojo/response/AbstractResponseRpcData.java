@@ -10,15 +10,15 @@ import indi.uhyils.rpc.exchange.pojo.AbstractRpcData;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 12时23分
  */
-public abstract class AbstractRpcResponse extends AbstractRpcData {
+public abstract class AbstractResponseRpcData extends AbstractRpcData {
 
 
-    protected AbstractRpcResponse(byte[] data) throws RpcException, ClassNotFoundException {
+    protected AbstractResponseRpcData(byte[] data) throws RpcException, ClassNotFoundException {
         super(data);
         this.type = RpcTypeEnum.RESPONSE.getCode();
     }
 
-    protected AbstractRpcResponse() {
+    protected AbstractResponseRpcData() {
     }
 
 }

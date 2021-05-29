@@ -7,8 +7,11 @@ import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.exchange.pojo.*;
-import indi.uhyils.rpc.exchange.pojo.response.RpcNormalResponse;
-import indi.uhyils.rpc.exchange.pojo.response.RpcResponseContentFactory;
+import indi.uhyils.rpc.exchange.pojo.factory.AbstractRpcFactory;
+import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
+import indi.uhyils.rpc.exchange.pojo.request.content.RpcRequestContentFactory;
+import indi.uhyils.rpc.exchange.pojo.response.NormalResponseRpcData;
+import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContentFactory;
 import indi.uhyils.util.LogUtil;
 
 import java.nio.charset.StandardCharsets;
@@ -39,21 +42,21 @@ public class RpcRequestFactory extends AbstractRpcFactory {
 
     @Override
     public RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {
-        return new RpcNormalRequest(data);
+        return new NormalRequestRpcData(data);
     }
 
     @Override
     public RpcData createByInfo(Long unique, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException {
-        RpcNormalRequest rpcNormalRequest = new RpcNormalRequest();
+        NormalRequestRpcData rpcNormalRequest = new NormalRequestRpcData();
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);
         rpcNormalRequest.setContentArray(contentArray);
         rpcNormalRequest.setStatus(RpcStatusEnum.NULL.getCode());
         rpcNormalRequest.setUnique(unique);
-        RpcContent content = RpcRequestContentFactory.createByContentArray(rpcNormalRequest, contentArray);
+        RpcContent content = RpcRequestContentFactory.createNormalByContentArray(rpcNormalRequest, contentArray);
         rpcNormalRequest.setContent(content);
-        rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
+        rpcNormalRequest.setSize(content.contentString().getBytes(StandardCharsets.UTF_8).length);
         return rpcNormalRequest;
     }
 
@@ -65,7 +68,7 @@ public class RpcRequestFactory extends AbstractRpcFactory {
      */
     @Override
     public RpcData createTimeoutResponse(RpcData request, Long timeout) throws RpcException {
-        RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
+        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(request.rpcHeaders());
@@ -80,7 +83,7 @@ public class RpcRequestFactory extends AbstractRpcFactory {
     }
 
     public RpcData createRetriesError(RpcData request, Throwable th) {
-        RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
+        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(request.rpcHeaders());
@@ -99,7 +102,7 @@ public class RpcRequestFactory extends AbstractRpcFactory {
     }
 
     public RpcData createFallback(RpcData request, Object response) {
-        RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
+        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(request.rpcHeaders());

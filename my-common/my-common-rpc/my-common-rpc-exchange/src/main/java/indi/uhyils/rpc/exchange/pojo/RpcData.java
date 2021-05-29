@@ -51,25 +51,15 @@ public interface RpcData {
     RpcContent content();
 
     /**
+     * 获取header和content的组合字符串
+     * @return
+     */
+    String headerAndContent();
+
+    /**
      * 获取rpc全部
      *
      * @return
      */
     byte[] toBytes();
-
-    /**
-     * 获取content部分的字符串
-     *
-     * @return
-     */
-    String contentString();
-
-
-    /**
-     * 获取rpc内容体的行
-     *
-     * @return
-     */
-    String[] contentArray();
-
 }

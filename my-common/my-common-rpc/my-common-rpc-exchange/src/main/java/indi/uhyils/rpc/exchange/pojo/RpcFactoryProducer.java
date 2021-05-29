@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.exchange.pojo;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
+import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
 import indi.uhyils.rpc.exchange.pojo.request.RpcRequestFactory;
 import indi.uhyils.rpc.exchange.pojo.response.RpcResponseFactory;
 

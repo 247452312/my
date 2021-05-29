@@ -4,6 +4,7 @@ import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcHeader;
+import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContentFactory;
 
 /**
  * rpc正常响应
@@ -11,13 +12,13 @@ import indi.uhyils.rpc.exchange.pojo.RpcHeader;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 13时34分
  */
-public class RpcNormalResponse extends AbstractRpcResponse {
+public class NormalResponseRpcData extends AbstractResponseRpcData {
 
-    public RpcNormalResponse(byte[] data) throws RpcException, ClassNotFoundException {
+    public NormalResponseRpcData(byte[] data) throws RpcException, ClassNotFoundException {
         super(data);
     }
 
-    public RpcNormalResponse() {
+    public NormalResponseRpcData() {
     }
 
     @Override
@@ -48,24 +49,6 @@ public class RpcNormalResponse extends AbstractRpcResponse {
     @Override
     public RpcContent content() {
         return this.content;
-    }
-
-
-    @Override
-    public String contentString() {
-        StringBuilder sb = new StringBuilder();
-        for (RpcHeader rpcHeader : rpcHeaders()) {
-            sb.append("\n");
-            sb.append(String.format("%s:%s", rpcHeader.getName(), rpcHeader.getValue()));
-        }
-        sb.append("\n");
-        sb.append("\n");
-        RpcNormalResponseContent content = (RpcNormalResponseContent) content();
-        sb.append(content.type());
-        sb.append("\n");
-        sb.append(content.getResponseContent());
-        sb.append("\n");
-        return sb.toString();
     }
 
 }

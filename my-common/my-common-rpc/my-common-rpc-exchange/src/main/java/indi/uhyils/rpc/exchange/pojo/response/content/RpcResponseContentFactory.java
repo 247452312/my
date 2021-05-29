@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.exchange.pojo.response;
+package indi.uhyils.rpc.exchange.pojo.response.content;
 
 import indi.uhyils.rpc.exception.ContentArrayQuantityMismatchException;
 import indi.uhyils.rpc.exception.RpcException;
@@ -23,7 +23,7 @@ public class RpcResponseContentFactory {
         if (contentArray.length != CONTENT_SIZE) {
             throw new ContentArrayQuantityMismatchException(contentArray.length, CONTENT_SIZE);
         }
-        RpcNormalResponseContent content = new RpcNormalResponseContent(rpcData);
+        RpcNormalResponseContent content = new RpcNormalResponseContent(rpcData, contentArray);
         int type = Integer.parseInt(contentArray[RpcResponseContentEnum.TYPE.getLine()]);
         content.setResponseType(type);
         content.setResponseContent(contentArray[RpcResponseContentEnum.RESPONSE_CONTENT.getLine()]);

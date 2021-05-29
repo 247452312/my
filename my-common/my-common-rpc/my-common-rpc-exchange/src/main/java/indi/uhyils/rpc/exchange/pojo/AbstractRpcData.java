@@ -6,9 +6,12 @@ import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exception.RpcTypeNotSupportedException;
 import indi.uhyils.rpc.exception.RpcVersionNotSupportedException;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
+import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
+import indi.uhyils.rpc.exchange.pojo.factory.RpcHeaderFactory;
 import indi.uhyils.rpc.exchange.pojo.request.RpcRequestFactory;
 import indi.uhyils.rpc.exchange.pojo.response.RpcResponseFactory;
 import indi.uhyils.rpc.util.BytesUtils;
+import indi.uhyils.util.LogUtil;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -146,8 +149,7 @@ public abstract class AbstractRpcData implements RpcData {
         System.arraycopy(src, 0, previousBytes, andAdd, MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_VERSION_REQ_RES_INDEX]);
 
         //写入size,并获取head 和 content 的数组
-        final String s = contentString();
-        byte[] headAndContent = s.getBytes(StandardCharsets.UTF_8);
+        byte[] headAndContent = headerAndContent().getBytes(StandardCharsets.UTF_8);
         System.arraycopy(BytesUtils.changeIntegerToByte(headAndContent.length), 0, previousBytes, writeIndex.getAndAdd(MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_SIZE_INDEX]), MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_SIZE_INDEX]);
 
         // 写入状态
@@ -169,33 +171,38 @@ public abstract class AbstractRpcData implements RpcData {
     }
 
     private void doInit(final byte[] data) throws RpcException, ClassNotFoundException {
-        AtomicInteger readIndex = new AtomicInteger(0);
-        // 判断是不是myRpc的协议
-        isMyRpc(data, readIndex);
+        try {
+            AtomicInteger readIndex = new AtomicInteger(0);
+            // 判断是不是myRpc的协议
+            isMyRpc(data, readIndex);
 
-        // 确定版本以及类型是否兼容(正确)
-        initVersionAndType(data, readIndex);
+            // 确定版本以及类型是否兼容(正确)
+            initVersionAndType(data, readIndex);
 
-        // 填充size
-        initSize(data, readIndex);
+            // 填充size
+            initSize(data, readIndex);
 
-        //填充状态
-        initStatus(data, readIndex);
+            //填充状态
+            initStatus(data, readIndex);
 
-        //填充唯一标识
-        initUnique(data, readIndex);
+            //填充唯一标识
+            initUnique(data, readIndex);
 
-        // 获取header
-        initHeader(data, readIndex);
+            // 获取header
+            initHeader(data, readIndex);
 
-        // 获取内容字符串
-        initContentArray(data, readIndex);
+            // 获取内容字符串
+            initContentArray(data, readIndex);
 
-        // 处理内容
-        initContent();
+            // 处理内容
+            initContent();
+        } catch (RpcException | ClassNotFoundException e) {
+            LogUtil.error(this, e);
+            throw e;
+        }
     }
 
-    private void initUnique(byte[] data, AtomicInteger readIndex) {
+    protected void initUnique(byte[] data, AtomicInteger readIndex) {
         final int uniqueSize = MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_UNIQUE_INDEX];
         final int startIndex = readIndex.get();
         byte[] uniqueBytes = Arrays.copyOfRange(data, startIndex, startIndex + uniqueSize);
@@ -203,7 +210,7 @@ public abstract class AbstractRpcData implements RpcData {
         readIndex.addAndGet(uniqueSize);
     }
 
-    private void initStatus(byte[] data, AtomicInteger readIndex) {
+    protected void initStatus(byte[] data, AtomicInteger readIndex) {
         final int statusSize = MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_STATUS_INDEX];
         assert statusSize == 1;
         final int startIndex = readIndex.get();
@@ -213,13 +220,13 @@ public abstract class AbstractRpcData implements RpcData {
         readIndex.addAndGet(statusSize);
     }
 
-    private void initContentArray(byte[] data, AtomicInteger readIndex) {
+    protected void initContentArray(byte[] data, AtomicInteger readIndex) {
         byte[] bytes = Arrays.copyOfRange(data, readIndex.get(), data.length);
         String contentStr = new String(bytes, StandardCharsets.UTF_8);
         this.contentArray = contentStr.split("\n");
     }
 
-    private void initHeader(byte[] data, AtomicInteger readIndex) {
+    protected void initHeader(byte[] data, AtomicInteger readIndex) {
         boolean lastByteIsEnter = false;
         List<RpcHeader> rpcHeaders = new ArrayList<>();
         StringBuilder headerStr = new StringBuilder();
@@ -231,7 +238,7 @@ public abstract class AbstractRpcData implements RpcData {
                     break;
                 }
                 lastByteIsEnter = true;
-                RpcHeader rpcHeader = RpcHeaderFactory.newInstance(headerStr.toString());
+                RpcHeader rpcHeader = RpcHeaderFactory.newHeader(headerStr.toString());
                 headerStr.delete(0, headerStr.length());
                 if (rpcHeader != null) {
                     rpcHeaders.add(rpcHeader);
@@ -252,7 +259,7 @@ public abstract class AbstractRpcData implements RpcData {
      * @param readIndex
      * @throws RpcVersionNotSupportedException
      */
-    private void initVersionAndType(byte[] data, AtomicInteger readIndex) throws RpcException {
+    protected void initVersionAndType(byte[] data, AtomicInteger readIndex) throws RpcException {
         int dataVersion = (data[readIndex.get()] >> 2) & 0b111111;
         if (dataVersion > MAX_VERSION) {
             throw new RpcVersionNotSupportedException(dataVersion, MAX_VERSION);
@@ -316,10 +323,6 @@ public abstract class AbstractRpcData implements RpcData {
         this.headers = headers;
     }
 
-    @Override
-    public String[] contentArray() {
-        return contentArray;
-    }
 
     public RpcContent getContent() {
         return content;
@@ -356,5 +359,18 @@ public abstract class AbstractRpcData implements RpcData {
 
     public void setContentArray(String[] contentArray) {
         this.contentArray = contentArray;
+    }
+
+    @Override
+    public String headerAndContent() {
+        StringBuilder sb = new StringBuilder();
+        for (RpcHeader rpcHeader : rpcHeaders()) {
+            sb.append("\n");
+            sb.append(String.format("%s:%s", rpcHeader.getName(), rpcHeader.getValue()));
+        }
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(this.content().contentString());
+        return sb.toString();
     }
 }

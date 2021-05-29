@@ -5,10 +5,11 @@ import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
-import indi.uhyils.rpc.exchange.pojo.AbstractRpcFactory;
+import indi.uhyils.rpc.exchange.pojo.factory.AbstractRpcFactory;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.RpcHeader;
+import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContentFactory;
 
 import java.nio.charset.StandardCharsets;
 
@@ -35,12 +36,12 @@ public class RpcResponseFactory extends AbstractRpcFactory {
 
     @Override
     public RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {
-        return new RpcNormalResponse(data);
+        return new NormalResponseRpcData(data);
     }
 
     @Override
     public RpcData createByInfo(Long unique, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException {
-        RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
+        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
         rpcNormalRequest.setType(RpcTypeEnum.RESPONSE.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);
@@ -56,7 +57,7 @@ public class RpcResponseFactory extends AbstractRpcFactory {
 
     @Override
     public RpcData createTimeoutResponse(RpcData request, Long timeout) throws RpcException {
-        RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
+        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(request.rpcHeaders());
@@ -71,7 +72,7 @@ public class RpcResponseFactory extends AbstractRpcFactory {
     }
 
     public RpcData createErrorResponse(Long unique, Throwable e, RpcHeader[] rpcHeaders) throws RpcException {
-        RpcNormalResponse rpcNormalRequest = new RpcNormalResponse();
+        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
         rpcNormalRequest.setType(RpcTypeEnum.RESPONSE.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);

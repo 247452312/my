@@ -42,14 +42,14 @@ public class HystrixFilter implements ConsumerFilter {
      * @param rpcData
      */
     private void addUnique(RpcData rpcData) throws InterruptedException {
-        JSONArray argsMap = JSON.parseArray(rpcData.contentArray()[RpcRequestContentEnum.ARG_MAP.getLine()]);
+        JSONArray argsMap = JSON.parseArray(rpcData.content().getLine(RpcRequestContentEnum.ARG_MAP.getLine()));
         JSONObject o = (JSONObject) argsMap.get(0);
         DefaultRequest defaultRequest = o.toJavaObject(DefaultRequest.class);
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         try {
             defaultRequest.setUnique(bean.newId());
             List<DefaultRequest> defaultRequests = Arrays.asList(defaultRequest);
-            rpcData.contentArray()[RpcRequestContentEnum.ARG_MAP.getLine()] = JSON.toJSONString(defaultRequests);
+            rpcData.content().contentArray()[RpcRequestContentEnum.ARG_MAP.getLine()] = JSON.toJSONString(defaultRequests);
         } catch (IdGenerationException e) {
             LogUtil.error(this, e);
         }

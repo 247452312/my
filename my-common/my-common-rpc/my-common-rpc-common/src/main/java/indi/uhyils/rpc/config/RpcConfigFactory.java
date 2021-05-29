@@ -1,6 +1,5 @@
 package indi.uhyils.rpc.config;
 
-import indi.uhyils.rpc.constant.RpcConstant;
 
 /**
  * rpc配置工厂
@@ -23,7 +22,7 @@ public class RpcConfigFactory {
     @Deprecated
     public static RpcConfig newDefault() {
         RpcConfig rpcConfig = new RpcConfig();
-        rpcConfig.getApplication().setName(RpcConstant.RPC_PREFIX);
+        rpcConfig.getApplication().setName("rpc");
         ProviderConfig provider = rpcConfig.getProvider();
         provider.setPort(8080);
         RegistryConfig registry = rpcConfig.getRegistry();

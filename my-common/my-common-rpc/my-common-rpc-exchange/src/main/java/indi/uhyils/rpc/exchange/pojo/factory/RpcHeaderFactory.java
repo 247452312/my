@@ -1,5 +1,6 @@
-package indi.uhyils.rpc.exchange.pojo;
+package indi.uhyils.rpc.exchange.pojo.factory;
 
+import indi.uhyils.rpc.exchange.pojo.RpcHeader;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -10,12 +11,17 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class RpcHeaderFactory {
 
-    public static RpcHeader newInstance(String data) {
+    /**
+     * header
+     */
+    private static final char HEADER_SPLIT = ':';
+
+    public static RpcHeader newHeader(String data) {
         if (StringUtils.isEmpty(data)) {
             return null;
         }
         RpcHeader rpcHeader = new RpcHeader();
-        int colonIndex = data.indexOf(':');
+        int colonIndex = data.indexOf(HEADER_SPLIT);
         String name = data.substring(0, colonIndex);
         String value = data.substring(colonIndex + 1);
         rpcHeader.setName(name);

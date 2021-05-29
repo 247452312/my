@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.exchange.pojo.response;
+package indi.uhyils.rpc.exchange.pojo.response.content;
 
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 
