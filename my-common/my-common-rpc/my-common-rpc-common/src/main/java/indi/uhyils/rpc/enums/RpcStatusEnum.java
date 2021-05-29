@@ -1,6 +1,8 @@
 package indi.uhyils.rpc.enums;
 
 /**
+ * rpc结果状态枚举
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 09时53分
  */
@@ -62,6 +64,16 @@ public enum RpcStatusEnum {
         this.name = name;
         this.code = code;
     }
+
+    public static RpcStatusEnum parse(byte responseStatus) {
+        for (RpcStatusEnum value : RpcStatusEnum.values()) {
+            if (value.getCode() == responseStatus) {
+                return value;
+            }
+        }
+        return BAD_REQUEST;
+    }
+
 
     public byte getCode() {
         return code;

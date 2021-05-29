@@ -25,7 +25,7 @@ public class RpcBeanFactory {
      */
     private Map<String, Object> rpcBeans = new HashMap<>();
 
-    private RpcBeanFactory(Map<String, Object> beans) throws Exception {
+    private RpcBeanFactory(Map<String, Object> beans) {
         if (beans == null) {
             init = false;
             return;
@@ -39,7 +39,7 @@ public class RpcBeanFactory {
      *
      * @return
      */
-    public static RpcBeanFactory getInstance(Map<String, Object> beans) throws Exception {
+    public static RpcBeanFactory getInstance(Map<String, Object> beans) {
         if (null == instance) {
             if (beans == null) {
                 throw new RuntimeException("rpc bean工厂第一次初始化需要参数");
@@ -54,7 +54,7 @@ public class RpcBeanFactory {
     }
 
     /**
-     * 双重检测锁
+     * 双重检测锁 此处在已经调用过之后不会再报错
      *
      * @return
      */

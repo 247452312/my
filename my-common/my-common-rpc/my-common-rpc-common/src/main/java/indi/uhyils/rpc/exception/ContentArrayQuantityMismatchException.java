@@ -1,6 +1,8 @@
 package indi.uhyils.rpc.exception;
 
 /**
+ * rpc byte装载时 内容体数量不匹配异常
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 14时58分
  */

@@ -1,7 +1,7 @@
 package indi.uhyils.rpc.enums;
 
 /**
- * 请求响应编码
+ * 请求 or 响应编码
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 12时34分
@@ -23,14 +23,12 @@ public enum RpcTypeEnum {
     }
 
     public static RpcTypeEnum parse(Integer code) {
-        switch (code) {
-            case 1:
-                return REQUEST;
-            case 0:
-                return RESPONSE;
-            default:
-                return null;
+        for (RpcTypeEnum value : RpcTypeEnum.values()) {
+            if (value.getCode().equals(code)) {
+                return value;
+            }
         }
+        return null;
     }
 
     public Integer getCode() {

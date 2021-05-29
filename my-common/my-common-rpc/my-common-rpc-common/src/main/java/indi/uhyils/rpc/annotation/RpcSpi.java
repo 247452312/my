@@ -3,6 +3,8 @@ package indi.uhyils.rpc.annotation;
 import java.lang.annotation.*;
 
 /**
+ * 扩展注释,此注释和{META-INF/rpc/}下的文件配合使用
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月18日 07时58分
  */

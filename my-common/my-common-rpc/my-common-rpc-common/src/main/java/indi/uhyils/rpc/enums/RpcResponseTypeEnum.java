@@ -1,6 +1,8 @@
 package indi.uhyils.rpc.enums;
 
 /**
+ * rpc 返回值结果
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月23日 19时29分
  */
@@ -28,15 +30,12 @@ public enum RpcResponseTypeEnum {
     }
 
     public static RpcResponseTypeEnum parse(Integer responseType) {
-        switch (responseType) {
-            case 0:
-                return NULL_BACK;
-            case 1:
-                return STRING_BACK;
-            default:
-            case 2:
-                return EXCEPTION;
+        for (RpcResponseTypeEnum value : RpcResponseTypeEnum.values()) {
+            if (value.getCode().equals(responseType)) {
+                return value;
+            }
         }
+        return EXCEPTION;
     }
 
     public Integer getCode() {

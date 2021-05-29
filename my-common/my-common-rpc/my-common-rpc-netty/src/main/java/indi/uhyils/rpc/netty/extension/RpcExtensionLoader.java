@@ -88,7 +88,7 @@ public class RpcExtensionLoader {
 
 
     /**
-     * 判断clazz是否是
+     * 判断clazz是否是扩展点
      *
      * @param clazz
      * @return

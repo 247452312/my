@@ -5,6 +5,8 @@ import indi.uhyils.rpc.enums.RpcTypeEnum;
 import java.util.Objects;
 
 /**
+ * rpc 请求响应类型不正确异常
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月22日 10时19分
  */
