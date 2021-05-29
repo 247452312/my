@@ -1,15 +1,14 @@
 package indi.uhyils.rpc.proxy.handler;
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.config.ConsumerConfig;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
-import indi.uhyils.rpc.netty.extension.RpcExtensionLoader;
-import indi.uhyils.rpc.netty.extension.RpcExtensionLoaderTypeEnum;
-import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseObjectExtension;
+import indi.uhyils.rpc.netty.spi.step.RpcStep;
+import indi.uhyils.rpc.netty.spi.step.template.ConsumerResponseObjectExtension;
 import indi.uhyils.rpc.registry.Registry;
 import indi.uhyils.rpc.registry.RegistryFactory;
+import indi.uhyils.rpc.spi.RpcExtensionLoader;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
@@ -51,7 +50,7 @@ public class RpcProxyHandler implements InvocationHandler {
                 LogUtil.error(this, e);
             }
         }
-        consumerResponseObjectExtensions = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_STEP, ConsumerResponseObjectExtension.class);
+        consumerResponseObjectExtensions = RpcExtensionLoader.getExtensionByClass(RpcStep.class, ConsumerResponseObjectExtension.class);
 
     }
 

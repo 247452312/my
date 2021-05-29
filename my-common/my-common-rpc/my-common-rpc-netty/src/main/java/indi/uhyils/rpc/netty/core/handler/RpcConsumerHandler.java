@@ -3,10 +3,10 @@ package indi.uhyils.rpc.netty.core.handler;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
 import indi.uhyils.rpc.netty.core.RpcNettyNormalConsumer;
-import indi.uhyils.rpc.netty.extension.RpcExtensionLoader;
-import indi.uhyils.rpc.netty.extension.RpcExtensionLoaderTypeEnum;
-import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseByteExtension;
-import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseDataExtension;
+import indi.uhyils.rpc.netty.spi.step.RpcStep;
+import indi.uhyils.rpc.netty.spi.step.template.ConsumerResponseByteExtension;
+import indi.uhyils.rpc.netty.spi.step.template.ConsumerResponseDataExtension;
+import indi.uhyils.rpc.spi.RpcExtensionLoader;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -41,9 +41,8 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<ByteBuf> {
     public RpcConsumerHandler(RpcCallBack callBack, RpcNettyNormalConsumer netty) {
         this.callBack = callBack;
         this.netty = netty;
-        consumerResponseByteFilters = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_STEP, ConsumerResponseByteExtension.class);
-        consumerResponseDataFilters = RpcExtensionLoader.getExtensionByClass(RpcExtensionLoaderTypeEnum.RPC_STEP, ConsumerResponseDataExtension.class);
-
+        consumerResponseByteFilters = RpcExtensionLoader.getExtensionByClass(RpcStep.class, ConsumerResponseByteExtension.class);
+        consumerResponseDataFilters = RpcExtensionLoader.getExtensionByClass(RpcStep.class, ConsumerResponseDataExtension.class);
     }
 
     @Override

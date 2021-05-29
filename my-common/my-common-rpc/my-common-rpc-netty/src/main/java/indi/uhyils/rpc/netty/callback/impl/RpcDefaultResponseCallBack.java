@@ -5,7 +5,7 @@ import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
-import indi.uhyils.rpc.exchange.pojo.RpcFactoryProducer;
+import indi.uhyils.rpc.exchange.pojo.factory.RpcFactoryProducer;
 import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContent;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
 

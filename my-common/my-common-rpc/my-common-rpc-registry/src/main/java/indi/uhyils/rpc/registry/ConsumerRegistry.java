@@ -8,7 +8,7 @@ import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
-import indi.uhyils.rpc.exchange.pojo.RpcFactoryProducer;
+import indi.uhyils.rpc.exchange.pojo.factory.RpcFactoryProducer;
 import indi.uhyils.rpc.exchange.pojo.RpcHeader;
 import indi.uhyils.rpc.exchange.pojo.demo.response.content.RpcNormalResponseContent;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;

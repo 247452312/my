@@ -7,7 +7,7 @@ import indi.uhyils.pojo.response.HotSpotResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.rpc.annotation.RpcSpi;
-import indi.uhyils.rpc.netty.extension.step.template.ConsumerResponseObjectExtension;
+import indi.uhyils.rpc.netty.spi.step.template.ConsumerResponseObjectExtension;
 import indi.uhyils.util.ObjectByteUtil;
 import indi.uhyils.util.SpringUtil;
 import redis.clients.jedis.Jedis;
