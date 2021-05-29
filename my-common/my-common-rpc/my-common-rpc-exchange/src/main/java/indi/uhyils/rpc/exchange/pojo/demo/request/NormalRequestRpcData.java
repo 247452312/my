@@ -1,9 +1,10 @@
-package indi.uhyils.rpc.exchange.pojo.request;
+package indi.uhyils.rpc.exchange.pojo.demo.request;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcHeader;
+import indi.uhyils.rpc.exchange.pojo.request.AbstractRequestRpcData;
 import indi.uhyils.rpc.exchange.pojo.request.content.RpcRequestContentFactory;
 
 /**

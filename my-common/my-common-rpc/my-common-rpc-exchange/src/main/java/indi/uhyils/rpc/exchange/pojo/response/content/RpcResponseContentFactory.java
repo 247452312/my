@@ -5,6 +5,7 @@ import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.enum_.RpcResponseContentEnum;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.demo.response.content.RpcNormalResponseContent;
 
 /**
  * rpc响应内容工厂

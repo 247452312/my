@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.exchange.pojo.response.content;
+package indi.uhyils.rpc.exchange.pojo.demo.response.content;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exchange.pojo.AbstractRpcContent;

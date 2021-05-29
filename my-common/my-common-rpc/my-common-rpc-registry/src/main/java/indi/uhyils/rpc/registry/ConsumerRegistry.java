@@ -10,7 +10,7 @@ import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
 import indi.uhyils.rpc.exchange.pojo.RpcFactoryProducer;
 import indi.uhyils.rpc.exchange.pojo.RpcHeader;
-import indi.uhyils.rpc.exchange.pojo.response.content.RpcNormalResponseContent;
+import indi.uhyils.rpc.exchange.pojo.demo.response.content.RpcNormalResponseContent;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.registry.content.RegistryContent;
 import indi.uhyils.rpc.registry.mode.RegistryMode;

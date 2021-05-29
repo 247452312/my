@@ -7,10 +7,11 @@ import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.exchange.pojo.*;
+import indi.uhyils.rpc.exchange.pojo.demo.request.NormalRequestRpcData;
 import indi.uhyils.rpc.exchange.pojo.factory.AbstractRpcFactory;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
 import indi.uhyils.rpc.exchange.pojo.request.content.RpcRequestContentFactory;
-import indi.uhyils.rpc.exchange.pojo.response.NormalResponseRpcData;
+import indi.uhyils.rpc.exchange.pojo.demo.response.NormalResponseRpcData;
 import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContentFactory;
 import indi.uhyils.util.LogUtil;
 

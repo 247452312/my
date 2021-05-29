@@ -4,6 +4,7 @@ import indi.uhyils.rpc.exception.ContentArrayQuantityMismatchException;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.demo.request.content.RpcNormalRequestContent;
 
 /**
  * 请求内容装载工厂

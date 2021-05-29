@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.exchange.pojo.request.content;
+package indi.uhyils.rpc.exchange.pojo.demo.request.content;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
