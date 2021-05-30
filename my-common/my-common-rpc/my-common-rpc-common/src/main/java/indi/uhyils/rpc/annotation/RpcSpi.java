@@ -26,4 +26,11 @@ public @interface RpcSpi {
      * @return
      */
     String name() default "";
+
+    /**
+     * 是否是单例,如果不是就使用原型模式,自行实现cloneable接口
+     *
+     * @return
+     */
+    boolean single() default true;
 }

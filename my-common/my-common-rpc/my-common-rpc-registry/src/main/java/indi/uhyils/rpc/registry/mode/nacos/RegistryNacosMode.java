@@ -32,7 +32,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月26日 18时44分
  */
-@RpcSpi
+@RpcSpi(single = false)
 public class RegistryNacosMode implements RegistryMode {
 
     /**
