@@ -3,7 +3,7 @@ package indi.uhyils.rpc.netty.spi.filter;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcResult;
-import indi.uhyils.rpc.spi.RpcExtension;
+import indi.uhyils.rpc.spi.RpcSpiExtension;
 
 /**
  * handler中执行类
@@ -11,7 +11,7 @@ import indi.uhyils.rpc.spi.RpcExtension;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月19日 07时01分
  */
-public interface RpcFilter extends RpcExtension {
+public interface RpcFilter extends RpcSpiExtension {
 
 
     /**

@@ -4,7 +4,7 @@ import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.registry.exception.RegistryException;
 import indi.uhyils.rpc.registry.exception.RegistryTypeException;
 import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
-import indi.uhyils.rpc.spi.RpcExtension;
+import indi.uhyils.rpc.spi.RpcSpiExtension;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月26日 16时50分
  */
-public interface RegistryMode extends RpcExtension {
+public interface RegistryMode extends RpcSpiExtension {
 
     /**
      * 获取配置

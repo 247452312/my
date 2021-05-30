@@ -101,10 +101,10 @@ public class RpcExtensionLoader {
                             className = className.trim();
                             if (className.length() > 0) {
                                 Class<?> targetClass = Class.forName(className, true, classLoader);
-                                if (RpcExtension.class.isAssignableFrom(targetClass)) {
+                                if (RpcSpiExtension.class.isAssignableFrom(targetClass)) {
                                     result.add(targetClass);
                                 } else {
-                                    LogUtil.warn(targetClass.getName() + " 没有继承: " + RpcExtension.class.getName());
+                                    LogUtil.warn(targetClass.getName() + " 没有继承: " + RpcSpiExtension.class.getName());
                                 }
                             }
                         }
@@ -201,7 +201,7 @@ public class RpcExtensionLoader {
      * @param targetClass 要获取的类
      * @return
      */
-    public static <T extends Cloneable, E extends T> List<E> getExtensionByClass(Class<T> root, Class<E> targetClass) {
+    public static <T extends RpcSpiExtension, E extends T> List<E> getExtensionByClass(Class<T> root, Class<E> targetClass) {
         // 看看加载的类中是否有目标root
         if (!cacheClass.containsKey(root)) {
             return new ArrayList();

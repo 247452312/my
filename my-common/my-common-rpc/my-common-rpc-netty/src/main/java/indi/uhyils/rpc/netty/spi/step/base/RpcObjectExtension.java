@@ -1,7 +1,7 @@
 package indi.uhyils.rpc.netty.spi.step.base;
 
 
-import indi.uhyils.rpc.spi.RpcExtension;
+import indi.uhyils.rpc.spi.RpcSpiExtension;
 
 /**
  * rpc类扩展点
@@ -9,7 +9,7 @@ import indi.uhyils.rpc.spi.RpcExtension;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年02月14日 13时00分
  */
-public interface RpcObjectExtension extends RpcExtension {
+public interface RpcObjectExtension extends RpcSpiExtension {
 
     /**
      * rpc类扩展点
