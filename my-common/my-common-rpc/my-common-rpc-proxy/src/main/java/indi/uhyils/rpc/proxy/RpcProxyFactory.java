@@ -3,7 +3,6 @@ package indi.uhyils.rpc.proxy;
 import indi.uhyils.rpc.proxy.generic.GenericService;
 import indi.uhyils.rpc.proxy.handler.RpcProxyHandler;
 import indi.uhyils.rpc.registry.exception.RegistryException;
-import indi.uhyils.util.SpringUtil;
 
 import java.lang.reflect.Proxy;
 

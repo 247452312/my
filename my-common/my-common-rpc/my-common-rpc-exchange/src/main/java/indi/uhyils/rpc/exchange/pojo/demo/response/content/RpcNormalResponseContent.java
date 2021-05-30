@@ -23,7 +23,7 @@ public class RpcNormalResponseContent extends AbstractRpcContent implements RpcR
      */
     private String responseContent;
 
-    public RpcNormalResponseContent(RpcData rpcData,String[] contentArray) {
+    public RpcNormalResponseContent(RpcData rpcData, String[] contentArray) {
         super(contentArray);
         setRpcData(rpcData);
     }

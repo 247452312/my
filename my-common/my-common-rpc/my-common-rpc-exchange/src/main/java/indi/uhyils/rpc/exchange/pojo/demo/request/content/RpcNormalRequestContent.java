@@ -52,6 +52,7 @@ public class RpcNormalRequestContent extends AbstractRpcContent implements RpcRe
         init();
         setRpcData(rpcData);
     }
+
     /**
      * 初始化属性
      *
@@ -95,7 +96,6 @@ public class RpcNormalRequestContent extends AbstractRpcContent implements RpcRe
         }
         this.setOthers(others.toArray());
     }
-
 
 
     @Override
