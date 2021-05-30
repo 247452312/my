@@ -10,12 +10,12 @@ import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
 import indi.uhyils.rpc.netty.factory.NettyInitDtoFactory;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
 import indi.uhyils.rpc.registry.mode.RegistryMode;
-import indi.uhyils.rpc.registry.mode.nacos.RegistryNacosMode;
 import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
 import indi.uhyils.rpc.registry.pojo.info.RegistryProviderNecessaryInfo;
 import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadata;
 import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadataOfInterface;
 import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadataOfMethod;
+import indi.uhyils.rpc.spi.RpcExtensionLoader;
 import indi.uhyils.util.IpUtil;
 
 import java.lang.reflect.Method;
@@ -32,6 +32,14 @@ import java.util.List;
  */
 public class RegistryFactory {
 
+
+    /**
+     * 默认的注册中心
+     */
+    private static final String DEFAULT_REGISTRY = "default_registry";
+
+    private static final String REGISTRY_SPI_NAME = "registrySpi";
+
     /**
      * 创建一个消费者的注册层
      *
@@ -41,7 +49,10 @@ public class RegistryFactory {
      * @return
      */
     public static <T> Registry<T> createConsumer(Class<T> clazz, String host) throws Exception {
-        RegistryMode mode = new RegistryNacosMode();
+        // spi 获取消费者
+        String name = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_SPI_NAME, DEFAULT_REGISTRY);
+        RegistryMode mode = (RegistryMode) RpcExtensionLoader.getExtensionByClass(RegistryMode.class, name);
+        assert mode != null;
         List<RegistryInfo> targetInterfaceInfo = mode.getTargetInterfaceInfo(clazz.getName());
         NettyInitDto[] nettyInitDtos = new NettyInitDto[targetInterfaceInfo.size()];
         for (int i = 0; i < targetInterfaceInfo.size(); i++) {

@@ -7,6 +7,7 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.config.RegistryConfig;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
@@ -31,6 +32,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月26日 18时44分
  */
+@RpcSpi
 public class RegistryNacosMode implements RegistryMode {
 
     /**

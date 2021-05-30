@@ -70,9 +70,7 @@ public class RpcProxyHandler implements InvocationHandler {
             }
         }
 
-        /**
-         * 防止proxy是自动调用toString方法导致的报错
-         */
+        // 防止proxy自动调用toString方法导致的报错
         if (TO_STRING.equals(method.getName())) {
             return "this is the interface,it`s name is " + proxy.getClass().getSimpleName();
         }

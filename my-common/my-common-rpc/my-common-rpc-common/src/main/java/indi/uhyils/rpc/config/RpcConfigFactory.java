@@ -35,6 +35,17 @@ public class RpcConfigFactory {
         return config;
     }
 
+    /**
+     * 获取rpc自定义扩展配置
+     *
+     * @param key
+     * @param defaultKey
+     * @return
+     */
+    public static Object getCustomOrDefault(String key, Object defaultKey) {
+        return getInstance().getCustom().getCustom().getOrDefault(key, defaultKey);
+    }
+
     public static void setRpcConfig(RpcConfig config) {
         RpcConfigFactory.config = config;
     }
