@@ -7,7 +7,7 @@ import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactoryProducer;
-import indi.uhyils.rpc.exchange.pojo.factory.NormalRpcRequestFactory;
+import indi.uhyils.rpc.exchange.pojo.demo.factory.NormalRpcRequestFactory;
 import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.filter.filter.ConsumerFilter;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
