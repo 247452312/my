@@ -1,15 +1,15 @@
-package indi.uhyils.rpc.exchange.pojo.response;
+package indi.uhyils.rpc.exchange.pojo.factory;
 
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
-import indi.uhyils.rpc.exchange.pojo.demo.response.NormalResponseRpcData;
-import indi.uhyils.rpc.exchange.pojo.factory.AbstractRpcFactory;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.RpcHeader;
+import indi.uhyils.rpc.exchange.pojo.demo.response.NormalResponseRpcData;
 import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContentFactory;
 
 import java.nio.charset.StandardCharsets;
@@ -20,19 +20,10 @@ import java.nio.charset.StandardCharsets;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 12时47分
  */
-public class RpcResponseFactory extends AbstractRpcFactory {
+@RpcSpi
+public class NormalRpcResponseFactory extends AbstractRpcFactory {
 
-    public volatile static RpcResponseFactory instance;
-
-    public static RpcResponseFactory getInstance() {
-        if (null == instance) {
-            synchronized (RpcResponseFactory.class) {
-                if (null == instance) {
-                    instance = new RpcResponseFactory();
-                }
-            }
-        }
-        return instance;
+    public NormalRpcResponseFactory() {
     }
 
     @Override

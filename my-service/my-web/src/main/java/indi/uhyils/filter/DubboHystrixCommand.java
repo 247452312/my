@@ -8,7 +8,7 @@ import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exchange.enum_.RpcRequestContentEnum;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactoryProducer;
-import indi.uhyils.rpc.exchange.pojo.request.RpcRequestFactory;
+import indi.uhyils.rpc.exchange.pojo.factory.NormalRpcRequestFactory;
 import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContent;
 import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
@@ -70,7 +70,7 @@ public class DubboHystrixCommand extends HystrixCommand<RpcResult> {
 
     @Override
     protected RpcResult getFallback() {
-        RpcRequestFactory build = (RpcRequestFactory) RpcFactoryProducer.build(RpcTypeEnum.REQUEST);
+        NormalRpcRequestFactory build = (NormalRpcRequestFactory) RpcFactoryProducer.build(RpcTypeEnum.REQUEST);
         ServiceResult sr = ServiceResult.buildFailedResult("您好,您请求的服务暂时不可用,请一分钟后重试!", null, null);
         RpcData rpcData = build.createFallback(invocation.getRpcResult().get(), sr);
         try {

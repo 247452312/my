@@ -6,10 +6,10 @@ import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exception.RpcTypeNotSupportedException;
 import indi.uhyils.rpc.exception.RpcVersionNotSupportedException;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
+import indi.uhyils.rpc.exchange.pojo.factory.NormalRpcRequestFactory;
+import indi.uhyils.rpc.exchange.pojo.factory.NormalRpcResponseFactory;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcHeaderFactory;
-import indi.uhyils.rpc.exchange.pojo.request.RpcRequestFactory;
-import indi.uhyils.rpc.exchange.pojo.response.RpcResponseFactory;
 import indi.uhyils.rpc.util.BytesUtils;
 import indi.uhyils.util.LogUtil;
 
@@ -91,10 +91,10 @@ public abstract class AbstractRpcData implements RpcData {
         RpcFactory rpcFactory;
         switch (parse) {
             case REQUEST:
-                rpcFactory = RpcRequestFactory.getInstance();
+                rpcFactory = new NormalRpcRequestFactory();
                 break;
             case RESPONSE:
-                rpcFactory = RpcResponseFactory.getInstance();
+                rpcFactory = new NormalRpcResponseFactory();
                 break;
             default:
                 throw new RpcException("rpc类型错误");

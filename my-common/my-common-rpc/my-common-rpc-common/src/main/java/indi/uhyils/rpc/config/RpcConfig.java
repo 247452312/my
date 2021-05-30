@@ -32,6 +32,11 @@ public class RpcConfig {
      */
     private ConsumerConfig consumer = new ConsumerConfig();
 
+    /**
+     * 自定义扩展
+     */
+    private CustomConfig custom = new CustomConfig();
+
     public ApplicationConfig getApplication() {
         return application;
     }
@@ -70,5 +75,13 @@ public class RpcConfig {
 
     public void setConsumer(ConsumerConfig consumer) {
         this.consumer = consumer;
+    }
+
+    public CustomConfig getCustom() {
+        return custom;
+    }
+
+    public void setCustom(CustomConfig custom) {
+        this.custom = custom;
     }
 }

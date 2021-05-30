@@ -1,17 +1,18 @@
-package indi.uhyils.rpc.exchange.pojo.request;
+package indi.uhyils.rpc.exchange.pojo.factory;
 
 import com.alibaba.fastjson.JSON;
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
-import indi.uhyils.rpc.exchange.pojo.*;
+import indi.uhyils.rpc.exchange.pojo.RpcContent;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.RpcHeader;
 import indi.uhyils.rpc.exchange.pojo.demo.request.NormalRequestRpcData;
-import indi.uhyils.rpc.exchange.pojo.factory.AbstractRpcFactory;
-import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
-import indi.uhyils.rpc.exchange.pojo.request.content.RpcRequestContentFactory;
 import indi.uhyils.rpc.exchange.pojo.demo.response.NormalResponseRpcData;
+import indi.uhyils.rpc.exchange.pojo.request.content.RpcRequestContentFactory;
 import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContentFactory;
 import indi.uhyils.util.LogUtil;
 
@@ -23,23 +24,13 @@ import java.nio.charset.StandardCharsets;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 12时38分
  */
-public class RpcRequestFactory extends AbstractRpcFactory {
+@RpcSpi
+public class NormalRpcRequestFactory extends AbstractRpcFactory {
 
-    public volatile static RpcFactory instance;
 
-    private RpcRequestFactory() {
+    public NormalRpcRequestFactory() {
     }
 
-    public static RpcFactory getInstance() {
-        if (null == instance) {
-            synchronized (RpcRequestFactory.class) {
-                if (null == instance) {
-                    instance = new RpcRequestFactory();
-                }
-            }
-        }
-        return instance;
-    }
 
     @Override
     public RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {

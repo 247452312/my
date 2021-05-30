@@ -1,9 +1,11 @@
 package indi.uhyils.rpc.exchange.pojo.factory;
 
+import indi.uhyils.rpc.config.RpcConfig;
+import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
-import indi.uhyils.rpc.exchange.pojo.request.RpcRequestFactory;
-import indi.uhyils.rpc.exchange.pojo.response.RpcResponseFactory;
+import indi.uhyils.rpc.spi.RpcExtensionLoader;
+
+import java.util.Map;
 
 /**
  * Rpc工厂生成器
@@ -13,14 +15,34 @@ import indi.uhyils.rpc.exchange.pojo.response.RpcResponseFactory;
  */
 public class RpcFactoryProducer {
 
-    public static RpcFactory build(RpcTypeEnum rpcTypeEnum) {
-        switch (rpcTypeEnum) {
-            default:
-            case REQUEST:
-                return RpcRequestFactory.getInstance();
-            case RESPONSE:
-                return RpcResponseFactory.getInstance();
-        }
+    /**
+     * 默认的rpc请求工厂的spi名称
+     */
+    private static final String requestFactoryDefaultRpcSpiName = "default_rpc_request_factory";
+    /**
+     * 默认的rpc响应工厂的spi名称
+     */
+    private static final String responseFactoryDefaultRpcSpiName = "default_rpc_response_factory";
 
+    /**
+     * rpc请求工厂在rpc自定义扩展中的key
+     */
+    private static final String requestFactoryRpcSpiCustomKey = "rpc_request_factory";
+    /**
+     * rpc响应工厂在rpc自定义扩展中的key
+     */
+    private static final String responseFactoryRpcSpiCustomKey = "rpc_response_factory";
+
+    public static RpcFactory build(RpcTypeEnum rpcTypeEnum) {
+        RpcConfig instance = RpcConfigFactory.getInstance();
+        Map<String, Object> custom = instance.getCustom().getCustom();
+        switch (rpcTypeEnum) {
+            case RESPONSE:
+                return (RpcFactory) RpcExtensionLoader.getExtensionByClass(RpcFactory.class, (String) custom.getOrDefault(responseFactoryRpcSpiCustomKey, responseFactoryDefaultRpcSpiName));
+            //default默认使用request的请求
+            case REQUEST:
+            default:
+                return (RpcFactory) RpcExtensionLoader.getExtensionByClass(RpcFactory.class, (String) custom.getOrDefault(requestFactoryRpcSpiCustomKey, requestFactoryDefaultRpcSpiName));
+        }
     }
 }

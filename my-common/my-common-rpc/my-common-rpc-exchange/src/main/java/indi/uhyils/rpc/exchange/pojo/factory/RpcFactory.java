@@ -4,6 +4,7 @@ import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.RpcHeader;
+import indi.uhyils.rpc.spi.RpcExtension;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -12,7 +13,7 @@ import io.netty.buffer.ByteBuf;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 12时39分
  */
-public interface RpcFactory {
+public interface RpcFactory extends RpcExtension {
 
     /**
      * 使用数据流新建一个rpc体

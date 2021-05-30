@@ -11,6 +11,7 @@ import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -20,12 +21,12 @@ public class RpcExtensionLoader {
     /**
      * 加载扩展点时的路径
      */
-    public static final String RPC_EXTENSION_PATH = "META-INF/rpc/";
+    private static final String RPC_EXTENSION_PATH = "META-INF/rpc/";
 
     /**
      * 加载扩展点时的扩展点保存地
      */
-    public static final String RPC_EXTENSION_CLASS_PATH = "META-INF/rpcClass";
+    private static final String RPC_EXTENSION_CLASS_PATH = "META-INF/rpcClass";
     /**
      * 已加载的所有扩展点类型
      * map<扩展点最终类,map<扩展点具体名称,扩展点实际类>>
@@ -36,6 +37,10 @@ public class RpcExtensionLoader {
      * Map<root.class : target.class , 扩展点实例>
      */
     private static Map<String, List<?>> cacheExtensionPath = new HashMap<>();
+    /**
+     * cacheClass 对应的实例
+     */
+    private static Map<Class, Map<String, Object>> cacheClassInstanceMap = new HashMap<>();
 
     static {
         init();
@@ -114,39 +119,113 @@ public class RpcExtensionLoader {
         return result;
     }
 
-    public static List getExtensionByClass(Class root, Class targetClass) {
+    public static Object getExtensionByClass(Class root, String name) {
+        // 看看加载的类中是否有目标root
+        if (!cacheClass.containsKey(root)) {
+            return null;
+        }
 
+        // 初始化缓存,加速获取用
+        if (!cacheClassInstanceMap.containsKey(root)) {
+            int size = cacheClass.get(root).size();
+            cacheClassInstanceMap.put(root, new HashMap<>(size));
+        }
+
+        // 如果应该加载的地方没有此名称
+        if (!cacheClass.get(root).containsKey(name)) {
+            return null;
+        }
+
+        // 查询之前缓存里有没有
+        Map<String, Object> cacheMap = cacheClassInstanceMap.get(root);
+        if (cacheMap.containsKey(name)) {
+            return cacheMap.get(name);
+        } else {
+            // 之前缓存里也没有 只能初始化一次了
+            Class<?> clazz = cacheClass.get(root).get(name);
+            Constructor<?> constructor;
+            try {
+                // 获取空的构造器
+                constructor = clazz.getConstructor();
+            } catch (Exception e) {
+                throw new IllegalStateException(root.getName() + " 必须要空构造器");
+            }
+            Object instance = null;
+            try {
+                // 初始化
+                instance = constructor.newInstance();
+            } catch (Exception e) {
+                LogUtil.error(RpcExtensionLoader.class, e);
+            }
+            //放入缓存
+            cacheMap.put(name, instance);
+            return instance;
+        }
+    }
+
+    /**
+     * 根据rpcClass中的类作为root,以目标class获取指定的所有类,根据order排序的linkList
+     *
+     * @param root        rpcClass中定义的类
+     * @param targetClass 要获取的类
+     * @return
+     */
+    public static List getExtensionByClass(Class root, Class targetClass) {
+        // 看看加载的类中是否有目标root
         if (!cacheClass.containsKey(root)) {
             return new ArrayList();
         }
+        // 缓存,加速获取用
+        if (!cacheClassInstanceMap.containsKey(root)) {
+            int size = cacheClass.get(root).size();
+            cacheClassInstanceMap.put(root, new HashMap<>(size));
+        }
+        //缓存中的key,如果有 直接返回
         String cacheKey = root.getName() + " : " + targetClass.getName();
         if (cacheExtensionPath.containsKey(cacheKey)) {
             return cacheExtensionPath.get(cacheKey);
         }
-        Map<String, Class<?>> classMap = cacheClass.get(root);
-        LinkedList<Object> linkedList = new LinkedList<>();
-        try {
-            ArrayList<Class<?>> list = new ArrayList(classMap.values());
-            Collections.sort(list, (o1, o2) -> {
-                int o1Order = o1.getAnnotation(RpcSpi.class).order();
-                int o2Order = o2.getAnnotation(RpcSpi.class).order();
-                return o1Order - o2Order;
-            });
-            for (Class<?> value : list) {
-                Constructor<?> constructor = value.getConstructor();
-                if (constructor == null) {
-                    throw new IllegalStateException(root.getName() + " 必须要空构造器");
-                }
-                if (targetClass.isAssignableFrom(value)) {
-                    linkedList.add(value.newInstance());
-                }
-            }
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-            LogUtil.error(e);
-        }
-        cacheExtensionPath.put(cacheKey, linkedList);
+        final Map<String, Class<?>> classMap = cacheClass.get(root);
+        ArrayList<String> list = new ArrayList<>(classMap.keySet());
+        // 获取结果
+        List<Object> result = list.stream()
+                //将对应的转换为object 缓存
+                .map(value -> {
+                    Class<?> clazz = classMap.get(value);
+                    // 判断是不是指定的需要的targetClass的子类
+                    if (!targetClass.isAssignableFrom(clazz)) {
+                        return null;
+                    }
+                    Constructor<?> constructor;
+                    try {
+                        // 获取空的构造器
+                        constructor = clazz.getConstructor();
+                    } catch (Exception e) {
+                        throw new IllegalStateException(root.getName() + " 必须要空构造器");
+                    }
 
-        return linkedList;
+                    //从缓存中拿出已经有的,防止重复初始化
+                    Map<String, Object> cacheClassRootMap = cacheClassInstanceMap.get(root);
+                    if (cacheClassRootMap.containsKey(value)) {
+                        return cacheClassRootMap.get(value);
+                    } else {
+                        Object instance = null;
+                        try {
+                            // 初始化
+                            instance = constructor.newInstance();
+                        } catch (Exception e) {
+                            LogUtil.error(RpcExtensionLoader.class, e);
+                        }
+                        cacheClassRootMap.put(value, instance);
+                        return instance;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparingInt(value -> value.getClass().getAnnotation(RpcSpi.class).order())).collect(Collectors.toList());
+
+        cacheExtensionPath.put(cacheKey, result);
+
+        return result;
     }
 
 

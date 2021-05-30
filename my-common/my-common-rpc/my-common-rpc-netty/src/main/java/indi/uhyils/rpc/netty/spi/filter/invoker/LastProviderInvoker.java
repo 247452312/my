@@ -3,8 +3,8 @@ package indi.uhyils.rpc.netty.spi.filter.invoker;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.factory.NormalRpcResponseFactory;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactoryProducer;
-import indi.uhyils.rpc.exchange.pojo.response.RpcResponseFactory;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
 import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.step.RpcStep;
@@ -89,7 +89,7 @@ public class LastProviderInvoker implements RpcInvoker {
             rpcResult.set(byBytes);
         } catch (ClassNotFoundException e) {
             LogUtil.error(this, e);
-            RpcData assembly = RpcResponseFactory.getInstance().createErrorResponse(rpcData.unique(), e, null);
+            RpcData assembly = new NormalRpcResponseFactory().createErrorResponse(rpcData.unique(), e, null);
             context.put("result", assembly.toBytes());
             rpcResult.set(assembly);
         }

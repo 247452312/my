@@ -1,12 +1,14 @@
 package indi.uhyils.rpc.config;
 
+import java.io.Serializable;
+
 /**
  * 注册中心配置
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月16日 10时32分
  */
-public class RegistryConfig {
+public class RegistryConfig implements Serializable {
 
     /**
      * 注册中心地址
