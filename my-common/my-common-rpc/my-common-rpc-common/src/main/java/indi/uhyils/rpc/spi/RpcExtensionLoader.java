@@ -8,8 +8,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -38,11 +36,11 @@ public class RpcExtensionLoader {
      * 已加载的所有扩展点类型,缓存,注,此处list是有order的,所以在使用时用LinkedList
      * Map<root.class : target.class , 扩展点实例>
      */
-    private static Map<String, List<Cloneable>> cacheExtensionPath = new HashMap<>();
+    private static Map<String, List<RpcSpiExtension>> cacheExtensionPath = new HashMap<>();
     /**
      * cacheClass 对应的实例
      */
-    private static Map<Class, Map<String, Cloneable>> cacheClassInstanceMap = new HashMap<>();
+    private static Map<Class, Map<String, RpcSpiExtension>> cacheClassInstanceMap = new HashMap<>();
 
     static {
         init();
@@ -146,7 +144,7 @@ public class RpcExtensionLoader {
         }
 
         // 查询之前缓存里有没有
-        Map<String, Cloneable> cacheMap = cacheClassInstanceMap.get(root);
+        Map<String, RpcSpiExtension> cacheMap = cacheClassInstanceMap.get(root);
         if (cacheMap.containsKey(name)) {
             return checkSingleAndGetResult(cacheMap.get(name));
         } else {
@@ -159,10 +157,10 @@ public class RpcExtensionLoader {
             } catch (Exception e) {
                 throw new IllegalStateException(root.getName() + " 必须要空构造器");
             }
-            Cloneable instance = null;
+            RpcSpiExtension instance = null;
             try {
                 // 初始化
-                instance = (Cloneable) constructor.newInstance();
+                instance = (RpcSpiExtension) constructor.newInstance();
             } catch (Exception e) {
                 LogUtil.error(RpcExtensionLoader.class, e);
             }
@@ -178,7 +176,7 @@ public class RpcExtensionLoader {
      * @param obj
      * @return
      */
-    private static <T extends Cloneable> T checkSingleAndGetResult(T obj) {
+    private static <T extends RpcSpiExtension> T checkSingleAndGetResult(T obj) {
         if (obj == null) {
             return null;
         }
@@ -190,31 +188,11 @@ public class RpcExtensionLoader {
         } else {
             //调用clone方法
             try {
-                final Class<?> clazz = obj.getClass();
-                final Method m;
-                try {
-                    m = clazz.getMethod("clone", (Class<?>[]) null);
-                } catch (final NoSuchMethodException ex) {
-                    throw new NoSuchMethodError(ex.getMessage());
-                }
-                try {
-                    @SuppressWarnings("unchecked") // OK because clone() preserves the class
-                    final T result = (T) m.invoke(obj, (Object[]) null);
-                    return result;
-                } catch (final InvocationTargetException ex) {
-                    final Throwable cause = ex.getCause();
-                    if (cause instanceof CloneNotSupportedException) {
-                        throw ((CloneNotSupportedException) cause);
-                    }
-                    throw new Error("Unexpected exception", cause);
-                } catch (final IllegalAccessException ex) {
-                    throw new IllegalAccessError(ex.getMessage());
-                }
-            } catch (CloneNotSupportedException e) {
+                return (T) obj.rpcClone();
+            } catch (IllegalAccessException | InstantiationException e) {
                 LogUtil.error(RpcExtensionLoader.class, e);
                 return null;
             }
-
         }
     }
 
@@ -238,13 +216,13 @@ public class RpcExtensionLoader {
         //缓存中的key,如果有 直接返回
         String cacheKey = root.getName() + " : " + targetClass.getName();
         if (cacheExtensionPath.containsKey(cacheKey)) {
-            List<Cloneable> objects = cacheExtensionPath.get(cacheKey);
+            List<RpcSpiExtension> objects = cacheExtensionPath.get(cacheKey);
             return objects.stream().map(t -> (E) t).map(RpcExtensionLoader::checkSingleAndGetResult).filter(Objects::nonNull).collect(Collectors.toList());
         }
         final Map<String, Class<?>> classMap = cacheClass.get(root);
         ArrayList<String> list = new ArrayList<>(classMap.keySet());
         // 获取结果,注 这里面不是克隆的 而是原型模式中的原型 所以不需要lone
-        List<Cloneable> result = list.stream()
+        List<RpcSpiExtension> result = list.stream()
                 //将对应的转换为object 缓存
                 .map(value -> {
                     Class<?> clazz = classMap.get(value);
@@ -261,14 +239,14 @@ public class RpcExtensionLoader {
                     }
 
                     //从缓存中拿出已经有的,防止重复初始化
-                    Map<String, Cloneable> cacheClassRootMap = cacheClassInstanceMap.get(root);
+                    Map<String, RpcSpiExtension> cacheClassRootMap = cacheClassInstanceMap.get(root);
                     if (cacheClassRootMap.containsKey(value)) {
                         return cacheClassRootMap.get(value);
                     } else {
-                        Cloneable instance = null;
+                        RpcSpiExtension instance = null;
                         try {
                             // 初始化
-                            instance = (Cloneable) constructor.newInstance();
+                            instance = (RpcSpiExtension) constructor.newInstance();
                         } catch (Exception e) {
                             LogUtil.error(RpcExtensionLoader.class, e);
                         }
