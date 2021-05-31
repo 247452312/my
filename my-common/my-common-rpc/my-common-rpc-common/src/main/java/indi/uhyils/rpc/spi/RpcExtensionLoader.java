@@ -3,12 +3,13 @@ package indi.uhyils.rpc.spi;
 import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.utils.CloneUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -174,18 +175,41 @@ public class RpcExtensionLoader {
     /**
      * 扫描spi是否是单例,如果不是,则使用clone方法
      *
-     * @param o
+     * @param obj
      * @return
      */
-    private static <T extends Cloneable> T checkSingleAndGetResult(T o) {
-        RpcSpi annotation = o.getClass().getAnnotation(RpcSpi.class);
+    private static <T extends Cloneable> T checkSingleAndGetResult(T obj) {
+        if (obj == null) {
+            return null;
+        }
+
+        RpcSpi annotation = obj.getClass().getAnnotation(RpcSpi.class);
         // 如果是单例模式,直接返回
         if (annotation.single()) {
-            return o;
+            return obj;
         } else {
             //调用clone方法
             try {
-                return CloneUtils.cloneObject(o);
+                final Class<?> clazz = obj.getClass();
+                final Method m;
+                try {
+                    m = clazz.getMethod("clone", (Class<?>[]) null);
+                } catch (final NoSuchMethodException ex) {
+                    throw new NoSuchMethodError(ex.getMessage());
+                }
+                try {
+                    @SuppressWarnings("unchecked") // OK because clone() preserves the class
+                    final T result = (T) m.invoke(obj, (Object[]) null);
+                    return result;
+                } catch (final InvocationTargetException ex) {
+                    final Throwable cause = ex.getCause();
+                    if (cause instanceof CloneNotSupportedException) {
+                        throw ((CloneNotSupportedException) cause);
+                    }
+                    throw new Error("Unexpected exception", cause);
+                } catch (final IllegalAccessException ex) {
+                    throw new IllegalAccessError(ex.getMessage());
+                }
             } catch (CloneNotSupportedException e) {
                 LogUtil.error(RpcExtensionLoader.class, e);
                 return null;

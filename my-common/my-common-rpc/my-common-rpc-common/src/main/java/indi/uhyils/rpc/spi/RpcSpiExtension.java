@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.spi;
 
+
 /**
  * rpc的拦截器,可扩展
  *
@@ -7,12 +8,4 @@ package indi.uhyils.rpc.spi;
  * @date 文件创建日期 2021年01月18日 08时04分
  */
 public interface RpcSpiExtension extends Cloneable {
-    /**
-     * 子类要实现克隆方法
-     *
-     * @return
-     */
-    default Object clone() {
-        return this;
-    }
 }
