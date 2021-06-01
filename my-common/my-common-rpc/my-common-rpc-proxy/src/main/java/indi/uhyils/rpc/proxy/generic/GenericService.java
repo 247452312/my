@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * 泛化接口
+ * 泛化接口,这里的接口代表了一个rpcConsumer 可以类比为代理之后的类,invoke方法可以执行rpc调用
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月23日 09时42分

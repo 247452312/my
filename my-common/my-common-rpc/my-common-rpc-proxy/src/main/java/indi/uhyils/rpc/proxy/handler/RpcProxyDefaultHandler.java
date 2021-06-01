@@ -19,8 +19,11 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
+ * 默认的rpc代理类,自己实现代理见{@link RpcProxyHandlerInterface}
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月28日 06时47分
+ * @see RpcProxyHandlerInterface
  */
 @RpcSpi(single = false)
 public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {

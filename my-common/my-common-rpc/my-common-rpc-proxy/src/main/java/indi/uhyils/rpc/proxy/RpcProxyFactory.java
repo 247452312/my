@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.proxy;
 
+import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.proxy.generic.GenericService;
 import indi.uhyils.rpc.proxy.handler.RpcProxyHandlerInterface;
 import indi.uhyils.rpc.registry.exception.RegistryException;
@@ -18,6 +19,11 @@ public class RpcProxyFactory {
      */
     private static final String RPC_SPI_DEFAULT_NAME = "default_rpc_spi_proxy";
 
+    /**
+     * 配置中的名称
+     */
+    private static final String RPC_SPI_CONFIG_PROXY_NAME = "proxy";
+
     private RpcProxyFactory() {
 
     }
@@ -28,7 +34,8 @@ public class RpcProxyFactory {
         }
         Class<?>[] interfaces = new Class[1];
         interfaces[0] = clazz;
-        RpcProxyHandlerInterface extensionByClass = (RpcProxyHandlerInterface) RpcSpiManager.getExtensionByClass(RpcProxyHandlerInterface.class, RPC_SPI_DEFAULT_NAME);
+        String name = RpcConfigFactory.getCustomOrDefault(RPC_SPI_CONFIG_PROXY_NAME, RPC_SPI_DEFAULT_NAME).toString();
+        RpcProxyHandlerInterface extensionByClass = (RpcProxyHandlerInterface) RpcSpiManager.getExtensionByClass(RpcProxyHandlerInterface.class, name);
         extensionByClass.init(clazz);
         Object o = Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, extensionByClass);
         return (T) o;
