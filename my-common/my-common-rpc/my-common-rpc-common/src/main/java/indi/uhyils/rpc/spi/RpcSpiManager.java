@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月18日 11时20分
  */
-public class RpcExtensionLoader {
+public class RpcSpiManager {
     /**
      * 加载扩展点时的路径
      */
@@ -51,7 +51,7 @@ public class RpcExtensionLoader {
      */
     private Class<?> type;
 
-    public RpcExtensionLoader(Class<?> type) {
+    public RpcSpiManager(Class<?> type) {
         this.type = type;
     }
 
@@ -66,7 +66,7 @@ public class RpcExtensionLoader {
         }
         // 遍历RpcExtensionLoaderTypeEnum中所有的根Class(即遍历所有扩展点类型)
         for (Class value : allRpcExtensionClass) {
-            RpcExtensionLoader rpcExtensionLoader = new RpcExtensionLoader(value);
+            RpcSpiManager rpcExtensionLoader = new RpcSpiManager(value);
             Map<String, Class<?>> load = rpcExtensionLoader.load();
             cacheClass.put(value, load);
         }
@@ -113,7 +113,7 @@ public class RpcExtensionLoader {
                 }
             }
         } catch (IOException e) {
-            LogUtil.error(RpcExtensionLoader.class, e);
+            LogUtil.error(RpcSpiManager.class, e);
             return new ArrayList<>();
         }
         return result;
@@ -126,7 +126,7 @@ public class RpcExtensionLoader {
      * @param name 名称,唯一
      * @return
      */
-    public static Object getExtensionByClass(Class root, String name) {
+    public static <T extends RpcSpiExtension> RpcSpiExtension getExtensionByClass(Class<T> root, String name) {
         // 看看加载的类中是否有目标root
         if (!cacheClass.containsKey(root)) {
             return null;
@@ -162,7 +162,7 @@ public class RpcExtensionLoader {
                 // 初始化
                 instance = (RpcSpiExtension) constructor.newInstance();
             } catch (Exception e) {
-                LogUtil.error(RpcExtensionLoader.class, e);
+                LogUtil.error(RpcSpiManager.class, e);
             }
             //放入缓存
             cacheMap.put(name, instance);
@@ -190,7 +190,7 @@ public class RpcExtensionLoader {
             try {
                 return (T) obj.rpcClone();
             } catch (IllegalAccessException | InstantiationException e) {
-                LogUtil.error(RpcExtensionLoader.class, e);
+                LogUtil.error(RpcSpiManager.class, e);
                 return null;
             }
         }
@@ -217,7 +217,7 @@ public class RpcExtensionLoader {
         String cacheKey = root.getName() + " : " + targetClass.getName();
         if (cacheExtensionPath.containsKey(cacheKey)) {
             List<RpcSpiExtension> objects = cacheExtensionPath.get(cacheKey);
-            return objects.stream().map(t -> (E) t).map(RpcExtensionLoader::checkSingleAndGetResult).filter(Objects::nonNull).collect(Collectors.toList());
+            return objects.stream().map(t -> (E) t).map(RpcSpiManager::checkSingleAndGetResult).filter(Objects::nonNull).collect(Collectors.toList());
         }
         final Map<String, Class<?>> classMap = cacheClass.get(root);
         ArrayList<String> list = new ArrayList<>(classMap.keySet());
@@ -248,7 +248,7 @@ public class RpcExtensionLoader {
                             // 初始化
                             instance = (RpcSpiExtension) constructor.newInstance();
                         } catch (Exception e) {
-                            LogUtil.error(RpcExtensionLoader.class, e);
+                            LogUtil.error(RpcSpiManager.class, e);
                         }
                         cacheClassRootMap.put(value, instance);
                         return instance;
@@ -259,7 +259,7 @@ public class RpcExtensionLoader {
 
         cacheExtensionPath.put(cacheKey, result);
 
-        return result.stream().map(t -> (E) t).map(RpcExtensionLoader::checkSingleAndGetResult).filter(Objects::nonNull).collect(Collectors.toList());
+        return result.stream().map(t -> (E) t).map(RpcSpiManager::checkSingleAndGetResult).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
 

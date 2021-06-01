@@ -15,7 +15,7 @@ import indi.uhyils.rpc.registry.pojo.info.RegistryProviderNecessaryInfo;
 import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadata;
 import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadataOfInterface;
 import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadataOfMethod;
-import indi.uhyils.rpc.spi.RpcExtensionLoader;
+import indi.uhyils.rpc.spi.RpcSpiManager;
 import indi.uhyils.util.IpUtil;
 
 import java.lang.reflect.Method;
@@ -51,7 +51,7 @@ public class RegistryFactory {
     public static <T> Registry<T> createConsumer(Class<T> clazz, String host) throws Exception {
         // spi 获取消费者
         String name = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_SPI_NAME, DEFAULT_REGISTRY);
-        RegistryMode mode = (RegistryMode) RpcExtensionLoader.getExtensionByClass(RegistryMode.class, name);
+        RegistryMode mode = (RegistryMode) RpcSpiManager.getExtensionByClass(RegistryMode.class, name);
         assert mode != null;
         List<RegistryInfo> targetInterfaceInfo = mode.getTargetInterfaceInfo(clazz.getName());
         NettyInitDto[] nettyInitDtos = new NettyInitDto[targetInterfaceInfo.size()];

@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.proxy.handler;
 
 import com.alibaba.fastjson.JSON;
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.config.ConsumerConfig;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
@@ -8,13 +9,12 @@ import indi.uhyils.rpc.netty.spi.step.RpcStep;
 import indi.uhyils.rpc.netty.spi.step.template.ConsumerResponseObjectExtension;
 import indi.uhyils.rpc.registry.Registry;
 import indi.uhyils.rpc.registry.RegistryFactory;
-import indi.uhyils.rpc.spi.RpcExtensionLoader;
+import indi.uhyils.rpc.spi.RpcSpiManager;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -22,7 +22,8 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月28日 06时47分
  */
-public class RpcProxyHandler implements InvocationHandler {
+@RpcSpi(single = false)
+public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
     private static final String TO_STRING = "toString";
     /**
      * 这个handler代理的类
@@ -40,7 +41,23 @@ public class RpcProxyHandler implements InvocationHandler {
     private List<ConsumerResponseObjectExtension> consumerResponseObjectExtensions;
 
 
-    public RpcProxyHandler(Class<?> clazz) {
+    /**
+     * 启动时初始化
+     *
+     * @param clazz
+     */
+    public RpcProxyDefaultHandler(Class<?> clazz) {
+        init(clazz);
+    }
+
+    /**
+     * 启动时不初始化 兼容spi
+     */
+    public RpcProxyDefaultHandler() {
+    }
+
+    @Override
+    public void init(Class<?> clazz) {
         this.type = clazz;
         // 如果懒加载,那么就不加载
         if (isCheck()) {
@@ -50,8 +67,7 @@ public class RpcProxyHandler implements InvocationHandler {
                 LogUtil.error(this, e);
             }
         }
-        consumerResponseObjectExtensions = RpcExtensionLoader.getExtensionByClass(RpcStep.class, ConsumerResponseObjectExtension.class);
-
+        consumerResponseObjectExtensions = RpcSpiManager.getExtensionByClass(RpcStep.class, ConsumerResponseObjectExtension.class);
     }
 
     private boolean isCheck() {

@@ -12,7 +12,7 @@ import indi.uhyils.rpc.netty.spi.step.template.ProviderRequestByteExtension;
 import indi.uhyils.rpc.netty.spi.step.template.ProviderRequestDataExtension;
 import indi.uhyils.rpc.netty.spi.step.template.ProviderResponseByteExtension;
 import indi.uhyils.rpc.netty.spi.step.template.ProviderResponseDataExtension;
-import indi.uhyils.rpc.spi.RpcExtensionLoader;
+import indi.uhyils.rpc.spi.RpcSpiManager;
 import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 
@@ -52,10 +52,10 @@ public class LastProviderInvoker implements RpcInvoker {
     public LastProviderInvoker(RpcCallBack callback, ByteBuf msg) {
         this.callback = callback;
         this.msg = msg;
-        providerRequestByteFilters = RpcExtensionLoader.getExtensionByClass(RpcStep.class, ProviderRequestByteExtension.class);
-        providerRequestDataFilters = RpcExtensionLoader.getExtensionByClass(RpcStep.class, ProviderRequestDataExtension.class);
-        providerResponseDataFilters = RpcExtensionLoader.getExtensionByClass(RpcStep.class, ProviderResponseDataExtension.class);
-        providerResponseByteFilters = RpcExtensionLoader.getExtensionByClass(RpcStep.class, ProviderResponseByteExtension.class);
+        providerRequestByteFilters = RpcSpiManager.getExtensionByClass(RpcStep.class, ProviderRequestByteExtension.class);
+        providerRequestDataFilters = RpcSpiManager.getExtensionByClass(RpcStep.class, ProviderRequestDataExtension.class);
+        providerResponseDataFilters = RpcSpiManager.getExtensionByClass(RpcStep.class, ProviderResponseDataExtension.class);
+        providerResponseByteFilters = RpcSpiManager.getExtensionByClass(RpcStep.class, ProviderResponseByteExtension.class);
     }
 
     @Override

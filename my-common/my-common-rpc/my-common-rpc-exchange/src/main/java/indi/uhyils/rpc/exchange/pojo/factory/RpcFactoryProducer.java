@@ -3,7 +3,7 @@ package indi.uhyils.rpc.exchange.pojo.factory;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.spi.RpcExtensionLoader;
+import indi.uhyils.rpc.spi.RpcSpiManager;
 
 import java.util.Map;
 
@@ -38,11 +38,11 @@ public class RpcFactoryProducer {
         Map<String, Object> custom = instance.getCustom().getCustom();
         switch (rpcTypeEnum) {
             case RESPONSE:
-                return (RpcFactory) RpcExtensionLoader.getExtensionByClass(RpcFactory.class, (String) custom.getOrDefault(responseFactoryRpcSpiCustomKey, responseFactoryDefaultRpcSpiName));
+                return (RpcFactory) RpcSpiManager.getExtensionByClass(RpcFactory.class, (String) custom.getOrDefault(responseFactoryRpcSpiCustomKey, responseFactoryDefaultRpcSpiName));
             //default默认使用request的请求
             case REQUEST:
             default:
-                return (RpcFactory) RpcExtensionLoader.getExtensionByClass(RpcFactory.class, (String) custom.getOrDefault(requestFactoryRpcSpiCustomKey, requestFactoryDefaultRpcSpiName));
+                return (RpcFactory) RpcSpiManager.getExtensionByClass(RpcFactory.class, (String) custom.getOrDefault(requestFactoryRpcSpiCustomKey, requestFactoryDefaultRpcSpiName));
         }
     }
 }

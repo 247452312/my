@@ -1,8 +1,9 @@
 package indi.uhyils.rpc.proxy;
 
 import indi.uhyils.rpc.proxy.generic.GenericService;
-import indi.uhyils.rpc.proxy.handler.RpcProxyHandler;
+import indi.uhyils.rpc.proxy.handler.RpcProxyHandlerInterface;
 import indi.uhyils.rpc.registry.exception.RegistryException;
+import indi.uhyils.rpc.spi.RpcSpiManager;
 
 import java.lang.reflect.Proxy;
 
@@ -11,6 +12,11 @@ import java.lang.reflect.Proxy;
  * @date 文件创建日期 2020年12月28日 06时45分
  */
 public class RpcProxyFactory {
+
+    /**
+     * rpc spi 默认名称
+     */
+    private static final String RPC_SPI_DEFAULT_NAME = "default_rpc_spi_proxy";
 
     private RpcProxyFactory() {
 
@@ -22,7 +28,9 @@ public class RpcProxyFactory {
         }
         Class<?>[] interfaces = new Class[1];
         interfaces[0] = clazz;
-        Object o = Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, new RpcProxyHandler(clazz));
+        RpcProxyHandlerInterface extensionByClass = (RpcProxyHandlerInterface) RpcSpiManager.getExtensionByClass(RpcProxyHandlerInterface.class, RPC_SPI_DEFAULT_NAME);
+        extensionByClass.init(clazz);
+        Object o = Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, extensionByClass);
         return (T) o;
     }
 
@@ -36,6 +44,6 @@ public class RpcProxyFactory {
      */
     public static Object newProxy(Class<?> clazz, boolean generic) throws Exception {
         Object service = newProxy(clazz);
-        return generic ? new GenericService(service) : service;
+        return generic ? new GenericService<>(service) : service;
     }
 }
