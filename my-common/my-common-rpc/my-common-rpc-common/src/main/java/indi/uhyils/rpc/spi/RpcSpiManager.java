@@ -64,12 +64,16 @@ public class RpcSpiManager {
         if (allRpcExtensionClass == null) {
             return;
         }
-        // 遍历RpcExtensionLoaderTypeEnum中所有的根Class(即遍历所有扩展点类型)
+        // 遍历所有扩展点类型
         for (Class value : allRpcExtensionClass) {
             RpcSpiManager rpcExtensionLoader = new RpcSpiManager(value);
             Map<String, Class<?>> load = rpcExtensionLoader.load();
             cacheClass.put(value, load);
         }
+
+        /**
+         * todo 应该扫{@link indi.uhyils.rpc.annotation.MyRpc}下的所有类,扫描出需要扩展的扩展点
+         */
     }
 
     /**
