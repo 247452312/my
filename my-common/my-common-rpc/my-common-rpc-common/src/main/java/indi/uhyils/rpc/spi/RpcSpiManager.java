@@ -1,6 +1,8 @@
 package indi.uhyils.rpc.spi;
 
+import indi.uhyils.rpc.annotation.MyRpc;
 import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.util.PackageUtils;
 import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -71,10 +73,92 @@ public class RpcSpiManager {
             cacheClass.put(value, load);
         }
 
-        /**
-         * todo 应该扫{@link indi.uhyils.rpc.annotation.MyRpc}下的所有类,扫描出需要扩展的扩展点
-         */
+        // 扫描启动类下的myRpc注解 然后扫描此注解下的所有spi,加载进来
+        scanRunClassMyRpcPackageSpiSubclass();
     }
+
+    /**
+     * 扫描启动类下的myRpc注解 然后扫描此注解下的所有spi,加载进来
+     */
+    private static void scanRunClassMyRpcPackageSpiSubclass() {
+        /*1.获取启动类*/
+        /*2.获取启动类包下所有的@MyRpc注解*/
+        /*3.获取myRpc注解下所有的spi,除了手动排除的部分*/
+
+        //获取启动类
+        Class mainClass = getMainClass();
+        if (mainClass == null) {
+            return;
+        }
+        // 扫描main下的类
+        Set<Class<?>> mainClassScanCLassNames = null;
+        try {
+            mainClassScanCLassNames = PackageUtils.getClassByPackageName(mainClass.getPackage().getName(), null, true);
+        } catch (IOException | ClassNotFoundException e) {
+            LogUtil.error(RpcSpiManager.class, e);
+        }
+        if (mainClassScanCLassNames == null) {
+            return;
+        }
+
+        // 获取所有@MyRpc注解
+        List<Class<?>> classHaveMyRpc = mainClassScanCLassNames.stream().filter(t -> t.getAnnotation(MyRpc.class) != null).collect(Collectors.toList());
+
+        /*扫描包的规则, exclude优先级最高,一定不会扫*/
+        // 要扫描的包
+        Set<String> packageName = new HashSet<>();
+        // 不要扫描的包
+        Set<String> excludePackageName = new HashSet<>();
+        //  ...... 获取包.
+        classHaveMyRpc.forEach(t -> {
+            MyRpc myRpc = t.getAnnotation(MyRpc.class);
+            if (myRpc == null) {
+                return;
+            }
+            String[] scanPackages = myRpc.baseScanPackage();
+            String[] excludePackages = myRpc.excludePackage();
+            String name = t.getPackage().getName();
+
+            packageName.addAll(Arrays.asList(scanPackages));
+            excludePackageName.addAll(Arrays.asList(excludePackages));
+            packageName.add(name);
+        });
+        // 获取需要的扫描包
+        Set<Class<?>> classByPackageName = PackageUtils.getClassByPackageName(packageName, excludePackageName, true);
+        List<Class<?>> rpcSpiList = classByPackageName.stream().filter(t -> t.getAnnotation(RpcSpi.class) != null).collect(Collectors.toList());
+
+        Set<Class<?>> rootClazz = cacheClass.keySet();
+        for (Class<?> clazz : rpcSpiList) {
+            boolean cover = false;
+            for (Class<?> rootClazzItem : rootClazz) {
+                // todo 没写完
+            }
+
+        }
+
+
+    }
+
+
+    /**
+     * 获取启动类名称
+     *
+     * @return
+     */
+    public static Class getMainClass() {
+        StackTraceElement[] stackTraceElements = new RuntimeException().getStackTrace();
+        for (StackTraceElement stackTraceElement : stackTraceElements) {
+            if ("main".equals(stackTraceElement.getMethodName())) {
+                try {
+                    return Class.forName(stackTraceElement.getClassName());
+                } catch (ClassNotFoundException e) {
+                    LogUtil.error(RpcSpiManager.class, e);
+                }
+            }
+        }
+        return null;
+    }
+
 
     /**
      * 加载所有的需要扩展的扩展点

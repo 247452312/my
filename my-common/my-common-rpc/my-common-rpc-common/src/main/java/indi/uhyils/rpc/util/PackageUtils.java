@@ -1,5 +1,8 @@
 package indi.uhyils.rpc.util;
 
+import indi.uhyils.util.LogUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -41,7 +44,77 @@ public class PackageUtils {
 
         Set<Class<?>> fileNames = new HashSet<>();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        String packagePath = packageName.replace(".", "/");
+        doDealWithScanPackage(recursiveSubpackage, excludePackagePaths, fileNames, loader, packageName);
+        return fileNames;
+    }
+
+    /**
+     * 根据包名获取class
+     *
+     * @param packageName         包名
+     * @param excludePackage      排除的包名
+     * @param recursiveSubpackage 是否递归子包
+     * @return
+     */
+    public static Set<Class<?>> getClassByPackageName(String[] packageName, String[] excludePackage, Boolean recursiveSubpackage) throws IOException, ClassNotFoundException {
+
+        // 去重(覆盖的包)
+        packageName = duplicateRemoval(packageName);
+        excludePackage = duplicateRemoval(excludePackage);
+
+        List<String> excludePackagePaths = Arrays.stream(excludePackage).map(t -> t.replace(".", "/")).collect(Collectors.toList());
+
+        Set<Class<?>> fileNames = new HashSet<>();
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        for (String packageNameItem : packageName) {
+            doDealWithScanPackage(recursiveSubpackage, excludePackagePaths, fileNames, loader, packageNameItem);
+        }
+
+        return fileNames;
+    }
+
+    /**
+     * 根据包名获取class
+     *
+     * @param packageName         包名
+     * @param excludePackage      排除的包名
+     * @param recursiveSubpackage 是否递归子包
+     * @return
+     */
+    public static Set<Class<?>> getClassByPackageName(Collection<String> packageName, Collection<String> excludePackage, Boolean recursiveSubpackage) {
+
+        // 去重(覆盖的包)
+        packageName = duplicateRemoval(packageName);
+        excludePackage = duplicateRemoval(excludePackage);
+
+        List<String> excludePackagePaths = excludePackage.stream().map(t -> t.replace(".", "/")).collect(Collectors.toList());
+
+        Set<Class<?>> fileNames = new HashSet<>();
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        try {
+            for (String packageNameItem : packageName) {
+                doDealWithScanPackage(recursiveSubpackage, excludePackagePaths, fileNames, loader, packageNameItem);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            LogUtil.error(PackageUtils.class, e);
+        }
+
+        return fileNames;
+    }
+
+    /**
+     * 扫描
+     *
+     * @param recursiveSubpackage 是否递归子包
+     * @param excludePackagePaths 排除的包
+     * @param result              结果
+     * @param loader              类加载器
+     * @param packageNameItem     要扫描的包名
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private static void doDealWithScanPackage(Boolean recursiveSubpackage, List<String> excludePackagePaths, Set<Class<?>> result, ClassLoader loader, String packageNameItem) throws IOException, ClassNotFoundException {
+        String packagePath = packageNameItem.replace(".", "/");
         Enumeration<URL> urls = loader.getResources(packagePath);
         while (urls.hasMoreElements()) {
             URL url = urls.nextElement();
@@ -54,13 +127,49 @@ public class PackageUtils {
 
             String type = url.getProtocol();
             if (FILE.equals(type)) {
-                fileNames.addAll(getClassNameByFile(url.getPath(), recursiveSubpackage));
+                result.addAll(getClassNameByFile(url.getPath(), recursiveSubpackage));
             } else if (JAR.equals(type)) {
-                fileNames.addAll(getClassNameByJar(url.getPath(), recursiveSubpackage));
+                result.addAll(getClassNameByJar(url.getPath(), recursiveSubpackage));
             }
         }
-        fileNames.addAll(getClassNameByJars(((URLClassLoader) loader).getURLs(), packagePath, recursiveSubpackage));
-        return fileNames;
+        result.addAll(getClassNameByJars(((URLClassLoader) loader).getURLs(), packagePath, recursiveSubpackage));
+    }
+
+    /**
+     * 去重包(包含覆盖)
+     *
+     * @param packageName 包名
+     * @return 去重后的数组
+     */
+    private static String[] duplicateRemoval(String[] packageName) {
+        List<String> result = duplicateRemoval(Arrays.asList(packageName));
+        return result.toArray(new String[0]);
+    }
+
+    /**
+     * 去重包(包含覆盖)
+     *
+     * @param packageName 包名
+     * @return 去重后的数组
+     */
+    private static List<String> duplicateRemoval(Collection<String> packageName) {
+        // 根据 . 的数量排序
+        List<String> collects = packageName.stream().sorted(Comparator.comparingInt(t -> StringUtils.countMatches(t, "."))).collect(Collectors.toList());
+        List<String> result = new ArrayList<>();
+        for (String collect : collects) {
+            boolean cover = false;
+            for (String resultItem : result) {
+                if (resultItem.startsWith(collect)) {
+                    cover = true;
+                    break;
+                }
+            }
+            // 如果没有cover
+            if (!cover) {
+                result.add(collect);
+            }
+        }
+        return result;
     }
 
     private static Boolean checkExclude(List<String> excludePackagePaths, URL url) {
