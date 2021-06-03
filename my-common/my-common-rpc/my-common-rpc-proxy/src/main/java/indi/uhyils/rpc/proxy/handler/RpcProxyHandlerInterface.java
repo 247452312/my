@@ -18,10 +18,5 @@ import java.lang.reflect.InvocationHandler;
  */
 public interface RpcProxyHandlerInterface extends InvocationHandler, RpcSpiExtension {
 
-    /**
-     * 初始化handler用
-     *
-     * @param clazz
-     */
-    void init(Class<?> clazz);
+
 }

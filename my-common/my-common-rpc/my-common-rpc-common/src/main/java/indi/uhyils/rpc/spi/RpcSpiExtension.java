@@ -19,4 +19,14 @@ public interface RpcSpiExtension {
     default Object rpcClone() throws IllegalAccessException, InstantiationException {
         return this.getClass().newInstance();
     }
+
+    /**
+     * 初始化rpcSpi的方法
+     *
+     * @param params
+     */
+    default void init(Object... params) {
+
+    }
+
 }

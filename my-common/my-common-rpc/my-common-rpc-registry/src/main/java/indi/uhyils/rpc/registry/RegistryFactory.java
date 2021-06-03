@@ -44,29 +44,27 @@ public class RegistryFactory {
      * 创建一个消费者的注册层
      *
      * @param clazz 消费者对应的接口
-     * @param host  消费者自己的ip
-     * @param <T>
      * @return
      */
-    public static <T> Registry<T> createConsumer(Class<T> clazz, String host) throws Exception {
+    public static <T> Registry<T> createConsumer(Class<T> clazz) throws Exception {
         // spi 获取消费者
         String name = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_SPI_NAME, DEFAULT_REGISTRY);
         RegistryMode mode = (RegistryMode) RpcSpiManager.getExtensionByClass(RegistryMode.class, name);
         assert mode != null;
         List<RegistryInfo> targetInterfaceInfo = mode.getTargetInterfaceInfo(clazz.getName());
-        NettyInitDto[] nettyInitDtos = new NettyInitDto[targetInterfaceInfo.size()];
+        NettyInitDto[] nettyInitDTOs = new NettyInitDto[targetInterfaceInfo.size()];
         for (int i = 0; i < targetInterfaceInfo.size(); i++) {
             RegistryInfo registryInfo = targetInterfaceInfo.get(i);
             RegistryProviderNecessaryInfo necessaryInfo = (RegistryProviderNecessaryInfo) registryInfo.getNecessaryInfo();
             double weight = necessaryInfo.getWeight();
-            nettyInitDtos[i] = NettyInitDtoFactory.createNettyInitDto(
+            nettyInitDTOs[i] = NettyInitDtoFactory.createNettyInitDto(
                     necessaryInfo.getHost(),
                     necessaryInfo.getPort(),
                     (int) weight,
                     new RpcDefaultResponseCallBack());
         }
-        Cluster defaultConsumerCluster = ClusterFactory.createDefaultConsumerCluster(clazz, nettyInitDtos);
-        return new ConsumerRegistry<>(defaultConsumerCluster, clazz, host, mode);
+        Cluster defaultConsumerCluster = ClusterFactory.createDefaultConsumerCluster(clazz, nettyInitDTOs);
+        return new ConsumerRegistry<>(defaultConsumerCluster, clazz, mode);
     }
 
     /**

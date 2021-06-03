@@ -5,6 +5,7 @@ import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.config.ConsumerConfig;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
+import indi.uhyils.rpc.factory.RpcParamExceptionFactory;
 import indi.uhyils.rpc.netty.spi.step.RpcStep;
 import indi.uhyils.rpc.netty.spi.step.template.ConsumerResponseObjectExtension;
 import indi.uhyils.rpc.registry.Registry;
@@ -60,17 +61,26 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
     }
 
     @Override
-    public void init(Class<?> clazz) {
+    public void init(Object... params) {
+        if (params == null || !(params[0] instanceof Class)) {
+            throw RpcParamExceptionFactory.newException("<RpcProxyDefaultHandler>参数不正确,应该为%s,实际为:%s", "java.lang.Class[0]", JSON.toJSONString(params));
+        }
+        Class<?> clazz = (Class<?>) params[0];
         this.type = clazz;
         // 如果懒加载,那么就不加载
         if (isCheck()) {
-            try {
-                this.registry = RegistryFactory.createConsumer(clazz, IpUtil.getIp());
-            } catch (Exception e) {
-                LogUtil.error(this, e);
-            }
+            // 初始化registry
+            initRegistry(clazz);
         }
         consumerResponseObjectExtensions = RpcSpiManager.getExtensionByClass(RpcStep.class, ConsumerResponseObjectExtension.class);
+    }
+
+    private void initRegistry(Class<?> clazz) {
+        try {
+            this.registry = RegistryFactory.createConsumer(clazz);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+        }
     }
 
     /**
@@ -87,11 +97,7 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (registry == null) {
-            try {
-                this.registry = RegistryFactory.createConsumer(type, IpUtil.getIp());
-            } catch (Exception e) {
-                LogUtil.error(this, e);
-            }
+            initRegistry(type);
         }
 
         // 防止proxy自动调用toString方法导致的报错
@@ -102,7 +108,7 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         String invoke = registry.invoke(bean.newId(), method.getName(), method.getParameterTypes(), args);
         Object result = JSON.parseObject(invoke, method.getGenericReturnType());
-        //后置处理
+        //后置自定义处理
         result = postProcessing(invoke, result);
         return result;
     }

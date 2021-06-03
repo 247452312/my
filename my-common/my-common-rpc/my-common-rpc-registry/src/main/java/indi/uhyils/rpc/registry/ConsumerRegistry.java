@@ -15,6 +15,7 @@ import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.registry.content.RegistryContent;
 import indi.uhyils.rpc.registry.mode.RegistryMode;
 import indi.uhyils.rpc.registry.mode.nacos.RegistryNacosServiceListener;
+import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 
 /**
@@ -31,12 +32,11 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
     /**
      * @param cluster      集群信息
      * @param serviceClass 目标的类的class
-     * @param selfIp       自己的ip信息
      * @param mode         注册中心的信息
      */
-    public ConsumerRegistry(Cluster cluster, Class<T> serviceClass, String selfIp, RegistryMode mode) {
+    public ConsumerRegistry(Cluster cluster, Class<T> serviceClass,  RegistryMode mode) {
         super(cluster, serviceClass);
-        this.selfIp = selfIp;
+        this.selfIp = IpUtil.getIp();
         this.mode = mode;
         mode.setType(RpcNettyTypeEnum.CONSUMER);
         try {

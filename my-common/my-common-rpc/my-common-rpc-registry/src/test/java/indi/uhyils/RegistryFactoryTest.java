@@ -26,7 +26,7 @@ class RegistryFactoryTest {
         RpcConfigFactory.setRpcConfig(RpcConfigFactory.newDefault());
         RegistryNacosMode mode = new RegistryNacosMode();
         Class<FunctionOneInterface> clazz = FunctionOneInterface.class;
-        Registry<FunctionOneInterface> consumer = RegistryFactory.createConsumer(clazz, "127.0.0.1");
+        Registry<FunctionOneInterface> consumer = RegistryFactory.createConsumer(clazz);
         String add = consumer.invoke(90L, "add", clazz.getMethods()[0].getParameterTypes(), new Object[]{1, 2});
 
         System.out.println("--------------------------------------------------------------------" + add);
