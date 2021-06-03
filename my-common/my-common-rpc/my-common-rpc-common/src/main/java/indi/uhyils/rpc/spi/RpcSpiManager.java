@@ -125,20 +125,39 @@ public class RpcSpiManager {
         });
         // 获取需要的扫描包
         Set<Class<?>> classByPackageName = PackageUtils.getClassByPackageName(packageName, excludePackageName, true);
+        // 所有带有spi注解的类
         List<Class<?>> rpcSpiList = classByPackageName.stream().filter(t -> t.getAnnotation(RpcSpi.class) != null).collect(Collectors.toList());
 
+        /*将扫描出来的类分发到各个类里面去*/
         Set<Class<?>> rootClazz = cacheClass.keySet();
+        // 遍历每个spi类
         for (Class<?> clazz : rpcSpiList) {
-            boolean cover = false;
+            // 查询是否有根类,如果没有,则不并入缓存中
             for (Class<?> rootClazzItem : rootClazz) {
-                // todo 没写完
+                // 如果这个根类是指定类的父类,则加入
+                if (rootClazzItem.isAssignableFrom(clazz)) {
+                    Map<String, Class<?>> classMap = cacheClass.get(rootClazzItem);
+                    //防重
+                    if (!classMap.containsValue(clazz)) {
+                        classMap.put(getBeanName(clazz), clazz);
+                    }
+                }
             }
-
         }
-
-
     }
 
+    /**
+     * 获取一种首字母小写的bean名称
+     *
+     * @param clazz
+     * @return
+     */
+    private static String getBeanName(Class clazz) {
+        String simpleName = clazz.getSimpleName();
+        String first = simpleName.substring(0, 1);
+        return simpleName.replaceFirst(first, first.toLowerCase(Locale.ROOT));
+
+    }
 
     /**
      * 获取启动类名称

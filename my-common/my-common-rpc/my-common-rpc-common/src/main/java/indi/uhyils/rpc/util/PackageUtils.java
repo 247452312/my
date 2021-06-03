@@ -40,6 +40,9 @@ public class PackageUtils {
      */
     public static Set<Class<?>> getClassByPackageName(String packageName, String[] excludePackage, Boolean recursiveSubpackage) throws IOException, ClassNotFoundException {
 
+        if (excludePackage == null) {
+            excludePackage = new String[0];
+        }
         List<String> excludePackagePaths = Arrays.stream(excludePackage).map(t -> t.replace(".", "/")).collect(Collectors.toList());
 
         Set<Class<?>> fileNames = new HashSet<>();
