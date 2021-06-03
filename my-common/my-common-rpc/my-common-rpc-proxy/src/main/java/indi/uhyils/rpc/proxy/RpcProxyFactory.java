@@ -36,7 +36,6 @@ public class RpcProxyFactory {
         Class<?>[] interfaces = new Class[1];
         interfaces[0] = clazz;
         String name = RpcConfigFactory.getCustomOrDefault(RPC_SPI_CONFIG_PROXY_NAME, RPC_SPI_DEFAULT_NAME).toString();
-        RpcSpiExtension extensionByClass1 = RpcSpiManager.getExtensionByClass(RpcProxyHandlerInterface.class, name);
         RpcProxyHandlerInterface extensionByClass = (RpcProxyHandlerInterface) RpcSpiManager.getExtensionByClass(RpcProxyHandlerInterface.class, name);
         extensionByClass.init(clazz);
         Object o = Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, extensionByClass);
