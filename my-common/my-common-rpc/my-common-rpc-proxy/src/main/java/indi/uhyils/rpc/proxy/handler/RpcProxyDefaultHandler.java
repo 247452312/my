@@ -45,7 +45,7 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
 
 
     /**
-     * 启动时初始化
+     * 创建时初始化
      *
      * @param clazz
      */
@@ -54,7 +54,7 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
     }
 
     /**
-     * 启动时不初始化 兼容spi
+     * 创建时不初始化 兼容spi
      */
     public RpcProxyDefaultHandler() {
     }
@@ -73,6 +73,11 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
         consumerResponseObjectExtensions = RpcSpiManager.getExtensionByClass(RpcStep.class, ConsumerResponseObjectExtension.class);
     }
 
+    /**
+     * 配置中是否使用了懒加载
+     *
+     * @return
+     */
     private boolean isCheck() {
         RpcConfig instance = RpcConfigFactory.getInstance();
         ConsumerConfig consumer = instance.getConsumer();
@@ -93,12 +98,26 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
         if (TO_STRING.equals(method.getName())) {
             return "this is the interface,it`s name is " + proxy.getClass().getSimpleName();
         }
+        // registry执行方法
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         String invoke = registry.invoke(bean.newId(), method.getName(), method.getParameterTypes(), args);
-        Object o = JSON.parseObject(invoke, method.getGenericReturnType());
+        Object result = JSON.parseObject(invoke, method.getGenericReturnType());
+        //后置处理
+        result = postProcessing(invoke, result);
+        return result;
+    }
+
+    /**
+     * spi加载的类进行后置处理
+     *
+     * @param result
+     * @param jsonResult
+     * @return
+     */
+    private Object postProcessing(String jsonResult, Object result) {
         for (ConsumerResponseObjectExtension consumerResponseObjectExtension : consumerResponseObjectExtensions) {
-            o = consumerResponseObjectExtension.doFilter(o, invoke);
+            result = consumerResponseObjectExtension.doFilter(result, jsonResult);
         }
-        return o;
+        return result;
     }
 }

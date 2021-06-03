@@ -29,6 +29,15 @@ public class GenericService<T> {
         return service;
     }
 
+    /**
+     * 执行指定的方法
+     *
+     * @param method         要执行的方法的名称
+     * @param parameterTypes 方法的参数类型
+     * @param args           方法的实际参数
+     * @return
+     * @throws InvocationTargetException
+     */
     public Object invoke(String method, Class[] parameterTypes, Object[] args) throws InvocationTargetException {
         try {
             Method targetMethod = service.getClass().getMethod(method, parameterTypes);
@@ -45,6 +54,15 @@ public class GenericService<T> {
         return null;
     }
 
+    /**
+     * 执行指定的方法
+     *
+     * @param method         要执行的方法的名称
+     * @param parameterTypes 方法的参数类型
+     * @param args           方法的实际参数
+     * @return
+     * @throws InvocationTargetException
+     */
     public Object invoke(String method, String[] parameterTypes, Object[] args) throws InvocationTargetException {
         Class[] parameterTypesClass = new Class[parameterTypes.length];
         try {

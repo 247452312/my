@@ -4,7 +4,6 @@ import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.proxy.generic.GenericService;
 import indi.uhyils.rpc.proxy.handler.RpcProxyHandlerInterface;
 import indi.uhyils.rpc.registry.exception.RegistryException;
-import indi.uhyils.rpc.spi.RpcSpiExtension;
 import indi.uhyils.rpc.spi.RpcSpiManager;
 
 import java.lang.reflect.Proxy;
@@ -29,16 +28,24 @@ public class RpcProxyFactory {
 
     }
 
+    /**
+     * 将一个正常的class加载为一个class类型的consumer
+     *
+     * @param clazz
+     * @param <T>
+     * @return
+     * @throws RegistryException
+     */
     public static <T> T newProxy(Class<T> clazz) throws RegistryException {
         if (!clazz.isInterface()) {
             throw new RegistryException("必须使用接口,您使用的是: " + clazz.getName());
         }
-        Class<?>[] interfaces = new Class[1];
-        interfaces[0] = clazz;
-        String name = RpcConfigFactory.getCustomOrDefault(RPC_SPI_CONFIG_PROXY_NAME, RPC_SPI_DEFAULT_NAME).toString();
-        RpcProxyHandlerInterface extensionByClass = (RpcProxyHandlerInterface) RpcSpiManager.getExtensionByClass(RpcProxyHandlerInterface.class, name);
+        // 从spi管理处获取一个指定的扩展点名称
+        String spiClassName = RpcConfigFactory.getCustomOrDefault(RPC_SPI_CONFIG_PROXY_NAME, RPC_SPI_DEFAULT_NAME).toString();
+        RpcProxyHandlerInterface extensionByClass = (RpcProxyHandlerInterface) RpcSpiManager.getExtensionByClass(RpcProxyHandlerInterface.class, spiClassName);
+        // 初始化proxyHandler
         extensionByClass.init(clazz);
-        Object o = Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, extensionByClass);
+        Object o = Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, extensionByClass);
         return (T) o;
     }
 

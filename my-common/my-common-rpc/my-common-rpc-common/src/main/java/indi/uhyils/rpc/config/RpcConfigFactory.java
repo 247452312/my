@@ -39,11 +39,11 @@ public class RpcConfigFactory {
      * 获取rpc自定义扩展配置
      *
      * @param key
-     * @param defaultKey
+     * @param defaultValue
      * @return
      */
-    public static Object getCustomOrDefault(String key, Object defaultKey) {
-        return getInstance().getCustom().getCustom().getOrDefault(key, defaultKey);
+    public static Object getCustomOrDefault(String key, Object defaultValue) {
+        return getInstance().getCustom().getCustom().getOrDefault(key, defaultValue);
     }
 
     public static void setRpcConfig(RpcConfig config) {
