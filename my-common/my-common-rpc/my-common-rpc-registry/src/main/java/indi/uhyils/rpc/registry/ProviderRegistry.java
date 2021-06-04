@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.registry;
 
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
@@ -9,6 +10,7 @@ import indi.uhyils.rpc.registry.mode.RegistryMode;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月27日 15时43分
  */
+@RpcSpi(single = false)
 public class ProviderRegistry<T> extends AbstractRegistry<T> {
 
     public ProviderRegistry(Cluster cluster, Class<T> serviceClass, RegistryMode mode) {

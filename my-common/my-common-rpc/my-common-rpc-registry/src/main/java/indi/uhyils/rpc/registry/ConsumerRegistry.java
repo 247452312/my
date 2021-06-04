@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.registry;
 
 import com.alibaba.fastjson.JSON;
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
@@ -22,6 +23,7 @@ import indi.uhyils.util.LogUtil;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月27日 15时43分
  */
+@RpcSpi(single = false)
 public class ConsumerRegistry<T> extends AbstractRegistry<T> {
 
     /**
