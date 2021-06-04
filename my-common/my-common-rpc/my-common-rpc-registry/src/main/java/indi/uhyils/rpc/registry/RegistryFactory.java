@@ -47,24 +47,40 @@ public class RegistryFactory {
      * @return
      */
     public static <T> Registry<T> createConsumer(Class<T> clazz) throws Exception {
-        // spi 获取消费者
+        /*registry大体包含三大部分,1.cluster(负载均衡集群,下层) 2.要实现的class 3.和注册中心保持连接的mode*/
+        // spi 获取消费者的注册者信息
         String name = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_SPI_NAME, DEFAULT_REGISTRY);
         RegistryMode mode = (RegistryMode) RpcSpiManager.getExtensionByClass(RegistryMode.class, name);
         assert mode != null;
+        // 获取目标接口的信息
         List<RegistryInfo> targetInterfaceInfo = mode.getTargetInterfaceInfo(clazz.getName());
-        NettyInitDto[] nettyInitDTOs = new NettyInitDto[targetInterfaceInfo.size()];
+        // 构建netty初始化需要的信息
+        NettyInitDto[] nettyInits = builderNettyInitDto(targetInterfaceInfo);
+        // 创建一个Cluster
+        Cluster defaultConsumerCluster = ClusterFactory.createDefaultConsumerCluster(clazz, nettyInits);
+        // 返回一个构造完成的消费者
+        return ConsumerRegistry.build(defaultConsumerCluster, clazz, mode);
+    }
+
+    /**
+     * 构建netty初始化需要的信息
+     *
+     * @param targetInterfaceInfo 从注册中心获取的信息
+     * @return
+     */
+    private static NettyInitDto[] builderNettyInitDto(List<RegistryInfo> targetInterfaceInfo) {
+        NettyInitDto[] nettyInits = new NettyInitDto[targetInterfaceInfo.size()];
         for (int i = 0; i < targetInterfaceInfo.size(); i++) {
             RegistryInfo registryInfo = targetInterfaceInfo.get(i);
+            //查询到目标class注册到注册中心的信息
             RegistryProviderNecessaryInfo necessaryInfo = (RegistryProviderNecessaryInfo) registryInfo.getNecessaryInfo();
-            double weight = necessaryInfo.getWeight();
-            nettyInitDTOs[i] = NettyInitDtoFactory.createNettyInitDto(
+            nettyInits[i] = NettyInitDtoFactory.createNettyInitDto(
                     necessaryInfo.getHost(),
                     necessaryInfo.getPort(),
-                    (int) weight,
+                    necessaryInfo.getWeight().intValue(),
                     new RpcDefaultResponseCallBack());
         }
-        Cluster defaultConsumerCluster = ClusterFactory.createDefaultConsumerCluster(clazz, nettyInitDTOs);
-        return new ConsumerRegistry<>(defaultConsumerCluster, clazz, mode);
+        return nettyInits;
     }
 
     /**

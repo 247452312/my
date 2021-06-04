@@ -30,6 +30,16 @@ public class NettyInitDto implements Serializable {
      */
     private Integer weight;
 
+    public static NettyInitDto build(Integer port, String host, RpcCallBack callback, Integer weight) {
+        NettyInitDto build = new NettyInitDto();
+        build.port = port;
+        build.host = host;
+        build.callback = callback;
+        build.weight = weight;
+        return build;
+    }
+
+
     public Integer getPort() {
         return port;
     }

@@ -34,8 +34,47 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
      * @param serviceClass 目标的类的class
      * @param mode         注册中心的信息
      */
-    public ConsumerRegistry(Cluster cluster, Class<T> serviceClass,  RegistryMode mode) {
+    public ConsumerRegistry(Cluster cluster, Class<T> serviceClass, RegistryMode mode) {
         super(cluster, serviceClass);
+        this.selfIp = IpUtil.getIp();
+        this.mode = mode;
+        mode.setType(RpcNettyTypeEnum.CONSUMER);
+        try {
+            RegistryNacosServiceListener listener = new RegistryNacosServiceListener(mode, cluster.getInterfaceName());
+            listener.setCluster(cluster);
+            mode.addServiceListener(serviceClass.getName(), RegistryContent.DEFAULT_REGISTRY_GROUP_NAME, listener);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+        }
+    }
+
+    public ConsumerRegistry() {
+    }
+
+    /**
+     * 构造
+     *
+     * @param cluster      集群信息
+     * @param serviceClass 目标的类的class
+     * @param mode         注册中心的信息
+     * @return
+     */
+    public static <T> ConsumerRegistry<T> build(Cluster cluster, Class<T> serviceClass, RegistryMode mode) {
+        ConsumerRegistry<T> build = new ConsumerRegistry<>();
+        build.init(cluster, serviceClass, mode);
+        return build;
+
+    }
+
+    /**
+     * 初始化consumer
+     *
+     * @param cluster
+     * @param serviceClass
+     * @param mode
+     */
+    public void init(Cluster cluster, Class<T> serviceClass, RegistryMode mode) {
+        init(cluster, serviceClass);
         this.selfIp = IpUtil.getIp();
         this.mode = mode;
         mode.setType(RpcNettyTypeEnum.CONSUMER);
