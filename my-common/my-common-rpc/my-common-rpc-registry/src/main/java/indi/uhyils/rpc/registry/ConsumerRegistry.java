@@ -53,32 +53,15 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
     public ConsumerRegistry() {
     }
 
-    /**
-     * 构造
-     *
-     * @param cluster      集群信息
-     * @param serviceClass 目标的类的class
-     * @param mode         注册中心的信息
-     * @return
-     */
-    public static <T> ConsumerRegistry<T> build(Cluster cluster, Class<T> serviceClass, RegistryMode mode) {
-        ConsumerRegistry<T> build = new ConsumerRegistry<>();
-        build.init(cluster, serviceClass, mode);
-        return build;
-
-    }
 
     /**
      * 初始化consumer
-     *
-     * @param cluster
-     * @param serviceClass
-     * @param mode
      */
-    public void init(Cluster cluster, Class<T> serviceClass, RegistryMode mode) {
-        init(cluster, serviceClass);
+    @Override
+    public void init(Object... objects) {
+        super.init(objects[0], objects[1]);
         this.selfIp = IpUtil.getIp();
-        this.mode = mode;
+        this.mode = (RegistryMode) objects[2];
         mode.setType(RpcNettyTypeEnum.CONSUMER);
         try {
             RegistryNacosServiceListener listener = new RegistryNacosServiceListener(mode, cluster.getInterfaceName());
@@ -88,6 +71,7 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
             LogUtil.error(this, e);
         }
     }
+
 
     @Override
     public String invoke(Long unique, String methodName, Class[] paramType, Object[] args) throws RpcException, ClassNotFoundException, InterruptedException {

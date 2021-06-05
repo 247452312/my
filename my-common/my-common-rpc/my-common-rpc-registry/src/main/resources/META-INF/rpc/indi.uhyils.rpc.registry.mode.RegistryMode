@@ -1,1 +1,1 @@
-default_registry=indi.uhyils.rpc.registry.mode.nacos.RegistryNacosMode
+default_mode_registry=indi.uhyils.rpc.registry.mode.nacos.RegistryNacosMode

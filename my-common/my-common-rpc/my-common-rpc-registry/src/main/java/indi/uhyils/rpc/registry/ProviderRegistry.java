@@ -18,6 +18,15 @@ public class ProviderRegistry<T> extends AbstractRegistry<T> {
         this.mode = mode;
         mode.setType(RpcNettyTypeEnum.PROVIDER);
     }
+    public ProviderRegistry() {
+    }
+
+    @Override
+    public void init(Object... objects) {
+        super.init(objects);
+        this.mode = (RegistryMode) objects[2];
+        mode.setType(RpcNettyTypeEnum.PROVIDER);
+    }
 
     @Override
     public String invoke(Long unique, String methodName, Class[] paramType, Object[] args) throws RpcException, ClassNotFoundException, InterruptedException {

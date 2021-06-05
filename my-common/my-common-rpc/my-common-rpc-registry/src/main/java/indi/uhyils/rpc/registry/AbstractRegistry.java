@@ -32,15 +32,14 @@ public abstract class AbstractRegistry<T> implements Registry<T> {
     protected AbstractRegistry() {
     }
 
+
     /**
      * 如果使用默认的构造方法,则需要执行此方法进行初始化
-     *
-     * @param cluster
-     * @param serviceClass
      */
-    protected void init(Cluster cluster, Class<T> serviceClass) {
-        this.cluster = cluster;
-        this.serviceClass = serviceClass;
+    @Override
+    public void init(Object... objects) {
+        this.cluster = (Cluster) objects[0];
+        this.serviceClass = (Class<T>) objects[1];
     }
 
     public RegistryMode getMode() {
