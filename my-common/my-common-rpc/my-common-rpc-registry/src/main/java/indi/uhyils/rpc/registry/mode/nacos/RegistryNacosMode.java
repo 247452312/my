@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 默认的注册中心,如果有其他的.请自行实现
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月26日 18时44分
  */
@@ -101,13 +103,7 @@ public class RegistryNacosMode implements RegistryMode {
         List<Instance> allInstances = nacosNaming.getAllInstances(interfaceName, RegistryContent.DEFAULT_REGISTRY_GROUP_NAME);
         List<RegistryInfo> result = new ArrayList<>(allInstances.size());
         for (Instance instance : allInstances) {
-            RegistryProviderNecessaryInfo providerNecessaryInfo = new RegistryProviderNecessaryInfo();
-            providerNecessaryInfo.setHost(instance.getIp());
-            providerNecessaryInfo.setPort(instance.getPort());
-            providerNecessaryInfo.setHealth(instance.isHealthy());
-            providerNecessaryInfo.setWeight(instance.getWeight());
-            providerNecessaryInfo.setInterfaceName(instance.getServiceName());
-            providerNecessaryInfo.setClusterName(instance.getClusterName());
+            RegistryProviderNecessaryInfo providerNecessaryInfo = RegistryProviderNecessaryInfo.build(instance.getServiceName(), instance.getIp(), instance.getPort(), null, instance.isHealthy(), instance.getClusterName(), instance.getWeight());
             Map<String, String> metadata = instance.getMetadata();
             RegistryMetadata registryMetadata = JSON.parseObject(metadata.get(METADATA), RegistryMetadata.class);
 

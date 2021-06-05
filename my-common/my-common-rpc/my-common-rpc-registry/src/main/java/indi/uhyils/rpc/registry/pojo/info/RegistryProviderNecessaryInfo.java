@@ -97,4 +97,16 @@ public class RegistryProviderNecessaryInfo implements RegistryNecessaryInfo {
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
     }
+
+    public static RegistryProviderNecessaryInfo build(String interfaceName, String host, Integer port, Integer rpcVersion, Boolean health, String clusterName, Double weight) {
+        RegistryProviderNecessaryInfo build = new RegistryProviderNecessaryInfo();
+        build.interfaceName = interfaceName;
+        build.host = host;
+        build.port = port;
+        build.rpcVersion = rpcVersion;
+        build.health = health;
+        build.clusterName = clusterName;
+        build.weight = weight;
+        return build;
+    }
 }
