@@ -227,6 +227,21 @@ public class RpcSpiManager {
     }
 
     /**
+     * 创建时化时顺带初始化(只在原型模式下可用)
+     *
+     * @param root
+     * @param name
+     * @param objects
+     * @param <T>
+     * @return
+     */
+    public static <T extends RpcSpiExtension> RpcSpiExtension getExtensionByClass(Class<T> root, String name, Object... objects) {
+        RpcSpiExtension extensionByClass = getExtensionByClass(root, name);
+        extensionByClass.init(objects);
+        return extensionByClass;
+    }
+
+    /**
      * 根据名称获取指定扩展点的类
      *
      * @param root 指定扩展点(rpcClass文件中的类)

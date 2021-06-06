@@ -8,6 +8,7 @@ import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.config.RegistryConfig;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
@@ -161,5 +162,12 @@ public class RegistryNacosMode implements RegistryMode {
     @Override
     public void setType(RpcNettyTypeEnum type) {
         this.type = type;
+    }
+
+    @Override
+    public void createListener(String interfaceName, Cluster cluster) throws NacosException {
+        RegistryServiceListener listener = new RegistryNacosServiceListener(this, interfaceName);
+        listener.setCluster(cluster);
+        this.addServiceListener(interfaceName, RegistryContent.DEFAULT_REGISTRY_GROUP_NAME, listener);
     }
 }

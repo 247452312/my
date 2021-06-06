@@ -6,9 +6,6 @@ import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
-import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
-import indi.uhyils.rpc.netty.factory.NettyInitDtoFactory;
-import indi.uhyils.rpc.netty.pojo.NettyInitDto;
 import indi.uhyils.rpc.registry.mode.RegistryMode;
 import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
 import indi.uhyils.rpc.registry.pojo.info.RegistryProviderNecessaryInfo;
@@ -22,7 +19,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * 注册中心类工厂
@@ -33,15 +29,7 @@ import java.util.List;
 public class RegistryFactory {
 
 
-    /**
-     * 默认的注册中心
-     */
-    private static final String DEFAULT_MODE_REGISTRY = "default_mode_registry";
 
-    /**
-     * 配置中注册中心的名称
-     */
-    private static final String REGISTRY_MODE_SPI_NAME = "registryModeSpi";
     /**
      * 默认的registry
      */
@@ -61,44 +49,13 @@ public class RegistryFactory {
     public static <T> Registry<T> createConsumer(Class<T> clazz) throws Exception {
         /*registry大体包含三大部分,1.cluster(负载均衡集群,下层) 2.要实现的class 3.和注册中心保持连接的mode*/
         // spi 获取消费者的注册者信息
-        String name = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_MODE_SPI_NAME, DEFAULT_MODE_REGISTRY);
-        RegistryMode mode = (RegistryMode) RpcSpiManager.getExtensionByClass(RegistryMode.class, name);
-        assert mode != null;
-        // 获取目标接口的信息
-        List<RegistryInfo> targetInterfaceInfo = mode.getTargetInterfaceInfo(clazz.getName());
-        // 构建netty初始化需要的信息
-        NettyInitDto[] nettyInits = builderNettyInitDto(targetInterfaceInfo);
-        // 创建一个Cluster
-        Cluster defaultConsumerCluster = ClusterFactory.createDefaultConsumerCluster(clazz, nettyInits);
-
-        // spi 获取消费者的注册者信息
         String registryName = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_SPI_NAME, DEFAULT_REGISTRY);
         Registry registry = (Registry) RpcSpiManager.getExtensionByClass(Registry.class, registryName);
-        registry.init(defaultConsumerCluster, clazz, mode);
+        registry.init(clazz);
         // 返回一个构造完成的消费者
         return registry;
     }
 
-    /**
-     * 构建netty初始化需要的信息
-     *
-     * @param targetInterfaceInfo 从注册中心获取的信息
-     * @return
-     */
-    private static NettyInitDto[] builderNettyInitDto(List<RegistryInfo> targetInterfaceInfo) {
-        NettyInitDto[] nettyInits = new NettyInitDto[targetInterfaceInfo.size()];
-        for (int i = 0; i < targetInterfaceInfo.size(); i++) {
-            RegistryInfo registryInfo = targetInterfaceInfo.get(i);
-            //查询到目标class注册到注册中心的信息
-            RegistryProviderNecessaryInfo necessaryInfo = (RegistryProviderNecessaryInfo) registryInfo.getNecessaryInfo();
-            nettyInits[i] = NettyInitDtoFactory.createNettyInitDto(
-                    necessaryInfo.getHost(),
-                    necessaryInfo.getPort(),
-                    necessaryInfo.getWeight().intValue(),
-                    new RpcDefaultResponseCallBack());
-        }
-        return nettyInits;
-    }
 
     /**
      * 创建一个生产者的注册层

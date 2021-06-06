@@ -1,7 +1,7 @@
 package indi.uhyils.rpc.exchange.pojo;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.exception.NoMyRpcException;
+import indi.uhyils.rpc.exception.MyRpcException;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exception.RpcTypeNotSupportedException;
 import indi.uhyils.rpc.exception.RpcVersionNotSupportedException;
@@ -278,14 +278,14 @@ public abstract class AbstractRpcData implements RpcData {
      *
      * @param data
      * @param readIndex
-     * @throws NoMyRpcException
+     * @throws MyRpcException
      */
-    private void isMyRpc(byte[] data, AtomicInteger readIndex) throws NoMyRpcException {
+    private void isMyRpc(byte[] data, AtomicInteger readIndex) throws MyRpcException {
         int from = readIndex.get();
         byte[] bytes = Arrays.copyOfRange(data, from, from + MyRpcContent.AGREEMENT_START.length);
         boolean startByteEquals = Arrays.equals(bytes, MyRpcContent.AGREEMENT_START);
         if (!startByteEquals) {
-            throw new NoMyRpcException();
+            throw new MyRpcException();
         }
         readIndex.addAndGet(MyRpcContent.RPC_DATA_ITEM_SIZE[MyRpcContent.RPC_DATA_MARK_INDEX]);
     }

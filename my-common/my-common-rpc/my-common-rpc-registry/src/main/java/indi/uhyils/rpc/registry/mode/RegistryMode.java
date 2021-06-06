@@ -1,5 +1,7 @@
 package indi.uhyils.rpc.registry.mode;
 
+import com.alibaba.nacos.api.exception.NacosException;
+import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.registry.exception.RegistryException;
 import indi.uhyils.rpc.registry.exception.RegistryTypeException;
@@ -62,7 +64,7 @@ public interface RegistryMode extends RpcSpiExtension {
      * @param interfaceName
      * @return
      */
-    List<RegistryInfo> getTargetInterfaceInfo(String interfaceName) throws Exception;
+    List<RegistryInfo> getTargetInterfaceInfo(String interfaceName) throws NacosException;
 
     /**
      * 服务端注册
@@ -109,4 +111,12 @@ public interface RegistryMode extends RpcSpiExtension {
      * @param type
      */
     void setType(RpcNettyTypeEnum type);
+
+    /**
+     * 创建一个新的注册中心监听器
+     *
+     * @param interfaceName 服务名称
+     * @param cluster       服务集群
+     */
+    void createListener(String interfaceName, Cluster cluster) throws Exception;
 }
