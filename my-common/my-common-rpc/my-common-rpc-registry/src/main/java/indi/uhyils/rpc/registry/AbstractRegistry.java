@@ -1,9 +1,10 @@
 package indi.uhyils.rpc.registry;
 
+import com.alibaba.nacos.api.exception.NacosException;
 import indi.uhyils.rpc.cluster.Cluster;
-import indi.uhyils.rpc.config.RpcConfigFactory;
+import indi.uhyils.rpc.exception.MyRpcException;
 import indi.uhyils.rpc.registry.mode.RegistryMode;
-import indi.uhyils.rpc.spi.RpcSpiManager;
+import indi.uhyils.util.LogUtil;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -23,11 +24,6 @@ public abstract class AbstractRegistry<T> implements Registry<T> {
      */
     protected Class<T> serviceClass;
 
-    protected AbstractRegistry(Cluster cluster, Class<T> serviceClass) {
-        this.cluster = cluster;
-        this.serviceClass = serviceClass;
-    }
-
     protected AbstractRegistry() {
     }
 
@@ -37,9 +33,20 @@ public abstract class AbstractRegistry<T> implements Registry<T> {
      */
     @Override
     public void init(Object... objects) {
-        this.cluster = (Cluster) objects[0];
-        this.serviceClass = (Class<T>) objects[1];
+        serviceClass = (Class<T>) objects[0];
+        try {
+            doRegistryInit(objects);
+        } catch (NacosException | MyRpcException e) {
+            LogUtil.error(this, e);
+        }
     }
+
+    /**
+     * 初始化
+     *
+     * @param objects
+     */
+    protected abstract void doRegistryInit(Object... objects) throws NacosException, MyRpcException;
 
     public RegistryMode getMode() {
         return mode;

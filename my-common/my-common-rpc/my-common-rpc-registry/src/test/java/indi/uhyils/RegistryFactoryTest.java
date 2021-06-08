@@ -42,9 +42,8 @@ class RegistryFactoryTest {
     void createProvider1() throws Exception {
 
         RpcConfigFactory.setRpcConfig(RpcConfigFactory.newDefault());
-        RegistryNacosMode mode = new RegistryNacosMode();
         FunctionOneInterface functionOneInterface = new FunctionOne();
-        Registry<FunctionOneInterface> provider = RegistryFactory.createProvider(FunctionOneInterface.class, functionOneInterface, mode);
+        Registry<FunctionOneInterface> provider = RegistryFactory.createProvider(FunctionOneInterface.class, functionOneInterface);
         System.out.println("服务提供者服务加载完毕----------------------------!!!!!!! yeah");
         System.in.read();
 
@@ -54,9 +53,8 @@ class RegistryFactoryTest {
     void createProvider2() throws Exception {
 
         RpcConfigFactory.setRpcConfig(RpcConfigFactory.newDefault());
-        RegistryNacosMode mode = new RegistryNacosMode();
         FunctionOneInterface functionOneInterface = new FunctionOne();
-        Registry<FunctionOneInterface> provider = RegistryFactory.createProvider(FunctionOneInterface.class, functionOneInterface, mode);
+        Registry<FunctionOneInterface> provider = RegistryFactory.createProvider(FunctionOneInterface.class, functionOneInterface);
         System.out.println("服务提供者服务加载完毕----------------------------!!!!!!! yeah");
         System.in.read();
 

@@ -112,8 +112,6 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
         // 创建生产者的registries
         try {
             registries = new ArrayList<>(beans.size());
-            //todo 此处默认为不应该使用nacos,应该改为默认使用nacos,可以使用配置修改,使用原型模式+name的形式
-            RegistryNacosMode mode = new RegistryNacosMode();
             for (Map.Entry<String, Object> entry : beans.entrySet()) {
                 Object bean = entry.getValue();
                 Class<?> clazz = ClassUtil.getRealClass(bean);
@@ -121,7 +119,7 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
                     Class<?>[] interfaces = clazz.getInterfaces();
                     clazz = interfaces[0];
                 }
-                registries.add(RegistryFactory.createProvider(clazz, beans.get(clazz.getName()), mode));
+                registries.add(RegistryFactory.createProvider(clazz, beans.get(clazz.getName())));
 
             }
         } catch (Exception e) {

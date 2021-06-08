@@ -19,9 +19,8 @@ import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.netty.factory.NettyInitDtoFactory;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
-import indi.uhyils.rpc.registry.content.RegistryContent;
 import indi.uhyils.rpc.registry.mode.RegistryMode;
-import indi.uhyils.rpc.registry.mode.nacos.RegistryNacosServiceListener;
+import indi.uhyils.rpc.registry.mode.RegistryModeFactory;
 import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
 import indi.uhyils.rpc.registry.pojo.info.RegistryProviderNecessaryInfo;
 import indi.uhyils.rpc.spi.RpcSpiManager;
@@ -36,70 +35,34 @@ import java.util.List;
  */
 @RpcSpi(single = false)
 public class ConsumerRegistry<T> extends AbstractRegistry<T> {
-    /**
-     * 默认的注册中心
-     */
-    private static final String DEFAULT_MODE_REGISTRY = "default_mode_registry";
-    /**
-     * 配置中注册中心的名称
-     */
-    private static final String REGISTRY_MODE_SPI_NAME = "registryModeSpi";
+
 
     /**
      * 发送者的ip
      */
     private String selfIp;
 
-    /**
-     * @param cluster      集群信息
-     * @param serviceClass 目标的类的class
-     * @param mode         注册中心的信息
-     */
-    public ConsumerRegistry(Cluster cluster, Class<T> serviceClass, RegistryMode mode) {
-        super(cluster, serviceClass);
-        this.selfIp = IpUtil.getIp();
-        this.mode = mode;
-        mode.setType(RpcNettyTypeEnum.CONSUMER);
-        try {
-            RegistryNacosServiceListener listener = new RegistryNacosServiceListener(mode, cluster.getInterfaceName());
-            listener.setCluster(cluster);
-            mode.addServiceListener(serviceClass.getName(), RegistryContent.DEFAULT_REGISTRY_GROUP_NAME, listener);
-        } catch (Exception e) {
-            LogUtil.error(this, e);
-        }
-    }
 
     public ConsumerRegistry() {
     }
 
-
-    /**
-     * 初始化consumer
-     */
     @Override
-    public void init(Object... objects) {
-        // 解析入参,只有一个class
-        Class clazz = (Class) objects[0];
+    protected void doRegistryInit(Object... objects) {
 
-        // spi 获取消费者的注册者信息
-        String name = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_MODE_SPI_NAME, DEFAULT_MODE_REGISTRY);
-        RegistryMode mode = (RegistryMode) RpcSpiManager.getExtensionByClass(RegistryMode.class, name);
-        assert mode != null;
-
+        RegistryMode mode = RegistryModeFactory.create();
         mode.setType(RpcNettyTypeEnum.CONSUMER);
         this.mode = mode;
 
         try {
-            Cluster cluster = createCluster();
-            super.init(cluster, clazz);
+            this.cluster = createCluster();
             this.selfIp = IpUtil.getIp();
-
             // 创建监听器.监听注册中心
-            mode.createListener(clazz.getName(), cluster);
+            mode.createListener(this.serviceClass.getName(), cluster);
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
     }
+
 
     private Cluster createCluster() throws NacosException {
 

@@ -1,10 +1,12 @@
 package indi.uhyils.rpc.proxy;
 
 import indi.uhyils.rpc.config.RpcConfigFactory;
+import indi.uhyils.rpc.exception.MyRpcException;
 import indi.uhyils.rpc.proxy.generic.GenericService;
 import indi.uhyils.rpc.proxy.handler.RpcProxyHandlerInterface;
 import indi.uhyils.rpc.registry.exception.RegistryException;
 import indi.uhyils.rpc.spi.RpcSpiManager;
+import indi.uhyils.util.LogUtil;
 
 import java.lang.reflect.Proxy;
 
@@ -42,9 +44,13 @@ public class RpcProxyFactory {
         }
         // 从spi管理处获取一个指定的扩展点名称
         String spiClassName = RpcConfigFactory.getCustomOrDefault(RPC_SPI_CONFIG_PROXY_NAME, RPC_SPI_DEFAULT_NAME).toString();
-        RpcProxyHandlerInterface extensionByClass = (RpcProxyHandlerInterface) RpcSpiManager.getExtensionByClass(RpcProxyHandlerInterface.class, spiClassName);
-        // 初始化proxyHandler
-        extensionByClass.init(clazz);
+        RpcProxyHandlerInterface extensionByClass = null;
+        try {
+            extensionByClass = (RpcProxyHandlerInterface) RpcSpiManager.getExtensionByClass(RpcProxyHandlerInterface.class, spiClassName, clazz);
+        } catch (MyRpcException e) {
+            LogUtil.error(clazz, e);
+        }
+
         Object o = Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, extensionByClass);
         return (T) o;
     }

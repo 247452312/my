@@ -2,6 +2,8 @@ package indi.uhyils.rpc.spi;
 
 import indi.uhyils.rpc.annotation.MyRpc;
 import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.exception.MyRpcException;
+import indi.uhyils.rpc.exception.RpcRunTimeException;
 import indi.uhyils.rpc.util.PackageUtils;
 import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -235,7 +237,7 @@ public class RpcSpiManager {
      * @param <T>
      * @return
      */
-    public static <T extends RpcSpiExtension> RpcSpiExtension getExtensionByClass(Class<T> root, String name, Object... objects) {
+    public static <T extends RpcSpiExtension> RpcSpiExtension getExtensionByClass(Class<T> root, String name, Object... objects) throws MyRpcException {
         RpcSpiExtension extensionByClass = getExtensionByClass(root, name);
         extensionByClass.init(objects);
         return extensionByClass;
@@ -251,7 +253,7 @@ public class RpcSpiManager {
     public static <T extends RpcSpiExtension> RpcSpiExtension getExtensionByClass(Class<T> root, String name) {
         // 看看加载的类中是否有目标root
         if (!cacheClass.containsKey(root)) {
-            return null;
+            throw new RpcRunTimeException("rpcSpi 没有类:" + root.getName() + "请在META-INF/rpcClass中添加需要加载的类");
         }
 
         // 初始化缓存,加速获取用
@@ -262,7 +264,7 @@ public class RpcSpiManager {
 
         // 如果应该加载的地方没有此名称
         if (!cacheClass.get(root).containsKey(name)) {
-            return null;
+            throw new RpcRunTimeException("rpcSpi 没有加载此扩展,请检查是否在META-INF/rpc/" + root.getName() + "文件中添加需要扩展的类,名称: " + name);
         }
 
         // 查询之前缓存里有没有
@@ -299,9 +301,6 @@ public class RpcSpiManager {
      * @return
      */
     private static <T extends RpcSpiExtension> T checkSingleAndGetResult(T obj) {
-        if (obj == null) {
-            return null;
-        }
 
         RpcSpi annotation = obj.getClass().getAnnotation(RpcSpi.class);
         // 如果是单例模式,直接返回
