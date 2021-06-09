@@ -1,7 +1,6 @@
 package indi.uhyils.rpc.proxy;
 
 import indi.uhyils.rpc.config.RpcConfigFactory;
-import indi.uhyils.rpc.exception.MyRpcException;
 import indi.uhyils.rpc.proxy.generic.GenericService;
 import indi.uhyils.rpc.proxy.handler.RpcProxyHandlerInterface;
 import indi.uhyils.rpc.registry.exception.RegistryException;
@@ -47,7 +46,7 @@ public class RpcProxyFactory {
         RpcProxyHandlerInterface extensionByClass = null;
         try {
             extensionByClass = (RpcProxyHandlerInterface) RpcSpiManager.getExtensionByClass(RpcProxyHandlerInterface.class, spiClassName, clazz);
-        } catch (MyRpcException e) {
+        } catch (Exception e) {
             LogUtil.error(clazz, e);
         }
 

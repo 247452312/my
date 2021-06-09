@@ -6,7 +6,6 @@ import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.ClusterFactory;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
-import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
@@ -15,7 +14,7 @@ import indi.uhyils.rpc.exchange.pojo.RpcHeader;
 import indi.uhyils.rpc.exchange.pojo.demo.response.content.RpcNormalResponseContent;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactoryProducer;
-import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
+import indi.uhyils.rpc.netty.callback.RpcCallBackFactory;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.netty.factory.NettyInitDtoFactory;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
@@ -23,7 +22,6 @@ import indi.uhyils.rpc.registry.mode.RegistryMode;
 import indi.uhyils.rpc.registry.mode.RegistryModeFactory;
 import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
 import indi.uhyils.rpc.registry.pojo.info.RegistryProviderNecessaryInfo;
-import indi.uhyils.rpc.spi.RpcSpiManager;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 
@@ -74,7 +72,7 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
             RegistryInfo registryInfo = remoteInfo.get(i);
             //查询到目标class注册到注册中心的信息
             RegistryProviderNecessaryInfo necessaryInfo = (RegistryProviderNecessaryInfo) registryInfo.getNecessaryInfo();
-            nettyInits[i] = NettyInitDtoFactory.createNettyInitDto(necessaryInfo.getHost(), necessaryInfo.getPort(), necessaryInfo.getWeight().intValue(), new RpcDefaultResponseCallBack());
+            nettyInits[i] = NettyInitDtoFactory.createNettyInitDto(necessaryInfo.getHost(), necessaryInfo.getPort(), necessaryInfo.getWeight().intValue(), RpcCallBackFactory.createResponseCallBack());
         }
 
         return ClusterFactory.createDefaultConsumerCluster(this.serviceClass, nettyInits);

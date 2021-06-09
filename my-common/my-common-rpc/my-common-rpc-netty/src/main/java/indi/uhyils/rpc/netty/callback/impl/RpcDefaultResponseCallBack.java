@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty.callback.impl;
 
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
@@ -15,6 +16,7 @@ import indi.uhyils.rpc.netty.callback.RpcCallBack;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月23日 19时15分
  */
+@RpcSpi
 public class RpcDefaultResponseCallBack implements RpcCallBack {
     @Override
     public RpcData getRpcData(byte[] data) throws RpcException, ClassNotFoundException {

@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.netty.callback.impl;
 
 import com.alibaba.fastjson.JSON;
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
@@ -30,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月23日 19时15分
  */
+@RpcSpi
 public class RpcDefaultRequestCallBack implements RpcCallBack {
 
     /**
@@ -39,6 +41,20 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
 
     public RpcDefaultRequestCallBack(Map<String, Object> beans) throws ClassNotFoundException {
         for (Map.Entry<String, Object> entity : beans.entrySet()) {
+            String beanName = entity.getKey();
+            Object bean = entity.getValue();
+            Class<?> key = Class.forName(beanName);
+            this.beans.put(key, bean);
+        }
+    }
+
+    public RpcDefaultRequestCallBack() {
+    }
+
+    @Override
+    public void init(Object... params) throws Exception {
+        Map<String, Object> param = (Map<String, Object>) params[0];
+        for (Map.Entry<String, Object> entity : param.entrySet()) {
             String beanName = entity.getKey();
             Object bean = entity.getValue();
             Class<?> key = Class.forName(beanName);

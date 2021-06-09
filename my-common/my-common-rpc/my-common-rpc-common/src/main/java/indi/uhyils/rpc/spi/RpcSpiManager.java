@@ -237,7 +237,7 @@ public class RpcSpiManager {
      * @param <T>
      * @return
      */
-    public static <T extends RpcSpiExtension> RpcSpiExtension getExtensionByClass(Class<T> root, String name, Object... objects) throws MyRpcException {
+    public static <T extends RpcSpiExtension> RpcSpiExtension getExtensionByClass(Class<T> root, String name, Object... objects) throws Exception {
         RpcSpiExtension extensionByClass = getExtensionByClass(root, name);
         extensionByClass.init(objects);
         return extensionByClass;

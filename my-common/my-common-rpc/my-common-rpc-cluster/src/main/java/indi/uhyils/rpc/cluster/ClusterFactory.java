@@ -5,7 +5,7 @@ import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.cluster.provider.impl.ProviderDefaultCluster;
 import indi.uhyils.rpc.factory.RpcBeanFactory;
 import indi.uhyils.rpc.netty.RpcNetty;
-import indi.uhyils.rpc.netty.callback.impl.RpcDefaultRequestCallBack;
+import indi.uhyils.rpc.netty.callback.RpcCallBackFactory;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.netty.factory.RpcNettyFactory;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
@@ -38,7 +38,8 @@ public class ClusterFactory {
             synchronized (ClusterFactory.class) {
                 if (instance == null) {
                     NettyInitDto nettyInit = new NettyInitDto();
-                    nettyInit.setCallback(new RpcDefaultRequestCallBack(RpcBeanFactory.getInstance(beans).getRpcBeans()));
+
+                    nettyInit.setCallback(RpcCallBackFactory.createRequestCallBack(RpcBeanFactory.getInstance(beans).getRpcBeans()));
                     nettyInit.setHost(IpUtil.getIp());
                     nettyInit.setPort(port);
                     RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.PROVIDER, nettyInit);
