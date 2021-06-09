@@ -11,11 +11,11 @@ import java.util.Arrays;
  */
 public class LogicEngineHelper {
 
-    private static final Symbol[] values = Symbol.values();
+    private static final Symbol[] VALUES = Symbol.values();
 
     static {
         //从大到小排列
-        Arrays.sort(values, (o1, o2) -> Integer.compare(o2.getSym().length(), o1.getSym().length()));
+        Arrays.sort(VALUES, (o1, o2) -> Integer.compare(o2.getSym().length(), o1.getSym().length()));
     }
 
     /**
@@ -43,26 +43,26 @@ public class LogicEngineHelper {
             String[] split = expression.split("&&");
             for (String s : split) {
                 Boolean check = check(s, key, keyName);
-                if (check == false) {
-                    return false;
+                if (Boolean.FALSE.equals(check)) {
+                    return Boolean.FALSE;
                 }
             }
-            return true;
+            return Boolean.TRUE;
         }
         if (expression.contains("||")) {
             //根据&&分开字符串
             String[] split = expression.split("\\|\\|");
             for (String s : split) {
                 Boolean check = check(s, key, keyName);
-                if (check == true) {
-                    return true;
+                if (Boolean.TRUE.equals(check)) {
+                    return Boolean.TRUE;
                 }
             }
-            return false;
+            return Boolean.FALSE;
         }
 
 
-        for (Symbol value : values) {
+        for (Symbol value : VALUES) {
             final String sym = value.getSym();
             if (expression.contains(sym)) {
                 String[] split = expression.split(sym);
@@ -79,10 +79,10 @@ public class LogicEngineHelper {
             }
         }
         if ("true".equalsIgnoreCase(expression)) {
-            return true;
+            return Boolean.TRUE;
         }
         if ("false".equalsIgnoreCase(expression)) {
-            return false;
+            return Boolean.FALSE;
         }
         throw new ExpressionInvalidException(expression);
     }

@@ -47,11 +47,11 @@ public class JvmDataStatisticsResponse implements Serializable {
         jvmDataStatisticsResponse.setWebRequestCount(webRequestCount);
         jvmDataStatisticsResponse.setInterfaceCellCount(interfaceCellCount);
         // 默认是好的
-        boolean serviceOperationQuality = true;
+        boolean serviceOperationQuality = Boolean.TRUE;
         for (Map.Entry<Long, List<ServiceQualityEnum>> entity : serviceMap.entrySet()) {
             List<ServiceQualityEnum> value = entity.getValue();
             if (value.size() != 1 || !value.get(0).equals(ServiceQualityEnum.GOOD)) {
-                serviceOperationQuality = false;
+                serviceOperationQuality = Boolean.FALSE;
                 break;
             }
         }

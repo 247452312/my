@@ -27,7 +27,7 @@ public class ReflactUtil {
         }
         if (attrName != null && attrName.length() > 1) {
             Method declaredMethod = obj.getClass().getDeclaredMethod("get" + attrName.substring(0, 1).toUpperCase() + attrName.substring(1));
-            declaredMethod.setAccessible(true);
+            declaredMethod.setAccessible(Boolean.TRUE);
             return declaredMethod.invoke(obj);
         } else {
             return null;
@@ -45,7 +45,7 @@ public class ReflactUtil {
      */
     public static Object getAttrByField(Object object, String attrName) throws NoSuchFieldException, IllegalAccessException {
         Field declaredField = object.getClass().getDeclaredField(attrName);
-        declaredField.setAccessible(true);
+        declaredField.setAccessible(Boolean.TRUE);
         return declaredField.get(object);
     }
 
@@ -55,7 +55,7 @@ public class ReflactUtil {
      * @return 所有泛型
      */
     public static Class getGenericity(Method method) throws ClassNotFoundException {
-        method.setAccessible(true);
+        method.setAccessible(Boolean.TRUE);
         Type type = method.getGenericReturnType();
         if (type instanceof ParameterizedType) {
             Type[] actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();

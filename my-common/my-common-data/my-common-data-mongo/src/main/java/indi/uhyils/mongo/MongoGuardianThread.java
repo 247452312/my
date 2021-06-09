@@ -22,7 +22,7 @@ public class MongoGuardianThread implements Runnable {
     private volatile Boolean alive;
 
     public MongoGuardianThread(MongoConnPool pool) {
-        alive = true;
+        alive = Boolean.TRUE;
         this.pool = pool;
     }
 

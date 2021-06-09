@@ -195,7 +195,7 @@ public class GeneticAlgorithm {
         HashMap<DnaData, Integer> result = new HashMap<>(16);
         for (DnaData datum : data) {
             // 默认里面没有datum相近的点
-            Boolean b = true;
+            Boolean b = Boolean.TRUE;
             for (Map.Entry<DnaData, Integer> entity : result.entrySet()) {
                 DnaData key = entity.getKey();
                 Double distance = initialization.getDistance(datum, key);
@@ -217,10 +217,10 @@ public class GeneticAlgorithm {
     @Override
     public boolean equals(Object o) {
         if (this == o) {
-            return true;
+            return Boolean.TRUE;
         }
         if (o == null || getClass() != o.getClass()) {
-            return false;
+            return Boolean.FALSE;
         }
         GeneticAlgorithm that = (GeneticAlgorithm) o;
         return Objects.equals(maxNum, that.maxNum) &&

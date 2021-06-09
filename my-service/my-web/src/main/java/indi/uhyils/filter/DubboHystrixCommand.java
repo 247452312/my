@@ -60,7 +60,7 @@ public class DubboHystrixCommand extends HystrixCommand<RpcResult> {
                         //错误率达到50开启熔断保护
                         .withCircuitBreakerErrorThresholdPercentage(ERROR_RATE)
                         //使用dubbo的超时，禁用这里的超时
-                        .withExecutionTimeoutEnabled(false))
+                        .withExecutionTimeoutEnabled(Boolean.FALSE))
                 //获取线程池大小
                 .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(8)));
         this.invoker = invoker;

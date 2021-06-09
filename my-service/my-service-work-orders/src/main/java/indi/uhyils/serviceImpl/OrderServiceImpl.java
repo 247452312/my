@@ -409,9 +409,9 @@ public class OrderServiceImpl implements OrderService {
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, monitorUserId, PushTypeEnum.EMAIL.getCode(), "工单撤回申请", request.getOrderId() + "工单申请撤回,请尽快审批,工单优先度:" + OrderPriorityEnum.parse(byId.getPriority()).getName());
         ServiceResult serviceResult = RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
-            return true;
+            return Boolean.TRUE;
         }
-        return false;
+        return Boolean.FALSE;
     }
 
     /**
@@ -428,9 +428,9 @@ public class OrderServiceImpl implements OrderService {
         // 只有状态为指定的状态的工单才能进行操作,否则操作失败
         if (orderLastStatusEnum.getCode().equals(orderStatus)) {
             orderInfoDao.changeOrderStatus(orderId, orderStatusEnum.getCode());
-            return true;
+            return Boolean.TRUE;
         }
-        return false;
+        return Boolean.FALSE;
     }
 
     /**
@@ -446,9 +446,9 @@ public class OrderServiceImpl implements OrderService {
         // 只有状态为指定的状态的工单才能进行操作,否则操作失败
         if (OrderStatusEnum.START.getCode().equals(orderStatus)) {
             orderInfoDao.changeOrderStatus(orderId, orderStatusEnum.getCode());
-            return true;
+            return Boolean.TRUE;
         }
-        return false;
+        return Boolean.FALSE;
     }
 
 

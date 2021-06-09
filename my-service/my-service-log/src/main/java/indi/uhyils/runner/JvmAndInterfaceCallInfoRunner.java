@@ -44,18 +44,18 @@ public class JvmAndInterfaceCallInfoRunner implements ApplicationRunner {
         /* 第1个是启动JVM_START信息的 */
         Channel channel1 = conn.createChannel();
         String queueName1 = RabbitMqContent.JVM_START_QUEUE_NAME;
-        channel1.exchangeDeclare(exchangeName, "direct", false, false, null);
-        channel1.queueDeclare(queueName1, false, false, false, null);
+        channel1.exchangeDeclare(exchangeName, "direct", Boolean.FALSE, Boolean.FALSE, null);
+        channel1.queueDeclare(queueName1, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null);
         channel1.queueBind(queueName1, exchangeName, queueName1);
-        channel1.basicConsume(queueName1, false, new RabbitJvmStartInfoConsumer(channel1, applicationContext));
+        channel1.basicConsume(queueName1, Boolean.FALSE, new RabbitJvmStartInfoConsumer(channel1, applicationContext));
         channels.add(channel1);
 
         /* 第2个是启动INTERFACE_CALL_INFO信息的 */
         Channel channel2 = conn.createChannel();
         String queueName2 = RabbitMqContent.INTERFACE_CALL_INFO;
         channel2.confirmSelect();
-        channel2.exchangeDeclare(exchangeName, "direct", false, false, null);
-        channel2.queueDeclare(queueName2, false, false, false, null);
+        channel2.exchangeDeclare(exchangeName, "direct", Boolean.FALSE, Boolean.FALSE, null);
+        channel2.queueDeclare(queueName2, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null);
         channel2.queueBind(queueName2, exchangeName, queueName2);
         channel2.basicConsume(queueName2, true, new RabbitInterfaceCallInfoConsumer(channel2, applicationContext));
         channels.add(channel2);

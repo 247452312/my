@@ -30,7 +30,7 @@ public class RpcBeanFactory {
             init = false;
             return;
         }
-        init = true;
+        init = Boolean.TRUE;
         rpcBeans.putAll(beans);
     }
 

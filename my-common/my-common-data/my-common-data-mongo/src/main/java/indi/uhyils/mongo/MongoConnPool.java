@@ -57,7 +57,7 @@ public class MongoConnPool {
          */
         Runnable guardianThread = new MongoGuardianThread(this);
         Thread thread = new Thread(guardianThread, "mongo线程池守护线程");
-        thread.setDaemon(true);
+        thread.setDaemon(Boolean.TRUE);
         thread.start();
 
         /*底下的是线程池来运行的代码.感觉不需要呀?*/
@@ -113,7 +113,7 @@ public class MongoConnPool {
             if (!mongoConn.getHaveUse()) {
                 synchronized (mongoConn) {
                     if (!mongoConn.getHaveUse()) {
-                        mongoConn.setHaveUse(true);
+                        mongoConn.setHaveUse(Boolean.TRUE);
                         mongoConn.setCreateTime(System.currentTimeMillis());
                         return mongoConn;
                     }
@@ -127,7 +127,7 @@ public class MongoConnPool {
         synchronized (list) {
             MongoConn conn = mongoDbFactory.getConn(this);
             list.add(conn);
-            conn.setHaveUse(true);
+            conn.setHaveUse(Boolean.TRUE);
             return conn;
         }
     }

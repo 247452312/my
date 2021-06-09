@@ -146,13 +146,13 @@ public class OrderNodeFieldEntity extends BaseVoEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) {
-            return true;
+            return Boolean.TRUE;
         }
         if (o == null || getClass() != o.getClass()) {
-            return false;
+            return Boolean.FALSE;
         }
         if (!super.equals(o)) {
-            return false;
+            return Boolean.FALSE;
         }
         OrderNodeFieldEntity that = (OrderNodeFieldEntity) o;
         return Objects.equals(baseOrderNodeId, that.baseOrderNodeId) && Objects.equals(name, that.name) && Objects.equals(desc, that.desc) && Objects.equals(defaultValue, that.defaultValue) && Objects.equals(empty, that.empty) && Objects.equals(edit, that.edit) && Objects.equals(type, that.type) && Objects.equals(valueType, that.valueType) && Objects.equals(dataSources, that.dataSources) && Objects.equals(relationId, that.relationId);

@@ -149,7 +149,7 @@ public class HuffmanCodeUtil {
          */
         public Node(Double value) {
             this.value = value;
-            this.ph = true;
+            this.ph = Boolean.TRUE;
         }
 
         public Node() {

@@ -38,7 +38,7 @@ public class TheadFactoryName implements ThreadFactory {
                 namePrefix + "-thread-" + threadNumber.getAndIncrement(),
                 0);
         if (t.isDaemon()) {
-            t.setDaemon(false);
+            t.setDaemon(Boolean.FALSE);
         }
         if (t.getPriority() != Thread.NORM_PRIORITY) {
             t.setPriority(Thread.NORM_PRIORITY);

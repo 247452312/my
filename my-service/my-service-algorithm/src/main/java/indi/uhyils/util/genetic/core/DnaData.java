@@ -38,10 +38,10 @@ public class DnaData implements Data {
     @Override
     public boolean equals(Object o) {
         if (this == o) {
-            return true;
+            return Boolean.TRUE;
         }
         if (o == null || getClass() != o.getClass()) {
-            return false;
+            return Boolean.FALSE;
         }
         DnaData dnaData = (DnaData) o;
         return Objects.equals(genes, dnaData.genes);

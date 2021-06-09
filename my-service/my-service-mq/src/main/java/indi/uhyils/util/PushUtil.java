@@ -29,6 +29,6 @@ public class PushUtil {
                 LogUtil.debug(PushUtil.class, "\r\n发送消息为:\r\n%s\r\n接收消息为:\r\n %s", JSON.toJSONString(message), JSON.toJSONString(response));
             }
         }
-        return true;
+        return Boolean.TRUE;
     }
 }

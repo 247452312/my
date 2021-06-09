@@ -50,7 +50,7 @@ public class RpcApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult rpcApiTool(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
-        return getServiceResult(interfaceName, methodName, args, request, false, DEFAULT_PROCOTOL);
+        return getServiceResult(interfaceName, methodName, args, request, Boolean.FALSE, DEFAULT_PROCOTOL);
     }
 
     /**
@@ -62,7 +62,7 @@ public class RpcApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult rpcApiTool(String interfaceName, String methodName, Object... args) {
-        return getServiceResult(interfaceName, methodName, Arrays.asList(args), new DefaultRequest(), false, DEFAULT_PROCOTOL);
+        return getServiceResult(interfaceName, methodName, Arrays.asList(args), new DefaultRequest(), Boolean.FALSE, DEFAULT_PROCOTOL);
     }
 
     /**
@@ -75,7 +75,7 @@ public class RpcApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult rpcApiToolAsync(String interfaceName, String methodName, List<Object> args, DefaultRequest request) {
-        return getServiceResult(interfaceName, methodName, args, request, true, DEFAULT_PROCOTOL);
+        return getServiceResult(interfaceName, methodName, args, request, Boolean.TRUE, DEFAULT_PROCOTOL);
     }
 
     /**
@@ -88,7 +88,7 @@ public class RpcApiUtil {
      * @return 方法返回值
      */
     public static ServiceResult rpcApiToolAsync(String interfaceName, String methodName, Object args, DefaultRequest request) {
-        return getServiceResult(interfaceName, methodName, Arrays.asList(args), request, true, DEFAULT_PROCOTOL);
+        return getServiceResult(interfaceName, methodName, Arrays.asList(args), request, Boolean.TRUE, DEFAULT_PROCOTOL);
     }
 
     private static ServiceResult getServiceResult(String interfaceName, String methodName, List<Object> args, DefaultRequest request, boolean async, String procotol) {
@@ -127,7 +127,7 @@ public class RpcApiUtil {
             } else {
                 LogUtil.info("返回值为空");
             }
-            if (async == false) {
+            if (async == Boolean.FALSE) {
                 // 添加链路
                 request.setRequestLink(serviceResult.getRequestLink());
             }

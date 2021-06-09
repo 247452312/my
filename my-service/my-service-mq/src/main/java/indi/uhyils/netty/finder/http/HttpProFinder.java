@@ -74,7 +74,7 @@ public class HttpProFinder implements Finder {
     public Boolean checkByteBuf(ByteBuf byteBuf) {
         boolean typeNameIsHttp = checkTypeNameIsHttp(byteBuf);
         if (!typeNameIsHttp) {
-            return false;
+            return Boolean.FALSE;
         }
         int i = byteBuf.forEachByte(ByteProcessor.FIND_CRLF);
         return checkHttpName(byteBuf, i);
@@ -90,7 +90,7 @@ public class HttpProFinder implements Finder {
     private Boolean checkHttpName(ByteBuf byteBuf, int crlfIndex) {
         int length = HTTP_NAME.length();
         if (crlfIndex < length) {
-            return false;
+            return Boolean.FALSE;
         }
         byte[] httpDemo = new byte[HTTP.length()];
         byteBuf.getBytes(crlfIndex - length, httpDemo);

@@ -112,9 +112,9 @@ public class ApiUtils {
             setHttpHead(api, httpHead, con);
 
             //允许写出
-            con.setDoOutput(true);
+            con.setDoOutput(Boolean.TRUE);
             //允许读入
-            con.setDoInput(true);
+            con.setDoInput(Boolean.TRUE);
             //不使用缓存
             con.setUseCaches(false);
             if (paramByte != null && paramByte.length != 0) {

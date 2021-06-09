@@ -160,10 +160,10 @@ public class PackageUtils {
         List<String> collects = packageName.stream().sorted(Comparator.comparingInt(t -> StringUtils.countMatches(t, "."))).collect(Collectors.toList());
         List<String> result = new ArrayList<>();
         for (String collect : collects) {
-            boolean cover = false;
+            boolean cover = Boolean.FALSE;
             for (String resultItem : result) {
                 if (resultItem.startsWith(collect)) {
-                    cover = true;
+                    cover = Boolean.TRUE;
                     break;
                 }
             }
@@ -178,10 +178,10 @@ public class PackageUtils {
     private static Boolean checkExclude(List<String> excludePackagePaths, URL url) {
         for (String excludePackagePath : excludePackagePaths) {
             if (url.getPath().contains(excludePackagePath)) {
-                return false;
+                return falsBoolean.FALSEe;
             }
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     /**
@@ -204,7 +204,7 @@ public class PackageUtils {
         for (File childFile : childFiles) {
             if (childFile.isDirectory()) {
                 if (childPackage) {
-                    myClassName.addAll(getClassNameByFile(childFile.getPath(), true));
+                    myClassName.addAll(getClassNameByFile(childFile.getPath(), Boolean.TRUE));
                 }
             } else {
                 String childFilePath = childFile.getPath();

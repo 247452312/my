@@ -99,10 +99,10 @@ public class MqUtil {
         @Override
         public boolean equals(Object o) {
             if (this == o) {
-                return true;
+                return Boolean.TRUE;
             }
             if (o == null || getClass() != o.getClass()) {
-                return false;
+                return Boolean.FALSE;
             }
             MqQueueInfo that = (MqQueueInfo) o;
             return Objects.equals(exchange, that.exchange) &&

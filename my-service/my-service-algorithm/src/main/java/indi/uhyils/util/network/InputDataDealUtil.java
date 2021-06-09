@@ -102,7 +102,7 @@ public class InputDataDealUtil {
         // 最后一帧修改为: 从最后一个音频点往前推的sizeD个点 使整个音频饱满起来
         System.arraycopy(dataDouble, dataDouble.length - sizeD, result[count], 0, sizeD);
 
-        MFCC mfcc = new MFCC(13, fs, 24, sizeD, false, 24, false);
+        MFCC mfcc = new MFCC(13, fs, 24, sizeD, Boolean.FALSE, 24, Boolean.FALSE);
         double[][] parameters = new double[(count + 1)][13];
         // 汉明窗的a
         double hammingA = 0.46;

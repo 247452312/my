@@ -33,7 +33,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月27日 15时43分
  */
-@RpcSpi(single = false)
+@RpcSpi(single = Boolean.FALSE)
 public class ConsumerRegistry<T> extends AbstractRegistry<T> {
 
 

@@ -212,7 +212,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         ArrayList<MenuEntity> collect = (ArrayList<MenuEntity>) byDictId.stream().map(t -> {
             Long menuId = Long.valueOf(t.getValue().toString());
             MenuEntity byId = dao.getById(menuId);
-            if (byId.getType() == false) {
+            if (Boolean.FALSE.equals(byId.getType())) {
                 try {
                     throw new Exception("服务字典中快捷入口(" + byId.getName() + ") 不是叶子结点");
                 } catch (Exception e) {

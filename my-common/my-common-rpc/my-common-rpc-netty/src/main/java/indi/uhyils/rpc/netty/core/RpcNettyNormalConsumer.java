@@ -37,7 +37,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
     /**
      * 一个公平的可重入锁
      */
-    private final ReentrantLock REENTRANT_LOCK = new ReentrantLock(true);
+    private final ReentrantLock REENTRANT_LOCK = new ReentrantLock(Boolean.TRUE);
     /**
      * 客户端
      */
@@ -89,7 +89,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
 
         //连接服务器
         this.channelFuture = client.connect(host, port);
-        return true;
+        return Boolean.TRUE;
     }
 
     public EventLoopGroup getGroup() {
@@ -114,10 +114,10 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
             if (group != null) {
                 this.group.shutdownGracefully();
             }
-            return true;
+            return Boolean.TRUE;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return Boolean.FALSE;
         }
     }
 
@@ -125,7 +125,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
         ByteBuf buf = Unpooled.buffer();
         buf.writeBytes(bytes);
         channelFuture.channel().writeAndFlush(buf);
-        return true;
+        return Boolean.TRUE;
     }
 
     public RpcData wait(Long unique) {

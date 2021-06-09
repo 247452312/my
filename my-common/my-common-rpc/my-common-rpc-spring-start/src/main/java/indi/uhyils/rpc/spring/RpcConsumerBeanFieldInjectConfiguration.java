@@ -59,7 +59,7 @@ public class RpcConsumerBeanFieldInjectConfiguration implements InstantiationAwa
     public boolean postProcessAfterInstantiation(Object bean, String beanName) {
         fieldInject(bean);
         methodInject(bean);
-        return true;
+        return Boolean.TRUE;
     }
 
     /**
@@ -70,7 +70,7 @@ public class RpcConsumerBeanFieldInjectConfiguration implements InstantiationAwa
     private void methodInject(Object bean) {
         Method[] declaredMethods = bean.getClass().getDeclaredMethods();
         for (Method declaredMethod : declaredMethods) {
-            declaredMethod.setAccessible(true);
+            declaredMethod.setAccessible(Boolean.TRUE);
             Annotation[] declaredAnnotations = declaredMethod.getDeclaredAnnotations();
             RpcReference haveInitProxy = isHaveInitProxy(declaredAnnotations);
             if (haveInitProxy != null) {
@@ -99,7 +99,7 @@ public class RpcConsumerBeanFieldInjectConfiguration implements InstantiationAwa
     private void fieldInject(Object bean) {
         Field[] declaredFields = bean.getClass().getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            declaredField.setAccessible(true);
+            declaredField.setAccessible(Boolean.TRUE);
             Annotation[] declaredAnnotations = declaredField.getDeclaredAnnotations();
             RpcReference reference = isHaveInitProxy(declaredAnnotations);
             if (reference != null) {

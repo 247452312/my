@@ -121,10 +121,10 @@ public class MenuEntity extends BaseVoEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) {
-            return true;
+            return Boolean.TRUE;
         }
         if (o == null || getClass() != o.getClass()) {
-            return false;
+            return Boolean.FALSE;
         }
         MenuEntity that = (MenuEntity) o;
         return Objects.equals(iFrame, that.iFrame) &&

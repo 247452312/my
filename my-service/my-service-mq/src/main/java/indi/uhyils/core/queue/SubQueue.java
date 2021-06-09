@@ -29,6 +29,6 @@ public class SubQueue extends AbstractQueue {
     @Override
     public Boolean tryToRegister(Register register) {
         consumer.add(register);
-        return true;
+        return Boolean.TRUE;
     }
 }

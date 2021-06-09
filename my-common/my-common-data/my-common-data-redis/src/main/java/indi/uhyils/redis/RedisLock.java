@@ -81,7 +81,7 @@ public class RedisLock {
      * 加锁
      */
     public void lock(Long time) {
-        while (true) {
+        while (Boolean.TRUE) {
             boolean b = tryLock(time);
             if (b) {
                 break;
@@ -137,7 +137,7 @@ public class RedisLock {
                 // 重入数量+1
                 jedis.incrBy(lockCountName, 1L);
                 jedis.expire(lockCountName, time.intValue());
-                return true;
+                return Boolean.TRUE;
             } else if (s == null) {
                 // 尝试获取锁
                 Long getLockSuccess = jedis.setnx(lockName, value);
@@ -148,7 +148,7 @@ public class RedisLock {
                     // 重入数量+1
                     jedis.incrBy(lockCountName, 1L);
                     jedis.expire(lockCountName, time.intValue());
-                    return true;
+                    return Boolean.TRUE;
                 }
             }
 
@@ -157,7 +157,7 @@ public class RedisLock {
         } finally {
             jedis.close();
         }
-        return false;
+        return Boolean.FALSE;
 
     }
 
@@ -244,7 +244,7 @@ public class RedisLock {
             if (expireSeconds != -1) {
                 jedis.expire(key, expireSeconds);
             }
-            return true;
+            return Boolean.TRUE;
         } finally {
             jedis.close();
         }

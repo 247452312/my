@@ -36,10 +36,10 @@ public class NettyInfo {
     @Override
     public boolean equals(Object o) {
         if (this == o) {
-            return true;
+            return Boolean.TRUE;
         }
         if (o == null || getClass() != o.getClass()) {
-            return false;
+            return Boolean.FALSE;
         }
         NettyInfo nettyInfo = (NettyInfo) o;
         return Objects.equals(weight, nettyInfo.weight) && Objects.equals(host, nettyInfo.host) && Objects.equals(port, nettyInfo.port);

@@ -48,10 +48,10 @@ public class ClassUtil {
      */
     private static Object getJdkDynamicProxyTargetObject(Object proxy) throws Exception {
         Field h = proxy.getClass().getSuperclass().getDeclaredField("h");
-        h.setAccessible(true);
+        h.setAccessible(Boolean.TRUE);
         AopProxy aopProxy = (AopProxy) h.get(proxy);
         Field advised = aopProxy.getClass().getDeclaredField("advised");
-        advised.setAccessible(true);
+        advised.setAccessible(Boolean.TRUE);
         return ((AdvisedSupport) advised.get(aopProxy)).getTargetSource().getTarget();
     }
 
@@ -62,10 +62,10 @@ public class ClassUtil {
      */
     private static Object getCglibProxyTargetObject(Object proxy) throws Exception {
         Field h = proxy.getClass().getDeclaredField("CGLIB$CALLBACK_0");
-        h.setAccessible(true);
+        h.setAccessible(Boolean.TRUE);
         Object dynamicAdvisedInterceptor = h.get(proxy);
         Field advised = dynamicAdvisedInterceptor.getClass().getDeclaredField("advised");
-        advised.setAccessible(true);
+        advised.setAccessible(Boolean.TRUE);
         Object target = ((AdvisedSupport) advised.get(dynamicAdvisedInterceptor)).getTargetSource().getTarget();
         return target;
     }

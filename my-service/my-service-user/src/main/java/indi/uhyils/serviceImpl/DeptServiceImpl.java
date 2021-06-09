@@ -49,14 +49,14 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
             middle.preInsert(request);
             dao.insertDeptPower(middle);
         }
-        return ServiceResult.buildSuccessResult("权限集添加权限成功", true, request);
+        return ServiceResult.buildSuccessResult("权限集添加权限成功", Boolean.TRUE, request);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public ServiceResult<Boolean> deleteDeptPower(IdsRequest idsRequest) {
         dao.deleteDeptPower(idsRequest.getIds());
-        return ServiceResult.buildSuccessResult("删除成功", true, idsRequest);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, idsRequest);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
             }
             dao.insertDeptMenu(t);
         });
-        return ServiceResult.buildSuccessResult("赋权成功", true, request);
+        return ServiceResult.buildSuccessResult("赋权成功", Boolean.TRUE, request);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
             }
             dao.insertDeptMenu(t);
         });
-        return ServiceResult.buildSuccessResult("赋权成功", true, request);
+        return ServiceResult.buildSuccessResult("赋权成功", Boolean.TRUE, request);
     }
 
     @Override
@@ -125,14 +125,14 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
         if (t == null) {
             return ServiceResult.buildFailedResult("查无此人", null, request);
         }
-        t.setDeleteFlag(true);
+        t.setDeleteFlag(Boolean.TRUE);
         t.preUpdate(request);
         getDao().update(t);
         dao.deleteDeptPowerMiddleByDeptId(request.getId());
         dao.deleteDeptMenuMiddleByDeptId(request.getId());
         dao.deleteRoleDeptMiddleByDeptId(request.getId());
 
-        return ServiceResult.buildSuccessResult("删除成功", true, request);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, request);
     }
 
 

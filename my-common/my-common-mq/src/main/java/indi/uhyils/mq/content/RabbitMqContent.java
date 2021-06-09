@@ -50,7 +50,7 @@ public class RabbitMqContent {
     /**
      * log服务是否在线
      */
-    private static volatile Boolean logServiceOnLine = false;
+    private static volatile Boolean logServiceOnLine = Boolean.FALSE;
 
     static {
         IP = IpUtil.getIp();

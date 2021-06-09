@@ -158,7 +158,7 @@ public abstract class AbstractTopic implements Topic {
     @Override
     public Boolean addNewRegister(final Register register) throws ExpressionInvalidException {
         if (register == null) {
-            return false;
+            return Boolean.FALSE;
         }
         OutDealTypeEnum behaviorType = register.getBehaviorType();
         // 如果是发布订阅类的主题
@@ -172,7 +172,7 @@ public abstract class AbstractTopic implements Topic {
                     t.tryToRegister(register);
                 }
             } else {
-                return false;
+                return Boolean.FALSE;
             }
         } else {
             if (register.getRegisterType() == RegisterType.PROVIDER && behaviorType == receiveType) {
@@ -183,10 +183,10 @@ public abstract class AbstractTopic implements Topic {
                     t.tryToRegister(register);
                 }
             } else {
-                return false;
+                return Boolean.FALSE;
             }
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     @Override

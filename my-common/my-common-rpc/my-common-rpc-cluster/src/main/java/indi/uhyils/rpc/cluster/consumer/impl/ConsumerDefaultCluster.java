@@ -92,11 +92,11 @@ public class ConsumerDefaultCluster implements Cluster {
 
     @Override
     public Boolean shutdown() {
-        boolean result = true;
+        boolean result = Boolean.TRUE;
         for (Map.Entry<NettyInfo, RpcNetty> nettyInfoRpcNettyEntry : nettyMap.entrySet()) {
             boolean shutdown = nettyInfoRpcNettyEntry.getValue().shutdown();
             if (!shutdown) {
-                result = false;
+                result = Boolean.FALSE;
             }
         }
         return result;
@@ -229,6 +229,6 @@ public class ConsumerDefaultCluster implements Cluster {
             RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
             nettyMap.put(nettyInfo, netty);
         }
-        return true;
+        return Boolean.TRUE;
     }
 }

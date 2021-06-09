@@ -64,7 +64,7 @@ public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> 
         if (byId == null) {
             return ServiceResult.buildFailedResult("查无此服务", null, idRequest);
         }
-        byId.setDeleteFlag(true);
+        byId.setDeleteFlag(Boolean.TRUE);
         byId.preUpdate(idRequest);
         getDao().update(byId);
         int apiDelete = apiDao.deleteAllByGroup(byId);

@@ -66,7 +66,7 @@ public class ProtocolParsingModel implements Serializable {
         build.paramsType = paramsType;
         build.params = params;
         build.function = function;
-        build.needService = true;
+        build.needService = Boolean.TRUE;
         return build;
     }
 
@@ -75,7 +75,7 @@ public class ProtocolParsingModel implements Serializable {
         build.keepAlive = keepAlive;
         build.protocolName = protocolName;
         build.ip = ip;
-        build.needService = false;
+        build.needService = Boolean.FALSE;
         build.returnByteFunction = returnByteFunction;
         return build;
     }

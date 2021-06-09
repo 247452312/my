@@ -80,7 +80,7 @@ public class ServiceTemporarilyDisabledAop {
         }
 
         // 找方法上的对应注解,如果有,则覆盖类上的方法
-        declaredMethod.setAccessible(false);
+        declaredMethod.setAccessible(Boolean.FALSE);
         ReadWriteMark methodDeclaredAnnotation = declaredMethod.getDeclaredAnnotation(ReadWriteMark.class);
         if (methodDeclaredAnnotation != null) {
             methodType = methodDeclaredAnnotation.type();

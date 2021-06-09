@@ -59,7 +59,7 @@ public class MongoConn {
         build.mongoClient = mongoClient;
         build.pool = pool;
         build.createTime = System.currentTimeMillis();
-        build.haveUse = false;
+        build.haveUse = Boolean.FALSE;
         return build;
     }
 
@@ -123,14 +123,14 @@ public class MongoConn {
         document.put(VALUE_NAME, base);
         mongoCollection.insertOne(document);
         close();
-        return true;
+        return Boolean.TRUE;
     }
 
     public boolean removeFile(String fileName) {
         Bson bson = Filters.gte(KEY_NAME, fileName);
         mongoCollection.deleteOne(bson);
         close();
-        return true;
+        return Boolean.TRUE;
     }
 
     public String getFile(String fileName) {

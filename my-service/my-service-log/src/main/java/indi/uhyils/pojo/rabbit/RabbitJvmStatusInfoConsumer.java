@@ -63,7 +63,7 @@ public class RabbitJvmStatusInfoConsumer extends DefaultConsumer {
         // 获取tag(队列中的唯一标示)
         long deliveryTag = envelope.getDeliveryTag();
         // 确认 false为不批量确认
-        getChannel().basicAck(deliveryTag, false);
+        getChannel().basicAck(deliveryTag, Boolean.FALSE);
 
     }
 }

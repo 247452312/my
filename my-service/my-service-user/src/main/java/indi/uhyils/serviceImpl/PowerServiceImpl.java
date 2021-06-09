@@ -56,7 +56,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
         Integer count = dao.checkUserHavePower(request.getUserId(), request.getInterfaceName(), request.getMethodName());
         boolean havePower;
         if (count > 0) {
-            havePower = true;
+            havePower = Boolean.TRUE;
         } else {
             havePower = false;
         }
@@ -71,13 +71,13 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
         if (powerEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null, request);
         }
-        powerEntity.setDeleteFlag(true);
+        powerEntity.setDeleteFlag(Boolean.TRUE);
         powerEntity.preUpdate(request);
         dao.update(powerEntity);
 
         dao.deleteDeptPowerMiddleByPowerId(request.getId());
 
-        return ServiceResult.buildSuccessResult("删除成功", true, request);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, request);
     }
 
     @Override

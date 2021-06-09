@@ -52,9 +52,9 @@ public class ScheduledManager {
             }
         } catch (Exception e) {
             LogUtil.error(this, e);
-            return false;
+            return Boolean.FALSE;
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     /**
@@ -84,9 +84,9 @@ public class ScheduledManager {
             }
         } catch (Exception e) {
             LogUtil.error(this, e);
-            return false;
+            return Boolean.FALSE;
         }
-        return true;
+        return Boolean.TRUE;
 
     }
 
@@ -102,9 +102,9 @@ public class ScheduledManager {
             scheduler.deleteJob(jobKey);
         } catch (Exception e) {
             LogUtil.error(this, e);
-            return false;
+            return Boolean.FALSE;
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     /**
@@ -124,9 +124,9 @@ public class ScheduledManager {
             scheduler.resumeJob(jobKey);
         } catch (Exception e) {
             LogUtil.error(this, e);
-            return false;
+            return Boolean.FALSE;
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     /**
@@ -148,9 +148,9 @@ public class ScheduledManager {
             scheduler.triggerJob(jobKey, dataMap);
         } catch (Exception e) {
             LogUtil.error(this, e);
-            return false;
+            return Boolean.FALSE;
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     /**
@@ -164,8 +164,8 @@ public class ScheduledManager {
             scheduler.pauseJob(jobKey);
         } catch (Exception e) {
             LogUtil.error(this, e);
-            return false;
+            return Boolean.FALSE;
         }
-        return true;
+        return Boolean.TRUE;
     }
 }

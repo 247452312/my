@@ -21,7 +21,7 @@ public class MongoManager {
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
-        return false;
+        return Boolean.FALSE;
     }
 
     public boolean removeFile(String fileName) {
@@ -32,7 +32,7 @@ public class MongoManager {
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
-        return false;
+        return Boolean.FALSE;
 
     }
 

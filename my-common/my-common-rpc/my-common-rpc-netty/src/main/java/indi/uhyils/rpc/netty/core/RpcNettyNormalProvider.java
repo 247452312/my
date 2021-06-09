@@ -63,10 +63,10 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
 
             b.bind(port).sync();
             setBootstrap(b);
-            return true;
+            return Boolean.TRUE;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return Boolean.FALSE;
         }
     }
 
@@ -79,10 +79,10 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
             if (this.workerGroup != null) {
                 this.workerGroup.shutdownGracefully();
             }
-            return true;
+            return Boolean.TRUE;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return Boolean.FALSE;
         }
     }
 

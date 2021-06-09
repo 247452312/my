@@ -54,7 +54,7 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
 
     @Override
     public Boolean isSingle() {
-        return true;
+        return Boolean.TRUE;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
 
     @Override
     public Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) {
-        return true;
+        return Boolean.TRUE;
     }
 
     @Override

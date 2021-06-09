@@ -25,14 +25,14 @@ public class LogUtil {
 
     public static Boolean isDebugEnabled(Object obj) {
         if (obj == null) {
-            return false;
+            return Boolean.FALSE;
         }
         return isDebugEnabled(obj.getClass());
     }
 
     public static Boolean isDebugEnabled(Class obj) {
         if (obj == null) {
-            return false;
+            return Boolean.FALSE;
         }
         String simpleName = obj.getName();
         if (!loggerMap.containsKey(simpleName)) {

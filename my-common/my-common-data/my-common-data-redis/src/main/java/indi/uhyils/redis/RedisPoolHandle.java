@@ -149,7 +149,7 @@ public class RedisPoolHandle {
         } finally {
             jedis.close();
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     public boolean removeUserBytoken(String token) {
@@ -157,7 +157,7 @@ public class RedisPoolHandle {
         try {
             String userJson = jedis.get(token);
             if (StringUtils.isEmpty(userJson)) {
-                return true;
+                return Boolean.TRUE;
             }
             UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
             Long id = userEntity.getId();
@@ -168,7 +168,7 @@ public class RedisPoolHandle {
         } finally {
             jedis.close();
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     public RedisPool getRedisPool() {
@@ -228,7 +228,7 @@ public class RedisPoolHandle {
             return jedis.sismember(key, ip);
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
-            return false;
+            return Boolean.FALSE;
         } finally {
             jedis.close();
         }
@@ -240,7 +240,7 @@ public class RedisPoolHandle {
             return jedis.hexists(key, ip);
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
-            return false;
+            return Boolean.FALSE;
         } finally {
             jedis.close();
         }
@@ -316,7 +316,7 @@ public class RedisPoolHandle {
         try {
             Boolean exists = jedis.exists(Content.SERVICE_USEABLE_SWITCH);
             if (!exists) {
-                return true;
+                return Boolean.TRUE;
             }
             String methodPower = jedis.hget(Content.SERVICE_USEABLE_SWITCH, methodName);
             if (methodPower != null) {
@@ -327,18 +327,18 @@ public class RedisPoolHandle {
                 if (classPower != null) {
                     int classPowerInt = Integer.parseInt(classPower);
                     if (classPowerInt == 3) {
-                        return false;
+                        return Boolean.FALSE;
                     } else if (classPowerInt == 0) {
-                        return true;
+                        return Boolean.TRUE;
 
                     } else {
                         if (classPowerInt == readWriteType) {
-                            return false;
+                            return Boolean.FALSE;
                         }
-                        return true;
+                        return Boolean.TRUE;
                     }
                 }
-                return true;
+                return Boolean.TRUE;
             }
         } finally {
             jedis.close();
@@ -355,6 +355,6 @@ public class RedisPoolHandle {
         } finally {
             jedis.close();
         }
-        return true;
+        return Boolean.TRUE;
     }
 }

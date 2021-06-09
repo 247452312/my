@@ -1,7 +1,7 @@
 package indi.uhyils.core.queue;
 
 import indi.uhyils.core.message.Message;
-import indi.uhyils.core.queue.distribute.MessageDistributeRunnable;
+import indi.uhyils.core.queue.distribute.AbstractMessageDistributeRunnable;
 import indi.uhyils.core.register.Register;
 import indi.uhyils.core.topic.Topic;
 
@@ -39,7 +39,7 @@ public abstract class AbstractQueue implements Queue {
     /**
      * 此队列的消息分发者
      */
-    protected MessageDistributeRunnable distribute;
+    protected AbstractMessageDistributeRunnable distribute;
 
     public AbstractQueue(Topic topic, Executor executor) {
         this.topic = topic;
@@ -100,9 +100,9 @@ public abstract class AbstractQueue implements Queue {
             queue.put(message);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            return false;
+            return Boolean.FALSE;
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     @Override

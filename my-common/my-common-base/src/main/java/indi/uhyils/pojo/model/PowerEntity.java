@@ -47,10 +47,10 @@ public class PowerEntity extends BaseVoEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) {
-            return true;
+            return Boolean.TRUE;
         }
         if (o == null || getClass() != o.getClass()) {
-            return false;
+            return Boolean.FALSE;
         }
         PowerEntity that = (PowerEntity) o;
         return Objects.equals(interfaceName, that.interfaceName) &&

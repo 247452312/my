@@ -170,7 +170,7 @@ public class AllController {
         LogUtil.info(this, "sessionData : " + sessionRequest.getData());
         HttpSession session = request.getSession();
         session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
-        return true;
+        return Boolean.TRUE;
     }
 
 }

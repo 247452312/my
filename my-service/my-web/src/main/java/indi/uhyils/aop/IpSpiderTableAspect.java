@@ -91,12 +91,12 @@ public class IpSpiderTableAspect {
     /**
      * 黑名单是否初始化
      */
-    private volatile Boolean init = false;
+    private volatile Boolean init = Boolean.FALSE;
 
     /**
      * 是否可以初始化
      */
-    private volatile Boolean canInit = true;
+    private volatile Boolean canInit = Boolean.TRUE;
 
     /**
      * 定义切入点，切入点为 {@link indi.uhyils.controller.AllController#action(Action, HttpServletRequest)}
@@ -114,9 +114,9 @@ public class IpSpiderTableAspect {
     @PostConstruct
     private boolean init() {
         // 没有初始化并且可以初始化
-        if (init == false && canInit == true) {
+        if (Boolean.FALSE.equals(init) && Boolean.TRUE.equals(canInit)) {
             synchronized (this) {
-                if (init == false || canInit == true) {
+                if (Boolean.FALSE.equals(init) || Boolean.TRUE.equals(canInit)) {
                     try {
                         // 去后台获取数据库中的ip黑名单
                         DefaultRequest request = DefaultRequestBuildUtil.getAdminDefaultRequest();
@@ -124,27 +124,27 @@ public class IpSpiderTableAspect {
                         // 如果log服务挂了
                         if (allIpBlackList == null || !allIpBlackList.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                             // 设置为不可用
-                            canInit = false;
-                            return false;
+                            canInit = Boolean.FALSE;
+                            return Boolean.FALSE;
                         }
                         // 将黑名单存入redis
                         Long sadd = redisPoolHandle.sadd(IP_BLACK_REDIS_KEY, allIpBlackList.getData());
                         // 如果redis不可用
                         if (sadd == -1L) {
-                            canInit = false;
-                            return false;
+                            canInit = Boolean.FALSE;
+                            return Boolean.FALSE;
                         }
-                        init = true;
-                        return true;
+                        init = Boolean.TRUE;
+                        return Boolean.TRUE;
                     } catch (Exception e) {
                         LogUtil.error(this, e);
-                        canInit = false;
-                        return false;
+                        canInit = Boolean.FALSE;
+                        return Boolean.FALSE;
                     }
                 }
             }
         }
-        return true;
+        return Boolean.TRUE;
 
     }
 

@@ -61,14 +61,14 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
             build.preInsert(request);
             dao.insertRoleDept(build);
         }
-        return ServiceResult.buildSuccessResult("角色添加权限集成功", true, request);
+        return ServiceResult.buildSuccessResult("角色添加权限集成功", Boolean.TRUE, request);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept"})
     public ServiceResult<Boolean> deleteRoleDept(IdsRequest idsRequest) {
         dao.deleteRoleDept(idsRequest.getIds());
-        return ServiceResult.buildSuccessResult("删除成功", true, idsRequest);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, idsRequest);
     }
 
     @Override
@@ -96,13 +96,13 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
         if (t == null) {
             return ServiceResult.buildFailedResult("查询失败", null, request);
         }
-        t.setDeleteFlag(true);
+        t.setDeleteFlag(Boolean.TRUE);
         t.preUpdate(request);
         dao.update(t);
         dao.deleteRoleDeptMiddleByRoleId(request.getId());
         dao.updateUserRoleToNullByRoleId(request.getId());
 
-        return ServiceResult.buildSuccessResult("删除成功", true, request);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, request);
 
     }
 

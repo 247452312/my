@@ -32,7 +32,7 @@ public class JobInitRunner implements ApplicationRunner {
 
         List<JobEntity> list = jobDao.getAll();
         list.forEach(t -> {
-            if (t.getPause() != true) {
+            if (Boolean.FALSE.equals(t.getPause())) {
                 scheduledManager.addJob(t);
             }
         });

@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TopicFactory {
 
-    private static final Map<String, Topic> topicMap = new ConcurrentHashMap<>();
+    private static final Map<String, Topic> TOPIC_MAP = new ConcurrentHashMap<>();
 
     /**
      * 根据消息创建或获取一个topic
@@ -35,7 +35,7 @@ public class TopicFactory {
     }
 
     public static Topic getByTopicName(String topicName) {
-        return topicMap.get(topicName);
+        return TOPIC_MAP.get(topicName);
     }
 
     /**
@@ -75,8 +75,8 @@ public class TopicFactory {
     public static Topic createOrGetTopic(String topicName, TopicType userType, OutDealTypeEnum receiveType,
                                          OutDealTypeEnum pushType, String key) throws UserException {
 
-        if (topicMap.containsKey(topicName)) {
-            Topic topic = topicMap.get(topicName);
+        if (TOPIC_MAP.containsKey(topicName)) {
+            Topic topic = TOPIC_MAP.get(topicName);
             TopicType topicType = topic.getTopicType();
             // 判断已存在的主体类型和刚刚发送的主体是否相同
             if (topicType != userType) {
@@ -89,7 +89,7 @@ public class TopicFactory {
             throw new PartitionTopicNoKeyException();
         }
         Topic topic = newTopic(topicName, userType, receiveType, pushType, key);
-        topicMap.put(topicName, topic);
+        TOPIC_MAP.put(topicName, topic);
         return topic;
     }
 

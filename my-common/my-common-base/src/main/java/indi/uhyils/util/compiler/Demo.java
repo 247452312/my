@@ -36,7 +36,7 @@ public class Demo {
         Object o = c.newInstance();
         Method[] declaredMethods = c.getDeclaredMethods();
         Method add = declaredMethods[0];
-        add.setAccessible(true);
+        add.setAccessible(Boolean.TRUE);
         Object invoke = add.invoke(o, 1, 2);
         LogUtil.info(invoke.toString());
     }

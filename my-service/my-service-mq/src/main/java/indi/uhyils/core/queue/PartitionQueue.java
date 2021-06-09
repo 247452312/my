@@ -37,8 +37,8 @@ public class PartitionQueue extends AbstractQueue {
         boolean check = LogicEngineHelper.check(expression, key);
         if (check) {
             consumer.add(register);
-            return true;
+            return Boolean.TRUE;
         }
-        return false;
+        return Boolean.FALSE;
     }
 }

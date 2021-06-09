@@ -63,49 +63,49 @@ public class MqServiceImpl implements MqService {
             pushType = OutDealTypeEnum.PASSIVE;
         }
         TopicFactory.createOrGetTopic(request.getName(), request.getType(), receiveType, pushType, request.getKey());
-        return ServiceResult.buildSuccessResult(true, request);
+        return ServiceResult.buildSuccessResult(Boolean.TRUE, request);
     }
 
     @Override
     public ServiceResult<Boolean> registerProvider(RegisterProviderRequest request) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
-            return ServiceResult.buildSuccessResult(false, request);
+            return ServiceResult.buildSuccessResult(Boolean.FALSE, request);
         }
         if (StringUtils.isBlank(request.getChannelId())) {
             topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.PROVIDER, request.getUrl(), topic, request.getBehavior()));
         } else {
             topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PROVIDER, request.getChannelId(), topic, request.getBehavior()));
         }
-        return ServiceResult.buildSuccessResult(true, request);
+        return ServiceResult.buildSuccessResult(Boolean.TRUE, request);
     }
 
     @Override
     public ServiceResult<Boolean> registerConsumer(RegisterConsumerRequest request) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
-            return ServiceResult.buildSuccessResult(false, request);
+            return ServiceResult.buildSuccessResult(Boolean.FALSE, request);
         }
         if (StringUtils.isBlank(request.getChannelId())) {
             topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.COMSUMER, request.getUrl(), topic, request.getBehavior()));
         } else {
             topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.COMSUMER, request.getChannelId(), topic, request.getBehavior()));
         }
-        return ServiceResult.buildSuccessResult(true, request);
+        return ServiceResult.buildSuccessResult(Boolean.TRUE, request);
     }
 
     @Override
     public ServiceResult<Boolean> registerPublish(RegisterPublishRequest request) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
-            return ServiceResult.buildSuccessResult(false, request);
+            return ServiceResult.buildSuccessResult(Boolean.FALSE, request);
         }
         if (StringUtils.isBlank(request.getChannelId())) {
             topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.PUBLISH, request.getUrl(), topic, request.getBehavior()));
         } else {
             topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PUBLISH, request.getChannelId(), topic, request.getBehavior()));
         }
-        return ServiceResult.buildSuccessResult(true, request);
+        return ServiceResult.buildSuccessResult(Boolean.TRUE, request);
     }
 
     @Override
@@ -113,13 +113,13 @@ public class MqServiceImpl implements MqService {
             throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
-            return ServiceResult.buildSuccessResult(false, request);
+            return ServiceResult.buildSuccessResult(Boolean.FALSE, request);
         }
         if (StringUtils.isBlank(request.getChannelId())) {
             topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.SUBSCRIBER, request.getUrl(), topic, request.getBehavior()));
         } else {
             topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.SUBSCRIBER, request.getChannelId(), topic, request.getBehavior()));
         }
-        return ServiceResult.buildSuccessResult(true, request);
+        return ServiceResult.buildSuccessResult(Boolean.TRUE, request);
     }
 }

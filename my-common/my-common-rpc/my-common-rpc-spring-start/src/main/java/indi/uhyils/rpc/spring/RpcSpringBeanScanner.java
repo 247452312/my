@@ -30,23 +30,23 @@ public class RpcSpringBeanScanner extends ClassPathBeanDefinitionScanner {
     }
 
     public void registerFilters() {
-        boolean acceptAllInterfaces = true;
+        boolean acceptAllInterfaces = Boolean.TRUE;
 
         if (this.annotationClass != null) {
             addIncludeFilter(new AnnotationTypeFilter(this.annotationClass));
-            acceptAllInterfaces = false;
+            acceptAllInterfaces = Boolean.FALSE;
         }
         if (this.superInterface != null) {
             addIncludeFilter(new AssignableTypeFilter(this.superInterface) {
                 @Override
                 protected boolean matchClassName(String className) {
-                    return false;
+                    return Boolean.FALSE;
                 }
             });
-            acceptAllInterfaces = false;
+            acceptAllInterfaces = Boolean.FALSE;
         }
         if (acceptAllInterfaces) {
-            addIncludeFilter((metadataReader, metadataReaderFactory) -> true);
+            addIncludeFilter((metadataReader, metadataReaderFactory) -> Boolean.TRUE);
         }
 
     }

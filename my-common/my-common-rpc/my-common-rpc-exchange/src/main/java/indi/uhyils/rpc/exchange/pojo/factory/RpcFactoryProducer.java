@@ -18,31 +18,31 @@ public class RpcFactoryProducer {
     /**
      * 默认的rpc请求工厂的spi名称
      */
-    private static final String requestFactoryDefaultRpcSpiName = "default_rpc_request_factory";
+    private static final String REQUEST_FACTORY_DEFAULT_RPC_SPI_NAME = "default_rpc_request_factory";
     /**
      * 默认的rpc响应工厂的spi名称
      */
-    private static final String responseFactoryDefaultRpcSpiName = "default_rpc_response_factory";
+    private static final String RESPONSE_FACTORY_DEFAULT_RPC_SPI_NAME = "default_rpc_response_factory";
 
     /**
      * rpc请求工厂在rpc自定义扩展中的key
      */
-    private static final String requestFactoryRpcSpiCustomKey = "rpc_request_factory";
+    private static final String REQUEST_FACTORY_RPC_SPI_CUSTOM_KEY = "rpc_request_factory";
     /**
      * rpc响应工厂在rpc自定义扩展中的key
      */
-    private static final String responseFactoryRpcSpiCustomKey = "rpc_response_factory";
+    private static final String RESPONSE_FACTORY_RPC_SPI_CUSTOM_KEY = "rpc_response_factory";
 
     public static RpcFactory build(RpcTypeEnum rpcTypeEnum) {
         RpcConfig instance = RpcConfigFactory.getInstance();
         Map<String, Object> custom = instance.getCustom().getCustom();
         switch (rpcTypeEnum) {
             case RESPONSE:
-                return (RpcFactory) RpcSpiManager.getExtensionByClass(RpcFactory.class, (String) custom.getOrDefault(responseFactoryRpcSpiCustomKey, responseFactoryDefaultRpcSpiName));
+                return (RpcFactory) RpcSpiManager.getExtensionByClass(RpcFactory.class, (String) custom.getOrDefault(RESPONSE_FACTORY_RPC_SPI_CUSTOM_KEY, RESPONSE_FACTORY_DEFAULT_RPC_SPI_NAME));
             //default默认使用request的请求
             case REQUEST:
             default:
-                return (RpcFactory) RpcSpiManager.getExtensionByClass(RpcFactory.class, (String) custom.getOrDefault(requestFactoryRpcSpiCustomKey, requestFactoryDefaultRpcSpiName));
+                return (RpcFactory) RpcSpiManager.getExtensionByClass(RpcFactory.class, (String) custom.getOrDefault(REQUEST_FACTORY_RPC_SPI_CUSTOM_KEY, REQUEST_FACTORY_DEFAULT_RPC_SPI_NAME));
         }
     }
 }

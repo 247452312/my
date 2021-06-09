@@ -42,7 +42,7 @@ public class SendMail {
         MailAccount account = new MailAccount();
         account.setHost(emailConfig.getHost());
         account.setPort(Integer.parseInt(emailConfig.getPort()));
-        account.setAuth(true);
+        account.setAuth(Boolean.TRUE);
         try {
             // 对称解密
             account.setPass(emailConfig.getPass());
@@ -51,7 +51,7 @@ public class SendMail {
         }
         account.setFrom(emailConfig.getUser() + "<" + emailConfig.getFromUser() + ">");
         // ssl方式发送
-        account.setSslEnable(true);
+        account.setSslEnable(Boolean.TRUE);
         // 发送
         try {
             int size = emailVo.getTos().size();
@@ -61,14 +61,14 @@ public class SendMail {
                     .setContent(emailVo.getContent())
                     //抄送给自己防止邮箱发送出现554
                     .setCcs(emailConfig.getFromUser())
-                    .setHtml(true)
+                    .setHtml(Boolean.TRUE)
                     //关闭session
                     .setUseGlobalSession(false)
                     .send();
-            return true;
+            return Boolean.TRUE;
         } catch (Exception e) {
             LogUtil.error(SendMail.class, e);
         }
-        return false;
+        return Boolean.FALSE;
     }
 }

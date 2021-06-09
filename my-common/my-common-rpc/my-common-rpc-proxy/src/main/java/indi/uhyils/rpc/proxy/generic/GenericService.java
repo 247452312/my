@@ -41,7 +41,7 @@ public class GenericService<T> {
     public Object invoke(String method, Class[] parameterTypes, Object[] args) throws InvocationTargetException {
         try {
             Method targetMethod = service.getClass().getMethod(method, parameterTypes);
-            targetMethod.setAccessible(true);
+            targetMethod.setAccessible(Boolean.TRUE);
             for (int i = 0; i < parameterTypes.length; i++) {
                 if (args[i] instanceof JSONObject || args[i] instanceof JSONArray || args[i] instanceof Map) {
                     args[i] = JSONObject.parseObject(JSONObject.toJSONString(args[i]), parameterTypes[i]);

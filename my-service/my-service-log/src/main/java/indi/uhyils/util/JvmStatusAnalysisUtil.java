@@ -39,7 +39,7 @@ public class JvmStatusAnalysisUtil {
         Boolean memStillUp = true;
         for (int i = 1; i < statuses.size(); i++) {
             if (statuses.get(i).getUseMem() <= statuses.get(i - 1).getUseMem()) {
-                memStillUp = false;
+                memStillUp = Boolean.FALSE;
                 break;
             }
         }

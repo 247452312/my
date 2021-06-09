@@ -120,9 +120,9 @@ public class SpringUtil implements ApplicationContextInitializer {
     public static <T> Boolean containsBean(Class<T> beanClass) {
         try {
             getBean(beanClass);
-            return true;
+            return Boolean.TRUE;
         } catch (Exception e) {
-            return false;
+            return Boolean.FALSE;
         }
     }
 

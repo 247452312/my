@@ -227,7 +227,7 @@ public abstract class AbstractRpcData implements RpcData {
     }
 
     protected void initHeader(byte[] data, AtomicInteger readIndex) {
-        boolean lastByteIsEnter = false;
+        boolean lastByteIsEnter = Boolean.FALSE;
         List<RpcHeader> rpcHeaders = new ArrayList<>();
         StringBuilder headerStr = new StringBuilder();
         int headerEnd = 0;
@@ -237,7 +237,7 @@ public abstract class AbstractRpcData implements RpcData {
                 if (lastByteIsEnter) {
                     break;
                 }
-                lastByteIsEnter = true;
+                lastByteIsEnter = Boolean.TRUE;
                 RpcHeader rpcHeader = RpcHeaderFactory.newHeader(headerStr.toString());
                 headerStr.delete(0, headerStr.length());
                 if (rpcHeader != null) {
@@ -245,7 +245,7 @@ public abstract class AbstractRpcData implements RpcData {
                 }
             } else {
                 headerStr.append((char) data[i]);
-                lastByteIsEnter = false;
+                lastByteIsEnter = Boolean.FALSE;
             }
         }
         this.headers = rpcHeaders.toArray(new RpcHeader[]{new RpcHeader()});

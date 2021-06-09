@@ -36,7 +36,7 @@ public class OffLineJedis implements Redisable {
     /**
      * 代表真的redis没有开
      */
-    public volatile static Boolean redisStart = false;
+    public volatile static Boolean redisStart = Boolean.FALSE;
 
     static {
         Runnable thread = () -> {
@@ -46,7 +46,7 @@ public class OffLineJedis implements Redisable {
         };
         Thread redis = new Thread(thread);
         redis.setName("redis_guardian_thread");
-        redis.setDaemon(true);
+        redis.setDaemon(Boolean.TRUE);
         redis.start();
 
     }
@@ -119,10 +119,10 @@ public class OffLineJedis implements Redisable {
 
     @Override
     public Long del(String key) {
-        Boolean b = false;
+        Boolean b = Boolean.FALSE;
         if (CACHE.containsKey(key)) {
             CACHE.remove(key);
-            b = true;
+            b = Boolean.TRUE;
             if (CACHE_TIME.containsKey(key)) {
                 CACHE_TIME.remove(key);
             }
@@ -187,7 +187,7 @@ public class OffLineJedis implements Redisable {
     @Override
     public Boolean sismember(String key, String member) {
         // 一直返回false. 不保证幂等性
-        return false;
+        return Boolean.FALSE;
     }
 
     @Override

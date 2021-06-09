@@ -50,7 +50,7 @@ public abstract class BaseVoEntity extends BaseIdEntity {
         this.createUser = request.getUser().getId();
         this.updateDate = this.createDate;
         this.updateUser = this.createUser;
-        this.deleteFlag = false;
+        this.deleteFlag = Boolean.FALSE;
 
     }
 

@@ -50,7 +50,7 @@ public class PushServiceImpl implements PushService {
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> push(CronRequest request) throws Exception {
-        Boolean result = true;
+        Boolean result = Boolean.TRUE;
         String cron = request.getCron();
         LogUtil.info(this, "定时推送任务启动: " + cron);
         /* 获取api群 */
@@ -87,10 +87,10 @@ public class PushServiceImpl implements PushService {
             String sendContent = PushUtils.getSendContent(userEntity, apiGroupEntity);
             switch (Objects.requireNonNull(PushTypeEnum.prase(apiSubscribeEntity.getType()))) {
                 case PAGE:
-                    result = !PushUtils.pagePush(userEntity, "my系统,订阅消息-" + apiGroupEntity.getName(), sendContent) ? false : result;
+                    result = !PushUtils.pagePush(userEntity, "my系统,订阅消息-" + apiGroupEntity.getName(), sendContent) ? Boolean.FALSE : result;
                     break;
                 case EMAIL:
-                    result = !PushUtils.emailPush(userEntity, "my系统,订阅邮件-" + apiGroupEntity.getName(), sendContent) ? false : result;
+                    result = !PushUtils.emailPush(userEntity, "my系统,订阅邮件-" + apiGroupEntity.getName(), sendContent) ? Boolean.FALSE : result;
                     break;
                 default:
                     break;
@@ -108,7 +108,7 @@ public class PushServiceImpl implements PushService {
         }
         JSONObject jsonObject = (JSONObject) serviceResult.getData();
         UserEntity userEntity = jsonObject.toJavaObject(UserEntity.class);
-        boolean result = true;
+        boolean result = Boolean.TRUE;
         switch (Objects.requireNonNull(PushTypeEnum.prase(request.getType()))) {
             case PAGE:
                 result = PushUtils.pagePush(userEntity, request.getTitle(), request.getMsg());

@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Date 文件创建日期 2021年04月16日 20时55分
  * @Version 1.0
  */
-public abstract class MessageDistributeRunnable extends Thread implements QueueObserver {
+public abstract class AbstractMessageDistributeRunnable extends Thread implements QueueObserver {
 
     private static AtomicInteger integer = new AtomicInteger(0);
     /**
@@ -29,7 +29,7 @@ public abstract class MessageDistributeRunnable extends Thread implements QueueO
      */
     private final Queue queue;
 
-    public MessageDistributeRunnable(Queue queue) {
+    public AbstractMessageDistributeRunnable(Queue queue) {
         super("message_distribute_" + integer.addAndGet(1));
         this.queue = queue;
         this.consumer = queue.getConsumer();

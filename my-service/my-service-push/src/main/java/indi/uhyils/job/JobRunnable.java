@@ -56,6 +56,6 @@ public class JobRunnable implements Callable {
         ArrayList<Object> list = new ArrayList<>(1);
         list.add(defaultRequest);
         RpcApiUtil.rpcApiToolAsync(interfaceName, methodName, list, new DefaultRequest());
-        return true;
+        return Boolean.TRUE;
     }
 }

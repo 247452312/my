@@ -165,7 +165,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
             t.preUpdate(request);
             int update = dao.update(t);
             if (update == 0) {
-                b.set(false);
+                b.set(Boolean.FALSE);
             }
         });
         return ServiceResult.buildSuccessResult("删除redis执行成功", b.get(), request);
@@ -188,7 +188,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
                 dao.update(redisEntity);
             } catch (Exception e) {
                 LogUtil.error(this, e);
-                b.set(false);
+                b.set(Boolean.FALSE);
             }
         });
 
@@ -213,7 +213,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
             if (StringUtils.contains(s, redisEntity.getDockerName())) {
                 return;
             }
-            b.set(false);
+            b.set(Boolean.FALSE);
         });
         return ServiceResult.buildSuccessResult("批量开启redis执行成功", b.get(), request);
 
@@ -235,7 +235,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
             if (StringUtils.contains(s, redisEntity.getDockerName())) {
                 return;
             }
-            b.set(false);
+            b.set(Boolean.FALSE);
         });
 
         return ServiceResult.buildSuccessResult("redis批量停止操作执行成功", b.get(), request);

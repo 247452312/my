@@ -144,7 +144,7 @@ public class RegistryNacosMode implements RegistryMode {
 
 
         nacosNaming.registerInstance(providerNecessaryInfo.getInterfaceName(), RegistryContent.DEFAULT_REGISTRY_GROUP_NAME, instance);
-        return true;
+        return Boolean.TRUE;
     }
 
     @Override

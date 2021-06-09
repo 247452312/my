@@ -65,7 +65,7 @@ public class Page<T extends Serializable> implements Serializable {
      */
     public static <T extends Serializable> Page<T> build(DefaultPageRequest pageRequest, List<T> list, Integer count, Integer totalPage) {
         //代表分页
-        if (pageRequest.getPaging() == true) {
+        if (Boolean.TRUE.equals(pageRequest.getPaging())) {
             return build(list, pageRequest.getSize(), pageRequest.getPage(), count, totalPage);
         } else {
             return build(list, count, 1, count, 1);

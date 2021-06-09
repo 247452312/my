@@ -234,7 +234,7 @@ public class HotSpotAop {
                 if ("unique".equals(field.getName())) {
                     continue;
                 }
-                field.setAccessible(true);
+                field.setAccessible(Boolean.TRUE);
                 sb.append(JSON.toJSONString(field.get(arg)));
             }
             // 获取热点redis中的key(有参数)

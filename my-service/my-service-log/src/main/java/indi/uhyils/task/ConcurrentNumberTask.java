@@ -32,7 +32,7 @@ public class ConcurrentNumberTask {
     /**
      * 低级服务是否降级(默认没有降级)
      */
-    private volatile static Boolean degradation = false;
+    private volatile static Boolean degradation = Boolean.FALSE;
     @Resource
     private LogDao logDao;
     @RpcReference
@@ -63,13 +63,13 @@ public class ConcurrentNumberTask {
             // 如果设置的并发数的80%大于已有并发数,说明高峰已经过去(设置80% 防抖)
             if (concurrentNumberSetable * RECOVERY_PRE > countByStartTime) {
                 NacosUtil.recoveryLowInterface();
-                degradation = false;
+                degradation = Boolean.FALSE;
             }
         } else {
             // 如果设置的并发数小于现有的并发数
             if (concurrentNumberSetable < countByStartTime) {
                 NacosUtil.degradationLowInterface();
-                degradation = true;
+                degradation = Boolean.TRUE;
             }
         }
 

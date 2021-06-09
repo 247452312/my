@@ -24,7 +24,7 @@ public abstract class AbstractTimeOutFilter {
         try {
             return submit.get(timeOut, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            submit.cancel(true);
+            submit.cancel(Boolean.TRUE);
             RpcData response = invokeException(rpcData, timeOut);
             invokerContext.getRpcResult().set(response);
             return invokerContext.getRpcResult();

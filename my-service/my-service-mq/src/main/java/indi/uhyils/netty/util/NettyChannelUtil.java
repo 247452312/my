@@ -29,11 +29,11 @@ public class NettyChannelUtil {
      */
     public static Boolean addChannel(Channel channel) {
         if (!channel.isActive()) {
-            return false;
+            return Boolean.FALSE;
         }
         String channelId = channel.id().asLongText();
         CHANNEL_MAP.put(channelId, channel);
-        return true;
+        return Boolean.TRUE;
 
     }
 
@@ -46,7 +46,7 @@ public class NettyChannelUtil {
     public static Boolean addChannelIfNoContains(Channel channel) {
         String id = channel.id().asLongText();
         if (CHANNEL_MAP.containsKey(id)) {
-            return false;
+            return Boolean.FALSE;
         }
         return addChannel(channel);
     }

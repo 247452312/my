@@ -40,7 +40,7 @@ public class DealOrderNodeResponse implements Serializable {
      */
     public static DealOrderNodeResponse buildSuccess() {
         DealOrderNodeResponse build = new DealOrderNodeResponse();
-        build.setAllow(true);
+        build.setAllow(Boolean.TRUE);
         return build;
     }
 

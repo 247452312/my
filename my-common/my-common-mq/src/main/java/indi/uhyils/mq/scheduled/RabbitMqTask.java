@@ -96,9 +96,9 @@ public class RabbitMqTask {
                 startChannel = rabbitFactory.getConn().createChannel();
                 startChannel.confirmSelect();
                 //创建exchange
-                startChannel.exchangeDeclare(RabbitMqContent.EXCHANGE_NAME, "direct", false, false, null);
+                startChannel.exchangeDeclare(RabbitMqContent.EXCHANGE_NAME, "direct", Boolean.FALSE, Boolean.FALSE, null);
                 //创建队列
-                startChannel.queueDeclare(RabbitMqContent.JVM_START_QUEUE_NAME, false, false, false, null);
+                startChannel.queueDeclare(RabbitMqContent.JVM_START_QUEUE_NAME, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null);
                 //绑定exchange和queue
                 startChannel.queueBind(RabbitMqContent.JVM_START_QUEUE_NAME, RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.JVM_START_QUEUE_NAME);
 
@@ -117,7 +117,7 @@ public class RabbitMqTask {
                             // 设置唯一标示
                             rabbitMqTask.setJvmUniqueMark(jvmUniqueMark);
                             // 设置interface可以开始干活了
-                            RabbitMqContent.setLogServiceOnLine(true);
+                            RabbitMqContent.setLogServiceOnLine(Boolean.TRUE);
                             // 设置为空 释放内存
                             JvmStartInfo.setStatusInfos(null);
                         }
@@ -142,9 +142,9 @@ public class RabbitMqTask {
                 statusChannel = rabbitFactory.getConn().createChannel();
                 statusChannel.confirmSelect();
                 //创建exchange
-                statusChannel.exchangeDeclare(RabbitMqContent.EXCHANGE_NAME, "direct", false, false, null);
+                statusChannel.exchangeDeclare(RabbitMqContent.EXCHANGE_NAME, "direct", Boolean.FALSE, Boolean.FALSE, null);
                 //创建队列
-                statusChannel.queueDeclare(RabbitMqContent.JVM_STATUS_QUEUE_NAME, false, false, false, null);
+                statusChannel.queueDeclare(RabbitMqContent.JVM_STATUS_QUEUE_NAME, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null);
                 //绑定exchange和queue
                 statusChannel.queueBind(RabbitMqContent.JVM_STATUS_QUEUE_NAME, RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.JVM_STATUS_QUEUE_NAME);
                 statusChannel.addConfirmListener(new ConfirmListener() {
@@ -152,14 +152,14 @@ public class RabbitMqTask {
                     public void handleAck(long deliveryTag, boolean multiple) {
                         LogUtil.info(this, "JVM状态消息处理成功");
                         // 成功了就开启interface发送
-                        RabbitMqContent.setLogServiceOnLine(true);
+                        RabbitMqContent.setLogServiceOnLine(Boolean.TRUE);
 
                     }
 
                     @Override
                     public void handleNack(long deliveryTag, boolean multiple) {
                         // 失败了就取消interface发送
-                        RabbitMqContent.setLogServiceOnLine(false);
+                        RabbitMqContent.setLogServiceOnLine(Boolean.FALSE);
                         LogUtil.warn(this, "JVM信息处理失败");
                     }
                 });

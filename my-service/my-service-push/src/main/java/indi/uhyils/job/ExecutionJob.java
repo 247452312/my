@@ -47,7 +47,7 @@ public class ExecutionJob extends QuartzJobBean {
             LogUtil.info(this, "任务执行完毕，任务名称：" + quartzJob.getName());
         } catch (Exception e) {
             LogUtil.error(this, e);
-            quartzJob.setPause(false);
+            quartzJob.setPause(Boolean.FALSE);
             //更新状态
             dao.update(quartzJob);
             manager.deleteJob(quartzJob);

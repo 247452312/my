@@ -141,11 +141,11 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
             int monNow = Integer.parseInt(format.substring(4, 6));
             // 如果分钟差超过30
             if (monNow - Integer.parseInt(mon) >= Content.LOGIN_TIME_OUT_MIN) {
-                tokenInfo.setTimeOut(true);
+                tokenInfo.setTimeOut(Boolean.TRUE);
             } else if (hourNow - Integer.parseInt(hour) > 0) {
-                tokenInfo.setTimeOut(true);
+                tokenInfo.setTimeOut(Boolean.TRUE);
             } else if (dayNow - Integer.parseInt(day) > 0) {
-                tokenInfo.setTimeOut(true);
+                tokenInfo.setTimeOut(Boolean.TRUE);
             } else {
                 tokenInfo.setTimeOut(false);
             }

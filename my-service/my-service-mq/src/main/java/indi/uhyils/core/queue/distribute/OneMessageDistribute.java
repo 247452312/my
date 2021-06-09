@@ -12,7 +12,7 @@ import java.util.Optional;
  * @Date 文件创建日期 2021年04月16日 21时52分
  * @Version 1.0
  */
-public class OneMessageDistribute extends MessageDistributeRunnable {
+public class OneMessageDistribute extends AbstractMessageDistributeRunnable {
 
     public OneMessageDistribute(Queue queue) {
         super(queue);

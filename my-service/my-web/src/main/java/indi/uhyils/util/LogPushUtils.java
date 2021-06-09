@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 public class LogPushUtils {
 
 
-    private static final JsonEventProducerWithTranslator producer;
+    private static final JsonEventProducerWithTranslator PRODUCER;
 
     static {
         JsonEventFactory factory = new JsonEventFactory();
@@ -32,7 +32,7 @@ public class LogPushUtils {
         disruptor.handleEventsWith(SpringUtil.getBean(JsonEventConsumer.class));
         disruptor.start();
         RingBuffer<JsonEvent> ringBuffer = disruptor.getRingBuffer();
-        producer = new JsonEventProducerWithTranslator(ringBuffer);
+        PRODUCER = new JsonEventProducerWithTranslator(ringBuffer);
     }
 
     public static void pushLog(String exceptionDetail, String interfaceName, String methodName, Object params, LinkNode<String> link, HttpServletRequest request, String token, Integer serviceCode) {
@@ -55,7 +55,7 @@ public class LogPushUtils {
         jsonObject.put("link", parseString(link));
 
         String json = jsonObject.toJSONString();
-        producer.onData(json, token);
+        PRODUCER.onData(json, token);
     }
 
     public static String getIpAddress(HttpServletRequest request) {

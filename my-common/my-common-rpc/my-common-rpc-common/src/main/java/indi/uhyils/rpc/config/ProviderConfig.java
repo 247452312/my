@@ -13,7 +13,7 @@ public class ProviderConfig implements Serializable {
     /**
      * 是否开启生产者
      */
-    private boolean enable = false;
+    private boolean enable = Boolean.FALSE;
     /**
      * rpc端口
      */
@@ -31,7 +31,7 @@ public class ProviderConfig implements Serializable {
 
     public void setPort(Integer port) {
         this.port = port;
-        enable = true;
+        enable = Boolean.TRUE;
     }
 
     public Long getTimeout() {
@@ -40,7 +40,7 @@ public class ProviderConfig implements Serializable {
 
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
-        enable = true;
+        enable = Boolean.TRUE;
     }
 
     public boolean isEnable() {

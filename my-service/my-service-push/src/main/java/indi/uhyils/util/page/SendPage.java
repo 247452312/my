@@ -28,6 +28,6 @@ public class SendPage {
         sendPageEntity.preInsert(request);
         //插入
         bean.insert(sendPageEntity);
-        return true;
+        return Boolean.TRUE;
     }
 }

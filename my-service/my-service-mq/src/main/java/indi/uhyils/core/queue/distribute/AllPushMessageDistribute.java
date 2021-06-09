@@ -11,7 +11,7 @@ import java.util.Collection;
  * @Date 文件创建日期 2021年04月16日 21时52分
  * @Version 1.0
  */
-public class AllPushMessageDistribute extends MessageDistributeRunnable {
+public class AllPushMessageDistribute extends AbstractMessageDistributeRunnable {
 
     public AllPushMessageDistribute(Queue queue) {
         super(queue);

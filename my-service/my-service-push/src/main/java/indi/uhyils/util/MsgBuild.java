@@ -21,7 +21,7 @@ public class MsgBuild {
     public static MsgEntity buildSuccessMsg(Long userId, String title, String content, PushTypeEnum type) {
         MsgEntity msgEntity = new MsgEntity();
         msgEntity.setContent(content);
-        msgEntity.setSuccess(true);
+        msgEntity.setSuccess(Boolean.TRUE);
         msgEntity.setTarget(userId);
         msgEntity.setTitle(title);
         msgEntity.setType(type.getCode());

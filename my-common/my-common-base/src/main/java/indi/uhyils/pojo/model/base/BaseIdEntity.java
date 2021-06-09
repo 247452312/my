@@ -45,10 +45,10 @@ public abstract class BaseIdEntity implements BaseDbSaveable {
     @Override
     public boolean equals(Object o) {
         if (this == o) {
-            return true;
+            return Boolean.TRUE;
         }
         if (o == null || getClass() != o.getClass()) {
-            return false;
+            return Boolean.FALSE;
         }
         BaseIdEntity that = (BaseIdEntity) o;
         return Objects.equals(id, that.id);

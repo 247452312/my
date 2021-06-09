@@ -28,7 +28,7 @@ public class RedisPool {
     /**
      * 初始化类型是否是正常的redis
      */
-    private static Boolean initTypeIsRedis = true;
+    private static Boolean initTypeIsRedis = Boolean.TRUE;
     /**
      * 最大连接数
      */
@@ -44,11 +44,11 @@ public class RedisPool {
     /**
      * 在borrow一个jedis实例的时候，是否要进行验证操作，如果赋值true。则得到的jedis实例肯定是可以用的。
      */
-    private static Boolean testOnBorrow = false;
+    private static Boolean testOnBorrow = Boolean.FALSE;
     /**
      * 在return一个jedis实例的时候，是否要进行验证操作，如果赋值true。则放回jedispool的jedis实例肯定是可以用的。
      */
-    private static Boolean testOnReturn = false;
+    private static Boolean testOnReturn = Boolean.FALSE;
     @Value("${redis.normal.ip}")
     private String redisIp;
     @Value("${redis.normal.port}")
@@ -70,17 +70,17 @@ public class RedisPool {
             config.setTestOnBorrow(testOnBorrow);
             config.setTestOnReturn(testOnReturn);
             //连接耗尽的时候，是否阻塞，false会抛出异常，true阻塞直到超时。默认为true。
-            config.setBlockWhenExhausted(true);
+            config.setBlockWhenExhausted(Boolean.TRUE);
             pool = new JedisPool(config, redisIp, Integer.parseInt(redisPort), 1000 * 2, password);
             // 测试是否成功
             Jedis resource = pool.getResource();
             resource.close();
-            initTypeIsRedis = true;
-            return true;
+            initTypeIsRedis = Boolean.TRUE;
+            return Boolean.TRUE;
         } catch (Exception e) {
             LogUtil.error(this, "redis没有在线,临时启用项目内缓存");
-            initTypeIsRedis = false;
-            return false;
+            initTypeIsRedis = Boolean.FALSE;
+            return Boolean.FALSE;
         }
     }
 

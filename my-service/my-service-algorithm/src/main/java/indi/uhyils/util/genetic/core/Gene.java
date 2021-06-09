@@ -30,9 +30,9 @@ public class Gene implements Cloneable {
     public static Boolean getRandomBool() {
         int i = random.nextInt(2);
         if (i == 0) {
-            return false;
+            return Boolean.FALSE;
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     public static Double getRandomT(Double min, Double max) {

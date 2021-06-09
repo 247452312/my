@@ -29,7 +29,7 @@ public class SshUtils {
 
             boolean connect = conn.authenticateWithPassword(username, password);
             if (!connect) {
-                return false;
+                return Boolean.FALSE;
             }
             ses = conn.openSession();
             ses.execCommand("pwd");
@@ -38,13 +38,13 @@ public class SshUtils {
             BufferedReader br = new BufferedReader(new InputStreamReader(stdout));
             String line = br.readLine();
             if (StringUtils.isEmpty(line)) {
-                return false;
+                return Boolean.FALSE;
             } else {
-                return true;
+                return Boolean.TRUE;
             }
         } catch (Exception e) {
             LogUtil.error(SshUtils.class, e);
-            return false;
+            return Boolean.FALSE;
         } finally {
             if (ses != null) {
                 ses.close();
