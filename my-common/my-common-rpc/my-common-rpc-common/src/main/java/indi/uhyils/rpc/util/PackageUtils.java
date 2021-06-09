@@ -178,7 +178,7 @@ public class PackageUtils {
     private static Boolean checkExclude(List<String> excludePackagePaths, URL url) {
         for (String excludePackagePath : excludePackagePaths) {
             if (url.getPath().contains(excludePackagePath)) {
-                return falsBoolean.FALSEe;
+                return Boolean.FALSE;
             }
         }
         return Boolean.TRUE;
