@@ -1,12 +1,19 @@
 package indi.uhyils.rpc.cluster.provider.impl;
 
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
 import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.cluster.provider.AbstractProviderCluster;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.factory.RpcBeanFactory;
 import indi.uhyils.rpc.netty.RpcNetty;
+import indi.uhyils.rpc.netty.callback.RpcCallBackFactory;
+import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
+import indi.uhyils.rpc.netty.factory.RpcNettyFactory;
+import indi.uhyils.rpc.netty.pojo.NettyInitDto;
+import indi.uhyils.util.IpUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +23,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月25日 15时36分
  */
+@RpcSpi
 public class ProviderDefaultCluster extends AbstractProviderCluster {
     /**
      * netty信息
@@ -32,14 +40,28 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
      */
     private LoadBalanceEnum loadBalanceType;
 
-    public ProviderDefaultCluster(NettyInfo nettyInfo, RpcNetty netty, LoadBalanceEnum loadBalanceType) {
-        this.nettyInfo = nettyInfo;
-        this.netty = netty;
-        this.loadBalanceType = loadBalanceType;
+
+    public ProviderDefaultCluster() {
     }
 
-    public ProviderDefaultCluster(NettyInfo nettyInfo, RpcNetty netty) {
-        this(nettyInfo, netty, LoadBalanceEnum.RANDOM);
+    @Override
+    public void init(Object... params) throws Exception {
+
+        Integer port = (Integer) params[0];
+        Map<String, Object> beans = (Map<String, Object>) params[1];
+
+        NettyInitDto nettyInit = new NettyInitDto();
+
+        nettyInit.setCallback(RpcCallBackFactory.createRequestCallBack(RpcBeanFactory.getInstance(beans).getRpcBeans()));
+        nettyInit.setHost(IpUtil.getIp());
+        nettyInit.setPort(port);
+        RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.PROVIDER, nettyInit);
+        NettyInfo nettyInfo = new NettyInfo();
+        nettyInfo.setIndexInColony(1);
+
+        this.nettyInfo = nettyInfo;
+        this.netty = netty;
+        this.loadBalanceType = LoadBalanceEnum.RANDOM;
     }
 
     @Override

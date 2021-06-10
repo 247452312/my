@@ -1,8 +1,6 @@
 package indi.uhyils.rpc.spi;
 
 
-import indi.uhyils.rpc.exception.MyRpcException;
-
 /**
  * rpc的拦截器,可扩展如果需要扩展proxy,分五步:
  * 1.需要实现此方法(必须)

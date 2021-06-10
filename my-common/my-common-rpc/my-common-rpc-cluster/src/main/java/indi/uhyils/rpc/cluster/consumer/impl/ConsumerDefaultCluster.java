@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.cluster.consumer.impl;
 
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
 import indi.uhyils.rpc.cluster.load.LoadBalanceFactory;
@@ -15,12 +16,7 @@ import indi.uhyils.rpc.netty.factory.RpcNettyFactory;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
 import indi.uhyils.util.LogUtil;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.*;
 
 /**
  * 消费者默认的cluster
@@ -28,45 +24,49 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月25日 12时23分
  */
+@RpcSpi(single = false)
 public class ConsumerDefaultCluster implements Cluster {
     /**
      * 需要负载均衡的netty们
      */
-    private final Map<NettyInfo, RpcNetty> nettyMap;
+    private Map<NettyInfo, RpcNetty> nettyMap;
 
     /**
      * 负载均衡策略
      */
-    private final LoadBalanceEnum loadBalanceType;
+    private LoadBalanceEnum loadBalanceType;
 
     /**
      * 接口名称
      */
-    private final Class<?> target;
+    private Class<?> target;
 
-    /**
-     * 如果是轮询时的标记
-     */
-    private final AtomicInteger pollingMark = new AtomicInteger(0);
-
-//    /**
-//     * 权重分配的标记
-//     */
-//    private volatile NettyInfo[] weightArrayForManualAssignment;
-    /**
-     * 权重分配的标记
-     */
-    private AtomicReferenceArray<NettyInfo> weightArrayForManualAssignment;
-
-
-    public ConsumerDefaultCluster(Class<?> clazz, Map<NettyInfo, RpcNetty> nettyMap, LoadBalanceEnum loadBalanceType) {
-        this.nettyMap = nettyMap;
-        this.loadBalanceType = loadBalanceType;
-        this.target = clazz;
+    public ConsumerDefaultCluster() {
     }
 
-    public ConsumerDefaultCluster(Class<?> clazz, Map<NettyInfo, RpcNetty> nettyMap) {
-        this(clazz, nettyMap, LoadBalanceEnum.RANDOM);
+    @Override
+    public void init(Object... params) throws Exception {
+        Class clazz = (Class) params[0];
+        NettyInitDto[] nettyInits = (NettyInitDto[]) params[1];
+        if (params.length > 2) {
+            this.loadBalanceType = (LoadBalanceEnum) params[2];
+        } else {
+            this.loadBalanceType = LoadBalanceEnum.RANDOM;
+        }
+
+        HashMap<NettyInfo, RpcNetty> nettyMap = new HashMap<>(nettyInits.length);
+        for (int i = 0; i < nettyInits.length; i++) {
+            NettyInitDto nettyInit = nettyInits[i];
+            RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
+            NettyInfo nettyInfo = new NettyInfo();
+            nettyInfo.setHost(nettyInit.getHost());
+            nettyInfo.setPort(nettyInit.getPort());
+            nettyInfo.setWeight(nettyInit.getWeight());
+            nettyInfo.setIndexInColony(i);
+            nettyMap.put(nettyInfo, netty);
+        }
+        this.nettyMap = nettyMap;
+        this.target = clazz;
     }
 
     @Override

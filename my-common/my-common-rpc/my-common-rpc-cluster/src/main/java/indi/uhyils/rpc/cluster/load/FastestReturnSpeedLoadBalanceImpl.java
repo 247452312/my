@@ -19,7 +19,6 @@ import java.util.Map;
 @RpcSpi
 public class FastestReturnSpeedLoadBalanceImpl extends AbstractLoadBalance {
 
-
     /**
      * 记录返回时间用
      */

@@ -2,7 +2,6 @@ package indi.uhyils.rpc.spi;
 
 import indi.uhyils.rpc.annotation.MyRpc;
 import indi.uhyils.rpc.annotation.RpcSpi;
-import indi.uhyils.rpc.exception.MyRpcException;
 import indi.uhyils.rpc.exception.RpcRunTimeException;
 import indi.uhyils.rpc.util.PackageUtils;
 import indi.uhyils.util.LogUtil;
@@ -45,6 +44,11 @@ public class RpcSpiManager {
      * cacheClass 对应的实例
      */
     private static Map<Class, Map<String, RpcSpiExtension>> cacheClassInstanceMap = new HashMap<>();
+
+    /**
+     * 记录是否初始化,原型模式只初始化一次
+     */
+    private static Map<Class, Map<String, Boolean>> init = new HashMap<>();
 
     static {
         init();
@@ -229,7 +233,7 @@ public class RpcSpiManager {
     }
 
     /**
-     * 创建时化时顺带初始化(只在原型模式下可用)
+     * 创建时化时顺带初始化
      *
      * @param root
      * @param name
@@ -239,7 +243,32 @@ public class RpcSpiManager {
      */
     public static <T extends RpcSpiExtension> RpcSpiExtension getExtensionByClass(Class<T> root, String name, Object... objects) throws Exception {
         RpcSpiExtension extensionByClass = getExtensionByClass(root, name);
-        extensionByClass.init(objects);
+
+        RpcSpi annotation = extensionByClass.getClass().getAnnotation(RpcSpi.class);
+        if (annotation != null) {
+            boolean single = annotation.single();
+
+            if (single) {
+                /*原型的初始化过程*/
+                Map<String, Boolean> stringBooleanMap = init.get(root);
+                if (stringBooleanMap == null) {
+                    stringBooleanMap = new HashMap<>();
+                    init.put(root, stringBooleanMap);
+                }
+                Boolean isInit = stringBooleanMap.get(name);
+                if (isInit == null) {
+                    isInit = Boolean.FALSE;
+                    stringBooleanMap.put(name, isInit);
+                }
+                if (Boolean.FALSE.equals(isInit)) {
+                    extensionByClass.init(objects);
+                    stringBooleanMap.put(name, Boolean.TRUE);
+                }
+            } else {
+                /*非原型的初始化过程*/
+                extensionByClass.init(objects);
+            }
+        }
         return extensionByClass;
     }
 
@@ -259,8 +288,10 @@ public class RpcSpiManager {
         // 初始化缓存,加速获取用
         if (!cacheClassInstanceMap.containsKey(root)) {
             int size = cacheClass.get(root).size();
-            cacheClassInstanceMap.put(root, new HashMap<>(size));
+            // 使用putIfAbsent 防止并发
+            cacheClassInstanceMap.putIfAbsent(root, new HashMap<>(size));
         }
+
 
         // 如果应该加载的地方没有此名称
         if (!cacheClass.get(root).containsKey(name)) {
@@ -272,25 +303,31 @@ public class RpcSpiManager {
         if (cacheMap.containsKey(name)) {
             return checkSingleAndGetResult(cacheMap.get(name));
         } else {
-            // 之前缓存里也没有 只能初始化一次了
-            Class<?> clazz = cacheClass.get(root).get(name);
-            Constructor<?> constructor;
-            try {
-                // 获取空的构造器
-                constructor = clazz.getConstructor();
-            } catch (Exception e) {
-                throw new IllegalStateException(root.getName() + " 必须要空构造器");
+            synchronized (cacheMap) {
+                // 双重检测,防止重复
+                if (cacheMap.containsKey(name)) {
+                    return checkSingleAndGetResult(cacheMap.get(name));
+                }
+                // 之前缓存里也没有 只能初始化一次了
+                Class<?> clazz = cacheClass.get(root).get(name);
+                Constructor<?> constructor;
+                try {
+                    // 获取空的构造器
+                    constructor = clazz.getConstructor();
+                } catch (Exception e) {
+                    throw new IllegalStateException(root.getName() + " 必须要空构造器");
+                }
+                RpcSpiExtension instance = null;
+                try {
+                    // 初始化
+                    instance = (RpcSpiExtension) constructor.newInstance();
+                } catch (Exception e) {
+                    LogUtil.error(RpcSpiManager.class, e);
+                }
+                //放入缓存
+                cacheMap.put(name, instance);
+                return checkSingleAndGetResult(instance);
             }
-            RpcSpiExtension instance = null;
-            try {
-                // 初始化
-                instance = (RpcSpiExtension) constructor.newInstance();
-            } catch (Exception e) {
-                LogUtil.error(RpcSpiManager.class, e);
-            }
-            //放入缓存
-            cacheMap.put(name, instance);
-            return checkSingleAndGetResult(instance);
         }
     }
 

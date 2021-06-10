@@ -6,6 +6,7 @@ import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.RpcNetty;
+import indi.uhyils.rpc.spi.RpcSpiExtension;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月25日 09时29分
  */
-public interface Cluster {
+public interface Cluster extends RpcSpiExtension {
 
     /**
      * 获取接口名称

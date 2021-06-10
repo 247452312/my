@@ -80,7 +80,12 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
             nettyInits[i] = NettyInitDtoFactory.createNettyInitDto(necessaryInfo.getHost(), necessaryInfo.getPort(), necessaryInfo.getWeight().intValue(), RpcCallBackFactory.createResponseCallBack());
         }
 
-        return ClusterFactory.createDefaultConsumerCluster(this.serviceClass, nettyInits);
+        try {
+            return ClusterFactory.createDefaultConsumerCluster(this.serviceClass, nettyInits);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+            return null;
+        }
     }
 
 

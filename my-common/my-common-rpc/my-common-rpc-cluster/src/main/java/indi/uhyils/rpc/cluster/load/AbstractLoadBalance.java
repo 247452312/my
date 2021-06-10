@@ -27,6 +27,7 @@ public abstract class AbstractLoadBalance implements LoadBalanceInterface {
 
     @Override
     public RpcData send(RpcData rpcSendData, SendInfo info, Map<NettyInfo, RpcNetty> nettyMap) throws InterruptedException, RpcException, ClassNotFoundException {
+        /*1.通过子类查询出要使用的netty 2.发送信息*/
         NettyInfo nettyInfo = null;
         RpcNetty rpcNetty = null;
         int type = getType();

@@ -1,17 +1,9 @@
 package indi.uhyils.rpc.cluster;
 
-import indi.uhyils.rpc.cluster.consumer.impl.ConsumerDefaultCluster;
-import indi.uhyils.rpc.cluster.pojo.NettyInfo;
-import indi.uhyils.rpc.cluster.provider.impl.ProviderDefaultCluster;
-import indi.uhyils.rpc.factory.RpcBeanFactory;
-import indi.uhyils.rpc.netty.RpcNetty;
-import indi.uhyils.rpc.netty.callback.RpcCallBackFactory;
-import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
-import indi.uhyils.rpc.netty.factory.RpcNettyFactory;
+import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
-import indi.uhyils.util.IpUtil;
+import indi.uhyils.rpc.spi.RpcSpiManager;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,7 +12,13 @@ import java.util.Map;
  */
 public class ClusterFactory {
 
-    private volatile static Cluster instance;
+    private static final String providerDefaultName = "default_provider_name";
+
+    private static final String providerSpiName = "providerSpiName";
+
+    private static final String consumerDefaultName = "default_consumer_name";
+
+    private static final String consumerSpiName = "consumerSpiName";
 
     private ClusterFactory() {
     }
@@ -34,41 +32,29 @@ public class ClusterFactory {
      * @throws Exception
      */
     public static Cluster createDefaultProviderCluster(Integer port, Map<String, Object> beans) throws Exception {
-        if (instance == null) {
-            synchronized (ClusterFactory.class) {
-                if (instance == null) {
-                    NettyInitDto nettyInit = new NettyInitDto();
-
-                    nettyInit.setCallback(RpcCallBackFactory.createRequestCallBack(RpcBeanFactory.getInstance(beans).getRpcBeans()));
-                    nettyInit.setHost(IpUtil.getIp());
-                    nettyInit.setPort(port);
-                    RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.PROVIDER, nettyInit);
-                    NettyInfo nettyInfo = new NettyInfo();
-                    nettyInfo.setIndexInColony(1);
-                    instance = new ProviderDefaultCluster(nettyInfo, netty);
-                }
-            }
-        }
-        return instance;
+        // spi 获取消费者的注册者信息
+        String registryName = (String) RpcConfigFactory.getCustomOrDefault(providerSpiName, providerDefaultName);
+        // 返回一个构造完成的消费者
+        return (Cluster) RpcSpiManager.getExtensionByClass(Cluster.class, registryName, port, beans);
     }
 
-    public static Cluster createDefaultConsumerCluster(Class<?> clazz, NettyInitDto nettyInit) {
+    public static Cluster createDefaultConsumerCluster(Class<?> clazz, NettyInitDto nettyInit) throws Exception {
         return createDefaultConsumerCluster(clazz, new NettyInitDto[]{nettyInit});
     }
 
-    public static Cluster createDefaultConsumerCluster(Class<?> clazz, NettyInitDto... nettyInits) {
-        HashMap<NettyInfo, RpcNetty> nettyMap = new HashMap<>(nettyInits.length);
-        for (int i = 0; i < nettyInits.length; i++) {
-            NettyInitDto nettyInit = nettyInits[i];
-            RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
-            NettyInfo nettyInfo = new NettyInfo();
-            nettyInfo.setHost(nettyInit.getHost());
-            nettyInfo.setPort(nettyInit.getPort());
-            nettyInfo.setWeight(nettyInit.getWeight());
-            nettyInfo.setIndexInColony(i);
-            nettyMap.put(nettyInfo, netty);
-        }
-        return new ConsumerDefaultCluster(clazz, nettyMap);
+    /**
+     * 创建一个consumer端的cluster
+     *
+     * @param clazz      要使用的class
+     * @param nettyInits netty 初始化需要的东西
+     * @return
+     * @throws Exception
+     */
+    public static Cluster createDefaultConsumerCluster(Class<?> clazz, NettyInitDto... nettyInits) throws Exception {
+        // spi 获取消费者的注册者信息
+        String registryName = (String) RpcConfigFactory.getCustomOrDefault(consumerSpiName, consumerDefaultName);
+        // 返回一个构造完成的消费者
+        return (Cluster) RpcSpiManager.getExtensionByClass(Cluster.class, registryName, clazz, nettyInits);
     }
 
 
