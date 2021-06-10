@@ -38,6 +38,7 @@ function getCookie(cname) {
  * @param methodName
  * @param data 向后台发送的数据
  * @param success 成功后执行的方法
+ * @param target 是否弹窗提示
  */
 function pushRequest(interfaceName, methodName, data, success, target = false) {
     let result = null;

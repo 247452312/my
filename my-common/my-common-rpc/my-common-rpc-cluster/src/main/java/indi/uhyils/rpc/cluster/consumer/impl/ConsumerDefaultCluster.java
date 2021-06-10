@@ -2,6 +2,8 @@ package indi.uhyils.rpc.cluster.consumer.impl;
 
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.enums.LoadBalanceEnum;
+import indi.uhyils.rpc.cluster.load.LoadBalanceFactory;
+import indi.uhyils.rpc.cluster.load.LoadBalanceInterface;
 import indi.uhyils.rpc.cluster.pojo.NettyInfo;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.exception.RpcException;
@@ -11,7 +13,7 @@ import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.netty.factory.RpcNettyFactory;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
-import org.apache.commons.lang3.RandomUtils;
+import indi.uhyils.util.LogUtil;
 
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /**
+ * 消费者默认的cluster
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月25日 12时23分
  */
@@ -103,104 +107,19 @@ public class ConsumerDefaultCluster implements Cluster {
     }
 
     @Override
-    public RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException, RpcException, ClassNotFoundException {
+    public RpcData sendMsg(RpcData rpcData, SendInfo info) throws RpcException {
         if (nettyMap.isEmpty()) {
             String interfaceName = getInterfaceName();
             throw new RpcException("指定的服务端" + interfaceName + "不存在");
         }
-
-        //todo 暂时没有实现最少活跃
-        switch (loadBalanceType) {
-            case LEAST_ACTIVE:
-                // 这里需要修改为:n秒内调用成功次数
-            case RANDOM:
-                return randomSend(rpcData);
-            case IP_HASH:
-                return sendByIndex(rpcData, info.getIp().hashCode());
-            case POLLING:
-                return sendByPolling(rpcData);
-            case MANUAL_ASSIGNMENT:
-                return manualAssignmentByWeight(rpcData);
-            case FASTEST_RETURN_SPEED:
-                return sendByFastestReturnSpeed(rpcData);
-            default:
-                return null;
+        try {
+            LoadBalanceInterface loadBalance = LoadBalanceFactory.createByLoadBalanceEnum(loadBalanceType, nettyMap);
+            return loadBalance.send(rpcData, info, nettyMap);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
         }
+        return null;
     }
-
-
-    private RpcData sendByFastestReturnSpeed(RpcData rpcData) throws InterruptedException, RpcException, ClassNotFoundException {
-        NettyInfo fastNettyInfo = null;
-        long minTime = 0;
-        for (NettyInfo nettyInfo : nettyMap.keySet()) {
-            Long lastFiveSendAvgTime = nettyInfo.getLastFiveSendAvgTime();
-            // 如果一个netty一次都没有执行过,那么就选它
-            if (lastFiveSendAvgTime == null) {
-                fastNettyInfo = nettyInfo;
-                break;
-            }
-            if (lastFiveSendAvgTime < minTime) {
-                minTime = lastFiveSendAvgTime;
-                fastNettyInfo = nettyInfo;
-            }
-        }
-        assert fastNettyInfo != null;
-        long startTime = System.currentTimeMillis();
-        RpcNetty rpcNetty = nettyMap.get(fastNettyInfo);
-        RpcData wait = rpcNetty.sendMsg(rpcData);
-        long runTime = System.currentTimeMillis() - startTime;
-        Long lastFiveSendAvgTime = fastNettyInfo.getLastFiveSendAvgTime();
-        if (lastFiveSendAvgTime == null) {
-            lastFiveSendAvgTime = runTime;
-        }
-        long lastTime = (lastFiveSendAvgTime * 5 + runTime) / 6L;
-        fastNettyInfo.setLastFiveSendAvgTime(lastTime);
-        return wait;
-    }
-
-    private RpcData manualAssignmentByWeight(RpcData rpcData) throws InterruptedException, RpcException, ClassNotFoundException {
-        if (weightArrayForManualAssignment == null) {
-            Integer length = 0;
-            for (NettyInfo nettyInfo : nettyMap.keySet()) {
-                length += nettyInfo.getWeight();
-            }
-            weightArrayForManualAssignment = new AtomicReferenceArray<>(length);
-            int writeIndex = 0;
-            for (NettyInfo nettyInfo : nettyMap.keySet()) {
-                Integer weight = nettyInfo.getWeight();
-                for (int i = 0; i < weight; i++, writeIndex++) {
-                    weightArrayForManualAssignment.set(writeIndex, nettyInfo);
-                }
-            }
-        }
-
-        int i = RandomUtils.nextInt(0, weightArrayForManualAssignment.length());
-        RpcNetty rpcNetty = nettyMap.get(weightArrayForManualAssignment.get(i));
-        return rpcNetty.sendMsg(rpcData);
-    }
-
-    private RpcData sendByPolling(RpcData rpcData) throws InterruptedException, RpcException, ClassNotFoundException {
-        int pollIndex = pollingMark.getAndAdd(1);
-        if (pollIndex > nettyMap.size()) {
-            pollingMark.set(0);
-            return sendByIndex(rpcData, 0);
-        } else {
-            return sendByIndex(rpcData, pollIndex);
-        }
-    }
-
-    private RpcData randomSend(RpcData rpcData) throws InterruptedException, RpcException, ClassNotFoundException {
-        int i = RandomUtils.nextInt(0, nettyMap.size());
-        return sendByIndex(rpcData, i);
-    }
-
-    private RpcData sendByIndex(RpcData rpcData, int i) throws InterruptedException, RpcException, ClassNotFoundException {
-        i = i % nettyMap.size();
-        Object o = nettyMap.keySet().toArray()[i];
-        RpcNetty rpcNetty = nettyMap.get(o);
-        return rpcNetty.sendMsg(rpcData);
-    }
-
 
     @Override
     public Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) {

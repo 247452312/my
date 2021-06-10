@@ -55,7 +55,7 @@ class ClusterFactoryTest {
     }
 
     @org.junit.jupiter.api.Test
-    void createDefaultConsumerCluster() throws RpcException, ClassNotFoundException, InterruptedException {
+    void createDefaultConsumerCluster() throws Exception {
 
         RpcConfigFactory.setRpcConfig(RpcConfigFactory.newDefault());
         NettyInitDto nettyInit1 = new NettyInitDto();

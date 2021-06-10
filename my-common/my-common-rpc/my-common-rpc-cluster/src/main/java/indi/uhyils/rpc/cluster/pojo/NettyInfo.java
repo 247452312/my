@@ -19,11 +19,6 @@ public class NettyInfo {
     private Integer weight;
 
     /**
-     * 前五次请求平均时间
-     */
-    private Long lastFiveSendAvgTime;
-
-    /**
      * 这个netty的host
      */
     private String host;
@@ -64,14 +59,6 @@ public class NettyInfo {
 
     public void setHost(String host) {
         this.host = host;
-    }
-
-    public Long getLastFiveSendAvgTime() {
-        return lastFiveSendAvgTime;
-    }
-
-    public void setLastFiveSendAvgTime(Long lastFiveSendAvgTime) {
-        this.lastFiveSendAvgTime = lastFiveSendAvgTime;
     }
 
     public Integer getWeight() {

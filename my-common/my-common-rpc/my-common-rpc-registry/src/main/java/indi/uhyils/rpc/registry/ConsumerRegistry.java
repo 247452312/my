@@ -61,7 +61,12 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
         }
     }
 
-
+    /**
+     * 创建一个消费者的cluster,包含了目标的cluster
+     *
+     * @return
+     * @throws NacosException
+     */
     private Cluster createCluster() throws NacosException {
 
         /*构建netty初始化需要的信息*/

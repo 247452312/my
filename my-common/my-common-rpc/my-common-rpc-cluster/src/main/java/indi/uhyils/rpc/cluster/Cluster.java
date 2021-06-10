@@ -68,7 +68,7 @@ public interface Cluster {
      * @return
      * @throws InterruptedException
      */
-    RpcData sendMsg(RpcData rpcData, SendInfo info) throws InterruptedException, RpcException, ClassNotFoundException;
+    RpcData sendMsg(RpcData rpcData, SendInfo info) throws RpcException, ClassNotFoundException, InterruptedException;
 
     /**
      * 服务数量改变时->生产者不需要关心自己的上下线,所以只有消费者需要完成逻辑
