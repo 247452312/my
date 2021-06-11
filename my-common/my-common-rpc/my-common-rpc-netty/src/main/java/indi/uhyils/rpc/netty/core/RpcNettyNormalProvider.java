@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty.core;
 
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
 import indi.uhyils.rpc.netty.callback.RpcCallBack;
@@ -22,11 +23,12 @@ import io.netty.handler.logging.LoggingHandler;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月20日 13时42分
  */
+@RpcSpi
 public class RpcNettyNormalProvider extends AbstractRpcNetty {
     /**
      * 回调
      */
-    private final RpcCallBack callback;
+    private RpcCallBack callback;
     /**
      * 主线程,单线程
      */
@@ -37,37 +39,35 @@ public class RpcNettyNormalProvider extends AbstractRpcNetty {
     private EventLoopGroup workerGroup;
 
 
-    public RpcNettyNormalProvider(Long outTime, RpcCallBack callback) {
-        super(outTime);
-        this.callback = callback;
+    public RpcNettyNormalProvider() {
+
     }
 
     @Override
-    public Boolean init(String host, Integer port) {
+    public void init(Object... params) throws Exception {
+        super.init(params);
+        this.callback = (RpcCallBack) params[1];
+        String host = (String) params[2];
+        Integer port = (Integer) params[3];
         bossGroup = new NioEventLoopGroup(1);
         workerGroup = new NioEventLoopGroup();
-        try {
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 100)
-                    .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
-                            ChannelPipeline p = ch.pipeline();
-                            p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
-                            p.addLast("byte-to-object", new RpcProviderHandler(callback));
-                        }
-                    });
 
-            b.bind(port).sync();
-            setBootstrap(b);
-            return Boolean.TRUE;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Boolean.FALSE;
-        }
+        ServerBootstrap b = new ServerBootstrap();
+        b.group(bossGroup, workerGroup)
+                .channel(NioServerSocketChannel.class)
+                .option(ChannelOption.SO_BACKLOG, 100)
+                .handler(new LoggingHandler(LogLevel.INFO))
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    public void initChannel(SocketChannel ch) throws Exception {
+                        ChannelPipeline p = ch.pipeline();
+                        p.addLast("length-decoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 3, 4, 9, 0));
+                        p.addLast("byte-to-object", new RpcProviderHandler(callback));
+                    }
+                });
+
+        b.bind(port).sync();
+        setBootstrap(b);
     }
 
     @Override

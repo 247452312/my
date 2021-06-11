@@ -46,7 +46,11 @@ public class RegistryNacosServiceListener extends AbstractRegistryServiceListene
         if (event != null) {
             if (event instanceof NamingEvent) {
                 LogUtil.info("name!!!!!!!!!!!!!!!!");
-                doServiceEvent((NamingEvent) event);
+                try {
+                    doServiceEvent((NamingEvent) event);
+                } catch (Exception e) {
+                    LogUtil.error(this, e);
+                }
             }
         }
     }
@@ -56,7 +60,7 @@ public class RegistryNacosServiceListener extends AbstractRegistryServiceListene
      *
      * @param event
      */
-    private void doServiceEvent(NamingEvent event) {
+    private void doServiceEvent(NamingEvent event) throws Exception {
         ArrayList<NettyInfo> nettyInfos = new ArrayList<>();
         List<Instance> instances = event.getInstances();
         if (instances.isEmpty()) {

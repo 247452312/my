@@ -2,6 +2,7 @@ package indi.uhyils.rpc.netty;
 
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.spi.RpcSpiExtension;
 import io.netty.bootstrap.AbstractBootstrap;
 import io.netty.channel.Channel;
 
@@ -11,7 +12,7 @@ import io.netty.channel.Channel;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月20日 13时42分
  */
-public interface RpcNetty {
+public interface RpcNetty extends RpcSpiExtension {
 
     /**
      * 获取bootStrap
@@ -27,14 +28,6 @@ public interface RpcNetty {
      */
     void setBootstrap(AbstractBootstrap<?, ? extends Channel> bootstrap);
 
-    /**
-     * 初始化,其中host只有客户端有用
-     *
-     * @param host
-     * @param port
-     * @return
-     */
-    Boolean init(String host, Integer port);
 
     /**
      * 关闭,不会立即关闭.会等待线程结束

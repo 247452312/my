@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.netty.core;
 
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.netty.AbstractRpcNetty;
@@ -32,6 +33,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月20日 15时06分
  */
+@RpcSpi(single = false)
 public class RpcNettyNormalConsumer extends AbstractRpcNetty {
 
     /**
@@ -64,14 +66,17 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
      */
     private FixedLengthQueue<Long> timeOutUnique = new FixedLengthQueue<>(200, Long.class);
 
-    public RpcNettyNormalConsumer(Long outTime, RpcCallBack callBack) {
-        super(outTime);
-        this.callBack = callBack;
-
+    public RpcNettyNormalConsumer() {
     }
 
     @Override
-    public Boolean init(String host, Integer port) {
+    public void init(Object... params) throws Exception {
+        super.init(params);
+
+        this.callBack = (RpcCallBack) params[1];
+        String host = (String) params[2];
+        Integer port = (Integer) params[3];
+
         Bootstrap client = new Bootstrap();
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         this.group = eventLoopGroup;
@@ -89,7 +94,6 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
 
         //连接服务器
         this.channelFuture = client.connect(host, port);
-        return Boolean.TRUE;
     }
 
     public EventLoopGroup getGroup() {

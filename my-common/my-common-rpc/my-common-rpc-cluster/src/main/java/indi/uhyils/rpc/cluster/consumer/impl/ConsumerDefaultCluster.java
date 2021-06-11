@@ -122,7 +122,7 @@ public class ConsumerDefaultCluster implements Cluster {
     }
 
     @Override
-    public Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) {
+    public Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) throws Exception {
         // 筛选出没有的,移出->下线
         Set<NettyInfo> set = new HashSet<>();
         for (NettyInfo nettyInfo : nettyMap.keySet()) {

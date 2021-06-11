@@ -43,7 +43,7 @@ class RpcNettyNormalProviderTest {
     }
 
     @org.junit.jupiter.api.Test
-    void consumerInit() throws RpcException, ClassNotFoundException, InterruptedException {
+    void consumerInit() throws Exception {
 
         RpcConfigFactory.setRpcConfig(RpcConfigFactory.newDefault());
         RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, NettyInitDtoFactory.createNettyInitDto("127.0.0.1", 1, 8081, new RpcDefaultResponseCallBack()));

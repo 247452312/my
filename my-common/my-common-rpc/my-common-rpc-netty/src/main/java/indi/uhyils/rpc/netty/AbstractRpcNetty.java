@@ -18,8 +18,12 @@ public abstract class AbstractRpcNetty implements RpcNetty {
      */
     protected AbstractBootstrap<?, ? extends Channel> bootstrap;
 
-    protected AbstractRpcNetty(Long timeOut) {
-        this.timeOut = timeOut;
+    protected AbstractRpcNetty() {
+    }
+
+    @Override
+    public void init(Object... params) throws Exception {
+        this.timeOut = (Long) params[0];
     }
 
     @Override
