@@ -19,7 +19,7 @@ import indi.uhyils.rpc.netty.callback.RpcCallBack;
 @RpcSpi
 public class RpcDefaultResponseCallBack implements RpcCallBack {
     @Override
-    public RpcData getRpcData(byte[] data) throws RpcException, ClassNotFoundException {
+    public RpcData getRpcData(byte[] data) throws Exception {
         /*解析*/
         RpcFactory build = RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
         // 获取到的Request
@@ -28,7 +28,7 @@ public class RpcDefaultResponseCallBack implements RpcCallBack {
     }
 
     @Override
-    public RpcContent getContent(byte[] data) throws RpcException, ClassNotFoundException {
+    public RpcContent getContent(byte[] data) throws Exception {
         RpcData request = getRpcData(data);
         return request.content();
     }

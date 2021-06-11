@@ -14,7 +14,7 @@ import indi.uhyils.rpc.exchange.pojo.factory.RpcFactoryProducer;
 class TestTest {
 
     @org.junit.jupiter.api.Test
-    void testRequest() throws RpcException, ClassNotFoundException {
+    void testRequest() throws Exception {
         RpcFactory build = RpcFactoryProducer.build(RpcTypeEnum.REQUEST);
         RpcHeader rpcHeader = new RpcHeader();
         rpcHeader.setName("a");
@@ -27,7 +27,7 @@ class TestTest {
     }
 
     @org.junit.jupiter.api.Test
-    void testResponse() throws RpcException, ClassNotFoundException {
+    void testResponse() throws Exception {
         RpcFactory build = RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
         RpcHeader rpcHeader = new RpcHeader();
         rpcHeader.setName("a");

@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.exchange.pojo.demo.factory;
 
 import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
@@ -12,6 +13,7 @@ import indi.uhyils.rpc.exchange.pojo.RpcHeader;
 import indi.uhyils.rpc.exchange.pojo.demo.response.NormalResponseRpcData;
 import indi.uhyils.rpc.exchange.pojo.factory.AbstractRpcFactory;
 import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContentFactory;
+import indi.uhyils.rpc.spi.RpcSpiManager;
 
 import java.nio.charset.StandardCharsets;
 
@@ -24,17 +26,25 @@ import java.nio.charset.StandardCharsets;
 @RpcSpi
 public class NormalRpcResponseFactory extends AbstractRpcFactory {
 
+    private static final String RPC_RESPONSE_DEFAULT_NAME = "RPC_RESPONSE_DEFAULT_NAME";
+    private static final String RPC_RESPONSE_SPI_NAME = "RPC_RESPONSE_SPI_NAME";
+
     public NormalRpcResponseFactory() {
     }
 
     @Override
-    public RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {
-        return new NormalResponseRpcData(data);
+    public RpcData createByBytes(byte[] data) throws Exception {
+        // spi 获取消费者的注册者信息
+        String registryName = (String) RpcConfigFactory.getCustomOrDefault(RPC_RESPONSE_SPI_NAME, RPC_RESPONSE_DEFAULT_NAME);
+        // 返回一个构造完成的消费者
+        return (RpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName, data);
     }
 
     @Override
     public RpcData createByInfo(Long unique, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException {
-        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
+        // spi 获取消费者的注册者信息
+        NormalResponseRpcData rpcNormalRequest = createNewNormalResponseRpcData();
+
         rpcNormalRequest.setType(RpcTypeEnum.RESPONSE.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);
@@ -50,7 +60,9 @@ public class NormalRpcResponseFactory extends AbstractRpcFactory {
 
     @Override
     public RpcData createTimeoutResponse(RpcData request, Long timeout) throws RpcException {
-        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
+        // spi 获取消费者的注册者信息
+        NormalResponseRpcData rpcNormalRequest = createNewNormalResponseRpcData();
+
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(request.rpcHeaders());
@@ -65,7 +77,8 @@ public class NormalRpcResponseFactory extends AbstractRpcFactory {
     }
 
     public RpcData createErrorResponse(Long unique, Throwable e, RpcHeader[] rpcHeaders) throws RpcException {
-        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
+        NormalResponseRpcData rpcNormalRequest = createNewNormalResponseRpcData();
+
         rpcNormalRequest.setType(RpcTypeEnum.RESPONSE.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);
@@ -79,6 +92,13 @@ public class NormalRpcResponseFactory extends AbstractRpcFactory {
         rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
         return rpcNormalRequest;
 
+    }
+
+    public static NormalResponseRpcData createNewNormalResponseRpcData() {
+        // spi 获取消费者的注册者信息
+        String registryName = (String) RpcConfigFactory.getCustomOrDefault(RPC_RESPONSE_SPI_NAME, RPC_RESPONSE_DEFAULT_NAME);
+        // 返回一个构造完成的消费者
+        return (NormalResponseRpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName);
     }
 
     @Override

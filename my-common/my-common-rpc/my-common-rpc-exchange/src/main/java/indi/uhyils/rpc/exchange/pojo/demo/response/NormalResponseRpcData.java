@@ -1,5 +1,6 @@
 package indi.uhyils.rpc.exchange.pojo.demo.response;
 
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcContent;
@@ -13,13 +14,16 @@ import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContentFactory;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 13时34分
  */
+@RpcSpi(single = false)
 public class NormalResponseRpcData extends AbstractResponseRpcData {
 
-    public NormalResponseRpcData(byte[] data) throws RpcException, ClassNotFoundException {
-        super(data);
-    }
 
     public NormalResponseRpcData() {
+    }
+
+    @Override
+    public void init(Object... params) throws Exception {
+        super.init(params);
     }
 
     @Override

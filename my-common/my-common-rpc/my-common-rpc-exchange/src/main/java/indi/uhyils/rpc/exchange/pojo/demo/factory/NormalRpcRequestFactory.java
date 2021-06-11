@@ -2,6 +2,7 @@ package indi.uhyils.rpc.exchange.pojo.demo.factory;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcStatusEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
@@ -15,6 +16,7 @@ import indi.uhyils.rpc.exchange.pojo.demo.response.NormalResponseRpcData;
 import indi.uhyils.rpc.exchange.pojo.factory.AbstractRpcFactory;
 import indi.uhyils.rpc.exchange.pojo.request.content.RpcRequestContentFactory;
 import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContentFactory;
+import indi.uhyils.rpc.spi.RpcSpiManager;
 import indi.uhyils.util.LogUtil;
 
 import java.nio.charset.StandardCharsets;
@@ -28,19 +30,27 @@ import java.nio.charset.StandardCharsets;
 @RpcSpi
 public class NormalRpcRequestFactory extends AbstractRpcFactory {
 
+    private static final String RPC_REQUEST_DEFAULT_NAME = "RPC_REQUEST_DEFAULT_NAME";
+    private static final String RPC_REQUEST_SPI_NAME = "RPC_REQUEST_SPI_NAME";
 
     public NormalRpcRequestFactory() {
     }
 
 
     @Override
-    public RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {
-        return new NormalRequestRpcData(data);
+    public RpcData createByBytes(byte[] data) throws Exception {
+        // spi 获取消费者的注册者信息
+        String registryName = (String) RpcConfigFactory.getCustomOrDefault(RPC_REQUEST_SPI_NAME, RPC_REQUEST_DEFAULT_NAME);
+        // 返回一个构造完成的消费者
+        return (RpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName, data);
     }
 
     @Override
     public RpcData createByInfo(Long unique, Object[] others, RpcHeader[] rpcHeaders, String... contentArray) throws RpcException, ClassNotFoundException {
-        NormalRequestRpcData rpcNormalRequest = new NormalRequestRpcData();
+        // spi 获取消费者的注册者信息
+        String registryName = (String) RpcConfigFactory.getCustomOrDefault(RPC_REQUEST_SPI_NAME, RPC_REQUEST_DEFAULT_NAME);
+        // 返回一个构造完成的消费者
+        NormalRequestRpcData rpcNormalRequest =  (NormalRequestRpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName);
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);
@@ -61,7 +71,10 @@ public class NormalRpcRequestFactory extends AbstractRpcFactory {
      */
     @Override
     public RpcData createTimeoutResponse(RpcData request, Long timeout) throws RpcException {
-        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
+        // spi 获取消费者的注册者信息
+        String registryName = (String) RpcConfigFactory.getCustomOrDefault(RPC_REQUEST_SPI_NAME, RPC_REQUEST_DEFAULT_NAME);
+        // 返回一个构造完成的消费者
+        NormalRequestRpcData rpcNormalRequest =  (NormalRequestRpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName);
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(request.rpcHeaders());
@@ -76,7 +89,7 @@ public class NormalRpcRequestFactory extends AbstractRpcFactory {
     }
 
     public RpcData createRetriesError(RpcData request, Throwable th) {
-        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
+        NormalResponseRpcData rpcNormalRequest = NormalRpcResponseFactory.createNewNormalResponseRpcData();
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(request.rpcHeaders());
@@ -95,7 +108,7 @@ public class NormalRpcRequestFactory extends AbstractRpcFactory {
     }
 
     public RpcData createFallback(RpcData request, Object response) {
-        NormalResponseRpcData rpcNormalRequest = new NormalResponseRpcData();
+        NormalResponseRpcData rpcNormalRequest = NormalRpcResponseFactory.createNewNormalResponseRpcData();
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(request.rpcHeaders());

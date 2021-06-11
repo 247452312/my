@@ -30,7 +30,7 @@ public interface RpcSpiExtension {
      *
      * @param params
      */
-    default void init(Object... params) throws Exception {
+    default void init(final Object... params) throws Exception {
 
     }
 

@@ -1,14 +1,10 @@
 package indi.uhyils.rpc.exchange.pojo;
 
-import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.MyRpcException;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exception.RpcTypeNotSupportedException;
 import indi.uhyils.rpc.exception.RpcVersionNotSupportedException;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
-import indi.uhyils.rpc.exchange.pojo.demo.factory.NormalRpcRequestFactory;
-import indi.uhyils.rpc.exchange.pojo.demo.factory.NormalRpcResponseFactory;
-import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcHeaderFactory;
 import indi.uhyils.rpc.util.BytesUtils;
 import indi.uhyils.util.LogUtil;
@@ -19,8 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static indi.uhyils.rpc.enums.RpcTypeEnum.parse;
 
 /**
  * rpc体模板,用来规定rpc应该有的东西
@@ -77,29 +71,13 @@ public abstract class AbstractRpcData implements RpcData {
      */
     protected RpcContent content;
 
-    protected AbstractRpcData(final byte[] data) throws RpcException, ClassNotFoundException {
-        doInit(data);
-    }
-
     protected AbstractRpcData() {
     }
 
-    public static RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException {
-        int type = (data[2] & 0b10) >> 1;
-        RpcTypeEnum parse = parse(type);
-        assert parse != null;
-        RpcFactory rpcFactory;
-        switch (parse) {
-            case REQUEST:
-                rpcFactory = new NormalRpcRequestFactory();
-                break;
-            case RESPONSE:
-                rpcFactory = new NormalRpcResponseFactory();
-                break;
-            default:
-                throw new RpcException("rpc类型错误");
-        }
-        return rpcFactory.createByBytes(data);
+    @Override
+    public void init(final Object... params) throws Exception {
+        byte[] data = (byte[]) params[0];
+        doInit(data);
     }
 
     /**

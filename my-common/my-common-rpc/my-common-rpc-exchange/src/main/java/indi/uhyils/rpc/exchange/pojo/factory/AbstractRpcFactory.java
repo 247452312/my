@@ -14,7 +14,7 @@ import io.netty.buffer.ByteBuf;
 public abstract class AbstractRpcFactory implements RpcFactory {
 
     @Override
-    public RpcData createByByteBuf(ByteBuf in) throws RpcException, ClassNotFoundException {
+    public RpcData createByByteBuf(ByteBuf in) throws Exception {
         byte[] bytes = new byte[in.readableBytes()];
         in.readBytes(bytes);
         return createByBytes(bytes);

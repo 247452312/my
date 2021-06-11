@@ -1,12 +1,14 @@
 package indi.uhyils.rpc.exchange.pojo;
 
+import indi.uhyils.rpc.spi.RpcSpiExtension;
+
 /**
  * rpc数据体
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 10时14分
  */
-public interface RpcData {
+public interface RpcData extends RpcSpiExtension {
 
     /**
      * RPC版本

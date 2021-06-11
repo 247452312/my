@@ -23,7 +23,7 @@ public interface RpcFactory extends RpcSpiExtension {
      * @throws RpcException
      * @throws ClassNotFoundException
      */
-    RpcData createByBytes(byte[] data) throws RpcException, ClassNotFoundException;
+    RpcData createByBytes(byte[] data) throws Exception;
 
     /**
      * 根据数据流新建一个rpc体
@@ -33,7 +33,7 @@ public interface RpcFactory extends RpcSpiExtension {
      * @throws RpcException
      * @throws ClassNotFoundException
      */
-    RpcData createByByteBuf(ByteBuf data) throws RpcException, ClassNotFoundException;
+    RpcData createByByteBuf(ByteBuf data) throws Exception;
 
     /**
      * 根据一些必要的信息创建RPC体

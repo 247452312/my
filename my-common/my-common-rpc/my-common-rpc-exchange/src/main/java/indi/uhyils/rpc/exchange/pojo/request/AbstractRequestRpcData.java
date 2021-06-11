@@ -1,7 +1,6 @@
 package indi.uhyils.rpc.exchange.pojo.request;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.AbstractRpcData;
 
 /**
@@ -13,12 +12,13 @@ import indi.uhyils.rpc.exchange.pojo.AbstractRpcData;
 public abstract class AbstractRequestRpcData extends AbstractRpcData {
 
 
-    protected AbstractRequestRpcData(byte[] data) throws RpcException, ClassNotFoundException {
-        super(data);
-        this.type = RpcTypeEnum.REQUEST.getCode();
+    protected AbstractRequestRpcData() {
     }
 
-    protected AbstractRequestRpcData() {
+    @Override
+    public void init(Object... params) throws Exception {
+        super.init(params);
+        this.type = RpcTypeEnum.REQUEST.getCode();
     }
 
 }
