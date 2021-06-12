@@ -23,23 +23,23 @@ public class LogUtil {
      */
     private static Map<String, Logger> loggerMap = new HashMap<>();
 
-    public static Boolean isDebugEnabled(Object obj) {
+    public static boolean isDebugEnabled(Object obj) {
         if (obj == null) {
             return Boolean.FALSE;
         }
         return isDebugEnabled(obj.getClass());
     }
 
-    public static Boolean isDebugEnabled(Class obj) {
-        if (obj == null) {
+    public static boolean isDebugEnabled(Class<?> clazz) {
+        if (clazz == null) {
             return Boolean.FALSE;
         }
-        String simpleName = obj.getName();
-        if (!loggerMap.containsKey(simpleName)) {
-            Logger logger = LoggerFactory.getLogger(simpleName);
-            loggerMap.put(simpleName, logger);
+        String simpleName = clazz.getName();
+        Logger logger = MapUtil.putIfAbsent(loggerMap, simpleName, () -> LoggerFactory.getLogger(clazz));
+        if (logger != null) {
+            return logger.isDebugEnabled();
         }
-        return loggerMap.get(simpleName).isDebugEnabled();
+        return Boolean.TRUE;
     }
 
     public static void info(Class<?> cls, String msg) {

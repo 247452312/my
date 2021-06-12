@@ -18,7 +18,7 @@ black-list:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://prod:3306/my_log
     username: root
     password: 123456

@@ -274,7 +274,10 @@ public class HotSpotAop {
                 jedis.eval(UPDATE_CACHE.getBytes(StandardCharsets.UTF_8), updateKeys, updateArgv);
                 return proceed;
             }
-            LogUtil.info(HotSpotAop.class, String.format("接口<%s> 读取redis中的缓存热点数据", methodName));
+            if (LogUtil.isDebugEnabled(HotSpotAop.class)) {
+                LogUtil.debug(HotSpotAop.class, String.format("接口<%s> 读取redis中的缓存热点数据", methodName));
+            }
+
             ServiceResult<HotSpotResponse> hotSpotResponse = ServiceResult.buildHotSpotHaveResult(format, HotSpotContent.HOTSPOT_HASH_DATA_KEY, (DefaultRequest) pjp.getArgs()[0]);
             return hotSpotResponse;
         } finally {

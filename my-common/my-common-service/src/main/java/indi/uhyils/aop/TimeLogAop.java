@@ -89,8 +89,10 @@ public class TimeLogAop {
      * @param proceed    返回值
      */
     private void after(String className, String methodName, double v, Object proceed) {
-        LogUtil.info(this, String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));
-        LogUtil.info(this, String.format("   返回值为:%s", JSONObject.toJSONString(proceed)));
+        if (LogUtil.isDebugEnabled(this)) {
+            LogUtil.debug(this, String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));
+            LogUtil.debug(this, String.format("   返回值为:%s", JSONObject.toJSONString(proceed)));
+        }
     }
 
     /**
@@ -101,21 +103,22 @@ public class TimeLogAop {
      * @param methodName 方法名
      */
     private void before(ProceedingJoinPoint pjp, String className, String methodName) {
-        StringBuilder sb = new StringBuilder();
-        Object[] args = pjp.getArgs();
-        sb.append("方法开始执行:  ");
-        sb.append(className);
-        sb.append("类中的");
-        sb.append(methodName);
-        sb.append(",参数为:");
-        for (Object arg : args) {
-            sb.append(JSONObject.toJSONString(arg));
-            sb.append("(");
-            sb.append(arg.getClass().getSimpleName());
-            sb.append(")");
+        if (LogUtil.isDebugEnabled(this)) {
+            StringBuilder sb = new StringBuilder();
+            Object[] args = pjp.getArgs();
+            sb.append("方法开始执行:  ");
+            sb.append(className);
+            sb.append("类中的");
+            sb.append(methodName);
+            sb.append(",参数为:");
+            for (Object arg : args) {
+                sb.append(JSONObject.toJSONString(arg));
+                sb.append("(");
+                sb.append(arg.getClass().getSimpleName());
+                sb.append(")");
+            }
+            LogUtil.debug(this, "---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
+            LogUtil.debug(this, sb.toString());
         }
-        LogUtil.info(this, "---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
-        LogUtil.info(this, sb.toString());
-        sb.delete(0, sb.length());
     }
 }
