@@ -11,6 +11,8 @@ import indi.uhyils.rpc.spi.RpcSpiManager;
  */
 public class RegistryFactory {
 
+    private RegistryFactory() {
+    }
 
     /**
      * 默认的registry

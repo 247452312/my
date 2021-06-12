@@ -41,8 +41,6 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
     private LoadBalanceEnum loadBalanceType;
 
 
-    public ProviderDefaultCluster() {
-    }
 
     @Override
     public void init(Object... params) throws Exception {
@@ -55,12 +53,12 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
         nettyInit.setCallback(RpcCallBackFactory.createRequestCallBack(RpcBeanFactory.getInstance(beans).getRpcBeans()));
         nettyInit.setHost(IpUtil.getIp());
         nettyInit.setPort(port);
-        RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.PROVIDER, nettyInit);
-        NettyInfo nettyInfo = new NettyInfo();
-        nettyInfo.setIndexInColony(1);
+        RpcNetty initNetty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.PROVIDER, nettyInit);
+        NettyInfo initNettyInfo = new NettyInfo();
+        initNettyInfo.setIndexInColony(1);
 
-        this.nettyInfo = nettyInfo;
-        this.netty = netty;
+        this.nettyInfo = initNettyInfo;
+        this.netty = initNetty;
         this.loadBalanceType = LoadBalanceEnum.RANDOM;
     }
 

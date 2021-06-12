@@ -12,7 +12,7 @@ public class ClassNotRpcBeanException extends RpcException {
         super("此类不是rpc的bean: " + message);
     }
 
-    public ClassNotRpcBeanException(Class clazz) {
+    public ClassNotRpcBeanException(Class<?> clazz) {
         super("此类不是rpc的bean: " + clazz.getName());
     }
 }

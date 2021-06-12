@@ -4,11 +4,16 @@ import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactoryProducer;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 09时23分
  */
 public class MyRpcContent {
+
     /**
      * rpc版本
      */
@@ -16,8 +21,7 @@ public class MyRpcContent {
     /**
      * rpc头数据结构标记大小
      */
-    public static final int[] RPC_DATA_ITEM_SIZE = new int[]{2, 1, 4, 1, 8};
-
+    public static final List<Integer> RPC_DATA_ITEM_SIZE = Collections.unmodifiableList(Arrays.asList(2, 1, 4, 1, 8));
     /**
      * mark在头中所占的位
      */
@@ -53,6 +57,9 @@ public class MyRpcContent {
             (byte) (AGREEMENT_START_INT >> 8 & 0xff),
             (byte) (AGREEMENT_START_INT & 0xff)
     };
+
+    private MyRpcContent() {
+    }
 
 
 }

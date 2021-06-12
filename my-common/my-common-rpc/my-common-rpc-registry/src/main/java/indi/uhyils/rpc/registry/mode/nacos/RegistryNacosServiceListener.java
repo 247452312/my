@@ -43,14 +43,15 @@ public class RegistryNacosServiceListener extends AbstractRegistryServiceListene
 
     @Override
     public void onEvent(Event event) {
-        if (event != null) {
-            if (event instanceof NamingEvent) {
-                LogUtil.info("name!!!!!!!!!!!!!!!!");
-                try {
-                    doServiceEvent((NamingEvent) event);
-                } catch (Exception e) {
-                    LogUtil.error(this, e);
-                }
+        if (event == null) {
+            return;
+        }
+        if (event instanceof NamingEvent) {
+            LogUtil.info("name!!!!!!!!!!!!!!!!");
+            try {
+                doServiceEvent((NamingEvent) event);
+            } catch (Exception e) {
+                LogUtil.error(this, e);
             }
         }
     }

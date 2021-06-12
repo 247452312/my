@@ -29,8 +29,6 @@ public class NormalRpcResponseFactory extends AbstractRpcFactory {
     private static final String RPC_RESPONSE_DEFAULT_NAME = "RPC_RESPONSE_DEFAULT_NAME";
     private static final String RPC_RESPONSE_SPI_NAME = "RPC_RESPONSE_SPI_NAME";
 
-    public NormalRpcResponseFactory() {
-    }
 
     @Override
     public RpcData createByBytes(byte[] data) throws Exception {

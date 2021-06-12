@@ -9,6 +9,9 @@ import indi.uhyils.rpc.netty.pojo.NettyInitDto;
  */
 public class NettyInitDtoFactory {
 
+    private NettyInitDtoFactory() {
+    }
+
     /**
      * 创建基础nettyInitDto
      *

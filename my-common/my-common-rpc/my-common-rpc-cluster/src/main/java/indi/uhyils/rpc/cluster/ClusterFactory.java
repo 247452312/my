@@ -12,13 +12,13 @@ import java.util.Map;
  */
 public class ClusterFactory {
 
-    private static final String providerDefaultName = "default_provider_name";
+    private static final String PROVIDER_DEFAULT_NAME = "default_provider_name";
 
-    private static final String providerSpiName = "providerSpiName";
+    private static final String PROVIDER_SPI_NAME = "providerSpiName";
 
-    private static final String consumerDefaultName = "default_consumer_name";
+    private static final String CONSUMER_DEFAULT_NAME = "default_consumer_name";
 
-    private static final String consumerSpiName = "consumerSpiName";
+    private static final String CONSUMER_SPI_NAME = "consumerSpiName";
 
     private ClusterFactory() {
     }
@@ -33,7 +33,7 @@ public class ClusterFactory {
      */
     public static Cluster createDefaultProviderCluster(Integer port, Map<String, Object> beans) throws Exception {
         // spi 获取消费者的注册者信息
-        String registryName = (String) RpcConfigFactory.getCustomOrDefault(providerSpiName, providerDefaultName);
+        String registryName = (String) RpcConfigFactory.getCustomOrDefault(PROVIDER_SPI_NAME, PROVIDER_DEFAULT_NAME);
         // 返回一个构造完成的消费者
         return (Cluster) RpcSpiManager.getExtensionByClass(Cluster.class, registryName, port, beans);
     }
@@ -52,7 +52,7 @@ public class ClusterFactory {
      */
     public static Cluster createDefaultConsumerCluster(Class<?> clazz, NettyInitDto... nettyInits) throws Exception {
         // spi 获取消费者的注册者信息
-        String registryName = (String) RpcConfigFactory.getCustomOrDefault(consumerSpiName, consumerDefaultName);
+        String registryName = (String) RpcConfigFactory.getCustomOrDefault(CONSUMER_SPI_NAME, CONSUMER_DEFAULT_NAME);
         // 返回一个构造完成的消费者
         return (Cluster) RpcSpiManager.getExtensionByClass(Cluster.class, registryName, clazz, nettyInits);
     }

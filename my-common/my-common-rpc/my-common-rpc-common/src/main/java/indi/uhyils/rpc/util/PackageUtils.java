@@ -29,6 +29,8 @@ public class PackageUtils {
      */
     private static final String JAR = "jar";
 
+    private PackageUtils() {
+    }
 
     /**
      * 根据包名获取class
@@ -121,10 +123,7 @@ public class PackageUtils {
         Enumeration<URL> urls = loader.getResources(packagePath);
         while (urls.hasMoreElements()) {
             URL url = urls.nextElement();
-            if (url == null) {
-                continue;
-            }
-            if (!checkExclude(excludePackagePaths, url)) {
+            if (url == null || !checkExclude(excludePackagePaths, url)) {
                 continue;
             }
 
@@ -194,6 +193,7 @@ public class PackageUtils {
      * @throws UnsupportedEncodingException
      */
     private static List<Class<?>> getClassNameByFile(String filePath, boolean childPackage) throws UnsupportedEncodingException, ClassNotFoundException {
+        // 获取path下的所有文件或文件夹
         List<Class<?>> myClassName = new ArrayList<>();
         filePath = URLDecoder.decode(filePath, "UTF-8");
         File file = new File(filePath);
@@ -201,11 +201,11 @@ public class PackageUtils {
         if (childFiles == null) {
             return myClassName;
         }
+
+        // 遍历所有获取的文件,获取所有类
         for (File childFile : childFiles) {
-            if (childFile.isDirectory()) {
-                if (childPackage) {
-                    myClassName.addAll(getClassNameByFile(childFile.getPath(), Boolean.TRUE));
-                }
+            if (childFile.isDirectory() && childPackage) {
+                myClassName.addAll(getClassNameByFile(childFile.getPath(), Boolean.TRUE));
             } else {
                 String childFilePath = childFile.getPath();
                 if (childFilePath.endsWith(".class")) {
@@ -241,8 +241,8 @@ public class PackageUtils {
         String jarFilePath = jarInfo[0].substring(jarInfo[0].indexOf("/"));
         jarFilePath = URLDecoder.decode(jarFilePath, "UTF-8");
         String packagePath = jarInfo[1].substring(1);
-        try {
-            JarFile jarFile = new JarFile(jarFilePath);
+        try (JarFile jarFile = new JarFile(jarFilePath)) {
+
             Enumeration<JarEntry> entrys = jarFile.entries();
             while (entrys.hasMoreElements()) {
                 JarEntry jarEntry = entrys.nextElement();

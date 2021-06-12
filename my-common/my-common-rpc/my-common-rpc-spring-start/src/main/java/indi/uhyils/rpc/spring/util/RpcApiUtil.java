@@ -23,22 +23,21 @@ import java.util.List;
  */
 public class RpcApiUtil {
 
-
     /**
      * 接口名称包分隔符
      */
     public static final String INTERFACE_NAME_PACKAGE_SEPARATOR = ".";
-
-
     /**
      * 默认的协议
      */
     private static final String DEFAULT_PROCOTOL = "dubbo";
-
     /**
      * ReferenceConfig缓存(重量级, 不缓存太慢了, 但是还没有考虑微服务过多的情况)
      */
     private static final HashMap<String, GenericService> MAP = new HashMap<>();
+
+    private RpcApiUtil() {
+    }
 
     /**
      * rpc泛化接口调用类
@@ -127,7 +126,7 @@ public class RpcApiUtil {
             } else {
                 LogUtil.info("返回值为空");
             }
-            if (async == Boolean.FALSE) {
+            if (Boolean.FALSE.equals(async)) {
                 // 添加链路
                 request.setRequestLink(serviceResult.getRequestLink());
             }

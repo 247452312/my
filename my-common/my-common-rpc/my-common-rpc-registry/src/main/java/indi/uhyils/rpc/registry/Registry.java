@@ -23,7 +23,7 @@ public interface Registry<T> extends RpcSpiExtension {
      * @throws ClassNotFoundException 类没有找到错误
      * @throws InterruptedException   过程调用被打断错误(例如超时)
      */
-    String invoke(Long unique, String methodName, Class[] paramType, Object[] args) throws RpcException, ClassNotFoundException, InterruptedException;
+    String invoke(Long unique, String methodName, Class<T>[] paramType, Object[] args) throws RpcException, ClassNotFoundException, InterruptedException;
 
 
 }

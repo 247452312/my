@@ -53,15 +53,8 @@ public enum LoadBalanceEnum {
         return code;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
-    }
 
     public String getSpiName() {
         return spiName;
-    }
-
-    public void setSpiName(String spiName) {
-        this.spiName = spiName;
     }
 }

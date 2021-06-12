@@ -40,10 +40,6 @@ public class ConsumerRegistry<T> extends AbstractRegistry<T> {
      */
     private String selfIp;
 
-
-    public ConsumerRegistry() {
-    }
-
     @Override
     protected void doRegistryInit(Object... objects) {
 

@@ -17,11 +17,10 @@ import indi.uhyils.rpc.netty.spi.filter.invoker.RpcResult;
  */
 @RpcSpi(order = Integer.MAX_VALUE)
 public class ConsumerTimeOutFilter extends AbstractTimeOutFilter implements ConsumerFilter {
-    public ConsumerTimeOutFilter() {
-    }
+
 
     @Override
-    public RpcResult invoke(final RpcInvoker invoker, final FilterContext invokerContext) throws RpcException, ClassNotFoundException {
+    public RpcResult invoke(final RpcInvoker invoker, final FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
         return invoke0(invoker, invokerContext);
     }
 

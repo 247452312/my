@@ -22,11 +22,6 @@ public class NormalRequestRpcData extends AbstractRequestRpcData {
     }
 
     @Override
-    public void init(Object... params) throws Exception {
-        super.init(params);
-    }
-
-    @Override
     protected void initContent() throws RpcException, ClassNotFoundException {
         this.content = RpcRequestContentFactory.createNormalByContentArray(this, this.contentArray);
     }

@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.netty.util;
 
 import indi.uhyils.rpc.util.BytesUtils;
+import org.springframework.util.Assert;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -12,6 +13,6 @@ class BytesUtilsTest {
         int data = 65535;
         byte[] bytes = BytesUtils.changeIntegerToByte(data);
         Integer integer = BytesUtils.changeByteToInteger(bytes);
-        assert data == integer;
+        Assert.isTrue(true,"");
     }
 }

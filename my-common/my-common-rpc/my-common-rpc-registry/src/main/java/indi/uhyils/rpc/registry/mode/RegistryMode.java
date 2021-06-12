@@ -3,8 +3,6 @@ package indi.uhyils.rpc.registry.mode;
 import com.alibaba.nacos.api.exception.NacosException;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
-import indi.uhyils.rpc.registry.exception.RegistryException;
-import indi.uhyils.rpc.registry.exception.RegistryTypeException;
 import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
 import indi.uhyils.rpc.spi.RpcSpiExtension;
 
@@ -72,18 +70,14 @@ public interface RegistryMode extends RpcSpiExtension {
      * @param info
      * @return
      * @throws Exception
-     * @throws RegistryTypeException
-     * @throws RegistryException
      */
-    Boolean registry(RegistryInfo info) throws Exception, RegistryTypeException, RegistryException;
+    Boolean registry(RegistryInfo info) throws Exception;
 
     /**
      * 服务端注销
      *
      * @return
      * @throws Exception
-     * @throws RegistryTypeException
-     * @throws RegistryException
      */
     void removeInstance(String interfaceName, String ip, int port) throws Exception;
 

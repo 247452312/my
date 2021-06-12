@@ -20,11 +20,9 @@ import indi.uhyils.util.LogUtil;
  */
 @RpcSpi(order = Integer.MIN_VALUE)
 public class RetryFilter implements ConsumerFilter {
-    public RetryFilter() {
-    }
 
     @Override
-    public RpcResult invoke(RpcInvoker invoker, FilterContext invokerContext) {
+    public RpcResult invoke(RpcInvoker invoker, FilterContext invokerContext) throws InterruptedException {
         RpcResult rpcResult = invokerContext.getRpcResult();
         RpcConfig instance = RpcConfigFactory.getInstance();
         Integer retries = instance.getConsumer().getRetries();
@@ -36,7 +34,7 @@ public class RetryFilter implements ConsumerFilter {
                 RpcResult invoke = invoker.invoke(invokerContext);
                 rpcResult.set(invoke.get());
                 return invoke;
-            } catch (RpcException | InterruptedException e) {
+            } catch (RpcException e) {
                 LogUtil.error(this, e);
                 th = e;
             } catch (ClassNotFoundException e) {

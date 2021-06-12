@@ -41,12 +41,18 @@ public class ConsumerDefaultCluster implements Cluster {
      */
     private Class<?> target;
 
-    public ConsumerDefaultCluster() {
-    }
 
+    /**
+     * @throws Exception
+     * @initParam 1 Clazz consumer要封装的rpc类
+     * @initParam 2 NettyInitDto[] netty初始化需要的东西
+     * @initParam 3 LoadBalanceEnum(可选) netty初始化需要的东西
+     */
     @Override
     public void init(Object... params) throws Exception {
-        Class clazz = (Class) params[0];
+
+        // 入参由 0 - class  1 - nettyInitDto[] 2 - LoadBalanceEnum(可选) 负载均衡,不选默认随机算法
+        Class<?> clazz = (Class<?>) params[0];
         NettyInitDto[] nettyInits = (NettyInitDto[]) params[1];
         if (params.length > 2) {
             this.loadBalanceType = (LoadBalanceEnum) params[2];
@@ -54,7 +60,7 @@ public class ConsumerDefaultCluster implements Cluster {
             this.loadBalanceType = LoadBalanceEnum.RANDOM;
         }
 
-        HashMap<NettyInfo, RpcNetty> nettyMap = new HashMap<>(nettyInits.length);
+        HashMap<NettyInfo, RpcNetty> initNettyMap = new HashMap<>(nettyInits.length);
         for (int i = 0; i < nettyInits.length; i++) {
             NettyInitDto nettyInit = nettyInits[i];
             RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
@@ -63,9 +69,9 @@ public class ConsumerDefaultCluster implements Cluster {
             nettyInfo.setPort(nettyInit.getPort());
             nettyInfo.setWeight(nettyInit.getWeight());
             nettyInfo.setIndexInColony(i);
-            nettyMap.put(nettyInfo, netty);
+            initNettyMap.put(nettyInfo, netty);
         }
-        this.nettyMap = nettyMap;
+        this.nettyMap = initNettyMap;
         this.target = clazz;
     }
 
@@ -107,7 +113,7 @@ public class ConsumerDefaultCluster implements Cluster {
     }
 
     @Override
-    public RpcData sendMsg(RpcData rpcData, SendInfo info) throws RpcException {
+    public RpcData sendMsg(RpcData rpcData, SendInfo info) throws RpcException, InterruptedException {
         if (nettyMap.isEmpty()) {
             String interfaceName = getInterfaceName();
             throw new RpcException("指定的服务端" + interfaceName + "不存在");
@@ -115,6 +121,8 @@ public class ConsumerDefaultCluster implements Cluster {
         try {
             LoadBalanceInterface loadBalance = LoadBalanceFactory.createByLoadBalanceEnum(loadBalanceType, nettyMap);
             return loadBalance.send(rpcData, info, nettyMap);
+        } catch (InterruptedException e) {
+            throw e;
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
@@ -122,7 +130,7 @@ public class ConsumerDefaultCluster implements Cluster {
     }
 
     @Override
-    public Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) throws Exception {
+    public Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) {
         // 筛选出没有的,移出->下线
         Set<NettyInfo> set = new HashSet<>();
         for (NettyInfo nettyInfo : nettyMap.keySet()) {
@@ -145,8 +153,12 @@ public class ConsumerDefaultCluster implements Cluster {
             nettyInit.setHost(nettyInfo.getHost());
             nettyInit.setPort(nettyInfo.getPort());
             nettyInit.setCallback(new RpcDefaultResponseCallBack());
-            RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
-            nettyMap.put(nettyInfo, netty);
+            try {
+                RpcNetty netty = RpcNettyFactory.createNetty(RpcNettyTypeEnum.CONSUMER, nettyInit);
+                nettyMap.put(nettyInfo, netty);
+            } catch (Exception e) {
+                LogUtil.error(this, e);
+            }
         }
         return Boolean.TRUE;
     }

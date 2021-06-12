@@ -33,8 +33,7 @@ public class NormalRpcRequestFactory extends AbstractRpcFactory {
     private static final String RPC_REQUEST_DEFAULT_NAME = "RPC_REQUEST_DEFAULT_NAME";
     private static final String RPC_REQUEST_SPI_NAME = "RPC_REQUEST_SPI_NAME";
 
-    public NormalRpcRequestFactory() {
-    }
+
 
 
     @Override

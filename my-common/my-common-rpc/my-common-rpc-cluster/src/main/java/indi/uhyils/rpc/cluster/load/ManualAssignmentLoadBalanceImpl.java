@@ -24,9 +24,6 @@ public class ManualAssignmentLoadBalanceImpl extends AbstractLoadBalance {
      */
     private AtomicReferenceArray<NettyInfo> weightArrayForManualAssignment;
 
-    public ManualAssignmentLoadBalanceImpl() {
-
-    }
 
     @Override
     public void init(Object... objects) {

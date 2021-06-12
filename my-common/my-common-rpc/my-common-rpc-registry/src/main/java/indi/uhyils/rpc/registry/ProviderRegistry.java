@@ -21,10 +21,6 @@ import java.util.HashMap;
 @RpcSpi(single = false)
 public class ProviderRegistry<T> extends AbstractRegistry<T> {
 
-
-    public ProviderRegistry() {
-    }
-
     @Override
     protected void doRegistryInit(Object[] objects) throws NacosException, MyRpcException {
         Object bean = objects[1];

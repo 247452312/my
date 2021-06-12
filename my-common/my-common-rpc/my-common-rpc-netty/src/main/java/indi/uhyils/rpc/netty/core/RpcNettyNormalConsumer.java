@@ -66,8 +66,6 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty {
      */
     private FixedLengthQueue<Long> timeOutUnique = new FixedLengthQueue<>(200, Long.class);
 
-    public RpcNettyNormalConsumer() {
-    }
 
     @Override
     public void init(Object... params) throws Exception {

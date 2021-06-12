@@ -1,7 +1,6 @@
 package indi.uhyils.rpc.exchange.pojo.factory;
 
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import io.netty.buffer.ByteBuf;
 

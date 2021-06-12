@@ -7,7 +7,6 @@ import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.registry.Registry;
 import indi.uhyils.rpc.registry.RegistryFactory;
-import indi.uhyils.rpc.registry.mode.nacos.RegistryNacosMode;
 import indi.uhyils.util.ClassUtil;
 import indi.uhyils.util.LogUtil;
 import org.springframework.beans.factory.BeanFactory;

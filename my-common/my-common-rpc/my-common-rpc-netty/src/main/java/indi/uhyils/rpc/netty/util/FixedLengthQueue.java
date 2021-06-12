@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月25日 14时02分
  */
-public class FixedLengthQueue<T> implements Serializable {
+public class FixedLengthQueue<T extends Serializable> implements Serializable {
 
     /**
      * 定长

@@ -18,14 +18,6 @@ import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContentFactory;
 public class NormalResponseRpcData extends AbstractResponseRpcData {
 
 
-    public NormalResponseRpcData() {
-    }
-
-    @Override
-    public void init(Object... params) throws Exception {
-        super.init(params);
-    }
-
     @Override
     protected void initContent() throws RpcException {
         this.content = RpcResponseContentFactory.createByContentArray(this, this.contentArray);

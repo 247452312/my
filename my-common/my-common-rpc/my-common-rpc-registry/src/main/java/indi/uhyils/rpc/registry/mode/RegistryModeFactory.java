@@ -18,6 +18,8 @@ public class RegistryModeFactory {
      * 配置中注册中心的名称
      */
     private static final String REGISTRY_MODE_SPI_NAME = "registryModeSpi";
+    private RegistryModeFactory() {
+    }
 
     public static RegistryMode create() {
         String registryModelName = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_MODE_SPI_NAME, DEFAULT_MODE_REGISTRY);

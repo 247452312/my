@@ -18,8 +18,6 @@ import indi.uhyils.rpc.netty.spi.filter.invoker.RpcResult;
 @RpcSpi(order = Integer.MAX_VALUE)
 public class ProviderTimeOutFilter extends AbstractTimeOutFilter implements ProviderFilter {
 
-    public ProviderTimeOutFilter() {
-    }
 
     @Override
     public RpcResult invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {

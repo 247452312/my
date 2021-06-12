@@ -12,6 +12,7 @@ import indi.uhyils.rpc.registry.RegistryFactory;
 import indi.uhyils.rpc.registry.content.RegistryContent;
 import indi.uhyils.rpc.registry.mode.nacos.RegistryNacosMode;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.Assert;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -27,15 +28,16 @@ class RegistryFactoryTest {
         RegistryNacosMode mode = new RegistryNacosMode();
         Class<FunctionOneInterface> clazz = FunctionOneInterface.class;
         Registry<FunctionOneInterface> consumer = RegistryFactory.createConsumer(clazz);
-        String add = consumer.invoke(90L, "add", clazz.getMethods()[0].getParameterTypes(), new Object[]{1, 2});
+        String add = consumer.invoke(90L, "add", (Class<FunctionOneInterface>[]) clazz.getMethods()[0].getParameterTypes(), new Object[]{1, 2});
 
         System.out.println("--------------------------------------------------------------------" + add);
 
         for (int i = 0; i < 10; i++) {
-            String temp = consumer.invoke(Integer.toUnsignedLong(i), "add", clazz.getMethods()[0].getParameterTypes(), new Object[]{1, 2});
+            String temp = consumer.invoke(Integer.toUnsignedLong(i), "add", (Class<FunctionOneInterface>[]) clazz.getMethods()[0].getParameterTypes(), new Object[]{1, 2});
             System.out.println("-------------重复执行 这里是" + i + "遍结果是:   " + temp);
 
         }
+        Assert.isTrue(true,"hello world");
     }
 
     @Test
@@ -47,6 +49,7 @@ class RegistryFactoryTest {
         System.out.println("服务提供者服务加载完毕----------------------------!!!!!!! yeah");
         System.in.read();
 
+        Assert.isTrue(true,"hello world");
     }
 
     @Test
@@ -58,6 +61,7 @@ class RegistryFactoryTest {
         System.out.println("服务提供者服务加载完毕----------------------------!!!!!!! yeah");
         System.in.read();
 
+        Assert.isTrue(true,"hello world");
     }
 
     @Test
@@ -73,5 +77,6 @@ class RegistryFactoryTest {
         });
         System.in.read();
 
+        Assert.isTrue(true,"hello world");
     }
 }

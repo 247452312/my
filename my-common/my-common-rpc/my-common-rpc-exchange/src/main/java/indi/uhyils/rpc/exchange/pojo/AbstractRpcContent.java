@@ -20,7 +20,7 @@ public abstract class AbstractRpcContent implements RpcContent {
      */
     private String[] contentArray;
 
-    public AbstractRpcContent(String[] contentArray) {
+    protected AbstractRpcContent(String[] contentArray) {
         this.contentArray = contentArray;
     }
 

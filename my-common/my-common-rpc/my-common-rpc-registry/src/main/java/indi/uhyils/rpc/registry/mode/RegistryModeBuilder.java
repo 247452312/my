@@ -14,6 +14,7 @@ import indi.uhyils.util.IpUtil;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -22,13 +23,16 @@ import java.util.Arrays;
  */
 public class RegistryModeBuilder {
 
+    private RegistryModeBuilder() {
+    }
+
     /**
      * 初始化注册信息
      *
      * @param clazz
      * @return
      */
-    public static RegistryInfo initRegistryInfo(Class clazz) {
+    public static RegistryInfo initRegistryInfo(Class<?> clazz) {
         RegistryInfo info = new RegistryInfo();
 
         RegistryProviderNecessaryInfo necessaryInfo = initRegistryProviderNecessaryInfo(clazz);
@@ -46,10 +50,10 @@ public class RegistryModeBuilder {
      * @param clazz
      * @return
      */
-    public static RegistryMetadata initRegistryMetadata(Class clazz) {
+    public static RegistryMetadata initRegistryMetadata(Class<?> clazz) {
         RegistryMetadata metadata = new RegistryMetadata();
 
-        ArrayList<RegistryMetadataOfMethod> methodInfos = initMethodInfo(clazz);
+        List<RegistryMetadataOfMethod> methodInfos = initMethodInfo(clazz);
         metadata.setMethodInfos(methodInfos);
 
         RegistryMetadataOfInterface serviceInfo = initInterface();
@@ -77,8 +81,8 @@ public class RegistryModeBuilder {
      * @param clazz
      * @return
      */
-    public static ArrayList<RegistryMetadataOfMethod> initMethodInfo(Class clazz) {
-        ArrayList<RegistryMetadataOfMethod> methodInfos = new ArrayList<>();
+    public static List<RegistryMetadataOfMethod> initMethodInfo(Class<?> clazz) {
+        List<RegistryMetadataOfMethod> methodInfos = new ArrayList<>();
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
             RegistryMetadataOfMethod metadataOfMethod = new RegistryMetadataOfMethod();
@@ -98,7 +102,7 @@ public class RegistryModeBuilder {
      * @param clazz
      * @return
      */
-    public static RegistryProviderNecessaryInfo initRegistryProviderNecessaryInfo(Class clazz) {
+    public static RegistryProviderNecessaryInfo initRegistryProviderNecessaryInfo(Class<?> clazz) {
         RpcConfig config = RpcConfigFactory.getInstance();
         Integer port = config.getProvider().getPort();
 

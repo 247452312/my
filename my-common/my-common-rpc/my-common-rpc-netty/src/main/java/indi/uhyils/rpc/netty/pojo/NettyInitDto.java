@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class NettyInitDto implements Serializable {
 
+    private static final long serialVersionUID = 8849579140716709610L;
     /**
      * 端口
      */
@@ -23,7 +24,7 @@ public class NettyInitDto implements Serializable {
     /**
      * 收到消息的回调
      */
-    private RpcCallBack callback;
+    private transient RpcCallBack callback;
 
     /**
      * 权重

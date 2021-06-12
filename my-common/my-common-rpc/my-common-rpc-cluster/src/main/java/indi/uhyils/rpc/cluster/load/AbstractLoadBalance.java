@@ -40,8 +40,6 @@ public abstract class AbstractLoadBalance implements LoadBalanceInterface {
         } else if (type == 2) {
             nettyInfo = getNettyInfo(info, nettyMap);
             rpcNetty = nettyMap.get(nettyInfo);
-        } else {
-
         }
         if (rpcNetty != null) {
             preprocessing(nettyInfo, rpcNetty);

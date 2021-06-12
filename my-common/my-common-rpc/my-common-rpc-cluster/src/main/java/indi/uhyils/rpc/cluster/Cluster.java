@@ -77,7 +77,7 @@ public interface Cluster extends RpcSpiExtension {
      * @param nettyInfos
      * @return
      */
-    Boolean onServiceStatusChange(List<NettyInfo> nettyInfos) throws Exception;
+    Boolean onServiceStatusChange(List<NettyInfo> nettyInfos);
 
 
 }

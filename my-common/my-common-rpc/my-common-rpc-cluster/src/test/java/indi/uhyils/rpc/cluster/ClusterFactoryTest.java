@@ -3,7 +3,6 @@ package indi.uhyils.rpc.cluster;
 import indi.uhyils.rpc.cluster.pojo.SendInfo;
 import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.RpcHeader;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;
@@ -12,6 +11,7 @@ import indi.uhyils.rpc.netty.callback.impl.RpcDefaultResponseCallBack;
 import indi.uhyils.rpc.netty.function.FunctionOne;
 import indi.uhyils.rpc.netty.function.FunctionOneInterface;
 import indi.uhyils.rpc.netty.pojo.NettyInitDto;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,6 +36,7 @@ class ClusterFactoryTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Assert.isTrue(true, "hello World");
     }
 
     @org.junit.jupiter.api.Test
@@ -52,6 +53,7 @@ class ClusterFactoryTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Assert.isTrue(true, "hello World");
     }
 
     @org.junit.jupiter.api.Test
@@ -95,5 +97,6 @@ class ClusterFactoryTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Assert.isTrue(true, "hello World");
     }
 }
