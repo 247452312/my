@@ -92,7 +92,7 @@ public class HotSpotRedisPool {
             initTypeIsRedis = true;
             return Boolean.TRUE;
         } catch (Exception e) {
-            LogUtil.error(this, e,"redis热点集群没有在线");
+            LogUtil.error(this, e, "redis热点集群没有在线");
             initTypeIsRedis = false;
             return Boolean.FALSE;
         }

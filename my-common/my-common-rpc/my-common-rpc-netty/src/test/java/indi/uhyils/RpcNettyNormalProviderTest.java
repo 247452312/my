@@ -2,7 +2,6 @@ package indi.uhyils;
 
 import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.RpcData;
 import indi.uhyils.rpc.exchange.pojo.RpcHeader;
 import indi.uhyils.rpc.exchange.pojo.factory.RpcFactory;

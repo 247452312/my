@@ -148,11 +148,11 @@ public class ProtocolParsingModel implements Serializable {
         return keepAlive;
     }
 
-    public boolean isNotKeepAlive() {
-        return !keepAlive;
-    }
-
     public void setKeepAlive(boolean keepAlive) {
         this.keepAlive = keepAlive;
+    }
+
+    public boolean isNotKeepAlive() {
+        return !keepAlive;
     }
 }

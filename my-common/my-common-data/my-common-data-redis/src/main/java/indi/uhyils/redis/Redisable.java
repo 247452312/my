@@ -1,5 +1,6 @@
 package indi.uhyils.redis;
 
+import java.io.Closeable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月06日 06时48分
  */
-public interface Redisable {
+public interface Redisable extends Closeable {
 
     String set(String key, String value);
 
@@ -34,6 +35,7 @@ public interface Redisable {
 
     Long setnx(String key, String value);
 
+    @Override
     void close();
 
 

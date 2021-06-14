@@ -19,16 +19,16 @@ public class Provider extends AbstractRegister {
         super(null, channelId, outDealTypeEnum);
     }
 
-    @Override
-    public RegisterType getRegisterType() {
-        return RegisterType.PROVIDER;
-    }
-
     public static Provider buildUrlRegister(String url, OutDealTypeEnum outDealTypeEnum) {
         return new Provider(url, null, outDealTypeEnum);
     }
 
     public static Provider buildChannelRegister(String channelId, OutDealTypeEnum outDealTypeEnum) {
         return new Provider(channelId, outDealTypeEnum);
+    }
+
+    @Override
+    public RegisterType getRegisterType() {
+        return RegisterType.PROVIDER;
     }
 }

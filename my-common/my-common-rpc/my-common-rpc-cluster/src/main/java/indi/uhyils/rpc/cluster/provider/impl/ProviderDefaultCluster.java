@@ -41,7 +41,6 @@ public class ProviderDefaultCluster extends AbstractProviderCluster {
     private LoadBalanceEnum loadBalanceType;
 
 
-
     @Override
     public void init(Object... params) throws Exception {
 

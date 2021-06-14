@@ -18,6 +18,7 @@ public class RegistryModeFactory {
      * 配置中注册中心的名称
      */
     private static final String REGISTRY_MODE_SPI_NAME = "registryModeSpi";
+
     private RegistryModeFactory() {
     }
 

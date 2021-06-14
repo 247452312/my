@@ -17,16 +17,16 @@ public class Publish extends AbstractRegister {
         super(null, channelId, outDealTypeEnum);
     }
 
-    @Override
-    public RegisterType getRegisterType() {
-        return RegisterType.PUBLISH;
-    }
-
     public static Publish buildUrlRegister(String url, OutDealTypeEnum outDealTypeEnum) {
         return new Publish(url, null, outDealTypeEnum);
     }
 
     public static Publish buildChannelRegister(String channelId, OutDealTypeEnum outDealTypeEnum) {
         return new Publish(channelId, outDealTypeEnum);
+    }
+
+    @Override
+    public RegisterType getRegisterType() {
+        return RegisterType.PUBLISH;
     }
 }

@@ -50,7 +50,7 @@ public class MqServiceImplTest {
         Assert.assertEquals(data2.get("test1"), 1);
         Assert.assertEquals(data2.get("test2"), "1");
         message = service.getMessage(request1);
-        Assert.assertEquals(message.getData(),null);
+        Assert.assertEquals(message.getData(), null);
     }
 
     @Test

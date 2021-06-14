@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.request;
 
 import indi.uhyils.enum_.OutDealTypeEnum;
-import indi.uhyils.pojo.request.base.DefaultRequest;
 
 /**
  * @Author uhyils <247452312@qq.com>

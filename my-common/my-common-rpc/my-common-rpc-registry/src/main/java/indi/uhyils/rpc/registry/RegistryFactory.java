@@ -11,28 +11,25 @@ import indi.uhyils.rpc.spi.RpcSpiManager;
  */
 public class RegistryFactory {
 
-    private RegistryFactory() {
-    }
-
     /**
      * 默认的registry
      */
     private static final String DEFAULT_REGISTRY = "default_consumer";
-
     /**
      * 配置中registry
      */
     private static final String REGISTRY_SPI_NAME = "registryConsumerSpi";
-
     /**
      * 默认的provider registry
      */
     private static final String DEFAULT_PROVIDER_REGISTRY = "default_provider";
-
     /**
      * 配置中provider registry
      */
     private static final String REGISTRY_PROVIDER_SPI_NAME = "registryProviderSpi";
+
+    private RegistryFactory() {
+    }
 
     /**
      * 创建一个消费者的注册层

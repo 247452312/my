@@ -29,6 +29,12 @@ public class NormalRpcResponseFactory extends AbstractRpcFactory {
     private static final String RPC_RESPONSE_DEFAULT_NAME = "RPC_RESPONSE_DEFAULT_NAME";
     private static final String RPC_RESPONSE_SPI_NAME = "RPC_RESPONSE_SPI_NAME";
 
+    public static NormalResponseRpcData createNewNormalResponseRpcData() {
+        // spi 获取消费者的注册者信息
+        String registryName = (String) RpcConfigFactory.getCustomOrDefault(RPC_RESPONSE_SPI_NAME, RPC_RESPONSE_DEFAULT_NAME);
+        // 返回一个构造完成的消费者
+        return (NormalResponseRpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName);
+    }
 
     @Override
     public RpcData createByBytes(byte[] data) throws Exception {
@@ -90,13 +96,6 @@ public class NormalRpcResponseFactory extends AbstractRpcFactory {
         rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
         return rpcNormalRequest;
 
-    }
-
-    public static NormalResponseRpcData createNewNormalResponseRpcData() {
-        // spi 获取消费者的注册者信息
-        String registryName = (String) RpcConfigFactory.getCustomOrDefault(RPC_RESPONSE_SPI_NAME, RPC_RESPONSE_DEFAULT_NAME);
-        // 返回一个构造完成的消费者
-        return (NormalResponseRpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName);
     }
 
     @Override

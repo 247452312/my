@@ -17,16 +17,16 @@ public class Consumer extends AbstractRegister {
         super(null, channelId, outDealTypeEnum);
     }
 
-    @Override
-    public RegisterType getRegisterType() {
-        return RegisterType.COMSUMER;
-    }
-
     public static Consumer buildUrlRegister(String url, OutDealTypeEnum outDealTypeEnum) {
         return new Consumer(url, null, outDealTypeEnum);
     }
 
     public static Consumer buildChannelRegister(String channelId, OutDealTypeEnum outDealTypeEnum) {
         return new Consumer(channelId, outDealTypeEnum);
+    }
+
+    @Override
+    public RegisterType getRegisterType() {
+        return RegisterType.COMSUMER;
     }
 }

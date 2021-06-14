@@ -19,16 +19,16 @@ public class Subscriber extends AbstractRegister {
         super(null, channelId, outDealTypeEnum);
     }
 
-    @Override
-    public RegisterType getRegisterType() {
-        return RegisterType.SUBSCRIBER;
-    }
-
     public static Subscriber buildUrlRegister(String url, OutDealTypeEnum outDealTypeEnum) {
         return new Subscriber(url, null, outDealTypeEnum);
     }
 
     public static Subscriber buildChannelRegister(String channelId, OutDealTypeEnum outDealTypeEnum) {
         return new Subscriber(channelId, outDealTypeEnum);
+    }
+
+    @Override
+    public RegisterType getRegisterType() {
+        return RegisterType.SUBSCRIBER;
     }
 }

@@ -34,8 +34,6 @@ public class NormalRpcRequestFactory extends AbstractRpcFactory {
     private static final String RPC_REQUEST_SPI_NAME = "RPC_REQUEST_SPI_NAME";
 
 
-
-
     @Override
     public RpcData createByBytes(byte[] data) throws Exception {
         // spi 获取消费者的注册者信息
@@ -49,7 +47,7 @@ public class NormalRpcRequestFactory extends AbstractRpcFactory {
         // spi 获取消费者的注册者信息
         String registryName = (String) RpcConfigFactory.getCustomOrDefault(RPC_REQUEST_SPI_NAME, RPC_REQUEST_DEFAULT_NAME);
         // 返回一个构造完成的消费者
-        NormalRequestRpcData rpcNormalRequest =  (NormalRequestRpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName);
+        NormalRequestRpcData rpcNormalRequest = (NormalRequestRpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName);
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);
@@ -73,7 +71,7 @@ public class NormalRpcRequestFactory extends AbstractRpcFactory {
         // spi 获取消费者的注册者信息
         String registryName = (String) RpcConfigFactory.getCustomOrDefault(RPC_REQUEST_SPI_NAME, RPC_REQUEST_DEFAULT_NAME);
         // 返回一个构造完成的消费者
-        NormalRequestRpcData rpcNormalRequest =  (NormalRequestRpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName);
+        NormalRequestRpcData rpcNormalRequest = (NormalRequestRpcData) RpcSpiManager.getExtensionByClass(RpcData.class, registryName);
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(request.rpcHeaders());

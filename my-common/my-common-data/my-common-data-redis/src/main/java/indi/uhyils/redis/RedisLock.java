@@ -17,6 +17,11 @@ public class RedisLock {
      * 分布式count_down_latch 名称
      */
     private static final String REDIS_COUNT_DOWN_LATCH = "count_down_latch_";
+
+    /**
+     * 默认尝试加锁次数
+     */
+    private static final Integer MAX_LOCK_COUNT = 3;
     /**
      * 锁名称 = lock_ + 传入的名称
      */
@@ -80,17 +85,15 @@ public class RedisLock {
     /**
      * 加锁
      */
-    public void lock(Long time) {
-        while (Boolean.TRUE) {
+    public void lock(Long time) throws InterruptedException {
+        int count = 0;
+        while (count < MAX_LOCK_COUNT) {
+            count++;
             boolean b = tryLock(time);
             if (b) {
                 break;
             }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                LogUtil.error(this, e);
-            }
+            Thread.sleep(500);
         }
     }
 
@@ -98,8 +101,7 @@ public class RedisLock {
      * 解锁
      */
     public void unlock() {
-        Redisable jedis = pool.getJedis();
-        try {
+        try (Redisable jedis = pool.getJedis()) {
             Long lockCount = jedis.incrBy(lockCountName, -1L);
             if (lockCount == 0) {
                 jedis.del(lockName);
@@ -107,8 +109,6 @@ public class RedisLock {
             }
         } catch (Exception e) {
             LogUtil.error(this, e);
-        } finally {
-            jedis.close();
         }
 
     }
@@ -126,8 +126,7 @@ public class RedisLock {
     }
 
     public final boolean tryLock(Long time) {
-        Redisable jedis = pool.getJedis();
-        try {
+        try (Redisable jedis = pool.getJedis()) {
             // 如果此线程已经获取到这个锁,那么不需要再次获取
             String s = jedis.get(lockName);
             if (s != null && s.equals(value)) {
@@ -154,8 +153,6 @@ public class RedisLock {
 
         } catch (Exception e) {
             LogUtil.error(this, e);
-        } finally {
-            jedis.close();
         }
         return Boolean.FALSE;
 
@@ -168,16 +165,13 @@ public class RedisLock {
      * @return
      */
     public boolean countDown(String uniqueName) throws RedisCountDownLatchExistsException, InterruptedException {
-        Redisable jedis = pool.getJedis();
-        try {
+        try (Redisable jedis = pool.getJedis()) {
             String key = REDIS_COUNT_DOWN_LATCH + uniqueName;
             if (!jedis.exists(key)) {
                 throw new RedisCountDownLatchExistsException(key);
             }
             jedis.incrBy(key, -1L);
             return loopToWaitCountDownLatch(jedis, uniqueName);
-        } finally {
-            jedis.close();
         }
     }
 
@@ -188,12 +182,9 @@ public class RedisLock {
      * @return
      */
     public int getCountDownLatchCount(String uniqueName) {
-        Redisable jedis = pool.getJedis();
-        try {
+        try (Redisable jedis = pool.getJedis()) {
             String count = jedis.get(uniqueName);
             return Integer.parseInt(count);
-        } finally {
-            jedis.close();
         }
     }
 
@@ -235,8 +226,7 @@ public class RedisLock {
      */
     public boolean createCountDownLatch(String uniqueName, Integer count, Integer expireSeconds) throws RedisCountDownLatchExistsException {
         String key = REDIS_COUNT_DOWN_LATCH + uniqueName;
-        Redisable jedis = pool.getJedis();
-        try {
+        try (Redisable jedis = pool.getJedis()) {
             if (jedis.exists(key)) {
                 throw new RedisCountDownLatchExistsException(key);
             }
@@ -245,8 +235,6 @@ public class RedisLock {
                 jedis.expire(key, expireSeconds);
             }
             return Boolean.TRUE;
-        } finally {
-            jedis.close();
         }
     }
 }

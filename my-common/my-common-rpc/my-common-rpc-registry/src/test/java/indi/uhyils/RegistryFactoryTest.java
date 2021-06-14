@@ -37,7 +37,7 @@ class RegistryFactoryTest {
             System.out.println("-------------重复执行 这里是" + i + "遍结果是:   " + temp);
 
         }
-        Assert.isTrue(true,"hello world");
+        Assert.isTrue(true, "hello world");
     }
 
     @Test
@@ -49,7 +49,7 @@ class RegistryFactoryTest {
         System.out.println("服务提供者服务加载完毕----------------------------!!!!!!! yeah");
         System.in.read();
 
-        Assert.isTrue(true,"hello world");
+        Assert.isTrue(true, "hello world");
     }
 
     @Test
@@ -61,7 +61,7 @@ class RegistryFactoryTest {
         System.out.println("服务提供者服务加载完毕----------------------------!!!!!!! yeah");
         System.in.read();
 
-        Assert.isTrue(true,"hello world");
+        Assert.isTrue(true, "hello world");
     }
 
     @Test
@@ -77,6 +77,6 @@ class RegistryFactoryTest {
         });
         System.in.read();
 
-        Assert.isTrue(true,"hello world");
+        Assert.isTrue(true, "hello world");
     }
 }
