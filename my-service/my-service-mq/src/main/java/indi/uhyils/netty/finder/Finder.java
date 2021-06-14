@@ -2,9 +2,12 @@ package indi.uhyils.netty.finder;
 
 import indi.uhyils.exception.UserException;
 import indi.uhyils.netty.model.ProtocolParsingModel;
+import indi.uhyils.rpc.spi.RpcSpiExtension;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 协议发现者
@@ -13,7 +16,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @version 1.0
  * @date 文件创建日期 2021年04月23日 09时24分
  */
-public interface Finder {
+public interface Finder extends RpcSpiExtension {
 
     /**
      * 方法名称
@@ -34,6 +37,7 @@ public interface Finder {
      * @param byteBuf
      * @return
      */
+    @NotNull
     Boolean checkByteBuf(ByteBuf byteBuf);
 
     /**

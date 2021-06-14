@@ -21,7 +21,7 @@ public class InvokerChainBuilder {
         // 最后一个连接器,系统类,必须执行
         RpcInvoker last = lastDefaultInvoker;
         // 获取已经排序好的所有的拦截器
-        List<ProviderFilter> chain = RpcSpiManager.getExtensionByClass(RpcFilter.class, ProviderFilter.class);
+        List<ProviderFilter> chain = RpcSpiManager.getExtensionsByClass(RpcFilter.class, ProviderFilter.class);
 
         for (int i = chain.size() - 1; i >= 0; i--) {
             final ProviderFilter providerInvoker = chain.get(i);
@@ -33,7 +33,7 @@ public class InvokerChainBuilder {
 
     public static RpcInvoker buildConsumerSendInvokerChain(LastConsumerInvoker lastConsumerInvoker) {
         RpcInvoker last = lastConsumerInvoker;
-        List<ConsumerFilter> chain = RpcSpiManager.getExtensionByClass(RpcFilter.class, ConsumerFilter.class);
+        List<ConsumerFilter> chain = RpcSpiManager.getExtensionsByClass(RpcFilter.class, ConsumerFilter.class);
         for (int i = chain.size() - 1; i >= 0; i--) {
             final ConsumerFilter providerInvoker = chain.get(i);
             final RpcInvoker next = last;

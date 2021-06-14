@@ -361,7 +361,7 @@ public class RpcSpiManager {
      * @param targetClass 要获取的类
      * @return
      */
-    public static <T extends RpcSpiExtension, E extends T> List<E> getExtensionByClass(Class<T> root, Class<E> targetClass) {
+    public static <T extends RpcSpiExtension, E extends T> List<E> getExtensionsByClass(Class<T> root, Class<E> targetClass) {
         // 看看加载的类中是否有目标root
         if (!cacheClass.containsKey(root)) {
             return new ArrayList();

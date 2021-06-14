@@ -2,8 +2,8 @@ package indi.uhyils.netty.handler;
 
 import indi.uhyils.netty.exception.ByteToMessageException;
 import indi.uhyils.netty.finder.Finder;
-import indi.uhyils.netty.finder.http.HttpProFinder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
+import indi.uhyils.rpc.spi.RpcSpiManager;
 import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -11,7 +11,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.ReferenceCountUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,12 +29,10 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
     /**
      * 协议解析器
      */
-    private List<Finder> finders;
+    private final List<Finder> finders;
 
     public MqByteToMessageDecoder() {
-        // TODO 此处可以重构为spi机制
-        finders = new ArrayList<>();
-        finders.add(new HttpProFinder());
+        finders = RpcSpiManager.getExtensionsByClass(Finder.class, Finder.class);
     }
 
     @Override
@@ -49,7 +46,7 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
             Finder finder = null;
             //筛选是否有合适的解析器
             for (Finder entry : finders) {
-                if (entry.checkByteBuf(buffer)) {
+                if (Boolean.TRUE.equals(entry.checkByteBuf(buffer))) {
                     finder = entry;
                     break;
                 }

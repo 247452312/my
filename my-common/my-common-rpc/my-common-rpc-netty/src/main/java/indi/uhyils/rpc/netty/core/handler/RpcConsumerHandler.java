@@ -41,8 +41,8 @@ public class RpcConsumerHandler extends SimpleChannelInboundHandler<ByteBuf> {
     public RpcConsumerHandler(RpcCallBack callBack, RpcNettyNormalConsumer netty) {
         this.callBack = callBack;
         this.netty = netty;
-        consumerResponseByteFilters = RpcSpiManager.getExtensionByClass(RpcStep.class, ConsumerResponseByteExtension.class);
-        consumerResponseDataFilters = RpcSpiManager.getExtensionByClass(RpcStep.class, ConsumerResponseDataExtension.class);
+        consumerResponseByteFilters = RpcSpiManager.getExtensionsByClass(RpcStep.class, ConsumerResponseByteExtension.class);
+        consumerResponseDataFilters = RpcSpiManager.getExtensionsByClass(RpcStep.class, ConsumerResponseDataExtension.class);
     }
 
     @Override

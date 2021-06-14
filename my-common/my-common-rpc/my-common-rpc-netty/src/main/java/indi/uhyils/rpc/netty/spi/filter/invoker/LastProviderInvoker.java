@@ -52,10 +52,10 @@ public class LastProviderInvoker implements RpcInvoker {
     public LastProviderInvoker(RpcCallBack callback, ByteBuf msg) {
         this.callback = callback;
         this.msg = msg;
-        providerRequestByteFilters = RpcSpiManager.getExtensionByClass(RpcStep.class, ProviderRequestByteExtension.class);
-        providerRequestDataFilters = RpcSpiManager.getExtensionByClass(RpcStep.class, ProviderRequestDataExtension.class);
-        providerResponseDataFilters = RpcSpiManager.getExtensionByClass(RpcStep.class, ProviderResponseDataExtension.class);
-        providerResponseByteFilters = RpcSpiManager.getExtensionByClass(RpcStep.class, ProviderResponseByteExtension.class);
+        providerRequestByteFilters = RpcSpiManager.getExtensionsByClass(RpcStep.class, ProviderRequestByteExtension.class);
+        providerRequestDataFilters = RpcSpiManager.getExtensionsByClass(RpcStep.class, ProviderRequestDataExtension.class);
+        providerResponseDataFilters = RpcSpiManager.getExtensionsByClass(RpcStep.class, ProviderResponseDataExtension.class);
+        providerResponseByteFilters = RpcSpiManager.getExtensionsByClass(RpcStep.class, ProviderResponseByteExtension.class);
     }
 
     @Override

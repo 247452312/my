@@ -8,6 +8,7 @@ import indi.uhyils.netty.util.HttpResponseUtil;
 import indi.uhyils.netty.util.IpUtil;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
+import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -27,6 +28,7 @@ import java.nio.charset.StandardCharsets;
  * @version 1.0
  * @date 文件创建日期 2021年04月23日 09时23分
  */
+@RpcSpi
 public class HttpProFinder implements Finder {
     /**
      * http请求名称

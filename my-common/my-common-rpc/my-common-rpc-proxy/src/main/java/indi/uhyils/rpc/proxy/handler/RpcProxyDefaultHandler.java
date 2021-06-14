@@ -12,7 +12,6 @@ import indi.uhyils.rpc.registry.Registry;
 import indi.uhyils.rpc.registry.RegistryFactory;
 import indi.uhyils.rpc.spi.RpcSpiManager;
 import indi.uhyils.util.IdUtil;
-import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 
@@ -72,7 +71,7 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
             // 初始化registry
             initRegistry(clazz);
         }
-        consumerResponseObjectExtensions = RpcSpiManager.getExtensionByClass(RpcStep.class, ConsumerResponseObjectExtension.class);
+        consumerResponseObjectExtensions = RpcSpiManager.getExtensionsByClass(RpcStep.class, ConsumerResponseObjectExtension.class);
     }
 
     private void initRegistry(Class<?> clazz) {
