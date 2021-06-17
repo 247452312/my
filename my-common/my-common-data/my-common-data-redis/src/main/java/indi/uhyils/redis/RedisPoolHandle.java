@@ -187,10 +187,9 @@ public class RedisPoolHandle {
      * 分布式锁,key为lock + lockName,value为 "持有此锁的线程的名称 : 此微服务的名称"
      *
      * @param lockName
-     * @param thread
      */
-    public RedisLock getLock(String lockName, Thread thread) {
-        return new RedisLock("lock_" + lockName, redisPool, thread);
+    public RedisLock getLock(String lockName) {
+        return new RedisLock("lock_" + lockName, redisPool);
 
     }
 

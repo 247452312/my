@@ -40,7 +40,7 @@ redis:
   normal:
     ip: prod
     port: 6379
-    password: uhyils
+    password: uhyils-single
   hotspot:
     hosts: prod:26380;prod:26381;prod:26382
     password: uhyils

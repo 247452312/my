@@ -168,7 +168,6 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public ServiceResult<VersionInfoResponse> getVersionInfoResponse(DefaultRequest request) {
-        // TODO 版本信息应该加入在缓存里
         Long dictId = dao.getIdByCode(VERSION_CODE);
         ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
         VersionInfoResponse build = VersionInfoResponse.build(infos);
@@ -178,7 +177,6 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public ServiceResult<LastPlanResponse> getLastPlanResponse(DefaultRequest request) {
-        // TODO 下一步计划应该在缓存里
         Long dictId = dao.getIdByCode(LAST_PLAN_CODE);
         ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
         LastPlanResponse build = LastPlanResponse.build(infos);

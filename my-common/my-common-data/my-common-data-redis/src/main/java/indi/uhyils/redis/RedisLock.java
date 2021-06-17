@@ -1,6 +1,5 @@
 package indi.uhyils.redis;
 
-import indi.uhyils.rpc.config.ApplicationConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.util.LogUtil;
 
@@ -48,23 +47,33 @@ public class RedisLock {
     private Long lockTime = 3 * 60L;
 
     /**
-     * @param lockName 分布式锁名称
-     * @param pool     redis线程池
-     * @param thread   这里只做名字用, 和获取加锁信息时用,没有其他特别的用处
+     * @param lockName    分布式锁名称
+     * @param pool        redis线程池
+     * @param valueSuffix value后缀
      */
-    public RedisLock(String lockName, RedisPool pool, Thread thread) {
+    public RedisLock(String lockName, RedisPool pool, String valueSuffix) {
+        Thread nowThread = Thread.currentThread();
         this.lockName = lockName;
         this.pool = pool;
-        this.thread = thread;
-        ApplicationConfig application = RpcConfigFactory.getInstance().getApplication();
-        this.value = thread.getName() + ":" + application.getName();
+        this.thread = nowThread;
+
+        this.value = this.thread.getName() + ":" + valueSuffix;
         this.lockCountName = lockName + "_count";
     }
 
 
-    public RedisLock(String lockName, RedisPool pool, Thread thread, Long lockTime) {
-        this(lockName, pool, thread);
+    public RedisLock(String lockName, RedisPool pool, Long lockTime) {
+        this(lockName, pool, RpcConfigFactory.getInstance().getApplication().getName());
         this.lockTime = lockTime;
+    }
+
+    public RedisLock(String lockName, RedisPool pool, Long lockTime, String valueSuffix) {
+        this(lockName, pool, valueSuffix);
+        this.lockTime = lockTime;
+    }
+
+    public RedisLock(String lockName, RedisPool pool) {
+        this(lockName, pool, RpcConfigFactory.getInstance().getApplication().getName());
     }
 
     public RedisLock() {
@@ -85,16 +94,17 @@ public class RedisLock {
     /**
      * 加锁
      */
-    public void lock(Long time) throws InterruptedException {
+    public boolean lock(Long time) throws InterruptedException {
         int count = 0;
         while (count < MAX_LOCK_COUNT) {
             count++;
             boolean b = tryLock(time);
             if (b) {
-                break;
+                return true;
             }
-            Thread.sleep(500);
+            Thread.sleep(500L);
         }
+        return false;
     }
 
     /**
@@ -170,7 +180,10 @@ public class RedisLock {
             if (!jedis.exists(key)) {
                 throw new RedisCountDownLatchExistsException(key);
             }
-            jedis.incrBy(key, -1L);
+            Long incrBy = jedis.incrBy(key, -1L);
+            if (incrBy == 0L) {
+                return true;
+            }
             return loopToWaitCountDownLatch(jedis, uniqueName);
         }
     }

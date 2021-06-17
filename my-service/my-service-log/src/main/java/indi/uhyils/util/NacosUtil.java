@@ -7,10 +7,10 @@ package indi.uhyils.util;
 public class NacosUtil {
 
     public static void degradationLowInterface() {
-        // TODO 在这里自动降级不重要的接口
+        // fixme 在这里自动降级不重要的接口
     }
 
     public static void recoveryLowInterface() {
-        // TODO 在这里自动恢复不重要的接口
+        // fixme 在这里自动恢复不重要的接口
     }
 }

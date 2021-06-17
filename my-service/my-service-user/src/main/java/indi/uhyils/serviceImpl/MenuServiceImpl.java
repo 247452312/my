@@ -206,7 +206,6 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict", "sys_dict_item"})
     public ServiceResult<QuickStartResponse> getQuickStartResponse(DefaultRequest request) {
-        // TODO 快捷入口应该去缓存里
         Long idByCode = dictDao.getIdByCode(QUICK_START_CODE);
         ArrayList<DictItemEntity> byDictId = dictItemDao.getByDictId(idByCode);
         ArrayList<MenuEntity> collect = (ArrayList<MenuEntity>) byDictId.stream().map(t -> {

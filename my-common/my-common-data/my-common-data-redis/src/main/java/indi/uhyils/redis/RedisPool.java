@@ -78,6 +78,7 @@ public class RedisPool {
             return Boolean.TRUE;
         } catch (Exception e) {
             LogUtil.error(this, "redis没有在线,临时启用项目内缓存");
+            LogUtil.error(this, e);
             initTypeIsRedis = Boolean.FALSE;
             return Boolean.FALSE;
         }
