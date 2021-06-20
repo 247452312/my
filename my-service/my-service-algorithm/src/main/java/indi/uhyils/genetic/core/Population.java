@@ -53,4 +53,15 @@ public interface Population {
     boolean birth(double ratio);
 
 
+    /**
+     * 迭代
+     *
+     * @param foods       食物集
+     * @param probability 变异概率
+     * @param ratio       种群数量增加比例
+     * @return
+     */
+    boolean iteration(Food[] foods, double probability, double ratio);
+
+
 }
