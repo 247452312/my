@@ -21,9 +21,10 @@ public interface Population {
     /**
      * 淘汰
      *
+     * @param rules 自然选择的规则
      * @return
      */
-    boolean eliminate();
+    boolean eliminate(EnvRule[] rules);
 
 
     /**
@@ -62,6 +63,21 @@ public interface Population {
      * @return
      */
     boolean iteration(Food[] foods, double probability, double ratio);
+
+
+    /**
+     * 获取其中一个
+     *
+     * @return
+     */
+    Individual getOne();
+
+    /**
+     * 获取全部
+     *
+     * @return
+     */
+    Individual getAll();
 
 
 }
