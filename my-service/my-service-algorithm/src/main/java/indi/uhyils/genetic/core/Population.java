@@ -17,14 +17,20 @@ public interface Population {
      */
     boolean init(Integer[] factors);
 
+    /**
+     * 设置种群数量
+     *
+     * @param count 数量
+     */
+    void setIndividualCount(int count);
 
     /**
      * 淘汰
      *
-     * @param rules 自然选择的规则
+     * @param foods 验证集
      * @return
      */
-    boolean eliminate(EnvRule[] rules);
+    boolean eliminate(Food[] foods);
 
 
     /**
@@ -77,7 +83,7 @@ public interface Population {
      *
      * @return
      */
-    Individual getAll();
+    Individual[] getAll();
 
 
 }

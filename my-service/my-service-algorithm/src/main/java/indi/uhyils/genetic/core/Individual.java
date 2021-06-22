@@ -1,7 +1,7 @@
 package indi.uhyils.genetic.core;
 
 /**
- * 个体
+ * 个体(神经网络)
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
@@ -19,10 +19,11 @@ public interface Individual {
     /**
      * 初始化个体
      *
-     * @param factors
+     * @param factors 初始因子
+     * @param index   这个个体初始化时在种群中的下标
      * @return
      */
-    boolean init(Integer[] factors);
+    boolean init(Integer[] factors, Integer index);
 
     /**
      * 学习
@@ -46,5 +47,14 @@ public interface Individual {
      * @return
      */
     boolean birth(Individual individual);
+
+
+    /**
+     * 前向计算
+     *
+     * @param food
+     * @return
+     */
+    double[] forward(Food food);
 
 }

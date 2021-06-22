@@ -8,4 +8,15 @@ package indi.uhyils.genetic.core;
  * @date 文件创建日期 2021年06月21日 08时49分
  */
 public interface EnvRule {
+
+
+    /**
+     * 获取生存系数,也是最后一层的差值
+     *
+     * @param out    计算值
+     * @param should 实际值
+     * @return 生存系数 = (计算值 - 实际值)/实际值
+     */
+    double[] getSurvivalCoefficient(double[] out, double[] should);
+
 }
