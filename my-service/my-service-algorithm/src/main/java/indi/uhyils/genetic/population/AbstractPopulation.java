@@ -41,6 +41,7 @@ public abstract class AbstractPopulation implements Population {
     private EnvRule envRule;
     /**
      * 淘汰时记录每一个个体的环境适应度,为什么写在这里: 空间重用,省时
+     * 自然选择不选用末位淘汰,选用在生存期间进行淘汰,减少计算时间
      */
     private List<Double> eliminateTarget;
 
@@ -66,7 +67,7 @@ public abstract class AbstractPopulation implements Population {
     @Override
     public boolean eliminate(Food[] foods) {
         if (foods == null || foods.length == 0 || !init.get()) {
-            return true;
+            return false;
         }
         for (int i = 0; i < individuals.length; i++) {
             double sum = 0;
