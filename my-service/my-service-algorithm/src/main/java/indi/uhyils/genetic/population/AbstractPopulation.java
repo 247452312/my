@@ -9,6 +9,8 @@ import indi.uhyils.genetic.individual.IndividualFactory;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -21,29 +23,35 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class AbstractPopulation implements Population {
 
     /**
+     * 种群是否初始化
+     */
+    protected final AtomicBoolean init = new AtomicBoolean(false);
+    /**
+     * 生存资源,此生存资源在每一代都是不变的,所以,适应度高的总能获取更多的资源,使得可以更好的存活下来,规定获得生存资源多与1的生物就可以存活下来,少于一的将获得神圣的死亡
+     */
+    protected final Integer survivalResources = 1000;
+
+    /**
+     * 及格比例
+     */
+    protected final double passRate = 1.0 / survivalResources;
+    /**
      * 种群中的个体
      */
-    private Individual[] individuals;
-
+    protected Individual[] individuals;
     /**
      * 种群数量
      */
-    private int count;
-
-    /**
-     * 种群是否初始化
-     */
-    private AtomicBoolean init = new AtomicBoolean(false);
-
+    protected int count;
     /**
      * 自然选择函数
      */
-    private EnvRule envRule;
+    protected EnvRule envRule;
     /**
      * 淘汰时记录每一个个体的环境适应度,为什么写在这里: 空间重用,省时
      * 自然选择不选用末位淘汰,选用在生存期间进行淘汰,减少计算时间
      */
-    private List<Double> eliminateTarget;
+    protected List<Double> eliminateTarget;
 
     @Override
     public boolean init(Integer[] factors) {
@@ -69,8 +77,12 @@ public abstract class AbstractPopulation implements Population {
         if (foods == null || foods.length == 0 || !init.get()) {
             return false;
         }
+        /*资源分配式淘汰*/
+        int sumElement = 0;
         for (int i = 0; i < individuals.length; i++) {
+            // 在这个训练集中的得分
             double sum = 0;
+            // 训练集得分项的个数
             int targetCount = 0;
             for (int j = 0; j < foods.length; j++) {
                 //前向计算
@@ -82,8 +94,20 @@ public abstract class AbstractPopulation implements Population {
                     targetCount++;
                 }
             }
-            eliminateTarget.add(i, sum / targetCount);
+            double element = sum / targetCount;
+            eliminateTarget.add(i, element);
+            sumElement += element;
         }
+        List<Individual> survivalIndividual = new ArrayList<>();
+        for (int i = 0; i < eliminateTarget.size(); i++) {
+            double getSourcePro = eliminateTarget.get(i) / sumElement;
+            // 如果达到了及格比例,即获得了足够的食物,则不会消亡
+            if (getSourcePro >= passRate) {
+                survivalIndividual.add(individuals[i]);
+            }
+        }
+        individuals = survivalIndividual.toArray(new Individual[0]);
+        eliminateTarget.clear();
         return true;
     }
 
@@ -100,17 +124,52 @@ public abstract class AbstractPopulation implements Population {
 
     @Override
     public boolean variation(double probability) {
-        return false;
+        for (Individual individual : individuals) {
+            double nextDouble = RandomUtils.nextDouble(0, 1);
+            // 小于就说明中奖了,需要变异
+            if (nextDouble < probability) {
+                individual.variation();
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean birth(double ratio) {
-        return false;
+        List<Individual> list = Arrays.asList(this.individuals);
+        Collections.shuffle(list);
+
+        ratio = ratio > 1 ? (ratio - 1) : ratio;
+        int addLength = (int) (individuals.length * ratio);
+        List<Individual> childs = new ArrayList<>(addLength);
+        for (int i = 0, index = 0; i < addLength; i++, index += 2) {
+            if (index > list.size()) {
+                index -= list.size();
+            }
+            Individual mather = list.get(index);
+            Individual father = list.get(index + 1);
+            Individual child = father.birth(mather);
+            childs.add(child);
+
+        }
+        Individual[] newIndividual = new Individual[individuals.length + addLength];
+        System.arraycopy(individuals, 0, newIndividual, 0, individuals.length);
+        System.arraycopy(childs.toArray(new Individual[addLength]), 0, newIndividual, individuals.length, addLength);
+        individuals = newIndividual;
+        return true;
     }
 
     @Override
     public boolean iteration(Food[] foods, double probability, double ratio) {
-        return false;
+        /*学习*/
+        this.learn(foods);
+        /*淘汰*/
+        this.eliminate(foods);
+        /*交叉*/
+        this.birth(ratio);
+        /*变异*/
+        this.variation(probability);
+        return true;
     }
 
     @Override

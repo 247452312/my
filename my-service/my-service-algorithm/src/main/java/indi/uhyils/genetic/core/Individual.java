@@ -21,9 +21,11 @@ public interface Individual {
      *
      * @param factors 初始因子
      * @param index   这个个体初始化时在种群中的下标
+     * @param inSize  入参个数
+     * @param outSize 出参个数
      * @return
      */
-    boolean init(Integer[] factors, Integer index);
+    boolean init(Integer[] factors, Integer index, int inSize, int outSize);
 
     /**
      * 学习
@@ -46,7 +48,7 @@ public interface Individual {
      * @param individual 另一个个体
      * @return
      */
-    boolean birth(Individual individual);
+    Individual birth(Individual individual);
 
 
     /**
