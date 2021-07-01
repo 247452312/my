@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.DataEntity;
+import indi.uhyils.pojo.model.base.BaseVoEntity;
 
 import java.util.Objects;
 
@@ -10,7 +10,7 @@ import java.util.Objects;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月28日 12时36分
  */
-public class MenuEntity extends DataEntity {
+public class MenuEntity extends BaseVoEntity {
 
     /**
      * 场景
@@ -38,7 +38,7 @@ public class MenuEntity extends DataEntity {
     /**
      * 父节点id
      */
-    private String fid;
+    private Long fid;
     /**
      * 菜单名称
      */
@@ -86,11 +86,11 @@ public class MenuEntity extends DataEntity {
         this.type = type;
     }
 
-    public String getFid() {
+    public Long getFid() {
         return fid;
     }
 
-    public void setFid(String fid) {
+    public void setFid(Long fid) {
         this.fid = fid;
     }
 
@@ -121,10 +121,10 @@ public class MenuEntity extends DataEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) {
-            return true;
+            return Boolean.TRUE;
         }
         if (o == null || getClass() != o.getClass()) {
-            return false;
+            return Boolean.FALSE;
         }
         MenuEntity that = (MenuEntity) o;
         return Objects.equals(iFrame, that.iFrame) &&

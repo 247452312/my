@@ -36,9 +36,9 @@ function getCookie(cname) {
  * @param token
  * @param interfaceName
  * @param methodName
- * @param args
- * @param success
- * @returns {null}
+ * @param data 向后台发送的数据
+ * @param success 成功后执行的方法
+ * @param target 是否弹窗提示
  */
 function pushRequest(interfaceName, methodName, data, success, target = false) {
     let result = null;
@@ -52,30 +52,7 @@ function pushRequest(interfaceName, methodName, data, success, target = false) {
         contentType: "application/json;charset=utf8",
         async: false,
         success: function (data) {
-            if (data.code >= 200 && data.code < 300) {
-                if (target) {
-                    layer.msg(data.msg);
-                }
-                result = success(data.data);
-            } else {
-                // code不为200
-                switch (data.code) {
-                    case 402:
-                        // 代表登录问题. 返回登录页
-                        top.layer.alert(data.msg + ", 即将返回登录页", function (index) {
-
-                            layer.close(index);
-                            top.window.location.href = "/login.html";
-                        });
-                        break;
-                    case 401:
-                        // 代表没有权限
-                        layer.msg(data.msg + " ,由于您触发了权限检测,所以您的信息将出现在我们的数据库暗杀名单中,出门请注意安全!");
-                        break;
-                    default:
-                        layer.msg(data.msg);
-                }
-            }
+            result = dealResponse(data, success, target);
         }
     });
     return result;
@@ -92,19 +69,29 @@ class my_request {
 
 function getAttrBySession(attrName) {
     var result = {};
+    // let cookie = getCookie(attrName);
+    // debugger
+    // if (cookie != null && cookie != "") {
+    //     return cookie;
+    // }
     $.ajax({
         url: "/getSession",
         type: "POST",
+        async: false,
         xhrFields: {withCredentials: true},
         data: JSON.stringify({
             "attrName": attrName
         }),
         async: false,
-        contentType: "application/json;charset=UTF-8"
-    }).done(function (data) {
-        console.log("获取session: " + JSON.stringify(data))
-        result = data;
+        contentType: "application/json;charset=UTF-8",
+        success: function (data) {
+            console.log("获取session: " + JSON.stringify(data))
+            result = data;
+        }
     });
+    // if (attrName == 'token') {
+    //     setCookie(attrName, result, 1.0 / 24);
+    // }
     return result;
 }
 
@@ -272,3 +259,140 @@ $.fn.serializeJson = function () {
     });
     return serializeObj;
 };
+
+function getDict(dictCode) {
+    pushRequest("DictService", "getDictByCode", {code: dictCode}, function (data) {
+        return data;
+    })
+}
+
+/**
+ * 文件下载
+ * @param name 文件名称
+ * @returns {null}
+ */
+function download(name) {
+    let result = null;
+    let token = Base64.encode(getAttrBySession("token").token);
+    $.ajax({
+        url: "/file/down/" + name + "/" + token,
+        type: "POST",
+        contentType: "application/json;charset=utf8",
+        async: false,
+        success: function (data) {
+            result = data;
+        }
+    });
+    return result;
+}
+
+function bandUpFile(element, success) {
+    $(element).change(function () {
+        let result = null;
+        let reader = new FileReader();   //新建一个FileReader对象
+        reader.readAsDataURL(this.files[0]);  //将读取的文件转换成base64格式
+        reader.onload = function (e) {
+            let json = JSON.stringify(new my_request(getAttrBySession("token").token, null, null, {data: e.target.result}));
+            console.log("发送");
+            console.log(json);
+            $.ajax({
+                url: "/file/up",
+                type: "POST",
+                data: json,
+                contentType: "application/json;charset=utf8",
+                async: false,
+                success: function (data) {
+                    result = dealResponse(data, function (realData) {
+                        return realData;
+                    }, false);
+                    success(result, e.target.result);
+                }
+            });
+        }
+    });
+
+
+}
+
+/**
+ * 处理返回值
+ * @param res 返回值
+ * @param success 成功后回调方法
+ * @param target 成功后是否显示信息
+ * @returns {null}
+ */
+function dealResponse(res, success, target = false) {
+    let result = null;
+    if (res.code >= 200 && res.code < 300) {
+        if (target) {
+            layer.msg(res.msg);
+        }
+        result = success(res.data);
+    } else {
+        // code不为200
+        switch (res.code) {
+            case 404:
+                top.layer.alert("您已被认定为爬虫,请输入验证码");
+                let key = res.data.key;
+                let picBase64 = res.data.picBase64;
+
+
+                top.layer.prompt({
+                    title: '<img src="' + picBase64 + '"  id="verifyImg" height="50">',
+                    formType: 0,
+                    move: false,
+                    value: '', //初始时的值，默认空字符
+                    maxlength: 140, //可输入文本的最大长度，默认500
+                    success: function (layero, index) {
+                        layero.find('input').attr('placeholder', "请输入图形验证码");
+                        $('.layui-layer-title img').css('cursor', 'crosshair');
+                        layero.on('click', '#verifyImg', function () {
+                            pushRequest('VerificationService', 'getVerification', {}, function (data) {
+                                key = data.key;
+                                $(this).attr('src', data.picBase64);
+                            });
+                        });
+                    }
+                }, function (value, index, elem) {
+                    let code = value;
+                    pushRequest('VerificationService', 'verification', {code: code, key: key}, function (data) {
+                        if (data) {
+                            top.layer.alert("验证正确");
+                        } else {
+                            top.layer.alert("验证错误,请重新验证");
+                            pushRequest('VerificationService', 'getVerification', {}, function (data) {
+                                key = data.key;
+                                $(this).attr('src', data.picBase64);
+                            });
+                        }
+                    });
+                });
+
+
+                break;
+            case 403:
+            case 402:
+                // 代表登录问题. 返回登录页
+                top.layer.alert(res.msg + ", 即将返回登录页", function (index) {
+
+                    layer.close(index);
+                    top.window.location.href = "/login.html";
+                });
+
+                layer.msg(res.msg + ", 即将返回登录页", {
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                    top.window.location.href = "/login.html";
+                });
+                break;
+            case 401:
+                // 代表没有权限
+                layer.msg(res.msg + " ,由于您触发了权限检测,所以您的信息将出现在我们的数据库暗杀名单中,出门请注意安全!");
+                break;
+            default:
+                layer.msg(res.msg);
+        }
+    }
+    return result;
+}

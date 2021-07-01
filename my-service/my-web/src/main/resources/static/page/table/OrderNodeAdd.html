@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta content="webkit" name="renderer">
+    <!--设置1个小时的缓存-->
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .layui-transfer-box {
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <!--  父id    -->
+    <input name="id" style="display:none;" type="text" value="">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">保存执行事件id</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="saveApiId" placeholder="请输入保存执行事件id" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">处理结果类型</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="resultType" placeholder="请输入处理结果类型" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">节点初始化事件id</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="initApiId" placeholder="请输入节点初始化事件id" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">是否发送邮件</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="sendEmail" placeholder="请输入是否发送邮件" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">处理类型</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="runType" placeholder="请输入处理类型" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">节点类型</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="type" placeholder="请输入节点类型" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">是否同步</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="sync" placeholder="请输入是否同步" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">限时(分钟)</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="limitTime" placeholder="请输入限时(分钟)" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">处理结果</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="result" placeholder="请输入处理结果" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">抄送人id</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="noticeUserId" placeholder="请输入抄送人id" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">基础表id</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="baseInfoId" placeholder="请输入基础表id" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">处理人id</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="runDealUserId" placeholder="请输入处理人id" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">节点名称</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="name" placeholder="请输入节点名称" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">节点执行事件id</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="runApiId" placeholder="请输入节点执行事件id" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">是否发送短信</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="sendSms" placeholder="请输入是否发送短信" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">节点描述</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="desc" placeholder="请输入节点描述" type="text"
+                   value="">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-filter="saveBtn" lay-submit>确认保存</button>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/my.js"></script>
+<script charset="utf-8" src="../../lib/layui-v2.5.5/layui.js"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        };
+        let id = $.getUrlParam('id');
+        let func = $.getUrlParam('func');
+
+        if (func == 'edit') { // 这是修改
+            pushRequest("OrderNodeService", "getById", {
+                id: id
+            }, function (data) {
+                $('[name="id"]').attr('value', data.id);
+                $('[name="saveApiId"]').attr('value', data.saveApiId);
+                $('[name="resultType"]').attr('value', data.resultType);
+                $('[name="initApiId"]').attr('value', data.initApiId);
+                $('[name="sendEmail"]').attr('value', data.sendEmail);
+                $('[name="runType"]').attr('value', data.runType);
+                $('[name="type"]').attr('value', data.type);
+                $('[name="sync"]').attr('value', data.sync);
+                $('[name="limitTime"]').attr('value', data.limitTime);
+                $('[name="result"]').attr('value', data.result);
+                $('[name="noticeUserId"]').attr('value', data.noticeUserId);
+                $('[name="baseInfoId"]').attr('value', data.baseInfoId);
+                $('[name="runDealUserId"]').attr('value', data.runDealUserId);
+                $('[name="name"]').attr('value', data.name);
+                $('[name="runApiId"]').attr('value', data.runApiId);
+                $('[name="sendSms"]').attr('value', data.sendSms);
+                $('[name="desc"]').attr('value', data.desc);
+                form.render();
+            })
+        }
+
+        var closeAndReload = function () {
+            var iframeIndex = parent.layer.getFrameIndex(window.name);
+            parent.$.reloadTable();
+            parent.layer.close(iframeIndex);
+        };
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+                // 关闭弹出层
+                layer.close(index);
+                if (func === 'add') {
+                    pushRequest("OrderNodeService", "insert", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                } else if (func === 'edit') {
+                    pushRequest("OrderNodeService", "update", {data: data.field}, function () {
+                    });
+                    closeAndReload();
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

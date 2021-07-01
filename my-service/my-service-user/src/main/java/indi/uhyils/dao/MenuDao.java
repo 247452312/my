@@ -1,5 +1,6 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.MenuEntity;
 import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,7 +30,7 @@ public interface MenuDao extends DefaultDao<MenuEntity> {
      * @param deptIds 权限集ids
      * @return menuIds
      */
-    List<String> getByDeptIds(List<String> deptIds);
+    List<Long> getByDeptIds(List<Long> deptIds);
 
     /**
      * 根据ids删除菜单
@@ -37,7 +38,7 @@ public interface MenuDao extends DefaultDao<MenuEntity> {
      * @param collect 菜单ids
      * @return 删除个数
      */
-    Integer deleteByIds(List<String> collect);
+    Integer deleteByIds(List<Long> collect);
 
     /**
      * 根据菜单ids删除权限集与菜单中间表数据
@@ -45,7 +46,7 @@ public interface MenuDao extends DefaultDao<MenuEntity> {
      * @param menuIds 菜单ids
      * @return 删除个数
      */
-    Integer deleteDeptMenuByMenuIds(List<String> menuIds);
+    Integer deleteDeptMenuByMenuIds(List<Long> menuIds);
 
 
     /**
@@ -54,7 +55,7 @@ public interface MenuDao extends DefaultDao<MenuEntity> {
      * @param deptIds 权限集ids
      * @return 删除个数
      */
-    Integer deleteDeptMenuByDeptIds(List<String> deptIds);
+    Integer deleteDeptMenuByDeptIds(List<Long> deptIds);
 
     /**
      * 获取所有叶子菜单(包含羁绊标记)
@@ -62,5 +63,5 @@ public interface MenuDao extends DefaultDao<MenuEntity> {
      * @param deptId 权限集id
      * @return 所有叶子菜单(包含羁绊标记)
      */
-    ArrayList<GetAllMenuWithHaveMarkResponse> getAllMenuWithHaveMark(String deptId);
+    ArrayList<GetAllMenuWithHaveMarkResponse> getAllMenuWithHaveMark(Long deptId);
 }

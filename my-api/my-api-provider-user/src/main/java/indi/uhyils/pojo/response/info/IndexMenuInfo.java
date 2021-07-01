@@ -11,8 +11,8 @@ import java.util.List;
  * @date 文件创建日期 2020年05月30日 07时38分
  */
 public class IndexMenuInfo implements Serializable {
-    private String id;
-    private String fid;
+    private Long id;
+    private Long fid;
     private String title;
     private String icon;
     private String href;
@@ -40,19 +40,19 @@ public class IndexMenuInfo implements Serializable {
         this.sort = sort;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getFid() {
+    public Long getFid() {
         return fid;
     }
 
-    public void setFid(String fid) {
+    public void setFid(Long fid) {
         this.fid = fid;
     }
 

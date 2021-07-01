@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.SendPageDao">
+    <sql id="columnList">
+        a.id,
+        a.create_date as createDate,
+        a.create_user as createUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+        a.update_date as updateDate,
+        a.update_user as updateUser,
+
+        a.content,
+        a.title,
+        a.user_id     as userId,
+        a.view
+    </sql>
+
+    <select id="getById" resultType="indi.uhyils.pojo.model.SendPageEntity">
+        select
+        <include refid="columnList"/>
+        from sys_push_page_msg a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.SendPageEntity">
+        select
+        <include refid="columnList"/>
+        from sys_push_page_msg a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.SendPageEntity">
+        select
+        <include refid="columnList"/>
+        from sys_push_page_msg a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${size}
+        </if>
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.SendPageEntity">
+        insert sys_push_page_msg(id,
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user,
+        content,
+        title,
+        user_id,
+        view)
+        values (#{id},
+        #{createDate},
+        #{createUser},
+        0,
+        #{remark},
+        #{updateDate},
+        #{updateUser},
+        #{content},
+        #{title},
+        #{userId},
+        #{view})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.SendPageEntity">
+        update sys_push_page_msg set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+
+
+        <if test="content != null and content != ''">
+            ,content = #{content}
+        </if>
+        <if test="title != null and title != ''">
+            ,title = #{title}
+        </if>
+        <if test="userId != null and userId != ''">
+            ,user_id = #{userId}
+        </if>
+        <if test="view != null and view != ''">
+            ,view = #{view}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_push_page_msg a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_push_page_msg a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_push_page_msg a
+        where ${columnName} = #{value}
+    </select>
+</mapper>

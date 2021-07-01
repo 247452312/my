@@ -1,10 +1,12 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param roleId 角色id
      * @return 角色实例
      */
-    RoleEntity getUserRoleById(String roleId);
+    RoleEntity getUserRoleById(Long roleId);
 
     /**
      * 根据角色id获取用户的权限集
@@ -30,7 +32,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param roleId 角色id
      * @return 用户的权限集
      */
-    ArrayList<DeptEntity> getUserDeptsByRoleId(String roleId);
+    ArrayList<DeptEntity> getUserDeptsByRoleId(Long roleId);
 
 
     /**
@@ -39,7 +41,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param deptId 权限集id
      * @return 用户的权限
      */
-    List<PowerEntity> getUserPowerByDeptId(String deptId);
+    List<PowerEntity> getUserPowerByDeptId(Long deptId);
 
     /**
      * 获取全部用户
@@ -48,4 +50,20 @@ public interface UserDao extends DefaultDao<UserEntity> {
      */
     ArrayList<UserEntity> getAll();
 
+    /**
+     * 对比密码是否和数据库中的相同
+     *
+     * @param id          用户id
+     * @param oldPassword 旧密码
+     * @return 是否正确
+     */
+    Integer checkUserPassword(@Param("id") Long id, @Param("password") String oldPassword);
+
+    /**
+     * 获取用户名称
+     *
+     * @param id id
+     * @return 用户名称
+     */
+    String getNameById(Long id);
 }

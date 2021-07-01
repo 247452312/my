@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>menu</title>
-    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../css/public.css" media="all">
-    <link rel="stylesheet" href="../css/my.css" media="all">
+    <!--设置1个小时的缓存-->
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <link href="../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../css/public.css" media="all" rel="stylesheet">
+    <link href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet">
+    <link href="../css/public.css" media="all" rel="stylesheet">
+    <link href="../css/my.css" media="all" rel="stylesheet">
 
     <style>
         .layui-btn:not(.layui-btn-lg ):not(.layui-btn-sm):not(.layui-btn-xs) {
@@ -30,19 +34,19 @@
                 <button class="layui-btn layui-btn-warm" id="btn-add" style="border-radius: 15px">添加新菜单</button>
             </div>
             <div class="clean"></div>
-            <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
+            <table class="layui-table" id="munu-table" lay-filter="munu-table"></table>
         </div>
     </div>
 </div>
 <!-- 操作列 -->
-<script type="text/html" id="auth-state">
+<script id="auth-state" type="text/html">
     <!--    这个是非叶子节点 不允许赋权 -->
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="add">添加</a>
     <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-radius layui-btn-disabled" lay-event="disabled">赋权</a>
 </script>
-<script type="text/html" id="auth-state-no-add">
+<script id="auth-state-no-add" type="text/html">
     <!--    这个是叶子结点 不允许添加子节点 -->
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -50,10 +54,10 @@
     <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-radius" lay-event="empowerment">赋权</a>
 </script>
 
-<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
-<script src="/js/jquery.min.js" charset="UTF-8"></script>
-<script src="/js/my.js" charset="UTF-8"></script>
+<script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
+<script charset="utf-8" src="../js/lay-config.js?v=1.0.4"></script>
+<script charset="UTF-8" src="/js/jquery.min.js"></script>
+<script charset="UTF-8" src="/js/my.js"></script>
 <script>
     layui.use(['table', 'treetable', 'layer'], function () {
         var $ = layui.jquery;
@@ -62,6 +66,7 @@
         var layer = layui.layer;
         $.reloadTable = function () {
             pushRequest("MenuService", "getMenuTree", {iFrame: 1}, function (data) {
+                debugger;
                 // 渲染表格
                 layer.load(2);
                 treetable.render({
@@ -78,7 +83,7 @@
                         {field: 'name', title: '菜单名称'},
                         {
                             field: 'icon', width: 150, title: '图标', templet: function (d) {
-                                return '<div class="' + d.icon + '"></div>';
+                                return '<i class="' + d.icon + '"></i>';
                             }
                         },
                         {field: 'url', width: 250, title: '菜单url'},

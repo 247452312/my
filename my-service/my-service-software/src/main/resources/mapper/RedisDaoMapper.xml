@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.RedisDao">
+    <sql id="columnList">
+        a.id,
+        a.create_date as 'createDate',
+        a.create_user as createUser,
+        a.update_date as 'updateDate',
+        a.update_user as updateUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+
+
+        a.password,
+        a.port,
+        a.server_id   as serverId,
+        a.start_sh    as startSh,
+        a.status,
+        a.status_sh   as statusSh,
+        a.stop_sh     as stopSh,
+        a.other_1     as dockerName,
+        a.version
+    </sql>
+
+    <select id="getById" resultType="indi.uhyils.pojo.model.RedisEntity">
+        select
+        <include refid="columnList"/>
+        from sys_software a
+        where delete_flag = 0 and type = 1
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.RedisEntity">
+        select
+        <include refid="columnList"/>
+        from sys_software a
+        where delete_flag = 0 and type = 1
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.RedisEntity">
+        select
+        <include refid="columnList"/>
+        from sys_software a
+        where delete_flag = 0 and type = 1
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${size}
+        </if>
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.RedisEntity">
+        insert sys_software(id,
+        create_date,
+        create_user,
+        update_date,
+        update_user,
+        delete_flag,
+        type,
+        password,
+        port,
+        server_id,
+        start_sh,
+        status,
+        status_sh,
+        stop_sh,
+        version,
+        other_1)
+        values (#{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        1,
+        #{password},
+        #{port},
+        #{serverId},
+        #{startSh},
+        #{status},
+        #{statusSh},
+        #{stopSh},
+        #{version},
+        #{dockerName})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.RedisEntity">
+        update sys_software set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+
+        <if test="password != null">
+            ,password = #{password}
+        </if>
+        <if test="port != null and port != ''">
+            ,port = #{port}
+        </if>
+        <if test="serverId != null and serverId != ''">
+            ,server_id = #{serverId}
+        </if>
+        <if test="startSh != null and startSh != ''">
+            ,start_sh = #{startSh}
+        </if>
+        <if test="status != null and status != ''">
+            ,status = #{status}
+        </if>
+        <if test="statusSh != null and statusSh != ''">
+            ,status_sh = #{statusSh}
+        </if>
+        <if test="stopSh != null and stopSh != ''">
+            ,stop_sh = #{stopSh}
+        </if>
+        <if test="version != null and version != ''">
+            ,version = #{version}
+        </if>
+        <if test="dockerName != null">
+            ,other_1 = #{dockerName}
+        </if>
+
+
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_software a
+        where delete_flag = 0
+          and type = 1;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_software a
+        where delete_flag = 0 and type = 1
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_software a
+        where ${columnName} = #{value}
+    </select>
+</mapper>

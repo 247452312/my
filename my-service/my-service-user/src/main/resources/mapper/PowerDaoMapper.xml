@@ -2,19 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.PowerDao">
-
-
     <sql id="columnList">
         a.id,
-        a.create_date as 'createDate',
-        a.create_user as createUser,
-        a.update_date as 'updateDate',
-        a.update_user as updateUser,
-        a.delete_flag as deleteFlag,
+        a.create_date    as 'createDate',
+        a.create_user    as createUser,
+        a.update_date    as 'updateDate',
+        a.update_user    as updateUser,
+        a.delete_flag    as deleteFlag,
         a.remark,
 
         a.interface_name as interfaceName,
-        a.method_name as methodName
+        a.method_name    as methodName
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.PowerEntity">
@@ -45,21 +43,28 @@
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
         <if test="page != null and page != ''">
-            limit ${(page-1) * size},${page * size}
+            limit ${(page-1) * size},${size}
         </if>
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.PowerEntity">
         insert sys_power(id,
-                         create_date,
-                         create_user,
-                         update_date,
-                         update_user,
-                         delete_flag,
-                         interface_name,
-                         method_name)
-        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{interfaceName}, #{methodName})
+        create_date,
+        create_user,
+        update_date,
+        update_user,
+        delete_flag,
+        interface_name,
+        method_name)
+        values (#{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{interfaceName},
+        #{methodName})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.PowerEntity">
@@ -88,7 +93,7 @@
         select count(*)
         from sys_power a
         where delete_flag = 0
-        <foreach item="item" index="index" collection="list">
+        <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
     </select>
@@ -111,20 +116,18 @@
         select count(*)
         from sys_user
         where id = #{userId}
-          and role_id in (select id
-                          from sys_role
-                          where id in (select role_id
-                                       from sys_role_dept
-                                       where dept_id in (select id
-                                                         from sys_dept
-                                                         where id in (select dept_id
-                                                                      from sys_dept_power
-                                                                      where power_id in (select id
-                                                                                         from sys_power
-                                                                                         where interface_name = #{interfaceName}
-                                                                                           and method_name = #{methodName})))))
-
-
+        and role_id in (select id
+        from sys_role
+        where id in (select role_id
+        from sys_role_dept
+        where dept_id in (select id
+        from sys_dept
+        where id in (select dept_id
+        from sys_dept_power
+        where power_id in (select id
+        from sys_power
+        where interface_name = #{interfaceName}
+        and method_name = #{methodName})))))
     </select>
 
 
@@ -145,7 +148,7 @@
         select method_name
         from sys_power
         where delete_flag = 0
-          and interface_name = #{interfaceName}
+        and interface_name = #{interfaceName}
         group by method_name
     </select>
 
@@ -153,8 +156,7 @@
         select count(*)
         from sys_power
         where delete_flag = 0
-          and interface_name = #{interfaceName}
-          and method_name = #{methodName}
+        and interface_name = #{interfaceName}
+        and method_name = #{methodName}
     </select>
-
 </mapper>

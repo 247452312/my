@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.MonitorInterfaceDetailDao">
+    <sql id="columnList">
+        a.id,
+        a.fid,
+        a.interface_name  as interfaceName,
+        a.method_name     as methodName,
+        a.run_time        as runTime,
+        a.request_length  as requestLength,
+        a.response_length as responseLength,
+        a.success,
+        a.time,
+        a.create_date     as createDate,
+        a.create_user     as createUser,
+        a.delete_flag     as deleteFlag,
+        a.remark,
+        a.update_date     as updateDate,
+        a.update_user     as updateUser
+    </sql>
+
+    <select id="getById" resultType="indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity">
+        select
+        <include refid="columnList"/>
+        from sys_log_monitor_interface_call a
+        where id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity">
+        select
+        <include refid="columnList"/>
+        from sys_log_monitor_interface_call a
+        where 1 = 1
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        order by time desc
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity">
+        select
+        <include refid="columnList"/>
+        from sys_log_monitor_interface_call a
+        where 1 = 1
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        order by time desc
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${size}
+        </if>
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity">
+        insert sys_log_monitor_interface_call(id,
+        fid,
+        interface_name,
+        method_name,
+        run_time,
+        request_length,
+        response_length,
+        success,
+        time,
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user)
+        values (#{id},
+        #{fid},
+        #{interfaceName},
+        #{methodName},
+        #{runTime},
+        #{requestLength},
+        #{responseLength},
+        #{success},
+        #{time},
+        #{createDate},
+        #{createUser},
+        #{deleteFlag},
+        #{remark},
+        #{updateDate},
+        #{updateUser})
+    </insert>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_log_monitor_interface_call a
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_log_monitor_interface_call a
+        where 1 = 1
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_log_monitor_interface_call a
+        where ${columnName} = #{value}
+    </select>
+
+    <select id="getCountByStartTime" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(*)
+        from sys_log_monitor_interface_call
+        where time > #{firstStartTile}
+    </select>
+</mapper>

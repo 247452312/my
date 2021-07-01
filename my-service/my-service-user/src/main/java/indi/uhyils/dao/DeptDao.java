@@ -1,5 +1,6 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.DeptMenuMiddle;
 import indi.uhyils.pojo.model.DeptPowerMiddle;
@@ -31,7 +32,7 @@ public interface DeptDao extends DefaultDao<DeptEntity> {
      * @param ids 权限集与权限的关联关系
      * @return影响行数
      */
-    Integer deleteDeptPower(List<String> ids);
+    Integer deleteDeptPower(List<Long> ids);
 
     /**
      * 插入权限集与菜单中间表
@@ -47,7 +48,7 @@ public interface DeptDao extends DefaultDao<DeptEntity> {
      * @param id menuId
      * @return 权限集
      */
-    ArrayList<GetDeptsByMenuIdResponse> getByMenuId(String id);
+    ArrayList<GetDeptsByMenuIdResponse> getByMenuId(Long id);
 
     /**
      * 获取全部
@@ -62,7 +63,7 @@ public interface DeptDao extends DefaultDao<DeptEntity> {
      * @param deptId 权限集id
      * @return 删除条数
      */
-    Integer deleteDeptMenuMiddleByDeptId(String deptId);
+    Integer deleteDeptMenuMiddleByDeptId(Long deptId);
 
     /**
      * 根据权限集id获取所有的带有羁绊的权限
@@ -70,7 +71,7 @@ public interface DeptDao extends DefaultDao<DeptEntity> {
      * @param id 权限集id
      * @return 所有的带有羁绊的权限
      */
-    ArrayList<GetAllPowerWithHaveMarkResponse> getAllPowerWithHaveMark(String id);
+    ArrayList<GetAllPowerWithHaveMarkResponse> getAllPowerWithHaveMark(Long id);
 
     /**
      * 删除某权限集的所有权限羁绊
@@ -78,7 +79,7 @@ public interface DeptDao extends DefaultDao<DeptEntity> {
      * @param deptId 权限集id
      * @return 删除数量
      */
-    Integer deleteDeptPowerMiddleByDeptId(String deptId);
+    Integer deleteDeptPowerMiddleByDeptId(Long deptId);
 
     /**
      * 根据权限集id删除角色-权限集关联表
@@ -86,5 +87,5 @@ public interface DeptDao extends DefaultDao<DeptEntity> {
      * @param id 权限集id
      * @return 删除个数
      */
-    Integer deleteRoleDeptMiddleByDeptId(String id);
+    Integer deleteRoleDeptMiddleByDeptId(Long id);
 }

@@ -13,7 +13,7 @@ public class GetAllDeptWithHaveMarkResponse implements Serializable {
     /**
      * 权限集id
      */
-    private String deptId;
+    private Long deptId;
 
     /**
      * 权限集名称
@@ -26,11 +26,11 @@ public class GetAllDeptWithHaveMarkResponse implements Serializable {
     private Boolean mark;
 
 
-    public String getDeptId() {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(String deptId) {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 

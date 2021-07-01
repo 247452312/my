@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.OrderNodeDao">
+    <sql id="columnList">
+        a.save_api_id      as saveApiId,
+        a.result_type      as resultType,
+        a.init_api_id      as initApiId,
+        a.remark           as remark,
+        a.run_type         as runType,
+        a.type             as type,
+        a.sync             as sync,
+        a.update_date      as updateDate,
+        a.limit_time       as limitTime,
+        a.notice_user_id   as noticeUserId,
+        a.update_user      as updateUser,
+        a.base_info_id     as baseInfoId,
+        a.run_deal_user_id as runDealUserId,
+        a.name             as name,
+        a.run_api_id       as runApiId,
+        a.id               as id,
+        a.create_user      as createUser,
+        a.create_date      as createDate,
+        a.delete_flag      as deleteFlag,
+        a.`desc`
+    </sql>
+    <update id="deleteByIds">
+        update sys_order_node set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        ,delete_flag = 1
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+    <select id="getByIds" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node a
+        where delete_flag = 0
+        and id in
+        <foreach collection="nodeIds" index="nodeId" open="(" close=")" separator=",">
+            #{nodeId}
+        </foreach>
+    </select>
+    <update id="makeOrderFault">
+        update sys_order_node
+        set status = #{orderStatus},
+        result_type = #{orderResultType},
+        suggest = #{msg}
+        where id = #{orderNodeId}
+    </update>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${size}
+        </if>
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeEntity">
+        insert sys_order_node(save_api_id,
+        result_type,
+        init_api_id,
+        remark,
+        run_type,
+        type,
+        sync,
+        update_date,
+        limit_time,
+        notice_user_id,
+        update_user,
+        base_info_id,
+        run_deal_user_id,
+        name,
+        run_api_id,
+        id,
+        create_user,
+        create_date,
+        delete_flag,
+        `desc`)
+        values (#{saveApiId},
+        #{resultType},
+        #{initApiId},
+        #{remark},
+        #{runType},
+        #{type},
+        #{sync},
+        #{updateDate},
+        #{limitTime},
+        #{noticeUserId},
+        #{updateUser},
+        #{baseInfoId},
+        #{runDealUserId},
+        #{name},
+        #{runApiId},
+        #{id},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{desc})
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeEntity">
+        update sys_order_node set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="saveApiId != null and saveApiId != ''">
+            ,save_api_id = #{saveApiId}
+        </if>
+        <if test="resultType != null and resultType != ''">
+            ,result_type = #{resultType}
+        </if>
+        <if test="initApiId != null and initApiId != ''">
+            ,init_api_id = #{initApiId}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="runType != null and runType != ''">
+            ,run_type = #{runType}
+        </if>
+        <if test="type != null and type != ''">
+            ,type = #{type}
+        </if>
+        <if test="sync != null and sync != ''">
+            ,sync = #{sync}
+        </if>
+        <if test="limitTime != null and limitTime != ''">
+            ,limit_time = #{limitTime}
+        </if>
+        <if test="noticeUserId != null and noticeUserId != ''">
+            ,notice_user_id = #{noticeUserId}
+        </if>
+        <if test="baseInfoId != null and baseInfoId != ''">
+            ,base_info_id = #{baseInfoId}
+        </if>
+        <if test="runDealUserId != null and runDealUserId != ''">
+            ,run_deal_user_id = #{runDealUserId}
+        </if>
+        <if test="name != null and name != ''">
+            ,name = #{name}
+        </if>
+        <if test="runApiId != null and runApiId != ''">
+            ,run_api_id = #{runApiId}
+        </if>
+        <if test="createUser != null and createUser != ''">
+            ,create_user = #{createUser}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            ,create_date = #{createDate}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="desc != null and desc != ''">
+            ,`desc` = #{desc}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_node a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_node a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_node a
+        where ${columnName} = #{value}
+    </select>
+    <select id="getNextNodeByNodeAndResult" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node a
+        where delete_flag = 0
+        and id =
+        (select next_node_id from sys_order_node_route
+        where prev_node_id = #{nodeId} and result_id = #{resultId})
+    </select>
+    <select id="getByOrderId" resultType="indi.uhyils.pojo.model.OrderNodeEntity">
+        select
+        <include refid="columnList"/>
+        from sys_order_node a
+        where delete_flag = 0
+        and base_info_id = #{id}
+    </select>
+</mapper>

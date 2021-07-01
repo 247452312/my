@@ -1,9 +1,6 @@
 package indi.uhyils.util;
 
 import indi.uhyils.pojo.model.PowerSimpleEntity;
-import indi.uhyils.serviceImpl.PowerServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +18,16 @@ import java.util.stream.Collectors;
  */
 public class ApiPowerInitUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiPowerInitUtil.class);
 
+    private ApiPowerInitUtil() {
+    }
+
+    /**
+     * 此工具只在未打包时有用 获取所有接口的方法 TODO 此处需要修改
+     *
+     * @return
+     * @throws IOException
+     */
     public static List<PowerSimpleEntity> getPowersSingle() throws IOException {
         String basePath = new File("").getCanonicalPath();
         basePath += "\\my-api\\";
@@ -50,19 +55,20 @@ public class ApiPowerInitUtil {
                             //全部方法名称
                             List<String> methodsName = Arrays.stream(declaredMethods).map(Method::getName).collect(Collectors.toList()); // 此类里面的所有方法
 
-                            Class<?> aClass = Class.forName("indi.uhyils.service.DefaultEntityService");
+                            Class<?> aClass = Class.forName("indi.uhyils.service.DefaultEnt" +
+                                    "ityService");
                             //父类全部方法名称
                             List<String> fatherMethodsName = Arrays.stream(aClass.getDeclaredMethods()).map(Method::getName).collect(Collectors.toList());
                             methodsName.addAll(fatherMethodsName);
                             list.addAll(methodsName.stream().map(v -> PowerSimpleEntity.build(interfaceName, v)).collect(Collectors.toList()));
 
                         } catch (IOException | ClassNotFoundException e) {
-                            LogUtil.error(ApiPowerInitUtil.class, e.getMessage());
+                            LogUtil.error(ApiPowerInitUtil.class, e);
                         }
 
                     });
                 } catch (IOException e) {
-                    LogUtil.error(ApiPowerInitUtil.class, e.getMessage());
+                    LogUtil.error(ApiPowerInitUtil.class, e);
                 }
             }
         });

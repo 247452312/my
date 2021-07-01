@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.request;
 
+import indi.uhyils.pojo.request.base.DefaultRequest;
+
 import java.util.List;
 
 /**
@@ -14,26 +16,26 @@ public class PutDeptsToMenuRequest extends DefaultRequest {
     /**
      * 菜单id
      */
-    private String menuId;
+    private Long menuId;
 
     /**
      * 权限集id们
      */
-    private List<String> deptIds;
+    private List<Long> deptIds;
 
-    public String getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(String menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 
-    public List<String> getDeptIds() {
+    public List<Long> getDeptIds() {
         return deptIds;
     }
 
-    public void setDeptIds(List<String> deptIds) {
+    public void setDeptIds(List<Long> deptIds) {
         this.deptIds = deptIds;
     }
 }

@@ -28,7 +28,7 @@ public class LoginResponse implements Serializable {
 
     public static LoginResponse buildLoginFail() {
         LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setSuccess(false);
+        loginResponse.setSuccess(Boolean.FALSE);
         return loginResponse;
     }
 
@@ -39,7 +39,7 @@ public class LoginResponse implements Serializable {
      */
     public static LoginResponse buildLoginSuccess(String token, UserEntity userEntity) {
         LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setSuccess(true);
+        loginResponse.setSuccess(Boolean.TRUE);
         loginResponse.setToken(token);
         loginResponse.setUserEntity(userEntity);
         return loginResponse;

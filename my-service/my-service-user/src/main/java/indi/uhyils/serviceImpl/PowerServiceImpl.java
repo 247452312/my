@@ -1,37 +1,41 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import indi.uhyils.annotation.NoToken;
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.PowerDao;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.PowerSimpleEntity;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
-import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.GetMethodNameByInterfaceNameRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.PowerService;
 import indi.uhyils.util.ApiPowerInitUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import indi.uhyils.util.LogUtil;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时28分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
+@ReadWriteMark(tables = {"sys_power"})
 public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implements PowerService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PowerServiceImpl.class);
 
-    @Autowired
+    @Resource
     private PowerDao dao;
 
 
+    @Override
     public PowerDao getDao() {
         return dao;
     }
@@ -46,11 +50,13 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
-    public ServiceResult<Boolean> checkUserHavePowerNoToken(CheckUserHavePowerRequest request) {
+    @NoToken
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_user", "sys_role", "sys_role_dept", "sys_dept", "sys_dept_power", "sys_power"})
+    public ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerRequest request) {
         Integer count = dao.checkUserHavePower(request.getUserId(), request.getInterfaceName(), request.getMethodName());
         boolean havePower;
         if (count > 0) {
-            havePower = true;
+            havePower = Boolean.TRUE;
         } else {
             havePower = false;
         }
@@ -59,55 +65,56 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public ServiceResult<Boolean> deletePower(IdRequest request) {
-        List<PowerEntity> byId = getDao().getById(request.getId());
-        if (byId == null) {
-            return ServiceResult.buildFailedResult("查无此人", null, request);
+        PowerEntity powerEntity = getDao().getById(request.getId());
+        if (powerEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, request);
         }
-        PowerEntity powerEntity = byId.get(0);
-        powerEntity.setDeleteFlag(true);
+        powerEntity.setDeleteFlag(Boolean.TRUE);
         powerEntity.preUpdate(request);
         dao.update(powerEntity);
 
         dao.deleteDeptPowerMiddleByPowerId(request.getId());
 
-        return ServiceResult.buildSuccessResult("删除成功", true, request);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, request);
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_power"})
     public ServiceResult<ArrayList<String>> getInterfaces(DefaultRequest request) {
         return ServiceResult.buildSuccessResult("查询成功", dao.getInterfaces(), request);
     }
 
     @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_power"})
     public ServiceResult<ArrayList<String>> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameRequest request) {
         return ServiceResult.buildSuccessResult("查询成功", dao.getMethodNameByInterfaceName(request.getInterfaceName()), request);
     }
 
     @Override
-    public ServiceResult<Boolean> initPowerInProStartNoToken(DefaultRequest request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_power"})
+    public ServiceResult<Integer> initPowerInProStart(DefaultRequest request) throws Exception {
         List<PowerSimpleEntity> powersSingle;
         try {
             powersSingle = ApiPowerInitUtil.getPowersSingle();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LogUtil.error(this, e);
             return ServiceResult.buildErrorResult("初始化power失败:" + e.getMessage(), request);
         }
-        ArrayList<PowerSimpleEntity> result = new ArrayList<>();
-        boolean b = true;
+        AtomicInteger newPowerCount = new AtomicInteger(0);
         for (PowerSimpleEntity powerSimpleEntity : powersSingle) {
             Integer count = dao.checkPower(powerSimpleEntity.getInterfaceName(), powerSimpleEntity.getMethodName());
             // 如果数据库中不存在此权限
             if (count == 0) {
                 PowerEntity powerEntity = PowerEntity.build(powerSimpleEntity);
                 powerEntity.preInsert(request);
-                int insert = dao.insert(powerEntity);
-                if (insert != 1) {
-                    b = false;
-                }
+                dao.insert(powerEntity);
+                newPowerCount.incrementAndGet();
+
             }
         }
-        return ServiceResult.buildSuccessResult("初始化power成功", b, request);
+        return ServiceResult.buildSuccessResult("初始化power成功", newPowerCount.get(), request);
     }
 
 }

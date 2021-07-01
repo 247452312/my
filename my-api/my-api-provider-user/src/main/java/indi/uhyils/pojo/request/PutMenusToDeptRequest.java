@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.request;
 
+import indi.uhyils.pojo.request.base.DefaultRequest;
+
 import java.util.List;
 
 /**
@@ -10,23 +12,23 @@ import java.util.List;
  */
 public class PutMenusToDeptRequest extends DefaultRequest {
 
-    private String deptId;
+    private Long deptId;
 
-    private List<String> menuIds;
+    private List<Long> menuIds;
 
-    public String getDeptId() {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(String deptId) {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 
-    public List<String> getMenuIds() {
+    public List<Long> getMenuIds() {
         return menuIds;
     }
 
-    public void setMenuIds(List<String> menuIds) {
+    public void setMenuIds(List<Long> menuIds) {
         this.menuIds = menuIds;
     }
 }

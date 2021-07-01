@@ -1,0 +1,10 @@
+server:
+  port: 8005
+rpc:
+  provider:
+    port: 20805
+  application:
+    name: provider-distribute
+
+log-out:
+  dir-name: distribute

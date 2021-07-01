@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.AlgorithmDao">
+    <sql id="columnList">
+        a
+                .
+                id
+                ,
+        a.create_date     as 'createDate',
+        a.create_user     as createUser,
+        a.update_date     as 'updateDate',
+        a.update_user     as updateUser,
+        a.delete_flag     as deleteFlag,
+        a.remark,
+
+
+        a.name,
+        a.model_file_path as modelFilePath,
+        a.accuracy,
+        a.in_param_size   as inParamSize,
+        a.out_param_size  as outParamSize
+    </sql>
+
+    <select id="getById" resultType="indi.uhyils.pojo.model.AlgorithmEntity">
+        select
+        <include refid="columnList"/>
+        from sys_algorithm a
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.AlgorithmEntity">
+        select
+        <include refid="columnList"/>
+        from sys_algorithm a
+        where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.AlgorithmEntity">
+        select
+        <include refid="columnList"/>
+        from sys_algorithm a
+        where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size},${size}
+        </if>
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.AlgorithmEntity">
+        insert
+        sys_algorithm(id,
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user,
+        name,
+        model_file_path,
+        accuracy,
+        in_param_size,
+        out_param_size)
+        values (
+        #{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        #{deleteFlag},
+        #{remark},
+        #{modelFilePath},
+        #{accuracy},
+        #{inParamSize},
+        #{outParamSize}
+        )
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.AlgorithmEntity">
+        update sys_algorithm set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+
+
+        <if test="name != null and name != ''">
+            ,name = #{name}
+        </if>
+        <if test="modelFilePath != null and modelFilePath != ''">
+            ,model_file_path = #{modelFilePath}
+        </if>
+        <if test="accuracy != null and accuracy != ''">
+            ,accuracy = #{accuracy}
+        </if>
+        <if test="inParamSize != null and inParamSize != ''">
+            ,in_param_size = #{inParamSize}
+        </if>
+        <if test="outParamSize != null and outParamSize != ''">
+            ,out_param_size = #{outParamSize}
+        </if>
+
+        <if test="deleteFlag != null and deleteFlag != ''">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_algorithm a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_algorithm a
+        where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_algorithm a
+        where ${columnName} = #{value}
+    </select>
+</mapper>

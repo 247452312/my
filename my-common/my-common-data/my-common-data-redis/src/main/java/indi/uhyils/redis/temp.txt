@@ -1,0 +1,18 @@
+if redis.call("HEXISTS",KEYS[2]) then
+    return redis.call("HGET",KEYS[2])
+elseif redis.call("HEXISTS",KEYS[1]) then
+    local classType = redis.call("HGET",KEYS[1])
+    if classType == 0 then
+
+    elseif classType == 1 then
+        if KEYS[3] == 1 then
+            return 1
+    elseif classType == 2 then
+        if KEYS[3] == 2 then
+            return 1
+    elseif classType == 3 then
+        return 1
+    end
+else
+    return 0
+end

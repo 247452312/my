@@ -3,12 +3,17 @@
 <head>
     <meta charset="utf-8">
     <title>layui</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../../css/public.css" media="all">
-    <link rel="stylesheet" href="../../css/my.css" media="all">
+    <meta content="webkit" name="renderer">
+    <!--设置1个小时的缓存-->
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
+    <link href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
+    <link href="../../css/my.css" media="all" rel="stylesheet">
+
     <style>
         body {
             background-color: #ffffff;
@@ -22,28 +27,22 @@
 <body>
 <div class="layui-form layuimini-form">
     <!--  父id    -->
-    <input type="text" name="id" value="" style="display:none;">
-    <input type="text" name="class" value="indi.uhyils.pojo.model.MenuEntity" style="display:none;">
-    <input type="text" name="fid" value="" style="display:none;">
-    <input type="text" name="iFrame" value="1" style="display:none;">
+    <input name="id" style="display:none;" type="text" value="">
+    <input name="fid" style="display:none;" type="text" value="">
+    <input name="iFrame" style="display:none;" type="text" value="1">
 
     <div class="layui-form-item">
         <label class="layui-form-label required">菜单名称</label>
         <div class="layui-input-block">
-            <input type="text" name="name" lay-verify="required" placeholder="请输入菜单名称" value=""
-                   class="layui-input">
+            <input class="layui-input" lay-verify="required" name="name" placeholder="请输入菜单名称" type="text"
+                   value="">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">icon</label>
         <div class="layui-input-block">
-            <select name="icon">
-                <option value="icon0">0</option>
-                <option value="icon1">1</option>
-                <option value="icon2">2</option>
-                <option value="icon3">3</option>
-                <option value="icon4">4</option>
-                <option value="icon5">5</option>
+            <select id="menu_icon" name="icon">
+                <option value="">请选择</option>
             </select>
         </div>
     </div>
@@ -51,44 +50,45 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">排序</label>
         <div class="layui-input-block">
-            <input type="text" name="sort" lay-verify="required" lay-reqtext="排序不能为空" placeholder="序号 e.g.(1)" value=""
-                   οnkeyup="value=value.replace(/^0(0+)|[^\d]+/g,'')"
-                   class="layui-input">
+            <input class="layui-input" lay-reqtext="排序不能为空" lay-verify="required" name="sort" placeholder="序号 e.g.(1)"
+                   type="text"
+                   value=""
+                   οnkeyup="value=value.replace(/^0(0+)|[^\d]+/g,'')">
             <tip>序号越小越靠前</tip>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">是否是叶子结点</label>
         <div class="layui-input-block dependent">
-            <input type="radio" lay-filter="level" target-mark="0" name="type" value="true" title="是" checked="">
-            <input type="radio" lay-filter="level" target-mark="1" name="type" value="false" title="否">
+            <input checked="" lay-filter="level" name="type" target-mark="0" title="是" type="radio" value="true">
+            <input lay-filter="level" name="type" target-mark="1" title="否" type="radio" value="false">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label ">跳转方式</label>
         <div class="layui-input-block independent">
-            <input type="radio" name="target" value="" title="不跳转" checked="">
-            <input type="radio" name="target" value="_self" title="iframe页面跳转">
-            <input type="radio" name="target" value="_blank" title="页面跳转">
+            <input checked="" name="target" title="不跳转" type="radio" value="">
+            <input name="target" title="iframe页面跳转" type="radio" value="_self">
+            <input name="target" title="页面跳转" type="radio" value="_blank">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label ">跳转页面</label>
         <div class="layui-input-block independent">
-            <input type="text" name="url" placeholder="请输入目标网址" value=""
-                   class="layui-input">
+            <input class="layui-input" name="url" placeholder="请输入目标网址" type="text"
+                   value="">
         </div>
     </div>
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+            <button class="layui-btn layui-btn-normal" lay-filter="saveBtn" lay-submit>确认保存</button>
         </div>
     </div>
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/my.js"></script>
-<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script charset="utf-8" src="../../lib/layui-v2.5.5/layui.js"></script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form,
@@ -114,6 +114,14 @@
         };
         let id = $.getUrlParam('id');
         let func = $.getUrlParam('func');
+        pushRequest("DictService", "getAllMenuIcon", {}, function (data) {
+            let $menuIcon = $("#menu_icon");
+            $menuIcon.empty();
+            $menuIcon.append("<option value=\"\">请选择</option>");
+            for (let i = 0; i < data.length; i++) {
+                $menuIcon.append('<option value="' + data[i] + '" icon="' + data[i] + '">' + data[i] + '</option>')
+            }
+        });
         pushRequest("MenuService", "getById", {
             id: id
         }, function (data) {
@@ -133,6 +141,7 @@
                 $('[name="target"][value="' + data.target + '"]').attr("checked", true);
                 $('[name="name"]').attr('value', data.name);
                 // $('[name="icon"]').attr('value', data.icon);
+                $('[name="icon"] option').removeAttr("selected");
                 $('[name="icon"] option[value="' + data.icon + '"]').attr('selected', true);
                 $('[name="url"]').attr('value', data.url);
             } else if (func == 'add') {

@@ -1,0 +1,7 @@
+aop顺序由上往下
+10.服务禁用 ServiceTemporarilyDisabledAop
+20.token TokenInjectAop
+30.异常 ExceptionAop
+40.日志(打印) TimeLogAop
+41.接口日志(MQ) InterfaceCellAop
+50.热点

@@ -1,40 +1,63 @@
 package indi.uhyils.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.Action;
-import indi.uhyils.pojo.request.DefaultRequest;
 import indi.uhyils.pojo.request.SessionRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.pojo.response.ServiceResult;
 import indi.uhyils.pojo.response.WebResponse;
-import indi.uhyils.util.DubboApiUtil;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.redis.hotspot.HotSpotRedisPool;
+import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月24日 16时14分
  */
-@Controller
+@RestController
+@CrossOrigin
 public class AllController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AllController.class);
-
+    /**
+     * 用户登录时携带的token的名称
+     */
     private static final String TOKEN = "token";
+    /**
+     * 保证请求幂等性, 不会在前一个相同幂等id执行结束前执行方法
+     */
+    private static final String UNIQUE = "unique";
+    /**
+     * 热点缓存
+     */
+    @Autowired
+    private HotSpotRedisPool redisPool;
+
+    /**
+     * action 添加链路跟踪起点
+     *
+     * @param action
+     */
+    public static void actionAddRequestLink(Action action) {
+        HashMap<String, Object> requestLink = new HashMap<>(2);
+        requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
+        requestLink.put("data", "页面请求");
+        action.getArgs().put("requestLink", requestLink);
+    }
 
     /**
      * 默认返回所有的方法
@@ -43,31 +66,38 @@ public class AllController {
      * @param httpServletRequest 请求,暂时没用,日后或许有用
      * @return 向界面返回的值
      */
-    @RequestMapping("action")
-    @ResponseBody
+    @PostMapping("action")
     public WebResponse action(@RequestBody Action action, HttpServletRequest httpServletRequest) {
+        //错误日志
         String eMsg = null;
+        // 链路跟踪
         LinkNode<String> link = null;
+        // 服务返回信息
         ServiceResult serviceResult = null;
 
-        logger.info("param: " + JSON.toJSONString(action));
-        action.getArgs().put(TOKEN, action.getToken());
-        actionAddRequestLink(action);
+        // 发送前处理
+        dealActionBeforeCall(action);
         try {
-            List list = new ArrayList();
-            list.add(action.getArgs());
-            serviceResult = DubboApiUtil.dubboApiTool(action.getInterfaceName(), action.getMethodName(), list, new DefaultRequest());
-            if (ServiceCode.SUCCESS.getText().equals(serviceResult.getServiceCode())) {
-                LogUtil.linkPrint(serviceResult.getRequestLink(), logger);
-            }
+            serviceResult = RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+
+            /* 打印链路跟踪 */
             link = serviceResult.getRequestLink();
+            LogUtil.linkPrint(link);
+
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 eMsg = serviceResult.getServiceMessage();
             }
+            // 修改字段类型为String,因为前端大数会失去精度
+            Serializable data = serviceResult.getData();
+            if (data instanceof JSONObject) {
+                changeFieldTypeToString((JSONObject) data);
+            } else if (data instanceof JSONArray) {
+                changeFieldTypeToString((JSONArray) data);
+            }
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
-            LogUtil.error(this, e.getMessage());
-            e.printStackTrace();
+            // 如果失败,就返回微服务传回来的错误信息与提示
+            LogUtil.error(this, e);
             eMsg = e.getMessage();
             return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
         } finally {
@@ -75,43 +105,72 @@ public class AllController {
                 try {
                     LogPushUtils.pushLog(eMsg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken(), serviceResult.getServiceCode());
                 } catch (Exception e) {
-                    logger.error(e.getMessage());
+                    LogUtil.error(this, e);
                 }
 
             }
         }
     }
 
+
+    private void changeFieldTypeToString(JSONObject data) {
+        // 因前端大数会失去精度, 所以要转变类型,全部转换为String类型的
+        if (data != null) {
+            for (Map.Entry<String, Object> entry : data.entrySet()) {
+                String s = entry.getKey();
+                Object value = entry.getValue();
+                if (value instanceof JSONObject) {
+                    changeFieldTypeToString((JSONObject) value);
+                } else if (value instanceof JSONArray) {
+                    changeFieldTypeToString((JSONArray) value);
+                } else if (value instanceof Long) {
+                    value = value.toString();
+                }
+                data.put(s, value);
+            }
+        }
+    }
+
+    private void changeFieldTypeToString(JSONArray data) {
+        // 因前端大数会失去精度, 所以要转变类型,全部转换为String类型的
+        if (data != null) {
+            for (int i = 0; i < data.size(); i++) {
+                Object o = data.get(i);
+                if (o instanceof JSONArray) {
+                    changeFieldTypeToString((JSONArray) o);
+                } else if (o instanceof JSONObject) {
+                    changeFieldTypeToString((JSONObject) o);
+                } else if (o instanceof Long) {
+                    o = o.toString();
+                }
+                data.set(i, o);
+            }
+        }
+    }
+
+    private void dealActionBeforeCall(Action action) {
+        LogUtil.info(this, "param: " + JSON.toJSONString(action));
+        // token修改到arg中
+        action.getArgs().put(TOKEN, action.getToken());
+        // 添加链路跟踪
+        actionAddRequestLink(action);
+    }
+
     @PostMapping("/getSession")
-    @ResponseBody
     public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
-        logger.info("getSession: " + sessionRequest.getAttrName());
+        LogUtil.info(this, "getSession: " + sessionRequest.getAttrName());
         HttpSession session = request.getSession();
-        logger.info("result: " + session.getAttribute(sessionRequest.getAttrName()));
+        LogUtil.info(this, "result: " + session.getAttribute(sessionRequest.getAttrName()));
         return session.getAttribute(sessionRequest.getAttrName());
     }
 
     @PostMapping("/setSession")
-    @ResponseBody
     public boolean setSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
-        logger.info("setSession: " + sessionRequest.getAttrName());
-        logger.info("sessionData : " + sessionRequest.getData());
+        LogUtil.info(this, "setSession: " + sessionRequest.getAttrName());
+        LogUtil.info(this, "sessionData : " + sessionRequest.getData());
         HttpSession session = request.getSession();
         session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
-        return true;
-    }
-
-
-    /**
-     * action 添加链路跟踪起点
-     *
-     * @param action
-     */
-    private void actionAddRequestLink(@RequestBody Action action) {
-        HashMap<String, Object> requestLink = new HashMap<>(2);
-        requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
-        requestLink.put("data", "页面请求");
-        action.getArgs().put("requestLink", requestLink);
+        return Boolean.TRUE;
     }
 
 }

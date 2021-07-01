@@ -3,15 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>登录页</title>
-    <link rel="bookmark" type="image/x-icon" href="/pic/lxh_icon/icon11.png"/>
-    <link rel="shortcut icon" href="/pic/lxh_icon/icon11.png">
-    <link rel="stylesheet" href="/css/my.css">
-    <link rel="stylesheet" href="/static/lib/layui-v2.5.5/css/modules/layer/default/layer.css">
-    <script src="js/jquery.min.js"></script>
-    <script src="lib/layui-v2.5.5/lay/modules/layer.js"></script>
-    <script src="js/my.js"></script>
-    <link rel="stylesheet" href="/css/login.css">
+    <!--设置1个小时的缓存-->
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <link href="/pic/lxh_icon/icon11.png" rel="bookmark" type="image/x-icon"/>
+    <link href="/pic/lxh_icon/icon11.png" rel="shortcut icon">
+    <link href="/css/my.css" rel="stylesheet">
+    <link href="/lib/layui-v2.5.5/css/modules/layer/default/layer.css" rel="stylesheet">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/lib/layui-v2.5.5/lay/modules/layer.js"></script>
+    <script src="/js/my.js"></script>
+    <script src="/js/dat.gui.min.js" type="text/javascript"></script>
+    <link href="/css/login.css" rel="stylesheet">
     <script>
+
+        /*背景图片配置*/
+        window.ga = window.ga || function () {
+            (ga.q = ga.q || []).push(arguments)
+        };
+        ga.l = +new Date;
+        ga('create', 'UA-105392568-1', 'auto');
+        ga('send', 'pageview');
+        /*背景图片配置end*/
+
         $.fn.serializeObject = function () {
             var o = {};
             var a = this.serializeArray();
@@ -33,7 +46,11 @@
             arg = {};
             arg.username = a.username;
             arg.password = a.password;
-            pushRequest("UserService", "userLoginNoToken", arg, function (data) {
+            pushRequest("UserService", "login", arg, function (data) {
+                if ($('.login-save-user').is(':checked')) {
+                    setCookie("username", a.username, 7);
+                    setCookie("password", a.password, 7);
+                }
                 setCookie("token", data.token, 1);
                 setAttrBySession("userInfo", data.userEntity);
                 setAttrBySession("token", {token: data.token});
@@ -41,47 +58,100 @@
             });
 
         }
+
+        function checkSaveUserName() {
+            arg = {};
+            let username = getCookie("username");
+            let password = getCookie("password");
+            if (username != null && username != "") {
+                arg.username = username;
+                arg.password = password;
+                pushRequest("UserService", "login", arg, function (data) {
+                    setCookie("token", data.token, 1);
+                    setAttrBySession("userInfo", data.userEntity);
+                    setAttrBySession("token", {token: data.token});
+                    window.location.href = "index.html";
+                });
+            }
+        }
+
+        checkSaveUserName();
     </script>
 </head>
 <body>
-<div class="login-background">
-    <div class="login-middle">
-        <div class="login-middle-top-logo">
-            <img src="/pic/logo.gif" alt>
-        </div>
-        <div class="login-middle-top-title">my框架 v 0.0.1</div>
-        <div class="login-middle-login-border">
-            <!-- 登录框↓↓↓  -->
-            <form class="login-form login-submit-target" onsubmit="return false;">
-                <div class="login-form-line">
-                    <input type="text" name="username" autocomplete="off" placeholder="请输入用户名">
-                    <span class="input-prefix-username">
+<canvas></canvas>
+<div class="login-middle">
+    <div class="login-middle-top-logo">
+        <img alt src="/pic/logo.gif">
+    </div>
+    <div class="login-middle-top-title">my框架 v 0.1.2</div>
+    <div class="login-middle-login-border">
+        <form class="login-form login-submit-target" onsubmit="return false;">
+            <div class="login-form-line username-login-form-line">
+                <input autocomplete="off" name="username" placeholder="请输入用户名" type="text">
+                <span class="input-prefix-username">
                         <img class="input-prefix-username-icon" src="/pic/login_username.svg"/>
                     </span>
-
-                </div>
-                <div class="login-form-line">
-                    <input type="password" name="password" autocomplete="off" placeholder="请输入密码">
-                    <span class="input-suffix-username">
+                <div class="login-input-username-empty">x</div>
+            </div>
+            <div class="login-form-line">
+                <input autocomplete="off" name="password" placeholder="请输入密码" type="password">
+                <span class="input-suffix-username">
                         <img class="input-suffix-username-icon" src="/pic/login_password.svg"/>
                     </span>
-                </div>
-                <div class="login-form-line">
-                    <button class="button login-submit-button" onclick="login()">登录</button>
-                </div>
-            </form>
-            <!-- 登录框↑↑↑  -->
+            </div>
+            <input class="login-save-user" id="save-user" type="checkbox"/><label class="login-save-user-text"
+                                                                                  for="save-user">
+            7天免登陆</label>
+            <div class="login-form-line">
+                <button class="button login-submit-button" onclick="login()">登录</button>
+            </div>
 
+        </form>
+
+    </div>
+</div>
+<!-- Mother of God, pls forgive me -->
+<div class="promo">
+
+    <div class="promo-middle">
+        <div class="promo-content">
+            <div class="promo-header">
+                <span class="promo-close">&times;</span>
+            </div>
+            <div class="promo-body">
+                <p>Try Fluid Simulation app!</p>
+                <div class="links-container">
+                    <a class="link" id="apple_link" target="_blank">
+                        <img class="link-img"/>
+                    </a>
+                    <a class="link" id="google_link" target="_blank">
+                        <img class="link-img"/>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-
 </div>
+
+
+<script src="/js/script.js"></script>
 <script>
     $(document).ready(function () {
         $(".login-middle").animate({
             left: '100px',
             opacity: 1
         }, 500); // 登录框弹出
+
+        $(".username-login-form-line").on('mouseover', function () {
+            $('.login-input-username-empty').css('display', 'block');
+        });
+        $(".username-login-form-line").on('mouseout', function () {
+            $('.login-input-username-empty').css('display', 'none');
+        });
+        $(".login-input-username-empty").on('click', function () {
+            $('[name=username]').val('');
+        });
     });
 </script>
 </body>

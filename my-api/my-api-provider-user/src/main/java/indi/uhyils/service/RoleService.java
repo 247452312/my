@@ -2,12 +2,13 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.RoleEntity;
-import indi.uhyils.pojo.request.DefaultRequest;
-import indi.uhyils.pojo.request.IdRequest;
-import indi.uhyils.pojo.request.IdsRequest;
 import indi.uhyils.pojo.request.PutDeptsToRoleRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * @param request 角色id
      * @return 角色
      */
-    ServiceResult<RoleEntity> getRoleByRoleIdNoToken(IdRequest request);
+    ServiceResult<RoleEntity> getRoleByRoleId(IdRequest request);
 
     /**
      * 给角色添加权限集
@@ -33,7 +34,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * @param request 角色id 和 权限集们
      * @return 是否成功
      */
-    ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleRequest request);
+    ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleRequest request) throws Exception;
 
     /**
      * 删除 -> 真删. 不是假删

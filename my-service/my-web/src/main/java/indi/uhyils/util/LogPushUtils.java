@@ -9,6 +9,7 @@ import indi.uhyils.util.disruptor.JsonEvent;
 import indi.uhyils.util.disruptor.JsonEventConsumer;
 import indi.uhyils.util.disruptor.JsonEventFactory;
 import indi.uhyils.util.disruptor.JsonEventProducerWithTranslator;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.Executors;
@@ -22,7 +23,7 @@ import java.util.concurrent.Executors;
 public class LogPushUtils {
 
 
-    private static JsonEventProducerWithTranslator producer;
+    private static final JsonEventProducerWithTranslator PRODUCER;
 
     static {
         JsonEventFactory factory = new JsonEventFactory();
@@ -31,14 +32,14 @@ public class LogPushUtils {
         disruptor.handleEventsWith(SpringUtil.getBean(JsonEventConsumer.class));
         disruptor.start();
         RingBuffer<JsonEvent> ringBuffer = disruptor.getRingBuffer();
-        producer = new JsonEventProducerWithTranslator(ringBuffer);
+        PRODUCER = new JsonEventProducerWithTranslator(ringBuffer);
     }
 
     public static void pushLog(String exceptionDetail, String interfaceName, String methodName, Object params, LinkNode<String> link, HttpServletRequest request, String token, Integer serviceCode) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("class", "indi.uhyils.pojo.model.LogEntity");
         // 说明有错误信息,类型是错误
-        if (exceptionDetail != null && !"".equals(exceptionDetail)) {
+        if (StringUtils.isNotEmpty(exceptionDetail)) {
             jsonObject.put("logType", serviceCode);
             jsonObject.put("exceptionDetail", exceptionDetail);
         } else {
@@ -49,15 +50,15 @@ public class LogPushUtils {
         jsonObject.put("methodName", methodName);
         jsonObject.put("params", JSONObject.toJSONString(params));
         jsonObject.put("time", System.currentTimeMillis());
-        jsonObject.put("ip", getIPAddress(request));
+        jsonObject.put("ip", getIpAddress(request));
         jsonObject.put("userId", token);
         jsonObject.put("link", parseString(link));
 
         String json = jsonObject.toJSONString();
-        producer.onData(json, token);
+        PRODUCER.onData(json, token);
     }
 
-    private static String getIPAddress(HttpServletRequest request) {
+    public static String getIpAddress(HttpServletRequest request) {
         String ip = null;
 
         //X-Forwarded-For：Squid 服务代理

@@ -1,2 +1,3 @@
 **/*.yml merge=out
 **/*.xml merge=out
+*.js linguist-language=java

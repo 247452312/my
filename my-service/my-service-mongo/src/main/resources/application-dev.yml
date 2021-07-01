@@ -1,0 +1,21 @@
+server:
+  port: 8007
+rpc:
+  provider:
+    port: 20807
+  application:
+    name: provider-mongo
+
+log-out:
+  dir-name: mongo
+
+mongo:
+  ip: prod
+  port: 27017
+  username: uhyils
+  password: myuhyils
+  pool:
+    coreSize: 5
+    maxSize: 10
+    keepAliveTime: 50000
+

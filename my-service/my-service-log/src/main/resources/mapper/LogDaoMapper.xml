@@ -2,26 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.LogDao">
-
-
     <sql id="columnList">
         a.id,
-        a.create_date as 'createDate',
-        a.create_user as createUser,
-        a.update_date as 'updateDate',
-        a.update_user as updateUser,
-        a.delete_flag as deleteFlag,
+        a.create_date      as 'createDate',
+        a.create_user      as createUser,
+        a.update_date      as 'updateDate',
+        a.update_user      as updateUser,
+        a.delete_flag      as deleteFlag,
         a.remark,
 
 
         a.exception_detail as exceptionDetail,
-        a.interface_name as interfaceName,
+        a.interface_name   as interfaceName,
         a.ip,
-        a.log_type as logType,
-        a.method_name as methodName,
+        a.log_type         as logType,
+        a.method_name      as methodName,
         a.params,
         a.time,
-        a.user_id as userId,
+        a.user_id          as userId,
         a.link
     </sql>
 
@@ -41,6 +39,7 @@
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
+        order by time desc
     </select>
 
     <select id="getByArgs" resultType="indi.uhyils.pojo.model.LogEntity">
@@ -52,38 +51,44 @@
         <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
+        order by time desc
         <if test="page != null and page != ''">
-            limit ${(page-1) * size},${page * size}
+            limit ${(page-1) * size},${size}
         </if>
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.LogEntity">
         insert sys_log(id,
-                       create_date,
-                       create_user,
-                       update_date,
-                       update_user,
-                       delete_flag,
-                       exception_detail,
-                       interface_name,
-                       ip,
-                       log_type,
-                       method_name,
-                       params,
-                       time,
-                       user_id,
-                       link)
-        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0,
-                #{exceptionDetail},
-                #{interfaceName},
-                #{ip},
-                #{logType},
-                #{methodName},
-                #{params},
-                #{time},
-                #{userId},
-                #{link})
+        create_date,
+        create_user,
+        update_date,
+        update_user,
+        delete_flag,
+        exception_detail,
+        interface_name,
+        ip,
+        log_type,
+        method_name,
+        params,
+        time,
+        user_id,
+        link)
+        values (#{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{exceptionDetail},
+        #{interfaceName},
+        #{ip},
+        #{logType},
+        #{methodName},
+        #{params},
+        #{time},
+        #{userId},
+        #{link})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.LogEntity">
@@ -145,6 +150,9 @@
         from sys_log a
         where ${columnName} = #{value}
     </select>
-
-
+    <select id="getCountByStartTime" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(*)
+        from sys_log
+        where time > #{time}
+    </select>
 </mapper>

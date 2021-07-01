@@ -1,25 +1,33 @@
 package indi.uhyils.serviceImpl;
 
-import com.alibaba.dubbo.config.annotation.Service;
+import indi.uhyils.annotation.NoToken;
+import indi.uhyils.annotation.ReadWriteMark;
+import indi.uhyils.content.Content;
 import indi.uhyils.dao.UserDao;
+import indi.uhyils.enum_.CacheTypeEnum;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.DeptEntity;
 import indi.uhyils.pojo.model.PowerEntity;
 import indi.uhyils.pojo.model.RoleEntity;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.model.base.TokenInfo;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.LoginRequest;
+import indi.uhyils.pojo.request.UpdatePasswordRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.LoginResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.redis.RedisPoolHandle;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
-import indi.uhyils.util.RedisPoolUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,15 +39,14 @@ import java.util.Random;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月20日 11时51分
  */
-@Service(group = "${spring.profiles.active}")
+@RpcService
+@ReadWriteMark(tables = {"sys_user"})
 public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implements UserService {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
     @Autowired
-    private RedisPoolUtil redisPoolUtil;
-    @Autowired
+    private RedisPoolHandle redisPoolHandle;
+    @Resource
     private UserDao dao;
 
     @Value("${token.salt}")
@@ -50,20 +57,22 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
 
     @Override
-    public ServiceResult<UserEntity> getUserByIdNoToken(IdRequest idRequest) {
+    @NoToken
+    @ReadWriteMark(tables = {"sys_user", "sys_role", "sys_dept", "sys_role_dept", "sys_power", "sys_dept_power"})
+    public ServiceResult<UserEntity> getUserById(IdRequest idRequest) {
 
         //缓存
-        UserEntity user = redisPoolUtil.getUser(idRequest.getToken());
+        UserEntity user = redisPoolHandle.getUser(idRequest.getToken());
         if (user != null) {
             return ServiceResult.buildSuccessResult("查询成功", user, idRequest);
         }
-        List<UserEntity> byId = dao.getById(idRequest.getId());
-        if (byId != null && byId.size() == 1) {
-            UserEntity userEntity = byId.get(0);
-            initRole(userEntity);
-            return ServiceResult.buildSuccessResult("查询成功", userEntity, idRequest);
+        UserEntity userEntity = dao.getById(idRequest.getId());
+        if (userEntity == null) {
+            return ServiceResult.buildFailedResult("查询失败", null, idRequest);
         }
-        return ServiceResult.buildFailedResult("查无此人", null, idRequest);
+        initRole(userEntity);
+        return ServiceResult.buildSuccessResult("查询成功", userEntity, idRequest);
+
     }
 
     private void initRole(UserEntity userEntity) {
@@ -82,13 +91,15 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
 
     @Override
-    public ServiceResult<String> getUserTokenNoToken(GetUserRequest userRequest) {
-        String token = getToken(userRequest.getId());
-        return ServiceResult.buildSuccessResult("token生成成功", token, userRequest);
+    @NoToken
+    @ReadWriteMark(cacheType = CacheTypeEnum.NOT_TYPE)
+    public ServiceResult<String> getUserToken(IdRequest request) {
+        String token = getToken(request.getId());
+        return ServiceResult.buildSuccessResult("token生成成功", token, request);
     }
 
     @Override
-    public ServiceResult<Integer> insert(ObjRequest<UserEntity> insert) {
+    public ServiceResult<Integer> insert(ObjRequest<UserEntity> insert) throws Exception {
         UserEntity data = insert.getData();
         data.preInsert(insert);
         data.setPassword(MD5Util.MD5Encode(data.getPassword()));
@@ -97,7 +108,8 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
 
     @Override
-    public ServiceResult<TokenInfo> getTokenInfoByTokenNoToken(DefaultRequest request) {
+    @NoToken
+    public ServiceResult<TokenInfo> getTokenInfoByToken(DefaultRequest request) {
         String token = request.getToken();
 
         String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
@@ -110,7 +122,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         String random = tokenInfoString.substring(8, 10);
 
 
-        String userId = tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length());
+        long userId = Long.parseLong(tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length()));
 
         TokenInfo tokenInfo = new TokenInfo();
         tokenInfo.setDay(Integer.parseInt(day));
@@ -119,12 +131,33 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         tokenInfo.setSec(Integer.parseInt(sec));
         tokenInfo.setRandom(Integer.parseInt(random));
         tokenInfo.setUserId(userId);
-        tokenInfo.setTimeOut(!redisPoolUtil.haveToken(token));
+        Boolean aBoolean = redisPoolHandle.haveToken(token);
+        if (aBoolean == null) {
+            LocalDateTime localDateTime = LocalDateTime.now();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddhhmm");
+            String format = localDateTime.format(dateTimeFormatter);
+            int dayNow = Integer.parseInt(format.substring(0, 2));
+            int hourNow = Integer.parseInt(format.substring(2, 4));
+            int monNow = Integer.parseInt(format.substring(4, 6));
+            // 如果分钟差超过30
+            if (monNow - Integer.parseInt(mon) >= Content.LOGIN_TIME_OUT_MIN) {
+                tokenInfo.setTimeOut(Boolean.TRUE);
+            } else if (hourNow - Integer.parseInt(hour) > 0) {
+                tokenInfo.setTimeOut(Boolean.TRUE);
+            } else if (dayNow - Integer.parseInt(day) > 0) {
+                tokenInfo.setTimeOut(Boolean.TRUE);
+            } else {
+                tokenInfo.setTimeOut(false);
+            }
+        } else {
+            tokenInfo.setTimeOut(!aBoolean);
+        }
         return ServiceResult.buildSuccessResult("解密成功", tokenInfo, request);
     }
 
     @Override
-    public ServiceResult<LoginResponse> userLoginNoToken(LoginRequest userRequest) {
+    @NoToken
+    public ServiceResult<LoginResponse> login(LoginRequest userRequest) {
         ArrayList<Arg> objects = new ArrayList<>();
         objects.add(new Arg("username", "=", userRequest.getUsername()));
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
@@ -135,28 +168,34 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         UserEntity userEntity = byArgsNoPage.get(0);
 
         //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
-        Boolean haveUserId = redisPoolUtil.haveUserId(userEntity.getId());
-        if (haveUserId) {
-            redisPoolUtil.removeUserById(userEntity.getId());
+        Boolean haveUserId = redisPoolHandle.haveUserId(userEntity.getId());
+
+        if (haveUserId != null && haveUserId) {
+            redisPoolHandle.removeUserById(userEntity.getId());
         }
 
         String token = getToken(userEntity.getId());
         userRequest.setToken(token);
 
-
-        if (userEntity.getRoleId() == null) {
-            return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
-        }
         // 登录->加入缓存中
-        redisPoolUtil.addUser(token, userEntity);
+        redisPoolHandle.addUser(token, userEntity);
         return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
+    }
+
+    @Override
+    public ServiceResult<Boolean> logout(DefaultRequest request) {
+        Boolean result = redisPoolHandle.removeByKey(request.getToken());
+        if (result) {
+            result = redisPoolHandle.removeByKey(request.getUser().getId().toString());
+        }
+        return ServiceResult.buildSuccessResult("登出结束", result, request);
     }
 
     @Override
     public ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request) {
         ArrayList<UserEntity> all = dao.getAll();
         all.forEach(t -> {
-            String roleId = t.getRoleId();
+            Long roleId = t.getRoleId();
             RoleEntity userRoleById = dao.getUserRoleById(roleId);
             t.setRole(userRoleById);
         });
@@ -164,17 +203,32 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
     @Override
-    public ServiceResult<UserEntity> getUserById(IdRequest request) {
-        String id = request.getId();
-        List<UserEntity> byId = dao.getById(id);
-        if (byId == null || byId.size() != 1) {
-            return ServiceResult.buildFailedResult("id不存在", null, request);
+    public ServiceResult<UserEntity> getUserByToken(DefaultRequest request) {
+        return ServiceResult.buildSuccessResult("查询成功", request.getUser(), request);
+    }
+
+    @Override
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
+    public ServiceResult<String> updatePassword(UpdatePasswordRequest request) {
+        String oldPassword = request.getOldPassword();
+        UserEntity user = request.getUser();
+        Long userId = user.getId();
+        Integer passwordIsTrue = dao.checkUserPassword(userId, MD5Util.MD5Encode(oldPassword));
+        // 不为1 说明不正确
+        if (passwordIsTrue != 1) {
+            return ServiceResult.buildFailedResult("密码不正确", "密码不正确", request);
         }
-        UserEntity userEntity = byId.get(0);
-        String roleId = userEntity.getRoleId();
-        RoleEntity userRoleById = dao.getUserRoleById(roleId);
-        userEntity.setRole(userRoleById);
-        return ServiceResult.buildSuccessResult("获取用户成功", userEntity, request);
+        UserEntity byId = dao.getById(userId);
+        byId.setPassword(request.getNewPassword());
+        byId.preUpdate(request);
+        dao.update(byId);
+        return ServiceResult.buildSuccessResult("修改密码成功", "true", request);
+    }
+
+    @Override
+    public ServiceResult<String> getNameById(IdRequest request) {
+        String name = dao.getNameById(request.getId());
+        return ServiceResult.buildSuccessResult("查询成功", name, request);
     }
 
 
@@ -195,7 +249,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
 
-    private String getToken(String userId) {
+    private String getToken(Long userId) {
         StringBuilder sb = new StringBuilder(26 + salt.length());
 
         //生成日期部分 8位
@@ -208,8 +262,16 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         //两位随机数 两位
         sb.append(randomNum);
 
-        // 用户id 16位
-        sb.append(userId);
+        // 用户id 19位
+        String str = userId.toString();
+        long i = 19L - str.length();
+        // long 最大19位 如果不够 最高位补0
+        StringBuilder sbTemp = new StringBuilder(19);
+        for (int j = 0; j < i; j++) {
+            sbTemp.append("0");
+        }
+        sbTemp.append(str);
+        sb.append(sbTemp);
         //盐 x位
         sb.append(salt);
 
@@ -217,6 +279,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
 
+    @Override
     public UserDao getDao() {
         return dao;
     }

@@ -1,31 +1,12 @@
 server:
-  port: 8080
-dubbo:
-  registry:
-    client: curator
-    address: zookeeper://192.168.1.101:2181
-  protocol:
-    name: dubbo
-    port: 20880
+  port: 8001
+rpc:
+  provider:
+    port: 20801
   application:
     name: consumer-web
   consumer:
     check: false # 关闭启动时检查依赖服务
-    timeout: 3000
-    group: ${spring.profiles.active}
-  provider:
-    timeout: 3000
-    group: ${spring.profiles.active}
 
-
-spring:
-  devtools:
-    restart:
-      enabled: true  #设置开启热部署
-      additional-paths: src/main/java #重启目录
-      exclude: WEB-INF/**
-    freemarker:
-      cache: false    #页面不加载缓存，修改即时生效
-  output:
-    ansi:
-      enabled: ALWAYS
+log-out:
+  dir-name: web

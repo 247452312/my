@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.MiddleEntity;
+import indi.uhyils.pojo.model.base.BaseMiddleEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,39 +11,39 @@ import java.util.stream.Collectors;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月28日 12时39分
  */
-public class DeptMenuMiddle extends MiddleEntity {
+public class DeptMenuMiddle extends BaseMiddleEntity {
 
-    private String deptId;
-    private String menuId;
+    private Long deptId;
+    private Long menuId;
 
-    public String getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(String deptId) {
-        this.deptId = deptId;
-    }
-
-    public String getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(String menuId) {
-        this.menuId = menuId;
-    }
-
-    public static DeptMenuMiddle build(String deptId, String menuId) {
+    public static DeptMenuMiddle build(Long deptId, Long menuId) {
         DeptMenuMiddle deptMenuMiddle = new DeptMenuMiddle();
         deptMenuMiddle.setDeptId(deptId);
         deptMenuMiddle.setMenuId(menuId);
         return deptMenuMiddle;
     }
 
-    public static List<DeptMenuMiddle> build(String deptId, List<String> menuIds) {
+    public static List<DeptMenuMiddle> build(Long deptId, List<Long> menuIds) {
         return menuIds.stream().map(t -> build(deptId, t)).collect(Collectors.toList());
     }
 
-    public static List<DeptMenuMiddle> build(List<String> deptIds, String menuId) {
+    public static List<DeptMenuMiddle> build(List<Long> deptIds, Long menuId) {
         return deptIds.stream().map(t -> build(t, menuId)).collect(Collectors.toList());
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
+
+    public Long getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(Long menuId) {
+        this.menuId = menuId;
     }
 }

@@ -1,10 +1,15 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.DeptEntity;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.PutDeptsToMenuRequest;
+import indi.uhyils.pojo.request.PutMenusToDeptsRequest;
+import indi.uhyils.pojo.request.PutPowersToDeptRequest;
+import indi.uhyils.pojo.request.base.IdRequest;
+import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
-import indi.uhyils.pojo.response.ServiceResult;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.service.base.DefaultEntityService;
 
 import java.util.ArrayList;
 
@@ -22,7 +27,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * @param request 将权限授予权限集的请求
      * @return
      */
-    ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request);
+    ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) throws Exception;
 
     /**
      * 删除 -> 真删. 不是假删

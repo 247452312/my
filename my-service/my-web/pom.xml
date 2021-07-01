@@ -5,12 +5,11 @@
     <parent>
         <artifactId>my-service</artifactId>
         <groupId>indi.uhyils</groupId>
-        <version>0.0.2</version>
+        <version>0.3.0-my-SNAPSHOT</version>
     </parent>
-    <groupId>indi.uhyils</groupId>
     <artifactId>my-web</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.2</version>
+    <version>0.3.0-my-SNAPSHOT</version>
     <name>my-web</name>
     <description>Demo project for Spring Boot</description>
 
@@ -31,8 +30,17 @@
     <dependencies>
         <dependency>
             <groupId>indi.uhyils</groupId>
-            <artifactId>my-common</artifactId>
+            <artifactId>my-common-base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-mq</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-api-provider-user</artifactId>
@@ -41,6 +49,40 @@
             <groupId>indi.uhyils</groupId>
             <artifactId>my-api-provider-log</artifactId>
         </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-software</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-distribute</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-push</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-mongo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-algorithm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-smart-home</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-api-provider-work-orders</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-hot-spot</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -52,46 +94,44 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-<!--        &lt;!&ndash; 热部署 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--            <scope>true</scope>-->
-<!--        </dependency>-->
-
-        <dependency>
-            <groupId>com.alibaba.boot</groupId>
-            <artifactId>velocity-spring-boot-starter</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo</artifactId>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-rpc-spring-start</artifactId>
+        </dependency>
+
+        <!-- hystrix-core 熔断 -->
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+            <artifactId>hystrix-core</artifactId>
         </dependency>
 
 
+        <!--zookeeper-->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
 
+
         <!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
         <dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
         </dependency>
-
 
 
     </dependencies>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta content="webkit" name="renderer">
+    <!--设置1个小时的缓存-->
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../css/public.css" media="all" rel="stylesheet">
+    <style>
+        .layui-btn-container {
+            height: 100%;
+            width: 100%;
+        }
+
+        html, body, .layuimini-container, .layuimini-main, .layui-btn-container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .layui-btn {
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-btn-container">
+            <div class="layui-row layui-col-space5" id="button-target">
+                <button class="layui-btn layui-btn-radius layui-btn-normal layui-col-md2" type="button">按钮一</button>
+                <button class="layui-btn layui-btn-radius layui-btn-normal layui-col-md2" type="button">按钮二</button>
+                <button class="layui-btn layui-btn-radius layui-btn-normal layui-col-md2" type="button">按钮三</button>
+                <button class="layui-btn layui-btn-radius layui-btn-normal layui-col-md2" type="button">按钮四</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
+<script charset="utf-8" src="/js/jquery.min.js"></script>
+<script charset="utf-8" src="/js/my.js"></script>
+<script>
+    layui.use(['form', 'table', 'layer', 'laypage'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            laypage = layui.laypage,
+            layer = layui.layer;
+        pushRequest("OrderBaseInfoService", "getAllBaseOrderIdAndName", {}, function (data) {
+            let $button = $("#button-target");
+            $button.empty();
+            for (let i = 0; i < data.length; i++) {
+                let newChild = $('<button type="button" class="layui-btn layui-btn-radius layui-btn-normal layui-col-md2" mark="' + data[i].id + '">' + data[i].name + '</button>');
+                newChild.hover(function () {
+                    layer.tips(data[i].desc, $(this), {tips: [1, '#ff6700'], time: 30000});
+                });
+                newChild.click(function () {
+                    let baseOrderId = $(this).attr("mark");
+                    window.location.href = "/page/fillOrder.html?id=" + baseOrderId;
+                });
+                $button.append(newChild);
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

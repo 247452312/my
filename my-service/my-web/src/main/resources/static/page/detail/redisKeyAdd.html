@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta content="webkit" name="renderer">
+    <!--设置1个小时的缓存-->
+    <meta content="max-age=3200" http-equiv="Cache-Control"/>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../css/public.css" media="all" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .layui-transfer-box {
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <!--  父id    -->
+    <input name="db" style="display:none;" type="text" value="">
+    <input name="redisId" style="display:none;" type="text" value="">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">key</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="key" placeholder="请输入key值" type="text"
+                   value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">value</label>
+        <div class="layui-input-block">
+            <input class="layui-input" lay-verify="required" name="value" placeholder="请输入value值" type="text"
+                   value="">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-filter="saveBtn" lay-submit>确认保存</button>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/my.js"></script>
+<script charset="utf-8" src="../../lib/layui-v2.5.5/layui.js"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        $.getUrlParam = function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        };
+        let redisId = $.getUrlParam('redisId');
+        let db = $.getUrlParam('db');
+        let key = $.getUrlParam('key');
+        let func = $.getUrlParam('func');
+
+        $('[name="db"]').attr('value', db);
+        $('[name="redisId"]').attr('value', redisId);
+        if (func == 'edit') { // 这是修改
+            pushRequest("RedisService", "getValueByKey", {
+                data: {
+                    db: db,
+                    key: key,
+                    redisId: redisId,
+                    class: 'indi.uhyils.pojo.model.RedisKeyAndValue'
+                }
+            }, function (data) {
+                $('[name="key"]').attr('value', key);
+                $('[name="value"]').attr('value', data);
+                form.render();
+            })
+        }
+
+
+        var closeAndReload = function () {
+            let e = window.name;
+            layer.alert("关闭窗口");
+            var iframeIndex = parent.layer.getFrameIndex(e);
+            parent.table.render();
+            parent.layer.close(iframeIndex);
+        };
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+                // 关闭弹出层
+                layer.close(index);
+                if (func === 'add') { // 添加key
+                    pushRequest("RedisService", "addKey", {data: data.field}, function (addKeyData) {
+                        if (addKeyData === 1) { // 代表添加成功
+                            layer.msg("添加成功");
+                            closeAndReload();
+                        } else if (addKeyData === 2) { // 代表有重复
+                            layer.open({
+                                type: 0,
+                                title: '修改问题',
+                                content: 'key值已存在',
+                                btn: ['覆盖', '继续修改'],
+                                yes: function (index, layero) {
+                                    pushRequest("RedisService", "addKeyCover", {data: data.field}, function (addKeyCoverData) {
+                                        if (addKeyCoverData === true) {
+                                            layer.msg("添加成功");
+                                        } else {
+                                            layer.msg("添加失败");
+                                        }
+                                        closeAndReload();
+                                    });
+                                },
+                                btn2: function (index, layero) {
+
+                                }
+                            });
+                        }
+                    });
+                } else if (func === 'edit') { // 修改
+                    pushRequest("RedisService", "updateKey", {data: data.field}, function (updateKeyData) {
+                        if (updateKeyData === 1) { // 代表修改成功
+                            parent.layer.msg("修改成功");
+                            closeAndReload();
+                        } else if (updateKeyData === 2) { // 代表无此key
+                            layer.open({
+                                type: 0,
+                                title: '修改问题',
+                                content: '此key不存在',
+                                btn: ['新插入', '取消修改'],
+                                yes: function (index, layero) {
+                                    pushRequest("RedisService", "addKey", {data: data.field}, function (addKeyData) {
+                                        parent.layer.msg("添加成功");
+                                        closeAndReload();
+                                    });
+                                },
+                                btn2: function (index, layero) {
+
+                                }
+                            });
+                        }
+
+                    });
+
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

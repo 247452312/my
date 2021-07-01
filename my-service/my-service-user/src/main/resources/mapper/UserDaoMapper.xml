@@ -2,21 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.UserDao">
-
-
     <sql id="columnList">
         a.id,
-        a.create_date as 'createDate',
-        a.create_user as createUser,
-        a.update_date as 'updateDate',
-        a.update_user as updateUser,
-        a.delete_flag as deleteFlag,
+        a.create_date   as 'createDate',
+        a.create_user   as createUser,
+        a.update_date   as 'updateDate',
+        a.update_user   as updateUser,
+        a.delete_flag   as deleteFlag,
         a.remark,
 
-        a.nick_name as nickName,
+        a.nick_name     as nickName,
+        a.mail,
+        a.phone,
         a.username,
-        a.password,
-        a.role_id as roleId
+        a.head_portrait as headPortrait,
+        a.role_id       as roleId
     </sql>
     <sql id="deptColumnList">
         a.id,
@@ -31,15 +31,15 @@
     </sql>
     <sql id="powerColumnList">
         a.id,
-        a.create_date as 'createDate',
-        a.create_user as createUser,
-        a.update_date as 'updateDate',
-        a.update_user as updateUser,
-        a.delete_flag as deleteFlag,
+        a.create_date    as 'createDate',
+        a.create_user    as createUser,
+        a.update_date    as 'updateDate',
+        a.update_user    as updateUser,
+        a.delete_flag    as deleteFlag,
         a.remark,
 
         a.interface_name as interfaceName,
-        a.method_name as methodName
+        a.method_name    as methodName
     </sql>
     <sql id="roleColumnList">
         a.id,
@@ -64,7 +64,7 @@
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
         <if test="page != null and page != ''">
-            limit ${(page-1) * size},${page * size}
+            limit ${(page-1) * size},${size}
         </if>
     </select>
 
@@ -98,7 +98,7 @@
         select count(*)
         from sys_user a
         where delete_flag = 0
-        <foreach item="item" index="index" collection="list">
+        <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
     </select>
@@ -110,10 +110,23 @@
     </select>
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.UserEntity">
-        insert sys_user(id, nick_name, username, password,role_id, create_date, create_user, update_date, update_user,
-                    delete_flag, remark)
-        values (#{id}, #{nickName}, #{userName},#{password},#{roleId},#{createDate}, #{createUser}, #{updateDate},
-                #{updateUser}, 0, #{remark})
+        insert sys_user(id, nick_name, mail, phone, head_portrait, username, password, role_id, create_date,
+        create_user, update_date, update_user,
+        delete_flag, remark)
+        values (#{id},
+        #{nickName},
+        #{mail},
+        #{phone},
+        #{headPortrait},
+        #{userName},
+        #{password},
+        #{roleId},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{remark})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.UserEntity">
@@ -129,13 +142,22 @@
         <if test="password != null and password != ''">
             ,password = #{password}
         </if>
-        <if test="roleId != null and roleId != ''">
+        <if test="mail != null">
+            ,mail = #{mail}
+        </if>
+        <if test="phone != null">
+            ,phone = #{phone}
+        </if>
+        <if test="headPortrait != null and headPortrait != ''">
+            ,head_portrait = #{headPortrait}
+        </if>
+        <if test="roleId != null">
             ,role_id = #{roleId}
         </if>
         <if test="deleteFlag != null and deleteFlag != ''">
             ,delete_flag = #{deleteFlag}
         </if>
-        <if test="remark != null and remark != ''">
+        <if test="remark != null">
             ,remark = #{remark}
         </if>
         where id = #{id}
@@ -167,5 +189,18 @@
         <include refid="columnList"/>
         from sys_user a
         where delete_flag = 0
+    </select>
+
+    <select id="checkUserPassword" resultType="java.lang.Integer">
+        select count(*)
+        from sys_user
+        where delete_flag = 0
+        and passowrd = #{passowrd}
+        and id = #{id}
+    </select>
+    <select id="getNameById" resultType="java.lang.String">
+        select nick_name
+        from sys_user
+        where id = #{id}
     </select>
 </mapper>

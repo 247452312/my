@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.ContentDao">
-
-
     <sql id="columnList">
         a.id,
         a.create_date as 'createDate',
@@ -56,44 +54,50 @@
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
         <if test="page != null and page != ''">
-            limit ${(page-1) * size},${page * size}
+            limit ${(page-1) * size},${size}
         </if>
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.ContentEntity">
         insert sys_content(id,
-                           create_date,
-                           create_user,
-                           update_date,
-                           update_user,
-                           delete_flag,
-                           name,
-                           title1,
-                           title2,
-                           title3,
-                           title4,
-                           title5,
-                           title6,
-                           var1,
-                           var2,
-                           var3,
-                           var4,
-                           var5,
-                           var6)
-        values (#{id}, #{createDate}, #{createUser}, #{updateDate}, #{updateUser}, 0, #{name},
-                #{title1},
-                #{title2},
-                #{title3},
-                #{title4},
-                #{title5},
-                #{title6},
-                #{var1},
-                #{var2},
-                #{var3},
-                #{var4},
-                #{var5},
-                #{var6})
+        create_date,
+        create_user,
+        update_date,
+        update_user,
+        delete_flag,
+        name,
+        title1,
+        title2,
+        title3,
+        title4,
+        title5,
+        title6,
+        var1,
+        var2,
+        var3,
+        var4,
+        var5,
+        var6)
+        values (#{id},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser},
+        0,
+        #{name},
+        #{title1},
+        #{title2},
+        #{title3},
+        #{title4},
+        #{title5},
+        #{title6},
+        #{var1},
+        #{var2},
+        #{var3},
+        #{var4},
+        #{var5},
+        #{var6})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.ContentEntity">
@@ -104,45 +108,45 @@
             ,name = #{name}
         </if>
 
-        <if test="title1 != null and title1 != ''">
+        <if test="title1 != null">
             ,title1 = #{title1}
         </if>
-        <if test="var1 != null and var1 != ''">
+        <if test="var1 != null">
             ,var1 = #{var1}
         </if>
 
-        <if test="title2 != null and title2 != ''">
+        <if test="title2 != null">
             ,title2 = #{title2}
         </if>
-        <if test="var2 != null and var2 != ''">
+        <if test="var2 != null">
             ,var2 = #{var2}
         </if>
 
-        <if test="title3 != null and title3 != ''">
+        <if test="title3 != null">
             ,title3 = #{title3}
         </if>
-        <if test="var3 != null and var3 != ''">
+        <if test="var3 != null">
             ,var3 = #{var3}
         </if>
 
-        <if test="title4 != null and title4 != ''">
+        <if test="title4 != null">
             ,title4 = #{title4}
         </if>
-        <if test="var4 != null and var4 != ''">
+        <if test="var4 != null">
             ,var4 = #{var4}
         </if>
 
-        <if test="title5 != null and title5 != ''">
+        <if test="title5 != null">
             ,title5 = #{title5}
         </if>
-        <if test="var5 != null and var5 != ''">
+        <if test="var5 != null">
             ,var5 = #{var5}
         </if>
 
-        <if test="title6 != null and title6 != ''">
+        <if test="title6 != null">
             ,title6 = #{title6}
         </if>
-        <if test="var6 != null and var6 != ''">
+        <if test="var6 != null">
             ,var6 = #{var6}
         </if>
 
@@ -162,7 +166,7 @@
         select count(*)
         from sys_content a
         where delete_flag = 0
-        <foreach item="item" index="index" collection="list">
+        <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
     </select>
@@ -180,5 +184,4 @@
         where delete_flag = 0
         and name = #{name}
     </select>
-
 </mapper>

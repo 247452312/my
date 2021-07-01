@@ -13,7 +13,7 @@ public class GetAllPowerWithHaveMarkResponse implements Serializable {
     /**
      * 权限id
      */
-    private String powerId;
+    private Long powerId;
 
     /**
      * 接口名称
@@ -30,11 +30,11 @@ public class GetAllPowerWithHaveMarkResponse implements Serializable {
     private Boolean mark;
 
 
-    public String getPowerId() {
+    public Long getPowerId() {
         return powerId;
     }
 
-    public void setPowerId(String powerId) {
+    public void setPowerId(Long powerId) {
         this.powerId = powerId;
     }
 
