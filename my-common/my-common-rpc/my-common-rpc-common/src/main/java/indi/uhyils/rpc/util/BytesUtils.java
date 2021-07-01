@@ -1,6 +1,5 @@
 package indi.uhyils.rpc.util;
 
-import indi.uhyils.util.LogUtil;
 
 /**
  * @author uhyils <247452312@qq.com>

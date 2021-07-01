@@ -1,6 +1,5 @@
 package indi.uhyils.rpc.util;
 
-import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
