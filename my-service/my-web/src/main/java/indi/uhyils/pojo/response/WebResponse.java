@@ -45,7 +45,7 @@ public class WebResponse<T extends Serializable> implements Serializable {
 
             List args = new ArrayList();
             args.add(DefaultRequestBuildUtil.getAdminDefaultRequest());
-            ServiceResult<JSONObject> serviceResult = RpcApiUtil.rpcApiTool(Content.VERIFICATION_CODE_INTERFACE, Content.GET_VERIFICATION_CODE_METHOD, args, new DefaultRequest());
+            ServiceResult<JSONObject> serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(Content.VERIFICATION_CODE_INTERFACE, Content.GET_VERIFICATION_CODE_METHOD, args, new DefaultRequest());
             JSONObject verification = serviceResult.getData();
             VerificationGetResponse verificationGetResponse = verification.toJavaObject(VerificationGetResponse.class);
             serializableWebResponse.setData(verificationGetResponse);

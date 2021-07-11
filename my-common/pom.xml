@@ -16,7 +16,6 @@
         <module>my-common-inside-package</module>
         <module>my-common-data</module>
         <module>my-common-hot-spot</module>
-        <module>my-common-rpc</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -77,7 +77,7 @@ public class PushServiceImpl implements PushService {
             Long userId = apiSubscribeEntity.getUserId();
             /* 获取user */
             IdRequest build = IdRequest.build(request, userId);
-            ServiceResult serviceResult = RpcApiUtil.rpcApiTool("UserService", "getById", build);
+            ServiceResult serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool("UserService", "getById", build);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 return serviceResult;
             }
@@ -102,7 +102,7 @@ public class PushServiceImpl implements PushService {
 
     @Override
     public ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request) throws Exception {
-        ServiceResult serviceResult = RpcApiUtil.rpcApiTool("UserService", "getById", IdRequest.build(request, request.getUserId()));
+        ServiceResult serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool("UserService", "getById", IdRequest.build(request, request.getUserId()));
         if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             return serviceResult;
         }

@@ -69,9 +69,10 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
         <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-common-rpc-spring-start</artifactId>
+            <groupId>io.github.247452312</groupId>
+            <artifactId>my-rpc-spring-start</artifactId>
         </dependency>
 
         <!--zookeeper-->

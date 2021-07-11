@@ -23,6 +23,6 @@ public class DistributeRpcApiUtil {
         defaultRequest.setToken(request.getToken());
         defaultRequest.setRequestLink(request.getRequestLink());
         args.add(defaultRequest);
-        return RpcApiUtil.rpcApiTool(interfaceName, methodName, args, request);
+        return (ServiceResult)RpcApiUtil.rpcApiTool(interfaceName, methodName, args, request);
     }
 }

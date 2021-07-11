@@ -86,6 +86,7 @@
         <hystrix.version>1.5.18</hystrix.version>
         <es.version>7.9.1</es.version>
         <netty.version>4.1.54.Final</netty.version>
+        <my.rpc.version>1.0.0.my</my.rpc.version>
 
     </properties>
 
@@ -435,8 +436,12 @@
                 <artifactId>netty-all</artifactId>
                 <version>${netty.version}</version>
             </dependency>
-
-
+            <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
+            <dependency>
+                <groupId>io.github.247452312</groupId>
+                <artifactId>my-rpc-spring-start</artifactId>
+                <version>${my.rpc.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

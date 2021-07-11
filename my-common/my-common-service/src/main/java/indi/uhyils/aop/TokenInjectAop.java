@@ -154,6 +154,6 @@ public class TokenInjectAop {
         build.setUser(userEntity);
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        return RpcApiUtil.rpcApiTool("PowerService", "checkUserHavePower", args, request);
+        return (ServiceResult) RpcApiUtil.rpcApiTool("PowerService", "checkUserHavePower", args, request);
     }
 }

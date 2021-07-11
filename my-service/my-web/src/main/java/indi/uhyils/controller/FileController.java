@@ -50,7 +50,7 @@ public class FileController {
             requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
             requestLink.put("data", "页面请求");
             args.put("requestLink", requestLink);
-            serviceResult = RpcApiUtil.rpcApiTool(INTERFACE, METHOD_NAME, args);
+            serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, METHOD_NAME, args);
             link = serviceResult.getRequestLink();
             LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
@@ -91,7 +91,7 @@ public class FileController {
             action.getArgs().put("token", action.getToken());
             List<Object> list = new ArrayList();
             list.add(action.getArgs());
-            serviceResult = RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultRequest());
+            serviceResult = (ServiceResult)RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultRequest());
             link = serviceResult.getRequestLink();
             LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {

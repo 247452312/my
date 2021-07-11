@@ -7,6 +7,8 @@ import indi.uhyils.pojo.response.HotSpotResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.exchange.pojo.RpcData;
+import indi.uhyils.rpc.exchange.pojo.demo.response.content.RpcNormalResponseContent;
 import indi.uhyils.rpc.netty.spi.step.template.ConsumerResponseObjectExtension;
 import indi.uhyils.util.ObjectByteUtil;
 import indi.uhyils.util.SpringUtil;
@@ -27,10 +29,12 @@ public class RpcHotSpotExtension implements ConsumerResponseObjectExtension {
      * 如果返回值是缓存,那么应该获取真实的数据 然后返回
      *
      * @param serviceResult
-     * @param json
+     * @param rpcData
      * @return
      */
-    private static ServiceResult getRealServiceResult(ServiceResult serviceResult, String json) {
+    private static ServiceResult getRealServiceResult(ServiceResult serviceResult, RpcData rpcData) {
+        RpcNormalResponseContent content = (RpcNormalResponseContent) rpcData.content();
+        String json = content.getResponseContent();
         // 如果返回值是缓存
         if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS_REDIS.getText())) {
             JSONObject jsonObject = JSON.parseObject(json);
@@ -47,7 +51,7 @@ public class RpcHotSpotExtension implements ConsumerResponseObjectExtension {
     }
 
     @Override
-    public Object doFilter(Object obj, String json) {
-        return getRealServiceResult((ServiceResult) obj, json);
+    public Object doFilter(Object obj, RpcData rpcData) {
+        return getRealServiceResult((ServiceResult) obj, rpcData);
     }
 }

@@ -320,7 +320,7 @@ public class OrderServiceImpl implements OrderService {
         orderApply.preInsert(request);
         orderApplyDao.insert(orderApply);
         /*3.通知审批人*/
-        ServiceResult<String> userName = RpcApiUtil.rpcApiTool("UserService", "getNameById", IdRequest.build(request, request.getRecommendUserId()));
+        ServiceResult<String> userName = (ServiceResult) RpcApiUtil.rpcApiTool("UserService", "getNameById", IdRequest.build(request, request.getRecommendUserId()));
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, order.getMonitorUserId(), PushTypeEnum.EMAIL.getCode(), "工单节点转交申请", order.getId() + "工单转交撤回,请尽快审批,转交目标人:" + userName.getData().toString());
         RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         return ServiceResult.buildSuccessResult(true, request);
@@ -407,7 +407,7 @@ public class OrderServiceImpl implements OrderService {
         OrderInfoEntity byId = orderInfoDao.getById(request.getOrderId());
         Long monitorUserId = byId.getMonitorUserId();
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, monitorUserId, PushTypeEnum.EMAIL.getCode(), "工单撤回申请", request.getOrderId() + "工单申请撤回,请尽快审批,工单优先度:" + OrderPriorityEnum.parse(byId.getPriority()).getName());
-        ServiceResult serviceResult = RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
+        ServiceResult serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             return Boolean.TRUE;
         }

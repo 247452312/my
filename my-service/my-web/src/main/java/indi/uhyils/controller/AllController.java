@@ -78,7 +78,7 @@ public class AllController {
         // 发送前处理
         dealActionBeforeCall(action);
         try {
-            serviceResult = RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+            serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
 
             /* 打印链路跟踪 */
             link = serviceResult.getRequestLink();
