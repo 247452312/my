@@ -18,7 +18,7 @@ import indi.uhyils.pojo.request.PushMsgToSomeoneRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
-import indi.uhyils.rpc.spring.util.RpcApiUtil;
+import indi.uhyils.util.RpcApiUtil;
 import indi.uhyils.service.PushService;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.PushUtils;

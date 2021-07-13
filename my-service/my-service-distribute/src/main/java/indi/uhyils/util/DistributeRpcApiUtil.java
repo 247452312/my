@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.rpc.spring.util.RpcApiUtil;
+import indi.uhyils.util.RpcApiUtil;
 
 import java.util.ArrayList;
 

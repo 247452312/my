@@ -18,13 +18,18 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.DeptService;
 import indi.uhyils.util.LogUtil;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Resource;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import sun.reflect.generics.repository.ClassRepository;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -33,11 +38,25 @@ import java.util.List;
 @RpcService
 @ReadWriteMark(tables = {"sys_dept"})
 public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implements DeptService {
+
     @Resource
     private DeptDao dao;
 
     @Resource
     private MenuDao menuDao;
+
+    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method getAllMenuWithHaveMark = DeptServiceImpl.class.getDeclaredMethod("getAllMenuWithHaveMark",IdRequest.class);
+        Type genericReturnType = getAllMenuWithHaveMark.getGenericReturnType();
+        System.out.println(genericReturnType.getTypeName());
+        List<DeptServiceImpl> list = new ArrayList<>();
+        ParameterizedType genericSuperclass = (ParameterizedType)list.getClass().getGenericSuperclass();
+        Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
+        for (Type actualTypeArgument : actualTypeArguments) {
+            System.out.println(actualTypeArgument.getTypeName());
+        }
+
+    }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
@@ -135,7 +154,6 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
         return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, request);
     }
 
-
     @Override
     public DeptDao getDao() {
         return dao;
@@ -145,3 +163,6 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
         this.dao = dao;
     }
 }
+
+
+

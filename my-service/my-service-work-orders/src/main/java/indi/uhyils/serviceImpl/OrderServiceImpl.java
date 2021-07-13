@@ -19,7 +19,7 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.temp.CheckNodeFieldResultTemporary;
 import indi.uhyils.pojo.temp.InitApiRequestTemporary;
 import indi.uhyils.rpc.annotation.RpcService;
-import indi.uhyils.rpc.spring.util.RpcApiUtil;
+import indi.uhyils.util.RpcApiUtil;
 import indi.uhyils.service.OrderService;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.OrderBuilder;

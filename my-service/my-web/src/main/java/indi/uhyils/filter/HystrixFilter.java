@@ -3,6 +3,7 @@ package indi.uhyils.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.rpc.annotation.RpcSpi;
@@ -17,6 +18,7 @@ import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,9 +44,8 @@ public class HystrixFilter implements ConsumerFilter {
      * @param rpcData
      */
     private void addUnique(RpcData rpcData) throws InterruptedException {
-        JSONArray argsMap = JSON.parseArray(rpcData.content().getLine(RpcRequestContentEnum.ARG_MAP.getLine()));
-        JSONObject o = (JSONObject) argsMap.get(0);
-        DefaultRequest defaultRequest = o.toJavaObject(DefaultRequest.class);
+        ArrayList list = JSON.parseObject(rpcData.content().getLine(RpcRequestContentEnum.ARG_MAP.getLine()), ArrayList.class, Feature.SupportAutoType);
+        DefaultRequest defaultRequest = ((JSONObject) list.get(0)).toJavaObject(DefaultRequest.class);
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         try {
             defaultRequest.setUnique(bean.newId());

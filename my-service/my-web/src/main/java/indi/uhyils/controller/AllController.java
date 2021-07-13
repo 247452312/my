@@ -10,7 +10,7 @@ import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
-import indi.uhyils.rpc.spring.util.RpcApiUtil;
+import indi.uhyils.util.RpcApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +78,8 @@ public class AllController {
         // 发送前处理
         dealActionBeforeCall(action);
         try {
-            serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+            JSONObject o = (JSONObject) RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+            serviceResult = JSON.toJavaObject(o, ServiceResult.class);
 
             /* 打印链路跟踪 */
             link = serviceResult.getRequestLink();

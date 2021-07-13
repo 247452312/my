@@ -7,7 +7,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.rpc.spring.util.RpcApiUtil;
+import indi.uhyils.util.RpcApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import org.apache.tomcat.util.codec.binary.Base64;
