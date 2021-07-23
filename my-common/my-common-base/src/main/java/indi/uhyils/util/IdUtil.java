@@ -2,10 +2,9 @@ package indi.uhyils.util;
 
 import indi.uhyils.content.Content;
 import indi.uhyils.exception.IdGenerationException;
+import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 本项目id生产规则
@@ -19,7 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class IdUtil {
 
     // todo 这个code在RPC初始化时需要从nacos中获取
-    @Value("${id.organization.code:1}")
+    @Value("${id.organization.code:-1}")
     private Long code;
 
     /**
@@ -50,6 +49,10 @@ public class IdUtil {
 
         long l = timeResult | sqResult | distributedResult;
         LogUtil.info(Long.toString(l));
+    }
+
+    public void setCode(Long code) {
+        this.code = code;
     }
 
     public long newId() throws IdGenerationException, InterruptedException {

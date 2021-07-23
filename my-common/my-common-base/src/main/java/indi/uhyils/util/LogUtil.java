@@ -6,11 +6,10 @@ import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -22,6 +21,11 @@ public class LogUtil {
      * 日志文件缓存地
      */
     private static Map<String, Logger> loggerMap = new HashMap<>();
+
+    /**
+     * 链路
+     */
+    private static Logger linkMain = LoggerFactory.getLogger("link_log");
 
     public static boolean isDebugEnabled(Object obj) {
         if (obj == null) {
@@ -62,7 +66,6 @@ public class LogUtil {
         info(obj.getClass(), e);
     }
 
-
     public static void debug(Class<?> cls, String msg) {
         writeLog(cls.getName(), msg, null, LogTypeEnum.DEBUG);
     }
@@ -95,7 +98,6 @@ public class LogUtil {
         debug(obj.getClass(), e);
     }
 
-
     public static void warn(Class<?> cls, String msg) {
         writeLog(cls.getName(), msg, null, LogTypeEnum.WARN);
     }
@@ -115,7 +117,6 @@ public class LogUtil {
     public static void warn(Object obj, Throwable e) {
         warn(obj.getClass(), e);
     }
-
 
     public static void error(Class<?> cls, String msg) {
         writeLog(cls.getName(), msg, null, LogTypeEnum.ERROR);
@@ -153,6 +154,14 @@ public class LogUtil {
         error(obj.getClass(), e);
     }
 
+    /**
+     * 链路跟踪日志打印
+     *
+     * @param msg
+     */
+    public static void link(String msg) {
+        linkMain.info(msg);
+    }
 
     /**
      * 根据类型输出不同级别的对应类的日志
@@ -164,16 +173,16 @@ public class LogUtil {
     private static void writeLog(String className, String msg, Throwable throwable, LogTypeEnum logTypeEnum) {
         if (loggerMap.containsKey(className)) {
             Logger logger = loggerMap.get(className);
-            choiseLogType(msg, throwable, logTypeEnum, logger);
+            choiceLogType(msg, throwable, logTypeEnum, logger);
             return;
         }
         Logger logger = LoggerFactory.getLogger(className);
         loggerMap.put(className, logger);
-        choiseLogType(msg, throwable, logTypeEnum, logger);
+        choiceLogType(msg, throwable, logTypeEnum, logger);
     }
 
 
-    private static void choiseLogType(String msg, Throwable throwable, LogTypeEnum logTypeEnum, Logger logger) {
+    private static void choiceLogType(String msg, Throwable throwable, LogTypeEnum logTypeEnum, Logger logger) {
         switch (logTypeEnum) {
             case INFO:
                 logger.info(msg, throwable);

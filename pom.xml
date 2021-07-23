@@ -86,7 +86,7 @@
         <hystrix.version>1.5.18</hystrix.version>
         <es.version>7.9.1</es.version>
         <netty.version>4.1.54.Final</netty.version>
-        <my.rpc.version>1.0.2.my</my.rpc.version>
+        <my.rpc.version>1.0.2.my-SNAPSHOT</my.rpc.version>
 
     </properties>
 

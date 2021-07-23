@@ -50,6 +50,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
+        <dependency>
+            <groupId>io.github.247452312</groupId>
+            <artifactId>my-rpc-spring-start</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
