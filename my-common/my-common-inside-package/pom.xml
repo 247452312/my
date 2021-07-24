@@ -31,6 +31,11 @@
       </dependency>
       <dependency>
         <groupId>indi.uhyils</groupId>
+        <artifactId>my-common-log</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>indi.uhyils</groupId>
         <artifactId>my-common-data-redis</artifactId>
         <version>${project.version}</version>
       </dependency>

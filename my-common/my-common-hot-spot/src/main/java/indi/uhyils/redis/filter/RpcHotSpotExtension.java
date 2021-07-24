@@ -7,8 +7,8 @@ import indi.uhyils.pojo.response.HotSpotResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.rpc.annotation.RpcSpi;
-import indi.uhyils.rpc.exchange.pojo.RpcData;
-import indi.uhyils.rpc.exchange.pojo.demo.response.content.RpcNormalResponseContent;
+import indi.uhyils.rpc.exchange.pojo.content.impl.RpcResponseContentImpl;
+import indi.uhyils.rpc.exchange.pojo.data.RpcData;
 import indi.uhyils.rpc.netty.spi.step.template.ConsumerResponseObjectExtension;
 import indi.uhyils.util.ObjectByteUtil;
 import indi.uhyils.util.SpringUtil;
@@ -33,7 +33,7 @@ public class RpcHotSpotExtension implements ConsumerResponseObjectExtension {
      * @return
      */
     private static ServiceResult getRealServiceResult(ServiceResult serviceResult, RpcData rpcData) {
-        RpcNormalResponseContent content = (RpcNormalResponseContent) rpcData.content();
+        RpcResponseContentImpl content = (RpcResponseContentImpl) rpcData.content();
         String json = content.getResponseContent();
         // 如果返回值是缓存
         if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS_REDIS.getText())) {

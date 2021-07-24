@@ -25,8 +25,8 @@ public class RpcLogFilter implements ConsumerFilter {
     @Override
     public RpcResult invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
         long startTime = System.currentTimeMillis();
-        RpcData requestRpcData = (RpcData) invokerContext.get(FilterContextTypeEnum.REQUEST_RPC_DATA.getKey());
         RpcResult invoke = invoker.invoke(invokerContext);
+        RpcData requestRpcData = (RpcData) invokerContext.get(FilterContextTypeEnum.REQUEST_RPC_DATA.getKey());
         long timeConsuming = System.currentTimeMillis() - startTime;
         RpcContent content = requestRpcData.content();
         MyTraceIdContext
