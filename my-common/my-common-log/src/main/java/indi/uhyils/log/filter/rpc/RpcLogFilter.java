@@ -7,11 +7,9 @@ import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.enum_.RpcRequestContentEnum;
 import indi.uhyils.rpc.exchange.pojo.content.RpcContent;
 import indi.uhyils.rpc.exchange.pojo.data.RpcData;
-import indi.uhyils.rpc.netty.enums.FilterContextTypeEnum;
 import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.filter.filter.ConsumerFilter;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
-import indi.uhyils.rpc.netty.spi.filter.invoker.RpcResult;
 
 
 /**
@@ -23,12 +21,12 @@ import indi.uhyils.rpc.netty.spi.filter.invoker.RpcResult;
 public class RpcLogFilter implements ConsumerFilter {
 
     @Override
-    public RpcResult invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
+    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
         long startTime = System.currentTimeMillis();
-        RpcResult invoke = invoker.invoke(invokerContext);
-        RpcData requestRpcData = (RpcData) invokerContext.get(FilterContextTypeEnum.REQUEST_RPC_DATA.getKey());
+        RpcData invoke = invoker.invoke(invokerContext);
+        RpcData requestData = invokerContext.getRequestData();
         long timeConsuming = System.currentTimeMillis() - startTime;
-        RpcContent content = requestRpcData.content();
+        RpcContent content = requestData.content();
         MyTraceIdContext
             .printLogInfo(LogTypeEnum.RPC, startTime, timeConsuming, content.getLine(RpcRequestContentEnum.SERVICE_NAME.getLine()), content.getLine(RpcRequestContentEnum.METHOD_NAME.getLine()));
         return invoke;

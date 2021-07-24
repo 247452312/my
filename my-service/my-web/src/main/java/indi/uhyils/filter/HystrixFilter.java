@@ -13,7 +13,6 @@ import indi.uhyils.rpc.exchange.pojo.data.RpcData;
 import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.filter.filter.ConsumerFilter;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
-import indi.uhyils.rpc.netty.spi.filter.invoker.RpcResult;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
@@ -32,8 +31,8 @@ import java.util.List;
 public class HystrixFilter implements ConsumerFilter {
 
     @Override
-    public RpcResult invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
-        addUnique(invokerContext.getRpcResult().get());
+    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
+        addUnique(invokerContext.getRequestData());
         DubboHystrixCommand command = new DubboHystrixCommand(invoker, invokerContext);
         return command.execute();
     }
