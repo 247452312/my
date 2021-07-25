@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -18,14 +20,16 @@ import org.slf4j.LoggerFactory;
 public class LogUtil {
 
     /**
+     * 链路
+     */
+    private static final Logger LINK_LOG = LoggerFactory.getLogger("link_log");
+
+    private static final Marker LINK_MARKER = MarkerFactory.getMarker("LINK");
+
+    /**
      * 日志文件缓存地
      */
     private static Map<String, Logger> loggerMap = new HashMap<>();
-
-    /**
-     * 链路
-     */
-    private static Logger linkMain = LoggerFactory.getLogger("link_log");
 
     public static boolean isDebugEnabled(Object obj) {
         if (obj == null) {
@@ -160,7 +164,7 @@ public class LogUtil {
      * @param msg
      */
     public static void link(String msg) {
-        linkMain.info(msg);
+        LINK_LOG.error(LINK_MARKER, msg);
     }
 
     /**
