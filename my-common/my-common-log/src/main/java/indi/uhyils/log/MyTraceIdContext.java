@@ -19,6 +19,11 @@ public class MyTraceIdContext {
 
 
     /**
+     * rpc_trace 信息
+     */
+    public static final String RPC_HEADER_TRACE_INFO = "rpcTraceInfo";
+
+    /**
      * 保存traceId的地方
      */
     private static final ThreadLocal<Long> thraceId = new ThreadLocal<>();
@@ -61,7 +66,7 @@ public class MyTraceIdContext {
      *
      * @return
      */
-    public static String getLogInfo(LogTypeEnum logTypeEnum, long startTime, long timeConsuming, String... otherInfo) {
+    public static String getLogInfo(String rpcStr, LogTypeEnum logTypeEnum, long startTime, long timeConsuming, String... otherInfo) {
         StringBuilder sb = new StringBuilder();
         sb.append(getThraceId());
         sb.append(PIPE_SYMBOL);
@@ -69,7 +74,7 @@ public class MyTraceIdContext {
         sb.append(PIPE_SYMBOL);
         sb.append(logTypeEnum.getCode());
         sb.append(PIPE_SYMBOL);
-        sb.append(getAndAddRpcId());
+        sb.append(rpcStr);
         sb.append(PIPE_SYMBOL);
         sb.append(projectName);
         sb.append(PIPE_SYMBOL);
@@ -96,8 +101,8 @@ public class MyTraceIdContext {
      *
      * @return
      */
-    public static void printLogInfo(LogTypeEnum logTypeEnum, long startTime, long timeConsuming, String... otherInfo) {
-        String logInfo = getLogInfo(logTypeEnum, startTime, timeConsuming, otherInfo);
+    public static void printLogInfo(String rpcStr, LogTypeEnum logTypeEnum, long startTime, long timeConsuming, String... otherInfo) {
+        String logInfo = getLogInfo(rpcStr, logTypeEnum, startTime, timeConsuming, otherInfo);
         LogUtil.link(logInfo);
     }
 
@@ -154,14 +159,29 @@ public class MyTraceIdContext {
         }
         List<Integer> lastRpcIds = rpcId.get();
         int rpcId = thisRpcId.get().getAndAdd(1);
+        StringBuilder sb = mergeRpcId(lastRpcIds, rpcId);
+        return sb.toString();
+    }
+
+
+    /**
+     * rpcId
+     *
+     * @param lastRpcIds 上一层rpcId
+     * @param rpcId      这一层的rpcId
+     *
+     * @return
+     */
+    private static StringBuilder mergeRpcId(List<Integer> lastRpcIds, int rpcId) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < lastRpcIds.size(); i++) {
             sb.append(lastRpcIds.get(i));
             sb.append(".");
         }
         sb.append(rpcId);
-        return sb.toString();
+        return sb;
     }
+
 
     /**
      * 设置rpcId
@@ -177,5 +197,37 @@ public class MyTraceIdContext {
         thraceId.remove();
         rpcId.remove();
         thisRpcId.remove();
+    }
+
+    /**
+     * 获取下一个rpc应该使用的rpcId
+     *
+     * @return
+     */
+    public static List<Integer> getNextRpcIds() {
+        List<Integer> nestRpcIds = new ArrayList<>(rpcId.get());
+        AtomicInteger atomicInteger = getThisRpcId();
+        nestRpcIds.add(atomicInteger.get());
+        return nestRpcIds;
+    }
+
+    private static AtomicInteger getThisRpcId() {
+        AtomicInteger atomicInteger = thisRpcId.get();
+        if (atomicInteger == null) {
+            synchronized (MyTraceIdContext.class) {
+                if (atomicInteger == null) {
+                    atomicInteger = new AtomicInteger(1);
+                }
+            }
+        }
+        return atomicInteger;
+    }
+
+    public static void init() {
+        getThisRpcId();
+        ArrayList<Integer> lastRpcIds = new ArrayList<>();
+        lastRpcIds.add(1);
+        setRpcId(lastRpcIds);
+        getThisRpcId();
     }
 }

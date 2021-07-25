@@ -1,1 +1,1 @@
-rpcLogFilter=indi.uhyils.log.filter.rpc.RpcLogFilter
+rpcLogFilter=indi.uhyils.log.filter.rpc.RpcSendLogFilter
