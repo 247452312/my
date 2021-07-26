@@ -1,5 +1,6 @@
 package indi.uhyils.log;
 
+import com.alibaba.ttl.TransmittableThreadLocal;
 import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.LogUtil;
@@ -26,17 +27,17 @@ public class MyTraceIdContext {
     /**
      * 保存traceId的地方
      */
-    private static final ThreadLocal<Long> thraceId = new ThreadLocal<>();
+    private static final ThreadLocal<Long> thraceId = new TransmittableThreadLocal<>();
 
     /**
      * 保存上一次调用链顺序的地方
      */
-    private static final ThreadLocal<List<Integer>> rpcId = new ThreadLocal<>();
+    private static final ThreadLocal<List<Integer>> rpcId = new TransmittableThreadLocal<>();
 
     /**
      * 这一次调用的RPCid
      */
-    private static final ThreadLocal<AtomicInteger> thisRpcId = new ThreadLocal<>();
+    private static final ThreadLocal<AtomicInteger> thisRpcId = new TransmittableThreadLocal<>();
 
     /**
      * 分隔符

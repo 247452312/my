@@ -7,41 +7,13 @@
 
     <groupId>indi.uhyils</groupId>
     <artifactId>my</artifactId>
-    <packaging>pom</packaging>
     <version>0.3.0-my-SNAPSHOT</version>
     <name>my</name>
-
-    <scm>
-        <connection>scm:git:git@github.com:247452312/my.git</connection>
-        <developerConnection>scm:git:git@github.com:247452312/my.git</developerConnection>
-        <url>https://github.com/247452312/my</url>
-    </scm>
-
-    <!--项目开发者列表-->
-    <developers>
-        <!--某个项目开发者的信息-->
-        <developer>
-            <!--SCM里项目开发者的唯一标识符-->
-            <id>uhyils</id>
-            <!--项目开发者的全名-->
-            <name>uhyils</name>
-            <!--项目开发者的email-->
-            <email>uhyils@qq.com</email>
-
-            <!--项目开发者所在时区， -11到12范围内的整数。-->
-            <timezone>8</timezone>
-        </developer>
-    </developers>
+    <packaging>pom</packaging>
 
     <url>https://github.com/247452312/my</url>
 
-    <modules>
-        <module>my-api</module>
-        <module>my-service</module>
-        <module>my-common</module>
-    </modules>
-
-
+    <!--项目开发者列表-->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -86,52 +58,10 @@
         <hystrix.version>1.5.18</hystrix.version>
         <es.version>7.9.1</es.version>
         <netty.version>4.1.54.Final</netty.version>
-        <slf4j-api.version>2.0.0-alpha2</slf4j-api.version>
+        <transmittable.threalLocal.version>2.12.1</transmittable.threalLocal.version>
         <my.rpc.version>1.0.3.my-SNAPSHOT</my.rpc.version>
 
-
     </properties>
-
-    <!-- profile配置 -->
-    <profiles>
-        <profile>
-            <!-- 本地开发环境 -->
-            <id>dev</id>
-            <!-- 定义该配置的属性 -->
-            <properties>
-                <profiles.active>dev</profiles.active>
-            </properties>
-            <activation>
-                <!-- 设置默认激活这个配置 -->
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <!-- 测试环境 -->
-            <id>test</id>
-            <!-- 定义该配置的属性 -->
-            <properties>
-                <profiles.active>test</profiles.active>
-            </properties>
-        </profile>
-        <profile>
-            <!-- 准生产环境 -->
-            <id>release</id>
-            <!-- 定义该配置的属性 -->
-            <properties>
-                <profiles.active>release</profiles.active>
-            </properties>
-        </profile>
-        <profile>
-            <!-- 生产环境 -->
-            <id>prod</id>
-            <!-- 定义该配置的属性 -->
-            <properties>
-                <profiles.active>prod</profiles.active>
-            </properties>
-        </profile>
-    </profiles>
-
 
     <dependencyManagement>
         <dependencies>
@@ -411,6 +341,12 @@
                 <version>${tencentcloud.version}</version>
             </dependency>
 
+            <!--阿里可传递的ThreadLocal-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable.threalLocal.version}</version>
+            </dependency>
 
             <!-- poi -->
             <dependency>
@@ -468,6 +404,75 @@
             </plugins>
         </pluginManagement>
     </build>
+
+
+    <scm>
+        <url>https://github.com/247452312/my</url>
+        <connection>scm:git:git@github.com:247452312/my.git</connection>
+        <developerConnection>scm:git:git@github.com:247452312/my.git</developerConnection>
+    </scm>
+
+    <!-- profile配置 -->
+    <developers>
+        <!--某个项目开发者的信息-->
+        <developer>
+            <!--SCM里项目开发者的唯一标识符-->
+            <name>uhyils</name>
+            <!--项目开发者的全名-->
+            <id>uhyils</id>
+            <!--项目开发者的email-->
+            <email>uhyils@qq.com</email>
+
+            <!--项目开发者所在时区， -11到12范围内的整数。-->
+            <timezone>8</timezone>
+        </developer>
+    </developers>
+
+
+    <modules>
+        <module>my-api</module>
+        <module>my-service</module>
+        <module>my-common</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <!-- 本地开发环境 -->
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <!-- 定义该配置的属性 -->
+            <id>dev</id>
+            <activation>
+                <!-- 设置默认激活这个配置 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- 测试环境 -->
+            <properties>
+                <profiles.active>test</profiles.active>
+            </properties>
+            <!-- 定义该配置的属性 -->
+            <id>test</id>
+        </profile>
+        <profile>
+            <!-- 准生产环境 -->
+            <properties>
+                <profiles.active>release</profiles.active>
+            </properties>
+            <!-- 定义该配置的属性 -->
+            <id>release</id>
+        </profile>
+        <profile>
+            <!-- 生产环境 -->
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+            <!-- 定义该配置的属性 -->
+            <id>prod</id>
+        </profile>
+    </profiles>
 
 
     <!--这里留着这个写法.. 万一以后用到了. 不用再上网找了-->

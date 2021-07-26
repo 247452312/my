@@ -19,6 +19,7 @@ import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.DictService;
+import indi.uhyils.util.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -195,6 +196,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"}, cacheType = CacheTypeEnum.ALL_TYPE)
     public ServiceResult<ArrayList<DictItemEntity>> getByCode(GetByCodeRequest request) {
         ArrayList<DictItemEntity> list = dictItemDao.getByCode(request.getCode());
+        LogUtil.info("test_getByCode!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return ServiceResult.buildSuccessResult("查询成功", list, request);
     }
 

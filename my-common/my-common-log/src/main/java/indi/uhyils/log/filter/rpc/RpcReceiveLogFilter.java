@@ -15,12 +15,13 @@ import java.util.List;
 
 /**
  * rpcTrace信息接收
+ * 注: order排在timeOutFilter后面
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
  * @date 文件创建日期 2021年07月23日 14时53分
  */
-@RpcSpi
+@RpcSpi(order = 101)
 public class RpcReceiveLogFilter implements ProviderFilter {
 
     @Override
@@ -33,7 +34,11 @@ public class RpcReceiveLogFilter implements ProviderFilter {
             MyTraceIdContext.setRpcId(rpcIds);
             MyTraceIdContext.setThraceId(rpcTraceInfo.getTraceId());
         }
-        return invoker.invoke(invokerContext);
+        try {
+            return invoker.invoke(invokerContext);
+        } finally {
+            MyTraceIdContext.clean();
+        }
     }
 
 }
