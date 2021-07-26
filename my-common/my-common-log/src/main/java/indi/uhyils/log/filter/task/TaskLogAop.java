@@ -1,6 +1,8 @@
 package indi.uhyils.log.filter.task;
 
+import indi.uhyils.log.LogTypeEnum;
 import indi.uhyils.log.MyTraceIdContext;
+import indi.uhyils.util.LogUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -29,10 +31,15 @@ public class TaskLogAop {
     @Around("taskTraceInjectPoint()")
     public Object exceptionAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
         MyTraceIdContext.init();
+        long startTime = System.currentTimeMillis();
         Object proceed;
         try {
             proceed = pjp.proceed();
         } finally {
+            long useTime = System.currentTimeMillis() - startTime;
+            String rpcIdStr = MyTraceIdContext.getRpcIdStr();
+            MyTraceIdContext.printLogInfo(rpcIdStr, LogTypeEnum.TASK, startTime, useTime);
+            LogUtil.info("定时任务结束!");
             MyTraceIdContext.clean();
         }
         return proceed;

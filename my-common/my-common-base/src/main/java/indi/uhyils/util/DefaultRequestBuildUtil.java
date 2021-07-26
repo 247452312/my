@@ -24,7 +24,6 @@ public class DefaultRequestBuildUtil {
         user.setId(Content.ADMIN_USER_ID);
         user.setUserName("admin");
         defaultRequest.setUser(user);
-        defaultRequest.setRequestLink(new LinkNode<>());
         return defaultRequest;
     }
 
@@ -36,7 +35,6 @@ public class DefaultRequestBuildUtil {
      */
     public static <T extends DefaultRequest> void fillRequestByAdminRequest(T t) {
         DefaultRequest adminDefaultRequest = getAdminDefaultRequest();
-        t.setRequestLink(adminDefaultRequest.getRequestLink());
         t.setUnique(adminDefaultRequest.getUnique());
         t.setUser(adminDefaultRequest.getUser());
     }

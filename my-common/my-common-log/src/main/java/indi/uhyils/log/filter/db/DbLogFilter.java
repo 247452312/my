@@ -20,7 +20,7 @@ public class DbLogFilter extends FilterEventAdapter {
     @Override
     public boolean preparedStatement_execute(FilterChain chain, PreparedStatementProxy statement) throws SQLException {
         long startTime = System.currentTimeMillis();
-        String rpcStr = MyTraceIdContext.getAndAddRpcId();
+        String rpcStr = MyTraceIdContext.getAndAddRpcIdStr();
         boolean result = super.preparedStatement_execute(chain, statement);
         long timeConsuming = System.currentTimeMillis() - startTime;
         MyTraceIdContext

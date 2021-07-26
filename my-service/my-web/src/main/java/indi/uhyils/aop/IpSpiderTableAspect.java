@@ -226,7 +226,6 @@ public class IpSpiderTableAspect {
             user.setId(Content.ADMIN_USER_ID);
             user.setUserName("admin");
             defaultRequest.setUser(user);
-            defaultRequest.setRequestLink(new LinkNode<>());
             defaultRequest.setIp(ip);
             ServiceResult<Boolean> logIntervalByIp = blackListService.getLogIntervalByIp(defaultRequest);
             // 如果log服务挂了

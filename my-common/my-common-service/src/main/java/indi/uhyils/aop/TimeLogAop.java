@@ -48,20 +48,6 @@ public class TimeLogAop {
         String className = pjp.getTarget().getClass().getSimpleName();
         String methodName = pjp.getSignature().getName();
 
-        //添加链路跟踪
-        DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
-        LinkNode<String> requestLink = arg.getRequestLink();
-        if (requestLink == null) {
-            throw new NoRequestLinkException();
-        }
-        LinkNode<String> temp = requestLink;
-        while (temp.hasNext()) {
-            temp = temp.getLinkNode();
-        }
-        LinkNode<String> next = new LinkNode<>();
-        next.setData(String.format("%s : %s", className, methodName));
-        temp.setLinkNode(next);
-
         //方法执行前显示 类名,方法名,参数名
         before(pjp, className, methodName);
         Long startTime = System.currentTimeMillis();

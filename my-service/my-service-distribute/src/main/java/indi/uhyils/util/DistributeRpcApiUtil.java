@@ -21,7 +21,6 @@ public class DistributeRpcApiUtil {
         DefaultRequest defaultRequest = new DefaultRequest();
         defaultRequest.setUser(userEntity);
         defaultRequest.setToken(request.getToken());
-        defaultRequest.setRequestLink(request.getRequestLink());
         args.add(defaultRequest);
         return (ServiceResult)RpcApiUtil.rpcApiTool(interfaceName, methodName, args, request);
     }

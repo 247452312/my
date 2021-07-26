@@ -52,7 +52,6 @@ public class JobRunnable implements Callable {
         Class<DefaultRequest> aClass = (Class<DefaultRequest>) Class.forName(paramType == null ? "indi.uhyils.pojo.request.base.DefaultRequest" : paramType);
         DefaultRequest defaultRequest = JSON.parseObject(params, aClass);
         defaultRequest.setUser(userEntity);
-        defaultRequest.setRequestLink(new LinkNode<>());
         ArrayList<Object> list = new ArrayList<>(1);
         list.add(defaultRequest);
         RpcApiUtil.rpcApiToolAsync(interfaceName, methodName, list);

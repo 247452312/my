@@ -33,17 +33,11 @@ public class ServiceResult<T extends Serializable> implements Serializable {
     private String serviceMessage;
 
 
-    /**
-     * 链路跟踪
-     */
-    private LinkNode<String> requestLink;
-
 
     public ServiceResult(T data, Integer serviceCode, String serviceMessage, LinkNode<String> linkNode) {
         this.data = data;
         this.serviceCode = serviceCode;
         this.serviceMessage = serviceMessage;
-        this.requestLink = linkNode;
     }
 
     public ServiceResult(T data, Integer serviceCode, String serviceMessage, DefaultRequest req) {
@@ -53,7 +47,6 @@ public class ServiceResult<T extends Serializable> implements Serializable {
         this.data = data;
         this.serviceCode = serviceCode;
         this.serviceMessage = serviceMessage;
-        this.requestLink = req.getRequestLink();
     }
 
     public ServiceResult() {
@@ -197,11 +190,4 @@ public class ServiceResult<T extends Serializable> implements Serializable {
         this.serviceMessage = serviceMessage;
     }
 
-    public LinkNode<String> getRequestLink() {
-        return requestLink;
-    }
-
-    public void setRequestLink(LinkNode<String> requestLink) {
-        this.requestLink = requestLink;
-    }
 }

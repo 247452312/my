@@ -11,7 +11,8 @@ public enum LogTypeEnum {
      */
     RPC(1),
     MQ(2),
-    DB(3);
+    DB(3),
+    TASK(4);
 
     private Integer code;
 

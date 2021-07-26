@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.request.base;
 
 import indi.uhyils.pojo.model.UserEntity;
-import indi.uhyils.pojo.request.model.LinkNode;
 
 /**
  * 请求父类,所有页面请求都应该继承这个类
@@ -25,17 +24,10 @@ public class DefaultRequest implements BaseRequest {
      */
     private Long unique;
 
-
-    /**
-     * 跟踪请求链路
-     */
-    private LinkNode<String> requestLink;
-
     public DefaultRequest(DefaultRequest request) {
         this.token = request.token;
         this.user = request.user;
         this.unique = request.unique;
-        this.requestLink = request.requestLink;
     }
 
     public DefaultRequest() {
@@ -55,14 +47,6 @@ public class DefaultRequest implements BaseRequest {
 
     public void setUser(UserEntity user) {
         this.user = user;
-    }
-
-    public LinkNode<String> getRequestLink() {
-        return requestLink;
-    }
-
-    public void setRequestLink(LinkNode<String> requestLink) {
-        this.requestLink = requestLink;
     }
 
     public Long getUnique() {

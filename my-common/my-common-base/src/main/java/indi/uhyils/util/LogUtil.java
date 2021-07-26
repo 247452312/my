@@ -3,6 +3,7 @@ package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.log.MyTraceIdContext;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -175,6 +176,9 @@ public class LogUtil {
      * @param logTypeEnum 类型
      */
     private static void writeLog(String className, String msg, Throwable throwable, LogTypeEnum logTypeEnum) {
+        if (msg != null) {
+            msg = String.format("%s|%s|%s", MyTraceIdContext.getThraceId(), MyTraceIdContext.getRpcIdStr(), msg);
+        }
         if (loggerMap.containsKey(className)) {
             Logger logger = loggerMap.get(className);
             choiceLogType(msg, throwable, logTypeEnum, logger);
@@ -204,38 +208,6 @@ public class LogUtil {
                 logger.error("no this LogType!");
                 break;
         }
-    }
-
-
-    /**
-     * 添加链路跟踪
-     *
-     * @param targetRequest 目标请求
-     * @param serviceResult 请求返回
-     */
-    public static void addRequestLink(DefaultRequest targetRequest, ServiceResult<?> serviceResult) {
-        LinkNode<String> serviceResultRequestLink = serviceResult.getRequestLink();
-        targetRequest.setRequestLink(serviceResultRequestLink);
-    }
-
-
-    /**
-     * 控制台输出链路跟踪
-     *
-     * @param requestLink 链
-     */
-    public static void linkPrint(LinkNode<String> requestLink) {
-        if (requestLink == null) {
-            return;
-        }
-        StringBuilder sb = new StringBuilder();
-        LinkNode<String> p = requestLink;
-        do {
-            sb.append(p.getData());
-            sb.append(" --> ");
-            p = p.getLinkNode();
-        } while (p != null);
-        LogUtil.info(LogUtil.class, String.format("链路跟踪: %s  结束!", sb.toString()));
     }
 
 }

@@ -21,7 +21,6 @@ public class ObjRequest<T extends Serializable> extends DefaultRequest {
         ObjRequest<T> serializableObjRequest = new ObjRequest<>();
         serializableObjRequest.setData(data);
         serializableObjRequest.setToken(token);
-        serializableObjRequest.setRequestLink(new LinkNode<>());
         return serializableObjRequest;
     }
 

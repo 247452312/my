@@ -10,12 +10,14 @@ import java.security.NoSuchAlgorithmException;
  * @date 文件创建日期 2020年04月26日 14时46分
  */
 public class MD5Util {
+
     public static final String MD5 = "MD5";
 
     /**
      * MD5加密
      *
      * @param str 待加密的字符串
+     *
      * @return 密文(16位)
      */
     public static String MD5Encode(String str) {

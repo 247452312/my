@@ -46,7 +46,6 @@ public class ConcurrentNumberTask {
         GetByCodeRequest request = new GetByCodeRequest();
         DefaultRequest adminDefaultRequest = DefaultRequestBuildUtil.getAdminDefaultRequest();
         request.setUser(adminDefaultRequest.getUser());
-        request.setRequestLink(adminDefaultRequest.getRequestLink());
         request.setCode(Content.CONCURRENT_NUM_DICT_CODE);
         ServiceResult<ArrayList<DictItemEntity>> byCode = dictService.getByCode(request);
         if (byCode == null || !byCode.getServiceCode().equals(ServiceCode.SUCCESS.getText()) || byCode.getData().size() == 0) {

@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static indi.uhyils.controller.AllController.actionAddRequestLink;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -46,13 +45,8 @@ public class FileController {
             token = new String(Base64.decodeBase64(token));
             args.put("token", token);
             args.put("name", fileName);
-            HashMap<String, Object> requestLink = new HashMap<>(2);
-            requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
-            requestLink.put("data", "页面请求");
-            args.put("requestLink", requestLink);
+
             serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, METHOD_NAME, args);
-            link = serviceResult.getRequestLink();
-            LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 eMsg = serviceResult.getServiceMessage();
             }
@@ -84,16 +78,12 @@ public class FileController {
         LogUtil.info(this, "param: " + JSON.toJSONString(action));
         // token修改到arg中
         action.getArgs().put(TOKEN, action.getToken());
-        // 添加链路跟踪
-        actionAddRequestLink(action);
 
         try {
             action.getArgs().put("token", action.getToken());
             List<Object> list = new ArrayList();
             list.add(action.getArgs());
             serviceResult = (ServiceResult)RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultRequest());
-            link = serviceResult.getRequestLink();
-            LogUtil.linkPrint(link);
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 eMsg = serviceResult.getServiceMessage();
             }

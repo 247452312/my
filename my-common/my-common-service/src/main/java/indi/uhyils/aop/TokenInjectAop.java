@@ -150,7 +150,6 @@ public class TokenInjectAop {
     private ServiceResult<JSONObject> checkUserHavePower(UserEntity userEntity, Long id, String interfaceName, String methodName, String token, DefaultRequest request) {
         CheckUserHavePowerRequest build = CheckUserHavePowerRequest.build(interfaceName, methodName, id);
         build.setToken(token);
-        build.setRequestLink(request.getRequestLink());
         build.setUser(userEntity);
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);

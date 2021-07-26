@@ -29,7 +29,7 @@ public class RpcSendLogFilter implements ConsumerFilter {
     public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
         // 优先获取rpcId,防止thisRpcId提前+1
         List<Integer> nextRpcIds = MyTraceIdContext.getNextRpcIds();
-        String rpcStr = MyTraceIdContext.getAndAddRpcId();
+        String rpcStr = MyTraceIdContext.getAndAddRpcIdStr();
         AbstractRpcData requestData = (AbstractRpcData) invokerContext.getRequestData();
         addRpcTraceInfoToRpcHeader(requestData, nextRpcIds);
         long startTime = System.currentTimeMillis();

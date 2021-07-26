@@ -104,6 +104,7 @@ public class MyTraceIdContext {
     public static void printLogInfo(String rpcStr, LogTypeEnum logTypeEnum, long startTime, long timeConsuming, String... otherInfo) {
         String logInfo = getLogInfo(rpcStr, logTypeEnum, startTime, timeConsuming, otherInfo);
         LogUtil.link(logInfo);
+        LogUtil.info(logInfo);
     }
 
     /**
@@ -146,7 +147,27 @@ public class MyTraceIdContext {
      *
      * @return
      */
-    public static String getAndAddRpcId() {
+    public static String getAndAddRpcIdStr() {
+        initRpcIdAndThisRpcId();
+        List<Integer> lastRpcIds = rpcId.get();
+        int rpcId = thisRpcId.get().getAndAdd(1);
+        StringBuilder sb = mergeRpcId(lastRpcIds, rpcId);
+        return sb.toString();
+    }
+    /**
+     * 获取rpcId
+     *
+     * @return
+     */
+    public static String getRpcIdStr() {
+        initRpcIdAndThisRpcId();
+        List<Integer> lastRpcIds = rpcId.get();
+        int rpcId = thisRpcId.get().get();
+        StringBuilder sb = mergeRpcId(lastRpcIds, rpcId);
+        return sb.toString();
+    }
+
+    private static void initRpcIdAndThisRpcId() {
         if (rpcId.get() == null) {
             synchronized (MyTraceIdContext.class) {
                 if (rpcId.get() == null) {
@@ -157,10 +178,6 @@ public class MyTraceIdContext {
                 }
             }
         }
-        List<Integer> lastRpcIds = rpcId.get();
-        int rpcId = thisRpcId.get().getAndAdd(1);
-        StringBuilder sb = mergeRpcId(lastRpcIds, rpcId);
-        return sb.toString();
     }
 
 
@@ -205,7 +222,7 @@ public class MyTraceIdContext {
      * @return
      */
     public static List<Integer> getNextRpcIds() {
-        List<Integer> nestRpcIds = new ArrayList<>(rpcId.get());
+        List<Integer> nestRpcIds = new ArrayList<>(initLastRpcId());
         AtomicInteger atomicInteger = getThisRpcId();
         nestRpcIds.add(atomicInteger.get());
         return nestRpcIds;
@@ -217,6 +234,7 @@ public class MyTraceIdContext {
             synchronized (MyTraceIdContext.class) {
                 if (atomicInteger == null) {
                     atomicInteger = new AtomicInteger(1);
+                    thisRpcId.set(atomicInteger);
                 }
             }
         }
@@ -224,10 +242,18 @@ public class MyTraceIdContext {
     }
 
     public static void init() {
+        getThraceId();
         getThisRpcId();
+        initLastRpcId();
+    }
+
+    private static List<Integer> initLastRpcId() {
+        if (rpcId.get() != null) {
+            return rpcId.get();
+        }
         ArrayList<Integer> lastRpcIds = new ArrayList<>();
         lastRpcIds.add(1);
         setRpcId(lastRpcIds);
-        getThisRpcId();
+        return lastRpcIds;
     }
 }

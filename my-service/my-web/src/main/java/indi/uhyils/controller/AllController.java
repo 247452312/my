@@ -47,17 +47,6 @@ public class AllController {
     @Autowired
     private HotSpotRedisPool redisPool;
 
-    /**
-     * action 添加链路跟踪起点
-     *
-     * @param action
-     */
-    public static void actionAddRequestLink(Action action) {
-        HashMap<String, Object> requestLink = new HashMap<>(2);
-        requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
-        requestLink.put("data", "页面请求");
-        action.getArgs().put("requestLink", requestLink);
-    }
 
     /**
      * 默认返回所有的方法
@@ -80,10 +69,6 @@ public class AllController {
         try {
             JSONObject o = (JSONObject) RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
             serviceResult = JSON.toJavaObject(o, ServiceResult.class);
-
-            /* 打印链路跟踪 */
-            link = serviceResult.getRequestLink();
-            LogUtil.linkPrint(link);
 
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 eMsg = serviceResult.getServiceMessage();
@@ -153,8 +138,6 @@ public class AllController {
         LogUtil.info(this, "param: " + JSON.toJSONString(action));
         // token修改到arg中
         action.getArgs().put(TOKEN, action.getToken());
-        // 添加链路跟踪
-        actionAddRequestLink(action);
     }
 
     @PostMapping("/getSession")

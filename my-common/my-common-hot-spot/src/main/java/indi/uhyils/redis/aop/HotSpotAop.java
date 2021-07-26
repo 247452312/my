@@ -98,6 +98,9 @@ public class HotSpotAop {
 
     @Around("hotSpotAspectPoint()")
     public Object hotSpotAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
+        if (true) {
+            return pjp.proceed();
+        }
         // 如果 热点集群redis没有加载成功,则一段时间后自动重试一次
         if (!HotSpotRedisPool.initTypeIsRedis) {
             long lastTryTime = System.currentTimeMillis();

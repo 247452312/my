@@ -61,17 +61,6 @@ public class HttpProFinder implements Finder {
     private static final String KEEP_ALIVE_VALUE = "keep-alive";
 
 
-    /**
-     * action 添加链路跟踪起点
-     *
-     * @param action
-     */
-    public static void actionAddRequestLink(DefaultRequest action) {
-        LinkNode<String> link = new LinkNode<>();
-        link.setData("MQ请求");
-        action.setRequestLink(link);
-    }
-
     @Override
     public Boolean checkByteBuf(ByteBuf byteBuf) {
         boolean typeNameIsHttp = checkTypeNameIsHttp(byteBuf);
@@ -213,9 +202,6 @@ public class HttpProFinder implements Finder {
             JSONObject o = dataArray.getJSONObject(i);
             Class clazz = methodClassType[i];
             data[i] = o.toJavaObject(clazz);
-        }
-        if (data[0] instanceof DefaultRequest) {
-            actionAddRequestLink((DefaultRequest) data[0]);
         }
 
         return ProtocolParsingModel.buildServiceModel(HTTP, ip, keepAlive, methodName, methodClassType, data, this::packingByteToRightResponse);
