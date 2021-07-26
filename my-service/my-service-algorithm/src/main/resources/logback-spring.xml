@@ -158,17 +158,32 @@
             <!--日志文档保留天数-->
             <maxHistory>15</maxHistory>
         </rollingPolicy>
-        <!-- 此日志文档只记录ERROR级别的 -->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-
     </appender>
 
-    <logger name="link_log" additivity="false" level="INFO">
+    <logger name="link_log" additivity="false" level="ERROR">
         <appender-ref ref="LINK_FILE"/>
+    </logger>
+
+
+    <!--     sql_log       -->
+    <appender name="SQL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <file>${log.path}/${log.dir.name}/sql.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/${log.dir.name}/sql-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文档保留天数-->
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="sql_log" additivity="false" level="ERROR">
+        <appender-ref ref="SQL_FILE"/>
     </logger>
 
     <!-- 4. 最终的策略 -->

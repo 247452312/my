@@ -80,15 +80,10 @@ public class MyTraceIdContext {
         sb.append(projectName);
         sb.append(PIPE_SYMBOL);
         sb.append(timeConsuming);
-        sb.append(PIPE_SYMBOL);
         for (String info : otherInfo) {
-            sb.append(info);
             sb.append(PIPE_SYMBOL);
+            sb.append(info);
         }
-        String resultNoHash = sb.toString();
-        sb.append("^");
-        int hash = resultNoHash.hashCode() & 0xffffff;
-        sb.append(Integer.toString(hash, 16));
         return sb.toString();
     }
 
@@ -100,12 +95,12 @@ public class MyTraceIdContext {
      * @param timeConsuming
      * @param otherInfo
      *
-     * @return
+     * @return MD5 唯一值
      */
-    public static void printLogInfo(String rpcStr, LogTypeEnum logTypeEnum, long startTime, long timeConsuming, String... otherInfo) {
+    public static String printLogInfo(String rpcStr, LogTypeEnum logTypeEnum, long startTime, long timeConsuming, String... otherInfo) {
         String logInfo = getLogInfo(rpcStr, logTypeEnum, startTime, timeConsuming, otherInfo);
         LogUtil.link(logInfo);
-        LogUtil.info(logInfo);
+        return logInfo;
     }
 
     /**

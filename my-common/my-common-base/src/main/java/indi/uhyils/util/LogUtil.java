@@ -4,9 +4,6 @@ package indi.uhyils.util;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.log.MyTraceIdContext;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.pojo.response.base.ServiceResult;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -26,6 +23,13 @@ public class LogUtil {
     private static final Logger LINK_LOG = LoggerFactory.getLogger("link_log");
 
     private static final Marker LINK_MARKER = MarkerFactory.getMarker("LINK");
+
+    /**
+     * sql
+     */
+    private static final Logger SQL_LOG = LoggerFactory.getLogger("sql_log");
+
+    private static final Marker SQL_MARKER = MarkerFactory.getMarker("SQL");
 
     /**
      * 日志文件缓存地
@@ -167,6 +171,19 @@ public class LogUtil {
     public static void link(String msg) {
         LINK_LOG.error(LINK_MARKER, msg);
     }
+
+    /**
+     * sql语句打印
+     *
+     * @param unique
+     * @param sql
+     * @param timeConsuming
+     */
+    public static void sql(String unique, String sql, long timeConsuming) {
+        sql = String.format("%s|%d|%s", unique, timeConsuming, sql);
+        SQL_LOG.error(SQL_MARKER, sql);
+    }
+
 
     /**
      * 根据类型输出不同级别的对应类的日志
