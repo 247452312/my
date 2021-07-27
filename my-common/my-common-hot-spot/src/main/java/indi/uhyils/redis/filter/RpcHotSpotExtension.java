@@ -12,9 +12,8 @@ import indi.uhyils.rpc.exchange.pojo.data.RpcData;
 import indi.uhyils.rpc.netty.spi.step.template.ConsumerResponseObjectExtension;
 import indi.uhyils.util.ObjectByteUtil;
 import indi.uhyils.util.SpringUtil;
-import redis.clients.jedis.Jedis;
-
 import java.nio.charset.StandardCharsets;
+import redis.clients.jedis.Jedis;
 
 /**
  * 如果返回值是缓存信息,那么应该获取真实的数据 然后返回
@@ -30,6 +29,7 @@ public class RpcHotSpotExtension implements ConsumerResponseObjectExtension {
      *
      * @param serviceResult
      * @param rpcData
+     *
      * @return
      */
     private static ServiceResult getRealServiceResult(ServiceResult serviceResult, RpcData rpcData) {
@@ -37,15 +37,16 @@ public class RpcHotSpotExtension implements ConsumerResponseObjectExtension {
         String json = content.getResponseContent();
         // 如果返回值是缓存
         if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS_REDIS.getText())) {
-            JSONObject jsonObject = JSON.parseObject(json);
-            Object data = jsonObject.get("data");
-            HotSpotResponse hotSpotResponse = JSON.parseObject(JSON.toJSONString(data), HotSpotResponse.class);
-            String key = hotSpotResponse.getKey();
-            String hkey = hotSpotResponse.getHkey();
             HotSpotRedisPool bean = SpringUtil.getBean(HotSpotRedisPool.class);
-            Jedis jedis = bean.getJedis();
-            byte[] hget = jedis.hget(key.getBytes(StandardCharsets.UTF_8), hkey.getBytes(StandardCharsets.UTF_8));
-            serviceResult = ObjectByteUtil.toObject(hget, ServiceResult.class);
+            try (Jedis jedis = bean.getJedis()) {
+                JSONObject jsonObject = JSON.parseObject(json);
+                Object data = jsonObject.get("data");
+                HotSpotResponse hotSpotResponse = JSON.parseObject(JSON.toJSONString(data), HotSpotResponse.class);
+                String key = hotSpotResponse.getKey();
+                String hkey = hotSpotResponse.getHkey();
+                byte[] hget = jedis.hget(key.getBytes(StandardCharsets.UTF_8), hkey.getBytes(StandardCharsets.UTF_8));
+                serviceResult = ObjectByteUtil.toObject(hget, ServiceResult.class);
+            }
         }
         return serviceResult;
     }

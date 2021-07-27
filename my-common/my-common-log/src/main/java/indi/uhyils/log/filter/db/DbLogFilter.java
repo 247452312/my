@@ -6,6 +6,12 @@ import com.alibaba.druid.proxy.jdbc.JdbcParameter;
 import com.alibaba.druid.proxy.jdbc.PreparedStatementProxy;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.SQLUtils.FormatOption;
+import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.ast.statement.SQLDeleteStatement;
+import com.alibaba.druid.sql.ast.statement.SQLInsertStatement;
+import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
+import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import indi.uhyils.log.LogTypeEnum;
 import indi.uhyils.log.MyTraceIdContext;
 import indi.uhyils.util.LogUtil;
@@ -30,14 +36,43 @@ public class DbLogFilter extends FilterEventAdapter {
     public boolean preparedStatement_execute(FilterChain chain, PreparedStatementProxy statement) throws SQLException {
         String preparedSql = statement.getSql();
         String sql = changeSqlPlaceholder(preparedSql, statement.getParameters());
-        String rpcStr = MyTraceIdContext.getAndAddRpcIdStr();
-        long startTime = System.currentTimeMillis();
-        boolean result = super.preparedStatement_execute(chain, statement);
-        long timeConsuming = System.currentTimeMillis() - startTime;
-        String unique = Integer.toUnsignedString(preparedSql.hashCode(), 16);
-        MyTraceIdContext.printLogInfo(rpcStr, LogTypeEnum.DB, startTime, timeConsuming, unique);
-        LogUtil.sql(unique, sql, timeConsuming);
-        return result;
+        if (LogUtil.isDebugEnabled(this)) {
+            LogUtil.debug(this, sql);
+        }
+        String sqlType = getSqlType(sql);
+        return MyTraceIdContext.printLogInfo(LogTypeEnum.DB, () -> {
+            try {
+                return super.preparedStatement_execute(chain, statement);
+            } catch (SQLException e) {
+                LogUtil.error(this, e);
+            }
+            return false;
+        }, new String[]{sqlType}, preparedSql);
+    }
+
+    /**
+     * 获取sql类型
+     *
+     * @param sql
+     *
+     * @return
+     */
+    private String getSqlType(String sql) {
+        MySqlStatementParser parser = new MySqlStatementParser(sql);
+        SQLStatement sqlStatement = parser.parseStatement();
+        String sqlType;
+        if (sqlStatement instanceof SQLSelectStatement) {
+            sqlType = "select";
+        } else if (sqlStatement instanceof SQLInsertStatement) {
+            sqlType = "insert";
+        } else if (sqlStatement instanceof SQLUpdateStatement) {
+            sqlType = "update";
+        } else if (sqlStatement instanceof SQLDeleteStatement) {
+            sqlType = "delete";
+        } else {
+            sqlType = sqlStatement.getClass().getName();
+        }
+        return sqlType;
     }
 
     /**

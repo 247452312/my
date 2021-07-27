@@ -191,6 +191,9 @@
     <springProfile name="dev">
         <logger name="indi.uhyils" level="debug"/>
     </springProfile>
+    <springProfile name="prod">
+        <logger name="indi.uhyils" level="info"/>
+    </springProfile>
 
     <root level="info">
         <appender-ref ref="CONSOLE"/>

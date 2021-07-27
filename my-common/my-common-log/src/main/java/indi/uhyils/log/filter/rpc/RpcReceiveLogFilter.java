@@ -2,6 +2,7 @@ package indi.uhyils.log.filter.rpc;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.log.MyTraceIdContext;
+import indi.uhyils.log.RpcTraceInfo;
 import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.data.AbstractRpcData;

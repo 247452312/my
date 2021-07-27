@@ -1,17 +1,57 @@
 package indi.uhyils.serviceImpl;
 
+import com.alibaba.fastjson.JSON;
 import indi.uhyils.builder.OrderApplyBuilder;
 import indi.uhyils.builder.OrderNodeFieldValueBuilder;
 import indi.uhyils.builder.OrderNodeResultTypeBuilder;
 import indi.uhyils.builder.OrderNodeRouteBuilder;
 import indi.uhyils.content.Content;
 import indi.uhyils.content.OrderContent;
-import indi.uhyils.dao.*;
-import indi.uhyils.enum_.*;
+import indi.uhyils.dao.OrderApplyDao;
+import indi.uhyils.dao.OrderBaseInfoDao;
+import indi.uhyils.dao.OrderBaseNodeDao;
+import indi.uhyils.dao.OrderBaseNodeFieldDao;
+import indi.uhyils.dao.OrderBaseNodeResultTypeDao;
+import indi.uhyils.dao.OrderBaseNodeRouteDao;
+import indi.uhyils.dao.OrderInfoDao;
+import indi.uhyils.dao.OrderNodeDao;
+import indi.uhyils.dao.OrderNodeFieldDao;
+import indi.uhyils.dao.OrderNodeFieldValueDao;
+import indi.uhyils.dao.OrderNodeResultTypeDao;
+import indi.uhyils.dao.OrderNodeRouteDao;
+import indi.uhyils.enum_.OrderNodeFieldValueTypeEnum;
+import indi.uhyils.enum_.OrderNodeResultTypeEnum;
+import indi.uhyils.enum_.OrderNodeRunTypeEnum;
+import indi.uhyils.enum_.OrderNodeStatusEnum;
+import indi.uhyils.enum_.OrderNodeTypeEnum;
+import indi.uhyils.enum_.OrderPriorityEnum;
+import indi.uhyils.enum_.OrderStatusEnum;
+import indi.uhyils.enum_.PushTypeEnum;
+import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.mq.util.MqUtil;
-import indi.uhyils.pojo.model.*;
+import indi.uhyils.pojo.model.OrderApplyEntity;
+import indi.uhyils.pojo.model.OrderBaseInfoEntity;
+import indi.uhyils.pojo.model.OrderBaseNodeEntity;
+import indi.uhyils.pojo.model.OrderBaseNodeFieldEntity;
+import indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity;
+import indi.uhyils.pojo.model.OrderBaseNodeRouteEntity;
+import indi.uhyils.pojo.model.OrderInfoEntity;
+import indi.uhyils.pojo.model.OrderNodeEntity;
+import indi.uhyils.pojo.model.OrderNodeFieldEntity;
+import indi.uhyils.pojo.model.OrderNodeFieldValueEntity;
+import indi.uhyils.pojo.model.OrderNodeResultTypeEntity;
+import indi.uhyils.pojo.model.OrderNodeRouteEntity;
 import indi.uhyils.pojo.model.base.BaseIdEntity;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.AgreeRecallOrderRequest;
+import indi.uhyils.pojo.request.ApprovalOrderRequest;
+import indi.uhyils.pojo.request.CommitOrderRequest;
+import indi.uhyils.pojo.request.DealOrderNodeRequest;
+import indi.uhyils.pojo.request.FailOrderNodeRequest;
+import indi.uhyils.pojo.request.FrozenOrderRequest;
+import indi.uhyils.pojo.request.IncapacityFailOrderNodeRequest;
+import indi.uhyils.pojo.request.PushMsgToSomeoneRequest;
+import indi.uhyils.pojo.request.RecallOrderRequest;
+import indi.uhyils.pojo.request.RestartOrderRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.DealOrderNodeResponse;
 import indi.uhyils.pojo.response.InitOrderResponse;
@@ -19,17 +59,21 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.temp.CheckNodeFieldResultTemporary;
 import indi.uhyils.pojo.temp.InitApiRequestTemporary;
 import indi.uhyils.rpc.annotation.RpcService;
-import indi.uhyils.util.RpcApiUtil;
 import indi.uhyils.service.OrderService;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.OrderBuilder;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
+import indi.uhyils.util.RpcApiUtil;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -56,6 +100,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private OrderNodeDao orderNodeDao;
+
     @Resource
     private OrderNodeFieldDao orderNodeFieldDao;
 
@@ -303,7 +348,7 @@ public class OrderServiceImpl implements OrderService {
         InitApiRequestTemporary msg = new InitApiRequestTemporary();
         msg.setOrderNode(orderNodeDao.getById(nextNodeId));
         msg.setPervOrderNode(orderNodeDao.getById(nodeId));
-        MqUtil.sendMsg(OrderContent.ORDER_EXCHANGE, OrderContent.ORDER_AUTO_NODE_SEND_QUEUE, msg);
+        MqUtil.sendMsg(OrderContent.ORDER_EXCHANGE, OrderContent.ORDER_AUTO_NODE_SEND_QUEUE, JSON.toJSONString(msg));
     }
 
     @Override
@@ -321,7 +366,8 @@ public class OrderServiceImpl implements OrderService {
         orderApplyDao.insert(orderApply);
         /*3.通知审批人*/
         ServiceResult<String> userName = (ServiceResult) RpcApiUtil.rpcApiTool("UserService", "getNameById", IdRequest.build(request, request.getRecommendUserId()));
-        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, order.getMonitorUserId(), PushTypeEnum.EMAIL.getCode(), "工单节点转交申请", order.getId() + "工单转交撤回,请尽快审批,转交目标人:" + userName.getData().toString());
+        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest
+            .build(request, order.getMonitorUserId(), PushTypeEnum.EMAIL.getCode(), "工单节点转交申请", order.getId() + "工单转交撤回,请尽快审批,转交目标人:" + userName.getData().toString());
         RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         return ServiceResult.buildSuccessResult(true, request);
     }
@@ -392,7 +438,8 @@ public class OrderServiceImpl implements OrderService {
         /*6.通知下一节点处理人*/
         Long targetUserId = orderApply.getTargetUserId();
         OrderInfoEntity orderInfo = orderInfoDao.getById(orderNode.getBaseInfoId());
-        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, targetUserId, PushTypeEnum.EMAIL.getCode(), "工单流转事务提示", orderNodeId + "工单已转交到你手,审批人通过,请尽快处理,工单优先度:" + OrderPriorityEnum.parse(orderInfo.getPriority()).getName());
+        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest
+            .build(request, targetUserId, PushTypeEnum.EMAIL.getCode(), "工单流转事务提示", orderNodeId + "工单已转交到你手,审批人通过,请尽快处理,工单优先度:" + OrderPriorityEnum.parse(orderInfo.getPriority()).getName());
         RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         return ServiceResult.buildSuccessResult("审批成功", true, request);
     }
@@ -401,12 +448,14 @@ public class OrderServiceImpl implements OrderService {
      * 通知工单监管人,进行审批处理,是否予以撤回
      *
      * @param request
+     *
      * @return
      */
     private boolean noticeMonitorUserIdAboutBackOrder(RecallOrderRequest request) {
         OrderInfoEntity byId = orderInfoDao.getById(request.getOrderId());
         Long monitorUserId = byId.getMonitorUserId();
-        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest.build(request, monitorUserId, PushTypeEnum.EMAIL.getCode(), "工单撤回申请", request.getOrderId() + "工单申请撤回,请尽快审批,工单优先度:" + OrderPriorityEnum.parse(byId.getPriority()).getName());
+        PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest
+            .build(request, monitorUserId, PushTypeEnum.EMAIL.getCode(), "工单撤回申请", request.getOrderId() + "工单申请撤回,请尽快审批,工单优先度:" + OrderPriorityEnum.parse(byId.getPriority()).getName());
         ServiceResult serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
         if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
             return Boolean.TRUE;
@@ -420,6 +469,7 @@ public class OrderServiceImpl implements OrderService {
      * @param orderId             工单id
      * @param orderStatusEnum     工单要修改的状态
      * @param orderLastStatusEnum 工单原本状态
+     *
      * @return
      */
     private Boolean changeOrderStatus(Long orderId, OrderStatusEnum orderStatusEnum, OrderStatusEnum orderLastStatusEnum) {
@@ -438,6 +488,7 @@ public class OrderServiceImpl implements OrderService {
      *
      * @param orderId         工单id
      * @param orderStatusEnum 工单要修改的状态
+     *
      * @return
      */
     private Boolean changeOrderStatus(Long orderId, OrderStatusEnum orderStatusEnum) {
@@ -456,6 +507,7 @@ public class OrderServiceImpl implements OrderService {
      * 检查输入值是否符合要求
      *
      * @param orderNodeFieldValueMap
+     *
      * @return
      */
     private CheckNodeFieldResultTemporary checkNodeAllow(Map<Long, Object> orderNodeFieldValueMap) {

@@ -111,7 +111,22 @@ public class SpringUtil implements ApplicationContextInitializer {
             return environment.getProperty(key);
         }
         return null;
+    }
 
+    /**
+     * 通过key 获取环境变量
+     *
+     * @param key          环境变量的key
+     * @param defaultValue 默认值
+     *
+     * @return 环境变量的值
+     */
+    public static String getProperty(String key, String defaultValue) {
+        Environment environment = getApplicationContext().getEnvironment();
+        if (environment != null) {
+            return environment.getProperty(key, defaultValue);
+        }
+        return null;
     }
 
 

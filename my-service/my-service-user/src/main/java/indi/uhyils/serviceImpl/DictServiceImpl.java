@@ -196,7 +196,6 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"}, cacheType = CacheTypeEnum.ALL_TYPE)
     public ServiceResult<ArrayList<DictItemEntity>> getByCode(GetByCodeRequest request) {
         ArrayList<DictItemEntity> list = dictItemDao.getByCode(request.getCode());
-        LogUtil.info("test_getByCode!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return ServiceResult.buildSuccessResult("查询成功", list, request);
     }
 

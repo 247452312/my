@@ -15,6 +15,12 @@ import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.MD5Util;
 import indi.uhyils.util.ObjectByteUtil;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,13 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 热点aop
@@ -46,43 +45,50 @@ public class HotSpotAop {
      * redis写脚本
      */
     private static final String WRITE_LUA = "local keys = KEYS\n\nfor i, v in ipairs(keys) do\n   redis.call('HINCRBY','" + HotSpotContent.TABLES_HASH_KEY + "', keys[i], 1)\nend\nreturn true";
+
     /**
      * 检查缓存表是否更新
      */
     private static final String CHECK_TABLE_UPDATE = "local keys,val = KEYS,ARGV\n" +
-            "for i, v in ipairs(val) do\n" +
-            // 这里是防止不存在,给hashTable里赋初值为1
-            "\tredis.call('hsetnx','" + HotSpotContent.TABLES_HASH_KEY + "',v,'1')\n" +
-            "end\n" +
-            "local k = 0\n" +
-            "for i, v in ipairs(val) do\n" +
-            "\tlocal table_version = redis.call('HGET',keys[1], v)\n" +
-            "\tlocal real_table_version = redis.call('HGET','" + HotSpotContent.TABLES_HASH_KEY + "',v)\n" +
-            "\tif not(real_table_version) or table_version ~= real_table_version then\n" +
-            "\t\tk = 1\n" +
-            "\tend\n" +
-            "end  \n" +
-            "if k == 0 then    \n" +
-            "\treturn 1    \n" +
-            "else    \n" +
-            "\treturn 0    \n" +
-            "end";
+                                                     "for i, v in ipairs(val) do\n" +
+                                                     // 这里是防止不存在,给hashTable里赋初值为1
+                                                     "\tredis.call('hsetnx','" + HotSpotContent.TABLES_HASH_KEY + "',v,'1')\n" +
+                                                     "end\n" +
+                                                     "local k = 0\n" +
+                                                     "for i, v in ipairs(val) do\n" +
+                                                     "\tlocal table_version = redis.call('HGET',keys[1], v)\n" +
+                                                     "\tlocal real_table_version = redis.call('HGET','" + HotSpotContent.TABLES_HASH_KEY + "',v)\n" +
+                                                     "\tif not(real_table_version) or table_version ~= real_table_version then\n" +
+                                                     "\t\tk = 1\n" +
+                                                     "\tend\n" +
+                                                     "end  \n" +
+                                                     "if k == 0 then    \n" +
+                                                     "\treturn 1    \n" +
+                                                     "else    \n" +
+                                                     "\treturn 0    \n" +
+                                                     "end";
+
     /**
      * 更新缓存的lua脚本
      */
     private static final String UPDATE_CACHE = "local keys,val = KEYS,ARGV\n\nredis.call('hset',keys[1],keys[2],val[2])\nredis.call('hset',keys[1],keys[3],val[3])\n\nfor i, v in ipairs(redis.call('hkeys',val[1])) do\n\tredis.call('hset',keys[1],v,redis.call('hget',val[1],v))\nend";
+
     /**
      * 重试的间隔(ms)
      */
     private static final Long RETRY_INTERVAL = 1000L * 10;
+
     /**
      * 注解的ThreadLocal
      */
     private ThreadLocal<CacheTypeEnum> markThreadLocal = new ThreadLocal<>();
+
     @Autowired
     private RedisPoolHandle redisPoolHandle;
+
     @Autowired
     private HotSpotRedisPool hotSpotRedisPool;
+
     /**
      * 上次尝试的时间
      */
@@ -98,9 +104,6 @@ public class HotSpotAop {
 
     @Around("hotSpotAspectPoint()")
     public Object hotSpotAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
-        if (true) {
-            return pjp.proceed();
-        }
         // 如果 热点集群redis没有加载成功,则一段时间后自动重试一次
         if (!HotSpotRedisPool.initTypeIsRedis) {
             long lastTryTime = System.currentTimeMillis();
@@ -277,9 +280,7 @@ public class HotSpotAop {
                 jedis.eval(UPDATE_CACHE.getBytes(StandardCharsets.UTF_8), updateKeys, updateArgv);
                 return proceed;
             }
-            if (LogUtil.isDebugEnabled(HotSpotAop.class)) {
-                LogUtil.debug(HotSpotAop.class, String.format("接口<%s> 读取redis中的缓存热点数据", methodName));
-            }
+            LogUtil.info(HotSpotAop.class, String.format("接口<%s#%s> 读取redis中的缓存热点数据", className, methodName));
 
             ServiceResult<HotSpotResponse> hotSpotResponse = ServiceResult.buildHotSpotHaveResult(format, HotSpotContent.HOTSPOT_HASH_DATA_KEY, (DefaultRequest) pjp.getArgs()[0]);
             return hotSpotResponse;

@@ -70,4 +70,5 @@ public class RabbitMqContent {
     public static void setLogServiceOnLine(Boolean logServiceOnLine) {
         RabbitMqContent.logServiceOnLine = logServiceOnLine;
     }
+
 }

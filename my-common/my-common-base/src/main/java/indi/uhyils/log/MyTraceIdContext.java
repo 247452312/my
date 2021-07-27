@@ -1,6 +1,7 @@
 package indi.uhyils.log;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
+import com.google.common.base.Supplier;
 import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.LogUtil;
@@ -47,7 +48,7 @@ public class MyTraceIdContext {
     /**
      * 项目名称
      */
-    private static String projectName = SpringUtil.getProperty("spring.application.name");
+    private static String projectName = SpringUtil.getProperty("spring.application.name", "NoName");
 
     public static String getProjectName() {
         return projectName;
@@ -72,6 +73,9 @@ public class MyTraceIdContext {
         sb.append(getThraceId());
         sb.append(PIPE_SYMBOL);
         sb.append(startTime);
+        sb.append(PIPE_SYMBOL);
+        String threadName = Thread.currentThread().getName();
+        sb.append(threadName);
         sb.append(PIPE_SYMBOL);
         sb.append(logTypeEnum.getCode());
         sb.append(PIPE_SYMBOL);
@@ -150,6 +154,7 @@ public class MyTraceIdContext {
         StringBuilder sb = mergeRpcId(lastRpcIds, rpcId);
         return sb.toString();
     }
+
     /**
      * 获取rpcId
      *
@@ -251,5 +256,65 @@ public class MyTraceIdContext {
         lastRpcIds.add(1);
         setRpcId(lastRpcIds);
         return lastRpcIds;
+    }
+
+
+    /**
+     * 输出日志
+     *
+     * @param logType    日志类型
+     * @param supplier   要执行的东西
+     * @param other      其他加入主日志的东西
+     * @param additional 详情日志
+     * @param <T>        返回值
+     *
+     * @return
+     */
+    public static <T> T printLogInfo(LogTypeEnum logType, Supplier<T> supplier, String[] other, String... additional) {
+        String rpcIdStr = getAndAddRpcIdStr();
+        long startTime = System.currentTimeMillis();
+        try {
+            return supplier.get();
+        } finally {
+            long useTime = System.currentTimeMillis() - startTime;
+            String hash = null;
+            if (additional != null && additional.length != 0) {
+                String[] realOther = new String[other.length + 1];
+                System.arraycopy(other, 0, realOther, 0, other.length);
+                hash = hash(additional);
+                realOther[other.length] = hash;
+                other = realOther;
+            }
+            printLogInfo(rpcIdStr, logType, startTime, useTime, other);
+            switch (logType) {
+                case DB:
+                    assert additional != null;
+                    LogUtil.sql(hash, additional[0], useTime);
+                    break;
+                case MQ:
+                    // todo mq的日志
+                    break;
+                case RPC:
+                    // todo rpc的日志
+                    break;
+                case TASK:
+                    // todo 定时任务的日志
+                default:
+                    break;
+            }
+        }
+
+    }
+
+    private static String hash(String[] additionals) {
+        StringBuilder sb = new StringBuilder();
+        for (String additional : additionals) {
+            sb.append(additional);
+            sb.append(PIPE_SYMBOL);
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        int hash = sb.toString().hashCode() & 0xFFFFFFF;
+        return "^" + Integer.toUnsignedString(hash, 16);
+
     }
 }

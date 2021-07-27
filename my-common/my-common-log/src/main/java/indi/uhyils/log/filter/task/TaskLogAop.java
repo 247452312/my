@@ -1,5 +1,6 @@
 package indi.uhyils.log.filter.task;
 
+import com.google.common.base.Supplier;
 import indi.uhyils.log.LogTypeEnum;
 import indi.uhyils.log.MyTraceIdContext;
 import indi.uhyils.util.LogUtil;
@@ -30,19 +31,24 @@ public class TaskLogAop {
 
     @Around("taskTraceInjectPoint()")
     public Object exceptionAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
+        String className = pjp.getTarget().getClass().getSimpleName();
+        String methodName = pjp.getSignature().getName();
         MyTraceIdContext.init();
-        long startTime = System.currentTimeMillis();
-        Object proceed;
+        Supplier<Object> objectSupplier = () -> {
+            try {
+                return pjp.proceed();
+            } catch (Throwable throwable) {
+                LogUtil.error(throwable);
+            } finally {
+                LogUtil.info("定时任务结束!");
+            }
+            return null;
+        };
         try {
-            proceed = pjp.proceed();
+            return MyTraceIdContext.printLogInfo(LogTypeEnum.TASK, objectSupplier, new String[]{className, methodName});
         } finally {
-            long useTime = System.currentTimeMillis() - startTime;
-            String rpcIdStr = MyTraceIdContext.getRpcIdStr();
-            MyTraceIdContext.printLogInfo(rpcIdStr, LogTypeEnum.TASK, startTime, useTime);
-            LogUtil.info("定时任务结束!");
             MyTraceIdContext.clean();
         }
-        return proceed;
     }
 
 }

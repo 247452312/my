@@ -1,4 +1,4 @@
-package indi.uhyils.log.filter.rpc;
+package indi.uhyils.log;
 
 import java.io.Serializable;
 import java.util.List;
