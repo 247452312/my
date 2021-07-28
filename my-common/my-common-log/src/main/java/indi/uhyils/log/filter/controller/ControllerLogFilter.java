@@ -1,5 +1,8 @@
 package indi.uhyils.log.filter.controller;
 
+import indi.uhyils.log.LogTypeEnum;
+import indi.uhyils.log.MyTraceIdContext;
+import indi.uhyils.util.LogUtil;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,6 +20,16 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ControllerLogFilter implements Filter {
 
+    /**
+     * 静态资源标记
+     */
+    private static final char STATIC_RESOURCE_MARK = '.';
+
+    /**
+     * 接口标记
+     */
+    private static final char CONTROLLER_MARK = '/';
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
@@ -24,12 +37,34 @@ public class ControllerLogFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        String requestURI = req.getRequestURI();
-        String s = req.getRequestURL().toString();
-        filterChain.doFilter(servletRequest, servletResponse);
+        String requestUri = req.getRequestURI();
+        boolean isController = true;
+        for (int i = requestUri.length() - 1; i >= 0; i--) {
+            char c = requestUri.charAt(i);
+            if (c == STATIC_RESOURCE_MARK) {
+                isController = false;
+                break;
+            } else if (c == CONTROLLER_MARK) {
+                break;
+            }
+        }
+        if (!isController) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+        // 防止共享traceId
+        MyTraceIdContext.clean();
+        MyTraceIdContext.onlyOnePrintLogInfo(LogTypeEnum.CONTROLLER, () -> {
+            try {
+                filterChain.doFilter(servletRequest, servletResponse);
+            } catch (IOException | ServletException e) {
+                LogUtil.error(e);
+            }
+            return null;
+        }, new String[]{requestUri});
     }
+
 
     @Override
     public void destroy() {

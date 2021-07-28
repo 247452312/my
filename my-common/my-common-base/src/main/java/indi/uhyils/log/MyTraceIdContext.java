@@ -19,7 +19,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class MyTraceIdContext {
 
-
+    /**
+     * 主线程名称
+     */
+    private static final String MAIN_THREAD_NAME = "main";
     /**
      * rpc_trace 信息
      */
@@ -74,12 +77,12 @@ public class MyTraceIdContext {
         sb.append(PIPE_SYMBOL);
         sb.append(startTime);
         sb.append(PIPE_SYMBOL);
-        String threadName = Thread.currentThread().getName();
-        sb.append(threadName);
-        sb.append(PIPE_SYMBOL);
         sb.append(logTypeEnum.getCode());
         sb.append(PIPE_SYMBOL);
         sb.append(rpcStr);
+        sb.append(PIPE_SYMBOL);
+        String threadName = Thread.currentThread().getName();
+        sb.append(threadName);
         sb.append(PIPE_SYMBOL);
         sb.append(projectName);
         sb.append(PIPE_SYMBOL);
@@ -114,6 +117,9 @@ public class MyTraceIdContext {
      */
     public static Long getThraceId() {
         if (thraceId.get() == null) {
+            if (checkMainThread()) {
+                return 1L;
+            }
             synchronized (MyTraceIdContext.class) {
                 if (thraceId.get() == null) {
                     try {
@@ -148,28 +154,19 @@ public class MyTraceIdContext {
      * @return
      */
     public static String getAndAddRpcIdStr() {
-        initRpcIdAndThisRpcId();
-        List<Integer> lastRpcIds = rpcId.get();
-        int rpcId = thisRpcId.get().getAndAdd(1);
+        List<Integer> lastRpcIds = getRpcId();
+        int rpcId = getThisRpcId().getAndAdd(1);
         StringBuilder sb = mergeRpcId(lastRpcIds, rpcId);
         return sb.toString();
     }
 
-    /**
-     * 获取rpcId
-     *
-     * @return
-     */
-    public static String getRpcIdStr() {
-        initRpcIdAndThisRpcId();
-        List<Integer> lastRpcIds = rpcId.get();
-        int rpcId = thisRpcId.get().get();
-        StringBuilder sb = mergeRpcId(lastRpcIds, rpcId);
-        return sb.toString();
-    }
-
-    private static void initRpcIdAndThisRpcId() {
+    private static List<Integer> getRpcId() {
         if (rpcId.get() == null) {
+            if (checkMainThread()) {
+                ArrayList<Integer> integers = new ArrayList<>();
+                integers.add(-1);
+                return integers;
+            }
             synchronized (MyTraceIdContext.class) {
                 if (rpcId.get() == null) {
                     ArrayList<Integer> value = new ArrayList<>();
@@ -179,6 +176,24 @@ public class MyTraceIdContext {
                 }
             }
         }
+        return rpcId.get();
+    }
+
+    /**
+     * 获取rpcId
+     *
+     * @return
+     */
+    public static String getRpcIdStr() {
+        List<Integer> lastRpcIds = getRpcId();
+        int rpcId = getThisRpcId().get();
+        StringBuilder sb = mergeRpcId(lastRpcIds, rpcId);
+        return sb.toString();
+    }
+
+
+    private static boolean checkMainThread() {
+        return MAIN_THREAD_NAME.equals(Thread.currentThread().getName());
     }
 
 
@@ -223,41 +238,26 @@ public class MyTraceIdContext {
      * @return
      */
     public static List<Integer> getNextRpcIds() {
-        List<Integer> nestRpcIds = new ArrayList<>(initLastRpcId());
+        List<Integer> nestRpcIds = new ArrayList<>(getRpcId());
         AtomicInteger atomicInteger = getThisRpcId();
         nestRpcIds.add(atomicInteger.get());
         return nestRpcIds;
     }
 
     private static AtomicInteger getThisRpcId() {
-        AtomicInteger atomicInteger = thisRpcId.get();
-        if (atomicInteger == null) {
+        if (thisRpcId.get() == null) {
+            if (checkMainThread()) {
+                return new AtomicInteger(-1);
+            }
             synchronized (MyTraceIdContext.class) {
-                if (atomicInteger == null) {
-                    atomicInteger = new AtomicInteger(1);
-                    thisRpcId.set(atomicInteger);
+                if (thisRpcId.get() == null) {
+                    AtomicInteger integer = new AtomicInteger(1);
+                    thisRpcId.set(integer);
                 }
             }
         }
-        return atomicInteger;
+        return thisRpcId.get();
     }
-
-    public static void init() {
-        getThraceId();
-        getThisRpcId();
-        initLastRpcId();
-    }
-
-    private static List<Integer> initLastRpcId() {
-        if (rpcId.get() != null) {
-            return rpcId.get();
-        }
-        ArrayList<Integer> lastRpcIds = new ArrayList<>();
-        lastRpcIds.add(1);
-        setRpcId(lastRpcIds);
-        return lastRpcIds;
-    }
-
 
     /**
      * 输出日志
@@ -299,9 +299,32 @@ public class MyTraceIdContext {
                     break;
                 case TASK:
                     // todo 定时任务的日志
+                case CONTROLLER:
+                    // todo controller的日志
                 default:
                     break;
             }
+
+        }
+
+    }
+
+    /**
+     * 入口.并且输出日志完成后清理掉
+     *
+     * @param logType    日志类型
+     * @param supplier   要执行的东西
+     * @param other      其他加入主日志的东西
+     * @param additional 详情日志
+     * @param <T>        返回值
+     *
+     * @return
+     */
+    public static <T> T onlyOnePrintLogInfo(LogTypeEnum logType, Supplier<T> supplier, String[] other, String... additional) {
+        try {
+            return printLogInfo(logType, supplier, other, additional);
+        } finally {
+            MyTraceIdContext.clean();
         }
 
     }

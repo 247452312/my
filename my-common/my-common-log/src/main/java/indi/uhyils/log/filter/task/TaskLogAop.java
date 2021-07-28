@@ -33,7 +33,6 @@ public class TaskLogAop {
     public Object exceptionAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
         String className = pjp.getTarget().getClass().getSimpleName();
         String methodName = pjp.getSignature().getName();
-        MyTraceIdContext.init();
         Supplier<Object> objectSupplier = () -> {
             try {
                 return pjp.proceed();
