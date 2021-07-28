@@ -1,8 +1,11 @@
 package indi.uhyils.log;
 
+import indi.uhyils.log.filter.controller.ControllerLogFilter;
 import indi.uhyils.log.filter.db.DbLogFilter;
 import indi.uhyils.log.filter.task.TaskLogAop;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 
@@ -15,4 +18,13 @@ import org.springframework.context.annotation.Import;
 @Import({DbLogFilter.class, TaskLogAop.class})
 public class LogConfigurable {
 
+    @Bean
+    public FilterRegistrationBean<ControllerLogFilter> setFilter() {
+
+        FilterRegistrationBean<ControllerLogFilter> filterBean = new FilterRegistrationBean<>();
+        filterBean.setFilter(new ControllerLogFilter());
+        filterBean.setName("controllerFilter");
+        filterBean.addUrlPatterns("/*");
+        return filterBean;
+    }
 }
