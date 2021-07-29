@@ -4,13 +4,13 @@ import indi.uhyils.enum_.OrderNodeResultTypeEnum;
 import indi.uhyils.enum_.OrderNodeRunTypeEnum;
 import indi.uhyils.enum_.OrderNodeStatusEnum;
 import indi.uhyils.enum_.OrderNodeTypeEnum;
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
  */
-public class OrderNodeEntity extends BaseVoEntity {
+public class OrderNodeEntity extends BaseDoEntity {
 
     /**
      * 基础表id

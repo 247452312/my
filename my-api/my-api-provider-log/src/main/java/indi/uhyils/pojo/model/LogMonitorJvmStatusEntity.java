@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * JVM实时信息
@@ -14,7 +14,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时18分
  */
-public class LogMonitorJvmStatusEntity extends BaseVoEntity {
+public class LogMonitorJvmStatusEntity extends BaseDoEntity {
 
     private Long fid;
 

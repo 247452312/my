@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * 定时任务
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时23分
  */
-public class JobEntity extends BaseVoEntity {
+public class JobEntity extends BaseDoEntity {
 
     /**
      * cron 表达式

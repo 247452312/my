@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * (Device)表 数据库实体类
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月29日 10时47分31秒
  */
-public class DeviceEntity extends BaseVoEntity {
+public class DeviceEntity extends BaseDoEntity {
 
     private static final long serialVersionUID = -21514581687308441L;
 

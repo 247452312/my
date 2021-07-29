@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * 日志{@db sys_log}
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月28日 12时36分
  */
-public class LogEntity extends BaseVoEntity {
+public class LogEntity extends BaseDoEntity {
 
     /**
      * 错误信息 {@ps 不一定有, 正确的操作的错误信息默认为空}

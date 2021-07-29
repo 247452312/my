@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * 页面推送
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月29日 08时10分
  */
-public class SendPageEntity extends BaseVoEntity {
+public class SendPageEntity extends BaseDoEntity {
 
     /**
      * 用户

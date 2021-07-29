@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * zookeeper
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 13时04分
  */
-public class ZookeeperEntity extends BaseVoEntity {
+public class ZookeeperEntity extends BaseDoEntity {
 
     /**
      * 登录用户名

@@ -9,7 +9,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 13时23分
  */
-public abstract class BaseVoEntity extends BaseIdEntity {
+public abstract class BaseDoEntity extends BaseIdEntity {
     /**
      * 创建时间
      */

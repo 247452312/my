@@ -1,10 +1,12 @@
 package indi.uhyils.runner;
 
 import indi.uhyils.mq.content.RabbitMqContent;
+import indi.uhyils.mq.util.LogInfoSendMqUtil;
 import indi.uhyils.mq.util.MqUtil;
 import indi.uhyils.pojo.rabbit.RabbitInterfaceCallInfoConsumer;
 import indi.uhyils.pojo.rabbit.RabbitJvmStartInfoConsumer;
 import indi.uhyils.pojo.rabbit.RabbitJvmStatusInfoConsumer;
+import indi.uhyils.pojo.rabbit.RabbitLogInfoConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Component;
  * @date 文件创建日期 2020年06月19日 11时27分
  */
 @Component
-public class JvmAndInterfaceCallInfoRunner implements ApplicationRunner {
+public class JvmAndInterfaceCallInfoAndLogRunner implements ApplicationRunner {
 
 
     @Autowired
@@ -36,5 +38,8 @@ public class JvmAndInterfaceCallInfoRunner implements ApplicationRunner {
 
         /* 第3个是启动JVM_STATUS信息的 */
         MqUtil.addConsumer(exchangeName, RabbitMqContent.JVM_STATUS_QUEUE_NAME, RabbitMqContent.JVM_STATUS_QUEUE_NAME, (channel) -> new RabbitJvmStatusInfoConsumer(channel, applicationContext));
+
+        /* 第4个是日志信息的(注,此queue流量巨大) */
+        MqUtil.addConsumer(exchangeName, LogInfoSendMqUtil.getExchangeName(), LogInfoSendMqUtil.getQueueName(), (channel) -> new RabbitLogInfoConsumer(channel, applicationContext));
     }
 }

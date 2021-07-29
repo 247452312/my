@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * 算法类
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月27日 06时24分
  */
-public class AlgorithmEntity extends BaseVoEntity {
+public class AlgorithmEntity extends BaseDoEntity {
     /**
      * 算法名称
      */

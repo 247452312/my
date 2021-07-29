@@ -71,6 +71,26 @@ public class MqUtil {
     }
 
     /**
+     * 添加消费者
+     *
+     * @param exchange         路由的名称
+     * @param queue            队列的名称
+     * @param name             消费者的名称
+     * @param consumerFunction 消费者创建逻辑
+     */
+    public static void addNoLogConsumer(String exchange, String queue, String name, Function<Channel, Consumer> consumerFunction) throws IOException, TimeoutException {
+        RabbitFactory factory = SpringUtil.getBean(RabbitFactory.class);
+        Connection conn = factory.getConn();
+        Channel channel = conn.createChannel();
+        channel.exchangeDeclare(exchange, "direct", Boolean.FALSE, Boolean.FALSE, null);
+        channel.queueDeclare(queue, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null);
+        channel.queueBind(queue, exchange, queue);
+        Consumer consumer = consumerFunction.apply(channel);
+        channel.basicConsume(queue, Boolean.FALSE, consumer);
+        consumers.put(name, consumer);
+    }
+
+    /**
      * 推送信息到mq
      *
      * @param exchange 路由名称
@@ -81,38 +101,7 @@ public class MqUtil {
      */
     private static void sendMsg(String exchange, String queue, byte[] bytes) {
         Supplier direct = () -> {
-            MqQueueInfo key = new MqQueueInfo(exchange, queue);
-            Channel channel = null;
-            if (CHANNEL_MAP.containsKey(key)) {
-                channel = CHANNEL_MAP.get(key);
-            } else {
-                newChannelLock.lock();
-                try {
-                    if (!CHANNEL_MAP.containsKey(key)) {
-                        RabbitFactory factory = SpringUtil.getBean(RabbitFactory.class);
-                        channel = factory.getConn().createChannel();
-                        //创建exchange
-                        channel.exchangeDeclare(exchange, "direct", false, false, null);
-                        //创建队列
-                        channel.queueDeclare(queue, false, false, false, null);
-                        //绑定exchange和queue
-                        channel.queueBind(queue, exchange, queue);
-                        CHANNEL_MAP.put(key, channel);
-                    } else {
-                        channel = CHANNEL_MAP.get(key);
-                    }
-
-                } catch (TimeoutException | IOException e) {
-                    LogUtil.error(e);
-                } finally {
-                    newChannelLock.unlock();
-                }
-                try {
-                    channel.basicPublish(exchange, queue, null, bytes);
-                } catch (IOException e) {
-                    LogUtil.error(e);
-                }
-            }
+            doSendMsg(exchange, queue, bytes);
             return null;
         };
         MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, direct, new String[]{exchange, queue});
@@ -135,6 +124,66 @@ public class MqUtil {
         MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
         byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
         sendMsg(exchange, queue, bytes);
+    }
+
+    /**
+     * 推送信息到mq
+     *
+     * @param exchange 路由名称
+     * @param queue    队列名称
+     * @param msg      发送的信息的byte
+     *
+     * @return
+     */
+    protected static void sendMsgNoLog(String exchange, String queue, String msg) {
+        doSendMsg(exchange, queue, JSON.toJSONString(msg).getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * 发送信息
+     *
+     * @param exchange
+     * @param queue
+     * @param bytes
+     */
+    private static void doSendMsg(String exchange, String queue, byte[] bytes) {
+        MqQueueInfo key = new MqQueueInfo(exchange, queue);
+        Channel channel = null;
+        if (CHANNEL_MAP.containsKey(key)) {
+            channel = CHANNEL_MAP.get(key);
+        } else {
+            newChannelLock.lock();
+            try {
+                if (!CHANNEL_MAP.containsKey(key)) {
+                    RabbitFactory factory = null;
+                    try {
+                        factory = SpringUtil.getBean(RabbitFactory.class);
+                    } catch (Exception e) {
+                        LogUtil.error(e);
+                    }
+                    channel = factory.getConn().createChannel();
+                    //创建exchange
+                    channel.exchangeDeclare(exchange, "direct", false, false, null);
+                    //创建队列
+                    channel.queueDeclare(queue, false, false, false, null);
+                    //绑定exchange和queue
+                    channel.queueBind(queue, exchange, queue);
+                    CHANNEL_MAP.put(key, channel);
+                } else {
+                    channel = CHANNEL_MAP.get(key);
+                }
+
+            } catch (TimeoutException | IOException e) {
+                LogUtil.error(e);
+            } finally {
+                newChannelLock.unlock();
+            }
+            try {
+                channel.basicPublish(exchange, queue, null, bytes);
+            } catch (IOException e) {
+                LogUtil.error(e);
+            }
+        }
     }
 
     /**

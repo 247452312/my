@@ -1,12 +1,12 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月26日 17时50分
  */
-public class OrderApplyEntity extends BaseVoEntity {
+public class OrderApplyEntity extends BaseDoEntity {
 
     /**
      * 申请人id

@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 import indi.uhyils.pojo.request.SubscribeRequest;
 
 /**
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.request.SubscribeRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月27日 17时17分
  */
-public class ApiSubscribeEntity extends BaseVoEntity {
+public class ApiSubscribeEntity extends BaseDoEntity {
 
     /**
      * 订阅用户id

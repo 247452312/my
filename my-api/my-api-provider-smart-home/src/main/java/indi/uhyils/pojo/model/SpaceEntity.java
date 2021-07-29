@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * (Space)表 数据库实体类
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月29日 10时47分54秒
  */
-public class SpaceEntity extends BaseVoEntity {
+public class SpaceEntity extends BaseDoEntity {
 
     private static final long serialVersionUID = -14584589457118847L;
 

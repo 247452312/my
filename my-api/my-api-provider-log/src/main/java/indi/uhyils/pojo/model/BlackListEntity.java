@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * (BlackList)表 数据库实体类
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月24日 06时40分36秒
  */
-public class BlackListEntity extends BaseVoEntity {
+public class BlackListEntity extends BaseDoEntity {
 
     private static final long serialVersionUID = -24783323375205414L;
 

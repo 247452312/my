@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * (Instructions)表 数据库实体类
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.model.base.BaseVoEntity;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月29日 10时47分50秒
  */
-public class InstructionsEntity extends BaseVoEntity {
+public class InstructionsEntity extends BaseDoEntity {
 
     private static final long serialVersionUID = -90971541994755037L;
 

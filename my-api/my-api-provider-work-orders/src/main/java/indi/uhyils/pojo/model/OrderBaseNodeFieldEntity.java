@@ -3,13 +3,13 @@ package indi.uhyils.pojo.model;
 import indi.uhyils.enum_.OrderNodeFieldSourceEnum;
 import indi.uhyils.enum_.OrderNodeFieldTypeEnum;
 import indi.uhyils.enum_.OrderNodeFieldValueTypeEnum;
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
  */
-public class OrderBaseNodeFieldEntity extends BaseVoEntity {
+public class OrderBaseNodeFieldEntity extends BaseDoEntity {
 
     /**
      * 节点id

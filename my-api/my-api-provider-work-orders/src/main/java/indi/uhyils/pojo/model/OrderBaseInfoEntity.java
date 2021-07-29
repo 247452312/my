@@ -1,13 +1,13 @@
 package indi.uhyils.pojo.model;
 
 import indi.uhyils.enum_.OrderPriorityEnum;
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
  */
-public class OrderBaseInfoEntity extends BaseVoEntity {
+public class OrderBaseInfoEntity extends BaseDoEntity {
 
     /**
      * 优先级{@link OrderPriorityEnum}

@@ -17,6 +17,7 @@
         <module>my-common-data</module>
         <module>my-common-hot-spot</module>
         <module>my-common-log</module>
+        <module>my-common-util</module>
     </modules>
     <packaging>pom</packaging>
 

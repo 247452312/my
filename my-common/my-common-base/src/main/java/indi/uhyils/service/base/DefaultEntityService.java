@@ -1,6 +1,6 @@
 package indi.uhyils.service.base;
 
-import indi.uhyils.pojo.model.base.BaseVoEntity;
+import indi.uhyils.pojo.model.base.BaseDoEntity;
 import indi.uhyils.pojo.request.base.ArgsRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
@@ -14,7 +14,7 @@ import indi.uhyils.pojo.response.base.ServiceResult;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时29分
  */
-public interface DefaultEntityService<T extends BaseVoEntity> extends BaseService {
+public interface DefaultEntityService<T extends BaseDoEntity> extends BaseService {
 
 
     /**
