@@ -2,6 +2,8 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.TraceInfoEntity;
+import indi.uhyils.pojo.request.GetLinkByTraceIdRequest;
+import indi.uhyils.pojo.request.base.DefaultPageRequest;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,5 +22,32 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
      *
      * @return
      */
-    List<TraceInfoEntity> getByTraceId(String value);
+    List<TraceInfoEntity> getByTraceId(Long value);
+
+    /**
+     * 分页获取traceId
+     *
+     * @param request 请求
+     *
+     * @return
+     */
+    List<Long> getTraceIdByPage(DefaultPageRequest request);
+
+    /**
+     * 获取traceId分页数据
+     *
+     * @param request
+     *
+     * @return
+     */
+    Integer getTraceIdByPageCount(DefaultPageRequest request);
+
+    /**
+     * 通过traceId 获取link
+     *
+     * @param traceId
+     *
+     * @return
+     */
+    List<TraceInfoEntity> getLinkByTraceId(GetLinkByTraceIdRequest traceId);
 }

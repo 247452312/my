@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.response.base;
 
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -61,9 +60,34 @@ public class Page<T extends Serializable> implements Serializable {
      * @param count       查询数量
      * @param totalPage   总页数
      * @param <T>         查询结果类
+     *
      * @return 包含分页信息的返回集
      */
     public static <T extends Serializable> Page<T> build(DefaultPageRequest pageRequest, List<T> list, Integer count, Integer totalPage) {
+        //代表分页
+        if (Boolean.TRUE.equals(pageRequest.getPaging())) {
+            return build(list, pageRequest.getSize(), pageRequest.getPage(), count, totalPage);
+        } else {
+            return build(list, count, 1, count, 1);
+        }
+    }
+
+    /**
+     * 创建一个page
+     *
+     * @param pageRequest 分页请求
+     * @param list        查询结果
+     * @param count       查询数量
+     * @param <T>         查询结果类
+     *
+     * @return 包含分页信息的返回集
+     */
+    public static <T extends Serializable> Page<T> build(DefaultPageRequest pageRequest, List<T> list, Integer count) {
+        Integer totalPage = count / pageRequest.getSize();
+        if (count % pageRequest.getSize() != 0) {
+            totalPage++;
+        }
+
         //代表分页
         if (Boolean.TRUE.equals(pageRequest.getPaging())) {
             return build(list, pageRequest.getSize(), pageRequest.getPage(), count, totalPage);
