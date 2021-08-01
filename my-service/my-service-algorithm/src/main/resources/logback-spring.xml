@@ -37,12 +37,12 @@
 
     <!--2. 输出到文档-->
     <!-- 2.1 level为 DEBUG 日志，时间滚动输出  -->
-    <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="DEBUG_FILE" class="indi.uhyils.mq.log.MyLogAppender">
         <!-- 正在记录的日志文档的路径及文档名 -->
         <file>${log.path}/${log.dir.name}/debug.log</file>
         <!--日志文档输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <pattern>%msg%n</pattern>
             <charset>UTF-8</charset> <!-- 设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -64,12 +64,12 @@
     </appender>
 
     <!-- 2.2 level为 INFO 日志，时间滚动输出  -->
-    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="INFO_FILE" class="indi.uhyils.mq.log.MyLogAppender">
         <!-- 正在记录的日志文档的路径及文档名 -->
         <file>${log.path}/${log.dir.name}/info.log</file>
         <!--日志文档输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <pattern>%msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -91,12 +91,12 @@
     </appender>
 
     <!-- 2.3 level为 WARN 日志，时间滚动输出  -->
-    <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="WARN_FILE" class="indi.uhyils.mq.log.MyLogAppender">
         <!-- 正在记录的日志文档的路径及文档名 -->
         <file>${log.path}/${log.dir.name}/warn.log</file>
         <!--日志文档输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <pattern>%msg%n</pattern>
             <charset>UTF-8</charset> <!-- 此处设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -117,12 +117,12 @@
     </appender>
 
     <!-- 2.4 level为 ERROR 日志，时间滚动输出  -->
-    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="ERROR_FILE" class="indi.uhyils.mq.log.MyLogAppender">
         <!-- 正在记录的日志文档的路径及文档名 -->
         <file>${log.path}/${log.dir.name}/error.log</file>
         <!--日志文档输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <pattern>%msg%n</pattern>
             <charset>UTF-8</charset> <!-- 此处设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -144,7 +144,7 @@
 
 
     <!--     link_log       -->
-    <appender name="LINK_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="LINK_FILE" class="indi.uhyils.mq.log.MyLogAppender">
         <encoder>
             <pattern>%msg%n</pattern>
             <charset>UTF-8</charset>
@@ -166,7 +166,7 @@
 
 
     <!--     sql_log       -->
-    <appender name="SQL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="SQL_FILE" class="indi.uhyils.mq.log.MyLogAppender">
         <encoder>
             <pattern>%msg%n</pattern>
             <charset>UTF-8</charset>
@@ -189,7 +189,7 @@
     <!-- 4. 最终的策略 -->
     <!-- 4.1 开发环境:打印控制台-->
     <springProfile name="dev">
-        <logger name="indi.uhyils" level="debug"/>
+        <logger name="indi.uhyils" level="info"/>
     </springProfile>
     <springProfile name="prod">
         <logger name="indi.uhyils" level="info"/>

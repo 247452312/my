@@ -56,7 +56,6 @@ public class ConcurrentNumberTask {
         DictItemEntity dictItemEntity = data.get(0);
         Long concurrentNumberSetable = Long.parseLong(dictItemEntity.getValue().toString());
 
-
         //如果已经降级过了
         if (degradation) {
             // 如果设置的并发数的80%大于已有并发数,说明高峰已经过去(设置80% 防抖)

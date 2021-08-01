@@ -62,7 +62,7 @@ mybatis:
   type-aliases-package: indi.uhyils.dao
 logging:
   level:
-    indi.uhyils.dao: DEBUG
+    indi.uhyils.dao: INFO
 token:
   salt: my
   encodeRules: my
@@ -72,7 +72,7 @@ redis:
   normal:
     ip: prod
     port: 6379
-    password: uhyils-single
+    password: uhyils
   hotspot:
     hosts: prod:26380;prod:26381;prod:26382
     password: uhyils

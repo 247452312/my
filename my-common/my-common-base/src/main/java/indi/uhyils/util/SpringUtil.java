@@ -23,7 +23,9 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.env.Environment;
 
 /**
@@ -32,7 +34,9 @@ import org.springframework.core.env.Environment;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月27日 16时46分
  */
-public class SpringUtil implements ApplicationContextInitializer {
+public class SpringUtil implements ApplicationContextInitializer, ApplicationListener<ContextRefreshedEvent> {
+
+    private volatile static Boolean atomicBoolean = Boolean.FALSE;
 
     private static ApplicationContext applicationContext = null;
 
@@ -59,6 +63,30 @@ public class SpringUtil implements ApplicationContextInitializer {
      */
     public static <T extends Annotation> Map<String, Object> getBeansWithAnnotation(Class<T> clazz) {
         return applicationContext.getBeansWithAnnotation(clazz);
+    }
+
+    /**
+     * 判断spring是否初始化
+     *
+     * @return
+     */
+    public static boolean isStart() {
+        if (applicationContext == null) {
+            return false;
+        }
+        if (!atomicBoolean) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 判断spring是否初始化
+     *
+     * @return
+     */
+    public static boolean isNotStart() {
+        return !isStart();
     }
 
     /**
@@ -164,5 +192,10 @@ public class SpringUtil implements ApplicationContextInitializer {
             LogUtil.info(SpringUtil.class, "set applicationContext");
             SpringUtil.applicationContext = applicationContext;
         }
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        atomicBoolean = true;
     }
 }

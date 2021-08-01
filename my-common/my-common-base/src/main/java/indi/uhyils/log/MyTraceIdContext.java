@@ -1,6 +1,5 @@
 package indi.uhyils.log;
 
-import com.alibaba.ttl.TransmittableThreadLocal;
 import com.google.common.base.Supplier;
 import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.util.IdUtil;
@@ -20,38 +19,44 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MyTraceIdContext {
 
     /**
-     * 主线程名称
-     */
-    private static final String MAIN_THREAD_NAME = "main";
-    /**
      * rpc_trace 信息
      */
     public static final String RPC_HEADER_TRACE_INFO = "rpcTraceInfo";
 
     /**
+     * 分隔符
+     */
+    public static final String PIPE_SYMBOL = "|";
+
+    /**
+     * hash起始符号
+     */
+    public static final String HASH_SYMBOL = "^";
+
+    /**
+     * 主线程名称
+     */
+    private static final String MAIN_THREAD_NAME = "main";
+
+    /**
      * 保存traceId的地方
      */
-    private static final ThreadLocal<Long> thraceId = new TransmittableThreadLocal<>();
+    private static final ThreadLocal<Long> thraceId = new InheritableThreadLocal<>();
 
     /**
      * 保存上一次调用链顺序的地方
      */
-    private static final ThreadLocal<List<Integer>> rpcId = new TransmittableThreadLocal<>();
+    private static final ThreadLocal<List<Integer>> rpcId = new InheritableThreadLocal<>();
 
     /**
      * 这一次调用的RPCid
      */
-    private static final ThreadLocal<AtomicInteger> thisRpcId = new TransmittableThreadLocal<>();
-
-    /**
-     * 分隔符
-     */
-    private static final String PIPE_SYMBOL = "|";
+    private static final ThreadLocal<AtomicInteger> thisRpcId = new InheritableThreadLocal<>();
 
     /**
      * 项目名称
      */
-    private static String projectName = SpringUtil.getProperty("spring.application.name", "NoName");
+    private volatile static String projectName = SpringUtil.getProperty("spring.application.name", "NoName");
 
     public static String getProjectName() {
         return projectName;
@@ -84,7 +89,7 @@ public class MyTraceIdContext {
         String threadName = Thread.currentThread().getName();
         sb.append(threadName);
         sb.append(PIPE_SYMBOL);
-        sb.append(projectName);
+        sb.append(getProjectName());
         sb.append(PIPE_SYMBOL);
         sb.append(timeConsuming);
         for (String info : otherInfo) {
@@ -180,6 +185,16 @@ public class MyTraceIdContext {
     }
 
     /**
+     * 设置rpcId
+     *
+     * @param lastRpcIds
+     */
+    public static void setRpcId(List<Integer> lastRpcIds) {
+        rpcId.set(lastRpcIds);
+        thisRpcId.set(new AtomicInteger(1));
+    }
+
+    /**
      * 获取rpcId
      *
      * @return
@@ -191,11 +206,9 @@ public class MyTraceIdContext {
         return sb.toString();
     }
 
-
     private static boolean checkMainThread() {
         return MAIN_THREAD_NAME.equals(Thread.currentThread().getName());
     }
-
 
     /**
      * rpcId
@@ -213,17 +226,6 @@ public class MyTraceIdContext {
         }
         sb.append(rpcId);
         return sb;
-    }
-
-
-    /**
-     * 设置rpcId
-     *
-     * @param lastRpcIds
-     */
-    public static void setRpcId(List<Integer> lastRpcIds) {
-        rpcId.set(lastRpcIds);
-        thisRpcId.set(new AtomicInteger(1));
     }
 
     public static void clean() {
@@ -289,7 +291,7 @@ public class MyTraceIdContext {
             switch (logType) {
                 case DB:
                     assert additional != null;
-                    LogUtil.sql(hash, additional[0], useTime);
+                    LogUtil.sql(hash, getThraceId(), additional[0], useTime);
                     break;
                 case MQ:
                     // todo mq的日志
@@ -335,9 +337,11 @@ public class MyTraceIdContext {
             sb.append(additional);
             sb.append(PIPE_SYMBOL);
         }
-        sb.deleteCharAt(sb.length() - 1);
+        if (sb.length() != 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
         int hash = sb.toString().hashCode() & 0xFFFFFFF;
-        return "^" + Integer.toUnsignedString(hash, 16);
+        return HASH_SYMBOL + Integer.toUnsignedString(hash, 16);
 
     }
 }

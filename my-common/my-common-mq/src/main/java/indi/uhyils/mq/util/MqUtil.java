@@ -86,7 +86,7 @@ public class MqUtil {
         channel.queueDeclare(queue, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null);
         channel.queueBind(queue, exchange, queue);
         Consumer consumer = consumerFunction.apply(channel);
-        channel.basicConsume(queue, Boolean.FALSE, consumer);
+        channel.basicConsume(queue, Boolean.TRUE, consumer);
         consumers.put(name, consumer);
     }
 
@@ -147,6 +147,7 @@ public class MqUtil {
      * @param bytes
      */
     private static void doSendMsg(String exchange, String queue, byte[] bytes) {
+
         MqQueueInfo key = new MqQueueInfo(exchange, queue);
         Channel channel = null;
         if (CHANNEL_MAP.containsKey(key)) {
@@ -178,11 +179,11 @@ public class MqUtil {
             } finally {
                 newChannelLock.unlock();
             }
-            try {
-                channel.basicPublish(exchange, queue, null, bytes);
-            } catch (IOException e) {
-                LogUtil.error(e);
-            }
+        }
+        try {
+            channel.basicPublish(exchange, queue, null, bytes);
+        } catch (IOException e) {
+            LogUtil.error(e);
         }
     }
 

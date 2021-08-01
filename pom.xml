@@ -58,7 +58,7 @@
         <hystrix.version>1.5.18</hystrix.version>
         <es.version>7.9.1</es.version>
         <netty.version>4.1.54.Final</netty.version>
-        <transmittable.threalLocal.version>2.12.1</transmittable.threalLocal.version>
+        <flink.version>1.13.1</flink.version>
         <my.rpc.version>1.0.3.my-SNAPSHOT</my.rpc.version>
 
     </properties>
@@ -341,12 +341,6 @@
                 <version>${tencentcloud.version}</version>
             </dependency>
 
-            <!--阿里可传递的ThreadLocal-->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>transmittable-thread-local</artifactId>
-                <version>${transmittable.threalLocal.version}</version>
-            </dependency>
 
             <!-- poi -->
             <dependency>

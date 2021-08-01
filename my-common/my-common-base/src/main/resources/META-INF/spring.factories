@@ -1,1 +1,2 @@
 org.springframework.context.ApplicationContextInitializer=indi.uhyils.util.SpringUtil
+org.springframework.context.ApplicationListener=indi.uhyils.util.SpringUtil

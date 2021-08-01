@@ -56,11 +56,6 @@
             <artifactId>my-rpc-spring-start</artifactId>
         </dependency>
 
-        <!--阿里可传递的ThreadLocal-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>transmittable-thread-local</artifactId>
-        </dependency>
 
     </dependencies>
 

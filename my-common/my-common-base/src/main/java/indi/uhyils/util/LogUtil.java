@@ -169,7 +169,7 @@ public class LogUtil {
      * @param msg
      */
     public static void link(String msg) {
-        LINK_LOG.error(LINK_MARKER, msg);
+        LINK_LOG.info(LINK_MARKER, msg);
     }
 
     /**
@@ -179,9 +179,9 @@ public class LogUtil {
      * @param sql
      * @param timeConsuming
      */
-    public static void sql(String unique, String sql, long timeConsuming) {
-        sql = String.format("%s|%d|%s", unique, timeConsuming, sql);
-        SQL_LOG.error(SQL_MARKER, sql);
+    public static void sql(String unique, Long traceId, String sql, long timeConsuming) {
+        sql = String.format("%s|%d|%d|%s", unique, traceId, timeConsuming, sql);
+        SQL_LOG.info(SQL_MARKER, sql);
     }
 
 
@@ -194,7 +194,7 @@ public class LogUtil {
      */
     private static void writeLog(String className, String msg, Throwable throwable, LogTypeEnum logTypeEnum) {
         if (msg != null) {
-            msg = String.format("%s|%s|%s", MyTraceIdContext.getThraceId(), MyTraceIdContext.getRpcIdStr(), msg);
+            msg = String.format("%s|%s|%d|%s", MyTraceIdContext.getThraceId(), MyTraceIdContext.getRpcIdStr(), System.currentTimeMillis(), msg);
         }
         if (loggerMap.containsKey(className)) {
             Logger logger = loggerMap.get(className);

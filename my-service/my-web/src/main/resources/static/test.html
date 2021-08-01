@@ -1,23 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>测试css用</title>
-    <link href="css/my.css" rel="stylesheet">
-    <link href="lib/layui-v2.5.5/css/modules/layer/default/layer.css" rel="stylesheet">
-    <script src="lib/layui-v2.5.5/lay/modules/layer.js"></script>
-    <script src="js/my.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/mouse.min.js"></script>
+  <meta charset="UTF-8">
+  <title>测试css用</title>
+  <link href="css/my.css" rel="stylesheet">
+  <link href="lib/layui-v2.5.5/css/modules/layer/default/layer.css" rel="stylesheet">
+  <script src="lib/layui-v2.5.5/lay/modules/layer.js"></script>
+  <script src="js/my.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/mouse.min.js"></script>
 
 </head>
 <body>
+<div class="layui-table" id="munu-table" lay-filter="munu-table"></div>
+
+
+<script charset="utf-8" src="../lib/layui-v2.5.5/layui.js"></script>
+<script charset="utf-8" src="../js/lay-config.js?v=1.0.4"></script>
+<script charset="UTF-8" src="/js/jquery.min.js"></script>
+<script charset="UTF-8" src="/js/my.js"></script>
 
 <script type="text/javascript">
-    $.shuicheMouse({
-        type: 11,
-        color: "rgb(0,0,0)"
-    })
+
+  layui.use('tree', function () {
+    var tree = layui.tree;
+
+    pushRequest("TraceInfoService", "getLinkByTraceId", {value: '1706804689839849504'}, function (data) {
+      data = data.link.list;
+      debugger;
+      data = addTraceId(data);
+      console.log(JSON.stringify(data));
+      //渲染
+      var inst1 = tree.render({
+        elem: '#munu-table'  //绑定元素
+        , data: data
+      });
+    });
+
+  });
+
+  function addTraceId(node) {
+    if (node == null || node.length == 0) {
+      return [];
+    }
+    let result = [];
+    for (let i = 0; i < node.length; i++) {
+      let nodeElement = node[i];
+      let traceInfoEntity = nodeElement.traceInfoEntity;
+      let lastChinder = nodeElement.lastLayerTrace;
+      node[i].spread = true;
+
+      node[i].title = traceInfoEntity.rpcId + ' ' + traceInfoEntity.other;
+      node[i].children = addTraceId(lastChinder);
+      result.push(node[i]);
+    }
+    return result;
+
+  }
+
 </script>
 </body>
 </html>

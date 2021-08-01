@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="indi.uhyils.dao.TraceInfoDao">
+    <sql id="columnList">
+        a.polymerization as polymerization,
+        a.trace_id       as traceId,
+        a.other          as other,
+        a.level          as level,
+        a.use_time       as useTime,
+        a.remark         as remark,
+        a.project_name   as projectName,
+        a.update_date    as updateDate,
+        a.start_time     as startTime,
+        a.log_type       as logType,
+        a.update_user    as updateUser,
+        a.rpc_id         as rpcId,
+        a.thread_name    as threadName,
+        a.id             as id,
+        a.create_user    as createUser,
+        a.create_date    as createDate,
+        a.delete_flag    as deleteFlag
+    </sql>
+
+    <select id="getById" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
+        select
+        <include refid="columnList"/>
+        from sys_trace_info a
+        where delete_flag = 0
+          and id = #{id}
+    </select>
+
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
+        select
+        <include refid="columnList"/>
+        from sys_trace_info a
+            where delete_flag = 0
+        <foreach item="item" index="index" collection="list">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+    </select>
+
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
+        select
+        <include refid="columnList"/>
+        from sys_trace_info a
+            where delete_flag = 0
+
+        <foreach item="item" index="index" collection="args">
+            and ${item.name} ${item.symbol} #{item.data}
+        </foreach>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size}
+                , ${page * size}
+        </if>
+    </select>
+
+
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.TraceInfoEntity">
+        insert
+            sys_trace_info(polymerization,
+		trace_id,
+		other,
+		level,
+		use_time,
+		remark,
+		project_name,
+		update_date,
+		start_time,
+		log_type,
+		update_user,
+		rpc_id,
+		thread_name,
+		id,
+		create_user,
+		create_date,
+		delete_flag)
+        values (
+            #{polymerization},
+            #{traceId},
+            #{other},
+            #{level},
+            #{useTime},
+            #{remark},
+            #{projectName},
+            #{updateDate},
+            #{startTime},
+            #{logType},
+            #{updateUser},
+            #{rpcId},
+            #{threadName},
+            #{id},
+            #{createUser},
+            #{createDate},
+            #{deleteFlag}
+            )
+    </insert>
+
+    <update id="update" parameterType="indi.uhyils.pojo.model.TraceInfoEntity">
+        update sys_trace_info set
+        <if test="polymerization != null and polymerization != ''">
+            , polymerization = #{polymerization}
+        </if>
+        <if test="traceId != null and traceId != ''">
+            , trace_id = #{traceId}
+        </if>
+        <if test="other != null and other != ''">
+            , other = #{other}
+        </if>
+        <if test="level != null and level != ''">
+            , level = #{level}
+        </if>
+        <if test="useTime != null and useTime != ''">
+            , use_time = #{useTime}
+        </if>
+        <if test="remark != null and remark != ''">
+            , remark = #{remark}
+        </if>
+        <if test="projectName != null and projectName != ''">
+            , project_name = #{projectName}
+        </if>
+        <if test="updateDate != null and updateDate != ''">
+            , update_date = #{updateDate}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            , start_time = #{startTime}
+        </if>
+        <if test="logType != null and logType != ''">
+            , log_type = #{logType}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+            , update_user = #{updateUser}
+        </if>
+        <if test="rpcId != null and rpcId != ''">
+            , rpc_id = #{rpcId}
+        </if>
+        <if test="threadName != null and threadName != ''">
+            , thread_name = #{threadName}
+        </if>
+        <if test="createUser != null and createUser != ''">
+            , create_user = #{createUser}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            , create_date = #{createDate}
+        </if>
+        <if test="deleteFlag != null and deleteFlag != ''">
+            , delete_flag = #{deleteFlag}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_trace_info a
+        where delete_flag = 0;
+    </select>
+
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_trace_info a
+            where delete_flag = 0
+        <foreach item="arg" index="index" collection="args">
+            and ${arg.name} ${arg.symbol} #{arg.data}
+        </foreach>
+    </select>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_trace_info a
+        where ${columnName} = #{value}
+    </select>
+
+    <select id="getByTraceId" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
+        select
+        <include refid="columnList"/>
+        from sys_trace_info a
+        where delete_flag = 0
+          and trace_id = #{value}
+    </select>
+</mapper>

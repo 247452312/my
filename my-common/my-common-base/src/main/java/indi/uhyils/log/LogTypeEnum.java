@@ -22,6 +22,15 @@ public enum LogTypeEnum {
         this.code = code;
     }
 
+    public static LogTypeEnum parse(Integer code) {
+        for (LogTypeEnum value : values()) {
+            if (value.getCode().equals(code)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
     public Integer getCode() {
         return code;
     }
