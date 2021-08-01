@@ -61,7 +61,10 @@ public class TraceInfoServiceImpl extends BaseDefaultServiceImpl<TraceInfoEntity
     @Override
     public ServiceResult<GetLinkByTraceIdResponse> getLinkByTraceId(GetLinkByTraceIdRequest request) {
         List<TraceInfoEntity> traceIds = dao.getLinkByTraceId(request);
-        traceIds = traceIds.stream().filter(t -> t.getRpcId() != null && t.getRpcId().lastIndexOf(".") == request.getRpcId().length()).collect(Collectors.toList());
+        traceIds = traceIds.stream()
+                           .filter(t -> t.getRpcId() != null)
+                           .filter(t -> t.getRpcId().lastIndexOf(".") == request.getRpcId().length())
+                           .collect(Collectors.toList());
         return ServiceResult.buildSuccessResult(GetLinkByTraceIdResponse.build(traceIds), request);
     }
 
