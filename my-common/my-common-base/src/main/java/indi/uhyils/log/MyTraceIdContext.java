@@ -56,7 +56,7 @@ public class MyTraceIdContext {
     /**
      * 项目名称
      */
-    private volatile static String projectName = SpringUtil.getProperty("spring.application.name", "NoName");
+    private volatile static String projectName = SpringUtil.getProperty("rpc.application.name", "NoName");
 
     public static String getProjectName() {
         return projectName;
@@ -282,27 +282,29 @@ public class MyTraceIdContext {
             String hash = null;
             if (additional != null && additional.length != 0) {
                 String[] realOther = new String[other.length + 1];
-                System.arraycopy(other, 0, realOther, 0, other.length);
+                System.arraycopy(other, 0, realOther, 1, other.length);
                 hash = hash(additional);
-                realOther[other.length] = hash;
+                realOther[0] = hash;
                 other = realOther;
             }
             printLogInfo(rpcIdStr, logType, startTime, useTime, other);
+            assert additional != null;
             switch (logType) {
                 case DB:
-                    assert additional != null;
-                    LogUtil.sql(hash, getThraceId(), additional[0], useTime);
+                    LogUtil.sql(getThraceId(), hash, useTime, additional[0]);
                     break;
                 case MQ:
-                    // todo mq的日志
+                    LogUtil.mq(getThraceId(), hash, useTime, additional[0], additional[1]);
                     break;
                 case RPC:
-                    // todo rpc的日志
+                    LogUtil.rpc(getThraceId(), hash, useTime, additional[0], additional[1]);
                     break;
                 case TASK:
-                    // todo 定时任务的日志
+                    LogUtil.task(getThraceId(), hash, useTime, additional[0], additional[1]);
+                    break;
                 case CONTROLLER:
-                    // todo controller的日志
+                    LogUtil.controller(getThraceId(), hash, useTime, additional[0]);
+                    break;
                 default:
                     break;
             }

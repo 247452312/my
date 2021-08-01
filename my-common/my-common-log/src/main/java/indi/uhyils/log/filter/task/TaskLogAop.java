@@ -44,7 +44,7 @@ public class TaskLogAop {
             return null;
         };
         try {
-            return MyTraceIdContext.printLogInfo(LogTypeEnum.TASK, objectSupplier, new String[]{className, methodName});
+            return MyTraceIdContext.printLogInfo(LogTypeEnum.TASK, objectSupplier, new String[]{className, methodName}, className, methodName);
         } finally {
             MyTraceIdContext.clean();
         }

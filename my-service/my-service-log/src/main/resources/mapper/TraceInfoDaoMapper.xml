@@ -3,23 +3,22 @@
 
 <mapper namespace="indi.uhyils.dao.TraceInfoDao">
     <sql id="columnList">
-        a.polymerization as polymerization,
-        a.trace_id       as traceId,
-        a.other          as other,
-        a.level          as level,
-        a.use_time       as useTime,
-        a.remark         as remark,
-        a.project_name   as projectName,
-        a.update_date    as updateDate,
-        a.start_time     as startTime,
-        a.log_type       as logType,
-        a.update_user    as updateUser,
-        a.rpc_id         as rpcId,
-        a.thread_name    as threadName,
-        a.id             as id,
-        a.create_user    as createUser,
-        a.create_date    as createDate,
-        a.delete_flag    as deleteFlag
+        a.trace_id     as traceId,
+        a.other        as other,
+        a.level        as level,
+        a.use_time     as useTime,
+        a.remark       as remark,
+        a.project_name as projectName,
+        a.update_date  as updateDate,
+        a.start_time   as startTime,
+        a.log_type     as logType,
+        a.update_user  as updateUser,
+        a.rpc_id       as rpcId,
+        a.thread_name  as threadName,
+        a.id           as id,
+        a.create_user  as createUser,
+        a.create_date  as createDate,
+        a.delete_flag  as deleteFlag
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
@@ -58,7 +57,7 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.TraceInfoEntity">
         insert
-            sys_trace_info(polymerization,
+            sys_trace_info(
 		trace_id,
 		other,
 		level,
@@ -76,7 +75,6 @@
 		create_date,
 		delete_flag)
         values (
-            #{polymerization},
             #{traceId},
             #{other},
             #{level},
@@ -98,9 +96,6 @@
 
     <update id="update" parameterType="indi.uhyils.pojo.model.TraceInfoEntity">
         update sys_trace_info set
-        <if test="polymerization != null and polymerization != ''">
-            , polymerization = #{polymerization}
-        </if>
         <if test="traceId != null and traceId != ''">
             , trace_id = #{traceId}
         </if>
@@ -189,8 +184,11 @@
 
     <select id="getTraceIdByPageCount" resultType="java.lang.Integer">
         select count(*)
-        from sys_trace_info a
-        group by trace_id
+        from (
+                 select count(*)
+                 from sys_trace_info a
+                 group by trace_id
+                 ) b
     </select>
 
     <select id="getLinkByTraceId" resultType="indi.uhyils.pojo.model.TraceInfoEntity">

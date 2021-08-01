@@ -12,3 +12,7 @@ spring:
     url: jdbc:mysql://prod:3306/my_push
     username: root
     password: 123456
+id:
+  organization:
+    # 机构代码
+    code: 7

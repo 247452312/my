@@ -34,15 +34,20 @@ public class RpcSendLogFilter implements ConsumerFilter {
         AbstractRpcData requestData = (AbstractRpcData) invokerContext.getRequestData();
         RpcContent content = requestData.content();
         return MyTraceIdContext.printLogInfo(LogTypeEnum.RPC, () -> {
-            try {
-                addRpcTraceInfoToRpcHeader(requestData, nextRpcIds);
-                return invoker.invoke(invokerContext);
-            } catch (RpcException | ClassNotFoundException | InterruptedException e) {
-                LogUtil.error(this, e);
-            }
-            return null;
-        }, new String[]{content.getLine(RpcRequestContentEnum.SERVICE_NAME.getLine()),
-            content.getLine(RpcRequestContentEnum.METHOD_NAME.getLine())});
+                                                 try {
+                                                     addRpcTraceInfoToRpcHeader(requestData, nextRpcIds);
+                                                     return invoker.invoke(invokerContext);
+                                                 } catch (RpcException | ClassNotFoundException | InterruptedException e) {
+                                                     LogUtil.error(this, e);
+                                                 }
+                                                 return null;
+                                             }, new String[]{parseContentInfo(content, RpcRequestContentEnum.SERVICE_NAME),
+                                                 parseContentInfo(content, RpcRequestContentEnum.METHOD_NAME)}, parseContentInfo(content, RpcRequestContentEnum.SERVICE_NAME),
+                                             parseContentInfo(content, RpcRequestContentEnum.METHOD_NAME));
+    }
+
+    private String parseContentInfo(RpcContent content, RpcRequestContentEnum methodName) {
+        return content.getLine(methodName.getLine());
     }
 
     private void addRpcTraceInfoToRpcHeader(AbstractRpcData requestData, List<Integer> nextRpcIds) {

@@ -20,3 +20,8 @@ spring:
 tencent:
   voice:
     url: https://api.ai.qq.com/fcgi-bin/aai/aai_asr
+
+id:
+  organization:
+    # 机构代码
+    code: 2

@@ -8,10 +8,6 @@ import indi.uhyils.pojo.model.base.BaseDoEntity;
  */
 public class TraceInfoEntity extends BaseDoEntity {
 
-    /**
-     * 是否是聚合日志
-     */
-    private Boolean polymerization;
 
     /**
      *
@@ -67,15 +63,6 @@ public class TraceInfoEntity extends BaseDoEntity {
      * 线程名称
      */
     private String threadName;
-
-
-    public Boolean getPolymerization() {
-        return polymerization;
-    }
-
-    public void setPolymerization(Boolean polymerization) {
-        this.polymerization = polymerization;
-    }
 
     public Long getTraceId() {
         return traceId;

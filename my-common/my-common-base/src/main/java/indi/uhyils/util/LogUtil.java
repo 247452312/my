@@ -32,6 +32,34 @@ public class LogUtil {
     private static final Marker SQL_MARKER = MarkerFactory.getMarker("SQL");
 
     /**
+     * mq
+     */
+    private static final Logger MQ_LOG = LoggerFactory.getLogger("mq_log");
+
+    private static final Marker MQ_MARKER = MarkerFactory.getMarker("MQ");
+
+    /**
+     * mq
+     */
+    private static final Logger RPC_LOG = LoggerFactory.getLogger("rpc_log");
+
+    private static final Marker RPC_MARKER = MarkerFactory.getMarker("RPC");
+
+    /**
+     * task
+     */
+    private static final Logger TASK_LOG = LoggerFactory.getLogger("task_log");
+
+    private static final Marker TASK_MARKER = MarkerFactory.getMarker("TASK");
+
+    /**
+     * controller
+     */
+    private static final Logger CONTROLLER_LOG = LoggerFactory.getLogger("controller_log");
+
+    private static final Marker CONTROLLER_MARKER = MarkerFactory.getMarker("CONTROLLER");
+
+    /**
      * 日志文件缓存地
      */
     private static Map<String, Logger> loggerMap = new HashMap<>();
@@ -175,15 +203,64 @@ public class LogUtil {
     /**
      * sql语句打印
      *
-     * @param unique
+     * @param hash
      * @param sql
-     * @param timeConsuming
+     * @param useTime
      */
-    public static void sql(String unique, Long traceId, String sql, long timeConsuming) {
-        sql = String.format("%s|%d|%d|%s", unique, traceId, timeConsuming, sql);
+    public static void sql(Long traceId, String hash, long useTime, String sql) {
+        sql = String.format("%d|%s|%d|%d|%s", traceId, hash, System.currentTimeMillis(), useTime, sql);
         SQL_LOG.info(SQL_MARKER, sql);
     }
 
+    /**
+     * mq打印
+     *
+     * @param hash
+     * @param exchangeName
+     * @param queueName
+     */
+    public static void mq(Long traceId, String hash, long useTime, String exchangeName, String queueName) {
+        String msg = String.format("%d|%s|%d|%d|%s|%s", traceId, hash, System.currentTimeMillis(), useTime, exchangeName, queueName);
+        MQ_LOG.info(MQ_MARKER, msg);
+    }
+
+    /**
+     * rpc打印
+     *
+     * @param hash
+     * @param useTime
+     * @param serviceName
+     * @param methodName
+     */
+    public static void rpc(Long traceId, String hash, long useTime, String serviceName, String methodName) {
+        String msg = String.format("%d|%s|%d|%d|%s|%s", traceId, hash, System.currentTimeMillis(), useTime, serviceName, methodName);
+        RPC_LOG.info(RPC_MARKER, msg);
+    }
+
+    /**
+     * rpc打印
+     *
+     * @param hash
+     * @param useTime
+     * @param serviceName
+     * @param methodName
+     */
+    public static void task(Long traceId, String hash, long useTime, String serviceName, String methodName) {
+        String msg = String.format("%d|%s|%d|%d|%s|%s", traceId, hash, System.currentTimeMillis(), useTime, serviceName, methodName);
+        TASK_LOG.info(TASK_MARKER, msg);
+    }
+
+    /**
+     * controller打印
+     *
+     * @param hash
+     * @param useTime
+     * @param url
+     */
+    public static void controller(Long traceId, String hash, long useTime, String url) {
+        String msg = String.format("%d|%s|%d|%d|%s", traceId, hash, System.currentTimeMillis(), useTime, url);
+        CONTROLLER_LOG.info(CONTROLLER_MARKER, msg);
+    }
 
     /**
      * 根据类型输出不同级别的对应类的日志
@@ -193,8 +270,8 @@ public class LogUtil {
      * @param logTypeEnum 类型
      */
     private static void writeLog(String className, String msg, Throwable throwable, LogTypeEnum logTypeEnum) {
-        if (msg != null) {
-            msg = String.format("%s|%s|%d|%s", MyTraceIdContext.getThraceId(), MyTraceIdContext.getRpcIdStr(), System.currentTimeMillis(), msg);
+        if (msg != null && logTypeEnum != LogTypeEnum.DEBUG) {
+            msg = String.format("%s|%s|%d|%s", MyTraceIdContext.getThraceId(), MyTraceIdContext.getAndAddRpcIdStr(), System.currentTimeMillis(), msg);
         }
         if (loggerMap.containsKey(className)) {
             Logger logger = loggerMap.get(className);

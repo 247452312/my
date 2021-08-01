@@ -62,7 +62,7 @@ public class ControllerLogFilter implements Filter {
                 LogUtil.error(e);
             }
             return null;
-        }, new String[]{requestUri});
+        }, new String[]{requestUri}, requestUri);
     }
 
 

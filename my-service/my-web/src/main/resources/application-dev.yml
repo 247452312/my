@@ -10,3 +10,7 @@ rpc:
 
 log-out:
   dir-name: web
+id:
+  organization:
+    # 机构代码
+    code: 12

@@ -104,7 +104,7 @@ public class MqUtil {
             doSendMsg(exchange, queue, bytes);
             return null;
         };
-        MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, direct, new String[]{exchange, queue});
+        MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, direct, new String[]{exchange, queue}, exchange, queue);
 
     }
 
@@ -237,7 +237,7 @@ public class MqUtil {
             }
             return null;
         };
-        MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, direct, new String[]{exchange, queue});
+        MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, direct, new String[]{exchange, queue}, exchange, queue);
     }
 
     /**
@@ -260,7 +260,7 @@ public class MqUtil {
                 LogUtil.error(e);
             }
             return null;
-        }, new String[]{exchange, queue});
+        }, new String[]{exchange, queue}, exchange, queue);
 
     }
 

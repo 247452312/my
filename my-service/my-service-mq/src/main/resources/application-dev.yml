@@ -38,4 +38,9 @@ queue:
 
 logging:
   level:
-    indi.uhyils.netty.handler.MqByteToMessageDecoder: debug
+    indi.uhyils.netty.handler.MqByteToMessageDecoder: info
+
+id:
+  organization:
+    # 机构代码
+    code: 6
