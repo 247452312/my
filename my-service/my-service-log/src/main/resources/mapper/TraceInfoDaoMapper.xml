@@ -3,22 +3,24 @@
 
 <mapper namespace="indi.uhyils.dao.TraceInfoDao">
     <sql id="columnList">
-        a.trace_id as traceId,
-        a.other as other,
-        a.level as level,
-        a.use_time as useTime,
-        a.remark as remark,
+        a.trace_id     as traceId,
+        a.other        as other,
+        a.level        as level,
+        a.use_time     as useTime,
+        a.remark       as remark,
         a.project_name as projectName,
-        a.update_date as updateDate,
-        a.start_time as startTime,
-        a.log_type as logType,
-        a.update_user as updateUser,
-        a.rpc_id as rpcId,
-        a.thread_name as threadName,
-        a.id as id,
-        a.create_user as createUser,
-        a.create_date as createDate,
-        a.delete_flag as deleteFlag
+        a.logger_name as loggerName,
+        a.update_date  as updateDate,
+        a.start_time   as startTime,
+        a.log_type     as logType,
+        a.update_user  as updateUser,
+        a.rpc_id       as rpcId,
+        a.hash_code    as hashCode,
+        a.thread_name  as threadName,
+        a.id           as id,
+        a.create_user  as createUser,
+        a.create_date  as createDate,
+        a.delete_flag  as deleteFlag
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
@@ -26,14 +28,14 @@
         <include refid="columnList"/>
         from sys_trace_info a
         where delete_flag = 0
-        and id = #{id}
+          and id = #{id}
     </select>
 
     <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
         select
         <include refid="columnList"/>
         from sys_trace_info a
-        where delete_flag = 0
+            where delete_flag = 0
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
@@ -43,55 +45,54 @@
         select
         <include refid="columnList"/>
         from sys_trace_info a
-        where delete_flag = 0
+            where delete_flag = 0
 
         <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
         <if test="page != null and page != ''">
-            limit ${(page-1) * size}
-            , ${page * size}
+            limit ${(page-1) * size} , ${page * size}
         </if>
     </select>
 
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.TraceInfoEntity">
-        insert
-        sys_trace_info(
-        trace_id,
-        other,
-        level,
-        use_time,
-        remark,
-        project_name,
-        update_date,
-        start_time,
-        log_type,
-        update_user,
-        rpc_id,
-        thread_name,
-        id,
-        create_user,
-        create_date,
-        delete_flag)
-        values (
-        #{traceId},
-        #{other},
-        #{level},
-        #{useTime},
-        #{remark},
-        #{projectName},
-        #{updateDate},
-        #{startTime},
-        #{logType},
-        #{updateUser},
-        #{rpcId},
-        #{threadName},
-        #{id},
-        #{createUser},
-        #{createDate},
-        #{deleteFlag}
-        )
+        insert sys_trace_info(trace_id,
+                              other,
+                              level,
+        logger_name,
+                              use_time,
+                              remark,
+                              project_name,
+                              update_date,
+                              start_time,
+                              log_type,
+                              update_user,
+                              rpc_id,
+                              thread_name,
+                              id,
+                              hash_code,
+                              create_user,
+                              create_date,
+                              delete_flag)
+        values (#{traceId},
+                #{other},
+                #{level},
+                #{loggerName},
+                #{useTime},
+                #{remark},
+                #{projectName},
+                #{updateDate},
+                #{startTime},
+                #{logType},
+                #{updateUser},
+                #{rpcId},
+                #{threadName},
+                #{id},
+                #{hashCode},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.TraceInfoEntity">
@@ -111,6 +112,9 @@
         <if test="remark != null and remark != ''">
             , remark = #{remark}
         </if>
+        <if test="loggerName != null and loggerName != ''">
+            , logger_name = #{loggerName}
+        </if>
         <if test="projectName != null and projectName != ''">
             , project_name = #{projectName}
         </if>
@@ -128,6 +132,9 @@
         </if>
         <if test="rpcId != null and rpcId != ''">
             , rpc_id = #{rpcId}
+        </if>
+        <if test="hashCode != null and hashCode != ''">
+            , hash_code = #{hashCode}
         </if>
         <if test="threadName != null and threadName != ''">
             , thread_name = #{threadName}
@@ -153,7 +160,7 @@
     <select id="countByArgs" resultType="java.lang.Integer">
         select count(*)
         from sys_trace_info a
-        where delete_flag = 0
+            where delete_flag = 0
         <foreach item="arg" index="index" collection="args">
             and ${arg.name} ${arg.symbol} #{arg.data}
         </foreach>
@@ -170,25 +177,25 @@
         <include refid="columnList"/>
         from sys_trace_info a
         where delete_flag = 0
-        and trace_id = #{value}
+          and trace_id = #{value}
     </select>
 
     <select id="getTraceIdByPage" resultType="java.lang.Long">
         select trace_id
-        from sys_trace_info a group by trace_id
+        from sys_trace_info a
+        group by trace_id
         <if test="page != null and page != ''">
-            limit ${(page-1) * size}
-            , ${page * size}
+            limit ${(page-1) * size} , ${page * size}
         </if>
     </select>
 
     <select id="getTraceIdByPageCount" resultType="java.lang.Integer">
         select count(*)
         from (
-        select count(*)
-        from sys_trace_info a
-        group by trace_id
-        ) b
+                 select count(*)
+                 from sys_trace_info a
+                 group by trace_id
+                 ) b
     </select>
 
     <select id="getLinkByTraceId" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
@@ -196,6 +203,6 @@
         <include refid="columnList"/>
         from sys_trace_info a
         where delete_flag = 0
-        and trace_id = #{traceId}
+          and trace_id = #{traceId}
     </select>
 </mapper>

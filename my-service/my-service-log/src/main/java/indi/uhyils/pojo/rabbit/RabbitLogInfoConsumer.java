@@ -18,6 +18,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.context.ApplicationContext;
@@ -47,7 +48,7 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
     public RabbitLogInfoConsumer(Channel channel, ApplicationContext applicationContext) {
         super(channel);
         int process = Runtime.getRuntime().availableProcessors();
-        executor = new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory());
+        executor = new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory(), new CallerRunsPolicy());
         traceInfoDao = applicationContext.getBean(TraceInfoDao.class);
         traceDetailDao = applicationContext.getBean(TraceDetailDao.class);
         traceLogDao = applicationContext.getBean(TraceLogDao.class);

@@ -19,7 +19,7 @@ public class MyLogAppender extends RollingFileAppender {
 
     private static final String PIPE_SYMBOL = "|";
 
-    private static final String TRACE_INFO = "sys_trace_info";
+    private static final String TRACE_INFO = "sys_trace";
 
     private static final String DEBUG = "debug";
 

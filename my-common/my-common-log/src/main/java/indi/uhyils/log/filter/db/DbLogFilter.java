@@ -32,9 +32,14 @@ public class DbLogFilter extends FilterEventAdapter {
 
     private FormatOption statementSqlFormatOption = new FormatOption(false, true);
 
+    private static final String TRACE_INFO = "sys_trace";
+
     @Override
     public boolean preparedStatement_execute(FilterChain chain, PreparedStatementProxy statement) throws SQLException {
         String preparedSql = statement.getSql();
+        if (preparedSql.contains(TRACE_INFO)) {
+            return super.preparedStatement_execute(chain, statement);
+        }
         String sql = changeSqlPlaceholder(preparedSql, statement.getParameters());
         if (LogUtil.isDebugEnabled(this)) {
             LogUtil.debug(this, sql);

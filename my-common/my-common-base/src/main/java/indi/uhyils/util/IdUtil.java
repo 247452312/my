@@ -29,33 +29,13 @@ public class IdUtil {
     /**
      * 序列号
      */
-    private AtomicLong sequence = new AtomicLong(0L);
-
-    private static void extracted() {
-        // 生成时间
-        long time = System.currentTimeMillis();
-
-        // 获取序列号
-        long sq = 0L;
-
-        // 从配置文件中获取 代表学校码
-        long distributedResult = (1 & Content.DISTRIBUTED_MASK) << Content.DISTRIBUTED_DISPLACEMENT;
-
-        //时间戳
-        long timeResult = (time & Content.TIME_MASK) << Content.TIME_DISPLACEMENT;
-
-        // 序列数
-        long sqResult = (sq & Content.SEQUENCE_MASK) << Content.SEQUENCE_DISPLACEMENT;
-
-        long l = timeResult | sqResult | distributedResult;
-        LogUtil.info(Long.toString(l));
-    }
+    private volatile AtomicLong sequence = new AtomicLong(0L);
 
     public void setCode(Long code) {
         this.code = code;
     }
 
-    public long newId() throws IdGenerationException, InterruptedException {
+    public synchronized long newId() throws IdGenerationException, InterruptedException {
         // 生成时间
         long time = System.currentTimeMillis();
         if (lastTime > time) {
@@ -66,9 +46,9 @@ public class IdUtil {
             sequence.set(0L);
             lastTime = time;
         }
-
         // 获取序列号
         long sq = sequence.getAndIncrement();
+
         // 如果序列号超出,则阻塞到下一个毫秒继续获取序列号
         if (sq > Content.SEQUENCE_MASK) {
             Thread.sleep(1L);
