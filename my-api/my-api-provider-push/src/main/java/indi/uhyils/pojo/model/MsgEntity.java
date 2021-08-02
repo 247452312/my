@@ -9,10 +9,12 @@ import indi.uhyils.pojo.model.base.BaseDoEntity;
  * @date 文件创建日期 2020年06月29日 07时53分
  */
 public class MsgEntity extends BaseDoEntity {
+
     /**
      * 发送类型
      */
     private Integer type;
+
     /**
      * 目标userId
      */

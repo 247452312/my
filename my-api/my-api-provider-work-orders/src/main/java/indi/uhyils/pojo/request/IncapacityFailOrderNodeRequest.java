@@ -14,6 +14,7 @@ public class IncapacityFailOrderNodeRequest extends DefaultRequest {
      * 节点id
      */
     private Long orderNodeId;
+
     /**
      * 失败原因
      */

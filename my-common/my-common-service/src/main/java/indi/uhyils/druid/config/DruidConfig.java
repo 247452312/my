@@ -3,13 +3,12 @@ package indi.uhyils.druid.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import javax.sql.DataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.sql.DataSource;
 
 /**
  * 配置所有项目的druid控制台
@@ -19,11 +18,12 @@ import javax.sql.DataSource;
  */
 @Configuration
 public class DruidConfig {
+
     @Bean
     public ServletRegistrationBean druidServlet() { // 主要实现WEB监控的配置处理
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(
-                // 现在要进行druid监控的配置处理操作
-                new StatViewServlet(), "/druid/*");
+            // 现在要进行druid监控的配置处理操作
+            new StatViewServlet(), "/druid/*");
         // 白名单
         servletRegistrationBean.addInitParameter("allow", "127.0.0.1");
         // 用户名

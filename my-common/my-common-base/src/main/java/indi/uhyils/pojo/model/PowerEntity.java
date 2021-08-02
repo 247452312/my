@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.model;
 
 import indi.uhyils.pojo.model.base.BaseDoEntity;
-
 import java.util.Objects;
 
 /**
@@ -16,6 +15,7 @@ public class PowerEntity extends BaseDoEntity {
      * 接口名称
      */
     private String interfaceName;
+
     /**
      * 方法名称
      */
@@ -54,7 +54,7 @@ public class PowerEntity extends BaseDoEntity {
         }
         PowerEntity that = (PowerEntity) o;
         return Objects.equals(interfaceName, that.interfaceName) &&
-                Objects.equals(methodName, that.methodName);
+               Objects.equals(methodName, that.methodName);
     }
 
     @Override

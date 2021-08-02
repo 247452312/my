@@ -5,7 +5,6 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -21,6 +20,7 @@ public interface LogService extends DefaultEntityService<LogEntity> {
      * 推送请求日志
      *
      * @param request 请求
+     *
      * @return 是否成功
      */
     ServiceResult<Boolean> pushRequestLog(ObjRequest<LogEntity> request) throws Exception;
@@ -29,6 +29,7 @@ public interface LogService extends DefaultEntityService<LogEntity> {
      * 获取所有的日志类型 -- > 这个应该不用访问数据库
      *
      * @param request 请求
+     *
      * @return 所有的日志类型
      */
     ServiceResult<ArrayList<Map<String, Object>>> getLogTypes(DefaultRequest request);

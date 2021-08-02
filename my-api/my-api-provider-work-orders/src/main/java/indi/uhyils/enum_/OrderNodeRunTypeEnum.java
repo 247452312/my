@@ -15,6 +15,7 @@ public enum OrderNodeRunTypeEnum {
 
 
     private String name;
+
     private Integer code;
 
     OrderNodeRunTypeEnum(String name, Integer code) {

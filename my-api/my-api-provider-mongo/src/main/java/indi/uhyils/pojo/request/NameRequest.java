@@ -9,6 +9,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @date 文件创建日期 2020年07月02日 16时35分
  */
 public class NameRequest extends DefaultRequest {
+
     /**
      * 名称, 人名,地名,文件名
      */

@@ -9,14 +9,17 @@ import indi.uhyils.pojo.model.base.BaseDoEntity;
  * @date 文件创建日期 2020年06月16日 14时50分
  */
 public class DictItemEntity extends BaseDoEntity {
+
     /**
      * 字典id
      */
     private Long dictId;
+
     /**
      * 文本
      */
     private String text;
+
     /**
      * 值
      */

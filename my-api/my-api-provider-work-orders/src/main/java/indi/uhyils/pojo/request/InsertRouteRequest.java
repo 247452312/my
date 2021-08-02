@@ -7,4 +7,5 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @date 文件创建日期 2020年11月09日 19时30分
  */
 public class InsertRouteRequest extends DefaultRequest {
+
 }

@@ -10,22 +10,27 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @date 文件创建日期 2020年07月04日 17时15分
  */
 public class CellAlgorithmRequest extends DefaultRequest {
+
     /**
      * 算法id
      */
     private Long algorithmId;
+
     /**
      * 此次请求id
      */
     private Long requestId;
+
     /**
      * 上一个请求的id
      */
     private Long lastRequestId;
+
     /**
      * 请求体
      */
     private Double[] requestBody;
+
     /**
      * base64请求体
      */

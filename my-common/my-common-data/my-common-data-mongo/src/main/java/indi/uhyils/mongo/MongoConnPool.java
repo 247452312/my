@@ -1,13 +1,12 @@
 package indi.uhyils.mongo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * mongo连接池
@@ -31,11 +30,13 @@ public class MongoConnPool {
      */
     @Value("${mongo.pool.coreSize}")
     private Integer coreConnSize;
+
     /**
      * 最大连接数量
      */
     @Value("${mongo.pool.maxSize}")
     private Integer maxConnSize;
+
     /**
      * 核心之外的连接存活时间
      */

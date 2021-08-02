@@ -2,7 +2,6 @@ package indi.uhyils.mq.content;
 
 
 import indi.uhyils.util.IpUtil;
-
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
@@ -41,12 +40,16 @@ public class RabbitMqContent {
      * 同时也是微服务发送监控间隔
      */
     public static final long OUT_TIME = 5L;
+
     /**
      * 数据库中默认假想超时时间比例系数 设置假想结束时间=JVM上次发送状态时间+ OUT_TIME*比例系数
      */
     public static final double OUT_TIME_PRO = 1.1;
+
     public static final String IP;
+
     public static final Long START_TIME;
+
     /**
      * log服务是否在线
      */

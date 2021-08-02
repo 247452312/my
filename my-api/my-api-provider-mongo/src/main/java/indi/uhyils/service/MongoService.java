@@ -17,6 +17,7 @@ public interface MongoService extends BaseService {
      * 添加
      *
      * @param request base64 图片
+     *
      * @return fileName
      */
     ServiceResult<String> add(ObjRequest<String> request);
@@ -25,6 +26,7 @@ public interface MongoService extends BaseService {
      * 删除
      *
      * @param request fileName
+     *
      * @return 是否成功
      */
     ServiceResult<Boolean> delete(NameRequest request);
@@ -34,6 +36,7 @@ public interface MongoService extends BaseService {
      * 根据fileName精准查询
      *
      * @param request fileName
+     *
      * @return base64
      */
     ServiceResult<String> getByFileName(NameRequest request);

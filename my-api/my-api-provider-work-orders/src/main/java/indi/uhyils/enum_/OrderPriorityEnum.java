@@ -15,6 +15,7 @@ public enum OrderPriorityEnum {
 
 
     private String name;
+
     private Integer code;
 
     OrderPriorityEnum(String name, Integer code) {

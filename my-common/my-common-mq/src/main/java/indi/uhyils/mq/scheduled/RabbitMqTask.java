@@ -9,7 +9,6 @@ import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.mq.util.JvmUtil;
 import indi.uhyils.mq.util.MqUtil;
 import indi.uhyils.util.LogUtil;
-import java.nio.charset.StandardCharsets;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -62,6 +61,7 @@ public class RabbitMqTask {
                         JvmStartInfo.setStatusInfos(null);
                     }
                 }
+
                 /**
                  * 消息处理失败
                  * @param deliveryTag 唯一标识

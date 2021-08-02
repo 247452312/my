@@ -46,6 +46,7 @@ public interface Redisable extends Closeable {
      *
      * @param key    集合名称
      * @param member 值名称
+     *
      * @return 是否存在
      */
     Boolean sismember(String key, String member);
@@ -55,6 +56,7 @@ public interface Redisable extends Closeable {
      *
      * @param key     集合名称
      * @param members 元素名称
+     *
      * @return 删除个数
      */
     Long sadd(String key, String... members);
@@ -65,6 +67,7 @@ public interface Redisable extends Closeable {
      *
      * @param key     集合名称
      * @param members 元素名称
+     *
      * @return 删除个数
      */
     Long srem(String key, String... members);
@@ -74,6 +77,7 @@ public interface Redisable extends Closeable {
      * 查询集合中的个数
      *
      * @param key 集合名称
+     *
      * @return 个数
      */
     Long scard(String key);
@@ -84,6 +88,7 @@ public interface Redisable extends Closeable {
      * @param lua  lua代码
      * @param keys lua中的key参数
      * @param args lua中的args参数
+     *
      * @return
      */
     Object lua(String lua, List<String> keys, List<String> args);
@@ -94,6 +99,7 @@ public interface Redisable extends Closeable {
      *
      * @param key  hash key
      * @param hKey key
+     *
      * @return 数量
      */
     Long hdel(String key, String hKey);
@@ -103,6 +109,7 @@ public interface Redisable extends Closeable {
      *
      * @param key  hash key
      * @param hKey 内部key
+     *
      * @return 是否存在
      */
     Boolean hexists(String key, String hKey);
@@ -112,6 +119,7 @@ public interface Redisable extends Closeable {
      *
      * @param key  hash key
      * @param hKey 内部key
+     *
      * @return 获取指定值
      */
     String hget(String key, String hKey);
@@ -120,6 +128,7 @@ public interface Redisable extends Closeable {
      * 获取hash的全部
      *
      * @param key hash的key
+     *
      * @return hash的全部
      */
     Map<String, String> hgetAll(String key);
@@ -129,6 +138,7 @@ public interface Redisable extends Closeable {
      *
      * @param key  hash的key
      * @param hKey hash内部key
+     *
      * @return 自增后的值
      */
     Long hincrby(String key, String hKey);

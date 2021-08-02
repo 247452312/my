@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.response;
 
 import indi.uhyils.enum_.ServiceQualityEnum;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +29,7 @@ public class JvmDataStatisticsResponse implements Serializable {
      * 服务运行质量详情
      */
     private HashMap<Long, List<ServiceQualityEnum>> serviceMap;
+
     /**
      * 前台请求次数
      */

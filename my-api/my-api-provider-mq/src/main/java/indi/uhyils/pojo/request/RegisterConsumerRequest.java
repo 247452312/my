@@ -10,6 +10,7 @@ import indi.uhyils.enum_.OutDealTypeEnum;
  * @Version 1.0
  */
 public class RegisterConsumerRequest extends DefaultLinkRequest {
+
     /**
      * topic名称
      */

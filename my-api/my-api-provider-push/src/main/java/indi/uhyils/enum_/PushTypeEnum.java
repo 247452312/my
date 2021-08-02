@@ -15,6 +15,7 @@ public enum PushTypeEnum {
      * 页面推送
      */
     PAGE(2);
+
     /**
      * 推送编码
      */

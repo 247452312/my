@@ -22,6 +22,7 @@ public enum OrderNodeStatusEnum {
      * 名称
      */
     private String name;
+
     /**
      * 代码
      */

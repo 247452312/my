@@ -8,7 +8,6 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
-
 import java.util.ArrayList;
 
 /**
@@ -34,6 +33,7 @@ public interface ServiceControlService extends BaseService {
      * 获取接口是否允许使用
      *
      * @param request 接口名称
+     *
      * @return
      */
     ServiceResult<Boolean> getMethodDisable(GetMethodDisableRequest request);
@@ -57,6 +57,7 @@ public interface ServiceControlService extends BaseService {
      * 删除对应的禁用接口项
      *
      * @param request 删除请求
+     *
      * @return 删除请求
      */
     ServiceResult<Boolean> delMethodDisable(DelMethodDisableRequest request);

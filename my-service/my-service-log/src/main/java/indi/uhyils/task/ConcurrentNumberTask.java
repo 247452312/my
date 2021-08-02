@@ -29,12 +29,15 @@ public class ConcurrentNumberTask {
 
 
     private static final Double RECOVERY_PRE = 0.8;
+
     /**
      * 低级服务是否降级(默认没有降级)
      */
     private volatile static Boolean degradation = Boolean.FALSE;
+
     @Resource
     private LogDao logDao;
+
     @RpcReference
     private DictService dictService;
 

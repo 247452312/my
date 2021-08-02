@@ -8,7 +8,6 @@ import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.AddBlackIpRequest;
 import indi.uhyils.pojo.request.GetLogIntervalByIpRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.OffLineJedis;
@@ -20,17 +19,16 @@ import indi.uhyils.service.LogService;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
+import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * 爬虫防范
@@ -48,46 +46,57 @@ public class IpSpiderTableAspect {
      * @ps 在redis中 黑名单是set格式的
      */
     private static final String IP_BLACK_REDIS_KEY = "ip_black_redis_key";
+
     /**
      * 临时冻结等级 在redis中的key
      *
      * @ps hash结构 key为ip value为冻结等级
      */
     private static final String IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY = "ip_black_temp_frozen_level_redis_key";
+
     /**
      * 临时冻结到期时间 在redis中的key
      *
      * @ps hash结构 key为ip value为冻结开始时间
      */
     private static final String IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY = "ip_black_temp_frozen_time_out_redis_key";
+
     /**
      * 错误次数
      *
      * @ps hash结构 key:ip,value:count
      */
     private static final String IP_TEMP_RECORD_KEY_COUNT = "ip_temp_record_key_count";
+
     /**
      * 最大错误次数
      */
     private static final Integer WRONG_COUNT = 3;
+
     /**
      * 首次被冻结时间
      */
     private static final Long FIRST_FROZEN_TIME = 3 * 60 * 1000L;
+
     /**
      * 第二次冻结时间
      */
     private static final Long SECOND_FROZEN_TIME = 60 * 60 * 1000L;
+
     /**
      * 最大冻结次数 如果第三次冻结,则清除冻结次数并加入永久黑名单
      */
     private static final Long MAX_FROZEN_COUNT = 2L;
+
     @RpcReference
     private LogService logService;
+
     @RpcReference
     private BlackListService blackListService;
+
     @Autowired
     private RedisPoolHandle redisPoolHandle;
+
     /**
      * 黑名单是否初始化
      */
@@ -251,6 +260,7 @@ public class IpSpiderTableAspect {
      * 输入了错误的验证码 或者根本就没有输入验证码
      *
      * @param ip ip
+     *
      * @return 返回前端的东西
      */
     private Object faultVerification(Redisable jedis, String ip) throws IdGenerationException, InterruptedException {

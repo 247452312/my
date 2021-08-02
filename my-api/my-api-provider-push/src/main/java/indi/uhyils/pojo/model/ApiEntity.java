@@ -15,6 +15,7 @@ public class ApiEntity extends BaseDoEntity {
      * api所在组(群)
      */
     private Long apiGroupId;
+
     /**
      * 调用顺位
      */

@@ -4,10 +4,9 @@ import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2021年07月31日 06时43分
+ * @date 文件创建日期 2021年08月02日 08时14分
  */
 public class TraceInfoEntity extends BaseDoEntity {
-
 
     /**
      *
@@ -18,11 +17,6 @@ public class TraceInfoEntity extends BaseDoEntity {
      * 其他
      */
     private String other;
-
-    /**
-     * 日志名称
-     */
-    private String logName;
 
     /**
      * 日志等级
@@ -45,14 +39,14 @@ public class TraceInfoEntity extends BaseDoEntity {
     private Long startTime;
 
     /**
-     * hash码
-     */
-    private String hashCode;
-
-    /**
      * 日志类型
      */
     private Integer logType;
+
+    /**
+     * 此条hash值
+     */
+    private String hashCode;
 
     /**
      *
@@ -63,6 +57,12 @@ public class TraceInfoEntity extends BaseDoEntity {
      * 线程名称
      */
     private String threadName;
+
+    /**
+     * 日志名称
+     */
+    private String loggerName;
+
 
     public Long getTraceId() {
         return traceId;
@@ -80,6 +80,13 @@ public class TraceInfoEntity extends BaseDoEntity {
         this.other = other;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
 
     public Long getUseTime() {
         return useTime;
@@ -113,6 +120,14 @@ public class TraceInfoEntity extends BaseDoEntity {
         this.logType = logType;
     }
 
+    public String getHashCode() {
+        return hashCode;
+    }
+
+    public void setHashCode(String hashCode) {
+        this.hashCode = hashCode;
+    }
+
     public String getRpcId() {
         return rpcId;
     }
@@ -129,27 +144,13 @@ public class TraceInfoEntity extends BaseDoEntity {
         this.threadName = threadName;
     }
 
-    public String getLogName() {
-        return logName;
+    public String getLoggerName() {
+        return loggerName;
     }
 
-    public void setLogName(String logName) {
-        this.logName = logName;
+    public void setLoggerName(String loggerName) {
+        this.loggerName = loggerName;
     }
 
-    public String getLevel() {
-        return level;
-    }
 
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public String getHashCode() {
-        return hashCode;
-    }
-
-    public void setHashCode(String hashCode) {
-        this.hashCode = hashCode;
-    }
 }

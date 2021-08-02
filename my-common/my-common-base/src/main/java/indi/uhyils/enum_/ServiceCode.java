@@ -59,6 +59,7 @@ public enum ServiceCode {
     ERROR(500, "服务器内部错误");
 
     private Integer text;
+
     private String msg;
 
     ServiceCode(Integer text, String msg) {

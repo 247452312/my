@@ -1,15 +1,7 @@
 package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.exception.NoRequestLinkException;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.LogUtil;
-import java.util.HashSet;
-import javafx.concurrent.ScheduledService;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -43,7 +35,9 @@ public class TimeLogAop {
      * 添加链路跟踪
      *
      * @param pjp 切点
+     *
      * @return 正常的返回值
+     *
      * @throws Throwable 意外,没有请求参数, 没有链路跟踪
      */
     @Around("logAspectPoint()")

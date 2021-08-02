@@ -14,10 +14,12 @@ public class AddOrEditMethodDisable implements Serializable {
      * 接口名称
      */
     private String className;
+
     /**
      * 方法名称
      */
     private String methodName;
+
     /**
      * 类型
      * 如果是接口: 0->无 1->读接口禁用 2->写接口禁用 3->全部禁用

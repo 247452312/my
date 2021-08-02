@@ -4,7 +4,6 @@ package indi.uhyils.mq.util;
 import indi.uhyils.mq.pojo.mqinfo.JvmStartInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
-
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;

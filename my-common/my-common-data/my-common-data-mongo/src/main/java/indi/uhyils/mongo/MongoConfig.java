@@ -17,6 +17,7 @@ public class MongoConfig {
      */
     @Value("${mongo.ip}")
     private String ip;
+
     /**
      * 端口
      */

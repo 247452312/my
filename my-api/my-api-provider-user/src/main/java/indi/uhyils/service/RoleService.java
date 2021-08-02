@@ -9,7 +9,6 @@ import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
-
 import java.util.ArrayList;
 
 /**
@@ -24,6 +23,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * 根据角色id获取角色
      *
      * @param request 角色id
+     *
      * @return 角色
      */
     ServiceResult<RoleEntity> getRoleByRoleId(IdRequest request);
@@ -32,6 +32,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * 给角色添加权限集
      *
      * @param request 角色id 和 权限集们
+     *
      * @return 是否成功
      */
     ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleRequest request) throws Exception;
@@ -40,6 +41,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * 删除 -> 真删. 不是假删
      *
      * @param idsRequest 要删除的中间表id
+     *
      * @return 删除是否成功
      */
     ServiceResult<Boolean> deleteRoleDept(IdsRequest idsRequest);
@@ -48,6 +50,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * 获取所有的角色
      *
      * @param request 默认
+     *
      * @return 角色
      */
     ServiceResult<ArrayList<RoleEntity>> getRoles(DefaultRequest request);
@@ -56,6 +59,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * 获取角色的用户权限集
      *
      * @param request 角色id
+     *
      * @return 对应的权限集
      */
     ServiceResult<ArrayList<DeptEntity>> getUserDeptsByRoleId(IdRequest request);
@@ -64,6 +68,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * 获取所有权限集(带有角色包不包含此权限集的标记)
      *
      * @param request 角色id
+     *
      * @return 所有权限集(带有角色包不包含此权限集的标记)
      */
     ServiceResult<ArrayList<GetAllDeptWithHaveMarkResponse>> getAllDeptWithHaveMark(IdRequest request);
@@ -72,6 +77,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      * 根据角色id删除角色以及关联表
      *
      * @param request 角色id
+     *
      * @return 删除是否成功
      */
     ServiceResult<Boolean> deleteRole(IdRequest request);

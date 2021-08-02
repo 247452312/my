@@ -9,4 +9,5 @@ import java.io.Serializable;
  * @date 文件创建日期 2020年07月04日 17时15分
  */
 public class CellAlgorithmResponse implements Serializable {
+
 }

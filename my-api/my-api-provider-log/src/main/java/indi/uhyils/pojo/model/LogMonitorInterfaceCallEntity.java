@@ -40,10 +40,12 @@ public class LogMonitorInterfaceCallEntity extends BaseDoEntity {
      * 执行时间跨度 时间戳类型
      */
     private Long runTime;
+
     /**
      * 请求大小
      */
     private Integer requestLength;
+
     /**
      * 返回值大小
      */
@@ -117,34 +119,34 @@ public class LogMonitorInterfaceCallEntity extends BaseDoEntity {
     public String toString() {
         final StringBuilder sb = new StringBuilder("{");
         sb.append("            \"fid\":")
-                .append(fid);
+          .append(fid);
         if (interfaceName != null) {
             sb.append(",            \"interfaceName\":\"")
-                    .append(interfaceName).append('\"');
+              .append(interfaceName).append('\"');
         }
         if (methodName != null) {
             sb.append(",            \"methodName\":\"")
-                    .append(methodName).append('\"');
+              .append(methodName).append('\"');
         }
         if (success != null) {
             sb.append(",            \"success\":")
-                    .append(success);
+              .append(success);
         }
         if (time != null) {
             sb.append(",            \"time\":")
-                    .append(time);
+              .append(time);
         }
         if (runTime != null) {
             sb.append(",            \"runTime\":")
-                    .append(runTime);
+              .append(runTime);
         }
         if (requestLength != null) {
             sb.append(",            \"requestLength\":")
-                    .append(requestLength);
+              .append(requestLength);
         }
         if (responseLength != null) {
             sb.append(",            \"responseLength\":")
-                    .append(responseLength);
+              .append(responseLength);
         }
         sb.append('}');
         return sb.toString();

@@ -17,6 +17,7 @@ public interface PushService extends BaseService {
      * 定时任务触发指定cron的推送
      *
      * @param request cron请求
+     *
      * @return 是否成功
      */
     ServiceResult<Boolean> push(CronRequest request) throws Exception;
@@ -25,6 +26,7 @@ public interface PushService extends BaseService {
      * 主动向某人推送一条消息
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request) throws Exception;

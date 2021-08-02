@@ -9,6 +9,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @date 文件创建日期 2020年08月24日 09时32分
  */
 public class AddBlackIpRequest extends DefaultRequest {
+
     /**
      * ip
      */

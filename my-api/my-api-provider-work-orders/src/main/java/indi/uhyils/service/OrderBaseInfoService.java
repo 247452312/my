@@ -6,7 +6,6 @@ import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.response.order.GetOneBaseOrderResponse;
 import indi.uhyils.service.base.DefaultEntityService;
-
 import java.util.ArrayList;
 
 /**
@@ -19,6 +18,7 @@ public interface OrderBaseInfoService extends DefaultEntityService<OrderBaseInfo
      * 获取全部的基础工单(id与名称)
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<ArrayList<OrderBaseInfoEntity>> getAllBaseOrderIdAndName(DefaultRequest request);
@@ -27,6 +27,7 @@ public interface OrderBaseInfoService extends DefaultEntityService<OrderBaseInfo
      * 获取一个工单的所有信息
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<GetOneBaseOrderResponse> getOneOrder(IdRequest request);

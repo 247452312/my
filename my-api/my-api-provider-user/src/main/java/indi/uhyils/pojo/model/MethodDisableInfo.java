@@ -14,6 +14,7 @@ public class MethodDisableInfo implements Serializable {
      * 类名称
      */
     private String className;
+
     /**
      * 方法名称
      */

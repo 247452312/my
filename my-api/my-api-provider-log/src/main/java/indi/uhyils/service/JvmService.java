@@ -18,6 +18,7 @@ public interface JvmService extends BaseService {
      * 获取JVM数据统计信息
      *
      * @param request 默认请求
+     *
      * @return JVM数据统计信息
      */
     ServiceResult<JvmDataStatisticsResponse> getJvmDataStatisticsResponse(DefaultRequest request);
@@ -27,6 +28,7 @@ public interface JvmService extends BaseService {
      * 获取JVM历史信息 -> 存活的
      *
      * @param request 请求
+     *
      * @return JVM历史信息 -> 存活的
      */
     ServiceResult<JvmInfoLogResponse> getJvmInfoLogResponse(DefaultRequest request);

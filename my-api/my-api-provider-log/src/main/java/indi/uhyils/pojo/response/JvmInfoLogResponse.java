@@ -33,10 +33,10 @@ public class JvmInfoLogResponse implements Serializable {
      * 创建JVM显示信息
      *
      * @param data 展示信息 -> (size=3 [0]->x轴 [1]->非堆内存 [2]->堆内存)
+     *
      * @return
      */
     public static JvmInfoLogResponse build(HashMap<String, List> data) {
-
 
         Double max = 0.0;
         JvmInfoLogResponse build = new JvmInfoLogResponse();

@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.response;
 
 import indi.uhyils.pojo.model.MenuEntity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

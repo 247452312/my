@@ -1,13 +1,18 @@
 package indi.uhyils.pojo.rabbit;
 
+
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import indi.uhyils.dao.TraceDetailDao;
 import indi.uhyils.dao.TraceInfoDao;
-import indi.uhyils.factory.TraceInfoFactory;
-import indi.uhyils.pojo.model.TraceInfoEntity;
-import indi.uhyils.util.DefaultRequestBuildUtil;
+import indi.uhyils.dao.TraceLogDao;
+import indi.uhyils.log.LogDetailTypeEnum;
+import indi.uhyils.trace.DetailTraceDeal;
+import indi.uhyils.trace.LinkTraceDeal;
+import indi.uhyils.trace.LogTraceDeal;
+import indi.uhyils.trace.TraceDealInterface;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
@@ -31,6 +36,10 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
 
     private TraceInfoDao traceInfoDao;
 
+    private TraceDetailDao traceDetailDao;
+
+    private TraceLogDao traceLogDao;
+
     /**
      * @param channel
      * @param applicationContext
@@ -40,6 +49,8 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
         int process = Runtime.getRuntime().availableProcessors();
         executor = new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory());
         traceInfoDao = applicationContext.getBean(TraceInfoDao.class);
+        traceDetailDao = applicationContext.getBean(TraceDetailDao.class);
+        traceLogDao = applicationContext.getBean(TraceLogDao.class);
     }
 
     @Override
@@ -49,16 +60,25 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
                 try {
                     String text = new String(body, StandardCharsets.UTF_8);
                     text = text.substring(1, text.length() - 1);
-                    TraceInfoEntity byText = TraceInfoFactory.createByText(text);
-                    if (byText.getTraceId() != null && 1L == byText.getTraceId()) {
-                        return;
+                    LogDetailTypeEnum parse = LogDetailTypeEnum.parse(text.charAt(0));
+                    TraceDealInterface traceDeal = null;
+                    switch (parse) {
+                        case DETAIL:
+                            traceDeal = new DetailTraceDeal();
+                            traceDeal.init(traceDetailDao);
+                            break;
+                        case LOG:
+                            traceDeal = new LogTraceDeal();
+                            traceDeal.init(traceLogDao);
+                            break;
+                        case LINK:
+                            traceDeal = new LinkTraceDeal();
+                            traceDeal.init(traceInfoDao);
+                            break;
+                        default:
+                            throw new RuntimeException("前缀错误" + text.charAt(0));
                     }
-                    if ((byText.getThreadName() != null && byText.getThreadName().startsWith(THREAD_NAME))) {
-                        return;
-                    }
-
-                    byText.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());
-                    traceInfoDao.insert(byText);
+                    traceDeal.doDeal(text);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

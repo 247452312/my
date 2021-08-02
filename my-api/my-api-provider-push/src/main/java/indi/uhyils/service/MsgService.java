@@ -10,4 +10,5 @@ import indi.uhyils.service.base.DefaultEntityService;
  * @date 文件创建日期 2020年06月29日 07时54分
  */
 public interface MsgService extends DefaultEntityService<MsgEntity> {
+
 }

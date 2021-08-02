@@ -26,6 +26,7 @@ public class JvmStatusAnalysisUtil {
      *
      * @param logMonitorEntity 初始内存
      * @param statuses         状态们
+     *
      * @return 是否健康
      */
     public static List<ServiceQualityEnum> analysis(LogMonitorEntity logMonitorEntity, List<LogMonitorJvmStatusEntity> statuses) {
@@ -119,7 +120,6 @@ public class JvmStatusAnalysisUtil {
         if (noHeapOutCount == 0 && noHeapLowCount > threshold) {
             list.add(ServiceQualityEnum.NOT_ENOUGH_NO_HEAP_MAX_MEMORY);
         }
-
 
         return list;
 

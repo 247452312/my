@@ -9,6 +9,7 @@ import java.io.Serializable;
  * @date 文件创建日期 2020年06月14日 16时33分
  */
 public class GetInfosResponse implements Serializable {
+
     /**
      * info的名称
      */

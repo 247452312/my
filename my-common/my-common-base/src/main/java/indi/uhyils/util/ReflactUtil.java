@@ -1,6 +1,10 @@
 package indi.uhyils.util;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * 反射工具类
@@ -16,7 +20,9 @@ public class ReflactUtil {
      *
      * @param obj      实例
      * @param attrName 属性
+     *
      * @return 属性的值
+     *
      * @throws NoSuchMethodException
      * @throws InvocationTargetException
      * @throws IllegalAccessException
@@ -39,7 +45,9 @@ public class ReflactUtil {
      *
      * @param object
      * @param attrName
+     *
      * @return
+     *
      * @throws NoSuchFieldException
      * @throws IllegalAccessException
      */

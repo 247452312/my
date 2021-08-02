@@ -9,10 +9,9 @@ import indi.uhyils.util.disruptor.JsonEvent;
 import indi.uhyils.util.disruptor.JsonEventConsumer;
 import indi.uhyils.util.disruptor.JsonEventFactory;
 import indi.uhyils.util.disruptor.JsonEventProducerWithTranslator;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.Executors;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 日志推送请求

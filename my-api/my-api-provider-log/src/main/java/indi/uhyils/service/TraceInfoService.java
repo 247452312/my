@@ -4,7 +4,6 @@ import indi.uhyils.pojo.model.TraceInfoEntity;
 import indi.uhyils.pojo.request.GetLinkByTraceIdRequest;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
 import indi.uhyils.pojo.request.base.LongRequest;
-import indi.uhyils.pojo.request.base.StringRequest;
 import indi.uhyils.pojo.response.GetAllLinkByTraceIdResponse;
 import indi.uhyils.pojo.response.GetLinkByTraceIdResponse;
 import indi.uhyils.pojo.response.base.Page;

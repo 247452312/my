@@ -3,6 +3,7 @@ package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.log.LogDetailTypeEnum;
 import indi.uhyils.log.MyTraceIdContext;
 import java.util.HashMap;
 import java.util.Map;
@@ -208,7 +209,7 @@ public class LogUtil {
      * @param useTime
      */
     public static void sql(Long traceId, String hash, long useTime, String sql) {
-        sql = String.format("%d|%s|%d|%d|%s", traceId, hash, System.currentTimeMillis(), useTime, sql);
+        sql = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s", traceId, indi.uhyils.log.LogTypeEnum.DB.getCode(), hash, System.currentTimeMillis(), useTime, sql);
         SQL_LOG.info(SQL_MARKER, sql);
     }
 
@@ -220,7 +221,8 @@ public class LogUtil {
      * @param queueName
      */
     public static void mq(Long traceId, String hash, long useTime, String exchangeName, String queueName) {
-        String msg = String.format("%d|%s|%d|%d|%s|%s", traceId, hash, System.currentTimeMillis(), useTime, exchangeName, queueName);
+        String msg = String
+            .format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, indi.uhyils.log.LogTypeEnum.MQ.getCode(), hash, System.currentTimeMillis(), useTime, exchangeName, queueName);
         MQ_LOG.info(MQ_MARKER, msg);
     }
 
@@ -233,7 +235,8 @@ public class LogUtil {
      * @param methodName
      */
     public static void rpc(Long traceId, String hash, long useTime, String serviceName, String methodName) {
-        String msg = String.format("%d|%s|%d|%d|%s|%s", traceId, hash, System.currentTimeMillis(), useTime, serviceName, methodName);
+        String msg = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, indi.uhyils.log.LogTypeEnum.RPC.getCode(), hash, System
+            .currentTimeMillis(), useTime, serviceName, methodName);
         RPC_LOG.info(RPC_MARKER, msg);
     }
 
@@ -246,7 +249,8 @@ public class LogUtil {
      * @param methodName
      */
     public static void task(Long traceId, String hash, long useTime, String serviceName, String methodName) {
-        String msg = String.format("%d|%s|%d|%d|%s|%s", traceId, hash, System.currentTimeMillis(), useTime, serviceName, methodName);
+        String msg = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, indi.uhyils.log.LogTypeEnum.TASK.getCode(), hash, System
+            .currentTimeMillis(), useTime, serviceName, methodName);
         TASK_LOG.info(TASK_MARKER, msg);
     }
 
@@ -258,7 +262,7 @@ public class LogUtil {
      * @param url
      */
     public static void controller(Long traceId, String hash, long useTime, String url) {
-        String msg = String.format("%d|%s|%d|%d|%s", traceId, hash, System.currentTimeMillis(), useTime, url);
+        String msg = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s", indi.uhyils.log.LogTypeEnum.CONTROLLER.getCode(), traceId, hash, System.currentTimeMillis(), useTime, url);
         CONTROLLER_LOG.info(CONTROLLER_MARKER, msg);
     }
 
@@ -271,7 +275,7 @@ public class LogUtil {
      */
     private static void writeLog(String className, String msg, Throwable throwable, LogTypeEnum logTypeEnum) {
         if (msg != null && logTypeEnum != LogTypeEnum.DEBUG) {
-            msg = String.format("%s|%s|%d|%s", MyTraceIdContext.getThraceId(), MyTraceIdContext.getAndAddRpcIdStr(), System.currentTimeMillis(), msg);
+            msg = String.format(LogDetailTypeEnum.LOG.getCode() + "%s|%s|%d|%s", MyTraceIdContext.getThraceId(), MyTraceIdContext.getAndAddRpcIdStr(), System.currentTimeMillis(), msg);
         }
         if (loggerMap.containsKey(className)) {
             Logger logger = loggerMap.get(className);

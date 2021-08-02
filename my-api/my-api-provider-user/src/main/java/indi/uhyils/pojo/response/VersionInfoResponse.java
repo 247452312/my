@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.response;
 
 import indi.uhyils.pojo.model.DictItemEntity;
-
 import java.io.Serializable;
 import java.util.List;
 

@@ -627,7 +627,7 @@ public class KproUtil {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 hh时mm分");
         String dateFormat = simpleDateFormat.format(date);
         DbInformation dbInformation = new DbInformation();
-        dbInformation.setUrl("jdbc:mysql://127.0.0.1:3306/my_log");
+        dbInformation.setUrl("jdbc:mysql://prod:3306/my_log");
         dbInformation.setDbName("my_log");
         dbInformation.setProjectName("log");
         dbInformation.setType(1);
@@ -636,6 +636,8 @@ public class KproUtil {
         dbInformation.setPassword("123456");
         ArrayList<String> tables = new ArrayList<>();
         tables.add("sys_trace_info");
+        tables.add("sys_trace_log");
+        tables.add("sys_trace_detail");
         dbInformation.setTables(tables);
 
         HashMap<String, String> mySqlKpro = getMySqlKpro(dbInformation, dateFormat);

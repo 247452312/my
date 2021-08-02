@@ -7,6 +7,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @date 文件创建日期 2020年12月04日 15时54分
  */
 public class GetAllOrderRequest extends DefaultRequest {
+
     /**
      * 要获取的工单类型
      */

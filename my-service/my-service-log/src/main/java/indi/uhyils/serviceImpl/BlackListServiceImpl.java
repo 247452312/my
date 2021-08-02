@@ -26,21 +26,26 @@ import java.util.List;
  */
 @RpcService
 public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity> implements BlackListService {
+
     /**
      * 最大时间跨度 1秒
      */
     private static final Long MAX_TIME_SPAN = 1000L;
+
     /**
      * 很久很久以前 (3分钟)
      */
     private static final Long LONG_TIME_AGO = 3 * 60 * 1000L;
+
     @Resource
     private BlackListDao dao;
+
     /**
      * 可以评价的最小 ip访问次数
      */
     @Value("${black-list.size}")
     private Integer canEvaluateMinSize;
+
     /**
      * 方差阈值 低于此阈值被认为是爬虫
      */

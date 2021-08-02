@@ -9,7 +9,9 @@ import indi.uhyils.pojo.model.UserEntity;
  * @date 文件创建日期 2020年04月23日 14时04分
  */
 public class DefaultRequest implements BaseRequest {
+
     private static final long serialVersionUID = 5644347874561939629L;
+
     /**
      * token
      */

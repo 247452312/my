@@ -1,6 +1,9 @@
 package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -15,10 +18,6 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * http请求类
  *
@@ -26,6 +25,7 @@ import java.util.Map;
  * @date 文件创建日期 2020年07月26日 10时56分
  */
 public class HttpUtil {
+
     /**
      * 返回成功状态码
      */
@@ -36,7 +36,9 @@ public class HttpUtil {
      *
      * @param url  请求url
      * @param head 请求参数
+     *
      * @return JSON或者字符串
+     *
      * @throws Exception
      */
     public static Object sendHttpGet(String url, Map<String, Object> head) throws Exception {
@@ -108,7 +110,9 @@ public class HttpUtil {
      *
      * @param url  请求url
      * @param head 请求参数
+     *
      * @return JSON或者字符串
+     *
      * @throws Exception
      */
     public static Object sendHttpsGet(String url, Map<String, Object> head) throws Exception {
@@ -180,7 +184,9 @@ public class HttpUtil {
      * @param url    url
      * @param heads  请求头
      * @param params 参数
+     *
      * @return JSON或者字符串
+     *
      * @throws Exception
      */
     public static Object sendHttpPost(String url, Map<String, Object> heads, Map<String, Object> params) throws Exception {
@@ -252,7 +258,9 @@ public class HttpUtil {
      * @param url    url
      * @param heads  请求头
      * @param params 参数
+     *
      * @return JSON或者字符串
+     *
      * @throws Exception
      */
     public static Object sendHttpsPost(String url, Map<String, Object> heads, Map<String, Object> params) throws Exception {
@@ -321,6 +329,7 @@ public class HttpUtil {
      * 组织请求参数{参数名和参数值下标保持一致}
      *
      * @param params 参数数组
+     *
      * @return 参数对象
      */
     private static List<NameValuePair> getParams(Map<String, Object> params) {
@@ -335,6 +344,7 @@ public class HttpUtil {
      * 组织请求参数{参数名和参数值下标保持一致}
      *
      * @param heads 参数数组
+     *
      * @return 参数对象
      */
     private static List<BasicHeader> getHeads(Map<String, Object> heads) {

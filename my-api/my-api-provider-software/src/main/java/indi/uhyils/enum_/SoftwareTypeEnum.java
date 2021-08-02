@@ -22,6 +22,7 @@ public enum SoftwareTypeEnum {
     MYSQL(3, "mysql");
 
     private Integer type;
+
     private String name;
 
 

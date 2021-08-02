@@ -24,18 +24,22 @@ public class JobEntity extends BaseDoEntity {
      * 接口名称
      */
     private String interfaceName;
+
     /**
      * 方法名称
      */
     private String methodName;
+
     /**
      * 参数类型
      */
     private String paramType;
+
     /**
      * 参数
      */
     private String params;
+
     /**
      * 是否暂停
      */

@@ -4,7 +4,6 @@ import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.SpringUtil;
-
 import java.util.Objects;
 
 /**
@@ -14,6 +13,7 @@ import java.util.Objects;
  * @date 文件创建日期 2020年06月23日 14时23分
  */
 public abstract class BaseIdEntity implements BaseDbSaveable {
+
     /**
      * id 一定是uuid的格式
      */

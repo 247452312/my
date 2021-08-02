@@ -16,6 +16,7 @@ public enum OrderNodeResultTypeEnum {
 
 
     private String name;
+
     private Integer code;
 
     OrderNodeResultTypeEnum(String name, Integer code) {

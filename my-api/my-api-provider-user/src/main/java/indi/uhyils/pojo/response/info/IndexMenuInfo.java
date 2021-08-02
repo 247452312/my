@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.response.info;
 
 import indi.uhyils.pojo.model.MenuEntity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +10,21 @@ import java.util.List;
  * @date 文件创建日期 2020年05月30日 07时38分
  */
 public class IndexMenuInfo implements Serializable {
+
     private Long id;
+
     private Long fid;
+
     private String title;
+
     private String icon;
+
     private String href;
+
     private String target;
+
     private Integer sort;
+
     private List<IndexMenuInfo> child = new ArrayList<>();
 
     public static IndexMenuInfo build(MenuEntity menuEntity) {

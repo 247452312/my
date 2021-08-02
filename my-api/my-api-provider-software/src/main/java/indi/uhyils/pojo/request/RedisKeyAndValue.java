@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class RedisKeyAndValue implements Serializable {
 
     private Long redisId;
+
     /**
      * redis 数据库
      */

@@ -16,6 +16,7 @@ public class JvmLineInfoResponse implements Serializable {
      * 名称
      */
     private String name;
+
     /**
      * 类型 'line'
      */

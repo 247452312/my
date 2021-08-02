@@ -2,8 +2,11 @@ package indi.uhyils.annotation;
 
 import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * 读写标记接口 如果方法上有此注解,优先应用接口上的注解,如果方法和接口上均无此注解,则认为此接口默认为读接口
@@ -16,6 +19,7 @@ import java.lang.annotation.*;
 @Target(value = {ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ReadWriteMark {
+
     /**
      * 标记此接口或方法是读还是写,默认是写接口,在接口禁用功能中,如果禁用的功能是类的所有读接口,就是用此注解来识别
      * 如果禁用的是方法,则优先级要高于类上的禁用

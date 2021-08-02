@@ -12,6 +12,7 @@ public class BlackListBuilder {
      * 根据id创建一个黑名单
      *
      * @param ip
+     *
      * @return
      */
     public static BlackListEntity buildByIp(String ip) {

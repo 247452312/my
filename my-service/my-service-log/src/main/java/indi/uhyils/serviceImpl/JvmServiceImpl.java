@@ -32,10 +32,13 @@ public class JvmServiceImpl implements JvmService {
 
     @Resource
     private MonitorDao monitorDao;
+
     @Resource
     private MonitorInterfaceDetailDao monitorInterfaceDetailDao;
+
     @Resource
     private MonitorJvmStatusDetailDao monitorJvmStatusDetailDao;
+
     @Resource
     private LogDao logDao;
 

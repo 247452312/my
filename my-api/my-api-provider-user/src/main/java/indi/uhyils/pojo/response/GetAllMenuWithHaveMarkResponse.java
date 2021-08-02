@@ -14,6 +14,7 @@ public class GetAllMenuWithHaveMarkResponse implements Serializable {
      * 菜单id
      */
     private Long menuId;
+
     /**
      * 菜单名称
      */

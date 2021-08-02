@@ -16,21 +16,27 @@ public class ContentEntity extends BaseDoEntity {
     private String name;
 
     private String title1;
+
     private String var1;
 
     private String title2;
+
     private String var2;
 
     private String title3;
+
     private String var3;
 
     private String title4;
+
     private String var4;
 
     private String title5;
+
     private String var5;
 
     private String title6;
+
     private String var6;
 
     public String getName() {

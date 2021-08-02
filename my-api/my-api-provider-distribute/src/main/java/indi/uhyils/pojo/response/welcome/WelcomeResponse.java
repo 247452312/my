@@ -1,7 +1,10 @@
 package indi.uhyils.pojo.response.welcome;
 
-import indi.uhyils.pojo.response.*;
-
+import indi.uhyils.pojo.response.JvmDataStatisticsResponse;
+import indi.uhyils.pojo.response.JvmInfoLogResponse;
+import indi.uhyils.pojo.response.LastPlanResponse;
+import indi.uhyils.pojo.response.QuickStartResponse;
+import indi.uhyils.pojo.response.VersionInfoResponse;
 import java.io.Serializable;
 
 /**

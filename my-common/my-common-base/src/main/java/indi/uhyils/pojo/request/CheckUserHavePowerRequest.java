@@ -14,6 +14,7 @@ public class CheckUserHavePowerRequest extends DefaultRequest {
      * 权限接口名称
      */
     private String interfaceName;
+
     /**
      * 权限方法名称
      */

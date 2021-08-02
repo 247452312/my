@@ -10,6 +10,7 @@ import java.util.List;
  * @date 文件创建日期 2020年06月21日 07时26分
  */
 public class AlgorithmStatisticsResponse implements Serializable {
+
     /**
      * 占位 不至于报错
      */

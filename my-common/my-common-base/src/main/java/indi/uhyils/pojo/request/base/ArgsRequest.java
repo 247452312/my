@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.request.base;
 
 import indi.uhyils.pojo.request.model.Arg;
-
 import java.util.Arrays;
 import java.util.List;
 

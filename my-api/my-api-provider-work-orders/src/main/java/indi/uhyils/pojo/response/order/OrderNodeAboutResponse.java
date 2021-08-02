@@ -1,8 +1,11 @@
 package indi.uhyils.pojo.response.order;
 
 
-import indi.uhyils.pojo.model.*;
-
+import indi.uhyils.pojo.model.OrderNodeEntity;
+import indi.uhyils.pojo.model.OrderNodeFieldEntity;
+import indi.uhyils.pojo.model.OrderNodeFieldValueEntity;
+import indi.uhyils.pojo.model.OrderNodeResultTypeEntity;
+import indi.uhyils.pojo.model.OrderNodeRouteEntity;
 import java.io.Serializable;
 import java.util.List;
 

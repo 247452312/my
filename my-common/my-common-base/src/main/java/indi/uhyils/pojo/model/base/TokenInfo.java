@@ -20,10 +20,12 @@ public class TokenInfo implements Serializable {
      * 小时
      */
     private Integer hour;
+
     /**
      * 分钟
      */
     private Integer min;
+
     /**
      * 秒
      */

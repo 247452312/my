@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.request;
 
 import indi.uhyils.pojo.request.base.DefaultRequest;
-
 import java.util.Map;
 
 /**

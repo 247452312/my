@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.response.order;
 
 import indi.uhyils.pojo.model.OrderInfoEntity;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import java.util.List;
  * @date 文件创建日期 2020年12月12日 14时44分
  */
 public class GetOneOrderResponse implements Serializable {
+
     /**
      * 工单本体
      */

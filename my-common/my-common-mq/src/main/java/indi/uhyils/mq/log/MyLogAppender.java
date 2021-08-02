@@ -42,7 +42,9 @@ public class MyLogAppender extends RollingFileAppender {
             return;
         }
         if (message.contains(PIPE_SYMBOL)) {
-            LogInfoSendMqUtil.sendLogInfo(String.format(MSG_FORMAT, loggingEvent.getLoggerName(), level, message));
+            char sym = message.charAt(0);
+            message = message.substring(1);
+            LogInfoSendMqUtil.sendLogInfo(sym + String.format(MSG_FORMAT, loggingEvent.getLoggerName(), level, message));
         }
     }
 }

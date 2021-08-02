@@ -11,6 +11,7 @@ import java.util.List;
  * @date 文件创建日期 2020年07月27日 07时08分
  */
 public class DbInformation {
+
     /**
      * 数据库连接串
      */
@@ -20,6 +21,7 @@ public class DbInformation {
      * 数据库名称
      */
     private String dbName;
+
     /**
      * 项目包名称
      */
@@ -29,6 +31,7 @@ public class DbInformation {
      * 前台不传 项目名首字母大写
      */
     private String bigProjectName;
+
     /**
      * 前台不传 项目名首字母小写
      */
@@ -48,6 +51,7 @@ public class DbInformation {
      * 用户名
      */
     private String userName;
+
     /**
      * 密码
      */

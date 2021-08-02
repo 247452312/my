@@ -17,6 +17,7 @@ public enum LogResultStatusEnum {
 
 
     private String name;
+
     private Integer code;
 
     LogResultStatusEnum(String name, Integer code) {

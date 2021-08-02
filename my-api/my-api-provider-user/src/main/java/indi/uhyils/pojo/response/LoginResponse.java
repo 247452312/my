@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.response;
 
 import indi.uhyils.pojo.model.UserEntity;
-
 import java.io.Serializable;
 
 /**
@@ -35,6 +34,7 @@ public class LoginResponse implements Serializable {
     /**
      * @param token      token
      * @param userEntity 用户本体
+     *
      * @return 登录成功
      */
     public static LoginResponse buildLoginSuccess(String token, UserEntity userEntity) {

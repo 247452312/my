@@ -19,6 +19,7 @@ public interface AlgorithmService extends BaseService {
      * 调用算法
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<CellAlgorithmResponse> cellAlgorithm(CellAlgorithmRequest request);
@@ -28,6 +29,7 @@ public interface AlgorithmService extends BaseService {
      * 获取某个算法的准确率
      *
      * @param request 算法id
+     *
      * @return 准确率
      */
     ServiceResult<Double> getAlgorithmAccuracy(IdRequest request);

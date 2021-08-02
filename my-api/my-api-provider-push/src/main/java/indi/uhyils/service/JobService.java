@@ -17,7 +17,9 @@ public interface JobService extends DefaultEntityService<JobEntity> {
      * 暂停定时任务
      *
      * @param request id
+     *
      * @return 是否成功
+     *
      * @throws ClassNotFoundException 参数类型错误
      */
     ServiceResult<Boolean> pause(IdRequest request) throws ClassNotFoundException;
@@ -26,6 +28,7 @@ public interface JobService extends DefaultEntityService<JobEntity> {
      * 开启定时任务
      *
      * @param request id
+     *
      * @return 是否成功
      */
     ServiceResult<Boolean> start(IdRequest request);
@@ -34,7 +37,9 @@ public interface JobService extends DefaultEntityService<JobEntity> {
      * 执行定时任务
      *
      * @param request id
+     *
      * @return 是否成功
+     *
      * @throws ClassNotFoundException 参数类型错误
      */
     ServiceResult<Boolean> test(IdRequest request) throws ClassNotFoundException;

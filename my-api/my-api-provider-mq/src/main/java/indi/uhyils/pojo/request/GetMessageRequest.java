@@ -11,6 +11,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @date 文件创建日期 2021年04月18日 18时10分
  */
 public class GetMessageRequest extends DefaultRequest {
+
     /**
      * 主题名称
      */

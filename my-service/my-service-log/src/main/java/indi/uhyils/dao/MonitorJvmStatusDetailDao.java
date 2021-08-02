@@ -17,6 +17,7 @@ public interface MonitorJvmStatusDetailDao extends DefaultDao<LogMonitorJvmStatu
      * 根据主表id获取分表数据
      *
      * @param id 主表id
+     *
      * @return 主表id对应的分表数据
      */
     List<LogMonitorJvmStatusEntity> getByMonitorId(Long id);

@@ -10,4 +10,5 @@ import indi.uhyils.service.base.DefaultEntityService;
  * @date 文件创建日期 2020年06月29日 08时11分
  */
 public interface SendPageService extends DefaultEntityService<SendPageEntity> {
+
 }

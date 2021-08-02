@@ -20,7 +20,9 @@ public class MongoDbFactory {
      * 存放文件的数据库
      */
     private static final String DB_NAME = "fileDB";
+
     private static MongoDbFactory INSTANCE = null;
+
     private MongoConfig mongoConfig;
 
     private MongoDbFactory(MongoConfig mongoConfig) {
@@ -31,6 +33,7 @@ public class MongoDbFactory {
      * 双重检测所 单例
      *
      * @param mongoConfig
+     *
      * @return
      */
     public static MongoDbFactory getInstance(MongoConfig mongoConfig) {

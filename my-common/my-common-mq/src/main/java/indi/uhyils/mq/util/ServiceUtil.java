@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSON;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.mq.pojo.mqinfo.InterfaceCallInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
-
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -26,6 +25,7 @@ public class ServiceUtil {
      * @param requestLength  请求大小
      * @param responseLength 返回大小
      * @param jvmUniqueMark  JVM信息
+     *
      * @return
      */
     public static InterfaceCallInfo getInterfaceCallInfo(String interfaceName, String methodName, Boolean success, Long runTime, Integer requestLength, Integer responseLength, JvmUniqueMark jvmUniqueMark) {
@@ -51,6 +51,7 @@ public class ServiceUtil {
      * @param request       请求
      * @param response      返回
      * @param jvmUniqueMark JVM信息
+     *
      * @return
      */
     public static InterfaceCallInfo getInterfaceCallInfo(String interfaceName, String methodName, Integer serviceCode, Long runTime, Object request, Object response, JvmUniqueMark jvmUniqueMark) {

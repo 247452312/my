@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.model;
 
 import indi.uhyils.pojo.model.base.BaseMiddleEntity;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +13,7 @@ import java.util.stream.Collectors;
 public class DeptMenuMiddle extends BaseMiddleEntity {
 
     private Long deptId;
+
     private Long menuId;
 
     public static DeptMenuMiddle build(Long deptId, Long menuId) {

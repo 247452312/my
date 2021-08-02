@@ -7,17 +7,20 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.util.RpcApiUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
+import indi.uhyils.util.RpcApiUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -30,6 +33,7 @@ import java.util.Map;
 public class FileController {
 
     private static final String INTERFACE = "MongoService";
+
     private static final String METHOD_NAME = "getByFileName";
 
     private static final String TOKEN = "token";
@@ -83,7 +87,7 @@ public class FileController {
             action.getArgs().put("token", action.getToken());
             List<Object> list = new ArrayList();
             list.add(action.getArgs());
-            serviceResult = (ServiceResult)RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultRequest());
+            serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultRequest());
             if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                 eMsg = serviceResult.getServiceMessage();
             }

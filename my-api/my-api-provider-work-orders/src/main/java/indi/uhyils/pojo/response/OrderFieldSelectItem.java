@@ -12,6 +12,7 @@ public class OrderFieldSelectItem implements Serializable {
      * select中的name
      */
     private String name;
+
     /**
      * select中的value
      */

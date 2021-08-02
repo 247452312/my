@@ -2,7 +2,6 @@ package indi.uhyils.pojo.response.info;
 
 import indi.uhyils.pojo.model.ContentEntity;
 import indi.uhyils.util.ContentUtil;
-
 import java.io.Serializable;
 
 /**
@@ -12,8 +11,11 @@ import java.io.Serializable;
  * @date 文件创建日期 2020年05月30日 07时38分
  */
 public class MenuHomeInfo implements Serializable {
+
     private static final String HOME_INFO = "homeInfo";
+
     private String title;
+
     private String href;
 
     public static MenuHomeInfo build(ContentEntity honeInfo) {

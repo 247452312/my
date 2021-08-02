@@ -19,10 +19,12 @@ public class JvmStatusInfo implements Serializable {
      * 堆以外的内存
      */
     private Double noHeapUseMem;
+
     /**
      * 堆占用的内存(类对象 成员变量)
      */
     private Double heapUseMem;
+
     /**
      * 此状态生成时间
      */

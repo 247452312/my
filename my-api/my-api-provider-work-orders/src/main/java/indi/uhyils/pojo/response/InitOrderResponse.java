@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.response;
 
 import indi.uhyils.pojo.model.OrderNodeFieldEntity;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +17,12 @@ public class InitOrderResponse implements Serializable {
      * 工单初始节点需要填写的属性
      */
     private List<OrderNodeFieldEntity> orderNodeField;
+
     /**
      * 新生成的工单的id
      */
     private Long newOrderId;
+
     /**
      * 工单监管人
      */

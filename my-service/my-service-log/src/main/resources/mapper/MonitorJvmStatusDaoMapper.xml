@@ -6,15 +6,15 @@
         a.id,
         a.fid,
         a.time,
-        a.heap_use_mem    as heapUseMem,
+        a.heap_use_mem as heapUseMem,
         a.no_heap_use_mem as noHeapUseMem,
-        a.use_mem         as useMem,
-        a.create_date     as createDate,
-        a.create_user     as createUser,
-        a.delete_flag     as deleteFlag,
+        a.use_mem as useMem,
+        a.create_date as createDate,
+        a.create_user as createUser,
+        a.delete_flag as deleteFlag,
         a.remark,
-        a.update_date     as updateDate,
-        a.update_user     as updateUser
+        a.update_date as updateDate,
+        a.update_user as updateUser
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">

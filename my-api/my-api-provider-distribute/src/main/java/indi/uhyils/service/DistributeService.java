@@ -19,7 +19,9 @@ public interface DistributeService extends BaseService {
      * 获取首页数据
      *
      * @param request 默认请求
+     *
      * @return 数据
+     *
      * @throws Exception 远程调用错误
      */
     ServiceResult<WelcomeResponse> getWelcomeData(DefaultRequest request) throws Exception;

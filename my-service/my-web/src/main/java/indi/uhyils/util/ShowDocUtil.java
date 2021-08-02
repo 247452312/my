@@ -3,13 +3,16 @@ package indi.uhyils.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -73,40 +76,39 @@ public class ShowDocUtil {
                             String paramList = getList(paramJson);
                             String resultList = getList(resultJson);
 
-
                             String html = new StringBuilder()
-                                    .append("\n")
-                                    .append("\n")
-                                    .append("    \n")
-                                    .append("##### 简要描述\n")
-                                    .append("\n")
-                                    .append("- \n")
-                                    .append("\n")
-                                    .append("##### 接口默认信息\n")
-                                    .append("- 见默认接口说明\n")
-                                    .append("\n")
-                                    .append("| 参数名称 |   参数类型|参数值|\n")
-                                    .append("| :------------: | :------------: |:------------: |\n")
-                                    .append("| interfaceName |  string|")
-                                    .append(aClass.getSimpleName())
-                                    .append("|\n")
-                                    .append("|  methodName |  string |")
-                                    .append(declaredMethod.getName())
-                                    .append("|\n")
-                                    .append("\n")
-                                    .append("\n")
-                                    .append("##### 请求参数 \n")
-                                    .append("```\n")
-                                    .append(paramJson)
-                                    .append("```\n")
-                                    .append(paramList)
-                                    .append("\n")
-                                    .append("\n")
-                                    .append("##### 返回参数\n")
-                                    .append("```\n")
-                                    .append(resultJson)
-                                    .append("```\n")
-                                    .append(resultList).toString();
+                                .append("\n")
+                                .append("\n")
+                                .append("    \n")
+                                .append("##### 简要描述\n")
+                                .append("\n")
+                                .append("- \n")
+                                .append("\n")
+                                .append("##### 接口默认信息\n")
+                                .append("- 见默认接口说明\n")
+                                .append("\n")
+                                .append("| 参数名称 |   参数类型|参数值|\n")
+                                .append("| :------------: | :------------: |:------------: |\n")
+                                .append("| interfaceName |  string|")
+                                .append(aClass.getSimpleName())
+                                .append("|\n")
+                                .append("|  methodName |  string |")
+                                .append(declaredMethod.getName())
+                                .append("|\n")
+                                .append("\n")
+                                .append("\n")
+                                .append("##### 请求参数 \n")
+                                .append("```\n")
+                                .append(paramJson)
+                                .append("```\n")
+                                .append(paramList)
+                                .append("\n")
+                                .append("\n")
+                                .append("##### 返回参数\n")
+                                .append("```\n")
+                                .append(resultJson)
+                                .append("```\n")
+                                .append(resultList).toString();
                             ApiContent apiContent = new ApiContent();
                             apiContent.setApi_key("bc973c7dea684a306ad7f4c3df5feb581341237566");
                             apiContent.setApi_token("1f48fe4aea0dc96599f6f7ca5ebe0eaa1211797159");
@@ -135,6 +137,7 @@ public class ShowDocUtil {
      * 获取json的列表->showDoc中的参数表格
      *
      * @param paramJson 参数的json
+     *
      * @return 可以展示为list的字符串
      */
     private static String getList(String paramJson) {
@@ -156,7 +159,6 @@ public class ShowDocUtil {
             return getList(paramJson);
         }
 
-
         JSONObject jsonObject = null;
         try {
             jsonObject = JSON.parseObject(paramJson);
@@ -169,7 +171,6 @@ public class ShowDocUtil {
             LogUtil.error(ShowDocUtil.class, e);
         }
 
-
         return list;
     }
 
@@ -179,7 +180,9 @@ public class ShowDocUtil {
      * @param clazz               要变成的类
      * @param lastClass           已经用过的class
      * @param recursionSuperClass 是否递归父类
+     *
      * @return
+     *
      * @throws Exception
      */
     private static String getJson(Class clazz, List<Class> lastClass, Boolean recursionSuperClass, Type lastClassType) throws Exception {
@@ -224,23 +227,23 @@ public class ShowDocUtil {
             lastClass.add(clazz);
             StringBuilder sb = new StringBuilder();
             sb
-                    .append("{");
+                .append("{");
             for (Field declaredField : declaredFields) {
                 Class<?> type = declaredField.getType();
                 sb
-                        .append("\"")
-                        .append(declaredField.getName())
-                        .append("\":");
+                    .append("\"")
+                    .append(declaredField.getName())
+                    .append("\":");
                 sb
-                        .append(getJson(type, lastClass, true, null));
+                    .append(getJson(type, lastClass, true, null));
                 sb
-                        .append(",");
+                    .append(",");
             }
             if (declaredFields.size() != 0) {
                 sb.delete(sb.length() - 1, sb.length());
             }
             sb
-                    .append("}");
+                .append("}");
             return jsonFormat(sb.toString());
         }
     }
@@ -249,6 +252,7 @@ public class ShowDocUtil {
      * 获取一个class包含自己的所有父类
      *
      * @param clazz clazz
+     *
      * @return
      */
     public static List<Class> getSuperClass(Class clazz) {
@@ -269,6 +273,7 @@ public class ShowDocUtil {
      * 格式化json
      *
      * @param jsonString json
+     *
      * @return 格式化后的json
      */
     public static String jsonFormat(String jsonString) {
@@ -278,10 +283,15 @@ public class ShowDocUtil {
     }
 
     static class ApiContent {
+
         private String api_key;
+
         private String api_token;
+
         private String cat_name;
+
         private String page_title;
+
         private String page_content;
 
         public String getApi_key() {

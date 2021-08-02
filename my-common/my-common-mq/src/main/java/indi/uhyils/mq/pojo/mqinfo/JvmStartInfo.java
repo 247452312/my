@@ -16,6 +16,7 @@ public class JvmStartInfo implements Serializable {
      * 收集信息,如果发送失败时也能记录之前的状态信息
      */
     private static volatile List<JvmStatusInfo> statusInfos = new ArrayList<>();
+
     /**
      * 分配给jvm的总内存
      */

@@ -21,26 +21,32 @@ public class RedisLock {
      * 默认尝试加锁次数
      */
     private static final Integer MAX_LOCK_COUNT = 3;
+
     /**
      * 锁名称 = lock_ + 传入的名称
      */
     private String lockName;
+
     /**
      * 锁的重入数量
      */
     private String lockCountName;
+
     /**
      * redis线程池
      */
     private RedisPool pool;
+
     /**
      * 加锁的线程
      */
     private Thread thread;
+
     /**
      * 这把锁持有时的value
      */
     private String value;
+
     /**
      * 默认持有锁3分钟
      */
@@ -172,6 +178,7 @@ public class RedisLock {
      * 使用分布式CountDownLatch
      *
      * @param uniqueName
+     *
      * @return
      */
     public boolean countDown(String uniqueName) throws RedisCountDownLatchExistsException, InterruptedException {
@@ -192,6 +199,7 @@ public class RedisLock {
      * 获取指定countDownLatch的count
      *
      * @param uniqueName
+     *
      * @return
      */
     public int getCountDownLatchCount(String uniqueName) {
@@ -206,7 +214,9 @@ public class RedisLock {
      *
      * @param jedis
      * @param uniqueName
+     *
      * @return
+     *
      * @throws InterruptedException
      */
     private boolean loopToWaitCountDownLatch(Redisable jedis, String uniqueName) throws InterruptedException {
@@ -221,7 +231,9 @@ public class RedisLock {
      *
      * @param uniqueName
      * @param count
+     *
      * @return
+     *
      * @throws RedisCountDownLatchExistsException
      */
     public boolean createCountDownLatch(String uniqueName, Integer count) throws RedisCountDownLatchExistsException {
@@ -234,7 +246,9 @@ public class RedisLock {
      * @param uniqueName    这个countDownLatch的名称
      * @param count         要创建的数量
      * @param expireSeconds 超时时间(-1为不设置)
+     *
      * @return
+     *
      * @throws RedisCountDownLatchExistsException
      */
     public boolean createCountDownLatch(String uniqueName, Integer count, Integer expireSeconds) throws RedisCountDownLatchExistsException {

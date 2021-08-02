@@ -2,7 +2,13 @@ package indi.uhyils.service;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.exception.UserException;
-import indi.uhyils.pojo.request.*;
+import indi.uhyils.pojo.request.CreateTopicRequest;
+import indi.uhyils.pojo.request.GetMessageRequest;
+import indi.uhyils.pojo.request.RegisterConsumerRequest;
+import indi.uhyils.pojo.request.RegisterProviderRequest;
+import indi.uhyils.pojo.request.RegisterPublishRequest;
+import indi.uhyils.pojo.request.RegisterSubscriberReqeust;
+import indi.uhyils.pojo.request.SendMessageRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
 
@@ -12,10 +18,12 @@ import indi.uhyils.service.base.BaseService;
  * @Version 1.0
  */
 public interface MqService extends BaseService {
+
     /**
      * 发送消息
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> sendMessage(SendMessageRequest request) throws UserException;
@@ -24,6 +32,7 @@ public interface MqService extends BaseService {
      * 获取消息
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<JSONObject> getMessage(GetMessageRequest request) throws UserException;
@@ -32,6 +41,7 @@ public interface MqService extends BaseService {
      * 创建主题
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> createTopic(CreateTopicRequest request) throws UserException;
@@ -40,6 +50,7 @@ public interface MqService extends BaseService {
      * 注册一个生产者
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> registerProvider(RegisterProviderRequest request) throws UserException;
@@ -48,6 +59,7 @@ public interface MqService extends BaseService {
      * 注册一个消费者
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> registerConsumer(RegisterConsumerRequest request) throws UserException;
@@ -56,6 +68,7 @@ public interface MqService extends BaseService {
      * 注册一个发布者
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> registerPublish(RegisterPublishRequest request) throws UserException;
@@ -64,6 +77,7 @@ public interface MqService extends BaseService {
      * 注册一个订阅者
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> registerSubscriber(RegisterSubscriberReqeust request) throws UserException;

@@ -4,22 +4,22 @@
 <mapper namespace="indi.uhyils.dao.LogDao">
     <sql id="columnList">
         a.id,
-        a.create_date      as 'createDate',
-        a.create_user      as createUser,
-        a.update_date      as 'updateDate',
-        a.update_user      as updateUser,
-        a.delete_flag      as deleteFlag,
+        a.create_date as 'createDate',
+        a.create_user as createUser,
+        a.update_date as 'updateDate',
+        a.update_user as updateUser,
+        a.delete_flag as deleteFlag,
         a.remark,
 
 
         a.exception_detail as exceptionDetail,
-        a.interface_name   as interfaceName,
+        a.interface_name as interfaceName,
         a.ip,
-        a.log_type         as logType,
-        a.method_name      as methodName,
+        a.log_type as logType,
+        a.method_name as methodName,
         a.params,
         a.time,
-        a.user_id          as userId,
+        a.user_id as userId,
         a.link
     </sql>
 

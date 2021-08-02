@@ -7,6 +7,7 @@ package indi.uhyils.pojo.request.base;
  * @date 文件创建日期 2020年09月14日 06时33分
  */
 public class StringRequest extends DefaultRequest {
+
     /**
      * 字符串
      */

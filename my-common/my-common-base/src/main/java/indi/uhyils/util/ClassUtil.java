@@ -1,11 +1,10 @@
 package indi.uhyils.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Proxy;
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.support.AopUtils;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Proxy;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -17,7 +16,9 @@ public class ClassUtil {
      * 剥去springAop等代理类的外衣,获取真实的类的类型
      *
      * @param value
+     *
      * @return
+     *
      * @throws Exception
      */
     public static Class<?> getRealClass(Object value) throws Exception {

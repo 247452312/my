@@ -14,6 +14,7 @@ public class SendPageEntity extends BaseDoEntity {
      * 用户
      */
     private Long userId;
+
     /**
      * 是否观看
      */

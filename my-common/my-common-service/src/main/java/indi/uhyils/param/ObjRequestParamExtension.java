@@ -54,7 +54,8 @@ public class ObjRequestParamExtension implements ParamTransExtension {
         }
         Class<?> parameterType = method.getParameterTypes()[methodTypeIndex];
         final Method finalMethod = method;
-        List<Method> methodNameMethod = Arrays.stream(realClass.getMethods()).filter(t -> t.getName().equals(finalMethod.getName())).filter(t->t.getParameterTypes()[methodTypeIndex].equals(parameterType)).collect(Collectors.toList());
+        List<Method> methodNameMethod = Arrays.stream(realClass.getMethods()).filter(t -> t.getName().equals(finalMethod.getName()))
+                                              .filter(t -> t.getParameterTypes()[methodTypeIndex].equals(parameterType)).collect(Collectors.toList());
         if (CollectionUtils.isEmpty(methodNameMethod)) {
             return arg;
         }

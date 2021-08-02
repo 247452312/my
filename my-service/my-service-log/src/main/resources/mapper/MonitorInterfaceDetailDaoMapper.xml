@@ -5,19 +5,19 @@
     <sql id="columnList">
         a.id,
         a.fid,
-        a.interface_name  as interfaceName,
-        a.method_name     as methodName,
-        a.run_time        as runTime,
-        a.request_length  as requestLength,
+        a.interface_name as interfaceName,
+        a.method_name as methodName,
+        a.run_time as runTime,
+        a.request_length as requestLength,
         a.response_length as responseLength,
         a.success,
         a.time,
-        a.create_date     as createDate,
-        a.create_user     as createUser,
-        a.delete_flag     as deleteFlag,
+        a.create_date as createDate,
+        a.create_user as createUser,
+        a.delete_flag as deleteFlag,
         a.remark,
-        a.update_date     as updateDate,
-        a.update_user     as updateUser
+        a.update_date as updateDate,
+        a.update_user as updateUser
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity">

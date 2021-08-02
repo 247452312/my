@@ -13,6 +13,7 @@ public class OrderNodeResultTypeBuilder {
      *
      * @param orderNodeId
      * @param msg
+     *
      * @return
      */
     public static OrderNodeResultTypeEntity build(Long orderNodeId, String msg) {

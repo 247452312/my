@@ -17,6 +17,7 @@ public class OrderApplyEntity extends BaseDoEntity {
      * 工单id
      */
     private Long orderId;
+
     /**
      * 工单节点id
      */

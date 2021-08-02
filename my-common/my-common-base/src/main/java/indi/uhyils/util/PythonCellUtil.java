@@ -1,7 +1,5 @@
 package indi.uhyils.util;
 
-import org.springframework.util.StringUtils;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.util.StringUtils;
 
 /**
  * python文件调用接口
@@ -23,6 +22,7 @@ public class PythonCellUtil {
      * 寻找python源文件在哪里
      */
     private static final String PYTHON_PATH;
+
     /**
      * python文件的名称
      */
@@ -38,7 +38,9 @@ public class PythonCellUtil {
      * @param pythonExePath python路径
      * @param pythonPath    要执行的文件的路径
      * @param args          参数
+     *
      * @return 执行结果
+     *
      * @throws IOException
      * @throws InterruptedException
      */
@@ -71,7 +73,9 @@ public class PythonCellUtil {
      *
      * @param pythonPath pythonPath
      * @param args       参数
+     *
      * @return 执行结果
+     *
      * @throws Exception
      */
     public static String cellPython(String pythonPath, List<String> args) throws Exception {

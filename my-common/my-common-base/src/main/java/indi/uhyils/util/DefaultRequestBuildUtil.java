@@ -3,7 +3,6 @@ package indi.uhyils.util;
 import indi.uhyils.content.Content;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
 
 /**
  * 创建一个默认的ADMIN用户的请求 此方法只用来作服务之间的调用

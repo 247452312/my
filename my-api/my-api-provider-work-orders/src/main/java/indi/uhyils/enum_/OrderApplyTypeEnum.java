@@ -13,6 +13,7 @@ public enum OrderApplyTypeEnum {
     TRANS("转交申请", 0);
 
     private String name;
+
     private Integer code;
 
     OrderApplyTypeEnum(String name, Integer code) {

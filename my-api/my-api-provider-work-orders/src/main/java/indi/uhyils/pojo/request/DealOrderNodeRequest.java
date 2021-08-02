@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.request;
 
 import indi.uhyils.pojo.request.base.DefaultRequest;
-
 import java.util.Map;
 
 /**
@@ -14,14 +13,17 @@ public class DealOrderNodeRequest extends DefaultRequest {
      * 填充的节点属性值<节点属性id,真实值>
      */
     Map<Long, Object> orderNodeFieldValueMap;
+
     /**
      * 节点id
      */
     private Long nodeId;
+
     /**
      * 处理结果id
      */
     private Long resultId;
+
     /**
      * 处理人建议
      */

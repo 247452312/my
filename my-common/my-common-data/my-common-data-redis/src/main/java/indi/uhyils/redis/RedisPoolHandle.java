@@ -5,14 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.content.Content;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.util.LogUtil;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.exceptions.JedisConnectionException;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 /**
  * 懒加载,除了用到redis
@@ -28,27 +27,29 @@ public class RedisPoolHandle {
      * impl
      */
     private static final String IMPL = "Impl";
+
     /**
      * 检查方法是否允许执行所需要执行的lua脚本
      */
     private static String checkMethodDisableLua = "if redis.call(\"HEXISTS\",KEYS[2]) then\n" +
-            "    return redis.call(\"HGET\",KEYS[2])\n" +
-            "elseif redis.call(\"HEXISTS\",KEYS[1]) then\n" +
-            "    local classType = redis.call(\"HGET\",KEYS[1])\n" +
-            "    if classType == 0 then\n" +
-            "\n" +
-            "    elseif classType == 1 then\n" +
-            "        if KEYS[3] == 1 then\n" +
-            "            return 1\n" +
-            "    elseif classType == 2 then\n" +
-            "        if KEYS[3] == 2 then\n" +
-            "            return 1\n" +
-            "    elseif classType == 3 then\n" +
-            "        return 1\n" +
-            "    end\n" +
-            "else\n" +
-            "    return 0\n" +
-            "end\n";
+                                                  "    return redis.call(\"HGET\",KEYS[2])\n" +
+                                                  "elseif redis.call(\"HEXISTS\",KEYS[1]) then\n" +
+                                                  "    local classType = redis.call(\"HGET\",KEYS[1])\n" +
+                                                  "    if classType == 0 then\n" +
+                                                  "\n" +
+                                                  "    elseif classType == 1 then\n" +
+                                                  "        if KEYS[3] == 1 then\n" +
+                                                  "            return 1\n" +
+                                                  "    elseif classType == 2 then\n" +
+                                                  "        if KEYS[3] == 2 then\n" +
+                                                  "            return 1\n" +
+                                                  "    elseif classType == 3 then\n" +
+                                                  "        return 1\n" +
+                                                  "    end\n" +
+                                                  "else\n" +
+                                                  "    return 0\n" +
+                                                  "end\n";
+
     @Autowired
     private RedisPool redisPool;
 
@@ -81,6 +82,7 @@ public class RedisPoolHandle {
      * 前台有操作都会经过这个方法, 通过token获取user, 同时刷新redis中用户的存在时间
      *
      * @param token token
+     *
      * @return user
      */
     public UserEntity getUser(String token) {
@@ -107,6 +109,7 @@ public class RedisPoolHandle {
      * 是否存在token
      *
      * @param token
+     *
      * @return
      */
     public Boolean haveToken(String token) {
@@ -287,6 +290,7 @@ public class RedisPoolHandle {
      * @param targetClass    目标class
      * @param declaredMethod 目标方法
      * @param readWriteType  方法的类型 1->读接口 2->写接口
+     *
      * @return 是否允许执行
      */
     public Boolean checkMethodDisable(Class<?> targetClass, Method declaredMethod, Integer readWriteType) {
@@ -307,6 +311,7 @@ public class RedisPoolHandle {
      * @param className     目标class
      * @param methodName    目标className+#+methodName
      * @param readWriteType 方法的类型 1->读接口 2->写接口
+     *
      * @return 是否允许执行
      */
     public Boolean checkMethodDisable(String className, String methodName, Integer readWriteType) {

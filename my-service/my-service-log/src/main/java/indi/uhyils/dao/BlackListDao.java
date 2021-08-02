@@ -23,6 +23,7 @@ public interface BlackListDao extends DefaultDao<BlackListEntity> {
      *
      * @param ip   ip
      * @param size limit
+     *
      * @return
      */
     List<Long> getTimeByIp(@Param("ip") String ip, @Param("size") Integer size);

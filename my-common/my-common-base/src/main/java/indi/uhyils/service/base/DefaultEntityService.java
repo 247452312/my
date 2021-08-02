@@ -21,6 +21,7 @@ public interface DefaultEntityService<T extends BaseDoEntity> extends BaseServic
      * 根据某几列获取数据
      *
      * @param argsRequest 根据列名获取信息
+     *
      * @return 分页数据(也可以设置不分页)
      */
     ServiceResult<Page<T>> getByArgs(ArgsRequest argsRequest);
@@ -29,6 +30,7 @@ public interface DefaultEntityService<T extends BaseDoEntity> extends BaseServic
      * 根据id查询
      *
      * @param idRequest id
+     *
      * @return 单条
      */
     ServiceResult<T> getById(IdRequest idRequest);
@@ -38,6 +40,7 @@ public interface DefaultEntityService<T extends BaseDoEntity> extends BaseServic
      * 插入
      *
      * @param insert 插入信息,要求是entity
+     *
      * @return 插入条数
      */
     ServiceResult<Integer> insert(ObjRequest<T> insert) throws Exception;
@@ -46,6 +49,7 @@ public interface DefaultEntityService<T extends BaseDoEntity> extends BaseServic
      * 修改
      *
      * @param update 修改信息,要求是entity,并且要求有id
+     *
      * @return 修改条数
      */
     ServiceResult<Integer> update(ObjRequest<T> update);
@@ -55,6 +59,7 @@ public interface DefaultEntityService<T extends BaseDoEntity> extends BaseServic
      * 删除
      *
      * @param idRequest id
+     *
      * @return 删除条数
      */
     ServiceResult<Integer> delete(IdRequest idRequest);
@@ -64,6 +69,7 @@ public interface DefaultEntityService<T extends BaseDoEntity> extends BaseServic
      * 数量
      *
      * @param argsRequest 默认不分页,不可配置是否分页
+     *
      * @return 根据条件查询出来的数量
      */
     ServiceResult<Integer> countByArgs(ArgsRequest argsRequest);

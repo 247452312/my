@@ -1,15 +1,15 @@
 package indi.uhyils.util.compiler;
 
-import javax.tools.JavaCompiler;
-import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaCompiler.CompilationTask;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
 
 /**
  * 字符串编译器(以下内容来自网络)
@@ -24,6 +24,7 @@ public class JavaStringCompiler {
      * java编译器
      */
     JavaCompiler compiler;
+
     /**
      * 编译内容管理器
      */
@@ -39,7 +40,9 @@ public class JavaStringCompiler {
      *
      * @param fileName java文件名称, e.g. "Test.java"
      * @param source   文件内容
+     *
      * @return 编译结果为Map，其中包含类名作为键,二进制java源码作为value
+     *
      * @throws IOException 编译失败.
      */
     public Map<String, byte[]> compile(String fileName, String source) throws IOException {
@@ -58,7 +61,9 @@ public class JavaStringCompiler {
      * 在内存中编译String类型的java源码
      *
      * @param fileSourceMap key是java文件名称, e.g. "Test.java" value是文件内容
+     *
      * @return 编译结果为Map，其中包含类名作为键,二进制java源码作为value
+     *
      * @throws IOException 编译失败.
      */
     public Map<String, byte[]> compile(Map<String, String> fileSourceMap) throws IOException {
@@ -82,7 +87,9 @@ public class JavaStringCompiler {
      *
      * @param name       class全名
      * @param classBytes 编译结果
+     *
      * @return class们
+     *
      * @throws ClassNotFoundException 类没找到
      * @throws IOException            如果加载失败
      */

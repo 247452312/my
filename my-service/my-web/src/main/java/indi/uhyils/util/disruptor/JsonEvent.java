@@ -7,7 +7,9 @@ package indi.uhyils.util.disruptor;
  * @date 文件创建日期 2020年06月09日 07时01分
  */
 public class JsonEvent {
+
     private String value;
+
     private String token;
 
     public String getValue() {

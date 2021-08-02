@@ -9,6 +9,7 @@ import indi.uhyils.pojo.request.base.ArgsRequest;
  * @date 文件创建日期 2020年06月17日 07时07分
  */
 public class GetByItemArgsRequest extends ArgsRequest {
+
     /**
      * 字典id
      */

@@ -5,7 +5,6 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.VerificationGetResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
-
 import java.io.IOException;
 
 /**
@@ -20,6 +19,7 @@ public interface VerificationService extends BaseService {
      * 获取验证码
      *
      * @param request 默认请求
+     *
      * @return 验证码与在redis中的key
      */
     ServiceResult<VerificationGetResponse> getVerification(DefaultRequest request) throws IOException;
@@ -29,6 +29,7 @@ public interface VerificationService extends BaseService {
      * 验证码验证
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> verification(VerificationRequest request);

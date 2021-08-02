@@ -1,7 +1,5 @@
 package indi.uhyils.util.compiler;
 
-import javax.tools.*;
-import javax.tools.JavaFileObject.Kind;
 import java.io.ByteArrayOutputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -10,6 +8,12 @@ import java.net.URI;
 import java.nio.CharBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import javax.tools.FileObject;
+import javax.tools.ForwardingJavaFileManager;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.JavaFileObject.Kind;
+import javax.tools.SimpleJavaFileObject;
 
 /**
  * java内容管理器
@@ -43,8 +47,9 @@ public class MemoryJavaFileManager extends ForwardingJavaFileManager<JavaFileMan
     }
 
     @Override
-    public JavaFileObject getJavaFileForOutput(Location location, String className, Kind kind,
-                                               FileObject sibling) throws IOException {
+    public JavaFileObject getJavaFileForOutput(
+        Location location, String className, Kind kind,
+        FileObject sibling) throws IOException {
         if (kind == Kind.CLASS) {
             return new MemoryOutputJavaFileObject(className);
         } else {
@@ -72,6 +77,7 @@ public class MemoryJavaFileManager extends ForwardingJavaFileManager<JavaFileMan
     }
 
     class MemoryOutputJavaFileObject extends SimpleJavaFileObject {
+
         final String name;
 
         MemoryOutputJavaFileObject(String name) {
@@ -82,6 +88,7 @@ public class MemoryJavaFileManager extends ForwardingJavaFileManager<JavaFileMan
         @Override
         public OutputStream openOutputStream() {
             return new FilterOutputStream(new ByteArrayOutputStream()) {
+
                 @Override
                 public void close() throws IOException {
                     out.close();

@@ -2,7 +2,6 @@ package indi.uhyils.pojo.model.base;
 
 import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.request.base.DefaultRequest;
-
 import java.io.Serializable;
 
 /**
@@ -12,10 +11,12 @@ import java.io.Serializable;
  * @date 文件创建日期 2020年06月23日 14时19分
  */
 public interface BaseDbSaveable extends Serializable {
+
     /**
      * 插入前时使用的方法
      *
      * @param request 入参
+     *
      * @throws IdGenerationException id生成错误
      * @throws InterruptedException  sleep线程报错
      */

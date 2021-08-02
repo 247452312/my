@@ -9,10 +9,12 @@ import java.io.Serializable;
  * @date 文件创建日期 2020年09月14日 06时29分
  */
 public class VerificationGetResponse implements Serializable {
+
     /**
      * 验证码对应在redis中的key
      */
     private String key;
+
     /**
      * 图片的base64编码
      */

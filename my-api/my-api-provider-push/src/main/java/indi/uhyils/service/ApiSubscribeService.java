@@ -18,7 +18,9 @@ public interface ApiSubscribeService extends DefaultEntityService<ApiSubscribeEn
      * 订阅
      *
      * @param request 订阅请求
+     *
      * @return 是否订阅成功
+     *
      * @throws IdGenerationException 见{@link indi.uhyils.pojo.model.base.BaseDbSaveable#preInsert}
      * @throws InterruptedException
      */

@@ -1,7 +1,5 @@
 package indi.uhyils.pojo.request.base;
 
-import indi.uhyils.pojo.request.model.LinkNode;
-
 import java.io.Serializable;
 
 /**

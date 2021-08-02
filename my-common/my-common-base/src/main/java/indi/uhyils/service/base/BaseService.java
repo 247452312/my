@@ -9,4 +9,5 @@ import java.io.Serializable;
  * @date 文件创建日期 2020年06月23日 14时56分
  */
 public interface BaseService extends Serializable {
+
 }

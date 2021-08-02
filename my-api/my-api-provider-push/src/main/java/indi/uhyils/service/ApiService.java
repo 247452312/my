@@ -18,6 +18,7 @@ public interface ApiService extends DefaultEntityService<ApiEntity> {
      * 获取所有的指定组下的api
      *
      * @param request 筛选信息
+     *
      * @return 所有的指定组下的api
      */
     ServiceResult<Page<ApiEntity>> getByArgsAndGroup(GetByArgsAndGroupRequest request);

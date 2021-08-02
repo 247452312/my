@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class JsonEventConsumer implements EventHandler<JsonEvent> {
+
     @RpcReference
     private LogService logService;
 
@@ -33,6 +34,7 @@ public class JsonEventConsumer implements EventHandler<JsonEvent> {
      * @param jsonEvent 事件本身
      * @param l         正在处理的事件的顺序
      * @param b         是否是最后一个事件
+     *
      * @throws Exception
      */
     @Override

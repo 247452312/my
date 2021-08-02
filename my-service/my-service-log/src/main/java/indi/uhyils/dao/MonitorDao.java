@@ -20,6 +20,7 @@ public interface MonitorDao extends DefaultDao<LogMonitorEntity> {
      *
      * @param id      id
      * @param endTime 要改成的时间
+     *
      * @return
      */
     Boolean changeEndTime(@Param("id") Long id, @Param("endTime") long endTime);
@@ -28,6 +29,7 @@ public interface MonitorDao extends DefaultDao<LogMonitorEntity> {
      * 根据JVM唯一标识 获取主表主键
      *
      * @param jvmUniqueMark
+     *
      * @return
      */
     Long getIdByJvmUniqueMark(JvmUniqueMark jvmUniqueMark);
@@ -36,6 +38,7 @@ public interface MonitorDao extends DefaultDao<LogMonitorEntity> {
      * 获取现在正在运行中的服务数量
      *
      * @param time 现在时间
+     *
      * @return 现在正在运行中的服务数量
      */
     List<LogMonitorEntity> getOnlineService(long time);
@@ -44,6 +47,7 @@ public interface MonitorDao extends DefaultDao<LogMonitorEntity> {
      * 查询监控主表是否重复
      *
      * @param jvmUniqueMark 唯一标示
+     *
      * @return 个数
      */
     Integer checkMonitorRepeat(JvmUniqueMark jvmUniqueMark);

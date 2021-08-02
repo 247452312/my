@@ -32,6 +32,7 @@ public class LogServiceImpl extends BaseDefaultServiceImpl<LogEntity> implements
      * 工具entity, 插入日志时用来插入登录日志
      */
     private final UserEntity userEntity = new UserEntity();
+
     @Resource
     private LogDao dao;
 

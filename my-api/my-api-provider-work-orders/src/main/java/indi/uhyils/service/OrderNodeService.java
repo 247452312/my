@@ -15,6 +15,7 @@ public interface OrderNodeService extends DefaultEntityService<OrderNodeEntity> 
      * 批量删除,删除工单时用
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> deleteByIds(IdsRequest request);

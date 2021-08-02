@@ -10,6 +10,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @Version 1.0
  */
 public class CreateTopicRequest extends DefaultRequest {
+
     /**
      * topic名称
      */

@@ -2,7 +2,6 @@ package indi.uhyils.pojo.response.info;
 
 import indi.uhyils.pojo.model.ContentEntity;
 import indi.uhyils.util.ContentUtil;
-
 import java.io.Serializable;
 
 /**
@@ -14,7 +13,9 @@ import java.io.Serializable;
 public class MenuLogoInfo implements Serializable {
 
     private String title;
+
     private String image;
+
     private String href;
 
     public static MenuLogoInfo build(ContentEntity logoInfo) {

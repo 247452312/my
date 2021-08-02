@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.response;
 
 import indi.uhyils.pojo.model.OrderNodeFieldEntity;
-
 import java.io.Serializable;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ public class DealOrderNodeResponse implements Serializable {
      * 判断节点值是否允许的最终结果
      */
     private Boolean allow;
+
     /**
      * 判断节点值是否允许的结果
      */
@@ -24,6 +24,7 @@ public class DealOrderNodeResponse implements Serializable {
      * 出错时返回
      *
      * @param detailResult
+     *
      * @return
      */
     public static DealOrderNodeResponse buildCheckFaild(Boolean allow, Map<OrderNodeFieldEntity, Boolean> detailResult) {

@@ -14,6 +14,7 @@ public class GetMethodDisableRequest extends DefaultRequest {
      * 接口名称
      */
     private String className;
+
     /**
      * 方法名称
      */

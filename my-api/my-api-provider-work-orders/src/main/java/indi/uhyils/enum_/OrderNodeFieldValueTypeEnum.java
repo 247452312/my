@@ -18,6 +18,7 @@ public enum OrderNodeFieldValueTypeEnum {
 
 
     private String name;
+
     private Integer code;
 
     OrderNodeFieldValueTypeEnum(String name, Integer code) {

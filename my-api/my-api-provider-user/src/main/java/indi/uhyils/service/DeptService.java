@@ -10,7 +10,6 @@ import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
-
 import java.util.ArrayList;
 
 /**
@@ -25,6 +24,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * 给权限集添加权限
      *
      * @param request 将权限授予权限集的请求
+     *
      * @return
      */
     ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) throws Exception;
@@ -34,6 +34,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * 解除权限和权限集的关联关系
      *
      * @param idsRequest 权限ids
+     *
      * @return
      */
     ServiceResult<Boolean> deleteDeptPower(IdsRequest idsRequest);
@@ -43,6 +44,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * 将许多菜单添加到一个权限集
      *
      * @param request 将许多菜单添加到一个权限集的请求
+     *
      * @return 是否成功
      */
     ServiceResult<Boolean> putMenusToDept(PutMenusToDeptsRequest request);
@@ -51,6 +53,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * 将许多权限集添加到一个菜单
      *
      * @param request 将许多权限集添加到一个菜单的请求
+     *
      * @return 是否成功
      */
     ServiceResult<Boolean> putDeptsToMenu(PutDeptsToMenuRequest request);
@@ -59,6 +62,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * 获取全部权限集
      *
      * @param request 请求
+     *
      * @return 权限集
      */
     ServiceResult<ArrayList<DeptEntity>> getDepts(PutDeptsToMenuRequest request);
@@ -68,6 +72,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * 获取所有叶子菜单(包含羁绊标记)
      *
      * @param request 权限集id
+     *
      * @return 所有叶子菜单(包含羁绊标记)
      */
     ServiceResult<ArrayList<GetAllMenuWithHaveMarkResponse>> getAllMenuWithHaveMark(IdRequest request);
@@ -76,6 +81,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * 获取所有
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<ArrayList<GetAllPowerWithHaveMarkResponse>> getAllPowerWithHaveMark(IdRequest request);
@@ -85,6 +91,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      * 根据权限集id删除 并且删除关联表
      *
      * @param request 权限集id
+     *
      * @return 删除是否成功
      */
     ServiceResult<Boolean> deleteDept(IdRequest request);

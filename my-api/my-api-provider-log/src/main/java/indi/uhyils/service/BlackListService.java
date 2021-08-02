@@ -7,7 +7,6 @@ import indi.uhyils.pojo.request.GetLogIntervalByIpRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
-
 import java.util.ArrayList;
 
 /**
@@ -22,6 +21,7 @@ public interface BlackListService extends DefaultEntityService<BlackListEntity> 
      * 获取ip是否在爬虫黑名单中
      *
      * @param request ip
+     *
      * @return
      */
     ServiceResult<Boolean> getLogIntervalByIp(GetLogIntervalByIpRequest request);
@@ -30,6 +30,7 @@ public interface BlackListService extends DefaultEntityService<BlackListEntity> 
      * 获取所有的ip黑名单
      *
      * @param request 默认
+     *
      * @return 所有的ip黑名单
      */
     ServiceResult<ArrayList<String>> getAllIpBlackList(DefaultRequest request);
@@ -38,7 +39,9 @@ public interface BlackListService extends DefaultEntityService<BlackListEntity> 
      * 添加黑名单
      *
      * @param request ip
+     *
      * @return 是否成功
+     *
      * @throws IdGenerationException
      * @throws InterruptedException
      */

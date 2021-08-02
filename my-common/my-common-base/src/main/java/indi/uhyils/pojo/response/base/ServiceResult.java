@@ -4,7 +4,6 @@ import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.HotSpotResponse;
-
 import java.io.Serializable;
 
 /**
@@ -17,6 +16,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
 
 
     private static final long serialVersionUID = -4154566267377974875L;
+
     /**
      * 返回的类型
      */
@@ -31,7 +31,6 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * 服务提示给用户的信息.
      */
     private String serviceMessage;
-
 
 
     public ServiceResult(T data, Integer serviceCode, String serviceMessage, LinkNode<String> linkNode) {
@@ -59,6 +58,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @param t               请求返回值
      * @param req             请求(链路跟踪用)
      * @param <T>             请求返回值
+     *
      * @return 一个code是200 代表成功的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildSuccessResult(String businessMessage, T t, DefaultRequest req) {
@@ -71,6 +71,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @param t   请求返回值
      * @param req 请求(链路跟踪用)
      * @param <T> 请求返回值
+     *
      * @return 一个code是200 代表成功的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildSuccessResult(T t, DefaultRequest req) {
@@ -84,6 +85,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @param t               失败的返回体,通常是null
      * @param req             请求(链路跟踪用)
      * @param <T>             失败的返回体,通常是null
+     *
      * @return 一个code是400的 代表逻辑错误的返回(程序并没有错)
      */
     public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage, T t, DefaultRequest req) {
@@ -100,6 +102,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @param req             前台的请求
      * @param req             请求(链路跟踪用)
      * @param <T>             null
+     *
      * @return 一个code是500 代表逻辑错误的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildErrorResult(String businessMessage, DefaultRequest req) {
@@ -114,6 +117,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @param req 前台的请求
      * @param <T> null
+     *
      * @return 一个code是401 代表权限未通过的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildNoAuthResult(DefaultRequest req) {
@@ -125,6 +129,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @param req 前台的请求
      * @param <T> null
+     *
      * @return 一个code是402 代表登录问题的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildLoginOutResult(DefaultRequest req) {
@@ -136,6 +141,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @param req 前台的请求
      * @param <T> null
+     *
      * @return 一个code是403 代表登录问题的返回
      */
     public static <T extends Serializable> ServiceResult<T> buildNoLoginResult(DefaultRequest req) {
@@ -147,6 +153,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @param req 前台的请求
      * @param <T> null
+     *
      * @return 一个返回
      */
     public static <T extends Serializable> ServiceResult<T> buildResultByServiceCode(ServiceCode code, DefaultRequest req) {
@@ -159,6 +166,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      * @param key  redis中的key
      * @param hkey redis中hash内的key
      * @param req  请求
+     *
      * @return
      */
     public static ServiceResult<HotSpotResponse> buildHotSpotHaveResult(String key, String hkey, DefaultRequest req) {

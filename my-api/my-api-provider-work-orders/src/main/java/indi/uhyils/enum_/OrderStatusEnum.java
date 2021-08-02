@@ -18,6 +18,7 @@ public enum OrderStatusEnum {
     BACKING("回退中", 5);
 
     private String name;
+
     private Integer code;
 
     OrderStatusEnum(String name, Integer code) {

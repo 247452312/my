@@ -17,6 +17,7 @@ public enum OrderApplyStatusEnum {
     REJECT("已驳回", 4);
 
     private String name;
+
     private Integer code;
 
     OrderApplyStatusEnum(String name, Integer code) {

@@ -7,7 +7,6 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
-
 import java.util.ArrayList;
 
 /**
@@ -22,6 +21,7 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * 获取所有的权限
      *
      * @param request 请求
+     *
      * @return 所有权限
      */
     ServiceResult<ArrayList<PowerEntity>> getPowers(DefaultRequest request);
@@ -30,6 +30,7 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * 检查用户是否存在此权限
      *
      * @param request 检查用户是否存在此权限请求
+     *
      * @return 是否存在
      */
     ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerRequest request);
@@ -38,6 +39,7 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * 删除权限->包括连接表
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> deletePower(IdRequest request);
@@ -47,6 +49,7 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * 获取所有interfaceName
      *
      * @param request 原始请求
+     *
      * @return 所有interfaceName
      */
     ServiceResult<ArrayList<String>> getInterfaces(DefaultRequest request);
@@ -56,6 +59,7 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * 获取所有指定接口的方法
      *
      * @param request 接口名称
+     *
      * @return 对应方法
      */
     ServiceResult<ArrayList<String>> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameRequest request);
@@ -65,6 +69,7 @@ public interface PowerService extends DefaultEntityService<PowerEntity> {
      * 初始化权限,如果权限不存在,则添加权限,如果权限已经存在,则不作任何修改
      *
      * @param request 权限集
+     *
      * @return 添加的权限
      */
     ServiceResult<Integer> initPowerInProStart(DefaultRequest request) throws Exception;

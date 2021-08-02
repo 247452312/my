@@ -9,6 +9,7 @@ import java.io.Serializable;
  * @date 文件创建日期 2020年06月06日 14时50分
  */
 public class GetDeptsByMenuIdResponse implements Serializable {
+
     /**
      * 权限集id
      */

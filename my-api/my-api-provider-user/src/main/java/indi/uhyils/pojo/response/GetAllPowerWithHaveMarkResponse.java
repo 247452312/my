@@ -19,6 +19,7 @@ public class GetAllPowerWithHaveMarkResponse implements Serializable {
      * 接口名称
      */
     private String interfaceName;
+
     /**
      * 方法名称
      */

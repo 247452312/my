@@ -9,10 +9,12 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @date 文件创建日期 2020年09月14日 06时47分
  */
 public class VerificationRequest extends DefaultRequest {
+
     /**
      * 验证码
      */
     private String code;
+
     /**
      * redis中存储验证码的key
      */

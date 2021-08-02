@@ -7,7 +7,6 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.DefaultEntityService;
-
 import java.util.ArrayList;
 
 /**
@@ -22,6 +21,7 @@ public interface ServerService extends DefaultEntityService<ServerEntity> {
      * 测试服务器链接
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> testConnByData(TestConnByDataRequest request);
@@ -30,6 +30,7 @@ public interface ServerService extends DefaultEntityService<ServerEntity> {
      * 测试服务器链接
      *
      * @param request
+     *
      * @return
      */
     ServiceResult<Boolean> testConnById(IdRequest request);
@@ -38,6 +39,7 @@ public interface ServerService extends DefaultEntityService<ServerEntity> {
      * 获取所有服务器信息
      *
      * @param request 请求
+     *
      * @return 所有服务器信息
      */
     ServiceResult<ArrayList<ServerEntity>> getServersIdAndName(DefaultRequest request);
@@ -47,6 +49,7 @@ public interface ServerService extends DefaultEntityService<ServerEntity> {
      * 根据服务器的id获取服务器的用户名
      *
      * @param request 服务器id
+     *
      * @return 服务器名称
      */
     ServiceResult<String> getNameById(GetNameByIdRequest request);

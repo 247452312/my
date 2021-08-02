@@ -1,7 +1,6 @@
 package indi.uhyils.mongo;
 
 import indi.uhyils.util.LogUtil;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,7 +14,9 @@ public class MongoGuardianThread implements Runnable {
      * 睡眠时间 1分钟
      */
     private static final Long SLEEP_TIME = 1000L * 60;
+
     private MongoConnPool pool;
+
     /**
      * 保持启动
      */

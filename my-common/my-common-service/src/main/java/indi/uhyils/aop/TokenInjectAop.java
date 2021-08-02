@@ -11,6 +11,8 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.RpcApiUtil;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -21,9 +23,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 /**
  * token转用户信息切面(包含验证)
@@ -69,12 +68,13 @@ public class TokenInjectAop {
      * 6. 查询正常用户是否登录
      *
      * @param pjp pjp
+     *
      * @return pjp 的返回值
+     *
      * @throws Throwable pjp执行出错
      */
     @Around("tokenInjectPoint()")
     public Object tokenInjectAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
-
 
         //NoToken注释的方法直接放行 不需要token
         String className = pjp.getTarget().getClass().getCanonicalName();
@@ -120,7 +120,6 @@ public class TokenInjectAop {
             return pjp.proceed(new DefaultRequest[]{arg});
         }
 
-
         String substring = className.substring(className.lastIndexOf('.') + 1);
         if (substring.contains(IMPL)) {
             substring = substring.substring(0, substring.length() - 4);
@@ -145,6 +144,7 @@ public class TokenInjectAop {
      * @param id            用户id
      * @param interfaceName 权限接口名
      * @param methodName    权限方法名
+     *
      * @return 是否有权限
      */
     private ServiceResult<JSONObject> checkUserHavePower(UserEntity userEntity, Long id, String interfaceName, String methodName, String token, DefaultRequest request) {

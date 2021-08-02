@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.model;
 
 import indi.uhyils.pojo.model.base.BaseDoEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 

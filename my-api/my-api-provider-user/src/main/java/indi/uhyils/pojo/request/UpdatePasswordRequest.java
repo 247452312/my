@@ -15,6 +15,7 @@ public class UpdatePasswordRequest extends DefaultRequest {
      * 旧密码
      */
     private String oldPassword;
+
     /**
      * 新密码
      */

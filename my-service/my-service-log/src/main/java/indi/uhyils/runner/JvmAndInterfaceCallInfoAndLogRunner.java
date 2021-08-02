@@ -40,6 +40,7 @@ public class JvmAndInterfaceCallInfoAndLogRunner implements ApplicationRunner {
         MqUtil.addConsumer(exchangeName, RabbitMqContent.JVM_STATUS_QUEUE_NAME, RabbitMqContent.JVM_STATUS_QUEUE_NAME, (channel) -> new RabbitJvmStatusInfoConsumer(channel, applicationContext));
 
         /* 第4个是日志信息的(注,此queue流量巨大) */
-        MqUtil.addNoLogConsumer(LogInfoSendMqUtil.getExchangeName(), LogInfoSendMqUtil.getQueueName(), LogInfoSendMqUtil.getQueueName(), (channel) -> new RabbitLogInfoConsumer(channel, applicationContext));
+        MqUtil.addNoLogConsumer(LogInfoSendMqUtil.getExchangeName(), LogInfoSendMqUtil.getQueueName(), LogInfoSendMqUtil
+            .getQueueName(), (channel) -> new RabbitLogInfoConsumer(channel, applicationContext));
     }
 }

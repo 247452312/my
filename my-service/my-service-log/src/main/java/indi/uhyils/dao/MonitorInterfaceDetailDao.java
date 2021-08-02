@@ -15,6 +15,7 @@ public interface MonitorInterfaceDetailDao extends DefaultDao<LogMonitorInterfac
      * 获取从从开始时间到现在的服务调用次数
      *
      * @param time 开始时间
+     *
      * @return 从开始时间到现在的服务调用次数
      */
     Integer getCountByStartTime(Long time);

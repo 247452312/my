@@ -22,6 +22,7 @@ public class PushMsgToSomeoneRequest extends DefaultRequest {
      * 推送标题
      */
     private String title;
+
     /**
      * 推送内容
      */
