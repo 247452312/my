@@ -31,7 +31,7 @@ public enum LogDetailTypeEnum {
                 return value;
             }
         }
-        return null;
+        throw new RuntimeException("没有发现指定的前缀" + ch);
     }
 
     public Character getCode() {

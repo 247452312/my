@@ -160,7 +160,7 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="link_log" additivity="false" level="ERROR">
+    <logger name="link_log" additivity="false" level="INFO">
         <appender-ref ref="LINK_FILE"/>
     </logger>
 
@@ -182,7 +182,7 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="sql_log" additivity="false" level="ERROR">
+    <logger name="sql_log" additivity="false" level="INFO">
         <appender-ref ref="SQL_FILE"/>
     </logger>
     <!--     mq_log       -->
@@ -202,7 +202,7 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="mq_log" additivity="false" level="ERROR">
+    <logger name="mq_log" additivity="false" level="INFO">
         <appender-ref ref="MQ_FILE"/>
     </logger>
 
@@ -223,7 +223,7 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="rpc_log" additivity="false" level="ERROR">
+    <logger name="rpc_log" additivity="false" level="INFO">
         <appender-ref ref="RPC_FILE"/>
     </logger>
 
@@ -244,7 +244,7 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="task_log" additivity="false" level="ERROR">
+    <logger name="task_log" additivity="false" level="INFO">
         <appender-ref ref="TASK_FILE"/>
     </logger>
     <!--     controller_log       -->
@@ -264,7 +264,7 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="controller_log" additivity="false" level="ERROR">
+    <logger name="controller_log" additivity="false" level="INFO">
         <appender-ref ref="CONTROLLER_FILE"/>
     </logger>
 

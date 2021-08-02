@@ -77,7 +77,8 @@ public class MyTraceIdContext {
      * @return
      */
     public static String getLogInfo(String rpcStr, LogTypeEnum logTypeEnum, long startTime, long timeConsuming, String... otherInfo) {
-        StringBuilder sb = new StringBuilder(LogDetailTypeEnum.LINK.getCode());
+        StringBuilder sb = new StringBuilder();
+        sb.append(LogDetailTypeEnum.LINK.getCode());
         sb.append(getThraceId());
         sb.append(PIPE_SYMBOL);
         sb.append(startTime);
