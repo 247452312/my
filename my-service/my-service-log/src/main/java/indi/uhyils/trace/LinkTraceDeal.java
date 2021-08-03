@@ -1,8 +1,8 @@
 package indi.uhyils.trace;
 
 import indi.uhyils.log.MyTraceIdContext;
+import indi.uhyils.pojo.model.TraceIdDoEntity;
 import indi.uhyils.pojo.model.TraceInfoEntity;
-import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 
 /**
@@ -15,7 +15,7 @@ import indi.uhyils.pojo.model.base.BaseDoEntity;
 public class LinkTraceDeal extends AbstractTraceDeal {
 
     @Override
-    protected BaseDoEntity getTargetEntity(String[] split) {
+    protected TraceIdDoEntity getTargetEntity(String[] split) {
         if (split.length < 10) {
             throw new RuntimeException("错误");
         }
@@ -34,6 +34,9 @@ public class LinkTraceDeal extends AbstractTraceDeal {
         for (int i = 10; i < split.length; i++) {
             sb.append(split[i]);
             sb.append(MyTraceIdContext.PIPE_SYMBOL);
+        }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
         }
 
         TraceInfoEntity entity = new TraceInfoEntity();

@@ -13,6 +13,7 @@ import indi.uhyils.trace.DetailTraceDeal;
 import indi.uhyils.trace.LinkTraceDeal;
 import indi.uhyils.trace.LogTraceDeal;
 import indi.uhyils.trace.TraceDealInterface;
+import indi.uhyils.util.LogUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
@@ -56,37 +57,34 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
 
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) {
-        try {
-            executor.execute(() -> {
-                try {
-                    String text = new String(body, StandardCharsets.UTF_8);
-                    text = text.substring(1, text.length() - 1);
-                    LogDetailTypeEnum parse = LogDetailTypeEnum.parse(text.charAt(0));
-                    TraceDealInterface traceDeal = null;
-                    switch (parse) {
-                        case DETAIL:
-                            traceDeal = new DetailTraceDeal();
-                            traceDeal.init(traceDetailDao);
-                            break;
-                        case LOG:
-                            traceDeal = new LogTraceDeal();
-                            traceDeal.init(traceLogDao);
-                            break;
-                        case LINK:
-                            traceDeal = new LinkTraceDeal();
-                            traceDeal.init(traceInfoDao);
-                            break;
-                        default:
-                            throw new RuntimeException("前缀错误" + text.charAt(0));
-                    }
-                    traceDeal.doDeal(text);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        executor.execute(() -> {
+            String text = new String(body, StandardCharsets.UTF_8);
+            try {
+                text = text.substring(1, text.length() - 1);
+                LogDetailTypeEnum parse = LogDetailTypeEnum.parse(text.charAt(0));
+                TraceDealInterface traceDeal = null;
+                switch (parse) {
+                    case DETAIL:
+                        traceDeal = new DetailTraceDeal();
+                        traceDeal.init(traceDetailDao);
+                        break;
+                    case LOG:
+                        traceDeal = new LogTraceDeal();
+                        traceDeal.init(traceLogDao);
+                        break;
+                    case LINK:
+                        traceDeal = new LinkTraceDeal();
+                        traceDeal.init(traceInfoDao);
+                        break;
+                    default:
+                        throw new RuntimeException("前缀错误" + text.charAt(0));
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                traceDeal.doDeal(text);
+            } catch (Exception e) {
+                LogUtil.error(e, text);
+            }
+        });
+
 
     }
 

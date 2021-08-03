@@ -1,8 +1,9 @@
 package indi.uhyils.trace;
 
+import com.alibaba.nacos.common.utils.Objects;
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.exception.IdGenerationException;
-import indi.uhyils.pojo.model.base.BaseDoEntity;
+import indi.uhyils.pojo.model.TraceIdDoEntity;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 
 /**
@@ -18,7 +19,10 @@ public abstract class AbstractTraceDeal implements TraceDealInterface {
     public void doDeal(String traceMsg) throws IdGenerationException, InterruptedException {
         traceMsg = traceMsg.substring(1);
         String[] split = traceMsg.split("\\|");
-        BaseDoEntity entity = getTargetEntity(split);
+        TraceIdDoEntity entity = getTargetEntity(split);
+        if (Objects.equals(entity.getTraceId(), 1L)) {
+            return;
+        }
         entity.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());
         dao.insert(entity);
     }
@@ -27,8 +31,10 @@ public abstract class AbstractTraceDeal implements TraceDealInterface {
      * 解析
      *
      * @param split
+     *
+     * @return
      */
-    protected abstract BaseDoEntity getTargetEntity(String[] split);
+    protected abstract TraceIdDoEntity getTargetEntity(String[] split);
 
     @Override
     public void init(DefaultDao dao) {

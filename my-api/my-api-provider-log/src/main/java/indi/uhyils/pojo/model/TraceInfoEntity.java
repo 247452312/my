@@ -1,17 +1,12 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseDoEntity;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年08月02日 08时14分
  */
-public class TraceInfoEntity extends BaseDoEntity {
+public class TraceInfoEntity extends TraceIdDoEntity {
 
-    /**
-     *
-     */
-    private Long traceId;
 
     /**
      * 其他
@@ -62,15 +57,6 @@ public class TraceInfoEntity extends BaseDoEntity {
      * 日志名称
      */
     private String loggerName;
-
-
-    public Long getTraceId() {
-        return traceId;
-    }
-
-    public void setTraceId(Long traceId) {
-        this.traceId = traceId;
-    }
 
     public String getOther() {
         return other;

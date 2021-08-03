@@ -49,7 +49,7 @@ public class RabbitInterfaceCallInfoConsumer extends DefaultConsumer {
         Long id = monitorDao.getIdByJvmUniqueMark(interfaceCallInfo.getJvmUniqueMark());
         LogMonitorInterfaceCallEntity logMonitorInterfaceCallEntity = ModelTransUtils.transInterfaceCallInfoToMonitorInterfaceDetailDO(interfaceCallInfo, id);
         try {
-            logMonitorInterfaceCallEntity.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());
+            logMonitorInterfaceCallEntity.preInsert();
         } catch (Exception e) {
             LogUtil.error(this, e);
         }

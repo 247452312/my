@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.model;
 
+import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.model.base.BaseDbSaveable;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 
@@ -24,6 +25,11 @@ public class MongoEntity implements BaseDbSaveable {
 
     @Override
     public void preInsert(DefaultRequest request) {
+        // nothing to do
+    }
+
+    @Override
+    public void preInsert() throws IdGenerationException, InterruptedException {
         // nothing to do
     }
 

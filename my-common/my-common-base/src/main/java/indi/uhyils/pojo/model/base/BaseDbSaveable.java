@@ -23,6 +23,14 @@ public interface BaseDbSaveable extends Serializable {
     void preInsert(DefaultRequest request) throws IdGenerationException, InterruptedException;
 
     /**
+     * 插入前时使用的方法(使用系统管理账号)
+     *
+     * @throws IdGenerationException id生成错误
+     * @throws InterruptedException  sleep线程报错
+     */
+    void preInsert() throws IdGenerationException, InterruptedException;
+
+    /**
      * 修改前时使用的方法
      *
      * @param request 请求
