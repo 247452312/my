@@ -1,5 +1,6 @@
 package indi.uhyils.trace;
 
+import indi.uhyils.log.MyTraceIdContext;
 import indi.uhyils.pojo.model.TraceIdDoEntity;
 import indi.uhyils.pojo.model.TraceLogEntity;
 
@@ -15,7 +16,7 @@ public class LogTraceDeal extends AbstractTraceDeal {
 
     @Override
     protected TraceIdDoEntity getTargetEntity(String[] split) {
-        if (split.length != 6) {
+        if (split.length < 6) {
             throw new RuntimeException("错误");
         }
         String loggerName = split[0];
@@ -23,14 +24,18 @@ public class LogTraceDeal extends AbstractTraceDeal {
         String traceId = split[2];
         String rpcId = split[3];
         String nowTime = split[4];
-        String log = split[5];
+        StringBuilder log = new StringBuilder();
+        for (int i = 5; i < split.length; i++) {
+            log.append(split[i]);
+            log.append(MyTraceIdContext.PIPE_SYMBOL);
+        }
         TraceLogEntity traceLogEntity = new TraceLogEntity();
         traceLogEntity.setLoggerName(loggerName);
         traceLogEntity.setLogLevel(logLevel);
         traceLogEntity.setTraceId(Long.valueOf(traceId));
         traceLogEntity.setRpcId(rpcId);
         traceLogEntity.setNowTime(Long.valueOf(nowTime));
-        traceLogEntity.setLog(log);
+        traceLogEntity.setLog(log.toString());
         return traceLogEntity;
     }
 }
