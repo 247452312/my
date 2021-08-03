@@ -1,9 +1,6 @@
 package indi.uhyils.util.disruptor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.lmax.disruptor.EventHandler;
-import indi.uhyils.pojo.model.LogEntity;
-import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.service.LogService;
 import org.springframework.stereotype.Component;
@@ -17,17 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class JsonEventConsumer implements EventHandler<JsonEvent> {
 
-    @RpcReference
-    private LogService logService;
-
-    public LogService getLogService() {
-        return logService;
-    }
-
-    public void setLogService(LogService logService) {
-        this.logService = logService;
-    }
-
     /**
      * 发送日志
      *
@@ -39,6 +25,6 @@ public class JsonEventConsumer implements EventHandler<JsonEvent> {
      */
     @Override
     public void onEvent(JsonEvent jsonEvent, long l, boolean b) throws Exception {
-        logService.pushRequestLog(ObjRequest.build(JSONObject.parseObject(jsonEvent.getValue(), LogEntity.class), jsonEvent.getToken()));
+//        logService.pushRequestLog(ObjRequest.build(JSONObject.parseObject(jsonEvent.getValue(), LogEntity.class), jsonEvent.getToken()));
     }
 }

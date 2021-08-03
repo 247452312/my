@@ -6,6 +6,7 @@ import indi.uhyils.pojo.request.GetLinkByTraceIdRequest;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -50,4 +51,14 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
      * @return
      */
     List<TraceInfoEntity> getLinkByTraceId(GetLinkByTraceIdRequest traceId);
+
+    /**
+     * 获取从开始时间到现在的前台请求次数
+     *
+     * @param code
+     * @param time 开始时间
+     *
+     * @return 从开始时间到现在的前台请求次数
+     */
+    Integer getCountByTypeAndStartTime(@Param("code") Integer code, @Param("time") Long time);
 }

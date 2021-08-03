@@ -31,11 +31,6 @@ public class RabbitMqContent {
     public static final String JVM_STATUS_QUEUE_NAME = "jvm_status";
 
     /**
-     * 服务调用日志
-     */
-    public static final String INTERFACE_CALL_INFO = "interface_call_info";
-
-    /**
      * 数据库中默认假想超时时间 设置假想结束时间=JVM上次发送状态时间+ OUT_TIME*比例系数
      * 同时也是微服务发送监控间隔
      */

@@ -1,6 +1,6 @@
 package indi.uhyils.factory;
 
-import indi.uhyils.log.MyTraceIdContext;
+import com.sun.istack.internal.NotNull;
 import indi.uhyils.pojo.model.TraceInfoEntity;
 import indi.uhyils.pojo.response.trace.OneTraceLink;
 import indi.uhyils.pojo.response.trace.OneTraceNode;
@@ -20,9 +20,10 @@ import org.springframework.util.CollectionUtils;
 public class TraceInfoFactory {
 
 
+    @NotNull
     public static Map<Long, OneTraceLink> createByTraceLink(List<TraceInfoEntity> list) {
         if (CollectionUtils.isEmpty(list)) {
-            return null;
+            return new HashMap<>();
         }
         Map<Long, OneTraceLink> result = new HashMap<>();
         list.sort(Comparator.comparingInt(t -> StringUtil.containsCount(t.getRpcId(), '.')));

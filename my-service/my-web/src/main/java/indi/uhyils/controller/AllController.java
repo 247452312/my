@@ -6,18 +6,19 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.SessionRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.redis.hotspot.HotSpotRedisPool;
-import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.io.Serializable;
-import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,12 +42,10 @@ public class AllController {
      */
     private static final String UNIQUE = "unique";
 
-    /**
-     * 热点缓存
-     */
-    @Autowired
-    private HotSpotRedisPool redisPool;
 
+    @Autowired
+    @Qualifier("actionExecutor")
+    private ThreadPoolTaskExecutor executor;
 
     /**
      * 默认返回所有的方法
@@ -58,22 +57,15 @@ public class AllController {
      */
     @PostMapping("action")
     public WebResponse action(@RequestBody Action action, HttpServletRequest httpServletRequest) {
-        //错误日志
-        String eMsg = null;
-        // 链路跟踪
-        LinkNode<String> link = null;
         // 服务返回信息
-        ServiceResult serviceResult = null;
+        ServiceResult serviceResult;
 
         // 发送前处理
         dealActionBeforeCall(action);
         try {
-            JSONObject o = (JSONObject) RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
-            serviceResult = JSON.toJavaObject(o, ServiceResult.class);
+            Future<ServiceResult> submit = executor.submit(new ActionFuture(action));
+            serviceResult = submit.get();
 
-            if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
-                eMsg = serviceResult.getServiceMessage();
-            }
             // 修改字段类型为String,因为前端大数会失去精度
             Serializable data = serviceResult.getData();
             if (data instanceof JSONObject) {
@@ -85,9 +77,10 @@ public class AllController {
         } catch (Exception e) {
             // 如果失败,就返回微服务传回来的错误信息与提示
             LogUtil.error(this, e);
-            eMsg = e.getMessage();
             return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
-        } finally {
+        }
+        // disruptor 注释了. 以后想用在别的地方当做参考
+        /*finally {
             if (serviceResult != null) {
                 try {
                     LogPushUtils.pushLog(eMsg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken(), serviceResult.getServiceCode());
@@ -96,14 +89,13 @@ public class AllController {
                 }
 
             }
-        }
+        }*/
     }
-
 
     private void changeFieldTypeToString(JSONObject data) {
         // 因前端大数会失去精度, 所以要转变类型,全部转换为String类型的
         if (data != null) {
-            for (Map.Entry<String, Object> entry : data.entrySet()) {
+            for (Entry<String, Object> entry : data.entrySet()) {
                 String s = entry.getKey();
                 Object value = entry.getValue();
                 if (value instanceof JSONObject) {
@@ -156,6 +148,21 @@ public class AllController {
         HttpSession session = request.getSession();
         session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
         return Boolean.TRUE;
+    }
+
+    private static class ActionFuture implements Callable<ServiceResult> {
+
+        private final Action action;
+
+        public ActionFuture(Action action) {
+            this.action = action;
+        }
+
+        @Override
+        public ServiceResult call() throws Exception {
+            JSONObject result = (JSONObject) RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+            return JSON.toJavaObject(result, ServiceResult.class);
+        }
     }
 
 }

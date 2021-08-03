@@ -28,12 +28,6 @@ public class TraceInfoServiceImpl extends BaseDefaultServiceImpl<TraceInfoEntity
     @Resource
     private TraceInfoDao dao;
 
-    public static void main(String[] args) {
-        String s = "1.2.3.4";
-        String rpcId = "1.2.3";
-        System.out.println(s.lastIndexOf(".") - rpcId.length());
-    }
-
     @Override
     public TraceInfoDao getDao() {
         return dao;
@@ -47,7 +41,7 @@ public class TraceInfoServiceImpl extends BaseDefaultServiceImpl<TraceInfoEntity
     public ServiceResult<GetAllLinkByTraceIdResponse> getAllLinkByTraceId(LongRequest request) {
         List<TraceInfoEntity> traceInfoEntities = dao.getByTraceId(request.getValue());
         Map<Long, OneTraceLink> byTraceLink = TraceInfoFactory.createByTraceLink(traceInfoEntities);
-        return ServiceResult.buildSuccessResult(GetAllLinkByTraceIdResponse.build(byTraceLink.get(Long.valueOf(request.getValue()))), request);
+        return ServiceResult.buildSuccessResult(GetAllLinkByTraceIdResponse.build(byTraceLink.get(request.getValue())), request);
     }
 
     @Override

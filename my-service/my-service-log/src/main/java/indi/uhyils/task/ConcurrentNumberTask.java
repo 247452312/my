@@ -1,8 +1,9 @@
 package indi.uhyils.task;
 
 import indi.uhyils.content.Content;
-import indi.uhyils.dao.LogDao;
+import indi.uhyils.dao.TraceInfoDao;
 import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.log.LogTypeEnum;
 import indi.uhyils.pojo.model.DictItemEntity;
 import indi.uhyils.pojo.request.GetByCodeRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
@@ -12,11 +13,10 @@ import indi.uhyils.service.DictService;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.NacosUtil;
+import java.util.ArrayList;
+import javax.annotation.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
 
 /**
  * 并发数统计
@@ -36,7 +36,7 @@ public class ConcurrentNumberTask {
     private volatile static Boolean degradation = Boolean.FALSE;
 
     @Resource
-    private LogDao logDao;
+    private TraceInfoDao traceInfoDao;
 
     @RpcReference
     private DictService dictService;
@@ -44,7 +44,7 @@ public class ConcurrentNumberTask {
     @Scheduled(cron = "*/2 * * * * ?")
     public void demoSchedule() {
         // 获取每秒网关的并发数
-        Integer countByStartTime = logDao.getCountByStartTime(System.currentTimeMillis() - 1000L);
+        Integer countByStartTime = traceInfoDao.getCountByTypeAndStartTime(LogTypeEnum.CONTROLLER.getCode(), System.currentTimeMillis() - 1000L);
         //获取字典中人工设置的自动降级的并发数
         GetByCodeRequest request = new GetByCodeRequest();
         DefaultRequest adminDefaultRequest = DefaultRequestBuildUtil.getAdminDefaultRequest();

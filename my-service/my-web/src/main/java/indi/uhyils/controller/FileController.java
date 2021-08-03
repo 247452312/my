@@ -1,13 +1,10 @@
 package indi.uhyils.controller;
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.WebResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.util.ArrayList;
@@ -40,8 +37,6 @@ public class FileController {
 
     @RequestMapping("/down/{fileName}/{token}")
     public String down(@PathVariable String token, @PathVariable String fileName, HttpServletRequest request) {
-        String eMsg = null;
-        LinkNode<String> link = null;
         ServiceResult serviceResult = null;
         Map<String, Object> args = new HashMap<>(3);
 
@@ -51,32 +46,18 @@ public class FileController {
             args.put("name", fileName);
 
             serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, METHOD_NAME, args);
-            if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
-                eMsg = serviceResult.getServiceMessage();
-            }
+
             ServiceResult<String> sr = serviceResult;
             return sr.getData();
         } catch (Exception e) {
             LogUtil.error(this, e);
-            eMsg = e.getMessage();
             return null;
-        } finally {
-            if (serviceResult != null) {
-                try {
-                    LogPushUtils.pushLog(eMsg, INTERFACE, METHOD_NAME, args, link, request, token, serviceResult.getServiceCode());
-                } catch (Exception e) {
-                    LogUtil.error(this, e);
-                }
-
-            }
         }
     }
 
     @RequestMapping("/up")
     public WebResponse up(@RequestBody Action action, HttpServletRequest request) {
         String methodName = "add";
-        String eMsg = null;
-        LinkNode<String> link = null;
         ServiceResult serviceResult = null;
 
         LogUtil.info(this, "param: " + JSON.toJSONString(action));
@@ -88,23 +69,11 @@ public class FileController {
             List<Object> list = new ArrayList();
             list.add(action.getArgs());
             serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultRequest());
-            if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
-                eMsg = serviceResult.getServiceMessage();
-            }
+
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
             LogUtil.error(this, e);
-            eMsg = e.getMessage();
             return null;
-        } finally {
-            if (serviceResult != null) {
-                try {
-                    LogPushUtils.pushLog(eMsg, INTERFACE, methodName, action.getArgs(), link, request, action.getToken(), serviceResult.getServiceCode());
-                } catch (Exception e) {
-                    LogUtil.error(this, e);
-                }
-
-            }
         }
     }
 
