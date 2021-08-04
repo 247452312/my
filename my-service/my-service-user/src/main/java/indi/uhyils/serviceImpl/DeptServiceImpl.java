@@ -68,14 +68,14 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
             middle.preInsert(request);
             dao.insertDeptPower(middle);
         }
-        return ServiceResult.buildSuccessResult("权限集添加权限成功", Boolean.TRUE, request);
+        return ServiceResult.buildSuccessResult("权限集添加权限成功", Boolean.TRUE);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public ServiceResult<Boolean> deleteDeptPower(IdsRequest idsRequest) {
         dao.deleteDeptPower(idsRequest.getIds());
-        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, idsRequest);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
             }
             dao.insertDeptMenu(t);
         });
-        return ServiceResult.buildSuccessResult("赋权成功", Boolean.TRUE, request);
+        return ServiceResult.buildSuccessResult("赋权成功", Boolean.TRUE);
     }
 
     @Override
@@ -115,26 +115,26 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
             }
             dao.insertDeptMenu(t);
         });
-        return ServiceResult.buildSuccessResult("赋权成功", Boolean.TRUE, request);
+        return ServiceResult.buildSuccessResult("赋权成功", Boolean.TRUE);
     }
 
     @Override
     public ServiceResult<ArrayList<DeptEntity>> getDepts(PutDeptsToMenuRequest request) {
-        return ServiceResult.buildSuccessResult("获取成功", dao.getAll(), request);
+        return ServiceResult.buildSuccessResult("获取成功", dao.getAll());
     }
 
     @Override
     @ReadWriteMark(tables = {"sys_dept_menu", "sys_menu"})
     public ServiceResult<ArrayList<GetAllMenuWithHaveMarkResponse>> getAllMenuWithHaveMark(IdRequest request) {
         ArrayList<GetAllMenuWithHaveMarkResponse> list = menuDao.getAllMenuWithHaveMark(request.getId());
-        return ServiceResult.buildSuccessResult("查询菜单(包含羁绊)成功", list, request);
+        return ServiceResult.buildSuccessResult("查询菜单(包含羁绊)成功", list);
     }
 
     @Override
     @ReadWriteMark(tables = {"sys_dept_power", "sys_power"})
     public ServiceResult<ArrayList<GetAllPowerWithHaveMarkResponse>> getAllPowerWithHaveMark(IdRequest request) {
         ArrayList<GetAllPowerWithHaveMarkResponse> list = dao.getAllPowerWithHaveMark(request.getId());
-        return ServiceResult.buildSuccessResult("查询权限(包含羁绊)成功", list, request);
+        return ServiceResult.buildSuccessResult("查询权限(包含羁绊)成功", list);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     public ServiceResult<Boolean> deleteDept(IdRequest request) {
         DeptEntity t = getDao().getById(request.getId());
         if (t == null) {
-            return ServiceResult.buildFailedResult("查无此人", null, request);
+            return ServiceResult.buildFailedResult("查无此人", null);
         }
         t.setDeleteFlag(Boolean.TRUE);
         t.preUpdate(request);
@@ -151,7 +151,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
         dao.deleteDeptMenuMiddleByDeptId(request.getId());
         dao.deleteRoleDeptMiddleByDeptId(request.getId());
 
-        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, request);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE);
     }
 
     @Override

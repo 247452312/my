@@ -1,11 +1,11 @@
 package indi.uhyils.serviceImpl;
 
-import indi.uhyils.rpc.annotation.RpcService;
-import indi.uhyils.annotation.NoToken;
-import indi.uhyils.content.Content;
 import indi.uhyils.dao.TraceDetailDao;
-import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.model.*;
+import indi.uhyils.pojo.model.TraceDetailEntity;
+import indi.uhyils.pojo.request.GetTraceDetailByHashCodeRequest;
+import indi.uhyils.pojo.response.GetTraceDetailByHashCodeResponse;
+import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.TraceDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,5 +27,11 @@ public class TraceDetailServiceImpl extends BaseDefaultServiceImpl<TraceDetailEn
 
     public void setDao(TraceDetailDao dao) {
         this.dao = dao;
+    }
+
+    @Override
+    public ServiceResult<GetTraceDetailByHashCodeResponse> getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request) {
+        TraceDetailEntity entity = dao.getTraceDetailByHashCode(request);
+        return ServiceResult.buildSuccessResult(GetTraceDetailByHashCodeResponse.build(entity));
     }
 }

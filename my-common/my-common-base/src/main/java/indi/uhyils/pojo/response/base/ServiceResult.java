@@ -1,8 +1,6 @@
 package indi.uhyils.pojo.response.base;
 
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.pojo.response.HotSpotResponse;
 import java.io.Serializable;
 
@@ -33,20 +31,12 @@ public class ServiceResult<T extends Serializable> implements Serializable {
     private String serviceMessage;
 
 
-    public ServiceResult(T data, Integer serviceCode, String serviceMessage, LinkNode<String> linkNode) {
+    public ServiceResult(T data, Integer serviceCode, String serviceMessage) {
         this.data = data;
         this.serviceCode = serviceCode;
         this.serviceMessage = serviceMessage;
     }
 
-    public ServiceResult(T data, Integer serviceCode, String serviceMessage, DefaultRequest req) {
-        if (req == null) {
-            throw new NullPointerException("请求参数为空");
-        }
-        this.data = data;
-        this.serviceCode = serviceCode;
-        this.serviceMessage = serviceMessage;
-    }
 
     public ServiceResult() {
     }
@@ -56,26 +46,24 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @param businessMessage 给前台返回的信息
      * @param t               请求返回值
-     * @param req             请求(链路跟踪用)
      * @param <T>             请求返回值
      *
      * @return 一个code是200 代表成功的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildSuccessResult(String businessMessage, T t, DefaultRequest req) {
-        return new ServiceResult(t, ServiceCode.SUCCESS.getText(), businessMessage, req);
+    public static <T extends Serializable> ServiceResult<T> buildSuccessResult(String businessMessage, T t) {
+        return new ServiceResult(t, ServiceCode.SUCCESS.getText(), businessMessage);
     }
 
     /**
      * 构建一个逻辑成功的返回
      *
      * @param t   请求返回值
-     * @param req 请求(链路跟踪用)
      * @param <T> 请求返回值
      *
      * @return 一个code是200 代表成功的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildSuccessResult(T t, DefaultRequest req) {
-        return new ServiceResult(t, ServiceCode.SUCCESS.getText(), null, req);
+    public static <T extends Serializable> ServiceResult<T> buildSuccessResult(T t) {
+        return new ServiceResult(t, ServiceCode.SUCCESS.getText(), null);
     }
 
     /**
@@ -83,81 +71,69 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @param businessMessage 给前台的返回
      * @param t               失败的返回体,通常是null
-     * @param req             请求(链路跟踪用)
      * @param <T>             失败的返回体,通常是null
      *
      * @return 一个code是400的 代表逻辑错误的返回(程序并没有错)
      */
-    public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage, T t, DefaultRequest req) {
-        if (req == null) {
-            req = new DefaultRequest();
-        }
-        return new ServiceResult(t, ServiceCode.REQUEST_PARAM_ERROR.getText(), businessMessage, req);
+    public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage, T t) {
+        return new ServiceResult(t, ServiceCode.REQUEST_PARAM_ERROR.getText(), businessMessage);
     }
 
     /**
      * 构建一个程序失败的返回
      *
      * @param businessMessage 给前台的返回
-     * @param req             前台的请求
-     * @param req             请求(链路跟踪用)
      * @param <T>             null
      *
      * @return 一个code是500 代表逻辑错误的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildErrorResult(String businessMessage, DefaultRequest req) {
-        if (req == null) {
-            req = new DefaultRequest();
-        }
-        return new ServiceResult(null, ServiceCode.ERROR.getText(), businessMessage, req);
+    public static <T extends Serializable> ServiceResult<T> buildErrorResult(String businessMessage) {
+
+        return new ServiceResult(null, ServiceCode.ERROR.getText(), businessMessage);
     }
 
     /**
      * 构建一个权限未通过的返回
      *
-     * @param req 前台的请求
      * @param <T> null
      *
      * @return 一个code是401 代表权限未通过的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildNoAuthResult(DefaultRequest req) {
-        return buildResultByServiceCode(ServiceCode.NONE_AUTH_ERROR, req);
+    public static <T extends Serializable> ServiceResult<T> buildNoAuthResult() {
+        return buildResultByServiceCode(ServiceCode.NONE_AUTH_ERROR);
     }
 
     /**
      * 构建一个登录过期的返回
      *
-     * @param req 前台的请求
      * @param <T> null
      *
      * @return 一个code是402 代表登录问题的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildLoginOutResult(DefaultRequest req) {
-        return buildResultByServiceCode(ServiceCode.LOGIN_TIME_OUT_ERROR, req);
+    public static <T extends Serializable> ServiceResult<T> buildLoginOutResult() {
+        return buildResultByServiceCode(ServiceCode.LOGIN_TIME_OUT_ERROR);
     }
 
     /**
      * 构建一个未登录的返回
      *
-     * @param req 前台的请求
      * @param <T> null
      *
      * @return 一个code是403 代表登录问题的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildNoLoginResult(DefaultRequest req) {
-        return buildResultByServiceCode(ServiceCode.NO_LOGIN__ERROR, req);
+    public static <T extends Serializable> ServiceResult<T> buildNoLoginResult() {
+        return buildResultByServiceCode(ServiceCode.NO_LOGIN__ERROR);
     }
 
     /**
      * 根据ServiceCode构建一个返回
      *
-     * @param req 前台的请求
      * @param <T> null
      *
      * @return 一个返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildResultByServiceCode(ServiceCode code, DefaultRequest req) {
-        return new ServiceResult(null, code.getText(), code.getMsg(), req);
+    public static <T extends Serializable> ServiceResult<T> buildResultByServiceCode(ServiceCode code) {
+        return new ServiceResult(null, code.getText(), code.getMsg());
     }
 
     /**
@@ -165,13 +141,12 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @param key  redis中的key
      * @param hkey redis中hash内的key
-     * @param req  请求
      *
      * @return
      */
-    public static ServiceResult<HotSpotResponse> buildHotSpotHaveResult(String key, String hkey, DefaultRequest req) {
+    public static ServiceResult<HotSpotResponse> buildHotSpotHaveResult(String key, String hkey) {
         HotSpotResponse build = HotSpotResponse.build(key, hkey);
-        return new ServiceResult(build, ServiceCode.SUCCESS_REDIS.getText(), null, req);
+        return new ServiceResult(build, ServiceCode.SUCCESS_REDIS.getText(), null);
     }
 
     public T getData() {

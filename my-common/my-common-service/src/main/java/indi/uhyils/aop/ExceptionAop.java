@@ -1,7 +1,6 @@
 package indi.uhyils.aop;
 
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.LogUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -36,7 +35,7 @@ public class ExceptionAop {
             return pjp.proceed();
         } catch (Throwable e) {
             LogUtil.error(this, e);
-            return ServiceResult.buildErrorResult(e.getMessage(), AopUtil.getDefaultRequestInPjp(pjp));
+            return ServiceResult.buildErrorResult(e.getMessage());
         }
     }
 }

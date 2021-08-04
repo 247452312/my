@@ -19,7 +19,6 @@ import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.DictService;
-import indi.uhyils.util.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,13 +61,13 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         Long id = idRequest.getId();
         DictEntity dictEntity = dao.getById(id);
         if (dictEntity == null) {
-            return ServiceResult.buildFailedResult("查无此字典", null, idRequest);
+            return ServiceResult.buildFailedResult("查无此字典", null);
         }
         dictEntity.setDeleteFlag(true);
         dictEntity.preUpdate(idRequest);
         dao.update(dictEntity);
         dictItemDao.deleteByDictId(id);
-        return ServiceResult.buildSuccessResult("删除字典以及字典项成功", 1, idRequest);
+        return ServiceResult.buildSuccessResult("删除字典以及字典项成功", 1);
     }
 
     @Override
@@ -94,14 +93,14 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         DictItemEntity data = request.getData();
         data.preInsert(request);
         dictItemDao.insert(data);
-        return ServiceResult.buildSuccessResult("插入字典项成功", true, request);
+        return ServiceResult.buildSuccessResult("插入字典项成功", true);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public ServiceResult<ArrayList<DictItemEntity>> getItemByDictId(IdRequest request) {
         ArrayList<DictItemEntity> items = dictItemDao.getByDictId(request.getId());
-        return ServiceResult.buildSuccessResult("查询成功", items, request);
+        return ServiceResult.buildSuccessResult("查询成功", items);
     }
 
     @Override
@@ -110,7 +109,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         DictItemEntity data = request.getData();
         data.preUpdate(request);
         dictItemDao.update(data);
-        return ServiceResult.buildSuccessResult("修改成功", true, request);
+        return ServiceResult.buildSuccessResult("修改成功", true);
     }
 
     @Override
@@ -121,7 +120,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         dictItemEntity.preUpdate(request);
         dictItemEntity.setDeleteFlag(true);
         dictItemDao.update(dictItemEntity);
-        return ServiceResult.buildSuccessResult("删除成功", true, request);
+        return ServiceResult.buildSuccessResult("删除成功", true);
     }
 
     @Override
@@ -133,13 +132,13 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
             item.preUpdate(request);
             dictItemDao.update(item);
         });
-        return ServiceResult.buildSuccessResult("清理成功", true, request);
+        return ServiceResult.buildSuccessResult("清理成功", true);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public ServiceResult<DictItemEntity> getItemById(IdRequest request) {
-        return ServiceResult.buildSuccessResult("查询成功", dictItemDao.getById(request.getId()), request);
+        return ServiceResult.buildSuccessResult("查询成功", dictItemDao.getById(request.getId()));
     }
 
     @Override
@@ -156,12 +155,12 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
             ArrayList<DictItemEntity> byArgs = dictItemDao.getByArgs(args, request.getPage(), request.getSize());
             int count = dictItemDao.countByArgs(request.getArgs());
             Page<DictItemEntity> build = Page.build(request, byArgs, count, (count / request.getSize()) + 1);
-            return ServiceResult.buildSuccessResult("查询成功", build, request);
+            return ServiceResult.buildSuccessResult("查询成功", build);
         } else {
             ArrayList<DictItemEntity> byArgs = dictItemDao.getByArgsNoPage(args);
             int count = dictItemDao.countByArgs(request.getArgs());
             Page<DictItemEntity> build = Page.build(request, byArgs, count, null);
-            return ServiceResult.buildSuccessResult("查询成功", build, request);
+            return ServiceResult.buildSuccessResult("查询成功", build);
         }
     }
 
@@ -171,7 +170,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         Long dictId = dao.getIdByCode(VERSION_CODE);
         ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
         VersionInfoResponse build = VersionInfoResponse.build(infos);
-        return ServiceResult.buildSuccessResult("查询成功", build, request);
+        return ServiceResult.buildSuccessResult("查询成功", build);
     }
 
     @Override
@@ -180,7 +179,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         Long dictId = dao.getIdByCode(LAST_PLAN_CODE);
         ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
         LastPlanResponse build = LastPlanResponse.build(infos);
-        return ServiceResult.buildSuccessResult("查询成功", build, request);
+        return ServiceResult.buildSuccessResult("查询成功", build);
     }
 
     @Override
@@ -189,14 +188,14 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         Long dictId = dao.getIdByCode(MENU_ICON_CLASS_CODE);
         ArrayList<DictItemEntity> infos = dictItemDao.getByDictId(dictId);
         ArrayList<Object> collect = (ArrayList<Object>) infos.stream().map(DictItemEntity::getValue).collect(Collectors.toList());
-        return ServiceResult.buildSuccessResult("查询成功", collect, request);
+        return ServiceResult.buildSuccessResult("查询成功", collect);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"}, cacheType = CacheTypeEnum.ALL_TYPE)
     public ServiceResult<ArrayList<DictItemEntity>> getByCode(GetByCodeRequest request) {
         ArrayList<DictItemEntity> list = dictItemDao.getByCode(request.getCode());
-        return ServiceResult.buildSuccessResult("查询成功", list, request);
+        return ServiceResult.buildSuccessResult("查询成功", list);
     }
 
 }

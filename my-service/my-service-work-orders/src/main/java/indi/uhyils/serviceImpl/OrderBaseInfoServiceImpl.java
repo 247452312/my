@@ -52,7 +52,7 @@ public class OrderBaseInfoServiceImpl extends BaseDefaultServiceImpl<OrderBaseIn
     @Override
     public ServiceResult<ArrayList<OrderBaseInfoEntity>> getAllBaseOrderIdAndName(DefaultRequest request) {
         ArrayList<OrderBaseInfoEntity> result = dao.getAllBaseOrderIdAndName();
-        return ServiceResult.buildSuccessResult(result, request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
@@ -71,6 +71,6 @@ public class OrderBaseInfoServiceImpl extends BaseDefaultServiceImpl<OrderBaseIn
             orderBaseNodeList.add(build);
         }
         GetOneBaseOrderResponse build = GetOneBaseOrderResponse.build(byId, orderBaseNodeList);
-        return ServiceResult.buildSuccessResult(build, request);
+        return ServiceResult.buildSuccessResult(build);
     }
 }

@@ -76,7 +76,7 @@ public class DubboHystrixCommand extends HystrixCommand<RpcData> {
     @Override
     protected RpcData getFallback() {
         NormalRpcRequestFactory build = (NormalRpcRequestFactory) RpcFactoryProducer.build(RpcTypeEnum.REQUEST);
-        ServiceResult sr = ServiceResult.buildFailedResult("您好,您请求的服务暂时不可用,请一分钟后重试!", null, null);
+        ServiceResult sr = ServiceResult.buildFailedResult("您好,您请求的服务暂时不可用,请一分钟后重试!", null);
         RpcData rpcData = build.createFallback(invocation.getRequestData(), sr);
         try {
             return rpcData;

@@ -45,7 +45,7 @@ public class KproServiceImpl implements KproService {
                     resultList.add(KproUtil.getSqliteKpro(dbInformation, dateFormat));
                     break;
                 default:
-                    return ServiceResult.buildFailedResult("暂时不支持数据库类型", null, request);
+                    return ServiceResult.buildFailedResult("暂时不支持数据库类型", null);
             }
         }
         HashMap<String, String> result = new HashMap<>(16);
@@ -71,6 +71,6 @@ public class KproServiceImpl implements KproService {
                 LogUtil.error(this, e);
             }
         }
-        return ServiceResult.buildSuccessResult("生成成功", result, request);
+        return ServiceResult.buildSuccessResult("生成成功", result);
     }
 }

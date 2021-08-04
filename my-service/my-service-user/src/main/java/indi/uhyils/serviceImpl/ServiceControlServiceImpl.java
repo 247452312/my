@@ -47,7 +47,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
             className = Content.SERVICE_PACKAGE_PREFIX + className;
         }
         Boolean enable = redisPoolHandle.checkMethodDisable(className, className + METHOD_LINK_CLASS_SYMBOL + request.getMethodName(), request.getMethodType());
-        return ServiceResult.buildSuccessResult(enable, request);
+        return ServiceResult.buildSuccessResult(enable);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
             Boolean exists = jedis.exists(Content.SERVICE_USEABLE_SWITCH);
             // 如果不存在禁用对应的key
             if (!exists) {
-                return ServiceResult.buildSuccessResult(new ArrayList<>(), request);
+                return ServiceResult.buildSuccessResult(new ArrayList<>());
             }
             Map<String, String> allMethodDisable = jedis.hgetAll(Content.SERVICE_USEABLE_SWITCH);
             ArrayList<MethodDisableInfo> list = new ArrayList<>();
@@ -72,7 +72,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
                     list.add(MethodDisableInfo.build(key, null, value));
                 }
             }
-            return ServiceResult.buildSuccessResult(list, request);
+            return ServiceResult.buildSuccessResult(list);
         } finally {
             jedis.close();
         }
@@ -97,7 +97,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
             } else {
                 jedis.hset(Content.SERVICE_USEABLE_SWITCH, className, data.getType().toString());
             }
-            return ServiceResult.buildSuccessResult(true, request);
+            return ServiceResult.buildSuccessResult(true);
         } finally {
             jedis.close();
         }
@@ -121,7 +121,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
                 key = key + METHOD_LINK_CLASS_SYMBOL + methodName;
             }
             jedis.hdel(Content.SERVICE_USEABLE_SWITCH, key);
-            return ServiceResult.buildSuccessResult(true, request);
+            return ServiceResult.buildSuccessResult(true);
         } finally {
             jedis.close();
         }

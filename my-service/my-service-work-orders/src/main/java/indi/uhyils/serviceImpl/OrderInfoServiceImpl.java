@@ -60,7 +60,7 @@ public class OrderInfoServiceImpl extends BaseDefaultServiceImpl<OrderInfoEntity
     @Override
     public ServiceResult<ArrayList<OrderInfoEntity>> getAllOrder(GetAllOrderRequest request) {
         ArrayList<OrderInfoEntity> result = dao.getOrderByType(request.getType());
-        return ServiceResult.buildSuccessResult(result, request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
@@ -92,6 +92,6 @@ public class OrderInfoServiceImpl extends BaseDefaultServiceImpl<OrderInfoEntity
             orderNodeList.add(build);
         }
         GetOneOrderResponse build = GetOneOrderResponse.build(byId, orderNodeList);
-        return ServiceResult.buildSuccessResult(build, request);
+        return ServiceResult.buildSuccessResult(build);
     }
 }

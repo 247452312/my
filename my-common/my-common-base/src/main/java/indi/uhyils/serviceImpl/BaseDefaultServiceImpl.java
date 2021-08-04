@@ -32,16 +32,16 @@ public abstract class BaseDefaultServiceImpl<T extends BaseDoEntity> implements 
         }
         int count = getDao().countByArgs(argsRequest.getArgs());
         Page<T> build = Page.build(argsRequest, byArgs, count, null);
-        return ServiceResult.buildSuccessResult("查询成功", build, argsRequest);
+        return ServiceResult.buildSuccessResult("查询成功", build);
     }
 
     @Override
     public ServiceResult<T> getById(IdRequest idRequest) {
         T byId = getDao().getById(idRequest.getId());
         if (byId == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, idRequest);
+            return ServiceResult.buildFailedResult("查询失败", null);
         }
-        return ServiceResult.buildSuccessResult("查询成功", byId, idRequest);
+        return ServiceResult.buildSuccessResult("查询成功", byId);
     }
 
     @Override
@@ -51,9 +51,9 @@ public abstract class BaseDefaultServiceImpl<T extends BaseDoEntity> implements 
         data.preInsert(insert);
         int count = getDao().insert(data);
         if (count == 1) {
-            return ServiceResult.buildSuccessResult("创建成功", count, insert);
+            return ServiceResult.buildSuccessResult("创建成功", count);
         }
-        return ServiceResult.buildFailedResult("创建失败", 0, insert);
+        return ServiceResult.buildFailedResult("创建失败", 0);
     }
 
     @Override
@@ -63,9 +63,9 @@ public abstract class BaseDefaultServiceImpl<T extends BaseDoEntity> implements 
         data.preUpdate(update);
         int count = getDao().update(data);
         if (count != 0) {
-            return ServiceResult.buildSuccessResult("修改成功", count, update);
+            return ServiceResult.buildSuccessResult("修改成功", count);
         } else {
-            return ServiceResult.buildFailedResult("修改失败", 0, update);
+            return ServiceResult.buildFailedResult("修改失败", 0);
         }
     }
 
@@ -74,15 +74,15 @@ public abstract class BaseDefaultServiceImpl<T extends BaseDoEntity> implements 
     public ServiceResult<Integer> delete(IdRequest idRequest) {
         T byId = getDao().getById(idRequest.getId());
         if (byId == null) {
-            return ServiceResult.buildFailedResult("查无此人", null, idRequest);
+            return ServiceResult.buildFailedResult("查无此人", null);
         }
         byId.setDeleteFlag(true);
         byId.preUpdate(idRequest);
         int delete = getDao().update(byId);
         if (delete != 0) {
-            return ServiceResult.buildSuccessResult("删除成功", delete, idRequest);
+            return ServiceResult.buildSuccessResult("删除成功", delete);
         } else {
-            return ServiceResult.buildFailedResult("删除失败", delete, idRequest);
+            return ServiceResult.buildFailedResult("删除失败", delete);
         }
     }
 
@@ -90,7 +90,7 @@ public abstract class BaseDefaultServiceImpl<T extends BaseDoEntity> implements 
     public ServiceResult<Integer> countByArgs(ArgsRequest argsRequest) {
         List<Arg> args = argsRequest.getArgs();
         int count = getDao().countByArgs(args);
-        return ServiceResult.buildSuccessResult("查询数量成功", count, argsRequest);
+        return ServiceResult.buildSuccessResult("查询数量成功", count);
     }
 
 

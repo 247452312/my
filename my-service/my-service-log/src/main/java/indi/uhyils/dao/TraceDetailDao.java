@@ -1,7 +1,8 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.pojo.model.*;
 import indi.uhyils.dao.base.DefaultDao;
+import indi.uhyils.pojo.model.TraceDetailEntity;
+import indi.uhyils.pojo.request.GetTraceDetailByHashCodeRequest;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -12,4 +13,12 @@ import org.apache.ibatis.annotations.Mapper;
 public interface TraceDetailDao extends DefaultDao<TraceDetailEntity> {
 
 
+    /**
+     * 获取链路详情
+     *
+     * @param request
+     *
+     * @return
+     */
+    TraceDetailEntity getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request);
 }

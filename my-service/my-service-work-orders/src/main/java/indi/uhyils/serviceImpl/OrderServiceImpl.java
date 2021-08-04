@@ -202,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
         });
 
         InitOrderResponse build = InitOrderResponse.build(infoId, orderNodeField, baseInfo.getMonitorUserId(), dealUserIds, noticeUserIds);
-        return ServiceResult.buildSuccessResult("插入成功", build, request);
+        return ServiceResult.buildSuccessResult("插入成功", build);
     }
 
     @Override
@@ -256,7 +256,7 @@ public class OrderServiceImpl implements OrderService {
 
         }
 
-        return ServiceResult.buildSuccessResult("提交成功", true, request);
+        return ServiceResult.buildSuccessResult("提交成功", true);
     }
 
 
@@ -267,36 +267,36 @@ public class OrderServiceImpl implements OrderService {
             /*工单状态修改完成后通知工单监管人,进行审批处理,是否予以撤回,注意,此处返回值为是否发送申请成功*/
             boolean b = noticeMonitorUserIdAboutBackOrder(request);
             if (!b) {
-                return ServiceResult.buildFailedResult("操作失败,推送系统异常", false, request);
+                return ServiceResult.buildFailedResult("操作失败,推送系统异常", false);
             }
-            return ServiceResult.buildSuccessResult("操作成功,等待审批人审批", true, request);
+            return ServiceResult.buildSuccessResult("操作成功,等待审批人审批", true);
         }
-        return ServiceResult.buildFailedResult("操作失败", false, request);
+        return ServiceResult.buildFailedResult("操作失败", false);
     }
 
     @Override
     public ServiceResult<Boolean> agreeRecallOrder(AgreeRecallOrderRequest request) {
         Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.WITHDRAWED);
-        return ServiceResult.buildSuccessResult("操作成功", result, request);
+        return ServiceResult.buildSuccessResult("操作成功", result);
     }
 
     @Override
     public ServiceResult<Boolean> frozenOrder(FrozenOrderRequest request) {
         Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.STOP);
-        return ServiceResult.buildSuccessResult("操作成功", result, request);
+        return ServiceResult.buildSuccessResult("操作成功", result);
     }
 
 
     @Override
     public ServiceResult<Boolean> restartOrder(RestartOrderRequest request) {
         Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.START, OrderStatusEnum.STOP);
-        return ServiceResult.buildSuccessResult("操作成功", result, request);
+        return ServiceResult.buildSuccessResult("操作成功", result);
     }
 
     @Override
     public ServiceResult<Boolean> failOrderNode(FailOrderNodeRequest request) {
         orderNodeDao.makeOrderFault(request.getOrderNodeId(), OrderNodeStatusEnum.FAULT.getCode(), OrderNodeResultTypeEnum.FAULT.getCode(), request.getMsg());
-        return ServiceResult.buildSuccessResult("处理成功", true, request);
+        return ServiceResult.buildSuccessResult("处理成功", true);
     }
 
     @Override
@@ -304,7 +304,7 @@ public class OrderServiceImpl implements OrderService {
         /*前提:判断节点值是否允许*/
         CheckNodeFieldResultTemporary checkNodeFieldResult = checkNodeAllow(request.getOrderNodeFieldValueMap());
         if (!checkNodeFieldResult.getAllow()) {
-            return ServiceResult.buildFailedResult("节点值判断出错", DealOrderNodeResponse.buildCheckFaild(checkNodeFieldResult.getAllow(), checkNodeFieldResult.getDetailResult()), request);
+            return ServiceResult.buildFailedResult("节点值判断出错", DealOrderNodeResponse.buildCheckFaild(checkNodeFieldResult.getAllow(), checkNodeFieldResult.getDetailResult()));
         }
         /*1.结束当前工单节点(节点状态),处理结果类型->处理成功,处理结果id选择,处理人建议*/
         Long nodeId = request.getNodeId();
@@ -335,7 +335,7 @@ public class OrderServiceImpl implements OrderService {
         if (OrderNodeRunTypeEnum.AUTO.getCode().equals(runType)) {
             noticeAutoDealOrder(nextNode.getId(), request.getNodeId());
         }
-        return ServiceResult.buildSuccessResult("处理成功", DealOrderNodeResponse.buildSuccess(), request);
+        return ServiceResult.buildSuccessResult("处理成功", DealOrderNodeResponse.buildSuccess());
     }
 
     /**
@@ -369,7 +369,7 @@ public class OrderServiceImpl implements OrderService {
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest
             .build(request, order.getMonitorUserId(), PushTypeEnum.EMAIL.getCode(), "工单节点转交申请", order.getId() + "工单转交撤回,请尽快审批,转交目标人:" + userName.getData().toString());
         RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
-        return ServiceResult.buildSuccessResult(true, request);
+        return ServiceResult.buildSuccessResult(true);
     }
 
     @Override
@@ -441,7 +441,7 @@ public class OrderServiceImpl implements OrderService {
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest
             .build(request, targetUserId, PushTypeEnum.EMAIL.getCode(), "工单流转事务提示", orderNodeId + "工单已转交到你手,审批人通过,请尽快处理,工单优先度:" + OrderPriorityEnum.parse(orderInfo.getPriority()).getName());
         RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
-        return ServiceResult.buildSuccessResult("审批成功", true, request);
+        return ServiceResult.buildSuccessResult("审批成功", true);
     }
 
     /**

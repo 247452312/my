@@ -3,7 +3,6 @@ package indi.uhyils.job;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.pojo.model.UserEntity;
 import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
 import indi.uhyils.util.RpcApiUtil;
 
 import java.util.ArrayList;

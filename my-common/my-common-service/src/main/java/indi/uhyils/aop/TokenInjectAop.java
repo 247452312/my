@@ -96,7 +96,7 @@ public class TokenInjectAop {
 
         /* 查询有没有登录 */
         if (StringUtils.isEmpty(token) && arg.getUser() == null) {
-            return ServiceResult.buildNoLoginResult(arg);
+            return ServiceResult.buildNoLoginResult();
         }
 
         /* 查询是否超时 */
@@ -108,7 +108,7 @@ public class TokenInjectAop {
             userEntity = redisPoolHandle.getUser(token);
         }
         if (userEntity == null) {
-            return ServiceResult.buildLoginOutResult(arg);
+            return ServiceResult.buildLoginOutResult();
         }
 
         /* 查询是否有权限 */
@@ -130,7 +130,7 @@ public class TokenInjectAop {
         }
         Boolean havePower = (Boolean) checkUserHavePowerServiceResult.getData();
         if (!havePower) {
-            return ServiceResult.buildNoAuthResult(arg);
+            return ServiceResult.buildNoAuthResult();
         }
 
         arg.setUser(userEntity);

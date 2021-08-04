@@ -46,7 +46,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
 
     @Override
     public ServiceResult<ArrayList<PowerEntity>> getPowers(DefaultRequest request) {
-        return ServiceResult.buildSuccessResult("获取成功", dao.getAll(), request);
+        return ServiceResult.buildSuccessResult("获取成功", dao.getAll());
     }
 
     @Override
@@ -60,7 +60,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
         } else {
             havePower = false;
         }
-        return ServiceResult.buildSuccessResult("查询成功", havePower, request);
+        return ServiceResult.buildSuccessResult("查询成功", havePower);
 
     }
 
@@ -69,7 +69,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     public ServiceResult<Boolean> deletePower(IdRequest request) {
         PowerEntity powerEntity = getDao().getById(request.getId());
         if (powerEntity == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, request);
+            return ServiceResult.buildFailedResult("查询失败", null);
         }
         powerEntity.setDeleteFlag(Boolean.TRUE);
         powerEntity.preUpdate(request);
@@ -77,19 +77,19 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
 
         dao.deleteDeptPowerMiddleByPowerId(request.getId());
 
-        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, request);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_power"})
     public ServiceResult<ArrayList<String>> getInterfaces(DefaultRequest request) {
-        return ServiceResult.buildSuccessResult("查询成功", dao.getInterfaces(), request);
+        return ServiceResult.buildSuccessResult("查询成功", dao.getInterfaces());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_power"})
     public ServiceResult<ArrayList<String>> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameRequest request) {
-        return ServiceResult.buildSuccessResult("查询成功", dao.getMethodNameByInterfaceName(request.getInterfaceName()), request);
+        return ServiceResult.buildSuccessResult("查询成功", dao.getMethodNameByInterfaceName(request.getInterfaceName()));
     }
 
     @Override
@@ -100,7 +100,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
             powersSingle = ApiPowerInitUtil.getPowersSingle();
         } catch (IOException e) {
             LogUtil.error(this, e);
-            return ServiceResult.buildErrorResult("初始化power失败:" + e.getMessage(), request);
+            return ServiceResult.buildErrorResult("初始化power失败:" + e.getMessage());
         }
         AtomicInteger newPowerCount = new AtomicInteger(0);
         for (PowerSimpleEntity powerSimpleEntity : powersSingle) {
@@ -114,7 +114,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
 
             }
         }
-        return ServiceResult.buildSuccessResult("初始化power成功", newPowerCount.get(), request);
+        return ServiceResult.buildSuccessResult("初始化power成功", newPowerCount.get());
     }
 
 }

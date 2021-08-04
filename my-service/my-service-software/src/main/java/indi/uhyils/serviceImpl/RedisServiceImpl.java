@@ -79,14 +79,14 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         RedisEntity redisEntity = insert.getData();
         ServerEntity serverEntity = serverDao.getById(redisEntity.getServerId());
         if (serverEntity == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, insert);
+            return ServiceResult.buildFailedResult("查询失败", null);
         }
         String redisVersion = getRedisNewVersion(redisEntity, serverEntity);
         redisEntity.setVersion(redisVersion);
         redisEntity.setStatus(getRedisNewStatus(redisEntity, serverEntity));
         redisEntity.preInsert(insert);
         dao.insert(redisEntity);
-        return ServiceResult.buildSuccessResult("插入成功", 1, insert);
+        return ServiceResult.buildSuccessResult("插入成功", 1);
 
     }
 
@@ -95,19 +95,19 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         Long id = request.getId();
         RedisEntity redisEntity = dao.getById(id);
         if (redisEntity == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, request);
+            return ServiceResult.buildFailedResult("查询失败", null);
         }
         Long serverId = redisEntity.getServerId();
         ServerEntity serverEntity = serverDao.getById(serverId);
         if (serverEntity == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, request);
+            return ServiceResult.buildFailedResult("查询失败", null);
         }
         redisEntity.setStatus(getRedisNewStatus(redisEntity, serverEntity));
         String redisVersion = getRedisNewVersion(redisEntity, serverEntity);
         redisEntity.setVersion(redisVersion);
         redisEntity.preUpdate(request);
         dao.update(redisEntity);
-        return ServiceResult.buildSuccessResult("刷新状态成功", redisEntity, request);
+        return ServiceResult.buildSuccessResult("刷新状态成功", redisEntity);
     }
 
     @Override
@@ -121,15 +121,15 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         if (SoftwareStatusEnum.RUNNING.getStatus().equals(redisNewStatus)) {
             operateSoftwareResponse.setStatus(SoftwareStatusEnum.RUNNING.getStatus());
             operateSoftwareResponse.setMsg("redis运行中,不需要启动");
-            return ServiceResult.buildSuccessResult("启动成功", operateSoftwareResponse, request);
+            return ServiceResult.buildSuccessResult("启动成功", operateSoftwareResponse);
         }
         String s = SshUtils.execCommandBySsh(serverEntity, redisEntity.getStartSh());
         if (StringUtils.contains(s, redisEntity.getDockerName())) {
             operateSoftwareResponse.setStatus(SoftwareStatusEnum.RUNNING.getStatus());
             operateSoftwareResponse.setMsg("redis docker启动成功");
-            return ServiceResult.buildSuccessResult("启动成功", operateSoftwareResponse, request);
+            return ServiceResult.buildSuccessResult("启动成功", operateSoftwareResponse);
         }
-        return ServiceResult.buildFailedResult("启动失败", null, request);
+        return ServiceResult.buildFailedResult("启动失败", null);
     }
 
     @Override
@@ -143,15 +143,15 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         if (SoftwareStatusEnum.STOP.getStatus().equals(redisNewStatus)) {
             operateSoftwareResponse.setStatus(SoftwareStatusEnum.STOP.getStatus());
             operateSoftwareResponse.setMsg("redis已经停止,不需要再次停止");
-            return ServiceResult.buildSuccessResult("停止成功", operateSoftwareResponse, request);
+            return ServiceResult.buildSuccessResult("停止成功", operateSoftwareResponse);
         }
         String s = SshUtils.execCommandBySsh(serverEntity, redisEntity.getStopSh());
         if (StringUtils.contains(s, redisEntity.getDockerName())) {
             operateSoftwareResponse.setStatus(SoftwareStatusEnum.STOP.getStatus());
             operateSoftwareResponse.setMsg("redis docker停止成功");
-            return ServiceResult.buildSuccessResult("停止成功", operateSoftwareResponse, request);
+            return ServiceResult.buildSuccessResult("停止成功", operateSoftwareResponse);
         }
-        return ServiceResult.buildFailedResult("停止失败", null, request);
+        return ServiceResult.buildFailedResult("停止失败", null);
     }
 
     @Override
@@ -168,7 +168,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
                 b.set(Boolean.FALSE);
             }
         });
-        return ServiceResult.buildSuccessResult("删除redis执行成功", b.get(), request);
+        return ServiceResult.buildSuccessResult("删除redis执行成功", b.get());
     }
 
     @Override
@@ -192,7 +192,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
             }
         });
 
-        return ServiceResult.buildSuccessResult("重置数据操作成功", b.get(), request);
+        return ServiceResult.buildSuccessResult("重置数据操作成功", b.get());
 
     }
 
@@ -215,7 +215,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
             }
             b.set(Boolean.FALSE);
         });
-        return ServiceResult.buildSuccessResult("批量开启redis执行成功", b.get(), request);
+        return ServiceResult.buildSuccessResult("批量开启redis执行成功", b.get());
 
     }
 
@@ -238,7 +238,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
             b.set(Boolean.FALSE);
         });
 
-        return ServiceResult.buildSuccessResult("redis批量停止操作执行成功", b.get(), request);
+        return ServiceResult.buildSuccessResult("redis批量停止操作执行成功", b.get());
 
     }
 
@@ -255,7 +255,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         for (String key : keys) {
             list.add(RedisKeyResponse.build(key));
         }
-        return ServiceResult.buildSuccessResult("查询key成功", list, request);
+        return ServiceResult.buildSuccessResult("查询key成功", list);
     }
 
 
@@ -268,10 +268,10 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         LogUtil.info(this, "查询 configGet数量为:" + databases.size());
         if (databases.size() == CONFIG_GET_SIZE) {
             String count = databases.get(1);
-            return ServiceResult.buildSuccessResult("查询数据库成功", Integer.parseInt(count), request);
+            return ServiceResult.buildSuccessResult("查询数据库成功", Integer.parseInt(count));
         }
 
-        return ServiceResult.buildSuccessResult("查询数据库出问题了,查看日志", null, request);
+        return ServiceResult.buildSuccessResult("查询数据库出问题了,查看日志", null);
     }
 
     @Override
@@ -285,12 +285,12 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         // 查询出来的不为空
         if (!StringUtils.isEmpty(s)) {
             jedis.close();
-            return ServiceResult.buildSuccessResult("redis中已经存在此key了", RedisAddEnum.HAVE_KEY.getType(), request);
+            return ServiceResult.buildSuccessResult("redis中已经存在此key了", RedisAddEnum.HAVE_KEY.getType());
         }
         jedis.append(data.getKey(), data.getValue());
         jedis.close();
 
-        return ServiceResult.buildSuccessResult("插入成功", RedisAddEnum.SUCCESS.getType(), request);
+        return ServiceResult.buildSuccessResult("插入成功", RedisAddEnum.SUCCESS.getType());
     }
 
     @Override
@@ -301,7 +301,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         Jedis jedis = getJedis(redisId);
         jedis.append(data.getKey(), data.getValue());
         jedis.close();
-        return ServiceResult.buildSuccessResult("添加成功", RedisAddEnum.SUCCESS.getType(), request);
+        return ServiceResult.buildSuccessResult("添加成功", RedisAddEnum.SUCCESS.getType());
     }
 
     @Override
@@ -314,11 +314,11 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         // 如果是空,则说明修改没有
         if (StringUtils.isEmpty(s)) {
             jedis.close();
-            return ServiceResult.buildSuccessResult("key不存在", RedisUpdateEnum.NO_KEY.getType(), request);
+            return ServiceResult.buildSuccessResult("key不存在", RedisUpdateEnum.NO_KEY.getType());
         }
         jedis.set(data.getKey(), data.getValue());
         jedis.close();
-        return ServiceResult.buildSuccessResult("修改成功", RedisUpdateEnum.SUCCESS.getType(), request);
+        return ServiceResult.buildSuccessResult("修改成功", RedisUpdateEnum.SUCCESS.getType());
     }
 
     @Override
@@ -327,7 +327,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         Jedis jedis = getJedis(data.getRedisId());
         String value = jedis.get(data.getKey());
         jedis.close();
-        return ServiceResult.buildSuccessResult("redis value查询成功", value, request);
+        return ServiceResult.buildSuccessResult("redis value查询成功", value);
     }
 
     @Override
@@ -338,7 +338,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         Jedis jedis = getJedis(redisId);
         jedis.del(data.getKey());
         jedis.close();
-        return ServiceResult.buildSuccessResult("删除成功", true, request);
+        return ServiceResult.buildSuccessResult("删除成功", true);
     }
 
     @Override
@@ -363,7 +363,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         });
         jedis.close();
 
-        return ServiceResult.buildSuccessResult("获取redis服务器信息", list, request);
+        return ServiceResult.buildSuccessResult("获取redis服务器信息", list);
     }
 
 

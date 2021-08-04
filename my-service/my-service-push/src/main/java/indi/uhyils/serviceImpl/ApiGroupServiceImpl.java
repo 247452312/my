@@ -48,13 +48,13 @@ public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> 
         ApiUtils.callApi(groupByGroupId, request.getUser(), parameter);
         String resultFormat = apiGroupEntity.getResultFormat();
         resultFormat = ApiUtils.replaceString(parameter, resultFormat);
-        return ServiceResult.buildSuccessResult("执行成功", resultFormat, request);
+        return ServiceResult.buildSuccessResult("执行成功", resultFormat);
     }
 
     @Override
     public ServiceResult<ArrayList<ApiGroupEntity>> getCanBeSubscribed(DefaultRequest request) {
         ArrayList<ApiGroupEntity> result = dao.getCanBeSubscribed();
-        return ServiceResult.buildSuccessResult("查询成功", result, request);
+        return ServiceResult.buildSuccessResult("查询成功", result);
     }
 
     @Override
@@ -62,12 +62,12 @@ public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> 
     public ServiceResult<Integer> delete(IdRequest idRequest) {
         ApiGroupEntity byId = getDao().getById(idRequest.getId());
         if (byId == null) {
-            return ServiceResult.buildFailedResult("查无此服务", null, idRequest);
+            return ServiceResult.buildFailedResult("查无此服务", null);
         }
         byId.setDeleteFlag(Boolean.TRUE);
         byId.preUpdate(idRequest);
         getDao().update(byId);
         int apiDelete = apiDao.deleteAllByGroup(byId);
-        return ServiceResult.buildSuccessResult("删除成功", apiDelete, idRequest);
+        return ServiceResult.buildSuccessResult("删除成功", apiDelete);
     }
 }

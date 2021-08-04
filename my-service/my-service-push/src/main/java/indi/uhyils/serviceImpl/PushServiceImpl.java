@@ -97,7 +97,7 @@ public class PushServiceImpl implements PushService {
             }
         }
         LogUtil.info(this, "定时推送任务结束: " + cron);
-        return ServiceResult.buildSuccessResult("定时任务执行成功", result, request);
+        return ServiceResult.buildSuccessResult("定时任务执行成功", result);
     }
 
     @Override
@@ -119,6 +119,6 @@ public class PushServiceImpl implements PushService {
             default:
                 break;
         }
-        return ServiceResult.buildSuccessResult("执行成功", result, request);
+        return ServiceResult.buildSuccessResult("执行成功", result);
     }
 }

@@ -2,10 +2,8 @@ package indi.uhyils.aop;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
-import indi.uhyils.util.AopUtil;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,8 +93,7 @@ public class ServiceTemporarilyDisabledAop {
         if (allowRun) {
             return pjp.proceed();
         } else {
-            DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
-            return ServiceResult.buildFailedResult("请求接口已被禁用", null, arg);
+            return ServiceResult.buildFailedResult("请求接口已被禁用", null);
         }
 
 

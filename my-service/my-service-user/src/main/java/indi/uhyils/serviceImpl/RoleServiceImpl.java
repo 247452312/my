@@ -17,9 +17,8 @@ import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.RoleService;
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
+import javax.annotation.Resource;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -36,18 +35,14 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     @Resource
     private UserDao userDao;
 
-    @Resource
-    private MenuDao menuDao;
-
-
     @Override
     @NoToken
     public ServiceResult<RoleEntity> getRoleByRoleId(IdRequest request) {
         RoleEntity byId = dao.getById(request.getId());
         if (byId == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, request);
+            return ServiceResult.buildFailedResult("查询失败", null);
         }
-        return ServiceResult.buildSuccessResult("获取用户角色成功", byId, request);
+        return ServiceResult.buildSuccessResult("获取用户角色成功", byId);
     }
 
     @Override
@@ -61,32 +56,32 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
             build.preInsert(request);
             dao.insertRoleDept(build);
         }
-        return ServiceResult.buildSuccessResult("角色添加权限集成功", Boolean.TRUE, request);
+        return ServiceResult.buildSuccessResult("角色添加权限集成功", Boolean.TRUE);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept"})
     public ServiceResult<Boolean> deleteRoleDept(IdsRequest idsRequest) {
         dao.deleteRoleDept(idsRequest.getIds());
-        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, idsRequest);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE);
     }
 
     @Override
     public ServiceResult<ArrayList<RoleEntity>> getRoles(DefaultRequest request) {
-        return ServiceResult.buildSuccessResult("查询成功", dao.getAll(), request);
+        return ServiceResult.buildSuccessResult("查询成功", dao.getAll());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dept", "sys_role_dept"})
     public ServiceResult<ArrayList<DeptEntity>> getUserDeptsByRoleId(IdRequest request) {
-        return ServiceResult.buildSuccessResult("查询角色成功", userDao.getUserDeptsByRoleId(request.getId()), request);
+        return ServiceResult.buildSuccessResult("查询角色成功", userDao.getUserDeptsByRoleId(request.getId()));
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_role_dept", "sys_dept"})
     public ServiceResult<ArrayList<GetAllDeptWithHaveMarkResponse>> getAllDeptWithHaveMark(IdRequest request) {
         ArrayList<GetAllDeptWithHaveMarkResponse> allDeptWithHaveMark = dao.getAllDeptWithHaveMark(request.getId());
-        return ServiceResult.buildSuccessResult("查询带存在标记的权限集成功", allDeptWithHaveMark, request);
+        return ServiceResult.buildSuccessResult("查询带存在标记的权限集成功", allDeptWithHaveMark);
     }
 
     @Override
@@ -94,7 +89,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     public ServiceResult<Boolean> deleteRole(IdRequest request) {
         RoleEntity t = getDao().getById(request.getId());
         if (t == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, request);
+            return ServiceResult.buildFailedResult("查询失败", null);
         }
         t.setDeleteFlag(Boolean.TRUE);
         t.preUpdate(request);
@@ -102,7 +97,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
         dao.deleteRoleDeptMiddleByRoleId(request.getId());
         dao.updateUserRoleToNullByRoleId(request.getId());
 
-        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE, request);
+        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE);
 
     }
 

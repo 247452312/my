@@ -172,38 +172,13 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getByTraceId" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
-        select
-        <include refid="columnList"/>
-        from sys_trace_info a
-        where delete_flag = 0
-          and trace_id = #{value}
-    </select>
-
-    <select id="getTraceIdByPage" resultType="java.lang.Long">
-        select trace_id
-        from sys_trace_info a
-        group by trace_id
-        <if test="page != null and page != ''">
-            limit ${(page-1) * size} , ${page * size}
-        </if>
-    </select>
-
-    <select id="getTraceIdByPageCount" resultType="java.lang.Integer">
-        select count(*)
-        from (
-                 select count(*)
-                 from sys_trace_info a
-                 group by trace_id
-                 ) b
-    </select>
-
-    <select id="getLinkByTraceId" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
+    <select id="getLinkByTraceIdAndRpcIdPrefix" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
         select
         <include refid="columnList"/>
         from sys_trace_info a
         where delete_flag = 0
           and trace_id = #{traceId}
+          and rpc_id like '${rpcId}._'
     </select>
 
     <select id="getCountByTypeAndStartTime" resultType="java.lang.Integer">
@@ -211,5 +186,43 @@
         from sys_trace_info a
         where a.log_type = #{code}
           and a.start_time > #{time}
+    </select>
+
+    <select id="getTraceInfoByArgAndPage" resultType="indi.uhyils.pojo.model.TraceInfoEntity">
+        select
+        <include refid="columnList"/>
+        from sys_trace_info a
+            where delete_flag = 1
+        <if test="traceId != null">
+            and trace_id = #{traceId}
+        </if>
+        <if test="startTime != null">
+            and start_time >= #{startTime}
+        </if>
+        <if test="type != null">
+            and type = #{type,jdbcType=INTEGER}
+        </if>
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size} , ${page * size}
+        </if>
+    </select>
+
+
+    <select id="getTraceStatisticsCount" resultType="java.lang.Integer">
+        select count(*)
+        from v_sys_trace_detail_statistics a
+    </select>
+    <select id="getTraceStatistics" resultType="indi.uhyils.pojo.model.TraceDetailStatisticsView">
+        select a.time,
+               a.type,
+               a.type_name as typeName,
+               a.hash_code as hashCode,
+               a.count,
+               a.sum,
+               a.avg
+        from v_sys_trace_detail_statistics a
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size} , ${page * size}
+        </if>
     </select>
 </mapper>

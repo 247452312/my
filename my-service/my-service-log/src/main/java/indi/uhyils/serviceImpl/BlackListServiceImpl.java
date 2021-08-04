@@ -68,7 +68,7 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
         List<Long> realTimes = dao.getTimeByIp(ip, canEvaluateMinSize);
         // 如果次数不够,代表不能判断,返回不是爬虫的判断
         if (realTimes.size() < canEvaluateMinSize) {
-            return ServiceResult.buildSuccessResult(null, false, request);
+            return ServiceResult.buildSuccessResult(null, false);
         }
         Long first = realTimes.get(0);
         Long end = realTimes.get(realTimes.size() - 1);
@@ -76,7 +76,7 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
         long timeSpan = first - end;
         // 如果时间已经过去很久了(指3分钟) 则返回不是爬虫
         if (System.currentTimeMillis() - first > LONG_TIME_AGO) {
-            return ServiceResult.buildSuccessResult(false, request);
+            return ServiceResult.buildSuccessResult(false);
         }
         List<Long> timeIntervals = new ArrayList<>(realTimes.size() - 1);
 
@@ -89,9 +89,9 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
         // 求出来的方差小于阈值并且时间跨度小(每秒n个) 返回此ip可能是爬虫
         if (result <= frequency && timeSpan < MAX_TIME_SPAN) {
             LogUtil.info("ip:" + ip + " 最近12次请求的时间跨度为:" + timeSpan + " 方差为:" + result);
-            return ServiceResult.buildSuccessResult(true, request);
+            return ServiceResult.buildSuccessResult(true);
         }
-        return ServiceResult.buildSuccessResult(false, request);
+        return ServiceResult.buildSuccessResult(false);
     }
 
     private double getVariance(List<Long> times) {
@@ -112,7 +112,7 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
 
     @Override
     public ServiceResult<ArrayList<String>> getAllIpBlackList(DefaultRequest request) {
-        return ServiceResult.buildSuccessResult(dao.getAllIpBlackList(), request);
+        return ServiceResult.buildSuccessResult(dao.getAllIpBlackList());
     }
 
     @Override
@@ -120,6 +120,6 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
         BlackListEntity blackListEntity = BlackListBuilder.buildByIp(request.getIp());
         blackListEntity.preInsert(request);
         dao.insert(blackListEntity);
-        return ServiceResult.buildSuccessResult(true, request);
+        return ServiceResult.buildSuccessResult(true);
     }
 }

@@ -1,9 +1,12 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
+import indi.uhyils.pojo.model.TraceDetailStatisticsView;
 import indi.uhyils.pojo.model.TraceInfoEntity;
 import indi.uhyils.pojo.request.GetLinkByTraceIdRequest;
+import indi.uhyils.pojo.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,34 +18,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
 
-
-    /**
-     * 根据traceId获取链路
-     *
-     * @param value
-     *
-     * @return
-     */
-    List<TraceInfoEntity> getByTraceId(Long value);
-
-    /**
-     * 分页获取traceId
-     *
-     * @param request 请求
-     *
-     * @return
-     */
-    List<Long> getTraceIdByPage(DefaultPageRequest request);
-
-    /**
-     * 获取traceId分页数据
-     *
-     * @param request
-     *
-     * @return
-     */
-    Integer getTraceIdByPageCount(DefaultPageRequest request);
-
     /**
      * 通过traceId 获取link
      *
@@ -50,7 +25,7 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
      *
      * @return
      */
-    List<TraceInfoEntity> getLinkByTraceId(GetLinkByTraceIdRequest traceId);
+    List<TraceInfoEntity> getLinkByTraceIdAndRpcIdPrefix(GetLinkByTraceIdRequest traceId);
 
     /**
      * 获取从开始时间到现在的前台请求次数
@@ -61,4 +36,29 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
      * @return 从开始时间到现在的前台请求次数
      */
     Integer getCountByTypeAndStartTime(@Param("code") Integer code, @Param("time") Long time);
+
+    /**
+     * 获取traceInfo
+     *
+     * @param request
+     *
+     * @return
+     */
+    ArrayList<TraceInfoEntity> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
+
+    /**
+     * 获取统计信息
+     *
+     * @return
+     */
+    List<TraceDetailStatisticsView> getTraceStatistics(DefaultPageRequest request);
+
+    /**
+     * 获取统计信息的数量
+     *
+     * @param request
+     *
+     * @return
+     */
+    Integer getTraceStatisticsCount(DefaultPageRequest request);
 }

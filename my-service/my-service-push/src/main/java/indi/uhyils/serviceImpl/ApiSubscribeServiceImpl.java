@@ -40,9 +40,9 @@ public class ApiSubscribeServiceImpl extends BaseDefaultServiceImpl<ApiSubscribe
         if (repeat == 0) {
             entity.preInsert(request);
             int insert = dao.insert(entity);
-            return ServiceResult.buildSuccessResult("订阅成功", insert == 1, request);
+            return ServiceResult.buildSuccessResult("订阅成功", insert == 1);
         } else {
-            return ServiceResult.buildFailedResult("不允许重复订阅", false, request);
+            return ServiceResult.buildFailedResult("不允许重复订阅", false);
         }
 
     }

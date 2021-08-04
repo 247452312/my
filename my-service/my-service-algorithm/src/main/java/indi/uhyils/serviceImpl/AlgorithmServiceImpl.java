@@ -32,7 +32,7 @@ public class AlgorithmServiceImpl implements AlgorithmService {
     @Override
     public ServiceResult<Double> getAlgorithmAccuracy(IdRequest request) {
         AlgorithmEntity byId = dao.getById(request.getId());
-        return ServiceResult.buildSuccessResult("查询成功", byId.getAccuracy(), request);
+        return ServiceResult.buildSuccessResult("查询成功", byId.getAccuracy());
     }
 
     public AlgorithmDao getDao() {

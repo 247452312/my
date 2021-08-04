@@ -1,7 +1,8 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.pojo.response.trace.OneTraceLink;
+import indi.uhyils.pojo.model.TraceInfoEntity;
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -11,19 +12,22 @@ import java.io.Serializable;
  */
 public class GetAllLinkByTraceIdResponse implements Serializable {
 
-    private OneTraceLink link;
+    /**
+     * trace信息
+     */
+    private List<TraceInfoEntity> traceInfos;
 
-    public static GetAllLinkByTraceIdResponse build(OneTraceLink link) {
+    public static GetAllLinkByTraceIdResponse build(List<TraceInfoEntity> traceInfos) {
         GetAllLinkByTraceIdResponse build = new GetAllLinkByTraceIdResponse();
-        build.link = link;
+        build.traceInfos = traceInfos;
         return build;
     }
 
-    public OneTraceLink getLink() {
-        return link;
+    public List<TraceInfoEntity> getTraceInfos() {
+        return traceInfos;
     }
 
-    public void setLink(OneTraceLink link) {
-        this.link = link;
+    public void setTraceInfos(List<TraceInfoEntity> traceInfos) {
+        this.traceInfos = traceInfos;
     }
 }

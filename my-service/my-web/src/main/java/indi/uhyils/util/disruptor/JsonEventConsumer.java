@@ -1,8 +1,6 @@
 package indi.uhyils.util.disruptor;
 
 import com.lmax.disruptor.EventHandler;
-import indi.uhyils.rpc.annotation.RpcReference;
-import indi.uhyils.service.LogService;
 import org.springframework.stereotype.Component;
 
 /**

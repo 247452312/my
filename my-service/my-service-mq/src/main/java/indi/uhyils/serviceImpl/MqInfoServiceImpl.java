@@ -24,6 +24,6 @@ public class MqInfoServiceImpl implements MqInfoService {
         Field topicMapField = TopicFactory.class.getDeclaredField("topicMap");
         topicMapField.setAccessible(true);
         Map<String, Topic> topicMap = (Map<String, Topic>) topicMapField.get(TopicFactory.class);
-        return ServiceResult.buildSuccessResult(new ArrayList<>(topicMap.values()), request);
+        return ServiceResult.buildSuccessResult(new ArrayList<>(topicMap.values()));
     }
 }

@@ -3,14 +3,17 @@ package indi.uhyils.serviceImpl;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.*;
+import indi.uhyils.pojo.response.JvmDataStatisticsResponse;
+import indi.uhyils.pojo.response.JvmInfoLogResponse;
+import indi.uhyils.pojo.response.LastPlanResponse;
+import indi.uhyils.pojo.response.QuickStartResponse;
+import indi.uhyils.pojo.response.VersionInfoResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.pojo.response.welcome.AlgorithmStatisticsResponse;
 import indi.uhyils.pojo.response.welcome.WelcomeResponse;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.DistributeService;
 import indi.uhyils.util.DistributeRpcApiUtil;
-
 import java.util.ArrayList;
 
 /**
@@ -60,6 +63,6 @@ public class DistributeServiceImpl implements DistributeService {
             throw new Exception(lastPlan.getServiceMessage());
         }
         welcomeResponse.setLastPlanResponse(lastPlan.getData().toJavaObject(LastPlanResponse.class));
-        return ServiceResult.buildSuccessResult("首页查询成功", welcomeResponse, request);
+        return ServiceResult.buildSuccessResult("首页查询成功", welcomeResponse);
     }
 }

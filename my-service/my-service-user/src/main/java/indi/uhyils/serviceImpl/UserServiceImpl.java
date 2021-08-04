@@ -24,15 +24,14 @@ import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.MD5Util;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 
 /**
@@ -46,6 +45,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     @Autowired
     private RedisPoolHandle redisPoolHandle;
+
     @Resource
     private UserDao dao;
 
@@ -64,14 +64,14 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         //缓存
         UserEntity user = redisPoolHandle.getUser(idRequest.getToken());
         if (user != null) {
-            return ServiceResult.buildSuccessResult("查询成功", user, idRequest);
+            return ServiceResult.buildSuccessResult("查询成功", user);
         }
         UserEntity userEntity = dao.getById(idRequest.getId());
         if (userEntity == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, idRequest);
+            return ServiceResult.buildFailedResult("查询失败", null);
         }
         initRole(userEntity);
-        return ServiceResult.buildSuccessResult("查询成功", userEntity, idRequest);
+        return ServiceResult.buildSuccessResult("查询成功", userEntity);
 
     }
 
@@ -95,7 +95,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     @ReadWriteMark(cacheType = CacheTypeEnum.NOT_TYPE)
     public ServiceResult<String> getUserToken(IdRequest request) {
         String token = getToken(request.getId());
-        return ServiceResult.buildSuccessResult("token生成成功", token, request);
+        return ServiceResult.buildSuccessResult("token生成成功", token);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         UserEntity data = insert.getData();
         data.preInsert(insert);
         data.setPassword(MD5Util.MD5Encode(data.getPassword()));
-        return ServiceResult.buildSuccessResult("插入成功", dao.insert(data), insert);
+        return ServiceResult.buildSuccessResult("插入成功", dao.insert(data));
     }
 
 
@@ -120,7 +120,6 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         String mon = tokenInfoString.substring(4, 6);
         String sec = tokenInfoString.substring(6, 8);
         String random = tokenInfoString.substring(8, 10);
-
 
         long userId = Long.parseLong(tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length()));
 
@@ -152,7 +151,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         } else {
             tokenInfo.setTimeOut(!aBoolean);
         }
-        return ServiceResult.buildSuccessResult("解密成功", tokenInfo, request);
+        return ServiceResult.buildSuccessResult("解密成功", tokenInfo);
     }
 
     @Override
@@ -163,7 +162,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
         ArrayList<UserEntity> byArgsNoPage = dao.getByArgsNoPage(objects);
         if (byArgsNoPage.size() != 1) {
-            return ServiceResult.buildFailedResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail(), userRequest);
+            return ServiceResult.buildFailedResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail());
         }
         UserEntity userEntity = byArgsNoPage.get(0);
 
@@ -179,7 +178,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
         // 登录->加入缓存中
         redisPoolHandle.addUser(token, userEntity);
-        return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity), userRequest);
+        return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(token, userEntity));
     }
 
     @Override
@@ -188,7 +187,7 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         if (result) {
             result = redisPoolHandle.removeByKey(request.getUser().getId().toString());
         }
-        return ServiceResult.buildSuccessResult("登出结束", result, request);
+        return ServiceResult.buildSuccessResult("登出结束", result);
     }
 
     @Override
@@ -199,12 +198,12 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
             RoleEntity userRoleById = dao.getUserRoleById(roleId);
             t.setRole(userRoleById);
         });
-        return ServiceResult.buildSuccessResult("查询成功", all, request);
+        return ServiceResult.buildSuccessResult("查询成功", all);
     }
 
     @Override
     public ServiceResult<UserEntity> getUserByToken(DefaultRequest request) {
-        return ServiceResult.buildSuccessResult("查询成功", request.getUser(), request);
+        return ServiceResult.buildSuccessResult("查询成功", request.getUser());
     }
 
     @Override
@@ -216,19 +215,19 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         Integer passwordIsTrue = dao.checkUserPassword(userId, MD5Util.MD5Encode(oldPassword));
         // 不为1 说明不正确
         if (passwordIsTrue != 1) {
-            return ServiceResult.buildFailedResult("密码不正确", "密码不正确", request);
+            return ServiceResult.buildFailedResult("密码不正确", "密码不正确");
         }
         UserEntity byId = dao.getById(userId);
         byId.setPassword(request.getNewPassword());
         byId.preUpdate(request);
         dao.update(byId);
-        return ServiceResult.buildSuccessResult("修改密码成功", "true", request);
+        return ServiceResult.buildSuccessResult("修改密码成功", "true");
     }
 
     @Override
     public ServiceResult<String> getNameById(IdRequest request) {
         String name = dao.getNameById(request.getId());
-        return ServiceResult.buildSuccessResult("查询成功", name, request);
+        return ServiceResult.buildSuccessResult("查询成功", name);
     }
 
 

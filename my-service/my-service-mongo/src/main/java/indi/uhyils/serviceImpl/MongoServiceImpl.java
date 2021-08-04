@@ -31,9 +31,9 @@ public class MongoServiceImpl implements MongoService {
         String md5 = MD5Util.MD5Encode(uuid);
         boolean b1 = mongoManager.addFile(md5, file);
         if (b1) {
-            return ServiceResult.buildSuccessResult("插入执行完成", md5, request);
+            return ServiceResult.buildSuccessResult("插入执行完成", md5);
         }
-        return ServiceResult.buildFailedResult("插入出错", md5, request);
+        return ServiceResult.buildFailedResult("插入出错", md5);
     }
 
     @Override
@@ -41,14 +41,14 @@ public class MongoServiceImpl implements MongoService {
     public ServiceResult<Boolean> delete(NameRequest request) {
         String name = request.getName();
         boolean b = mongoManager.removeFile(name);
-        return ServiceResult.buildSuccessResult("删除执行完成", b, request);
+        return ServiceResult.buildSuccessResult("删除执行完成", b);
     }
 
     @Override
     public ServiceResult<String> getByFileName(NameRequest request) {
         String name = request.getName();
         String file = mongoManager.getFile(name);
-        return ServiceResult.buildSuccessResult("获取文件成功", file, request);
+        return ServiceResult.buildSuccessResult("获取文件成功", file);
     }
 
 

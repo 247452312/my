@@ -52,6 +52,6 @@ public class OrderBaseNodeServiceImpl extends BaseDefaultServiceImpl<OrderBaseNo
         /*删除本体*/
         boolean deleteByIds = dao.deleteByIds(request.getIds(), updateUser, updateDate) != 0;
 
-        return ServiceResult.buildSuccessResult("删除执行成功", deleteFieldByNodeIds & deleteResultTypeByNodeIds & deleteRouteByNodeIds & deleteByIds, request);
+        return ServiceResult.buildSuccessResult("删除执行成功", deleteFieldByNodeIds & deleteResultTypeByNodeIds & deleteRouteByNodeIds & deleteByIds);
     }
 }

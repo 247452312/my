@@ -61,9 +61,9 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
         data.setUserEntity(userEntity);
         boolean add = scheduledManager.addJob(data);
         if (count == 1 && add) {
-            return ServiceResult.buildSuccessResult("创建成功", count, insert);
+            return ServiceResult.buildSuccessResult("创建成功", count);
         }
-        return ServiceResult.buildFailedResult("创建失败", 0, insert);
+        return ServiceResult.buildFailedResult("创建失败", 0);
     }
 
     @Override
@@ -77,9 +77,9 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
         boolean remove = scheduledManager.deleteJob(data);
         boolean add = scheduledManager.addJob(data);
         if (count != 0 && remove && add) {
-            return ServiceResult.buildSuccessResult("修改成功", count, update);
+            return ServiceResult.buildSuccessResult("修改成功", count);
         } else {
-            return ServiceResult.buildFailedResult("修改失败", 0, update);
+            return ServiceResult.buildFailedResult("修改失败", 0);
         }
     }
 
@@ -92,9 +92,9 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
         dao.pause(id);
         boolean remove = scheduledManager.pauseJob(byId);
         if (remove) {
-            return ServiceResult.buildSuccessResult("停止成功", Boolean.TRUE, request);
+            return ServiceResult.buildSuccessResult("停止成功", Boolean.TRUE);
         }
-        return ServiceResult.buildFailedResult("停止失败", Boolean.FALSE, request);
+        return ServiceResult.buildFailedResult("停止失败", Boolean.FALSE);
     }
 
     @Override
@@ -106,9 +106,9 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
         dao.start(id);
         boolean add = scheduledManager.resumeJob(byId);
         if (add) {
-            return ServiceResult.buildSuccessResult("开启成功", Boolean.TRUE, request);
+            return ServiceResult.buildSuccessResult("开启成功", Boolean.TRUE);
         }
-        return ServiceResult.buildFailedResult("开启失败", Boolean.FALSE, request);
+        return ServiceResult.buildFailedResult("开启失败", Boolean.FALSE);
     }
 
     @Override
@@ -117,8 +117,8 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
         byId.setUserEntity(request.getUser());
         boolean test = scheduledManager.runJobNow(byId);
         if (test) {
-            return ServiceResult.buildSuccessResult("测试成功", Boolean.TRUE, request);
+            return ServiceResult.buildSuccessResult("测试成功", Boolean.TRUE);
         }
-        return ServiceResult.buildFailedResult("测试失败", Boolean.FALSE, request);
+        return ServiceResult.buildFailedResult("测试失败", Boolean.FALSE);
     }
 }

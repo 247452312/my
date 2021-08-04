@@ -15,7 +15,6 @@ import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
 import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.service.BlackListService;
-import indi.uhyils.service.LogService;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
@@ -88,8 +87,6 @@ public class IpSpiderTableAspect {
      */
     private static final Long MAX_FROZEN_COUNT = 2L;
 
-    @RpcReference
-    private LogService logService;
 
     @RpcReference
     private BlackListService blackListService;

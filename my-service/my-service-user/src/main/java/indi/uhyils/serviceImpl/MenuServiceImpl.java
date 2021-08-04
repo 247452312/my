@@ -92,7 +92,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         Set<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
         if (user.getRole() == null && user.getRoleId() == null) {
-            return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
+            return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null);
         }
         List<DeptEntity> depts;
         if (user.getRole() == null) {
@@ -128,7 +128,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         tree.setHomeInfo(MenuHomeInfo.build(honeInfo));
         tree.setLogoInfo(MenuLogoInfo.build(logoInfo));
         /* 5. 返回 */
-        return ServiceResult.buildSuccessResult("菜单请求成功", tree, request);
+        return ServiceResult.buildSuccessResult("菜单请求成功", tree);
     }
 
     @Override
@@ -140,7 +140,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         HashSet<MenuEntity> set = new HashSet<>();
         UserEntity user = request.getUser();
         if (user.getRole() == null && user.getRoleId() == null) {
-            return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null, request);
+            return ServiceResult.buildFailedResult("查询成功,此账号没有角色,请添加", null);
         }
         List<DeptEntity> depts;
 
@@ -167,7 +167,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
                 getParents(e, set, map);
             }
         }
-        return ServiceResult.buildSuccessResult("查询树列表成功", MenuHtmlTreeResponse.build(set), request);
+        return ServiceResult.buildSuccessResult("查询树列表成功", MenuHtmlTreeResponse.build(set));
     }
 
 
@@ -182,7 +182,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         Long menuId = req.getId();
         MenuEntity menuEntity = dao.getById(menuId);
         if (menuEntity == null) {
-            return ServiceResult.buildFailedResult("查询失败", null, req);
+            return ServiceResult.buildFailedResult("查询失败", null);
         }
         Integer frame = menuEntity.getiFrame();
         List<MenuEntity> byIFrame = dao.getByIFrame(frame);
@@ -193,14 +193,14 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
         dao.deleteByIds(menuIds);
         /* 2.删除连接表节点 */
         dao.deleteDeptMenuByMenuIds(menuIds);
-        return ServiceResult.buildSuccessResult("删除成功", true, req);
+        return ServiceResult.buildSuccessResult("删除成功", true);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu", "sys_dept"})
     public ServiceResult<ArrayList<GetDeptsByMenuIdResponse>> getDeptsByMenuId(IdRequest req) {
         ArrayList<GetDeptsByMenuIdResponse> list = deptDao.getByMenuId(req.getId());
-        return ServiceResult.buildSuccessResult("查询成功", list, req);
+        return ServiceResult.buildSuccessResult("查询成功", list);
     }
 
     @Override
@@ -221,7 +221,7 @@ public class MenuServiceImpl extends BaseDefaultServiceImpl<MenuEntity> implemen
             return byId;
         }).collect(Collectors.toList());
         QuickStartResponse build = QuickStartResponse.build(collect);
-        return ServiceResult.buildSuccessResult("查询快捷入口成功", build, request);
+        return ServiceResult.buildSuccessResult("查询快捷入口成功", build);
     }
 
     /**

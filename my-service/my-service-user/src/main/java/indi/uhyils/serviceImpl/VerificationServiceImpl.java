@@ -78,7 +78,7 @@ public class VerificationServiceImpl implements VerificationService {
         try {
             jedis.set(key, code);
             jedis.expire(key, VERIFICATION_TIME_OUT);
-            return ServiceResult.buildSuccessResult(build, request);
+            return ServiceResult.buildSuccessResult(build);
         } finally {
             jedis.close();
         }
@@ -96,9 +96,9 @@ public class VerificationServiceImpl implements VerificationService {
             String realCode = jedis.get(key);
             if (code.equals(realCode)) {
                 jedis.del(key);
-                return ServiceResult.buildSuccessResult(true, request);
+                return ServiceResult.buildSuccessResult(true);
             }
-            return ServiceResult.buildSuccessResult(false, request);
+            return ServiceResult.buildSuccessResult(false);
         } finally {
             jedis.close();
         }

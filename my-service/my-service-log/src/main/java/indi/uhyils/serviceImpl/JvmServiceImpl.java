@@ -62,7 +62,7 @@ public class JvmServiceImpl implements JvmService {
         /* 获取接口调用次数 */
         Integer interfaceCellCount = traceInfoDao.getCountByTypeAndStartTime(LogTypeEnum.RPC.getCode(), firstStartTile);
 
-        return ServiceResult.buildSuccessResult("查询数据统计JVM部分信息成功", JvmDataStatisticsResponse.build(onlineServiceCount, map, webRequestCount, interfaceCellCount), request);
+        return ServiceResult.buildSuccessResult("查询数据统计JVM部分信息成功", JvmDataStatisticsResponse.build(onlineServiceCount, map, webRequestCount, interfaceCellCount));
     }
 
     @Override
@@ -107,6 +107,6 @@ public class JvmServiceImpl implements JvmService {
             map.put(logMonitorEntity.getServiceName() + ":" + logMonitorEntity.getIp(), list);
         }
         JvmInfoLogResponse build = JvmInfoLogResponse.build(map);
-        return ServiceResult.buildSuccessResult("查询JVM内存信息成功", build, request);
+        return ServiceResult.buildSuccessResult("查询JVM内存信息成功", build);
     }
 }
