@@ -1,12 +1,15 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.TraceInfoDao;
+import indi.uhyils.log.LogTypeEnum;
 import indi.uhyils.pojo.model.TraceDetailStatisticsView;
 import indi.uhyils.pojo.model.TraceInfoEntity;
 import indi.uhyils.pojo.request.GetLinkByTraceIdRequest;
 import indi.uhyils.pojo.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
+import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.GetLinkByTraceIdResponse;
+import indi.uhyils.pojo.response.GetLogTypeResponse;
 import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
@@ -41,10 +44,11 @@ public class TraceInfoServiceImpl extends BaseDefaultServiceImpl<TraceInfoEntity
     }
 
     @Override
-    public ServiceResult<ArrayList<TraceInfoEntity>> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request) {
-        ArrayList<TraceInfoEntity> list = dao.getTraceInfoByArgAndPage(request);
-
-        return ServiceResult.buildSuccessResult(list);
+    public ServiceResult<Page<TraceInfoEntity>> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request) {
+        List<TraceInfoEntity> list = dao.getTraceInfoByArgAndPage(request);
+        Integer count = dao.getTraceInfoByArgAndPageCount(request);
+        Page<TraceInfoEntity> build = Page.build(request, list, count);
+        return ServiceResult.buildSuccessResult(build);
     }
 
     @Override
@@ -52,6 +56,16 @@ public class TraceInfoServiceImpl extends BaseDefaultServiceImpl<TraceInfoEntity
         List<TraceDetailStatisticsView> list = dao.getTraceStatistics(request);
         Integer count = dao.getTraceStatisticsCount(request);
         return ServiceResult.buildSuccessResult(Page.build(request, list, count));
+    }
+
+    @Override
+    public ServiceResult<ArrayList<GetLogTypeResponse>> getLogType(DefaultRequest request) {
+        ArrayList<GetLogTypeResponse> list = new ArrayList<>();
+        for (LogTypeEnum value : LogTypeEnum.values()) {
+            GetLogTypeResponse build = GetLogTypeResponse.build(value.name(), value.getCode());
+            list.add(build);
+        }
+        return ServiceResult.buildSuccessResult(list);
     }
 
 

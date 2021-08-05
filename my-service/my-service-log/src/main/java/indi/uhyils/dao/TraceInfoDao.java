@@ -44,7 +44,15 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
      *
      * @return
      */
-    ArrayList<TraceInfoEntity> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
+    List<TraceInfoEntity> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
+    /**
+     * 获取traceInfo
+     *
+     * @param request
+     *
+     * @return
+     */
+    Integer getTraceInfoByArgAndPageCount(GetTraceInfoByArgAndPageRequest request);
 
     /**
      * 获取统计信息
