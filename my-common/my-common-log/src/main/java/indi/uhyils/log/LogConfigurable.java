@@ -24,7 +24,7 @@ public class LogConfigurable {
 
         FilterRegistrationBean<ControllerLogFilter> filterBean = new FilterRegistrationBean<>();
         filterBean.setFilter(new ControllerLogFilter());
-        filterBean.setName("controllerFilter");
+        filterBean.setName("controllerLogFilter");
         filterBean.addUrlPatterns("/*");
         return filterBean;
     }
