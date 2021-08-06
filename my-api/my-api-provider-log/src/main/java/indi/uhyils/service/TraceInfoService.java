@@ -2,11 +2,14 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.TraceDetailStatisticsView;
 import indi.uhyils.pojo.model.TraceInfoEntity;
-import indi.uhyils.pojo.request.GetLinkByTraceIdRequest;
+import indi.uhyils.pojo.request.GetDetailByHashAndLogTypeRequest;
+import indi.uhyils.pojo.request.GetLinkByTraceIdAndRpcIdRequest;
 import indi.uhyils.pojo.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.GetLinkByTraceIdResponse;
+import indi.uhyils.pojo.request.base.LongRequest;
+import indi.uhyils.pojo.response.GetDetailByHashAndLogTypeResponse;
+import indi.uhyils.pojo.response.GetLinkByTraceIdAndRpcIdResponse;
 import indi.uhyils.pojo.response.GetLogTypeResponse;
 import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -21,13 +24,23 @@ public interface TraceInfoService extends DefaultEntityService<TraceInfoEntity> 
 
 
     /**
+     * 根据traceId和rpcId获取这一串
+     *
+     * @param request
+     *
+     * @return
+     */
+    ServiceResult<GetLinkByTraceIdAndRpcIdResponse> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdRequest request);
+
+    /**
      * 根据traceId获取这一串
      *
      * @param request
      *
      * @return
      */
-    ServiceResult<GetLinkByTraceIdResponse> getLinkByTraceId(GetLinkByTraceIdRequest request);
+    ServiceResult<ArrayList<TraceInfoEntity>> getLinkByTraceId(LongRequest request);
+
 
 
     /**

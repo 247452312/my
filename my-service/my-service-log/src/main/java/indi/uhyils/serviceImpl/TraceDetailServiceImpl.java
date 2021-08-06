@@ -2,7 +2,9 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.TraceDetailDao;
 import indi.uhyils.pojo.model.TraceDetailEntity;
+import indi.uhyils.pojo.request.GetDetailByHashAndLogTypeRequest;
 import indi.uhyils.pojo.request.GetTraceDetailByHashCodeRequest;
+import indi.uhyils.pojo.response.GetDetailByHashAndLogTypeResponse;
 import indi.uhyils.pojo.response.GetTraceDetailByHashCodeResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;

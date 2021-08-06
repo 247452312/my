@@ -56,9 +56,12 @@ public class MyTraceIdContext {
     /**
      * 项目名称
      */
-    private volatile static String projectName = SpringUtil.getProperty("rpc.application.name", "NoName");
+    private volatile static String projectName;
 
     public static String getProjectName() {
+        if (projectName == null) {
+            projectName = SpringUtil.getProperty("rpc.application.name", "NoName");
+        }
         return projectName;
     }
 

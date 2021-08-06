@@ -10,12 +10,12 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月01日 13时28分
  */
-public class GetLinkByTraceIdResponse implements Serializable {
+public class GetLinkByTraceIdAndRpcIdResponse implements Serializable {
 
     private List<TraceInfoEntity> data;
 
-    public static GetLinkByTraceIdResponse build(List<TraceInfoEntity> data) {
-        GetLinkByTraceIdResponse build = new GetLinkByTraceIdResponse();
+    public static GetLinkByTraceIdAndRpcIdResponse build(List<TraceInfoEntity> data) {
+        GetLinkByTraceIdAndRpcIdResponse build = new GetLinkByTraceIdAndRpcIdResponse();
         build.data = data;
         return build;
     }

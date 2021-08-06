@@ -155,5 +155,7 @@
         where delete_flag = 0
           and hash_code = #{hashCode,jdbcType=VARCHAR}
           and type = #{type,jdbcType=INTEGER}
+        order by end_time desc
+        limit 1
     </select>
 </mapper>

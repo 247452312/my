@@ -96,15 +96,15 @@
           page: false,
           cols: [[
             {type: "numbers", title: '序号'},
-            {field: 'traceId', title: 'traceId',event:'traceIdClick'},
+            {field: 'traceId', title: 'traceId', event: 'traceIdClick'},
             {field: 'startTime', title: '开始时间'},
             {field: 'other', title: '其他'},
             {field: 'level', title: '日志等级'},
             {field: 'useTime', title: '执行时间'},
             {field: 'projectName', title: '项目名称'},
             {field: 'logType', title: '日志类型'},
-            {field: 'hashCode', title: 'hash'},
-            {field: 'rpcId', title: 'rpcId'},
+            {field: 'hashCode', title: 'hash', event: 'hashClick'},
+            {field: 'rpcId', title: 'rpcId', event: 'rpcIdClick'},
             {field: 'threadName', title: 'threadName'},
             {field: 'loggerName', title: 'loggerName'}
           ]],
@@ -182,15 +182,15 @@
     });
 
     //监听单元格事件
-    table.on('tool(currentTableFilter)', function(obj){
+    table.on('tool(currentTableFilter)', function (obj) {
       var data = obj.data;
-      if(obj.event === 'traceIdClick'){
+      if (obj.event === 'rpcIdClick') {
         let traceId = data.traceId;
         let rpcId = data.rpcId;
-        pushRequest("TraceInfoService", "getLinkByTraceId", {
-          "traceId":traceId,
-          "rpcId":rpcId
-        },function (ooo){
+        pushRequest("TraceInfoService", "getLinkByTraceIdAndRpcId", {
+          "traceId": traceId,
+          "rpcId": rpcId
+        }, function (ooo) {
           //自定页
           layer.open({
             type: 1,
@@ -204,6 +204,44 @@
           });
         });
 
+      } else if (obj.event === 'traceIdClick') {
+        let traceId = data.traceId;
+        pushRequest("TraceInfoService", "getLinkByTraceId", {
+          "value": traceId
+        }, function (ooo) {
+          //自定页
+          layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '300px'],
+            scrollbar: false,
+            closeBtn: 0, //不显示关闭按钮
+            anim: 2,
+            shadeClose: true, //开启遮罩关闭
+            content: JSON.stringify(ooo)
+          });
+        });
+      } else if (obj.event === 'hashClick') {
+        pushRequest("TraceDetailService", "getTraceDetailByHashCode", {
+          "hashCode": data.hashCode,
+          "type": data.logType
+        }, function (ooo) {
+          let otherOne = ooo.traceDetailEntity.otherOne.replaceAll('\\n', '<br/>');
+          if (ooo.traceDetailEntity.otherTwo != null) {
+            otherOne += '<br/>' + ooo.traceDetailEntity.otherTwo;
+          }
+          //自定页
+          layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '300px'],
+            scrollbar: false,
+            closeBtn: 0, //不显示关闭按钮
+            anim: 2,
+            shadeClose: true, //开启遮罩关闭
+            content: otherOne
+          });
+        });
       }
     });
 

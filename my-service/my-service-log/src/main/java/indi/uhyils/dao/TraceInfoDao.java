@@ -3,7 +3,7 @@ package indi.uhyils.dao;
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.TraceDetailStatisticsView;
 import indi.uhyils.pojo.model.TraceInfoEntity;
-import indi.uhyils.pojo.request.GetLinkByTraceIdRequest;
+import indi.uhyils.pojo.request.GetLinkByTraceIdAndRpcIdRequest;
 import indi.uhyils.pojo.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
 import java.util.ArrayList;
@@ -17,15 +17,6 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
-
-    /**
-     * 通过traceId 获取link
-     *
-     * @param traceId
-     *
-     * @return
-     */
-    List<TraceInfoEntity> getLinkByTraceIdAndRpcIdPrefix(GetLinkByTraceIdRequest traceId);
 
     /**
      * 获取从开始时间到现在的前台请求次数
@@ -45,6 +36,7 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
      * @return
      */
     List<TraceInfoEntity> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
+
     /**
      * 获取traceInfo
      *
@@ -69,4 +61,22 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
      * @return
      */
     Integer getTraceStatisticsCount(DefaultPageRequest request);
+
+    /**
+     * 根据traceId 和 rpcId 获取详情
+     *
+     * @param request
+     *
+     * @return
+     */
+    List<TraceInfoEntity> getLinkByTraceIdAndRpcIdPrefix(GetLinkByTraceIdAndRpcIdRequest request);
+
+    /**
+     * 根据traceId 获取整个链路
+     *
+     * @param traceId
+     *
+     * @return
+     */
+    ArrayList<TraceInfoEntity> getTraceInfoByTraceId(Long traceId);
 }

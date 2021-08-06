@@ -4,11 +4,12 @@ import indi.uhyils.dao.TraceInfoDao;
 import indi.uhyils.log.LogTypeEnum;
 import indi.uhyils.pojo.model.TraceDetailStatisticsView;
 import indi.uhyils.pojo.model.TraceInfoEntity;
-import indi.uhyils.pojo.request.GetLinkByTraceIdRequest;
+import indi.uhyils.pojo.request.GetLinkByTraceIdAndRpcIdRequest;
 import indi.uhyils.pojo.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.GetLinkByTraceIdResponse;
+import indi.uhyils.pojo.request.base.LongRequest;
+import indi.uhyils.pojo.response.GetLinkByTraceIdAndRpcIdResponse;
 import indi.uhyils.pojo.response.GetLogTypeResponse;
 import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -28,6 +29,7 @@ public class TraceInfoServiceImpl extends BaseDefaultServiceImpl<TraceInfoEntity
     @Resource
     private TraceInfoDao dao;
 
+
     @Override
     public TraceInfoDao getDao() {
         return dao;
@@ -38,9 +40,15 @@ public class TraceInfoServiceImpl extends BaseDefaultServiceImpl<TraceInfoEntity
     }
 
     @Override
-    public ServiceResult<GetLinkByTraceIdResponse> getLinkByTraceId(GetLinkByTraceIdRequest request) {
+    public ServiceResult<GetLinkByTraceIdAndRpcIdResponse> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdRequest request) {
         List<TraceInfoEntity> traceIds = dao.getLinkByTraceIdAndRpcIdPrefix(request);
-        return ServiceResult.buildSuccessResult(GetLinkByTraceIdResponse.build(traceIds));
+        return ServiceResult.buildSuccessResult(GetLinkByTraceIdAndRpcIdResponse.build(traceIds));
+    }
+
+    @Override
+    public ServiceResult<ArrayList<TraceInfoEntity>> getLinkByTraceId(LongRequest request) {
+        ArrayList<TraceInfoEntity> list = dao.getTraceInfoByTraceId(request.getValue());
+        return ServiceResult.buildSuccessResult(list);
     }
 
     @Override
