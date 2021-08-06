@@ -178,7 +178,7 @@
         from sys_trace_info a
         where delete_flag = 0
           and trace_id = #{traceId}
-          and rpc_id like '${rpcId}._'
+          and (rpc_id like '${rpcId}.%' or rpc_id = #{rpcId})
     </select>
 
     <select id="getCountByTypeAndStartTime" resultType="java.lang.Integer">

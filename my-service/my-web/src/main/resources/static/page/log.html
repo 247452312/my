@@ -96,7 +96,7 @@
           page: false,
           cols: [[
             {type: "numbers", title: '序号'},
-            {field: 'traceId', title: 'traceId'},
+            {field: 'traceId', title: 'traceId',event:'traceIdClick'},
             {field: 'startTime', title: '开始时间'},
             {field: 'other', title: '其他'},
             {field: 'level', title: '日志等级'},
@@ -179,6 +179,32 @@
     //监听表格复选框选择
     table.on('checkbox(currentTableFilter)', function (obj) {
       console.log(obj)
+    });
+
+    //监听单元格事件
+    table.on('tool(currentTableFilter)', function(obj){
+      var data = obj.data;
+      if(obj.event === 'traceIdClick'){
+        let traceId = data.traceId;
+        let rpcId = data.rpcId;
+        pushRequest("TraceInfoService", "getLinkByTraceId", {
+          "traceId":traceId,
+          "rpcId":rpcId
+        },function (ooo){
+          //自定页
+          layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '300px'],
+            scrollbar: false,
+            closeBtn: 0, //不显示关闭按钮
+            anim: 2,
+            shadeClose: true, //开启遮罩关闭
+            content: JSON.stringify(ooo.data)
+          });
+        });
+
+      }
     });
 
   });
