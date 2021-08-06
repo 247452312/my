@@ -2,6 +2,7 @@ package indi.uhyils.pojo.response.base;
 
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.response.HotSpotResponse;
+import indi.uhyils.rpc.util.RpcAssertUtil;
 import java.io.Serializable;
 
 /**
@@ -171,6 +172,26 @@ public class ServiceResult<T extends Serializable> implements Serializable {
 
     public void setServiceMessage(String serviceMessage) {
         this.serviceMessage = serviceMessage;
+    }
+
+    /**
+     * 验证并且返回
+     *
+     * @return
+     */
+    public T validationAndGet() {
+        if (ServiceCode.SUCCESS.getText().equals(this.getServiceCode())) {
+            return getData();
+        } else if (ServiceCode.SUCCESS_REDIS.getText().equals(this.getServiceCode())) {
+            RpcAssertUtil.assertTrue(false, "rpc结果通过redis存储.请自行处理或者引入: my-common-hot-spot");
+        } else {
+            RpcAssertUtil.assertTrue(false, this.toErrorString());
+        }
+        return null;
+    }
+
+    private String toErrorString() {
+        return String.format("error,serviceCode: %s, serviceMessage: %s ", this.getServiceCode(), this.getServiceMessage());
     }
 
 }

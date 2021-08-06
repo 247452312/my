@@ -104,6 +104,6 @@
         <include refid="columnList"/>
         from sys_log_monitor_jvm_status a
         where fid = #{id}
-        order by time;
+        order by time
     </select>
 </mapper>
