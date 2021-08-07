@@ -96,7 +96,7 @@
           page: false,
           cols: [[
             {type: "numbers", title: '序号'},
-            {field: 'traceId', title: 'traceId', event: 'traceIdClick'},
+            {field: 'traceId', title: 'traceId', event: 'traceIdClick', width: '12%'},
             {field: 'startTime', title: '开始时间'},
             {field: 'other', title: '其他'},
             {field: 'level', title: '日志等级'},
@@ -203,23 +203,19 @@
             content: JSON.stringify(ooo.data)
           });
         });
-
       } else if (obj.event === 'traceIdClick') {
         let traceId = data.traceId;
-        pushRequest("TraceInfoService", "getLinkByTraceId", {
-          "value": traceId
-        }, function (ooo) {
-          //自定页
-          layer.open({
-            type: 1,
-            skin: 'layui-layer-demo', //样式类名
-            area: ['500px', '300px'],
-            scrollbar: false,
-            closeBtn: 0, //不显示关闭按钮
-            anim: 2,
-            shadeClose: true, //开启遮罩关闭
-            content: JSON.stringify(ooo)
-          });
+        var index = layer.open({
+          title: '日志链路详情',
+          type: 2,
+          shade: 0.2,
+          maxmin: true,
+          shadeClose: true,
+          area: ['100%', '100%'],
+          content: 'table/logTraceLink.html?traceId=' + traceId
+        });
+        $(window).on("resize", function () {
+          layer.full(index);
         });
       } else if (obj.event === 'hashClick') {
         pushRequest("TraceDetailService", "getTraceDetailByHashCode", {

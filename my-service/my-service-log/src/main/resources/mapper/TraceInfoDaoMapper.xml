@@ -192,7 +192,7 @@
             and start_time >= #{startTime}
         </if>
         <if test="type != null">
-            and type = #{type,jdbcType=INTEGER}
+            and log_type = #{type,jdbcType=INTEGER}
         </if>
         <if test="page != null and page != ''">
             limit ${(page-1) * size} , ${page * size}
@@ -229,7 +229,7 @@
             and start_time >= #{startTime}
         </if>
         <if test="type != null">
-            and type = #{type,jdbcType=INTEGER}
+            and log_type = #{type,jdbcType=INTEGER}
         </if>
     </select>
 

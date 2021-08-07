@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>layui</title>
+  <meta content="webkit" name="renderer">
+  <!--设置1个小时的缓存-->
+  <meta content="max-age=3200" http-equiv="Cache-Control"/>
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+  <link href="../../lib/layui-v2.5.5/css/layui.css" media="all" rel="stylesheet">
+  <link href="../../css/public.css" media="all" rel="stylesheet">
+  <style>
+    body {
+      background-color: #ffffff;
+    }
+
+    .layui-transfer-box {
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+  <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+</div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/my.js"></script>
+<script charset="utf-8" src="../../lib/layui-v2.5.5/layui.js"></script>
+<script>
+  layui.use(['form', 'table'], function () {
+    var form = layui.form,
+        layer = layui.layer,
+        table = layui.table,
+        $ = layui.$;
+
+    $.getUrlParam = function (name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) {
+        return unescape(r[2]);
+      }
+      return null;
+    };
+    let traceId = $.getUrlParam('traceId');
+
+    pushRequest("TraceInfoService", "getLinkByTraceId", {
+      "value": traceId
+    }, function (ooo) {
+      table.render({
+        elem: '#currentTableId',
+        data: ooo,
+        toolbar: false,
+        page: false,
+        cols: [[
+          {type: "numbers", title: '序号'},
+          {field: 'projectName', title: '应用名称', width: '7%'},
+          {
+            field: 'startTime', title: '日志产生时间', width: '10%', templet: function (d) {
+              return new Date(parseInt(d.startTime)).toLocaleString().replace(/:\d{1,2}$/, ' ');
+            }
+          },
+          {
+            field: 'logType', title: '类型', width: '5%', templet: function (d) {
+              switch (d.logType) {
+                case 1:
+                  return 'RPC';
+                case 2:
+                  return 'MQ';
+                case 3:
+                  return 'DB';
+                case 4:
+                  return 'TASK';
+                case 5:
+                  return 'CONTROLLER';
+                default:
+                  return 'NULL';
+              }
+            }
+          },
+          {field: 'hashCode', title: 'hash', width: '6%'},
+          {field: 'other', title: '服务信息'},
+          {title: '时间轴', width: '50%'}
+        ]],
+        skin: 'line'
+      });
+    });
+
+  });
+</script>
+</body>
+</html>
