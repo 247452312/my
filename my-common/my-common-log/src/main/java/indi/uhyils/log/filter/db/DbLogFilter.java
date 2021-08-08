@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DbLogFilter extends FilterEventAdapter {
 
-    private FormatOption statementSqlFormatOption = new FormatOption(false, true);
+    private final FormatOption statementSqlFormatOption = new FormatOption(false, true);
 
     private static final String TRACE_INFO = "sys_trace";
 
