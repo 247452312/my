@@ -14,6 +14,7 @@ import indi.uhyils.util.SpringUtil;
  * @Version 1.0
  */
 public abstract class AbstractMessage implements Message {
+
     /**
      * 数据
      */
@@ -34,7 +35,7 @@ public abstract class AbstractMessage implements Message {
         this.topic = topic;
         try {
             initSequence();
-        } catch (InterruptedException | IdGenerationException e) {
+        } catch (IdGenerationException e) {
             LogUtil.error(this, e);
         }
     }
@@ -58,7 +59,7 @@ public abstract class AbstractMessage implements Message {
         return sequence;
     }
 
-    private void initSequence() throws IdGenerationException, InterruptedException {
+    private void initSequence() throws IdGenerationException {
         this.sequence = SpringUtil.getBean(IdUtil.class).newId();
     }
 

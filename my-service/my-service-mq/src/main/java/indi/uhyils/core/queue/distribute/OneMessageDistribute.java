@@ -19,7 +19,7 @@ public class OneMessageDistribute extends AbstractMessageDistributeRunnable {
     }
 
     @Override
-    public void sendMessage(Message message, Collection<Register> registers) throws Throwable {
+    public void sendMessage(Message message, Collection<Register> registers){
         Optional<Register> any = registers.stream().findAny();
         if (any.isPresent()) {
             Register register = any.get();

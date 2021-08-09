@@ -18,7 +18,7 @@ public class AllPushMessageDistribute extends AbstractMessageDistributeRunnable 
     }
 
     @Override
-    public void sendMessage(Message message, Collection<Register> registers) throws Throwable {
+    public void sendMessage(Message message, Collection<Register> registers) {
         registers.forEach(t -> t.pushMessage(message));
     }
 

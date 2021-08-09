@@ -35,7 +35,7 @@ public class IdUtil {
         this.code = code;
     }
 
-    public synchronized long newId() throws IdGenerationException, InterruptedException {
+    public synchronized long newId() throws IdGenerationException {
         // 生成时间
         long time = System.currentTimeMillis();
         if (lastTime > time) {
@@ -51,7 +51,12 @@ public class IdUtil {
 
         // 如果序列号超出,则阻塞到下一个毫秒继续获取序列号
         if (sq > Content.SEQUENCE_MASK) {
-            Thread.sleep(1L);
+            try {
+                Thread.sleep(1L);
+            } catch (InterruptedException e) {
+                LogUtil.error(e);
+                Thread.currentThread().interrupt();
+            }
             return newId();
         }
         // 从配置文件中获取 代表学校码

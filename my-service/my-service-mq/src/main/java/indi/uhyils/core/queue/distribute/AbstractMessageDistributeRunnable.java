@@ -5,7 +5,7 @@ import indi.uhyils.core.queue.Queue;
 import indi.uhyils.core.queue.QueueObserver;
 import indi.uhyils.core.register.Register;
 import indi.uhyils.util.CollectionUtils;
-
+import indi.uhyils.util.LogUtil;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,16 +20,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class AbstractMessageDistributeRunnable extends Thread implements QueueObserver {
 
     private static AtomicInteger integer = new AtomicInteger(0);
+
     /**
      * 此分发者负责的消息接受者
      */
     private final List<Register> consumer;
+
     /**
      * 队列
      */
     private final Queue queue;
 
-    public AbstractMessageDistributeRunnable(Queue queue) {
+    protected AbstractMessageDistributeRunnable(Queue queue) {
         super("message_distribute_" + integer.addAndGet(1));
         this.queue = queue;
         this.consumer = queue.getConsumer();
@@ -54,8 +56,9 @@ public abstract class AbstractMessageDistributeRunnable extends Thread implement
                 while ((!isInterrupted() && (one = getQueue().takeOne()) != null)) {
                     sendMessage(one, consumer);
                 }
-            } catch (Throwable th) {
-                th.printStackTrace();
+            } catch (InterruptedException e) {
+                LogUtil.error(e);
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -65,7 +68,8 @@ public abstract class AbstractMessageDistributeRunnable extends Thread implement
      *
      * @param message
      * @param registers
+     *
      * @throws Throwable
      */
-    public abstract void sendMessage(Message message, Collection<Register> registers) throws Throwable;
+    public abstract void sendMessage(Message message, Collection<Register> registers);
 }

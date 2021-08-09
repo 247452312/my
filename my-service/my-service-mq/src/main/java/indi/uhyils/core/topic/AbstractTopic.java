@@ -7,10 +7,10 @@ import indi.uhyils.core.register.Register;
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.RegisterType;
 import indi.uhyils.exception.ExpressionInvalidException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,16 +38,17 @@ public abstract class AbstractTopic implements Topic {
     /**
      * 队列们
      */
-    protected volatile Map<String, Queue> queues;
+    protected transient Map<String, Queue> queues;
 
     /**
      * 接收者们
      */
-    protected Collection<Register> providers = new ArrayList<>();
+    protected List<Register> providers = new ArrayList<>();
+
     /**
      * 推送者们
      */
-    protected Collection<Register> consumers = new ArrayList<>();
+    protected List<Register> consumers = new ArrayList<>();
 
     /**
      * 创建队列的工厂
@@ -111,6 +112,7 @@ public abstract class AbstractTopic implements Topic {
      * 保存消息
      *
      * @param message
+     *
      * @return
      */
     protected abstract Boolean saveMessage0(Message message) throws ExpressionInvalidException;
@@ -118,14 +120,8 @@ public abstract class AbstractTopic implements Topic {
     /**
      * 初始化队列
      */
-    private void initQueue() {
-        if (queues == null) {
-            synchronized (this) {
-                if (queues == null) {
-                    this.queues = new HashMap<>(16);
-                }
-            }
-        }
+    private synchronized void initQueue() {
+        this.queues = new HashMap<>(16);
     }
 
     /**
