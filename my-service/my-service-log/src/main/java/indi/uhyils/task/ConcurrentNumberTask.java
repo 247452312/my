@@ -33,7 +33,7 @@ public class ConcurrentNumberTask {
     /**
      * 低级服务是否降级(默认没有降级)
      */
-    private volatile static Boolean degradation = Boolean.FALSE;
+    private volatile Boolean degradation = Boolean.FALSE;
 
     @Resource
     private TraceInfoDao traceInfoDao;
@@ -51,11 +51,7 @@ public class ConcurrentNumberTask {
         request.setUser(adminDefaultRequest.getUser());
         request.setCode(Content.CONCURRENT_NUM_DICT_CODE);
         ServiceResult<ArrayList<DictItemEntity>> byCode = dictService.getByCode(request);
-        if (byCode == null || !byCode.getServiceCode().equals(ServiceCode.SUCCESS.getText()) || byCode.getData().size() == 0) {
-            LogUtil.warn("获取服务字典中的并发数错误,请检查" + byCode.getServiceMessage());
-            return;
-        }
-        ArrayList<DictItemEntity> data = byCode.getData();
+        ArrayList<DictItemEntity> data = byCode.validationAndGet();
         DictItemEntity dictItemEntity = data.get(0);
         Long concurrentNumberSetable = Long.parseLong(dictItemEntity.getValue().toString());
 

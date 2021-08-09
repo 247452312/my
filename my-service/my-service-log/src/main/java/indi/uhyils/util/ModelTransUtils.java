@@ -8,7 +8,6 @@ import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.model.LogMonitorEntity;
 import indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity;
 import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

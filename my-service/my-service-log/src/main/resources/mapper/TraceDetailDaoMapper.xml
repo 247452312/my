@@ -24,14 +24,14 @@
         <include refid="columnList"/>
         from sys_trace_detail a
         where delete_flag = 0
-          and id = #{id}
+        and id = #{id}
     </select>
 
     <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.TraceDetailEntity">
         select
         <include refid="columnList"/>
         from sys_trace_detail a
-            where delete_flag = 0
+        where delete_flag = 0
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
@@ -41,7 +41,7 @@
         select
         <include refid="columnList"/>
         from sys_trace_detail a
-            where delete_flag = 0
+        where delete_flag = 0
 
         <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
@@ -54,33 +54,33 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.model.TraceDetailEntity">
         insert sys_trace_detail(trace_id,
-                                use_time,
-                                end_time,
-                                remark,
-                                type,
-                                update_date,
-                                hash_code,
-                                update_user,
-                                other_two,
-                                id,
-                                create_user,
-                                create_date,
-                                delete_flag,
-                                other_one)
+        use_time,
+        end_time,
+        remark,
+        type,
+        update_date,
+        hash_code,
+        update_user,
+        other_two,
+        id,
+        create_user,
+        create_date,
+        delete_flag,
+        other_one)
         values (#{traceId},
-                #{useTime},
-                #{endTime},
-                #{remark},
-                #{type},
-                #{updateDate},
-                #{hashCode},
-                #{updateUser},
-                #{otherTwo},
-                #{id},
-                #{createUser},
-                #{createDate},
-                #{deleteFlag},
-                #{otherOne})
+        #{useTime},
+        #{endTime},
+        #{remark},
+        #{type},
+        #{updateDate},
+        #{hashCode},
+        #{updateUser},
+        #{otherTwo},
+        #{id},
+        #{createUser},
+        #{createDate},
+        #{deleteFlag},
+        #{otherOne})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.model.TraceDetailEntity">
@@ -136,7 +136,7 @@
     <select id="countByArgs" resultType="java.lang.Integer">
         select count(*)
         from sys_trace_detail a
-            where delete_flag = 0
+        where delete_flag = 0
         <foreach item="arg" index="index" collection="args">
             and ${arg.name} ${arg.symbol} #{arg.data}
         </foreach>
@@ -153,8 +153,8 @@
         <include refid="columnList"/>
         from sys_trace_detail a
         where delete_flag = 0
-          and hash_code = #{hashCode,jdbcType=VARCHAR}
-          and type = #{type,jdbcType=INTEGER}
+        and hash_code = #{hashCode,jdbcType=VARCHAR}
+        and type = #{type,jdbcType=INTEGER}
         order by end_time desc
         limit 1
     </select>

@@ -4,22 +4,22 @@
 <mapper namespace="indi.uhyils.dao.MonitorDao">
     <sql id="columnList">
         a.
-        id,
+            id,
         a.ip,
-        a.service_name as serviceName,
+        a.service_name      as serviceName,
         a.time,
-        a.jvm_total_mem as jvmTotalMem,
-        a.heap_init_mem as heapInitMem,
-        a.heap_total_mem as heapTotalMem,
-        a.no_heap_init_mem as noHeapInitMem,
+        a.jvm_total_mem     as jvmTotalMem,
+        a.heap_init_mem     as heapInitMem,
+        a.heap_total_mem    as heapTotalMem,
+        a.no_heap_init_mem  as noHeapInitMem,
         a.no_heap_total_mem as noHeapTotalMem,
-        a.end_time as endTime,
-        a.create_date as createDate,
-        a.create_user as createUser,
-        a.delete_flag as deleteFlag,
+        a.end_time          as endTime,
+        a.create_date       as createDate,
+        a.create_user       as createUser,
+        a.delete_flag       as deleteFlag,
         a.remark,
-        a.update_date as updateDate,
-        a.update_user as updateUser
+        a.update_date       as updateDate,
+        a.update_user       as updateUser
     </sql>
 
     <select id="getById" resultType="indi.uhyils.pojo.model.LogMonitorEntity">

@@ -3,7 +3,6 @@ package indi.uhyils.util;
 import indi.uhyils.enum_.ServiceQualityEnum;
 import indi.uhyils.pojo.model.LogMonitorEntity;
 import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 

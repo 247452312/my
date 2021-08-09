@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.pojo.model.*;
 import indi.uhyils.dao.base.DefaultDao;
+import indi.uhyils.pojo.model.TraceLogEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
