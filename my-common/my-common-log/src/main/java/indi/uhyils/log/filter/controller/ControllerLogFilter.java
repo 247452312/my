@@ -2,6 +2,7 @@ package indi.uhyils.log.filter.controller;
 
 import indi.uhyils.log.LogTypeEnum;
 import indi.uhyils.log.MyTraceIdContext;
+import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -53,6 +54,7 @@ public class ControllerLogFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
+        String ip = IpUtil.getServletIP(req);
         // 防止共享traceId
         MyTraceIdContext.clean();
         MyTraceIdContext.onlyOnePrintLogInfo(LogTypeEnum.CONTROLLER, () -> {
@@ -62,7 +64,7 @@ public class ControllerLogFilter implements Filter {
                 LogUtil.error(e);
             }
             return null;
-        }, new String[]{requestUri}, requestUri);
+        }, new String[]{requestUri, ip}, requestUri, ip);
     }
 
 

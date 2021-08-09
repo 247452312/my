@@ -261,8 +261,9 @@ public class LogUtil {
      * @param useTime
      * @param url
      */
-    public static void controller(Long traceId, String hash, long useTime, String url) {
-        String msg = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s", traceId, indi.uhyils.log.LogTypeEnum.CONTROLLER.getCode(), hash, System.currentTimeMillis(), useTime, url);
+    public static void controller(Long traceId, String hash, long useTime, String url, String ip) {
+        String msg = String
+            .format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, indi.uhyils.log.LogTypeEnum.CONTROLLER.getCode(), hash, System.currentTimeMillis(), useTime, url, ip);
         CONTROLLER_LOG.info(CONTROLLER_MARKER, msg);
     }
 

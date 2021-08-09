@@ -39,6 +39,11 @@ public class TraceInfoEntity extends TraceIdDoEntity {
     private Integer logType;
 
     /**
+     * ip
+     */
+    private String ip;
+
+    /**
      * 此条hash值
      */
     private String hashCode;
@@ -138,5 +143,11 @@ public class TraceInfoEntity extends TraceIdDoEntity {
         this.loggerName = loggerName;
     }
 
+    public String getIp() {
+        return ip;
+    }
 
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 }

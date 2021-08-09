@@ -3,6 +3,7 @@ package indi.uhyils.log;
 import com.google.common.base.Supplier;
 import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.util.IdUtil;
+import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 import java.util.ArrayList;
@@ -87,6 +88,8 @@ public class MyTraceIdContext {
         sb.append(startTime);
         sb.append(PIPE_SYMBOL);
         sb.append(logTypeEnum.getCode());
+        sb.append(PIPE_SYMBOL);
+        sb.append(IpUtil.getIp());
         sb.append(PIPE_SYMBOL);
         sb.append(rpcStr);
         sb.append(PIPE_SYMBOL);
@@ -307,7 +310,7 @@ public class MyTraceIdContext {
                     LogUtil.task(getThraceId(), hash, useTime, additional[0], additional[1]);
                     break;
                 case CONTROLLER:
-                    LogUtil.controller(getThraceId(), hash, useTime, additional[0]);
+                    LogUtil.controller(getThraceId(), hash, useTime, additional[0], additional[1]);
                     break;
                 default:
                     break;

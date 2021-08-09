@@ -17,17 +17,6 @@ import java.util.List;
 @Mapper
 public interface BlackListDao extends DefaultDao<BlackListEntity> {
 
-
-    /**
-     * 获取指定ip用户访问的前size个时间
-     *
-     * @param ip   ip
-     * @param size limit
-     *
-     * @return
-     */
-    List<Long> getTimeByIp(@Param("ip") String ip, @Param("size") Integer size);
-
     /**
      * 获取所有的ip黑名单
      *

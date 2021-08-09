@@ -308,7 +308,7 @@ public class KproUtil {
         StringBuilder sb = new StringBuilder();
         sb.append(
             "# Docker image for {tomcat? springBoot?}\n# VERSION {版本号}\n# Author: uhyils\n# docker stop prod-my-service-user\n# docker rm prod-my-service-user\n# docker rmi my-service/prod-my-service-user:latest\n# docker build --build-arg version=0.0.7-my-SNAPSHOT --build-arg runEnv=prod -t my-service/prod-my-service-user .\n# docker run -it -d  -p ")
-          .append(dbInformation.getPort() + 50).append(":").append(dbInformation.getPort() + 50).append(" -p 20852").append(dbInformation.getPort() + 12850).append(":")
+          .append(dbInformation.getPort() + 50).append(":").append(dbInformation.getPort() + 50).append(" -p ").append(dbInformation.getPort() + 12850).append(":")
           .append(dbInformation.getPort() + 12850).append(
             " -v /my/logs:/my/logs --name prod-my-service-user my-service/prod-my-service-user:latest\n\nFROM java:8\n\n#作者\nMAINTAINER uhyils <uhyils@qq.com>\n\n\n#挂载\nVOLUME /my/logs\n\n#暴露端口\nEXPOSE ")
           .append(dbInformation.getPort() + 50).append(" ").append(dbInformation.getPort() + 12850).append(
@@ -627,17 +627,15 @@ public class KproUtil {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 hh时mm分");
         String dateFormat = simpleDateFormat.format(date);
         DbInformation dbInformation = new DbInformation();
-        dbInformation.setUrl("jdbc:mysql://prod:3306/my_log");
-        dbInformation.setDbName("my_log");
-        dbInformation.setProjectName("log");
+        dbInformation.setUrl("jdbc:mysql://prod:3306/my_user");
+        dbInformation.setDbName("my_user");
+        dbInformation.setProjectName("user");
         dbInformation.setType(1);
         dbInformation.setPort(8080);
         dbInformation.setUserName("root");
         dbInformation.setPassword("123456");
         ArrayList<String> tables = new ArrayList<>();
-        tables.add("sys_trace_info");
-        tables.add("sys_trace_log");
-        tables.add("sys_trace_detail");
+        tables.add("sys_dept");
         dbInformation.setTables(tables);
 
         HashMap<String, String> mySqlKpro = getMySqlKpro(dbInformation, dateFormat);

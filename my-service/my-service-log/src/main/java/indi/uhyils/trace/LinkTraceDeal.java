@@ -16,7 +16,7 @@ public class LinkTraceDeal extends AbstractTraceDeal {
 
     @Override
     protected TraceIdDoEntity getTargetEntity(String[] split) {
-        if (split.length < 10) {
+        if (split.length < 11) {
             throw new RuntimeException("错误");
         }
         String loggerName = split[0];
@@ -25,11 +25,12 @@ public class LinkTraceDeal extends AbstractTraceDeal {
         String traceId = split[2];
         String startTime = split[3];
         String linkType = split[4];
-        String rpcId = split[5];
-        String threadName = split[6];
-        String projectName = split[7];
-        String useTime = split[8];
-        String hashCode = split[9];
+        String ip = split[5];
+        String rpcId = split[6];
+        String threadName = split[7];
+        String projectName = split[8];
+        String useTime = split[9];
+        String hashCode = split[10];
         StringBuilder sb = new StringBuilder();
         for (int i = 10; i < split.length; i++) {
             sb.append(split[i]);
@@ -45,6 +46,7 @@ public class LinkTraceDeal extends AbstractTraceDeal {
         entity.setTraceId(Long.valueOf(traceId));
         entity.setStartTime(Long.valueOf(startTime));
         entity.setLogType(Integer.valueOf(linkType));
+        entity.setIp(ip);
         entity.setRpcId(rpcId);
         entity.setThreadName(threadName);
         entity.setProjectName(projectName);

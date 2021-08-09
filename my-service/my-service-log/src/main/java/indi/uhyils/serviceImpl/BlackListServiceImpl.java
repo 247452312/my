@@ -2,6 +2,7 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.builder.BlackListBuilder;
 import indi.uhyils.dao.BlackListDao;
+import indi.uhyils.dao.TraceDetailDao;
 import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.model.BlackListEntity;
 import indi.uhyils.pojo.request.AddBlackIpRequest;
@@ -11,11 +12,10 @@ import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BlackListService;
 import indi.uhyils.util.LogUtil;
-import org.springframework.beans.factory.annotation.Value;
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
 
 
 /**
@@ -39,6 +39,9 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
 
     @Resource
     private BlackListDao dao;
+
+    @Resource
+    private TraceDetailDao traceDetailDao;
 
     /**
      * 可以评价的最小 ip访问次数
@@ -65,7 +68,7 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
     public ServiceResult<Boolean> getLogIntervalByIp(GetLogIntervalByIpRequest request) {
         String ip = request.getIp();
         //取指定ip最近的{canEvaluateMinSize}次访问时间节点
-        List<Long> realTimes = dao.getTimeByIp(ip, canEvaluateMinSize);
+        List<Long> realTimes = traceDetailDao.getTimeByIp(ip, canEvaluateMinSize);
         // 如果次数不够,代表不能判断,返回不是爬虫的判断
         if (realTimes.size() < canEvaluateMinSize) {
             return ServiceResult.buildSuccessResult(null, false);

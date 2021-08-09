@@ -13,6 +13,7 @@
         a.update_date  as updateDate,
         a.start_time   as startTime,
         a.log_type     as logType,
+        a.ip           as ip,
         a.update_user  as updateUser,
         a.rpc_id       as rpcId,
         a.hash_code    as hashCode,
@@ -67,6 +68,7 @@
                               update_date,
                               start_time,
                               log_type,
+                              ip,
                               update_user,
                               rpc_id,
                               thread_name,
@@ -85,6 +87,7 @@
                 #{updateDate},
                 #{startTime},
                 #{logType},
+                #{ip},
                 #{updateUser},
                 #{rpcId},
                 #{threadName},
@@ -126,6 +129,9 @@
         </if>
         <if test="logType != null and logType != ''">
             , log_type = #{logType}
+        </if>
+        <if test="ip != null and ip != ''">
+            , ip = #{ip}
         </if>
         <if test="updateUser != null and updateUser != ''">
             , update_user = #{updateUser}
