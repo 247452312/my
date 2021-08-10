@@ -141,7 +141,7 @@ public class MyTraceIdContext {
                             bean.setCode(1L);
                         }
                         thraceId.set(bean.newId());
-                    } catch (IdGenerationException | InterruptedException e) {
+                    } catch (IdGenerationException e) {
                         LogUtil.error(MyTraceIdContext.class, e);
                     }
                 }

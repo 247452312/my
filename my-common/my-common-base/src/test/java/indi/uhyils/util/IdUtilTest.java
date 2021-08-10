@@ -40,7 +40,7 @@ public class IdUtilTest {
                         System.out.println("aaaaaaaaaaaaaaaaa");
                     }
                     set.add(e);
-                } catch (IdGenerationException | InterruptedException e) {
+                } catch (IdGenerationException e) {
                     LogUtil.error(e);
                 }
             });
