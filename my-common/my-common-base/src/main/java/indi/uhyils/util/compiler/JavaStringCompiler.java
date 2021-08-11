@@ -3,6 +3,7 @@ package indi.uhyils.util.compiler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.tools.JavaCompiler;
@@ -46,15 +47,9 @@ public class JavaStringCompiler {
      * @throws IOException 编译失败.
      */
     public Map<String, byte[]> compile(String fileName, String source) throws IOException {
-        try (MemoryJavaFileManager manager = new MemoryJavaFileManager(stdManager)) {
-            JavaFileObject javaFileObject = manager.makeStringSource(fileName, source);
-            CompilationTask task = compiler.getTask(null, manager, null, null, null, Arrays.asList(javaFileObject));
-            Boolean result = task.call();
-            if (result == null || !result) {
-                throw new RuntimeException("Compilation failed.");
-            }
-            return manager.getClassBytes();
-        }
+        Map<String, String> param = new HashMap<>(1);
+        param.put(fileName, source);
+        return compile(param);
     }
 
     /**
