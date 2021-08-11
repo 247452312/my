@@ -4,8 +4,6 @@ import indi.uhyils.pojo.request.ExecuteCodeRequest;
 import indi.uhyils.pojo.response.ExecuteCodeResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.service.base.BaseService;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * 解析代码的service
@@ -23,5 +21,5 @@ public interface ParsingCodeService extends BaseService {
      *
      * @return
      */
-    ServiceResult<ExecuteCodeResponse> executeCode(ExecuteCodeRequest request) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException;
+    ServiceResult<ExecuteCodeResponse> executeCode(ExecuteCodeRequest request);
 }

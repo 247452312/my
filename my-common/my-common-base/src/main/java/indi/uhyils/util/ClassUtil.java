@@ -41,6 +41,36 @@ public class ClassUtil {
         return clazz;
     }
 
+    /**
+     * 剥去springAop等代理类的外衣,获取真实的类
+     *
+     * @param value
+     *
+     * @return
+     *
+     * @throws Exception
+     */
+    public static Object getRealObj(Object value) throws Exception {
+        // 防止这里key是spring的aop类 或者 proxy代理
+        if (!AopUtils.isAopProxy(value) && !Proxy.isProxyClass(value.getClass())) {
+            return value;
+        }
+        Object result = value;
+        if (AopUtils.isAopProxy(value.getClass())) {
+            if (AopUtils.isJdkDynamicProxy(value)) {
+                result = getJdkDynamicProxyTargetObject(value);
+            } else {
+                result = getCglibProxyTargetObject(value);
+            }
+        }
+        if (Proxy.isProxyClass(result.getClass())) {
+            result = getTarget(result);
+        }
+        if (result.equals(value)) {
+            return value;
+        }
+        return getRealObj(result);
+    }
 
     /**
      * JDK动态代理方式被代理类的获取
@@ -69,5 +99,25 @@ public class ClassUtil {
         advised.setAccessible(Boolean.TRUE);
         Object target = ((AdvisedSupport) advised.get(dynamicAdvisedInterceptor)).getTargetSource().getTarget();
         return target;
+    }
+
+    /**
+     * 获取proxy真实对象
+     *
+     * @param proxy
+     *
+     * @return
+     *
+     * @throws Exception
+     */
+    private static Object getTarget(Object proxy) throws Exception {
+        Field field = proxy.getClass().getSuperclass().getDeclaredField("h");
+        field.setAccessible(true);
+        //获取指定对象中此字段的值
+        //获取Proxy对象中的此字段的值
+        Object o = field.get(proxy);
+        Field person = o.getClass().getDeclaredField("target");
+        person.setAccessible(true);
+        return person.get(o);
     }
 }

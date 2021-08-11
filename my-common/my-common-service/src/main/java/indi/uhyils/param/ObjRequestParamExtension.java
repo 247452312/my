@@ -59,18 +59,21 @@ public class ObjRequestParamExtension implements ParamTransExtension {
         if (CollectionUtils.isEmpty(methodNameMethod)) {
             return arg;
         }
-        method = methodNameMethod.get(0);
         boolean objRequestEquals = parameterType.equals(ObjRequest.class);
         boolean objsRequestEquals = parameterType.equals(ObjsRequest.class);
         if (objRequestEquals || objsRequestEquals) {
             String requestJson = JSON.toJSONString(arg);
-            Type[] genericInterfaces = method.getGenericParameterTypes();
-            Type genericSuperclass = genericInterfaces[0];
-            String className = genericSuperclass.getTypeName();
+            String className = realClass.getGenericSuperclass().getTypeName();
             if (className.contains(GENERIC_LEFT_BRACKET)) {
                 String substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
                 if (PARADIGM_STRING.equals(substring)) {
-                    Type genericInterface = interfaceClass.getGenericInterfaces()[0];
+                    Type genericInterface = null;
+                    try {
+                        genericInterface = ClassUtil.getRealObj(bean).getClass().getGenericInterfaces()[0];
+                    } catch (Exception e) {
+                        LogUtil.error(e);
+                        return arg;
+                    }
                     className = genericInterface.getTypeName();
                     substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
                 }
