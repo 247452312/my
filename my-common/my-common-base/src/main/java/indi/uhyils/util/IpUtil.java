@@ -14,11 +14,9 @@ import org.apache.commons.lang3.StringUtils;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 09时15分
  */
-public class IpUtil {
-
+public final class IpUtil {
 
     private static final String LEGAL_LOCAL_IP_PROPERTY = "java.net.preferIPv6Addresses";
-
 
     private static final String CLIENT_LOCAL_IP_PROPERTY = "indi.uhyils.rpc.ip";
 
@@ -27,6 +25,10 @@ public class IpUtil {
     private static final String CLIENT_LOCAL_PREFER_HOSTNAME_PROPERTY = "indi.uhyils.rpc.local.preferHostname";
 
     private static String localIp;
+
+    private IpUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static String getIp() {
         if (!StringUtils.isEmpty(localIp)) {
@@ -107,16 +109,17 @@ public class IpUtil {
      */
     public static String getServletIP(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        String unknown = "unknown";
+        if (ip == null || ip.length() == 0 || unknown.equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || unknown.equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || unknown.equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Real-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || unknown.equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
         return ip;

@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
  * @version 1.0
  * @date 文件创建日期 2021年06月12日 17时55分
  */
-public class MapUtil {
+public final class MapUtil {
 
     private MapUtil() {
     }

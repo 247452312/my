@@ -16,7 +16,11 @@ import org.springframework.util.StringUtils;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月22日 06时44分
  */
-public class PythonCellUtil {
+public final class PythonCellUtil {
+
+    private PythonCellUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 寻找python源文件在哪里

@@ -17,7 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月26日 11时04分
  */
-public class SSLClient extends DefaultHttpClient {
+public final class SSLClient extends DefaultHttpClient {
 
     public SSLClient() throws Exception {
         super();

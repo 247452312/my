@@ -2,13 +2,11 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.model.TraceDetailStatisticsView;
 import indi.uhyils.pojo.model.TraceInfoEntity;
-import indi.uhyils.pojo.request.GetDetailByHashAndLogTypeRequest;
 import indi.uhyils.pojo.request.GetLinkByTraceIdAndRpcIdRequest;
 import indi.uhyils.pojo.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.LongRequest;
-import indi.uhyils.pojo.response.GetDetailByHashAndLogTypeResponse;
 import indi.uhyils.pojo.response.GetLinkByTraceIdAndRpcIdResponse;
 import indi.uhyils.pojo.response.GetLogTypeResponse;
 import indi.uhyils.pojo.response.base.Page;
@@ -40,7 +38,6 @@ public interface TraceInfoService extends DefaultEntityService<TraceInfoEntity> 
      * @return
      */
     ServiceResult<ArrayList<TraceInfoEntity>> getLinkByTraceId(LongRequest request);
-
 
 
     /**

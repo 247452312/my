@@ -10,7 +10,11 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月24日 07时25分
  */
-public class DefaultRequestBuildUtil {
+public final class DefaultRequestBuildUtil {
+
+    private DefaultRequestBuildUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 获取管理员的默认请求, 内部用

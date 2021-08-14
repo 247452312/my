@@ -16,7 +16,11 @@ import org.slf4j.MarkerFactory;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月25日 08时43分
  */
-public class LogUtil {
+public final class LogUtil {
+
+    private LogUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 链路

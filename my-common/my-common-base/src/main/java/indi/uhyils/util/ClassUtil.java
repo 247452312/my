@@ -2,6 +2,7 @@ package indi.uhyils.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
+import java.util.Objects;
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.support.AopUtils;
@@ -10,7 +11,11 @@ import org.springframework.aop.support.AopUtils;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月23日 14时11分
  */
-public class ClassUtil {
+public final class ClassUtil {
+
+    private ClassUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 剥去springAop等代理类的外衣,获取真实的类的类型
@@ -28,10 +33,14 @@ public class ClassUtil {
         }
         Class<?> clazz = value.getClass();
         if (AopUtils.isAopProxy(value)) {
+            Object realObj;
             if (AopUtils.isJdkDynamicProxy(value)) {
-                clazz = getJdkDynamicProxyTargetObject(value).getClass();
+                realObj = getJdkDynamicProxyTargetObject(value);
             } else {
-                clazz = getCglibProxyTargetObject(value).getClass();
+                realObj = getCglibProxyTargetObject(value);
+            }
+            if (realObj != null) {
+                clazz = realObj.getClass();
             }
         }
         if (Proxy.isProxyClass(clazz)) {
@@ -63,10 +72,10 @@ public class ClassUtil {
                 result = getCglibProxyTargetObject(value);
             }
         }
-        if (Proxy.isProxyClass(result.getClass())) {
+        if (result != null && Proxy.isProxyClass(result.getClass())) {
             result = getTarget(result);
         }
-        if (result.equals(value)) {
+        if (Objects.equals(result, value)) {
             return value;
         }
         return getRealObj(result);
@@ -97,8 +106,7 @@ public class ClassUtil {
         Object dynamicAdvisedInterceptor = h.get(proxy);
         Field advised = dynamicAdvisedInterceptor.getClass().getDeclaredField("advised");
         advised.setAccessible(Boolean.TRUE);
-        Object target = ((AdvisedSupport) advised.get(dynamicAdvisedInterceptor)).getTargetSource().getTarget();
-        return target;
+        return ((AdvisedSupport) advised.get(dynamicAdvisedInterceptor)).getTargetSource().getTarget();
     }
 
     /**
@@ -110,7 +118,7 @@ public class ClassUtil {
      *
      * @throws Exception
      */
-    private static Object getTarget(Object proxy) throws Exception {
+    private static Object getTarget(Object proxy) throws NoSuchFieldException, IllegalAccessException {
         Field field = proxy.getClass().getSuperclass().getDeclaredField("h");
         field.setAccessible(true);
         //获取指定对象中此字段的值

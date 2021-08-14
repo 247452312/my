@@ -1,10 +1,8 @@
 package indi.uhyils.druid.config;
 
-import com.alibaba.druid.filter.FilterEventAdapter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import indi.uhyils.druid.filter.limit.LimitFilter;
 import javax.sql.DataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

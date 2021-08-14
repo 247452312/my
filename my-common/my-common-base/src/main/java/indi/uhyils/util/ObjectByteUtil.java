@@ -11,7 +11,11 @@ import java.io.ObjectOutputStream;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月28日 14时06分
  */
-public class ObjectByteUtil {
+public final class ObjectByteUtil {
+
+    private ObjectByteUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 对象转数组

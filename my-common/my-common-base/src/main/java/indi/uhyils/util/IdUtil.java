@@ -17,6 +17,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class IdUtil {
 
+    /**
+     * 序列号
+     */
+    private final AtomicLong sequence = new AtomicLong(0L);
+
     // todo 这个code在RPC初始化时需要从nacos中获取
     @Value("${id.organization.code:-1}")
     private Long code;
@@ -25,11 +30,6 @@ public class IdUtil {
      * 存储上一次生成的时间,保证系统时间不正确时不产生错误的id
      */
     private volatile Long lastTime = 0L;
-
-    /**
-     * 序列号
-     */
-    private volatile AtomicLong sequence = new AtomicLong(0L);
 
     public void setCode(Long code) {
         this.code = code;

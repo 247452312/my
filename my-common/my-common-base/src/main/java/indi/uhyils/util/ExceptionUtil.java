@@ -7,7 +7,11 @@ import java.util.Arrays;
  * @version 1.0
  * @date 文件创建日期 2021年08月11日 08时16分
  */
-public class ExceptionUtil {
+public final class ExceptionUtil {
+
+    private ExceptionUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 异常解析

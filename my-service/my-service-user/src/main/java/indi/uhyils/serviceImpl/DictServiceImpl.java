@@ -151,7 +151,7 @@ public class DictServiceImpl extends BaseDefaultServiceImpl<DictEntity> implemen
         arg.setSymbol("=");
         arg.setData(request.getDictId());
         args.add(arg);
-        if (paging) {
+        if (Boolean.TRUE.equals(paging)) {
             ArrayList<DictItemEntity> byArgs = dictItemDao.getByArgs(args, request.getPage(), request.getSize());
             int count = dictItemDao.countByArgs(request.getArgs());
             Page<DictItemEntity> build = Page.build(request, byArgs, count, (count / request.getSize()) + 1);

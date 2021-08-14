@@ -3,7 +3,6 @@ package indi.uhyils.log;
 import indi.uhyils.log.filter.controller.ControllerLogFilter;
 import indi.uhyils.log.filter.db.DbLogFilter;
 import indi.uhyils.log.filter.task.TaskLogAop;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

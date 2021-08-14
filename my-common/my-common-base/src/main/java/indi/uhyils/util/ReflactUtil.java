@@ -12,8 +12,11 @@ import java.lang.reflect.Type;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月27日 16时46分
  */
-public class ReflactUtil {
+public final class ReflactUtil {
 
+    private ReflactUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 获取实例中的某个属性的值

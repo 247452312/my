@@ -9,7 +9,11 @@ import java.security.NoSuchAlgorithmException;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月26日 14时46分
  */
-public class MD5Util {
+public final class MD5Util {
+
+    private MD5Util() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static final String MD5 = "MD5";
 

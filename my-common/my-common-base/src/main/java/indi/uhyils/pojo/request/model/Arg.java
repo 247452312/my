@@ -15,19 +15,19 @@ public class Arg implements Serializable {
     /**
      * 字段名称
      */
-    public String name;
+    private String name;
 
     /**
      * 符号
      */
-    public String symbol;
+    private String symbol;
 
     /**
      * 数据
      */
-    public Object data;
+    private Serializable data;
 
-    public Arg(String name, String symbol, Object data) {
+    public Arg(String name, String symbol, Serializable data) {
         this.name = name;
         this.symbol = symbol;
         this.data = data;
@@ -38,11 +38,11 @@ public class Arg implements Serializable {
 
     public static List<Arg> buildSingleArgs(String name, String symbol, String data) {
         List<Arg> list = new ArrayList<>();
-        Arg e = new Arg();
-        e.setName(name);
-        e.setSymbol(symbol);
-        e.setData(data);
-        list.add(e);
+        Arg arg = new Arg();
+        arg.setName(name);
+        arg.setSymbol(symbol);
+        arg.setData(data);
+        list.add(arg);
         return list;
     }
 
@@ -62,11 +62,11 @@ public class Arg implements Serializable {
         this.symbol = symbol;
     }
 
-    public Object getData() {
+    public Serializable getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(Serializable data) {
         this.data = data;
     }
 }

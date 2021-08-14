@@ -128,11 +128,11 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="deleteByDictId" resultType="java.lang.Integer">
+    <update id="deleteByDictId">
         update sys_dict_item
         set delete_flag = 1
         where dict_id = #{id}
-    </select>
+    </update>
 
 
     <select id="getByDictId" resultType="indi.uhyils.pojo.model.DictItemEntity">

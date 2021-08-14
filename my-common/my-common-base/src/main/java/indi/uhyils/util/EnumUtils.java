@@ -14,7 +14,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月13日 12时44分
  */
-public class EnumUtils {
+public final class EnumUtils {
 
 
     /**
@@ -22,8 +22,12 @@ public class EnumUtils {
      */
     private static final String GET_METHOD_PREFIX = "get";
 
-    public static ArrayList<Map<String, Object>> getEnumList(Class en) {
-        ArrayList<Map<String, Object>> result = new ArrayList<>();
+    private EnumUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static List<Map<String, Object>> getEnumList(Class en) {
+        List<Map<String, Object>> result = new ArrayList<>();
         Enum[] enumConstants = (Enum[]) en.getEnumConstants();
         Method[] methods = en.getMethods();
         List<Method> getMethods = new ArrayList<>();

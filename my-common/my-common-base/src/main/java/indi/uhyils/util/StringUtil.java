@@ -5,7 +5,11 @@ package indi.uhyils.util;
  * @version 1.0
  * @date 文件创建日期 2021年07月31日 21时33分
  */
-public class StringUtil {
+public final class StringUtil {
+
+    private StringUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 包含数量

@@ -25,7 +25,7 @@ public abstract class BaseDefaultServiceImpl<T extends BaseDoEntity> implements 
         List<Arg> args = argsRequest.getArgs();
         Boolean paging = argsRequest.getPaging();
         ArrayList<T> byArgs;
-        if (paging) {
+        if (Boolean.TRUE.equals(paging)) {
             byArgs = getDao().getByArgs(args, argsRequest.getPage(), argsRequest.getSize());
         } else {
             byArgs = getDao().getByArgsNoPage(args);
