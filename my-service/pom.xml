@@ -24,6 +24,7 @@
         <module>my-service-smart-home</module>
         <module>my-service-work-orders</module>
       <module>my-service-mq</module>
+        <module>my-service-all</module>
     </modules>
 
 

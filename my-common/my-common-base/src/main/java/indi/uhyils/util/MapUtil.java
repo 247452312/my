@@ -35,4 +35,13 @@ public final class MapUtil {
         return v;
     }
 
+    public static boolean isNotEmpty(Map map) {
+        if (map == null) {
+            return false;
+        }
+        if (map.size() == 0) {
+            return false;
+        }
+        return true;
+    }
 }
