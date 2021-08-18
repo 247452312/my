@@ -1,6 +1,7 @@
 package indi.uhyils.util;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Supplier;
 import org.springframework.lang.Nullable;
 
@@ -43,5 +44,22 @@ public final class MapUtil {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 批量插入,每个判断
+     *
+     * @param mainMap
+     * @param bePutMap
+     * @param <T>
+     */
+    public static <T> void putAllIfAbsent(Map<String, T> mainMap, Map<String, T> bePutMap) {
+        for (Entry<String, T> entry : bePutMap.entrySet()) {
+            String key = entry.getKey();
+            if (mainMap.containsKey(key)) {
+                continue;
+            }
+            mainMap.put(key, entry.getValue());
+        }
     }
 }

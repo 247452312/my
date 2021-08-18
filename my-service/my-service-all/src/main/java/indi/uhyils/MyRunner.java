@@ -3,6 +3,7 @@ package indi.uhyils;
 import indi.uhyils.load.MyClassLoader;
 import indi.uhyils.util.LogUtil;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -34,7 +35,7 @@ public class MyRunner {
      */
     private static final String APP_SOURCE = "webapp";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ClassLoader classLoader = MyRunner.class.getClassLoader();
         URL plugins = classLoader.getResource(APP_SOURCE);
 
@@ -46,7 +47,7 @@ public class MyRunner {
         for (File pluginDir : pluginsDirs) {
             String name = pluginDir.getName();
             File jarFile = Objects.requireNonNull(pluginDir.listFiles())[0];
-            MyClassLoader myClassLoader = MyClassLoader.newInstall(jarFile.getPath(), "indi.uhyils");
+            MyClassLoader myClassLoader = MyClassLoader.newInstall(jarFile.getPath());
             map.put(name, myClassLoader);
         }
         for (MyClassLoader value : map.values()) {

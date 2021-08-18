@@ -1,5 +1,6 @@
 package indi.uhyils.load;
 
+import indi.uhyils.load.model.LoadModel;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.MapUtil;
 import indi.uhyils.util.StringUtil;
@@ -16,7 +17,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 每一个应用的classLoader
@@ -36,6 +36,8 @@ public class MyClassLoader extends ClassLoader {
 
     private static final String CLASS_FILE = ".class";
 
+    private static final String JAR_FILE = ".jar";
+
     private final Map<String, byte[]> classCache;
 
     private final Map<String, byte[]> sourceCache;
@@ -46,46 +48,66 @@ public class MyClassLoader extends ClassLoader {
         this.sourceCache = sourceCache;
     }
 
-    public static MyClassLoader newInstall(String jarPath, String packagePrefix) {
-        if (StringUtils.isBlank(packagePrefix)) {
-            packagePrefix = SPOT;
-        }
-        packagePrefix = packagePrefix.replace(SPOT, SLASH);
+    public static MyClassLoader newInstall(String jarPath) throws IOException {
+        LoadModel loadModel = loadJar(jarPath);
+        return new MyClassLoader(loadModel.getClassCache(), loadModel.getSourceCache());
+    }
+
+    /**
+     * 加载jar包中的文件
+     *
+     * @param jarPath
+     *
+     * @return
+     *
+     * @throws IOException
+     */
+    public static LoadModel loadJar(String jarPath) throws IOException {
         try (JarFile jarFile = new JarFile(new File(jarPath))) {
             Enumeration<JarEntry> entries = jarFile.entries();
             Map<String, byte[]> classMap = new HashMap<>();
             Map<String, byte[]> sourceMap = new HashMap<>();
+            LoadModel build = LoadModel.build(classMap, sourceMap);
             while (entries.hasMoreElements()) {
                 JarEntry jarEntry = entries.nextElement();
                 String name = jarEntry.getName();
-                if (name.endsWith(CLASS_FILE) && name.contains(packagePrefix)) {
+                if (name.endsWith(CLASS_FILE)) {
                     if (classMap.containsKey(name)) {
                         continue;
                     }
-                    byte[] bytes;
-                    try (InputStream inputStream = jarFile.getInputStream(jarEntry)) {
-                        bytes = new byte[inputStream.available()];
-                        inputStream.read(bytes);
-                    }
-                    int i1 = name.lastIndexOf(CLASS_FILE);
-                    name = name.substring(0, i1);
-                    if (name.startsWith(JAR_PREFIX)) {
-                        name = name.substring(JAR_PREFIX.length());
-                    }
-                    name = name.replace(SLASH, SPOT);
-                    classMap.put(name, bytes);
-                } else if (!name.endsWith(SLASH)) {
-                    // TODO source还没有读取 先暂时写一个能跑起来 之后再重构
-
-
+                    fileCacheMap(jarFile, jarEntry, classMap, name, CLASS_FILE);
+                } else if (!name.endsWith(SLASH) && !name.endsWith(JAR_FILE)) {
+                    // 资源文件
+                    fileCacheMap(jarFile, jarEntry, sourceMap, name, JAR_FILE);
                 }
             }
-            return new MyClassLoader(classMap, sourceMap);
-        } catch (IOException e) {
-            LogUtil.error(e);
-        }
-        return null;
+            entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry jarEntry = entries.nextElement();
+                String name = jarEntry.getName();
+                if (name.endsWith(JAR_FILE)) {
+                    //jar 递归
+                    LoadModel loadModel = loadJar(jarPath + "!/" + name);
+                    build.putAllIfAbsent(loadModel);
+                }
 
+            }
+            return build;
+        }
+    }
+
+    private static void fileCacheMap(JarFile jarFile, JarEntry jarEntry, Map<String, byte[]> sourceMap, String name, String jarFile2) throws IOException {
+        byte[] bytes;
+        try (InputStream inputStream = jarFile.getInputStream(jarEntry)) {
+            bytes = new byte[inputStream.available()];
+            inputStream.read(bytes);
+        }
+        name = name.substring(0, name.lastIndexOf(jarFile2));
+        if (name.startsWith(JAR_PREFIX)) {
+            name = name.substring(JAR_PREFIX.length());
+        }
+        name = name.replace(SLASH, SPOT);
+        sourceMap.put(name, bytes);
     }
 
     @Override
