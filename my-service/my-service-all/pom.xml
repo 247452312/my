@@ -60,7 +60,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
                     </execution>
-                    <execution>
+                    <!--<execution>
                         <id>my-user</id>
                         <goals>
                             <goal>copy</goal>
@@ -109,7 +109,7 @@
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
-                    </execution>
+                    </execution>-->
                 </executions>
             </plugin>
         </plugins>

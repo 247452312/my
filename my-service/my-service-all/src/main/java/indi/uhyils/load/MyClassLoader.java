@@ -6,6 +6,9 @@ import indi.uhyils.util.StringUtil;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -35,8 +38,12 @@ public class MyClassLoader extends ClassLoader {
 
     private final Map<String, byte[]> classCache;
 
-    public MyClassLoader(Map<String, byte[]> classCache) {
+    private final Map<String, byte[]> sourceCache;
+
+
+    public MyClassLoader(Map<String, byte[]> classCache, Map<String, byte[]> sourceCache) {
         this.classCache = classCache;
+        this.sourceCache = sourceCache;
     }
 
     public static MyClassLoader newInstall(String jarPath, String packagePrefix) {
@@ -44,14 +51,17 @@ public class MyClassLoader extends ClassLoader {
             packagePrefix = SPOT;
         }
         packagePrefix = packagePrefix.replace(SPOT, SLASH);
-        File file = new File(jarPath);
-        try (JarFile jarFile = new JarFile(file)) {
+        try (JarFile jarFile = new JarFile(new File(jarPath))) {
             Enumeration<JarEntry> entries = jarFile.entries();
-            Map<String, byte[]> map = new HashMap<>();
+            Map<String, byte[]> classMap = new HashMap<>();
+            Map<String, byte[]> sourceMap = new HashMap<>();
             while (entries.hasMoreElements()) {
                 JarEntry jarEntry = entries.nextElement();
                 String name = jarEntry.getName();
                 if (name.endsWith(CLASS_FILE) && name.contains(packagePrefix)) {
+                    if (classMap.containsKey(name)) {
+                        continue;
+                    }
                     byte[] bytes;
                     try (InputStream inputStream = jarFile.getInputStream(jarEntry)) {
                         bytes = new byte[inputStream.available()];
@@ -63,12 +73,14 @@ public class MyClassLoader extends ClassLoader {
                         name = name.substring(JAR_PREFIX.length());
                     }
                     name = name.replace(SLASH, SPOT);
-                    map.put(name, bytes);
+                    classMap.put(name, bytes);
                 } else if (!name.endsWith(SLASH)) {
                     // TODO source还没有读取 先暂时写一个能跑起来 之后再重构
+
+
                 }
             }
-            return new MyClassLoader(map);
+            return new MyClassLoader(classMap, sourceMap);
         } catch (IOException e) {
             LogUtil.error(e);
         }
@@ -76,6 +88,15 @@ public class MyClassLoader extends ClassLoader {
 
     }
 
+    @Override
+    protected URL findResource(String name) {
+        try {
+            return new URI("").toURL();
+        } catch (MalformedURLException | URISyntaxException e) {
+            LogUtil.error(e);
+        }
+        return super.findResource(name);
+    }
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
