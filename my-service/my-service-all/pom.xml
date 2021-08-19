@@ -14,13 +14,15 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <tomcat.version>9.0.31</tomcat.version>
     </properties>
-    <!--<dependencies>
-        <dependency>
+    <dependencies>
+        <!--<dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-common-base</artifactId>
-        </dependency>
-    </dependencies>-->
+        </dependency>-->
+    </dependencies>
+
     <build>
         <finalName>my-service-all</finalName>
 
@@ -65,6 +67,7 @@
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${project.build.directory}/classes/webapp/my-web</outputDirectory>
                                     <excludes>
+
                                     </excludes>
                                 </artifactItem>
                             </artifactItems>
@@ -72,7 +75,7 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
                     </execution>
-                    <!--<execution>
+                    <execution>
                         <id>my-user</id>
                         <goals>
                             <goal>copy</goal>
@@ -84,13 +87,10 @@
                                     <groupId>indi.uhyils</groupId>
                                     <artifactId>my-service-user</artifactId>
                                     <version>0.3.0-my-SNAPSHOT</version>
-                                    <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>
                                         ${project.build.directory}/classes/webapp/my-user
                                     </outputDirectory>
-                                    <excludes>
-                                    </excludes>
                                 </artifactItem>
                             </artifactItems>
                             <overWriteReleases>false</overWriteReleases>
@@ -109,19 +109,16 @@
                                     <groupId>indi.uhyils</groupId>
                                     <artifactId>my-service-log</artifactId>
                                     <version>0.3.0-my-SNAPSHOT</version>
-                                    <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>
                                         ${project.build.directory}/classes/webapp/my-log
                                     </outputDirectory>
-                                    <excludes>
-                                    </excludes>
                                 </artifactItem>
                             </artifactItems>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
-                    </execution>-->
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

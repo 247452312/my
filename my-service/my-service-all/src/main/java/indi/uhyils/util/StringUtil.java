@@ -31,6 +31,10 @@ public final class StringUtil {
     }
 
     public static boolean isNotBlack(CharSequence cs) {
-        return cs != null && cs.length() != 0;
+        return !isBlack(cs);
+    }
+
+    public static boolean isBlack(CharSequence cs) {
+        return cs == null || cs.length() == 0;
     }
 }

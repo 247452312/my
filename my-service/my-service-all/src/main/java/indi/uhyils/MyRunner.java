@@ -1,11 +1,9 @@
 package indi.uhyils;
 
-import indi.uhyils.load.MyClassLoader;
 import indi.uhyils.load.MyUrlClassLoader;
+import indi.uhyils.runner.MyRunnable;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,11 +28,6 @@ public class MyRunner {
     private static final String THREAD_NAME = "sample";
 
     /**
-     * jar包的后缀
-     */
-    private static final String JAR_SUFFIX = ".jar";
-
-    /**
      * app包路径
      */
     private static final String APP_SOURCE = "webapp";
@@ -53,32 +46,13 @@ public class MyRunner {
         File[] pluginsDirs = pluginsFile.listFiles();
         Map<String, MyUrlClassLoader> map = new HashMap<>();
         for (File pluginDir : pluginsDirs) {
-            String name = pluginDir.getPath();
             File file = pluginDir.listFiles()[0];
             MyUrlClassLoader myClassLoader = new MyUrlClassLoader(new URL[]{file.toURI().toURL()});
             map.put(pluginDir.getName(), myClassLoader);
         }
 
         for (MyUrlClassLoader value : map.values()) {
-            executor.execute(() -> {
-                Class<?> myMainClass = null;
-                try {
-                    myMainClass = value.getMyMainClass();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                if (myMainClass == null) {
-                    return;
-                }
-                try {
-                    Method main = myMainClass.getDeclaredMethod("main", String[].class);
-                    main.setAccessible(true);
-                    Object[] obj = new Object[]{args};
-                    main.invoke(myMainClass, obj);
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            });
+            executor.execute(new MyRunnable(value, args));
         }
     }
 
@@ -90,5 +64,6 @@ public class MyRunner {
         public Thread newThread(Runnable r) {
             return new Thread(r, THREAD_NAME + atomicInteger.getAndAdd(1));
         }
+
     }
 }
