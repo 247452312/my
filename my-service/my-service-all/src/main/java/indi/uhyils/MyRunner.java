@@ -1,7 +1,7 @@
 package indi.uhyils;
 
 import indi.uhyils.load.MyClassLoader;
-import indi.uhyils.util.LogUtil;
+import indi.uhyils.load.MyUrlClassLoader;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -9,7 +9,6 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
@@ -31,32 +30,42 @@ public class MyRunner {
     private static final String THREAD_NAME = "sample";
 
     /**
+     * jar包的后缀
+     */
+    private static final String JAR_SUFFIX = ".jar";
+
+    /**
      * app包路径
      */
     private static final String APP_SOURCE = "webapp";
 
     public static void main(String[] args) throws IOException {
+        init(args);
+    }
+
+    private static void init(String[] args) throws IOException {
         ClassLoader classLoader = MyRunner.class.getClassLoader();
         URL plugins = classLoader.getResource(APP_SOURCE);
 
-        File file = new File(plugins.getPath());
+        File pluginsFile = new File(plugins.getPath());
         int process = Runtime.getRuntime().availableProcessors();
         Executor executor = new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory(), new CallerRunsPolicy());
-        File[] pluginsDirs = file.listFiles();
-        Map<String, MyClassLoader> map = new HashMap<>();
+        File[] pluginsDirs = pluginsFile.listFiles();
+        Map<String, MyUrlClassLoader> map = new HashMap<>();
         for (File pluginDir : pluginsDirs) {
-            String name = pluginDir.getName();
-            File jarFile = Objects.requireNonNull(pluginDir.listFiles())[0];
-            MyClassLoader myClassLoader = MyClassLoader.newInstall(jarFile.getPath());
-            map.put(name, myClassLoader);
+            String name = pluginDir.getPath();
+            File file = pluginDir.listFiles()[0];
+            MyUrlClassLoader myClassLoader = new MyUrlClassLoader(new URL[]{file.toURI().toURL()});
+            map.put(pluginDir.getName(), myClassLoader);
         }
-        for (MyClassLoader value : map.values()) {
+
+        for (MyUrlClassLoader value : map.values()) {
             executor.execute(() -> {
                 Class<?> myMainClass = null;
                 try {
                     myMainClass = value.getMyMainClass();
                 } catch (ClassNotFoundException e) {
-                    LogUtil.error(e);
+                    e.printStackTrace();
                 }
                 if (myMainClass == null) {
                     return;
@@ -67,11 +76,10 @@ public class MyRunner {
                     Object[] obj = new Object[]{args};
                     main.invoke(myMainClass, obj);
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    LogUtil.error(e);
+                    e.printStackTrace();
                 }
             });
         }
-
     }
 
     private static class LogDealThreadFactory implements ThreadFactory {

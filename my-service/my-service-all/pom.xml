@@ -15,12 +15,12 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
-    <dependencies>
+    <!--<dependencies>
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-common-base</artifactId>
         </dependency>
-    </dependencies>
+    </dependencies>-->
     <build>
         <finalName>my-service-all</finalName>
 
@@ -31,6 +31,19 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>indi.uhyils.MyRunner</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
@@ -49,7 +62,6 @@
                                     <groupId>indi.uhyils</groupId>
                                     <artifactId>my-web</artifactId>
                                     <version>0.3.0-my-SNAPSHOT</version>
-                                    <type>jar</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${project.build.directory}/classes/webapp/my-web</outputDirectory>
                                     <excludes>
