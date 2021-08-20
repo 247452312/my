@@ -3,7 +3,10 @@ package indi.uhyils.load;
 import indi.uhyils.util.StringUtil;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Map;
 
 
 /**
@@ -17,8 +20,15 @@ public class MyUrlClassLoader extends ShareClassLoader {
 
     private static final String MAIN_CLASS = "Main-Class";
 
-    public MyUrlClassLoader(URL[] urls) {
+    /**
+     * java字节码
+     */
+    private final Map<String, byte[]> classAsmCache;
+
+    public MyUrlClassLoader(URL[] urls, Map<String, byte[]> classAsmCache) {
         super(urls);
+        this.classAsmCache = classAsmCache;
+
     }
 
     public Class<?> getMyMainClass() throws ClassNotFoundException, IOException {
@@ -43,5 +53,33 @@ public class MyUrlClassLoader extends ShareClassLoader {
         mainClass = "org.springframework.boot.loader.JarLauncher";
         return findClass(mainClass);
     }
+
+    @Override
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
+        if (classAsmCache.containsKey(name)) {
+            byte[] bytes = classAsmCache.get(name);
+            return defineClass(name, bytes, 0, bytes.length);
+        }
+        return super.loadClass(name);
+    }
+
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        if (classAsmCache.containsKey(name)) {
+            try {
+                byte[] bytes = classAsmCache.get(name);
+                ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+                Method defineClass = null;
+                defineClass = ClassLoader.class.getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
+                defineClass.setAccessible(true);
+                return (Class<?>) defineClass.invoke(contextClassLoader, name, bytes, 0, bytes.length);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+        return super.findClass(name);
+
+    }
+
 
 }

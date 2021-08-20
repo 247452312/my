@@ -1,12 +1,13 @@
 package indi.uhyils;
 
+import indi.uhyils.asm.TomcatURLStreamHandlerFactoryDump;
 import indi.uhyils.load.MyUrlClassLoader;
 import indi.uhyils.runner.MyRunnable;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
@@ -32,22 +33,25 @@ public class MyRunner {
      */
     private static final String APP_SOURCE = "webapp";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         init(args);
     }
 
-    private static void init(String[] args) throws IOException {
+    private static void init(String[] args) throws Exception {
         ClassLoader classLoader = MyRunner.class.getClassLoader();
         URL plugins = classLoader.getResource(APP_SOURCE);
+
+        Map<String, byte[]> classAsmCache = new HashMap<>(1);
+        classAsmCache.put("org.apache.catalina.webresources.TomcatURLStreamHandlerFactory", TomcatURLStreamHandlerFactoryDump.dump());
 
         File pluginsFile = new File(plugins.getPath());
         int process = Runtime.getRuntime().availableProcessors();
         Executor executor = new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory(), new CallerRunsPolicy());
         File[] pluginsDirs = pluginsFile.listFiles();
-        Map<String, MyUrlClassLoader> map = new HashMap<>();
+        Map<String, MyUrlClassLoader> map = new HashMap<>(pluginsDirs.length);
         for (File pluginDir : pluginsDirs) {
-            File file = pluginDir.listFiles()[0];
-            MyUrlClassLoader myClassLoader = new MyUrlClassLoader(new URL[]{file.toURI().toURL()});
+            File file = Objects.requireNonNull(pluginDir.listFiles())[0];
+            MyUrlClassLoader myClassLoader = new MyUrlClassLoader(new URL[]{file.toURI().toURL()}, classAsmCache);
             map.put(pluginDir.getName(), myClassLoader);
         }
 

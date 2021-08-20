@@ -25,9 +25,9 @@ public class Arg implements Serializable {
     /**
      * 数据
      */
-    private Serializable data;
+    private Object data;
 
-    public Arg(String name, String symbol, Serializable data) {
+    public Arg(String name, String symbol, Object data) {
         this.name = name;
         this.symbol = symbol;
         this.data = data;
@@ -62,11 +62,11 @@ public class Arg implements Serializable {
         this.symbol = symbol;
     }
 
-    public Serializable getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(Serializable data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }

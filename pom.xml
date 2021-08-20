@@ -60,7 +60,7 @@
         <netty.version>4.1.54.Final</netty.version>
         <flink.version>1.13.1</flink.version>
         <my.rpc.version>1.0.3.my-SNAPSHOT</my.rpc.version>
-
+        <asm.version>9.2</asm.version>
     </properties>
 
     <dependencyManagement>
@@ -132,6 +132,13 @@
                 <groupId>com.alibaba.boot</groupId>
                 <artifactId>velocity-spring-boot-starter</artifactId>
                 <version>0.1.0</version>
+            </dependency>
+
+            <!--asm-->
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>${asm.version}</version>
             </dependency>
 
             <!-- es -->
