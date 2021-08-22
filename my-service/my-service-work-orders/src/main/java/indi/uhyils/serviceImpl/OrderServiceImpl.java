@@ -147,7 +147,7 @@ public class OrderServiceImpl implements OrderService {
         //获取基础节点对应的所有信息(属性,结果类型,路由) 并转换成实例信息插入实例表
         nodeList.forEach(node -> {
 
-            Boolean isStartNode = OrderNodeTypeEnum.START.getCode().equals(node.getType());
+            boolean isStartNode = OrderNodeTypeEnum.START.getCode().equals(node.getType());
 
             //转换节点本身
             OrderNodeEntity orderNodeEntity = OrderBuilder.transBaseNode2Node(node, infoId);

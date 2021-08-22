@@ -4,7 +4,7 @@ import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.Queue;
 import indi.uhyils.core.queue.QueueObserver;
 import indi.uhyils.core.register.Register;
-import indi.uhyils.util.CollectionUtils;
+import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.LogUtil;
 import java.util.Collection;
 import java.util.List;
@@ -49,7 +49,7 @@ public abstract class AbstractMessageDistributeRunnable extends Thread implement
             Message one;
             try {
                 // 过滤掉没有接受者的情况
-                if (CollectionUtils.isEmpty(consumer)) {
+                if (CollectionUtil.isEmpty(consumer)) {
                     Thread.sleep(1000);
                     continue;
                 }

@@ -61,6 +61,7 @@
         <flink.version>1.13.1</flink.version>
         <my.rpc.version>1.0.3.my-SNAPSHOT</my.rpc.version>
         <asm.version>9.2</asm.version>
+        <javaparser.version>3.22.1</javaparser.version>
     </properties>
 
     <dependencyManagement>
@@ -381,6 +382,14 @@
                 <artifactId>my-rpc-spring-start</artifactId>
                 <version>${my.rpc.version}</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.github.javaparser/javaparser-core -->
+            <dependency>
+                <groupId>com.github.javaparser</groupId>
+                <artifactId>javaparser-core</artifactId>
+                <version>${javaparser.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
