@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.DeviceEntity;
+import indi.uhyils.pojo.model.DeviceDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年08月29日 10时47分40秒
  */
 @Mapper
-public interface DeviceDao extends DefaultDao<DeviceEntity> {
+public interface DeviceDao extends DefaultDao<DeviceDO> {
 
 
 }

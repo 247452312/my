@@ -21,7 +21,7 @@
         a.url
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.MenuEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.MenuDO">
         select
         <include refid="columnList"/>
         from sys_menu a
@@ -29,7 +29,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.MenuEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.MenuDO">
         select
         <include refid="columnList"/>
         from sys_menu a
@@ -39,7 +39,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.MenuEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.MenuDO">
         select
         <include refid="columnList"/>
         from sys_menu a
@@ -54,7 +54,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.MenuEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.MenuDO">
         insert sys_menu(id,
         create_date,
         create_user,
@@ -78,7 +78,7 @@
         #{url})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.MenuEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.MenuDO">
         update sys_menu set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -132,7 +132,7 @@
         from sys_menu a
         where ${columnName} = #{value}
     </select>
-    <select id="getByIFrame" resultType="indi.uhyils.pojo.model.MenuEntity">
+    <select id="getByIFrame" resultType="indi.uhyils.pojo.model.MenuDO">
         select
         <include refid="columnList"/>
         from sys_menu a

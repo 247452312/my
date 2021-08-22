@@ -1,7 +1,7 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.DictEntity;
-import indi.uhyils.pojo.model.DictItemEntity;
+import indi.uhyils.pojo.model.DictDO;
+import indi.uhyils.pojo.model.DictItemDO;
 import indi.uhyils.pojo.request.GetByCodeRequest;
 import indi.uhyils.pojo.request.GetByItemArgsRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
@@ -11,7 +11,7 @@ import indi.uhyils.pojo.response.LastPlanResponse;
 import indi.uhyils.pojo.response.VersionInfoResponse;
 import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时25分
  */
-public interface DictService extends DefaultEntityService<DictEntity> {
+public interface DictService extends DefaultDOService<DictDO> {
 
     /**
      * 新建新的字典项
@@ -29,7 +29,7 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      *
      * @return
      */
-    ServiceResult<Boolean> insertItem(ObjRequest<DictItemEntity> request) throws Exception;
+    ServiceResult<Boolean> insertItem(ObjRequest<DictItemDO> request) throws Exception;
 
 
     /**
@@ -39,7 +39,7 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      *
      * @return 字典项
      */
-    ServiceResult<ArrayList<DictItemEntity>> getItemByDictId(IdRequest request);
+    ServiceResult<ArrayList<DictItemDO>> getItemByDictId(IdRequest request);
 
     /**
      * 修改字典项
@@ -48,7 +48,7 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      *
      * @return 修改是否成功
      */
-    ServiceResult<Boolean> updateItem(ObjRequest<DictItemEntity> request);
+    ServiceResult<Boolean> updateItem(ObjRequest<DictItemDO> request);
 
     /**
      * 删除字典项
@@ -77,7 +77,7 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      *
      * @return 字典项
      */
-    ServiceResult<DictItemEntity> getItemById(IdRequest request);
+    ServiceResult<DictItemDO> getItemById(IdRequest request);
 
     /**
      * 根据某几列获取item数据
@@ -86,7 +86,7 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      *
      * @return 分页数据(也可以设置不分页)
      */
-    ServiceResult<Page<DictItemEntity>> getByItemArgs(GetByItemArgsRequest request);
+    ServiceResult<Page<DictItemDO>> getByItemArgs(GetByItemArgsRequest request);
 
 
     /**
@@ -126,5 +126,5 @@ public interface DictService extends DefaultEntityService<DictEntity> {
      *
      * @return code对应的字典对应的所有项
      */
-    ServiceResult<ArrayList<DictItemEntity>> getByCode(GetByCodeRequest request);
+    ServiceResult<ArrayList<DictItemDO>> getByCode(GetByCodeRequest request);
 }

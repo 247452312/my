@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.pojo.model.OrderNodeFieldEntity;
+import indi.uhyils.pojo.model.OrderNodeFieldDO;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class InitOrderResponse implements Serializable {
     /**
      * 工单初始节点需要填写的属性
      */
-    private List<OrderNodeFieldEntity> orderNodeField;
+    private List<OrderNodeFieldDO> orderNodeField;
 
     /**
      * 新生成的工单的id
@@ -43,7 +43,7 @@ public class InitOrderResponse implements Serializable {
     public InitOrderResponse() {
     }
 
-    public InitOrderResponse(Long newOrderId, List<OrderNodeFieldEntity> orderNodeField, Long monitorUserId, Map<Long, Long> dealUserIds, Map<Long, Long> noticeUserIds) {
+    public InitOrderResponse(Long newOrderId, List<OrderNodeFieldDO> orderNodeField, Long monitorUserId, Map<Long, Long> dealUserIds, Map<Long, Long> noticeUserIds) {
         this.newOrderId = newOrderId;
         this.orderNodeField = orderNodeField;
         this.monitorUserId = monitorUserId;
@@ -51,7 +51,7 @@ public class InitOrderResponse implements Serializable {
         this.noticeUserIds = noticeUserIds;
     }
 
-    public static InitOrderResponse build(Long newOrderId, List<OrderNodeFieldEntity> orderNodeField, Long monitorUserId, Map<Long, Long> dealUserIds, Map<Long, Long> noticeUserIds) {
+    public static InitOrderResponse build(Long newOrderId, List<OrderNodeFieldDO> orderNodeField, Long monitorUserId, Map<Long, Long> dealUserIds, Map<Long, Long> noticeUserIds) {
         InitOrderResponse build = new InitOrderResponse();
         build.setNewOrderId(newOrderId);
         build.setOrderNodeField(orderNodeField);
@@ -62,11 +62,11 @@ public class InitOrderResponse implements Serializable {
 
     }
 
-    public List<OrderNodeFieldEntity> getOrderNodeField() {
+    public List<OrderNodeFieldDO> getOrderNodeField() {
         return orderNodeField;
     }
 
-    public void setOrderNodeField(List<OrderNodeFieldEntity> orderNodeField) {
+    public void setOrderNodeField(List<OrderNodeFieldDO> orderNodeField) {
         this.orderNodeField = orderNodeField;
     }
 

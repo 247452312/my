@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.DictEntity;
+import indi.uhyils.pojo.model.DictDO;
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface DictDao extends DefaultDao<DictEntity> {
+public interface DictDao extends DefaultDao<DictDO> {
 
 
     /**

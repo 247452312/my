@@ -8,11 +8,11 @@ import indi.uhyils.dao.ApiSubscribeDao;
 import indi.uhyils.enum_.PushTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.model.ApiEntity;
-import indi.uhyils.pojo.model.ApiGroupEntity;
-import indi.uhyils.pojo.model.ApiSubscribeEntity;
-import indi.uhyils.pojo.model.UserEntity;
-import indi.uhyils.pojo.model.base.BaseIdEntity;
+import indi.uhyils.pojo.model.ApiDO;
+import indi.uhyils.pojo.model.ApiGroupDO;
+import indi.uhyils.pojo.model.ApiSubscribeDO;
+import indi.uhyils.pojo.model.UserDO;
+import indi.uhyils.pojo.model.base.BaseIdDO;
 import indi.uhyils.pojo.request.CronRequest;
 import indi.uhyils.pojo.request.PushMsgToSomeoneRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
@@ -54,22 +54,22 @@ public class PushServiceImpl implements PushService {
         String cron = request.getCron();
         LogUtil.info(this, "定时推送任务启动: " + cron);
         /* 获取api群 */
-        List<ApiGroupEntity> apiGroups = apiGroupDao.getAll();
-        List<ApiEntity> apis = apiDao.getAll();
-        HashMap<String, ApiGroupEntity> apiMaps = new HashMap<>(apiGroups.size());
-        Map<Long, ApiGroupEntity> collect = apiGroups.stream().collect(Collectors.toMap(BaseIdEntity::getId, value -> value));
-        for (ApiEntity api : apis) {
+        List<ApiGroupDO> apiGroups = apiGroupDao.getAll();
+        List<ApiDO> apis = apiDao.getAll();
+        HashMap<String, ApiGroupDO> apiMaps = new HashMap<>(apiGroups.size());
+        Map<Long, ApiGroupDO> collect = apiGroups.stream().collect(Collectors.toMap(BaseIdDO::getId, value -> value));
+        for (ApiDO api : apis) {
             if (collect.containsKey(api.getApiGroupId())) {
                 apiMaps.get(api.getApiGroupId()).getApis().add(api);
             }
         }
 
         /* 获取订阅 */
-        List<ApiSubscribeEntity> list = apiSubscribeDao.getByCron(cron);
-        for (ApiSubscribeEntity apiSubscribeEntity : list) {
+        List<ApiSubscribeDO> list = apiSubscribeDao.getByCron(cron);
+        for (ApiSubscribeDO apiSubscribeEntity : list) {
             Long apiGroupId = apiSubscribeEntity.getApiGroupId();
             // 获取对应的api,如果没有,则跳过(可能api下线了)
-            ApiGroupEntity apiGroupEntity = apiMaps.get(apiGroupId);
+            ApiGroupDO apiGroupEntity = apiMaps.get(apiGroupId);
             if (apiGroupEntity == null || apiGroupEntity.getApis().size() == 0) {
                 continue;
             }
@@ -83,7 +83,7 @@ public class PushServiceImpl implements PushService {
             }
             Serializable data = serviceResult.getData();
             JSONObject jsonObject = (JSONObject) data;
-            UserEntity userEntity = jsonObject.toJavaObject(UserEntity.class);
+            UserDO userEntity = jsonObject.toJavaObject(UserDO.class);
             String sendContent = PushUtils.getSendContent(userEntity, apiGroupEntity);
             switch (Objects.requireNonNull(PushTypeEnum.prase(apiSubscribeEntity.getType()))) {
                 case PAGE:
@@ -107,7 +107,7 @@ public class PushServiceImpl implements PushService {
             return serviceResult;
         }
         JSONObject jsonObject = (JSONObject) serviceResult.getData();
-        UserEntity userEntity = jsonObject.toJavaObject(UserEntity.class);
+        UserDO userEntity = jsonObject.toJavaObject(UserDO.class);
         boolean result = Boolean.TRUE;
         switch (Objects.requireNonNull(PushTypeEnum.prase(request.getType()))) {
             case PAGE:

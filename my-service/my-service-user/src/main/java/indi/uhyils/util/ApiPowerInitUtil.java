@@ -1,6 +1,6 @@
 package indi.uhyils.util;
 
-import indi.uhyils.pojo.model.PowerSimpleEntity;
+import indi.uhyils.pojo.model.PowerSimpleDO;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,13 +28,13 @@ public class ApiPowerInitUtil {
      * @return
      * @throws IOException
      */
-    public static List<PowerSimpleEntity> getPowersSingle() throws IOException {
+    public static List<PowerSimpleDO> getPowersSingle() throws IOException {
         String basePath = new File("").getCanonicalPath();
         basePath += "\\my-api\\";
         File file = new File(basePath);
         File[] files = file.listFiles();
 
-        List<PowerSimpleEntity> list = new ArrayList<>();
+        List<PowerSimpleDO> list = new ArrayList<>();
         assert files != null;
         // 遍历每个微服务的api包
         Arrays.stream(files).forEach(t -> {
@@ -60,7 +60,7 @@ public class ApiPowerInitUtil {
                             //父类全部方法名称
                             List<String> fatherMethodsName = Arrays.stream(aClass.getDeclaredMethods()).map(Method::getName).collect(Collectors.toList());
                             methodsName.addAll(fatherMethodsName);
-                            list.addAll(methodsName.stream().map(v -> PowerSimpleEntity.build(interfaceName, v)).collect(Collectors.toList()));
+                            list.addAll(methodsName.stream().map(v -> PowerSimpleDO.build(interfaceName, v)).collect(Collectors.toList()));
 
                         } catch (IOException | ClassNotFoundException e) {
                             LogUtil.error(ApiPowerInitUtil.class, e);

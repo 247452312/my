@@ -2,7 +2,7 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.*;
 import indi.uhyils.pojo.model.*;
-import indi.uhyils.pojo.model.base.BaseIdEntity;
+import indi.uhyils.pojo.model.base.BaseIdDO;
 import indi.uhyils.pojo.request.GetAllOrderRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @RpcService
-public class OrderInfoServiceImpl extends BaseDefaultServiceImpl<OrderInfoEntity> implements OrderInfoService {
+public class OrderInfoServiceImpl extends BaseDefaultServiceImpl<OrderInfoDO> implements OrderInfoService {
 
     @Resource
     private OrderInfoDao dao;
@@ -58,32 +58,32 @@ public class OrderInfoServiceImpl extends BaseDefaultServiceImpl<OrderInfoEntity
     }
 
     @Override
-    public ServiceResult<ArrayList<OrderInfoEntity>> getAllOrder(GetAllOrderRequest request) {
-        ArrayList<OrderInfoEntity> result = dao.getOrderByType(request.getType());
+    public ServiceResult<ArrayList<OrderInfoDO>> getAllOrder(GetAllOrderRequest request) {
+        ArrayList<OrderInfoDO> result = dao.getOrderByType(request.getType());
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<GetOneOrderResponse> getOneOrder(IdRequest request) {
         Long id = request.getId();
-        OrderInfoEntity byId = dao.getById(id);
-        List<OrderNodeEntity> orderNodes = orderNodeDao.getByOrderId(id);
-        List<Long> orderNodeIds = orderNodes.stream().map(BaseIdEntity::getId).collect(Collectors.toList());
-        List<OrderNodeFieldEntity> orderFields = orderNodeFieldDao.getByOrderNodeIds(orderNodeIds);
-        Map<Long, List<OrderNodeFieldEntity>> orderFieldMap = orderFields.stream().collect(Collectors.groupingBy(OrderNodeFieldEntity::getBaseOrderNodeId));
-        Map<Long, List<OrderNodeResultTypeEntity>> orderNodeResultTypeMap = orderNodeResultTypeDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderNodeResultTypeEntity::getBaseNodeId));
-        Map<Long, List<OrderNodeRouteEntity>> orderNodeRouteMap = orderNodeRouteDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderNodeRouteEntity::getPrevNodeId));
+        OrderInfoDO byId = dao.getById(id);
+        List<OrderNodeDO> orderNodes = orderNodeDao.getByOrderId(id);
+        List<Long> orderNodeIds = orderNodes.stream().map(BaseIdDO::getId).collect(Collectors.toList());
+        List<OrderNodeFieldDO> orderFields = orderNodeFieldDao.getByOrderNodeIds(orderNodeIds);
+        Map<Long, List<OrderNodeFieldDO>> orderFieldMap = orderFields.stream().collect(Collectors.groupingBy(OrderNodeFieldDO::getBaseOrderNodeId));
+        Map<Long, List<OrderNodeResultTypeDO>> orderNodeResultTypeMap = orderNodeResultTypeDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderNodeResultTypeDO::getBaseNodeId));
+        Map<Long, List<OrderNodeRouteDO>> orderNodeRouteMap = orderNodeRouteDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderNodeRouteDO::getPrevNodeId));
 
-        List<Long> orderNodeFieldIds = orderFields.stream().map(BaseIdEntity::getId).collect(Collectors.toList());
-        List<OrderNodeFieldValueEntity> orderNodeFieldValueEntities = orderNodeFieldValueDao.getByOrderFieldIds(orderNodeFieldIds);
-        Map<Long, OrderNodeFieldValueEntity> orderFieldOrderFieldValueMap = orderNodeFieldValueEntities.stream().collect(Collectors.toMap(t -> t.getNodeFieldId(), t -> t));
+        List<Long> orderNodeFieldIds = orderFields.stream().map(BaseIdDO::getId).collect(Collectors.toList());
+        List<OrderNodeFieldValueDO> orderNodeFieldValueEntities = orderNodeFieldValueDao.getByOrderFieldIds(orderNodeFieldIds);
+        Map<Long, OrderNodeFieldValueDO> orderFieldOrderFieldValueMap = orderNodeFieldValueEntities.stream().collect(Collectors.toMap(t -> t.getNodeFieldId(), t -> t));
         ArrayList<OrderNodeAboutResponse> orderNodeList = new ArrayList<>();
-        for (OrderNodeEntity orderNode : orderNodes) {
+        for (OrderNodeDO orderNode : orderNodes) {
             Long nodeId = orderNode.getId();
 
-            List<OrderNodeFieldEntity> orderNodeFields = orderFieldMap.get(nodeId);
-            List<OrderNodeFieldValueEntity> orderNodeFieldValues = new ArrayList<>();
-            for (OrderNodeFieldEntity orderNodeField : orderNodeFields) {
+            List<OrderNodeFieldDO> orderNodeFields = orderFieldMap.get(nodeId);
+            List<OrderNodeFieldValueDO> orderNodeFieldValues = new ArrayList<>();
+            for (OrderNodeFieldDO orderNodeField : orderNodeFields) {
                 Long orderNodeFieldId = orderNodeField.getId();
                 orderNodeFieldValues.add(orderFieldOrderFieldValueMap.get(orderNodeFieldId));
 

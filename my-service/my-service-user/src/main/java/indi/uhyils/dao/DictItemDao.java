@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.DictItemEntity;
+import indi.uhyils.pojo.model.DictItemDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface DictItemDao extends DefaultDao<DictItemEntity> {
+public interface DictItemDao extends DefaultDao<DictItemDO> {
 
     /**
      * 删除字典表指定字段对应的字典项
@@ -28,7 +28,7 @@ public interface DictItemDao extends DefaultDao<DictItemEntity> {
      * @param id 字典id
      * @return 某个字典的所有字典项
      */
-    ArrayList<DictItemEntity> getByDictId(Long id);
+    ArrayList<DictItemDO> getByDictId(Long id);
 
     /**
      * 根据字典code获取字典项
@@ -36,5 +36,5 @@ public interface DictItemDao extends DefaultDao<DictItemEntity> {
      * @param code 字典code
      * @return 字典项
      */
-    ArrayList<DictItemEntity> getByCode(String code);
+    ArrayList<DictItemDO> getByCode(String code);
 }

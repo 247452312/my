@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.DeptEntity;
+import indi.uhyils.pojo.model.DeptDO;
 import indi.uhyils.pojo.model.DeptMenuMiddle;
 import indi.uhyils.pojo.model.DeptPowerMiddle;
 import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
@@ -16,7 +16,7 @@ import java.util.List;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface DeptDao extends DefaultDao<DeptEntity> {
+public interface DeptDao extends DefaultDao<DeptDO> {
 
     /**
      * 插入权限集与权限的关联关系
@@ -55,7 +55,7 @@ public interface DeptDao extends DefaultDao<DeptEntity> {
      *
      * @return 全部权限集
      */
-    ArrayList<DeptEntity> getAll();
+    ArrayList<DeptDO> getAll();
 
     /**
      * 根据权限集id删除所有权限集-菜单中间表

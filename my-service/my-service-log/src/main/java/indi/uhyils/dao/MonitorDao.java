@@ -2,7 +2,7 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
-import indi.uhyils.pojo.model.LogMonitorEntity;
+import indi.uhyils.pojo.model.LogMonitorDO;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
  * @date 文件创建日期 2020年06月19日 14时55分
  */
 @Mapper
-public interface MonitorDao extends DefaultDao<LogMonitorEntity> {
+public interface MonitorDao extends DefaultDao<LogMonitorDO> {
 
     /**
      * 修改结束时间
@@ -40,7 +40,7 @@ public interface MonitorDao extends DefaultDao<LogMonitorEntity> {
      *
      * @return 现在正在运行中的服务数量
      */
-    List<LogMonitorEntity> getOnlineService(long time);
+    List<LogMonitorDO> getOnlineService(long time);
 
     /**
      * 查询监控主表是否重复

@@ -2,8 +2,8 @@ package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.CodeEnum;
-import indi.uhyils.pojo.model.ApiEntity;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.ApiDO;
+import indi.uhyils.pojo.model.UserDO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
@@ -30,7 +30,7 @@ public class ApiUtils {
      * @param apis 已经排好序的api们
      * @return 结果
      */
-    public static String callApi(List<ApiEntity> apis, UserEntity userEntity, HashMap<String, String> parameter) {
+    public static String callApi(List<ApiDO> apis, UserDO userEntity, HashMap<String, String> parameter) {
         // 初始化调用群期间可传递的参数
         parameter.put("${username}", userEntity.getUserName());
         parameter.put("${nickName}", userEntity.getNickName());
@@ -39,7 +39,7 @@ public class ApiUtils {
         String result = null;
         int apiIndex = 0;
         // 遍历api群中的每一个api(已经排好序)
-        for (ApiEntity api : apis) {
+        for (ApiDO api : apis) {
             String head = api.getHead();
             String param = api.getParam();
             // 初始化head
@@ -98,7 +98,7 @@ public class ApiUtils {
      * @param paramByte 参数byte
      * @return 此次http结果
      */
-    private static String getHttpResultString(HashMap<String, String> map, String result, int apiIndex, ApiEntity api, String param, HashMap<String, String> httpHead, byte[] paramByte) {
+    private static String getHttpResultString(HashMap<String, String> map, String result, int apiIndex, ApiDO api, String param, HashMap<String, String> httpHead, byte[] paramByte) {
         HttpURLConnection con = null;
         BufferedReader read = null;
         OutputStream outputStream = null;
@@ -184,7 +184,7 @@ public class ApiUtils {
         return result;
     }
 
-    private static void setHttpHead(ApiEntity api, HashMap<String, String> httpHead, HttpURLConnection con) {
+    private static void setHttpHead(ApiDO api, HashMap<String, String> httpHead, HttpURLConnection con) {
         // 设置请求头
         LogUtil.info(ApiUtils.class, "发送http请求: " + api.getUrl());
         LogUtil.info(ApiUtils.class, "请求头开始: ");

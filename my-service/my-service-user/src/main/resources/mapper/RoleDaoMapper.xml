@@ -14,7 +14,7 @@
         a.level
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.RoleEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.RoleDO">
         select
         <include refid="columnList"/>
         from sys_role a
@@ -22,7 +22,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.RoleEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.RoleDO">
         select
         <include refid="columnList"/>
         from sys_role a
@@ -32,7 +32,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.RoleEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.RoleDO">
         select
         <include refid="columnList"/>
         from sys_role a
@@ -47,7 +47,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.RoleEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.RoleDO">
         insert sys_role(id,
         create_date,
         create_user,
@@ -66,7 +66,7 @@
         #{level})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.RoleEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.RoleDO">
         update sys_role set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -115,7 +115,7 @@
         </foreach>
     </delete>
 
-    <select id="getAll" resultType="indi.uhyils.pojo.model.RoleEntity">
+    <select id="getAll" resultType="indi.uhyils.pojo.model.RoleDO">
         select
         <include refid="columnList"/>
         from sys_role a

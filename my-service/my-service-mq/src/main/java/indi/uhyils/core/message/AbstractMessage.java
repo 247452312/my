@@ -1,9 +1,7 @@
 package indi.uhyils.core.message;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.util.IdUtil;
-import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 
 /**
@@ -33,11 +31,8 @@ public abstract class AbstractMessage implements Message {
     protected AbstractMessage(JSONObject data, String topic) {
         this.data = data;
         this.topic = topic;
-        try {
-            initSequence();
-        } catch (IdGenerationException e) {
-            LogUtil.error(this, e);
-        }
+        initSequence();
+
     }
 
     @Override
@@ -59,7 +54,7 @@ public abstract class AbstractMessage implements Message {
         return sequence;
     }
 
-    private void initSequence() throws IdGenerationException {
+    private void initSequence() {
         this.sequence = SpringUtil.getBean(IdUtil.class).newId();
     }
 

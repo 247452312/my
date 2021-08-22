@@ -6,10 +6,10 @@ import indi.uhyils.content.Content;
 import indi.uhyils.dao.UserDao;
 import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.model.DeptEntity;
-import indi.uhyils.pojo.model.PowerEntity;
-import indi.uhyils.pojo.model.RoleEntity;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.DeptDO;
+import indi.uhyils.pojo.model.PowerDO;
+import indi.uhyils.pojo.model.RoleDO;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.request.LoginRequest;
 import indi.uhyils.pojo.request.UpdatePasswordRequest;
@@ -40,7 +40,7 @@ import org.springframework.beans.factory.annotation.Value;
  */
 @RpcService
 @ReadWriteMark(tables = {"sys_user"})
-public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implements UserService {
+public class UserServiceImpl extends BaseDefaultServiceImpl<UserDO> implements UserService {
 
 
     @Autowired
@@ -59,14 +59,14 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     @Override
     @NoToken
     @ReadWriteMark(tables = {"sys_user", "sys_role", "sys_dept", "sys_role_dept", "sys_power", "sys_dept_power"})
-    public ServiceResult<UserEntity> getUserById(IdRequest idRequest) {
+    public ServiceResult<UserDO> getUserById(IdRequest idRequest) {
 
         //缓存
-        UserEntity user = redisPoolHandle.getUser(idRequest.getToken());
+        UserDO user = redisPoolHandle.getUser(idRequest.getToken());
         if (user != null) {
             return ServiceResult.buildSuccessResult("查询成功", user);
         }
-        UserEntity userEntity = dao.getById(idRequest.getId());
+        UserDO userEntity = dao.getById(idRequest.getId());
         if (userEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null);
         }
@@ -75,15 +75,15 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
 
     }
 
-    private void initRole(UserEntity userEntity) {
+    private void initRole(UserDO userEntity) {
         // 获取权限
-        RoleEntity roleEntity = dao.getUserRoleById(userEntity.getRoleId());
+        RoleDO roleEntity = dao.getUserRoleById(userEntity.getRoleId());
         /* 注入dept*/
-        List<DeptEntity> deptEntities = dao.getUserDeptsByRoleId(roleEntity.getId());
+        List<DeptDO> deptEntities = dao.getUserDeptsByRoleId(roleEntity.getId());
         roleEntity.setDepts(deptEntities);
         /* 注入power */
-        for (DeptEntity deptEntity : deptEntities) {
-            List<PowerEntity> powerEntities = dao.getUserPowerByDeptId(deptEntity.getId());
+        for (DeptDO deptEntity : deptEntities) {
+            List<PowerDO> powerEntities = dao.getUserPowerByDeptId(deptEntity.getId());
             deptEntity.setPowers(powerEntities);
         }
         userEntity.setRole(roleEntity);
@@ -99,8 +99,8 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
     @Override
-    public ServiceResult<Integer> insert(ObjRequest<UserEntity> insert) throws Exception {
-        UserEntity data = insert.getData();
+    public ServiceResult<Integer> insert(ObjRequest<UserDO> insert) throws Exception {
+        UserDO data = insert.getData();
         data.preInsert(insert);
         data.setPassword(MD5Util.MD5Encode(data.getPassword()));
         return ServiceResult.buildSuccessResult("插入成功", dao.insert(data));
@@ -160,11 +160,11 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
         ArrayList<Arg> objects = new ArrayList<>();
         objects.add(new Arg("username", "=", userRequest.getUsername()));
         objects.add(new Arg("password", "=", MD5Util.MD5Encode(userRequest.getPassword())));
-        ArrayList<UserEntity> byArgsNoPage = dao.getByArgsNoPage(objects);
+        ArrayList<UserDO> byArgsNoPage = dao.getByArgsNoPage(objects);
         if (byArgsNoPage.size() != 1) {
             return ServiceResult.buildFailedResult("登录失败,用户名或密码不正确", LoginResponse.buildLoginFail());
         }
-        UserEntity userEntity = byArgsNoPage.get(0);
+        UserDO userEntity = byArgsNoPage.get(0);
 
         //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
         Boolean haveUserId = redisPoolHandle.haveUserId(userEntity.getId());
@@ -191,18 +191,18 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     }
 
     @Override
-    public ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request) {
-        ArrayList<UserEntity> all = dao.getAll();
+    public ServiceResult<ArrayList<UserDO>> getUsers(DefaultRequest request) {
+        ArrayList<UserDO> all = dao.getAll();
         all.forEach(t -> {
             Long roleId = t.getRoleId();
-            RoleEntity userRoleById = dao.getUserRoleById(roleId);
+            RoleDO userRoleById = dao.getUserRoleById(roleId);
             t.setRole(userRoleById);
         });
         return ServiceResult.buildSuccessResult("查询成功", all);
     }
 
     @Override
-    public ServiceResult<UserEntity> getUserByToken(DefaultRequest request) {
+    public ServiceResult<UserDO> getUserByToken(DefaultRequest request) {
         return ServiceResult.buildSuccessResult("查询成功", request.getUser());
     }
 
@@ -210,14 +210,14 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserEntity> implemen
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<String> updatePassword(UpdatePasswordRequest request) {
         String oldPassword = request.getOldPassword();
-        UserEntity user = request.getUser();
+        UserDO user = request.getUser();
         Long userId = user.getId();
         Integer passwordIsTrue = dao.checkUserPassword(userId, MD5Util.MD5Encode(oldPassword));
         // 不为1 说明不正确
         if (passwordIsTrue != 1) {
             return ServiceResult.buildFailedResult("密码不正确", "密码不正确");
         }
-        UserEntity byId = dao.getById(userId);
+        UserDO byId = dao.getById(userId);
         byId.setPassword(request.getNewPassword());
         byId.preUpdate(request);
         dao.update(byId);

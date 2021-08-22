@@ -2,7 +2,7 @@ package indi.uhyils.util;
 
 import indi.uhyils.job.ExecutionJob;
 import indi.uhyils.job.JobConfig;
-import indi.uhyils.pojo.model.JobEntity;
+import indi.uhyils.pojo.model.JobDO;
 import org.quartz.*;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ public class ScheduledManager {
     @Resource
     private Scheduler scheduler;
 
-    public boolean addJob(JobEntity jobEntity) {
+    public boolean addJob(JobDO jobEntity) {
         try {
             // 构建job信息
             JobDetail jobDetail = JobBuilder.newJob(ExecutionJob.class).
@@ -62,7 +62,7 @@ public class ScheduledManager {
      *
      * @param quartzJob /
      */
-    public boolean updateJobCron(JobEntity quartzJob) {
+    public boolean updateJobCron(JobDO quartzJob) {
         try {
             TriggerKey triggerKey = TriggerKey.triggerKey(JobConfig.JOB_NAME + quartzJob.getId());
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
@@ -95,7 +95,7 @@ public class ScheduledManager {
      *
      * @param quartzJob /
      */
-    public boolean deleteJob(JobEntity quartzJob) {
+    public boolean deleteJob(JobDO quartzJob) {
         try {
             JobKey jobKey = JobKey.jobKey(JobConfig.JOB_NAME + quartzJob.getId());
             scheduler.pauseJob(jobKey);
@@ -112,7 +112,7 @@ public class ScheduledManager {
      *
      * @param quartzJob /
      */
-    public boolean resumeJob(JobEntity quartzJob) {
+    public boolean resumeJob(JobDO quartzJob) {
         try {
             TriggerKey triggerKey = TriggerKey.triggerKey(JobConfig.JOB_NAME + quartzJob.getId());
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
@@ -134,7 +134,7 @@ public class ScheduledManager {
      *
      * @param quartzJob /
      */
-    public boolean runJobNow(JobEntity quartzJob) {
+    public boolean runJobNow(JobDO quartzJob) {
         try {
             TriggerKey triggerKey = TriggerKey.triggerKey(JobConfig.JOB_NAME + quartzJob.getId());
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
@@ -158,7 +158,7 @@ public class ScheduledManager {
      *
      * @param quartzJob /
      */
-    public boolean pauseJob(JobEntity quartzJob) {
+    public boolean pauseJob(JobDO quartzJob) {
         try {
             JobKey jobKey = JobKey.jobKey(JobConfig.JOB_NAME + quartzJob.getId());
             scheduler.pauseJob(jobKey);

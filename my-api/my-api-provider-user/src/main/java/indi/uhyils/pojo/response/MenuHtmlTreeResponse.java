@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.pojo.model.MenuEntity;
+import indi.uhyils.pojo.model.MenuDO;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -18,10 +18,10 @@ public class MenuHtmlTreeResponse implements Serializable {
 
     Integer count;
 
-    Collection<MenuEntity> data;
+    Collection<MenuDO> data;
 
 
-    public static MenuHtmlTreeResponse build(Collection<MenuEntity> list) {
+    public static MenuHtmlTreeResponse build(Collection<MenuDO> list) {
         assert list != null;
         MenuHtmlTreeResponse menuHtmlTreeResponse = new MenuHtmlTreeResponse();
         menuHtmlTreeResponse.setCount(list.size());
@@ -53,11 +53,11 @@ public class MenuHtmlTreeResponse implements Serializable {
         this.count = count;
     }
 
-    public Collection<MenuEntity> getData() {
+    public Collection<MenuDO> getData() {
         return data;
     }
 
-    public void setData(Collection<MenuEntity> data) {
+    public void setData(Collection<MenuDO> data) {
         this.data = data;
     }
 }

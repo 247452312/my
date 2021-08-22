@@ -4,7 +4,7 @@ import indi.uhyils.dao.OrderNodeDao;
 import indi.uhyils.dao.OrderNodeFieldDao;
 import indi.uhyils.dao.OrderNodeResultTypeDao;
 import indi.uhyils.dao.OrderNodeRouteDao;
-import indi.uhyils.pojo.model.OrderNodeEntity;
+import indi.uhyils.pojo.model.OrderNodeDO;
 import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @RpcService
-public class OrderNodeServiceImpl extends BaseDefaultServiceImpl<OrderNodeEntity> implements OrderNodeService {
+public class OrderNodeServiceImpl extends BaseDefaultServiceImpl<OrderNodeDO> implements OrderNodeService {
 
     @Resource
     private OrderNodeDao dao;

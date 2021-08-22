@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.OrderBaseNodeRouteDao;
-import indi.uhyils.pojo.model.OrderBaseNodeRouteEntity;
+import indi.uhyils.pojo.model.OrderBaseNodeRouteDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.OrderBaseNodeRouteService;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @RpcService
-public class OrderBaseNodeRouteServiceImpl extends BaseDefaultServiceImpl<OrderBaseNodeRouteEntity> implements OrderBaseNodeRouteService {
+public class OrderBaseNodeRouteServiceImpl extends BaseDefaultServiceImpl<OrderBaseNodeRouteDO> implements OrderBaseNodeRouteService {
 
     @Resource
     private OrderBaseNodeRouteDao dao;

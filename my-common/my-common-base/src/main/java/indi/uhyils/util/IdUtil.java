@@ -1,7 +1,6 @@
 package indi.uhyils.util;
 
 import indi.uhyils.content.Content;
-import indi.uhyils.exception.IdGenerationException;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -35,12 +34,10 @@ public class IdUtil {
         this.code = code;
     }
 
-    public synchronized long newId() throws IdGenerationException {
+    public synchronized long newId() {
         // 生成时间
         long time = System.currentTimeMillis();
-        if (lastTime > time) {
-            throw new IdGenerationException("系统时间不正确");
-        }
+        AssertUtil.assertTrue(time > lastTime, "系统时间不正确");
         if (lastTime != time) {
             // 如果不是之前的毫秒,则sequence归零,继续生成序列号
             sequence.set(0L);

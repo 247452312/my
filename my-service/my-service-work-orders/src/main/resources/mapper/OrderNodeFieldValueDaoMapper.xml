@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="indi.uhyils.dao.OrderNodeFieldValueDao">
-    <resultMap type="indi.uhyils.pojo.model.OrderNodeFieldValueEntity" id="OrderNodeFieldValueMap">
+    <resultMap type="indi.uhyils.pojo.model.OrderNodeFieldValueDO" id="OrderNodeFieldValueMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>
         <result property="createDate" column="create_date" jdbcType="INTEGER"/>
         <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
@@ -61,7 +61,7 @@
 
 
     <!--新增所有列-->
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeFieldValueEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeFieldValueDO">
         insert into my_order.sys_order_node_field_value(id, create_date, create_user, delete_flag, remark, update_date,
         update_user, node_field_id, real_value)
         values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser},
@@ -69,7 +69,7 @@
     </insert>
 
     <!--通过主键修改数据-->
-    <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeFieldValueEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeFieldValueDO">
         update my_order.sys_order_node_field_value
         set
         update_date = #{updateDate}

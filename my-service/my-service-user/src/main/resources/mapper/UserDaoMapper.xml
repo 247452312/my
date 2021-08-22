@@ -54,7 +54,7 @@
         a.level
     </sql>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.UserEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.UserDO">
         select
         <include refid="columnList"/>
         from sys_user a
@@ -69,7 +69,7 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.UserEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.UserDO">
         select
         <include refid="columnList"/>
         from sys_user a
@@ -80,7 +80,7 @@
     </select>
 
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.UserEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.UserDO">
         select
         <include refid="columnList"/>
         from sys_user a
@@ -109,7 +109,7 @@
         where ${columnName} = #{value}
     </select>
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.UserEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.UserDO">
         insert sys_user(id, nick_name, mail, phone, head_portrait, username, password, role_id, create_date,
         create_user, update_date, update_user,
         delete_flag, remark)
@@ -129,7 +129,7 @@
         #{remark})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.UserEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.UserDO">
         update sys_user set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -164,7 +164,7 @@
     </update>
 
 
-    <select id="getUserRoleById" resultType="indi.uhyils.pojo.model.RoleEntity">
+    <select id="getUserRoleById" resultType="indi.uhyils.pojo.model.RoleDO">
         select
         <include refid="roleColumnList"/>
         from sys_role a
@@ -172,19 +172,19 @@
         id = #{roleId}
     </select>
 
-    <select id="getUserDeptsByRoleId" resultType="indi.uhyils.pojo.model.DeptEntity">
+    <select id="getUserDeptsByRoleId" resultType="indi.uhyils.pojo.model.DeptDO">
         select
         <include refid="deptColumnList"/>
         from sys_dept a right join sys_role_dept b on a.id = b.dept_id where b.role_id = #{roleId}
     </select>
 
-    <select id="getUserPowerByDeptId" resultType="indi.uhyils.pojo.model.PowerEntity">
+    <select id="getUserPowerByDeptId" resultType="indi.uhyils.pojo.model.PowerDO">
         select
         <include refid="powerColumnList"/>
         from sys_power a right join sys_dept_power b on a.id = b.power_id where b.dept_id = #{deptId}
     </select>
 
-    <select id="getAll" resultType="indi.uhyils.pojo.model.UserEntity">
+    <select id="getAll" resultType="indi.uhyils.pojo.model.UserDO">
         select
         <include refid="columnList"/>
         from sys_user a

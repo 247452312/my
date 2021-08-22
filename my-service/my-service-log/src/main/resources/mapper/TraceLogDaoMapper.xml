@@ -18,7 +18,7 @@
         a.update_date as updateDate
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.TraceLogEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.TraceLogDO">
         select
         <include refid="columnList"/>
         from sys_trace_log a
@@ -26,7 +26,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.TraceLogEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.TraceLogDO">
         select
         <include refid="columnList"/>
         from sys_trace_log a
@@ -36,7 +36,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.TraceLogEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.TraceLogDO">
         select
         <include refid="columnList"/>
         from sys_trace_log a
@@ -51,7 +51,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.TraceLogEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.TraceLogDO">
         insert sys_trace_log(now_time,
         trace_id,
         update_user,
@@ -80,7 +80,7 @@
         #{updateDate})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.TraceLogEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.TraceLogDO">
         update sys_trace_log set
         <if test="nowTime != null and nowTime != ''">
             , now_time = #{nowTime}

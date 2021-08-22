@@ -1,6 +1,6 @@
 package indi.uhyils.builder;
 
-import indi.uhyils.pojo.model.OrderNodeResultTypeEntity;
+import indi.uhyils.pojo.model.OrderNodeResultTypeDO;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -16,8 +16,8 @@ public class OrderNodeResultTypeBuilder {
      *
      * @return
      */
-    public static OrderNodeResultTypeEntity build(Long orderNodeId, String msg) {
-        OrderNodeResultTypeEntity orderNodeResultTypeEntity = new OrderNodeResultTypeEntity();
+    public static OrderNodeResultTypeDO build(Long orderNodeId, String msg) {
+        OrderNodeResultTypeDO orderNodeResultTypeEntity = new OrderNodeResultTypeDO();
         orderNodeResultTypeEntity.setBaseNodeId(orderNodeId);
         orderNodeResultTypeEntity.setDealResultName(msg);
         return orderNodeResultTypeEntity;

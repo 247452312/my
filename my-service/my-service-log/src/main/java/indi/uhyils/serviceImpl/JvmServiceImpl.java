@@ -5,8 +5,8 @@ import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.dao.TraceInfoDao;
 import indi.uhyils.enum_.ServiceQualityEnum;
 import indi.uhyils.log.LogTypeEnum;
-import indi.uhyils.pojo.model.LogMonitorEntity;
-import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
+import indi.uhyils.pojo.model.LogMonitorDO;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusDO;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.JvmDataStatisticsResponse;
 import indi.uhyils.pojo.response.JvmInfoLogResponse;
@@ -41,18 +41,18 @@ public class JvmServiceImpl implements JvmService {
     @Override
     public ServiceResult<JvmDataStatisticsResponse> getJvmDataStatisticsResponse(DefaultRequest request) {
         /* 获取服务在线数量 */
-        List<LogMonitorEntity> logMonitorEntityList = monitorDao.getOnlineService(System.currentTimeMillis());
+        List<LogMonitorDO> logMonitorEntityList = monitorDao.getOnlineService(System.currentTimeMillis());
         Integer onlineServiceCount = logMonitorEntityList.size();
         /* 获取服务运行质量(以外关闭的系统,内存溢出风险的系统) */
         HashMap<Long, List<ServiceQualityEnum>> map = new HashMap<>(logMonitorEntityList.size());
-        for (LogMonitorEntity logMonitorEntity : logMonitorEntityList) {
-            List<LogMonitorJvmStatusEntity> list = monitorJvmStatusDetailDao.getByMonitorId(logMonitorEntity.getId());
+        for (LogMonitorDO logMonitorEntity : logMonitorEntityList) {
+            List<LogMonitorJvmStatusDO> list = monitorJvmStatusDetailDao.getByMonitorId(logMonitorEntity.getId());
             List<ServiceQualityEnum> analysis = JvmStatusAnalysisUtil.analysis(logMonitorEntity, list);
             map.put(logMonitorEntity.getId(), analysis);
         }
         // 由于无法分辨前台发送请求是哪一个服务的 所以这里以现在正在运行的jvm最早启动时间为开始时间
         Long firstStartTile = System.currentTimeMillis();
-        for (LogMonitorEntity logMonitorEntity : logMonitorEntityList) {
+        for (LogMonitorDO logMonitorEntity : logMonitorEntityList) {
             if (logMonitorEntity.getTime() < firstStartTile) {
                 firstStartTile = logMonitorEntity.getTime();
             }
@@ -69,15 +69,15 @@ public class JvmServiceImpl implements JvmService {
     public ServiceResult<JvmInfoLogResponse> getJvmInfoLogResponse(DefaultRequest request) {
         /*1.获取所有的活着的服务的监控信息*/
         long now = System.currentTimeMillis();
-        List<LogMonitorEntity> onlineService = monitorDao.getOnlineService(now);
+        List<LogMonitorDO> onlineService = monitorDao.getOnlineService(now);
         HashMap<String, List> map = new HashMap<>(onlineService.size());
-        for (LogMonitorEntity logMonitorEntity : onlineService) {
+        for (LogMonitorDO logMonitorEntity : onlineService) {
             /*2.获取每一个服务的详细信息 -> List*/
-            List<LogMonitorJvmStatusEntity> monitorStatuses = monitorJvmStatusDetailDao.getByMonitorId(logMonitorEntity.getId());
+            List<LogMonitorJvmStatusDO> monitorStatuses = monitorJvmStatusDetailDao.getByMonitorId(logMonitorEntity.getId());
             assert monitorStatuses.size() > 0;
             /*获取开始时间*/
 
-            LogMonitorJvmStatusEntity logMonitorJvmStatusEntity = monitorStatuses.get(0);
+            LogMonitorJvmStatusDO logMonitorJvmStatusEntity = monitorStatuses.get(0);
             Long startTime = logMonitorJvmStatusEntity.getTime();
 
             SimpleDateFormat simpleDateFormat;
@@ -91,7 +91,7 @@ public class JvmServiceImpl implements JvmService {
             List<String> xAxix = new ArrayList<>();
             List<Double> noHeapMem = new ArrayList<>();
             List<Double> heapMem = new ArrayList<>();
-            for (LogMonitorJvmStatusEntity monitorStatus : monitorStatuses) {
+            for (LogMonitorJvmStatusDO monitorStatus : monitorStatuses) {
                 Long time = monitorStatus.getTime();
                 String format = simpleDateFormat.format(new Date(time));
                 xAxix.add(format);

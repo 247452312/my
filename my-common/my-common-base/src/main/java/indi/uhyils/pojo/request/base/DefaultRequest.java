@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.request.base;
 
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.UserDO;
 
 /**
  * 请求父类,所有页面请求都应该继承这个类
@@ -17,7 +17,10 @@ public class DefaultRequest implements BaseRequest {
      */
     private String token;
 
-    private UserEntity user;
+    /**
+     * 请求时如果携带则代表已经有了,不需要解析token
+     */
+    private UserDO user;
 
     /**
      * 保证请求幂等性, 不会在前一个相同幂等id执行结束前执行方法
@@ -43,11 +46,11 @@ public class DefaultRequest implements BaseRequest {
         this.token = token;
     }
 
-    public UserEntity getUser() {
+    public UserDO getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(UserDO user) {
         this.user = user;
     }
 

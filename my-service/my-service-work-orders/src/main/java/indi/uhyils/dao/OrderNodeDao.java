@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.OrderNodeEntity;
+import indi.uhyils.pojo.model.OrderNodeDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +13,7 @@ import java.util.Set;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @Mapper
-public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
+public interface OrderNodeDao extends DefaultDao<OrderNodeDO> {
 
 
     /**
@@ -22,7 +22,7 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
      * @param nodeIds
      * @return
      */
-    List<OrderNodeEntity> getByIds(@Param("nodeIds") Set<Long> nodeIds);
+    List<OrderNodeDO> getByIds(@Param("nodeIds") Set<Long> nodeIds);
 
     /**
      * 将工单节点置为失败
@@ -41,7 +41,7 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
      * @param resultId
      * @return
      */
-    OrderNodeEntity getNextNodeByNodeAndResult(@Param("nodeId") Long nodeId, @Param("resultId") Long resultId);
+    OrderNodeDO getNextNodeByNodeAndResult(@Param("nodeId") Long nodeId, @Param("resultId") Long resultId);
 
     /**
      * 根据id批量删除
@@ -59,5 +59,5 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeEntity> {
      * @param id
      * @return
      */
-    List<OrderNodeEntity> getByOrderId(Long id);
+    List<OrderNodeDO> getByOrderId(Long id);
 }

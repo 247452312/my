@@ -1,14 +1,14 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.DeptEntity;
-import indi.uhyils.pojo.model.RoleEntity;
+import indi.uhyils.pojo.model.DeptDO;
+import indi.uhyils.pojo.model.RoleDO;
 import indi.uhyils.pojo.request.PutDeptsToRoleRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时24分
  */
-public interface RoleService extends DefaultEntityService<RoleEntity> {
+public interface RoleService extends DefaultDOService<RoleDO> {
 
     /**
      * 根据角色id获取角色
@@ -26,7 +26,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      *
      * @return 角色
      */
-    ServiceResult<RoleEntity> getRoleByRoleId(IdRequest request);
+    ServiceResult<RoleDO> getRoleByRoleId(IdRequest request);
 
     /**
      * 给角色添加权限集
@@ -53,7 +53,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      *
      * @return 角色
      */
-    ServiceResult<ArrayList<RoleEntity>> getRoles(DefaultRequest request);
+    ServiceResult<ArrayList<RoleDO>> getRoles(DefaultRequest request);
 
     /**
      * 获取角色的用户权限集
@@ -62,7 +62,7 @@ public interface RoleService extends DefaultEntityService<RoleEntity> {
      *
      * @return 对应的权限集
      */
-    ServiceResult<ArrayList<DeptEntity>> getUserDeptsByRoleId(IdRequest request);
+    ServiceResult<ArrayList<DeptDO>> getUserDeptsByRoleId(IdRequest request);
 
     /**
      * 获取所有权限集(带有角色包不包含此权限集的标记)

@@ -1,7 +1,7 @@
 package indi.uhyils.util;
 
 import indi.uhyils.enum_.PushTypeEnum;
-import indi.uhyils.pojo.model.MsgEntity;
+import indi.uhyils.pojo.model.MsgDO;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -18,8 +18,8 @@ public class MsgBuild {
      * @param type    类型
      * @return 成功的消息
      */
-    public static MsgEntity buildSuccessMsg(Long userId, String title, String content, PushTypeEnum type) {
-        MsgEntity msgEntity = new MsgEntity();
+    public static MsgDO buildSuccessMsg(Long userId, String title, String content, PushTypeEnum type) {
+        MsgDO msgEntity = new MsgDO();
         msgEntity.setContent(content);
         msgEntity.setSuccess(Boolean.TRUE);
         msgEntity.setTarget(userId);
@@ -37,8 +37,8 @@ public class MsgBuild {
      * @param type    类型
      * @return 成功的消息
      */
-    public static MsgEntity buildFaultMsg(Long userId, String title, String content, PushTypeEnum type) {
-        MsgEntity msgEntity = new MsgEntity();
+    public static MsgDO buildFaultMsg(Long userId, String title, String content, PushTypeEnum type) {
+        MsgDO msgEntity = new MsgDO();
         msgEntity.setContent(content);
         msgEntity.setSuccess(false);
         msgEntity.setTarget(userId);

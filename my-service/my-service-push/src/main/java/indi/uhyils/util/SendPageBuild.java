@@ -1,6 +1,6 @@
 package indi.uhyils.util;
 
-import indi.uhyils.pojo.model.SendPageEntity;
+import indi.uhyils.pojo.model.SendPageDO;
 
 /**
  * 发送页面
@@ -18,8 +18,8 @@ public class SendPageBuild {
      * @param content 内容
      * @return 页面推送
      */
-    public static SendPageEntity buildSendPage(Long userId, String title, String content) {
-        SendPageEntity sendPageEntity = new SendPageEntity();
+    public static SendPageDO buildSendPage(Long userId, String title, String content) {
+        SendPageDO sendPageEntity = new SendPageDO();
         sendPageEntity.setContent(content);
         sendPageEntity.setTitle(title);
         sendPageEntity.setUserId(userId);

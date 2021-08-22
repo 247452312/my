@@ -1,7 +1,6 @@
 package indi.uhyils.log;
 
 import com.google.common.base.Supplier;
-import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
@@ -134,16 +133,12 @@ public class MyTraceIdContext {
             }
             synchronized (MyTraceIdContext.class) {
                 if (thraceId.get() == null) {
-                    try {
-                        IdUtil bean = SpringUtil.getBean(IdUtil.class);
-                        if (bean == null) {
-                            bean = new IdUtil();
-                            bean.setCode(1L);
-                        }
-                        thraceId.set(bean.newId());
-                    } catch (IdGenerationException e) {
-                        LogUtil.error(MyTraceIdContext.class, e);
+                    IdUtil bean = SpringUtil.getBean(IdUtil.class);
+                    if (bean == null) {
+                        bean = new IdUtil();
+                        bean.setCode(1L);
                     }
+                    thraceId.set(bean.newId());
                 }
             }
         }

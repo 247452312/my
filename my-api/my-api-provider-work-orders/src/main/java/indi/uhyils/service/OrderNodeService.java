@@ -1,15 +1,15 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.OrderNodeEntity;
+import indi.uhyils.pojo.model.OrderNodeDO;
 import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
  */
-public interface OrderNodeService extends DefaultEntityService<OrderNodeEntity> {
+public interface OrderNodeService extends DefaultDOService<OrderNodeDO> {
 
     /**
      * 批量删除,删除工单时用

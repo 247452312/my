@@ -2,8 +2,8 @@ package indi.uhyils.util.page;
 
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.SendPageDao;
-import indi.uhyils.pojo.model.SendPageEntity;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.SendPageDO;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.util.SendPageBuild;
 import indi.uhyils.util.SpringUtil;
@@ -19,10 +19,10 @@ public class SendPage {
         // 获取dao
         SendPageDao bean = SpringUtil.getBean(SendPageDao.class);
         // 获取要插入的bean
-        SendPageEntity sendPageEntity = SendPageBuild.buildSendPage(userId, title, sendContent);
+        SendPageDO sendPageEntity = SendPageBuild.buildSendPage(userId, title, sendContent);
         // 构造系统请求
         DefaultRequest request = new DefaultRequest();
-        UserEntity user = new UserEntity();
+        UserDO user = new UserDO();
         user.setId(Content.ADMIN_USER_ID);
         request.setUser(user);
         sendPageEntity.preInsert(request);

@@ -1,7 +1,7 @@
 package indi.uhyils.util;
 
 import indi.uhyils.content.Content;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 
 /**
@@ -23,7 +23,7 @@ public final class DefaultRequestBuildUtil {
      */
     public static DefaultRequest getAdminDefaultRequest() {
         DefaultRequest defaultRequest = new DefaultRequest();
-        UserEntity user = new UserEntity();
+        UserDO user = new UserDO();
         user.setId(Content.ADMIN_USER_ID);
         user.setUserName("admin");
         defaultRequest.setUser(user);

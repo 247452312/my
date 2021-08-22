@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="indi.uhyils.dao.DeviceArgDao">
-    <resultMap type="indi.uhyils.pojo.model.DeviceArgEntity" id="DeviceArgMap">
+    <resultMap type="indi.uhyils.pojo.model.DeviceArgDO" id="DeviceArgMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>
         <result property="createDate" column="create_date" jdbcType="INTEGER"/>
         <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
@@ -69,7 +69,7 @@
 
 
     <!--新增所有列-->
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.DeviceArgEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.DeviceArgDO">
         insert into my_smart_home.sys_device_arg(id, create_date, create_user, delete_flag, remark, update_date,
         update_user, device_id, direction_x, direction_y, can_move, can_rotate)
         values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser},
@@ -77,7 +77,7 @@
     </insert>
 
     <!--通过主键修改数据-->
-    <update id="update" parameterType="indi.uhyils.pojo.model.DeviceArgEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.DeviceArgDO">
         update my_smart_home.sys_device_arg
         set
         update_date = #{updateDate}

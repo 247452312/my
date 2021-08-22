@@ -19,7 +19,7 @@
         a.other_one   as otherOne
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.TraceDetailEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.TraceDetailDO">
         select
         <include refid="columnList"/>
         from sys_trace_detail a
@@ -27,7 +27,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.TraceDetailEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.TraceDetailDO">
         select
         <include refid="columnList"/>
         from sys_trace_detail a
@@ -37,7 +37,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.TraceDetailEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.TraceDetailDO">
         select
         <include refid="columnList"/>
         from sys_trace_detail a
@@ -52,7 +52,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.TraceDetailEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.TraceDetailDO">
         insert sys_trace_detail(trace_id,
         use_time,
         end_time,
@@ -83,7 +83,7 @@
         #{otherOne})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.TraceDetailEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.TraceDetailDO">
         update sys_trace_detail set
         <if test="traceId != null and traceId != ''">
             , trace_id = #{traceId}
@@ -148,7 +148,7 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getTraceDetailByHashCode" resultType="indi.uhyils.pojo.model.TraceDetailEntity">
+    <select id="getTraceDetailByHashCode" resultType="indi.uhyils.pojo.model.TraceDetailDO">
         select
         <include refid="columnList"/>
         from sys_trace_detail a

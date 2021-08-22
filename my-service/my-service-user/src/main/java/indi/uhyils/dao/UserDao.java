@@ -1,10 +1,10 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.DeptEntity;
-import indi.uhyils.pojo.model.PowerEntity;
-import indi.uhyils.pojo.model.RoleEntity;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.DeptDO;
+import indi.uhyils.pojo.model.PowerDO;
+import indi.uhyils.pojo.model.RoleDO;
+import indi.uhyils.pojo.model.UserDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface UserDao extends DefaultDao<UserEntity> {
+public interface UserDao extends DefaultDao<UserDO> {
 
     /**
      * 根据角色Id获取用户的角色
@@ -24,7 +24,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param roleId 角色id
      * @return 角色实例
      */
-    RoleEntity getUserRoleById(Long roleId);
+    RoleDO getUserRoleById(Long roleId);
 
     /**
      * 根据角色id获取用户的权限集
@@ -32,7 +32,7 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param roleId 角色id
      * @return 用户的权限集
      */
-    ArrayList<DeptEntity> getUserDeptsByRoleId(Long roleId);
+    ArrayList<DeptDO> getUserDeptsByRoleId(Long roleId);
 
 
     /**
@@ -41,14 +41,14 @@ public interface UserDao extends DefaultDao<UserEntity> {
      * @param deptId 权限集id
      * @return 用户的权限
      */
-    List<PowerEntity> getUserPowerByDeptId(Long deptId);
+    List<PowerDO> getUserPowerByDeptId(Long deptId);
 
     /**
      * 获取全部用户
      *
      * @return 全部用户
      */
-    ArrayList<UserEntity> getAll();
+    ArrayList<UserDO> getAll();
 
     /**
      * 对比密码是否和数据库中的相同

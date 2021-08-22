@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.pojo.model.TraceDetailEntity;
+import indi.uhyils.pojo.model.TraceDetailDO;
 import java.io.Serializable;
 
 
@@ -11,19 +11,19 @@ import java.io.Serializable;
  */
 public class GetDetailByHashAndLogTypeResponse implements Serializable {
 
-    private TraceDetailEntity data;
+    private TraceDetailDO data;
 
-    public static GetDetailByHashAndLogTypeResponse build(TraceDetailEntity data) {
+    public static GetDetailByHashAndLogTypeResponse build(TraceDetailDO data) {
         GetDetailByHashAndLogTypeResponse build = new GetDetailByHashAndLogTypeResponse();
         build.data = data;
         return build;
     }
 
-    public TraceDetailEntity getData() {
+    public TraceDetailDO getData() {
         return data;
     }
 
-    public void setData(TraceDetailEntity data) {
+    public void setData(TraceDetailDO data) {
         this.data = data;
     }
 }

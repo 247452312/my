@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.pojo.model.base.BaseMiddleEntity;
+import indi.uhyils.pojo.model.base.BaseMiddleDO;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月28日 12时39分
  */
-public class DeptMenuMiddle extends BaseMiddleEntity {
+public class DeptMenuMiddle extends BaseMiddleDO {
 
     private Long deptId;
 

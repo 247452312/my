@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.DeviceDao;
-import indi.uhyils.pojo.model.DeviceEntity;
+import indi.uhyils.pojo.model.DeviceDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.DeviceService;
 
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年08月29日 10时47分40秒
  */
 @RpcService
-public class DeviceServiceImpl extends BaseDefaultServiceImpl<DeviceEntity> implements DeviceService {
+public class DeviceServiceImpl extends BaseDefaultServiceImpl<DeviceDO> implements DeviceService {
     @Resource
     private DeviceDao dao;
 

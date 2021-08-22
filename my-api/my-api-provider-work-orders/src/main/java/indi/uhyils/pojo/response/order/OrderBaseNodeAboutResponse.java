@@ -1,9 +1,9 @@
 package indi.uhyils.pojo.response.order;
 
-import indi.uhyils.pojo.model.OrderBaseNodeEntity;
-import indi.uhyils.pojo.model.OrderBaseNodeFieldEntity;
-import indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity;
-import indi.uhyils.pojo.model.OrderBaseNodeRouteEntity;
+import indi.uhyils.pojo.model.OrderBaseNodeDO;
+import indi.uhyils.pojo.model.OrderBaseNodeFieldDO;
+import indi.uhyils.pojo.model.OrderBaseNodeResultTypeDO;
+import indi.uhyils.pojo.model.OrderBaseNodeRouteDO;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,24 +16,24 @@ public class OrderBaseNodeAboutResponse implements Serializable {
     /**
      * 基本工单节点
      */
-    private OrderBaseNodeEntity orderBaseNode;
+    private OrderBaseNodeDO orderBaseNode;
 
     /**
      * 此工单节点的所有属性
      */
-    private List<OrderBaseNodeFieldEntity> orderBaseNodeFields;
+    private List<OrderBaseNodeFieldDO> orderBaseNodeFields;
 
     /**
      * 此工单节点结果的类型
      */
-    private List<OrderBaseNodeResultTypeEntity> orderBaseNodeResultTypes;
+    private List<OrderBaseNodeResultTypeDO> orderBaseNodeResultTypes;
 
     /**
      * 此工单节点的路由
      */
-    private List<OrderBaseNodeRouteEntity> orderBaseNodeRoutes;
+    private List<OrderBaseNodeRouteDO> orderBaseNodeRoutes;
 
-    public static OrderBaseNodeAboutResponse build(OrderBaseNodeEntity orderBaseNode, List<OrderBaseNodeFieldEntity> orderBaseNodeFields, List<OrderBaseNodeResultTypeEntity> orderBaseNodeResultTypes, List<OrderBaseNodeRouteEntity> orderBaseNodeRoutes) {
+    public static OrderBaseNodeAboutResponse build(OrderBaseNodeDO orderBaseNode, List<OrderBaseNodeFieldDO> orderBaseNodeFields, List<OrderBaseNodeResultTypeDO> orderBaseNodeResultTypes, List<OrderBaseNodeRouteDO> orderBaseNodeRoutes) {
         OrderBaseNodeAboutResponse build = new OrderBaseNodeAboutResponse();
         build.setOrderBaseNode(orderBaseNode);
         build.setOrderBaseNodeFields(orderBaseNodeFields);
@@ -42,35 +42,35 @@ public class OrderBaseNodeAboutResponse implements Serializable {
         return build;
     }
 
-    public OrderBaseNodeEntity getOrderBaseNode() {
+    public OrderBaseNodeDO getOrderBaseNode() {
         return orderBaseNode;
     }
 
-    public void setOrderBaseNode(OrderBaseNodeEntity orderBaseNode) {
+    public void setOrderBaseNode(OrderBaseNodeDO orderBaseNode) {
         this.orderBaseNode = orderBaseNode;
     }
 
-    public List<OrderBaseNodeFieldEntity> getOrderBaseNodeFields() {
+    public List<OrderBaseNodeFieldDO> getOrderBaseNodeFields() {
         return orderBaseNodeFields;
     }
 
-    public void setOrderBaseNodeFields(List<OrderBaseNodeFieldEntity> orderBaseNodeFields) {
+    public void setOrderBaseNodeFields(List<OrderBaseNodeFieldDO> orderBaseNodeFields) {
         this.orderBaseNodeFields = orderBaseNodeFields;
     }
 
-    public List<OrderBaseNodeResultTypeEntity> getOrderBaseNodeResultTypes() {
+    public List<OrderBaseNodeResultTypeDO> getOrderBaseNodeResultTypes() {
         return orderBaseNodeResultTypes;
     }
 
-    public void setOrderBaseNodeResultTypes(List<OrderBaseNodeResultTypeEntity> orderBaseNodeResultTypes) {
+    public void setOrderBaseNodeResultTypes(List<OrderBaseNodeResultTypeDO> orderBaseNodeResultTypes) {
         this.orderBaseNodeResultTypes = orderBaseNodeResultTypes;
     }
 
-    public List<OrderBaseNodeRouteEntity> getOrderBaseNodeRoutes() {
+    public List<OrderBaseNodeRouteDO> getOrderBaseNodeRoutes() {
         return orderBaseNodeRoutes;
     }
 
-    public void setOrderBaseNodeRoutes(List<OrderBaseNodeRouteEntity> orderBaseNodeRoutes) {
+    public void setOrderBaseNodeRoutes(List<OrderBaseNodeRouteDO> orderBaseNodeRoutes) {
         this.orderBaseNodeRoutes = orderBaseNodeRoutes;
     }
 }

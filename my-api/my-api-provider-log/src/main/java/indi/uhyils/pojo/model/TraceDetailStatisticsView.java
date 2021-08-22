@@ -1,6 +1,5 @@
 package indi.uhyils.pojo.model;
 
-import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.model.base.BaseDbSaveable;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 
@@ -104,17 +103,32 @@ public class TraceDetailStatisticsView implements BaseDbSaveable {
     }
 
     @Override
-    public void preInsert(DefaultRequest request) throws IdGenerationException, InterruptedException {
+    public void preInsert(DefaultRequest request) {
         throw new RuntimeException("视图不能插入");
     }
 
     @Override
-    public void preInsert() throws IdGenerationException, InterruptedException {
+    public void preInsert(UserDO userDO) {
+        throw new RuntimeException("视图不能插入");
+    }
+
+    @Override
+    public void preInsert() {
         throw new RuntimeException("视图不能插入");
     }
 
     @Override
     public void preUpdate(DefaultRequest request) {
+        throw new RuntimeException("视图不能修改");
+    }
+
+    @Override
+    public void preUpdate(UserDO userDO) {
+        throw new RuntimeException("视图不能修改");
+    }
+
+    @Override
+    public void preUpdate() {
         throw new RuntimeException("视图不能修改");
     }
 }

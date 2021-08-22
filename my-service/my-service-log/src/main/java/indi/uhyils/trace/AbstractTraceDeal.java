@@ -2,8 +2,7 @@ package indi.uhyils.trace;
 
 import com.alibaba.nacos.common.utils.Objects;
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.exception.IdGenerationException;
-import indi.uhyils.pojo.model.TraceIdDoEntity;
+import indi.uhyils.pojo.model.TraceIdDoDO;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 
 /**
@@ -11,12 +10,12 @@ import indi.uhyils.util.DefaultRequestBuildUtil;
  * @version 1.0
  * @date 文件创建日期 2021年08月02日 08时36分
  */
-public abstract class AbstractTraceDeal<T extends TraceIdDoEntity> implements TraceDealInterface<T> {
+public abstract class AbstractTraceDeal<T extends TraceIdDoDO> implements TraceDealInterface<T> {
 
     private DefaultDao<T> dao;
 
     @Override
-    public void doDeal(String traceMsg) throws IdGenerationException, InterruptedException {
+    public void doDeal(String traceMsg) {
         traceMsg = traceMsg.substring(1);
         String[] split = traceMsg.split("\\|");
         T entity = getTargetEntity(split);

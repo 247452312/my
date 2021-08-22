@@ -17,7 +17,7 @@
         a.user_id      as userId
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.ApiSubscribeEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.ApiSubscribeDO">
         select
         <include refid="columnList"/>
         from sys_api_subscribe a
@@ -26,7 +26,7 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.ApiSubscribeEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.ApiSubscribeDO">
         select
         <include refid="columnList"/>
         from sys_api_subscribe a
@@ -36,7 +36,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.ApiSubscribeEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.ApiSubscribeDO">
         select
         <include refid="columnList"/>
         from sys_api_subscribe a
@@ -51,7 +51,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.ApiSubscribeEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.ApiSubscribeDO">
         insert sys_api_subscribe(id,
         create_date,
         create_user,
@@ -76,7 +76,7 @@
         #{userId})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.ApiSubscribeEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.ApiSubscribeDO">
         update sys_api_subscribe set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -119,7 +119,7 @@
         from sys_api_subscribe a
         where ${columnName} = #{value}
     </select>
-    <select id="getByCron" resultType="indi.uhyils.pojo.model.ApiSubscribeEntity">
+    <select id="getByCron" resultType="indi.uhyils.pojo.model.ApiSubscribeDO">
         select
         <include refid="columnList"/>
         from sys_api_subscribe a
@@ -128,7 +128,7 @@
     </select>
 
     <select id="checkSubscribeRepeat" resultType="java.lang.Integer"
-            parameterType="indi.uhyils.pojo.model.ApiSubscribeEntity">
+            parameterType="indi.uhyils.pojo.model.ApiSubscribeDO">
         select count(*)
         from sys_api_subscribe
         where delete_flag = 0

@@ -1,6 +1,6 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.MenuEntity;
+import indi.uhyils.pojo.model.MenuDO;
 import indi.uhyils.pojo.request.GetByIFrameAndDeptsRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.response.IndexMenuTreeResponse;
 import indi.uhyils.pojo.response.MenuHtmlTreeResponse;
 import indi.uhyils.pojo.response.QuickStartResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月28日 12时41分
  */
-public interface MenuService extends DefaultEntityService<MenuEntity> {
+public interface MenuService extends DefaultDOService<MenuDO> {
 
     /**
      * 获取主页的菜单

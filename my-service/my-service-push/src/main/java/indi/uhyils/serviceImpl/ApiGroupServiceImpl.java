@@ -4,8 +4,8 @@ import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.ApiDao;
 import indi.uhyils.dao.ApiGroupDao;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.model.ApiEntity;
-import indi.uhyils.pojo.model.ApiGroupEntity;
+import indi.uhyils.pojo.model.ApiDO;
+import indi.uhyils.pojo.model.ApiGroupDO;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -23,7 +23,7 @@ import java.util.List;
  * @date 文件创建日期 2020年06月25日 13时30分
  */
 @RpcService
-public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> implements ApiGroupService {
+public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupDO> implements ApiGroupService {
 
     @Resource
     private ApiGroupDao dao;
@@ -42,8 +42,8 @@ public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> 
 
     @Override
     public ServiceResult<String> test(IdRequest request) {
-        ApiGroupEntity apiGroupEntity = dao.getById(request.getId());
-        List<ApiEntity> groupByGroupId = apiDao.getGroupByGroupId(apiGroupEntity.getId());
+        ApiGroupDO apiGroupEntity = dao.getById(request.getId());
+        List<ApiDO> groupByGroupId = apiDao.getGroupByGroupId(apiGroupEntity.getId());
         HashMap<String, String> parameter = new HashMap<>(16);
         ApiUtils.callApi(groupByGroupId, request.getUser(), parameter);
         String resultFormat = apiGroupEntity.getResultFormat();
@@ -52,15 +52,15 @@ public class ApiGroupServiceImpl extends BaseDefaultServiceImpl<ApiGroupEntity> 
     }
 
     @Override
-    public ServiceResult<ArrayList<ApiGroupEntity>> getCanBeSubscribed(DefaultRequest request) {
-        ArrayList<ApiGroupEntity> result = dao.getCanBeSubscribed();
+    public ServiceResult<ArrayList<ApiGroupDO>> getCanBeSubscribed(DefaultRequest request) {
+        ArrayList<ApiGroupDO> result = dao.getCanBeSubscribed();
         return ServiceResult.buildSuccessResult("查询成功", result);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Integer> delete(IdRequest idRequest) {
-        ApiGroupEntity byId = getDao().getById(idRequest.getId());
+        ApiGroupDO byId = getDao().getById(idRequest.getId());
         if (byId == null) {
             return ServiceResult.buildFailedResult("查无此服务", null);
         }

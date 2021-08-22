@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response.order;
 
-import indi.uhyils.pojo.model.OrderBaseInfoEntity;
+import indi.uhyils.pojo.model.OrderBaseInfoDO;
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,14 +13,14 @@ public class GetOneBaseOrderResponse implements Serializable {
     /**
      * 工单本体
      */
-    private OrderBaseInfoEntity baseInfo;
+    private OrderBaseInfoDO baseInfo;
 
     /**
      * 这个工单相关的节点
      */
     private List<OrderBaseNodeAboutResponse> orderBaseNodes;
 
-    public static GetOneBaseOrderResponse build(OrderBaseInfoEntity baseInfo, List<OrderBaseNodeAboutResponse> orderBaseNodes) {
+    public static GetOneBaseOrderResponse build(OrderBaseInfoDO baseInfo, List<OrderBaseNodeAboutResponse> orderBaseNodes) {
         GetOneBaseOrderResponse build = new GetOneBaseOrderResponse();
         build.setBaseInfo(baseInfo);
         build.setOrderBaseNodes(orderBaseNodes);
@@ -28,11 +28,11 @@ public class GetOneBaseOrderResponse implements Serializable {
 
     }
 
-    public OrderBaseInfoEntity getBaseInfo() {
+    public OrderBaseInfoDO getBaseInfo() {
         return baseInfo;
     }
 
-    public void setBaseInfo(OrderBaseInfoEntity baseInfo) {
+    public void setBaseInfo(OrderBaseInfoDO baseInfo) {
         this.baseInfo = baseInfo;
     }
 

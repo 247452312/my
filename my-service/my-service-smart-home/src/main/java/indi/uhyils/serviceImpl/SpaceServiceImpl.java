@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.SpaceDao;
-import indi.uhyils.pojo.model.SpaceEntity;
+import indi.uhyils.pojo.model.SpaceDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.SpaceService;
 
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年08月29日 10时47分54秒
  */
 @RpcService
-public class SpaceServiceImpl extends BaseDefaultServiceImpl<SpaceEntity> implements SpaceService {
+public class SpaceServiceImpl extends BaseDefaultServiceImpl<SpaceDO> implements SpaceService {
     @Resource
     private SpaceDao dao;
 

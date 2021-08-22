@@ -17,7 +17,7 @@
         a.type
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.DictEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.DictDO">
         select
         <include refid="columnList"/>
         from sys_dict a
@@ -25,7 +25,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.DictEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.DictDO">
         select
         <include refid="columnList"/>
         from sys_dict a
@@ -35,7 +35,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.DictEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.DictDO">
         select
         <include refid="columnList"/>
         from sys_dict a
@@ -50,7 +50,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.DictEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.DictDO">
         insert sys_dict(id,
         create_date,
         create_user,
@@ -73,7 +73,7 @@
         #{type})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.DictEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.DictDO">
         update sys_dict set
         update_date = #{updateDate}
         ,update_user = #{updateUser}

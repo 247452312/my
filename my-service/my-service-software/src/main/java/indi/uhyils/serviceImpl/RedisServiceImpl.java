@@ -7,8 +7,8 @@ import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.enum_.RedisAddEnum;
 import indi.uhyils.enum_.RedisUpdateEnum;
 import indi.uhyils.enum_.SoftwareStatusEnum;
-import indi.uhyils.pojo.model.RedisEntity;
-import indi.uhyils.pojo.model.ServerEntity;
+import indi.uhyils.pojo.model.RedisDO;
+import indi.uhyils.pojo.model.ServerDO;
 import indi.uhyils.pojo.request.GetRedisKeysRequest;
 import indi.uhyils.pojo.request.RedisKeyAndValue;
 import indi.uhyils.pojo.request.base.IdRequest;
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2020年06月12日 12时55分
  */
 @RpcService
-public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implements RedisService {
+public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisDO> implements RedisService {
 
     /**
      * 获取的redis info中的注释
@@ -75,9 +75,9 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Integer> insert(ObjRequest<RedisEntity> insert) throws Exception {
-        RedisEntity redisEntity = insert.getData();
-        ServerEntity serverEntity = serverDao.getById(redisEntity.getServerId());
+    public ServiceResult<Integer> insert(ObjRequest<RedisDO> insert) throws Exception {
+        RedisDO redisEntity = insert.getData();
+        ServerDO serverEntity = serverDao.getById(redisEntity.getServerId());
         if (serverEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null);
         }
@@ -91,14 +91,14 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     @Override
-    public ServiceResult<RedisEntity> reload(IdRequest request) {
+    public ServiceResult<RedisDO> reload(IdRequest request) {
         Long id = request.getId();
-        RedisEntity redisEntity = dao.getById(id);
+        RedisDO redisEntity = dao.getById(id);
         if (redisEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null);
         }
         Long serverId = redisEntity.getServerId();
-        ServerEntity serverEntity = serverDao.getById(serverId);
+        ServerDO serverEntity = serverDao.getById(serverId);
         if (serverEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null);
         }
@@ -114,9 +114,9 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<OperateSoftwareResponse> start(IdRequest request) {
         OperateSoftwareResponse operateSoftwareResponse = new OperateSoftwareResponse();
-        RedisEntity redisEntity = dao.getById(request.getId());
+        RedisDO redisEntity = dao.getById(request.getId());
         Long serverId = redisEntity.getServerId();
-        ServerEntity serverEntity = serverDao.getById(serverId);
+        ServerDO serverEntity = serverDao.getById(serverId);
         Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
         if (SoftwareStatusEnum.RUNNING.getStatus().equals(redisNewStatus)) {
             operateSoftwareResponse.setStatus(SoftwareStatusEnum.RUNNING.getStatus());
@@ -136,9 +136,9 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<OperateSoftwareResponse> stop(IdRequest request) {
         OperateSoftwareResponse operateSoftwareResponse = new OperateSoftwareResponse();
-        RedisEntity redisEntity = dao.getById(request.getId());
+        RedisDO redisEntity = dao.getById(request.getId());
         Long serverId = redisEntity.getServerId();
-        ServerEntity serverEntity = serverDao.getById(serverId);
+        ServerDO serverEntity = serverDao.getById(serverId);
         Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
         if (SoftwareStatusEnum.STOP.getStatus().equals(redisNewStatus)) {
             operateSoftwareResponse.setStatus(SoftwareStatusEnum.STOP.getStatus());
@@ -158,7 +158,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> deleteManyRedis(IdsRequest request) {
         List<Long> ids = request.getIds();
-        List<RedisEntity> collect = ids.stream().map(t -> dao.getById(t)).collect(Collectors.toList());
+        List<RedisDO> collect = ids.stream().map(t -> dao.getById(t)).collect(Collectors.toList());
         AtomicBoolean b = new AtomicBoolean(true);
         collect.forEach(t -> {
             t.setDeleteFlag(true);
@@ -178,9 +178,9 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         AtomicBoolean b = new AtomicBoolean(true);
         ids.forEach(id -> {
             try {
-                RedisEntity redisEntity = dao.getById(id);
+                RedisDO redisEntity = dao.getById(id);
                 Long serverId = redisEntity.getServerId();
-                ServerEntity serverEntity = serverDao.getById(serverId);
+                ServerDO serverEntity = serverDao.getById(serverId);
                 redisEntity.setStatus(getRedisNewStatus(redisEntity, serverEntity));
                 String redisVersion = getRedisNewVersion(redisEntity, serverEntity);
                 redisEntity.setVersion(redisVersion);
@@ -202,9 +202,9 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
         List<Long> ids = request.getIds();
         AtomicBoolean b = new AtomicBoolean(true);
         ids.forEach(id -> {
-            RedisEntity redisEntity = dao.getById(id);
+            RedisDO redisEntity = dao.getById(id);
             Long serverId = redisEntity.getServerId();
-            ServerEntity serverEntity = serverDao.getById(serverId);
+            ServerDO serverEntity = serverDao.getById(serverId);
             Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
             if (SoftwareStatusEnum.RUNNING.getStatus().equals(redisNewStatus)) {
                 return;
@@ -224,9 +224,9 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     public ServiceResult<Boolean> stopManyRedis(IdsRequest request) {
         AtomicBoolean b = new AtomicBoolean(true);
         request.getIds().forEach(id -> {
-            RedisEntity redisEntity = dao.getById(id);
+            RedisDO redisEntity = dao.getById(id);
             Long serverId = redisEntity.getServerId();
-            ServerEntity serverEntity = serverDao.getById(serverId);
+            ServerDO serverEntity = serverDao.getById(serverId);
             Integer redisNewStatus = getRedisNewStatus(redisEntity, serverEntity);
             if (SoftwareStatusEnum.STOP.getStatus().equals(redisNewStatus)) {
                 return;
@@ -367,7 +367,7 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
 
-    public Integer getRedisNewStatus(RedisEntity redisEntity, ServerEntity serverEntity) {
+    public Integer getRedisNewStatus(RedisDO redisEntity, ServerDO serverEntity) {
 
         String statusSh = redisEntity.getStatusSh();
         String status = SshUtils.execCommandBySsh(serverEntity.getIp(), serverEntity.getPort(), serverEntity.getUsername(), serverEntity.getPassword(), statusSh);
@@ -379,9 +379,9 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
     }
 
     private Jedis getJedis(Long id) {
-        RedisEntity redisEntity = dao.getById(id);
+        RedisDO redisEntity = dao.getById(id);
         Long serverId = redisEntity.getServerId();
-        ServerEntity serverEntity = serverDao.getById(serverId);
+        ServerDO serverEntity = serverDao.getById(serverId);
         Jedis jedis = new Jedis(serverEntity.getIp(), redisEntity.getPort());
         if (!StringUtils.isEmpty(redisEntity.getPassword())) {
             jedis.auth(redisEntity.getPassword());
@@ -390,12 +390,12 @@ public class RedisServiceImpl extends BaseDefaultServiceImpl<RedisEntity> implem
 
     }
 
-    public String getRedisNewVersion(RedisEntity redisEntity, ServerEntity serverEntity) {
+    public String getRedisNewVersion(RedisDO redisEntity, ServerDO serverEntity) {
         Map<String, String> redisNewInfo = getRedisNewInfo(redisEntity, serverEntity);
         return redisNewInfo.get("redis_version");
     }
 
-    public Map<String, String> getRedisNewInfo(RedisEntity redisEntity, ServerEntity serverEntity) {
+    public Map<String, String> getRedisNewInfo(RedisDO redisEntity, ServerDO serverEntity) {
         Jedis jedis = new Jedis(serverEntity.getIp(), redisEntity.getPort());
         if (!StringUtils.isEmpty(redisEntity.getPassword())) {
             jedis.auth(redisEntity.getPassword());

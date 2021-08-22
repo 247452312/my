@@ -1,10 +1,10 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.ApiGroupEntity;
+import indi.uhyils.pojo.model.ApiGroupDO;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时22分
  */
-public interface ApiGroupService extends DefaultEntityService<ApiGroupEntity> {
+public interface ApiGroupService extends DefaultDOService<ApiGroupDO> {
 
     /**
      * 测试api
@@ -31,7 +31,7 @@ public interface ApiGroupService extends DefaultEntityService<ApiGroupEntity> {
      *
      * @return 可以被订阅的api群
      */
-    ServiceResult<ArrayList<ApiGroupEntity>> getCanBeSubscribed(DefaultRequest request);
+    ServiceResult<ArrayList<ApiGroupDO>> getCanBeSubscribed(DefaultRequest request);
 
 
 }

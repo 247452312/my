@@ -3,14 +3,14 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.model.base.BaseDoEntity;
+import indi.uhyils.pojo.model.base.BaseDoDO;
 import indi.uhyils.pojo.request.base.ArgsRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月05日 17时57分
  */
-public abstract class BaseDefaultServiceImpl<T extends BaseDoEntity> implements DefaultEntityService<T> {
+public abstract class BaseDefaultServiceImpl<T extends BaseDoDO> implements DefaultDOService<T> {
 
     @Override
     public ServiceResult<Page<T>> getByArgs(ArgsRequest argsRequest) {

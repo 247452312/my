@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusDO;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年06月19日 14时55分
  */
 @Mapper
-public interface MonitorJvmStatusDetailDao extends DefaultDao<LogMonitorJvmStatusEntity> {
+public interface MonitorJvmStatusDetailDao extends DefaultDao<LogMonitorJvmStatusDO> {
 
     /**
      * 根据主表id获取分表数据
@@ -19,5 +19,5 @@ public interface MonitorJvmStatusDetailDao extends DefaultDao<LogMonitorJvmStatu
      *
      * @return 主表id对应的分表数据
      */
-    List<LogMonitorJvmStatusEntity> getByMonitorId(Long id);
+    List<LogMonitorJvmStatusDO> getByMonitorId(Long id);
 }

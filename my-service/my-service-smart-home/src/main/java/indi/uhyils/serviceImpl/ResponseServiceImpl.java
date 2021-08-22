@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.ResponseDao;
-import indi.uhyils.pojo.model.ResponseEntity;
+import indi.uhyils.pojo.model.ResponseDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.ResponseService;
 
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年08月29日 10时47分52秒
  */
 @RpcService
-public class ResponseServiceImpl extends BaseDefaultServiceImpl<ResponseEntity> implements ResponseService {
+public class ResponseServiceImpl extends BaseDefaultServiceImpl<ResponseDO> implements ResponseService {
     @Resource
     private ResponseDao dao;
 

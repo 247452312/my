@@ -2,13 +2,12 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.dao.MenuDao;
 import indi.uhyils.dao.RoleDao;
 import indi.uhyils.dao.UserDao;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.model.DeptEntity;
+import indi.uhyils.pojo.model.DeptDO;
 import indi.uhyils.pojo.model.RoleDeptMiddle;
-import indi.uhyils.pojo.model.RoleEntity;
+import indi.uhyils.pojo.model.RoleDO;
 import indi.uhyils.pojo.request.PutDeptsToRoleRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
@@ -26,7 +25,7 @@ import javax.annotation.Resource;
  */
 @RpcService
 @ReadWriteMark(tables = {"sys_role"})
-public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implements RoleService {
+public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleDO> implements RoleService {
 
 
     @Resource
@@ -37,8 +36,8 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
 
     @Override
     @NoToken
-    public ServiceResult<RoleEntity> getRoleByRoleId(IdRequest request) {
-        RoleEntity byId = dao.getById(request.getId());
+    public ServiceResult<RoleDO> getRoleByRoleId(IdRequest request) {
+        RoleDO byId = dao.getById(request.getId());
         if (byId == null) {
             return ServiceResult.buildFailedResult("查询失败", null);
         }
@@ -67,13 +66,13 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     }
 
     @Override
-    public ServiceResult<ArrayList<RoleEntity>> getRoles(DefaultRequest request) {
+    public ServiceResult<ArrayList<RoleDO>> getRoles(DefaultRequest request) {
         return ServiceResult.buildSuccessResult("查询成功", dao.getAll());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dept", "sys_role_dept"})
-    public ServiceResult<ArrayList<DeptEntity>> getUserDeptsByRoleId(IdRequest request) {
+    public ServiceResult<ArrayList<DeptDO>> getUserDeptsByRoleId(IdRequest request) {
         return ServiceResult.buildSuccessResult("查询角色成功", userDao.getUserDeptsByRoleId(request.getId()));
     }
 
@@ -87,7 +86,7 @@ public class RoleServiceImpl extends BaseDefaultServiceImpl<RoleEntity> implemen
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept", "sys_user"})
     public ServiceResult<Boolean> deleteRole(IdRequest request) {
-        RoleEntity t = getDao().getById(request.getId());
+        RoleDO t = getDao().getById(request.getId());
         if (t == null) {
             return ServiceResult.buildFailedResult("查询失败", null);
         }

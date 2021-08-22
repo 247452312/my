@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.PowerEntity;
+import indi.uhyils.pojo.model.PowerDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,14 +12,14 @@ import java.util.ArrayList;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface PowerDao extends DefaultDao<PowerEntity> {
+public interface PowerDao extends DefaultDao<PowerDO> {
 
     /**
      * 获取所有表权限
      *
      * @return 所有表权限
      */
-    ArrayList<PowerEntity> getAll();
+    ArrayList<PowerDO> getAll();
 
     /**
      * 查询该用户是否有这个权限

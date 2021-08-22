@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.TraceLogEntity;
+import indi.uhyils.pojo.model.TraceLogDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2021年08月02日 08时14分
  */
 @Mapper
-public interface TraceLogDao extends DefaultDao<TraceLogEntity> {
+public interface TraceLogDao extends DefaultDao<TraceLogDO> {
 
 
 }

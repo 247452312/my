@@ -23,7 +23,7 @@
         a.version
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.RedisEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.RedisDO">
         select
         <include refid="columnList"/>
         from sys_software a
@@ -31,7 +31,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.RedisEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.RedisDO">
         select
         <include refid="columnList"/>
         from sys_software a
@@ -41,7 +41,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.RedisEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.RedisDO">
         select
         <include refid="columnList"/>
         from sys_software a
@@ -56,7 +56,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.RedisEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.RedisDO">
         insert sys_software(id,
         create_date,
         create_user,
@@ -91,7 +91,7 @@
         #{dockerName})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.RedisEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.RedisDO">
         update sys_software set
         update_date = #{updateDate}
         ,update_user = #{updateUser}

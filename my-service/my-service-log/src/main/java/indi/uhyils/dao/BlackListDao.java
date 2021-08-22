@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.BlackListEntity;
+import indi.uhyils.pojo.model.BlackListDO;
 import java.util.ArrayList;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年08月24日 06时40分49秒
  */
 @Mapper
-public interface BlackListDao extends DefaultDao<BlackListEntity> {
+public interface BlackListDao extends DefaultDao<BlackListDO> {
 
     /**
      * 获取所有的ip黑名单

@@ -9,7 +9,7 @@ import indi.uhyils.dao.MonitorDao;
 import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
-import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusDO;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ModelTransUtils;
@@ -46,7 +46,7 @@ public class RabbitJvmStatusInfoConsumer extends DefaultConsumer {
         LogUtil.info(this, text);
         JvmStatusInfo jvmStatusInfo = JSONObject.parseObject(text, JvmStatusInfo.class);
         Long id = monitorDao.getIdByJvmUniqueMark(jvmStatusInfo.getJvmUniqueMark());
-        LogMonitorJvmStatusEntity logMonitorJvmStatusEntity = ModelTransUtils.transJvmStatusInfoToMonitorJvmStatusDetailDO(jvmStatusInfo, id);
+        LogMonitorJvmStatusDO logMonitorJvmStatusEntity = ModelTransUtils.transJvmStatusInfoToMonitorJvmStatusDetailDO(jvmStatusInfo, id);
         // 保存状态信息
         try {
             logMonitorJvmStatusEntity.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());

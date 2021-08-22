@@ -1,10 +1,9 @@
 package indi.uhyils.service;
 
-import indi.uhyils.exception.IdGenerationException;
-import indi.uhyils.pojo.model.ApiSubscribeEntity;
+import indi.uhyils.pojo.model.ApiSubscribeDO;
 import indi.uhyils.pojo.request.SubscribeRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 
 /**
  * api订阅表
@@ -12,7 +11,7 @@ import indi.uhyils.service.base.DefaultEntityService;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时22分
  */
-public interface ApiSubscribeService extends DefaultEntityService<ApiSubscribeEntity> {
+public interface ApiSubscribeService extends DefaultDOService<ApiSubscribeDO> {
 
     /**
      * 订阅
@@ -21,8 +20,7 @@ public interface ApiSubscribeService extends DefaultEntityService<ApiSubscribeEn
      *
      * @return 是否订阅成功
      *
-     * @throws IdGenerationException 见{@link indi.uhyils.pojo.model.base.BaseDbSaveable#preInsert}
      * @throws InterruptedException
      */
-    ServiceResult<Boolean> subscribe(SubscribeRequest request) throws IdGenerationException, InterruptedException;
+    ServiceResult<Boolean> subscribe(SubscribeRequest request);
 }

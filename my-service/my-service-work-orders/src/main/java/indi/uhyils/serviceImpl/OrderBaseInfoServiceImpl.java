@@ -2,7 +2,7 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.*;
 import indi.uhyils.pojo.model.*;
-import indi.uhyils.pojo.model.base.BaseIdEntity;
+import indi.uhyils.pojo.model.base.BaseIdDO;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @RpcService
-public class OrderBaseInfoServiceImpl extends BaseDefaultServiceImpl<OrderBaseInfoEntity> implements OrderBaseInfoService {
+public class OrderBaseInfoServiceImpl extends BaseDefaultServiceImpl<OrderBaseInfoDO> implements OrderBaseInfoService {
 
     @Resource
     private OrderBaseInfoDao dao;
@@ -50,22 +50,22 @@ public class OrderBaseInfoServiceImpl extends BaseDefaultServiceImpl<OrderBaseIn
     }
 
     @Override
-    public ServiceResult<ArrayList<OrderBaseInfoEntity>> getAllBaseOrderIdAndName(DefaultRequest request) {
-        ArrayList<OrderBaseInfoEntity> result = dao.getAllBaseOrderIdAndName();
+    public ServiceResult<ArrayList<OrderBaseInfoDO>> getAllBaseOrderIdAndName(DefaultRequest request) {
+        ArrayList<OrderBaseInfoDO> result = dao.getAllBaseOrderIdAndName();
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<GetOneBaseOrderResponse> getOneOrder(IdRequest request) {
         Long id = request.getId();
-        OrderBaseInfoEntity byId = dao.getById(id);
-        List<OrderBaseNodeEntity> orderBaseNodes = orderBaseNodeDao.getNoHiddenByOrderId(id);
-        List<Long> orderNodeIds = orderBaseNodes.stream().map(BaseIdEntity::getId).collect(Collectors.toList());
-        Map<Long, List<OrderBaseNodeFieldEntity>> orderBaseFieldMap = orderBaseNodeFieldDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderBaseNodeFieldEntity::getBaseOrderId));
-        Map<Long, List<OrderBaseNodeResultTypeEntity>> orderBaseNodeResultTypeMap = orderBaseNodeResultTypeDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderBaseNodeResultTypeEntity::getBaseNodeId));
-        Map<Long, List<OrderBaseNodeRouteEntity>> orderBaseNodeRouteMap = orderBaseNodeRouteDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderBaseNodeRouteEntity::getPrevNodeId));
+        OrderBaseInfoDO byId = dao.getById(id);
+        List<OrderBaseNodeDO> orderBaseNodes = orderBaseNodeDao.getNoHiddenByOrderId(id);
+        List<Long> orderNodeIds = orderBaseNodes.stream().map(BaseIdDO::getId).collect(Collectors.toList());
+        Map<Long, List<OrderBaseNodeFieldDO>> orderBaseFieldMap = orderBaseNodeFieldDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderBaseNodeFieldDO::getBaseOrderId));
+        Map<Long, List<OrderBaseNodeResultTypeDO>> orderBaseNodeResultTypeMap = orderBaseNodeResultTypeDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderBaseNodeResultTypeDO::getBaseNodeId));
+        Map<Long, List<OrderBaseNodeRouteDO>> orderBaseNodeRouteMap = orderBaseNodeRouteDao.getByOrderNodeIds(orderNodeIds).stream().collect(Collectors.groupingBy(OrderBaseNodeRouteDO::getPrevNodeId));
         ArrayList<OrderBaseNodeAboutResponse> orderBaseNodeList = new ArrayList<>();
-        for (OrderBaseNodeEntity orderBaseNode : orderBaseNodes) {
+        for (OrderBaseNodeDO orderBaseNode : orderBaseNodes) {
             Long nodeId = orderBaseNode.getId();
             OrderBaseNodeAboutResponse build = OrderBaseNodeAboutResponse.build(orderBaseNode, orderBaseFieldMap.get(nodeId), orderBaseNodeResultTypeMap.get(nodeId), orderBaseNodeRouteMap.get(nodeId));
             orderBaseNodeList.add(build);

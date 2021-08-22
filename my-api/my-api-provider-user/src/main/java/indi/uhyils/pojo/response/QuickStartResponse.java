@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.pojo.model.MenuEntity;
+import indi.uhyils.pojo.model.MenuDO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,20 +16,20 @@ public class QuickStartResponse implements Serializable {
     /**
      * 按钮们 -> 默认都是叶子结点 且不少过8个
      */
-    private List<MenuEntity> menus;
+    private List<MenuDO> menus;
 
-    public static QuickStartResponse build(ArrayList<MenuEntity> menus) {
+    public static QuickStartResponse build(ArrayList<MenuDO> menus) {
         QuickStartResponse quickStartResponse = new QuickStartResponse();
         quickStartResponse.setMenus(menus);
         return quickStartResponse;
     }
 
 
-    public List<MenuEntity> getMenus() {
+    public List<MenuDO> getMenus() {
         return menus;
     }
 
-    public void setMenus(List<MenuEntity> menus) {
+    public void setMenus(List<MenuDO> menus) {
         this.menus = menus;
     }
 }

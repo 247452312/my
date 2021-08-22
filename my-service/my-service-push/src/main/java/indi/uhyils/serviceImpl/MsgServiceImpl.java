@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.MsgDao;
-import indi.uhyils.pojo.model.MsgEntity;
+import indi.uhyils.pojo.model.MsgDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.MsgService;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年06月25日 13时30分
  */
 @RpcService
-public class MsgServiceImpl extends BaseDefaultServiceImpl<MsgEntity> implements MsgService {
+public class MsgServiceImpl extends BaseDefaultServiceImpl<MsgDO> implements MsgService {
 
     @Resource
     private MsgDao dao;

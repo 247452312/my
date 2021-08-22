@@ -1,6 +1,6 @@
 package indi.uhyils.builder;
 
-import indi.uhyils.pojo.model.OrderNodeRouteEntity;
+import indi.uhyils.pojo.model.OrderNodeRouteDO;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -9,8 +9,8 @@ import indi.uhyils.pojo.model.OrderNodeRouteEntity;
 public class OrderNodeRouteBuilder {
 
 
-    public static OrderNodeRouteEntity build(Long prevNodeId, Long resultId, Long nextNodeId) {
-        OrderNodeRouteEntity orderNodeRouteEntity = new OrderNodeRouteEntity();
+    public static OrderNodeRouteDO build(Long prevNodeId, Long resultId, Long nextNodeId) {
+        OrderNodeRouteDO orderNodeRouteEntity = new OrderNodeRouteDO();
         orderNodeRouteEntity.setPrevNodeId(prevNodeId);
         orderNodeRouteEntity.setResultId(resultId);
         orderNodeRouteEntity.setNextNodeId(nextNodeId);

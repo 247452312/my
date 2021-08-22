@@ -9,8 +9,8 @@ import indi.uhyils.handler.InitApiHandler;
 import indi.uhyils.handler.RunApiHandler;
 import indi.uhyils.handler.SaveApiHandler;
 import indi.uhyils.handler.TransApiHandler;
-import indi.uhyils.pojo.model.OrderApiEntity;
-import indi.uhyils.pojo.model.OrderNodeEntity;
+import indi.uhyils.pojo.model.OrderApiDO;
+import indi.uhyils.pojo.model.OrderNodeDO;
 import indi.uhyils.pojo.temp.InitApiRequestTemporary;
 import indi.uhyils.pojo.temp.InitToRunApiTemporary;
 import indi.uhyils.pojo.temp.RunToSaveApiTemporary;
@@ -50,25 +50,25 @@ public class OrderAutoDealConsumer extends DefaultConsumer {
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
         InitApiRequestTemporary initApiRequestTemporary = ObjectByteUtil.toObject(body, InitApiRequestTemporary.class);
-        OrderNodeEntity orderNodeEntity = initApiRequestTemporary.getOrderNode();
+        OrderNodeDO orderNodeEntity = initApiRequestTemporary.getOrderNode();
 
         // 初始化方法
-        OrderApiEntity initApiEntity = orderApiDao.getById(orderNodeEntity.getInitApiId());
+        OrderApiDO initApiEntity = orderApiDao.getById(orderNodeEntity.getInitApiId());
         InitApiHandler initHandler = applicationContext.getBean(initApiEntity.getBeanName(), InitApiHandler.class);
         InitToRunApiTemporary init = initHandler.init(initApiRequestTemporary);
 
         // 运行方法
-        OrderApiEntity runApiEntity = orderApiDao.getById(orderNodeEntity.getRunApiId());
+        OrderApiDO runApiEntity = orderApiDao.getById(orderNodeEntity.getRunApiId());
         RunApiHandler runHandler = applicationContext.getBean(runApiEntity.getBeanName(), RunApiHandler.class);
         RunToSaveApiTemporary run = runHandler.run(init);
 
         // 保存方法
-        OrderApiEntity saveApiEntity = orderApiDao.getById(orderNodeEntity.getSaveApiId());
+        OrderApiDO saveApiEntity = orderApiDao.getById(orderNodeEntity.getSaveApiId());
         SaveApiHandler saveHandler = applicationContext.getBean(saveApiEntity.getBeanName(), SaveApiHandler.class);
         SaveToTransApiTemporary save = saveHandler.save(run);
 
         // 运行方法
-        OrderApiEntity transApiEntity = orderApiDao.getById(orderNodeEntity.getTransApiId());
+        OrderApiDO transApiEntity = orderApiDao.getById(orderNodeEntity.getTransApiId());
         TransApiHandler transHandler = applicationContext.getBean(transApiEntity.getBeanName(), TransApiHandler.class);
         transHandler.trans(save);
 

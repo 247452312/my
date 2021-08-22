@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.AlgorithmDao;
-import indi.uhyils.pojo.model.AlgorithmEntity;
+import indi.uhyils.pojo.model.AlgorithmDO;
 import indi.uhyils.pojo.request.CellAlgorithmRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.CellAlgorithmResponse;
@@ -31,7 +31,7 @@ public class AlgorithmServiceImpl implements AlgorithmService {
 
     @Override
     public ServiceResult<Double> getAlgorithmAccuracy(IdRequest request) {
-        AlgorithmEntity byId = dao.getById(request.getId());
+        AlgorithmDO byId = dao.getById(request.getId());
         return ServiceResult.buildSuccessResult("查询成功", byId.getAccuracy());
     }
 

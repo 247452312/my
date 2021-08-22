@@ -3,8 +3,9 @@ package indi.uhyils.aop;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.content.Content;
+import indi.uhyils.content.UserContent;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -100,7 +101,7 @@ public class TokenInjectAop {
         }
 
         /* 查询是否超时 */
-        UserEntity userEntity;
+        UserDO userEntity;
         // 如果参数中携带了用户,则不需要去再次查询用户
         if (arg.getUser() != null) {
             userEntity = arg.getUser();
@@ -110,32 +111,37 @@ public class TokenInjectAop {
         if (userEntity == null) {
             return ServiceResult.buildLoginOutResult();
         }
+        try {
+            UserContent.setUser(userEntity);
 
-        /* 查询是否有权限 */
-        // 超级管理员直接放行
-        if (ADMIN.equals(userEntity.getUserName())) {
-            userEntity.setRoleId(Content.ADMIN_ROLE_ID);
+            /* 查询是否有权限 */
+            // 超级管理员直接放行
+            if (ADMIN.equals(userEntity.getUserName())) {
+                userEntity.setRoleId(Content.ADMIN_ROLE_ID);
+                arg.setUser(userEntity);
+                //执行方法
+                return pjp.proceed(new DefaultRequest[]{arg});
+            }
+
+            String substring = className.substring(className.lastIndexOf('.') + 1);
+            if (substring.contains(IMPL)) {
+                substring = substring.substring(0, substring.length() - 4);
+            }
+            ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userEntity, userEntity.getId(), substring, methodName, token, arg);
+            if (!ServiceCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
+                return checkUserHavePowerServiceResult;
+            }
+            Boolean havePower = (Boolean) checkUserHavePowerServiceResult.getData();
+            if (!havePower) {
+                return ServiceResult.buildNoAuthResult();
+            }
+
             arg.setUser(userEntity);
             //执行方法
             return pjp.proceed(new DefaultRequest[]{arg});
+        } finally {
+            UserContent.clean();
         }
-
-        String substring = className.substring(className.lastIndexOf('.') + 1);
-        if (substring.contains(IMPL)) {
-            substring = substring.substring(0, substring.length() - 4);
-        }
-        ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userEntity, userEntity.getId(), substring, methodName, token, arg);
-        if (!ServiceCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
-            return checkUserHavePowerServiceResult;
-        }
-        Boolean havePower = (Boolean) checkUserHavePowerServiceResult.getData();
-        if (!havePower) {
-            return ServiceResult.buildNoAuthResult();
-        }
-
-        arg.setUser(userEntity);
-        //执行方法
-        return pjp.proceed(new DefaultRequest[]{arg});
     }
 
     /**
@@ -147,7 +153,7 @@ public class TokenInjectAop {
      *
      * @return 是否有权限
      */
-    private ServiceResult<JSONObject> checkUserHavePower(UserEntity userEntity, Long id, String interfaceName, String methodName, String token, DefaultRequest request) {
+    private ServiceResult<JSONObject> checkUserHavePower(UserDO userEntity, Long id, String interfaceName, String methodName, String token, DefaultRequest request) {
         CheckUserHavePowerRequest build = CheckUserHavePowerRequest.build(interfaceName, methodName, id);
         build.setToken(token);
         build.setUser(userEntity);

@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.ServerDao;
-import indi.uhyils.pojo.model.ServerEntity;
+import indi.uhyils.pojo.model.ServerDO;
 import indi.uhyils.pojo.request.GetNameByIdRequest;
 import indi.uhyils.pojo.request.TestConnByDataRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * @date 文件创建日期 2020年06月12日 13时34分
  */
 @RpcService
-public class ServerServiceImpl extends BaseDefaultServiceImpl<ServerEntity> implements ServerService {
+public class ServerServiceImpl extends BaseDefaultServiceImpl<ServerDO> implements ServerService {
 
     @Resource
     private ServerDao dao;
@@ -43,7 +43,7 @@ public class ServerServiceImpl extends BaseDefaultServiceImpl<ServerEntity> impl
 
     @Override
     public ServiceResult<Boolean> testConnById(IdRequest request) {
-        ServerEntity serverEntity = dao.getById(request.getId());
+        ServerDO serverEntity = dao.getById(request.getId());
         if (serverEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null);
         }
@@ -52,8 +52,8 @@ public class ServerServiceImpl extends BaseDefaultServiceImpl<ServerEntity> impl
     }
 
     @Override
-    public ServiceResult<ArrayList<ServerEntity>> getServersIdAndName(DefaultRequest request) {
-        ArrayList<ServerEntity> list = dao.getServersIdAndName();
+    public ServiceResult<ArrayList<ServerDO>> getServersIdAndName(DefaultRequest request) {
+        ArrayList<ServerDO> list = dao.getServersIdAndName();
         return ServiceResult.buildSuccessResult("查询成功", list);
     }
 

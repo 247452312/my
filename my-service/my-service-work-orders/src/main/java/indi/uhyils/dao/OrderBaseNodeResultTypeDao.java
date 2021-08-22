@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity;
+import indi.uhyils.pojo.model.OrderBaseNodeResultTypeDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @Mapper
-public interface OrderBaseNodeResultTypeDao extends DefaultDao<OrderBaseNodeResultTypeEntity> {
+public interface OrderBaseNodeResultTypeDao extends DefaultDao<OrderBaseNodeResultTypeDO> {
 
 
     /**
@@ -21,7 +21,7 @@ public interface OrderBaseNodeResultTypeDao extends DefaultDao<OrderBaseNodeResu
      * @param nodeId 节点id
      * @return
      */
-    List<OrderBaseNodeResultTypeEntity> getByOrderNodeId(Long nodeId);
+    List<OrderBaseNodeResultTypeDO> getByOrderNodeId(Long nodeId);
 
     /**
      * 根据节点id删除所有结果类型
@@ -39,5 +39,5 @@ public interface OrderBaseNodeResultTypeDao extends DefaultDao<OrderBaseNodeResu
      * @param orderNodeIds
      * @return
      */
-    List<OrderBaseNodeResultTypeEntity> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);
+    List<OrderBaseNodeResultTypeDO> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);
 }

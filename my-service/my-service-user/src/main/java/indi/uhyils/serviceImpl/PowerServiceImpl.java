@@ -4,8 +4,8 @@ import indi.uhyils.annotation.NoToken;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.PowerDao;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.model.PowerEntity;
-import indi.uhyils.pojo.model.PowerSimpleEntity;
+import indi.uhyils.pojo.model.PowerDO;
+import indi.uhyils.pojo.model.PowerSimpleDO;
 import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
 import indi.uhyils.pojo.request.GetMethodNameByInterfaceNameRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @RpcService
 @ReadWriteMark(tables = {"sys_power"})
-public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implements PowerService {
+public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerDO> implements PowerService {
 
 
     @Resource
@@ -45,7 +45,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     }
 
     @Override
-    public ServiceResult<ArrayList<PowerEntity>> getPowers(DefaultRequest request) {
+    public ServiceResult<ArrayList<PowerDO>> getPowers(DefaultRequest request) {
         return ServiceResult.buildSuccessResult("获取成功", dao.getAll());
     }
 
@@ -67,7 +67,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public ServiceResult<Boolean> deletePower(IdRequest request) {
-        PowerEntity powerEntity = getDao().getById(request.getId());
+        PowerDO powerEntity = getDao().getById(request.getId());
         if (powerEntity == null) {
             return ServiceResult.buildFailedResult("查询失败", null);
         }
@@ -95,7 +95,7 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_power"})
     public ServiceResult<Integer> initPowerInProStart(DefaultRequest request) throws Exception {
-        List<PowerSimpleEntity> powersSingle;
+        List<PowerSimpleDO> powersSingle;
         try {
             powersSingle = ApiPowerInitUtil.getPowersSingle();
         } catch (IOException e) {
@@ -103,11 +103,11 @@ public class PowerServiceImpl extends BaseDefaultServiceImpl<PowerEntity> implem
             return ServiceResult.buildErrorResult("初始化power失败:" + e.getMessage());
         }
         AtomicInteger newPowerCount = new AtomicInteger(0);
-        for (PowerSimpleEntity powerSimpleEntity : powersSingle) {
-            Integer count = dao.checkPower(powerSimpleEntity.getInterfaceName(), powerSimpleEntity.getMethodName());
+        for (PowerSimpleDO powerSimpleDO : powersSingle) {
+            Integer count = dao.checkPower(powerSimpleDO.getInterfaceName(), powerSimpleDO.getMethodName());
             // 如果数据库中不存在此权限
             if (count == 0) {
-                PowerEntity powerEntity = PowerEntity.build(powerSimpleEntity);
+                PowerDO powerEntity = PowerDO.build(powerSimpleDO);
                 powerEntity.preInsert(request);
                 dao.insert(powerEntity);
                 newPowerCount.incrementAndGet();

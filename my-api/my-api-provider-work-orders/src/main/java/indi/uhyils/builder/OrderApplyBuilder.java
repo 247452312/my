@@ -2,8 +2,8 @@ package indi.uhyils.builder;
 
 import indi.uhyils.enum_.OrderApplyStatusEnum;
 import indi.uhyils.enum_.OrderApplyTypeEnum;
-import indi.uhyils.pojo.model.OrderApplyEntity;
-import indi.uhyils.pojo.model.OrderNodeEntity;
+import indi.uhyils.pojo.model.OrderApplyDO;
+import indi.uhyils.pojo.model.OrderNodeDO;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -18,8 +18,8 @@ public class OrderApplyBuilder {
      *
      * @return
      */
-    public static OrderApplyEntity buildTransApplyByOrderNode(OrderNodeEntity orderNode, Long monitorUserId) {
-        OrderApplyEntity orderApplyEntity = new OrderApplyEntity();
+    public static OrderApplyDO buildTransApplyByOrderNode(OrderNodeDO orderNode, Long monitorUserId) {
+        OrderApplyDO orderApplyEntity = new OrderApplyDO();
         orderApplyEntity.setApplyUserId(orderNode.getNoticeUserId());
         orderApplyEntity.setOrderId(orderNode.getBaseInfoId());
         orderApplyEntity.setOrderNodeId(orderNode.getId());

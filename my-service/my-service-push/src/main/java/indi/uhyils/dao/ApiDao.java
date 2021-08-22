@@ -1,8 +1,8 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.ApiEntity;
-import indi.uhyils.pojo.model.ApiGroupEntity;
+import indi.uhyils.pojo.model.ApiDO;
+import indi.uhyils.pojo.model.ApiGroupDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface ApiDao extends DefaultDao<ApiEntity> {
+public interface ApiDao extends DefaultDao<ApiDO> {
 
     /**
      * 获取某个api群的所有api -> 排序 从小到大
@@ -21,14 +21,14 @@ public interface ApiDao extends DefaultDao<ApiEntity> {
      * @param apiGroup api群名称
      * @return apis
      */
-    List<ApiEntity> getGroupByGroupId(Long apiGroup);
+    List<ApiDO> getGroupByGroupId(Long apiGroup);
 
     /**
      * 获取全部api
      *
      * @return 全部api
      */
-    List<ApiEntity> getAll();
+    List<ApiDO> getAll();
 
     /**
      * 删除所有
@@ -36,5 +36,5 @@ public interface ApiDao extends DefaultDao<ApiEntity> {
      * @param byId
      * @return
      */
-    int deleteAllByGroup(ApiGroupEntity byId);
+    int deleteAllByGroup(ApiGroupDO byId);
 }

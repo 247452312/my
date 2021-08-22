@@ -3,7 +3,7 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.dao.TraceInfoDao;
 import indi.uhyils.log.LogTypeEnum;
 import indi.uhyils.pojo.model.TraceDetailStatisticsView;
-import indi.uhyils.pojo.model.TraceInfoEntity;
+import indi.uhyils.pojo.model.TraceInfoDO;
 import indi.uhyils.pojo.request.GetLinkByTraceIdAndRpcIdRequest;
 import indi.uhyils.pojo.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
@@ -24,7 +24,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2021年07月31日 06时43分
  */
 @RpcService
-public class TraceInfoServiceImpl extends BaseDefaultServiceImpl<TraceInfoEntity> implements TraceInfoService {
+public class TraceInfoServiceImpl extends BaseDefaultServiceImpl<TraceInfoDO> implements TraceInfoService {
 
     @Resource
     private TraceInfoDao dao;
@@ -41,21 +41,21 @@ public class TraceInfoServiceImpl extends BaseDefaultServiceImpl<TraceInfoEntity
 
     @Override
     public ServiceResult<GetLinkByTraceIdAndRpcIdResponse> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdRequest request) {
-        List<TraceInfoEntity> traceIds = dao.getLinkByTraceIdAndRpcIdPrefix(request);
+        List<TraceInfoDO> traceIds = dao.getLinkByTraceIdAndRpcIdPrefix(request);
         return ServiceResult.buildSuccessResult(GetLinkByTraceIdAndRpcIdResponse.build(traceIds));
     }
 
     @Override
-    public ServiceResult<ArrayList<TraceInfoEntity>> getLinkByTraceId(LongRequest request) {
-        ArrayList<TraceInfoEntity> list = dao.getTraceInfoByTraceId(request.getValue());
+    public ServiceResult<ArrayList<TraceInfoDO>> getLinkByTraceId(LongRequest request) {
+        ArrayList<TraceInfoDO> list = dao.getTraceInfoByTraceId(request.getValue());
         return ServiceResult.buildSuccessResult(list);
     }
 
     @Override
-    public ServiceResult<Page<TraceInfoEntity>> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request) {
-        List<TraceInfoEntity> list = dao.getTraceInfoByArgAndPage(request);
+    public ServiceResult<Page<TraceInfoDO>> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request) {
+        List<TraceInfoDO> list = dao.getTraceInfoByArgAndPage(request);
         Integer count = dao.getTraceInfoByArgAndPageCount(request);
-        Page<TraceInfoEntity> build = Page.build(request, list, count);
+        Page<TraceInfoDO> build = Page.build(request, list, count);
         return ServiceResult.buildSuccessResult(build);
     }
 

@@ -6,7 +6,7 @@ import indi.uhyils.content.HotSpotContent;
 import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.HotSpotResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -98,7 +98,7 @@ public class HotSpotAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)) || execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.service.base.DefaultEntityService.*(..))")
+    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)) || execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.service.base.DefaultDOService.*(..))")
     public void hotSpotAspectPoint() {
     }
 
@@ -182,7 +182,7 @@ public class HotSpotAop {
             return pjp.proceed();
         } else {
             DefaultRequest arg = (DefaultRequest) pjp.getArgs()[0];
-            UserEntity user = arg.getUser();
+            UserDO user = arg.getUser();
             switch (mark) {
                 //此处是读接口应该做的方法
                 case READ:
@@ -219,7 +219,7 @@ public class HotSpotAop {
     /**
      * 读接口应该做的方法
      */
-    private Object doHotSpotRead(List<String> tables, String className, String methodName, CacheTypeEnum cacheType, UserEntity user, ProceedingJoinPoint pjp) throws Throwable {
+    private Object doHotSpotRead(List<String> tables, String className, String methodName, CacheTypeEnum cacheType, UserDO user, ProceedingJoinPoint pjp) throws Throwable {
         //如果此接口不允许缓存
         if (CacheTypeEnum.NOT_TYPE.equals(cacheType)) {
             return pjp.proceed();

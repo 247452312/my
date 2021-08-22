@@ -1,7 +1,7 @@
 package indi.uhyils.job;
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.util.RpcApiUtil;
 
@@ -35,9 +35,9 @@ public class JobRunnable implements Callable {
     /**
      * 调用用户
      */
-    private UserEntity userEntity;
+    private UserDO userEntity;
 
-    public JobRunnable(String interfaceName, String methodName, String params, String paramType, UserEntity userEntity) {
+    public JobRunnable(String interfaceName, String methodName, String params, String paramType, UserDO userEntity) {
         this.interfaceName = interfaceName;
         this.methodName = methodName;
         this.params = params;

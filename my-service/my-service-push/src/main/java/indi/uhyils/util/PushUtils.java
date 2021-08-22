@@ -3,9 +3,9 @@ package indi.uhyils.util;
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.MsgDao;
 import indi.uhyils.enum_.PushTypeEnum;
-import indi.uhyils.pojo.model.ApiGroupEntity;
-import indi.uhyils.pojo.model.MsgEntity;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.ApiGroupDO;
+import indi.uhyils.pojo.model.MsgDO;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.util.mail.SendMail;
 import indi.uhyils.util.page.SendPage;
@@ -30,7 +30,7 @@ public class PushUtils {
      * @param sendContent 发送内容
      * @return
      */
-    public static Boolean emailPush(UserEntity userEntity, String title, String sendContent) throws Exception {
+    public static Boolean emailPush(UserDO userEntity, String title, String sendContent) throws Exception {
         String mail = userEntity.getMail();
         Boolean send = SendMail.send(mail, title, sendContent);
         saveMsg(userEntity, title, sendContent, PushTypeEnum.EMAIL, send);
@@ -47,7 +47,7 @@ public class PushUtils {
      * @param sendContent 发送内容
      * @return
      */
-    public static Boolean pagePush(UserEntity userEntity, String title, String sendContent) throws Exception {
+    public static Boolean pagePush(UserDO userEntity, String title, String sendContent) throws Exception {
         Long userId = userEntity.getId();
         Boolean send = SendPage.send(userId, title, sendContent);
         saveMsg(userEntity, title, sendContent, PushTypeEnum.PAGE, send);
@@ -63,7 +63,7 @@ public class PushUtils {
      * @param apiGroupEntity api群
      * @return 内容
      */
-    public static String getSendContent(UserEntity userEntity, ApiGroupEntity apiGroupEntity) {
+    public static String getSendContent(UserDO userEntity, ApiGroupDO apiGroupEntity) {
         HashMap<String, String> parameter = new HashMap<>(16);
         ApiUtils.callApi(apiGroupEntity.getApis(), userEntity, parameter);
         String resultFormat = apiGroupEntity.getResultFormat();
@@ -82,16 +82,16 @@ public class PushUtils {
      * @param sendContent 内容
      * @param type        类型
      */
-    private static void saveMsg(UserEntity userEntity, String title, String sendContent, PushTypeEnum type, Boolean success) throws Exception {
+    private static void saveMsg(UserDO userEntity, String title, String sendContent, PushTypeEnum type, Boolean success) throws Exception {
         MsgDao bean = SpringUtil.getBean(MsgDao.class);
-        MsgEntity t;
+        MsgDO t;
         if (success) {
             t = MsgBuild.buildSuccessMsg(userEntity.getId(), title, sendContent, type);
         } else {
             t = MsgBuild.buildFaultMsg(userEntity.getId(), title, sendContent, type);
         }
         DefaultRequest request = new DefaultRequest();
-        UserEntity user = new UserEntity();
+        UserDO user = new UserDO();
         user.setId(Content.ADMIN_USER_ID);
         request.setUser(user);
         t.preInsert(request);

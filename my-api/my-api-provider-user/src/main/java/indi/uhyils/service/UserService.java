@@ -1,6 +1,6 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.model.base.TokenInfo;
 import indi.uhyils.pojo.request.LoginRequest;
 import indi.uhyils.pojo.request.UpdatePasswordRequest;
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.LoginResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 import java.util.ArrayList;
 
 
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月20日 11时29分
  */
-public interface UserService extends DefaultEntityService<UserEntity> {
+public interface UserService extends DefaultDOService<UserDO> {
 
 
     /**
@@ -28,7 +28,7 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      *
      * @return 用户
      */
-    ServiceResult<UserEntity> getUserById(IdRequest idRequest);
+    ServiceResult<UserDO> getUserById(IdRequest idRequest);
 
 
     /**
@@ -83,7 +83,7 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      *
      * @return 全部用户
      */
-    ServiceResult<ArrayList<UserEntity>> getUsers(DefaultRequest request);
+    ServiceResult<ArrayList<UserDO>> getUsers(DefaultRequest request);
 
     /**
      * 默认获取用户本身的方式
@@ -92,7 +92,7 @@ public interface UserService extends DefaultEntityService<UserEntity> {
      *
      * @return 用户
      */
-    ServiceResult<UserEntity> getUserByToken(DefaultRequest request);
+    ServiceResult<UserDO> getUserByToken(DefaultRequest request);
 
     /**
      * 更新密码

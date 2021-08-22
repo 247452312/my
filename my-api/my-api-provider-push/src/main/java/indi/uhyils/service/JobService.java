@@ -1,9 +1,9 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.JobEntity;
+import indi.uhyils.pojo.model.JobDO;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 
 /**
  * 定时任务管理表
@@ -11,7 +11,7 @@ import indi.uhyils.service.base.DefaultEntityService;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时22分
  */
-public interface JobService extends DefaultEntityService<JobEntity> {
+public interface JobService extends DefaultDOService<JobDO> {
 
     /**
      * 暂停定时任务

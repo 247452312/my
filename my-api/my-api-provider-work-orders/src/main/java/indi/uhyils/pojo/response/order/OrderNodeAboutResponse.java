@@ -1,11 +1,11 @@
 package indi.uhyils.pojo.response.order;
 
 
-import indi.uhyils.pojo.model.OrderNodeEntity;
-import indi.uhyils.pojo.model.OrderNodeFieldEntity;
-import indi.uhyils.pojo.model.OrderNodeFieldValueEntity;
-import indi.uhyils.pojo.model.OrderNodeResultTypeEntity;
-import indi.uhyils.pojo.model.OrderNodeRouteEntity;
+import indi.uhyils.pojo.model.OrderNodeDO;
+import indi.uhyils.pojo.model.OrderNodeFieldDO;
+import indi.uhyils.pojo.model.OrderNodeFieldValueDO;
+import indi.uhyils.pojo.model.OrderNodeResultTypeDO;
+import indi.uhyils.pojo.model.OrderNodeRouteDO;
 import java.io.Serializable;
 import java.util.List;
 
@@ -18,29 +18,29 @@ public class OrderNodeAboutResponse implements Serializable {
     /**
      * 基本工单节点
      */
-    private OrderNodeEntity orderNode;
+    private OrderNodeDO orderNode;
 
     /**
      * 此工单节点的所有属性
      */
-    private List<OrderNodeFieldEntity> orderNodeFields;
+    private List<OrderNodeFieldDO> orderNodeFields;
 
     /**
      * 此工单节点结果的类型
      */
-    private List<OrderNodeResultTypeEntity> orderNodeResultTypes;
+    private List<OrderNodeResultTypeDO> orderNodeResultTypes;
 
     /**
      * 此工单节点的路由
      */
-    private List<OrderNodeRouteEntity> orderNodeRoutes;
+    private List<OrderNodeRouteDO> orderNodeRoutes;
 
     /**
      * 此节点的所有属性填写的值
      */
-    private List<OrderNodeFieldValueEntity> orderNodeFieldValues;
+    private List<OrderNodeFieldValueDO> orderNodeFieldValues;
 
-    public static OrderNodeAboutResponse build(OrderNodeEntity orderNode, List<OrderNodeFieldEntity> orderNodeFields, List<OrderNodeResultTypeEntity> orderNodeResultTypes, List<OrderNodeRouteEntity> orderNodeRoutes, List<OrderNodeFieldValueEntity> orderNodeFieldValues) {
+    public static OrderNodeAboutResponse build(OrderNodeDO orderNode, List<OrderNodeFieldDO> orderNodeFields, List<OrderNodeResultTypeDO> orderNodeResultTypes, List<OrderNodeRouteDO> orderNodeRoutes, List<OrderNodeFieldValueDO> orderNodeFieldValues) {
         OrderNodeAboutResponse build = new OrderNodeAboutResponse();
         build.setOrderNode(orderNode);
         build.setOrderNodeFields(orderNodeFields);
@@ -50,43 +50,43 @@ public class OrderNodeAboutResponse implements Serializable {
         return build;
     }
 
-    public OrderNodeEntity getOrderNode() {
+    public OrderNodeDO getOrderNode() {
         return orderNode;
     }
 
-    public void setOrderNode(OrderNodeEntity orderNode) {
+    public void setOrderNode(OrderNodeDO orderNode) {
         this.orderNode = orderNode;
     }
 
-    public List<OrderNodeFieldEntity> getOrderNodeFields() {
+    public List<OrderNodeFieldDO> getOrderNodeFields() {
         return orderNodeFields;
     }
 
-    public void setOrderNodeFields(List<OrderNodeFieldEntity> orderNodeFields) {
+    public void setOrderNodeFields(List<OrderNodeFieldDO> orderNodeFields) {
         this.orderNodeFields = orderNodeFields;
     }
 
-    public List<OrderNodeResultTypeEntity> getOrderNodeResultTypes() {
+    public List<OrderNodeResultTypeDO> getOrderNodeResultTypes() {
         return orderNodeResultTypes;
     }
 
-    public void setOrderNodeResultTypes(List<OrderNodeResultTypeEntity> orderNodeResultTypes) {
+    public void setOrderNodeResultTypes(List<OrderNodeResultTypeDO> orderNodeResultTypes) {
         this.orderNodeResultTypes = orderNodeResultTypes;
     }
 
-    public List<OrderNodeRouteEntity> getOrderNodeRoutes() {
+    public List<OrderNodeRouteDO> getOrderNodeRoutes() {
         return orderNodeRoutes;
     }
 
-    public void setOrderNodeRoutes(List<OrderNodeRouteEntity> orderNodeRoutes) {
+    public void setOrderNodeRoutes(List<OrderNodeRouteDO> orderNodeRoutes) {
         this.orderNodeRoutes = orderNodeRoutes;
     }
 
-    public List<OrderNodeFieldValueEntity> getOrderNodeFieldValues() {
+    public List<OrderNodeFieldValueDO> getOrderNodeFieldValues() {
         return orderNodeFieldValues;
     }
 
-    public void setOrderNodeFieldValues(List<OrderNodeFieldValueEntity> orderNodeFieldValues) {
+    public void setOrderNodeFieldValues(List<OrderNodeFieldValueDO> orderNodeFieldValues) {
         this.orderNodeFieldValues = orderNodeFieldValues;
     }
 }

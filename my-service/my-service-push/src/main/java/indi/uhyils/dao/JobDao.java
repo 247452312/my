@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.JobEntity;
+import indi.uhyils.pojo.model.JobDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,14 +12,14 @@ import java.util.List;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface JobDao extends DefaultDao<JobEntity> {
+public interface JobDao extends DefaultDao<JobDO> {
 
     /**
      * 获取全部
      *
      * @return
      */
-    List<JobEntity> getAll();
+    List<JobDO> getAll();
 
     /**
      * 暂停一个任务

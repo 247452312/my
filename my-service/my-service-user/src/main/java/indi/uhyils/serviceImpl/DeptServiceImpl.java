@@ -4,7 +4,7 @@ import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.dao.DeptDao;
 import indi.uhyils.dao.MenuDao;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.model.DeptEntity;
+import indi.uhyils.pojo.model.DeptDO;
 import indi.uhyils.pojo.model.DeptMenuMiddle;
 import indi.uhyils.pojo.model.DeptPowerMiddle;
 import indi.uhyils.pojo.request.PutDeptsToMenuRequest;
@@ -22,14 +22,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.repository.ClassRepository;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -37,7 +35,7 @@ import sun.reflect.generics.repository.ClassRepository;
  */
 @RpcService
 @ReadWriteMark(tables = {"sys_dept"})
-public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implements DeptService {
+public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptDO> implements DeptService {
 
     @Resource
     private DeptDao dao;
@@ -119,7 +117,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     }
 
     @Override
-    public ServiceResult<ArrayList<DeptEntity>> getDepts(PutDeptsToMenuRequest request) {
+    public ServiceResult<ArrayList<DeptDO>> getDepts(PutDeptsToMenuRequest request) {
         return ServiceResult.buildSuccessResult("获取成功", dao.getAll());
     }
 
@@ -140,7 +138,7 @@ public class DeptServiceImpl extends BaseDefaultServiceImpl<DeptEntity> implemen
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept", "sys_dept_power", "sys_dept_menu", "sys_role_dept"})
     public ServiceResult<Boolean> deleteDept(IdRequest request) {
-        DeptEntity t = getDao().getById(request.getId());
+        DeptDO t = getDao().getById(request.getId());
         if (t == null) {
             return ServiceResult.buildFailedResult("查无此人", null);
         }

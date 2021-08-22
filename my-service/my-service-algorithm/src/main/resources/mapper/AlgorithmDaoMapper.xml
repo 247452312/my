@@ -22,7 +22,7 @@
         a.out_param_size  as outParamSize
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.AlgorithmEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.AlgorithmDO">
         select
         <include refid="columnList"/>
         from sys_algorithm a
@@ -30,7 +30,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.AlgorithmEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.AlgorithmDO">
         select
         <include refid="columnList"/>
         from sys_algorithm a
@@ -40,7 +40,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.AlgorithmEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.AlgorithmDO">
         select
         <include refid="columnList"/>
         from sys_algorithm a
@@ -55,7 +55,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.AlgorithmEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.AlgorithmDO">
         insert
         sys_algorithm(id,
         create_date,
@@ -84,7 +84,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.AlgorithmEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.AlgorithmDO">
         update sys_algorithm set
         update_date = #{updateDate}
         ,update_user = #{updateUser}

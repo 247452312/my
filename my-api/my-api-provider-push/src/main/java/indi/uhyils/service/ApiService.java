@@ -1,10 +1,10 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.ApiEntity;
+import indi.uhyils.pojo.model.ApiDO;
 import indi.uhyils.pojo.request.GetByArgsAndGroupRequest;
 import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 
 /**
  * 外界api调用表
@@ -12,7 +12,7 @@ import indi.uhyils.service.base.DefaultEntityService;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时22分
  */
-public interface ApiService extends DefaultEntityService<ApiEntity> {
+public interface ApiService extends DefaultDOService<ApiDO> {
 
     /**
      * 获取所有的指定组下的api
@@ -21,5 +21,5 @@ public interface ApiService extends DefaultEntityService<ApiEntity> {
      *
      * @return 所有的指定组下的api
      */
-    ServiceResult<Page<ApiEntity>> getByArgsAndGroup(GetByArgsAndGroupRequest request);
+    ServiceResult<Page<ApiDO>> getByArgsAndGroup(GetByArgsAndGroupRequest request);
 }

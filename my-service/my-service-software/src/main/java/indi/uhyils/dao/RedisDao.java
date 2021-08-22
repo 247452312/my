@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.RedisEntity;
+import indi.uhyils.pojo.model.RedisDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -9,5 +9,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年06月12日 13时23分
  */
 @Mapper
-public interface RedisDao extends DefaultDao<RedisEntity> {
+public interface RedisDao extends DefaultDao<RedisDO> {
 }

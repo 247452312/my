@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.OrderLogDao;
-import indi.uhyils.pojo.model.OrderLogEntity;
+import indi.uhyils.pojo.model.OrderLogDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.OrderLogService;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @RpcService
-public class OrderLogServiceImpl extends BaseDefaultServiceImpl<OrderLogEntity> implements OrderLogService {
+public class OrderLogServiceImpl extends BaseDefaultServiceImpl<OrderLogDO> implements OrderLogService {
 
     @Resource
     private OrderLogDao dao;

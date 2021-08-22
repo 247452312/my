@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.MenuEntity;
+import indi.uhyils.pojo.model.MenuDO;
 import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface MenuDao extends DefaultDao<MenuEntity> {
+public interface MenuDao extends DefaultDao<MenuDO> {
 
 
     /**
@@ -22,7 +22,7 @@ public interface MenuDao extends DefaultDao<MenuEntity> {
      * @param iframe IFrame
      * @return 实例
      */
-    List<MenuEntity> getByIFrame(Integer iframe);
+    List<MenuDO> getByIFrame(Integer iframe);
 
     /**
      * 根据权限集ids获取menuId

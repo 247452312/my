@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.ServerEntity;
+import indi.uhyils.pojo.model.ServerDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
@@ -11,14 +11,14 @@ import java.util.ArrayList;
  * @date 文件创建日期 2020年06月12日 13时34分
  */
 @Mapper
-public interface ServerDao extends DefaultDao<ServerEntity> {
+public interface ServerDao extends DefaultDao<ServerDO> {
 
     /**
      * 获取所有的服务器信息
      *
      * @return 所有服务器信息(只有id和name)
      */
-    ArrayList<ServerEntity> getServersIdAndName();
+    ArrayList<ServerDO> getServersIdAndName();
 
     /**
      * 根据服务器id获取名称

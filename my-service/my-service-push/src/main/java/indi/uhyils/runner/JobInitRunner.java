@@ -1,7 +1,7 @@
 package indi.uhyils.runner;
 
 import indi.uhyils.dao.JobDao;
-import indi.uhyils.pojo.model.JobEntity;
+import indi.uhyils.pojo.model.JobDO;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ScheduledManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class JobInitRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        List<JobEntity> list = jobDao.getAll();
+        List<JobDO> list = jobDao.getAll();
         list.forEach(t -> {
             if (Boolean.FALSE.equals(t.getPause())) {
                 scheduledManager.addJob(t);

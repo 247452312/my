@@ -15,7 +15,7 @@
         a.method_name    as methodName
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.PowerEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.PowerDO">
         select
         <include refid="columnList"/>
         from sys_power a
@@ -23,7 +23,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.PowerEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.PowerDO">
         select
         <include refid="columnList"/>
         from sys_power a
@@ -33,7 +33,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.PowerEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.PowerDO">
         select
         <include refid="columnList"/>
         from sys_power a
@@ -48,7 +48,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.PowerEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.PowerDO">
         insert sys_power(id,
         create_date,
         create_user,
@@ -67,7 +67,7 @@
         #{methodName})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.PowerEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.PowerDO">
         update sys_power set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -104,7 +104,7 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getAll" resultType="indi.uhyils.pojo.model.PowerEntity">
+    <select id="getAll" resultType="indi.uhyils.pojo.model.PowerDO">
         select
         <include refid="columnList"/>
         from sys_power a

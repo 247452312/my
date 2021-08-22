@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.OrderBaseInfoEntity;
+import indi.uhyils.pojo.model.OrderBaseInfoDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @Mapper
-public interface OrderBaseInfoDao extends DefaultDao<OrderBaseInfoEntity> {
+public interface OrderBaseInfoDao extends DefaultDao<OrderBaseInfoDO> {
 
 
     /**
@@ -19,5 +19,5 @@ public interface OrderBaseInfoDao extends DefaultDao<OrderBaseInfoEntity> {
      *
      * @return
      */
-    ArrayList<OrderBaseInfoEntity> getAllBaseOrderIdAndName();
+    ArrayList<OrderBaseInfoDO> getAllBaseOrderIdAndName();
 }

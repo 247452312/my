@@ -17,14 +17,14 @@
         a.update_user     as updateUser
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusDO">
         select
         <include refid="columnList"/>
         from sys_log_monitor_jvm_status a
         where id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusDO">
         select
         <include refid="columnList"/>
         from sys_log_monitor_jvm_status a
@@ -35,7 +35,7 @@
         order by time desc
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusDO">
         select
         <include refid="columnList"/>
         from sys_log_monitor_jvm_status a
@@ -51,7 +51,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.LogMonitorJvmStatusDO">
         insert sys_log_monitor_jvm_status(id,
         fid,
         time,
@@ -99,7 +99,7 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getByMonitorId" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusEntity">
+    <select id="getByMonitorId" resultType="indi.uhyils.pojo.model.LogMonitorJvmStatusDO">
         select
         <include refid="columnList"/>
         from sys_log_monitor_jvm_status a

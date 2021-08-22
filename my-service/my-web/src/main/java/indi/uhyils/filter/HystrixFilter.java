@@ -3,7 +3,6 @@ package indi.uhyils.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
-import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.exception.RpcException;
@@ -13,7 +12,6 @@ import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.filter.filter.ConsumerFilter;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
 import indi.uhyils.util.IdUtil;
-import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,12 +42,9 @@ public class HystrixFilter implements ConsumerFilter {
         ArrayList list = JSON.parseObject(rpcData.content().getLine(RpcRequestContentEnum.ARG_MAP.getLine()), ArrayList.class, Feature.SupportAutoType);
         DefaultRequest defaultRequest = ((JSONObject) list.get(0)).toJavaObject(DefaultRequest.class);
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
-        try {
-            defaultRequest.setUnique(bean.newId());
-            List<DefaultRequest> defaultRequests = Arrays.asList(defaultRequest);
-            rpcData.content().contentArray()[RpcRequestContentEnum.ARG_MAP.getLine()] = JSON.toJSONString(defaultRequests);
-        } catch (IdGenerationException e) {
-            LogUtil.error(this, e);
-        }
+        defaultRequest.setUnique(bean.newId());
+        List<DefaultRequest> defaultRequests = Arrays.asList(defaultRequest);
+        rpcData.content().contentArray()[RpcRequestContentEnum.ARG_MAP.getLine()] = JSON.toJSONString(defaultRequests);
+
     }
 }

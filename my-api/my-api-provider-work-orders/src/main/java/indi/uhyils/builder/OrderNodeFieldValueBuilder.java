@@ -1,6 +1,6 @@
 package indi.uhyils.builder;
 
-import indi.uhyils.pojo.model.OrderNodeFieldValueEntity;
+import indi.uhyils.pojo.model.OrderNodeFieldValueDO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +19,8 @@ public class OrderNodeFieldValueBuilder {
      *
      * @return
      */
-    public static OrderNodeFieldValueEntity buildOrderNodeFieldValue(Long orderFieldId, String value) {
-        OrderNodeFieldValueEntity fieldValue = new OrderNodeFieldValueEntity();
+    public static OrderNodeFieldValueDO buildOrderNodeFieldValue(Long orderFieldId, String value) {
+        OrderNodeFieldValueDO fieldValue = new OrderNodeFieldValueDO();
         fieldValue.setNodeFieldId(orderFieldId);
         fieldValue.setRealValue(value);
         return fieldValue;
@@ -33,8 +33,8 @@ public class OrderNodeFieldValueBuilder {
      *
      * @return
      */
-    public static List<OrderNodeFieldValueEntity> buildOrderNodeFieldValues(Map<Long, String> map) {
-        List<OrderNodeFieldValueEntity> result = new ArrayList<>(map.size());
+    public static List<OrderNodeFieldValueDO> buildOrderNodeFieldValues(Map<Long, String> map) {
+        List<OrderNodeFieldValueDO> result = new ArrayList<>(map.size());
         for (Map.Entry<Long, String> entry : map.entrySet()) {
             result.add(buildOrderNodeFieldValue(entry.getKey(), entry.getValue()));
         }

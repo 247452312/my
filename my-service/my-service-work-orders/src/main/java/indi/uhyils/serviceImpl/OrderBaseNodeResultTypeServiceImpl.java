@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.OrderBaseNodeResultTypeDao;
-import indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity;
+import indi.uhyils.pojo.model.OrderBaseNodeResultTypeDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.OrderBaseNodeResultTypeService;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @RpcService
-public class OrderBaseNodeResultTypeServiceImpl extends BaseDefaultServiceImpl<OrderBaseNodeResultTypeEntity> implements OrderBaseNodeResultTypeService {
+public class OrderBaseNodeResultTypeServiceImpl extends BaseDefaultServiceImpl<OrderBaseNodeResultTypeDO> implements OrderBaseNodeResultTypeService {
 
     @Resource
     private OrderBaseNodeResultTypeDao dao;

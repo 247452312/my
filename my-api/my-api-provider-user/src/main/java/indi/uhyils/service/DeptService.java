@@ -1,6 +1,6 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.DeptEntity;
+import indi.uhyils.pojo.model.DeptDO;
 import indi.uhyils.pojo.request.PutDeptsToMenuRequest;
 import indi.uhyils.pojo.request.PutMenusToDeptsRequest;
 import indi.uhyils.pojo.request.PutPowersToDeptRequest;
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.request.base.IdsRequest;
 import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
 import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时25分
  */
-public interface DeptService extends DefaultEntityService<DeptEntity> {
+public interface DeptService extends DefaultDOService<DeptDO> {
 
     /**
      * 给权限集添加权限
@@ -65,7 +65,7 @@ public interface DeptService extends DefaultEntityService<DeptEntity> {
      *
      * @return 权限集
      */
-    ServiceResult<ArrayList<DeptEntity>> getDepts(PutDeptsToMenuRequest request);
+    ServiceResult<ArrayList<DeptDO>> getDepts(PutDeptsToMenuRequest request);
 
 
     /**

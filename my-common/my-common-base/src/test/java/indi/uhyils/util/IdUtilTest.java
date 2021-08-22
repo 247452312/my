@@ -1,6 +1,5 @@
 package indi.uhyils.util;
 
-import indi.uhyils.exception.IdGenerationException;
 import indi.uhyils.rpc.util.RpcAssertUtil;
 import java.util.Collections;
 import java.util.HashSet;
@@ -34,15 +33,11 @@ public class IdUtilTest {
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < size; i++) {
             executor.execute(() -> {
-                try {
-                    long e = idUtil.newId();
-                    if (set.contains(e)) {
-                        System.out.println("aaaaaaaaaaaaaaaaa");
-                    }
-                    set.add(e);
-                } catch (IdGenerationException e) {
-                    LogUtil.error(e);
+                long e = idUtil.newId();
+                if (set.contains(e)) {
+                    System.out.println("aaaaaaaaaaaaaaaaa");
                 }
+                set.add(e);
             });
         }
         executor.shutdown();

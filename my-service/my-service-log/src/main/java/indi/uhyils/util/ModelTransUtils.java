@@ -5,9 +5,9 @@ import indi.uhyils.mq.pojo.mqinfo.InterfaceCallInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmStartInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
-import indi.uhyils.pojo.model.LogMonitorEntity;
-import indi.uhyils.pojo.model.LogMonitorInterfaceCallEntity;
-import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
+import indi.uhyils.pojo.model.LogMonitorDO;
+import indi.uhyils.pojo.model.LogMonitorInterfaceCallDO;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusDO;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
  */
 public class ModelTransUtils {
 
-    public static LogMonitorEntity transJvmStartInfoToMonitorDO(JvmStartInfo jvmStartInfo) {
-        LogMonitorEntity logMonitorEntity = new LogMonitorEntity();
+    public static LogMonitorDO transJvmStartInfoToMonitorDO(JvmStartInfo jvmStartInfo) {
+        LogMonitorDO logMonitorEntity = new LogMonitorDO();
         JvmUniqueMark jvmUniqueMark = jvmStartInfo.getJvmUniqueMark();
         logMonitorEntity.setIp(jvmUniqueMark.getIp());
         logMonitorEntity.setServiceName(jvmUniqueMark.getServiceName());
@@ -38,8 +38,8 @@ public class ModelTransUtils {
         return logMonitorEntity;
     }
 
-    public static LogMonitorJvmStatusEntity transJvmStatusInfoToMonitorJvmStatusDetailDO(JvmStatusInfo jvmStatusInfo, Long fid) {
-        LogMonitorJvmStatusEntity logMonitorJvmStatusEntity = new LogMonitorJvmStatusEntity();
+    public static LogMonitorJvmStatusDO transJvmStatusInfoToMonitorJvmStatusDetailDO(JvmStatusInfo jvmStatusInfo, Long fid) {
+        LogMonitorJvmStatusDO logMonitorJvmStatusEntity = new LogMonitorJvmStatusDO();
         logMonitorJvmStatusEntity.setFid(fid);
         logMonitorJvmStatusEntity.setHeapUseMem(jvmStatusInfo.getHeapUseMem());
         logMonitorJvmStatusEntity.setNoHeapUseMem(jvmStatusInfo.getNoHeapUseMem());
@@ -48,12 +48,12 @@ public class ModelTransUtils {
         return logMonitorJvmStatusEntity;
     }
 
-    public static List<LogMonitorJvmStatusEntity> transJvmStatusInfosToMonitorJvmStatusDetailDOs(List<JvmStatusInfo> jvmStatusInfos, Long fid) {
+    public static List<LogMonitorJvmStatusDO> transJvmStatusInfosToMonitorJvmStatusDetailDOs(List<JvmStatusInfo> jvmStatusInfos, Long fid) {
         return jvmStatusInfos.stream().map(jvmStatusInfo -> transJvmStatusInfoToMonitorJvmStatusDetailDO(jvmStatusInfo, fid)).collect(Collectors.toList());
     }
 
-    public static LogMonitorInterfaceCallEntity transInterfaceCallInfoToMonitorInterfaceDetailDO(InterfaceCallInfo interfaceCallInfo, Long fid) {
-        LogMonitorInterfaceCallEntity logMonitorInterfaceCallEntity = new LogMonitorInterfaceCallEntity();
+    public static LogMonitorInterfaceCallDO transInterfaceCallInfoToMonitorInterfaceDetailDO(InterfaceCallInfo interfaceCallInfo, Long fid) {
+        LogMonitorInterfaceCallDO logMonitorInterfaceCallEntity = new LogMonitorInterfaceCallDO();
         logMonitorInterfaceCallEntity.setFid(fid);
         logMonitorInterfaceCallEntity.setInterfaceName(interfaceCallInfo.getInterfaceName());
         logMonitorInterfaceCallEntity.setMethodName(interfaceCallInfo.getMethodName());

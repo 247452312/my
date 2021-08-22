@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.InstructionsEntity;
+import indi.uhyils.pojo.model.InstructionsDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年08月29日 10时47分50秒
  */
 @Mapper
-public interface InstructionsDao extends DefaultDao<InstructionsEntity> {
+public interface InstructionsDao extends DefaultDao<InstructionsDO> {
 
 
 }

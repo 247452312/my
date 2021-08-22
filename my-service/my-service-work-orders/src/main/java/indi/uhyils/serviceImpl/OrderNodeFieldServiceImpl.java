@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.OrderNodeFieldDao;
-import indi.uhyils.pojo.model.OrderNodeFieldEntity;
+import indi.uhyils.pojo.model.OrderNodeFieldDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.OrderNodeFieldService;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @RpcService
-public class OrderNodeFieldServiceImpl extends BaseDefaultServiceImpl<OrderNodeFieldEntity> implements OrderNodeFieldService {
+public class OrderNodeFieldServiceImpl extends BaseDefaultServiceImpl<OrderNodeFieldDO> implements OrderNodeFieldService {
 
     @Resource
     private OrderNodeFieldDao dao;

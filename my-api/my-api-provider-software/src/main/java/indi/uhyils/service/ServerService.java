@@ -1,12 +1,12 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.ServerEntity;
+import indi.uhyils.pojo.model.ServerDO;
 import indi.uhyils.pojo.request.GetNameByIdRequest;
 import indi.uhyils.pojo.request.TestConnByDataRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 13时15分
  */
-public interface ServerService extends DefaultEntityService<ServerEntity> {
+public interface ServerService extends DefaultDOService<ServerDO> {
 
     /**
      * 测试服务器链接
@@ -42,7 +42,7 @@ public interface ServerService extends DefaultEntityService<ServerEntity> {
      *
      * @return 所有服务器信息
      */
-    ServiceResult<ArrayList<ServerEntity>> getServersIdAndName(DefaultRequest request);
+    ServiceResult<ArrayList<ServerDO>> getServersIdAndName(DefaultRequest request);
 
 
     /**

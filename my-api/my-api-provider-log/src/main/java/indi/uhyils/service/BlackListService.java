@@ -1,12 +1,11 @@
 package indi.uhyils.service;
 
-import indi.uhyils.exception.IdGenerationException;
-import indi.uhyils.pojo.model.BlackListEntity;
+import indi.uhyils.pojo.model.BlackListDO;
 import indi.uhyils.pojo.request.AddBlackIpRequest;
 import indi.uhyils.pojo.request.GetLogIntervalByIpRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +14,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月24日 06时40分45秒
  */
-public interface BlackListService extends DefaultEntityService<BlackListEntity> {
+public interface BlackListService extends DefaultDOService<BlackListDO> {
 
     /**
      * 获取ip是否在爬虫黑名单中
@@ -42,8 +41,7 @@ public interface BlackListService extends DefaultEntityService<BlackListEntity> 
      *
      * @return 是否成功
      *
-     * @throws IdGenerationException
      * @throws InterruptedException
      */
-    ServiceResult<Boolean> addBlackIp(AddBlackIpRequest request) throws IdGenerationException, InterruptedException;
+    ServiceResult<Boolean> addBlackIp(AddBlackIpRequest request);
 }

@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.TraceDetailEntity;
+import indi.uhyils.pojo.model.TraceDetailDO;
 import indi.uhyils.pojo.request.GetTraceDetailByHashCodeRequest;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
  * @date 文件创建日期 2021年08月02日 08时14分
  */
 @Mapper
-public interface TraceDetailDao extends DefaultDao<TraceDetailEntity> {
+public interface TraceDetailDao extends DefaultDao<TraceDetailDO> {
 
 
     /**
@@ -22,7 +22,7 @@ public interface TraceDetailDao extends DefaultDao<TraceDetailEntity> {
      *
      * @return
      */
-    TraceDetailEntity getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request);
+    TraceDetailDO getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request);
 
     /**
      * 获取指定ip用户访问的前size个时间

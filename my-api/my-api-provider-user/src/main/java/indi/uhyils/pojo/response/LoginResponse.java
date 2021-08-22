@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.UserDO;
 import java.io.Serializable;
 
 /**
@@ -22,7 +22,7 @@ public class LoginResponse implements Serializable {
     /**
      * 用户
      */
-    private UserEntity userEntity;
+    private UserDO userEntity;
 
 
     public static LoginResponse buildLoginFail() {
@@ -37,7 +37,7 @@ public class LoginResponse implements Serializable {
      *
      * @return 登录成功
      */
-    public static LoginResponse buildLoginSuccess(String token, UserEntity userEntity) {
+    public static LoginResponse buildLoginSuccess(String token, UserDO userEntity) {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setSuccess(Boolean.TRUE);
         loginResponse.setToken(token);
@@ -63,11 +63,11 @@ public class LoginResponse implements Serializable {
         this.token = token;
     }
 
-    public UserEntity getUserEntity() {
+    public UserDO getUserEntity() {
         return userEntity;
     }
 
-    public void setUserEntity(UserEntity userEntity) {
+    public void setUserEntity(UserDO userEntity) {
         this.userEntity = userEntity;
     }
 

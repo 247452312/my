@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.model.base;
 
-import indi.uhyils.exception.IdGenerationException;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import java.io.Serializable;
 
@@ -16,19 +16,20 @@ public interface BaseDbSaveable extends Serializable {
      * 插入前时使用的方法
      *
      * @param request 入参
-     *
-     * @throws IdGenerationException id生成错误
-     * @throws InterruptedException  sleep线程报错
      */
-    void preInsert(DefaultRequest request) throws IdGenerationException, InterruptedException;
+    void preInsert(DefaultRequest request);
+
+    /**
+     * 插入前时使用的方法
+     *
+     * @param userDO 用户
+     */
+    void preInsert(UserDO userDO);
 
     /**
      * 插入前时使用的方法(使用系统管理账号)
-     *
-     * @throws IdGenerationException id生成错误
-     * @throws InterruptedException  sleep线程报错
      */
-    void preInsert() throws IdGenerationException, InterruptedException;
+    void preInsert();
 
     /**
      * 修改前时使用的方法
@@ -36,4 +37,16 @@ public interface BaseDbSaveable extends Serializable {
      * @param request 请求
      */
     void preUpdate(DefaultRequest request);
+
+    /**
+     * 修改前时使用的方法
+     *
+     * @param userDO 用户
+     */
+    void preUpdate(UserDO userDO);
+
+    /**
+     * 修改前时使用的方法
+     */
+    void preUpdate();
 }

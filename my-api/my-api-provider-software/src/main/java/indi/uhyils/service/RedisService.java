@@ -1,6 +1,6 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.model.RedisEntity;
+import indi.uhyils.pojo.model.RedisDO;
 import indi.uhyils.pojo.request.GetRedisKeysRequest;
 import indi.uhyils.pojo.request.RedisKeyAndValue;
 import indi.uhyils.pojo.request.base.IdRequest;
@@ -10,7 +10,7 @@ import indi.uhyils.pojo.response.GetInfosResponse;
 import indi.uhyils.pojo.response.OperateSoftwareResponse;
 import indi.uhyils.pojo.response.RedisKeyResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.base.DefaultEntityService;
+import indi.uhyils.service.base.DefaultDOService;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 12时56分
  */
-public interface RedisService extends DefaultEntityService<RedisEntity> {
+public interface RedisService extends DefaultDOService<RedisDO> {
 
     /**
      * 刷新某一个id的状态
@@ -28,7 +28,7 @@ public interface RedisService extends DefaultEntityService<RedisEntity> {
      *
      * @return
      */
-    ServiceResult<RedisEntity> reload(IdRequest request);
+    ServiceResult<RedisDO> reload(IdRequest request);
 
 
     /**

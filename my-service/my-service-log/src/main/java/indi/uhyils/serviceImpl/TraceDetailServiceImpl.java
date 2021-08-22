@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.TraceDetailDao;
-import indi.uhyils.pojo.model.TraceDetailEntity;
+import indi.uhyils.pojo.model.TraceDetailDO;
 import indi.uhyils.pojo.request.GetTraceDetailByHashCodeRequest;
 import indi.uhyils.pojo.response.GetTraceDetailByHashCodeResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2021年08月02日 08时14分
  */
 @RpcService
-public class TraceDetailServiceImpl extends BaseDefaultServiceImpl<TraceDetailEntity> implements TraceDetailService {
+public class TraceDetailServiceImpl extends BaseDefaultServiceImpl<TraceDetailDO> implements TraceDetailService {
 
     @Autowired
     private TraceDetailDao dao;
@@ -31,7 +31,7 @@ public class TraceDetailServiceImpl extends BaseDefaultServiceImpl<TraceDetailEn
 
     @Override
     public ServiceResult<GetTraceDetailByHashCodeResponse> getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request) {
-        TraceDetailEntity entity = dao.getTraceDetailByHashCode(request);
+        TraceDetailDO entity = dao.getTraceDetailByHashCode(request);
         return ServiceResult.buildSuccessResult(GetTraceDetailByHashCodeResponse.build(entity));
     }
 }

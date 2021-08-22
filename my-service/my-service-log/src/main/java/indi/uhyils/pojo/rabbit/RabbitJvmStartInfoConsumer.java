@@ -10,8 +10,8 @@ import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.JvmStartInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
-import indi.uhyils.pojo.model.LogMonitorEntity;
-import indi.uhyils.pojo.model.LogMonitorJvmStatusEntity;
+import indi.uhyils.pojo.model.LogMonitorDO;
+import indi.uhyils.pojo.model.LogMonitorJvmStatusDO;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ModelTransUtils;
@@ -55,7 +55,7 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
             /* 新增JVM启动信息 */
             LogUtil.info(this, "接收到JVM启动信息");
             LogUtil.info(this, text);
-            LogMonitorEntity logMonitorEntity = ModelTransUtils.transJvmStartInfoToMonitorDO(jvmStartInfo);
+            LogMonitorDO logMonitorEntity = ModelTransUtils.transJvmStartInfoToMonitorDO(jvmStartInfo);
             try {
                 logMonitorEntity.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());
             } catch (Exception e) {
@@ -63,7 +63,7 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
             }
             monitorDao.insert(logMonitorEntity);
             List<JvmStatusInfo> jvmStatusInfos = jvmStartInfo.getJvmStatusInfos();
-            List<LogMonitorJvmStatusEntity> logMonitorJvmStatusEntities = ModelTransUtils.transJvmStatusInfosToMonitorJvmStatusDetailDOs(jvmStatusInfos, logMonitorEntity.getId());
+            List<LogMonitorJvmStatusDO> logMonitorJvmStatusEntities = ModelTransUtils.transJvmStatusInfosToMonitorJvmStatusDetailDOs(jvmStatusInfos, logMonitorEntity.getId());
             final Long[] endTime = {0L};
             logMonitorJvmStatusEntities.forEach(t -> {
                 try {

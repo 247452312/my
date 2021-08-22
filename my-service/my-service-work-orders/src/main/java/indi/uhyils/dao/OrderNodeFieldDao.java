@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.OrderNodeFieldEntity;
+import indi.uhyils.pojo.model.OrderNodeFieldDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +13,7 @@ import java.util.Set;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @Mapper
-public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldEntity> {
+public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldDO> {
 
 
     /**
@@ -22,7 +22,7 @@ public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldEntity> {
      * @param fieldIds
      * @return
      */
-    List<OrderNodeFieldEntity> getByIds(Set<Long> fieldIds);
+    List<OrderNodeFieldDO> getByIds(Set<Long> fieldIds);
 
     /**
      * 根据工单节点id获取此节点的属性们
@@ -30,7 +30,7 @@ public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldEntity> {
      * @param orderNodeId
      * @return
      */
-    List<OrderNodeFieldEntity> getByOrderNodeId(Long orderNodeId);
+    List<OrderNodeFieldDO> getByOrderNodeId(Long orderNodeId);
 
     /**
      * 根据节点id批量删除指定的节点属性
@@ -48,5 +48,5 @@ public interface OrderNodeFieldDao extends DefaultDao<OrderNodeFieldEntity> {
      * @param orderNodeIds
      * @return
      */
-    List<OrderNodeFieldEntity> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);
+    List<OrderNodeFieldDO> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);
 }

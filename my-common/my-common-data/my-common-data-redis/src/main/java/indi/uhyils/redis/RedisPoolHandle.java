@@ -3,7 +3,7 @@ package indi.uhyils.redis;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.content.Content;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.util.LogUtil;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class RedisPoolHandle {
      * @param token token
      * @param user  user
      */
-    public void addUser(String token, UserEntity user) {
+    public void addUser(String token, UserDO user) {
         Redisable jedis = redisPool.getJedis();
         try {
             String value = JSONObject.toJSONString(user);
@@ -85,14 +85,14 @@ public class RedisPoolHandle {
      *
      * @return user
      */
-    public UserEntity getUser(String token) {
+    public UserDO getUser(String token) {
         Redisable jedis = redisPool.getJedis();
         try {
             String userJson = jedis.get(token);
             if (StringUtils.isEmpty(userJson)) {
                 return null;
             }
-            UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
+            UserDO userEntity = JSON.parseObject(userJson, UserDO.class);
             jedis.expire(token, 60 * Content.LOGIN_TIME_OUT_MIN);
             jedis.expire(userEntity.getId().toString(), 60 * Content.LOGIN_TIME_OUT_MIN);
             return userEntity;
@@ -162,7 +162,7 @@ public class RedisPoolHandle {
             if (StringUtils.isEmpty(userJson)) {
                 return Boolean.TRUE;
             }
-            UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
+            UserDO userEntity = JSON.parseObject(userJson, UserDO.class);
             Long id = userEntity.getId();
             Long del = jedis.del(id.toString(), token);
             return del != 0;

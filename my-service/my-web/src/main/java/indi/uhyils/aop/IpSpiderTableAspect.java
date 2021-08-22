@@ -2,8 +2,7 @@ package indi.uhyils.aop;
 
 import indi.uhyils.content.Content;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.exception.IdGenerationException;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.request.Action;
 import indi.uhyils.pojo.request.AddBlackIpRequest;
 import indi.uhyils.pojo.request.GetLogIntervalByIpRequest;
@@ -228,7 +227,7 @@ public class IpSpiderTableAspect {
                 }
             });
             GetLogIntervalByIpRequest defaultRequest = new GetLogIntervalByIpRequest();
-            UserEntity user = new UserEntity();
+            UserDO user = new UserDO();
             user.setId(Content.ADMIN_USER_ID);
             user.setUserName("admin");
             defaultRequest.setUser(user);
@@ -260,7 +259,7 @@ public class IpSpiderTableAspect {
      *
      * @return 返回前端的东西
      */
-    private Object faultVerification(Redisable jedis, String ip) throws IdGenerationException, InterruptedException {
+    private Object faultVerification(Redisable jedis, String ip) {
         // 获取自增后的验证码输入错误的次数
         Long count = jedis.hincrby(IP_TEMP_RECORD_KEY_COUNT, ip);
         // 错误超过一定的次数
@@ -280,7 +279,7 @@ public class IpSpiderTableAspect {
             } else if (frozenCount > MAX_FROZEN_COUNT) {
                 // 加入永久黑名单
                 AddBlackIpRequest build = AddBlackIpRequest.build(ip);
-                UserEntity user = new UserEntity();
+                UserDO user = new UserDO();
                 user.setId(Content.ADMIN_USER_ID);
                 build.setUser(user);
                 blackListService.addBlackIp(build);

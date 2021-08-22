@@ -1,6 +1,6 @@
 package indi.uhyils.trace;
 
-import indi.uhyils.pojo.model.TraceDetailEntity;
+import indi.uhyils.pojo.model.TraceDetailDO;
 
 
 /**
@@ -10,10 +10,10 @@ import indi.uhyils.pojo.model.TraceDetailEntity;
  * @version 1.0
  * @date 文件创建日期 2021年08月02日 08时41分
  */
-public class DetailTraceDeal extends AbstractTraceDeal<TraceDetailEntity> {
+public class DetailTraceDeal extends AbstractTraceDeal<TraceDetailDO> {
 
     @Override
-    protected TraceDetailEntity getTargetEntity(String[] split) {
+    protected TraceDetailDO getTargetEntity(String[] split) {
         if (split.length <= 7) {
             throw new RuntimeException("错误");
         }
@@ -23,7 +23,7 @@ public class DetailTraceDeal extends AbstractTraceDeal<TraceDetailEntity> {
         String hashCode = split[4];
         String nowTime = split[5];
         String useTime = split[6];
-        TraceDetailEntity entity = new TraceDetailEntity();
+        TraceDetailDO entity = new TraceDetailDO();
         entity.setTraceId(Long.valueOf(traceId));
         entity.setUseTime(Long.valueOf(useTime));
         entity.setEndTime(Long.valueOf(nowTime));

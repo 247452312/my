@@ -2,16 +2,14 @@ package indi.uhyils.task;
 
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.TraceInfoDao;
-import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.log.LogTypeEnum;
-import indi.uhyils.pojo.model.DictItemEntity;
+import indi.uhyils.pojo.model.DictItemDO;
 import indi.uhyils.pojo.request.GetByCodeRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.service.DictService;
 import indi.uhyils.util.DefaultRequestBuildUtil;
-import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.NacosUtil;
 import java.util.ArrayList;
 import javax.annotation.Resource;
@@ -50,9 +48,9 @@ public class ConcurrentNumberTask {
         DefaultRequest adminDefaultRequest = DefaultRequestBuildUtil.getAdminDefaultRequest();
         request.setUser(adminDefaultRequest.getUser());
         request.setCode(Content.CONCURRENT_NUM_DICT_CODE);
-        ServiceResult<ArrayList<DictItemEntity>> byCode = dictService.getByCode(request);
-        ArrayList<DictItemEntity> data = byCode.validationAndGet();
-        DictItemEntity dictItemEntity = data.get(0);
+        ServiceResult<ArrayList<DictItemDO>> byCode = dictService.getByCode(request);
+        ArrayList<DictItemDO> data = byCode.validationAndGet();
+        DictItemDO dictItemEntity = data.get(0);
         Long concurrentNumberSetable = Long.parseLong(dictItemEntity.getValue().toString());
 
         //如果已经降级过了

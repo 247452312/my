@@ -29,19 +29,19 @@ import indi.uhyils.enum_.OrderStatusEnum;
 import indi.uhyils.enum_.PushTypeEnum;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.mq.util.MqUtil;
-import indi.uhyils.pojo.model.OrderApplyEntity;
-import indi.uhyils.pojo.model.OrderBaseInfoEntity;
-import indi.uhyils.pojo.model.OrderBaseNodeEntity;
-import indi.uhyils.pojo.model.OrderBaseNodeFieldEntity;
-import indi.uhyils.pojo.model.OrderBaseNodeResultTypeEntity;
-import indi.uhyils.pojo.model.OrderBaseNodeRouteEntity;
-import indi.uhyils.pojo.model.OrderInfoEntity;
-import indi.uhyils.pojo.model.OrderNodeEntity;
-import indi.uhyils.pojo.model.OrderNodeFieldEntity;
-import indi.uhyils.pojo.model.OrderNodeFieldValueEntity;
-import indi.uhyils.pojo.model.OrderNodeResultTypeEntity;
-import indi.uhyils.pojo.model.OrderNodeRouteEntity;
-import indi.uhyils.pojo.model.base.BaseIdEntity;
+import indi.uhyils.pojo.model.OrderApplyDO;
+import indi.uhyils.pojo.model.OrderBaseInfoDO;
+import indi.uhyils.pojo.model.OrderBaseNodeDO;
+import indi.uhyils.pojo.model.OrderBaseNodeFieldDO;
+import indi.uhyils.pojo.model.OrderBaseNodeResultTypeDO;
+import indi.uhyils.pojo.model.OrderBaseNodeRouteDO;
+import indi.uhyils.pojo.model.OrderInfoDO;
+import indi.uhyils.pojo.model.OrderNodeDO;
+import indi.uhyils.pojo.model.OrderNodeFieldDO;
+import indi.uhyils.pojo.model.OrderNodeFieldValueDO;
+import indi.uhyils.pojo.model.OrderNodeResultTypeDO;
+import indi.uhyils.pojo.model.OrderNodeRouteDO;
+import indi.uhyils.pojo.model.base.BaseIdDO;
 import indi.uhyils.pojo.request.AgreeRecallOrderRequest;
 import indi.uhyils.pojo.request.ApprovalOrderRequest;
 import indi.uhyils.pojo.request.CommitOrderRequest;
@@ -124,21 +124,21 @@ public class OrderServiceImpl implements OrderService {
     public ServiceResult<InitOrderResponse> initOrder(IdRequest request) throws Exception {
         //插入order基础信息
         Long baseInfoId = request.getId();
-        OrderBaseInfoEntity baseInfo = orderBaseInfoDao.getById(baseInfoId);
-        OrderInfoEntity orderInfoEntity = OrderBuilder.transBaseInfo2Info(baseInfo);
+        OrderBaseInfoDO baseInfo = orderBaseInfoDao.getById(baseInfoId);
+        OrderInfoDO orderInfoEntity = OrderBuilder.transBaseInfo2Info(baseInfo);
         orderInfoEntity.preInsert(request);
         orderInfoDao.insert(orderInfoEntity);
 
         // 获取基础表对应的所有节点
-        List<OrderBaseNodeEntity> nodeList = orderBaseNodeDao.getNoHiddenByOrderId(baseInfoId);
+        List<OrderBaseNodeDO> nodeList = orderBaseNodeDao.getNoHiddenByOrderId(baseInfoId);
 
         Long infoId = orderInfoEntity.getId();
         // 保存所有的路由, 路由比较特殊 需要改node的id
-        List<OrderNodeRouteEntity> allRouteEntities = new ArrayList<>();
+        List<OrderNodeRouteDO> allRouteEntities = new ArrayList<>();
         // 报存所有的新老node对应关系
         Map<Long, Long> oldToNew = new HashMap<>(nodeList.size());
         // 创建之后的首节点的属性(返回给前台用)
-        ArrayList<OrderNodeFieldEntity> orderNodeField = new ArrayList<>();
+        ArrayList<OrderNodeFieldDO> orderNodeField = new ArrayList<>();
         // 每个节点的处理人(返回给前台用)
         HashMap<Long, Long> dealUserIds = new HashMap<>(nodeList.size());
         // 每个节点的抄送人(返回给前台用)
@@ -150,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
             boolean isStartNode = OrderNodeTypeEnum.START.getCode().equals(node.getType());
 
             //转换节点本身
-            OrderNodeEntity orderNodeEntity = OrderBuilder.transBaseNode2Node(node, infoId);
+            OrderNodeDO orderNodeEntity = OrderBuilder.transBaseNode2Node(node, infoId);
             try {
                 orderNodeEntity.preInsert(request);
             } catch (Exception e) {
@@ -164,9 +164,9 @@ public class OrderServiceImpl implements OrderService {
 
             oldToNew.put(node.getId(), orderNodeEntity.getId());
             //获取节点相关的所有东西(属性,结果类型,路由)
-            List<OrderBaseNodeFieldEntity> baseNodeFieldEntity = orderBaseNodeFieldDao.getByOrderNodeId(node.getId());
-            List<OrderBaseNodeResultTypeEntity> baseNodeResultTypeEntity = orderBaseNodeResultTypeDao.getByOrderNodeId(node.getId());
-            List<OrderBaseNodeRouteEntity> baseRouteEntity = orderBaseNodeRouteDao.getByOrderNodeId(node.getId());
+            List<OrderBaseNodeFieldDO> baseNodeFieldEntity = orderBaseNodeFieldDao.getByOrderNodeId(node.getId());
+            List<OrderBaseNodeResultTypeDO> baseNodeResultTypeEntity = orderBaseNodeResultTypeDao.getByOrderNodeId(node.getId());
+            List<OrderBaseNodeRouteDO> baseRouteEntity = orderBaseNodeRouteDao.getByOrderNodeId(node.getId());
 
             Long id = orderNodeEntity.getId();
             baseNodeFieldEntity.stream().map(field -> OrderBuilder.transBaseField2Field(field, id)).forEach(field -> {
@@ -208,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ServiceResult<Boolean> commitOrder(CommitOrderRequest request) {
         Map<Long, String> value = request.getValue();
-        List<OrderNodeFieldValueEntity> orderNodeFieldValueEntities = OrderNodeFieldValueBuilder.buildOrderNodeFieldValues(value);
+        List<OrderNodeFieldValueDO> orderNodeFieldValueEntities = OrderNodeFieldValueBuilder.buildOrderNodeFieldValues(value);
         /*添加首节点的真实值*/
         orderNodeFieldValueEntities.forEach(t -> {
             try {
@@ -219,7 +219,7 @@ public class OrderServiceImpl implements OrderService {
             orderNodeFieldValueDao.insert(t);
         });
         /*更新主表的监管人*/
-        OrderInfoEntity orderInfo = orderInfoDao.getById(request.getOrderId());
+        OrderInfoDO orderInfo = orderInfoDao.getById(request.getOrderId());
         Long monitorUserId = orderInfo.getMonitorUserId();
         if (monitorUserId == null || !monitorUserId.equals(request.getMonitorUserId())) {
             orderInfo.setMonitorUserId(request.getMonitorUserId());
@@ -233,8 +233,8 @@ public class OrderServiceImpl implements OrderService {
         Set<Long> nodeIds = new HashSet<>();
         nodeIds.addAll(dealUserIds.keySet());
         nodeIds.addAll(noticeUserIds.keySet());
-        List<OrderNodeEntity> orderNodeEntities = orderNodeDao.getByIds(nodeIds);
-        for (OrderNodeEntity orderNodeEntity : orderNodeEntities) {
+        List<OrderNodeDO> orderNodeEntities = orderNodeDao.getByIds(nodeIds);
+        for (OrderNodeDO orderNodeEntity : orderNodeEntities) {
             boolean update = false;
             Long orderDealUserId = dealUserIds.get(orderNodeEntity.getId());
             Long noticeUserId = noticeUserIds.get(orderNodeEntity.getId());
@@ -308,7 +308,7 @@ public class OrderServiceImpl implements OrderService {
         }
         /*1.结束当前工单节点(节点状态),处理结果类型->处理成功,处理结果id选择,处理人建议*/
         Long nodeId = request.getNodeId();
-        OrderNodeEntity orderNode = orderNodeDao.getById(nodeId);
+        OrderNodeDO orderNode = orderNodeDao.getById(nodeId);
         orderNode.setStatus(OrderNodeStatusEnum.OVER.getCode());
         orderNode.setResultType(OrderNodeResultTypeEnum.SUCCESS.getCode());
         orderNode.setResultId(request.getResultId());
@@ -318,7 +318,7 @@ public class OrderServiceImpl implements OrderService {
         /*2.填充对应节点所需的属性值,*/
         Map<Long, Object> orderNodeFieldValueMap = request.getOrderNodeFieldValueMap();
         for (Map.Entry<Long, Object> entry : orderNodeFieldValueMap.entrySet()) {
-            OrderNodeFieldValueEntity t = new OrderNodeFieldValueEntity();
+            OrderNodeFieldValueDO t = new OrderNodeFieldValueDO();
             Long key = entry.getKey();
             Object value = entry.getValue();
             t.setNodeFieldId(key);
@@ -327,7 +327,7 @@ public class OrderServiceImpl implements OrderService {
             orderNodeFieldValueDao.insert(t);
         }
         /*3.将下一节点置为等待开始(并通知自动处理模块检测是否为自动处理模块)*/
-        OrderNodeEntity nextNode = orderNodeDao.getNextNodeByNodeAndResult(request.getNodeId(), request.getResultId());
+        OrderNodeDO nextNode = orderNodeDao.getNextNodeByNodeAndResult(request.getNodeId(), request.getResultId());
         nextNode.setStatus(OrderNodeStatusEnum.WAIT_STATUS.getCode());
         nextNode.preUpdate(request);
         orderNodeDao.update(nextNode);
@@ -354,14 +354,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeRequest request) throws Exception {
         Long orderNodeId = request.getOrderNodeId();
-        OrderNodeEntity orderNode = orderNodeDao.getById(orderNodeId);
+        OrderNodeDO orderNode = orderNodeDao.getById(orderNodeId);
         /*1.将节点状态置为转交中*/
         orderNode.setStatus(OrderNodeStatusEnum.TRANSFER.getCode());
         orderNode.preUpdate(request);
         orderNodeDao.update(orderNode);
         /*2.插入申请表*/
-        OrderInfoEntity order = orderInfoDao.getById(orderNode.getBaseInfoId());
-        OrderApplyEntity orderApply = OrderApplyBuilder.buildTransApplyByOrderNode(orderNode, order.getMonitorUserId());
+        OrderInfoDO order = orderInfoDao.getById(orderNode.getBaseInfoId());
+        OrderApplyDO orderApply = OrderApplyBuilder.buildTransApplyByOrderNode(orderNode, order.getMonitorUserId());
         orderApply.preInsert(request);
         orderApplyDao.insert(orderApply);
         /*3.通知审批人*/
@@ -375,11 +375,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) throws Exception {
         Long orderApplyId = request.getOrderApplyId();
-        OrderApplyEntity orderApply = orderApplyDao.getById(orderApplyId);
+        OrderApplyDO orderApply = orderApplyDao.getById(orderApplyId);
 
         /*0.将此节点状态置位已转交*/
         Long orderNodeId = orderApply.getOrderNodeId();
-        OrderNodeEntity orderNode = orderNodeDao.getById(orderNodeId);
+        OrderNodeDO orderNode = orderNodeDao.getById(orderNodeId);
         orderNode.setStatus(OrderNodeStatusEnum.TRANSFERRED.getCode());
         orderNode.preUpdate(request);
         orderNodeDao.update(orderNode);
@@ -395,38 +395,38 @@ public class OrderServiceImpl implements OrderService {
 
         /*2.将此节点的属性,结果,路由复制到下一个节点上去*/
         // 属性
-        List<OrderNodeFieldEntity> orderNodeFields = orderNodeFieldDao.getByOrderNodeId(lastOrderNodeId);
-        for (OrderNodeFieldEntity orderNodeField : orderNodeFields) {
+        List<OrderNodeFieldDO> orderNodeFields = orderNodeFieldDao.getByOrderNodeId(lastOrderNodeId);
+        for (OrderNodeFieldDO orderNodeField : orderNodeFields) {
             orderNodeField.setBaseOrderNodeId(newOrderNodeId);
             orderNodeField.preInsert(request);
             orderNodeFieldDao.insert(orderNodeField);
         }
 
         //结果
-        List<OrderNodeResultTypeEntity> orderNodeResultTypes = orderNodeResultTypeDao.getByOrderNodeId(lastOrderNodeId);
-        for (OrderNodeResultTypeEntity orderNodeResultType : orderNodeResultTypes) {
+        List<OrderNodeResultTypeDO> orderNodeResultTypes = orderNodeResultTypeDao.getByOrderNodeId(lastOrderNodeId);
+        for (OrderNodeResultTypeDO orderNodeResultType : orderNodeResultTypes) {
             orderNodeResultType.setBaseNodeId(newOrderNodeId);
             orderNodeResultType.preInsert(request);
             orderNodeResultTypeDao.insert(orderNodeResultType);
         }
 
         // 路由
-        List<OrderNodeRouteEntity> orderNodeRoutes = orderNodeRouteDao.getByPrevOrderNodeId(lastOrderNodeId);
-        for (OrderNodeRouteEntity orderNodeRoute : orderNodeRoutes) {
+        List<OrderNodeRouteDO> orderNodeRoutes = orderNodeRouteDao.getByPrevOrderNodeId(lastOrderNodeId);
+        for (OrderNodeRouteDO orderNodeRoute : orderNodeRoutes) {
             orderNodeRoute.setPrevNodeId(newOrderNodeId);
             orderNodeRoute.preInsert(request);
             orderNodeRouteDao.insert(orderNodeRoute);
         }
 
         /*3.新增此节点已转交的'结果'并将此节点的'结果'置位此结果*/
-        OrderNodeResultTypeEntity transResult = OrderNodeResultTypeBuilder.build(lastOrderNodeId, "转交");
+        OrderNodeResultTypeDO transResult = OrderNodeResultTypeBuilder.build(lastOrderNodeId, "转交");
         transResult.preInsert(request);
         orderNodeResultTypeDao.insert(transResult);
         orderNode.setResultId(transResult.getId());
         orderNode.setResultType(OrderNodeResultTypeEnum.TRANSFER.getCode());
 
         /*4.新增此节点到下一节点的路由*/
-        OrderNodeRouteEntity newOrderNodeRoute = OrderNodeRouteBuilder.build(orderNodeId, transResult.getId(), newOrderNodeId);
+        OrderNodeRouteDO newOrderNodeRoute = OrderNodeRouteBuilder.build(orderNodeId, transResult.getId(), newOrderNodeId);
         newOrderNodeRoute.preInsert(request);
         orderNodeRouteDao.insert(newOrderNodeRoute);
 
@@ -437,7 +437,7 @@ public class OrderServiceImpl implements OrderService {
 
         /*6.通知下一节点处理人*/
         Long targetUserId = orderApply.getTargetUserId();
-        OrderInfoEntity orderInfo = orderInfoDao.getById(orderNode.getBaseInfoId());
+        OrderInfoDO orderInfo = orderInfoDao.getById(orderNode.getBaseInfoId());
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest
             .build(request, targetUserId, PushTypeEnum.EMAIL.getCode(), "工单流转事务提示", orderNodeId + "工单已转交到你手,审批人通过,请尽快处理,工单优先度:" + OrderPriorityEnum.parse(orderInfo.getPriority()).getName());
         RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
@@ -452,7 +452,7 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     private boolean noticeMonitorUserIdAboutBackOrder(RecallOrderRequest request) {
-        OrderInfoEntity byId = orderInfoDao.getById(request.getOrderId());
+        OrderInfoDO byId = orderInfoDao.getById(request.getOrderId());
         Long monitorUserId = byId.getMonitorUserId();
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest
             .build(request, monitorUserId, PushTypeEnum.EMAIL.getCode(), "工单撤回申请", request.getOrderId() + "工单申请撤回,请尽快审批,工单优先度:" + OrderPriorityEnum.parse(byId.getPriority()).getName());
@@ -517,12 +517,12 @@ public class OrderServiceImpl implements OrderService {
         result.setAllow(true);
 
         Set<Long> fieldIds = orderNodeFieldValueMap.keySet();
-        List<OrderNodeFieldEntity> fieldList = orderNodeFieldDao.getByIds(fieldIds);
-        Map<Long, OrderNodeFieldEntity> fieldMap = fieldList.stream().collect(Collectors.toMap(BaseIdEntity::getId, t -> t));
+        List<OrderNodeFieldDO> fieldList = orderNodeFieldDao.getByIds(fieldIds);
+        Map<Long, OrderNodeFieldDO> fieldMap = fieldList.stream().collect(Collectors.toMap(BaseIdDO::getId, t -> t));
         for (Map.Entry<Long, Object> entry : orderNodeFieldValueMap.entrySet()) {
             Long orderNodeFieldId = entry.getKey();
             Object value = entry.getValue();
-            OrderNodeFieldEntity orderNodeFieldEntity = fieldMap.get(orderNodeFieldId);
+            OrderNodeFieldDO orderNodeFieldEntity = fieldMap.get(orderNodeFieldId);
             // 如果前台没有传值,则使用默认值
             if (value == null) {
                 orderNodeFieldValueMap.put(orderNodeFieldId, orderNodeFieldEntity.getDefaultValue());

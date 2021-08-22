@@ -2,7 +2,7 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.TraceDetailStatisticsView;
-import indi.uhyils.pojo.model.TraceInfoEntity;
+import indi.uhyils.pojo.model.TraceInfoDO;
 import indi.uhyils.pojo.request.GetLinkByTraceIdAndRpcIdRequest;
 import indi.uhyils.pojo.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Param;
  * @date 文件创建日期 2021年07月31日 06时43分
  */
 @Mapper
-public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
+public interface TraceInfoDao extends DefaultDao<TraceInfoDO> {
 
     /**
      * 获取从开始时间到现在的前台请求次数
@@ -35,7 +35,7 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
      *
      * @return
      */
-    List<TraceInfoEntity> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
+    List<TraceInfoDO> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
 
     /**
      * 获取traceInfo
@@ -69,7 +69,7 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
      *
      * @return
      */
-    List<TraceInfoEntity> getLinkByTraceIdAndRpcIdPrefix(GetLinkByTraceIdAndRpcIdRequest request);
+    List<TraceInfoDO> getLinkByTraceIdAndRpcIdPrefix(GetLinkByTraceIdAndRpcIdRequest request);
 
     /**
      * 根据traceId 获取整个链路
@@ -78,5 +78,5 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoEntity> {
      *
      * @return
      */
-    ArrayList<TraceInfoEntity> getTraceInfoByTraceId(Long traceId);
+    ArrayList<TraceInfoDO> getTraceInfoByTraceId(Long traceId);
 }

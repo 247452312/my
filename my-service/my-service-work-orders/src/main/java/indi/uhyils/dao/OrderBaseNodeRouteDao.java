@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.OrderBaseNodeRouteEntity;
+import indi.uhyils.pojo.model.OrderBaseNodeRouteDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @Mapper
-public interface OrderBaseNodeRouteDao extends DefaultDao<OrderBaseNodeRouteEntity> {
+public interface OrderBaseNodeRouteDao extends DefaultDao<OrderBaseNodeRouteDO> {
 
 
     /**
@@ -21,7 +21,7 @@ public interface OrderBaseNodeRouteDao extends DefaultDao<OrderBaseNodeRouteEnti
      * @param nodeId 节点id
      * @return
      */
-    List<OrderBaseNodeRouteEntity> getByOrderNodeId(Long nodeId);
+    List<OrderBaseNodeRouteDO> getByOrderNodeId(Long nodeId);
 
     /**
      * 根据节点id批量删除路由
@@ -39,5 +39,5 @@ public interface OrderBaseNodeRouteDao extends DefaultDao<OrderBaseNodeRouteEnti
      * @param orderNodeIds
      * @return
      */
-    List<OrderBaseNodeRouteEntity> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);
+    List<OrderBaseNodeRouteDO> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);
 }

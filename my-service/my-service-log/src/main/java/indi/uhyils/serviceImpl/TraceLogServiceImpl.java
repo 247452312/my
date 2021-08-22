@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.TraceLogDao;
-import indi.uhyils.pojo.model.TraceLogEntity;
+import indi.uhyils.pojo.model.TraceLogDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.TraceLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2021年08月02日 08时14分
  */
 @RpcService
-public class TraceLogServiceImpl extends BaseDefaultServiceImpl<TraceLogEntity> implements TraceLogService {
+public class TraceLogServiceImpl extends BaseDefaultServiceImpl<TraceLogDO> implements TraceLogService {
 
     @Autowired
     private TraceLogDao dao;

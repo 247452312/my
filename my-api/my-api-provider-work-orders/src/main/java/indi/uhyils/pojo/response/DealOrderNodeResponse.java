@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.pojo.model.OrderNodeFieldEntity;
+import indi.uhyils.pojo.model.OrderNodeFieldDO;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class DealOrderNodeResponse implements Serializable {
     /**
      * 判断节点值是否允许的结果
      */
-    private Map<OrderNodeFieldEntity, Boolean> detailResult;
+    private Map<OrderNodeFieldDO, Boolean> detailResult;
 
     /**
      * 出错时返回
@@ -27,7 +27,7 @@ public class DealOrderNodeResponse implements Serializable {
      *
      * @return
      */
-    public static DealOrderNodeResponse buildCheckFaild(Boolean allow, Map<OrderNodeFieldEntity, Boolean> detailResult) {
+    public static DealOrderNodeResponse buildCheckFaild(Boolean allow, Map<OrderNodeFieldDO, Boolean> detailResult) {
         DealOrderNodeResponse build = new DealOrderNodeResponse();
         build.setAllow(allow);
         build.setDetailResult(detailResult);
@@ -53,11 +53,11 @@ public class DealOrderNodeResponse implements Serializable {
         this.allow = allow;
     }
 
-    public Map<OrderNodeFieldEntity, Boolean> getDetailResult() {
+    public Map<OrderNodeFieldDO, Boolean> getDetailResult() {
         return detailResult;
     }
 
-    public void setDetailResult(Map<OrderNodeFieldEntity, Boolean> detailResult) {
+    public void setDetailResult(Map<OrderNodeFieldDO, Boolean> detailResult) {
         this.detailResult = detailResult;
     }
 }

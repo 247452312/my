@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response.info;
 
-import indi.uhyils.pojo.model.MenuEntity;
+import indi.uhyils.pojo.model.MenuDO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class IndexMenuInfo implements Serializable {
 
     private List<IndexMenuInfo> child = new ArrayList<>();
 
-    public static IndexMenuInfo build(MenuEntity menuEntity) {
+    public static IndexMenuInfo build(MenuDO menuEntity) {
         IndexMenuInfo menuMenuInfo = new IndexMenuInfo();
         menuMenuInfo.setFid(menuEntity.getFid());
         menuMenuInfo.setId(menuEntity.getId());

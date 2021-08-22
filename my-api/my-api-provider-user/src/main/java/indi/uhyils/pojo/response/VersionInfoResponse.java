@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.pojo.model.DictItemEntity;
+import indi.uhyils.pojo.model.DictItemDO;
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,20 +15,20 @@ public class VersionInfoResponse implements Serializable {
     /**
      * 版本信息-> 数据字典中
      */
-    List<DictItemEntity> infos;
+    List<DictItemDO> infos;
 
-    public static VersionInfoResponse build(List<DictItemEntity> infos) {
+    public static VersionInfoResponse build(List<DictItemDO> infos) {
         VersionInfoResponse versionInfoResponse = new VersionInfoResponse();
         versionInfoResponse.setInfos(infos);
         return versionInfoResponse;
 
     }
 
-    public List<DictItemEntity> getInfos() {
+    public List<DictItemDO> getInfos() {
         return infos;
     }
 
-    public void setInfos(List<DictItemEntity> infos) {
+    public void setInfos(List<DictItemDO> infos) {
         this.infos = infos;
     }
 }

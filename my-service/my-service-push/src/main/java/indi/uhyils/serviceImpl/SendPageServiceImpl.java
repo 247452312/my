@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.SendPageDao;
-import indi.uhyils.pojo.model.SendPageEntity;
+import indi.uhyils.pojo.model.SendPageDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.SendPageService;
 
@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年06月25日 13时30分
  */
 @RpcService
-public class SendPageServiceImpl extends BaseDefaultServiceImpl<SendPageEntity> implements SendPageService {
+public class SendPageServiceImpl extends BaseDefaultServiceImpl<SendPageDO> implements SendPageService {
 
     @Resource
     private SendPageDao dao;

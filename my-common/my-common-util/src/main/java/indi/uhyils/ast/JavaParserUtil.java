@@ -41,7 +41,8 @@ public class JavaParserUtil {
     private static final JavaParser JAVA_PARSER = new JavaParser();
 
     public static void main(String[] args) throws FileNotFoundException {
-        List<CompilationUnit> compilationUnits = parseProject(Arrays.asList("D:\\share\\ideaSrc\\my"));
+        List<CompilationUnit> compilationUnits = parseProject(Arrays
+                                                                  .asList("D:\\share\\ideaSrc\\my\\my-common\\my-common-base\\src\\main\\java\\indi\\uhyils\\repository\\base\\AbstractRepository.java"));
         Map<String, List<CompilationUnit>> collect = compilationUnits.stream()
                                                                      .filter(t -> t.getPackageDeclaration().isPresent())
                                                                      .filter(JavaParserUtil::filterInterface)
@@ -232,7 +233,7 @@ public class JavaParserUtil {
             MethodNodeStatisticsInfo deepInfo = getDeep(node, 0);
 
             Integer deep = deepInfo.getSumComplexity();
-            if ((methodName.startsWith("get") || methodName.startsWith("set") || methodName.startsWith("is"))) {
+            if ((methodName.startsWith("get") || methodName.startsWith("set") || methodName.startsWith("is")) && deep < 10) {
                 return null;
             }
             MethodNodeAllInfo build = MethodNodeAllInfo.build(Long.valueOf(deep), 1, new HashMap<>());

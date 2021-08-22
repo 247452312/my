@@ -24,7 +24,7 @@
         </foreach>
     </update>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeDO">
         select
         <include refid="columnList"/>
         from sys_order_node_result_type a
@@ -32,7 +32,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeDO">
         select
         <include refid="columnList"/>
         from sys_order_node_result_type a
@@ -42,7 +42,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeDO">
         select
         <include refid="columnList"/>
         from sys_order_node_result_type a
@@ -57,7 +57,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeDO">
         insert sys_order_node_result_type(update_user,
         base_node_id,
         deal_result_name,
@@ -78,7 +78,7 @@
         #{updateDate})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeResultTypeDO">
         update sys_order_node_result_type set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -123,14 +123,14 @@
         from sys_order_node_result_type a
         where ${columnName} = #{value}
     </select>
-    <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+    <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeDO">
         select
         <include refid="columnList"/>
         from sys_order_node_result_type a
         where delete_flag = 0
         and base_node_id = #{orderNodeId}
     </select>
-    <select id="getByOrderNodeIds" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeEntity">
+    <select id="getByOrderNodeIds" resultType="indi.uhyils.pojo.model.OrderNodeResultTypeDO">
         select
         <include refid="columnList"/>
         from sys_order_node_result_type a

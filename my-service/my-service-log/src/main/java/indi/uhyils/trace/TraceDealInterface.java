@@ -1,8 +1,7 @@
 package indi.uhyils.trace;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.exception.IdGenerationException;
-import indi.uhyils.pojo.model.TraceIdDoEntity;
+import indi.uhyils.pojo.model.TraceIdDoDO;
 
 /**
  * 处理traceDeal
@@ -11,14 +10,14 @@ import indi.uhyils.pojo.model.TraceIdDoEntity;
  * @version 1.0
  * @date 文件创建日期 2021年08月02日 08时33分
  */
-public interface TraceDealInterface<T extends TraceIdDoEntity> {
+public interface TraceDealInterface<T extends TraceIdDoDO> {
 
     /**
      * 处理
      *
      * @param traceMsg
      */
-    void doDeal(String traceMsg) throws IdGenerationException, InterruptedException;
+    void doDeal(String traceMsg);
 
     /**
      * 初始化数据库处理

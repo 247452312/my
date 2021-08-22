@@ -14,7 +14,7 @@
         a.name
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.DeptEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.DeptDO">
         select
         <include refid="columnList"/>
         from sys_dept a
@@ -22,7 +22,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.DeptEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.DeptDO">
         select
         <include refid="columnList"/>
         from sys_dept a
@@ -32,7 +32,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.DeptEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.DeptDO">
         select
         <include refid="columnList"/>
         from sys_dept a
@@ -47,7 +47,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.DeptEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.DeptDO">
         insert sys_dept(id,
         create_date,
         create_user,
@@ -64,7 +64,7 @@
         #{name})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.DeptEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.DeptDO">
         update sys_dept set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -123,7 +123,7 @@
         where delete_flag = 0
     </select>
 
-    <select id="getAll" resultType="indi.uhyils.pojo.model.DeptEntity">
+    <select id="getAll" resultType="indi.uhyils.pojo.model.DeptDO">
         select
         <include refid="columnList"/>
         from sys_dept a

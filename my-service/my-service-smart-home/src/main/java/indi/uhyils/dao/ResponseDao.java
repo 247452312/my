@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.ResponseEntity;
+import indi.uhyils.pojo.model.ResponseDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年08月29日 10时47分52秒
  */
 @Mapper
-public interface ResponseDao extends DefaultDao<ResponseEntity> {
+public interface ResponseDao extends DefaultDao<ResponseDO> {
 
 
 }

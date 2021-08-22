@@ -2,7 +2,7 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.model.RoleDeptMiddle;
-import indi.uhyils.pojo.model.RoleEntity;
+import indi.uhyils.pojo.model.RoleDO;
 import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface RoleDao extends DefaultDao<RoleEntity> {
+public interface RoleDao extends DefaultDao<RoleDO> {
 
 
     /**
@@ -38,7 +38,7 @@ public interface RoleDao extends DefaultDao<RoleEntity> {
      *
      * @return 所有角色
      */
-    ArrayList<RoleEntity> getAll();
+    ArrayList<RoleDO> getAll();
 
     /**
      * 获取所有权限集以及角色是否有此权限集的标记

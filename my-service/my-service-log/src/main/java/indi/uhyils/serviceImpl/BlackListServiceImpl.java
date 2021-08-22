@@ -3,8 +3,7 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.builder.BlackListBuilder;
 import indi.uhyils.dao.BlackListDao;
 import indi.uhyils.dao.TraceDetailDao;
-import indi.uhyils.exception.IdGenerationException;
-import indi.uhyils.pojo.model.BlackListEntity;
+import indi.uhyils.pojo.model.BlackListDO;
 import indi.uhyils.pojo.request.AddBlackIpRequest;
 import indi.uhyils.pojo.request.GetLogIntervalByIpRequest;
 import indi.uhyils.pojo.request.base.DefaultRequest;
@@ -25,7 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
  * @date 文件创建日期 2020年08月24日 06时40分49秒
  */
 @RpcService
-public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity> implements BlackListService {
+public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListDO> implements BlackListService {
 
     /**
      * 最大时间跨度 1秒
@@ -119,8 +118,8 @@ public class BlackListServiceImpl extends BaseDefaultServiceImpl<BlackListEntity
     }
 
     @Override
-    public ServiceResult<Boolean> addBlackIp(AddBlackIpRequest request) throws IdGenerationException, InterruptedException {
-        BlackListEntity blackListEntity = BlackListBuilder.buildByIp(request.getIp());
+    public ServiceResult<Boolean> addBlackIp(AddBlackIpRequest request) {
+        BlackListDO blackListEntity = BlackListBuilder.buildByIp(request.getIp());
         blackListEntity.preInsert(request);
         dao.insert(blackListEntity);
         return ServiceResult.buildSuccessResult(true);

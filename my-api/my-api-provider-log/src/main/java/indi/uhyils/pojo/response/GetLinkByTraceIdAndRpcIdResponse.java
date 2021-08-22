@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.response;
 
-import indi.uhyils.pojo.model.TraceInfoEntity;
+import indi.uhyils.pojo.model.TraceInfoDO;
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,19 +12,19 @@ import java.util.List;
  */
 public class GetLinkByTraceIdAndRpcIdResponse implements Serializable {
 
-    private List<TraceInfoEntity> data;
+    private List<TraceInfoDO> data;
 
-    public static GetLinkByTraceIdAndRpcIdResponse build(List<TraceInfoEntity> data) {
+    public static GetLinkByTraceIdAndRpcIdResponse build(List<TraceInfoDO> data) {
         GetLinkByTraceIdAndRpcIdResponse build = new GetLinkByTraceIdAndRpcIdResponse();
         build.data = data;
         return build;
     }
 
-    public List<TraceInfoEntity> getData() {
+    public List<TraceInfoDO> getData() {
         return data;
     }
 
-    public void setData(List<TraceInfoEntity> data) {
+    public void setData(List<TraceInfoDO> data) {
         this.data = data;
     }
 }

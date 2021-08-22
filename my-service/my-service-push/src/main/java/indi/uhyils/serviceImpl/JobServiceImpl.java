@@ -5,8 +5,8 @@ import indi.uhyils.content.Content;
 import indi.uhyils.dao.JobDao;
 import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.model.JobEntity;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.pojo.model.JobDO;
+import indi.uhyils.pojo.model.UserDO;
 import indi.uhyils.pojo.request.base.IdRequest;
 import indi.uhyils.pojo.request.base.ObjRequest;
 import indi.uhyils.pojo.response.base.ServiceResult;
@@ -26,12 +26,12 @@ import javax.annotation.Resource;
  */
 @RpcService
 @ReadWriteMark(tables = {"sys_job"}, cacheType = CacheTypeEnum.ALL_TYPE)
-public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements JobService {
+public class JobServiceImpl extends BaseDefaultServiceImpl<JobDO> implements JobService {
 
     /**
      * 工具entity, 插入日志时用来插入登录日志
      */
-    private final UserEntity userEntity = new UserEntity();
+    private final UserDO userEntity = new UserDO();
     @Resource
     private JobDao dao;
     @Autowired
@@ -54,8 +54,8 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Integer> insert(ObjRequest<JobEntity> insert) throws Exception {
-        JobEntity data = insert.getData();
+    public ServiceResult<Integer> insert(ObjRequest<JobDO> insert) throws Exception {
+        JobDO data = insert.getData();
         data.preInsert(insert);
         int count = dao.insert(data);
         data.setUserEntity(userEntity);
@@ -69,8 +69,8 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Integer> update(ObjRequest<JobEntity> update) {
-        JobEntity data = update.getData();
+    public ServiceResult<Integer> update(ObjRequest<JobDO> update) {
+        JobDO data = update.getData();
         data.preUpdate(update);
         int count = getDao().update(data);
         data.setUserEntity(userEntity);
@@ -87,7 +87,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> pause(IdRequest request) throws ClassNotFoundException {
         Long id = request.getId();
-        JobEntity byId = dao.getById(id);
+        JobDO byId = dao.getById(id);
         byId.setUserEntity(userEntity);
         dao.pause(id);
         boolean remove = scheduledManager.pauseJob(byId);
@@ -101,7 +101,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> start(IdRequest request) {
         Long id = request.getId();
-        JobEntity byId = dao.getById(id);
+        JobDO byId = dao.getById(id);
         byId.setUserEntity(userEntity);
         dao.start(id);
         boolean add = scheduledManager.resumeJob(byId);
@@ -113,7 +113,7 @@ public class JobServiceImpl extends BaseDefaultServiceImpl<JobEntity> implements
 
     @Override
     public ServiceResult<Boolean> test(IdRequest request) throws ClassNotFoundException {
-        JobEntity byId = dao.getById(request.getId());
+        JobDO byId = dao.getById(request.getId());
         byId.setUserEntity(request.getUser());
         boolean test = scheduledManager.runJobNow(byId);
         if (test) {

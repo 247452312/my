@@ -1,7 +1,7 @@
 package indi.uhyils.job;
 
 import indi.uhyils.dao.JobDao;
-import indi.uhyils.pojo.model.JobEntity;
+import indi.uhyils.pojo.model.JobDO;
 import indi.uhyils.thread.ThreadPoolExecutorUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ScheduledManager;
@@ -33,7 +33,7 @@ public class ExecutionJob extends QuartzJobBean {
      */
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        JobEntity quartzJob = (JobEntity) jobExecutionContext.getMergedJobDataMap().get(JobConfig.JOB_KEY);
+        JobDO quartzJob = (JobDO) jobExecutionContext.getMergedJobDataMap().get(JobConfig.JOB_KEY);
         // 获取spring bean
         JobDao dao = SpringUtil.getBean(JobDao.class);
         ScheduledManager manager = SpringUtil.getBean(ScheduledManager.class);

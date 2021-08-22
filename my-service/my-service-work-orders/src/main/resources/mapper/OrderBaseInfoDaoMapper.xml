@@ -20,7 +20,7 @@
         a.`desc`
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseInfoDO">
         select
         <include refid="columnList"/>
         from sys_order_base_info a
@@ -28,7 +28,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderBaseInfoDO">
         select
         <include refid="columnList"/>
         from sys_order_base_info a
@@ -38,7 +38,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderBaseInfoDO">
         select
         <include refid="columnList"/>
         from sys_order_base_info a
@@ -53,7 +53,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseInfoDO">
         insert sys_order_base_info(remark,
         priority,
         update_date,
@@ -86,7 +86,7 @@
         #{desc})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseInfoDO">
         update sys_order_base_info set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -149,7 +149,7 @@
         from sys_order_base_info a
         where ${columnName} = #{value}
     </select>
-    <select id="getAllBaseOrderIdAndName" resultType="indi.uhyils.pojo.model.OrderBaseInfoEntity">
+    <select id="getAllBaseOrderIdAndName" resultType="indi.uhyils.pojo.model.OrderBaseInfoDO">
         select a.id,
                a.name,
                a.`desc`

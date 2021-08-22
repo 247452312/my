@@ -18,7 +18,7 @@
         a.username,
         a.type
     </sql>
-    <select id="getById" resultType="indi.uhyils.pojo.model.ServerEntity">
+    <select id="getById" resultType="indi.uhyils.pojo.model.ServerDO">
         select
         <include refid="columnList"/>
         from sys_server a
@@ -26,7 +26,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.ServerEntity">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.ServerDO">
         select
         <include refid="columnList"/>
         from sys_server a
@@ -36,7 +36,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.ServerEntity">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.model.ServerDO">
         select
         <include refid="columnList"/>
         from sys_server a
@@ -51,7 +51,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.ServerEntity">
+    <insert id="insert" parameterType="indi.uhyils.pojo.model.ServerDO">
         insert sys_server(id,
         create_date,
         create_user,
@@ -78,7 +78,7 @@
         #{port})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.ServerEntity">
+    <update id="update" parameterType="indi.uhyils.pojo.model.ServerDO">
         update sys_server set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -129,7 +129,7 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getServersIdAndName" resultType="indi.uhyils.pojo.model.ServerEntity">
+    <select id="getServersIdAndName" resultType="indi.uhyils.pojo.model.ServerDO">
         select id, name
         from sys_server
         where delete_flag = 0

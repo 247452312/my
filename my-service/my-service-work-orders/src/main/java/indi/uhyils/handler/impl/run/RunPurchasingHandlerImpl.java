@@ -3,7 +3,7 @@ package indi.uhyils.handler.impl.run;
 import indi.uhyils.enum_.ApiCodeEnum;
 import indi.uhyils.handler.RunApiHandler;
 import indi.uhyils.pojo.dto.ApiDealDto;
-import indi.uhyils.pojo.model.OrderNodeEntity;
+import indi.uhyils.pojo.model.OrderNodeDO;
 import indi.uhyils.pojo.temp.InitToRunApiTemporary;
 import indi.uhyils.pojo.temp.RunToSaveApiTemporary;
 import org.springframework.stereotype.Service;
@@ -18,14 +18,14 @@ import org.springframework.stereotype.Service;
 public class RunPurchasingHandlerImpl implements RunApiHandler {
     @Override
     public RunToSaveApiTemporary run(InitToRunApiTemporary requestTemporary) {
-        OrderNodeEntity orderNode = requestTemporary.getOrderNode();
-        OrderNodeEntity pervOrderNode = requestTemporary.getPervOrderNode();
+        OrderNodeDO orderNode = requestTemporary.getOrderNode();
+        OrderNodeDO pervOrderNode = requestTemporary.getPervOrderNode();
         ApiDealDto doInitDto = requestTemporary.getApiDealDto();
         ApiDealDto doRunDto = doRun(orderNode, pervOrderNode, doInitDto);
         return RunToSaveApiTemporary.build(orderNode, pervOrderNode, doRunDto);
     }
 
-    private ApiDealDto doRun(OrderNodeEntity orderNode, OrderNodeEntity pervOrderNode, ApiDealDto apiDealDto) {
+    private ApiDealDto doRun(OrderNodeDO orderNode, OrderNodeDO pervOrderNode, ApiDealDto apiDealDto) {
         return ApiDealDto.build(ApiCodeEnum.SUCCESS);
     }
 }

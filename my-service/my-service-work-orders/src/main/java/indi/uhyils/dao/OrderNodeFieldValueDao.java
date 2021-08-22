@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.OrderNodeFieldValueEntity;
+import indi.uhyils.pojo.model.OrderNodeFieldValueDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @date 文件创建日期 2020年11月15日 16时16分06秒
  */
 @Mapper
-public interface OrderNodeFieldValueDao extends DefaultDao<OrderNodeFieldValueEntity> {
+public interface OrderNodeFieldValueDao extends DefaultDao<OrderNodeFieldValueDO> {
 
 
     /**
@@ -23,5 +23,5 @@ public interface OrderNodeFieldValueDao extends DefaultDao<OrderNodeFieldValueEn
      * @param fieldIds
      * @return
      */
-    List<OrderNodeFieldValueEntity> getByOrderFieldIds(@Param("fieldIds") List<Long> fieldIds);
+    List<OrderNodeFieldValueDO> getByOrderFieldIds(@Param("fieldIds") List<Long> fieldIds);
 }

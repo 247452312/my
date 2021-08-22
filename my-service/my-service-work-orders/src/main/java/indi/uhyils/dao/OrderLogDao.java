@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.OrderLogEntity;
+import indi.uhyils.pojo.model.OrderLogDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @Mapper
-public interface OrderLogDao extends DefaultDao<OrderLogEntity> {
+public interface OrderLogDao extends DefaultDao<OrderLogDO> {
 
 
 }

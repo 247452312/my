@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.temp;
 
-import indi.uhyils.pojo.model.OrderNodeEntity;
+import indi.uhyils.pojo.model.OrderNodeDO;
 
 import java.io.Serializable;
 
@@ -13,26 +13,26 @@ public class InitApiRequestTemporary implements Serializable {
     /**
      * 工单节点
      */
-    private OrderNodeEntity orderNode;
+    private OrderNodeDO orderNode;
 
     /**
      * 上一个工单节点
      */
-    private OrderNodeEntity pervOrderNode;
+    private OrderNodeDO pervOrderNode;
 
-    public OrderNodeEntity getOrderNode() {
+    public OrderNodeDO getOrderNode() {
         return orderNode;
     }
 
-    public void setOrderNode(OrderNodeEntity orderNode) {
+    public void setOrderNode(OrderNodeDO orderNode) {
         this.orderNode = orderNode;
     }
 
-    public OrderNodeEntity getPervOrderNode() {
+    public OrderNodeDO getPervOrderNode() {
         return pervOrderNode;
     }
 
-    public void setPervOrderNode(OrderNodeEntity pervOrderNode) {
+    public void setPervOrderNode(OrderNodeDO pervOrderNode) {
         this.pervOrderNode = pervOrderNode;
     }
 }

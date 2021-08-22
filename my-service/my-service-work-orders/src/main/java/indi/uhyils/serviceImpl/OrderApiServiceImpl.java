@@ -1,7 +1,7 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.OrderApiDao;
-import indi.uhyils.pojo.model.OrderApiEntity;
+import indi.uhyils.pojo.model.OrderApiDO;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.OrderApiService;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @RpcService
-public class OrderApiServiceImpl extends BaseDefaultServiceImpl<OrderApiEntity> implements OrderApiService {
+public class OrderApiServiceImpl extends BaseDefaultServiceImpl<OrderApiDO> implements OrderApiService {
 
     @Resource
     private OrderApiDao dao;
