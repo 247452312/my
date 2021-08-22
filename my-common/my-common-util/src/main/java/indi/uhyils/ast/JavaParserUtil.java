@@ -254,12 +254,7 @@ public class JavaParserUtil {
                 continue;
             }
             sum += methodNodeInfo.getSum();
-            int realCount = methodNodeInfo.getCount();
-            int size = methodNodeInfo.getMethodDeep().size();
-            if (realCount != size) {
-                int i = 1;
-            }
-            count += realCount;
+            count += methodNodeInfo.getCount();
             for (Entry<String, MethodNodeStatisticsInfo> entry : methodNodeInfo.getMethodDeep().entrySet()) {
                 if (methodDeep.containsKey(entry.getKey())) {
                     methodDeep.put(entry.getKey() + "_" + (index++), entry.getValue());
