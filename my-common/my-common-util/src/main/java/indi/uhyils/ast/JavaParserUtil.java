@@ -6,16 +6,20 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import indi.uhyils.ast.model.MethodNodeInfo;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import indi.uhyils.ast.model.MethodNodeAllInfo;
+import indi.uhyils.ast.model.MethodNodeStatisticsInfo;
 import indi.uhyils.ast.model.ParseMethodNodeExcludeModel;
 import indi.uhyils.util.CollectionUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,19 +52,20 @@ public class JavaParserUtil {
         //方法个数
         int count = 0;
 
-        Map<String, Integer> methodDeeps = new HashMap<>();
+        Map<String, MethodNodeStatisticsInfo> methodDeeps = new HashMap<>();
 
         Function<String, Boolean> testFunction = s -> s.endsWith("Test");
         Function<String, Boolean> criteriaFunction = s -> s.endsWith("Criteria");
         Function<String, Boolean> exampleFunction = s -> s.endsWith("Example");
-        ParseMethodNodeExcludeModel build = ParseMethodNodeExcludeModel.build(Arrays.asList(testFunction, criteriaFunction,exampleFunction), Arrays.asList("equals"::equals, "hashCode"::equals, "toString"::equals));
+        ParseMethodNodeExcludeModel build = ParseMethodNodeExcludeModel
+            .build(Arrays.asList(testFunction, criteriaFunction, exampleFunction), Arrays.asList("equals"::equals, "hashCode"::equals, "toString"::equals));
 
         for (Entry<String, List<CompilationUnit>> entry : collect.entrySet()) {
             List<CompilationUnit> values = entry.getValue();
             for (CompilationUnit value : values) {
                 List<Node> childNodes = value.getChildNodes();
                 for (Node childNode : childNodes) {
-                    MethodNodeInfo methodNodeInfo = parseMethodNode(childNode, build);
+                    MethodNodeAllInfo methodNodeInfo = parseMethodNode(childNode, build);
                     if (methodNodeInfo == null) {
                         continue;
                     }
@@ -71,40 +76,112 @@ public class JavaParserUtil {
             }
 
         }
-        List<Entry<String, Integer>> list = new ArrayList<>(methodDeeps.entrySet());
-        list.sort(Entry.comparingByValue());
+        printResult(sum, count, methodDeeps);
+
+    }
+
+    private static void printResult(long sum, int count, Map<String, MethodNodeStatisticsInfo> methodDeeps) {
+        List<Entry<String, MethodNodeStatisticsInfo>> list = new ArrayList<>(methodDeeps.entrySet());
+        list.sort(Comparator.comparingInt(t -> t.getValue().getSumComplexity()));
         int middleIndex = list.size() / 2;
-        Entry<String, Integer> middle = list.get(middleIndex);
+        Entry<String, MethodNodeStatisticsInfo> middle = list.get(middleIndex);
+        double methodAvg = list.stream().mapToDouble(t -> t.getValue().getAvgComplexity()).average().getAsDouble();
+        double methodMaxDeepAvg = list.stream().mapToDouble(t -> t.getValue().getMaxComplexity()).average().getAsDouble();
+
+        List<MethodNodeStatisticsInfo> methodNodeStatisticsInfos = new ArrayList<>(methodDeeps.values());
+
+        //均值
+        double avgSumComplexity = methodNodeStatisticsInfos.stream().mapToDouble(MethodNodeStatisticsInfo::getSumComplexity).average().getAsDouble();
+        double avgAvgComplexity = methodNodeStatisticsInfos.stream().mapToDouble(MethodNodeStatisticsInfo::getAvgComplexity).average().getAsDouble();
+        double avgMaxComplexity = methodNodeStatisticsInfos.stream().mapToDouble(MethodNodeStatisticsInfo::getMaxComplexity).average().getAsDouble();
+
+        //方差
+        double varSumComplexity = methodNodeStatisticsInfos.stream().mapToDouble(t -> Math.pow(t.getSumComplexity() - avgSumComplexity, 2)).sum() / methodNodeStatisticsInfos.size();
+        double varAvgComplexity = methodNodeStatisticsInfos.stream().mapToDouble(t -> Math.pow(t.getAvgComplexity() - avgSumComplexity, 2)).sum() / methodNodeStatisticsInfos.size();
+        double varMaxComplexity = methodNodeStatisticsInfos.stream().mapToDouble(t -> Math.pow(t.getMaxComplexity() - avgSumComplexity, 2)).sum() / methodNodeStatisticsInfos.size();
 
         double avg = sum * 1.0 / count;
-        System.out.println("方法总复杂度为:" + sum + "方法个数:" + count + " 平均复杂度为:" + avg);
-        Integer middleValue = middle.getValue();
-        System.out.println("方法复杂度中位数为: " + middleValue);
-        System.out.println("偏态: " + (avg - middleValue) * 1.0 / middleValue);
+        System.out.println("方法总复杂度为:" + sum + "方法个数:" + count + " 平均方法复杂度为:" + avg + " 指令平均复杂度为:" + methodAvg + " 方法平均深度:" + methodMaxDeepAvg);
+        MethodNodeStatisticsInfo middleValue = middle.getValue();
+        Integer deep = middleValue.getSumComplexity();
+        System.out.println("方法复杂度中位数为: " + deep);
+        System.out.println("复杂度偏态: " + (avg - deep) * 1.0 / Math.sqrt(varSumComplexity));
 
-        System.out.println("方法复杂度排名:");
+        //相关系数
+        double rSumComplexityMaxComplexity = methodNodeStatisticsInfos.stream().mapToDouble(t -> (t.getSumComplexity() - avgSumComplexity) * (t.getMaxComplexity()) - avgMaxComplexity)
+                                                                      .sum() / methodNodeStatisticsInfos.size() / (Math.sqrt(varSumComplexity) * Math.sqrt(varMaxComplexity));
+        double rSumComplexityAvgComplexity = methodNodeStatisticsInfos.stream().mapToDouble(t -> (t.getSumComplexity() - avgSumComplexity) * (t.getAvgComplexity()) - avgAvgComplexity)
+                                                                      .sum() / methodNodeStatisticsInfos.size() / (Math.sqrt(varSumComplexity) * Math.sqrt(varAvgComplexity));
+        double rMaxComplexityAvgComplexity = methodNodeStatisticsInfos.stream().mapToDouble(t -> (t.getMaxComplexity() - avgMaxComplexity) * (t.getAvgComplexity()) - avgAvgComplexity)
+                                                                      .sum() / methodNodeStatisticsInfos.size() / (Math.sqrt(varMaxComplexity) * Math.sqrt(varAvgComplexity));
+        System.out.println("相关系数: ");
+        System.out.println("\t复杂度 and 最大深度:" + rSumComplexityMaxComplexity);
+        System.out.println("\t复杂度 and 指令复杂度:" + rSumComplexityAvgComplexity);
+        System.out.println("\t最大深度 and 指令复杂度:" + rMaxComplexityAvgComplexity);
+
         int maxSize = 25;
-        List<Entry<String, Integer>> lastList = null;
-        List<Entry<String, Integer>> nextList = null;
+        List<Entry<String, MethodNodeStatisticsInfo>> nextList = null;
         if (list.size() > maxSize) {
-            lastList = list.subList(0, maxSize);
             nextList = list.subList(list.size() - maxSize - 1, list.size() - 1);
         } else {
-            lastList = list;
             nextList = list;
         }
-        System.out.println("小--------------------------------------------------------------------");
-        for (Entry<String, Integer> entry : lastList) {
-            System.out.printf("名称: " + entry.getKey());
-            System.out.println(" 复杂度: " + entry.getValue());
-        }
-        System.out.println("大--------------------------------------------------------------------");
+
+        System.out.println();
+        System.out.println("复杂度排名--------------------------------------------------------------------");
         for (int i = nextList.size() - 1; i >= 0; i--) {
-            Entry<String, Integer> entry = nextList.get(i);
+            Entry<String, MethodNodeStatisticsInfo> entry = nextList.get(i);
             System.out.printf("名称: " + entry.getKey());
-            System.out.println(" 复杂度: " + entry.getValue());
+            System.out.printf(" 复杂度: " + entry.getValue().getSumComplexity());
+            System.out.printf(" 指令平均复杂度为: " + entry.getValue().getAvgComplexity());
+            System.out.println(" 方法深度: " + entry.getValue().getMaxComplexity());
+        }
+        list.sort(Comparator.comparingDouble(t -> t.getValue().getAvgComplexity()));
+        if (list.size() > maxSize) {
+            nextList = list.subList(list.size() - maxSize - 1, list.size() - 1);
+        } else {
+            nextList = list;
         }
 
+        System.out.println();
+        System.out.println("指令排名--------------------------------------------------------------------");
+        for (int i = nextList.size() - 1; i >= 0; i--) {
+            Entry<String, MethodNodeStatisticsInfo> entry = nextList.get(i);
+            System.out.printf("名称: " + entry.getKey());
+            System.out.printf(" 指令平均复杂度为: " + entry.getValue().getAvgComplexity());
+            System.out.printf(" 总复杂度: " + entry.getValue().getSumComplexity());
+            System.out.println(" 方法深度: " + entry.getValue().getMaxComplexity());
+        }
+        if (list.size() > maxSize) {
+            nextList = list.subList(0, maxSize);
+        } else {
+            nextList = list;
+        }
+        System.out.println();
+        System.out.println("指令倒排名--------------------------------------------------------------------");
+        for (Entry<String, MethodNodeStatisticsInfo> entry : nextList) {
+            System.out.printf("名称: " + entry.getKey());
+            System.out.printf(" 指令平均复杂度为: " + entry.getValue().getAvgComplexity());
+            System.out.printf(" 总复杂度: " + entry.getValue().getSumComplexity());
+            System.out.println(" 方法深度: " + entry.getValue().getMaxComplexity());
+        }
+
+        list.sort(Comparator.comparingDouble(t -> t.getValue().getMaxComplexity()));
+        if (list.size() > maxSize) {
+            nextList = list.subList(list.size() - maxSize - 1, list.size() - 1);
+        } else {
+            nextList = list;
+        }
+
+        System.out.println();
+        System.out.println("方法深度排名--------------------------------------------------------------------");
+        for (int i = nextList.size() - 1; i >= 0; i--) {
+            Entry<String, MethodNodeStatisticsInfo> entry = nextList.get(i);
+            System.out.printf("名称: " + entry.getKey());
+            System.out.printf(" 方法深度: " + entry.getValue().getMaxComplexity());
+            System.out.printf(" 指令平均复杂度为: " + entry.getValue().getAvgComplexity());
+            System.out.println(" 总复杂度: " + entry.getValue().getSumComplexity());
+        }
     }
 
     private static String namedUnit(CompilationUnit unit) {
@@ -128,7 +205,7 @@ public class JavaParserUtil {
         return false;
     }
 
-    private static MethodNodeInfo parseMethodNode(Node node, ParseMethodNodeExcludeModel excludeModel) {
+    private static MethodNodeAllInfo parseMethodNode(Node node, ParseMethodNodeExcludeModel excludeModel) {
         if (node instanceof MethodDeclaration) {
             MethodDeclaration methodDeclaration = (MethodDeclaration) node;
             if (!methodDeclaration.getBody().isPresent()) {
@@ -137,12 +214,12 @@ public class JavaParserUtil {
             String methodName = methodDeclaration.getName().toString();
             Node parentNode = methodDeclaration.getParentNode().get();
             String className = null;
-            if (parentNode instanceof ClassOrInterfaceDeclaration) {
-                ClassOrInterfaceDeclaration classOrInterfaceDeclaration = (ClassOrInterfaceDeclaration) parentNode;
-                className = classOrInterfaceDeclaration.getName().toString();
-            } else if (parentNode instanceof EnumDeclaration) {
-                EnumDeclaration enumDeclaration = (EnumDeclaration) parentNode;
-                className = enumDeclaration.getName().toString();
+            if (parentNode instanceof NodeWithSimpleName) {
+                NodeWithSimpleName typeDeclaration = (NodeWithSimpleName) parentNode;
+                className = typeDeclaration.getName().toString();
+            } else if (parentNode instanceof ObjectCreationExpr) {
+                ObjectCreationExpr objectCreationExpr = (ObjectCreationExpr) parentNode;
+                className = objectCreationExpr.getType() + "$";
             } else {
                 className = "None";
             }
@@ -152,13 +229,14 @@ public class JavaParserUtil {
                 return null;
             }
             String allMethodName = className + "." + methodName;
-            Integer deep = getDeep(node);
+            MethodNodeStatisticsInfo deepInfo = getDeep(node, 0);
 
-            if ((methodName.startsWith("get") || methodName.startsWith("set") || methodName.startsWith("is")) && deep < 15) {
+            Integer deep = deepInfo.getSumComplexity();
+            if ((methodName.startsWith("get") || methodName.startsWith("set") || methodName.startsWith("is"))) {
                 return null;
             }
-            MethodNodeInfo build = MethodNodeInfo.build(Long.valueOf(deep), 1, new HashMap<>());
-            build.getMethodDeep().put(allMethodName, deep);
+            MethodNodeAllInfo build = MethodNodeAllInfo.build(Long.valueOf(deep), 1, new HashMap<>());
+            build.getMethodDeep().put(allMethodName, deepInfo);
             return build;
         }
         List<Node> childNodes = node.getChildNodes();
@@ -169,15 +247,20 @@ public class JavaParserUtil {
         long sum = 0L;
         int count = 0;
         int index = 0;
-        Map<String, Integer> methodDeep = new HashMap<>();
+        Map<String, MethodNodeStatisticsInfo> methodDeep = new HashMap<>();
         for (Node childNode : childNodes) {
-            MethodNodeInfo methodNodeInfo = parseMethodNode(childNode, excludeModel);
+            MethodNodeAllInfo methodNodeInfo = parseMethodNode(childNode, excludeModel);
             if (methodNodeInfo == null) {
                 continue;
             }
             sum += methodNodeInfo.getSum();
-            count += methodNodeInfo.getCount();
-            for (Entry<String, Integer> entry : methodNodeInfo.getMethodDeep().entrySet()) {
+            int realCount = methodNodeInfo.getCount();
+            int size = methodNodeInfo.getMethodDeep().size();
+            if (realCount != size) {
+                int i = 1;
+            }
+            count += realCount;
+            for (Entry<String, MethodNodeStatisticsInfo> entry : methodNodeInfo.getMethodDeep().entrySet()) {
                 if (methodDeep.containsKey(entry.getKey())) {
                     methodDeep.put(entry.getKey() + "_" + (index++), entry.getValue());
                 } else {
@@ -185,21 +268,36 @@ public class JavaParserUtil {
                 }
             }
         }
-        return MethodNodeInfo.build(sum, count, methodDeep);
+        return MethodNodeAllInfo.build(sum, count, methodDeep);
     }
 
-    private static Integer getDeep(Node node) {
-        List<Node> childNodes = node.getChildNodes();
+    private static MethodNodeStatisticsInfo getDeep(Node node, Integer maxDeep) {
+        List<Node> childNodes = null;
+        if (node instanceof MethodDeclaration) {
+            MethodDeclaration methodDeclaration = (MethodDeclaration) node;
+            BlockStmt blockStmt = methodDeclaration.getBody().get();
+            childNodes = blockStmt.getChildNodes();
+        } else {
+            childNodes = node.getChildNodes();
+        }
         if (CollectionUtil.isEmpty(childNodes)) {
-            return 1;
+            return MethodNodeStatisticsInfo.build(maxDeep + 1);
         }
 
-        int sum = 0;
+        int sum = 1;
+        int count = 1;
+        int realDepp = 0;
         for (Node childNode : childNodes) {
-            sum += getDeep(childNode);
+            MethodNodeStatisticsInfo deep = getDeep(childNode, maxDeep + 1);
+            if (deep == null) {
+                continue;
+            }
+            realDepp = Math.max(realDepp, deep.getMaxComplexity());
+            sum += deep.getSumComplexity();
+            count++;
         }
 
-        return sum + 1;
+        return MethodNodeStatisticsInfo.build(sum, sum * 1.0 / count, realDepp);
 
     }
 

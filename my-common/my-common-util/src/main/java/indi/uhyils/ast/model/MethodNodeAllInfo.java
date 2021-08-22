@@ -10,7 +10,7 @@ import java.util.Map;
  * @version 1.0
  * @date 文件创建日期 2021年08月21日 11时08分
  */
-public class MethodNodeInfo implements Serializable {
+public class MethodNodeAllInfo implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
@@ -27,10 +27,10 @@ public class MethodNodeInfo implements Serializable {
     /**
      * 每个方法的复杂度
      */
-    private Map<String, Integer> methodDeep = new HashMap<>();
+    private Map<String, MethodNodeStatisticsInfo> methodDeep = new HashMap<>();
 
-    public static MethodNodeInfo build(Long sum, Integer count, Map<String, Integer> methodDeep) {
-        MethodNodeInfo build = new MethodNodeInfo();
+    public static MethodNodeAllInfo build(Long sum, Integer count, Map<String, MethodNodeStatisticsInfo> methodDeep) {
+        MethodNodeAllInfo build = new MethodNodeAllInfo();
         build.sum = sum;
         build.count = count;
         build.methodDeep = methodDeep;
@@ -53,11 +53,11 @@ public class MethodNodeInfo implements Serializable {
         this.count = count;
     }
 
-    public Map<String, Integer> getMethodDeep() {
+    public Map<String, MethodNodeStatisticsInfo> getMethodDeep() {
         return methodDeep;
     }
 
-    public void setMethodDeep(Map<String, Integer> methodDeep) {
+    public void setMethodDeep(Map<String, MethodNodeStatisticsInfo> methodDeep) {
         this.methodDeep = methodDeep;
     }
 }
