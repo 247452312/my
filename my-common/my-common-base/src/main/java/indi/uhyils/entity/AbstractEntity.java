@@ -1,7 +1,8 @@
 package indi.uhyils.entity;
 
 import indi.uhyils.entity.event.Event;
-import indi.uhyils.type.Identifier;
+import indi.uhyils.entity.type.Identifier;
+import indi.uhyils.pojo.model.base.BaseIdDO;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,21 +24,20 @@ public abstract class AbstractEntity implements HaveIdEntity {
     /**
      * id 是可以没有的
      */
-    private Identifier id;
+    protected Identifier id;
 
     /**
      * 是否可以修改
      */
-    private boolean canUpdate = false;
+    private boolean canUpdate;
+
 
     protected AbstractEntity() {
         this.events = new ArrayList<>();
+        this.canUpdate = false;
     }
 
-    protected AbstractEntity(Identifier id) {
-        this();
-        this.id = id;
-    }
+
 
     @Override
     public boolean canUpdate() {

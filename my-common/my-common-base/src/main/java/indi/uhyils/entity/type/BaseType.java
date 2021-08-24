@@ -1,4 +1,4 @@
-package indi.uhyils.type;
+package indi.uhyils.entity.type;
 
 /**
  * 类型包装

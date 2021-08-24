@@ -1,6 +1,6 @@
 package indi.uhyils.entity;
 
-import indi.uhyils.type.Identifier;
+import indi.uhyils.entity.type.Identifier;
 
 /**
  * @author uhyils <247452312@qq.com>

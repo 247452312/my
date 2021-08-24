@@ -1,0 +1,42 @@
+package indi.uhyils.entity;
+
+import indi.uhyils.entity.type.Identifier;
+import indi.uhyils.pojo.model.base.BaseIdDO;
+
+/**
+ * @author uhyils <247452312@qq.com>
+ * @version 1.0
+ * @date 文件创建日期 2021年08月24日 17时59分
+ */
+public abstract class AbstractDoEntity<T extends BaseIdDO> extends AbstractEntity {
+
+    /**
+     * 对应数据库DO
+     */
+    protected T data;
+
+    protected AbstractDoEntity(T t) {
+        super();
+        this.id = new Identifier(t.getId());
+        this.data = t;
+    }
+
+    /**
+     * 给子类用
+     *
+     * @return
+     */
+    protected T getData() {
+        return data;
+    }
+
+    /**
+     * 转换为DO
+     *
+     * @return
+     */
+    public T toDo() {
+        return data;
+    }
+
+}

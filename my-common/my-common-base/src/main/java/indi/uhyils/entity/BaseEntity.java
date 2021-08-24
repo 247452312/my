@@ -1,6 +1,7 @@
 package indi.uhyils.entity;
 
 import indi.uhyils.entity.event.Event;
+import java.io.Serializable;
 
 /**
  * entity基础
@@ -9,7 +10,7 @@ import indi.uhyils.entity.event.Event;
  * @version 1.0
  * @date 文件创建日期 2021年08月22日 15时38分
  */
-public interface BaseEntity {
+public interface BaseEntity extends Serializable {
 
     /**
      * 是否可以修改

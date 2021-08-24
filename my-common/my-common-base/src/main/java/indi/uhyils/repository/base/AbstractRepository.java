@@ -5,9 +5,10 @@ import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.entity.HaveIdEntity;
 import indi.uhyils.entity.query.BaseOrder;
 import indi.uhyils.entity.query.Limit;
+import indi.uhyils.entity.type.Identifier;
 import indi.uhyils.pojo.model.base.BaseDoDO;
 import indi.uhyils.pojo.request.model.Arg;
-import indi.uhyils.type.Identifier;
+import indi.uhyils.pojo.response.base.Page;
 import indi.uhyils.util.AssertUtil;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,15 +63,21 @@ public abstract class AbstractRepository<EN extends HaveIdEntity, DO extends Bas
     @Override
     public EN find(HaveIdEntity query) {
         AssertUtil.assertTrue(query.haveId(), "根据id查询, 你id不存在?");
-        Long idValue = query.getId().getId();
+        Identifier id = query.getId();
+        return find(id);
+    }
+
+    @Override
+    public EN find(Identifier id) {
+        Long idValue = id.getId();
         DO byId = dao.getById(idValue);
         return convert.doToEntity(byId);
     }
 
     @Override
-    public List<EN> find(BaseOrder id) {
-        List<Arg> args = id.args();
-        Limit limit = id.limit();
+    public List<EN> findNoPage(BaseOrder order) {
+        List<Arg> args = order.args();
+        Limit limit = order.limit();
         List<DO> result;
         if (limit.getPage()) {
             result = dao.getByArgs(args, limit.getNumber(), limit.getSize());
@@ -78,6 +85,13 @@ public abstract class AbstractRepository<EN extends HaveIdEntity, DO extends Bas
             result = dao.getByArgsNoPage(args);
         }
         return result.stream().map(convert::doToEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<EN> find(BaseOrder order) {
+        List<EN> noPageData = findNoPage(order);
+        int count = dao.countByArgs(order.args());
+        return Page.build(noPageData, order.limit(), count);
     }
 
     @Override

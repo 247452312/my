@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.response.base;
 
+import indi.uhyils.entity.query.BaseOrder;
+import indi.uhyils.entity.query.Limit;
 import indi.uhyils.pojo.request.base.DefaultPageRequest;
 import java.io.Serializable;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时41分
  */
-public class Page<T extends Serializable> implements Serializable {
+public class Page<T> implements Serializable {
 
     /**
      * 类
@@ -50,6 +52,19 @@ public class Page<T extends Serializable> implements Serializable {
 
     public static <T extends Serializable> Page<T> build(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
         return new Page(list, size, pageNum, count, totalPage);
+    }
+
+    public static <T extends Serializable> Page<T> build(List<T> list, Integer size, Integer pageNum, Integer count) {
+        int remainder = count % size == 0 ? 0 : 1;
+        return build(list, size, pageNum, count, count / size + remainder);
+    }
+
+    public static <T extends Serializable> Page<T> build(List<T> list, BaseOrder order, Integer count) {
+        return build(list, order.limit(), count);
+    }
+
+    public static <T extends Serializable> Page<T> build(List<T> list, Limit limit, Integer count) {
+        return build(list, limit.getSize(), limit.getNumber(), count);
     }
 
     /**

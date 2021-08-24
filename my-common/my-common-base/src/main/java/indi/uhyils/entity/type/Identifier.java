@@ -1,4 +1,4 @@
-package indi.uhyils.type;
+package indi.uhyils.entity.type;
 
 /**
  * @author uhyils <247452312@qq.com>

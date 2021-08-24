@@ -4,6 +4,8 @@ import indi.uhyils.annotation.NoToken;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.content.Content;
 import indi.uhyils.dao.UserDao;
+import indi.uhyils.entity.User;
+import indi.uhyils.entity.type.UserId;
 import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.model.DeptDO;
@@ -20,6 +22,7 @@ import indi.uhyils.pojo.request.model.Arg;
 import indi.uhyils.pojo.response.LoginResponse;
 import indi.uhyils.pojo.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
+import indi.uhyils.repository.UserRepository;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.UserService;
 import indi.uhyils.util.AESUtil;
@@ -28,7 +31,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +56,9 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserDO> implements U
 
     @Value("${token.encodeRules}")
     private String encodeRules;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @Override
@@ -94,15 +99,18 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserDO> implements U
     @NoToken
     @ReadWriteMark(cacheType = CacheTypeEnum.NOT_TYPE)
     public ServiceResult<String> getUserToken(IdRequest request) {
-        String token = getToken(request.getId());
+        Long id = request.getId();
+        UserId userId = new UserId(id);
+        String token = userId.toToken().getToken();
         return ServiceResult.buildSuccessResult("token生成成功", token);
     }
 
     @Override
     public ServiceResult<Integer> insert(ObjRequest<UserDO> insert) throws Exception {
         UserDO data = insert.getData();
-        data.preInsert(insert);
-        data.setPassword(MD5Util.MD5Encode(data.getPassword()));
+        User entity = new User(data);
+        entity.encodePassword();
+        userRepository.save(entity);
         return ServiceResult.buildSuccessResult("插入成功", dao.insert(data));
     }
 
@@ -172,8 +180,8 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserDO> implements U
         if (haveUserId != null && haveUserId) {
             redisPoolHandle.removeUserById(userEntity.getId());
         }
-
-        String token = getToken(userEntity.getId());
+        UserId userId = new UserId(userEntity.getId());
+        String token = userId.toToken().getToken();
         userRequest.setToken(token);
 
         // 登录->加入缓存中
@@ -245,36 +253,6 @@ public class UserServiceImpl extends BaseDefaultServiceImpl<UserDO> implements U
 
     public void setEncodeRules(String encodeRules) {
         this.encodeRules = encodeRules;
-    }
-
-
-    private String getToken(Long userId) {
-        StringBuilder sb = new StringBuilder(26 + salt.length());
-
-        //生成日期部分 8位
-        LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddhhmmss");
-        String format = localDateTime.format(dateTimeFormatter);
-        sb.append(format);
-        Random random = new Random(90);
-        int randomNum = random.nextInt() + 10;
-        //两位随机数 两位
-        sb.append(randomNum);
-
-        // 用户id 19位
-        String str = userId.toString();
-        long i = 19L - str.length();
-        // long 最大19位 如果不够 最高位补0
-        StringBuilder sbTemp = new StringBuilder(19);
-        for (int j = 0; j < i; j++) {
-            sbTemp.append("0");
-        }
-        sbTemp.append(str);
-        sb.append(sbTemp);
-        //盐 x位
-        sb.append(salt);
-
-        return AESUtil.AESEncode(encodeRules, sb.toString());
     }
 
 

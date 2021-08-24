@@ -26,6 +26,6 @@ public interface BaseEntityDOConvert<T extends BaseEntity, E extends BaseIdDO> {
      *
      * @return
      */
-    T doToEntity(E idDO);
+    T doToEntity(E dO);
 
 }
