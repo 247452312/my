@@ -1,10 +1,10 @@
 package indi.uhyils.util.page;
 
-import indi.uhyils.content.Content;
+import indi.uhyils.context.MyContext;
 import indi.uhyils.dao.SendPageDao;
-import indi.uhyils.pojo.model.SendPageDO;
-import indi.uhyils.pojo.model.UserDO;
-import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.DO.SendPageDO;
+import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.util.SendPageBuild;
 import indi.uhyils.util.SpringUtil;
 
@@ -23,7 +23,7 @@ public class SendPage {
         // 构造系统请求
         DefaultRequest request = new DefaultRequest();
         UserDO user = new UserDO();
-        user.setId(Content.ADMIN_USER_ID);
+        user.setId(MyContext.ADMIN_USER_ID);
         request.setUser(user);
         sendPageEntity.preInsert(request);
         //插入

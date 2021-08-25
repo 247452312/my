@@ -1,14 +1,14 @@
 package indi.uhyils.task;
 
-import indi.uhyils.content.Content;
+import indi.uhyils.context.MyContext;
 import indi.uhyils.dao.TraceInfoDao;
-import indi.uhyils.log.LogTypeEnum;
-import indi.uhyils.pojo.model.DictItemDO;
-import indi.uhyils.pojo.request.GetByCodeRequest;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.pojo.DO.DictItemDO;
+import indi.uhyils.pojo.DTO.request.GetByCodeRequest;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcReference;
-import indi.uhyils.service.DictService;
+import indi.uhyils.protocol.rpc.provider.DictProvider;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.NacosUtil;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class ConcurrentNumberTask {
     private TraceInfoDao traceInfoDao;
 
     @RpcReference
-    private DictService dictService;
+    private DictProvider dictService;
 
     @Scheduled(cron = "*/2 * * * * ?")
     public void demoSchedule() {
@@ -47,7 +47,7 @@ public class ConcurrentNumberTask {
         GetByCodeRequest request = new GetByCodeRequest();
         DefaultRequest adminDefaultRequest = DefaultRequestBuildUtil.getAdminDefaultRequest();
         request.setUser(adminDefaultRequest.getUser());
-        request.setCode(Content.CONCURRENT_NUM_DICT_CODE);
+        request.setCode(MyContext.CONCURRENT_NUM_DICT_CODE);
         ServiceResult<ArrayList<DictItemDO>> byCode = dictService.getByCode(request);
         ArrayList<DictItemDO> data = byCode.validationAndGet();
         DictItemDO dictItemEntity = data.get(0);

@@ -3,10 +3,10 @@ package indi.uhyils.serviceImpl;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.TopicType;
 import indi.uhyils.exception.UserException;
-import indi.uhyils.pojo.request.GetMessageRequest;
-import indi.uhyils.pojo.request.SendMessageRequest;
-import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.service.MqService;
+import indi.uhyils.pojo.DTO.request.GetMessageRequest;
+import indi.uhyils.pojo.DTO.request.SendMessageRequest;
+import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.protocol.rpc.provider.MqProvider;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,11 +23,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class MqServiceImplTest {
 
-    private MqService service;
+    private MqProvider service;
 
     @Before
     public void setUp() throws Exception {
-        service = new MqServiceImpl();
+        service = new MqProviderImpl();
     }
 
     @Test

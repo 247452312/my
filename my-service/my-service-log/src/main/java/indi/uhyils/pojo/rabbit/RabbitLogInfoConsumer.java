@@ -8,7 +8,7 @@ import com.rabbitmq.client.Envelope;
 import indi.uhyils.dao.TraceDetailDao;
 import indi.uhyils.dao.TraceInfoDao;
 import indi.uhyils.dao.TraceLogDao;
-import indi.uhyils.log.LogDetailTypeEnum;
+import indi.uhyils.enum_.LogDetailTypeEnum;
 import indi.uhyils.trace.DetailTraceDeal;
 import indi.uhyils.trace.LinkTraceDeal;
 import indi.uhyils.trace.LogTraceDeal;

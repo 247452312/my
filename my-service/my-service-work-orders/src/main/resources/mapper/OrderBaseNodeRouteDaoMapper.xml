@@ -25,7 +25,7 @@
         </foreach>
     </update>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseNodeRouteDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.OrderBaseNodeRouteDO">
         select
         <include refid="columnList"/>
         from sys_order_base_node_route a
@@ -33,7 +33,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderBaseNodeRouteDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.OrderBaseNodeRouteDO">
         select
         <include refid="columnList"/>
         from sys_order_base_node_route a
@@ -43,7 +43,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderBaseNodeRouteDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.OrderBaseNodeRouteDO">
         select
         <include refid="columnList"/>
         from sys_order_base_node_route a
@@ -58,7 +58,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeRouteDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.OrderBaseNodeRouteDO">
         insert sys_order_base_node_route(prev_node_id,
         update_user,
         remark,
@@ -81,7 +81,7 @@
         #{updateDate})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeRouteDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.OrderBaseNodeRouteDO">
         update sys_order_base_node_route set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -130,14 +130,14 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.model.OrderBaseNodeRouteDO">
+    <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.DO.OrderBaseNodeRouteDO">
         select
         <include refid="columnList"/>
         from sys_order_base_node_route a
         where delete_flag = 0
         and prev_node_id = #{nodeId}
     </select>
-    <select id="getByOrderNodeIds" resultType="indi.uhyils.pojo.model.OrderBaseNodeRouteDO">
+    <select id="getByOrderNodeIds" resultType="indi.uhyils.pojo.DO.OrderBaseNodeRouteDO">
         select
         <include refid="columnList"/>
         from sys_order_base_node_route a

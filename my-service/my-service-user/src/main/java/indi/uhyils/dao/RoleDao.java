@@ -1,9 +1,9 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.RoleDeptMiddle;
-import indi.uhyils.pojo.model.RoleDO;
-import indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse;
+import indi.uhyils.pojo.DO.RoleDeptMiddle;
+import indi.uhyils.pojo.DO.RoleDO;
+import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkResponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;

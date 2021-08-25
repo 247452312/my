@@ -4,7 +4,7 @@ import indi.uhyils.netty.finder.Finder;
 import indi.uhyils.netty.finder.http.HttpProFinder;
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import indi.uhyils.netty.util.IpUtil;
-import indi.uhyils.pojo.request.SendMessageRequest;
+import indi.uhyils.pojo.DTO.request.SendMessageRequest;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 import io.netty.buffer.ByteBuf;

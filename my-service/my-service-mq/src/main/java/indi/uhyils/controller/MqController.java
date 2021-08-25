@@ -2,16 +2,16 @@ package indi.uhyils.controller;
 
 import indi.uhyils.core.topic.Topic;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.request.LoginRequest;
-import indi.uhyils.pojo.request.MqLoginRequest;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.LoginResponse;
-import indi.uhyils.pojo.response.WebResponse;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.LoginRequest;
+import indi.uhyils.pojo.DTO.request.MqLoginRequest;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.response.LoginResponse;
+import indi.uhyils.pojo.DTO.response.WebResponse;
+import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcReference;
-import indi.uhyils.service.MqInfoService;
-import indi.uhyils.service.MqService;
-import indi.uhyils.service.UserService;
+import indi.uhyils.protocol.rpc.provider.MqInfoService;
+import indi.uhyils.protocol.rpc.provider.MqProvider;
+import indi.uhyils.protocol.rpc.provider.UserProvider;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,13 +36,13 @@ public class MqController {
     private static final String PASSWORD = "admin";
 
     @Resource
-    private MqService service;
+    private MqProvider service;
 
     @Resource
     private MqInfoService mqInfoService;
 
     @RpcReference
-    private UserService userService;
+    private UserProvider userService;
 
     /**
      * 登录

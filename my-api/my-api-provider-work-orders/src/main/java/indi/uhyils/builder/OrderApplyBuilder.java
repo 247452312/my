@@ -2,8 +2,8 @@ package indi.uhyils.builder;
 
 import indi.uhyils.enum_.OrderApplyStatusEnum;
 import indi.uhyils.enum_.OrderApplyTypeEnum;
-import indi.uhyils.pojo.model.OrderApplyDO;
-import indi.uhyils.pojo.model.OrderNodeDO;
+import indi.uhyils.pojo.DO.OrderApplyDO;
+import indi.uhyils.pojo.DO.OrderNodeDO;
 
 /**
  * @author uhyils <247452312@qq.com>

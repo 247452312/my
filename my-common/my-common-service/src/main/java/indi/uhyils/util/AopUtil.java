@@ -1,6 +1,6 @@
 package indi.uhyils.util;
 
-import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 /**

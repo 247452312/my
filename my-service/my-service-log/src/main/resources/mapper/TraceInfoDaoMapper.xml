@@ -24,7 +24,7 @@
         a.delete_flag  as deleteFlag
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.TraceInfoDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
         select
         <include refid="columnList"/>
         from sys_trace_info a
@@ -32,7 +32,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.TraceInfoDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
         select
         <include refid="columnList"/>
         from sys_trace_info a
@@ -42,7 +42,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.TraceInfoDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
         select
         <include refid="columnList"/>
         from sys_trace_info a
@@ -57,7 +57,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.TraceInfoDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.TraceInfoDO">
         insert sys_trace_info(trace_id,
         other,
         level,
@@ -98,7 +98,7 @@
         #{deleteFlag})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.TraceInfoDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.TraceInfoDO">
         update sys_trace_info set
         <if test="traceId != null and traceId != ''">
             , trace_id = #{traceId}
@@ -186,7 +186,7 @@
         and a.start_time > #{time}
     </select>
 
-    <select id="getTraceInfoByArgAndPage" resultType="indi.uhyils.pojo.model.TraceInfoDO">
+    <select id="getTraceInfoByArgAndPage" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
         select
         <include refid="columnList"/>
         from sys_trace_info a
@@ -210,7 +210,7 @@
         select count(*)
         from v_sys_trace_detail_statistics a
     </select>
-    <select id="getTraceStatistics" resultType="indi.uhyils.pojo.model.TraceDetailStatisticsView">
+    <select id="getTraceStatistics" resultType="indi.uhyils.pojo.DO.TraceDetailStatisticsView">
         select a.time,
         a.type,
         a.type_name as typeName,
@@ -239,7 +239,7 @@
         </if>
     </select>
 
-    <select id="getLinkByTraceIdAndRpcIdPrefix" resultType="indi.uhyils.pojo.model.TraceInfoDO">
+    <select id="getLinkByTraceIdAndRpcIdPrefix" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
         select
         <include refid="columnList"/>
         from sys_trace_info a
@@ -248,7 +248,7 @@
         and (rpc_id like '${rpcId}.%' or rpc_id = #{rpcId})
     </select>
 
-    <select id="getTraceInfoByTraceId" resultType="indi.uhyils.pojo.model.TraceInfoDO">
+    <select id="getTraceInfoByTraceId" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
         select
         <include refid="columnList"/>
         from sys_trace_info a

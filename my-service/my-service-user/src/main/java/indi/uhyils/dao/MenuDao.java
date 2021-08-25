@@ -1,8 +1,8 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.MenuDO;
-import indi.uhyils.pojo.response.GetAllMenuWithHaveMarkResponse;
+import indi.uhyils.pojo.DO.MenuDO;
+import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkResponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;

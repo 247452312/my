@@ -1,8 +1,8 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.ApiDO;
-import indi.uhyils.pojo.model.ApiGroupDO;
+import indi.uhyils.pojo.DO.ApiDO;
+import indi.uhyils.pojo.DO.ApiGroupDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

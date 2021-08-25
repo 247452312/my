@@ -1,6 +1,6 @@
 package indi.uhyils.util;
 
-import indi.uhyils.pojo.model.SendPageDO;
+import indi.uhyils.pojo.DO.SendPageDO;
 
 /**
  * 发送页面

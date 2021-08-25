@@ -1,6 +1,6 @@
 package indi.uhyils.utils;
 
-import indi.uhyils.pojo.model.MongoDO;
+import indi.uhyils.pojo.DO.MongoDO;
 
 /**
  * @author uhyils <247452312@qq.com>

@@ -1,7 +1,7 @@
 package indi.uhyils.trace;
 
-import indi.uhyils.log.MyTraceIdContext;
-import indi.uhyils.pojo.model.TraceLogDO;
+import indi.uhyils.context.MyTraceIdContext;
+import indi.uhyils.pojo.DO.TraceLogDO;
 
 
 /**

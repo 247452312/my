@@ -17,7 +17,7 @@
         a.view
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.SendPageDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.SendPageDO">
         select
         <include refid="columnList"/>
         from sys_push_page_msg a
@@ -26,7 +26,7 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.SendPageDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.SendPageDO">
         select
         <include refid="columnList"/>
         from sys_push_page_msg a
@@ -36,7 +36,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.SendPageDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.SendPageDO">
         select
         <include refid="columnList"/>
         from sys_push_page_msg a
@@ -51,7 +51,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.SendPageDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.SendPageDO">
         insert sys_push_page_msg(id,
         create_date,
         create_user,
@@ -76,7 +76,7 @@
         #{view})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.SendPageDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.SendPageDO">
         update sys_push_page_msg set
         update_date = #{updateDate}
         ,update_user = #{updateUser}

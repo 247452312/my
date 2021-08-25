@@ -1,8 +1,8 @@
 package indi.uhyils.log.filter.task;
 
 import com.google.common.base.Supplier;
-import indi.uhyils.log.LogTypeEnum;
-import indi.uhyils.log.MyTraceIdContext;
+import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.context.MyTraceIdContext;
 import indi.uhyils.util.LogUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

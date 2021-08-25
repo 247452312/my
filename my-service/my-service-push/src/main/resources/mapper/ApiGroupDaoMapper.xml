@@ -17,7 +17,7 @@
         a.subscribe
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.ApiGroupDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.ApiGroupDO">
         select
         <include refid="columnList"/>
         from sys_api_group a
@@ -26,7 +26,7 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.ApiGroupDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.ApiGroupDO">
         select
         <include refid="columnList"/>
         from sys_api_group a
@@ -36,7 +36,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.ApiGroupDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.ApiGroupDO">
         select
         <include refid="columnList"/>
         from sys_api_group a
@@ -51,7 +51,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.ApiGroupDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.ApiGroupDO">
         insert sys_api_group(id,
         create_date,
         create_user,
@@ -74,7 +74,7 @@
         #{subscribe})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.ApiGroupDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.ApiGroupDO">
         update sys_api_group set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -116,13 +116,13 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getAll" resultType="indi.uhyils.pojo.model.ApiGroupDO">
+    <select id="getAll" resultType="indi.uhyils.pojo.DO.ApiGroupDO">
         select
         <include refid="columnList"/>
         from sys_api_group a
         where delete_flag = 0
     </select>
-    <select id="getCanBeSubscribed" resultType="indi.uhyils.pojo.model.ApiGroupDO">
+    <select id="getCanBeSubscribed" resultType="indi.uhyils.pojo.DO.ApiGroupDO">
         select
         <include refid="columnList"/>
         from sys_api_group a

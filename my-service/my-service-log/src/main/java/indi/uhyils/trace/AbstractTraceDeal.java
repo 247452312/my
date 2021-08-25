@@ -2,7 +2,7 @@ package indi.uhyils.trace;
 
 import com.alibaba.nacos.common.utils.Objects;
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.TraceIdDoDO;
+import indi.uhyils.pojo.DO.TraceIdDoDO;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 
 /**

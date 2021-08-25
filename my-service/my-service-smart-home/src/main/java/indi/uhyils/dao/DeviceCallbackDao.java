@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.DeviceCallbackDO;
+import indi.uhyils.pojo.DO.DeviceCallbackDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

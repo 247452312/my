@@ -1,10 +1,10 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.DeptDO;
-import indi.uhyils.pojo.model.PowerDO;
-import indi.uhyils.pojo.model.RoleDO;
-import indi.uhyils.pojo.model.UserDO;
+import indi.uhyils.pojo.DO.DeptDO;
+import indi.uhyils.pojo.DO.PowerDO;
+import indi.uhyils.pojo.DO.RoleDO;
+import indi.uhyils.pojo.DO.UserDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

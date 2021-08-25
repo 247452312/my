@@ -1,12 +1,12 @@
 package indi.uhyils.util;
 
-import indi.uhyils.content.Content;
+import indi.uhyils.context.MyContext;
 import indi.uhyils.dao.MsgDao;
 import indi.uhyils.enum_.PushTypeEnum;
-import indi.uhyils.pojo.model.ApiGroupDO;
-import indi.uhyils.pojo.model.MsgDO;
-import indi.uhyils.pojo.model.UserDO;
-import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.DO.ApiGroupDO;
+import indi.uhyils.pojo.DO.MsgDO;
+import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.util.mail.SendMail;
 import indi.uhyils.util.page.SendPage;
 
@@ -92,7 +92,7 @@ public class PushUtils {
         }
         DefaultRequest request = new DefaultRequest();
         UserDO user = new UserDO();
-        user.setId(Content.ADMIN_USER_ID);
+        user.setId(MyContext.ADMIN_USER_ID);
         request.setUser(user);
         t.preInsert(request);
         bean.insert(t);

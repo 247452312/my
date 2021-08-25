@@ -7,7 +7,7 @@ import indi.uhyils.exception.PartitionTopicNoKeyException;
 import indi.uhyils.exception.TopicTypeNoEqualException;
 import indi.uhyils.exception.TopicTypeNotFoundException;
 import indi.uhyils.exception.UserException;
-import indi.uhyils.pojo.request.SendMessageRequest;
+import indi.uhyils.pojo.DTO.request.SendMessageRequest;
 import indi.uhyils.util.SpringUtil;
 
 import java.util.Map;

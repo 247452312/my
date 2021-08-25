@@ -1,8 +1,8 @@
 package indi.uhyils.util;
 
 import indi.uhyils.enum_.ServiceQualityEnum;
-import indi.uhyils.pojo.model.LogMonitorDO;
-import indi.uhyils.pojo.model.LogMonitorJvmStatusDO;
+import indi.uhyils.pojo.DO.LogMonitorDO;
+import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
 import java.util.ArrayList;
 import java.util.List;
 

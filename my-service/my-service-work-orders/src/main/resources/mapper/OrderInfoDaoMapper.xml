@@ -21,7 +21,7 @@
         a.status          as status
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.OrderInfoDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.OrderInfoDO">
         select
         <include refid="columnList"/>
         from sys_order_info a
@@ -40,7 +40,7 @@
         where id = #{orderId}
     </update>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderInfoDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.OrderInfoDO">
         select
         <include refid="columnList"/>
         from sys_order_info a
@@ -50,7 +50,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderInfoDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.OrderInfoDO">
         select
         <include refid="columnList"/>
         from sys_order_info a
@@ -65,7 +65,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderInfoDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.OrderInfoDO">
         insert sys_order_info(remark,
         priority,
         update_date,
@@ -100,7 +100,7 @@
         #{status})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.OrderInfoDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.OrderInfoDO">
         update sys_order_info set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -166,7 +166,7 @@
         from sys_order_info a
         where ${columnName} = #{value}
     </select>
-    <select id="getOrderByType" resultType="indi.uhyils.pojo.model.OrderInfoDO">
+    <select id="getOrderByType" resultType="indi.uhyils.pojo.DO.OrderInfoDO">
         select
         <include refid="columnList"/>
         from sys_order_info a

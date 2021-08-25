@@ -1,6 +1,6 @@
 package indi.uhyils.dao.base;
 
-import indi.uhyils.pojo.request.model.Arg;
+import indi.uhyils.pojo.DTO.request.model.Arg;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +61,15 @@ public interface DefaultDao<T extends Serializable> extends BaseDao {
      * @return 更新个数
      */
     int update(T t);
+
+    /**
+     * 批量更新,这里的实例必须是执行过priseUpdate的实例
+     *
+     * @param t 执行过priseUpdate方法的实例,并且含有id
+     *
+     * @return 更新个数
+     */
+    int update(List<T> t);
 
     /**
      * 根据条件查询个数

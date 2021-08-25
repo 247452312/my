@@ -1,8 +1,8 @@
 package indi.uhyils.util;
 
-import indi.uhyils.content.Content;
-import indi.uhyils.pojo.model.UserDO;
-import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.context.MyContext;
+import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 
 /**
  * 创建一个默认的ADMIN用户的请求 此方法只用来作服务之间的调用
@@ -24,7 +24,7 @@ public final class DefaultRequestBuildUtil {
     public static DefaultRequest getAdminDefaultRequest() {
         DefaultRequest defaultRequest = new DefaultRequest();
         UserDO user = new UserDO();
-        user.setId(Content.ADMIN_USER_ID);
+        user.setId(MyContext.ADMIN_USER_ID);
         user.setUserName("admin");
         defaultRequest.setUser(user);
         return defaultRequest;

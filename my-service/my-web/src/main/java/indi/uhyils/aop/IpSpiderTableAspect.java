@@ -1,19 +1,19 @@
 package indi.uhyils.aop;
 
-import indi.uhyils.content.Content;
+import indi.uhyils.context.MyContext;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.model.UserDO;
-import indi.uhyils.pojo.request.Action;
-import indi.uhyils.pojo.request.AddBlackIpRequest;
-import indi.uhyils.pojo.request.GetLogIntervalByIpRequest;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.WebResponse;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.request.Action;
+import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
+import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpRequest;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.response.WebResponse;
+import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.redis.OffLineJedis;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
 import indi.uhyils.rpc.annotation.RpcReference;
-import indi.uhyils.service.BlackListService;
+import indi.uhyils.protocol.rpc.provider.BlackListProvider;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
@@ -88,7 +88,7 @@ public class IpSpiderTableAspect {
 
 
     @RpcReference
-    private BlackListService blackListService;
+    private BlackListProvider blackListService;
 
     @Autowired
     private RedisPoolHandle redisPoolHandle;
@@ -164,7 +164,7 @@ public class IpSpiderTableAspect {
             return pjp.proceed();
         }
         //如果是获取验证码的请求,忽略
-        if (action.getInterfaceName().equals(Content.VERIFICATION_CODE_INTERFACE) && action.getMethodName().equals(Content.GET_VERIFICATION_CODE_METHOD)) {
+        if (action.getInterfaceName().equals(MyContext.VERIFICATION_CODE_INTERFACE) && action.getMethodName().equals(MyContext.GET_VERIFICATION_CODE_METHOD)) {
             return pjp.proceed();
         }
         Redisable jedis = redisPoolHandle.getRedisPool().getJedis();
@@ -201,7 +201,7 @@ public class IpSpiderTableAspect {
                 /*验证 验证码 是否正确*/
                 String interfaceName = action.getInterfaceName();
                 String methodName = action.getMethodName();
-                if (interfaceName.equals(Content.VERIFICATION_CODE_INTERFACE) && methodName.equals(Content.VERIFICATION_CODE_METHOD)) {
+                if (interfaceName.equals(MyContext.VERIFICATION_CODE_INTERFACE) && methodName.equals(MyContext.VERIFICATION_CODE_METHOD)) {
                     WebResponse<Boolean> proceed = (WebResponse<Boolean>) pjp.proceed();
                     Boolean data = proceed.getData();
                     // 验证码验证失败
@@ -228,7 +228,7 @@ public class IpSpiderTableAspect {
             });
             GetLogIntervalByIpRequest defaultRequest = new GetLogIntervalByIpRequest();
             UserDO user = new UserDO();
-            user.setId(Content.ADMIN_USER_ID);
+            user.setId(MyContext.ADMIN_USER_ID);
             user.setUserName("admin");
             defaultRequest.setUser(user);
             defaultRequest.setIp(ip);
@@ -280,7 +280,7 @@ public class IpSpiderTableAspect {
                 // 加入永久黑名单
                 AddBlackIpRequest build = AddBlackIpRequest.build(ip);
                 UserDO user = new UserDO();
-                user.setId(Content.ADMIN_USER_ID);
+                user.setId(MyContext.ADMIN_USER_ID);
                 build.setUser(user);
                 blackListService.addBlackIp(build);
                 // 清空临时冻结

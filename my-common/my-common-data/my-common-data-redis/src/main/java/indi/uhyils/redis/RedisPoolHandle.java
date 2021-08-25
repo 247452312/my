@@ -2,8 +2,8 @@ package indi.uhyils.redis;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.content.Content;
-import indi.uhyils.pojo.model.UserDO;
+import indi.uhyils.context.MyContext;
+import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.util.LogUtil;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -66,9 +66,9 @@ public class RedisPoolHandle {
             String value = JSONObject.toJSONString(user);
             jedis.append(token, value);
             //半个小时
-            jedis.expire(token, 60 * Content.LOGIN_TIME_OUT_MIN);
+            jedis.expire(token, 60 * MyContext.LOGIN_TIME_OUT_MIN);
             jedis.append(user.getId().toString(), token);
-            jedis.expire(user.getId().toString(), 60 * Content.LOGIN_TIME_OUT_MIN);
+            jedis.expire(user.getId().toString(), 60 * MyContext.LOGIN_TIME_OUT_MIN);
 
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
@@ -93,8 +93,8 @@ public class RedisPoolHandle {
                 return null;
             }
             UserDO userEntity = JSON.parseObject(userJson, UserDO.class);
-            jedis.expire(token, 60 * Content.LOGIN_TIME_OUT_MIN);
-            jedis.expire(userEntity.getId().toString(), 60 * Content.LOGIN_TIME_OUT_MIN);
+            jedis.expire(token, 60 * MyContext.LOGIN_TIME_OUT_MIN);
+            jedis.expire(userEntity.getId().toString(), 60 * MyContext.LOGIN_TIME_OUT_MIN);
             return userEntity;
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
@@ -318,16 +318,16 @@ public class RedisPoolHandle {
         Redisable jedis = redisPool.getJedis();
 
         try {
-            Boolean exists = jedis.exists(Content.SERVICE_USEABLE_SWITCH);
+            Boolean exists = jedis.exists(MyContext.SERVICE_USEABLE_SWITCH);
             if (!exists) {
                 return Boolean.TRUE;
             }
-            String methodPower = jedis.hget(Content.SERVICE_USEABLE_SWITCH, methodName);
+            String methodPower = jedis.hget(MyContext.SERVICE_USEABLE_SWITCH, methodName);
             if (methodPower != null) {
                 //如果是0返回不禁用.如果不是0返回禁用
                 return 0 == Integer.parseInt(methodPower);
             } else {
-                String classPower = jedis.hget(Content.SERVICE_USEABLE_SWITCH, className);
+                String classPower = jedis.hget(MyContext.SERVICE_USEABLE_SWITCH, className);
                 if (classPower != null) {
                     int classPowerInt = Integer.parseInt(classPower);
                     if (classPowerInt == 3) {

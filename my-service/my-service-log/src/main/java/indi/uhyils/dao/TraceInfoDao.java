@@ -1,11 +1,11 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.TraceDetailStatisticsView;
-import indi.uhyils.pojo.model.TraceInfoDO;
-import indi.uhyils.pojo.request.GetLinkByTraceIdAndRpcIdRequest;
-import indi.uhyils.pojo.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.request.base.DefaultPageRequest;
+import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
+import indi.uhyils.pojo.DO.TraceInfoDO;
+import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdRequest;
+import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
+import indi.uhyils.pojo.DTO.request.base.DefaultPageRequest;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;

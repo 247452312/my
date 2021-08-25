@@ -23,7 +23,7 @@
         a.url
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.ApiDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.ApiDO">
         select
         <include refid="columnList"/>
         from sys_api a
@@ -32,7 +32,7 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.ApiDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.ApiDO">
         select
         <include refid="columnList"/>
         from sys_api a
@@ -42,7 +42,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.ApiDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.ApiDO">
         select
         <include refid="columnList"/>
         from sys_api a
@@ -57,7 +57,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.ApiDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.ApiDO">
         insert sys_api(id,
         create_date,
         create_user,
@@ -92,7 +92,7 @@
         #{url})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.ApiDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.ApiDO">
         update sys_api set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -151,21 +151,21 @@
         from sys_api a
         where ${columnName} = #{value}
     </select>
-    <select id="getGroupByGroupId" resultType="indi.uhyils.pojo.model.ApiDO">
+    <select id="getGroupByGroupId" resultType="indi.uhyils.pojo.DO.ApiDO">
         select
         <include refid="columnList"/>
         from sys_api a
         where delete_flag = 0 and api_group_id = #{apiGroupId}
         order by api_order
     </select>
-    <select id="getAll" resultType="indi.uhyils.pojo.model.ApiDO">
+    <select id="getAll" resultType="indi.uhyils.pojo.DO.ApiDO">
         select
         <include refid="columnList"/>
         from sys_api a
         where delete_flag = 0
         order by api_order
     </select>
-    <select id="deleteAllByGroup" parameterType="indi.uhyils.pojo.model.ApiGroupDO" resultType="java.lang.Integer">
+    <select id="deleteAllByGroup" parameterType="indi.uhyils.pojo.DO.ApiGroupDO" resultType="java.lang.Integer">
         update sys_api
         set update_date = #{updateDate}
         , update_user = #{updateUser}

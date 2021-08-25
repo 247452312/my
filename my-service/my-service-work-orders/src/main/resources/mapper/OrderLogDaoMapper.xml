@@ -18,7 +18,7 @@
         a.node_id         as nodeId
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.OrderLogDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.OrderLogDO">
         select
         <include refid="columnList"/>
         from sys_order_log a
@@ -26,7 +26,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderLogDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.OrderLogDO">
         select
         <include refid="columnList"/>
         from sys_order_log a
@@ -36,7 +36,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderLogDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.OrderLogDO">
         select
         <include refid="columnList"/>
         from sys_order_log a
@@ -51,7 +51,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderLogDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.OrderLogDO">
         insert sys_order_log(deal_user_id,
         remark,
         update_date,
@@ -80,7 +80,7 @@
         #{nodeId})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.OrderLogDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.OrderLogDO">
         update sys_order_log set
         update_date = #{updateDate}
         ,update_user = #{updateUser}

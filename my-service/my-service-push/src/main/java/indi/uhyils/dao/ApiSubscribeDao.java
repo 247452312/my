@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.ApiSubscribeDO;
+import indi.uhyils.pojo.DO.ApiSubscribeDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -14,7 +14,7 @@
         a.level
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.RoleDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.RoleDO">
         select
         <include refid="columnList"/>
         from sys_role a
@@ -22,7 +22,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.RoleDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.RoleDO">
         select
         <include refid="columnList"/>
         from sys_role a
@@ -32,7 +32,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.RoleDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.RoleDO">
         select
         <include refid="columnList"/>
         from sys_role a
@@ -47,7 +47,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.RoleDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.RoleDO">
         insert sys_role(id,
         create_date,
         create_user,
@@ -66,7 +66,7 @@
         #{level})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.RoleDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.RoleDO">
         update sys_role set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -103,7 +103,7 @@
         where ${columnName} = #{value}
     </select>
 
-    <insert id="insertRoleDept" parameterType="indi.uhyils.pojo.model.RoleDeptMiddle">
+    <insert id="insertRoleDept" parameterType="indi.uhyils.pojo.DO.RoleDeptMiddle">
         insert into sys_role_dept(id, dept_id, role_id)
         values (#{id}, #{deptId}, #{roleId})
     </insert>
@@ -115,14 +115,14 @@
         </foreach>
     </delete>
 
-    <select id="getAll" resultType="indi.uhyils.pojo.model.RoleDO">
+    <select id="getAll" resultType="indi.uhyils.pojo.DO.RoleDO">
         select
         <include refid="columnList"/>
         from sys_role a
         where delete_flag = 0
     </select>
 
-    <select id="getAllDeptWithHaveMark" resultType="indi.uhyils.pojo.response.GetAllDeptWithHaveMarkResponse">
+    <select id="getAllDeptWithHaveMark" resultType="indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkResponse">
         select a.id deptId,
         a.name deptName,
         (select count(*) = 1 from sys_role_dept where role_id = #{id} and dept_id = a.id) as mark

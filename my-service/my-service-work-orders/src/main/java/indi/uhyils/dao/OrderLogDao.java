@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.OrderLogDO;
+import indi.uhyils.pojo.DO.OrderLogDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

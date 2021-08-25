@@ -2,7 +2,7 @@ package indi.uhyils.handler.impl.trans;
 
 import indi.uhyils.handler.TransApiHandler;
 import indi.uhyils.pojo.dto.ApiDealDto;
-import indi.uhyils.pojo.model.OrderNodeDO;
+import indi.uhyils.pojo.DO.OrderNodeDO;
 import indi.uhyils.pojo.temp.SaveToTransApiTemporary;
 import org.springframework.stereotype.Service;
 

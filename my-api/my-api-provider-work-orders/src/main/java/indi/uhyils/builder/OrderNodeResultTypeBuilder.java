@@ -1,6 +1,6 @@
 package indi.uhyils.builder;
 
-import indi.uhyils.pojo.model.OrderNodeResultTypeDO;
+import indi.uhyils.pojo.DO.OrderNodeResultTypeDO;
 
 /**
  * @author uhyils <247452312@qq.com>

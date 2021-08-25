@@ -2,13 +2,13 @@ package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.NoToken;
-import indi.uhyils.content.Content;
-import indi.uhyils.content.UserContent;
+import indi.uhyils.context.MyContext;
+import indi.uhyils.context.UserContext;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.model.UserDO;
-import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.request.CheckUserHavePowerRequest;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.RpcApiUtil;
@@ -55,7 +55,7 @@ public class TokenInjectAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)))")
     public void tokenInjectPoint() {
     }
 
@@ -112,12 +112,12 @@ public class TokenInjectAop {
             return ServiceResult.buildLoginOutResult();
         }
         try {
-            UserContent.setUser(userEntity);
+            UserContext.setUser(userEntity);
 
             /* 查询是否有权限 */
             // 超级管理员直接放行
             if (ADMIN.equals(userEntity.getUserName())) {
-                userEntity.setRoleId(Content.ADMIN_ROLE_ID);
+                userEntity.setRoleId(MyContext.ADMIN_ROLE_ID);
                 arg.setUser(userEntity);
                 //执行方法
                 return pjp.proceed(new DefaultRequest[]{arg});
@@ -140,7 +140,7 @@ public class TokenInjectAop {
             //执行方法
             return pjp.proceed(new DefaultRequest[]{arg});
         } finally {
-            UserContent.clean();
+            UserContext.clean();
         }
     }
 

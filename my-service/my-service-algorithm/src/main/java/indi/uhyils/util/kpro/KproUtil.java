@@ -2,7 +2,7 @@ package indi.uhyils.util.kpro;
 
 import indi.uhyils.enum_.DbTypeEnum;
 import indi.uhyils.enum_.KeyTypeEnum;
-import indi.uhyils.pojo.request.DbInformation;
+import indi.uhyils.pojo.DTO.request.DbInformation;
 import indi.uhyils.pojo.tool.ColumnInfo;
 import indi.uhyils.pojo.tool.TableInfo;
 import indi.uhyils.util.LogUtil;

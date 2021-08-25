@@ -2,8 +2,8 @@ package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.CodeEnum;
-import indi.uhyils.pojo.model.ApiDO;
-import indi.uhyils.pojo.model.UserDO;
+import indi.uhyils.pojo.DO.ApiDO;
+import indi.uhyils.pojo.DO.UserDO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;

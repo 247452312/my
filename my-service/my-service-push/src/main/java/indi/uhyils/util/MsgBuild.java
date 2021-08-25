@@ -1,7 +1,7 @@
 package indi.uhyils.util;
 
 import indi.uhyils.enum_.PushTypeEnum;
-import indi.uhyils.pojo.model.MsgDO;
+import indi.uhyils.pojo.DO.MsgDO;
 
 /**
  * @author uhyils <247452312@qq.com>

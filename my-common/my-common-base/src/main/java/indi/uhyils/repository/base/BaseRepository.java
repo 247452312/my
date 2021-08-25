@@ -1,10 +1,10 @@
 package indi.uhyils.repository.base;
 
-import indi.uhyils.entity.BaseEntity;
-import indi.uhyils.entity.HaveIdEntity;
-import indi.uhyils.entity.query.BaseOrder;
-import indi.uhyils.entity.type.Identifier;
-import indi.uhyils.pojo.response.base.Page;
+import indi.uhyils.pojo.DTO.response.base.Page;
+import indi.uhyils.pojo.cqe.query.BaseQuery;
+import indi.uhyils.pojo.entity.BaseEntity;
+import indi.uhyils.pojo.entity.HaveIdEntity;
+import indi.uhyils.pojo.entity.type.Identifier;
 import java.util.List;
 
 /**
@@ -46,6 +46,15 @@ public interface BaseRepository<T extends BaseEntity> {
     /**
      * 根据id查询
      *
+     * @param ids 主键ids
+     *
+     * @return
+     */
+    List<T> find(List<Identifier> ids);
+
+    /**
+     * 根据id查询
+     *
      * @param id 主键id
      *
      * @return
@@ -59,7 +68,7 @@ public interface BaseRepository<T extends BaseEntity> {
      *
      * @return
      */
-    List<T> findNoPage(BaseOrder order);
+    List<T> findNoPage(BaseQuery order);
 
     /**
      * 根据条件分页查询
@@ -68,7 +77,7 @@ public interface BaseRepository<T extends BaseEntity> {
      *
      * @return
      */
-    Page<T> find(BaseOrder order);
+    Page<T> find(BaseQuery order);
 
 
     /**
@@ -78,6 +87,24 @@ public interface BaseRepository<T extends BaseEntity> {
      *
      * @return
      */
-    int remote(List<T> ids);
+    int remove(List<T> ids);
+
+    /**
+     * 批量删除
+     *
+     * @param ids
+     *
+     * @return
+     */
+    int remove(Identifier... ids);
+
+    /**
+     * 批量删除
+     *
+     * @param order
+     *
+     * @return
+     */
+    int remove(BaseQuery order);
 
 }

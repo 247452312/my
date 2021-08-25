@@ -1,7 +1,10 @@
 package indi.uhyils.repository;
 
-import indi.uhyils.entity.User;
-import indi.uhyils.entity.type.Token;
+import indi.uhyils.pojo.entity.User;
+import indi.uhyils.pojo.entity.type.Password;
+import indi.uhyils.pojo.entity.type.Token;
+import indi.uhyils.pojo.entity.type.UserId;
+import indi.uhyils.pojo.entity.type.UserName;
 import indi.uhyils.repository.base.BaseRepository;
 import java.util.List;
 
@@ -28,4 +31,65 @@ public interface UserRepository extends BaseRepository<User> {
      * @return
      */
     User findUserByTokenInRedis(Token token);
+
+    /**
+     * 判断token是否存在
+     *
+     * @param token
+     *
+     * @return
+     */
+    Boolean haveToken(Token token);
+
+    /**
+     * 尝试登录
+     *
+     * @param userName 用户名
+     * @param password 密码
+     *
+     * @return
+     */
+    User checkLogin(UserName userName, Password password);
+
+    /**
+     * 检查redis是否包含用户id
+     *
+     * @param userId
+     *
+     * @return
+     */
+    Boolean checkRedisContainUserId(UserId userId);
+
+    /**
+     * 根据id删除用户
+     *
+     * @param userId
+     */
+    boolean removeUserInRedisById(UserId userId);
+
+    /**
+     * 向redis中添加user
+     *
+     * @param token
+     * @param user
+     */
+    void addUser(Token token, User user);
+
+    /**
+     * 清空redis中token信息
+     *
+     * @param token
+     *
+     * @return
+     */
+    boolean removeUserByToken(Token token);
+
+    /**
+     * 检查password是否正确
+     *
+     * @param user
+     * @param password
+     */
+    void checkPassword(User user, Password password);
+
 }

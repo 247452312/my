@@ -2,8 +2,8 @@ package indi.uhyils.netty.handler;
 
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import indi.uhyils.netty.util.NettyChannelUtil;
-import indi.uhyils.pojo.request.DefaultLinkRequest;
-import indi.uhyils.service.MqService;
+import indi.uhyils.pojo.DTO.request.DefaultLinkRequest;
+import indi.uhyils.protocol.rpc.provider.MqProvider;
 import indi.uhyils.util.SpringUtil;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -20,10 +20,10 @@ import java.lang.reflect.Method;
  */
 public class ServiceExecuteHandler extends SimpleChannelInboundHandler<ProtocolParsingModel> {
 
-    private final MqService service;
+    private final MqProvider service;
 
     public ServiceExecuteHandler() {
-        service = SpringUtil.getBean(MqService.class);
+        service = SpringUtil.getBean(MqProvider.class);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ServiceExecuteHandler extends SimpleChannelInboundHandler<ProtocolP
         ChannelFuture channelFuture;
         // 如果需要service
         if (ppm.getNeedService()) {
-            Class<? extends MqService> serviceClass = service.getClass();
+            Class<? extends MqProvider> serviceClass = service.getClass();
             String methodName = ppm.getMethodName();
             Class[] paramsType = ppm.getParamsType();
             Method method = serviceClass.getMethod(methodName, paramsType);

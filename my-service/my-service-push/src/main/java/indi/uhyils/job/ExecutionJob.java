@@ -1,7 +1,7 @@
 package indi.uhyils.job;
 
 import indi.uhyils.dao.JobDao;
-import indi.uhyils.pojo.model.JobDO;
+import indi.uhyils.pojo.DO.JobDO;
 import indi.uhyils.thread.ThreadPoolExecutorUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ScheduledManager;

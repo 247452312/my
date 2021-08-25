@@ -14,7 +14,7 @@
         a.name
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.DeptDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.DeptDO">
         select
         <include refid="columnList"/>
         from sys_dept a
@@ -22,7 +22,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.DeptDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.DeptDO">
         select
         <include refid="columnList"/>
         from sys_dept a
@@ -32,7 +32,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.DeptDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.DeptDO">
         select
         <include refid="columnList"/>
         from sys_dept a
@@ -47,7 +47,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.DeptDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.DeptDO">
         insert sys_dept(id,
         create_date,
         create_user,
@@ -64,7 +64,7 @@
         #{name})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.DeptDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.DeptDO">
         update sys_dept set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -98,7 +98,7 @@
         where ${columnName} = #{value}
     </select>
 
-    <insert id="insertDeptPower" parameterType="indi.uhyils.pojo.model.DeptPowerMiddle">
+    <insert id="insertDeptPower" parameterType="indi.uhyils.pojo.DO.DeptPowerMiddle">
         insert into sys_dept_power(id, dept_id, power_id)
         values (#{id}, #{deptId}, #{powerId})
     </insert>
@@ -110,12 +110,12 @@
         </foreach>
     </delete>
 
-    <insert id="insertDeptMenu" parameterType="indi.uhyils.pojo.model.DeptMenuMiddle">
+    <insert id="insertDeptMenu" parameterType="indi.uhyils.pojo.DO.DeptMenuMiddle">
         insert into sys_dept_menu(id, dept_id, menu_id)
         VALUES (#{id}, #{deptId}, #{menuId})
     </insert>
 
-    <select id="getByMenuId" resultType="indi.uhyils.pojo.response.GetDeptsByMenuIdResponse">
+    <select id="getByMenuId" resultType="indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdResponse">
         select a.id deptId,
         a.name deptName,
         (select count(*) = 1 from sys_dept_menu where menu_id = #{id} and dept_id = a.id) as mark
@@ -123,7 +123,7 @@
         where delete_flag = 0
     </select>
 
-    <select id="getAll" resultType="indi.uhyils.pojo.model.DeptDO">
+    <select id="getAll" resultType="indi.uhyils.pojo.DO.DeptDO">
         select
         <include refid="columnList"/>
         from sys_dept a
@@ -136,7 +136,7 @@
         where dept_id = #{deptId}
     </delete>
 
-    <select id="getAllPowerWithHaveMark" resultType="indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse">
+    <select id="getAllPowerWithHaveMark" resultType="indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkResponse">
         select a.id powerId,
         a.interface_name interfaceName,
         a.method_name methodName,

@@ -22,7 +22,7 @@
         a.`desc`
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.OrderBaseNodeFieldDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.OrderBaseNodeFieldDO">
         select
         <include refid="columnList"/>
         from sys_order_base_node_field a
@@ -30,7 +30,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderBaseNodeFieldDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.OrderBaseNodeFieldDO">
         select
         <include refid="columnList"/>
         from sys_order_base_node_field a
@@ -40,7 +40,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderBaseNodeFieldDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.OrderBaseNodeFieldDO">
         select
         <include refid="columnList"/>
         from sys_order_base_node_field a
@@ -55,7 +55,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderBaseNodeFieldDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.OrderBaseNodeFieldDO">
         insert sys_order_base_node_field(value_type,
         edit,
         default_value,
@@ -92,7 +92,7 @@
         #{desc})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.OrderBaseNodeFieldDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.OrderBaseNodeFieldDO">
         update sys_order_base_node_field set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -161,14 +161,14 @@
         from sys_order_base_node_field a
         where ${columnName} = #{value}
     </select>
-    <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.model.OrderBaseNodeFieldDO">
+    <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.DO.OrderBaseNodeFieldDO">
         select
         <include refid="columnList"/>
         from sys_order_base_node_field a
         where delete_flag = 0
         and base_order_id = #{nodeId}
     </select>
-    <select id="getByOrderNodeIds" resultType="indi.uhyils.pojo.model.OrderBaseNodeFieldDO">
+    <select id="getByOrderNodeIds" resultType="indi.uhyils.pojo.DO.OrderBaseNodeFieldDO">
         select
         <include refid="columnList"/>
         from sys_order_base_node_field a

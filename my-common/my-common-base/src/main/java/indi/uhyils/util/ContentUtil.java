@@ -1,7 +1,7 @@
 package indi.uhyils.util;
 
 import com.alibaba.nacos.common.utils.Objects;
-import indi.uhyils.pojo.model.ContentDO;
+import indi.uhyils.pojo.DO.ContentDO;
 
 /**
  * Content表工具

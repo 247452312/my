@@ -2,7 +2,7 @@ package indi.uhyils.annotation;
 
 import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.service.base.DefaultDOService;
+import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 /**
  * 读写标记接口 如果方法上有此注解,优先应用接口上的注解,如果方法和接口上均无此注解,则认为此接口默认为读接口
- * 通用接口{@link DefaultDOService}中的方法继承实现类上的此注解,若均没有,那么默认此接口不读取数据库
+ * 通用接口{@link DefaultDTOProvider}中的方法继承实现类上的此注解,若均没有,那么默认此接口不读取数据库
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年09月18日 07时58分

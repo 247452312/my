@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.RedisDO;
+import indi.uhyils.pojo.DO.RedisDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

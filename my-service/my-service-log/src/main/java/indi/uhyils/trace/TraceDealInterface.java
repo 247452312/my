@@ -1,7 +1,7 @@
 package indi.uhyils.trace;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.TraceIdDoDO;
+import indi.uhyils.pojo.DO.TraceIdDoDO;
 
 /**
  * 处理traceDeal

@@ -1,6 +1,6 @@
 package indi.uhyils.builder;
 
-import indi.uhyils.pojo.model.BlackListDO;
+import indi.uhyils.pojo.DO.BlackListDO;
 
 /**
  * @author uhyils <247452312@qq.com>

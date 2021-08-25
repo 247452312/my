@@ -1,8 +1,8 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.TraceDetailDO;
-import indi.uhyils.pojo.request.GetTraceDetailByHashCodeRequest;
+import indi.uhyils.pojo.DO.TraceDetailDO;
+import indi.uhyils.pojo.DTO.request.GetTraceDetailByHashCodeRequest;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

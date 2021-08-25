@@ -2,9 +2,10 @@ package indi.uhyils.util;
 
 
 import com.alibaba.fastjson.JSON;
+import indi.uhyils.enum_.LogLevelEnum;
+import indi.uhyils.enum_.LogDetailTypeEnum;
 import indi.uhyils.enum_.LogTypeEnum;
-import indi.uhyils.log.LogDetailTypeEnum;
-import indi.uhyils.log.MyTraceIdContext;
+import indi.uhyils.context.MyTraceIdContext;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -89,15 +90,15 @@ public final class LogUtil {
     }
 
     public static void info(Class<?> cls, String msg) {
-        writeLog(cls.getName(), msg, null, LogTypeEnum.INFO);
+        writeLog(cls.getName(), msg, null, LogLevelEnum.INFO);
     }
 
     public static void info(String msg) {
-        writeLog(Thread.currentThread().getName(), msg, null, LogTypeEnum.INFO);
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.INFO);
     }
 
     public static void info(Class<?> cls, Throwable e) {
-        writeLog(cls.getName(), null, e, LogTypeEnum.INFO);
+        writeLog(cls.getName(), null, e, LogLevelEnum.INFO);
     }
 
     public static void info(Object obj, String msg) {
@@ -109,7 +110,7 @@ public final class LogUtil {
     }
 
     public static void debug(Class<?> cls, String msg) {
-        writeLog(cls.getName(), msg, null, LogTypeEnum.DEBUG);
+        writeLog(cls.getName(), msg, null, LogLevelEnum.DEBUG);
     }
 
     public static void debug(Class<?> cls, String msg, String... param) {
@@ -125,11 +126,11 @@ public final class LogUtil {
     }
 
     public static void debug(String msg) {
-        writeLog(Thread.currentThread().getName(), msg, null, LogTypeEnum.DEBUG);
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.DEBUG);
     }
 
     public static void debug(Class<?> cls, Throwable e) {
-        writeLog(cls.getName(), null, e, LogTypeEnum.DEBUG);
+        writeLog(cls.getName(), null, e, LogLevelEnum.DEBUG);
     }
 
     public static void debug(Object obj, String msg) {
@@ -141,15 +142,15 @@ public final class LogUtil {
     }
 
     public static void warn(Class<?> cls, String msg) {
-        writeLog(cls.getName(), msg, null, LogTypeEnum.WARN);
+        writeLog(cls.getName(), msg, null, LogLevelEnum.WARN);
     }
 
     public static void warn(String msg) {
-        writeLog(Thread.currentThread().getName(), msg, null, LogTypeEnum.WARN);
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.WARN);
     }
 
     public static void warn(Class<?> cls, Throwable e) {
-        writeLog(cls.getName(), null, e, LogTypeEnum.WARN);
+        writeLog(cls.getName(), null, e, LogLevelEnum.WARN);
     }
 
     public static void warn(Object obj, String msg) {
@@ -161,23 +162,23 @@ public final class LogUtil {
     }
 
     public static void error(Class<?> cls, String msg) {
-        writeLog(cls.getName(), msg, null, LogTypeEnum.ERROR);
+        writeLog(cls.getName(), msg, null, LogLevelEnum.ERROR);
     }
 
     public static void error(String msg) {
-        writeLog(Thread.currentThread().getName(), msg, null, LogTypeEnum.ERROR);
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.ERROR);
     }
 
     public static void error(Throwable e) {
-        writeLog(Thread.currentThread().getName(), null, e, LogTypeEnum.ERROR);
+        writeLog(Thread.currentThread().getName(), null, e, LogLevelEnum.ERROR);
     }
 
     public static void error(Class<?> cls, Throwable e) {
-        writeLog(cls.getName(), null, e, LogTypeEnum.ERROR);
+        writeLog(cls.getName(), null, e, LogLevelEnum.ERROR);
     }
 
     public static void error(Class<?> cls, Throwable e, String msg) {
-        writeLog(cls.getName(), msg, e, LogTypeEnum.ERROR);
+        writeLog(cls.getName(), msg, e, LogLevelEnum.ERROR);
     }
 
     public static void error(Object cls, Throwable e, String msg) {
@@ -189,7 +190,7 @@ public final class LogUtil {
     }
 
     public static void error(Throwable e, String msg) {
-        writeLog(Thread.currentThread().getName(), msg, e, LogTypeEnum.ERROR);
+        writeLog(Thread.currentThread().getName(), msg, e, LogLevelEnum.ERROR);
     }
 
     public static void error(Object obj, Throwable e) {
@@ -213,7 +214,7 @@ public final class LogUtil {
      * @param useTime
      */
     public static void sql(Long traceId, String hash, long useTime, String sql) {
-        sql = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s", traceId, indi.uhyils.log.LogTypeEnum.DB.getCode(), hash, System.currentTimeMillis(), useTime, sql);
+        sql = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s", traceId, LogTypeEnum.DB.getCode(), hash, System.currentTimeMillis(), useTime, sql);
         SQL_LOG.info(SQL_MARKER, sql);
     }
 
@@ -226,7 +227,7 @@ public final class LogUtil {
      */
     public static void mq(Long traceId, String hash, long useTime, String exchangeName, String queueName) {
         String msg = String
-            .format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, indi.uhyils.log.LogTypeEnum.MQ.getCode(), hash, System.currentTimeMillis(), useTime, exchangeName, queueName);
+            .format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, LogTypeEnum.MQ.getCode(), hash, System.currentTimeMillis(), useTime, exchangeName, queueName);
         MQ_LOG.info(MQ_MARKER, msg);
     }
 
@@ -239,7 +240,7 @@ public final class LogUtil {
      * @param methodName
      */
     public static void rpc(Long traceId, String hash, long useTime, String serviceName, String methodName) {
-        String msg = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, indi.uhyils.log.LogTypeEnum.RPC.getCode(), hash, System
+        String msg = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, LogTypeEnum.RPC.getCode(), hash, System
             .currentTimeMillis(), useTime, serviceName, methodName);
         RPC_LOG.info(RPC_MARKER, msg);
     }
@@ -253,7 +254,7 @@ public final class LogUtil {
      * @param methodName
      */
     public static void task(Long traceId, String hash, long useTime, String serviceName, String methodName) {
-        String msg = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, indi.uhyils.log.LogTypeEnum.TASK.getCode(), hash, System
+        String msg = String.format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, LogTypeEnum.TASK.getCode(), hash, System
             .currentTimeMillis(), useTime, serviceName, methodName);
         TASK_LOG.info(TASK_MARKER, msg);
     }
@@ -267,7 +268,7 @@ public final class LogUtil {
      */
     public static void controller(Long traceId, String hash, long useTime, String url, String ip) {
         String msg = String
-            .format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, indi.uhyils.log.LogTypeEnum.CONTROLLER.getCode(), hash, System.currentTimeMillis(), useTime, url, ip);
+            .format(LogDetailTypeEnum.DETAIL.getCode() + "%d|%d|%s|%d|%d|%s|%s", traceId, LogTypeEnum.CONTROLLER.getCode(), hash, System.currentTimeMillis(), useTime, url, ip);
         CONTROLLER_LOG.info(CONTROLLER_MARKER, msg);
     }
 
@@ -278,8 +279,8 @@ public final class LogUtil {
      * @param msg         信息
      * @param logTypeEnum 类型
      */
-    private static void writeLog(String className, String msg, Throwable throwable, LogTypeEnum logTypeEnum) {
-        if (msg != null && logTypeEnum != LogTypeEnum.DEBUG) {
+    private static void writeLog(String className, String msg, Throwable throwable, LogLevelEnum logTypeEnum) {
+        if (msg != null && logTypeEnum != LogLevelEnum.DEBUG) {
             msg = String.format(LogDetailTypeEnum.LOG.getCode() + "%s|%s|%d|%s", MyTraceIdContext.getThraceId(), MyTraceIdContext.getAndAddRpcIdStr(), System.currentTimeMillis(), msg);
         }
         if (loggerMap.containsKey(className)) {
@@ -293,7 +294,7 @@ public final class LogUtil {
     }
 
 
-    private static void choiceLogType(String msg, Throwable throwable, LogTypeEnum logTypeEnum, Logger logger) {
+    private static void choiceLogType(String msg, Throwable throwable, LogLevelEnum logTypeEnum, Logger logger) {
         switch (logTypeEnum) {
             case INFO:
                 logger.info(msg, throwable);

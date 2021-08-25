@@ -1,6 +1,6 @@
 package indi.uhyils.trace;
 
-import indi.uhyils.pojo.model.TraceDetailDO;
+import indi.uhyils.pojo.DO.TraceDetailDO;
 
 
 /**

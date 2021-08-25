@@ -1,10 +1,10 @@
 package indi.uhyils.controller;
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.pojo.request.Action;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.WebResponse;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.Action;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.response.WebResponse;
+import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.util.ArrayList;

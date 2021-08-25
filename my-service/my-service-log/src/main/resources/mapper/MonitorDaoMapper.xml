@@ -22,14 +22,14 @@
         a.update_user       as updateUser
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.LogMonitorDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.LogMonitorDO">
         select
         <include refid="columnList"/>
         from sys_log_monitor a
         where id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.LogMonitorDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.LogMonitorDO">
         select
         <include refid="columnList"/>
         from sys_log_monitor a
@@ -40,7 +40,7 @@
         order by time desc
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.LogMonitorDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.LogMonitorDO">
         select
         <include refid="columnList"/>
         from sys_log_monitor a
@@ -55,7 +55,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.LogMonitorDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.LogMonitorDO">
         insert
         sys_log_monitor(id,
         ip,
@@ -128,7 +128,7 @@
         and time = #{time}
         and ip = #{ip}
     </select>
-    <select id="getOnlineService" resultType="indi.uhyils.pojo.model.LogMonitorDO" parameterType="java.lang.Long">
+    <select id="getOnlineService" resultType="indi.uhyils.pojo.DO.LogMonitorDO" parameterType="java.lang.Long">
         select
         <include refid="columnList"/>
         from sys_log_monitor a

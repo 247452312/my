@@ -2,8 +2,8 @@ package indi.uhyils.param;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.pojo.request.base.ObjRequest;
-import indi.uhyils.pojo.request.base.ObjsRequest;
+import indi.uhyils.pojo.DTO.request.base.ObjRequest;
+import indi.uhyils.pojo.DTO.request.base.ObjsRequest;
 import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.spi.param.ParamTransExtension;
 import indi.uhyils.util.ClassUtil;

@@ -9,7 +9,7 @@ import indi.uhyils.dao.MonitorDao;
 import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
-import indi.uhyils.pojo.model.LogMonitorJvmStatusDO;
+import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ModelTransUtils;

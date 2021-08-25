@@ -1,11 +1,11 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.DeptDO;
-import indi.uhyils.pojo.model.DeptMenuMiddle;
-import indi.uhyils.pojo.model.DeptPowerMiddle;
-import indi.uhyils.pojo.response.GetAllPowerWithHaveMarkResponse;
-import indi.uhyils.pojo.response.GetDeptsByMenuIdResponse;
+import indi.uhyils.pojo.DO.DeptDO;
+import indi.uhyils.pojo.DO.DeptMenuMiddle;
+import indi.uhyils.pojo.DO.DeptPowerMiddle;
+import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkResponse;
+import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdResponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;

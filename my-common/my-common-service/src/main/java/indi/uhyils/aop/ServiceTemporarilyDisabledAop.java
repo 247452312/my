@@ -2,7 +2,7 @@ package indi.uhyils.aop;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class ServiceTemporarilyDisabledAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)) || execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.service.base.DefaultDOService.*(..))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)) || execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.protocol.rpc.base.DefaultDTOProvider.*(..))")
     public void serviceTemporarilyDisabledAspectPoint() {
     }
 

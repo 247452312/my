@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.temp;
 
-import indi.uhyils.pojo.model.OrderNodeDO;
+import indi.uhyils.pojo.DO.OrderNodeDO;
 
 import java.io.Serializable;
 

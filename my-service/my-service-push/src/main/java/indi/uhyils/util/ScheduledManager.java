@@ -2,7 +2,7 @@ package indi.uhyils.util;
 
 import indi.uhyils.job.ExecutionJob;
 import indi.uhyils.job.JobConfig;
-import indi.uhyils.pojo.model.JobDO;
+import indi.uhyils.pojo.DO.JobDO;
 import org.quartz.*;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.stereotype.Component;

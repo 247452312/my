@@ -2,38 +2,40 @@ package indi.uhyils.enum_;
 
 /**
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年04月25日 09时04分
+ * @version 1.0
+ * @date 文件创建日期 2021年07月23日 09时11分
  */
 public enum LogTypeEnum {
+    /**
+     * 意思... 看名称就懂了吧
+     */
+    RPC(1),
+    MQ(2),
+    DB(3),
+    TASK(4),
+    CONTROLLER(5);
 
-    /**
-     * info
-     */
-    INFO(0),
-    /**
-     * debug
-     */
-    DEBUG(1),
-    /**
-     * warn
-     */
-    WARN(2),
-    /**
-     * error
-     */
-    ERROR(3);
+    private Integer code;
 
-    private Integer type;
 
-    LogTypeEnum(Integer type) {
-        this.type = type;
+    LogTypeEnum(Integer code) {
+        this.code = code;
     }
 
-    public Integer getType() {
-        return type;
+    public static LogTypeEnum parse(Integer code) {
+        for (LogTypeEnum value : values()) {
+            if (value.getCode().equals(code)) {
+                return value;
+            }
+        }
+        return null;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
     }
 }

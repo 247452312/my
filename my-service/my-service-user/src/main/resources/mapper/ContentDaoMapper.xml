@@ -26,7 +26,7 @@
         a.var6
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.ContentDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.ContentDO">
         select
         <include refid="columnList"/>
         from sys_content a
@@ -34,7 +34,7 @@
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.ContentDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.ContentDO">
         select
         <include refid="columnList"/>
         from sys_content a
@@ -44,7 +44,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.ContentDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.ContentDO">
         select
         <include refid="columnList"/>
         from sys_content a
@@ -59,7 +59,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.ContentDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.ContentDO">
         insert sys_content(id,
         create_date,
         create_user,
@@ -100,7 +100,7 @@
         #{var6})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.ContentDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.ContentDO">
         update sys_content set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -177,7 +177,7 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getByName" resultType="indi.uhyils.pojo.model.ContentDO">
+    <select id="getByName" resultType="indi.uhyils.pojo.DO.ContentDO">
         select
         <include refid="columnList"/>
         from sys_content a

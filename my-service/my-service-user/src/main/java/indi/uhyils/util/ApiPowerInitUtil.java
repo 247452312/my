@@ -1,6 +1,6 @@
 package indi.uhyils.util;
 
-import indi.uhyils.pojo.model.PowerSimpleDO;
+import indi.uhyils.pojo.DO.PowerSimpleDO;
 
 import java.io.File;
 import java.io.IOException;

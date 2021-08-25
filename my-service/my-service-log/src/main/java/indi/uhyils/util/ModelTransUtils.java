@@ -5,9 +5,9 @@ import indi.uhyils.mq.pojo.mqinfo.InterfaceCallInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmStartInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
-import indi.uhyils.pojo.model.LogMonitorDO;
-import indi.uhyils.pojo.model.LogMonitorInterfaceCallDO;
-import indi.uhyils.pojo.model.LogMonitorJvmStatusDO;
+import indi.uhyils.pojo.DO.LogMonitorDO;
+import indi.uhyils.pojo.DO.LogMonitorInterfaceCallDO;
+import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
 import java.util.List;
 import java.util.stream.Collectors;
 

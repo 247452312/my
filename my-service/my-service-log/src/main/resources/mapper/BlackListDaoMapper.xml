@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="indi.uhyils.dao.BlackListDao">
-    <resultMap type="indi.uhyils.pojo.model.BlackListDO" id="BlackListMap">
+    <resultMap type="indi.uhyils.pojo.DO.BlackListDO" id="BlackListMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>
         <result property="createDate" column="create_date" jdbcType="INTEGER"/>
         <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
@@ -71,14 +71,14 @@
 
 
     <!--新增所有列-->
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.BlackListDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.BlackListDO">
         insert into sys_black_list(id, create_date, create_user, delete_flag, remark, update_date, update_user,
         ip)
         values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser}, #{ip})
     </insert>
 
     <!--通过主键修改数据-->
-    <update id="update" parameterType="indi.uhyils.pojo.model.BlackListDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.BlackListDO">
         update sys_black_list
         set update_date = #{updateDate}
         , update_user = #{updateUser}

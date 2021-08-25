@@ -35,14 +35,14 @@
         </foreach>
     </update>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.OrderNodeDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.OrderNodeDO">
         select
         <include refid="columnList"/>
         from sys_order_node a
         where delete_flag = 0
         and id = #{id}
     </select>
-    <select id="getByIds" resultType="indi.uhyils.pojo.model.OrderNodeDO">
+    <select id="getByIds" resultType="indi.uhyils.pojo.DO.OrderNodeDO">
         select
         <include refid="columnList"/>
         from sys_order_node a
@@ -60,7 +60,7 @@
         where id = #{orderNodeId}
     </update>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.OrderNodeDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.OrderNodeDO">
         select
         <include refid="columnList"/>
         from sys_order_node a
@@ -70,7 +70,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.OrderNodeDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.OrderNodeDO">
         select
         <include refid="columnList"/>
         from sys_order_node a
@@ -85,7 +85,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.OrderNodeDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.OrderNodeDO">
         insert sys_order_node(save_api_id,
         result_type,
         init_api_id,
@@ -128,7 +128,7 @@
         #{desc})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.OrderNodeDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.OrderNodeDO">
         update sys_order_node set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
@@ -206,7 +206,7 @@
         from sys_order_node a
         where ${columnName} = #{value}
     </select>
-    <select id="getNextNodeByNodeAndResult" resultType="indi.uhyils.pojo.model.OrderNodeDO">
+    <select id="getNextNodeByNodeAndResult" resultType="indi.uhyils.pojo.DO.OrderNodeDO">
         select
         <include refid="columnList"/>
         from sys_order_node a
@@ -215,7 +215,7 @@
         (select next_node_id from sys_order_node_route
         where prev_node_id = #{nodeId} and result_id = #{resultId})
     </select>
-    <select id="getByOrderId" resultType="indi.uhyils.pojo.model.OrderNodeDO">
+    <select id="getByOrderId" resultType="indi.uhyils.pojo.DO.OrderNodeDO">
         select
         <include refid="columnList"/>
         from sys_order_node a

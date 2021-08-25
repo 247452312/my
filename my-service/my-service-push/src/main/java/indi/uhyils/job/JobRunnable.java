@@ -1,8 +1,8 @@
 package indi.uhyils.job;
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.pojo.model.UserDO;
-import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.util.RpcApiUtil;
 
 import java.util.ArrayList;

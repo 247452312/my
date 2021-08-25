@@ -1,5 +1,7 @@
 package indi.uhyils.mongo;
 
+import indi.uhyils.mongo.config.MongoConn;
+import indi.uhyils.mongo.config.MongoConnPool;
 import indi.uhyils.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

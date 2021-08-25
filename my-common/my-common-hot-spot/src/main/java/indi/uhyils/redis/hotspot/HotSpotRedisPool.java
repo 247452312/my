@@ -1,6 +1,6 @@
 package indi.uhyils.redis.hotspot;
 
-import indi.uhyils.content.HotSpotContent;
+import indi.uhyils.context.HotSpotContext;
 import indi.uhyils.util.LogUtil;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -92,7 +92,7 @@ public class HotSpotRedisPool {
             Jedis jedis = pool.getResource();
             try {
                 // 初始化table
-                jedis.hsetnx(HotSpotContent.TABLES_HASH_KEY, HotSpotContent.INIT_TABLE_NAME, "1");
+                jedis.hsetnx(HotSpotContext.TABLES_HASH_KEY, HotSpotContext.INIT_TABLE_NAME, "1");
             } finally {
                 jedis.close();
             }

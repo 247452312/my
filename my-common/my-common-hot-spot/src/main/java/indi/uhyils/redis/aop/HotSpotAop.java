@@ -2,14 +2,14 @@ package indi.uhyils.redis.aop;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.content.HotSpotContent;
+import indi.uhyils.context.HotSpotContext;
 import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.model.UserDO;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.HotSpotResponse;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.response.HotSpotResponse;
+import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.util.LogUtil;
@@ -44,7 +44,7 @@ public class HotSpotAop {
     /**
      * redis写脚本
      */
-    private static final String WRITE_LUA = "local keys = KEYS\n\nfor i, v in ipairs(keys) do\n   redis.call('HINCRBY','" + HotSpotContent.TABLES_HASH_KEY + "', keys[i], 1)\nend\nreturn true";
+    private static final String WRITE_LUA = "local keys = KEYS\n\nfor i, v in ipairs(keys) do\n   redis.call('HINCRBY','" + HotSpotContext.TABLES_HASH_KEY + "', keys[i], 1)\nend\nreturn true";
 
     /**
      * 检查缓存表是否更新
@@ -52,12 +52,12 @@ public class HotSpotAop {
     private static final String CHECK_TABLE_UPDATE = "local keys,val = KEYS,ARGV\n" +
                                                      "for i, v in ipairs(val) do\n" +
                                                      // 这里是防止不存在,给hashTable里赋初值为1
-                                                     "\tredis.call('hsetnx','" + HotSpotContent.TABLES_HASH_KEY + "',v,'1')\n" +
+                                                     "\tredis.call('hsetnx','" + HotSpotContext.TABLES_HASH_KEY + "',v,'1')\n" +
                                                      "end\n" +
                                                      "local k = 0\n" +
                                                      "for i, v in ipairs(val) do\n" +
                                                      "\tlocal table_version = redis.call('HGET',keys[1], v)\n" +
-                                                     "\tlocal real_table_version = redis.call('HGET','" + HotSpotContent.TABLES_HASH_KEY + "',v)\n" +
+                                                     "\tlocal real_table_version = redis.call('HGET','" + HotSpotContext.TABLES_HASH_KEY + "',v)\n" +
                                                      "\tif not(real_table_version) or table_version ~= real_table_version then\n" +
                                                      "\t\tk = 1\n" +
                                                      "\tend\n" +
@@ -98,7 +98,7 @@ public class HotSpotAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)) || execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.service.base.DefaultDOService.*(..))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)) || execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.protocol.rpc.base.DefaultDTOProvider.*(..))")
     public void hotSpotAspectPoint() {
     }
 
@@ -247,10 +247,10 @@ public class HotSpotAop {
                 sb.append(JSON.toJSONString(field.get(arg)));
             }
             // 获取热点redis中的key(有参数)
-            format = String.format(HotSpotContent.HOTSPOT_HASH_KEY_ROLE, className, methodName, MD5Util.MD5Encode(sb.toString()));
+            format = String.format(HotSpotContext.HOTSPOT_HASH_KEY_ROLE, className, methodName, MD5Util.MD5Encode(sb.toString()));
         } else {
             // 获取热点redis中的key(无参数)
-            format = String.format(HotSpotContent.HOTSPOT_HASH_KEY_ROLE, className, methodName, "none");
+            format = String.format(HotSpotContext.HOTSPOT_HASH_KEY_ROLE, className, methodName, "none");
         }
 
         Jedis jedis = hotSpotRedisPool.getJedis();
@@ -272,12 +272,12 @@ public class HotSpotAop {
                 List<byte[]> updateKeys = new ArrayList<>();
                 List<byte[]> updateArgv = new ArrayList<>();
                 updateKeys.add(format.getBytes(StandardCharsets.UTF_8));
-                updateArgv.add(HotSpotContent.TABLES_HASH_KEY.getBytes(StandardCharsets.UTF_8));
+                updateArgv.add(HotSpotContext.TABLES_HASH_KEY.getBytes(StandardCharsets.UTF_8));
 
-                updateKeys.add(HotSpotContent.CACHE_TYPE_MARK.getBytes(StandardCharsets.UTF_8));
+                updateKeys.add(HotSpotContext.CACHE_TYPE_MARK.getBytes(StandardCharsets.UTF_8));
                 updateArgv.add(user.getRoleId().toString().getBytes(StandardCharsets.UTF_8));
 
-                updateKeys.add(HotSpotContent.HOTSPOT_HASH_DATA_KEY.getBytes(StandardCharsets.UTF_8));
+                updateKeys.add(HotSpotContext.HOTSPOT_HASH_DATA_KEY.getBytes(StandardCharsets.UTF_8));
                 updateArgv.add(data);
 
                 jedis.eval(UPDATE_CACHE.getBytes(StandardCharsets.UTF_8), updateKeys, updateArgv);
@@ -285,7 +285,7 @@ public class HotSpotAop {
             }
             LogUtil.info(HotSpotAop.class, String.format("接口<%s#%s> 读取redis中的缓存热点数据", className, methodName));
 
-            ServiceResult<HotSpotResponse> hotSpotResponse = ServiceResult.buildHotSpotHaveResult(format, HotSpotContent.HOTSPOT_HASH_DATA_KEY);
+            ServiceResult<HotSpotResponse> hotSpotResponse = ServiceResult.buildHotSpotHaveResult(format, HotSpotContext.HOTSPOT_HASH_DATA_KEY);
             return hotSpotResponse;
         } finally {
             jedis.close();

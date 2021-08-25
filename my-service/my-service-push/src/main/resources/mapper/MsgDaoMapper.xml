@@ -18,7 +18,7 @@
         a.type
     </sql>
 
-    <select id="getById" resultType="indi.uhyils.pojo.model.MsgDO">
+    <select id="getById" resultType="indi.uhyils.pojo.DO.MsgDO">
         select
         <include refid="columnList"/>
         from sys_push_msg a
@@ -27,7 +27,7 @@
     </select>
 
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.model.MsgDO">
+    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.MsgDO">
         select
         <include refid="columnList"/>
         from sys_push_msg a
@@ -37,7 +37,7 @@
         </foreach>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.model.MsgDO">
+    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.MsgDO">
         select
         <include refid="columnList"/>
         from sys_push_msg a
@@ -52,7 +52,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="indi.uhyils.pojo.model.MsgDO">
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.MsgDO">
         insert sys_push_msg(id,
         create_date,
         create_user,
@@ -79,7 +79,7 @@
         #{type})
     </insert>
 
-    <update id="update" parameterType="indi.uhyils.pojo.model.MsgDO">
+    <update id="update" parameterType="indi.uhyils.pojo.DO.MsgDO">
         update sys_push_msg set
         update_date = #{updateDate}
         ,update_user = #{updateUser}

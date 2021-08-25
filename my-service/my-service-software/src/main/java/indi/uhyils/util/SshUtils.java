@@ -3,7 +3,7 @@ package indi.uhyils.util;
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
 import ch.ethz.ssh2.StreamGobbler;
-import indi.uhyils.pojo.model.ServerDO;
+import indi.uhyils.pojo.DO.ServerDO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
