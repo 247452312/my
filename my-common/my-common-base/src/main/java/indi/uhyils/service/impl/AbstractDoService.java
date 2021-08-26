@@ -1,10 +1,13 @@
 package indi.uhyils.service.impl;
 
-import indi.uhyils.pojo.DO.base.BaseIdDO;
+import indi.uhyils.assembler.BaseAssembler;
+import indi.uhyils.pojo.DO.base.BaseDoDO;
 import indi.uhyils.pojo.DTO.BaseDbDTO;
 import indi.uhyils.pojo.DTO.response.base.Page;
+import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
+import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RemoveCommand;
 import indi.uhyils.pojo.cqe.query.BaseQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
@@ -12,7 +15,6 @@ import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseRepository;
 import indi.uhyils.service.BaseDoService;
-import indi.uhyils.util.DtoEntityConvertUtil;
 import java.util.List;
 
 
@@ -21,76 +23,76 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 20时36分
  */
-public abstract class AbstractDoService<Y extends BaseIdDO, T extends AbstractDoEntity<Y>, E extends BaseDbDTO, R extends BaseRepository<T>> implements BaseDoService<E> {
+public abstract class AbstractDoService<DO extends BaseDoDO, ENTITY extends AbstractDoEntity<DO>, DTO extends BaseDbDTO, REP extends BaseRepository<ENTITY>, ASSEM extends BaseAssembler<DO, ENTITY, DTO>> implements BaseDoService<DTO> {
 
-    @Override
-    public Identifier add(AddCommand addCommand) {
-        BaseRepository<T> repository = getRepository();
-        T t = DtoEntityConvertUtil.toEntity(addCommand, getDoClass(), getEntityClass());
-        return repository.save(t);
-    }
+    protected final ASSEM assem;
 
+    protected final REP rep;
 
-    @Override
-    public int remove(Identifier id) {
-        BaseRepository<T> repository = getRepository();
-        return repository.remove(id);
+    public AbstractDoService(ASSEM u, REP r) {
+        this.assem = u;
+        this.rep = r;
     }
 
     @Override
-    public int remove(RemoveCommand removeCommand) {
-        return 0;
+    public ServiceResult<Long> add(AddCommand<DTO> addCommand) {
+        DTO dto = addCommand.getDto();
+        ENTITY t = assem.toEntity(dto);
+        Identifier save = rep.save(t);
+        return ServiceResult.buildSuccessResult(save.getId());
     }
 
     @Override
-    public Page<E> query(BaseQuery order) {
-        return null;
+    public ServiceResult<Integer> remove(IdCommand id) {
+        int remove = rep.remove(new Identifier(id.getId()));
+        return ServiceResult.buildSuccessResult(remove);
     }
 
     @Override
-    public List<E> query(IdsQuery order) {
-        return null;
+    public ServiceResult<Integer> remove(RemoveCommand removeCommand) {
+        int remove = rep.remove(removeCommand.getOrder());
+        return ServiceResult.buildSuccessResult(remove);
     }
 
     @Override
-    public List<E> queryNoPage(BaseQuery order) {
-        return null;
+    public ServiceResult<Page<DTO>> query(BaseQuery order) {
+        Page<ENTITY> tPage = rep.find(order);
+        Page<DTO> result = assem.pageToDTO(tPage);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    public E query(Identifier id) {
-        return null;
+    public ServiceResult<List<DTO>> query(IdsQuery order) {
+        List<ENTITY> noPage = rep.findNoPage(order);
+        List<DTO> dtos = assem.listToDTO(noPage);
+        return ServiceResult.buildSuccessResult(dtos);
     }
 
     @Override
-    public int update(ChangeCommand<E> changeCommand) {
-        return 0;
+    public ServiceResult<List<DTO>> queryNoPage(BaseQuery order) {
+        List<ENTITY> noPage = rep.findNoPage(order);
+        List<DTO> dtos = assem.listToDTO(noPage);
+        return ServiceResult.buildSuccessResult(dtos);
     }
 
     @Override
-    public Integer count(BaseQuery order) {
-        return 0;
+    public ServiceResult<DTO> query(Identifier id) {
+        ENTITY entity = rep.find(id);
+        DTO dto = assem.toDTO(entity);
+        return ServiceResult.buildSuccessResult(dto);
     }
 
-    /**
-     * 获取目标DO的class
-     *
-     * @return
-     */
-    protected abstract Class<Y> getDoClass();
+    @Override
+    public ServiceResult<Integer> update(ChangeCommand<DTO> changeCommand) {
+        ENTITY entity = assem.toEntity(changeCommand.getDto());
+        int change = rep.change(entity, changeCommand.getOrder());
+        return ServiceResult.buildSuccessResult(change);
+    }
 
-    /**
-     * 获取目标的EntityClass
-     *
-     * @return
-     */
-    protected abstract Class<T> getEntityClass();
-
-    /**
-     * 获取数据仓库
-     *
-     * @return
-     */
-    protected abstract BaseRepository<T> getRepository();
+    @Override
+    public ServiceResult<Integer> count(BaseQuery order) {
+        int count = rep.count(order);
+        return ServiceResult.buildSuccessResult(count);
+    }
 
 }

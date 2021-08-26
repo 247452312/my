@@ -107,4 +107,19 @@ public interface BaseRepository<T extends BaseEntity> {
      */
     int remove(BaseQuery order);
 
+    /**
+     * 修改
+     *
+     * @return
+     */
+    int change(T entity, BaseQuery query);
+
+    /**
+     * 数量
+     *
+     * @param order
+     *
+     * @return
+     */
+    int count(BaseQuery order);
 }

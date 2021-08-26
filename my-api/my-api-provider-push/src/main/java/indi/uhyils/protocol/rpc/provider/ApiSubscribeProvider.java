@@ -3,7 +3,7 @@ package indi.uhyils.protocol.rpc.provider;
 import indi.uhyils.pojo.DO.ApiSubscribeDO;
 import indi.uhyils.pojo.DTO.request.SubscribeRequest;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
  * api订阅表
@@ -11,7 +11,7 @@ import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时22分
  */
-public interface ApiSubscribeProvider extends DefaultDTOProvider<ApiSubscribeDO> {
+public interface ApiSubscribeProvider extends DTOProvider<ApiSubscribeDO> {
 
     /**
      * 订阅

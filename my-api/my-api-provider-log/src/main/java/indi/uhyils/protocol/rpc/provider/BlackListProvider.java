@@ -5,7 +5,7 @@ import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
 import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpRequest;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月24日 06时40分45秒
  */
-public interface BlackListProvider extends DefaultDTOProvider<BlackListDO> {
+public interface BlackListProvider extends DTOProvider<BlackListDO> {
 
     /**
      * 获取ip是否在爬虫黑名单中

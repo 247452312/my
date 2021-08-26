@@ -3,13 +3,13 @@ package indi.uhyils.protocol.rpc.provider;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DTO.request.PutDeptsToMenuRequest;
 import indi.uhyils.pojo.DTO.request.PutMenusToDeptsRequest;
-import indi.uhyils.pojo.DTO.request.PutPowersToDeptRequest;
+import indi.uhyils.pojo.DTO.request.PutPowersToDeptCommand;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
 import indi.uhyils.pojo.DTO.request.base.IdsRequest;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkResponse;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkResponse;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时25分
  */
-public interface DeptProvider extends DefaultDTOProvider<DeptDO> {
+public interface DeptProvider extends DTOProvider<DeptDTO> {
 
     /**
      * 给权限集添加权限
@@ -27,7 +27,7 @@ public interface DeptProvider extends DefaultDTOProvider<DeptDO> {
      *
      * @return
      */
-    ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) throws Exception;
+    ServiceResult<Boolean> putPowersToDept(PutPowersToDeptCommand request) throws Exception;
 
     /**
      * 删除 -> 真删. 不是假删

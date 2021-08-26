@@ -4,7 +4,7 @@ import indi.uhyils.pojo.DO.ApiGroupDO;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 13时22分
  */
-public interface ApiGroupProvider extends DefaultDTOProvider<ApiGroupDO> {
+public interface ApiGroupProvider extends DTOProvider<ApiGroupDO> {
 
     /**
      * 测试api

@@ -1,6 +1,8 @@
 package indi.uhyils.dao.base;
 
 import indi.uhyils.pojo.DTO.request.model.Arg;
+import indi.uhyils.pojo.cqe.query.Limit;
+import indi.uhyils.pojo.cqe.query.Order;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,49 +29,60 @@ public interface DefaultDao<T extends Serializable> extends BaseDao {
     /**
      * 根据某些字段获取实例(不分页)
      *
-     * @param map 条件
+     * @param args  条件
+     * @param order 排序
      *
      * @return 实例
      */
-    ArrayList<T> getByArgsNoPage(List<Arg> map);
+    ArrayList<T> getByArgsNoPage(@Param("args") List<Arg> args, @Param("order") Order order);
 
     /**
      * 根据某些字段获取实例(分页)
      *
-     * @param args 字段名称以及内容
-     * @param page 分页页码
-     * @param size 分页大小
+     * @param args  字段名称以及内容
+     * @param order 排序
+     * @param limit 分页
      *
      * @return 实例
      */
-    ArrayList<T> getByArgs(@Param("args") List<Arg> args, @Param("page") Integer page, @Param("size") Integer size);
+    ArrayList<T> getByArgs(@Param("args") List<Arg> args, @Param("order") Order order, @Param("limit") Limit limit);
 
     /**
      * 插入,这里的实例必须是执行过priseInsert方法的实例
      *
-     * @param t 执行过priseInsert方法的实例
+     * @param dO 执行过priseInsert方法的实例
      *
      * @return 插入个数
      */
-    int insert(T t);
+    int insert(T dO);
 
     /**
      * 更新,这里的实例必须是执行过priseUpdate的实例
      *
-     * @param t 执行过priseUpdate方法的实例,并且含有id
+     * @param dO 执行过priseUpdate方法的实例,并且含有id
      *
      * @return 更新个数
      */
-    int update(T t);
+    int update(T dO);
+
+    /**
+     * 更新,这里的实例必须是执行过priseUpdate的实例
+     *
+     * @param dO   执行过priseUpdate方法的实例,并且含有id
+     * @param args 参数
+     *
+     * @return 更新个数
+     */
+    int updateByOrder(@Param("data") T dO, @Param("args") List<Arg> args);
 
     /**
      * 批量更新,这里的实例必须是执行过priseUpdate的实例
      *
-     * @param t 执行过priseUpdate方法的实例,并且含有id
+     * @param dO 执行过priseUpdate方法的实例,并且含有id
      *
      * @return 更新个数
      */
-    int update(List<T> t);
+    int updateBatch(@Param("list") List<T> dO);
 
     /**
      * 根据条件查询个数

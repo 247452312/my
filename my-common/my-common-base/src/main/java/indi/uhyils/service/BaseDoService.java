@@ -2,8 +2,10 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.DTO.BaseDbDTO;
 import indi.uhyils.pojo.DTO.response.base.Page;
+import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
+import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RemoveCommand;
 import indi.uhyils.pojo.cqe.query.BaseQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
@@ -26,7 +28,7 @@ public interface BaseDoService<E extends BaseDbDTO> extends BaseService {
      *
      * @return
      */
-    Identifier add(AddCommand addCommand);
+    ServiceResult<Long> add(AddCommand<E> addCommand);
 
     /**
      * 根据id 删除
@@ -35,7 +37,7 @@ public interface BaseDoService<E extends BaseDbDTO> extends BaseService {
      *
      * @return
      */
-    int remove(Identifier id);
+    ServiceResult<Integer> remove(IdCommand id);
 
     /**
      * 根据条件删除
@@ -44,28 +46,28 @@ public interface BaseDoService<E extends BaseDbDTO> extends BaseService {
      *
      * @return
      */
-    int remove(RemoveCommand removeCommand);
+    ServiceResult<Integer> remove(RemoveCommand removeCommand);
 
     /**
      * 查询
      *
      * @param order
      */
-    Page<E> query(BaseQuery order);
+    ServiceResult<Page<E>> query(BaseQuery order);
 
     /**
      * 查询
      *
      * @param order
      */
-    List<E> query(IdsQuery order);
+    ServiceResult<List<E>> query(IdsQuery order);
 
     /**
      * 查询
      *
      * @param order
      */
-    List<E> queryNoPage(BaseQuery order);
+    ServiceResult<List<E>> queryNoPage(BaseQuery order);
 
     /**
      * 根据id获取DTO
@@ -74,7 +76,7 @@ public interface BaseDoService<E extends BaseDbDTO> extends BaseService {
      *
      * @return
      */
-    E query(Identifier id);
+    ServiceResult<E> query(Identifier id);
 
     /**
      * 修改
@@ -83,7 +85,7 @@ public interface BaseDoService<E extends BaseDbDTO> extends BaseService {
      *
      * @return
      */
-    int update(ChangeCommand<E> changeCommand);
+    ServiceResult<Integer> update(ChangeCommand<E> changeCommand);
 
 
     /**
@@ -93,5 +95,5 @@ public interface BaseDoService<E extends BaseDbDTO> extends BaseService {
      *
      * @return
      */
-    Integer count(BaseQuery order);
+    ServiceResult<Integer> count(BaseQuery order);
 }

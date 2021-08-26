@@ -1,6 +1,5 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.pojo.entity.ag.LoginStatus;
 import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.pojo.entity.type.UserName;
 import indi.uhyils.repository.UserRepository;

@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.cqe.query;
 
 import indi.uhyils.pojo.DTO.request.model.Arg;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 08时45分
  */
-public abstract class AbstractQuery implements BaseQuery {
+public abstract class AbstractQuery extends DefaultCQE implements BaseQuery {
 
     private final List<Arg> args;
 

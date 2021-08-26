@@ -2,7 +2,6 @@ package indi.uhyils.pojo.DO.base;
 
 import indi.uhyils.context.UserContext;
 import indi.uhyils.pojo.DO.UserDO;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 
 /**
  * 前台可操作性的的数据库实体中都应该有id,创建信息,修改信息删除标志灯信息
@@ -42,15 +41,6 @@ public abstract class BaseDoDO extends BaseIdDO {
      */
     private String remark;
 
-    /**
-     * 插入之前执行方法，需要手动调用
-     */
-    @Override
-    public void preInsert(DefaultRequest request) {
-        preInsert(request.getUser());
-
-    }
-
     @Override
     public void preInsert(UserDO userDO) {
         // 这里生成了id
@@ -82,13 +72,6 @@ public abstract class BaseDoDO extends BaseIdDO {
         preInsert(UserContext.doGet());
     }
 
-    /**
-     * 更新之前执行方法，需要手动调用
-     */
-    @Override
-    public void preUpdate(DefaultRequest request) {
-        preUpdate(request.getUser());
-    }
 
     public Long getCreateUser() {
         return createUser;

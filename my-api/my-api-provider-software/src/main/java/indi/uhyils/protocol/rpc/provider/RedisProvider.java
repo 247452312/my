@@ -10,7 +10,7 @@ import indi.uhyils.pojo.DTO.response.GetInfosResponse;
 import indi.uhyils.pojo.DTO.response.OperateSoftwareResponse;
 import indi.uhyils.pojo.DTO.response.RedisKeyResponse;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 12时56分
  */
-public interface RedisProvider extends DefaultDTOProvider<RedisDO> {
+public interface RedisProvider extends DTOProvider<RedisDO> {
 
     /**
      * 刷新某一个id的状态

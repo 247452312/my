@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.DeptMenuMiddle;
 import indi.uhyils.pojo.DO.DeptPowerMiddle;
 import indi.uhyils.pojo.DTO.request.PutDeptsToMenuRequest;
 import indi.uhyils.pojo.DTO.request.PutMenusToDeptsRequest;
-import indi.uhyils.pojo.DTO.request.PutPowersToDeptRequest;
+import indi.uhyils.pojo.DTO.request.PutPowersToDeptCommand;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
 import indi.uhyils.pojo.DTO.request.base.IdsRequest;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkResponse;
@@ -42,7 +42,7 @@ public class DeptProviderImpl extends BaseDefaultProvider<DeptDO> implements Dep
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
-    public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptRequest request) throws Exception {
+    public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptCommand request) throws Exception {
         dao.deleteDeptPowerMiddleByDeptId(request.getDeptId());
         Long deptId = request.getDeptId();
         for (Long powerId : request.getPowerIds()) {

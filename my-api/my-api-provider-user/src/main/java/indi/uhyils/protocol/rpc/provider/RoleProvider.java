@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.IdRequest;
 import indi.uhyils.pojo.DTO.request.base.IdsRequest;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkResponse;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时24分
  */
-public interface RoleProvider extends DefaultDTOProvider<RoleDO> {
+public interface RoleProvider extends DTOProvider<RoleDO> {
 
     /**
      * 根据角色id获取角色

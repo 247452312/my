@@ -81,7 +81,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     @Override
     public List<EN> find(List<Identifier> ids) {
         String idsStr = "('" + ids.stream().map(Object::toString).collect(Collectors.joining("','")) + "')";
-        ArrayList<DO> byArgsNoPage = getDao().getByArgsNoPage(Collections.singletonList(new Arg("id", "in", idsStr)));
+        ArrayList<DO> byArgsNoPage = getDao().getByArgsNoPage(Collections.singletonList(new Arg("id", "in", idsStr)), null);
         return byArgsNoPage.stream().map(convert::doToEntity).collect(Collectors.toList());
     }
 
@@ -98,9 +98,9 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
         Limit limit = order.limit();
         List<DO> result;
         if (limit.getPage()) {
-            result = dao.getByArgs(args, limit.getNumber(), limit.getSize());
+            result = dao.getByArgs(args, order.order(), order.limit());
         } else {
-            result = dao.getByArgsNoPage(args);
+            result = dao.getByArgsNoPage(args,order.order());
         }
         return result.stream().map(convert::doToEntity).collect(Collectors.toList());
     }
@@ -124,13 +124,23 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
         List<EN> ens = find(Arrays.asList(ids));
 
         List<DO> updateDos = ens.stream().peek(AbstractDoEntity::perUpdate).map(AbstractDoEntity::toDo).collect(Collectors.toList());
-        return getDao().update(updateDos);
+        return getDao().updateBatch(updateDos);
     }
 
     @Override
     public int remove(BaseQuery order) {
         List<EN> noPage = findNoPage(order);
         return remove(noPage);
+    }
+
+    @Override
+    public int change(EN entity, BaseQuery query) {
+        return getDao().updateByOrder(entity.toDo(), query.args());
+    }
+
+    @Override
+    public int count(BaseQuery order) {
+        return getDao().countByArgs(order.args());
     }
 
     protected BaseEntityDOConvert<EN, DO> getConvert() {

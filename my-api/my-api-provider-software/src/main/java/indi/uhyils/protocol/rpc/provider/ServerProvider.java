@@ -6,7 +6,7 @@ import indi.uhyils.pojo.DTO.request.TestConnByDataRequest;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 13时15分
  */
-public interface ServerProvider extends DefaultDTOProvider<ServerDO> {
+public interface ServerProvider extends DTOProvider<ServerDO> {
 
     /**
      * 测试服务器链接

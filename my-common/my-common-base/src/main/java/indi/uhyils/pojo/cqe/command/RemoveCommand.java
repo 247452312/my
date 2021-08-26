@@ -9,7 +9,7 @@ import indi.uhyils.pojo.cqe.query.BaseQuery;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 21时07分
  */
-public class RemoveCommand implements BaseCommand {
+public class RemoveCommand extends AbstractCommand {
 
     private BaseQuery order;
 

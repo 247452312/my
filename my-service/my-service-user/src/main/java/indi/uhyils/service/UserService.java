@@ -2,29 +2,30 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DO.base.TokenInfo;
-import indi.uhyils.pojo.DTO.request.LoginRequest;
-import indi.uhyils.pojo.DTO.request.UpdatePasswordRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.request.base.IdRequest;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.DTO.request.LoginCommand;
+import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginResponse;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import java.util.ArrayList;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.query.IdQuery;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 20时27分
  */
-public interface UserService extends BaseDoService {
+public interface UserService extends BaseDoService<UserDTO> {
 
     /**
      * 注入信息用,一般不用
      *
-     * @param idRequest 用户的idi
+     * @param request 用户的idi
      *
      * @return 用户
      */
-    ServiceResult<UserDO> getUserById(IdRequest idRequest);
+    ServiceResult<UserDTO> getUserById(IdQuery request);
 
 
     /**
@@ -40,7 +41,7 @@ public interface UserService extends BaseDoService {
      *
      * @return 通过用户id和用户类型编译的token
      */
-    ServiceResult<String> getUserToken(IdRequest request);
+    ServiceResult<String> getUserToken(IdQuery request);
 
 
     /**
@@ -51,17 +52,17 @@ public interface UserService extends BaseDoService {
      *
      * @return 解析后的token数据
      */
-    ServiceResult<TokenInfo> getTokenInfoByToken(DefaultRequest request);
+    ServiceResult<TokenInfo> getTokenInfoByToken(DefaultCQE request);
 
 
     /**
      * 用户登录 包含从哪里登录的信息
      *
-     * @param userRequest 用户登录所需要的条件
+     * @param request 用户登录所需要的条件
      *
      * @return 登录所需要的信息
      */
-    ServiceResult<LoginResponse> login(LoginRequest userRequest);
+    ServiceResult<LoginResponse> login(LoginCommand request);
 
     /**
      * 登出(删除redis中的用户)
@@ -70,7 +71,7 @@ public interface UserService extends BaseDoService {
      *
      * @return 是否登出成功
      */
-    ServiceResult<Boolean> logout(DefaultRequest request);
+    ServiceResult<Boolean> logout(DefaultCQE request);
 
     /**
      * 获取全部用户
@@ -79,7 +80,7 @@ public interface UserService extends BaseDoService {
      *
      * @return 全部用户
      */
-    ServiceResult<ArrayList<UserDO>> getUsers(DefaultRequest request);
+    ServiceResult<List<UserDO>> getUsers(DefaultCQE request);
 
     /**
      * 默认获取用户本身的方式
@@ -88,7 +89,7 @@ public interface UserService extends BaseDoService {
      *
      * @return 用户
      */
-    ServiceResult<UserDO> getUserByToken(DefaultRequest request);
+    ServiceResult<UserDO> getUserByToken(DefaultCQE request);
 
     /**
      * 更新密码
@@ -97,7 +98,7 @@ public interface UserService extends BaseDoService {
      *
      * @return 修改密码的返回
      */
-    ServiceResult<String> updatePassword(UpdatePasswordRequest request);
+    ServiceResult<String> updatePassword(UpdatePasswordCommand request);
 
     /**
      * 根据id获取用户名称
@@ -106,6 +107,6 @@ public interface UserService extends BaseDoService {
      *
      * @return 用户名称
      */
-    ServiceResult<String> getNameById(IdRequest request);
+    ServiceResult<String> getNameById(IdQuery request);
 
 }

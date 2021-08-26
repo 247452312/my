@@ -2,7 +2,7 @@ package indi.uhyils.controller;
 
 import indi.uhyils.core.topic.Topic;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.DTO.request.LoginRequest;
+import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.MqLoginRequest;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.response.LoginResponse;
@@ -54,7 +54,7 @@ public class MqController {
         String username = request.getUsername();
         String password = request.getPassword();
         if (StringUtils.equals(username, USERNAME) && StringUtils.equals(password, PASSWORD)) {
-            LoginRequest userRequest = new LoginRequest();
+            LoginCommand userRequest = new LoginCommand();
             DefaultRequestBuildUtil.fillRequestByAdminRequest(userRequest);
             userRequest.setUsername("admin");
             userRequest.setPassword("123456");

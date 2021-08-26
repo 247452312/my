@@ -1,21 +1,33 @@
 package indi.uhyils.service.impl;
 
+import indi.uhyils.assembler.UserAssembler;
 import indi.uhyils.dao.UserDao;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DO.base.TokenInfo;
-import indi.uhyils.pojo.DTO.request.LoginRequest;
-import indi.uhyils.pojo.DTO.request.UpdatePasswordRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.request.base.IdRequest;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.DTO.request.LoginCommand;
+import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginResponse;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.pojo.entity.AbstractDoEntity;
+import indi.uhyils.pojo.entity.LoginInfo;
+import indi.uhyils.pojo.entity.User;
+import indi.uhyils.pojo.entity.LoginStatus;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.type.Password;
+import indi.uhyils.pojo.entity.type.Token;
+import indi.uhyils.pojo.entity.type.UserId;
+import indi.uhyils.pojo.entity.type.UserName;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.service.UserService;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +40,7 @@ import org.springframework.stereotype.Service;
  * @date 文件创建日期 2021年08月25日 20时28分
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, UserRepository, UserAssembler> implements UserService {
 
     @Resource
     private UserDao dao;
@@ -38,9 +50,6 @@ public class UserServiceImpl implements UserService {
 
     @Value("${token.encodeRules}")
     private String encodeRules;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -55,49 +64,78 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MenuRepository menuRepository;
 
-
-    @Override
-    public ServiceResult<UserDO> getUserById(IdRequest idRequest) {
-        return null;
+    public UserServiceImpl(UserAssembler userAssembler, UserRepository userRepository) {
+        super(userAssembler, userRepository);
     }
 
     @Override
-    public ServiceResult<String> getUserToken(IdRequest request) {
-        return null;
+    public ServiceResult<UserDTO> getUserById(IdQuery request) {
+        User user = rep.find(new Identifier(request.getId()));
+        UserDTO userDTO = assem.toDTO(user);
+        return ServiceResult.buildSuccessResult(userDTO);
     }
 
     @Override
-    public ServiceResult<TokenInfo> getTokenInfoByToken(DefaultRequest request) {
-        return null;
+    public ServiceResult<String> getUserToken(IdQuery request) {
+        UserId userId = new UserId(request.getId());
+        Token token = userId.toToken(salt, encodeRules);
+        return ServiceResult.buildSuccessResult(token.getToken());
     }
 
     @Override
-    public ServiceResult<LoginResponse> login(LoginRequest userRequest) {
-        return null;
+    public ServiceResult<TokenInfo> getTokenInfoByToken(DefaultCQE request) {
+        Token token = new Token(request.getToken());
+        TokenInfo tokenInfo = token.parseToTokenInfo(encodeRules, salt, rep);
+        return ServiceResult.buildSuccessResult("解密成功", tokenInfo);
     }
 
     @Override
-    public ServiceResult<Boolean> logout(DefaultRequest request) {
-        return null;
+    public ServiceResult<LoginResponse> login(LoginCommand request) {
+        LoginInfo loginInfo = new LoginInfo(new UserName(request.getUsername()), new Password(request.getPassword()));
+        LoginStatus loginResult = loginInfo.login(rep, salt, encodeRules);
+
+        //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
+        loginResult.removeUserInRedis(rep);
+        // 登录->加入缓存中
+        loginResult.addUserToRedis(rep);
+
+        return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(loginResult.tokenValue(), loginResult.userValue()));
     }
 
     @Override
-    public ServiceResult<ArrayList<UserDO>> getUsers(DefaultRequest request) {
-        return null;
+    public ServiceResult<Boolean> logout(DefaultCQE request) {
+        LoginStatus loginResult = new LoginStatus(request);
+        Boolean success = loginResult.logout(rep);
+        return ServiceResult.buildSuccessResult("登出结束", success);
     }
 
     @Override
-    public ServiceResult<UserDO> getUserByToken(DefaultRequest request) {
-        return null;
+    public ServiceResult<List<UserDO>> getUsers(DefaultCQE request) {
+        List<User> all = rep.findAll();
+        // 填充角色
+        User.batchInitRole(all, roleRepository, deptRepository, powerRepository);
+        List<UserDO> userDos = all.stream().map(AbstractDoEntity::toDo).collect(Collectors.toList());
+        return ServiceResult.buildSuccessResult("查询成功", userDos);
     }
 
     @Override
-    public ServiceResult<String> updatePassword(UpdatePasswordRequest request) {
-        return null;
+    public ServiceResult<UserDO> getUserByToken(DefaultCQE request) {
+        return ServiceResult.buildSuccessResult("查询成功", request.getUser());
     }
 
     @Override
-    public ServiceResult<String> getNameById(IdRequest request) {
-        return null;
+    public ServiceResult<String> updatePassword(UpdatePasswordCommand request) {
+        LoginStatus loginStatus = new LoginStatus(request);
+        //检查密码是否正确
+        loginStatus.checkPassword(new Password(request.getOldPassword()), rep);
+        // 修改到新密码
+        loginStatus.changeToNewPassword(new Password(request.getNewPassword()), rep);
+        return ServiceResult.buildSuccessResult("修改密码成功", "true");
+    }
+
+    @Override
+    public ServiceResult<String> getNameById(IdQuery request) {
+        User user = rep.find(new Identifier(request.getId()));
+        return ServiceResult.buildSuccessResult("查询成功", user.toDo().getNickName());
     }
 }

@@ -8,7 +8,7 @@ import indi.uhyils.pojo.cqe.query.BaseQuery;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 21时11分
  */
-public class ChangeCommand<T extends BaseDbDTO> implements BaseCommand {
+public class ChangeCommand<T extends BaseDbDTO> extends AbstractCommand {
 
     /**
      * 要改成的东西

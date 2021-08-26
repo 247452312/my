@@ -6,7 +6,7 @@ import indi.uhyils.pojo.DTO.request.GetMethodNameByInterfaceNameRequest;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月27日 16时25分
  */
-public interface PowerProvider extends DefaultDTOProvider<PowerDO> {
+public interface PowerProvider extends DTOProvider<PowerDO> {
 
     /**
      * 获取所有的权限

@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 14时17分
  */
-public class ServiceResult<T extends Serializable> implements Serializable {
+public class ServiceResult<T> implements Serializable {
 
 
     private static final long serialVersionUID = -4154566267377974875L;
@@ -51,7 +51,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @return 一个code是200 代表成功的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildSuccessResult(String businessMessage, T t) {
+    public static <T> ServiceResult<T> buildSuccessResult(String businessMessage, T t) {
         return new ServiceResult(t, ServiceCode.SUCCESS.getText(), businessMessage);
     }
 
@@ -63,7 +63,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @return 一个code是200 代表成功的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildSuccessResult(T t) {
+    public static <T> ServiceResult<T> buildSuccessResult(T t) {
         return new ServiceResult(t, ServiceCode.SUCCESS.getText(), null);
     }
 
@@ -76,7 +76,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @return 一个code是400的 代表逻辑错误的返回(程序并没有错)
      */
-    public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage, T t) {
+    public static <T> ServiceResult<T> buildFailedResult(String businessMessage, T t) {
         return new ServiceResult(t, ServiceCode.REQUEST_PARAM_ERROR.getText(), businessMessage);
     }
     /**
@@ -86,7 +86,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @return 一个code是400的 代表逻辑错误的返回(程序并没有错)
      */
-    public static <T extends Serializable> ServiceResult<T> buildFailedResult(String businessMessage) {
+    public static <T> ServiceResult<T> buildFailedResult(String businessMessage) {
         return buildFailedResult(businessMessage, null);
     }
 
@@ -98,7 +98,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @return 一个code是500 代表逻辑错误的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildErrorResult(String businessMessage) {
+    public static <T> ServiceResult<T> buildErrorResult(String businessMessage) {
 
         return new ServiceResult(null, ServiceCode.ERROR.getText(), businessMessage);
     }
@@ -110,7 +110,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @return 一个code是401 代表权限未通过的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildNoAuthResult() {
+    public static <T> ServiceResult<T> buildNoAuthResult() {
         return buildResultByServiceCode(ServiceCode.NONE_AUTH_ERROR);
     }
 
@@ -121,7 +121,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @return 一个code是402 代表登录问题的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildLoginOutResult() {
+    public static <T> ServiceResult<T> buildLoginOutResult() {
         return buildResultByServiceCode(ServiceCode.LOGIN_TIME_OUT_ERROR);
     }
 
@@ -132,7 +132,7 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @return 一个code是403 代表登录问题的返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildNoLoginResult() {
+    public static <T> ServiceResult<T> buildNoLoginResult() {
         return buildResultByServiceCode(ServiceCode.NO_LOGIN__ERROR);
     }
 
@@ -143,8 +143,8 @@ public class ServiceResult<T extends Serializable> implements Serializable {
      *
      * @return 一个返回
      */
-    public static <T extends Serializable> ServiceResult<T> buildResultByServiceCode(ServiceCode code) {
-        return new ServiceResult(null, code.getText(), code.getMsg());
+    public static <T> ServiceResult<T> buildResultByServiceCode(ServiceCode code) {
+        return new ServiceResult<>(null, code.getText(), code.getMsg());
     }
 
     /**

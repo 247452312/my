@@ -1,14 +1,15 @@
 package indi.uhyils.dao;
 
-import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.InstructionsDO;
 import org.apache.ibatis.annotations.Mapper;
+import indi.uhyils.dao.base.DefaultDao;
 
 /**
- * (Instructions)表 数据库访问层
+ * 说明书表(Instructions)表 数据库访问层
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年08月29日 10时47分50秒
+ * @version 1.0
+ * @date 文件创建日期 2021年08月26日 22时50分41秒
  */
 @Mapper
 public interface InstructionsDao extends DefaultDao<InstructionsDO> {

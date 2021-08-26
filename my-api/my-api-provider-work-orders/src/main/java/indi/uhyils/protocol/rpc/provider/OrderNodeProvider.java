@@ -3,13 +3,13 @@ package indi.uhyils.protocol.rpc.provider;
 import indi.uhyils.pojo.DO.OrderNodeDO;
 import indi.uhyils.pojo.DTO.request.base.IdsRequest;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
  */
-public interface OrderNodeProvider extends DefaultDTOProvider<OrderNodeDO> {
+public interface OrderNodeProvider extends DTOProvider<OrderNodeDO> {
 
     /**
      * 批量删除,删除工单时用

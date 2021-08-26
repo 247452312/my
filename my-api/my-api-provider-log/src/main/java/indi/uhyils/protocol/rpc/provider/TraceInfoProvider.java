@@ -11,14 +11,14 @@ import indi.uhyils.pojo.DTO.response.GetLinkByTraceIdAndRpcIdResponse;
 import indi.uhyils.pojo.DTO.response.GetLogTypeResponse;
 import indi.uhyils.pojo.DTO.response.base.Page;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年07月31日 06时43分
  */
-public interface TraceInfoProvider extends DefaultDTOProvider<TraceInfoDO> {
+public interface TraceInfoProvider extends DTOProvider<TraceInfoDO> {
 
 
     /**

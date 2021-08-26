@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DTO.response.IndexMenuTreeResponse;
 import indi.uhyils.pojo.DTO.response.MenuHtmlTreeResponse;
 import indi.uhyils.pojo.DTO.response.QuickStartResponse;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.protocol.rpc.base.DefaultDTOProvider;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月28日 12时41分
  */
-public interface MenuProvider extends DefaultDTOProvider<MenuDO> {
+public interface MenuProvider extends DTOProvider<MenuDO> {
 
     /**
      * 获取主页的菜单
