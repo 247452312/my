@@ -3,7 +3,7 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.dao.ApiDao;
 import indi.uhyils.pojo.DO.ApiDO;
 import indi.uhyils.pojo.DTO.request.GetByArgsAndGroupRequest;
-import indi.uhyils.pojo.DTO.request.model.Arg;
+import indi.uhyils.pojo.cqe.Arg;
 import indi.uhyils.pojo.DTO.response.base.Page;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;

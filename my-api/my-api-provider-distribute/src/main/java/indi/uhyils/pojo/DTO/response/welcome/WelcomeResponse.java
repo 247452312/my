@@ -3,7 +3,7 @@ package indi.uhyils.pojo.DTO.response.welcome;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsResponse;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogResponse;
 import indi.uhyils.pojo.DTO.response.LastPlanResponse;
-import indi.uhyils.pojo.DTO.response.QuickStartResponse;
+import indi.uhyils.pojo.DTO.response.QuickStartDTO;
 import indi.uhyils.pojo.DTO.response.VersionInfoResponse;
 import java.io.Serializable;
 
@@ -14,7 +14,7 @@ import java.io.Serializable;
  * 前端无展示 其余都有展示
  * </p>
  * <p>
- * 快捷入口{@link QuickStartResponse} 返回值是从数据字典数据库中获取的
+ * 快捷入口{@link QuickStartDTO} 返回值是从数据字典数据库中获取的
  * 值
  * </p>
  * <p>
@@ -40,7 +40,7 @@ public class WelcomeResponse implements Serializable {
     /**
      * 首页中上 快捷入口
      */
-    private QuickStartResponse quickStartResponse;
+    private QuickStartDTO quickStartResponse;
 
     /**
      * 首页中下 jvm内存信息
@@ -72,11 +72,11 @@ public class WelcomeResponse implements Serializable {
         this.jvmDataStatisticsResponse = jvmDataStatisticsResponse;
     }
 
-    public QuickStartResponse getQuickStartResponse() {
+    public QuickStartDTO getQuickStartResponse() {
         return quickStartResponse;
     }
 
-    public void setQuickStartResponse(QuickStartResponse quickStartResponse) {
+    public void setQuickStartResponse(QuickStartDTO quickStartResponse) {
         this.quickStartResponse = quickStartResponse;
     }
 

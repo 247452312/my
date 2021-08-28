@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @version 1.0
  * @date 文件创建日期 2021年08月01日 13时27分
  */
-public class GetLinkByTraceIdAndRpcIdRequest extends DefaultRequest {
+public class GetLinkByTraceIdAndRpcIdRequest extends DefaultCQE {
 
     /**
      * traceId

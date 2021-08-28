@@ -4,7 +4,7 @@ import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
 import indi.uhyils.pojo.DO.TraceInfoDO;
 import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdRequest;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultPageRequest;
+import indi.uhyils.pojo.DTO.request.base.DefaultPageQuery;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.request.base.LongRequest;
 import indi.uhyils.pojo.DTO.response.GetLinkByTraceIdAndRpcIdResponse;
@@ -56,7 +56,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDO> {
      *
      * @return
      */
-    ServiceResult<Page<TraceDetailStatisticsView>> getTraceStatistics(DefaultPageRequest request);
+    ServiceResult<Page<TraceDetailStatisticsView>> getTraceStatistics(DefaultPageQuery request);
 
     /**
      * 获取日志类型

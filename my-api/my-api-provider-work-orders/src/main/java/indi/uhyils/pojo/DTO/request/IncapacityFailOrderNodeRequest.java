@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月25日 07时56分
  */
-public class IncapacityFailOrderNodeRequest extends DefaultRequest {
+public class IncapacityFailOrderNodeRequest extends DefaultCQE {
 
     /**
      * 节点id

@@ -1,8 +1,8 @@
 package indi.uhyils.pojo.DTO.response;
 
-import indi.uhyils.pojo.DO.MenuDO;
+import indi.uhyils.pojo.DTO.MenuDTO;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * menu.html菜单页用
@@ -18,10 +18,10 @@ public class MenuHtmlTreeResponse implements Serializable {
 
     Integer count;
 
-    Collection<MenuDO> data;
+    List<MenuDTO> data;
 
 
-    public static MenuHtmlTreeResponse build(Collection<MenuDO> list) {
+    public static MenuHtmlTreeResponse build(List<MenuDTO> list) {
         assert list != null;
         MenuHtmlTreeResponse menuHtmlTreeResponse = new MenuHtmlTreeResponse();
         menuHtmlTreeResponse.setCount(list.size());
@@ -53,11 +53,11 @@ public class MenuHtmlTreeResponse implements Serializable {
         this.count = count;
     }
 
-    public Collection<MenuDO> getData() {
+    public List<MenuDTO> getData() {
         return data;
     }
 
-    public void setData(Collection<MenuDO> data) {
+    public void setData(List<MenuDTO> data) {
         this.data = data;
     }
 }

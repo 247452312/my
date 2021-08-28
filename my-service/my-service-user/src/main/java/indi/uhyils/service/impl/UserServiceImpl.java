@@ -1,7 +1,6 @@
 package indi.uhyils.service.impl;
 
 import indi.uhyils.assembler.UserAssembler;
-import indi.uhyils.dao.UserDao;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
@@ -13,12 +12,12 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.LoginInfo;
-import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.LoginStatus;
+import indi.uhyils.pojo.entity.Token;
+import indi.uhyils.pojo.entity.User;
+import indi.uhyils.pojo.entity.UserId;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;
-import indi.uhyils.pojo.entity.type.Token;
-import indi.uhyils.pojo.entity.type.UserId;
 import indi.uhyils.pojo.entity.type.UserName;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
@@ -28,7 +27,6 @@ import indi.uhyils.repository.UserRepository;
 import indi.uhyils.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,9 +39,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, UserRepository, UserAssembler> implements UserService {
-
-    @Resource
-    private UserDao dao;
 
     @Value("${token.salt}")
     private String salt;
@@ -61,8 +56,10 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
     @Autowired
     private PowerRepository powerRepository;
 
+
     @Autowired
     private MenuRepository menuRepository;
+
 
     public UserServiceImpl(UserAssembler userAssembler, UserRepository userRepository) {
         super(userAssembler, userRepository);
@@ -98,34 +95,34 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
         loginResult.removeUserInRedis(rep);
         // 登录->加入缓存中
         loginResult.addUserToRedis(rep);
-
-        return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(loginResult.tokenValue(), loginResult.userValue()));
+        return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(loginResult.tokenValue(), assem.toDTO(loginResult.userValue())));
     }
 
     @Override
     public ServiceResult<Boolean> logout(DefaultCQE request) {
-        LoginStatus loginResult = new LoginStatus(request);
+        LoginStatus loginResult = new LoginStatus(request, assem);
         Boolean success = loginResult.logout(rep);
         return ServiceResult.buildSuccessResult("登出结束", success);
     }
 
     @Override
-    public ServiceResult<List<UserDO>> getUsers(DefaultCQE request) {
+    public ServiceResult<List<UserDTO>> getUsers(DefaultCQE request) {
         List<User> all = rep.findAll();
         // 填充角色
-        User.batchInitRole(all, roleRepository, deptRepository, powerRepository);
+        User.batchInitRole(all, roleRepository, deptRepository, powerRepository, menuRepository);
         List<UserDO> userDos = all.stream().map(AbstractDoEntity::toDo).collect(Collectors.toList());
-        return ServiceResult.buildSuccessResult("查询成功", userDos);
+        List<UserDTO> result = userDos.stream().map(assem::toDTO).collect(Collectors.toList());
+        return ServiceResult.buildSuccessResult("查询成功", result);
     }
 
     @Override
-    public ServiceResult<UserDO> getUserByToken(DefaultCQE request) {
+    public ServiceResult<UserDTO> getUserByToken(DefaultCQE request) {
         return ServiceResult.buildSuccessResult("查询成功", request.getUser());
     }
 
     @Override
     public ServiceResult<String> updatePassword(UpdatePasswordCommand request) {
-        LoginStatus loginStatus = new LoginStatus(request);
+        LoginStatus loginStatus = new LoginStatus(request, assem);
         //检查密码是否正确
         loginStatus.checkPassword(new Password(request.getOldPassword()), rep);
         // 修改到新密码

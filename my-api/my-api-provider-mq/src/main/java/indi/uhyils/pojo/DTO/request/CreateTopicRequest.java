@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @Date 文件创建日期 2021年04月11日 20时47分
  * @Version 1.0
  */
-public class CreateTopicRequest extends DefaultRequest {
+public class CreateTopicRequest extends DefaultCQE {
 
     /**
      * topic名称

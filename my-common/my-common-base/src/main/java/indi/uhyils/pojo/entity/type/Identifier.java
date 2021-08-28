@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.entity.type;
 
+import indi.uhyils.pojo.cqe.query.IdQuery;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0
@@ -11,6 +13,10 @@ public class Identifier implements BaseType {
 
     public Identifier(Long id) {
         this.id = id;
+    }
+
+    public Identifier(IdQuery request) {
+        this.id = request.getId();
     }
 
     public static Identifier build(Long id) {

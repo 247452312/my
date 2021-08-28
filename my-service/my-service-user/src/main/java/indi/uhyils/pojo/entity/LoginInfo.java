@@ -24,9 +24,6 @@ public class LoginInfo extends AbstractEntity {
 
         /*查询是否正确*/
         User user = userRepository.checkLogin(username, password);
-        if (user.isEmpty()) {
-            return new LoginStatus();
-        }
         return new LoginStatus(user.parseToken(salt, encodeRules), user);
     }
 

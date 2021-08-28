@@ -2,177 +2,379 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.MenuDao">
-    <sql id="columnList">
-        a.id,
-        a.create_date as 'createDate',
-        a.create_user as createUser,
-        a.update_date as 'updateDate',
-        a.update_user as updateUser,
-        a.delete_flag as deleteFlag,
-        a.remark,
+    <resultMap type="indi.uhyils.pojo.DO.MenuDO" id="MenuMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="fid" column="fid" jdbcType="INTEGER"/>
+        <result property="iFrame" column="i_frame" jdbcType="INTEGER"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <result property="target" column="target" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="BOOLEAN"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+    </resultMap>
 
-        a.fid,
-        a.i_frame     as iFrame,
-        a.target,
-        a.icon,
-        a.name,
-        a.sort,
-        a.type,
-        a.url
-    </sql>
-
-    <select id="getById" resultType="indi.uhyils.pojo.DO.MenuDO">
-        select
-        <include refid="columnList"/>
-        from sys_menu a
+    <!--查询单个-->
+    <select id="getById" resultMap="MenuMap">
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               fid,
+               i_frame,
+               icon,
+               name,
+               sort,
+               target,
+               type,
+               url
+        from sys_menu
         where delete_flag = 0
-        and id = #{id}
+          and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.MenuDO">
-        select
-        <include refid="columnList"/>
-        from sys_menu a
-        where delete_flag = 0
-        <foreach item="item" index="index" collection="list">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
+    <!--根据某些字段获取实例(不分页)-->
+    <select id="getByArgsNoPage" resultMap="MenuMap">
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               fid,
+               i_frame,
+               icon,
+               name,
+               sort,
+               target,
+               type,
+               url
+        from sys_menu
+            where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.MenuDO">
-        select
-        <include refid="columnList"/>
-        from sys_menu a
-        where delete_flag = 0
+    <!--根据某些字段获取实例(分页)-->
+    <select id="getByArgs" resultMap="MenuMap">
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               fid,
+               i_frame,
+               icon,
+               name,
+               sort,
+               target,
+               type,
+               url
+        from sys_menu
+            where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
 
-        <foreach item="item" index="index" collection="args">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
-        <if test="page != null and page != ''">
-            limit ${(page-1) * size},${size}
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
+
+        <if test="limit.number != null and limit.number != ''">
+            limit ${(limit.number-1) * limit.size},${ limit.number * limit.size}
         </if>
     </select>
 
 
+    <!--新增所有列-->
     <insert id="insert" parameterType="indi.uhyils.pojo.DO.MenuDO">
-        insert sys_menu(id,
-        create_date,
-        create_user,
-        update_date,
-        update_user,
-        delete_flag,
-        fid, i_frame, icon, name, target, sort, type, url)
-        values (#{id},
-        #{createDate},
-        #{createUser},
-        #{updateDate},
-        #{updateUser},
-        0,
-        #{fid},
-        #{iFrame},
-        #{icon},
-        #{name},
-        #{target},
-        #{sort},
-        #{type},
-        #{url})
+        insert into sys_menu(id, create_date, create_user, delete_flag, remark, update_date, update_user, fid, i_frame,
+                             icon, name, sort,
+                             target, type, url)
+        values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser}, #{fid},
+                #{iFrame}, #{icon}, #{name}, #{sort}, #{target}, #{type}, #{url})
     </insert>
 
+    <!--通过主键修改数据-->
     <update id="update" parameterType="indi.uhyils.pojo.DO.MenuDO">
-        update sys_menu set
-        update_date = #{updateDate}
-        ,update_user = #{updateUser}
+        update sys_menu set update_date = #{updateDate}
+                          , update_user = #{updateUser}
+        <if test="createDate != null">
+            , create_date = #{createDate}
+        </if>
+        <if test="createUser != null">
+            , create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            , delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            , remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            , update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null">
+            , update_user = #{updateUser}
+        </if>
         <if test="fid != null">
-            ,fid = #{fid}
+            , fid = #{fid}
         </if>
-        <if test="iFrame != null and iFrame != ''">
-            ,i_frame = #{iFrame}
+        <if test="iFrame != null">
+            , i_frame = #{iFrame}
         </if>
-        <if test="icon != null">
-            ,icon = #{icon}
+        <if test="icon != null and icon != ''">
+            , icon = #{icon}
         </if>
         <if test="name != null and name != ''">
-            ,name = #{name}
+            , name = #{name}
         </if>
-        <if test="sort != null and sort != ''">
-            ,sort = #{sort}
+        <if test="sort != null">
+            , sort = #{sort}
+        </if>
+        <if test="target != null and target != ''">
+            , target = #{target}
         </if>
         <if test="type != null">
-            ,type = #{type}
+            , type = #{type}
         </if>
-        <if test="url != null">
-            ,url = #{url}
-        </if>
-        <if test="target != null">
-            ,target = #{target}
-        </if>
-        <if test="deleteFlag != null and deleteFlag != ''">
-            ,delete_flag = #{deleteFlag}
+        <if test="url != null and url != ''">
+            , url = #{url}
         </if>
         where id = #{id}
     </update>
 
+    <!--通过主键修改数据-->
+    <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.MenuDO">
+        update sys_menu set update_date = #{updateDate}
+                          , update_user = #{updateUser}
+        <if test="createDate != null">
+            , create_date = #{createDate}
+        </if>
+        <if test="createUser != null">
+            , create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            , delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            , remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            , update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null">
+            , update_user = #{updateUser}
+        </if>
+        <if test="fid != null">
+            , fid = #{fid}
+        </if>
+        <if test="iFrame != null">
+            , i_frame = #{iFrame}
+        </if>
+        <if test="icon != null and icon != ''">
+            , icon = #{icon}
+        </if>
+        <if test="name != null and name != ''">
+            , name = #{name}
+        </if>
+        <if test="sort != null">
+            , sort = #{sort}
+        </if>
+        <if test="target != null and target != ''">
+            , target = #{target}
+        </if>
+        <if test="type != null">
+            , type = #{type}
+        </if>
+        <if test="url != null and url != ''">
+            , url = #{url}
+        </if>
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+    </update>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.MenuDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_menu set
+            update_date = #{item.updateDate}
+                ,update_user = #{item.updateUser}
+            <if test="createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="remark != null and remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="fid != null">
+                ,fid = #{item.fid}
+            </if>
+            <if test="iFrame != null">
+                ,i_frame = #{item.iFrame}
+            </if>
+            <if test="icon != null and icon != ''">
+                ,icon = #{item.icon}
+            </if>
+            <if test="name != null and name != ''">
+                , name = #{item.name}
+            </if>
+            <if test="sort != null">
+                ,sort = #{item.sort}
+            </if>
+            <if test="target != null and target != ''">
+                ,target = #{item.target}
+            </if>
+            <if test="type != null">
+                ,type = #{item.type}
+            </if>
+            <if test="url != null and url != ''">
+                ,url = #{item.url}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <!--查询总条数-->
     <select id="count" resultType="java.lang.Integer">
         select count(*)
-        from sys_menu a
+        from sys_menu
         where delete_flag = 0;
     </select>
 
+    <!--根据条件查询条数-->
     <select id="countByArgs" resultType="java.lang.Integer">
         select count(*)
-        from sys_menu a
-        where delete_flag = 0
-        <foreach item="item" index="index" collection="args">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
+        from sys_menu
+            where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
     </select>
 
+    <!--检查是否有重复-->
     <select id="checkRepeat" resultType="java.lang.Integer">
         select count(*)
-        from sys_menu a
+        from sys_menu
         where ${columnName} = #{value}
     </select>
+
     <select id="getByIFrame" resultType="indi.uhyils.pojo.DO.MenuDO">
-        select
-        <include refid="columnList"/>
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               fid,
+               i_frame,
+               icon,
+               name,
+               sort,
+               target,
+               type,
+               url
         from sys_menu a
         where delete_flag = 0
-        and i_frame = #{data}
+          and i_frame = #{data}
     </select>
 
-    <select id="getByDeptIds" resultType="java.lang.String">
-        select menu_id from sys_dept_menu where dept_id in
+    <select id="getByDeptIds" resultMap="MenuMap">
+        select sm.id,
+               sm.create_date,
+               sm.create_user,
+               sm.delete_flag,
+               sm.remark,
+               sm.update_date,
+               sm.update_user,
+               sm.fid,
+               sm.i_frame,
+               sm.icon,
+               sm.name,
+               sm.sort,
+               sm.target,
+               sm.type,
+               sm.url
+        from sys_menu sm
+                 left join sys_dept_menu sdm on sm.id = sdm.menu_id where sdm.dept_id in
         <foreach item="deptIds" index="index" collection="list" open="(" separator="," close=")">
             #{deptIds}
         </foreach>
     </select>
 
     <update id="deleteByIds" parameterType="java.util.List">
-        update sys_menu set delete_flag = 1 where id in
+        update sys_menu
+        set delete_flag = 1 where id in
         <foreach item="collect" index="index" collection="list" open="(" separator="," close=")">
             #{collect}
         </foreach>
     </update>
 
     <delete id="deleteDeptMenuByMenuIds" parameterType="java.util.List">
-        delete from sys_dept_menu where menu_id in
+        delete
+        from sys_dept_menu where menu_id in
         <foreach item="menuIds" index="index" collection="list" open="(" separator="," close=")">
             #{menuIds}
         </foreach>
     </delete>
     <delete id="deleteDeptMenuByDeptIds" parameterType="java.util.List">
-        delete from sys_dept_menu where dept_id in
+        delete
+        from sys_dept_menu where dept_id in
         <foreach item="deptIds" index="index" collection="list" open="(" separator="," close=")">
             #{deptIds}
         </foreach>
     </delete>
 
-    <select id="getAllMenuWithHaveMark" resultType="indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkResponse">
-        select a.id menuId,
-        a.name menuName,
-        (select count(*) = 1 from sys_dept_menu where dept_id = #{deptId} and menu_id = a.id) as mark
+    <select id="getAllMenuWithHaveMark" resultType="indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO">
+        select a.id                                                                                     menuId,
+               a.name                                                                                   menuName,
+               (select count(*) = 1 from sys_dept_menu where dept_id = #{deptId} and menu_id = a.id) as mark
         from sys_menu a
         where delete_flag = 0
-        and type = 1;
+          and type = 1;
     </select>
 </mapper>

@@ -6,7 +6,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月04日 15时54分
  */
-public class GetAllOrderRequest extends DefaultRequest {
+public class GetAllOrderRequest extends DefaultCQE {
 
     /**
      * 要获取的工单类型

@@ -2,95 +2,117 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.DictItemDao">
-    <sql id="columnList">
-        a.id,
-        a.create_date as 'createDate',
-        a.create_user as createUser,
-        a.update_date as 'updateDate',
-        a.update_user as updateUser,
-        a.delete_flag as deleteFlag,
-        a.remark,
+    <resultMap type="indi.uhyils.pojo.DO.DictItemDO" id="DictItemMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="dictId" column="dict_id" jdbcType="INTEGER"/>
+        <result property="sortOrder" column="sort_order" jdbcType="INTEGER"/>
+        <result property="text" column="text" jdbcType="VARCHAR"/>
+        <result property="value" column="value" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
 
-
-        a.description,
-        a.dict_id     as dictId,
-        a.sort_order  as sortOrder,
-        a.text,
-        a.value
-    </sql>
-
-    <select id="getById" resultType="indi.uhyils.pojo.DO.DictItemDO">
+    <!--查询单个-->
+    <select id="getById" resultMap="DictItemMap">
         select
-        <include refid="columnList"/>
-        from sys_dict_item a
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
+        text, value, status
+        from sys_dict_item
         where delete_flag = 0
         and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.DictItemDO">
+    <!--根据某些字段获取实例(不分页)-->
+    <select id="getByArgsNoPage" resultMap="DictItemMap">
         select
-        <include refid="columnList"/>
-        from sys_dict_item a
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
+        text, value, status
+        from sys_dict_item
         where delete_flag = 0
-        <foreach item="item" index="index" collection="list">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
-        order by sort_order
+        <if test="list != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.DictItemDO">
+    <!--根据某些字段获取实例(分页)-->
+    <select id="getByArgs" resultMap="DictItemMap">
         select
-        <include refid="columnList"/>
-        from sys_dict_item a
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
+        text, value, status
+        from sys_dict_item
         where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
 
-        <foreach item="item" index="index" collection="args">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
-        order by sort_order
-        <if test="page != null and page != ''">
-            limit ${(page-1) * size},${size}
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
+
+        <if test="limit.number != null and limit.number != ''">
+            limit ${(limit.number-1) * limit.size},${ limit.number * limit.size}
         </if>
     </select>
 
 
+    <!--新增所有列-->
     <insert id="insert" parameterType="indi.uhyils.pojo.DO.DictItemDO">
-        insert sys_dict_item(id,
-        create_date,
-        create_user,
-        update_date,
-        update_user,
-        delete_flag,
-        description,
-        dict_id,
-        sort_order,
-        text,
-        value)
-        values (#{id},
-        #{createDate},
-        #{createUser},
-        #{updateDate},
-        #{updateUser},
-        0,
-        #{description},
-        #{dictId},
-        #{sortOrder},
-        #{text},
-        #{value})
+        insert into sys_dict_item(
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
+        text, value, status)
+        values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser},
+        #{description}, #{dictId}, #{sortOrder}, #{text}, #{value}, #{status})
     </insert>
 
+    <!--通过主键修改数据-->
     <update id="update" parameterType="indi.uhyils.pojo.DO.DictItemDO">
         update sys_dict_item set
         update_date = #{updateDate}
         ,update_user = #{updateUser}
-
+        <if test="createDate != null">
+            ,create_date = #{createDate}
+        </if>
+        <if test="createUser != null">
+            ,create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            ,update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null">
+            ,update_user = #{updateUser}
+        </if>
         <if test="description != null and description != ''">
             ,description = #{description}
         </if>
-        <if test="dictId != null and dictId != ''">
+        <if test="dictId != null">
             ,dict_id = #{dictId}
         </if>
-        <if test="sortOrder != null and sortOrder != ''">
+        <if test="sortOrder != null">
             ,sort_order = #{sortOrder}
         </if>
         <if test="text != null and text != ''">
@@ -99,32 +121,130 @@
         <if test="value != null and value != ''">
             ,value = #{value}
         </if>
-
-
-        <if test="deleteFlag != null and deleteFlag != ''">
-            ,delete_flag = #{deleteFlag}
+        <if test="status != null">
+            ,status = #{status}
         </if>
         where id = #{id}
     </update>
 
+    <!--通过主键修改数据-->
+    <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.DictItemDO">
+        update sys_dict_item set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="createDate != null">
+            ,create_date = #{createDate}
+        </if>
+        <if test="createUser != null">
+            ,create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            ,update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null">
+            ,update_user = #{updateUser}
+        </if>
+        <if test="description != null and description != ''">
+            ,description = #{description}
+        </if>
+        <if test="dictId != null">
+            ,dict_id = #{dictId}
+        </if>
+        <if test="sortOrder != null">
+            ,sort_order = #{sortOrder}
+        </if>
+        <if test="text != null and text != ''">
+            ,text = #{text}
+        </if>
+        <if test="value != null and value != ''">
+            ,value = #{value}
+        </if>
+        <if test="status != null">
+            ,status = #{status}
+        </if>
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+    </update>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.DictItemDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_dict_item set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="remark != null and remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="description != null and description != ''">
+                ,description = #{item.description}
+            </if>
+            <if test="dictId != null">
+                ,dict_id = #{item.dictId}
+            </if>
+            <if test="sortOrder != null">
+                ,sort_order = #{item.sortOrder}
+            </if>
+            <if test="text != null and text != ''">
+                ,text = #{item.text}
+            </if>
+            <if test="value != null and value != ''">
+                ,value = #{item.value}
+            </if>
+            <if test="status != null">
+                ,status = #{item.status}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <!--查询总条数-->
     <select id="count" resultType="java.lang.Integer">
         select count(*)
-        from sys_dict_item a
+        from sys_dict_item
         where delete_flag = 0;
     </select>
 
+    <!--根据条件查询条数-->
     <select id="countByArgs" resultType="java.lang.Integer">
         select count(*)
-        from sys_dict_item a
+        from sys_dict_item
         where delete_flag = 0
-        <foreach item="item" index="index" collection="args">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
     </select>
 
+    <!--检查是否有重复-->
     <select id="checkRepeat" resultType="java.lang.Integer">
         select count(*)
-        from sys_dict_item a
+        from sys_dict_item
         where ${columnName} = #{value}
     </select>
 
@@ -149,4 +269,8 @@
         from sys_dict_item a
         where dict_id = (select id from sys_dict where code = #{code})
     </select>
+
+    <update id="delete">
+        update sys_dict_item a set a.delete_flag = 1 where a.id = #{id}
+    </update>
 </mapper>

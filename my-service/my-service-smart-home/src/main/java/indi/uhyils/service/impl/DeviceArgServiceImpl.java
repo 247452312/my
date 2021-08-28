@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月26日 22时50分31秒
+ * @date 文件创建日期 2021年08月27日 08时21分14秒
  */
 @Service
 public class DeviceArgServiceImpl extends AbstractDoService<DeviceArgDO, DeviceArg, DeviceArgDTO, DeviceArgRepository, DeviceArgAssembler> implements DeviceArgService {

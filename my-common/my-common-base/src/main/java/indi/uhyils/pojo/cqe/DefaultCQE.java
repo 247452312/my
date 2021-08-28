@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.cqe;
 
-import indi.uhyils.pojo.DO.UserDO;
+
+import indi.uhyils.pojo.DTO.UserDTO;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -16,7 +17,7 @@ public class DefaultCQE implements BaseCQE {
     /**
      * 请求时如果携带则代表已经有了,不需要解析token
      */
-    private UserDO user;
+    private UserDTO user;
 
     /**
      * 保证请求幂等性, 不会在前一个相同幂等id执行结束前执行方法
@@ -42,11 +43,11 @@ public class DefaultCQE implements BaseCQE {
         this.token = token;
     }
 
-    public UserDO getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(UserDO user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 

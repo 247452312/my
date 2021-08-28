@@ -80,7 +80,7 @@ public interface UserService extends BaseDoService<UserDTO> {
      *
      * @return 全部用户
      */
-    ServiceResult<List<UserDO>> getUsers(DefaultCQE request);
+    ServiceResult<List<UserDTO>> getUsers(DefaultCQE request);
 
     /**
      * 默认获取用户本身的方式
@@ -89,7 +89,7 @@ public interface UserService extends BaseDoService<UserDTO> {
      *
      * @return 用户
      */
-    ServiceResult<UserDO> getUserByToken(DefaultCQE request);
+    ServiceResult<UserDTO> getUserByToken(DefaultCQE request);
 
     /**
      * 更新密码

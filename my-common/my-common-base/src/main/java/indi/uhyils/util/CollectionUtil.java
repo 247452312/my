@@ -2,6 +2,7 @@ package indi.uhyils.util;
 
 
 import java.util.Collection;
+import java.util.function.Function;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -19,6 +20,12 @@ public final class CollectionUtil {
 
     public static boolean isNotEmpty(Collection<?> collection) {
         return !isEmpty(collection);
+    }
 
+    public static <T, E> Boolean contains(Collection<T> collection, E e, Function<T, E> function) {
+        if (collection == null) {
+            return false;
+        }
+        return collection.stream().map(function).anyMatch(t -> t.equals(e));
     }
 }

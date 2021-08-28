@@ -7,7 +7,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 19时30分
  */
-public class DealOrderNodeRequest extends DefaultRequest {
+public class DealOrderNodeRequest extends DefaultCQE {
 
     /**
      * 填充的节点属性值<节点属性id,真实值>

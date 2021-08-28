@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @version 1.0
  * @date 文件创建日期 2021年08月04日 09时09分
  */
-public class GetTraceDetailByHashCodeRequest extends DefaultRequest {
+public class GetTraceDetailByHashCodeRequest extends DefaultCQE {
 
     /**
      * hash

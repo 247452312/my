@@ -32,7 +32,7 @@ public class ApiUtils {
      */
     public static String callApi(List<ApiDO> apis, UserDO userEntity, HashMap<String, String> parameter) {
         // 初始化调用群期间可传递的参数
-        parameter.put("${username}", userEntity.getUserName());
+        parameter.put("${username}", userEntity.getUsername());
         parameter.put("${nickName}", userEntity.getNickName());
         parameter.put("${mail}", userEntity.getMail());
         parameter.put("${phone}", userEntity.getPhone());

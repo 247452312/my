@@ -6,7 +6,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月17日 07时30分
  */
-public class PushMsgToSomeoneRequest extends DefaultRequest {
+public class PushMsgToSomeoneRequest extends DefaultCQE {
 
     /**
      * 接收人id

@@ -8,7 +8,7 @@ import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.response.HotSpotResponse;
+import indi.uhyils.pojo.DTO.response.HotSpotDTO;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
@@ -285,7 +285,7 @@ public class HotSpotAop {
             }
             LogUtil.info(HotSpotAop.class, String.format("接口<%s#%s> 读取redis中的缓存热点数据", className, methodName));
 
-            ServiceResult<HotSpotResponse> hotSpotResponse = ServiceResult.buildHotSpotHaveResult(format, HotSpotContext.HOTSPOT_HASH_DATA_KEY);
+            ServiceResult<HotSpotDTO> hotSpotResponse = ServiceResult.buildHotSpotHaveResult(format, HotSpotContext.HOTSPOT_HASH_DATA_KEY);
             return hotSpotResponse;
         } finally {
             jedis.close();

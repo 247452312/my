@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月30日 13时50分
  */
-public class SubscribeRequest extends DefaultRequest {
+public class SubscribeRequest extends DefaultCQE {
 
     /**
      * api群id

@@ -1,12 +1,12 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.DTO.request.base.ArgsRequest;
+import indi.uhyils.pojo.DTO.request.base.ArgsQuery;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月30日 09时16分
  */
-public class GetByArgsAndGroupRequest extends ArgsRequest {
+public class GetByArgsAndGroupRequest extends ArgsQuery {
 
     /**
      * 组id

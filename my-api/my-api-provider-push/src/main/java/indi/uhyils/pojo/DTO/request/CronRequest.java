@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月29日 06时51分
  */
-public class CronRequest extends DefaultRequest {
+public class CronRequest extends DefaultCQE {
 
     /**
      * 定时表达式

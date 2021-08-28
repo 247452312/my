@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO.response.base;
 
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.DTO.response.HotSpotResponse;
+import indi.uhyils.pojo.DTO.response.HotSpotDTO;
 import indi.uhyils.rpc.util.RpcAssertUtil;
 import java.io.Serializable;
 
@@ -79,6 +79,7 @@ public class ServiceResult<T> implements Serializable {
     public static <T> ServiceResult<T> buildFailedResult(String businessMessage, T t) {
         return new ServiceResult(t, ServiceCode.REQUEST_PARAM_ERROR.getText(), businessMessage);
     }
+
     /**
      * 构建一个逻辑失败的返回
      *
@@ -155,8 +156,8 @@ public class ServiceResult<T> implements Serializable {
      *
      * @return
      */
-    public static ServiceResult<HotSpotResponse> buildHotSpotHaveResult(String key, String hkey) {
-        HotSpotResponse build = HotSpotResponse.build(key, hkey);
+    public static ServiceResult<HotSpotDTO> buildHotSpotHaveResult(String key, String hkey) {
+        HotSpotDTO build = HotSpotDTO.build(key, hkey);
         return new ServiceResult(build, ServiceCode.SUCCESS_REDIS.getText(), null);
     }
 

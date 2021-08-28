@@ -2,26 +2,20 @@ package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.dao.PowerDao;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.DO.PowerDO;
-import indi.uhyils.pojo.DO.PowerSimpleDO;
-import indi.uhyils.pojo.DTO.request.CheckUserHavePowerRequest;
-import indi.uhyils.pojo.DTO.request.GetMethodNameByInterfaceNameRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.request.base.IdRequest;
+import indi.uhyils.pojo.DTO.PowerDTO;
+import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
+import indi.uhyils.pojo.DTO.request.GetMethodNameByInterfaceNameQuery;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
-import indi.uhyils.rpc.annotation.RpcService;
-import indi.uhyils.protocol.rpc.provider.PowerProvider;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.command.IdCommand;
+import indi.uhyils.protocol.rpc.PowerProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
-import indi.uhyils.util.ApiPowerInitUtil;
-import indi.uhyils.util.LogUtil;
-
-import javax.annotation.Resource;
-import java.io.IOException;
-import java.util.ArrayList;
+import indi.uhyils.rpc.annotation.RpcService;
+import indi.uhyils.service.BaseDoService;
+import indi.uhyils.service.PowerService;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -29,93 +23,57 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @RpcService
 @ReadWriteMark(tables = {"sys_power"})
-public class PowerProviderImpl extends BaseDefaultProvider<PowerDO> implements PowerProvider {
+public class PowerProviderImpl extends BaseDefaultProvider<PowerDTO> implements PowerProvider {
 
 
-    @Resource
-    private PowerDao dao;
-
-
-    @Override
-    public PowerDao getDao() {
-        return dao;
-    }
-
-    public void setDao(PowerDao dao) {
-        this.dao = dao;
-    }
+    @Autowired
+    private PowerService service;
 
     @Override
-    public ServiceResult<ArrayList<PowerDO>> getPowers(DefaultRequest request) {
-        return ServiceResult.buildSuccessResult("获取成功", dao.getAll());
+    public ServiceResult<List<PowerDTO>> getPowers(DefaultCQE request) {
+        return service.getPowers(request);
+
     }
 
     @Override
     @NoToken
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_user", "sys_role", "sys_role_dept", "sys_dept", "sys_dept_power", "sys_power"})
-    public ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerRequest request) {
-        Integer count = dao.checkUserHavePower(request.getUserId(), request.getInterfaceName(), request.getMethodName());
-        boolean havePower;
-        if (count > 0) {
-            havePower = Boolean.TRUE;
-        } else {
-            havePower = false;
-        }
-        return ServiceResult.buildSuccessResult("查询成功", havePower);
+    public ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerQuery request) {
+        return service.checkUserHavePower(request);
+
 
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
-    public ServiceResult<Boolean> deletePower(IdRequest request) {
-        PowerDO powerEntity = getDao().getById(request.getId());
-        if (powerEntity == null) {
-            return ServiceResult.buildFailedResult("查询失败", null);
-        }
-        powerEntity.setDeleteFlag(Boolean.TRUE);
-        powerEntity.preUpdate(request);
-        dao.update(powerEntity);
+    public ServiceResult<Boolean> deletePower(IdCommand request) {
+        return service.deletePower(request);
 
-        dao.deleteDeptPowerMiddleByPowerId(request.getId());
-
-        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_power"})
-    public ServiceResult<ArrayList<String>> getInterfaces(DefaultRequest request) {
-        return ServiceResult.buildSuccessResult("查询成功", dao.getInterfaces());
+    public ServiceResult<List<String>> getInterfaces(DefaultCQE request) {
+        return service.getInterfaces(request);
+
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_power"})
-    public ServiceResult<ArrayList<String>> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameRequest request) {
-        return ServiceResult.buildSuccessResult("查询成功", dao.getMethodNameByInterfaceName(request.getInterfaceName()));
+    public ServiceResult<List<String>> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameQuery request) {
+        return service.getMethodNameByInterfaceName(request);
+
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_power"})
-    public ServiceResult<Integer> initPowerInProStart(DefaultRequest request) throws Exception {
-        List<PowerSimpleDO> powersSingle;
-        try {
-            powersSingle = ApiPowerInitUtil.getPowersSingle();
-        } catch (IOException e) {
-            LogUtil.error(this, e);
-            return ServiceResult.buildErrorResult("初始化power失败:" + e.getMessage());
-        }
-        AtomicInteger newPowerCount = new AtomicInteger(0);
-        for (PowerSimpleDO powerSimpleDO : powersSingle) {
-            Integer count = dao.checkPower(powerSimpleDO.getInterfaceName(), powerSimpleDO.getMethodName());
-            // 如果数据库中不存在此权限
-            if (count == 0) {
-                PowerDO powerEntity = PowerDO.build(powerSimpleDO);
-                powerEntity.preInsert(request);
-                dao.insert(powerEntity);
-                newPowerCount.incrementAndGet();
+    public ServiceResult<Integer> initPowerInProStart(DefaultCQE request) throws Exception {
+        return service.initPowerInProStart(request);
 
-            }
-        }
-        return ServiceResult.buildSuccessResult("初始化power成功", newPowerCount.get());
     }
 
+    @Override
+    protected BaseDoService<PowerDTO> getService() {
+        return service;
+    }
 }

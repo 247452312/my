@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @version 1.0
  * @date 文件创建日期 2021年08月10日 09时07分
  */
-public class ExecuteCodeRequest extends DefaultRequest {
+public class ExecuteCodeRequest extends DefaultCQE {
 
     /**
      * 类体

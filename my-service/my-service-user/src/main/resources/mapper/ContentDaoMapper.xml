@@ -2,73 +2,382 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="indi.uhyils.dao.ContentDao">
-    <sql id="columnList">
-        a.id,
-        a.create_date as 'createDate',
-        a.create_user as createUser,
-        a.update_date as 'updateDate',
-        a.update_user as updateUser,
-        a.delete_flag as deleteFlag,
-        a.remark,
+    <resultMap type="indi.uhyils.pojo.DO.ContentDO" id="ContentMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="title1" column="title1" jdbcType="VARCHAR"/>
+        <result property="title2" column="title2" jdbcType="VARCHAR"/>
+        <result property="title3" column="title3" jdbcType="VARCHAR"/>
+        <result property="title4" column="title4" jdbcType="VARCHAR"/>
+        <result property="title5" column="title5" jdbcType="VARCHAR"/>
+        <result property="title6" column="title6" jdbcType="VARCHAR"/>
+        <result property="var1" column="var1" jdbcType="VARCHAR"/>
+        <result property="var2" column="var2" jdbcType="VARCHAR"/>
+        <result property="var3" column="var3" jdbcType="VARCHAR"/>
+        <result property="var4" column="var4" jdbcType="VARCHAR"/>
+        <result property="var5" column="var5" jdbcType="VARCHAR"/>
+        <result property="var6" column="var6" jdbcType="VARCHAR"/>
+    </resultMap>
 
-        a.name,
-        a.title1,
-        a.title2,
-        a.title3,
-        a.title4,
-        a.title5,
-        a.title6,
-        a.var1,
-        a.var2,
-        a.var3,
-        a.var4,
-        a.var5,
-        a.var6
-    </sql>
-
-    <select id="getById" resultType="indi.uhyils.pojo.DO.ContentDO">
-        select
-        <include refid="columnList"/>
-        from sys_content a
+    <!--查询单个-->
+    <select id="getById" resultMap="ContentMap">
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               name,
+               title1,
+               title2,
+               title3,
+               title4,
+               title5,
+               title6,
+               var1,
+               var2,
+               var3,
+               var4,
+               var5,
+               var6
+        from sys_content
         where delete_flag = 0
-        and id = #{id}
+          and id = #{id}
     </select>
 
-    <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.ContentDO">
-        select
-        <include refid="columnList"/>
-        from sys_content a
-        where delete_flag = 0
-        <foreach item="item" index="index" collection="args">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
+    <!--根据某些字段获取实例(不分页)-->
+    <select id="getByArgsNoPage" resultMap="ContentMap">
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               name,
+               title1,
+               title2,
+               title3,
+               title4,
+               title5,
+               title6,
+               var1,
+               var2,
+               var3,
+               var4,
+               var5,
+               var6
+        from sys_content
+            where delete_flag = 0
+        <if test="list != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
         <if test="order != null">
-            order by <foreach collection="order.columns" item="item" index="index" separator=",">${item.columnName.name} ${item.symbol.name}</foreach>
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
         </if>
     </select>
 
-    <select id="getByArgs" resultType="indi.uhyils.pojo.DO.ContentDO">
-        select
-        <include refid="columnList"/>
-        from sys_content a
-        where delete_flag = 0
+    <!--根据某些字段获取实例(分页)-->
+    <select id="getByArgs" resultMap="ContentMap">
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               name,
+               title1,
+               title2,
+               title3,
+               title4,
+               title5,
+               title6,
+               var1,
+               var2,
+               var3,
+               var4,
+               var5,
+               var6
+        from sys_content
+            where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
 
-        <foreach item="item" index="index" collection="args">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
-        <if test="page != null and page != ''">
-            limit ${(page-1) * size},${size}
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
+
+        <if test="limit.number != null and limit.number != ''">
+            limit ${(limit.number-1) * limit.size},${ limit.number * limit.size}
         </if>
     </select>
 
 
+    <!--新增所有列-->
     <insert id="insert" parameterType="indi.uhyils.pojo.DO.ContentDO">
-        insert sys_content(id,
+        insert into sys_content(id, create_date, create_user, delete_flag, remark, update_date, update_user, name,
+                                title1, title2, title3,
+                                title4, title5, title6, var1, var2, var3, var4, var5, var6)
+        values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser}, #{name},
+                #{title1}, #{title2}, #{title3}, #{title4}, #{title5}, #{title6}, #{var1}, #{var2}, #{var3}, #{var4},
+                #{var5},
+                #{var6})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update" parameterType="indi.uhyils.pojo.DO.ContentDO">
+        update sys_content set update_date = #{updateDate}
+                             , update_user = #{updateUser}
+        <if test="createDate != null">
+            , create_date = #{createDate}
+        </if>
+        <if test="createUser != null">
+            , create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            , delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            , remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            , update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null">
+            , update_user = #{updateUser}
+        </if>
+        <if test="name != null and name != ''">
+            , name = #{name}
+        </if>
+        <if test="title1 != null and title1 != ''">
+            , title1 = #{title1}
+        </if>
+        <if test="title2 != null and title2 != ''">
+            , title2 = #{title2}
+        </if>
+        <if test="title3 != null and title3 != ''">
+            , title3 = #{title3}
+        </if>
+        <if test="title4 != null and title4 != ''">
+            , title4 = #{title4}
+        </if>
+        <if test="title5 != null and title5 != ''">
+            , title5 = #{title5}
+        </if>
+        <if test="title6 != null and title6 != ''">
+            , title6 = #{title6}
+        </if>
+        <if test="var1 != null and var1 != ''">
+            , var1 = #{var1}
+        </if>
+        <if test="var2 != null and var2 != ''">
+            , var2 = #{var2}
+        </if>
+        <if test="var3 != null and var3 != ''">
+            , var3 = #{var3}
+        </if>
+        <if test="var4 != null and var4 != ''">
+            , var4 = #{var4}
+        </if>
+        <if test="var5 != null and var5 != ''">
+            , var5 = #{var5}
+        </if>
+        <if test="var6 != null and var6 != ''">
+            , var6 = #{var6}
+        </if>
+        where id = #{id}
+    </update>
+
+    <!--通过主键修改数据-->
+    <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.ContentDO">
+        update sys_content set update_date = #{updateDate}
+                             , update_user = #{updateUser}
+        <if test="createDate != null">
+            , create_date = #{createDate}
+        </if>
+        <if test="createUser != null">
+            , create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            , delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            , remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            , update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null">
+            , update_user = #{updateUser}
+        </if>
+        <if test="name != null and name != ''">
+            , name = #{name}
+        </if>
+        <if test="title1 != null and title1 != ''">
+            , title1 = #{title1}
+        </if>
+        <if test="title2 != null and title2 != ''">
+            , title2 = #{title2}
+        </if>
+        <if test="title3 != null and title3 != ''">
+            , title3 = #{title3}
+        </if>
+        <if test="title4 != null and title4 != ''">
+            , title4 = #{title4}
+        </if>
+        <if test="title5 != null and title5 != ''">
+            , title5 = #{title5}
+        </if>
+        <if test="title6 != null and title6 != ''">
+            , title6 = #{title6}
+        </if>
+        <if test="var1 != null and var1 != ''">
+            , var1 = #{var1}
+        </if>
+        <if test="var2 != null and var2 != ''">
+            , var2 = #{var2}
+        </if>
+        <if test="var3 != null and var3 != ''">
+            , var3 = #{var3}
+        </if>
+        <if test="var4 != null and var4 != ''">
+            , var4 = #{var4}
+        </if>
+        <if test="var5 != null and var5 != ''">
+            , var5 = #{var5}
+        </if>
+        <if test="var6 != null and var6 != ''">
+            , var6 = #{var6}
+        </if>
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+    </update>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.ContentDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_content set
+            update_date = #{item.updateDate}
+                ,update_user = #{item.updateUser}
+            <if test="createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="remark != null and remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="name != null and name != ''">
+                , name = #{item.name}
+            </if>
+            <if test="title1 != null and title1 != ''">
+                ,title1 = #{item.title1}
+            </if>
+            <if test="title2 != null and title2 != ''">
+                ,title2 = #{item.title2}
+            </if>
+            <if test="title3 != null and title3 != ''">
+                ,title3 = #{item.title3}
+            </if>
+            <if test="title4 != null and title4 != ''">
+                ,title4 = #{item.title4}
+            </if>
+            <if test="title5 != null and title5 != ''">
+                ,title5 = #{item.title5}
+            </if>
+            <if test="title6 != null and title6 != ''">
+                ,title6 = #{item.title6}
+            </if>
+            <if test="var1 != null and var1 != ''">
+                ,var1 = #{item.var1}
+            </if>
+            <if test="var2 != null and var2 != ''">
+                ,var2 = #{item.var2}
+            </if>
+            <if test="var3 != null and var3 != ''">
+                ,var3 = #{item.var3}
+            </if>
+            <if test="var4 != null and var4 != ''">
+                ,var4 = #{item.var4}
+            </if>
+            <if test="var5 != null and var5 != ''">
+                ,var5 = #{item.var5}
+            </if>
+            <if test="var6 != null and var6 != ''">
+                ,var6 = #{item.var6}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <!--查询总条数-->
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_content
+        where delete_flag = 0;
+    </select>
+
+    <!--根据条件查询条数-->
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_content
+            where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+    </select>
+
+    <!--检查是否有重复-->
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_content
+        where ${columnName} = #{value}
+    </select>
+
+    <select id="getByName" resultMap="ContentMap">
+        select
+        id,
         create_date,
         create_user,
+        delete_flag,
+        remark,
         update_date,
         update_user,
-        delete_flag,
         name,
         title1,
         title2,
@@ -81,108 +390,7 @@
         var3,
         var4,
         var5,
-        var6)
-        values (#{id},
-        #{createDate},
-        #{createUser},
-        #{updateDate},
-        #{updateUser},
-        0,
-        #{name},
-        #{title1},
-        #{title2},
-        #{title3},
-        #{title4},
-        #{title5},
-        #{title6},
-        #{var1},
-        #{var2},
-        #{var3},
-        #{var4},
-        #{var5},
-        #{var6})
-    </insert>
-
-    <update id="update" parameterType="indi.uhyils.pojo.DO.ContentDO">
-        update sys_content set
-        update_date = #{updateDate}
-        ,update_user = #{updateUser}
-        <if test="name != null and name != ''">
-            ,name = #{name}
-        </if>
-
-        <if test="title1 != null">
-            ,title1 = #{title1}
-        </if>
-        <if test="var1 != null">
-            ,var1 = #{var1}
-        </if>
-
-        <if test="title2 != null">
-            ,title2 = #{title2}
-        </if>
-        <if test="var2 != null">
-            ,var2 = #{var2}
-        </if>
-
-        <if test="title3 != null">
-            ,title3 = #{title3}
-        </if>
-        <if test="var3 != null">
-            ,var3 = #{var3}
-        </if>
-
-        <if test="title4 != null">
-            ,title4 = #{title4}
-        </if>
-        <if test="var4 != null">
-            ,var4 = #{var4}
-        </if>
-
-        <if test="title5 != null">
-            ,title5 = #{title5}
-        </if>
-        <if test="var5 != null">
-            ,var5 = #{var5}
-        </if>
-
-        <if test="title6 != null">
-            ,title6 = #{title6}
-        </if>
-        <if test="var6 != null">
-            ,var6 = #{var6}
-        </if>
-
-        <if test="deleteFlag != null and deleteFlag != ''">
-            ,delete_flag = #{deleteFlag}
-        </if>
-        where id = #{id}
-    </update>
-
-    <select id="count" resultType="java.lang.Integer">
-        select count(*)
-        from sys_content a
-        where delete_flag = 0;
-    </select>
-
-    <select id="countByArgs" resultType="java.lang.Integer">
-        select count(*)
-        from sys_content a
-        where delete_flag = 0
-        <foreach item="item" index="index" collection="args">
-            and ${item.name} ${item.symbol} #{item.data}
-        </foreach>
-    </select>
-
-    <select id="checkRepeat" resultType="java.lang.Integer">
-        select count(*)
-        from sys_content a
-        where ${columnName} = #{value}
-    </select>
-
-    <select id="getByName" resultType="indi.uhyils.pojo.DO.ContentDO">
-        select
-        <include refid="columnList"/>
+        var6
         from sys_content a
         where delete_flag = 0
         and name = #{name}

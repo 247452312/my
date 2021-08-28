@@ -9,7 +9,7 @@ import indi.uhyils.dao.base.DefaultDao;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月26日 22时50分35秒
+ * @date 文件创建日期 2021年08月27日 08时21分16秒
  */
 @Mapper
 public interface DeviceCallbackDao extends DefaultDao<DeviceCallbackDO> {

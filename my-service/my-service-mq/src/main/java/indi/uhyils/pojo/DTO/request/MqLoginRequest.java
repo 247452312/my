@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @version 1.0
  * @date 文件创建日期 2021年04月30日 08时27分
  */
-public class MqLoginRequest extends DefaultRequest {
+public class MqLoginRequest extends DefaultCQE {
 
     /**
      * 用户名

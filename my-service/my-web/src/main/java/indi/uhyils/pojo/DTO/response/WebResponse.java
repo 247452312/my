@@ -3,7 +3,6 @@ package indi.uhyils.pojo.DTO.response;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.RpcApiUtil;

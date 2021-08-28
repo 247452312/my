@@ -1,10 +1,13 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.DO.DeptDO;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.repository.DeptRepository;
+import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
+import indi.uhyils.repository.RoleRepository;
+import indi.uhyils.util.CollectionUtil;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -16,6 +19,10 @@ import java.util.stream.Collectors;
  */
 public class Dept extends AbstractDoEntity<DeptDO> {
 
+    private List<Power> powers;
+
+    private List<Menu> menus;
+
     public Dept(DeptDO deptDO) {
         super(deptDO);
     }
@@ -26,10 +33,40 @@ public class Dept extends AbstractDoEntity<DeptDO> {
      * @param powerRepository
      */
     public void initPower(PowerRepository powerRepository) {
-        if (isEmpty()) {
+        if (powers != null) {
             return;
         }
-        List<Power> powers = powerRepository.findByDeptId(new Identifier(getData().getId()));
-        getData().setPowers(powers.stream().map(AbstractDoEntity::toDo).collect(Collectors.toList()));
+        this.powers = powerRepository.findByDeptId(new Identifier(getData().getId()));
+    }
+
+    /**
+     * 填充权限
+     *
+     * @param menuRepository
+     */
+    public void initMenus(MenuRepository menuRepository) {
+        if (menus != null) {
+            return;
+        }
+        this.menus = menuRepository.findByDeptId(new Identifier(getData().getId()));
+    }
+
+    public List<Menu> menus() {
+        return menus;
+    }
+
+    public void removeMenuLink(DeptRepository repository) {
+        if (CollectionUtil.isEmpty(menus)) {
+            return;
+        }
+    }
+
+    public void removePowerLink(DeptRepository repository) {
+        if (CollectionUtil.isEmpty(powers)) {
+            return;
+        }
+    }
+
+    public void removeRoleLink(DeptRepository repository) {
     }
 }

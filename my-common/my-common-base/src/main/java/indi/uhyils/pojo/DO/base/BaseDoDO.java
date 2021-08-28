@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DO.base;
 
 import indi.uhyils.context.UserContext;
-import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.UserDTO;
 
 /**
  * 前台可操作性的的数据库实体中都应该有id,创建信息,修改信息删除标志灯信息
@@ -42,7 +42,7 @@ public abstract class BaseDoDO extends BaseIdDO {
     private String remark;
 
     @Override
-    public void preInsert(UserDO userDO) {
+    public void preInsert(UserDTO userDO) {
         // 这里生成了id
         super.preInsert(userDO);
         this.createDate = System.currentTimeMillis();
@@ -53,7 +53,7 @@ public abstract class BaseDoDO extends BaseIdDO {
     }
 
     @Override
-    public void preUpdate(UserDO userDO) {
+    public void preUpdate(UserDTO userDO) {
         super.preUpdate(userDO);
         this.updateDate = System.currentTimeMillis();
         this.updateUser = userDO.getId();

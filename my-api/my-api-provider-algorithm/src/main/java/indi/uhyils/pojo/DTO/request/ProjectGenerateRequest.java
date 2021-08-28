@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import java.util.List;
 
 /**
@@ -9,7 +9,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月27日 07时04分
  */
-public class ProjectGenerateRequest extends DefaultRequest {
+public class ProjectGenerateRequest extends DefaultCQE {
 
     /**
      * 多个数据库信息

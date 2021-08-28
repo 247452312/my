@@ -6,7 +6,7 @@ import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
 import indi.uhyils.pojo.DO.TraceInfoDO;
 import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdRequest;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultPageRequest;
+import indi.uhyils.pojo.DTO.request.base.DefaultPageQuery;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.request.base.LongRequest;
 import indi.uhyils.pojo.DTO.response.GetLinkByTraceIdAndRpcIdResponse;
@@ -60,7 +60,7 @@ public class TraceInfoProvider extends BaseDefaultProvider<TraceInfoDO> implemen
     }
 
     @Override
-    public ServiceResult<Page<TraceDetailStatisticsView>> getTraceStatistics(DefaultPageRequest request) {
+    public ServiceResult<Page<TraceDetailStatisticsView>> getTraceStatistics(DefaultPageQuery request) {
         List<TraceDetailStatisticsView> list = dao.getTraceStatistics(request);
         Integer count = dao.getTraceStatisticsCount(request);
         return ServiceResult.buildSuccessResult(Page.build(request, list, count));

@@ -2,7 +2,6 @@ package indi.uhyils.pojo.DTO.response.base;
 
 import indi.uhyils.pojo.cqe.query.BaseQuery;
 import indi.uhyils.pojo.cqe.query.Limit;
-import indi.uhyils.pojo.DTO.request.base.DefaultPageRequest;
 import java.io.Serializable;
 import java.util.List;
 
@@ -63,6 +62,10 @@ public class Page<T> implements Serializable {
         return build(list, order.limit(), count);
     }
 
+    public static <T extends Serializable> Page<T> build(List<T> list, Page<?> page) {
+        return build(list, page.getSize(), page.pageNum, page.count);
+    }
+
     public static <T extends Serializable> Page<T> build(List<T> list, Limit limit, Integer count) {
         return build(list, limit.getSize(), limit.getNumber(), count);
     }
@@ -70,18 +73,19 @@ public class Page<T> implements Serializable {
     /**
      * 创建一个page
      *
-     * @param pageRequest 分页请求
-     * @param list        查询结果
-     * @param count       查询数量
-     * @param totalPage   总页数
-     * @param <T>         查询结果类
+     * @param query     分页请求
+     * @param list      查询结果
+     * @param count     查询数量
+     * @param totalPage 总页数
+     * @param <T>       查询结果类
      *
      * @return 包含分页信息的返回集
      */
-    public static <T extends Serializable> Page<T> build(DefaultPageRequest pageRequest, List<T> list, Integer count, Integer totalPage) {
+    public static <T extends Serializable> Page<T> build(BaseQuery query, List<T> list, Integer count, Integer totalPage) {
         //代表分页
-        if (Boolean.TRUE.equals(pageRequest.getPaging())) {
-            return build(list, pageRequest.getSize(), pageRequest.getPage(), count, totalPage);
+        Limit limit = query.limit();
+        if (Boolean.TRUE.equals(limit.getPage())) {
+            return build(list, limit.getSize(), limit.getNumber(), count, totalPage);
         } else {
             return build(list, count, 1, count, 1);
         }
@@ -90,22 +94,23 @@ public class Page<T> implements Serializable {
     /**
      * 创建一个page
      *
-     * @param pageRequest 分页请求
-     * @param list        查询结果
-     * @param count       查询数量
-     * @param <T>         查询结果类
+     * @param query 分页请求
+     * @param list  查询结果
+     * @param count 查询数量
+     * @param <T>   查询结果类
      *
      * @return 包含分页信息的返回集
      */
-    public static <T extends Serializable> Page<T> build(DefaultPageRequest pageRequest, List<T> list, Integer count) {
-        Integer totalPage = count / pageRequest.getSize();
-        if (count % pageRequest.getSize() != 0) {
+    public static <T extends Serializable> Page<T> build(BaseQuery query, List<T> list, Integer count) {
+        Limit limit = query.limit();
+        Integer totalPage = count / limit.getSize();
+        if (count % limit.getSize() != 0) {
             totalPage++;
         }
 
         //代表分页
-        if (Boolean.TRUE.equals(pageRequest.getPaging())) {
-            return build(list, pageRequest.getSize(), pageRequest.getPage(), count, totalPage);
+        if (Boolean.TRUE.equals(limit.getPage())) {
+            return build(list, limit.getSize(), limit.getNumber(), count, totalPage);
         } else {
             return build(list, count, 1, count, 1);
         }

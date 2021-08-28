@@ -1,7 +1,6 @@
 package indi.uhyils.util;
 
-import indi.uhyils.pojo.DO.PowerSimpleDO;
-
+import indi.uhyils.pojo.entity.type.PowerInfo;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -26,21 +25,22 @@ public class ApiPowerInitUtil {
      * 此工具只在未打包时有用 获取所有接口的方法 TODO 此处需要修改
      *
      * @return
+     *
      * @throws IOException
      */
-    public static List<PowerSimpleDO> getPowersSingle() throws IOException {
+    public static List<PowerInfo> getPowersSingle() throws IOException {
         String basePath = new File("").getCanonicalPath();
         basePath += "\\my-api\\";
         File file = new File(basePath);
         File[] files = file.listFiles();
 
-        List<PowerSimpleDO> list = new ArrayList<>();
+        List<PowerInfo> list = new ArrayList<>();
         assert files != null;
         // 遍历每个微服务的api包
         Arrays.stream(files).forEach(t -> {
             if (t.exists() && t.isDirectory()) {
                 try {
-                    String servicePackagePath = t.getCanonicalPath() + "/src/main/java/indi/uhyils/service";
+                    String servicePackagePath = t.getCanonicalPath() + "/src/main/java/indi/uhyils/protocol/rpc";
                     File servicePackage = new File(servicePackagePath);
                     File[] serviceFiles = servicePackage.listFiles();
                     // 遍历微服务的每个接口
@@ -49,18 +49,17 @@ public class ApiPowerInitUtil {
                             String canonicalPath = p.getCanonicalPath();
                             //接口名称
                             String interfaceName = canonicalPath.substring(canonicalPath.lastIndexOf('\\') + 1, canonicalPath.indexOf('.'));
-                            String javaClass = "indi.uhyils.service." + interfaceName;
+                            String javaClass = "indi.uhyils.protocol.rpc." + interfaceName;
                             Class<?> clazz = Class.forName(javaClass);
                             Method[] declaredMethods = clazz.getDeclaredMethods();
                             //全部方法名称
                             List<String> methodsName = Arrays.stream(declaredMethods).map(Method::getName).collect(Collectors.toList()); // 此类里面的所有方法
 
-                            Class<?> aClass = Class.forName("indi.uhyils.service.DefaultEnt" +
-                                    "ityService");
+                            Class<?> aClass = Class.forName("indi.uhyils.protocol.rpc.base.DTOProvider");
                             //父类全部方法名称
                             List<String> fatherMethodsName = Arrays.stream(aClass.getDeclaredMethods()).map(Method::getName).collect(Collectors.toList());
                             methodsName.addAll(fatherMethodsName);
-                            list.addAll(methodsName.stream().map(v -> PowerSimpleDO.build(interfaceName, v)).collect(Collectors.toList()));
+                            list.addAll(methodsName.stream().map(v -> new PowerInfo(interfaceName, v)).collect(Collectors.toList()));
 
                         } catch (IOException | ClassNotFoundException e) {
                             LogUtil.error(ApiPowerInitUtil.class, e);

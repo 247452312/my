@@ -2,16 +2,14 @@ package indi.uhyils.param;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.pojo.DTO.request.base.ObjRequest;
-import indi.uhyils.pojo.DTO.request.base.ObjsRequest;
+import indi.uhyils.pojo.DTO.BaseDTO;
+import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.spi.param.ParamTransExtension;
 import indi.uhyils.util.ClassUtil;
 import indi.uhyils.util.LogUtil;
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,9 +57,8 @@ public class ObjRequestParamExtension implements ParamTransExtension {
         if (CollectionUtils.isEmpty(methodNameMethod)) {
             return arg;
         }
-        boolean objRequestEquals = parameterType.equals(ObjRequest.class);
-        boolean objsRequestEquals = parameterType.equals(ObjsRequest.class);
-        if (objRequestEquals || objsRequestEquals) {
+        boolean addCommandType = parameterType.equals(AddCommand.class);
+        if (addCommandType) {
             String requestJson = JSON.toJSONString(arg);
             String className = realClass.getGenericSuperclass().getTypeName();
             if (className.contains(GENERIC_LEFT_BRACKET)) {
@@ -77,22 +74,24 @@ public class ObjRequestParamExtension implements ParamTransExtension {
                     className = genericInterface.getTypeName();
                     substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
                 }
-                if (objRequestEquals) {
-                    ObjRequest<Serializable> objRequest = JSONObject.parseObject(requestJson, ObjRequest.class);
-                    objRequest.setData((Serializable) JSONObject.parseObject(JSON.toJSONString(objRequest.getData()), Class.forName(substring)));
+                if (addCommandType) {
+                    AddCommand objRequest = JSONObject.parseObject(requestJson, AddCommand.class);
+                    BaseDTO o = (BaseDTO) JSONObject.parseObject(JSON.toJSONString(objRequest.getDto()), Class.forName(substring));
+                    objRequest.setDto(o);
 
                     return objRequest;
 
-                } else if (objsRequestEquals) {
-                    ObjsRequest<Serializable> objsRequest = JSONObject.parseObject(requestJson, ObjsRequest.class);
-                    List<Serializable> list = objsRequest.getList();
-                    List<Serializable> targetList = new ArrayList<>(list.size());
-                    for (Serializable serializable : list) {
-                        targetList.add((Serializable) JSONObject.parseObject(JSON.toJSONString(serializable), Class.forName(substring)));
-                    }
-                    objsRequest.setList(targetList);
-                    return objsRequest;
                 }
+//                else if (objsRequestEquals) {
+//                    ObjsRequest<Serializable> objsRequest = JSONObject.parseObject(requestJson, ObjsRequest.class);
+//                    List<Serializable> list = objsRequest.getList();
+//                    List<Serializable> targetList = new ArrayList<>(list.size());
+//                    for (Serializable serializable : list) {
+//                        targetList.add((Serializable) JSONObject.parseObject(JSON.toJSONString(serializable), Class.forName(substring)));
+//                    }
+//                    objsRequest.setList(targetList);
+//                    return objsRequest;
+//                }
             }
         }
         return arg;

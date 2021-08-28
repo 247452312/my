@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月24日 09时32分
  */
-public class AddBlackIpRequest extends DefaultRequest {
+public class AddBlackIpRequest extends DefaultCQE {
 
     /**
      * ip

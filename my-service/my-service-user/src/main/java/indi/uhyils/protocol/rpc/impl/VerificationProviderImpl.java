@@ -3,24 +3,25 @@ package indi.uhyils.protocol.rpc.impl;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.DTO.request.VerificationRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.request.VerificationCommand;
 import indi.uhyils.pojo.DTO.response.VerificationGetResponse;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.protocol.rpc.VerificationProvider;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
 import indi.uhyils.rpc.annotation.RpcService;
-import indi.uhyils.protocol.rpc.provider.VerificationProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Base64Utils;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
+import javax.imageio.ImageIO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Base64Utils;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -34,12 +35,13 @@ public class VerificationProviderImpl implements VerificationProvider {
      * 验证码有效期
      */
     private static final Integer VERIFICATION_TIME_OUT = 30;
+
     @Autowired
     private RedisPoolHandle redisPool;
 
     @Override
     @NoToken
-    public ServiceResult<VerificationGetResponse> getVerification(DefaultRequest request) throws IOException {
+    public ServiceResult<VerificationGetResponse> getVerification(DefaultCQE request) throws IOException {
         int width = 160;
         int height = 60;
         int lines = 10;
@@ -87,7 +89,7 @@ public class VerificationProviderImpl implements VerificationProvider {
     @Override
     @NoToken
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<Boolean> verification(VerificationRequest request) {
+    public ServiceResult<Boolean> verification(VerificationCommand request) {
         String key = request.getKey();
         String code = request.getCode();
         Redisable jedis = redisPool.getJedis();

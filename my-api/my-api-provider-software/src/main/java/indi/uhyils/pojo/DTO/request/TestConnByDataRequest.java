@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 16时51分
  */
-public class TestConnByDataRequest extends DefaultRequest {
+public class TestConnByDataRequest extends DefaultCQE {
 
     private String ip;
 

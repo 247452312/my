@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月02日 16时35分
  */
-public class NameRequest extends DefaultRequest {
+public class NameRequest extends DefaultCQE {
 
     /**
      * 名称, 人名,地名,文件名

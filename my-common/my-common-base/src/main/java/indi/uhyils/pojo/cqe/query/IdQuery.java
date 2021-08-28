@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.cqe.query;
 
-import indi.uhyils.pojo.DTO.request.model.Arg;
+import indi.uhyils.pojo.cqe.Arg;
 import java.util.Collections;
 
 

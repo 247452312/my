@@ -1,6 +1,6 @@
 package indi.uhyils.util;
 
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
@@ -23,7 +23,7 @@ public class AopUtil {
      *
      * @throws Exception 参数错误
      */
-    public static DefaultRequest getDefaultRequestInPjp(ProceedingJoinPoint pjp) throws Exception {
+    public static DefaultCQE getDefaultRequestInPjp(ProceedingJoinPoint pjp) throws Exception {
         Object[] objs = pjp.getArgs();
         boolean b = objs == null;
         boolean b1 = b || objs.length == 0;
@@ -31,6 +31,6 @@ public class AopUtil {
         if (b || b1) {
             throw new Exception("访问请求无参数");
         }
-        return (DefaultRequest) objs[0];
+        return (DefaultCQE) objs[0];
     }
 }

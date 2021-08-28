@@ -36,6 +36,11 @@ public abstract class AbstractEntity implements HaveIdEntity {
         this.canUpdate = false;
     }
 
+    protected AbstractEntity(Long id) {
+        this();
+        this.id = new Identifier(id);
+    }
+
 
     @Override
     public boolean canUpdate() {
@@ -85,3 +90,4 @@ public abstract class AbstractEntity implements HaveIdEntity {
     }
 
 }
+

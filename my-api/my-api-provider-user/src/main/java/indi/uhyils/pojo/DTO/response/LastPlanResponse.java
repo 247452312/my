@@ -1,8 +1,7 @@
 package indi.uhyils.pojo.DTO.response;
 
-import indi.uhyils.pojo.DO.DictItemDO;
+import indi.uhyils.pojo.DTO.DictItemDTO;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,19 +15,19 @@ public class LastPlanResponse implements Serializable {
     /**
      * 下一步计划 -> 数据字典中
      */
-    List<DictItemDO> infos;
+    List<DictItemDTO> infos;
 
-    public static LastPlanResponse build(ArrayList<DictItemDO> infos) {
+    public static LastPlanResponse build(List<DictItemDTO> infos) {
         LastPlanResponse lastPlanResponse = new LastPlanResponse();
         lastPlanResponse.setInfos(infos);
         return lastPlanResponse;
     }
 
-    public List<DictItemDO> getInfos() {
+    public List<DictItemDTO> getInfos() {
         return infos;
     }
 
-    public void setInfos(List<DictItemDO> infos) {
+    public void setInfos(List<DictItemDTO> infos) {
         this.infos = infos;
     }
 }

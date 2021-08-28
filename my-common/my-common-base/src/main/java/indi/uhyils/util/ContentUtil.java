@@ -1,7 +1,7 @@
 package indi.uhyils.util;
 
 import com.alibaba.nacos.common.utils.Objects;
-import indi.uhyils.pojo.DO.ContentDO;
+import indi.uhyils.pojo.DTO.ContentDTO;
 
 /**
  * Content表工具
@@ -15,7 +15,7 @@ public final class ContentUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    public static String getContentVarByTitle(ContentDO entity, String title) {
+    public static String getContentVarByTitle(ContentDTO entity, String title) {
         if (Objects.equals(title, entity.getTitle1())) {
             return entity.getVar1();
         }

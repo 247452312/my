@@ -2,10 +2,10 @@ package indi.uhyils.repository;
 
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Password;
-import indi.uhyils.pojo.entity.type.Token;
-import indi.uhyils.pojo.entity.type.UserId;
+import indi.uhyils.pojo.entity.Token;
+import indi.uhyils.pojo.entity.UserId;
 import indi.uhyils.pojo.entity.type.UserName;
-import indi.uhyils.repository.base.BaseRepository;
+import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
 
 /**
@@ -15,7 +15,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月24日 17时46分
  */
-public interface UserRepository extends BaseRepository<User> {
+public interface UserRepository extends BaseEntityRepository<User> {
 
 
     /**
@@ -58,14 +58,14 @@ public interface UserRepository extends BaseRepository<User> {
      *
      * @return
      */
-    Boolean checkRedisContainUserId(UserId userId);
+    Boolean checkCacheUserId(UserId userId);
 
     /**
      * 根据id删除用户
      *
      * @param userId
      */
-    boolean removeUserInRedisById(UserId userId);
+    boolean removeUserInCacheById(UserId userId);
 
     /**
      * 向redis中添加user
@@ -73,7 +73,7 @@ public interface UserRepository extends BaseRepository<User> {
      * @param token
      * @param user
      */
-    void addUser(Token token, User user);
+    void cacheUser(Token token, User user);
 
     /**
      * 清空redis中token信息

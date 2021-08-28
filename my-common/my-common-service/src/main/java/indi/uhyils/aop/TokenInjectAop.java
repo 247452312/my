@@ -5,10 +5,10 @@ import indi.uhyils.annotation.NoToken;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.context.UserContext;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.DO.UserDO;
-import indi.uhyils.pojo.DTO.request.CheckUserHavePowerRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.RpcApiUtil;
@@ -55,7 +55,7 @@ public class TokenInjectAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.service..*.*(..)))")
     public void tokenInjectPoint() {
     }
 
@@ -91,7 +91,7 @@ public class TokenInjectAop {
         }
 
         //获取token
-        DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
+        DefaultCQE arg = AopUtil.getDefaultRequestInPjp(pjp);
         String token = arg.getToken();
 
 
@@ -101,33 +101,33 @@ public class TokenInjectAop {
         }
 
         /* 查询是否超时 */
-        UserDO userEntity;
+        UserDTO userDTO;
         // 如果参数中携带了用户,则不需要去再次查询用户
         if (arg.getUser() != null) {
-            userEntity = arg.getUser();
+            userDTO = arg.getUser();
         } else {
-            userEntity = redisPoolHandle.getUser(token);
+            userDTO = redisPoolHandle.getUser(token);
         }
-        if (userEntity == null) {
+        if (userDTO == null) {
             return ServiceResult.buildLoginOutResult();
         }
         try {
-            UserContext.setUser(userEntity);
+            UserContext.setUser(userDTO);
 
             /* 查询是否有权限 */
             // 超级管理员直接放行
-            if (ADMIN.equals(userEntity.getUserName())) {
-                userEntity.setRoleId(MyContext.ADMIN_ROLE_ID);
-                arg.setUser(userEntity);
+            if (ADMIN.equals(userDTO.getUserName())) {
+                userDTO.setRoleId(MyContext.ADMIN_ROLE_ID);
+                arg.setUser(userDTO);
                 //执行方法
-                return pjp.proceed(new DefaultRequest[]{arg});
+                return pjp.proceed(new DefaultCQE[]{arg});
             }
 
             String substring = className.substring(className.lastIndexOf('.') + 1);
             if (substring.contains(IMPL)) {
                 substring = substring.substring(0, substring.length() - 4);
             }
-            ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userEntity, userEntity.getId(), substring, methodName, token, arg);
+            ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userDTO, userDTO.getId(), substring, methodName, token, arg);
             if (!ServiceCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
                 return checkUserHavePowerServiceResult;
             }
@@ -136,9 +136,9 @@ public class TokenInjectAop {
                 return ServiceResult.buildNoAuthResult();
             }
 
-            arg.setUser(userEntity);
+            arg.setUser(userDTO);
             //执行方法
-            return pjp.proceed(new DefaultRequest[]{arg});
+            return pjp.proceed(new DefaultCQE[]{arg});
         } finally {
             UserContext.clean();
         }
@@ -153,8 +153,8 @@ public class TokenInjectAop {
      *
      * @return 是否有权限
      */
-    private ServiceResult<JSONObject> checkUserHavePower(UserDO userEntity, Long id, String interfaceName, String methodName, String token, DefaultRequest request) {
-        CheckUserHavePowerRequest build = CheckUserHavePowerRequest.build(interfaceName, methodName, id);
+    private ServiceResult<JSONObject> checkUserHavePower(UserDTO userEntity, Long id, String interfaceName, String methodName, String token, DefaultCQE request) {
+        CheckUserHavePowerQuery build = CheckUserHavePowerQuery.build(interfaceName, methodName, id);
         build.setToken(token);
         build.setUser(userEntity);
         ArrayList<Object> args = new ArrayList<>();

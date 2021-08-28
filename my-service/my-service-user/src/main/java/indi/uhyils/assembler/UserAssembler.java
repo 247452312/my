@@ -2,8 +2,12 @@ package indi.uhyils.assembler;
 
 import indi.uhyils.annotation.Assembler;
 import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.RoleDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.entity.Role;
 import indi.uhyils.pojo.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -13,6 +17,9 @@ import indi.uhyils.pojo.entity.User;
 @Assembler
 public class UserAssembler extends AbstractAssembler<UserDO, User, UserDTO> {
 
+    @Autowired
+    private RoleAssembler roleAssembler;
+
     @Override
     public User toEntity(UserDO dO) {
         return new User(dO);
@@ -20,7 +27,15 @@ public class UserAssembler extends AbstractAssembler<UserDO, User, UserDTO> {
 
     @Override
     public User toEntity(UserDTO dto) {
-        return new User(toDo(dto));
+        User user = new User(toDo(dto));
+        Role role = roleAssembler.toEntity(dto.getRole());
+        user.forceInitRole(role);
+        return user;
+    }
+
+    public User toEntity(DefaultCQE cqe) {
+        UserDTO dto = cqe.getUser();
+        return toEntity(dto);
     }
 
     @Override
@@ -31,5 +46,13 @@ public class UserAssembler extends AbstractAssembler<UserDO, User, UserDTO> {
     @Override
     protected Class<UserDTO> getDtoClass() {
         return UserDTO.class;
+    }
+
+    @Override
+    public UserDTO toDTO(User entity) {
+        UserDTO userDTO = super.toDTO(entity);
+        RoleDTO roleDTO = roleAssembler.toDTO(entity.role());
+        userDTO.setRole(roleDTO);
+        return userDTO;
     }
 }

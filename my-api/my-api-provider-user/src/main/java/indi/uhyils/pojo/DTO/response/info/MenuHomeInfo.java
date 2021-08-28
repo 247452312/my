@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.response.info;
 
-import indi.uhyils.pojo.DO.ContentDO;
+import indi.uhyils.pojo.DTO.ContentDTO;
 import indi.uhyils.util.ContentUtil;
 import java.io.Serializable;
 
@@ -18,7 +18,7 @@ public class MenuHomeInfo implements Serializable {
 
     private String href;
 
-    public static MenuHomeInfo build(ContentDO honeInfo) {
+    public static MenuHomeInfo build(ContentDTO honeInfo) {
         assert HOME_INFO.equals(honeInfo.getName());
 
         MenuHomeInfo menuHomeInfo = new MenuHomeInfo();

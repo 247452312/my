@@ -2,7 +2,7 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.MenuDO;
-import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkResponse;
+import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public interface MenuDao extends DefaultDao<MenuDO> {
      * @param deptIds 权限集ids
      * @return menuIds
      */
-    List<Long> getByDeptIds(List<Long> deptIds);
+    List<MenuDO> getByDeptIds(List<Long> deptIds);
 
     /**
      * 根据ids删除菜单
@@ -63,5 +63,5 @@ public interface MenuDao extends DefaultDao<MenuDO> {
      * @param deptId 权限集id
      * @return 所有叶子菜单(包含羁绊标记)
      */
-    ArrayList<GetAllMenuWithHaveMarkResponse> getAllMenuWithHaveMark(Long deptId);
+    ArrayList<GetAllMenuWithHaveMarkDTO> getAllMenuWithHaveMark(Long deptId);
 }

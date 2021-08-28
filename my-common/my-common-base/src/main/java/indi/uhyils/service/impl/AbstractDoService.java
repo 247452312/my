@@ -13,7 +13,7 @@ import indi.uhyils.pojo.cqe.query.BaseQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.repository.base.BaseRepository;
+import indi.uhyils.repository.base.BaseEntityRepository;
 import indi.uhyils.service.BaseDoService;
 import java.util.List;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 20时36分
  */
-public abstract class AbstractDoService<DO extends BaseDoDO, ENTITY extends AbstractDoEntity<DO>, DTO extends BaseDbDTO, REP extends BaseRepository<ENTITY>, ASSEM extends BaseAssembler<DO, ENTITY, DTO>> implements BaseDoService<DTO> {
+public abstract class AbstractDoService<DO extends BaseDoDO, ENTITY extends AbstractDoEntity<DO>, DTO extends BaseDbDTO, REP extends BaseEntityRepository<ENTITY>, ASSEM extends BaseAssembler<DO, ENTITY, DTO>> implements BaseDoService<DTO> {
 
     protected final ASSEM assem;
 

@@ -1,11 +1,12 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.DO.RoleDO;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
+import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 角色
@@ -16,10 +17,11 @@ import java.util.stream.Collectors;
  */
 public class Role extends AbstractDoEntity<RoleDO> {
 
+    private List<Dept> depts;
+
     public Role(RoleDO roleDO) {
         super(roleDO);
     }
-
 
     /**
      * 填充部门与权限
@@ -27,11 +29,23 @@ public class Role extends AbstractDoEntity<RoleDO> {
      * @param deptRepository
      * @param powerRepository
      */
-    public void initDept(DeptRepository deptRepository, PowerRepository powerRepository) {
-        if (isEmpty()) {
+    public void initDept(DeptRepository deptRepository, PowerRepository powerRepository, MenuRepository menuRepository) {
+        if (this.depts != null) {
             return;
         }
-        List<Dept> depts = deptRepository.findByRoleId(new Identifier(getData().getId()));
-        getData().setDepts(depts.stream().peek(t -> t.initPower(powerRepository)).map(AbstractDoEntity::toDo).collect(Collectors.toList()));
+        this.depts = deptRepository.findByRoleId(new Identifier(getData().getId()));
+        for (Dept dept : depts) {
+            dept.initMenus(menuRepository);
+            dept.initPower(powerRepository);
+        }
+    }
+
+
+    public List<Menu> menus() {
+        List<Menu> result = new ArrayList<>();
+        for (Dept dept : depts) {
+            result.addAll(dept.menus());
+        }
+        return result;
     }
 }

@@ -1,6 +1,6 @@
 package indi.uhyils.dao.base;
 
-import indi.uhyils.pojo.DTO.request.model.Arg;
+import indi.uhyils.pojo.cqe.Arg;
 import indi.uhyils.pojo.cqe.query.Limit;
 import indi.uhyils.pojo.cqe.query.Order;
 import java.io.Serializable;

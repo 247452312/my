@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.DTO.request.base.DefaultPageRequest;
+import indi.uhyils.pojo.DTO.request.base.DefaultPageQuery;
 
 
 /**
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultPageRequest;
  * @version 1.0
  * @date 文件创建日期 2021年08月04日 08时39分
  */
-public class GetTraceInfoByArgAndPageRequest extends DefaultPageRequest {
+public class GetTraceInfoByArgAndPageRequest extends DefaultPageQuery {
 
     /**
      * 链路唯一索引

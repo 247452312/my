@@ -1,8 +1,8 @@
 package indi.uhyils.pojo.DO.base;
 
 import indi.uhyils.context.UserContext;
-import indi.uhyils.pojo.DO.UserDO;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.SpringUtil;
 import java.util.Objects;
@@ -33,12 +33,12 @@ public abstract class BaseIdDO implements BaseDbSaveable {
      * 插入之前执行方法，需要手动调用
      */
     @Override
-    public void preInsert(DefaultRequest request) {
+    public void preInsert(DefaultCQE request) {
         preInsert(request.getUser());
     }
 
     @Override
-    public void preInsert(UserDO userDO) {
+    public void preInsert(UserDTO userDO) {
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         id = bean.newId();
     }
@@ -52,12 +52,12 @@ public abstract class BaseIdDO implements BaseDbSaveable {
     }
 
     @Override
-    public void preUpdate(DefaultRequest request) {
+    public void preUpdate(DefaultCQE request) {
         // 只有id的修改前没有方法,但是也要执行
     }
 
     @Override
-    public void preUpdate(UserDO userDO) {
+    public void preUpdate(UserDTO userDO) {
     }
 
     @Override

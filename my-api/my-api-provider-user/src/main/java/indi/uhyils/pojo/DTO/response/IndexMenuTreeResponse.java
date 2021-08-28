@@ -1,8 +1,8 @@
 package indi.uhyils.pojo.DTO.response;
 
-import indi.uhyils.pojo.DTO.response.info.IndexMenuInfo;
 import indi.uhyils.pojo.DTO.response.info.MenuHomeInfo;
 import indi.uhyils.pojo.DTO.response.info.MenuLogoInfo;
+import indi.uhyils.pojo.DTO.response.info.MenuTreeDTO;
 import java.io.Serializable;
 import java.util.List;
 
@@ -18,8 +18,15 @@ public class IndexMenuTreeResponse implements Serializable {
 
     private MenuLogoInfo logoInfo;
 
-    private List<IndexMenuInfo> menuInfo;
+    private List<MenuTreeDTO> menuInfo;
 
+    public static IndexMenuTreeResponse build(MenuHomeInfo homeInfo, MenuLogoInfo logoInfo, List<MenuTreeDTO> menuInfo) {
+        IndexMenuTreeResponse build = new IndexMenuTreeResponse();
+        build.homeInfo = homeInfo;
+        build.logoInfo = logoInfo;
+        build.menuInfo = menuInfo;
+        return build;
+    }
 
     public MenuHomeInfo getHomeInfo() {
         return homeInfo;
@@ -37,11 +44,11 @@ public class IndexMenuTreeResponse implements Serializable {
         this.logoInfo = logoInfo;
     }
 
-    public List<IndexMenuInfo> getMenuInfo() {
+    public List<MenuTreeDTO> getMenuInfo() {
         return menuInfo;
     }
 
-    public void setMenuInfo(List<IndexMenuInfo> menuInfo) {
+    public void setMenuInfo(List<MenuTreeDTO> menuInfo) {
         this.menuInfo = menuInfo;
     }
 }

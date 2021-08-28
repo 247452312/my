@@ -35,7 +35,7 @@ public class ServiceTemporarilyDisabledAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)) || execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.protocol.rpc.base.DTOProvider.*(..))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.service..*.*(..)) || execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.protocol.rpc.base.DTOProvider.*(..))")
     public void serviceTemporarilyDisabledAspectPoint() {
     }
 

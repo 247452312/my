@@ -3,7 +3,7 @@ package indi.uhyils.redis.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.DTO.response.HotSpotResponse;
+import indi.uhyils.pojo.DTO.response.HotSpotDTO;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.rpc.annotation.RpcSpi;
@@ -41,7 +41,7 @@ public class RpcHotSpotExtension implements ConsumerResponseObjectExtension {
             try (Jedis jedis = bean.getJedis()) {
                 JSONObject jsonObject = JSON.parseObject(json);
                 Object data = jsonObject.get("data");
-                HotSpotResponse hotSpotResponse = JSON.parseObject(JSON.toJSONString(data), HotSpotResponse.class);
+                HotSpotDTO hotSpotResponse = JSON.parseObject(JSON.toJSONString(data), HotSpotDTO.class);
                 String key = hotSpotResponse.getKey();
                 String hkey = hotSpotResponse.getHkey();
                 byte[] hget = jedis.hget(key.getBytes(StandardCharsets.UTF_8), hkey.getBytes(StandardCharsets.UTF_8));

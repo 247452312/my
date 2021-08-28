@@ -13,7 +13,7 @@ public abstract class AbstractDoEntity<T extends BaseIdDO> extends AbstractEntit
     /**
      * 对应数据库DO
      */
-    protected T data;
+    protected final T data;
 
     protected AbstractDoEntity(T t) {
         super();
@@ -39,14 +39,6 @@ public abstract class AbstractDoEntity<T extends BaseIdDO> extends AbstractEntit
         return data;
     }
 
-    /**
-     * 判断是不是为用
-     *
-     * @return
-     */
-    public boolean isEmpty() {
-        return data == null;
-    }
 
     public void perUpdate() {
         data.preUpdate();

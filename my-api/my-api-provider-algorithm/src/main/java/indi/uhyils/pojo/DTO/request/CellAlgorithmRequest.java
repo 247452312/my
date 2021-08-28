@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月04日 17时15分
  */
-public class CellAlgorithmRequest extends DefaultRequest {
+public class CellAlgorithmRequest extends DefaultCQE {
 
     /**
      * 算法id

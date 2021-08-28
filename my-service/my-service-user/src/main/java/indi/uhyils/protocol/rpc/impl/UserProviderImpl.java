@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
@@ -10,8 +9,8 @@ import indi.uhyils.pojo.DTO.response.LoginResponse;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.protocol.rpc.UserProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
-import indi.uhyils.protocol.rpc.provider.UserProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.UserService;
@@ -63,12 +62,12 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
     }
 
     @Override
-    public ServiceResult<List<UserDO>> getUsers(DefaultCQE request) {
+    public ServiceResult<List<UserDTO>> getUsers(DefaultCQE request) {
         return service.getUsers(request);
     }
 
     @Override
-    public ServiceResult<UserDO> getUserByToken(DefaultCQE request) {
+    public ServiceResult<UserDTO> getUserByToken(DefaultCQE request) {
         return service.getUserByToken(request);
     }
 

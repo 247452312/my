@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DO.base;
 
-import indi.uhyils.pojo.DO.UserDO;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import java.io.Serializable;
 
 /**
@@ -17,14 +17,14 @@ public interface BaseDbSaveable extends Serializable {
      *
      * @param request 入参
      */
-    void preInsert(DefaultRequest request);
+    void preInsert(DefaultCQE request);
 
     /**
      * 插入前时使用的方法
      *
      * @param userDO 用户
      */
-    void preInsert(UserDO userDO);
+    void preInsert(UserDTO userDO);
 
     /**
      * 插入前时使用的方法(使用系统管理账号)
@@ -36,14 +36,14 @@ public interface BaseDbSaveable extends Serializable {
      *
      * @param request 请求
      */
-    void preUpdate(DefaultRequest request);
+    void preUpdate(DefaultCQE request);
 
     /**
      * 修改前时使用的方法
      *
      * @param userDO 用户
      */
-    void preUpdate(UserDO userDO);
+    void preUpdate(UserDTO userDO);
 
     /**
      * 修改前时使用的方法

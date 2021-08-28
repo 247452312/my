@@ -4,7 +4,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsResponse;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogResponse;
 import indi.uhyils.pojo.DTO.response.LastPlanResponse;
-import indi.uhyils.pojo.DTO.response.QuickStartResponse;
+import indi.uhyils.pojo.DTO.response.QuickStartDTO;
 import indi.uhyils.pojo.DTO.response.VersionInfoResponse;
 import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.welcome.AlgorithmStatisticsResponse;
@@ -42,7 +42,7 @@ public class DistributeProviderImpl implements DistributeProvider {
         welcomeResponse.setJvmDataStatisticsResponse(jvmDataStatisticsResponse.validationAndGet());
 
         /*快捷启动*/
-        ServiceResult<QuickStartResponse> quickStartResponse = menuService.getQuickStartResponse(request);
+        ServiceResult<QuickStartDTO> quickStartResponse = menuService.getQuickStartResponse(request);
         welcomeResponse.setQuickStartResponse(quickStartResponse.validationAndGet());
 
         /*jvm图表信息*/

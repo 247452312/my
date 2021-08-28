@@ -3,7 +3,7 @@ package indi.uhyils.redis;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.MyContext;
-import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.util.LogUtil;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class RedisPoolHandle {
      * @param token token
      * @param user  user
      */
-    public void addUser(String token, UserDO user) {
+    public void addUser(String token, UserDTO user) {
         Redisable jedis = redisPool.getJedis();
         try {
             String value = JSONObject.toJSONString(user);
@@ -85,14 +85,14 @@ public class RedisPoolHandle {
      *
      * @return user
      */
-    public UserDO getUser(String token) {
+    public UserDTO getUser(String token) {
         Redisable jedis = redisPool.getJedis();
         try {
             String userJson = jedis.get(token);
             if (StringUtils.isEmpty(userJson)) {
                 return null;
             }
-            UserDO userEntity = JSON.parseObject(userJson, UserDO.class);
+            UserDTO userEntity = JSON.parseObject(userJson, UserDTO.class);
             jedis.expire(token, 60 * MyContext.LOGIN_TIME_OUT_MIN);
             jedis.expire(userEntity.getId().toString(), 60 * MyContext.LOGIN_TIME_OUT_MIN);
             return userEntity;
@@ -162,7 +162,7 @@ public class RedisPoolHandle {
             if (StringUtils.isEmpty(userJson)) {
                 return Boolean.TRUE;
             }
-            UserDO userEntity = JSON.parseObject(userJson, UserDO.class);
+            UserDTO userEntity = JSON.parseObject(userJson, UserDTO.class);
             Long id = userEntity.getId();
             Long del = jedis.del(id.toString(), token);
             return del != 0;
@@ -301,28 +301,26 @@ public class RedisPoolHandle {
         }
         String methodName = className + "#" + declaredMethod.getName();
         return checkMethodDisable(className, methodName, readWriteType);
-
-
     }
 
     /**
      * 检查方法是否允许执行
      *
-     * @param className     目标class
-     * @param methodName    目标className+#+methodName
-     * @param readWriteType 方法的类型 1->读接口 2->写接口
+     * @param className      目标class
+     * @param methodFullName 目标className+#+methodFullName
+     * @param readWriteType  方法的类型 1->读接口 2->写接口
      *
      * @return 是否允许执行
      */
-    public Boolean checkMethodDisable(String className, String methodName, Integer readWriteType) {
-        Redisable jedis = redisPool.getJedis();
+    public Boolean checkMethodDisable(String className, String methodFullName, Integer readWriteType) {
 
-        try {
+        try (Redisable jedis = redisPool.getJedis()) {
             Boolean exists = jedis.exists(MyContext.SERVICE_USEABLE_SWITCH);
+            // 如果不存在这个hash串,则全部放行
             if (!exists) {
                 return Boolean.TRUE;
             }
-            String methodPower = jedis.hget(MyContext.SERVICE_USEABLE_SWITCH, methodName);
+            String methodPower = jedis.hget(MyContext.SERVICE_USEABLE_SWITCH, methodFullName);
             if (methodPower != null) {
                 //如果是0返回不禁用.如果不是0返回禁用
                 return 0 == Integer.parseInt(methodPower);
@@ -344,10 +342,9 @@ public class RedisPoolHandle {
                 }
                 return Boolean.TRUE;
             }
-        } finally {
-            jedis.close();
         }
     }
+
 
     public Boolean removeByKey(String key) {
         Redisable jedis = redisPool.getJedis();

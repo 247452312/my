@@ -1,11 +1,9 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.entity.AbstractEntity;
-import indi.uhyils.pojo.entity.User;
-import indi.uhyils.pojo.entity.type.Password;
-import indi.uhyils.pojo.entity.type.Token;
+import indi.uhyils.assembler.UserAssembler;
 import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.repository.UserRepository;
 
 
@@ -31,8 +29,8 @@ public class LoginStatus extends AbstractEntity {
         this.success = true;
     }
 
-    public LoginStatus(DefaultCQE request) {
-        this(new Token(request.getToken()), new User(request.getUser()));
+    public LoginStatus(DefaultCQE request, UserAssembler assembler) {
+        this(new Token(request.getToken()), assembler.toEntity(request.getUser()));
     }
 
     public LoginStatus() {
@@ -41,15 +39,15 @@ public class LoginStatus extends AbstractEntity {
 
     public void removeUserInRedis(UserRepository userRepository) {
         //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
-        Boolean haveUserId = userRepository.checkRedisContainUserId(user.toId());
+        Boolean haveUserId = userRepository.checkCacheUserId(user.toId());
 
         if (haveUserId != null && haveUserId) {
-            userRepository.removeUserInRedisById(user.toId());
+            userRepository.removeUserInCacheById(user.toId());
         }
     }
 
     public void addUserToRedis(UserRepository userRepository) {
-        userRepository.addUser(token, user);
+        userRepository.cacheUser(token, user);
     }
 
     public UserDO userValue() {
@@ -63,7 +61,7 @@ public class LoginStatus extends AbstractEntity {
     public Boolean logout(UserRepository userRepository) {
         boolean result = userRepository.removeUserByToken(token);
         if (result) {
-            result = userRepository.removeUserInRedisById(user.toId());
+            result = userRepository.removeUserInCacheById(user.toId());
         }
         return result;
     }

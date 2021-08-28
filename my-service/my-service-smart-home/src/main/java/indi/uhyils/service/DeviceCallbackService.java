@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.DeviceCallbackDTO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月26日 22时50分37秒
+ * @date 文件创建日期 2021年08月27日 08时21分17秒
  */
 public interface DeviceCallbackService extends BaseDoService<DeviceCallbackDTO> {
 

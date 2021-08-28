@@ -26,7 +26,7 @@ public class ExceptionAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..))))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.protocol..*.*(..))))")
     public void exceptionAspectPoint() {
     }
 
@@ -34,12 +34,11 @@ public class ExceptionAop {
     public Object exceptionAroundAspect(ProceedingJoinPoint pjp) throws Exception {
         try {
             return pjp.proceed();
+        } catch (AssertException e) {
+            return ServiceResult.buildFailedResult(e.getMessage());
         } catch (Throwable e) {
             LogUtil.error(this, e);
-            if (!(e instanceof AssertException)) {
-                return ServiceResult.buildErrorResult(e.getMessage());
-            }
-            return ServiceResult.buildFailedResult(e.getMessage());
+            return ServiceResult.buildErrorResult(e.getMessage());
         }
     }
 }

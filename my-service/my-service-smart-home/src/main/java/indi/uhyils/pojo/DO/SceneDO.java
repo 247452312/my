@@ -7,11 +7,11 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月26日 22时50分52秒
+ * @date 文件创建日期 2021年08月27日 08时21分28秒
  */
 public class SceneDO extends BaseDoDO {
 
-    private static final long serialVersionUID = 615421126543303820L;
+    private static final long serialVersionUID = -50383469531708028L;
 
 
     /**

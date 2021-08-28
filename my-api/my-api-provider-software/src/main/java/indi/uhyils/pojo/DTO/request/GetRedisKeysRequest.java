@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月14日 12时18分
  */
-public class GetRedisKeysRequest extends DefaultRequest {
+public class GetRedisKeysRequest extends DefaultCQE {
 
     /**
      * redis仓库名称

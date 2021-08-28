@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.cqe.query;
 
-import indi.uhyils.pojo.DTO.request.model.Arg;
+import indi.uhyils.pojo.cqe.Arg;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import java.util.List;
 
@@ -13,11 +13,14 @@ import java.util.List;
  */
 public abstract class AbstractQuery extends DefaultCQE implements BaseQuery {
 
-    private final List<Arg> args;
+    private List<Arg> args;
 
-    private final Order order;
+    private Order order;
 
-    private final Limit limit;
+    private Limit limit;
+
+    public AbstractQuery() {
+    }
 
     public AbstractQuery(List<Arg> args) {
         this(args, new Order(), new Limit());

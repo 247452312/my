@@ -92,7 +92,7 @@ public interface MyContext {
     /**
      * service包前缀
      */
-    String SERVICE_PACKAGE_PREFIX = "indi.uhyils.service.";
+    String SERVICE_PACKAGE_PREFIX = "indi.uhyils.protocol.rpc.";
 
     /*id生产规则*/
     /*时间start*/

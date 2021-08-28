@@ -10,7 +10,7 @@ import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
  * @version 1.0
  * @date 文件创建日期 2021年05月07日 08时49分
  */
-public class DefaultLinkRequest extends DefaultRequest {
+public class DefaultLinkRequest extends DefaultCQE {
 
     /**
      * url
