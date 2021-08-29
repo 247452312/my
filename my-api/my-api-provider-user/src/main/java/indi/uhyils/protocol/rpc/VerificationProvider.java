@@ -1,8 +1,8 @@
 package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.request.VerificationCommand;
-import indi.uhyils.pojo.DTO.response.VerificationGetResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.VerificationGetDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public interface VerificationProvider extends BaseProvider {
      *
      * @return 验证码与在redis中的key
      */
-    ServiceResult<VerificationGetResponse> getVerification(DefaultCQE request) throws IOException;
+    ServiceResult<VerificationGetDTO> getVerification(DefaultCQE request) throws IOException;
 
 
     /**

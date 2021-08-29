@@ -5,9 +5,9 @@ import indi.uhyils.pojo.DTO.request.GetByIFrameAndDeptsQuery;
 import indi.uhyils.pojo.DTO.request.PutDeptsToMenuCommand;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
-import indi.uhyils.pojo.DTO.response.IndexMenuTreeResponse;
-import indi.uhyils.pojo.DTO.response.MenuHtmlTreeResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.IndexMenuTreeDTO;
+import indi.uhyils.pojo.DTO.response.MenuHtmlTreeDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
@@ -29,7 +29,7 @@ public interface MenuProvider extends DTOProvider<MenuDTO> {
      *
      * @return 主页菜单 包括主页信息 logo信息 菜单信息
      */
-    ServiceResult<IndexMenuTreeResponse> getIndexMenu(DefaultCQE request);
+    ServiceResult<IndexMenuTreeDTO> getIndexMenu(DefaultCQE request);
 
 
     /**
@@ -48,7 +48,7 @@ public interface MenuProvider extends DTOProvider<MenuDTO> {
      *
      * @return 格式处理好菜单
      */
-    ServiceResult<MenuHtmlTreeResponse> getMenuTree(GetByIFrameAndDeptsQuery request);
+    ServiceResult<MenuHtmlTreeDTO> getMenuTree(GetByIFrameAndDeptsQuery request);
 
 
     /**

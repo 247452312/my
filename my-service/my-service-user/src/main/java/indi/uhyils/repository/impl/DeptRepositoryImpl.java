@@ -6,6 +6,7 @@ import indi.uhyils.dao.DeptDao;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DO.DeptMenuDO;
 import indi.uhyils.pojo.DO.DeptPowerDO;
+import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.cqe.Arg;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2021年08月24日 17时27分
  */
 @Repository
-public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao, DeptAssembler> implements DeptRepository {
+public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao, DeptDTO, DeptAssembler> implements DeptRepository {
 
 
     protected DeptRepositoryImpl(DeptAssembler assembler, DeptDao dao) {

@@ -4,6 +4,7 @@ import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ContentAssembler;
 import indi.uhyils.dao.ContentDao;
 import indi.uhyils.pojo.DO.ContentDO;
+import indi.uhyils.pojo.DTO.ContentDTO;
 import indi.uhyils.pojo.entity.Content;
 import indi.uhyils.repository.ContentRepository;
 import indi.uhyils.repository.base.AbstractRepository;
@@ -17,7 +18,7 @@ import indi.uhyils.repository.base.AbstractRepository;
  * @date 文件创建日期 2021年08月27日 08时32分18秒
  */
 @Repository
-public class ContentRepositoryImpl extends AbstractRepository<Content, ContentDO, ContentDao, ContentAssembler> implements ContentRepository {
+public class ContentRepositoryImpl extends AbstractRepository<Content, ContentDO, ContentDao, ContentDTO, ContentAssembler> implements ContentRepository {
 
     protected ContentRepositoryImpl(ContentAssembler convert, ContentDao dao) {
         super(convert, dao);

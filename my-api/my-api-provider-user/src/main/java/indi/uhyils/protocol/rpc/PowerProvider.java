@@ -3,7 +3,7 @@ package indi.uhyils.protocol.rpc;
 import indi.uhyils.pojo.DTO.PowerDTO;
 import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
 import indi.uhyils.pojo.DTO.request.GetMethodNameByInterfaceNameQuery;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.protocol.rpc.base.DTOProvider;

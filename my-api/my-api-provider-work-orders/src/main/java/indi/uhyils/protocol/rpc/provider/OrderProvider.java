@@ -1,18 +1,18 @@
 package indi.uhyils.protocol.rpc.provider;
 
-import indi.uhyils.pojo.DTO.request.AgreeRecallOrderRequest;
-import indi.uhyils.pojo.DTO.request.ApprovalOrderRequest;
-import indi.uhyils.pojo.DTO.request.CommitOrderRequest;
-import indi.uhyils.pojo.DTO.request.DealOrderNodeRequest;
-import indi.uhyils.pojo.DTO.request.FailOrderNodeRequest;
-import indi.uhyils.pojo.DTO.request.FrozenOrderRequest;
-import indi.uhyils.pojo.DTO.request.IncapacityFailOrderNodeRequest;
-import indi.uhyils.pojo.DTO.request.RecallOrderRequest;
-import indi.uhyils.pojo.DTO.request.RestartOrderRequest;
-import indi.uhyils.pojo.DTO.request.base.IdRequest;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.AgreeRecallOrderEvent;
+import indi.uhyils.pojo.DTO.request.ApprovalOrderEvent;
+import indi.uhyils.pojo.DTO.request.CommitOrderCommand;
+import indi.uhyils.pojo.DTO.request.DealOrderNodeCommand;
+import indi.uhyils.pojo.DTO.request.FailOrderNodeCommand;
+import indi.uhyils.pojo.DTO.request.FrozenOrderCommand;
+import indi.uhyils.pojo.DTO.request.IncapacityFailOrderNodeCommand;
+import indi.uhyils.pojo.DTO.request.RecallOrderCommand;
+import indi.uhyils.pojo.DTO.request.RestartOrderCommand;
 import indi.uhyils.pojo.DTO.response.DealOrderNodeResponse;
 import indi.uhyils.pojo.DTO.response.InitOrderResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 
 /**
@@ -30,7 +30,7 @@ public interface OrderProvider extends BaseProvider {
      *
      * @return 插入后的id
      */
-    ServiceResult<InitOrderResponse> initOrder(IdRequest request) throws Exception;
+    ServiceResult<InitOrderResponse> initOrder(IdCommand request) throws Exception;
 
     /**
      * 提交工单
@@ -39,7 +39,7 @@ public interface OrderProvider extends BaseProvider {
      *
      * @return 工单
      */
-    ServiceResult<Boolean> commitOrder(CommitOrderRequest request);
+    ServiceResult<Boolean> commitOrder(CommitOrderCommand request);
 
     /**
      * 撤回工单
@@ -48,7 +48,7 @@ public interface OrderProvider extends BaseProvider {
      *
      * @return 是否发送信息到审批人成功
      */
-    ServiceResult<Boolean> recallOrder(RecallOrderRequest request);
+    ServiceResult<Boolean> recallOrder(RecallOrderCommand request);
 
     /**
      * 同意撤回工单
@@ -57,7 +57,7 @@ public interface OrderProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> agreeRecallOrder(AgreeRecallOrderRequest request);
+    ServiceResult<Boolean> agreeRecallOrder(AgreeRecallOrderEvent request);
 
     /**
      * 冻结工单(审批人才能操作)
@@ -66,7 +66,7 @@ public interface OrderProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> frozenOrder(FrozenOrderRequest request);
+    ServiceResult<Boolean> frozenOrder(FrozenOrderCommand request);
 
     /**
      * 重启工单(对应冻结)
@@ -75,7 +75,7 @@ public interface OrderProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> restartOrder(RestartOrderRequest request);
+    ServiceResult<Boolean> restartOrder(RestartOrderCommand request);
 
     /**
      * 工单节点失败(主动将工单节点置为失败)(处理人员经过核实,客观上不能完成此操作,例:审批时客户填写不合格)
@@ -84,7 +84,7 @@ public interface OrderProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> failOrderNode(FailOrderNodeRequest request);
+    ServiceResult<Boolean> failOrderNode(FailOrderNodeCommand request);
 
 
     /**
@@ -94,7 +94,7 @@ public interface OrderProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) throws Exception;
+    ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeCommand request) throws Exception;
 
     /**
      * 工单节点(转交)失败(因处理人员无能力完成此节点,申请转交给其他人,则可以进行主动失败)
@@ -103,7 +103,7 @@ public interface OrderProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeRequest request) throws Exception;
+    ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeCommand request) throws Exception;
 
     /**
      * 审批工单
@@ -112,6 +112,6 @@ public interface OrderProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) throws Exception;
+    ServiceResult<Boolean> approvalOrder(ApprovalOrderEvent request) throws Exception;
 
 }

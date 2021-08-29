@@ -5,7 +5,7 @@ import indi.uhyils.pojo.DO.*;
 import indi.uhyils.pojo.DO.base.BaseIdDO;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.order.GetOneBaseOrderResponse;
 import indi.uhyils.pojo.DTO.response.order.OrderBaseNodeAboutResponse;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
@@ -50,7 +50,7 @@ public class OrderBaseInfoProvider extends BaseDefaultProvider<OrderBaseInfoDO> 
     }
 
     @Override
-    public ServiceResult<ArrayList<OrderBaseInfoDO>> getAllBaseOrderIdAndName(DefaultRequest request) {
+    public ServiceResult<ArrayList<OrderBaseInfoDO>> getAllBaseOrderIdAndName(DefaultCQE request) {
         ArrayList<OrderBaseInfoDO> result = dao.getAllBaseOrderIdAndName();
         return ServiceResult.buildSuccessResult(result);
     }

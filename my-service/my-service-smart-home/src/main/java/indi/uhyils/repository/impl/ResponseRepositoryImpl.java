@@ -1,10 +1,11 @@
 package indi.uhyils.repository.impl;
 
 import indi.uhyils.annotation.Repository;
-import indi.uhyils.repository.convert.ResponseConvert;
+import indi.uhyils.assembler.ResponseAssembler;
 import indi.uhyils.dao.ResponseDao;
-import indi.uhyils.pojo.entity.Response;
 import indi.uhyils.pojo.DO.ResponseDO;
+import indi.uhyils.pojo.DTO.ResponseDTO;
+import indi.uhyils.pojo.entity.Response;
 import indi.uhyils.repository.ResponseRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 
@@ -17,7 +18,7 @@ import indi.uhyils.repository.base.AbstractRepository;
  * @date 文件创建日期 2021年08月27日 08时21分25秒
  */
 @Repository
-public class ResponseRepositoryImpl extends AbstractRepository<Response, ResponseDO, ResponseDao> implements ResponseRepository {
+public class ResponseRepositoryImpl extends AbstractRepository<Response, ResponseDO, ResponseDao, ResponseDTO, ResponseAssembler> implements ResponseRepository {
 
     protected ResponseRepositoryImpl(ResponseAssembler convert, ResponseDao dao) {
         super(convert, dao);

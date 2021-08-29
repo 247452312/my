@@ -1,8 +1,8 @@
 package indi.uhyils.assembler;
 
 import indi.uhyils.pojo.DO.base.BaseDoDO;
-import indi.uhyils.pojo.DTO.BaseDbDTO;
-import indi.uhyils.pojo.DTO.response.base.Page;
+import indi.uhyils.pojo.DTO.IdDTO;
+import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.util.BeanUtil;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 文件创建日期 2021年08月26日 08时51分
  */
-public abstract class AbstractAssembler<DO extends BaseDoDO, ENTITY extends AbstractDoEntity<DO>, DTO extends BaseDbDTO> implements BaseAssembler<DO, ENTITY, DTO> {
+public abstract class AbstractAssembler<DO extends BaseDoDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO> implements BaseAssembler<DO, ENTITY, DTO> {
 
     @Override
     public DO toDo(ENTITY entity) {
@@ -23,17 +23,21 @@ public abstract class AbstractAssembler<DO extends BaseDoDO, ENTITY extends Abst
 
     @Override
     public DO toDo(DTO dto) {
-        return BeanUtil.copyProperties(dto, getDoClass());
+        Class<DO> doClass = getDoClass();
+        return BeanUtil.copyProperties(dto, doClass);
     }
 
     @Override
     public DTO toDTO(ENTITY entity) {
-        return BeanUtil.copyProperties(entity.toDo(), getDtoClass());
+        DO source = entity.toDo();
+        Class<DTO> dtoClass = getDtoClass();
+        return BeanUtil.copyProperties(source, dtoClass);
     }
 
     @Override
     public DTO toDTO(DO dO) {
-        return BeanUtil.copyProperties(dO, getDtoClass());
+        Class<DTO> dtoClass = getDtoClass();
+        return BeanUtil.copyProperties(dO, dtoClass);
     }
 
     @Override
@@ -48,6 +52,11 @@ public abstract class AbstractAssembler<DO extends BaseDoDO, ENTITY extends Abst
     @Override
     public List<DTO> listToDTO(List<ENTITY> noPage) {
         return noPage.stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ENTITY> listToEntity(List<DO> dos) {
+        return dos.stream().map(t -> toEntity(t)).collect(Collectors.toList());
     }
 
     @Override

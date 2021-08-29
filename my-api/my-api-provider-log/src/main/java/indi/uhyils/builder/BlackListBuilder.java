@@ -1,6 +1,7 @@
 package indi.uhyils.builder;
 
-import indi.uhyils.pojo.DO.BlackListDO;
+
+import indi.uhyils.pojo.DTO.BlackListDTO;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -15,8 +16,8 @@ public class BlackListBuilder {
      *
      * @return
      */
-    public static BlackListDO buildByIp(String ip) {
-        BlackListDO blackListEntity = new BlackListDO();
+    public static BlackListDTO buildByIp(String ip) {
+        BlackListDTO blackListEntity = new BlackListDTO();
         blackListEntity.setIp(ip);
         return blackListEntity;
     }

@@ -20,19 +20,24 @@ import org.springframework.util.CollectionUtils;
  */
 public final class BeanUtil {
 
-    private BeanUtil() {
-    }
     private static final Cache<String, BeanCopier> BEAN_COPIER_CACHE;
 
+    static {
+        BEAN_COPIER_CACHE = CacheBuilder.newBuilder().expireAfterAccess(1L, TimeUnit.HOURS).build();
+    }
+
+    private BeanUtil() {
+    }
+
     public static <T> T copyProperties(@Nonnull Object source, @Nonnull Class<T> target) {
-        T t = CommonUtils.newInstance(target);
+        T t = ReflactUtil.newInstance(target);
         copyProperties(source, t);
         return t;
     }
 
     public static <T> T copyProperties(@Nonnull Object source, @Nonnull T target) {
         BeanCopier copier = getBeanCopier(source.getClass(), target.getClass());
-        copier.copy(source, target, (Converter)null);
+        copier.copy(source, target, (Converter) null);
         return target;
     }
 
@@ -42,7 +47,7 @@ public final class BeanUtil {
         } else {
             Iterator var3 = sourceList.iterator();
 
-            while(var3.hasNext()) {
+            while (var3.hasNext()) {
                 Object obj = var3.next();
                 targetList.add(copyProperties(obj, targetType));
             }
@@ -63,7 +68,7 @@ public final class BeanUtil {
 
     private static BeanCopier getBeanCopier(Class<?> sourceClass, Class<?> targetClass) {
         String beanKey = generateKey(sourceClass, targetClass);
-        BeanCopier copier = (BeanCopier)BEAN_COPIER_CACHE.getIfPresent(beanKey);
+        BeanCopier copier = (BeanCopier) BEAN_COPIER_CACHE.getIfPresent(beanKey);
         if (Objects.isNull(copier)) {
             copier = BeanCopier.create(sourceClass, targetClass, false);
             BEAN_COPIER_CACHE.put(beanKey, copier);
@@ -74,12 +79,5 @@ public final class BeanUtil {
 
     private static String generateKey(Class<?> sourceClass, Class<?> targetClass) {
         return sourceClass.getName() + targetClass.getName();
-    }
-
-    private BeanUtils() {
-    }
-
-    static {
-        BEAN_COPIER_CACHE = CacheBuilder.newBuilder().expireAfterAccess(1L, TimeUnit.HOURS).build();
     }
 }

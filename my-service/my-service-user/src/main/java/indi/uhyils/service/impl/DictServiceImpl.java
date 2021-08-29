@@ -1,19 +1,21 @@
 package indi.uhyils.service.impl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.DictAssembler;
 import indi.uhyils.assembler.DictItemAssembler;
 import indi.uhyils.assembler.MenuAssembler;
+import indi.uhyils.enum_.CacheTypeEnum;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.DictDO;
 import indi.uhyils.pojo.DTO.DictDTO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.MenuDTO;
+import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetByCodeRequest;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
-import indi.uhyils.pojo.DTO.response.LastPlanResponse;
+import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
-import indi.uhyils.pojo.DTO.response.VersionInfoResponse;
-import indi.uhyils.pojo.DTO.response.base.Page;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.VersionInfoDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
@@ -44,6 +46,7 @@ import org.springframework.stereotype.Service;
  * @date 文件创建日期 2021年08月27日 08时32分38秒
  */
 @Service
+@ReadWriteMark(tables = {"sys_dict"}, cacheType = CacheTypeEnum.ALL_TYPE)
 public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, DictRepository, DictAssembler> implements DictService {
 
     /**
@@ -83,102 +86,114 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
     }
 
     @Override
-    public ServiceResult<Boolean> insertItem(AddCommand<DictItemDTO> request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
+    public Boolean insertItem(AddCommand<DictItemDTO> request) {
         DictItemDTO dto = request.getDto();
         DictItem dictItem = dictItemAssembler.toEntity(dto);
         dictItemRepository.save(dictItem);
-        return ServiceResult.buildSuccessResult("插入字典项成功", true);
+        return true;
     }
 
     @Override
-    public ServiceResult<List<DictItemDTO>> getItemByDictId(IdQuery request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
+    public List<DictItemDTO> getItemByDictId(IdQuery request) {
         DictId dictId = new DictId(request.getId());
         dictId.fillItem(dictItemRepository);
         List<DictItemDTO> collect = dictId.toItem().stream().map(dictItemAssembler::toDTO).collect(Collectors.toList());
-        return ServiceResult.buildSuccessResult("查询成功", collect);
+        return collect;
     }
 
     @Override
-    public ServiceResult<Boolean> updateItem(ChangeCommand<DictItemDTO> request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
+    public Boolean updateItem(ChangeCommand<DictItemDTO> request) {
         DictItemDTO dto = request.getDto();
         DictItem dict = dictItemAssembler.toEntity(dto);
         dictItemRepository.save(dict);
-        return ServiceResult.buildSuccessResult("修改成功", true);
+        return true;
     }
 
     @Override
-    public ServiceResult<Boolean> deleteItem(IdCommand request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
+    public Boolean deleteItem(IdCommand request) {
         DictItemId dictItemId = new DictItemId(request.getId());
         DictItem item = dictItemId.completion(dictItemRepository);
         dictItemRepository.remove(Collections.singletonList(item));
-        return ServiceResult.buildSuccessResult("删除成功", true);
+        return true;
     }
 
     @Override
-    public ServiceResult<Boolean> cleanDictItem(IdCommand request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
+    public Boolean cleanDictItem(IdCommand request) {
         DictId dictId = new DictId(request.getId());
         dictId.fillItem(dictItemRepository);
         dictId.cleanItem(dictItemRepository);
-        return ServiceResult.buildSuccessResult("清理成功", true);
+        return true;
     }
 
     @Override
-    public ServiceResult<DictItemDTO> getItemById(IdQuery request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
+    public DictItemDTO getItemById(IdQuery request) {
         DictItemId dictItemId = new DictItemId(request.getId());
         DictItem completion = dictItemId.completion(dictItemRepository);
-        return ServiceResult.buildSuccessResult("查询成功", dictItemAssembler.toDTO(completion));
+        return dictItemAssembler.toDTO(completion);
     }
 
     @Override
-    public ServiceResult<Page<DictItemDTO>> getByItemArgs(GetByItemArgsQuery request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
+    public Page<DictItemDTO> getByItemArgs(GetByItemArgsQuery request) {
         Page<DictItem> dictItemPage = dictItemRepository.find(request);
         Page<DictItemDTO> result = dictItemAssembler.toDTO(dictItemPage);
-        return ServiceResult.buildSuccessResult("查询成功", result);
+        return result;
     }
 
     @Override
-    public ServiceResult<VersionInfoResponse> getVersionInfoResponse(DefaultCQE request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
+    public VersionInfoDTO getVersionInfoResponse(DefaultCQE request) {
         DictItemCode dictItemCode = new DictItemCode(VERSION_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
-        VersionInfoResponse build = VersionInfoResponse.build(items);
-        return ServiceResult.buildSuccessResult("查询成功", build);
+        VersionInfoDTO build = VersionInfoDTO.build(items);
+        return build;
     }
 
     @Override
-    public ServiceResult<LastPlanResponse> getLastPlanResponse(DefaultCQE request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
+    public LastPlanDTO getLastPlanResponse(DefaultCQE request) {
         DictItemCode dictItemCode = new DictItemCode(VERSION_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
-        LastPlanResponse build = LastPlanResponse.build(items);
-        return ServiceResult.buildSuccessResult("查询成功", build);
+        LastPlanDTO build = LastPlanDTO.build(items);
+        return build;
     }
 
     @Override
-    public ServiceResult<List<String>> getAllMenuIcon(DefaultCQE request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
+    public List<String> getAllMenuIcon(DefaultCQE request) {
         DictItemCode dictItemCode = new DictItemCode(VERSION_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
         List<String> result = items.stream().map(DictItemDTO::getValue).collect(Collectors.toList());
-        return ServiceResult.buildSuccessResult("查询成功", result);
+        return result;
     }
 
     @Override
-    public ServiceResult<List<DictItemDTO>> getByCode(GetByCodeRequest request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"}, cacheType = CacheTypeEnum.ALL_TYPE)
+    public List<DictItemDTO> getByCode(GetByCodeRequest request) {
         DictItemCode dictItemCode = new DictItemCode(VERSION_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
-        return ServiceResult.buildSuccessResult("查询成功", items);
+        return items;
     }
 
     @Override
-    public ServiceResult<QuickStartDTO> getQuickStartResponse(DefaultCQE request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict", "sys_dict_item"})
+    public QuickStartDTO getQuickStartResponse(DefaultCQE request) {
         DictItemCode dictItemCode = new DictItemCode(VERSION_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
         List<MenuDTO> result = items.stream().map(t -> new MenuId(Long.valueOf(t.getValue()))).map(menuRepository::find).map(t -> menuAssembler.toDTO(t)).collect(Collectors.toList());
         result.stream().filter(t -> !t.getType()).map(MenuDTO::getName).forEach(t -> LogUtil.error("服务字典中快捷入口(" + t + ") 不是叶子结点"));
         QuickStartDTO build = QuickStartDTO.build(result);
-        return ServiceResult.buildSuccessResult("查询快捷入口成功", build);
+        return build;
     }
 }

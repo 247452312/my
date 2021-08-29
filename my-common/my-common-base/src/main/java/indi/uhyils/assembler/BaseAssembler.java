@@ -1,8 +1,8 @@
 package indi.uhyils.assembler;
 
 import indi.uhyils.pojo.DO.base.BaseDoDO;
-import indi.uhyils.pojo.DTO.BaseDbDTO;
-import indi.uhyils.pojo.DTO.response.base.Page;
+import indi.uhyils.pojo.DTO.IdDTO;
+import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月26日 08时41分
  */
-public interface BaseAssembler<DO extends BaseDoDO, ENTITY extends AbstractDoEntity<DO>, DTO extends BaseDbDTO> {
+public interface BaseAssembler<DO extends BaseDoDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO> {
 
     /**
      * entity转do
@@ -86,4 +86,13 @@ public interface BaseAssembler<DO extends BaseDoDO, ENTITY extends AbstractDoEnt
      * @return
      */
     List<DTO> listToDTO(List<ENTITY> noPage);
+
+    /**
+     * 列表转entity
+     *
+     * @param dos
+     *
+     * @return
+     */
+    List<ENTITY> listToEntity(List<DO> dos);
 }

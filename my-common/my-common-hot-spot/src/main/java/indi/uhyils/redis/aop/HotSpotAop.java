@@ -6,10 +6,10 @@ import indi.uhyils.context.HotSpotContext;
 import indi.uhyils.enum_.CacheTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.DO.UserDO;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.response.HotSpotDTO;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.HotSpotDTO;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.util.LogUtil;
@@ -81,10 +81,7 @@ public class HotSpotAop {
     /**
      * 注解的ThreadLocal
      */
-    private ThreadLocal<CacheTypeEnum> markThreadLocal = new ThreadLocal<>();
-
-    @Autowired
-    private RedisPoolHandle redisPoolHandle;
+    private final ThreadLocal<CacheTypeEnum> markThreadLocal = new ThreadLocal<>();
 
     @Autowired
     private HotSpotRedisPool hotSpotRedisPool;
@@ -98,7 +95,7 @@ public class HotSpotAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)) || execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.protocol.rpc.base.DTOProvider.*(..))")
+    @Pointcut("execution(public * indi.uhyils.service.impl.*.*(..))")
     public void hotSpotAspectPoint() {
     }
 
@@ -181,8 +178,8 @@ public class HotSpotAop {
             //此处说明类上,接口上都没有此接口的信息,那么就正常执行,什么都不发生
             return pjp.proceed();
         } else {
-            DefaultRequest arg = (DefaultRequest) pjp.getArgs()[0];
-            UserDO user = arg.getUser();
+            DefaultCQE arg = (DefaultCQE) pjp.getArgs()[0];
+            UserDTO user = arg.getUser();
             switch (mark) {
                 //此处是读接口应该做的方法
                 case READ:
@@ -219,7 +216,7 @@ public class HotSpotAop {
     /**
      * 读接口应该做的方法
      */
-    private Object doHotSpotRead(List<String> tables, String className, String methodName, CacheTypeEnum cacheType, UserDO user, ProceedingJoinPoint pjp) throws Throwable {
+    private Object doHotSpotRead(List<String> tables, String className, String methodName, CacheTypeEnum cacheType, UserDTO user, ProceedingJoinPoint pjp) throws Throwable {
         //如果此接口不允许缓存
         if (CacheTypeEnum.NOT_TYPE.equals(cacheType)) {
             return pjp.proceed();
@@ -229,7 +226,7 @@ public class HotSpotAop {
         Class<?> aClass = arg.getClass();
         String simpleName = aClass.getSimpleName();
         String format;
-        if (!DefaultRequest.class.getSimpleName().equals(simpleName)) {
+        if (!DefaultCQE.class.getSimpleName().equals(simpleName)) {
 
             // Arrays.asList()不能add和addAll所以要new ArrayList()
             List<Field> fields = new ArrayList<>(Arrays.asList(aClass.getDeclaredFields()));
@@ -253,8 +250,7 @@ public class HotSpotAop {
             format = String.format(HotSpotContext.HOTSPOT_HASH_KEY_ROLE, className, methodName, "none");
         }
 
-        Jedis jedis = hotSpotRedisPool.getJedis();
-        try {
+        try (Jedis jedis = hotSpotRedisPool.getJedis()) {
             List<String> keys = new ArrayList<>();
             keys.add(format);
             //此处返回true为未更新,表示可以取缓存
@@ -287,8 +283,6 @@ public class HotSpotAop {
 
             ServiceResult<HotSpotDTO> hotSpotResponse = ServiceResult.buildHotSpotHaveResult(format, HotSpotContext.HOTSPOT_HASH_DATA_KEY);
             return hotSpotResponse;
-        } finally {
-            jedis.close();
         }
 
     }

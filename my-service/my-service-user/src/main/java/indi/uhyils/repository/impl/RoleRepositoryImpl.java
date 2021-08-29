@@ -5,6 +5,7 @@ import indi.uhyils.assembler.RoleAssembler;
 import indi.uhyils.dao.RoleDao;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.RoleDeptDO;
+import indi.uhyils.pojo.DTO.RoleDTO;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
 import indi.uhyils.pojo.entity.DeptId;
 import indi.uhyils.pojo.entity.Role;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2021年08月24日 17时27分
  */
 @Repository
-public class RoleRepositoryImpl extends AbstractRepository<Role, RoleDO, RoleDao, RoleAssembler> implements RoleRepository {
+public class RoleRepositoryImpl extends AbstractRepository<Role, RoleDO, RoleDao, RoleDTO, RoleAssembler> implements RoleRepository {
 
 
     protected RoleRepositoryImpl(RoleAssembler assembler, RoleDao dao) {

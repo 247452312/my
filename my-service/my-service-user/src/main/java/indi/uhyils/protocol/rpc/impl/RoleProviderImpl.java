@@ -1,13 +1,11 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.annotation.NoToken;
-import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.RoleDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.PutDeptsToRoleCommand;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.IdsCommand;
@@ -25,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2020年05月27日 16时27分
  */
 @RpcService
-@ReadWriteMark(tables = {"sys_role"})
 public class RoleProviderImpl extends BaseDefaultProvider<RoleDTO> implements RoleProvider {
 
 
@@ -36,42 +33,44 @@ public class RoleProviderImpl extends BaseDefaultProvider<RoleDTO> implements Ro
     @Override
     @NoToken
     public ServiceResult<RoleDTO> getRoleByRoleId(IdQuery request) {
-        return service.getRoleByRoleId(request);
+        RoleDTO result = service.getRoleByRoleId(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept", "sys_role_dept"})
     public ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleCommand request) throws Exception {
-        return service.putDeptsToRole(request);
+        Boolean result = service.putDeptsToRole(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept"})
     public ServiceResult<Boolean> deleteRoleDept(IdsCommand idsRequest) {
-        return service.deleteRoleDept(idsRequest);
+        Boolean result = service.deleteRoleDept(idsRequest);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<List<RoleDTO>> getRoles(DefaultCQE request) {
-        return service.getRoles(request);
+        List<RoleDTO> result = service.getRoles(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dept", "sys_role_dept"})
     public ServiceResult<List<DeptDTO>> getUserDeptsByRoleId(IdQuery request) {
-        return service.getUserDeptsByRoleId(request);
+        List<DeptDTO> result = service.getUserDeptsByRoleId(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_role_dept", "sys_dept"})
     public ServiceResult<List<GetAllDeptWithHaveMarkDTO>> getAllDeptWithHaveMark(IdQuery request) {
-        return service.getAllDeptWithHaveMark(request);
+        List<GetAllDeptWithHaveMarkDTO> result = service.getAllDeptWithHaveMark(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept", "sys_user"})
     public ServiceResult<Boolean> deleteRole(IdCommand request) {
-        return service.deleteRole(request);
+        Boolean result = service.deleteRole(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override

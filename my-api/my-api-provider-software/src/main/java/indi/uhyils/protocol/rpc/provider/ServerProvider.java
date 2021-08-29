@@ -5,7 +5,7 @@ import indi.uhyils.pojo.DTO.request.GetNameByIdRequest;
 import indi.uhyils.pojo.DTO.request.TestConnByDataRequest;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ public interface ServerProvider extends DTOProvider<ServerDO> {
      *
      * @return 所有服务器信息
      */
-    ServiceResult<ArrayList<ServerDO>> getServersIdAndName(DefaultRequest request);
+    ServiceResult<ArrayList<ServerDO>> getServersIdAndName(DefaultCQE request);
 
 
     /**

@@ -8,7 +8,8 @@ import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
 import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpRequest;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.redis.OffLineJedis;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
@@ -124,7 +125,7 @@ public class IpSpiderTableAspect {
                 if (Boolean.FALSE.equals(init) || Boolean.TRUE.equals(canInit)) {
                     try {
                         // 去后台获取数据库中的ip黑名单
-                        DefaultRequest request = DefaultRequestBuildUtil.getAdminDefaultRequest();
+                        DefaultCQE request = DefaultRequestBuildUtil.getAdminDefaultRequest();
                         ServiceResult<ArrayList<String>> allIpBlackList = blackListService.getAllIpBlackList(request);
                         // 如果log服务挂了
                         if (allIpBlackList == null || !allIpBlackList.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {

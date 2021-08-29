@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DTO.request.RegisterProviderRequest;
 import indi.uhyils.pojo.DTO.request.RegisterPublishRequest;
 import indi.uhyils.pojo.DTO.request.RegisterSubscriberReqeust;
 import indi.uhyils.pojo.DTO.request.SendMessageRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 
 /**

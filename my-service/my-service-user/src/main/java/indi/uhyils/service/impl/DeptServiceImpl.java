@@ -1,12 +1,13 @@
 package indi.uhyils.service.impl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.DeptAssembler;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.request.PutMenusToDeptsCommand;
 import indi.uhyils.pojo.DTO.request.PutPowersToDeptCommand;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.IdsCommand;
@@ -19,6 +20,9 @@ import indi.uhyils.service.DeptService;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 部门(Dept)表 内部服务实现类
@@ -28,6 +32,7 @@ import org.springframework.stereotype.Service;
  * @date 文件创建日期 2021年08月27日 08时32分23秒
  */
 @Service
+@ReadWriteMark(tables = {"sys_dept"})
 public class DeptServiceImpl extends AbstractDoService<DeptDO, Dept, DeptDTO, DeptRepository, DeptAssembler> implements DeptService {
 
 
@@ -36,48 +41,52 @@ public class DeptServiceImpl extends AbstractDoService<DeptDO, Dept, DeptDTO, De
     }
 
     @Override
-    public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptCommand request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
+    public Boolean putPowersToDept(PutPowersToDeptCommand request) {
         DeptId deptId = new DeptId(request.getDeptId());
         // 清空之前这个部门的权限
         deptId.cleanPower(rep);
         deptId.addPower(request.getPowerIds(), rep);
-        return ServiceResult.buildSuccessResult("权限集添加权限成功", Boolean.TRUE);
+        return true;
     }
 
     @Override
-    public ServiceResult<Boolean> deleteDeptPower(IdsCommand request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
+    public Boolean deleteDeptPower(IdsCommand request) {
         rep.deleteDeptPower(request.getIds());
-        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE);
+        return true;
     }
 
     @Override
-    public ServiceResult<Boolean> putMenusToDept(PutMenusToDeptsCommand request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
+    public Boolean putMenusToDept(PutMenusToDeptsCommand request) {
         DeptId deptId = new DeptId(request.getDeptId());
         // 清空之前这个部门的按钮
         deptId.cleanMenu(rep);
         deptId.addMenu(request.getMenuIds(), rep);
-        return ServiceResult.buildSuccessResult("赋权成功", Boolean.TRUE);
+        return true;
     }
 
     @Override
-    public ServiceResult<List<DeptDTO>> getDepts(DefaultCQE request) {
+    public List<DeptDTO> getDepts(DefaultCQE request) {
         List<Dept> depts = rep.findAll();
-        List<DeptDTO> deptDTOS = depts.stream().map(assem::toDTO).collect(Collectors.toList());
-        return ServiceResult.buildSuccessResult("获取成功", deptDTOS);
+        return depts.stream().map(assem::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    public ServiceResult<List<GetAllPowerWithHaveMarkDTO>> getAllPowerWithHaveMark(IdQuery request) {
-        List<GetAllPowerWithHaveMarkDTO> list = rep.getAllPowerWithHaveMark(new DeptId(request.getId()));
-        return ServiceResult.buildSuccessResult("查询权限(包含羁绊)成功", list);
+    @ReadWriteMark(tables = {"sys_dept_power", "sys_power"})
+    public List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(IdQuery request) {
+        return rep.getAllPowerWithHaveMark(new DeptId(request.getId()));
     }
 
     @Override
-    public ServiceResult<Boolean> deleteDept(IdCommand request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept", "sys_dept_power", "sys_dept_menu", "sys_role_dept"})
+    public Boolean deleteDept(IdCommand request) {
         Dept dept = rep.find(new Identifier(request.getId()));
         dept.removeMenuLink(rep);
         dept.removePowerLink(rep);
         dept.removeRoleLink(rep);
-        return ServiceResult.buildSuccessResult("删除成功", Boolean.TRUE);
+        return true;
     }
 }

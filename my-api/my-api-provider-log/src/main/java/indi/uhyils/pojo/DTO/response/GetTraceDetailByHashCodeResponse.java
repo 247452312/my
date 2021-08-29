@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.response;
 
-import indi.uhyils.pojo.DO.TraceDetailDO;
+import indi.uhyils.pojo.DTO.TraceDetailDTO;
 import java.io.Serializable;
 
 
@@ -14,19 +14,19 @@ public class GetTraceDetailByHashCodeResponse implements Serializable {
     /**
      * trace
      */
-    private TraceDetailDO traceDetailEntity;
+    private TraceDetailDTO traceDetailEntity;
 
-    public static GetTraceDetailByHashCodeResponse build(TraceDetailDO traceDetailEntity) {
+    public static GetTraceDetailByHashCodeResponse build(TraceDetailDTO traceDetailEntity) {
         GetTraceDetailByHashCodeResponse build = new GetTraceDetailByHashCodeResponse();
         build.traceDetailEntity = traceDetailEntity;
         return build;
     }
 
-    public TraceDetailDO getTraceDetailEntity() {
+    public TraceDetailDTO getTraceDetailEntity() {
         return traceDetailEntity;
     }
 
-    public void setTraceDetailEntity(TraceDetailDO traceDetailEntity) {
+    public void setTraceDetailEntity(TraceDetailDTO traceDetailEntity) {
         this.traceDetailEntity = traceDetailEntity;
     }
 }

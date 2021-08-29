@@ -4,6 +4,7 @@ import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.PowerAssembler;
 import indi.uhyils.dao.PowerDao;
 import indi.uhyils.pojo.DO.PowerDO;
+import indi.uhyils.pojo.DTO.PowerDTO;
 import indi.uhyils.pojo.cqe.Arg;
 import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.PowerId;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2021年08月24日 17时27分
  */
 @Repository
-public class PowerRepositoryImpl extends AbstractRepository<Power, PowerDO, PowerDao, PowerAssembler> implements PowerRepository {
+public class PowerRepositoryImpl extends AbstractRepository<Power, PowerDO, PowerDao, PowerDTO, PowerAssembler> implements PowerRepository {
 
 
     protected PowerRepositoryImpl(PowerAssembler assembler, PowerDao dao) {

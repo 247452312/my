@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.pojo.DO.base.BaseDoDO;
 import indi.uhyils.pojo.DO.base.BaseIdDO;
 import indi.uhyils.pojo.entity.type.Identifier;
 
@@ -8,7 +9,7 @@ import indi.uhyils.pojo.entity.type.Identifier;
  * @version 1.0
  * @date 文件创建日期 2021年08月24日 17时59分
  */
-public abstract class AbstractDoEntity<T extends BaseIdDO> extends AbstractEntity {
+public abstract class AbstractDoEntity<T extends BaseDoDO> extends AbstractEntity {
 
     /**
      * 对应数据库DO

@@ -1,7 +1,8 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.pojo.DO.DictItemDO;
+import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
-import indi.uhyils.pojo.DTO.response.base.Page;
 import indi.uhyils.pojo.entity.DictId;
 import indi.uhyils.pojo.entity.DictItem;
 import indi.uhyils.pojo.entity.DictItemCode;
@@ -15,7 +16,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月27日 08时32分42秒
  */
-public interface DictItemRepository extends BaseEntityRepository<DictItem> {
+public interface DictItemRepository extends BaseEntityRepository<DictItemDO, DictItem> {
 
 
     /**

@@ -1,8 +1,8 @@
 package indi.uhyils.protocol.rpc.base;
 
 import indi.uhyils.pojo.DTO.BaseDbDTO;
-import indi.uhyils.pojo.DTO.response.base.Page;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;

@@ -5,7 +5,6 @@ import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.request.PutMenusToDeptsCommand;
 import indi.uhyils.pojo.DTO.request.PutPowersToDeptCommand;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.IdsCommand;
@@ -29,7 +28,7 @@ public interface DeptService extends BaseDoService<DeptDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> putPowersToDept(PutPowersToDeptCommand request) throws Exception;
+    Boolean putPowersToDept(PutPowersToDeptCommand request) throws Exception;
 
     /**
      * 删除 -> 真删. 不是假删
@@ -39,7 +38,7 @@ public interface DeptService extends BaseDoService<DeptDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> deleteDeptPower(IdsCommand idsRequest);
+    Boolean deleteDeptPower(IdsCommand idsRequest);
 
 
     /**
@@ -49,7 +48,7 @@ public interface DeptService extends BaseDoService<DeptDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> putMenusToDept(PutMenusToDeptsCommand request);
+    Boolean putMenusToDept(PutMenusToDeptsCommand request);
 
     /**
      * 获取全部权限集
@@ -58,7 +57,7 @@ public interface DeptService extends BaseDoService<DeptDTO> {
      *
      * @return 权限集
      */
-    ServiceResult<List<DeptDTO>> getDepts(DefaultCQE request);
+    List<DeptDTO> getDepts(DefaultCQE request);
 
     /**
      * 获取所有
@@ -67,7 +66,7 @@ public interface DeptService extends BaseDoService<DeptDTO> {
      *
      * @return
      */
-    ServiceResult<List<GetAllPowerWithHaveMarkDTO>> getAllPowerWithHaveMark(IdQuery request);
+    List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(IdQuery request);
 
 
     /**
@@ -77,5 +76,5 @@ public interface DeptService extends BaseDoService<DeptDTO> {
      *
      * @return 删除是否成功
      */
-    ServiceResult<Boolean> deleteDept(IdCommand request);
+    Boolean deleteDept(IdCommand request);
 }

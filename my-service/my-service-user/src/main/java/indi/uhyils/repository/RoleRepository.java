@@ -1,5 +1,6 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
 import indi.uhyils.pojo.entity.DeptId;
 import indi.uhyils.pojo.entity.Role;
@@ -15,7 +16,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月24日 17时46分
  */
-public interface RoleRepository extends BaseEntityRepository<Role> {
+public interface RoleRepository extends BaseEntityRepository<RoleDO, Role> {
 
     /**
      * 情况指定角色与部门的联系
@@ -57,6 +58,7 @@ public interface RoleRepository extends BaseEntityRepository<Role> {
 
     /**
      * 根据角色id获取
+     *
      * @param roleId
      *
      * @return

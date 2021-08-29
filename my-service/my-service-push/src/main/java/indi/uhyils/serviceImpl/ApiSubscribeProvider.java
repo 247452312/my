@@ -5,7 +5,7 @@ import indi.uhyils.dao.ApiSubscribeDao;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.ApiSubscribeDO;
 import indi.uhyils.pojo.DTO.request.SubscribeRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import javax.annotation.Resource;

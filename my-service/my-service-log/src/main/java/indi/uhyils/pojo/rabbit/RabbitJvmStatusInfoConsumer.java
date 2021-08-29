@@ -5,7 +5,7 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import indi.uhyils.dao.MonitorDao;
+import indi.uhyils.dao.LogMonitorDao;
 import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
@@ -25,7 +25,7 @@ public class RabbitJvmStatusInfoConsumer extends DefaultConsumer {
 
     private MonitorJvmStatusDetailDao monitorJvmStatusDetailDao;
 
-    private MonitorDao monitorDao;
+    private LogMonitorDao monitorDao;
 
     /**
      * Constructs a new instance and records its association to the passed-in channel.
@@ -36,7 +36,7 @@ public class RabbitJvmStatusInfoConsumer extends DefaultConsumer {
     public RabbitJvmStatusInfoConsumer(Channel channel, ApplicationContext applicationContext) {
         super(channel);
         monitorJvmStatusDetailDao = applicationContext.getBean(MonitorJvmStatusDetailDao.class);
-        monitorDao = applicationContext.getBean(MonitorDao.class);
+        monitorDao = applicationContext.getBean(LogMonitorDao.class);
     }
 
     @Override

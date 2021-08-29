@@ -3,7 +3,7 @@ package indi.uhyils.serviceImpl;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.pojo.DTO.request.ExecuteCodeRequest;
 import indi.uhyils.pojo.DTO.response.ExecuteCodeResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.protocol.rpc.provider.ParsingCodeProvider;
 import indi.uhyils.util.ExceptionUtil;

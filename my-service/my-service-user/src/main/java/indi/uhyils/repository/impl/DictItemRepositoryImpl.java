@@ -4,9 +4,10 @@ import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.DictItemAssembler;
 import indi.uhyils.dao.DictItemDao;
 import indi.uhyils.pojo.DO.DictItemDO;
+import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
+import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.Arg;
-import indi.uhyils.pojo.DTO.response.base.Page;
 import indi.uhyils.pojo.entity.DictId;
 import indi.uhyils.pojo.entity.DictItem;
 import indi.uhyils.pojo.entity.DictItemCode;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2021年08月27日 08时32分42秒
  */
 @Repository
-public class DictItemRepositoryImpl extends AbstractRepository<DictItem, DictItemDO, DictItemDao, DictItemAssembler> implements DictItemRepository {
+public class DictItemRepositoryImpl extends AbstractRepository<DictItem, DictItemDO, DictItemDao, DictItemDTO, DictItemAssembler> implements DictItemRepository {
 
     protected DictItemRepositoryImpl(DictItemAssembler convert, DictItemDao dao) {
         super(convert, dao);

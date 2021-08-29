@@ -5,7 +5,7 @@ import indi.uhyils.enum_.TopicType;
 import indi.uhyils.exception.UserException;
 import indi.uhyils.pojo.DTO.request.GetMessageRequest;
 import indi.uhyils.pojo.DTO.request.SendMessageRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.provider.MqProvider;
 import org.junit.Assert;
 import org.junit.Before;

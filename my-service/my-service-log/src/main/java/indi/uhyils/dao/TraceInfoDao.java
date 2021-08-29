@@ -3,9 +3,8 @@ package indi.uhyils.dao;
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
 import indi.uhyils.pojo.DO.TraceInfoDO;
-import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdRequest;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultPageQuery;
+import indi.uhyils.pojo.cqe.query.Query;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -51,7 +50,7 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoDO> {
      *
      * @return
      */
-    List<TraceDetailStatisticsView> getTraceStatistics(DefaultPageQuery request);
+    List<TraceDetailStatisticsView> getTraceStatistics(Query request);
 
     /**
      * 获取统计信息的数量
@@ -60,16 +59,17 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoDO> {
      *
      * @return
      */
-    Integer getTraceStatisticsCount(DefaultPageQuery request);
+    Integer getTraceStatisticsCount(Query request);
 
     /**
      * 根据traceId 和 rpcId 获取详情
      *
-     * @param request
+     * @param traceId
+     * @param rpcId
      *
      * @return
      */
-    List<TraceInfoDO> getLinkByTraceIdAndRpcIdPrefix(GetLinkByTraceIdAndRpcIdRequest request);
+    List<TraceInfoDO> getLinkByTraceIdAndRpcIdPrefix(@Param("traceId") Long traceId, @Param("rpcId") String rpcId);
 
     /**
      * 根据traceId 获取整个链路

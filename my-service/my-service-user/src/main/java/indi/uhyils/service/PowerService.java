@@ -2,11 +2,10 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.PowerDTO;
-import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
 import indi.uhyils.pojo.DTO.request.GetMethodNameByInterfaceNameQuery;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
+import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
 import java.util.List;
 
 /**
@@ -25,7 +24,7 @@ public interface PowerService extends BaseDoService<PowerDTO> {
      *
      * @return 所有权限
      */
-    ServiceResult<List<PowerDTO>> getPowers(DefaultCQE request);
+    List<PowerDTO> getPowers(DefaultCQE request);
 
     /**
      * 检查用户是否存在此权限
@@ -34,7 +33,7 @@ public interface PowerService extends BaseDoService<PowerDTO> {
      *
      * @return 是否存在
      */
-    ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerQuery request);
+    Boolean checkUserHavePower(CheckUserHavePowerQuery request);
 
     /**
      * 删除权限->包括连接表
@@ -43,7 +42,7 @@ public interface PowerService extends BaseDoService<PowerDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> deletePower(IdCommand request);
+    Boolean deletePower(IdCommand request);
 
 
     /**
@@ -53,7 +52,7 @@ public interface PowerService extends BaseDoService<PowerDTO> {
      *
      * @return 所有interfaceName
      */
-    ServiceResult<List<String>> getInterfaces(DefaultCQE request);
+    List<String> getInterfaces(DefaultCQE request);
 
 
     /**
@@ -63,7 +62,7 @@ public interface PowerService extends BaseDoService<PowerDTO> {
      *
      * @return 对应方法
      */
-    ServiceResult<List<String>> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameQuery request);
+    List<String> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameQuery request);
 
 
     /**
@@ -73,5 +72,5 @@ public interface PowerService extends BaseDoService<PowerDTO> {
      *
      * @return 添加的权限
      */
-    ServiceResult<Integer> initPowerInProStart(DefaultCQE request) throws Exception;
+    Integer initPowerInProStart(DefaultCQE request);
 }

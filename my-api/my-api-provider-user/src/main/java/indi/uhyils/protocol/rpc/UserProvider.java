@@ -4,8 +4,8 @@ import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
-import indi.uhyils.pojo.DTO.response.LoginResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.LoginDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
@@ -65,7 +65,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return 登录所需要的信息
      */
-    ServiceResult<LoginResponse> login(LoginCommand request);
+    ServiceResult<LoginDTO> login(LoginCommand request);
 
     /**
      * 登出(删除redis中的用户)

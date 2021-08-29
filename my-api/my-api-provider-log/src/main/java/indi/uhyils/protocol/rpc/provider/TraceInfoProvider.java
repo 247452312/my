@@ -1,24 +1,24 @@
 package indi.uhyils.protocol.rpc.provider;
 
-import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
-import indi.uhyils.pojo.DO.TraceInfoDO;
-import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdRequest;
+import indi.uhyils.pojo.DTO.TraceDetailStatisticsDTO;
+import indi.uhyils.pojo.DTO.TraceInfoDTO;
+import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultPageQuery;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.request.base.LongRequest;
-import indi.uhyils.pojo.DTO.response.GetLinkByTraceIdAndRpcIdResponse;
+import indi.uhyils.pojo.DTO.response.TraceInfosDTO;
 import indi.uhyils.pojo.DTO.response.GetLogTypeResponse;
-import indi.uhyils.pojo.DTO.response.base.Page;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.query.BaseQuery;
+import indi.uhyils.pojo.cqe.query.TraceIdQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年07月31日 06时43分
  */
-public interface TraceInfoProvider extends DTOProvider<TraceInfoDO> {
+public interface TraceInfoProvider extends DTOProvider<TraceInfoDTO> {
 
 
     /**
@@ -28,7 +28,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDO> {
      *
      * @return
      */
-    ServiceResult<GetLinkByTraceIdAndRpcIdResponse> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdRequest request);
+    ServiceResult<TraceInfosDTO> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request);
 
     /**
      * 根据traceId获取这一串
@@ -37,7 +37,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDO> {
      *
      * @return
      */
-    ServiceResult<ArrayList<TraceInfoDO>> getLinkByTraceId(LongRequest request);
+    ServiceResult<List<TraceInfoDTO>> getLinkByTraceId(TraceIdQuery request);
 
 
     /**
@@ -47,7 +47,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDO> {
      *
      * @return
      */
-    ServiceResult<Page<TraceInfoDO>> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
+    ServiceResult<Page<TraceInfoDTO>> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
 
     /**
      * 获取日志归档信息
@@ -56,7 +56,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDO> {
      *
      * @return
      */
-    ServiceResult<Page<TraceDetailStatisticsView>> getTraceStatistics(DefaultPageQuery request);
+    ServiceResult<Page<TraceDetailStatisticsDTO>> getTraceStatistics(BaseQuery request);
 
     /**
      * 获取日志类型
@@ -65,6 +65,6 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDO> {
      *
      * @return
      */
-    ServiceResult<ArrayList<GetLogTypeResponse>> getLogType(DefaultRequest request);
+    ServiceResult<List<GetLogTypeResponse>> getLogType(DefaultCQE request);
 
 }

@@ -5,6 +5,6 @@ package indi.uhyils.pojo.DTO;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 20时39分
  */
-public class BaseDbDTO implements BaseDTO {
+public abstract class BaseDbDTO implements BaseDTO {
 
 }

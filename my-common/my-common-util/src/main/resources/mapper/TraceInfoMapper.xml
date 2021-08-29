@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.TraceInfoDao">
+    <resultMap type="indi.uhyils.pojo.DO.TraceInfoDO" id="TraceInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="loggerName" column="logger_name" jdbcType="VARCHAR"/>
+        <result property="level" column="level" jdbcType="VARCHAR"/>
+        <result property="traceId" column="trace_id" jdbcType="INTEGER"/>
+        <result property="startTime" column="start_time" jdbcType="INTEGER"/>
+        <result property="logType" column="log_type" jdbcType="INTEGER"/>
+        <result property="ip" column="ip" jdbcType="VARCHAR"/>
+        <result property="rpcId" column="rpc_id" jdbcType="VARCHAR"/>
+        <result property="threadName" column="thread_name" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" jdbcType="VARCHAR"/>
+        <result property="useTime" column="use_time" jdbcType="INTEGER"/>
+        <result property="hashCode" column="hash_code" jdbcType="VARCHAR"/>
+        <result property="other" column="other" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="INTEGER"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="getById" resultMap="TraceInfoMap">
+        select
+        id, logger_name, level, trace_id, start_time, log_type, ip, rpc_id, thread_name, project_name, use_time,
+        hash_code, other, create_date, create_user, delete_flag, remark, update_date, update_user
+        from sys_trace_info
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <!--根据某些字段获取实例(不分页)-->
+    <select id="getByArgsNoPage" resultMap="TraceInfoMap">
+        select
+        id, logger_name, level, trace_id, start_time, log_type, ip, rpc_id, thread_name, project_name, use_time,
+        hash_code, other, create_date, create_user, delete_flag, remark, update_date, update_user
+        from sys_trace_info
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
+    </select>
+
+    <!--根据某些字段获取实例(分页)-->
+    <select id="getByArgs" resultMap="TraceInfoMap">
+        select
+        id, logger_name, level, trace_id, start_time, log_type, ip, rpc_id, thread_name, project_name, use_time,
+        hash_code, other, create_date, create_user, delete_flag, remark, update_date, update_user
+        from sys_trace_info
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
+
+        <if test="limit.number != null and limit.number != ''">
+            limit ${(limit.number-1) * limit.size},${ limit.number * limit.size}
+        </if>
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.TraceInfoDO">
+        insert into sys_trace_info(
+        id, logger_name, level, trace_id, start_time, log_type, ip, rpc_id, thread_name, project_name, use_time,
+        hash_code, other, create_date, create_user, delete_flag, remark, update_date, update_user)
+        values (#{id}, #{loggerName}, #{level}, #{traceId}, #{startTime}, #{logType}, #{ip}, #{rpcId}, #{threadName},
+        #{projectName}, #{useTime}, #{hashCode}, #{other}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark},
+        #{updateDate}, #{updateUser})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update" parameterType="indi.uhyils.pojo.DO.TraceInfoDO">
+        update sys_trace_info set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="loggerName != null and loggerName != ''">
+            ,logger_name = #{loggerName}
+        </if>
+        <if test="level != null and level != ''">
+            ,level = #{level}
+        </if>
+        <if test="traceId != null">
+            ,trace_id = #{traceId}
+        </if>
+        <if test="startTime != null">
+            ,start_time = #{startTime}
+        </if>
+        <if test="logType != null">
+            ,log_type = #{logType}
+        </if>
+        <if test="ip != null and ip != ''">
+            ,ip = #{ip}
+        </if>
+        <if test="rpcId != null and rpcId != ''">
+            ,rpc_id = #{rpcId}
+        </if>
+        <if test="threadName != null and threadName != ''">
+            ,thread_name = #{threadName}
+        </if>
+        <if test="projectName != null and projectName != ''">
+            ,project_name = #{projectName}
+        </if>
+        <if test="useTime != null">
+            ,use_time = #{useTime}
+        </if>
+        <if test="hashCode != null and hashCode != ''">
+            ,hash_code = #{hashCode}
+        </if>
+        <if test="other != null and other != ''">
+            ,other = #{other}
+        </if>
+        <if test="createDate != null">
+            ,create_date = #{createDate}
+        </if>
+        <if test="createUser != null and createUser != ''">
+            ,create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            ,update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+            ,update_user = #{updateUser}
+        </if>
+        where id = #{id}
+    </update>
+
+    <!--通过主键修改数据-->
+    <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.TraceInfoDO">
+        update sys_trace_info set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="loggerName != null and loggerName != ''">
+            ,logger_name = #{loggerName}
+        </if>
+        <if test="level != null and level != ''">
+            ,level = #{level}
+        </if>
+        <if test="traceId != null">
+            ,trace_id = #{traceId}
+        </if>
+        <if test="startTime != null">
+            ,start_time = #{startTime}
+        </if>
+        <if test="logType != null">
+            ,log_type = #{logType}
+        </if>
+        <if test="ip != null and ip != ''">
+            ,ip = #{ip}
+        </if>
+        <if test="rpcId != null and rpcId != ''">
+            ,rpc_id = #{rpcId}
+        </if>
+        <if test="threadName != null and threadName != ''">
+            ,thread_name = #{threadName}
+        </if>
+        <if test="projectName != null and projectName != ''">
+            ,project_name = #{projectName}
+        </if>
+        <if test="useTime != null">
+            ,use_time = #{useTime}
+        </if>
+        <if test="hashCode != null and hashCode != ''">
+            ,hash_code = #{hashCode}
+        </if>
+        <if test="other != null and other != ''">
+            ,other = #{other}
+        </if>
+        <if test="createDate != null">
+            ,create_date = #{createDate}
+        </if>
+        <if test="createUser != null and createUser != ''">
+            ,create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            ,update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+            ,update_user = #{updateUser}
+        </if>
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+    </update>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.TraceInfoDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_trace_info set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="loggerName != null and loggerName != ''">
+                ,logger_name = #{item.loggerName}
+            </if>
+            <if test="level != null and level != ''">
+                ,level = #{item.level}
+            </if>
+            <if test="traceId != null">
+                ,trace_id = #{item.traceId}
+            </if>
+            <if test="startTime != null">
+                ,start_time = #{item.startTime}
+            </if>
+            <if test="logType != null">
+                ,log_type = #{item.logType}
+            </if>
+            <if test="ip != null and ip != ''">
+                ,ip = #{item.ip}
+            </if>
+            <if test="rpcId != null and rpcId != ''">
+                ,rpc_id = #{item.rpcId}
+            </if>
+            <if test="threadName != null and threadName != ''">
+                ,thread_name = #{item.threadName}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                ,project_name = #{item.projectName}
+            </if>
+            <if test="useTime != null">
+                ,use_time = #{item.useTime}
+            </if>
+            <if test="hashCode != null and hashCode != ''">
+                ,hash_code = #{item.hashCode}
+            </if>
+            <if test="other != null and other != ''">
+                ,other = #{item.other}
+            </if>
+            <if test="createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="createUser != null and createUser != ''">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="remark != null and remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="updateUser != null and updateUser != ''">
+                ,update_user = #{item.updateUser}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <!--查询总条数-->
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_trace_info
+        where delete_flag = 0;
+    </select>
+
+    <!--根据条件查询条数-->
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_trace_info
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+    </select>
+
+    <!--检查是否有重复-->
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_trace_info
+        where ${columnName} = #{value}
+    </select>
+</mapper>

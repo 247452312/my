@@ -2,9 +2,9 @@ package indi.uhyils.pojo.DTO.response.welcome;
 
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsResponse;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogResponse;
-import indi.uhyils.pojo.DTO.response.LastPlanResponse;
+import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
-import indi.uhyils.pojo.DTO.response.VersionInfoResponse;
+import indi.uhyils.pojo.DTO.response.VersionInfoDTO;
 import java.io.Serializable;
 
 /**
@@ -21,7 +21,7 @@ import java.io.Serializable;
  * JVM内存信息{@link JvmInfoLogResponse} 是项目初始化时通过MQ向JVM服务
  * 定时发送JVM信息 保存在数据库中
  * 算法统计{@link AlgorithmStatisticsResponse} 未完待续
- * 版本信息{@link VersionInfoResponse} 以及下一步计划{@link LastPlanResponse}
+ * 版本信息{@link VersionInfoDTO} 以及下一步计划{@link LastPlanDTO}
  * 均在数据字典数据库中获取
  * 以上5条组成了首页的展示具体位置见各个属性的注释
  * </p>
@@ -56,13 +56,13 @@ public class WelcomeResponse implements Serializable {
     /**
      * 首页右中 版本信息
      */
-    private VersionInfoResponse versionInfoResponse;
+    private VersionInfoDTO versionInfoResponse;
 
 
     /**
      * 首页右下 下一步计划
      */
-    private LastPlanResponse lastPlanResponse;
+    private LastPlanDTO lastPlanResponse;
 
     public JvmDataStatisticsResponse getJvmDataStatisticsResponse() {
         return jvmDataStatisticsResponse;
@@ -96,19 +96,19 @@ public class WelcomeResponse implements Serializable {
         this.algorithmStatisticsResponse = algorithmStatisticsResponse;
     }
 
-    public VersionInfoResponse getVersionInfoResponse() {
+    public VersionInfoDTO getVersionInfoResponse() {
         return versionInfoResponse;
     }
 
-    public void setVersionInfoResponse(VersionInfoResponse versionInfoResponse) {
+    public void setVersionInfoResponse(VersionInfoDTO versionInfoResponse) {
         this.versionInfoResponse = versionInfoResponse;
     }
 
-    public LastPlanResponse getLastPlanResponse() {
+    public LastPlanDTO getLastPlanResponse() {
         return lastPlanResponse;
     }
 
-    public void setLastPlanResponse(LastPlanResponse lastPlanResponse) {
+    public void setLastPlanResponse(LastPlanDTO lastPlanResponse) {
         this.lastPlanResponse = lastPlanResponse;
     }
 }

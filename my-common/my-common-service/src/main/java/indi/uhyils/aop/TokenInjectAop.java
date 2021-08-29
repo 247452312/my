@@ -6,7 +6,7 @@ import indi.uhyils.context.MyContext;
 import indi.uhyils.context.UserContext;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
 import indi.uhyils.redis.RedisPoolHandle;
@@ -52,10 +52,10 @@ public class TokenInjectAop {
 
 
     /**
-     * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
+     * 定义切入点，切入点为service包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.DTO.response.base.ServiceResult indi.uhyils.service..*.*(..)))")
+    @Pointcut("execution(public * indi.uhyils.service..*.*(..)))")
     public void tokenInjectPoint() {
     }
 

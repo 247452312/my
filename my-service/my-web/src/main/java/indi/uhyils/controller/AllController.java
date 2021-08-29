@@ -7,7 +7,7 @@ import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.request.SessionRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.io.Serializable;

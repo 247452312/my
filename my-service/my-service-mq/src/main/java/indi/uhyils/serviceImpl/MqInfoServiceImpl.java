@@ -3,7 +3,7 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.core.topic.Topic;
 import indi.uhyils.core.topic.TopicFactory;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.provider.MqInfoService;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.util.Map;
 @Service
 public class MqInfoServiceImpl implements MqInfoService {
     @Override
-    public ServiceResult<ArrayList<Topic>> getAllInfo(DefaultRequest request) throws NoSuchFieldException, IllegalAccessException {
+    public ServiceResult<ArrayList<Topic>> getAllInfo(DefaultCQE request) throws NoSuchFieldException, IllegalAccessException {
         Field topicMapField = TopicFactory.class.getDeclaredField("topicMap");
         topicMapField.setAccessible(true);
         Map<String, Topic> topicMap = (Map<String, Topic>) topicMapField.get(TopicFactory.class);

@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DTO.request.base.ObjRequest;
 import indi.uhyils.pojo.DTO.response.GetInfosResponse;
 import indi.uhyils.pojo.DTO.response.OperateSoftwareResponse;
 import indi.uhyils.pojo.DTO.response.RedisKeyResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 

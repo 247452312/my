@@ -1,5 +1,6 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
 import indi.uhyils.pojo.entity.Dept;
@@ -17,7 +18,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月24日 17时46分
  */
-public interface DeptRepository extends BaseEntityRepository<Dept> {
+public interface DeptRepository extends BaseEntityRepository<DeptDO, Dept> {
 
     /**
      * 根据角色id获取全部dept

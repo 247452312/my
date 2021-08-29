@@ -5,8 +5,8 @@ import indi.uhyils.builder.OrderApplyBuilder;
 import indi.uhyils.builder.OrderNodeFieldValueBuilder;
 import indi.uhyils.builder.OrderNodeResultTypeBuilder;
 import indi.uhyils.builder.OrderNodeRouteBuilder;
-import indi.uhyils.context.MyContext;
 import indi.uhyils.content.OrderContent;
+import indi.uhyils.context.MyContext;
 import indi.uhyils.dao.OrderApplyDao;
 import indi.uhyils.dao.OrderBaseInfoDao;
 import indi.uhyils.dao.OrderBaseNodeDao;
@@ -42,24 +42,25 @@ import indi.uhyils.pojo.DO.OrderNodeFieldValueDO;
 import indi.uhyils.pojo.DO.OrderNodeResultTypeDO;
 import indi.uhyils.pojo.DO.OrderNodeRouteDO;
 import indi.uhyils.pojo.DO.base.BaseIdDO;
-import indi.uhyils.pojo.DTO.request.AgreeRecallOrderRequest;
-import indi.uhyils.pojo.DTO.request.ApprovalOrderRequest;
-import indi.uhyils.pojo.DTO.request.CommitOrderRequest;
-import indi.uhyils.pojo.DTO.request.DealOrderNodeRequest;
-import indi.uhyils.pojo.DTO.request.FailOrderNodeRequest;
-import indi.uhyils.pojo.DTO.request.FrozenOrderRequest;
-import indi.uhyils.pojo.DTO.request.IncapacityFailOrderNodeRequest;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.AgreeRecallOrderEvent;
+import indi.uhyils.pojo.DTO.request.ApprovalOrderEvent;
+import indi.uhyils.pojo.DTO.request.CommitOrderCommand;
+import indi.uhyils.pojo.DTO.request.DealOrderNodeCommand;
+import indi.uhyils.pojo.DTO.request.FailOrderNodeCommand;
+import indi.uhyils.pojo.DTO.request.FrozenOrderCommand;
+import indi.uhyils.pojo.DTO.request.IncapacityFailOrderNodeCommand;
 import indi.uhyils.pojo.DTO.request.PushMsgToSomeoneRequest;
-import indi.uhyils.pojo.DTO.request.RecallOrderRequest;
-import indi.uhyils.pojo.DTO.request.RestartOrderRequest;
-import indi.uhyils.pojo.DTO.request.base.IdRequest;
+import indi.uhyils.pojo.DTO.request.RecallOrderCommand;
+import indi.uhyils.pojo.DTO.request.RestartOrderCommand;
 import indi.uhyils.pojo.DTO.response.DealOrderNodeResponse;
 import indi.uhyils.pojo.DTO.response.InitOrderResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.IdCommand;
+import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.temp.CheckNodeFieldResultTemporary;
 import indi.uhyils.pojo.temp.InitApiRequestTemporary;
-import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.protocol.rpc.provider.OrderProvider;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.OrderBuilder;
 import indi.uhyils.util.RpcApiUtil;
@@ -121,7 +122,7 @@ public class OrderProviderImpl implements OrderProvider {
     private OrderNodeFieldValueDao orderNodeFieldValueDao;
 
     @Override
-    public ServiceResult<InitOrderResponse> initOrder(IdRequest request) throws Exception {
+    public ServiceResult<InitOrderResponse> initOrder(IdCommand request) throws Exception {
         //插入order基础信息
         Long baseInfoId = request.getId();
         OrderBaseInfoDO baseInfo = orderBaseInfoDao.getById(baseInfoId);
@@ -206,7 +207,7 @@ public class OrderProviderImpl implements OrderProvider {
     }
 
     @Override
-    public ServiceResult<Boolean> commitOrder(CommitOrderRequest request) {
+    public ServiceResult<Boolean> commitOrder(CommitOrderCommand request) {
         Map<Long, String> value = request.getValue();
         List<OrderNodeFieldValueDO> orderNodeFieldValueEntities = OrderNodeFieldValueBuilder.buildOrderNodeFieldValues(value);
         /*添加首节点的真实值*/
@@ -261,7 +262,7 @@ public class OrderProviderImpl implements OrderProvider {
 
 
     @Override
-    public ServiceResult<Boolean> recallOrder(RecallOrderRequest request) {
+    public ServiceResult<Boolean> recallOrder(RecallOrderCommand request) {
         Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.WITHDRAWING);
         if (result) {
             /*工单状态修改完成后通知工单监管人,进行审批处理,是否予以撤回,注意,此处返回值为是否发送申请成功*/
@@ -275,32 +276,32 @@ public class OrderProviderImpl implements OrderProvider {
     }
 
     @Override
-    public ServiceResult<Boolean> agreeRecallOrder(AgreeRecallOrderRequest request) {
+    public ServiceResult<Boolean> agreeRecallOrder(AgreeRecallOrderEvent request) {
         Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.WITHDRAWED);
         return ServiceResult.buildSuccessResult("操作成功", result);
     }
 
     @Override
-    public ServiceResult<Boolean> frozenOrder(FrozenOrderRequest request) {
+    public ServiceResult<Boolean> frozenOrder(FrozenOrderCommand request) {
         Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.STOP);
         return ServiceResult.buildSuccessResult("操作成功", result);
     }
 
 
     @Override
-    public ServiceResult<Boolean> restartOrder(RestartOrderRequest request) {
+    public ServiceResult<Boolean> restartOrder(RestartOrderCommand request) {
         Boolean result = changeOrderStatus(request.getOrderId(), OrderStatusEnum.START, OrderStatusEnum.STOP);
         return ServiceResult.buildSuccessResult("操作成功", result);
     }
 
     @Override
-    public ServiceResult<Boolean> failOrderNode(FailOrderNodeRequest request) {
+    public ServiceResult<Boolean> failOrderNode(FailOrderNodeCommand request) {
         orderNodeDao.makeOrderFault(request.getOrderNodeId(), OrderNodeStatusEnum.FAULT.getCode(), OrderNodeResultTypeEnum.FAULT.getCode(), request.getMsg());
         return ServiceResult.buildSuccessResult("处理成功", true);
     }
 
     @Override
-    public ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeRequest request) throws Exception {
+    public ServiceResult<DealOrderNodeResponse> dealOrderNode(DealOrderNodeCommand request) throws Exception {
         /*前提:判断节点值是否允许*/
         CheckNodeFieldResultTemporary checkNodeFieldResult = checkNodeAllow(request.getOrderNodeFieldValueMap());
         if (!checkNodeFieldResult.getAllow()) {
@@ -313,7 +314,7 @@ public class OrderProviderImpl implements OrderProvider {
         orderNode.setResultType(OrderNodeResultTypeEnum.SUCCESS.getCode());
         orderNode.setResultId(request.getResultId());
         orderNode.setSuggest(request.getSuggest());
-        orderNode.preUpdate(request);
+        orderNode.preUpdate();
         orderNodeDao.update(orderNode);
         /*2.填充对应节点所需的属性值,*/
         Map<Long, Object> orderNodeFieldValueMap = request.getOrderNodeFieldValueMap();
@@ -323,13 +324,13 @@ public class OrderProviderImpl implements OrderProvider {
             Object value = entry.getValue();
             t.setNodeFieldId(key);
             t.setRealValue(String.valueOf(value));
-            t.preInsert(request);
+            t.preInsert();
             orderNodeFieldValueDao.insert(t);
         }
         /*3.将下一节点置为等待开始(并通知自动处理模块检测是否为自动处理模块)*/
         OrderNodeDO nextNode = orderNodeDao.getNextNodeByNodeAndResult(request.getNodeId(), request.getResultId());
         nextNode.setStatus(OrderNodeStatusEnum.WAIT_STATUS.getCode());
-        nextNode.preUpdate(request);
+        nextNode.preUpdate();
         orderNodeDao.update(nextNode);
         Integer runType = nextNode.getRunType();
         if (OrderNodeRunTypeEnum.AUTO.getCode().equals(runType)) {
@@ -352,20 +353,20 @@ public class OrderProviderImpl implements OrderProvider {
     }
 
     @Override
-    public ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeRequest request) throws Exception {
+    public ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeCommand request) throws Exception {
         Long orderNodeId = request.getOrderNodeId();
         OrderNodeDO orderNode = orderNodeDao.getById(orderNodeId);
         /*1.将节点状态置为转交中*/
         orderNode.setStatus(OrderNodeStatusEnum.TRANSFER.getCode());
-        orderNode.preUpdate(request);
+        orderNode.preUpdate();
         orderNodeDao.update(orderNode);
         /*2.插入申请表*/
         OrderInfoDO order = orderInfoDao.getById(orderNode.getBaseInfoId());
         OrderApplyDO orderApply = OrderApplyBuilder.buildTransApplyByOrderNode(orderNode, order.getMonitorUserId());
-        orderApply.preInsert(request);
+        orderApply.preInsert();
         orderApplyDao.insert(orderApply);
         /*3.通知审批人*/
-        ServiceResult<String> userName = (ServiceResult) RpcApiUtil.rpcApiTool("UserService", "getNameById", IdRequest.build(request, request.getRecommendUserId()));
+        ServiceResult<String> userName = (ServiceResult) RpcApiUtil.rpcApiTool("UserService", "getNameById", IdQuery.build(request, request.getRecommendUserId()));
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest
             .build(request, order.getMonitorUserId(), PushTypeEnum.EMAIL.getCode(), "工单节点转交申请", order.getId() + "工单转交撤回,请尽快审批,转交目标人:" + userName.getData().toString());
         RpcApiUtil.rpcApiTool("PushService", "pushMsgToSomeone", pushMsgToSomeoneRequest);
@@ -373,7 +374,7 @@ public class OrderProviderImpl implements OrderProvider {
     }
 
     @Override
-    public ServiceResult<Boolean> approvalOrder(ApprovalOrderRequest request) throws Exception {
+    public ServiceResult<Boolean> approvalOrder(ApprovalOrderEvent request) throws Exception {
         Long orderApplyId = request.getOrderApplyId();
         OrderApplyDO orderApply = orderApplyDao.getById(orderApplyId);
 
@@ -451,7 +452,7 @@ public class OrderProviderImpl implements OrderProvider {
      *
      * @return
      */
-    private boolean noticeMonitorUserIdAboutBackOrder(RecallOrderRequest request) {
+    private boolean noticeMonitorUserIdAboutBackOrder(RecallOrderCommand request) {
         OrderInfoDO byId = orderInfoDao.getById(request.getOrderId());
         Long monitorUserId = byId.getMonitorUserId();
         PushMsgToSomeoneRequest pushMsgToSomeoneRequest = PushMsgToSomeoneRequest

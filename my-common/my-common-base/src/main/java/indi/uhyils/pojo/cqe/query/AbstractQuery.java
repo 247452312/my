@@ -13,11 +13,11 @@ import java.util.List;
  */
 public abstract class AbstractQuery extends DefaultCQE implements BaseQuery {
 
-    private List<Arg> args;
+    protected List<Arg> args;
 
-    private Order order;
+    protected Order order;
 
-    private Limit limit;
+    protected Limit limit;
 
     public AbstractQuery() {
     }

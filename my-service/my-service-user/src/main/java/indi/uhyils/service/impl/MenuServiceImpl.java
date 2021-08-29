@@ -1,8 +1,10 @@
 package indi.uhyils.service.impl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.ContentAssembler;
 import indi.uhyils.assembler.MenuAssembler;
 import indi.uhyils.assembler.UserAssembler;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.MenuDTO;
 import indi.uhyils.pojo.DTO.MenuTreeBuilder;
@@ -10,9 +12,8 @@ import indi.uhyils.pojo.DTO.request.GetByIFrameAndDeptsQuery;
 import indi.uhyils.pojo.DTO.request.PutDeptsToMenuCommand;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
-import indi.uhyils.pojo.DTO.response.IndexMenuTreeResponse;
-import indi.uhyils.pojo.DTO.response.MenuHtmlTreeResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.IndexMenuTreeDTO;
+import indi.uhyils.pojo.DTO.response.MenuHtmlTreeDTO;
 import indi.uhyils.pojo.DTO.response.info.MenuHomeInfo;
 import indi.uhyils.pojo.DTO.response.info.MenuLogoInfo;
 import indi.uhyils.pojo.DTO.response.info.MenuTreeDTO;
@@ -35,6 +36,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 菜单(Menu)表 内部服务实现类
@@ -44,6 +48,7 @@ import org.springframework.stereotype.Service;
  * @date 文件创建日期 2021年08月27日 08时32分48秒
  */
 @Service
+@ReadWriteMark(tables = {"sys_menu"})
 public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, MenuRepository, MenuAssembler> implements MenuService {
 
     /**
@@ -80,15 +85,18 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
 
 
     @Override
-    public ServiceResult<Boolean> putDeptsToMenu(PutDeptsToMenuCommand request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
+    public Boolean putDeptsToMenu(PutDeptsToMenuCommand request) {
         MenuId menuId = new MenuId(request.getMenuId());
         menuId.cleanDept(rep);
         menuId.addDepts(request.getDeptIds(), rep);
-        return ServiceResult.buildSuccessResult("赋权成功", Boolean.TRUE);
+        return true;
     }
 
     @Override
-    public ServiceResult<IndexMenuTreeResponse> getIndexMenu(DefaultCQE request) {
+    @ReadWriteMark(tables = {"sys_menu", "sys_content", "sys_dept", "sys_role_dept"})
+    public IndexMenuTreeDTO getIndexMenu(DefaultCQE request) {
         // 初始化角色的权限
         User user = userAssembler.toEntity(request.getUser());
         user.initRole(roleRepository, deptRepository, powerRepository, menuRepository);
@@ -108,13 +116,13 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
         MenuHomeInfo menuHomeInfo = MenuHomeInfo.build(contentAssembler.toDTO(homeInfo));
         MenuLogoInfo menuLogoInfo = MenuLogoInfo.build(contentAssembler.toDTO(logoInfo));
 
-        IndexMenuTreeResponse reuslt = IndexMenuTreeResponse.build(menuHomeInfo, menuLogoInfo, menuTree);
         /* 5. 返回 */
-        return ServiceResult.buildSuccessResult("菜单请求成功", reuslt);
+        return IndexMenuTreeDTO.build(menuHomeInfo, menuLogoInfo, menuTree);
     }
 
     @Override
-    public ServiceResult<MenuHtmlTreeResponse> getMenuTree(GetByIFrameAndDeptsQuery request) {
+    @ReadWriteMark(tables = {"sys_menu", "sys_content", "sys_dept", "sys_role_dept"})
+    public MenuHtmlTreeDTO getMenuTree(GetByIFrameAndDeptsQuery request) {
         // 初始化角色的权限
         User user = userAssembler.toEntity(request.getUser());
         user.initRole(roleRepository, deptRepository, powerRepository, menuRepository);
@@ -124,17 +132,19 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
         /* 2. 只取出来有用的 */
         menus = user.screenMenu(menus);
         List<MenuDTO> menuDTOS = menus.stream().map(assem::toDTO).collect(Collectors.toList());
-        return ServiceResult.buildSuccessResult("查询树列表成功", MenuHtmlTreeResponse.build(menuDTOS));
+        return MenuHtmlTreeDTO.build(menuDTOS);
     }
 
     @Override
-    public ServiceResult<List<GetAllMenuWithHaveMarkDTO>> getAllMenuWithHaveMark(IdQuery request) {
-        List<GetAllMenuWithHaveMarkDTO> result = rep.findAllMenuWithHaveMark(new Identifier(request));
-        return ServiceResult.buildSuccessResult("查询菜单(包含羁绊)成功", result);
+    @ReadWriteMark(tables = {"sys_dept_menu", "sys_menu"})
+    public List<GetAllMenuWithHaveMarkDTO> getAllMenuWithHaveMark(IdQuery request) {
+        return rep.findAllMenuWithHaveMark(new Identifier(request));
     }
 
     @Override
-    public ServiceResult<Boolean> removeMenu(IdCommand request) {
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
+    public Boolean removeMenu(IdCommand request) {
         /* 注:开启了事务 即@Transactional 参数propagation->事务传播类型,其中Propagation.REQUIRED为如果事务不存在,则创建新事物,如果事务存在,则加入
            isolation事务隔离级别 Isolation.DEFAULT默认隔离级别 */
 
@@ -144,13 +154,14 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
         menuId.cleanDept(rep);
         // 删除自己以及子节点
         menu.removeSelf(rep, assem);
-        return ServiceResult.buildSuccessResult("删除成功", true);
+        return true;
     }
 
 
     @Override
-    public ServiceResult<List<GetDeptsByMenuIdDTO>> getDeptsByMenuId(IdQuery request) {
-        return ServiceResult.buildSuccessResult("查询成功", deptRepository.findByMenuId(new MenuId(request.getId())));
+    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu", "sys_dept"})
+    public List<GetDeptsByMenuIdDTO> getDeptsByMenuId(IdQuery request) {
+        return deptRepository.findByMenuId(new MenuId(request.getId()));
     }
 
 }

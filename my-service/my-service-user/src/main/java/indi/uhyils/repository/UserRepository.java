@@ -1,9 +1,10 @@
 package indi.uhyils.repository;
 
-import indi.uhyils.pojo.entity.User;
-import indi.uhyils.pojo.entity.type.Password;
+import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.entity.Token;
+import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.UserId;
+import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.pojo.entity.type.UserName;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月24日 17时46分
  */
-public interface UserRepository extends BaseEntityRepository<User> {
+public interface UserRepository extends BaseEntityRepository<UserDO, User> {
 
 
     /**

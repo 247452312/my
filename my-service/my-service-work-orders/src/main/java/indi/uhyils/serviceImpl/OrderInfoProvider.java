@@ -3,9 +3,9 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.dao.*;
 import indi.uhyils.pojo.DO.*;
 import indi.uhyils.pojo.DO.base.BaseIdDO;
-import indi.uhyils.pojo.DTO.request.GetAllOrderRequest;
+import indi.uhyils.pojo.DTO.request.GetAllOrderQuery;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.order.GetOneOrderResponse;
 import indi.uhyils.pojo.DTO.response.order.OrderNodeAboutResponse;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
@@ -58,7 +58,7 @@ public class OrderInfoProvider extends BaseDefaultProvider<OrderInfoDO> implemen
     }
 
     @Override
-    public ServiceResult<ArrayList<OrderInfoDO>> getAllOrder(GetAllOrderRequest request) {
+    public ServiceResult<ArrayList<OrderInfoDO>> getAllOrder(GetAllOrderQuery request) {
         ArrayList<OrderInfoDO> result = dao.getOrderByType(request.getType());
         return ServiceResult.buildSuccessResult(result);
     }

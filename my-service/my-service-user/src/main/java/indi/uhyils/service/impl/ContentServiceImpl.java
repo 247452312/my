@@ -1,5 +1,6 @@
 package indi.uhyils.service.impl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.ContentAssembler;
 import indi.uhyils.pojo.DO.ContentDO;
 import indi.uhyils.pojo.DTO.ContentDTO;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
  * @date 文件创建日期 2021年08月27日 08时32分19秒
  */
 @Service
+@ReadWriteMark(tables = {"sys_content"})
 public class ContentServiceImpl extends AbstractDoService<ContentDO, Content, ContentDTO, ContentRepository, ContentAssembler> implements ContentService {
 
     public ContentServiceImpl(ContentAssembler assembler, ContentRepository repository) {

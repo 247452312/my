@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 
+import indi.uhyils.pojo.cqe.DefaultCQE;
 
 /**
  * @author uhyils <247452312@qq.com>

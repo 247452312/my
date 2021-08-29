@@ -5,9 +5,9 @@ import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.MqLoginRequest;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.response.LoginResponse;
+import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.DTO.response.WebResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.protocol.rpc.provider.MqInfoService;
 import indi.uhyils.protocol.rpc.provider.MqProvider;
@@ -58,8 +58,8 @@ public class MqController {
             DefaultRequestBuildUtil.fillRequestByAdminRequest(userRequest);
             userRequest.setUsername("admin");
             userRequest.setPassword("123456");
-            ServiceResult<LoginResponse> login = userService.login(userRequest);
-            LoginResponse data = login.getData();
+            ServiceResult<LoginDTO> login = userService.login(userRequest);
+            LoginDTO data = login.getData();
             if (data != null && data.getSuccess()) {
                 return WebResponse.build(data.getToken(), login.getServiceMessage(), login.getServiceCode());
             }
@@ -76,7 +76,7 @@ public class MqController {
      * @throws IllegalAccessException
      */
     @PostMapping("getAllTopic")
-    public WebResponse<ArrayList<Topic>> getAllTopic(@RequestBody DefaultRequest request) throws NoSuchFieldException, IllegalAccessException {
+    public WebResponse<ArrayList<Topic>> getAllTopic(@RequestBody DefaultCQE request) throws NoSuchFieldException, IllegalAccessException {
         DefaultRequestBuildUtil.fillRequestByAdminRequest(request);
         ServiceResult<ArrayList<Topic>> allInfo = mqInfoService.getAllInfo(request);
         return WebResponse.build(allInfo);

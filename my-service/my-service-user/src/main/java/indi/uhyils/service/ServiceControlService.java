@@ -5,7 +5,6 @@ import indi.uhyils.context.MyContext;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
 import indi.uhyils.pojo.DTO.request.MethodDisableQuery;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.AddCommand;
 import java.util.List;
@@ -37,14 +36,14 @@ public interface ServiceControlService extends BaseService {
      *
      * @return
      */
-    ServiceResult<Boolean> getMethodDisable(MethodDisableQuery request);
+    Boolean getMethodDisable(MethodDisableQuery request);
 
     /**
      * 获取所有接口是否允许使用
      *
      * @return 全部接口
      */
-    ServiceResult<List<MethodDisableDTO>> getAllMethodDisable(DefaultCQE request);
+    List<MethodDisableDTO> getAllMethodDisable(DefaultCQE request);
 
 
     /**
@@ -52,7 +51,7 @@ public interface ServiceControlService extends BaseService {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> addOrEditMethodDisable(AddCommand<MethodDisableDTO> request);
+    Boolean addOrEditMethodDisable(AddCommand<MethodDisableDTO> request);
 
     /**
      * 删除对应的禁用接口项
@@ -61,5 +60,5 @@ public interface ServiceControlService extends BaseService {
      *
      * @return 删除请求
      */
-    ServiceResult<Boolean> delMethodDisable(DelMethodDisableCommand request);
+    Boolean delMethodDisable(DelMethodDisableCommand request);
 }

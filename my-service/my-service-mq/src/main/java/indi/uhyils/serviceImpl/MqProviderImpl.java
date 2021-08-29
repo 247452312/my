@@ -9,7 +9,7 @@ import indi.uhyils.core.topic.TopicFactory;
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.RegisterType;
 import indi.uhyils.exception.UserException;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.protocol.rpc.provider.MqProvider;
 import indi.uhyils.util.LogUtil;

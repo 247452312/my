@@ -1,8 +1,8 @@
 package indi.uhyils.protocol.rpc.base;
 
-import indi.uhyils.pojo.DTO.BaseDbDTO;
-import indi.uhyils.pojo.DTO.response.base.Page;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.IdDTO;
+import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
@@ -18,16 +18,18 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年05月05日 17时57分
  */
-public abstract class BaseDefaultProvider<T extends BaseDbDTO> implements DTOProvider<T> {
+public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvider<T> {
 
     @Override
     public ServiceResult<Page<T>> query(BaseQuery query) {
-        return getService().query(query);
+        Page<T> result = getService().query(query);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<T> queryById(IdQuery query) {
-        return getService().query(new Identifier(query.getId()));
+        T result = getService().query(new Identifier(query.getId()));
+        return ServiceResult.buildSuccessResult(result);
     }
 
     /**
@@ -39,32 +41,38 @@ public abstract class BaseDefaultProvider<T extends BaseDbDTO> implements DTOPro
      */
     @Override
     public ServiceResult<List<T>> queryByIds(IdsQuery query) {
-        return getService().query(query);
+        List<T> result = getService().query(query);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Long> add(AddCommand<T> addCommand) {
-        return getService().add(addCommand);
+        Long result = getService().add(addCommand);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Integer> change(ChangeCommand<T> changeCommand) {
-        return getService().update(changeCommand);
+        Integer result = getService().update(changeCommand);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Integer> remove(RemoveCommand removeCommand) {
-        return getService().remove(removeCommand);
+        Integer result = getService().remove(removeCommand);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Integer> remove(IdCommand id) {
-        return getService().remove(id);
+        Integer result = getService().remove(id);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Integer> count(BaseQuery order) {
-        return getService().count(order);
+        Integer result = getService().count(order);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     /**

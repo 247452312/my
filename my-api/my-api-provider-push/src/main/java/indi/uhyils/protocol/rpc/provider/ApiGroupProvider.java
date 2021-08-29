@@ -3,7 +3,7 @@ package indi.uhyils.protocol.rpc.provider;
 import indi.uhyils.pojo.DO.ApiGroupDO;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
@@ -31,7 +31,7 @@ public interface ApiGroupProvider extends DTOProvider<ApiGroupDO> {
      *
      * @return 可以被订阅的api群
      */
-    ServiceResult<ArrayList<ApiGroupDO>> getCanBeSubscribed(DefaultRequest request);
+    ServiceResult<ArrayList<ApiGroupDO>> getCanBeSubscribed(DefaultCQE request);
 
 
 }

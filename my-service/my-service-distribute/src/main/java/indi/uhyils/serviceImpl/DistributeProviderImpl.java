@@ -3,10 +3,10 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsResponse;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogResponse;
-import indi.uhyils.pojo.DTO.response.LastPlanResponse;
+import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
-import indi.uhyils.pojo.DTO.response.VersionInfoResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.VersionInfoDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.welcome.AlgorithmStatisticsResponse;
 import indi.uhyils.pojo.DTO.response.welcome.WelcomeResponse;
 import indi.uhyils.rpc.annotation.RpcReference;
@@ -35,7 +35,7 @@ public class DistributeProviderImpl implements DistributeProvider {
     private DictProvider dictService;
 
     @Override
-    public ServiceResult<WelcomeResponse> getWelcomeData(DefaultRequest request) throws Exception {
+    public ServiceResult<WelcomeResponse> getWelcomeData(DefaultCQE request) throws Exception {
         WelcomeResponse welcomeResponse = new WelcomeResponse();
         /* 统计信息 */
         ServiceResult<JvmDataStatisticsResponse> jvmDataStatisticsResponse = jvmService.getJvmDataStatisticsResponse(request);
@@ -53,11 +53,11 @@ public class DistributeProviderImpl implements DistributeProvider {
         welcomeResponse.setAlgorithmStatisticsResponse(AlgorithmStatisticsResponse.build(new ArrayList<>()));
 
         /*版本信息*/
-        ServiceResult<VersionInfoResponse> versionInfoResponse = dictService.getVersionInfoResponse(request);
+        ServiceResult<VersionInfoDTO> versionInfoResponse = dictService.getVersionInfoResponse(request);
         welcomeResponse.setVersionInfoResponse(versionInfoResponse.validationAndGet());
 
         /* 下一步计划 */
-        ServiceResult<LastPlanResponse> lastPlanResponse = dictService.getLastPlanResponse(request);
+        ServiceResult<LastPlanDTO> lastPlanResponse = dictService.getLastPlanResponse(request);
         welcomeResponse.setLastPlanResponse(lastPlanResponse.validationAndGet());
         return ServiceResult.buildSuccessResult("首页查询成功", welcomeResponse);
     }

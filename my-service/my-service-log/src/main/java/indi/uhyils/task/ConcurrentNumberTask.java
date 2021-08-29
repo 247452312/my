@@ -6,7 +6,7 @@ import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.pojo.DO.DictItemDO;
 import indi.uhyils.pojo.DTO.request.GetByCodeRequest;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.protocol.rpc.provider.DictProvider;
 import indi.uhyils.util.DefaultRequestBuildUtil;

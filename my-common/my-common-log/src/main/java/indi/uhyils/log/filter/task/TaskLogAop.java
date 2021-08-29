@@ -1,9 +1,9 @@
 package indi.uhyils.log.filter.task;
 
-import com.google.common.base.Supplier;
-import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.context.MyTraceIdContext;
+import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.util.LogUtil;
+import java.util.function.Supplier;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -44,7 +44,7 @@ public class TaskLogAop {
             return null;
         };
         try {
-            return MyTraceIdContext.printLogInfo(LogTypeEnum.TASK, objectSupplier, new String[]{className, methodName}, className, methodName);
+            return MyTraceIdContext.printLogInfo(LogTypeEnum.TASK, objectSupplier::get, new String[]{className, methodName}, className, methodName);
         } finally {
             MyTraceIdContext.clean();
         }

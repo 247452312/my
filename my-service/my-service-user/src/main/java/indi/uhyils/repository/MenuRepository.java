@@ -1,5 +1,6 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
 import indi.uhyils.pojo.entity.DeptId;
 import indi.uhyils.pojo.entity.Menu;
@@ -16,7 +17,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月24日 17时46分
  */
-public interface MenuRepository extends BaseEntityRepository<Menu> {
+public interface MenuRepository extends BaseEntityRepository<MenuDO, Menu> {
 
     /**
      * 清空按钮

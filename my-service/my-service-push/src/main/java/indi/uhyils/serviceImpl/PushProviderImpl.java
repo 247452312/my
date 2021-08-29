@@ -16,7 +16,7 @@ import indi.uhyils.pojo.DO.base.BaseIdDO;
 import indi.uhyils.pojo.DTO.request.CronRequest;
 import indi.uhyils.pojo.DTO.request.PushMsgToSomeoneRequest;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.util.RpcApiUtil;
 import indi.uhyils.protocol.rpc.provider.PushProvider;

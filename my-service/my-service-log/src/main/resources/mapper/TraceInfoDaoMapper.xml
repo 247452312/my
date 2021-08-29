@@ -29,14 +29,14 @@
         <include refid="columnList"/>
         from sys_trace_info a
         where delete_flag = 0
-        and id = #{id}
+          and id = #{id}
     </select>
 
     <select id="getByArgsNoPage" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
         select
         <include refid="columnList"/>
         from sys_trace_info a
-        where delete_flag = 0
+            where delete_flag = 0
         <foreach item="item" index="index" collection="list">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
@@ -46,7 +46,7 @@
         select
         <include refid="columnList"/>
         from sys_trace_info a
-        where delete_flag = 0
+            where delete_flag = 0
 
         <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
@@ -59,43 +59,43 @@
 
     <insert id="insert" parameterType="indi.uhyils.pojo.DO.TraceInfoDO">
         insert sys_trace_info(trace_id,
-        other,
-        level,
-        logger_name,
-        use_time,
-        remark,
-        project_name,
-        update_date,
-        start_time,
-        log_type,
-        ip,
-        update_user,
-        rpc_id,
-        thread_name,
-        id,
-        hash_code,
-        create_user,
-        create_date,
-        delete_flag)
+                              other,
+                              level,
+                              logger_name,
+                              use_time,
+                              remark,
+                              project_name,
+                              update_date,
+                              start_time,
+                              log_type,
+                              ip,
+                              update_user,
+                              rpc_id,
+                              thread_name,
+                              id,
+                              hash_code,
+                              create_user,
+                              create_date,
+                              delete_flag)
         values (#{traceId},
-        #{other},
-        #{level},
-        #{loggerName},
-        #{useTime},
-        #{remark},
-        #{projectName},
-        #{updateDate},
-        #{startTime},
-        #{logType},
-        #{ip},
-        #{updateUser},
-        #{rpcId},
-        #{threadName},
-        #{id},
-        #{hashCode},
-        #{createUser},
-        #{createDate},
-        #{deleteFlag})
+                #{other},
+                #{level},
+                #{loggerName},
+                #{useTime},
+                #{remark},
+                #{projectName},
+                #{updateDate},
+                #{startTime},
+                #{logType},
+                #{ip},
+                #{updateUser},
+                #{rpcId},
+                #{threadName},
+                #{id},
+                #{hashCode},
+                #{createUser},
+                #{createDate},
+                #{deleteFlag})
     </insert>
 
     <update id="update" parameterType="indi.uhyils.pojo.DO.TraceInfoDO">
@@ -166,7 +166,7 @@
     <select id="countByArgs" resultType="java.lang.Integer">
         select count(*)
         from sys_trace_info a
-        where delete_flag = 0
+            where delete_flag = 0
         <foreach item="arg" index="index" collection="args">
             and ${arg.name} ${arg.symbol} #{arg.data}
         </foreach>
@@ -183,14 +183,14 @@
         select count(*)
         from sys_trace_info a
         where a.log_type = #{code}
-        and a.start_time > #{time}
+          and a.start_time > #{time}
     </select>
 
     <select id="getTraceInfoByArgAndPage" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
         select
         <include refid="columnList"/>
         from sys_trace_info a
-        where delete_flag = 0
+            where delete_flag = 0
         <if test="traceId != null">
             and trace_id = #{traceId}
         </if>
@@ -212,12 +212,12 @@
     </select>
     <select id="getTraceStatistics" resultType="indi.uhyils.pojo.DO.TraceDetailStatisticsView">
         select a.time,
-        a.type,
-        a.type_name as typeName,
-        a.hash_code as hashCode,
-        a.count,
-        a.sum,
-        a.avg
+               a.type,
+               a.type_name as typeName,
+               a.hash_code as hashCode,
+               a.count,
+               a.sum,
+               a.avg
         from v_sys_trace_detail_statistics a
         <if test="page != null and page != ''">
             limit ${(page-1) * size} , ${page * size}
@@ -227,7 +227,7 @@
     <select id="getTraceInfoByArgAndPageCount" resultType="java.lang.Integer">
         select count(*)
         from sys_trace_info a
-        where delete_flag = 0
+            where delete_flag = 0
         <if test="traceId != null">
             and trace_id = #{traceId}
         </if>
@@ -244,8 +244,8 @@
         <include refid="columnList"/>
         from sys_trace_info a
         where delete_flag = 0
-        and trace_id = #{traceId}
-        and (rpc_id like '${rpcId}.%' or rpc_id = #{rpcId})
+          and trace_id = #{traceId}
+          and (rpc_id like '${rpcId}.%' or rpc_id = #{rpcId})
     </select>
 
     <select id="getTraceInfoByTraceId" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
@@ -253,6 +253,6 @@
         <include refid="columnList"/>
         from sys_trace_info a
         where delete_flag = 0
-        and trace_id = #{traceId}
+          and trace_id = #{traceId}
     </select>
 </mapper>

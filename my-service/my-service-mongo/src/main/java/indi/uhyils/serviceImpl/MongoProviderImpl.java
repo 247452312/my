@@ -5,7 +5,7 @@ import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.mongo.MongoManager;
 import indi.uhyils.pojo.DTO.request.NameRequest;
 import indi.uhyils.pojo.DTO.request.base.ObjRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.protocol.rpc.provider.MongoProvider;
 import indi.uhyils.util.MD5Util;

@@ -4,18 +4,17 @@ import indi.uhyils.pojo.DTO.DictDTO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.request.GetByCodeRequest;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
-import indi.uhyils.pojo.DTO.response.LastPlanResponse;
+import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
-import indi.uhyils.pojo.DTO.response.VersionInfoResponse;
-import indi.uhyils.pojo.DTO.response.base.Page;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.VersionInfoDTO;
+import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -100,7 +99,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 版本信息
      */
-    ServiceResult<VersionInfoResponse> getVersionInfoResponse(DefaultCQE request);
+    ServiceResult<VersionInfoDTO> getVersionInfoResponse(DefaultCQE request);
 
 
     /**
@@ -110,7 +109,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 下一步计划
      */
-    ServiceResult<LastPlanResponse> getLastPlanResponse(DefaultCQE request);
+    ServiceResult<LastPlanDTO> getLastPlanResponse(DefaultCQE request);
 
 
     /**

@@ -1,12 +1,13 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.PowerId;
+import indi.uhyils.pojo.entity.UserId;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.InterfaceName;
 import indi.uhyils.pojo.entity.type.MethodName;
 import indi.uhyils.pojo.entity.type.PowerInfo;
-import indi.uhyils.pojo.entity.UserId;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月24日 17时46分
  */
-public interface PowerRepository extends BaseEntityRepository<Power> {
+public interface PowerRepository extends BaseEntityRepository<PowerDO, Power> {
 
     /**
      * 根据部门id获取权限集

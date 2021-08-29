@@ -2,7 +2,7 @@ package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.pojo.DTO.request.ExecuteCodeRequest;
 import indi.uhyils.pojo.DTO.response.ExecuteCodeResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 
 /**

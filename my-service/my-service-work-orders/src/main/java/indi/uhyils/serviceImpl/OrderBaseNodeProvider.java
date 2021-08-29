@@ -6,7 +6,7 @@ import indi.uhyils.dao.OrderBaseNodeResultTypeDao;
 import indi.uhyils.dao.OrderBaseNodeRouteDao;
 import indi.uhyils.pojo.DO.OrderBaseNodeDO;
 import indi.uhyils.pojo.DTO.request.base.IdsRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 

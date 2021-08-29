@@ -5,7 +5,7 @@ import indi.uhyils.pojo.DO.AlgorithmDO;
 import indi.uhyils.pojo.DTO.request.CellAlgorithmRequest;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
 import indi.uhyils.pojo.DTO.response.CellAlgorithmResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.protocol.rpc.provider.AlgorithmProvider;
 

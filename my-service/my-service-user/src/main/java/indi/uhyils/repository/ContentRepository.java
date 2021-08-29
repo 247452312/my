@@ -1,5 +1,6 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.pojo.DO.ContentDO;
 import indi.uhyils.pojo.entity.Content;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
@@ -10,7 +11,7 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  * @version 1.0
  * @date 文件创建日期 2021年08月27日 08时32分17秒
  */
-public interface ContentRepository extends BaseEntityRepository<Content> {
+public interface ContentRepository extends BaseEntityRepository<ContentDO, Content> {
 
 
     /**

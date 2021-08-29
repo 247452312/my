@@ -5,7 +5,7 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import indi.uhyils.dao.MonitorDao;
+import indi.uhyils.dao.LogMonitorDao;
 import indi.uhyils.dao.MonitorJvmStatusDetailDao;
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.JvmStartInfo;
@@ -26,7 +26,7 @@ import org.springframework.context.ApplicationContext;
  */
 public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
 
-    private MonitorDao monitorDao;
+    private LogMonitorDao monitorDao;
 
     private MonitorJvmStatusDetailDao monitorJvmStatusDetailDao;
 
@@ -39,7 +39,7 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
      */
     public RabbitJvmStartInfoConsumer(Channel channel, ApplicationContext applicationContext) {
         super(channel);
-        monitorDao = applicationContext.getBean(MonitorDao.class);
+        monitorDao = applicationContext.getBean(LogMonitorDao.class);
         monitorJvmStatusDetailDao = applicationContext.getBean(MonitorJvmStatusDetailDao.class);
     }
 

@@ -4,6 +4,7 @@ import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.DeviceArgAssembler;
 import indi.uhyils.dao.DeviceArgDao;
 import indi.uhyils.pojo.DO.DeviceArgDO;
+import indi.uhyils.pojo.DTO.DeviceArgDTO;
 import indi.uhyils.pojo.entity.DeviceArg;
 import indi.uhyils.repository.DeviceArgRepository;
 import indi.uhyils.repository.base.AbstractRepository;
@@ -17,7 +18,7 @@ import indi.uhyils.repository.base.AbstractRepository;
  * @date 文件创建日期 2021年08月27日 08时21分13秒
  */
 @Repository
-public class DeviceArgRepositoryImpl extends AbstractRepository<DeviceArg, DeviceArgDO, DeviceArgDao> implements DeviceArgRepository {
+public class DeviceArgRepositoryImpl extends AbstractRepository<DeviceArg, DeviceArgDO, DeviceArgDao, DeviceArgDTO, DeviceArgAssembler> implements DeviceArgRepository {
 
     protected DeviceArgRepositoryImpl(DeviceArgAssembler convert, DeviceArgDao dao) {
         super(convert, dao);

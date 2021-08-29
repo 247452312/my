@@ -1,11 +1,9 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
 import indi.uhyils.pojo.DTO.request.MethodDisableQuery;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.protocol.rpc.ServiceControlProvider;
@@ -21,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2020年05月27日 16时28分
  */
 @RpcService
-@ReadWriteMark
 public class ServiceControlProviderImpl implements ServiceControlProvider {
 
 
@@ -30,23 +27,25 @@ public class ServiceControlProviderImpl implements ServiceControlProvider {
 
     @Override
     public ServiceResult<Boolean> getMethodDisable(MethodDisableQuery request) {
-        return service.getMethodDisable(request);
+        Boolean result = service.getMethodDisable(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<List<MethodDisableDTO>> getAllMethodDisable(DefaultCQE request) {
-        return service.getAllMethodDisable(request);
+        List<MethodDisableDTO> result = service.getAllMethodDisable(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> addOrEditMethodDisable(AddCommand<MethodDisableDTO> request) {
-        return service.addOrEditMethodDisable(request);
+        Boolean result = service.addOrEditMethodDisable(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public ServiceResult<Boolean> delMethodDisable(DelMethodDisableCommand request) {
-        return service.delMethodDisable(request);
+        Boolean result = service.delMethodDisable(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 }

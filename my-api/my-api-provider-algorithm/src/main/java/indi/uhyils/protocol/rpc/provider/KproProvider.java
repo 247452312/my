@@ -2,7 +2,7 @@ package indi.uhyils.protocol.rpc.provider;
 
 
 import indi.uhyils.pojo.DTO.request.ProjectGenerateRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 import java.util.HashMap;
 

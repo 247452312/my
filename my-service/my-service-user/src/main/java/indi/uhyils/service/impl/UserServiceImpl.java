@@ -1,13 +1,13 @@
 package indi.uhyils.service.impl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.UserAssembler;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
-import indi.uhyils.pojo.DTO.response.LoginResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
  * @date 文件创建日期 2021年08月25日 20时28分
  */
 @Service
+@ReadWriteMark(tables = {"sys_user"})
 public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, UserRepository, UserAssembler> implements UserService {
 
     @Value("${token.salt}")
@@ -66,28 +67,27 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
     }
 
     @Override
-    public ServiceResult<UserDTO> getUserById(IdQuery request) {
+    public UserDTO getUserById(IdQuery request) {
         User user = rep.find(new Identifier(request.getId()));
-        UserDTO userDTO = assem.toDTO(user);
-        return ServiceResult.buildSuccessResult(userDTO);
+        return assem.toDTO(user);
     }
 
     @Override
-    public ServiceResult<String> getUserToken(IdQuery request) {
+    public String getUserToken(IdQuery request) {
         UserId userId = new UserId(request.getId());
         Token token = userId.toToken(salt, encodeRules);
-        return ServiceResult.buildSuccessResult(token.getToken());
+        return token.getToken();
     }
 
     @Override
-    public ServiceResult<TokenInfo> getTokenInfoByToken(DefaultCQE request) {
+    public TokenInfo getTokenInfoByToken(DefaultCQE request) {
         Token token = new Token(request.getToken());
         TokenInfo tokenInfo = token.parseToTokenInfo(encodeRules, salt, rep);
-        return ServiceResult.buildSuccessResult("解密成功", tokenInfo);
+        return tokenInfo;
     }
 
     @Override
-    public ServiceResult<LoginResponse> login(LoginCommand request) {
+    public LoginDTO login(LoginCommand request) {
         LoginInfo loginInfo = new LoginInfo(new UserName(request.getUsername()), new Password(request.getPassword()));
         LoginStatus loginResult = loginInfo.login(rep, salt, encodeRules);
 
@@ -95,44 +95,42 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
         loginResult.removeUserInRedis(rep);
         // 登录->加入缓存中
         loginResult.addUserToRedis(rep);
-        return ServiceResult.buildSuccessResult("成功", LoginResponse.buildLoginSuccess(loginResult.tokenValue(), assem.toDTO(loginResult.userValue())));
+        return LoginDTO.buildLoginSuccess(loginResult.tokenValue(), assem.toDTO(loginResult.userValue()));
     }
 
     @Override
-    public ServiceResult<Boolean> logout(DefaultCQE request) {
+    public Boolean logout(DefaultCQE request) {
         LoginStatus loginResult = new LoginStatus(request, assem);
-        Boolean success = loginResult.logout(rep);
-        return ServiceResult.buildSuccessResult("登出结束", success);
+        return loginResult.logout(rep);
     }
 
     @Override
-    public ServiceResult<List<UserDTO>> getUsers(DefaultCQE request) {
+    public List<UserDTO> getUsers(DefaultCQE request) {
         List<User> all = rep.findAll();
         // 填充角色
         User.batchInitRole(all, roleRepository, deptRepository, powerRepository, menuRepository);
         List<UserDO> userDos = all.stream().map(AbstractDoEntity::toDo).collect(Collectors.toList());
-        List<UserDTO> result = userDos.stream().map(assem::toDTO).collect(Collectors.toList());
-        return ServiceResult.buildSuccessResult("查询成功", result);
+        return userDos.stream().map(assem::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    public ServiceResult<UserDTO> getUserByToken(DefaultCQE request) {
-        return ServiceResult.buildSuccessResult("查询成功", request.getUser());
+    public UserDTO getUserByToken(DefaultCQE request) {
+        return request.getUser();
     }
 
     @Override
-    public ServiceResult<String> updatePassword(UpdatePasswordCommand request) {
+    public String updatePassword(UpdatePasswordCommand request) {
         LoginStatus loginStatus = new LoginStatus(request, assem);
         //检查密码是否正确
         loginStatus.checkPassword(new Password(request.getOldPassword()), rep);
         // 修改到新密码
         loginStatus.changeToNewPassword(new Password(request.getNewPassword()), rep);
-        return ServiceResult.buildSuccessResult("修改密码成功", "true");
+        return "true";
     }
 
     @Override
-    public ServiceResult<String> getNameById(IdQuery request) {
+    public String getNameById(IdQuery request) {
         User user = rep.find(new Identifier(request.getId()));
-        return ServiceResult.buildSuccessResult("查询成功", user.toDo().getNickName());
+        return user.toDo().getNickName();
     }
 }

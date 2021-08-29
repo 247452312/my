@@ -364,12 +364,6 @@
                 <version>${poi.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.tencent</groupId>
-                <artifactId>asr-sdk</artifactId>
-                <version>${asr.version}</version>
-            </dependency>
-
             <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
             <dependency>
                 <groupId>io.netty</groupId>

@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.DTO.request;
 
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -31,11 +32,11 @@ public class PushMsgToSomeoneRequest extends DefaultCQE {
     public PushMsgToSomeoneRequest() {
     }
 
-    public PushMsgToSomeoneRequest(DefaultRequest request) {
+    public PushMsgToSomeoneRequest(DefaultCQE request) {
         super(request);
     }
 
-    public static PushMsgToSomeoneRequest build(DefaultRequest request, Long userId, Integer type, String title, String msg) {
+    public static PushMsgToSomeoneRequest build(DefaultCQE request, Long userId, Integer type, String title, String msg) {
         PushMsgToSomeoneRequest build = new PushMsgToSomeoneRequest(request);
         build.setUserId(userId);
         build.setType(type);

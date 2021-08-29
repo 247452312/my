@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.pojo.DTO.ContentDTO;
 import indi.uhyils.protocol.rpc.ContentProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2021年08月27日 08时32分19秒
  */
 @RpcService
-@ReadWriteMark(tables = {"sys_content"})
 public class ContentProviderImpl extends BaseDefaultProvider<ContentDTO> implements ContentProvider {
 
 

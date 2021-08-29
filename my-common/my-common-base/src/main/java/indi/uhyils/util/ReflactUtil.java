@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import javax.annotation.Nonnull;
+import org.slf4j.helpers.MessageFormatter;
 
 /**
  * 反射工具类
@@ -76,6 +78,21 @@ public final class ReflactUtil {
             return Class.forName(typeName);
         }
         return null;
+    }
+
+    private static String format(@Nonnull String message, Object... args) {
+        return MessageFormatter.arrayFormat(message, args).getMessage();
+    }
+
+    public static <T> T newInstance(Class<T> tClass) {
+        try {
+            T t = tClass.newInstance();
+            return t;
+        } catch (IllegalAccessException | InstantiationException e) {
+            LogUtil.error(e, format("Create new instance of {} failed: {}", tClass, e.getMessage()));
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

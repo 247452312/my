@@ -6,13 +6,12 @@ import indi.uhyils.pojo.DTO.request.GetByIFrameAndDeptsQuery;
 import indi.uhyils.pojo.DTO.request.PutDeptsToMenuCommand;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
-import indi.uhyils.pojo.DTO.response.IndexMenuTreeResponse;
-import indi.uhyils.pojo.DTO.response.MenuHtmlTreeResponse;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.IndexMenuTreeDTO;
+import indi.uhyils.pojo.DTO.response.MenuHtmlTreeDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +30,7 @@ public interface MenuService extends BaseDoService<MenuDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> putDeptsToMenu(PutDeptsToMenuCommand request);
+    Boolean putDeptsToMenu(PutDeptsToMenuCommand request);
 
     /**
      * 获取index
@@ -40,7 +39,7 @@ public interface MenuService extends BaseDoService<MenuDTO> {
      *
      * @return
      */
-    ServiceResult<IndexMenuTreeResponse> getIndexMenu(DefaultCQE request);
+    IndexMenuTreeDTO getIndexMenu(DefaultCQE request);
 
     /**
      * 获取菜单tree,并将格式转为前台的格式(menu.html用)
@@ -49,7 +48,7 @@ public interface MenuService extends BaseDoService<MenuDTO> {
      *
      * @return 格式处理好菜单
      */
-    ServiceResult<MenuHtmlTreeResponse> getMenuTree(GetByIFrameAndDeptsQuery request);
+    MenuHtmlTreeDTO getMenuTree(GetByIFrameAndDeptsQuery request);
 
     /**
      * 获取所有叶子菜单(包含羁绊标记)
@@ -58,7 +57,7 @@ public interface MenuService extends BaseDoService<MenuDTO> {
      *
      * @return 所有叶子菜单(包含羁绊标记)
      */
-    ServiceResult<List<GetAllMenuWithHaveMarkDTO>> getAllMenuWithHaveMark(IdQuery request);
+    List<GetAllMenuWithHaveMarkDTO> getAllMenuWithHaveMark(IdQuery request);
 
     /**
      * 1.删除对应id节点以及所有子节点
@@ -68,7 +67,7 @@ public interface MenuService extends BaseDoService<MenuDTO> {
      *
      * @return 是否删除成功
      */
-    ServiceResult<Boolean> removeMenu(IdCommand req);
+    Boolean removeMenu(IdCommand req);
 
     /**
      * 根据菜单id获取属于这个菜单的权限集以及全部权限集
@@ -77,5 +76,5 @@ public interface MenuService extends BaseDoService<MenuDTO> {
      *
      * @return 权限集们
      */
-    ServiceResult<List<GetDeptsByMenuIdDTO>> getDeptsByMenuId(IdQuery request);
+    List<GetDeptsByMenuIdDTO> getDeptsByMenuId(IdQuery request);
 }

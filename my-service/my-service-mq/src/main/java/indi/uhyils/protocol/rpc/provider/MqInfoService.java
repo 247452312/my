@@ -2,7 +2,7 @@ package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.core.topic.Topic;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 
 import java.util.ArrayList;
 
@@ -20,6 +20,6 @@ public interface MqInfoService {
      *
      * @return
      */
-    ServiceResult<ArrayList<Topic>> getAllInfo(DefaultRequest request) throws NoSuchFieldException, IllegalAccessException;
+    ServiceResult<ArrayList<Topic>> getAllInfo(DefaultCQE request) throws NoSuchFieldException, IllegalAccessException;
 
 }

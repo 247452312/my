@@ -23,7 +23,7 @@ public class MongoDO implements BaseDbSaveable {
     private byte[] bytes;
 
     @Override
-    public void preInsert(DefaultRequest request) {
+    public void preInsert(DefaultCQE request) {
         // nothing to do
     }
 
@@ -38,7 +38,7 @@ public class MongoDO implements BaseDbSaveable {
     }
 
     @Override
-    public void preUpdate(DefaultRequest request) {
+    public void preUpdate(DefaultCQE request) {
         // nothing to do
     }
 

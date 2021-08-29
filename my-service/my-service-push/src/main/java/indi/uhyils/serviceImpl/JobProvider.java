@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.JobDO;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
 import indi.uhyils.pojo.DTO.request.base.ObjRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.util.ScheduledManager;

@@ -3,7 +3,7 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.enum_.DbTypeEnum;
 import indi.uhyils.pojo.DTO.request.DbInformation;
 import indi.uhyils.pojo.DTO.request.ProjectGenerateRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.protocol.rpc.provider.KproProvider;
 import indi.uhyils.util.LogUtil;

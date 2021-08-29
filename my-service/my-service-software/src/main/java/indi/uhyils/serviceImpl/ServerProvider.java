@@ -6,7 +6,7 @@ import indi.uhyils.pojo.DTO.request.GetNameByIdRequest;
 import indi.uhyils.pojo.DTO.request.TestConnByDataRequest;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.util.SshUtils;
@@ -52,7 +52,7 @@ public class ServerProvider extends BaseDefaultProvider<ServerDO> implements ind
     }
 
     @Override
-    public ServiceResult<ArrayList<ServerDO>> getServersIdAndName(DefaultRequest request) {
+    public ServiceResult<ArrayList<ServerDO>> getServersIdAndName(DefaultCQE request) {
         ArrayList<ServerDO> list = dao.getServersIdAndName();
         return ServiceResult.buildSuccessResult("查询成功", list);
     }

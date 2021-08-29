@@ -1,7 +1,7 @@
 package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.welcome.WelcomeResponse;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 
@@ -24,6 +24,6 @@ public interface DistributeProvider extends BaseProvider {
      *
      * @throws Exception 远程调用错误
      */
-    ServiceResult<WelcomeResponse> getWelcomeData(DefaultRequest request) throws Exception;
+    ServiceResult<WelcomeResponse> getWelcomeData(DefaultCQE request) throws Exception;
 
 }

@@ -5,17 +5,16 @@ import indi.uhyils.pojo.DTO.DictDTO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.request.GetByCodeRequest;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
-import indi.uhyils.pojo.DTO.response.LastPlanResponse;
+import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
-import indi.uhyils.pojo.DTO.response.VersionInfoResponse;
-import indi.uhyils.pojo.DTO.response.base.Page;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.VersionInfoDTO;
+import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> insertItem(AddCommand<DictItemDTO> request);
+    Boolean insertItem(AddCommand<DictItemDTO> request);
 
 
     /**
@@ -44,7 +43,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return 字典项
      */
-    ServiceResult<List<DictItemDTO>> getItemByDictId(IdQuery request);
+    List<DictItemDTO> getItemByDictId(IdQuery request);
 
     /**
      * 修改字典项
@@ -53,7 +52,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return 修改是否成功
      */
-    ServiceResult<Boolean> updateItem(ChangeCommand<DictItemDTO> request);
+    Boolean updateItem(ChangeCommand<DictItemDTO> request);
 
     /**
      * 删除字典项
@@ -62,7 +61,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return 是否删除成功
      */
-    ServiceResult<Boolean> deleteItem(IdCommand request);
+    Boolean deleteItem(IdCommand request);
 
 
     /**
@@ -72,7 +71,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> cleanDictItem(IdCommand request);
+    Boolean cleanDictItem(IdCommand request);
 
 
     /**
@@ -82,7 +81,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return 字典项
      */
-    ServiceResult<DictItemDTO> getItemById(IdQuery request);
+    DictItemDTO getItemById(IdQuery request);
 
     /**
      * 根据某几列获取item数据
@@ -91,7 +90,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return 分页数据(也可以设置不分页)
      */
-    ServiceResult<Page<DictItemDTO>> getByItemArgs(GetByItemArgsQuery request);
+    Page<DictItemDTO> getByItemArgs(GetByItemArgsQuery request);
 
 
     /**
@@ -101,7 +100,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return 版本信息
      */
-    ServiceResult<VersionInfoResponse> getVersionInfoResponse(DefaultCQE request);
+    VersionInfoDTO getVersionInfoResponse(DefaultCQE request);
 
 
     /**
@@ -111,7 +110,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return 下一步计划
      */
-    ServiceResult<LastPlanResponse> getLastPlanResponse(DefaultCQE request);
+    LastPlanDTO getLastPlanResponse(DefaultCQE request);
 
 
     /**
@@ -121,7 +120,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return 图标class
      */
-    ServiceResult<List<String>> getAllMenuIcon(DefaultCQE request);
+    List<String> getAllMenuIcon(DefaultCQE request);
 
 
     /**
@@ -131,7 +130,7 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return code对应的字典对应的所有项
      */
-    ServiceResult<List<DictItemDTO>> getByCode(GetByCodeRequest request);
+    List<DictItemDTO> getByCode(GetByCodeRequest request);
 
 
     /**
@@ -141,5 +140,5 @@ public interface DictService extends BaseDoService<DictDTO> {
      *
      * @return 开始界面快捷入口信息
      */
-    ServiceResult<QuickStartDTO> getQuickStartResponse(DefaultCQE request);
+    QuickStartDTO getQuickStartResponse(DefaultCQE request);
 }

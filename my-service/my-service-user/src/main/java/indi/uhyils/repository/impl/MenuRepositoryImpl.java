@@ -6,6 +6,7 @@ import indi.uhyils.dao.DeptDao;
 import indi.uhyils.dao.MenuDao;
 import indi.uhyils.pojo.DO.DeptMenuDO;
 import indi.uhyils.pojo.DO.MenuDO;
+import indi.uhyils.pojo.DTO.MenuDTO;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
 import indi.uhyils.pojo.entity.DeptId;
 import indi.uhyils.pojo.entity.Menu;
@@ -29,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2021年08月24日 17时27分
  */
 @Repository
-public class MenuRepositoryImpl extends AbstractRepository<Menu, MenuDO, MenuDao, MenuAssembler> implements MenuRepository {
+public class MenuRepositoryImpl extends AbstractRepository<Menu, MenuDO, MenuDao, MenuDTO, MenuAssembler> implements MenuRepository {
 
 
     @Autowired

@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DO.ApiDO;
 import indi.uhyils.pojo.DO.ApiGroupDO;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.request.base.IdRequest;
-import indi.uhyils.pojo.DTO.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.util.ApiUtils;
@@ -52,7 +52,7 @@ public class ApiGroupProvider extends BaseDefaultProvider<ApiGroupDO> implements
     }
 
     @Override
-    public ServiceResult<ArrayList<ApiGroupDO>> getCanBeSubscribed(DefaultRequest request) {
+    public ServiceResult<ArrayList<ApiGroupDO>> getCanBeSubscribed(DefaultCQE request) {
         ArrayList<ApiGroupDO> result = dao.getCanBeSubscribed();
         return ServiceResult.buildSuccessResult("查询成功", result);
     }
