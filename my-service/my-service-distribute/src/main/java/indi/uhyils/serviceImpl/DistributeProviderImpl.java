@@ -1,8 +1,8 @@
 package indi.uhyils.serviceImpl;
 
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.response.JvmDataStatisticsResponse;
-import indi.uhyils.pojo.DTO.response.JvmInfoLogResponse;
+import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
+import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
 import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
 import indi.uhyils.pojo.DTO.response.VersionInfoDTO;
@@ -38,7 +38,7 @@ public class DistributeProviderImpl implements DistributeProvider {
     public ServiceResult<WelcomeResponse> getWelcomeData(DefaultCQE request) throws Exception {
         WelcomeResponse welcomeResponse = new WelcomeResponse();
         /* 统计信息 */
-        ServiceResult<JvmDataStatisticsResponse> jvmDataStatisticsResponse = jvmService.getJvmDataStatisticsResponse(request);
+        ServiceResult<JvmDataStatisticsDTO> jvmDataStatisticsResponse = jvmService.getJvmDataStatisticsResponse(request);
         welcomeResponse.setJvmDataStatisticsResponse(jvmDataStatisticsResponse.validationAndGet());
 
         /*快捷启动*/
@@ -46,7 +46,7 @@ public class DistributeProviderImpl implements DistributeProvider {
         welcomeResponse.setQuickStartResponse(quickStartResponse.validationAndGet());
 
         /*jvm图表信息*/
-        ServiceResult<JvmInfoLogResponse> jvmInfoLogResponse = jvmService.getJvmInfoLogResponse(request);
+        ServiceResult<JvmInfoLogDTO> jvmInfoLogResponse = jvmService.getJvmInfoLogResponse(request);
         welcomeResponse.setJvmInfoLogResponse(jvmInfoLogResponse.validationAndGet());
 
         /*算法信息 还没有*/

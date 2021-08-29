@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.query.AbstractQuery;
 
 /**
  * 获取指定ip的访问请求
@@ -8,15 +8,15 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月23日 10时21分
  */
-public class GetLogIntervalByIpRequest extends DefaultCQE {
+public class GetLogIntervalByIpQuery extends AbstractQuery {
 
     /**
      * 指定ip
      */
     private String ip;
 
-    public static GetLogIntervalByIpRequest build(String ip) {
-        GetLogIntervalByIpRequest build = new GetLogIntervalByIpRequest();
+    public static GetLogIntervalByIpQuery build(String ip) {
+        GetLogIntervalByIpQuery build = new GetLogIntervalByIpQuery();
         build.ip = ip;
         return build;
 

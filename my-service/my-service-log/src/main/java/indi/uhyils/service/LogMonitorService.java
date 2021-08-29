@@ -2,6 +2,9 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.LogMonitorDTO;
+import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
+import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 
 /**
  * JVM日志表(LogMonitor)表 内部服务接口
@@ -12,4 +15,21 @@ import indi.uhyils.pojo.DTO.LogMonitorDTO;
  */
 public interface LogMonitorService extends BaseDoService<LogMonitorDTO> {
 
+    /**
+     * 获取JVM数据统计信息
+     *
+     * @param request 默认请求
+     *
+     * @return JVM数据统计信息
+     */
+    JvmDataStatisticsDTO getJvmDataStatisticsResponse(DefaultCQE request);
+
+    /**
+     * 获取JVM历史信息 -> 存活的
+     *
+     * @param request 请求
+     *
+     * @return JVM历史信息 -> 存活的
+     */
+    JvmInfoLogDTO getJvmInfoLogResponse(DefaultCQE request);
 }

@@ -3,12 +3,10 @@ package indi.uhyils.service.impl;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.BlackListAssembler;
 import indi.uhyils.builder.BlackListBuilder;
-import indi.uhyils.dao.BlackListDao;
-import indi.uhyils.dao.TraceDetailDao;
 import indi.uhyils.pojo.DO.BlackListDO;
 import indi.uhyils.pojo.DTO.BlackListDTO;
 import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
-import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpRequest;
+import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.entity.BlackList;
 import indi.uhyils.repository.BlackListRepository;
@@ -16,7 +14,6 @@ import indi.uhyils.service.BlackListService;
 import indi.uhyils.util.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -41,12 +38,6 @@ public class BlackListServiceImpl extends AbstractDoService<BlackListDO, BlackLi
      */
     private static final Long LONG_TIME_AGO = 3 * 60 * 1000L;
 
-    @Resource
-    private BlackListDao dao;
-
-    @Resource
-    private TraceDetailDao traceDetailDao;
-
     /**
      * 可以评价的最小 ip访问次数
      */
@@ -64,7 +55,7 @@ public class BlackListServiceImpl extends AbstractDoService<BlackListDO, BlackLi
     }
 
     @Override
-    public Boolean getLogIntervalByIp(GetLogIntervalByIpRequest request) {
+    public Boolean getLogIntervalByIp(GetLogIntervalByIpQuery request) {
         String ip = request.getIp();
         //取指定ip最近的{canEvaluateMinSize}次访问时间节点
         List<Long> realTimes = traceDetailDao.getTimeByIp(ip, canEvaluateMinSize);
@@ -109,11 +100,12 @@ public class BlackListServiceImpl extends AbstractDoService<BlackListDO, BlackLi
             result += Math.pow(time - avg, 2);
         }
         result /= times.size();
+
         return result;
     }
 
     @Override
-    public ArrayList<String> getAllIpBlackList(DefaultCQE request) {
+    public List<String> getAllIpBlackList(DefaultCQE request) {
         return dao.getAllIpBlackList();
     }
 

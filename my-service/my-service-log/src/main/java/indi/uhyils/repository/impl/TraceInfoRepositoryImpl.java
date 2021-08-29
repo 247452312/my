@@ -3,8 +3,10 @@ package indi.uhyils.repository.impl;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.TraceInfoAssembler;
 import indi.uhyils.dao.TraceInfoDao;
+import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.pojo.DO.TraceInfoDO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
+import indi.uhyils.pojo.entity.OnlineMonitors;
 import indi.uhyils.pojo.entity.Trace;
 import indi.uhyils.pojo.entity.TraceInfo;
 import indi.uhyils.repository.TraceInfoRepository;
@@ -31,5 +33,16 @@ public class TraceInfoRepositoryImpl extends AbstractRepository<TraceInfo, Trace
     public List<TraceInfo> findTraceInfoByTraceIdAndRpcId(Trace trace) {
         List<TraceInfoDO> traceInfos = dao.getLinkByTraceIdAndRpcIdPrefix(trace.traceId(), trace.rpcId());
         return assembler.listToEntity(traceInfos);
+    }
+
+    @Override
+    public Integer findWebRequestCount(OnlineMonitors logMonitors) {
+        return dao.getCountByTypeAndStartTime(LogTypeEnum.CONTROLLER.getCode(), logMonitors.earlyStartTime());
+    }
+
+    @Override
+    public Integer findRpcExecuteCount(OnlineMonitors logMonitors) {
+        /* 获取接口调用次数 */
+        return dao.getCountByTypeAndStartTime(LogTypeEnum.RPC.getCode(), logMonitors.earlyStartTime());
     }
 }

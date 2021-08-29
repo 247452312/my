@@ -1,6 +1,10 @@
 package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.pojo.DTO.LogMonitorDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
+import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
@@ -11,6 +15,25 @@ import indi.uhyils.protocol.rpc.base.DTOProvider;
  * @date 文件创建日期 2021年08月29日 16时58分53秒
  */
 public interface LogMonitorProvider extends DTOProvider<LogMonitorDTO> {
+
+    /**
+     * 获取JVM数据统计信息
+     *
+     * @param request 默认请求
+     *
+     * @return JVM数据统计信息
+     */
+    ServiceResult<JvmDataStatisticsDTO> getJvmDataStatisticsResponse(DefaultCQE request);
+
+
+    /**
+     * 获取JVM历史信息 -> 存活的
+     *
+     * @param request 请求
+     *
+     * @return JVM历史信息 -> 存活的
+     */
+    ServiceResult<JvmInfoLogDTO> getJvmInfoLogResponse(DefaultCQE request);
 
 }
 

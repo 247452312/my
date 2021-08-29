@@ -2,11 +2,10 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.BlackListDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
-import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpRequest;
+import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 黑名单(BlackList)表 内部服务接口
@@ -24,7 +23,7 @@ public interface BlackListService extends BaseDoService<BlackListDTO> {
      *
      * @return
      */
-    Boolean getLogIntervalByIp(GetLogIntervalByIpRequest request);
+    Boolean getLogIntervalByIp(GetLogIntervalByIpQuery request);
 
     /**
      * 获取所有的ip黑名单
@@ -33,7 +32,7 @@ public interface BlackListService extends BaseDoService<BlackListDTO> {
      *
      * @return 所有的ip黑名单
      */
-    ArrayList<String> getAllIpBlackList(DefaultCQE request);
+    List<String> getAllIpBlackList(DefaultCQE request);
 
     /**
      * 添加黑名单

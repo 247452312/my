@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO.response.welcome;
 
-import indi.uhyils.pojo.DTO.response.JvmDataStatisticsResponse;
-import indi.uhyils.pojo.DTO.response.JvmInfoLogResponse;
+import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
+import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
 import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
 import indi.uhyils.pojo.DTO.response.VersionInfoDTO;
@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * 首页初始化数据vo
  * <p>
- * 其中数据统计{@link JvmDataStatisticsResponse} 中携带质量详情,暂时
+ * 其中数据统计{@link JvmDataStatisticsDTO} 中携带质量详情,暂时
  * 前端无展示 其余都有展示
  * </p>
  * <p>
@@ -18,7 +18,7 @@ import java.io.Serializable;
  * 值
  * </p>
  * <p>
- * JVM内存信息{@link JvmInfoLogResponse} 是项目初始化时通过MQ向JVM服务
+ * JVM内存信息{@link JvmInfoLogDTO} 是项目初始化时通过MQ向JVM服务
  * 定时发送JVM信息 保存在数据库中
  * 算法统计{@link AlgorithmStatisticsResponse} 未完待续
  * 版本信息{@link VersionInfoDTO} 以及下一步计划{@link LastPlanDTO}
@@ -34,7 +34,7 @@ public class WelcomeResponse implements Serializable {
     /**
      * 首页左上 数据统计
      */
-    private JvmDataStatisticsResponse jvmDataStatisticsResponse;
+    private JvmDataStatisticsDTO jvmDataStatisticsResponse;
 
 
     /**
@@ -45,7 +45,7 @@ public class WelcomeResponse implements Serializable {
     /**
      * 首页中下 jvm内存信息
      */
-    private JvmInfoLogResponse jvmInfoLogResponse;
+    private JvmInfoLogDTO jvmInfoLogResponse;
 
 
     /**
@@ -64,11 +64,11 @@ public class WelcomeResponse implements Serializable {
      */
     private LastPlanDTO lastPlanResponse;
 
-    public JvmDataStatisticsResponse getJvmDataStatisticsResponse() {
+    public JvmDataStatisticsDTO getJvmDataStatisticsResponse() {
         return jvmDataStatisticsResponse;
     }
 
-    public void setJvmDataStatisticsResponse(JvmDataStatisticsResponse jvmDataStatisticsResponse) {
+    public void setJvmDataStatisticsResponse(JvmDataStatisticsDTO jvmDataStatisticsResponse) {
         this.jvmDataStatisticsResponse = jvmDataStatisticsResponse;
     }
 
@@ -80,11 +80,11 @@ public class WelcomeResponse implements Serializable {
         this.quickStartResponse = quickStartResponse;
     }
 
-    public JvmInfoLogResponse getJvmInfoLogResponse() {
+    public JvmInfoLogDTO getJvmInfoLogResponse() {
         return jvmInfoLogResponse;
     }
 
-    public void setJvmInfoLogResponse(JvmInfoLogResponse jvmInfoLogResponse) {
+    public void setJvmInfoLogResponse(JvmInfoLogDTO jvmInfoLogResponse) {
         this.jvmInfoLogResponse = jvmInfoLogResponse;
     }
 

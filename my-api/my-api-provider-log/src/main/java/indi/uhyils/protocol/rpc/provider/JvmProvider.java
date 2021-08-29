@@ -1,8 +1,8 @@
 package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.pojo.DTO.response.JvmDataStatisticsResponse;
-import indi.uhyils.pojo.DTO.response.JvmInfoLogResponse;
+import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
+import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 
@@ -21,7 +21,7 @@ public interface JvmProvider extends BaseProvider {
      *
      * @return JVM数据统计信息
      */
-    ServiceResult<JvmDataStatisticsResponse> getJvmDataStatisticsResponse(DefaultCQE request);
+    ServiceResult<JvmDataStatisticsDTO> getJvmDataStatisticsResponse(DefaultCQE request);
 
 
     /**
@@ -31,6 +31,6 @@ public interface JvmProvider extends BaseProvider {
      *
      * @return JVM历史信息 -> 存活的
      */
-    ServiceResult<JvmInfoLogResponse> getJvmInfoLogResponse(DefaultCQE request);
+    ServiceResult<JvmInfoLogDTO> getJvmInfoLogResponse(DefaultCQE request);
 
 }

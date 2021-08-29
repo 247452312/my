@@ -5,7 +5,7 @@ import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
-import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpRequest;
+import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpQuery;
 import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
@@ -227,7 +227,7 @@ public class IpSpiderTableAspect {
                     return null;
                 }
             });
-            GetLogIntervalByIpRequest defaultRequest = new GetLogIntervalByIpRequest();
+            GetLogIntervalByIpQuery defaultRequest = new GetLogIntervalByIpQuery();
             UserDO user = new UserDO();
             user.setId(MyContext.ADMIN_USER_ID);
             user.setUsername("admin");

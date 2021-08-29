@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年06月19日 14时55分
  */
 @Mapper
-public interface MonitorJvmStatusDetailDao extends DefaultDao<LogMonitorJvmStatusDO> {
+public interface LogMonitorJvmStatusDao extends DefaultDao<LogMonitorJvmStatusDO> {
 
     /**
      * 根据主表id获取分表数据

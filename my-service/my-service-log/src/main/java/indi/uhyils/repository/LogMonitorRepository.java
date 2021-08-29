@@ -1,12 +1,9 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.LogMonitorDO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.pojo.DTO.response.JvmDataStatisticsResponse;
-import indi.uhyils.pojo.DTO.response.JvmInfoLogResponse;
-import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.entity.LogMonitor;
 import indi.uhyils.repository.base.BaseEntityRepository;
+import java.util.List;
 
 /**
  * JVM日志表(LogMonitor)表 数据仓库层
@@ -17,24 +14,11 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  */
 public interface LogMonitorRepository extends BaseEntityRepository<LogMonitorDO, LogMonitor> {
 
-
     /**
-     * 获取JVM数据统计信息
+     * 获取在线服务信息
      *
-     * @param request 默认请求
-     *
-     * @return JVM数据统计信息
+     * @return
      */
-    JvmDataStatisticsResponse getJvmDataStatisticsResponse(DefaultCQE request);
-
-
-    /**
-     * 获取JVM历史信息 -> 存活的
-     *
-     * @param request 请求
-     *
-     * @return JVM历史信息 -> 存活的
-     */
-    JvmInfoLogResponse getJvmInfoLogResponse(DefaultCQE request);
+    List<LogMonitor> analysisOnlineService();
 
 }

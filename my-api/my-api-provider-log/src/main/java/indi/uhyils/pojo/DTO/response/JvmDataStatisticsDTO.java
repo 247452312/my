@@ -1,19 +1,18 @@
 package indi.uhyils.pojo.DTO.response;
 
 import indi.uhyils.enum_.ServiceQualityEnum;
-import java.io.Serializable;
-import java.util.HashMap;
+import indi.uhyils.pojo.DTO.BaseDTO;
 import java.util.List;
 import java.util.Map;
 
 /**
  * JVM数据统计信息
- * 通过一系列的算法计算出服务的运行质量,其中服务运行质量{@link JvmDataStatisticsResponse#serviceOperationQuality}代表了总体运行质量有没有好坏之分
+ * 通过一系列的算法计算出服务的运行质量,其中服务运行质量{@link JvmDataStatisticsDTO#serviceOperationQuality}代表了总体运行质量有没有好坏之分
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月21日 06时59分
  */
-public class JvmDataStatisticsResponse implements Serializable {
+public class JvmDataStatisticsDTO implements BaseDTO {
 
     /**
      * 服务在线数量
@@ -28,7 +27,7 @@ public class JvmDataStatisticsResponse implements Serializable {
     /**
      * 服务运行质量详情
      */
-    private HashMap<Long, List<ServiceQualityEnum>> serviceMap;
+    private Map<Long, List<ServiceQualityEnum>> serviceMap;
 
     /**
      * 前台请求次数
@@ -40,8 +39,8 @@ public class JvmDataStatisticsResponse implements Serializable {
      */
     private Integer interfaceCellCount;
 
-    public static JvmDataStatisticsResponse build(Integer serviceOnlineCount, HashMap<Long, List<ServiceQualityEnum>> serviceMap, Integer webRequestCount, Integer interfaceCellCount) {
-        JvmDataStatisticsResponse jvmDataStatisticsResponse = new JvmDataStatisticsResponse();
+    public static JvmDataStatisticsDTO build(Integer serviceOnlineCount, Map<Long, List<ServiceQualityEnum>> serviceMap, Integer webRequestCount, Integer interfaceCellCount) {
+        JvmDataStatisticsDTO jvmDataStatisticsResponse = new JvmDataStatisticsDTO();
         jvmDataStatisticsResponse.setServiceOnlineCount(serviceOnlineCount);
         jvmDataStatisticsResponse.setServiceMap(serviceMap);
         jvmDataStatisticsResponse.setWebRequestCount(webRequestCount);
@@ -83,11 +82,11 @@ public class JvmDataStatisticsResponse implements Serializable {
         this.webRequestCount = webRequestCount;
     }
 
-    public HashMap<Long, List<ServiceQualityEnum>> getServiceMap() {
+    public Map<Long, List<ServiceQualityEnum>> getServiceMap() {
         return serviceMap;
     }
 
-    public void setServiceMap(HashMap<Long, List<ServiceQualityEnum>> serviceMap) {
+    public void setServiceMap(Map<Long, List<ServiceQualityEnum>> serviceMap) {
         this.serviceMap = serviceMap;
     }
 

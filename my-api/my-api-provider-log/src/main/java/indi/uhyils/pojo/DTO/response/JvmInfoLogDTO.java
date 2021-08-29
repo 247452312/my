@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.DTO.response;
 
-import java.io.Serializable;
-import java.util.HashMap;
+import indi.uhyils.pojo.DTO.BaseDTO;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +11,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月21日 07时11分
  */
-public class JvmInfoLogResponse implements Serializable {
+public class JvmInfoLogDTO implements BaseDTO {
 
     /**
      * y轴最大值
@@ -22,7 +21,7 @@ public class JvmInfoLogResponse implements Serializable {
     /**
      * 线数据 list(0)是x轴 list(1)是非堆 list(2)是堆
      */
-    private HashMap<String, List> data;
+    private Map<String, List> data;
 
     /**
      * 默认展示第一个
@@ -36,10 +35,10 @@ public class JvmInfoLogResponse implements Serializable {
      *
      * @return
      */
-    public static JvmInfoLogResponse build(HashMap<String, List> data) {
+    public static JvmInfoLogDTO build(Map<String, List> data) {
 
         Double max = 0.0;
-        JvmInfoLogResponse build = new JvmInfoLogResponse();
+        JvmInfoLogDTO build = new JvmInfoLogDTO();
         // 先进行验证
         for (Map.Entry<String, List> stringListEntry : data.entrySet()) {
             if (build.getDefaultData() == null) {
@@ -87,11 +86,11 @@ public class JvmInfoLogResponse implements Serializable {
         this.maxY = maxY;
     }
 
-    public HashMap<String, List> getData() {
+    public Map<String, List> getData() {
         return data;
     }
 
-    public void setData(HashMap<String, List> data) {
+    public void setData(Map<String, List> data) {
         this.data = data;
     }
 

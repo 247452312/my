@@ -1,8 +1,10 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
+import indi.uhyils.pojo.entity.LogMonitor;
 import indi.uhyils.pojo.entity.LogMonitorJvmStatus;
 import indi.uhyils.repository.base.BaseEntityRepository;
+import java.util.List;
 
 /**
  * JVM状态子表(LogMonitorJvmStatus)表 数据仓库层
@@ -14,4 +16,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
 public interface LogMonitorJvmStatusRepository extends BaseEntityRepository<LogMonitorJvmStatusDO, LogMonitorJvmStatus> {
 
 
+    /**
+     * 列表获取这个服务的从启动开始的JVM状态
+     *
+     * @param logMonitor
+     *
+     * @return
+     */
+    List<LogMonitorJvmStatus> listLogMonitorJvmStatus(LogMonitor logMonitor);
 }

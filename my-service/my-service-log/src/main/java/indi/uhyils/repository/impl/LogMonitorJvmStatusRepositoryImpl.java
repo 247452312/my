@@ -5,9 +5,11 @@ import indi.uhyils.assembler.LogMonitorJvmStatusAssembler;
 import indi.uhyils.dao.LogMonitorJvmStatusDao;
 import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
 import indi.uhyils.pojo.DTO.LogMonitorJvmStatusDTO;
+import indi.uhyils.pojo.entity.LogMonitor;
 import indi.uhyils.pojo.entity.LogMonitorJvmStatus;
 import indi.uhyils.repository.LogMonitorJvmStatusRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
 
 
 /**
@@ -25,4 +27,9 @@ public class LogMonitorJvmStatusRepositoryImpl extends AbstractRepository<LogMon
     }
 
 
+    @Override
+    public List<LogMonitorJvmStatus> listLogMonitorJvmStatus(LogMonitor logMonitor) {
+        List<LogMonitorJvmStatusDO> byMonitorId = dao.getByMonitorId(logMonitor.id());
+        return assembler.listToEntity(byMonitorId);
+    }
 }

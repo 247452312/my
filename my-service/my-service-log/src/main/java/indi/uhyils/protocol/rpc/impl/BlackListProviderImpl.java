@@ -3,14 +3,14 @@ package indi.uhyils.protocol.rpc.impl;
 import indi.uhyils.pojo.DTO.BlackListDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
-import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpRequest;
+import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.protocol.rpc.provider.BlackListProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.BlackListService;
-import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -27,25 +27,27 @@ public class BlackListProviderImpl extends BaseDefaultProvider<BlackListDTO> imp
     @Autowired
     private BlackListService service;
 
-
     @Override
     protected BaseDoService<BlackListDTO> getService() {
         return service;
     }
 
     @Override
-    public ServiceResult<Boolean> getLogIntervalByIp(GetLogIntervalByIpRequest request) {
-        return null;
+    public ServiceResult<Boolean> getLogIntervalByIp(GetLogIntervalByIpQuery request) {
+        Boolean result = service.getLogIntervalByIp(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    public ServiceResult<ArrayList<String>> getAllIpBlackList(DefaultCQE request) {
-        return null;
+    public ServiceResult<List<String>> getAllIpBlackList(DefaultCQE request) {
+        List<String> result = service.getAllIpBlackList(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Boolean> addBlackIp(AddBlackIpRequest request) {
-        return null;
+        Boolean result = service.addBlackIp(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 }
 
