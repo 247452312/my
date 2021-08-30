@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 部门-菜单关联(DeptMenu)表 数据库实体类
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @version 1.0
  * @date 文件创建日期 2021年08月27日 08时32分27秒
  */
-public class DeptMenuDO extends BaseDoDO {
+public class DeptMenuDO extends BaseDO {
 
     private static final long serialVersionUID = -48185622937438151L;
 

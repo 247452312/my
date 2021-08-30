@@ -1,12 +1,12 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月26日 17时50分
  */
-public class OrderApplyDO extends BaseDoDO {
+public class OrderApplyDO extends BaseDO {
 
     /**
      * 申请人id

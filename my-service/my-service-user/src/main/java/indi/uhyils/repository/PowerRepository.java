@@ -2,8 +2,7 @@ package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.entity.Power;
-import indi.uhyils.pojo.entity.PowerId;
-import indi.uhyils.pojo.entity.UserId;
+import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.InterfaceName;
 import indi.uhyils.pojo.entity.type.MethodName;
@@ -44,14 +43,14 @@ public interface PowerRepository extends BaseEntityRepository<PowerDO, Power> {
      *
      * @return
      */
-    Boolean havePower(UserId userId, PowerInfo powerInfo);
+    Boolean havePower(User userId, PowerInfo powerInfo);
 
     /**
      * 删除权限
      *
      * @param powerId
      */
-    void removeDeptPowerByPowerId(PowerId powerId);
+    void removeDeptPowerByPowerId(Power powerId);
 
     /**
      * 获取全部接口

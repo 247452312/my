@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 接口调用监控信息 和{@link LogMonitorDO}是多对一的关系,记录了每一次的接口调用的信息 拟将此数据库代替log数据库,但是没有解决无法获取用户ip的痛点
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时22分
  */
-public class LogMonitorInterfaceCallDO extends BaseDoDO {
+public class LogMonitorInterfaceCallDO extends BaseDO {
 
     /**
      * 见{@link LogMonitorDO}

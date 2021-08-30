@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 订单节点属性真实值表(OrderNodeFieldValue)表 数据库实体类
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月15日 16时18分51秒
  */
-public class OrderNodeFieldValueDO extends BaseDoDO {
+public class OrderNodeFieldValueDO extends BaseDO {
 
     private static final long serialVersionUID = -40521694532478838L;
 

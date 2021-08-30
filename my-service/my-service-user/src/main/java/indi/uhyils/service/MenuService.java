@@ -51,7 +51,7 @@ public interface MenuService extends BaseDoService<MenuDTO> {
     MenuHtmlTreeDTO getMenuTree(GetByIFrameAndDeptsQuery request);
 
     /**
-     * 获取所有叶子菜单(包含羁绊标记)
+     * 获取所有叶子菜单(包含羁绊标记(传入的部门所有))
      *
      * @param request 权限集id
      *

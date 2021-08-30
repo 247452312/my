@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 设备参数表(DeviceArg)表 数据库实体类
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @version 1.0
  * @date 文件创建日期 2021年08月27日 08时21分12秒
  */
-public class DeviceArgDO extends BaseDoDO {
+public class DeviceArgDO extends BaseDO {
 
     private static final long serialVersionUID = -28368666303964952L;
 

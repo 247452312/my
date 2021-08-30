@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 每一个 -->微服务的集群<-- 中的每一个 -->微服务<-- 都会有这么一条JVM监控信息数据
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时06分
  */
-public class LogMonitorDO extends BaseDoDO {
+public class LogMonitorDO extends BaseDO {
 
     /**
      * 微服务的名称 名称与微服务rpc的applicationName相同

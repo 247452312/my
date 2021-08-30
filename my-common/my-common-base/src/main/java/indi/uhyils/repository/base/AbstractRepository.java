@@ -2,7 +2,7 @@ package indi.uhyils.repository.base;
 
 import indi.uhyils.assembler.AbstractAssembler;
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.Arg;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 文件创建日期 2021年08月22日 15时52分
  */
-public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO extends BaseDoDO, DAO extends DefaultDao<DO>, DTO extends IdDTO, ASSEM extends AbstractAssembler<DO, EN, DTO>> implements BaseEntityRepository<DO, EN> {
+public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO extends BaseDO, DAO extends DefaultDao<DO>, DTO extends IdDTO, ASSEM extends AbstractAssembler<DO, EN, DTO>> implements BaseEntityRepository<DO, EN> {
 
     /**
      * 转换器
@@ -116,7 +116,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     @Override
     public int remove(List<EN> entitys) {
         AssertUtil.assertTrue(entitys.stream().allMatch(HaveIdEntity::haveId), "删除时没有id");
-        List<DO> doList = entitys.stream().map(t->assembler.toDo(t)).peek(BaseDoDO::changeToDelete).peek(BaseDoDO::preUpdate).collect(Collectors.toList());
+        List<DO> doList = entitys.stream().map(t->assembler.toDo(t)).peek(BaseDO::changeToDelete).peek(BaseDO::preUpdate).collect(Collectors.toList());
         return doList.stream().mapToInt(dao::update).sum();
     }
 

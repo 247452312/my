@@ -9,9 +9,7 @@ import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.Arg;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.User;
-import indi.uhyils.pojo.entity.UserId;
 import indi.uhyils.pojo.entity.type.Password;
-import indi.uhyils.pojo.entity.type.UserName;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.repository.base.AbstractRepository;
@@ -64,10 +62,10 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
     }
 
     @Override
-    public User checkLogin(UserName userName, Password password) {
+    public User checkLogin(User user) {
         List<Arg> objects = new ArrayList<>();
-        objects.add(new Arg("username", "=", userName.getUserName()));
-        objects.add(new Arg("password", "=", password.toMD5Str()));
+        objects.add(new Arg("username", "=", user.username().getUserName()));
+        objects.add(new Arg("password", "=", user.password().toMD5Str()));
         ArrayList<UserDO> byArgsNoPage = dao.getByArgsNoPage(objects, null);
         AssertUtil.assertTrue(CollectionUtils.isNotEmpty(byArgsNoPage) && byArgsNoPage.size() == 1, "登录失败,用户名或密码不正确!");
         UserDO userDO = byArgsNoPage.get(0);
@@ -75,13 +73,13 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
     }
 
     @Override
-    public Boolean checkCacheUserId(UserId userId) {
-        return redisPoolHandle.haveUserId(userId.getId());
+    public Boolean checkCacheUserId(User userId) {
+        return redisPoolHandle.haveUserId(userId.getId().getId());
     }
 
     @Override
-    public boolean removeUserInCacheById(UserId userId) {
-        return redisPoolHandle.removeUserById(userId.getId());
+    public boolean removeUserInCacheById(User userId) {
+        return redisPoolHandle.removeUserById(userId.getId().getId());
     }
 
     @Override
@@ -96,7 +94,7 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
 
     @Override
     public void checkPassword(User user, Password password) {
-        Integer integer = dao.checkUserPassword(user.toId().getId(), password.toMD5Str());
+        Integer integer = dao.checkUserPassword(user.getId().getId(), password.toMD5Str());
         AssertUtil.assertTrue(integer == 1, "密码错误");
     }
 }

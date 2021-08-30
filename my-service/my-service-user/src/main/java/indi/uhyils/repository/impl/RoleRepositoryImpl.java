@@ -7,10 +7,8 @@ import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.RoleDeptDO;
 import indi.uhyils.pojo.DTO.RoleDTO;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
-import indi.uhyils.pojo.entity.DeptId;
+import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Role;
-import indi.uhyils.pojo.entity.RoleDept;
-import indi.uhyils.pojo.entity.RoleId;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 import java.util.List;
@@ -33,16 +31,16 @@ public class RoleRepositoryImpl extends AbstractRepository<Role, RoleDO, RoleDao
     }
 
     @Override
-    public void cleanDeptLink(RoleId roleId) {
-        dao.deleteRoleDeptMiddleByRoleId(roleId.roleIdValue());
+    public void cleanDeptLink(Role roleId) {
+        dao.deleteRoleDeptMiddleByRoleId(roleId.getId().getId());
     }
 
     @Override
-    public void addRoleDeptLink(RoleId roleId, List<DeptId> deptIds) {
+    public void addRoleDeptLink(Role roleId, List<Dept> deptIds) {
         RoleDeptDO roleDeptDO = new RoleDeptDO();
-        roleDeptDO.setRoleId(roleId.roleIdValue());
-        for (DeptId deptId : deptIds) {
-            roleDeptDO.setDeptId(deptId.deptIdValue());
+        roleDeptDO.setRoleId(roleId.getId().getId());
+        for (Dept deptId : deptIds) {
+            roleDeptDO.setDeptId(deptId.getId().getId());
             roleDeptDO.preInsert();
             dao.insertRoleDept(roleDeptDO);
         }
@@ -60,14 +58,14 @@ public class RoleRepositoryImpl extends AbstractRepository<Role, RoleDO, RoleDao
     }
 
     @Override
-    public List<RoleDept> findRoleDeptLinkByRoleId(RoleId roleId) {
-        List<RoleDeptDO> roleDeptDOS = dao.getRoleDeptLinkByRoleId(roleId.roleIdValue());
+    public List<Role> findRoleDeptLinkByRoleId(Role roleId) {
+        List<RoleDeptDO> roleDeptDOS = dao.getRoleDeptLinkByRoleId(roleId.getId().getId());
         return roleDeptDOS.stream().map(assembler::RoleDeptToEntity).collect(Collectors.toList());
     }
 
     @Override
-    public List<GetAllDeptWithHaveMarkDTO> findDeptWithHaveMark(RoleId roleId) {
-        return dao.getAllDeptWithHaveMark(roleId.roleIdValue());
+    public List<GetAllDeptWithHaveMarkDTO> findDeptWithHaveMark(Role roleId) {
+        return dao.getAllDeptWithHaveMark(roleId.getId().getId());
     }
 
 

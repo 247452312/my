@@ -22,8 +22,14 @@ import java.util.stream.Collectors;
  */
 public class Menu extends AbstractDoEntity<MenuDO> {
 
+    private List<Dept> depts;
+
     public Menu(MenuDO menuDO) {
         super(menuDO);
+    }
+
+    public Menu(Long id) {
+        super(id, new MenuDO());
     }
 
     public void removeSelf(MenuRepository rep, MenuAssembler assembler) {
@@ -83,5 +89,34 @@ public class Menu extends AbstractDoEntity<MenuDO> {
             return build;
         }
         return findNode(build.getChild(), id);
+    }
+
+
+    public void cleanDept(MenuRepository rep) {
+        this.depts = null;
+        rep.cleanDept(this);
+    }
+
+    public void addDepts(List<Dept> deptIds, MenuRepository rep) {
+        List<Dept> newDeptIds = addDeptsToEntity(deptIds);
+
+        for (Dept newDeptId : newDeptIds) {
+            rep.addDept(this, newDeptId);
+        }
+    }
+
+    public List<Dept> addDeptsToEntity(List<Dept> deptIds) {
+        if (this.depts == null) {
+            this.depts = new ArrayList<>(deptIds.size());
+        }
+        List<Dept> result = new ArrayList<>();
+        for (Dept newDeptId : deptIds) {
+            if (this.depts.contains(newDeptId)) {
+                continue;
+            }
+            this.depts.add(newDeptId);
+            result.add(newDeptId);
+        }
+        return result;
     }
 }

@@ -3,9 +3,8 @@ package indi.uhyils.repository;
 import indi.uhyils.pojo.DO.DictItemDO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
-import indi.uhyils.pojo.entity.DictId;
+import indi.uhyils.pojo.entity.Dict;
 import indi.uhyils.pojo.entity.DictItem;
-import indi.uhyils.pojo.entity.DictItemCode;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public interface DictItemRepository extends BaseEntityRepository<DictItemDO, Dic
      *
      * @return
      */
-    List<DictItem> findItemByDictId(DictId dictId);
+    List<DictItem> findItemByDictId(Dict dictId);
 
     /**
      * 查询
@@ -44,5 +43,5 @@ public interface DictItemRepository extends BaseEntityRepository<DictItemDO, Dic
      *
      * @return
      */
-    List<DictItem> findItemByDictCode(DictItemCode itemCode);
+    List<DictItem> findItemByDictCode(String itemCode);
 }

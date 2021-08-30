@@ -2,9 +2,8 @@ package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
-import indi.uhyils.pojo.entity.DeptId;
+import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Menu;
-import indi.uhyils.pojo.entity.MenuId;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.MenuIframe;
 import indi.uhyils.repository.base.BaseEntityRepository;
@@ -24,7 +23,7 @@ public interface MenuRepository extends BaseEntityRepository<MenuDO, Menu> {
      *
      * @param menuId
      */
-    void cleanDept(MenuId menuId);
+    void cleanDept(Menu menuId);
 
     /**
      * 给按钮添加部门
@@ -32,7 +31,7 @@ public interface MenuRepository extends BaseEntityRepository<MenuDO, Menu> {
      * @param menuId
      * @param newDeptId
      */
-    void addDept(MenuId menuId, DeptId newDeptId);
+    void addDept(Menu menuId, Dept newDeptId);
 
     /**
      * 根据iframe获取

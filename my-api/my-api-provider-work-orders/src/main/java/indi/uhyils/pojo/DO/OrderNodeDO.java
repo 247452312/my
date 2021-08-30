@@ -4,13 +4,13 @@ import indi.uhyils.enum_.OrderNodeResultTypeEnum;
 import indi.uhyils.enum_.OrderNodeRunTypeEnum;
 import indi.uhyils.enum_.OrderNodeStatusEnum;
 import indi.uhyils.enum_.OrderNodeTypeEnum;
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
  */
-public class OrderNodeDO extends BaseDoDO {
+public class OrderNodeDO extends BaseDO {
 
     /**
      * 基础表id

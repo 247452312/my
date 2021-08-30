@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 黑名单(BlackList)表 数据库实体类
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @version 1.0
  * @date 文件创建日期 2021年08月29日 16时58分52秒
  */
-public class BlackListDO extends BaseDoDO {
+public class BlackListDO extends BaseDO {
 
     private static final long serialVersionUID = -90750627793561708L;
 

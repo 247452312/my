@@ -5,8 +5,8 @@ import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
-import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.util.CollectionUtil;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,6 +27,84 @@ public class Dept extends AbstractDoEntity<DeptDO> {
         super(deptDO);
     }
 
+    public Dept(Long id) {
+        super(parseIdToDO(id));
+    }
+
+    private static DeptDO parseIdToDO(Long id) {
+        DeptDO deptDO = new DeptDO();
+        deptDO.setId(id);
+        return deptDO;
+    }
+
+    public Dept(DeptDO deptDO, List<Power> powers) {
+        super(deptDO);
+        this.powers = powers;
+    }
+
+    public Dept(List<Menu> menus, DeptDO deptDO) {
+        super(deptDO);
+        this.menus = menus;
+    }
+
+    public void addPower(List<Power> powers, DeptRepository rep) {
+        List<Power> newPowerIds = addPowerToEntity(powers);
+        for (Power newPowerId : newPowerIds) {
+            rep.addPowers(this, newPowerId);
+        }
+    }
+
+    public List<Power> addPowerToEntity(List<Power> powerIds) {
+        if (this.powers == null) {
+            this.powers = new ArrayList<>(powerIds.size());
+        }
+        List<Power> result = new ArrayList<>();
+        for (Power newPowerId : powerIds) {
+            if (this.powers.contains(newPowerId)) {
+                continue;
+            }
+            this.powers.add(newPowerId);
+            result.add(newPowerId);
+        }
+        return result;
+    }
+
+
+    public void cleanPower(DeptRepository rep) {
+        this.powers = null;
+        rep.cleanPower(this);
+
+    }
+
+    public void cleanMenu(DeptRepository rep) {
+        this.menus = null;
+        rep.cleanMenu(this);
+    }
+
+    public void addMenu(List<Menu> menus, DeptRepository rep) {
+        List<Menu> newPowerIds = addMenuToEntity(menus);
+
+        for (Menu newPowerId : newPowerIds) {
+            rep.addMenu(this, newPowerId);
+        }
+    }
+
+    private List<Menu> addMenuToEntity(List<Menu> menuIds) {
+        if (this.menus == null) {
+            this.menus = new ArrayList<>(menuIds.size());
+        }
+        List<Menu> result = new ArrayList<>();
+        for (Menu newMenuId : menuIds) {
+            if (this.menus.contains(newMenuId)) {
+                continue;
+            }
+            this.menus.add(newMenuId);
+            result.add(newMenuId);
+        }
+        return result;
+    }
+
+
     /**
      * 填充权限
      *
@@ -36,7 +114,7 @@ public class Dept extends AbstractDoEntity<DeptDO> {
         if (powers != null) {
             return;
         }
-        this.powers = powerRepository.findByDeptId(new Identifier(getData().getId()));
+        this.powers = powerRepository.findByDeptId(new Identifier(data.getId()));
     }
 
     /**
@@ -48,7 +126,7 @@ public class Dept extends AbstractDoEntity<DeptDO> {
         if (menus != null) {
             return;
         }
-        this.menus = menuRepository.findByDeptId(new Identifier(getData().getId()));
+        this.menus = menuRepository.findByDeptId(new Identifier(data.getId()));
     }
 
     public List<Menu> menus() {

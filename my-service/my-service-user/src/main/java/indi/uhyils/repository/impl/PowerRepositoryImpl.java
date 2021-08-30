@@ -7,12 +7,11 @@ import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.DTO.PowerDTO;
 import indi.uhyils.pojo.cqe.Arg;
 import indi.uhyils.pojo.entity.Power;
-import indi.uhyils.pojo.entity.PowerId;
+import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.InterfaceName;
 import indi.uhyils.pojo.entity.type.MethodName;
 import indi.uhyils.pojo.entity.type.PowerInfo;
-import indi.uhyils.pojo.entity.UserId;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 import java.util.ArrayList;
@@ -49,13 +48,13 @@ public class PowerRepositoryImpl extends AbstractRepository<Power, PowerDO, Powe
     }
 
     @Override
-    public Boolean havePower(UserId userId, PowerInfo powerInfo) {
-        return dao.checkUserHavePower(userId.getId(), powerInfo.getInterfaceName(), powerInfo.getMethodName()) != 0;
+    public Boolean havePower(User userId, PowerInfo powerInfo) {
+        return dao.checkUserHavePower(userId.getId().getId(), powerInfo.getInterfaceName(), powerInfo.getMethodName()) != 0;
     }
 
     @Override
-    public void removeDeptPowerByPowerId(PowerId powerId) {
-        dao.deleteDeptPowerMiddleByPowerId(powerId.powerIdValue());
+    public void removeDeptPowerByPowerId(Power powerId) {
+        dao.deleteDeptPowerMiddleByPowerId(powerId.getId().getId());
     }
 
     @Override

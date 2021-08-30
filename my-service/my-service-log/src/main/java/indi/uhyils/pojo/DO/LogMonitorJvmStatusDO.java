@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * JVM实时信息
@@ -14,7 +14,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 14时18分
  */
-public class LogMonitorJvmStatusDO extends BaseDoDO {
+public class LogMonitorJvmStatusDO extends BaseDO {
 
     private Long fid;
 

@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.request.SubscribeRequest;
 
 /**
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DTO.request.SubscribeRequest;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月27日 17时17分
  */
-public class ApiSubscribeDO extends BaseDoDO {
+public class ApiSubscribeDO extends BaseDO {
 
     /**
      * 订阅用户id

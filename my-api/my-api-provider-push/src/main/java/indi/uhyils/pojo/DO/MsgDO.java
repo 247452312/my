@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 消息entity
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月29日 07时53分
  */
-public class MsgDO extends BaseDoDO {
+public class MsgDO extends BaseDO {
 
     /**
      * 发送类型

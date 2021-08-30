@@ -1,6 +1,6 @@
 package indi.uhyils.assembler;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 文件创建日期 2021年08月26日 08时51分
  */
-public abstract class AbstractAssembler<DO extends BaseDoDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO> implements BaseAssembler<DO, ENTITY, DTO> {
+public abstract class AbstractAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO> implements BaseAssembler<DO, ENTITY, DTO> {
 
     @Override
     public DO toDo(ENTITY entity) {

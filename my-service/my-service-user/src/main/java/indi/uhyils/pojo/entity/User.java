@@ -4,16 +4,24 @@ import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;
+import indi.uhyils.pojo.entity.type.PowerInfo;
+import indi.uhyils.pojo.entity.type.UserName;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.RoleRepository;
+import indi.uhyils.repository.UserRepository;
+import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.BeanUtil;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.MD5Util;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -32,8 +40,25 @@ public class User extends AbstractDoEntity<UserDO> {
 
     private Role role;
 
+    private Token token;
+
     public User(UserDO userDO) {
         super(userDO);
+    }
+
+    public User(UserName userName, Password password) {
+        super(parseUserNamePasswordToDO(userName, password));
+    }
+
+    private static UserDO parseUserNamePasswordToDO(UserName userName, Password password) {
+        UserDO userDO = new UserDO();
+        userDO.setUsername(userName.getUserName());
+        userDO.setPassword(password.getPassword());
+        return userDO;
+    }
+
+    public User(Long id) {
+        super(id, new UserDO());
     }
 
     public User(UserDO userDO, RoleDO roleDO) {
@@ -101,7 +126,7 @@ public class User extends AbstractDoEntity<UserDO> {
         if (role != null) {
             return;
         }
-        Role role = roleRepository.find(new Identifier(getData().getRoleId()));
+        Role role = roleRepository.find(new Identifier(data.getRoleId()));
         role.initDept(deptRepository, powerRepository, menuRepository);
         RoleDO roleDO = role.toDo();
         this.role = new Role(roleDO);
@@ -117,20 +142,6 @@ public class User extends AbstractDoEntity<UserDO> {
         this.role = role;
     }
 
-    /**
-     * 用户转token
-     *
-     * @return
-     */
-    public Token parseToken(String salt, String encodeRules) {
-        UserId userId = toId();
-        return userId.toToken(salt, encodeRules);
-    }
-
-    public UserId toId() {
-        return new UserId(getData().getId());
-    }
-
     public void assertRole() {
         AssertUtil.assertTrue(role != null);
     }
@@ -144,4 +155,102 @@ public class User extends AbstractDoEntity<UserDO> {
         List<Menu> menu = role.menus();
         return menus.stream().filter(t -> CollectionUtil.contains(menu, t, entity -> entity.toDo().getId())).collect(Collectors.toList());
     }
+
+
+    public User login(UserRepository userRepository, String salt, String encodeRole) {
+        AssertUtil.assertTrue(data.getUsername() != null);
+        AssertUtil.assertTrue(data.getPassword() != null);
+
+        /*查询是否正确*/
+        User user = userRepository.checkLogin(this);
+        BeanUtil.copyProperties(user.data, data);
+        this.token = user.toToken(salt, encodeRole);
+        return this;
+    }
+
+    public UserName username() {
+        return new UserName(data.getUsername());
+    }
+
+    public Password password() {
+        return new Password(data.getPassword());
+    }
+
+
+    public Token toToken(String salt, String encodeRules) {
+        StringBuilder sb = new StringBuilder(26 + salt.length());
+
+        //生成日期部分 8位
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddhhmmss");
+        String format = localDateTime.format(dateTimeFormatter);
+        sb.append(format);
+        Random random = new Random(90);
+        int randomNum = random.nextInt() + 10;
+        //两位随机数 两位
+        sb.append(randomNum);
+
+        // 用户id 19位
+        String str = getId().toString();
+        long i = 19L - str.length();
+        // long 最大19位 如果不够 最高位补0
+        StringBuilder sbTemp = new StringBuilder(19);
+        for (int j = 0; j < i; j++) {
+            sbTemp.append("0");
+        }
+        sbTemp.append(str);
+        sb.append(sbTemp);
+        //盐 x位
+        sb.append(salt);
+
+        return new Token(id.getId(), AESUtil.AESEncode(encodeRules, sb.toString()));
+    }
+
+    public Boolean havePower(PowerInfo powerInfo, PowerRepository rep) {
+        return rep.havePower(this, powerInfo);
+    }
+
+
+    public void removeUserInRedis(UserRepository userRepository) {
+        //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
+        Boolean haveUserId = userRepository.checkCacheUserId(this);
+
+        if (haveUserId != null && haveUserId) {
+            userRepository.removeUserInCacheById(this);
+        }
+    }
+
+    public void addUserToRedis(UserRepository userRepository) {
+        userRepository.cacheUser(token, this);
+    }
+
+
+    public String tokenValue() {
+        return token.getToken();
+    }
+
+    public Boolean logout(UserRepository userRepository) {
+        boolean result = userRepository.removeUserByToken(token);
+        if (result) {
+            result = userRepository.removeUserInCacheById(this);
+        }
+        return result;
+    }
+
+    public void checkPassword(Password password, UserRepository userRepository) {
+        userRepository.checkPassword(this, password);
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param password
+     * @param userRepository
+     */
+    public void changeToNewPassword(Password password, UserRepository userRepository) {
+        data.setPassword(password.toMD5Str());
+        userRepository.save(this);
+
+    }
+
 }

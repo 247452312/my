@@ -13,10 +13,9 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.IdsCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.pojo.entity.AbstractEntity;
 import indi.uhyils.pojo.entity.Dept;
-import indi.uhyils.pojo.entity.DeptId;
 import indi.uhyils.pojo.entity.Role;
-import indi.uhyils.pojo.entity.RoleId;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.service.RoleService;
@@ -50,19 +49,19 @@ public class RoleServiceImpl extends AbstractDoService<RoleDO, Role, RoleDTO, Ro
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept", "sys_role_dept"})
     public RoleDTO getRoleByRoleId(IdQuery request) {
-        RoleId roleId = new RoleId(request.getId());
-        Role role = roleId.completion(rep);
-        AssertUtil.assertTrue(role != null, "查询失败");
+        Role role = new Role(request.getId());
+        role.completion(rep);
+        AssertUtil.assertTrue(role.toDo() != null, "查询失败");
         return assem.toDTO(role);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept"})
     public Boolean putDeptsToRole(PutDeptsToRoleCommand request) {
-        RoleId roleId = new RoleId(request.getRoleId());
+        Role roleId = new Role(request.getRoleId());
 
         roleId.cleanDeptLink(rep);
-        roleId.forceInitDeptIds(request.getDeptIds().stream().map(DeptId::new).collect(Collectors.toList()));
+        roleId.forceInitDeptIds(request.getDeptIds().stream().map(Dept::new).collect(Collectors.toList()));
         roleId.createDeptLink(rep);
         return true;
     }
@@ -82,26 +81,26 @@ public class RoleServiceImpl extends AbstractDoService<RoleDO, Role, RoleDTO, Ro
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dept", "sys_role_dept"})
     public List<DeptDTO> getUserDeptsByRoleId(IdQuery request) {
-        RoleId roleId = new RoleId(request.getId());
+        Role roleId = new Role(request.getId());
         roleId.fillDeptIds(rep);
-        List<DeptId> deptIds = roleId.deptIds();
-        List<Dept> list = deptRepository.find(deptIds);
+        List<Dept> deptIds = roleId.deptIds();
+        List<Dept> list = deptRepository.find(deptIds.stream().map(AbstractEntity::getId).collect(Collectors.toList()));
         return list.stream().map(t -> deptAssembler.toDTO(t)).collect(Collectors.toList());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_role_dept", "sys_dept"})
     public List<GetAllDeptWithHaveMarkDTO> getAllDeptWithHaveMark(IdQuery request) {
-        RoleId roleId = new RoleId(request.getId());
+        Role roleId = new Role(request.getId());
         return roleId.toDeptWithHaveMark(rep);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept", "sys_user"})
     public Boolean deleteRole(IdCommand request) {
-        RoleId roleId = new RoleId(request.getId());
+        Role roleId = new Role(request.getId());
         roleId.cleanDeptLink(rep);
-        rep.remove(roleId);
+        roleId.removeSelf(rep);
         return true;
     }
 

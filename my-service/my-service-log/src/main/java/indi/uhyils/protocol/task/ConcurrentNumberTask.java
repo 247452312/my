@@ -1,17 +1,17 @@
-package indi.uhyils.task;
+package indi.uhyils.protocol.task;
 
 import indi.uhyils.context.MyContext;
 import indi.uhyils.dao.TraceInfoDao;
 import indi.uhyils.enum_.LogTypeEnum;
-import indi.uhyils.pojo.DO.DictItemDO;
-import indi.uhyils.pojo.DTO.request.GetByCodeRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.GetByCodeRequest;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.protocol.rpc.DictProvider;
 import indi.uhyils.rpc.annotation.RpcReference;
-import indi.uhyils.protocol.rpc.provider.DictProvider;
 import indi.uhyils.util.DefaultRequestBuildUtil;
 import indi.uhyils.util.NacosUtil;
-import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -45,13 +45,13 @@ public class ConcurrentNumberTask {
         Integer countByStartTime = traceInfoDao.getCountByTypeAndStartTime(LogTypeEnum.CONTROLLER.getCode(), System.currentTimeMillis() - 1000L);
         //获取字典中人工设置的自动降级的并发数
         GetByCodeRequest request = new GetByCodeRequest();
-        DefaultRequest adminDefaultRequest = DefaultRequestBuildUtil.getAdminDefaultRequest();
+        DefaultCQE adminDefaultRequest = DefaultRequestBuildUtil.getAdminDefaultRequest();
         request.setUser(adminDefaultRequest.getUser());
         request.setCode(MyContext.CONCURRENT_NUM_DICT_CODE);
-        ServiceResult<ArrayList<DictItemDO>> byCode = dictService.getByCode(request);
-        ArrayList<DictItemDO> data = byCode.validationAndGet();
-        DictItemDO dictItemEntity = data.get(0);
-        Long concurrentNumberSetable = Long.parseLong(dictItemEntity.getValue().toString());
+        ServiceResult<List<DictItemDTO>> code = dictService.getByCode(request);
+        List<DictItemDTO> data = code.validationAndGet();
+        DictItemDTO dictItemEntity = data.get(0);
+        Long concurrentNumberSetable = Long.parseLong(dictItemEntity.getValue());
 
         //如果已经降级过了
         if (degradation) {

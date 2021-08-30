@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 数据字典子项(DictItem)表 数据库实体类
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @version 1.0
  * @date 文件创建日期 2021年08月27日 08时32分41秒
  */
-public class DictItemDO extends BaseDoDO {
+public class DictItemDO extends BaseDO {
 
     private static final long serialVersionUID = -37338752281642543L;
 

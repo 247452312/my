@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 设备回调表(DeviceCallback)表 数据库实体类
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @version 1.0
  * @date 文件创建日期 2021年08月27日 08时21分16秒
  */
-public class DeviceCallbackDO extends BaseDoDO {
+public class DeviceCallbackDO extends BaseDO {
 
     private static final long serialVersionUID = 527480449440624389L;
 

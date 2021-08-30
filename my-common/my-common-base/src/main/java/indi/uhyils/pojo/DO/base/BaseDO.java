@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DTO.UserDTO;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 13时23分
  */
-public abstract class BaseDoDO extends BaseIdDO {
+public abstract class BaseDO extends BaseIdDO {
 
     /**
      * 创建时间

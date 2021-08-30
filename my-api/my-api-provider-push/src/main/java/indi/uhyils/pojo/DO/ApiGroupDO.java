@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月30日 07时54分
  */
-public class ApiGroupDO extends BaseDoDO {
+public class ApiGroupDO extends BaseDO {
 
     /**
      * 名称

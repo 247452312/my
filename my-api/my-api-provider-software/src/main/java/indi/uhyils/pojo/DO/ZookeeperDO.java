@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * zookeeper
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 13时04分
  */
-public class ZookeeperDO extends BaseDoDO {
+public class ZookeeperDO extends BaseDO {
 
     /**
      * 登录用户名

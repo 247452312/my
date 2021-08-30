@@ -13,7 +13,8 @@ import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.IdsCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.Dept;
-import indi.uhyils.pojo.entity.DeptId;
+import indi.uhyils.pojo.entity.Menu;
+import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.service.DeptService;
@@ -43,10 +44,10 @@ public class DeptServiceImpl extends AbstractDoService<DeptDO, Dept, DeptDTO, De
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public Boolean putPowersToDept(PutPowersToDeptCommand request) {
-        DeptId deptId = new DeptId(request.getDeptId());
+        Dept deptId = new Dept(request.getDeptId());
         // 清空之前这个部门的权限
         deptId.cleanPower(rep);
-        deptId.addPower(request.getPowerIds(), rep);
+        deptId.addPower(request.getPowerIds().stream().map(Power::new).collect(Collectors.toList()), rep);
         return true;
     }
 
@@ -61,10 +62,10 @@ public class DeptServiceImpl extends AbstractDoService<DeptDO, Dept, DeptDTO, De
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public Boolean putMenusToDept(PutMenusToDeptsCommand request) {
-        DeptId deptId = new DeptId(request.getDeptId());
+        Dept deptId = new Dept(request.getDeptId());
         // 清空之前这个部门的按钮
         deptId.cleanMenu(rep);
-        deptId.addMenu(request.getMenuIds(), rep);
+        deptId.addMenu(request.getMenuIds().stream().map(Menu::new).collect(Collectors.toList()), rep);
         return true;
     }
 
@@ -77,7 +78,7 @@ public class DeptServiceImpl extends AbstractDoService<DeptDO, Dept, DeptDTO, De
     @Override
     @ReadWriteMark(tables = {"sys_dept_power", "sys_power"})
     public List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(IdQuery request) {
-        return rep.getAllPowerWithHaveMark(new DeptId(request.getId()));
+        return rep.getAllPowerWithHaveMark(new Dept(request.getId()));
     }
 
     @Override

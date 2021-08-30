@@ -2,10 +2,8 @@ package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
-import indi.uhyils.pojo.entity.DeptId;
+import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Role;
-import indi.uhyils.pojo.entity.RoleDept;
-import indi.uhyils.pojo.entity.RoleId;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
 
@@ -23,7 +21,7 @@ public interface RoleRepository extends BaseEntityRepository<RoleDO, Role> {
      *
      * @param roleId
      */
-    void cleanDeptLink(RoleId roleId);
+    void cleanDeptLink(Role roleId);
 
     /**
      * 添加角色和部门的连接
@@ -31,7 +29,7 @@ public interface RoleRepository extends BaseEntityRepository<RoleDO, Role> {
      * @param roleId
      * @param deptIds
      */
-    void addRoleDeptLink(RoleId roleId, List<DeptId> deptIds);
+    void addRoleDeptLink(Role roleId, List<Dept> deptIds);
 
     /**
      * 根据id删除角色和link的连接
@@ -54,7 +52,7 @@ public interface RoleRepository extends BaseEntityRepository<RoleDO, Role> {
      *
      * @return
      */
-    List<RoleDept> findRoleDeptLinkByRoleId(RoleId roleId);
+    List<Role> findRoleDeptLinkByRoleId(Role roleId);
 
     /**
      * 根据角色id获取
@@ -63,5 +61,5 @@ public interface RoleRepository extends BaseEntityRepository<RoleDO, Role> {
      *
      * @return
      */
-    List<GetAllDeptWithHaveMarkDTO> findDeptWithHaveMark(RoleId roleId);
+    List<GetAllDeptWithHaveMarkDTO> findDeptWithHaveMark(Role roleId);
 }

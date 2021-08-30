@@ -22,11 +22,8 @@ import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.Dict;
-import indi.uhyils.pojo.entity.DictId;
 import indi.uhyils.pojo.entity.DictItem;
-import indi.uhyils.pojo.entity.DictItemCode;
-import indi.uhyils.pojo.entity.DictItemId;
-import indi.uhyils.pojo.entity.MenuId;
+import indi.uhyils.pojo.entity.Menu;
 import indi.uhyils.repository.DictItemRepository;
 import indi.uhyils.repository.DictRepository;
 import indi.uhyils.repository.MenuRepository;
@@ -97,10 +94,9 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public List<DictItemDTO> getItemByDictId(IdQuery request) {
-        DictId dictId = new DictId(request.getId());
+        Dict dictId = new Dict(request.getId());
         dictId.fillItem(dictItemRepository);
-        List<DictItemDTO> collect = dictId.toItem().stream().map(dictItemAssembler::toDTO).collect(Collectors.toList());
-        return collect;
+        return dictId.toItem().stream().map(dictItemAssembler::toDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -115,16 +111,16 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
     public Boolean deleteItem(IdCommand request) {
-        DictItemId dictItemId = new DictItemId(request.getId());
-        DictItem item = dictItemId.completion(dictItemRepository);
-        dictItemRepository.remove(Collections.singletonList(item));
+        DictItem dictItemId = new DictItem(request.getId());
+        dictItemId.completion(dictItemRepository);
+        dictItemRepository.remove(Collections.singletonList(dictItemId));
         return true;
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
     public Boolean cleanDictItem(IdCommand request) {
-        DictId dictId = new DictId(request.getId());
+        Dict dictId = new Dict(request.getId());
         dictId.fillItem(dictItemRepository);
         dictId.cleanItem(dictItemRepository);
         return true;
@@ -133,67 +129,61 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public DictItemDTO getItemById(IdQuery request) {
-        DictItemId dictItemId = new DictItemId(request.getId());
-        DictItem completion = dictItemId.completion(dictItemRepository);
-        return dictItemAssembler.toDTO(completion);
+        DictItem dictItemId = new DictItem(request.getId());
+        dictItemId.completion(dictItemRepository);
+        return dictItemAssembler.toDTO(dictItemId);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public Page<DictItemDTO> getByItemArgs(GetByItemArgsQuery request) {
         Page<DictItem> dictItemPage = dictItemRepository.find(request);
-        Page<DictItemDTO> result = dictItemAssembler.toDTO(dictItemPage);
-        return result;
+        return dictItemAssembler.toDTO(dictItemPage);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public VersionInfoDTO getVersionInfoResponse(DefaultCQE request) {
-        DictItemCode dictItemCode = new DictItemCode(VERSION_CODE);
+        Dict dictItemCode = new Dict(VERSION_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
-        VersionInfoDTO build = VersionInfoDTO.build(items);
-        return build;
+        return VersionInfoDTO.build(items);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public LastPlanDTO getLastPlanResponse(DefaultCQE request) {
-        DictItemCode dictItemCode = new DictItemCode(VERSION_CODE);
+        Dict dictItemCode = new Dict(LAST_PLAN_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
-        LastPlanDTO build = LastPlanDTO.build(items);
-        return build;
+        return LastPlanDTO.build(items);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public List<String> getAllMenuIcon(DefaultCQE request) {
-        DictItemCode dictItemCode = new DictItemCode(VERSION_CODE);
+        Dict dictItemCode = new Dict(MENU_ICON_CLASS_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
-        List<String> result = items.stream().map(DictItemDTO::getValue).collect(Collectors.toList());
-        return result;
+        return items.stream().map(DictItemDTO::getValue).collect(Collectors.toList());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"}, cacheType = CacheTypeEnum.ALL_TYPE)
     public List<DictItemDTO> getByCode(GetByCodeRequest request) {
-        DictItemCode dictItemCode = new DictItemCode(VERSION_CODE);
+        Dict dictItemCode = new Dict(request.getCode());
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
-        List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
-        return items;
+        return item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict", "sys_dict_item"})
     public QuickStartDTO getQuickStartResponse(DefaultCQE request) {
-        DictItemCode dictItemCode = new DictItemCode(VERSION_CODE);
+        Dict dictItemCode = new Dict(QUICK_START_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
-        List<MenuDTO> result = items.stream().map(t -> new MenuId(Long.valueOf(t.getValue()))).map(menuRepository::find).map(t -> menuAssembler.toDTO(t)).collect(Collectors.toList());
+        List<MenuDTO> result = items.stream().map(t -> new Menu(Long.valueOf(t.getValue()))).map(menuRepository::find).map(t -> menuAssembler.toDTO(t)).collect(Collectors.toList());
         result.stream().filter(t -> !t.getType()).map(MenuDTO::getName).forEach(t -> LogUtil.error("服务字典中快捷入口(" + t + ") 不是叶子结点"));
-        QuickStartDTO build = QuickStartDTO.build(result);
-        return build;
+        return QuickStartDTO.build(result);
     }
 }

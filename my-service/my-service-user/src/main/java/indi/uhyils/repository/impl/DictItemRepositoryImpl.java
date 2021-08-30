@@ -5,12 +5,11 @@ import indi.uhyils.assembler.DictItemAssembler;
 import indi.uhyils.dao.DictItemDao;
 import indi.uhyils.pojo.DO.DictItemDO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
-import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
 import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
 import indi.uhyils.pojo.cqe.Arg;
-import indi.uhyils.pojo.entity.DictId;
+import indi.uhyils.pojo.entity.Dict;
 import indi.uhyils.pojo.entity.DictItem;
-import indi.uhyils.pojo.entity.DictItemCode;
 import indi.uhyils.repository.DictItemRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 import java.util.ArrayList;
@@ -34,8 +33,8 @@ public class DictItemRepositoryImpl extends AbstractRepository<DictItem, DictIte
 
 
     @Override
-    public List<DictItem> findItemByDictId(DictId dictId) {
-        ArrayList<DictItemDO> byDictId = dao.getByDictId(dictId.getId());
+    public List<DictItem> findItemByDictId(Dict dictId) {
+        ArrayList<DictItemDO> byDictId = dao.getByDictId(dictId.getId().getId());
         return byDictId.stream().map(assembler::toEntity).collect(Collectors.toList());
     }
 
@@ -51,8 +50,8 @@ public class DictItemRepositoryImpl extends AbstractRepository<DictItem, DictIte
     }
 
     @Override
-    public List<DictItem> findItemByDictCode(DictItemCode itemCode) {
-        ArrayList<DictItemDO> byCode = dao.getByCode(itemCode.getCode());
+    public List<DictItem> findItemByDictCode(String itemCode) {
+        ArrayList<DictItemDO> byCode = dao.getByCode(itemCode);
         return byCode.stream().map(assembler::toEntity).collect(Collectors.toList());
     }
 

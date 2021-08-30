@@ -8,9 +8,8 @@ import indi.uhyils.pojo.DO.DeptMenuDO;
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.MenuDTO;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
-import indi.uhyils.pojo.entity.DeptId;
+import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Menu;
-import indi.uhyils.pojo.entity.MenuId;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.MenuIframe;
 import indi.uhyils.repository.MenuRepository;
@@ -41,15 +40,15 @@ public class MenuRepositoryImpl extends AbstractRepository<Menu, MenuDO, MenuDao
     }
 
     @Override
-    public void cleanDept(MenuId menuId) {
-        dao.deleteDeptMenuByMenuIds(Arrays.asList(menuId.menuIdValue()));
+    public void cleanDept(Menu menuId) {
+        dao.deleteDeptMenuByMenuIds(Arrays.asList(menuId.getId().getId()));
     }
 
     @Override
-    public void addDept(MenuId menuId, DeptId newDeptId) {
+    public void addDept(Menu menuId, Dept newDeptId) {
         DeptMenuDO t = new DeptMenuDO();
-        t.setMenuId(menuId.menuIdValue());
-        t.setDeptId(newDeptId.deptIdValue());
+        t.setMenuId(menuId.getId().getId());
+        t.setDeptId(newDeptId.getId().getId());
         t.preInsert();
         deptDao.insertDeptMenu(t);
     }

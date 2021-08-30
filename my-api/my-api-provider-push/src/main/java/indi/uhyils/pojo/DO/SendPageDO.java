@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 页面推送
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月29日 08时10分
  */
-public class SendPageDO extends BaseDoDO {
+public class SendPageDO extends BaseDO {
 
     /**
      * 用户

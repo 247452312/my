@@ -3,9 +3,7 @@ package indi.uhyils.repository;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.User;
-import indi.uhyils.pojo.entity.UserId;
 import indi.uhyils.pojo.entity.type.Password;
-import indi.uhyils.pojo.entity.type.UserName;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
 
@@ -45,12 +43,11 @@ public interface UserRepository extends BaseEntityRepository<UserDO, User> {
     /**
      * 尝试登录
      *
-     * @param userName 用户名
-     * @param password 密码
+     * @param user 包含用户名密码的用户
      *
      * @return
      */
-    User checkLogin(UserName userName, Password password);
+    User checkLogin(User user);
 
     /**
      * 检查redis是否包含用户id
@@ -59,14 +56,14 @@ public interface UserRepository extends BaseEntityRepository<UserDO, User> {
      *
      * @return
      */
-    Boolean checkCacheUserId(UserId userId);
+    Boolean checkCacheUserId(User userId);
 
     /**
      * 根据id删除用户
      *
      * @param userId
      */
-    boolean removeUserInCacheById(UserId userId);
+    boolean removeUserInCacheById(User userId);
 
     /**
      * 向redis中添加user

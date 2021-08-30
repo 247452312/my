@@ -1,13 +1,13 @@
 package indi.uhyils.pojo.DO;
 
 import indi.uhyils.enum_.OrderPriorityEnum;
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
  */
-public class OrderBaseInfoDO extends BaseDoDO {
+public class OrderBaseInfoDO extends BaseDO {
 
     /**
      * 优先级{@link OrderPriorityEnum}

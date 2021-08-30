@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 服务器
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月12日 13时01分
  */
-public class ServerDO extends BaseDoDO {
+public class ServerDO extends BaseDO {
 
     /**
      * 服务器ip

@@ -30,5 +30,4 @@ public interface OrderBaseInfoProvider extends DTOProvider<OrderBaseInfoDTO> {
      * @return
      */
     ServiceResult<GetOneBaseOrderResponse> getOneOrder(IdRequest request);
-
 }

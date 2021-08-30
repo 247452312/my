@@ -8,7 +8,7 @@ package indi.uhyils.pojo.DTO;
  * @version 1.0
  * @date 文件创建日期 2021年08月29日 16时58分55秒
  */
-public class TraceLogDTO extends IdDTO {
+public class TraceLogDTO extends TraceIdDTO {
 
     private static final long serialVersionUID = 566184677223809006L;
 
@@ -22,8 +22,6 @@ public class TraceLogDTO extends IdDTO {
      * 日志等级
      */
     private String logLevel;
-
-    private Long traceId;
 
     private String rpcId;
 
@@ -48,16 +46,6 @@ public class TraceLogDTO extends IdDTO {
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
-
-
-    public Long getTraceId() {
-        return traceId;
-    }
-
-    public void setTraceId(Long traceId) {
-        this.traceId = traceId;
-    }
-
 
     public String getRpcId() {
         return rpcId;

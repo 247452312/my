@@ -20,13 +20,6 @@ public class LoginInfo extends AbstractEntity {
         this.password = password;
     }
 
-    public LoginStatus login(UserRepository userRepository, String salt, String encodeRules) {
-
-        /*查询是否正确*/
-        User user = userRepository.checkLogin(username, password);
-        return new LoginStatus(user.parseToken(salt, encodeRules), user);
-    }
-
     public UserName getUsername() {
         return username;
     }

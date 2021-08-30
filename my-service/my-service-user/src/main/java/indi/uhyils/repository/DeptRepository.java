@@ -4,9 +4,8 @@ import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
 import indi.uhyils.pojo.entity.Dept;
-import indi.uhyils.pojo.entity.DeptId;
-import indi.uhyils.pojo.entity.MenuId;
-import indi.uhyils.pojo.entity.PowerId;
+import indi.uhyils.pojo.entity.Menu;
+import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
@@ -32,17 +31,17 @@ public interface DeptRepository extends BaseEntityRepository<DeptDO, Dept> {
     /**
      * 添加新power
      *
-     * @param deptId
-     * @param powerId
+     * @param dept
+     * @param power
      */
-    void addPowers(DeptId deptId, PowerId powerId);
+    void addPowers(Dept dept, Power power);
 
     /**
      * 清空权限
      *
      * @param deptId
      */
-    void cleanPower(DeptId deptId);
+    void cleanPower(Dept deptId);
 
     /**
      * 删除deptPower
@@ -56,7 +55,7 @@ public interface DeptRepository extends BaseEntityRepository<DeptDO, Dept> {
      *
      * @param deptId
      */
-    void cleanMenu(DeptId deptId);
+    void cleanMenu(Dept deptId);
 
     /**
      * 添加新按钮
@@ -64,7 +63,7 @@ public interface DeptRepository extends BaseEntityRepository<DeptDO, Dept> {
      * @param deptId
      * @param newPowerId
      */
-    void addMenu(DeptId deptId, MenuId newPowerId);
+    void addMenu(Dept deptId, Menu newPowerId);
 
     /**
      * 根据按钮id查询
@@ -73,7 +72,7 @@ public interface DeptRepository extends BaseEntityRepository<DeptDO, Dept> {
      *
      * @return
      */
-    List<GetDeptsByMenuIdDTO> findByMenuId(MenuId menuId);
+    List<GetDeptsByMenuIdDTO> findByMenuId(Menu menuId);
 
     /**
      * 获取全部部门
@@ -89,5 +88,5 @@ public interface DeptRepository extends BaseEntityRepository<DeptDO, Dept> {
      *
      * @return
      */
-    List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(DeptId deptId);
+    List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(Dept deptId);
 }

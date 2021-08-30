@@ -11,11 +11,8 @@ import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
-import indi.uhyils.pojo.entity.LoginInfo;
-import indi.uhyils.pojo.entity.LoginStatus;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.User;
-import indi.uhyils.pojo.entity.UserId;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.pojo.entity.type.UserName;
@@ -74,7 +71,7 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
 
     @Override
     public String getUserToken(IdQuery request) {
-        UserId userId = new UserId(request.getId());
+        User userId = new User(request.getId());
         Token token = userId.toToken(salt, encodeRules);
         return token.getToken();
     }
@@ -88,20 +85,20 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
 
     @Override
     public LoginDTO login(LoginCommand request) {
-        LoginInfo loginInfo = new LoginInfo(new UserName(request.getUsername()), new Password(request.getPassword()));
-        LoginStatus loginResult = loginInfo.login(rep, salt, encodeRules);
+        User user = new User(new UserName(request.getUsername()), new Password(request.getPassword()));
+        user.login(rep, salt, encodeRules);
 
         //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
-        loginResult.removeUserInRedis(rep);
+        user.removeUserInRedis(rep);
         // 登录->加入缓存中
-        loginResult.addUserToRedis(rep);
-        return LoginDTO.buildLoginSuccess(loginResult.tokenValue(), assem.toDTO(loginResult.userValue()));
+        user.addUserToRedis(rep);
+        return LoginDTO.buildLoginSuccess(user.tokenValue(), assem.toDTO(user));
     }
 
     @Override
     public Boolean logout(DefaultCQE request) {
-        LoginStatus loginResult = new LoginStatus(request, assem);
-        return loginResult.logout(rep);
+        User user = new User(assem.toDo(request.getUser()));
+        return user.logout(rep);
     }
 
     @Override
@@ -120,11 +117,11 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
 
     @Override
     public String updatePassword(UpdatePasswordCommand request) {
-        LoginStatus loginStatus = new LoginStatus(request, assem);
+        User user = new User(assem.toDo(request.getUser()));
         //检查密码是否正确
-        loginStatus.checkPassword(new Password(request.getOldPassword()), rep);
+        user.checkPassword(new Password(request.getOldPassword()), rep);
         // 修改到新密码
-        loginStatus.changeToNewPassword(new Password(request.getNewPassword()), rep);
+        user.changeToNewPassword(new Password(request.getNewPassword()), rep);
         return "true";
     }
 

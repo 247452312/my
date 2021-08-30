@@ -11,8 +11,7 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
 import indi.uhyils.pojo.entity.Power;
-import indi.uhyils.pojo.entity.PowerId;
-import indi.uhyils.pojo.entity.UserId;
+import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.InterfaceName;
 import indi.uhyils.pojo.entity.type.MethodName;
 import indi.uhyils.pojo.entity.type.PowerInfo;
@@ -52,7 +51,7 @@ public class PowerServiceImpl extends AbstractDoService<PowerDO, Power, PowerDTO
     @NoToken
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_user", "sys_role", "sys_role_dept", "sys_dept", "sys_dept_power", "sys_power"})
     public Boolean checkUserHavePower(CheckUserHavePowerQuery request) {
-        UserId userId = new UserId(request.getUserId());
+        User userId = new User(request.getUserId());
         PowerInfo powerInfo = new PowerInfo(request.getInterfaceName(), request.getMethodName());
         return userId.havePower(powerInfo, rep);
     }
@@ -60,7 +59,7 @@ public class PowerServiceImpl extends AbstractDoService<PowerDO, Power, PowerDTO
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
     public Boolean deletePower(IdCommand request) {
-        PowerId powerId = new PowerId(request.getId());
+        Power powerId = new Power(request.getId());
         powerId.removeSelfLink(rep);
         powerId.removeSelf(rep);
         return true;

@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 设备指令回应表(Response)表 数据库实体类
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @version 1.0
  * @date 文件创建日期 2021年08月27日 08时21分24秒
  */
-public class ResponseDO extends BaseDoDO {
+public class ResponseDO extends BaseDO {
 
     private static final long serialVersionUID = -53511050141510736L;
 

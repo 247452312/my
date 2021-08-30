@@ -21,8 +21,8 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.Content;
+import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Menu;
-import indi.uhyils.pojo.entity.MenuId;
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.MenuIframe;
@@ -88,9 +88,9 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public Boolean putDeptsToMenu(PutDeptsToMenuCommand request) {
-        MenuId menuId = new MenuId(request.getMenuId());
+        Menu menuId = new Menu(request.getMenuId());
         menuId.cleanDept(rep);
-        menuId.addDepts(request.getDeptIds(), rep);
+        menuId.addDepts(request.getDeptIds().stream().map(Dept::new).collect(Collectors.toList()), rep);
         return true;
     }
 
@@ -148,12 +148,12 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
         /* 注:开启了事务 即@Transactional 参数propagation->事务传播类型,其中Propagation.REQUIRED为如果事务不存在,则创建新事物,如果事务存在,则加入
            isolation事务隔离级别 Isolation.DEFAULT默认隔离级别 */
 
-        MenuId menuId = new MenuId(request.getId());
-        Menu menu = menuId.toMenu(rep);
+        Menu menuId = new Menu(request.getId());
+        menuId.completion(rep);
         // 清空对应的连接
         menuId.cleanDept(rep);
         // 删除自己以及子节点
-        menu.removeSelf(rep, assem);
+        menuId.removeSelf(rep, assem);
         return true;
     }
 
@@ -161,7 +161,7 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu", "sys_dept"})
     public List<GetDeptsByMenuIdDTO> getDeptsByMenuId(IdQuery request) {
-        return deptRepository.findByMenuId(new MenuId(request.getId()));
+        return deptRepository.findByMenuId(new Menu(request.getId()));
     }
 
 }

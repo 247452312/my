@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * 空间坐标表(Space)表 数据库实体类
@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DO.base.BaseDoDO;
  * @version 1.0
  * @date 文件创建日期 2021年08月27日 08时21分32秒
  */
-public class SpaceDO extends BaseDoDO {
+public class SpaceDO extends BaseDO {
 
     private static final long serialVersionUID = 296876313580278733L;
 

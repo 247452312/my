@@ -6,7 +6,6 @@ import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.RoleDeptDO;
 import indi.uhyils.pojo.DTO.RoleDTO;
 import indi.uhyils.pojo.entity.Role;
-import indi.uhyils.pojo.entity.RoleDept;
 
 /**
  * 角色(Role)表 entity,DO,DTO转换工具
@@ -38,8 +37,8 @@ public class RoleAssembler extends AbstractAssembler<RoleDO, Role, RoleDTO> {
         return RoleDTO.class;
     }
 
-    public RoleDept RoleDeptToEntity(RoleDeptDO t) {
-        return new RoleDept(t);
+    public Role RoleDeptToEntity(RoleDeptDO t) {
+        return new Role(t);
     }
 }
 

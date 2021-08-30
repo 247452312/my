@@ -11,9 +11,8 @@ import indi.uhyils.pojo.cqe.Arg;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
 import indi.uhyils.pojo.entity.Dept;
-import indi.uhyils.pojo.entity.DeptId;
-import indi.uhyils.pojo.entity.MenuId;
-import indi.uhyils.pojo.entity.PowerId;
+import indi.uhyils.pojo.entity.Menu;
+import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.base.AbstractRepository;
@@ -46,17 +45,17 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
     }
 
     @Override
-    public void addPowers(DeptId deptId, PowerId powerId) {
+    public void addPowers(Dept deptId, Power power) {
         DeptPowerDO middle = new DeptPowerDO();
-        middle.setDeptId(deptId.deptIdValue());
-        middle.setPowerId(powerId.powerIdValue());
+        middle.setDeptId(deptId.getId().getId());
+        middle.setPowerId(power.getId().getId());
         middle.preInsert();
         dao.insertDeptPower(middle);
     }
 
     @Override
-    public void cleanPower(DeptId deptId) {
-        dao.deleteDeptPowerMiddleByDeptId(deptId.deptIdValue());
+    public void cleanPower(Dept deptId) {
+        dao.deleteDeptPowerMiddleByDeptId(deptId.getId().getId());
     }
 
     @Override
@@ -65,22 +64,22 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
     }
 
     @Override
-    public void cleanMenu(DeptId deptId) {
-        dao.deleteDeptMenuMiddleByDeptId(deptId.deptIdValue());
+    public void cleanMenu(Dept deptId) {
+        dao.deleteDeptMenuMiddleByDeptId(deptId.getId().getId());
     }
 
     @Override
-    public void addMenu(DeptId deptId, MenuId menuId) {
+    public void addMenu(Dept deptId, Menu menuId) {
         DeptMenuDO t = new DeptMenuDO();
-        t.setDeptId(deptId.deptIdValue());
-        t.setMenuId(menuId.menuIdValue());
+        t.setDeptId(deptId.getId().getId());
+        t.setMenuId(menuId.getId().getId());
         t.preInsert();
         dao.insertDeptMenu(t);
     }
 
     @Override
-    public List<GetDeptsByMenuIdDTO> findByMenuId(MenuId menuId) {
-        return dao.getByMenuId(menuId.menuIdValue());
+    public List<GetDeptsByMenuIdDTO> findByMenuId(Menu menuId) {
+        return dao.getByMenuId(menuId.getId().getId());
     }
 
     @Override
@@ -90,8 +89,8 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
     }
 
     @Override
-    public List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(DeptId deptId) {
-        return dao.getAllPowerWithHaveMark(deptId.deptIdValue());
+    public List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(Dept deptId) {
+        return dao.getAllPowerWithHaveMark(deptId.getId().getId());
     }
 
 

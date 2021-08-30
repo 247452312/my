@@ -3,13 +3,13 @@ package indi.uhyils.pojo.DO;
 import indi.uhyils.enum_.OrderNodeFieldSourceEnum;
 import indi.uhyils.enum_.OrderNodeFieldTypeEnum;
 import indi.uhyils.enum_.OrderNodeFieldValueTypeEnum;
-import indi.uhyils.pojo.DO.base.BaseDoDO;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
  */
-public class OrderBaseNodeFieldDO extends BaseDoDO {
+public class OrderBaseNodeFieldDO extends BaseDO {
 
     /**
      * 节点id

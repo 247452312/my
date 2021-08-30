@@ -1,7 +1,10 @@
-package indi.uhyils.trace;
+package indi.uhyils.pojo.trace;
 
 import indi.uhyils.context.MyTraceIdContext;
 import indi.uhyils.pojo.DO.TraceLogDO;
+import indi.uhyils.pojo.DTO.TraceLogDTO;
+import indi.uhyils.pojo.entity.TraceLog;
+import indi.uhyils.repository.base.BaseEntityRepository;
 
 
 /**
@@ -11,10 +14,10 @@ import indi.uhyils.pojo.DO.TraceLogDO;
  * @version 1.0
  * @date 文件创建日期 2021年08月02日 08时41分
  */
-public class LogTraceDeal extends AbstractTraceDeal<TraceLogDO> {
+public class LogTraceDeal extends AbstractTraceDeal<TraceLogDTO> {
 
     @Override
-    protected TraceLogDO getTargetEntity(String[] split) {
+    protected TraceLogDTO getTargetEntity(String[] split) {
         if (split.length < 6) {
             throw new RuntimeException("错误");
         }
@@ -28,7 +31,7 @@ public class LogTraceDeal extends AbstractTraceDeal<TraceLogDO> {
             log.append(split[i]);
             log.append(MyTraceIdContext.PIPE_SYMBOL);
         }
-        TraceLogDO traceLogEntity = new TraceLogDO();
+        TraceLogDTO traceLogEntity = new TraceLogDTO();
         traceLogEntity.setLoggerName(loggerName);
         traceLogEntity.setLogLevel(logLevel);
         traceLogEntity.setTraceId(Long.valueOf(traceId));

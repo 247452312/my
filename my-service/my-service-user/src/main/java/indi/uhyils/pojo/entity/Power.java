@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.PowerDO;
+import indi.uhyils.repository.PowerRepository;
 
 
 /**
@@ -15,4 +16,18 @@ public class Power extends AbstractDoEntity<PowerDO> {
     public Power(PowerDO powerDO) {
         super(powerDO);
     }
+
+
+    public Power(Long id) {
+        super(id, new PowerDO());
+    }
+
+    public void removeSelfLink(PowerRepository rep) {
+        rep.removeDeptPowerByPowerId(this);
+    }
+
+    public void removeSelf(PowerRepository rep) {
+        rep.remove(this.getId());
+    }
+
 }

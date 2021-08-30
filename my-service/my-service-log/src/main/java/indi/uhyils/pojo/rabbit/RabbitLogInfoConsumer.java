@@ -5,14 +5,17 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import indi.uhyils.dao.TraceDetailDao;
-import indi.uhyils.dao.TraceInfoDao;
-import indi.uhyils.dao.TraceLogDao;
 import indi.uhyils.enum_.LogDetailTypeEnum;
-import indi.uhyils.trace.DetailTraceDeal;
-import indi.uhyils.trace.LinkTraceDeal;
-import indi.uhyils.trace.LogTraceDeal;
-import indi.uhyils.trace.TraceDealInterface;
+import indi.uhyils.pojo.DTO.TraceDetailDTO;
+import indi.uhyils.pojo.DTO.TraceInfoDTO;
+import indi.uhyils.pojo.DTO.TraceLogDTO;
+import indi.uhyils.pojo.cqe.command.AddCommand;
+import indi.uhyils.pojo.trace.DetailTraceDeal;
+import indi.uhyils.pojo.trace.LinkTraceDeal;
+import indi.uhyils.pojo.trace.LogTraceDeal;
+import indi.uhyils.service.TraceDetailService;
+import indi.uhyils.service.TraceInfoService;
+import indi.uhyils.service.TraceLogService;
 import indi.uhyils.util.LogUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -34,13 +37,13 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
 
     private static final String THREAD_NAME = "log_deal_thread_";
 
-    private Executor executor;
+    private final Executor executor;
 
-    private TraceInfoDao traceInfoDao;
+    private final TraceDetailService traceDetailService;
 
-    private TraceDetailDao traceDetailDao;
+    private final TraceInfoService traceInfoService;
 
-    private TraceLogDao traceLogDao;
+    private final TraceLogService traceLogService;
 
     /**
      * @param channel
@@ -50,9 +53,9 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
         super(channel);
         int process = Runtime.getRuntime().availableProcessors();
         executor = new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory(), new CallerRunsPolicy());
-        traceInfoDao = applicationContext.getBean(TraceInfoDao.class);
-        traceDetailDao = applicationContext.getBean(TraceDetailDao.class);
-        traceLogDao = applicationContext.getBean(TraceLogDao.class);
+        traceDetailService = applicationContext.getBean(TraceDetailService.class);
+        traceInfoService = applicationContext.getBean(TraceInfoService.class);
+        traceLogService = applicationContext.getBean(TraceLogService.class);
     }
 
     @Override
@@ -62,24 +65,28 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
             try {
                 text = text.substring(1, text.length() - 1);
                 LogDetailTypeEnum parse = LogDetailTypeEnum.parse(text.charAt(0));
-                TraceDealInterface traceDeal = null;
                 switch (parse) {
                     case DETAIL:
-                        traceDeal = new DetailTraceDeal();
-                        traceDeal.init(traceDetailDao);
+                        TraceDetailDTO traceDetailDO = new DetailTraceDeal().doDeal(text);
+                        AddCommand<TraceDetailDTO> addCommand = new AddCommand<>();
+                        addCommand.setDto(traceDetailDO);
+                        traceDetailService.add(addCommand);
                         break;
                     case LOG:
-                        traceDeal = new LogTraceDeal();
-                        traceDeal.init(traceLogDao);
+                        TraceLogDTO traceDeal = new LogTraceDeal().doDeal(text);
+                        AddCommand<TraceLogDTO> add = new AddCommand<>();
+                        add.setDto(traceDeal);
+                        traceLogService.add(add);
                         break;
                     case LINK:
-                        traceDeal = new LinkTraceDeal();
-                        traceDeal.init(traceInfoDao);
+                        TraceInfoDTO traceInfoDTO = new LinkTraceDeal().doDeal(text);
+                        AddCommand<TraceInfoDTO> traceInfoDTOAddCommand = new AddCommand<>();
+                        traceInfoDTOAddCommand.setDto(traceInfoDTO);
+                        traceInfoService.add(traceInfoDTOAddCommand);
                         break;
                     default:
                         throw new RuntimeException("前缀错误" + text.charAt(0));
                 }
-                traceDeal.doDeal(text);
             } catch (Exception e) {
                 LogUtil.error(e, text);
             }
