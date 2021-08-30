@@ -3,6 +3,7 @@ package indi.uhyils.repository;
 import indi.uhyils.pojo.DO.BlackListDO;
 import indi.uhyils.pojo.entity.BlackList;
 import indi.uhyils.repository.base.BaseEntityRepository;
+import java.util.List;
 
 /**
  * 黑名单(BlackList)表 数据仓库层
@@ -13,5 +14,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  */
 public interface BlackListRepository extends BaseEntityRepository<BlackListDO, BlackList> {
 
+
+    /**
+     * 获取所有的ip黑名单
+     *
+     * @return
+     */
+    List<String> findAllIpBlackList();
 
 }

@@ -10,7 +10,7 @@ import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.DTO.response.GetLogTypeResponse;
+import indi.uhyils.pojo.DTO.response.LogTypeDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.Query;
 import indi.uhyils.pojo.cqe.query.TraceIdQuery;
@@ -20,7 +20,6 @@ import indi.uhyils.repository.TraceInfoRepository;
 import indi.uhyils.service.TraceInfoService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 /**
@@ -42,39 +41,34 @@ public class TraceInfoServiceImpl extends AbstractDoService<TraceInfoDO, TraceIn
     public List<TraceInfoDTO> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request) {
         Trace trace = new Trace(request.getTraceId(), request.getRpcId());
         List<TraceInfo> lists = trace.findTraceInfoByTraceIdAndRpcId(rep);
-        return assem.listToDTO(lists);
+        return assem.listEntityToDTO(lists);
     }
 
     @Override
     public List<TraceInfoDTO> getLinkByTraceId(TraceIdQuery request) {
-        List<TraceInfoDO> list = dao.getTraceInfoByTraceId(request.getTraceId());
-        return list.stream().map(assem::toDTO).collect(Collectors.toList());
+        List<TraceInfo> traceInfo = rep.findLinkByTraceId(request.getTraceId());
+        return assem.listEntityToDTO(traceInfo);
     }
 
     @Override
     public Page<TraceInfoDTO> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request) {
-        List<TraceInfoDO> list = dao.getTraceInfoByArgAndPage(request);
-        Integer count = dao.getTraceInfoByArgAndPageCount(request);
-        Page<TraceInfoDO> build = Page.build(request, list, count);
-        return assem.pageToDTO(build);
+        Page<TraceInfo> traceInfoPage = rep.find(request);
+        return assem.pageToDTO(traceInfoPage);
     }
 
     @Override
     public Page<TraceDetailStatisticsDTO> getTraceStatistics(Query request) {
-        List<TraceDetailStatisticsView> list = dao.getTraceStatistics(request);
-        List<TraceDetailStatisticsDTO> collect = list.stream().map(assem::viewToDTO).collect(Collectors.toList());
-        Integer count = dao.getTraceStatisticsCount(request);
-        return Page.build(request, collect, count);
+        Page<TraceDetailStatisticsView> result = rep.findView(request);
+        return assem.pageViewToDTO(result);
     }
 
     @Override
-    public ArrayList<GetLogTypeResponse> getLogType(DefaultCQE request) {
-        ArrayList<GetLogTypeResponse> list = new ArrayList<>();
+    public ArrayList<LogTypeDTO> getLogType(DefaultCQE request) {
+        ArrayList<LogTypeDTO> list = new ArrayList<>();
         for (LogTypeEnum value : LogTypeEnum.values()) {
-            GetLogTypeResponse build = GetLogTypeResponse.build(value.name(), value.getCode());
+            LogTypeDTO build = LogTypeDTO.build(value.name(), value.getCode());
             list.add(build);
         }
         return list;
     }
-
 }

@@ -1,6 +1,11 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
 import indi.uhyils.pojo.DO.TraceInfoDO;
+import indi.uhyils.pojo.DTO.TraceDetailStatisticsDTO;
+import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
+import indi.uhyils.pojo.cqe.query.Query;
 import indi.uhyils.pojo.entity.OnlineMonitors;
 import indi.uhyils.pojo.entity.Trace;
 import indi.uhyils.pojo.entity.TraceInfo;
@@ -43,4 +48,31 @@ public interface TraceInfoRepository extends BaseEntityRepository<TraceInfoDO, T
      * @return
      */
     Integer findRpcExecuteCount(OnlineMonitors logMonitors);
+
+    /**
+     * 根据traceId获取link
+     *
+     * @param traceId
+     *
+     * @return
+     */
+    List<TraceInfo> findLinkByTraceId(Long traceId);
+
+    /**
+     * 根据query获取
+     *
+     * @param request
+     *
+     * @return
+     */
+    Page<TraceInfo> find(GetTraceInfoByArgAndPageRequest request);
+
+    /**
+     * 视图获取
+     *
+     * @param request
+     *
+     * @return
+     */
+    Page<TraceDetailStatisticsView> findView(Query request);
 }

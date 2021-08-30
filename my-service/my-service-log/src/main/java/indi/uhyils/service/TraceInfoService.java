@@ -6,7 +6,7 @@ import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.DTO.response.GetLogTypeResponse;
+import indi.uhyils.pojo.DTO.response.LogTypeDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.Query;
 import indi.uhyils.pojo.cqe.query.TraceIdQuery;
@@ -65,6 +65,6 @@ public interface TraceInfoService extends BaseDoService<TraceInfoDTO> {
      *
      * @return
      */
-    List<GetLogTypeResponse> getLogType(DefaultCQE request);
+    List<LogTypeDTO> getLogType(DefaultCQE request);
 
 }

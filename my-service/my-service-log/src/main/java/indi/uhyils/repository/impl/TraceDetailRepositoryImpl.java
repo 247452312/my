@@ -6,8 +6,10 @@ import indi.uhyils.dao.TraceDetailDao;
 import indi.uhyils.pojo.DO.TraceDetailDO;
 import indi.uhyils.pojo.DTO.TraceDetailDTO;
 import indi.uhyils.pojo.entity.TraceDetail;
+import indi.uhyils.pojo.entity.UserSpiderBehavior;
 import indi.uhyils.repository.TraceDetailRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
 
 
 /**
@@ -25,4 +27,8 @@ public class TraceDetailRepositoryImpl extends AbstractRepository<TraceDetail, T
     }
 
 
+    @Override
+    public List<Long> findLastTime(UserSpiderBehavior userBehavior) {
+        return dao.getTimeByIp(userBehavior.ip(), userBehavior.size());
+    }
 }

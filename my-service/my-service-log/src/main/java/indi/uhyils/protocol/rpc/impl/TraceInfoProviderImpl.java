@@ -7,7 +7,7 @@ import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.DTO.response.TraceInfosDTO;
-import indi.uhyils.pojo.DTO.response.GetLogTypeResponse;
+import indi.uhyils.pojo.DTO.response.LogTypeDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.BaseQuery;
 import indi.uhyils.pojo.cqe.query.TraceIdQuery;
@@ -60,7 +60,7 @@ public class TraceInfoProviderImpl extends BaseDefaultProvider<TraceInfoDTO> imp
     }
 
     @Override
-    public ServiceResult<List<GetLogTypeResponse>> getLogType(DefaultCQE request) {
+    public ServiceResult<List<LogTypeDTO>> getLogType(DefaultCQE request) {
         return null;
     }
 }

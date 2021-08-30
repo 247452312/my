@@ -85,7 +85,16 @@ public interface BaseAssembler<DO extends BaseDoDO, ENTITY extends AbstractDoEnt
      *
      * @return
      */
-    List<DTO> listToDTO(List<ENTITY> noPage);
+    List<DTO> listEntityToDTO(List<ENTITY> noPage);
+
+    /**
+     * 列表转DTO
+     *
+     * @param list
+     *
+     * @return
+     */
+    List<DTO> listDoToDTO(List<DO> list);
 
     /**
      * 列表转entity

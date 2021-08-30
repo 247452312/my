@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.response;
 
-import java.io.Serializable;
+import indi.uhyils.pojo.DTO.BaseDTO;
 
 
 /**
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @version 1.0
  * @date 文件创建日期 2021年08月05日 09时17分
  */
-public class GetLogTypeResponse implements Serializable {
+public class LogTypeDTO implements BaseDTO {
 
     /**
      * 日志名称
@@ -20,8 +20,8 @@ public class GetLogTypeResponse implements Serializable {
      */
     private Integer code;
 
-    public static GetLogTypeResponse build(String name, Integer code) {
-        GetLogTypeResponse build = new GetLogTypeResponse();
+    public static LogTypeDTO build(String name, Integer code) {
+        LogTypeDTO build = new LogTypeDTO();
         build.name = name;
         build.code = code;
         return build;

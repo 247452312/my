@@ -2,7 +2,7 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.BlackListDO;
-import java.util.ArrayList;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -19,6 +19,6 @@ public interface BlackListDao extends DefaultDao<BlackListDO> {
      *
      * @return ip黑名单
      */
-    ArrayList<String> getAllIpBlackList();
+    List<String> getAllIpBlackList();
 
 }

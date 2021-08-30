@@ -4,13 +4,19 @@ import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.TraceInfoAssembler;
 import indi.uhyils.dao.TraceInfoDao;
 import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
 import indi.uhyils.pojo.DO.TraceInfoDO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
+import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
+import indi.uhyils.pojo.cqe.Arg;
+import indi.uhyils.pojo.cqe.query.Query;
 import indi.uhyils.pojo.entity.OnlineMonitors;
 import indi.uhyils.pojo.entity.Trace;
 import indi.uhyils.pojo.entity.TraceInfo;
 import indi.uhyils.repository.TraceInfoRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -44,5 +50,27 @@ public class TraceInfoRepositoryImpl extends AbstractRepository<TraceInfo, Trace
     public Integer findRpcExecuteCount(OnlineMonitors logMonitors) {
         /* 获取接口调用次数 */
         return dao.getCountByTypeAndStartTime(LogTypeEnum.RPC.getCode(), logMonitors.earlyStartTime());
+    }
+
+    @Override
+    public List<TraceInfo> findLinkByTraceId(Long traceId) {
+        ArrayList<TraceInfoDO> traceInfoByTraceId = dao.getTraceInfoByTraceId(traceId);
+        return assembler.listToEntity(traceInfoByTraceId);
+    }
+
+    @Override
+    public Page<TraceInfo> find(GetTraceInfoByArgAndPageRequest request) {
+        List<Arg> args = request.args();
+        args.add(new Arg("trace_id", "=", request.getTraceId()));
+        args.add(new Arg("start_time", ">", request.getStartTime()));
+        args.add(new Arg("type", "=", request.getType()));
+        return find((Query) request);
+    }
+
+    @Override
+    public Page<TraceDetailStatisticsView> findView(Query request) {
+        List<TraceDetailStatisticsView> traceStatistics = dao.getTraceStatistics(request);
+        Integer traceStatisticsCount = dao.getTraceStatisticsCount(request);
+        return Page.build(traceStatistics, request.limit(), traceStatisticsCount);
     }
 }

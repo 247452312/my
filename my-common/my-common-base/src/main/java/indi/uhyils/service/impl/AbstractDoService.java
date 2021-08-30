@@ -63,14 +63,14 @@ public abstract class AbstractDoService<DO extends BaseDoDO, ENTITY extends Abst
     @Override
     public List<DTO> query(IdsQuery order) {
         List<ENTITY> noPage = rep.findNoPage(order);
-        List<DTO> dtos = assem.listToDTO(noPage);
+        List<DTO> dtos = assem.listEntityToDTO(noPage);
         return dtos;
     }
 
     @Override
     public List<DTO> queryNoPage(BaseQuery order) {
         List<ENTITY> noPage = rep.findNoPage(order);
-        List<DTO> dtos = assem.listToDTO(noPage);
+        List<DTO> dtos = assem.listEntityToDTO(noPage);
         return dtos;
     }
 

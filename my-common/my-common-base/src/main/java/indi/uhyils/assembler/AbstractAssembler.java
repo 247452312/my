@@ -50,8 +50,13 @@ public abstract class AbstractAssembler<DO extends BaseDoDO, ENTITY extends Abst
     }
 
     @Override
-    public List<DTO> listToDTO(List<ENTITY> noPage) {
+    public List<DTO> listEntityToDTO(List<ENTITY> noPage) {
         return noPage.stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DTO> listDoToDTO(List<DO> list) {
+        return list.stream().map(t -> this.toDTO(t)).collect(Collectors.toList());
     }
 
     @Override

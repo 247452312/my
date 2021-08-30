@@ -8,6 +8,7 @@ import indi.uhyils.pojo.DTO.BlackListDTO;
 import indi.uhyils.pojo.entity.BlackList;
 import indi.uhyils.repository.BlackListRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
 
 
 /**
@@ -25,4 +26,8 @@ public class BlackListRepositoryImpl extends AbstractRepository<BlackList, Black
     }
 
 
+    @Override
+    public List<String> findAllIpBlackList() {
+        return dao.getAllIpBlackList();
+    }
 }
