@@ -3,8 +3,8 @@ package indi.uhyils.mq.scheduled;
 import com.alibaba.fastjson.JSON;
 import com.rabbitmq.client.ConfirmListener;
 import indi.uhyils.mq.content.RabbitMqContent;
-import indi.uhyils.mq.pojo.mqinfo.JvmStartInfo;
-import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoEvent;
+import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoEvent;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.mq.util.JvmUtil;
 import indi.uhyils.mq.util.MqUtil;
@@ -43,7 +43,7 @@ public class RabbitMqTask {
         System.gc();
         // 如果start信息没有发送过,那么发送start信息(只有项目启动时发送start信息失败时重复发送)
         if (!RabbitMqContent.getLogServiceOnLine()) {
-            JvmStartInfo jvmStartInfo = JvmUtil.getJvmStartInfo(jvmUniqueMark);
+            JvmStartInfoEvent jvmStartInfo = JvmUtil.getJvmStartInfo(jvmUniqueMark);
             MqUtil.sendConfirmMsg(RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.JVM_START_QUEUE_NAME, new ConfirmListener() {
 
                 /**
@@ -58,7 +58,7 @@ public class RabbitMqTask {
                         // 设置interface可以开始干活了
                         RabbitMqContent.setLogServiceOnLine(Boolean.TRUE);
                         // 设置为空 释放内存
-                        JvmStartInfo.setStatusInfos(null);
+                        JvmStartInfoEvent.setStatusInfos(null);
                     }
                 }
 
@@ -74,7 +74,7 @@ public class RabbitMqTask {
             }, JSON.toJSONString(jvmStartInfo));
         } else {
 
-            JvmStatusInfo jvmStatusInfo = JvmUtil.getJvmStatusInfo(jvmUniqueMark);
+            JvmStatusInfoEvent jvmStatusInfo = JvmUtil.getJvmStatusInfo(jvmUniqueMark);
             // 否则正常发送
             MqUtil.sendConfirmMsg(RabbitMqContent.EXCHANGE_NAME, RabbitMqContent.JVM_STATUS_QUEUE_NAME, new ConfirmListener() {
 

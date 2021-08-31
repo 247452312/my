@@ -8,6 +8,8 @@ import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.DTO.response.LogTypeDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.command.BlankCommand;
+import indi.uhyils.pojo.cqe.event.BlankEvent;
 import indi.uhyils.pojo.cqe.query.Query;
 import indi.uhyils.pojo.cqe.query.TraceIdQuery;
 import java.util.List;
@@ -67,4 +69,19 @@ public interface TraceInfoService extends BaseDoService<TraceInfoDTO> {
      */
     List<LogTypeDTO> getLogType(DefaultCQE request);
 
+    /**
+     * 监控并发数
+     *
+     * @param request
+     */
+    void monitorConcurrentNumber(BlankEvent request);
+
+    /**
+     * 获取每秒网关并发数
+     *
+     * @param request
+     *
+     * @return
+     */
+    Long getConcurrentNumber(DefaultCQE request);
 }

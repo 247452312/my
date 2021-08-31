@@ -1,6 +1,7 @@
 package indi.uhyils.service;
 
 
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoEvent;
 import indi.uhyils.pojo.DTO.LogMonitorDTO;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
@@ -32,4 +33,11 @@ public interface LogMonitorService extends BaseDoService<LogMonitorDTO> {
      * @return JVM历史信息 -> 存活的
      */
     JvmInfoLogDTO getJvmInfoLogResponse(DefaultCQE request);
+
+    /**
+     * 接收JVM启动信息
+     *
+     * @param jvmStartInfo
+     */
+    void receiveJvmStartInfo(JvmStartInfoEvent jvmStartInfo);
 }

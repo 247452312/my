@@ -1,6 +1,6 @@
 package indi.uhyils.mq.pojo.mqinfo;
 
-import java.io.Serializable;
+import indi.uhyils.pojo.cqe.event.AbstractEvent;
 
 /**
  * 每个微服务定时任务中微服务的info 一下所有内存单位为m
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月18日 07时36分
  */
-public class JvmStatusInfo implements Serializable {
+public class JvmStatusInfoEvent extends AbstractEvent {
 
     /**
      * jvm使用的总内存

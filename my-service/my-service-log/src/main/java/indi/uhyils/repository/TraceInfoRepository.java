@@ -2,7 +2,6 @@ package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
 import indi.uhyils.pojo.DO.TraceInfoDO;
-import indi.uhyils.pojo.DTO.TraceDetailStatisticsDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.cqe.query.Query;
@@ -38,7 +37,7 @@ public interface TraceInfoRepository extends BaseEntityRepository<TraceInfoDO, T
      *
      * @return
      */
-    Integer findWebRequestCount(OnlineMonitors logMonitors);
+    Long findWebRequestCount(OnlineMonitors logMonitors);
 
     /**
      * 获取rpc总次数
@@ -47,7 +46,7 @@ public interface TraceInfoRepository extends BaseEntityRepository<TraceInfoDO, T
      *
      * @return
      */
-    Integer findRpcExecuteCount(OnlineMonitors logMonitors);
+    Long findRpcExecuteCount(OnlineMonitors logMonitors);
 
     /**
      * 根据traceId获取link
@@ -75,4 +74,27 @@ public interface TraceInfoRepository extends BaseEntityRepository<TraceInfoDO, T
      * @return
      */
     Page<TraceDetailStatisticsView> findView(Query request);
+
+
+    /**
+     * 获取每秒网关并发数
+     *
+     * @return
+     */
+    Long findConcurrentNumber(Integer logType, Long startTime);
+
+    /**
+     * 获取服务是否降级
+     *
+     * @return
+     */
+    Boolean findDegradationStatusInCache();
+
+
+    /**
+     * 修改degradation
+     *
+     * @param degradation
+     */
+    void changeDegradation(boolean degradation);
 }

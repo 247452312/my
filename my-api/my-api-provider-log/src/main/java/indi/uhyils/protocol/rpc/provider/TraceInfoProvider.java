@@ -6,10 +6,10 @@ import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.DTO.response.TraceInfosDTO;
 import indi.uhyils.pojo.DTO.response.LogTypeDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.BaseQuery;
+import indi.uhyils.pojo.cqe.query.Query;
 import indi.uhyils.pojo.cqe.query.TraceIdQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.List;
@@ -28,7 +28,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDTO> {
      *
      * @return
      */
-    ServiceResult<TraceInfosDTO> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request);
+    ServiceResult<List<TraceInfoDTO>> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request);
 
     /**
      * 根据traceId获取这一串
@@ -56,7 +56,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDTO> {
      *
      * @return
      */
-    ServiceResult<Page<TraceDetailStatisticsDTO>> getTraceStatistics(BaseQuery request);
+    ServiceResult<Page<TraceDetailStatisticsDTO>> getTraceStatistics(Query request);
 
     /**
      * 获取日志类型

@@ -2,6 +2,7 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.LogMonitorAssembler;
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoEvent;
 import indi.uhyils.pojo.DO.LogMonitorDO;
 import indi.uhyils.pojo.DTO.LogMonitorDTO;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
@@ -59,5 +60,24 @@ public class LogMonitorServiceImpl extends AbstractDoService<LogMonitorDO, LogMo
         onlineMonitors.initServiceQuality(logMonitorJvmStatusRepository);
         /*做echart图*/
         return onlineMonitors.makeEchart(logMonitorJvmStatusRepository);
+    }
+
+    @Override
+    public void receiveJvmStartInfo(JvmStartInfoEvent jvmStartInfo) {
+        LogMonitor logMonitor = assem.jvmStartInfoToLogMonitor(jvmStartInfo);
+
+        logMonitor.checkMonitorRepeat(rep);
+
+        /*查询有没有同样ip 且同样服务名称的,如果有,将endtime设置为现在,表示发现停止的时间*/
+        logMonitor.changeMonitorThatRepeatByIpAndName(rep);
+
+        /* 新增JVM启动信息 */
+        logMonitor.addSelf(rep);
+
+        /*插入jvmStatus*/
+        logMonitor.addStatus(logMonitorJvmStatusRepository);
+        /*修改结束时间为假想时间*/
+        logMonitor.changeEndTimeLag(rep);
+
     }
 }

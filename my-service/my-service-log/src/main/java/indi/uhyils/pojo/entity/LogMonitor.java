@@ -1,15 +1,21 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.enum_.ServiceQualityEnum;
+import indi.uhyils.mq.content.RabbitMqContent;
+import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.DO.LogMonitorDO;
 import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.LogMonitorJvmStatusRepository;
+import indi.uhyils.repository.LogMonitorRepository;
 import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.CollectionUtil;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * JVM日志表(LogMonitor)表 数据库实体类
@@ -31,6 +37,11 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     private List<LogMonitorJvmStatus> statuses;
 
     /**
+     * 此服务的唯一标示
+     */
+    private JvmUniqueMark unique;
+
+    /**
      * 服务分析
      */
     private List<ServiceQualityEnum> qualitys;
@@ -38,6 +49,14 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     public LogMonitor(LogMonitorDO dO) {
         super(dO);
     }
+
+    public LogMonitor(JvmUniqueMark unique, LogMonitorDO logMonitorDO, List<LogMonitorJvmStatusDO> logMonitorJvmStatusDOS) {
+        super(logMonitorDO);
+        this.unique = unique;
+        this.statuses = logMonitorJvmStatusDOS.stream().map(LogMonitorJvmStatus::new).collect(Collectors.toList());
+
+    }
+
 
     public String echartKey() {
         return toDo().getServiceName() + ":" + toDo().getIp();
@@ -200,5 +219,50 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
         list.add(noHeapMem);
         list.add(heapMem);
         return list;
+    }
+
+    public void checkMonitorRepeat(LogMonitorRepository rep) {
+        Integer i = rep.checkMonitorRepeat(unique);
+        AssertUtil.assertTrue(i == 0, "此服务已存在,不能重复启动");
+    }
+
+    /**
+     * 查询有没有同样ip 且同样服务名称的,如果有,将endtime设置为现在,表示发现停止的时间
+     *
+     * @param rep
+     */
+    public void changeMonitorThatRepeatByIpAndName(LogMonitorRepository rep) {
+        rep.changeMonitorThatRepeatByIpAndName(data.getServiceName(), unique.getIp(), System.currentTimeMillis());
+
+    }
+
+    public void addSelf(LogMonitorRepository rep) {
+        Identifier save = rep.save(this);
+        for (LogMonitorJvmStatus status : statuses) {
+            status.data.setFid(save.getId());
+        }
+    }
+
+    public void addStatus(LogMonitorJvmStatusRepository repository) {
+        repository.save(statuses);
+    }
+
+    public void changeEndTimeLag(LogMonitorRepository rep) {
+        long endTime = 0L;
+        LogMonitorJvmStatus lastEndTimeStatus = null;
+        if (CollectionUtil.isEmpty(statuses)) {
+            return;
+        }
+        for (LogMonitorJvmStatus status : statuses) {
+            Long time = status.data.getTime();
+            if (time > endTime) {
+                endTime = time;
+                lastEndTimeStatus = status;
+            }
+        }
+        // 修改结束时间为假想时间
+        AssertUtil.assertTrue(lastEndTimeStatus.data != null && lastEndTimeStatus.data.getFid() != null, "假想时间所在状态没有fid");
+        lastEndTimeStatus.changeEndTimeLag(rep);
+
     }
 }

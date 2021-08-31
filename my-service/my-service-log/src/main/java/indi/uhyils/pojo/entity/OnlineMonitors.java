@@ -19,9 +19,9 @@ public class OnlineMonitors extends AbstractEntity {
 
     private final List<LogMonitor> logMonitors;
 
-    private Integer webRequestCount;
+    private Long webRequestCount;
 
-    private Integer rpcExecuteCount;
+    private Long rpcExecuteCount;
 
     /**
      * 现在正在运行的微服务的最早时间

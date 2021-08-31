@@ -1,7 +1,10 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.DO.LogMonitorDO;
 import indi.uhyils.pojo.entity.LogMonitor;
+import indi.uhyils.pojo.entity.LogMonitorJvmStatus;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
 
@@ -21,4 +24,38 @@ public interface LogMonitorRepository extends BaseEntityRepository<LogMonitorDO,
      */
     List<LogMonitor> analysisOnlineService();
 
+    /**
+     * 检查服务是否存在
+     *
+     * @param unique
+     *
+     * @return
+     */
+    Integer checkMonitorRepeat(JvmUniqueMark unique);
+
+    /**
+     * 修改服务的时间到现在
+     *
+     * @param serviceName
+     * @param ip
+     * @param currentTimeMillis
+     */
+    void changeMonitorThatRepeatByIpAndName(String serviceName, String ip, long currentTimeMillis);
+
+    /**
+     * 修改微服务的endTime
+     *
+     * @param logMonitor
+     * @param realEndTime
+     */
+    void changeEndTimeLag(LogMonitorJvmStatus logMonitor, long realEndTime);
+
+    /**
+     * 根据unique获取id
+     *
+     * @param unique
+     *
+     * @return
+     */
+    Identifier getIdByUnique(JvmUniqueMark unique);
 }

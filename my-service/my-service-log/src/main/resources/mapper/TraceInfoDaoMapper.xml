@@ -179,7 +179,7 @@
     </select>
 
 
-    <select id="getCountByTypeAndStartTime" resultType="java.lang.Integer">
+    <select id="getCountByTypeAndStartTime" resultType="java.lang.Long">
         select count(*)
         from sys_trace_info a
         where a.log_type = #{code}

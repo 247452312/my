@@ -32,14 +32,14 @@ public class JvmDataStatisticsDTO implements BaseDTO {
     /**
      * 前台请求次数
      */
-    private Integer webRequestCount;
+    private Long webRequestCount;
 
     /**
      * 接口调用次数
      */
-    private Integer interfaceCellCount;
+    private Long interfaceCellCount;
 
-    public static JvmDataStatisticsDTO build(Integer serviceOnlineCount, Map<Long, List<ServiceQualityEnum>> serviceMap, Integer webRequestCount, Integer interfaceCellCount) {
+    public static JvmDataStatisticsDTO build(Integer serviceOnlineCount, Map<Long, List<ServiceQualityEnum>> serviceMap, Long webRequestCount, Long interfaceCellCount) {
         JvmDataStatisticsDTO jvmDataStatisticsResponse = new JvmDataStatisticsDTO();
         jvmDataStatisticsResponse.setServiceOnlineCount(serviceOnlineCount);
         jvmDataStatisticsResponse.setServiceMap(serviceMap);
@@ -74,11 +74,11 @@ public class JvmDataStatisticsDTO implements BaseDTO {
         this.serviceOperationQuality = serviceOperationQuality;
     }
 
-    public Integer getWebRequestCount() {
+    public Long getWebRequestCount() {
         return webRequestCount;
     }
 
-    public void setWebRequestCount(Integer webRequestCount) {
+    public void setWebRequestCount(Long webRequestCount) {
         this.webRequestCount = webRequestCount;
     }
 
@@ -90,11 +90,11 @@ public class JvmDataStatisticsDTO implements BaseDTO {
         this.serviceMap = serviceMap;
     }
 
-    public Integer getInterfaceCellCount() {
+    public Long getInterfaceCellCount() {
         return interfaceCellCount;
     }
 
-    public void setInterfaceCellCount(Integer interfaceCellCount) {
+    public void setInterfaceCellCount(Long interfaceCellCount) {
         this.interfaceCellCount = interfaceCellCount;
     }
 }

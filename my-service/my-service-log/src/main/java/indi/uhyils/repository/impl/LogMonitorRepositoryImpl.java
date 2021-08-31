@@ -3,9 +3,12 @@ package indi.uhyils.repository.impl;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.LogMonitorAssembler;
 import indi.uhyils.dao.LogMonitorDao;
+import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.DO.LogMonitorDO;
 import indi.uhyils.pojo.DTO.LogMonitorDTO;
 import indi.uhyils.pojo.entity.LogMonitor;
+import indi.uhyils.pojo.entity.LogMonitorJvmStatus;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.LogMonitorRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 import java.util.List;
@@ -31,6 +34,26 @@ public class LogMonitorRepositoryImpl extends AbstractRepository<LogMonitor, Log
     public List<LogMonitor> analysisOnlineService() {
         List<LogMonitorDO> onlineService = dao.getOnlineService(System.currentTimeMillis());
         return assembler.listToEntity(onlineService);
+    }
+
+    @Override
+    public Integer checkMonitorRepeat(JvmUniqueMark unique) {
+        return dao.checkMonitorRepeat(unique);
+    }
+
+    @Override
+    public void changeMonitorThatRepeatByIpAndName(String serviceName, String ip, long currentTimeMillis) {
+        dao.updateMonitorThatRepeatByIpAndName(serviceName, ip, currentTimeMillis);
+    }
+
+    @Override
+    public void changeEndTimeLag(LogMonitorJvmStatus status, long realEndTime) {
+        dao.changeEndTime(status.fid(), realEndTime);
+    }
+
+    @Override
+    public Identifier getIdByUnique(JvmUniqueMark unique) {
+        return new Identifier(dao.getIdByJvmUniqueMark(unique));
     }
 
 }

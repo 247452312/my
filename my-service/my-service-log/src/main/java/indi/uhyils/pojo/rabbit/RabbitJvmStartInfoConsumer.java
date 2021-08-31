@@ -5,19 +5,11 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import indi.uhyils.dao.LogMonitorDao;
-import indi.uhyils.dao.MonitorJvmStatusDetailDao;
-import indi.uhyils.mq.content.RabbitMqContent;
-import indi.uhyils.mq.pojo.mqinfo.JvmStartInfo;
-import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfo;
-import indi.uhyils.pojo.DO.LogMonitorDO;
-import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
-import indi.uhyils.util.DefaultRequestBuildUtil;
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoEvent;
+import indi.uhyils.service.LogMonitorService;
 import indi.uhyils.util.LogUtil;
-import indi.uhyils.util.ModelTransUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -26,10 +18,7 @@ import org.springframework.context.ApplicationContext;
  */
 public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
 
-    private LogMonitorDao monitorDao;
-
-    private MonitorJvmStatusDetailDao monitorJvmStatusDetailDao;
-
+    private LogMonitorService logMonitorService;
 
     /**
      * Constructs a new instance and records its association to the passed-in channel.
@@ -39,48 +28,17 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
      */
     public RabbitJvmStartInfoConsumer(Channel channel, ApplicationContext applicationContext) {
         super(channel);
-        monitorDao = applicationContext.getBean(LogMonitorDao.class);
-        monitorJvmStatusDetailDao = applicationContext.getBean(MonitorJvmStatusDetailDao.class);
+        logMonitorService = applicationContext.getBean(LogMonitorService.class);
     }
 
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
         String text = new String(body, StandardCharsets.UTF_8);
-        JvmStartInfo jvmStartInfo = JSONObject.parseObject(text, JvmStartInfo.class);
-        Integer i = monitorDao.checkMonitorRepeat(jvmStartInfo.getJvmUniqueMark());
-        if (i == 0) {
-            /*查询有没有同样ip 且同样服务名称的,如果有,将endtime设置为现在,表示发现停止的时间*/
-            monitorDao.updateMonitorThatRepeatByIpAndName(jvmStartInfo.getJvmUniqueMark().getServiceName(), jvmStartInfo.getJvmUniqueMark().getIp(), System.currentTimeMillis());
+        JvmStartInfoEvent jvmStartInfo = JSONObject.parseObject(text, JvmStartInfoEvent.class);
+        LogUtil.info(this, "接收到JVM启动信息");
+        LogUtil.info(this, text);
+        logMonitorService.receiveJvmStartInfo(jvmStartInfo);
 
-            /* 新增JVM启动信息 */
-            LogUtil.info(this, "接收到JVM启动信息");
-            LogUtil.info(this, text);
-            LogMonitorDO logMonitorEntity = ModelTransUtils.transJvmStartInfoToMonitorDO(jvmStartInfo);
-            try {
-                logMonitorEntity.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());
-            } catch (Exception e) {
-                LogUtil.error(this, e);
-            }
-            monitorDao.insert(logMonitorEntity);
-            List<JvmStatusInfo> jvmStatusInfos = jvmStartInfo.getJvmStatusInfos();
-            List<LogMonitorJvmStatusDO> logMonitorJvmStatusEntities = ModelTransUtils.transJvmStatusInfosToMonitorJvmStatusDetailDOs(jvmStatusInfos, logMonitorEntity.getId());
-            final Long[] endTime = {0L};
-            logMonitorJvmStatusEntities.forEach(t -> {
-                try {
-                    t.preInsert(DefaultRequestBuildUtil.getAdminDefaultRequest());
-                } catch (Exception e) {
-                    LogUtil.error(this, e);
-                }
-                monitorJvmStatusDetailDao.insert(t);
-                Long time = t.getTime();
-                if (time > endTime[0]) {
-                    endTime[0] = time;
-                }
-            });
-            // 修改结束时间为假想时间
-            Double v = endTime[0] + RabbitMqContent.OUT_TIME * 60 * 1000 * RabbitMqContent.OUT_TIME_PRO;
-            monitorDao.changeEndTime(logMonitorEntity.getId(), v.longValue());
-        }
         // 获取tag(队列中的唯一标示)
         long deliveryTag = envelope.getDeliveryTag();
         // 确认 false为不批量确认

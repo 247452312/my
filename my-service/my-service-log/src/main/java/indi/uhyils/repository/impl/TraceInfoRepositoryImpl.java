@@ -14,10 +14,13 @@ import indi.uhyils.pojo.cqe.query.Query;
 import indi.uhyils.pojo.entity.OnlineMonitors;
 import indi.uhyils.pojo.entity.Trace;
 import indi.uhyils.pojo.entity.TraceInfo;
+import indi.uhyils.redis.RedisPoolHandle;
+import indi.uhyils.redis.Redisable;
 import indi.uhyils.repository.TraceInfoRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -30,10 +33,17 @@ import java.util.List;
 @Repository
 public class TraceInfoRepositoryImpl extends AbstractRepository<TraceInfo, TraceInfoDO, TraceInfoDao, TraceInfoDTO, TraceInfoAssembler> implements TraceInfoRepository {
 
+    /**
+     * 服务降级key
+     */
+    private static final String DEGRADATION_STATUS = "degradation";
+
+    @Autowired
+    private RedisPoolHandle redis;
+
     protected TraceInfoRepositoryImpl(TraceInfoAssembler convert, TraceInfoDao dao) {
         super(convert, dao);
     }
-
 
     @Override
     public List<TraceInfo> findTraceInfoByTraceIdAndRpcId(Trace trace) {
@@ -42,12 +52,12 @@ public class TraceInfoRepositoryImpl extends AbstractRepository<TraceInfo, Trace
     }
 
     @Override
-    public Integer findWebRequestCount(OnlineMonitors logMonitors) {
+    public Long findWebRequestCount(OnlineMonitors logMonitors) {
         return dao.getCountByTypeAndStartTime(LogTypeEnum.CONTROLLER.getCode(), logMonitors.earlyStartTime());
     }
 
     @Override
-    public Integer findRpcExecuteCount(OnlineMonitors logMonitors) {
+    public Long findRpcExecuteCount(OnlineMonitors logMonitors) {
         /* 获取接口调用次数 */
         return dao.getCountByTypeAndStartTime(LogTypeEnum.RPC.getCode(), logMonitors.earlyStartTime());
     }
@@ -72,5 +82,25 @@ public class TraceInfoRepositoryImpl extends AbstractRepository<TraceInfo, Trace
         List<TraceDetailStatisticsView> traceStatistics = dao.getTraceStatistics(request);
         Integer traceStatisticsCount = dao.getTraceStatisticsCount(request);
         return Page.build(traceStatistics, request.limit(), traceStatisticsCount);
+    }
+
+    @Override
+    public Long findConcurrentNumber(Integer logType, Long startTime) {
+        return dao.getCountByTypeAndStartTime(logType, startTime);
+    }
+
+    @Override
+    public Boolean findDegradationStatusInCache() {
+        try (Redisable jedis = redis.getJedis()) {
+            String s = jedis.get(DEGRADATION_STATUS);
+            return "true".equals(s);
+        }
+    }
+
+    @Override
+    public void changeDegradation(boolean degradation) {
+        try (Redisable jedis = redis.getJedis()) {
+            jedis.set(DEGRADATION_STATUS, degradation ? "true" : "false");
+        }
     }
 }

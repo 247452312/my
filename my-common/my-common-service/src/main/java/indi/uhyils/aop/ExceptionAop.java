@@ -35,6 +35,7 @@ public class ExceptionAop {
         try {
             return pjp.proceed();
         } catch (AssertException e) {
+            LogUtil.error(e.getMessage());
             return ServiceResult.buildFailedResult(e.getMessage());
         } catch (Throwable e) {
             LogUtil.error(this, e);

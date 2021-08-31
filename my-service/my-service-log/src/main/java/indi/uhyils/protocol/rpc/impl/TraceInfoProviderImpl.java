@@ -6,10 +6,9 @@ import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.DTO.response.TraceInfosDTO;
 import indi.uhyils.pojo.DTO.response.LogTypeDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.query.BaseQuery;
+import indi.uhyils.pojo.cqe.query.Query;
 import indi.uhyils.pojo.cqe.query.TraceIdQuery;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.protocol.rpc.provider.TraceInfoProvider;
@@ -40,28 +39,33 @@ public class TraceInfoProviderImpl extends BaseDefaultProvider<TraceInfoDTO> imp
     }
 
     @Override
-    public ServiceResult<TraceInfosDTO> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request) {
-        return null;
+    public ServiceResult<List<TraceInfoDTO>> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request) {
+        List<TraceInfoDTO> result = service.getLinkByTraceIdAndRpcId(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<List<TraceInfoDTO>> getLinkByTraceId(TraceIdQuery request) {
-        return null;
+        List<TraceInfoDTO> result = service.getLinkByTraceId(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Page<TraceInfoDTO>> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request) {
-        return null;
+        Page<TraceInfoDTO> result = service.getTraceInfoByArgAndPage(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    public ServiceResult<Page<TraceDetailStatisticsDTO>> getTraceStatistics(BaseQuery request) {
-        return null;
+    public ServiceResult<Page<TraceDetailStatisticsDTO>> getTraceStatistics(Query request) {
+        Page<TraceDetailStatisticsDTO> result = service.getTraceStatistics(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<List<LogTypeDTO>> getLogType(DefaultCQE request) {
-        return null;
+        List<LogTypeDTO> result = service.getLogType(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 }
 

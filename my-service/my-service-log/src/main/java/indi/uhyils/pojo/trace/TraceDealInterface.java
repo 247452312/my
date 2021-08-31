@@ -1,6 +1,5 @@
 package indi.uhyils.pojo.trace;
 
-import indi.uhyils.pojo.DO.TraceIdDoDO;
 import indi.uhyils.pojo.DTO.IdDTO;
 
 /**

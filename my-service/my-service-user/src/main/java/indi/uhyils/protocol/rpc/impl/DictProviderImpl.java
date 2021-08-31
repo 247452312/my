@@ -4,7 +4,7 @@ import indi.uhyils.pojo.DTO.DictDTO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.pojo.DTO.request.GetByCodeRequest;
+import indi.uhyils.pojo.DTO.request.GetByCodeQuery;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
 import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
@@ -104,7 +104,7 @@ public class DictProviderImpl extends BaseDefaultProvider<DictDTO> implements Di
     }
 
     @Override
-    public ServiceResult<List<DictItemDTO>> getByCode(GetByCodeRequest request) {
+    public ServiceResult<List<DictItemDTO>> getByCode(GetByCodeQuery request) {
         List<DictItemDTO> result = service.getByCode(request);
         return ServiceResult.buildSuccessResult(result);
 

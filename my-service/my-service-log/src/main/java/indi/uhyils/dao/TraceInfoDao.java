@@ -25,7 +25,7 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoDO> {
      *
      * @return 从开始时间到现在的前台请求次数
      */
-    Integer getCountByTypeAndStartTime(@Param("code") Integer code, @Param("time") Long time);
+    Long getCountByTypeAndStartTime(@Param("code") Integer code, @Param("time") Long time);
 
     /**
      * 获取traceInfo

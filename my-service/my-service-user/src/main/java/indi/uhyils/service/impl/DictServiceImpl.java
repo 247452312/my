@@ -11,7 +11,7 @@ import indi.uhyils.pojo.DTO.DictDTO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.MenuDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.request.GetByCodeRequest;
+import indi.uhyils.pojo.DTO.request.GetByCodeQuery;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
 import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
@@ -170,7 +170,7 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"}, cacheType = CacheTypeEnum.ALL_TYPE)
-    public List<DictItemDTO> getByCode(GetByCodeRequest request) {
+    public List<DictItemDTO> getByCode(GetByCodeQuery request) {
         Dict dictItemCode = new Dict(request.getCode());
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         return item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());

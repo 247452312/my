@@ -2,7 +2,7 @@ package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.DictDTO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
-import indi.uhyils.pojo.DTO.request.GetByCodeRequest;
+import indi.uhyils.pojo.DTO.request.GetByCodeQuery;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
 import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
@@ -129,7 +129,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return code对应的字典对应的所有项
      */
-    ServiceResult<List<DictItemDTO>> getByCode(GetByCodeRequest request);
+    ServiceResult<List<DictItemDTO>> getByCode(GetByCodeQuery request);
 
 
     /**

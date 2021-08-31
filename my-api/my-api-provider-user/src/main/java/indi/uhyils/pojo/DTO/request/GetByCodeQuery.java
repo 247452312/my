@@ -9,7 +9,7 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月25日 15时01分
  */
-public class GetByCodeRequest extends DefaultCQE {
+public class GetByCodeQuery extends DefaultCQE {
 
     /**
      * 字典code
