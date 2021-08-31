@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.pojo.DTO.DeviceCallbackDTO;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.protocol.rpc.DeviceCallbackProvider;
@@ -14,10 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时21分18秒
+ * @date 文件创建日期 2021年08月31日 19时04分22秒
  */
 @RpcService
-@ReadWriteMark(tables = {"sys_device_callback"})
 public class DeviceCallbackProviderImpl extends BaseDefaultProvider<DeviceCallbackDTO> implements DeviceCallbackProvider {
 
 

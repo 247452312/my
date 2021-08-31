@@ -8,7 +8,6 @@ import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RemoveCommand;
 import indi.uhyils.pojo.cqe.query.BaseArgQuery;
-import indi.uhyils.pojo.cqe.query.BaseQuery;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
 import java.util.List;

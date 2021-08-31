@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date 文件创建日期 2020年11月15日 16时15分56秒
  */
 @RpcService
-public class OrderNodeFieldValueProvider extends BaseDefaultProvider<OrderNodeFieldValueDO> implements indi.uhyils.protocol.rpc.provider.OrderNodeFieldValueProvider {
+public class OrderNodeFieldValueProvider extends BaseDefaultProvider<OrderNodeFieldValueDO> implements indi.uhyils.protocol.rpc.OrderNodeFieldValueProvider {
     @Autowired
     private OrderNodeFieldValueDao dao;
 

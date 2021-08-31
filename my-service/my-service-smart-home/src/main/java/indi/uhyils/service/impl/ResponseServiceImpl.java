@@ -1,5 +1,6 @@
 package indi.uhyils.service.impl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.ResponseAssembler;
 import indi.uhyils.repository.ResponseRepository;
 import indi.uhyils.pojo.DO.ResponseDO;
@@ -13,9 +14,10 @@ import org.springframework.stereotype.Service;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时21分25秒
+ * @date 文件创建日期 2021年08月31日 19时04分29秒
  */
 @Service
+@ReadWriteMark(tables = {"sys_response"})
 public class ResponseServiceImpl extends AbstractDoService<ResponseDO, Response, ResponseDTO, ResponseRepository, ResponseAssembler> implements ResponseService {
 
     public ResponseServiceImpl(ResponseAssembler assembler, ResponseRepository repository) {

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.OrderApplyDao">
+    <resultMap type="indi.uhyils.pojo.DO.OrderApplyDO" id="OrderApplyMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="applyUserId" column="apply_user_id" jdbcType="INTEGER"/>
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="orderNodeId" column="order_node_id" jdbcType="INTEGER"/>
+        <result property="monitorUserId" column="monitor_user_id" jdbcType="INTEGER"/>
+        <result property="targetUserId" column="target_user_id" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="getById" resultMap="OrderApplyMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, apply_user_id, order_id,
+        order_node_id, monitor_user_id, target_user_id, type, status
+        from sys_order_apply
+        where delete_flag = 0
+        and id = #{id}
+    </select>
+
+    <!--根据某些字段获取实例(不分页)-->
+    <select id="getByArgsNoPage" resultMap="OrderApplyMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, apply_user_id, order_id,
+        order_node_id, monitor_user_id, target_user_id, type, status
+        from sys_order_apply
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
+    </select>
+
+    <!--根据某些字段获取实例(分页)-->
+    <select id="getByArgs" resultMap="OrderApplyMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, apply_user_id, order_id,
+        order_node_id, monitor_user_id, target_user_id, type, status
+        from sys_order_apply
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
+
+        <if test="limit.number != null and limit.number != ''">
+            limit ${(limit.number-1) * limit.size},${ limit.number * limit.size}
+        </if>
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.OrderApplyDO">
+        insert into sys_order_apply(
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, apply_user_id, order_id,
+        order_node_id, monitor_user_id, target_user_id, type, status)
+        values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser},
+        #{applyUserId}, #{orderId}, #{orderNodeId}, #{monitorUserId}, #{targetUserId}, #{type}, #{status})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update" parameterType="indi.uhyils.pojo.DO.OrderApplyDO">
+        update sys_order_apply set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="createDate != null">
+            ,create_date = #{createDate}
+        </if>
+        <if test="createUser != null">
+            ,create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            ,update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null">
+            ,update_user = #{updateUser}
+        </if>
+        <if test="applyUserId != null">
+            ,apply_user_id = #{applyUserId}
+        </if>
+        <if test="orderId != null">
+            ,order_id = #{orderId}
+        </if>
+        <if test="orderNodeId != null">
+            ,order_node_id = #{orderNodeId}
+        </if>
+        <if test="monitorUserId != null">
+            ,monitor_user_id = #{monitorUserId}
+        </if>
+        <if test="targetUserId != null">
+            ,target_user_id = #{targetUserId}
+        </if>
+        <if test="type != null">
+            ,type = #{type}
+        </if>
+        <if test="status != null">
+            ,status = #{status}
+        </if>
+        where id = #{id}
+    </update>
+
+    <!--通过主键修改数据-->
+    <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.OrderApplyDO">
+        update sys_order_apply set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="createDate != null">
+            ,create_date = #{createDate}
+        </if>
+        <if test="createUser != null">
+            ,create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            ,update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null">
+            ,update_user = #{updateUser}
+        </if>
+        <if test="applyUserId != null">
+            ,apply_user_id = #{applyUserId}
+        </if>
+        <if test="orderId != null">
+            ,order_id = #{orderId}
+        </if>
+        <if test="orderNodeId != null">
+            ,order_node_id = #{orderNodeId}
+        </if>
+        <if test="monitorUserId != null">
+            ,monitor_user_id = #{monitorUserId}
+        </if>
+        <if test="targetUserId != null">
+            ,target_user_id = #{targetUserId}
+        </if>
+        <if test="type != null">
+            ,type = #{type}
+        </if>
+        <if test="status != null">
+            ,status = #{status}
+        </if>
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+    </update>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.OrderApplyDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_order_apply set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="remark != null and remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="applyUserId != null">
+                ,apply_user_id = #{item.applyUserId}
+            </if>
+            <if test="orderId != null">
+                ,order_id = #{item.orderId}
+            </if>
+            <if test="orderNodeId != null">
+                ,order_node_id = #{item.orderNodeId}
+            </if>
+            <if test="monitorUserId != null">
+                ,monitor_user_id = #{item.monitorUserId}
+            </if>
+            <if test="targetUserId != null">
+                ,target_user_id = #{item.targetUserId}
+            </if>
+            <if test="type != null">
+                ,type = #{item.type}
+            </if>
+            <if test="status != null">
+                ,status = #{item.status}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <!--查询总条数-->
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_apply
+        where delete_flag = 0;
+    </select>
+
+    <!--根据条件查询条数-->
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_apply
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+    </select>
+
+    <!--检查是否有重复-->
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_order_apply
+        where ${columnName} = #{value}
+    </select>
+</mapper>

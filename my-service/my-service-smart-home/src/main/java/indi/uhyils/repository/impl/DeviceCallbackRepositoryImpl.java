@@ -3,9 +3,9 @@ package indi.uhyils.repository.impl;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.DeviceCallbackAssembler;
 import indi.uhyils.dao.DeviceCallbackDao;
+import indi.uhyils.pojo.entity.DeviceCallback;
 import indi.uhyils.pojo.DO.DeviceCallbackDO;
 import indi.uhyils.pojo.DTO.DeviceCallbackDTO;
-import indi.uhyils.pojo.entity.DeviceCallback;
 import indi.uhyils.repository.DeviceCallbackRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 
@@ -15,7 +15,7 @@ import indi.uhyils.repository.base.AbstractRepository;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时21分17秒
+ * @date 文件创建日期 2021年08月31日 19时04分21秒
  */
 @Repository
 public class DeviceCallbackRepositoryImpl extends AbstractRepository<DeviceCallback, DeviceCallbackDO, DeviceCallbackDao, DeviceCallbackDTO, DeviceCallbackAssembler> implements DeviceCallbackRepository {

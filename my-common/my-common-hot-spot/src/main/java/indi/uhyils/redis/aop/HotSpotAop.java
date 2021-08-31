@@ -10,7 +10,6 @@ import indi.uhyils.pojo.DTO.HotSpotDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.MD5Util;

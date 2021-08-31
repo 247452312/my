@@ -1,6 +1,7 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.entity.Scene;
+import indi.uhyils.pojo.DO.SceneDO;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**
@@ -8,9 +9,9 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时21分28秒
+ * @date 文件创建日期 2021年08月31日 19时04分31秒
  */
-public interface SceneRepository extends BaseEntityRepository<Scene> {
+public interface SceneRepository extends BaseEntityRepository<SceneDO, Scene> {
 
 
 }

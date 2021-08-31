@@ -1,6 +1,7 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.entity.DeviceArg;
+import indi.uhyils.pojo.DO.DeviceArgDO;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**
@@ -8,9 +9,9 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时21分12秒
+ * @date 文件创建日期 2021年08月31日 19时04分16秒
  */
-public interface DeviceArgRepository extends BaseEntityRepository<DeviceArg> {
+public interface DeviceArgRepository extends BaseEntityRepository<DeviceArgDO, DeviceArg> {
 
 
 }

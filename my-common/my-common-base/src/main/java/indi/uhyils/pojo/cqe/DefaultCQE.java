@@ -9,6 +9,7 @@ import indi.uhyils.pojo.DTO.UserDTO;
  * @date 文件创建日期 2021年08月26日 08时23分
  */
 public class DefaultCQE implements BaseCQE {
+
     /**
      * token
      */

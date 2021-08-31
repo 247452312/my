@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.pojo.DTO.SpaceDTO;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.protocol.rpc.SpaceProvider;
@@ -14,10 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时21分33秒
+ * @date 文件创建日期 2021年08月31日 19时04分36秒
  */
 @RpcService
-@ReadWriteMark(tables = {"sys_space"})
 public class SpaceProviderImpl extends BaseDefaultProvider<SpaceDTO> implements SpaceProvider {
 
 

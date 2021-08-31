@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @RpcService
-public class OrderNodeRouteProvider extends BaseDefaultProvider<OrderNodeRouteDO> implements indi.uhyils.protocol.rpc.provider.OrderNodeRouteProvider {
+public class OrderNodeRouteProvider extends BaseDefaultProvider<OrderNodeRouteDO> implements indi.uhyils.protocol.rpc.OrderNodeRouteProvider {
 
     @Resource
     private OrderNodeRouteDao dao;

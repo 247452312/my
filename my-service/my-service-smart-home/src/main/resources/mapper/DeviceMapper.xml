@@ -31,7 +31,7 @@
         id, create_date, create_user, delete_flag, remark, update_date, update_user, name, space_id, type, ip, port
         from sys_device
         where delete_flag = 0
-        <if test="list != null">
+        <if test="args != null">
             <foreach item="item" index="index" collection="args">
                 and ${item.name} ${item.symbol} #{item.data}
             </foreach>

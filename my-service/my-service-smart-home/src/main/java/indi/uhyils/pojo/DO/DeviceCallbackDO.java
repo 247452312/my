@@ -7,11 +7,11 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时21分16秒
+ * @date 文件创建日期 2021年08月31日 19时04分19秒
  */
 public class DeviceCallbackDO extends BaseDO {
 
-    private static final long serialVersionUID = 527480449440624389L;
+    private static final long serialVersionUID = -44248131058536771L;
 
 
     /**

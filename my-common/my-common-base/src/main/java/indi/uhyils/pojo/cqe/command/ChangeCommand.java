@@ -2,7 +2,6 @@ package indi.uhyils.pojo.cqe.command;
 
 import indi.uhyils.pojo.DTO.BaseDbDTO;
 import indi.uhyils.pojo.cqe.query.BaseArgQuery;
-import indi.uhyils.pojo.cqe.query.BaseQuery;
 
 /**
  * @author uhyils <247452312@qq.com>

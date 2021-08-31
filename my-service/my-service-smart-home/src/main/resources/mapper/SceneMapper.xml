@@ -17,7 +17,7 @@
     <!--查询单个-->
     <select id="getById" resultMap="SceneMap">
         select
-        id, create_date, create_user, delete_flag, remark, update_date, update_user, type, value, other_model_id
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, type, `value`, other_model_id
         from sys_scene
         where delete_flag = 0
         and id = #{id}
@@ -26,10 +26,10 @@
     <!--根据某些字段获取实例(不分页)-->
     <select id="getByArgsNoPage" resultMap="SceneMap">
         select
-        id, create_date, create_user, delete_flag, remark, update_date, update_user, type, value, other_model_id
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, type, `value`, other_model_id
         from sys_scene
         where delete_flag = 0
-        <if test="list != null">
+        <if test="args != null">
             <foreach item="item" index="index" collection="args">
                 and ${item.name} ${item.symbol} #{item.data}
             </foreach>
@@ -45,7 +45,7 @@
     <!--根据某些字段获取实例(分页)-->
     <select id="getByArgs" resultMap="SceneMap">
         select
-        id, create_date, create_user, delete_flag, remark, update_date, update_user, type, value, other_model_id
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, type, `value`, other_model_id
         from sys_scene
         where delete_flag = 0
         <if test="args != null">
@@ -70,7 +70,7 @@
     <!--新增所有列-->
     <insert id="insert" parameterType="indi.uhyils.pojo.DO.SceneDO">
         insert into sys_scene(
-        id, create_date, create_user, delete_flag, remark, update_date, update_user, type, value, other_model_id)
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, type, `value`, other_model_id)
         values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser}, #{type},
         #{value}, #{otherModelId})
     </insert>
@@ -102,7 +102,7 @@
             ,type = #{type}
         </if>
         <if test="value != null">
-            ,value = #{value}
+            ,`value` = #{value}
         </if>
         <if test="otherModelId != null">
             ,other_model_id = #{otherModelId}
@@ -137,7 +137,7 @@
             ,type = #{type}
         </if>
         <if test="value != null">
-            ,value = #{value}
+            ,`value` = #{value}
         </if>
         <if test="otherModelId != null">
             ,other_model_id = #{otherModelId}
@@ -178,7 +178,7 @@
                 ,type = #{item.type}
             </if>
             <if test="value != null">
-                ,value = #{item.value}
+                ,`value` = #{item.value}
             </if>
             <if test="otherModelId != null">
                 ,other_model_id = #{item.otherModelId}

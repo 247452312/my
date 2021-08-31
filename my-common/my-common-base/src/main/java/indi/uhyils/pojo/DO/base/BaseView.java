@@ -14,31 +14,31 @@ public class BaseView implements BaseDbSaveable {
 
     @Override
     public void preInsert(DefaultCQE request) {
-        AssertUtil.assertTrue(false,"视图不能修改");
+        AssertUtil.assertTrue(false, "视图不能修改");
     }
 
     @Override
     public void preInsert(UserDTO userDO) {
-        AssertUtil.assertTrue(false,"视图不能修改");
+        AssertUtil.assertTrue(false, "视图不能修改");
     }
 
     @Override
     public void preInsert() {
-        AssertUtil.assertTrue(false,"视图不能修改");
+        AssertUtil.assertTrue(false, "视图不能修改");
     }
 
     @Override
     public void preUpdate(DefaultCQE request) {
-        AssertUtil.assertTrue(false,"视图不能修改");
+        AssertUtil.assertTrue(false, "视图不能修改");
     }
 
     @Override
     public void preUpdate(UserDTO userDO) {
-        AssertUtil.assertTrue(false,"视图不能修改");
+        AssertUtil.assertTrue(false, "视图不能修改");
     }
 
     @Override
     public void preUpdate() {
-        AssertUtil.assertTrue(false,"视图不能修改");
+        AssertUtil.assertTrue(false, "视图不能修改");
     }
 }

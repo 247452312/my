@@ -1,5 +1,6 @@
 package indi.uhyils.service.impl;
 
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.InstructionsAssembler;
 import indi.uhyils.repository.InstructionsRepository;
 import indi.uhyils.pojo.DO.InstructionsDO;
@@ -13,9 +14,10 @@ import org.springframework.stereotype.Service;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时21分21秒
+ * @date 文件创建日期 2021年08月31日 19时04分25秒
  */
 @Service
+@ReadWriteMark(tables = {"sys_instructions"})
 public class InstructionsServiceImpl extends AbstractDoService<InstructionsDO, Instructions, InstructionsDTO, InstructionsRepository, InstructionsAssembler> implements InstructionsService {
 
     public InstructionsServiceImpl(InstructionsAssembler assembler, InstructionsRepository repository) {

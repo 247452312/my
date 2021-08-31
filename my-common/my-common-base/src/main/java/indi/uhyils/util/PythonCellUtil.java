@@ -18,10 +18,6 @@ import org.springframework.util.StringUtils;
  */
 public final class PythonCellUtil {
 
-    private PythonCellUtil() {
-        throw new IllegalStateException("Utility class");
-    }
-
     /**
      * 寻找python源文件在哪里
      */
@@ -34,6 +30,10 @@ public final class PythonCellUtil {
 
     static {
         PYTHON_PATH = getPythonPath(System.getenv("PYTHON_HOME"), System.getenv("path"));
+    }
+
+    private PythonCellUtil() {
+        throw new IllegalStateException("Utility class");
     }
 
     /**

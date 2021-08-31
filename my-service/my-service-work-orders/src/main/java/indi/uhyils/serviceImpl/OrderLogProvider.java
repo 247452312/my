@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @RpcService
-public class OrderLogProvider extends BaseDefaultProvider<OrderLogDO> implements indi.uhyils.protocol.rpc.provider.OrderLogProvider {
+public class OrderLogProvider extends BaseDefaultProvider<OrderLogDO> implements indi.uhyils.protocol.rpc.OrderLogProvider {
 
     @Resource
     private OrderLogDao dao;

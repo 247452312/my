@@ -11,11 +11,11 @@ import java.security.NoSuchAlgorithmException;
  */
 public final class MD5Util {
 
+    public static final String MD5 = "MD5";
+
     private MD5Util() {
         throw new IllegalStateException("Utility class");
     }
-
-    public static final String MD5 = "MD5";
 
     /**
      * MD5加密

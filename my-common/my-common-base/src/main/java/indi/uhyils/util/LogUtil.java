@@ -2,10 +2,10 @@ package indi.uhyils.util;
 
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.enum_.LogLevelEnum;
-import indi.uhyils.enum_.LogDetailTypeEnum;
-import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.context.MyTraceIdContext;
+import indi.uhyils.enum_.LogDetailTypeEnum;
+import indi.uhyils.enum_.LogLevelEnum;
+import indi.uhyils.enum_.LogTypeEnum;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -18,10 +18,6 @@ import org.slf4j.MarkerFactory;
  * @date 文件创建日期 2020年04月25日 08时43分
  */
 public final class LogUtil {
-
-    private LogUtil() {
-        throw new IllegalStateException("Utility class");
-    }
 
     /**
      * 链路
@@ -69,6 +65,10 @@ public final class LogUtil {
      * 日志文件缓存地
      */
     private static Map<String, Logger> loggerMap = new HashMap<>();
+
+    private LogUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static boolean isDebugEnabled(Object obj) {
         if (obj == null) {

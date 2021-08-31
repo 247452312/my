@@ -9,7 +9,7 @@ import indi.uhyils.dao.base.DefaultDao;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时21分12秒
+ * @date 文件创建日期 2021年08月31日 19时04分15秒
  */
 @Mapper
 public interface DeviceArgDao extends DefaultDao<DeviceArgDO> {

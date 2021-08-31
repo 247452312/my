@@ -1,8 +1,6 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**
  * @author uhyils <247452312@qq.com>

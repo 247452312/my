@@ -29,7 +29,7 @@
         id, create_date, create_user, delete_flag, remark, update_date, update_user, device_id, url, meaning
         from sys_device_callback
         where delete_flag = 0
-        <if test="list != null">
+        <if test="args != null">
             <foreach item="item" index="index" collection="args">
                 and ${item.name} ${item.symbol} #{item.data}
             </foreach>

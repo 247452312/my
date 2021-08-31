@@ -1,6 +1,7 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.entity.Instructions;
+import indi.uhyils.pojo.DO.InstructionsDO;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**
@@ -8,9 +9,9 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时21分20秒
+ * @date 文件创建日期 2021年08月31日 19时04分25秒
  */
-public interface InstructionsRepository extends BaseEntityRepository<Instructions> {
+public interface InstructionsRepository extends BaseEntityRepository<InstructionsDO, Instructions> {
 
 
 }
