@@ -1,11 +1,11 @@
-package indi.uhyils.pojo.rabbit;
+package indi.uhyils.protocol.mq;
 
 import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoEvent;
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoCommand;
 import indi.uhyils.service.LogMonitorService;
 import indi.uhyils.util.LogUtil;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
         String text = new String(body, StandardCharsets.UTF_8);
-        JvmStartInfoEvent jvmStartInfo = JSONObject.parseObject(text, JvmStartInfoEvent.class);
+        JvmStartInfoCommand jvmStartInfo = JSONObject.parseObject(text, JvmStartInfoCommand.class);
         LogUtil.info(this, "接收到JVM启动信息");
         LogUtil.info(this, text);
         logMonitorService.receiveJvmStartInfo(jvmStartInfo);

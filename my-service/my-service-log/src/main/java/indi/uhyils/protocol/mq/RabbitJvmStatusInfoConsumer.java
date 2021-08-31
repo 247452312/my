@@ -1,11 +1,11 @@
-package indi.uhyils.pojo.rabbit;
+package indi.uhyils.protocol.mq;
 
 import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoEvent;
+import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoCommand;
 import indi.uhyils.service.LogMonitorJvmStatusService;
 import indi.uhyils.util.LogUtil;
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class RabbitJvmStatusInfoConsumer extends DefaultConsumer {
         String text = new String(body, StandardCharsets.UTF_8);
         LogUtil.info(this, "接收到JVM状态信息");
         LogUtil.info(this, text);
-        JvmStatusInfoEvent jvmStatusInfo = JSONObject.parseObject(text, JvmStatusInfoEvent.class);
+        JvmStatusInfoCommand jvmStatusInfo = JSONObject.parseObject(text, JvmStatusInfoCommand.class);
         service.receiveJvmStatusInfo(jvmStatusInfo);
         // 获取tag(队列中的唯一标示)
         long deliveryTag = envelope.getDeliveryTag();

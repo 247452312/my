@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO.base;
 
-import indi.uhyils.pojo.cqe.query.BaseQuery;
-import indi.uhyils.pojo.cqe.query.Limit;
+import indi.uhyils.pojo.cqe.query.BaseArgQuery;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
 import java.io.Serializable;
 import java.util.List;
 
@@ -58,8 +58,8 @@ public class Page<T> implements Serializable {
         return build(list, size, pageNum, count, count / size + remainder);
     }
 
-    public static <T extends Serializable> Page<T> build(List<T> list, BaseQuery order, Integer count) {
-        return build(list, order.limit(), count);
+    public static <T extends Serializable> Page<T> build(List<T> list, BaseArgQuery order, Integer count) {
+        return build(list, order.getLimit(), count);
     }
 
     public static <T extends Serializable> Page<T> build(List<T> list, Page<?> page) {
@@ -81,9 +81,9 @@ public class Page<T> implements Serializable {
      *
      * @return 包含分页信息的返回集
      */
-    public static <T extends Serializable> Page<T> build(BaseQuery query, List<T> list, Integer count, Integer totalPage) {
+    public static <T extends Serializable> Page<T> build(BaseArgQuery query, List<T> list, Integer count, Integer totalPage) {
         //代表分页
-        Limit limit = query.limit();
+        Limit limit = query.getLimit();
         if (Boolean.TRUE.equals(limit.getPage())) {
             return build(list, limit.getSize(), limit.getNumber(), count, totalPage);
         } else {
@@ -101,8 +101,8 @@ public class Page<T> implements Serializable {
      *
      * @return 包含分页信息的返回集
      */
-    public static <T extends Serializable> Page<T> build(BaseQuery query, List<T> list, Integer count) {
-        Limit limit = query.limit();
+    public static <T extends Serializable> Page<T> build(BaseArgQuery query, List<T> list, Integer count) {
+        Limit limit = query.getLimit();
         Integer totalPage = count / limit.getSize();
         if (count % limit.getSize() != 0) {
             totalPage++;

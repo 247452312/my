@@ -7,7 +7,7 @@ import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DO.DeptMenuDO;
 import indi.uhyils.pojo.DO.DeptPowerDO;
 import indi.uhyils.pojo.DTO.DeptDTO;
-import indi.uhyils.pojo.cqe.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
 import indi.uhyils.pojo.entity.Dept;

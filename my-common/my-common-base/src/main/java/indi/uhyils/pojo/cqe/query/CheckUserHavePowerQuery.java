@@ -6,7 +6,7 @@ package indi.uhyils.pojo.cqe.query;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月07日 16时40分
  */
-public class CheckUserHavePowerQuery extends AbstractQuery {
+public class CheckUserHavePowerQuery extends AbstractArgQuery {
 
     /**
      * 权限接口名称

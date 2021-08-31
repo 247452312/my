@@ -7,7 +7,7 @@ import indi.uhyils.pojo.DO.DictItemDO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
-import indi.uhyils.pojo.cqe.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.Dict;
 import indi.uhyils.pojo.entity.DictItem;
 import indi.uhyils.repository.DictItemRepository;
@@ -40,7 +40,7 @@ public class DictItemRepositoryImpl extends AbstractRepository<DictItem, DictIte
 
     @Override
     public Page<DictItem> find(GetByItemArgsQuery query) {
-        List<Arg> args = query.args();
+        List<Arg> args = query.getArgs();
         Arg arg = new Arg();
         arg.setName("dict_id");
         arg.setSymbol("=");

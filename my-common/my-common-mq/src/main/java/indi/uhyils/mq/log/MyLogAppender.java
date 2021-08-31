@@ -29,6 +29,7 @@ public class MyLogAppender extends RollingFileAppender {
         if (!this.isStarted()) {
             return;
         }
+        // spring还没有启动时不进行发送
         if (SpringUtil.isNotStart()) {
             return;
         }

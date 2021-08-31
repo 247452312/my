@@ -2,7 +2,7 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.LogMonitorJvmStatusAssembler;
-import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoEvent;
+import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoCommand;
 import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
 import indi.uhyils.pojo.DTO.LogMonitorJvmStatusDTO;
 import indi.uhyils.pojo.entity.LogMonitorJvmStatus;
@@ -33,7 +33,7 @@ public class LogMonitorJvmStatusServiceImpl extends AbstractDoService<LogMonitor
     }
 
     @Override
-    public void receiveJvmStatusInfo(JvmStatusInfoEvent jvmStatusInfo) {
+    public void receiveJvmStatusInfo(JvmStatusInfoCommand jvmStatusInfo) {
         LogMonitorJvmStatus logMonitorJvmStatus = assem.jvmStatusInfoToEntity(jvmStatusInfo);
         // 填充父id
         logMonitorJvmStatus.fillFid(repository);

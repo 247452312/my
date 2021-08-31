@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.cqe.query.AbstractQuery;
+import indi.uhyils.pojo.cqe.query.AbstractArgQuery;
 
 
 /**
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.cqe.query.AbstractQuery;
  * @version 1.0
  * @date 文件创建日期 2021年08月01日 13时27分
  */
-public class GetLinkByTraceIdAndRpcIdQuery extends AbstractQuery {
+public class GetLinkByTraceIdAndRpcIdQuery extends AbstractArgQuery {
 
     /**
      * traceId

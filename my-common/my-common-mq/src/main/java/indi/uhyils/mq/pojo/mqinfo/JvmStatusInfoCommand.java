@@ -1,6 +1,6 @@
 package indi.uhyils.mq.pojo.mqinfo;
 
-import indi.uhyils.pojo.cqe.event.AbstractEvent;
+import indi.uhyils.pojo.cqe.command.AbstractCommand;
 
 /**
  * 每个微服务定时任务中微服务的info 一下所有内存单位为m
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.cqe.event.AbstractEvent;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月18日 07时36分
  */
-public class JvmStatusInfoEvent extends AbstractEvent {
+public class JvmStatusInfoCommand extends AbstractCommand {
 
     /**
      * jvm使用的总内存

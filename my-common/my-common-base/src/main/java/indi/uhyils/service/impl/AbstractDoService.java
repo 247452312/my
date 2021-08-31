@@ -8,7 +8,7 @@ import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RemoveCommand;
-import indi.uhyils.pojo.cqe.query.BaseQuery;
+import indi.uhyils.pojo.cqe.query.BaseArgQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -22,13 +22,13 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 20时36分
  */
-public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO, REP extends BaseEntityRepository<DO, ENTITY>, ASSEMB extends BaseAssembler<DO, ENTITY, DTO>> implements BaseDoService<DTO> {
+public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO, REP extends BaseEntityRepository<DO, ENTITY>, ASSEM extends BaseAssembler<DO, ENTITY, DTO>> implements BaseDoService<DTO> {
 
-    protected final ASSEMB assem;
+    protected final ASSEM assem;
 
     protected final REP rep;
 
-    public AbstractDoService(ASSEMB u, REP r) {
+    public AbstractDoService(ASSEM u, REP r) {
         this.assem = u;
         this.rep = r;
     }
@@ -43,55 +43,47 @@ public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends Abstra
 
     @Override
     public Integer remove(IdCommand id) {
-        int remove = rep.remove(new Identifier(id.getId()));
-        return remove;
+        return rep.remove(new Identifier(id.getId()));
     }
 
     @Override
     public Integer remove(RemoveCommand removeCommand) {
-        int remove = rep.remove(removeCommand.getOrder());
-        return remove;
+        return rep.remove(removeCommand.getOrder());
     }
 
     @Override
-    public Page<DTO> query(BaseQuery order) {
+    public Page<DTO> query(BaseArgQuery order) {
         Page<ENTITY> tPage = rep.find(order);
-        Page<DTO> result = assem.pageToDTO(tPage);
-        return result;
+        return assem.pageToDTO(tPage);
     }
 
     @Override
     public List<DTO> query(IdsQuery order) {
         List<ENTITY> noPage = rep.findNoPage(order);
-        List<DTO> dtos = assem.listEntityToDTO(noPage);
-        return dtos;
+        return assem.listEntityToDTO(noPage);
     }
 
     @Override
-    public List<DTO> queryNoPage(BaseQuery order) {
+    public List<DTO> queryNoPage(BaseArgQuery order) {
         List<ENTITY> noPage = rep.findNoPage(order);
-        List<DTO> dtos = assem.listEntityToDTO(noPage);
-        return dtos;
+        return assem.listEntityToDTO(noPage);
     }
 
     @Override
     public DTO query(Identifier id) {
         ENTITY entity = rep.find(id);
-        DTO dto = assem.toDTO(entity);
-        return dto;
+        return assem.toDTO(entity);
     }
 
     @Override
     public Integer update(ChangeCommand<DTO> changeCommand) {
         ENTITY entity = assem.toEntity(changeCommand.getDto());
-        int change = rep.change(entity, changeCommand.getOrder());
-        return change;
+        return rep.change(entity, changeCommand.getOrder());
     }
 
     @Override
-    public Integer count(BaseQuery order) {
-        int count = rep.count(order);
-        return count;
+    public Integer count(BaseArgQuery order) {
+        return rep.count(order);
     }
 
 }

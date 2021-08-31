@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.cqe.command;
 
 import indi.uhyils.pojo.DTO.BaseDbDTO;
+import indi.uhyils.pojo.cqe.query.BaseArgQuery;
 import indi.uhyils.pojo.cqe.query.BaseQuery;
 
 /**
@@ -18,7 +19,7 @@ public class ChangeCommand<T extends BaseDbDTO> extends AbstractCommand {
     /**
      * 要改的东西
      */
-    private BaseQuery order;
+    private BaseArgQuery order;
 
 
     public T getDto() {
@@ -29,11 +30,11 @@ public class ChangeCommand<T extends BaseDbDTO> extends AbstractCommand {
         this.dto = dto;
     }
 
-    public BaseQuery getOrder() {
+    public BaseArgQuery getOrder() {
         return order;
     }
 
-    public void setOrder(BaseQuery order) {
+    public void setOrder(BaseArgQuery order) {
         this.order = order;
     }
 }

@@ -5,7 +5,7 @@ package indi.uhyils.pojo.cqe.query;
  * @version 1.0
  * @date 文件创建日期 2021年08月29日 17时35分
  */
-public class TraceIdQuery extends AbstractQuery {
+public class TraceIdQuery extends AbstractArgQuery {
 
 
     private Long TraceId;

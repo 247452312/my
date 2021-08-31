@@ -52,7 +52,7 @@ public class ServiceResult<T> implements Serializable {
      * @return 一个code是200 代表成功的返回
      */
     public static <T> ServiceResult<T> buildSuccessResult(String businessMessage, T t) {
-        return new ServiceResult(t, ServiceCode.SUCCESS.getText(), businessMessage);
+        return new ServiceResult<>(t, ServiceCode.SUCCESS.getText(), businessMessage);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ServiceResult<T> implements Serializable {
      * @return 一个code是200 代表成功的返回
      */
     public static <T> ServiceResult<T> buildSuccessResult(T t) {
-        return new ServiceResult(t, ServiceCode.SUCCESS.getText(), null);
+        return new ServiceResult<>(t, ServiceCode.SUCCESS.getText(), null);
     }
 
     /**
@@ -77,7 +77,7 @@ public class ServiceResult<T> implements Serializable {
      * @return 一个code是400的 代表逻辑错误的返回(程序并没有错)
      */
     public static <T> ServiceResult<T> buildFailedResult(String businessMessage, T t) {
-        return new ServiceResult(t, ServiceCode.REQUEST_PARAM_ERROR.getText(), businessMessage);
+        return new ServiceResult<>(t, ServiceCode.REQUEST_PARAM_ERROR.getText(), businessMessage);
     }
 
     /**
@@ -101,7 +101,7 @@ public class ServiceResult<T> implements Serializable {
      */
     public static <T> ServiceResult<T> buildErrorResult(String businessMessage) {
 
-        return new ServiceResult(null, ServiceCode.ERROR.getText(), businessMessage);
+        return new ServiceResult<>(null, ServiceCode.ERROR.getText(), businessMessage);
     }
 
     /**
@@ -158,7 +158,7 @@ public class ServiceResult<T> implements Serializable {
      */
     public static ServiceResult<HotSpotDTO> buildHotSpotHaveResult(String key, String hkey) {
         HotSpotDTO build = HotSpotDTO.build(key, hkey);
-        return new ServiceResult(build, ServiceCode.SUCCESS_REDIS.getText(), null);
+        return new ServiceResult<>(build, ServiceCode.SUCCESS_REDIS.getText(), null);
     }
 
     public T getData() {

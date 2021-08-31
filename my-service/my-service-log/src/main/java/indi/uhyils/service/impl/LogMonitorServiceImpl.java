@@ -2,7 +2,7 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.LogMonitorAssembler;
-import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoEvent;
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoCommand;
 import indi.uhyils.pojo.DO.LogMonitorDO;
 import indi.uhyils.pojo.DTO.LogMonitorDTO;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
@@ -63,7 +63,7 @@ public class LogMonitorServiceImpl extends AbstractDoService<LogMonitorDO, LogMo
     }
 
     @Override
-    public void receiveJvmStartInfo(JvmStartInfoEvent jvmStartInfo) {
+    public void receiveJvmStartInfo(JvmStartInfoCommand jvmStartInfo) {
         LogMonitor logMonitor = assem.jvmStartInfoToLogMonitor(jvmStartInfo);
 
         logMonitor.checkMonitorRepeat(rep);

@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.cqe.query.AbstractQuery;
+import indi.uhyils.pojo.cqe.query.AbstractArgQuery;
 
 /**
  * 分页查询,多一个字典id
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.cqe.query.AbstractQuery;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月17日 07时07分
  */
-public class GetByItemArgsQuery extends AbstractQuery {
+public class GetByItemArgsQuery extends AbstractArgQuery {
 
     /**
      * 字典id

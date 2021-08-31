@@ -2,7 +2,7 @@ package indi.uhyils.repository.base;
 
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.cqe.query.BaseQuery;
+import indi.uhyils.pojo.cqe.query.BaseArgQuery;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.HaveIdEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -15,7 +15,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月22日 14时49分
  */
-public interface BaseEntityRepository<DO extends BaseDO,EN extends AbstractDoEntity<DO>> extends BaseRepository {
+public interface BaseEntityRepository<DO extends BaseDO, EN extends AbstractDoEntity<DO>> extends BaseRepository {
 
     /**
      * 保存逻辑
@@ -69,7 +69,7 @@ public interface BaseEntityRepository<DO extends BaseDO,EN extends AbstractDoEnt
      *
      * @return
      */
-    <E extends BaseQuery> List<EN> findNoPage(E order);
+    <E extends BaseArgQuery> List<EN> findNoPage(E order);
 
     /**
      * 根据条件分页查询
@@ -78,7 +78,7 @@ public interface BaseEntityRepository<DO extends BaseDO,EN extends AbstractDoEnt
      *
      * @return
      */
-    <E extends BaseQuery> Page<EN> find(E order);
+    <E extends BaseArgQuery> Page<EN> find(E order);
 
 
     /**
@@ -106,14 +106,14 @@ public interface BaseEntityRepository<DO extends BaseDO,EN extends AbstractDoEnt
      *
      * @return
      */
-    <E extends BaseQuery> int remove(E order);
+    <E extends BaseArgQuery> int remove(E order);
 
     /**
      * 修改
      *
      * @return
      */
-    <E extends BaseQuery> int change(EN entity, E query);
+    <E extends BaseArgQuery> int change(EN entity, E query);
 
     /**
      * 数量
@@ -122,5 +122,5 @@ public interface BaseEntityRepository<DO extends BaseDO,EN extends AbstractDoEnt
      *
      * @return
      */
-    <E extends BaseQuery> int count(E order);
+    <E extends BaseArgQuery> int count(E order);
 }

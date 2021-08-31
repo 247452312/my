@@ -5,9 +5,9 @@ import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.cqe.Arg;
-import indi.uhyils.pojo.cqe.query.BaseQuery;
-import indi.uhyils.pojo.cqe.query.Limit;
+import indi.uhyils.pojo.cqe.query.BaseArgQuery;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.HaveIdEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -94,29 +94,29 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     }
 
     @Override
-    public <E extends BaseQuery> List<EN> findNoPage(E order) {
-        List<Arg> args = order.args();
-        Limit limit = order.limit();
+    public <E extends BaseArgQuery> List<EN> findNoPage(E order) {
+        List<Arg> args = order.getArgs();
+        Limit limit = order.getLimit();
         List<DO> result;
         if (limit.getPage()) {
-            result = dao.getByArgs(args, order.order(), order.limit());
+            result = dao.getByArgs(args, order.getOrder(), order.getLimit());
         } else {
-            result = dao.getByArgsNoPage(args, order.order());
+            result = dao.getByArgsNoPage(args, order.getOrder());
         }
         return result.stream().map(assembler::toEntity).collect(Collectors.toList());
     }
 
     @Override
-    public <E extends BaseQuery> Page<EN> find(E order) {
+    public <E extends BaseArgQuery> Page<EN> find(E order) {
         List<EN> noPageData = findNoPage(order);
-        int count = dao.countByArgs(order.args());
-        return Page.build(noPageData, order.limit(), count);
+        int count = dao.countByArgs(order.getArgs());
+        return Page.build(noPageData, order.getLimit(), count);
     }
 
     @Override
-    public int remove(List<EN> entitys) {
-        AssertUtil.assertTrue(entitys.stream().allMatch(HaveIdEntity::haveId), "删除时没有id");
-        List<DO> doList = entitys.stream().map(t->assembler.toDo(t)).peek(BaseDO::changeToDelete).peek(BaseDO::preUpdate).collect(Collectors.toList());
+    public int remove(List<EN> entities) {
+        AssertUtil.assertTrue(entities.stream().allMatch(HaveIdEntity::haveId), "删除时没有id");
+        List<DO> doList = entities.stream().map(t -> assembler.toDo(t)).peek(BaseDO::changeToDelete).peek(BaseDO::preUpdate).collect(Collectors.toList());
         return doList.stream().mapToInt(dao::update).sum();
     }
 
@@ -129,19 +129,19 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     }
 
     @Override
-    public <E extends BaseQuery> int remove(E order) {
+    public <E extends BaseArgQuery> int remove(E order) {
         List<EN> noPage = findNoPage(order);
         return remove(noPage);
     }
 
     @Override
-    public <E extends BaseQuery> int change(EN entity, E query) {
-        return dao.updateByOrder(entity.toDo(), query.args());
+    public <E extends BaseArgQuery> int change(EN entity, E query) {
+        return dao.updateByOrder(entity.toDo(), query.getArgs());
     }
 
     @Override
-    public <E extends BaseQuery> int count(E order) {
-        return dao.countByArgs(order.args());
+    public <E extends BaseArgQuery> int count(E order) {
+        return dao.countByArgs(order.getArgs());
     }
 
 

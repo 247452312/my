@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DTO;
 
+import java.util.List;
+
 /**
  * 部门
  *
@@ -13,6 +15,16 @@ public class DeptDTO extends IdDTO {
 
     private String name;
 
+    /**
+     * 权限
+     */
+    private List<PowerDTO> powers;
+
+    /**
+     * 菜单
+     */
+    private List<MenuDTO> menus;
+
 
     public String getName() {
         return name;
@@ -20,5 +32,21 @@ public class DeptDTO extends IdDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<PowerDTO> getPowers() {
+        return powers;
+    }
+
+    public void setPowers(List<PowerDTO> powers) {
+        this.powers = powers;
+    }
+
+    public List<MenuDTO> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<MenuDTO> menus) {
+        this.menus = menus;
     }
 }

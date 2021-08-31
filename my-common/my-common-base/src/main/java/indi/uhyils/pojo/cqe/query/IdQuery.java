@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.cqe.query;
 
-import indi.uhyils.pojo.cqe.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import java.util.Collections;
 
 
@@ -11,9 +11,9 @@ import java.util.Collections;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 08时44分
  */
-public class IdQuery extends AbstractQuery {
+public class IdQuery extends AbstractArgQuery {
 
-    private Long id;
+    private final Long id;
 
     public IdQuery(Long id) {
         super(Collections.singletonList(new Arg("id", "=", id)));

@@ -15,8 +15,8 @@ import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.DTO.response.LogTypeDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.event.BlankEvent;
-import indi.uhyils.pojo.cqe.query.Query;
+import indi.uhyils.pojo.cqe.command.BlankCommand;
+import indi.uhyils.pojo.cqe.query.BlackQuery;
 import indi.uhyils.pojo.cqe.query.TraceIdQuery;
 import indi.uhyils.pojo.entity.MonitorConcurrent;
 import indi.uhyils.pojo.entity.Trace;
@@ -66,7 +66,7 @@ public class TraceInfoServiceImpl extends AbstractDoService<TraceInfoDO, TraceIn
     }
 
     @Override
-    public Page<TraceDetailStatisticsDTO> getTraceStatistics(Query request) {
+    public Page<TraceDetailStatisticsDTO> getTraceStatistics(BlackQuery request) {
         Page<TraceDetailStatisticsView> result = rep.findView(request);
         return assem.pageViewToDTO(result);
     }
@@ -82,9 +82,9 @@ public class TraceInfoServiceImpl extends AbstractDoService<TraceInfoDO, TraceIn
     }
 
     @Override
-    public void monitorConcurrentNumber(BlankEvent cqe) {
+    public void monitorConcurrentNumber(BlankCommand request) {
         // 获取每秒网关的并发数
-        Long concurrentNumber = this.getConcurrentNumber(cqe);
+        Long concurrentNumber = this.getConcurrentNumber(request);
 
         //获取字典中人工设置的自动降级的并发数
         List<DictItemDTO> code = dictFacade.getByCode(MyContext.CONCURRENT_NUM_DICT_CODE);

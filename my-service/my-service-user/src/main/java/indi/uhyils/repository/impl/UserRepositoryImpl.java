@@ -6,7 +6,7 @@ import indi.uhyils.assembler.UserAssembler;
 import indi.uhyils.dao.UserDao;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.cqe.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Password;

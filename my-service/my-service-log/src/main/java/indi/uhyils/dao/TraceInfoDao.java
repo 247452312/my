@@ -4,7 +4,7 @@ import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
 import indi.uhyils.pojo.DO.TraceInfoDO;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.cqe.query.Query;
+import indi.uhyils.pojo.cqe.query.BlackQuery;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -50,7 +50,7 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoDO> {
      *
      * @return
      */
-    List<TraceDetailStatisticsView> getTraceStatistics(Query request);
+    List<TraceDetailStatisticsView> getTraceStatistics(BlackQuery request);
 
     /**
      * 获取统计信息的数量
@@ -59,7 +59,7 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoDO> {
      *
      * @return
      */
-    Integer getTraceStatisticsCount(Query request);
+    Integer getTraceStatisticsCount(BlackQuery request);
 
     /**
      * 根据traceId 和 rpcId 获取详情

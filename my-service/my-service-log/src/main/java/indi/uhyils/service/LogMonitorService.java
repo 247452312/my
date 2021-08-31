@@ -1,7 +1,7 @@
 package indi.uhyils.service;
 
 
-import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoEvent;
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoCommand;
 import indi.uhyils.pojo.DTO.LogMonitorDTO;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
@@ -39,5 +39,5 @@ public interface LogMonitorService extends BaseDoService<LogMonitorDTO> {
      *
      * @param jvmStartInfo
      */
-    void receiveJvmStartInfo(JvmStartInfoEvent jvmStartInfo);
+    void receiveJvmStartInfo(JvmStartInfoCommand jvmStartInfo);
 }

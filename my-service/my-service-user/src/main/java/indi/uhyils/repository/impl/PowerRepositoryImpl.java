@@ -5,7 +5,7 @@ import indi.uhyils.assembler.PowerAssembler;
 import indi.uhyils.dao.PowerDao;
 import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.DTO.PowerDTO;
-import indi.uhyils.pojo.cqe.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Identifier;

@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.rabbit;
+package indi.uhyils.protocol.mq;
 
 
 import com.rabbitmq.client.AMQP;
@@ -35,7 +35,12 @@ import org.springframework.context.ApplicationContext;
  */
 public class RabbitLogInfoConsumer extends DefaultConsumer {
 
-    private static final String THREAD_NAME = "log_deal_thread_";
+    private static final String THREAD_NAME = "thread_";
+
+    /**
+     * 包含这个字段的日志不发送MQ
+     */
+    private static final String TRACE_INFO = "sys_trace";
 
     private final Executor executor;
 
@@ -58,6 +63,11 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
         traceLogService = applicationContext.getBean(TraceLogService.class);
     }
 
+    /**
+     * 注: 此处不打印日志,如果打印日志,会造成递归效果.快速将磁盘吃没 具体方法为,线程名称中带有:
+     * {@link RabbitLogInfoConsumer#TRACE_INFO}
+     * 请不要在此方法创建的线程中再次创建其他线程
+     */
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) {
         executor.execute(() -> {
@@ -85,7 +95,7 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
                         traceInfoService.add(traceInfoDTOAddCommand);
                         break;
                     default:
-                        throw new RuntimeException("前缀错误" + text.charAt(0));
+                        LogUtil.error("前缀错误" + text.charAt(0));
                 }
             } catch (Exception e) {
                 LogUtil.error(e, text);
@@ -97,11 +107,11 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
 
     private static class LogDealThreadFactory implements ThreadFactory {
 
-        private static final AtomicInteger atomicInteger = new AtomicInteger(0);
+        private static final AtomicInteger ATOMIC_INTEGER = new AtomicInteger(0);
 
         @Override
-        public Thread newThread(Runnable r) {
-            return new Thread(r, THREAD_NAME + atomicInteger.getAndAdd(1));
+        public Thread newThread(Runnable runnable) {
+            return new Thread(runnable, TRACE_INFO + "_" + THREAD_NAME + ATOMIC_INTEGER.getAndAdd(1));
         }
     }
 

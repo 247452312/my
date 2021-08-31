@@ -1,6 +1,6 @@
 package indi.uhyils.mq.pojo.mqinfo;
 
-import indi.uhyils.pojo.cqe.event.AbstractEvent;
+import indi.uhyils.pojo.cqe.command.AbstractCommand;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +10,12 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月18日 07时43分
  */
-public class JvmStartInfoEvent extends AbstractEvent {
+public class JvmStartInfoCommand extends AbstractCommand {
 
     /**
      * 收集信息,如果发送失败时也能记录之前的状态信息
      */
-    private static volatile List<JvmStatusInfoEvent> statusInfos = new ArrayList<>();
+    private static volatile List<JvmStatusInfoCommand> statusInfos = new ArrayList<>();
 
     /**
      * 分配给jvm的总内存
@@ -50,14 +50,14 @@ public class JvmStartInfoEvent extends AbstractEvent {
     /**
      * 第一次发送携带此时的jvm信息
      */
-    private List<JvmStatusInfoEvent> jvmStatusInfos;
+    private List<JvmStatusInfoCommand> jvmStatusInfos;
 
-    public static List<JvmStatusInfoEvent> getStatusInfos() {
+    public static List<JvmStatusInfoCommand> getStatusInfos() {
         return statusInfos;
     }
 
-    public static void setStatusInfos(List<JvmStatusInfoEvent> statusInfos) {
-        JvmStartInfoEvent.statusInfos = statusInfos;
+    public static void setStatusInfos(List<JvmStatusInfoCommand> statusInfos) {
+        JvmStartInfoCommand.statusInfos = statusInfos;
     }
 
     public Double getJvmTotalMem() {
@@ -108,11 +108,11 @@ public class JvmStartInfoEvent extends AbstractEvent {
         this.jvmUniqueMark = jvmUniqueMark;
     }
 
-    public List<JvmStatusInfoEvent> getJvmStatusInfos() {
+    public List<JvmStatusInfoCommand> getJvmStatusInfos() {
         return jvmStatusInfos;
     }
 
-    public void setJvmStatusInfos(List<JvmStatusInfoEvent> jvmStatusInfos) {
+    public void setJvmStatusInfos(List<JvmStatusInfoCommand> jvmStatusInfos) {
         this.jvmStatusInfos = jvmStatusInfos;
     }
 }

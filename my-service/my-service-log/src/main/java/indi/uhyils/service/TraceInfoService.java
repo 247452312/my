@@ -9,8 +9,7 @@ import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.DTO.response.LogTypeDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.BlankCommand;
-import indi.uhyils.pojo.cqe.event.BlankEvent;
-import indi.uhyils.pojo.cqe.query.Query;
+import indi.uhyils.pojo.cqe.query.BlackQuery;
 import indi.uhyils.pojo.cqe.query.TraceIdQuery;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public interface TraceInfoService extends BaseDoService<TraceInfoDTO> {
      *
      * @return
      */
-    Page<TraceDetailStatisticsDTO> getTraceStatistics(Query request);
+    Page<TraceDetailStatisticsDTO> getTraceStatistics(BlackQuery request);
 
     /**
      * 获取日志类型
@@ -74,7 +73,7 @@ public interface TraceInfoService extends BaseDoService<TraceInfoDTO> {
      *
      * @param request
      */
-    void monitorConcurrentNumber(BlankEvent request);
+    void monitorConcurrentNumber(BlankCommand request);
 
     /**
      * 获取每秒网关并发数

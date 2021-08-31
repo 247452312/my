@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.cqe.query.Query;
+import indi.uhyils.pojo.cqe.query.BlackQuery;
 
 
 /**
@@ -8,7 +8,7 @@ import indi.uhyils.pojo.cqe.query.Query;
  * @version 1.0
  * @date 文件创建日期 2021年08月04日 08时39分
  */
-public class GetTraceInfoByArgAndPageRequest extends Query {
+public class GetTraceInfoByArgAndPageRequest extends BlackQuery {
 
     /**
      * 链路唯一索引

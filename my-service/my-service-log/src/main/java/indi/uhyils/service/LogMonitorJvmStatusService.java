@@ -1,7 +1,7 @@
 package indi.uhyils.service;
 
 
-import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoEvent;
+import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoCommand;
 import indi.uhyils.pojo.DTO.LogMonitorJvmStatusDTO;
 
 /**
@@ -18,5 +18,5 @@ public interface LogMonitorJvmStatusService extends BaseDoService<LogMonitorJvmS
      *
      * @param jvmStatusInfo
      */
-    void receiveJvmStatusInfo(JvmStatusInfoEvent jvmStatusInfo);
+    void receiveJvmStatusInfo(JvmStatusInfoCommand jvmStatusInfo);
 }

@@ -6,7 +6,7 @@ import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RemoveCommand;
-import indi.uhyils.pojo.cqe.query.BaseQuery;
+import indi.uhyils.pojo.cqe.query.BaseArgQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.pojo.entity.type.Identifier;
 import java.util.List;
@@ -52,7 +52,7 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
      *
      * @param order
      */
-    Page<E> query(BaseQuery order);
+    Page<E> query(BaseArgQuery order);
 
     /**
      * 查询
@@ -66,7 +66,7 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
      *
      * @param order
      */
-    List<E> queryNoPage(BaseQuery order);
+    List<E> queryNoPage(BaseArgQuery order);
 
     /**
      * 根据id获取DTO
@@ -94,5 +94,5 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
      *
      * @return
      */
-    Integer count(BaseQuery order);
+    Integer count(BaseArgQuery order);
 }

@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.cqe.command;
 
-import indi.uhyils.pojo.cqe.query.BaseQuery;
+import indi.uhyils.pojo.cqe.query.BaseArgQuery;
 
 /**
  * 删除命令
@@ -11,13 +11,13 @@ import indi.uhyils.pojo.cqe.query.BaseQuery;
  */
 public class RemoveCommand extends AbstractCommand {
 
-    private BaseQuery order;
+    private BaseArgQuery order;
 
-    public BaseQuery getOrder() {
+    public BaseArgQuery getOrder() {
         return order;
     }
 
-    public void setOrder(BaseQuery order) {
+    public void setOrder(BaseArgQuery order) {
         this.order = order;
     }
 }

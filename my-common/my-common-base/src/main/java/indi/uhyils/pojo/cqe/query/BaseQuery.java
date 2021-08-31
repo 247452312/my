@@ -1,8 +1,6 @@
 package indi.uhyils.pojo.cqe.query;
 
-import indi.uhyils.pojo.cqe.Arg;
 import indi.uhyils.pojo.cqe.BaseCQE;
-import java.util.List;
 
 /**
  * 查询命令, 只是查询,不会对现有的系统产生影响,一定是只读操作
@@ -13,25 +11,4 @@ import java.util.List;
  */
 public interface BaseQuery extends BaseCQE {
 
-    /**
-     * 获取参数
-     *
-     * @return
-     */
-    List<Arg> args();
-
-
-    /**
-     * 获取排序
-     *
-     * @return
-     */
-    Order order();
-
-    /**
-     * 获取分页
-     *
-     * @return
-     */
-    Limit limit();
 }

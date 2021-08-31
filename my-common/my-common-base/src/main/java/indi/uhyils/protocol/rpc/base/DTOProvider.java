@@ -7,6 +7,7 @@ import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RemoveCommand;
+import indi.uhyils.pojo.cqe.query.BaseArgQuery;
 import indi.uhyils.pojo.cqe.query.BaseQuery;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
@@ -29,7 +30,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 分页数据(也可以设置不分页)
      */
-    ServiceResult<Page<T>> query(BaseQuery query);
+    ServiceResult<Page<T>> query(BaseArgQuery query);
 
 
     /**
@@ -96,7 +97,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 根据条件查询出来的数量
      */
-    ServiceResult<Integer> count(BaseQuery order);
+    ServiceResult<Integer> count(BaseArgQuery order);
 
 
 }

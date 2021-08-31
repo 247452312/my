@@ -1,11 +1,11 @@
-package indi.uhyils.runner;
+package indi.uhyils.protocol.mq.runner;
 
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.util.LogInfoSendMqUtil;
 import indi.uhyils.mq.util.MqUtil;
-import indi.uhyils.pojo.rabbit.RabbitJvmStartInfoConsumer;
-import indi.uhyils.pojo.rabbit.RabbitJvmStatusInfoConsumer;
-import indi.uhyils.pojo.rabbit.RabbitLogInfoConsumer;
+import indi.uhyils.protocol.mq.RabbitJvmStartInfoConsumer;
+import indi.uhyils.protocol.mq.RabbitJvmStatusInfoConsumer;
+import indi.uhyils.protocol.mq.RabbitLogInfoConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

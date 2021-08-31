@@ -8,8 +8,7 @@ import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.DTO.response.LogTypeDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.query.BaseQuery;
-import indi.uhyils.pojo.cqe.query.Query;
+import indi.uhyils.pojo.cqe.query.BlackQuery;
 import indi.uhyils.pojo.cqe.query.TraceIdQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.List;
@@ -56,7 +55,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDTO> {
      *
      * @return
      */
-    ServiceResult<Page<TraceDetailStatisticsDTO>> getTraceStatistics(Query request);
+    ServiceResult<Page<TraceDetailStatisticsDTO>> getTraceStatistics(BlackQuery request);
 
     /**
      * 获取日志类型

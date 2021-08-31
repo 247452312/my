@@ -1,7 +1,9 @@
 package indi.uhyils.pojo.cqe.query;
 
-import indi.uhyils.pojo.cqe.Arg;
 import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import java.util.List;
 
 /**
@@ -11,7 +13,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 08时45分
  */
-public abstract class AbstractQuery extends DefaultCQE implements BaseQuery {
+public abstract class AbstractArgQuery extends DefaultCQE implements BaseArgQuery {
 
     protected List<Arg> args;
 
@@ -19,31 +21,31 @@ public abstract class AbstractQuery extends DefaultCQE implements BaseQuery {
 
     protected Limit limit;
 
-    public AbstractQuery() {
+    public AbstractArgQuery() {
     }
 
-    public AbstractQuery(List<Arg> args) {
+    public AbstractArgQuery(List<Arg> args) {
         this(args, new Order(), new Limit());
     }
 
-    public AbstractQuery(List<Arg> args, Order order, Limit limit) {
+    public AbstractArgQuery(List<Arg> args, Order order, Limit limit) {
         this.args = args;
         this.order = order;
         this.limit = limit;
     }
 
     @Override
-    public List<Arg> args() {
+    public List<Arg> getArgs() {
         return args;
     }
 
     @Override
-    public Order order() {
+    public Order getOrder() {
         return order;
     }
 
     @Override
-    public Limit limit() {
+    public Limit getLimit() {
         return limit;
     }
 }

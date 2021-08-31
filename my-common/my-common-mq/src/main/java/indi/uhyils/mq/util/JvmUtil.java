@@ -1,8 +1,8 @@
 package indi.uhyils.mq.util;
 
 
-import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoEvent;
-import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoEvent;
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoCommand;
+import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoCommand;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class JvmUtil {
 
-    public static JvmStartInfoEvent getJvmStartInfo(JvmUniqueMark jvmUniqueMark) {
-        JvmStartInfoEvent jvmStartInfo = new JvmStartInfoEvent();
+    public static JvmStartInfoCommand getJvmStartInfo(JvmUniqueMark jvmUniqueMark) {
+        JvmStartInfoCommand jvmStartInfo = new JvmStartInfoCommand();
 
-        List<JvmStatusInfoEvent> statusInfos = JvmStartInfoEvent.getStatusInfos();
+        List<JvmStatusInfoCommand> statusInfos = JvmStartInfoCommand.getStatusInfos();
         statusInfos.add(getJvmStatusInfo(jvmUniqueMark));
         MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
         MemoryUsage usage = memoryBean.getHeapMemoryUsage();
@@ -38,8 +38,8 @@ public class JvmUtil {
         return jvmStartInfo;
     }
 
-    public static JvmStatusInfoEvent getJvmStatusInfo(JvmUniqueMark jvmUniqueMark) {
-        JvmStatusInfoEvent jvmStatusInfo = new JvmStatusInfoEvent();
+    public static JvmStatusInfoCommand getJvmStatusInfo(JvmUniqueMark jvmUniqueMark) {
+        JvmStatusInfoCommand jvmStatusInfo = new JvmStatusInfoCommand();
         MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
         MemoryUsage usage = memoryBean.getHeapMemoryUsage();
         MemoryUsage nonUsage = memoryBean.getNonHeapMemoryUsage();

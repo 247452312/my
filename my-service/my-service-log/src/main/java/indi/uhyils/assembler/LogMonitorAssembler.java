@@ -3,15 +3,14 @@ package indi.uhyils.assembler;
 
 import indi.uhyils.annotation.Assembler;
 import indi.uhyils.mq.content.RabbitMqContent;
-import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoEvent;
-import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoEvent;
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoCommand;
+import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoCommand;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.DO.LogMonitorDO;
 import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
 import indi.uhyils.pojo.DTO.LogMonitorDTO;
 import indi.uhyils.pojo.entity.LogMonitor;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -47,16 +46,16 @@ public class LogMonitorAssembler extends AbstractAssembler<LogMonitorDO, LogMoni
         return LogMonitorDTO.class;
     }
 
-    public LogMonitor jvmStartInfoToLogMonitor(JvmStartInfoEvent jvmStartInfo) {
+    public LogMonitor jvmStartInfoToLogMonitor(JvmStartInfoCommand jvmStartInfo) {
         JvmUniqueMark jvmUniqueMark = jvmStartInfo.getJvmUniqueMark();
         LogMonitorDO logMonitorDO = transJvmStartInfoToMonitorDO(jvmStartInfo);
-        List<JvmStatusInfoEvent> jvmStatusInfos = jvmStartInfo.getJvmStatusInfos();
+        List<JvmStatusInfoCommand> jvmStatusInfos = jvmStartInfo.getJvmStatusInfos();
         List<LogMonitorJvmStatusDO> logMonitorJvmStatusEntities = logMonitorJvmStatusAssembler.transJvmStatusInfosToMonitorJvmStatusDetailDOs(jvmStatusInfos, null);
         return new LogMonitor(jvmUniqueMark, logMonitorDO, logMonitorJvmStatusEntities);
     }
 
 
-    public LogMonitorDO transJvmStartInfoToMonitorDO(JvmStartInfoEvent jvmStartInfo) {
+    public LogMonitorDO transJvmStartInfoToMonitorDO(JvmStartInfoCommand jvmStartInfo) {
         LogMonitorDO logMonitorEntity = new LogMonitorDO();
         JvmUniqueMark jvmUniqueMark = jvmStartInfo.getJvmUniqueMark();
         logMonitorEntity.setIp(jvmUniqueMark.getIp());

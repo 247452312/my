@@ -1,5 +1,6 @@
-package indi.uhyils.pojo.cqe.query;
+package indi.uhyils.pojo.cqe.query.demo;
 
+import indi.uhyils.pojo.cqe.query.Column;
 import java.util.List;
 
 /**

@@ -4,7 +4,7 @@ import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
 import indi.uhyils.pojo.DO.TraceInfoDO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.cqe.query.Query;
+import indi.uhyils.pojo.cqe.query.BlackQuery;
 import indi.uhyils.pojo.entity.OnlineMonitors;
 import indi.uhyils.pojo.entity.Trace;
 import indi.uhyils.pojo.entity.TraceInfo;
@@ -73,7 +73,7 @@ public interface TraceInfoRepository extends BaseEntityRepository<TraceInfoDO, T
      *
      * @return
      */
-    Page<TraceDetailStatisticsView> findView(Query request);
+    Page<TraceDetailStatisticsView> findView(BlackQuery request);
 
 
     /**
