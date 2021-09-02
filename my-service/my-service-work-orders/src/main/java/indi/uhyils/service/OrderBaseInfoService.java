@@ -34,16 +34,7 @@ public interface OrderBaseInfoService extends BaseDoService<OrderBaseInfoDTO> {
      *
      * @return
      */
-    GetOneBaseOrderDTO getOneOrder(IdQuery request);
+    OrderBaseInfoDTO getOneOrder(IdQuery request);
 
-
-    /**
-     * 复制基础工单到工单
-     *
-     * @param request 工单本体
-     *
-     * @return 插入后的id
-     */
-    InitOrderDTO initOrder(IdCommand request);
 
 }

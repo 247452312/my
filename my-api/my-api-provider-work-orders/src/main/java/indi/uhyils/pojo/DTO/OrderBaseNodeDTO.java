@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.DTO;
 
 
+import java.util.List;
+
 /**
  * 工单节点样例表(OrderBaseNode)表 对外数据传输载体
  *
@@ -82,6 +84,21 @@ public class OrderBaseNodeDTO extends IdDTO {
      * 是否隐藏,如果隐藏,则在创建项目时不自动添加此节点
      */
     private Integer hidden;
+
+    /**
+     * 节点属性
+     */
+    private List<OrderBaseNodeFieldDTO> fields;
+
+    /**
+     * 节点路由
+     */
+    private List<OrderBaseNodeRouteDTO> routes;
+
+    /**
+     * 节点结果列表
+     */
+    private List<OrderBaseNodeResultTypeDTO> resultTypes;
 
 
     public Long getBaseInfoId() {
@@ -209,4 +226,27 @@ public class OrderBaseNodeDTO extends IdDTO {
         this.hidden = hidden;
     }
 
+    public List<OrderBaseNodeFieldDTO> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<OrderBaseNodeFieldDTO> fields) {
+        this.fields = fields;
+    }
+
+    public List<OrderBaseNodeRouteDTO> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<OrderBaseNodeRouteDTO> routes) {
+        this.routes = routes;
+    }
+
+    public List<OrderBaseNodeResultTypeDTO> getResultTypes() {
+        return resultTypes;
+    }
+
+    public void setResultTypes(List<OrderBaseNodeResultTypeDTO> resultTypes) {
+        this.resultTypes = resultTypes;
+    }
 }

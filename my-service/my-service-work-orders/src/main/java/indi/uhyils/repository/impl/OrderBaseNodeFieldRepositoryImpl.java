@@ -6,8 +6,11 @@ import indi.uhyils.dao.OrderBaseNodeFieldDao;
 import indi.uhyils.pojo.DO.OrderBaseNodeFieldDO;
 import indi.uhyils.pojo.DTO.OrderBaseNodeFieldDTO;
 import indi.uhyils.pojo.entity.OrderBaseNodeField;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.OrderBaseNodeFieldRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -25,4 +28,9 @@ public class OrderBaseNodeFieldRepositoryImpl extends AbstractRepository<OrderBa
     }
 
 
+    @Override
+    public List<OrderBaseNodeField> findNodeFieldByNodes(List<Identifier> nodeIds) {
+        List<OrderBaseNodeFieldDO> byOrderNodeIds = dao.getByOrderNodeIds(nodeIds.stream().map(Identifier::getId).collect(Collectors.toList()));
+        return assembler.listToEntity(byOrderNodeIds);
+    }
 }

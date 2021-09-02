@@ -42,15 +42,10 @@ public class OrderBaseInfoProviderImpl extends BaseDefaultProvider<OrderBaseInfo
     }
 
     @Override
-    public ServiceResult<GetOneBaseOrderDTO> getOneOrder(IdQuery request) {
-        GetOneBaseOrderDTO result = service.getOneOrder(request);
+    public ServiceResult<OrderBaseInfoDTO> getOneOrder(IdQuery request) {
+        OrderBaseInfoDTO result = service.getOneOrder(request);
         return ServiceResult.buildSuccessResult(result);
     }
 
-    @Override
-    public ServiceResult<InitOrderDTO> initOrder(IdCommand request) {
-        InitOrderDTO result = service.initOrder(request);
-        return ServiceResult.buildSuccessResult(result);
-    }
 }
 

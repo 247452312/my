@@ -1,8 +1,10 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.OrderBaseInfoDO;
+import indi.uhyils.pojo.DTO.OrderBaseInfoDTO;
 import indi.uhyils.pojo.entity.OrderBaseInfo;
 import indi.uhyils.repository.base.BaseEntityRepository;
+import java.util.List;
 
 /**
  * 工单基础信息样例表(OrderBaseInfo)表 数据仓库层
@@ -13,5 +15,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  */
 public interface OrderBaseInfoRepository extends BaseEntityRepository<OrderBaseInfoDO, OrderBaseInfo> {
 
+
+    /**
+     * 获取基础工单(只包含内容和名称)
+     *
+     * @return
+     */
+    List<OrderBaseInfoDTO> getAllBaseOrderIdAndName();
 
 }

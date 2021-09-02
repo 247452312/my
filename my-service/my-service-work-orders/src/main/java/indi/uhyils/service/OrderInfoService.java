@@ -1,7 +1,9 @@
 package indi.uhyils.service;
 
 
+import indi.uhyils.pojo.DTO.InitOrderDTO;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
+import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.event.AgreeRecallOrderEvent;
 import indi.uhyils.pojo.cqe.event.ApprovalOrderEvent;
 import indi.uhyils.pojo.cqe.command.CommitOrderCommand;
@@ -19,6 +21,17 @@ import java.util.ArrayList;
  * @date 文件创建日期 2021年08月31日 19时59分14秒
  */
 public interface OrderInfoService extends BaseDoService<OrderInfoDTO> {
+
+
+
+    /**
+     * 复制基础工单到工单
+     *
+     * @param request 工单本体
+     *
+     * @return 插入后的id
+     */
+    InitOrderDTO initOrder(IdCommand request);
 
     /**
      * 根据类型获取全部工单

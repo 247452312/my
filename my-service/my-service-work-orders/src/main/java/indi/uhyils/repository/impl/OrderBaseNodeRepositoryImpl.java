@@ -2,12 +2,21 @@ package indi.uhyils.repository.impl;
 
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.OrderBaseNodeAssembler;
+import indi.uhyils.assembler.OrderBaseNodeRouteAssembler;
 import indi.uhyils.dao.OrderBaseNodeDao;
+import indi.uhyils.dao.OrderBaseNodeRouteDao;
 import indi.uhyils.pojo.DO.OrderBaseNodeDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeRouteDO;
 import indi.uhyils.pojo.DTO.OrderBaseNodeDTO;
 import indi.uhyils.pojo.entity.OrderBaseNode;
+import indi.uhyils.pojo.entity.OrderBaseNodeRoute;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.OrderBaseNodeRepository;
+import indi.uhyils.repository.OrderBaseNodeRouteRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -20,9 +29,15 @@ import indi.uhyils.repository.base.AbstractRepository;
 @Repository
 public class OrderBaseNodeRepositoryImpl extends AbstractRepository<OrderBaseNode, OrderBaseNodeDO, OrderBaseNodeDao, OrderBaseNodeDTO, OrderBaseNodeAssembler> implements OrderBaseNodeRepository {
 
+
     protected OrderBaseNodeRepositoryImpl(OrderBaseNodeAssembler convert, OrderBaseNodeDao dao) {
         super(convert, dao);
     }
 
 
+    @Override
+    public List<OrderBaseNode> findNoHiddenNodeById(Identifier id) {
+        List<OrderBaseNodeDO> noHiddenByOrderId = dao.getNoHiddenByOrderId(id.getId());
+        return assembler.listToEntity(noHiddenByOrderId);
+    }
 }

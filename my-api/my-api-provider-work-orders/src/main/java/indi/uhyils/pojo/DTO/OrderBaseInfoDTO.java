@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.DTO;
 
 
+import java.util.List;
+
 /**
  * 工单基础信息样例表(OrderBaseInfo)表 对外数据传输载体
  *
@@ -52,6 +54,11 @@ public class OrderBaseInfoDTO extends IdDTO {
      * 运行时限(分钟)
      */
     private Integer limitTime;
+
+    /**
+     * 节点列表
+     */
+    private List<OrderBaseNodeDTO> nodes;
 
 
     public String getName() {
@@ -125,4 +132,11 @@ public class OrderBaseInfoDTO extends IdDTO {
         this.limitTime = limitTime;
     }
 
+    public List<OrderBaseNodeDTO> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<OrderBaseNodeDTO> nodes) {
+        this.nodes = nodes;
+    }
 }

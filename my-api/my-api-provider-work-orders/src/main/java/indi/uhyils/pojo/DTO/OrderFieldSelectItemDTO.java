@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.DTO;
 
 /**
+ * 工单节点属性中下拉选项
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月04日 15时00分
  */

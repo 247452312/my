@@ -6,8 +6,11 @@ import indi.uhyils.dao.OrderBaseNodeResultTypeDao;
 import indi.uhyils.pojo.DO.OrderBaseNodeResultTypeDO;
 import indi.uhyils.pojo.DTO.OrderBaseNodeResultTypeDTO;
 import indi.uhyils.pojo.entity.OrderBaseNodeResultType;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.OrderBaseNodeResultTypeRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -25,4 +28,9 @@ public class OrderBaseNodeResultTypeRepositoryImpl extends AbstractRepository<Or
     }
 
 
+    @Override
+    public List<OrderBaseNodeResultType> findNodeResultTypeByNodes(List<Identifier> nodeIds) {
+        List<OrderBaseNodeResultTypeDO> byOrderNodeIds = dao.getByOrderNodeIds(nodeIds.stream().map(Identifier::getId).collect(Collectors.toList()));
+        return assembler.listToEntity(byOrderNodeIds);
+    }
 }

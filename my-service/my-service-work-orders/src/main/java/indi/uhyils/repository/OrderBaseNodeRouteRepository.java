@@ -2,7 +2,9 @@ package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.OrderBaseNodeRouteDO;
 import indi.uhyils.pojo.entity.OrderBaseNodeRoute;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
+import java.util.List;
 
 /**
  * 节点间关联路由样例表(OrderBaseNodeRoute)表 数据仓库层
@@ -14,4 +16,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
 public interface OrderBaseNodeRouteRepository extends BaseEntityRepository<OrderBaseNodeRouteDO, OrderBaseNodeRoute> {
 
 
+    /**
+     * 根据节点id获取节点路由
+     *
+     * @param nodeIds
+     *
+     * @return
+     */
+    List<OrderBaseNodeRoute> findNodeRouteByNodes(List<Identifier> nodeIds);
 }

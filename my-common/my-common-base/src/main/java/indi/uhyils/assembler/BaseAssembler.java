@@ -104,4 +104,13 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      * @return
      */
     List<ENTITY> listToEntity(List<DO> dos);
+
+    /**
+     * DTOs to Entity
+     *
+     * @param dtos
+     *
+     * @return
+     */
+    List<ENTITY> listDTOToEntity(List<DTO> dtos);
 }

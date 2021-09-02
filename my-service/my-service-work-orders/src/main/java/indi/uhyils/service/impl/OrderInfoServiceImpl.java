@@ -1,30 +1,52 @@
 package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
+import indi.uhyils.assembler.OrderBaseInfoAssembler;
 import indi.uhyils.assembler.OrderInfoAssembler;
 import indi.uhyils.builder.OrderNodeFieldValueBuilder;
+import indi.uhyils.enum_.OrderNodeTypeEnum;
 import indi.uhyils.enum_.OrderStatusEnum;
+import indi.uhyils.pojo.DO.OrderBaseInfoDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeFieldDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeResultTypeDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeRouteDO;
 import indi.uhyils.pojo.DO.OrderInfoDO;
 import indi.uhyils.pojo.DO.OrderNodeDO;
+import indi.uhyils.pojo.DO.OrderNodeFieldDO;
 import indi.uhyils.pojo.DO.OrderNodeFieldValueDO;
+import indi.uhyils.pojo.DO.OrderNodeRouteDO;
+import indi.uhyils.pojo.DTO.InitOrderDTO;
+import indi.uhyils.pojo.DTO.OrderBaseInfoDTO;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.pojo.cqe.event.AgreeRecallOrderEvent;
-import indi.uhyils.pojo.cqe.event.ApprovalOrderEvent;
 import indi.uhyils.pojo.cqe.command.CommitOrderCommand;
 import indi.uhyils.pojo.cqe.command.FrozenOrderCommand;
-import indi.uhyils.pojo.cqe.query.GetAllOrderQuery;
+import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RecallOrderCommand;
 import indi.uhyils.pojo.cqe.command.RestartOrderCommand;
+import indi.uhyils.pojo.cqe.event.AgreeRecallOrderEvent;
+import indi.uhyils.pojo.cqe.event.ApprovalOrderEvent;
+import indi.uhyils.pojo.cqe.query.GetAllOrderQuery;
+import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.OrderInfo;
 import indi.uhyils.repository.OrderInfoRepository;
+import indi.uhyils.repository.OrderNodeFieldRepository;
+import indi.uhyils.repository.OrderNodeRepository;
+import indi.uhyils.repository.OrderNodeResultTypeRepository;
+import indi.uhyils.repository.OrderNodeRouteRepository;
+import indi.uhyils.service.OrderBaseInfoService;
 import indi.uhyils.service.OrderInfoService;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.OrderBuilder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,10 +60,43 @@ import org.springframework.stereotype.Service;
 @ReadWriteMark(tables = {"sys_order_info"})
 public class OrderInfoServiceImpl extends AbstractDoService<OrderInfoDO, OrderInfo, OrderInfoDTO, OrderInfoRepository, OrderInfoAssembler> implements OrderInfoService {
 
+    @Autowired
+    private OrderBaseInfoService baseInfoService;
+
+    @Autowired
+    private OrderBaseInfoAssembler baseInfoAssembler;
+
+    @Autowired
+    private OrderNodeRepository nodeRepository;
+
+    @Autowired
+    private OrderNodeFieldRepository fieldRepository;
+
+    @Autowired
+    private OrderNodeRouteRepository routeRepository;
+
+    @Autowired
+    private OrderNodeResultTypeRepository resultTypeRepository;
+
     public OrderInfoServiceImpl(OrderInfoAssembler assembler, OrderInfoRepository repository) {
         super(assembler, repository);
     }
 
+    @Override
+    public InitOrderDTO initOrder(IdCommand request) {
+        OrderBaseInfoDTO order = baseInfoService.getOneOrder(new IdQuery(request.getId()));
+        OrderInfoDTO infoDTO = assem.baseInfoDTOToInfoDTO(order);
+        OrderInfo orderInfo = assem.toEntity(infoDTO);
+
+        // 保存自己,会改变id
+        orderInfo.saveSelf(rep);
+        // 将修改后的id赋值到node上并保存node
+        orderInfo.saveNode(nodeRepository, fieldRepository, routeRepository, resultTypeRepository);
+
+
+        InitOrderDTO build = InitOrderDTO.build(infoId, orderNodeField, baseInfo.getMonitorUserId(), dealUserIds, noticeUserIds);
+        return ServiceResult.buildSuccessResult("插入成功", build);
+    }
 
     @Override
     public ArrayList<OrderInfoDTO> getAllOrder(GetAllOrderQuery request) {

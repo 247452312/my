@@ -3,8 +3,14 @@ package indi.uhyils.assembler;
 
 import indi.uhyils.annotation.Assembler;
 import indi.uhyils.pojo.DO.OrderInfoDO;
+import indi.uhyils.pojo.DTO.OrderBaseInfoDTO;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
+import indi.uhyils.pojo.DTO.OrderNodeDTO;
 import indi.uhyils.pojo.entity.OrderInfo;
+import indi.uhyils.pojo.entity.OrderNode;
+import indi.uhyils.util.BeanUtil;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 工单基础信息样例表(OrderInfo)表 entity,DO,DTO转换工具
@@ -16,6 +22,9 @@ import indi.uhyils.pojo.entity.OrderInfo;
 @Assembler
 public class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, OrderInfo, OrderInfoDTO> {
 
+    @Autowired
+    private OrderNodeAssembler nodeAssembler;
+
     @Override
     public OrderInfo toEntity(OrderInfoDO dO) {
         return new OrderInfo(dO);
@@ -23,7 +32,11 @@ public class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, OrderInfo
 
     @Override
     public OrderInfo toEntity(OrderInfoDTO dto) {
-        return new OrderInfo(toDo(dto));
+        OrderInfo orderInfo = new OrderInfo(toDo(dto));
+        List<OrderNodeDTO> nodes = dto.getNodes();
+        List<OrderNode> orderNodes = nodeAssembler.listDTOToEntity(nodes);
+        orderInfo.forceFillNodes(orderNodes);
+        return orderInfo;
     }
 
     @Override
@@ -35,5 +48,10 @@ public class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, OrderInfo
     protected Class<OrderInfoDTO> getDtoClass() {
         return OrderInfoDTO.class;
     }
+
+    public OrderInfoDTO baseInfoDTOToInfoDTO(OrderBaseInfoDTO order) {
+        return BeanUtil.copyProperties(order, OrderInfoDTO.class);
+    }
+
 }
 

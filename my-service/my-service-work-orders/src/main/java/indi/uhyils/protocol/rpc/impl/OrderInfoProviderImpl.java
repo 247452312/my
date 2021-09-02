@@ -1,7 +1,9 @@
 package indi.uhyils.protocol.rpc.impl;
 
+import indi.uhyils.pojo.DTO.InitOrderDTO;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.event.AgreeRecallOrderEvent;
 import indi.uhyils.pojo.cqe.event.ApprovalOrderEvent;
 import indi.uhyils.pojo.cqe.command.CommitOrderCommand;
@@ -35,6 +37,13 @@ public class OrderInfoProviderImpl extends BaseDefaultProvider<OrderInfoDTO> imp
     @Override
     protected BaseDoService<OrderInfoDTO> getService() {
         return service;
+    }
+
+
+    @Override
+    public ServiceResult<InitOrderDTO> initOrder(IdCommand request) {
+        InitOrderDTO result = service.initOrder(request);
+        return ServiceResult.buildSuccessResult(result);
     }
 
     @Override

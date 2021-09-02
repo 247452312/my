@@ -6,8 +6,11 @@ import indi.uhyils.dao.OrderBaseNodeRouteDao;
 import indi.uhyils.pojo.DO.OrderBaseNodeRouteDO;
 import indi.uhyils.pojo.DTO.OrderBaseNodeRouteDTO;
 import indi.uhyils.pojo.entity.OrderBaseNodeRoute;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.OrderBaseNodeRouteRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -25,4 +28,9 @@ public class OrderBaseNodeRouteRepositoryImpl extends AbstractRepository<OrderBa
     }
 
 
+    @Override
+    public List<OrderBaseNodeRoute> findNodeRouteByNodes(List<Identifier> nodeIds) {
+        List<OrderBaseNodeRouteDO> byOrderNodeIds = dao.getByOrderNodeIds(nodeIds.stream().map(Identifier::getId).collect(Collectors.toList()));
+        return assembler.listToEntity(byOrderNodeIds);
+    }
 }

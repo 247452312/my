@@ -2,7 +2,9 @@ package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.OrderBaseNodeFieldDO;
 import indi.uhyils.pojo.entity.OrderBaseNodeField;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
+import java.util.List;
 
 /**
  * 工单节点属性样例表(OrderBaseNodeField)表 数据仓库层
@@ -14,4 +16,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
 public interface OrderBaseNodeFieldRepository extends BaseEntityRepository<OrderBaseNodeFieldDO, OrderBaseNodeField> {
 
 
+    /**
+     * 根据节点id获取节点属性
+     *
+     * @param nodeIds
+     *
+     * @return
+     */
+    List<OrderBaseNodeField> findNodeFieldByNodes(List<Identifier> nodeIds);
 }

@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.DTO;
 
 
+import java.util.List;
+
 /**
  * 工单基础信息样例表(OrderInfo)表 对外数据传输载体
  *
@@ -63,6 +65,12 @@ public class OrderInfoDTO extends IdDTO {
      * 类型 dict的OrderType
      */
     private Integer type;
+
+
+    /**
+     * 节点
+     */
+    private List<OrderNodeDTO> nodes;
 
 
     public String getName() {
@@ -145,4 +153,11 @@ public class OrderInfoDTO extends IdDTO {
         this.type = type;
     }
 
+    public List<OrderNodeDTO> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<OrderNodeDTO> nodes) {
+        this.nodes = nodes;
+    }
 }

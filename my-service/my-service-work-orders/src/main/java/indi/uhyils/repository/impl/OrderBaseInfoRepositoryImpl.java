@@ -8,6 +8,8 @@ import indi.uhyils.pojo.DTO.OrderBaseInfoDTO;
 import indi.uhyils.pojo.entity.OrderBaseInfo;
 import indi.uhyils.repository.OrderBaseInfoRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,5 +26,9 @@ public class OrderBaseInfoRepositoryImpl extends AbstractRepository<OrderBaseInf
         super(convert, dao);
     }
 
-
+    @Override
+    public List<OrderBaseInfoDTO> getAllBaseOrderIdAndName() {
+        ArrayList<OrderBaseInfoDO> allBaseOrderIdAndName = dao.getAllBaseOrderIdAndName();
+        return assembler.listDoToDTO(allBaseOrderIdAndName);
+    }
 }

@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.DTO;
 
 
+import java.util.List;
+
 /**
  * 工单节点样例表(OrderNode)表 对外数据传输载体
  *
@@ -98,6 +100,20 @@ public class OrderNodeDTO extends IdDTO {
      */
     private String suggest;
 
+    /**
+     * 节点属性
+     */
+    private List<OrderNodeFieldDTO> fields;
+
+    /**
+     * 节点路由
+     */
+    private List<OrderNodeRouteDTO> routes;
+
+    /**
+     * 节点结果列表
+     */
+    private List<OrderNodeResultTypeDTO> resultTypes;
 
     public Long getBaseInfoId() {
         return baseInfoId;
@@ -251,4 +267,27 @@ public class OrderNodeDTO extends IdDTO {
         this.suggest = suggest;
     }
 
+    public List<OrderNodeFieldDTO> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<OrderNodeFieldDTO> fields) {
+        this.fields = fields;
+    }
+
+    public List<OrderNodeRouteDTO> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<OrderNodeRouteDTO> routes) {
+        this.routes = routes;
+    }
+
+    public List<OrderNodeResultTypeDTO> getResultTypes() {
+        return resultTypes;
+    }
+
+    public void setResultTypes(List<OrderNodeResultTypeDTO> resultTypes) {
+        this.resultTypes = resultTypes;
+    }
 }

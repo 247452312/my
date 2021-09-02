@@ -4,7 +4,12 @@ package indi.uhyils.assembler;
 import indi.uhyils.annotation.Assembler;
 import indi.uhyils.pojo.DO.OrderNodeDO;
 import indi.uhyils.pojo.DTO.OrderNodeDTO;
+import indi.uhyils.pojo.DTO.OrderNodeFieldDTO;
+import indi.uhyils.pojo.DTO.OrderNodeResultTypeDTO;
+import indi.uhyils.pojo.DTO.OrderNodeRouteDTO;
 import indi.uhyils.pojo.entity.OrderNode;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 工单节点样例表(OrderNode)表 entity,DO,DTO转换工具
@@ -16,6 +21,15 @@ import indi.uhyils.pojo.entity.OrderNode;
 @Assembler
 public class OrderNodeAssembler extends AbstractAssembler<OrderNodeDO, OrderNode, OrderNodeDTO> {
 
+    @Autowired
+    private OrderNodeFieldAssembler fieldAssembler;
+
+    @Autowired
+    private OrderNodeRouteAssembler routeAssembler;
+
+    @Autowired
+    private OrderNodeResultTypeAssembler resultTypeAssembler;
+
     @Override
     public OrderNode toEntity(OrderNodeDO dO) {
         return new OrderNode(dO);
@@ -23,7 +37,12 @@ public class OrderNodeAssembler extends AbstractAssembler<OrderNodeDO, OrderNode
 
     @Override
     public OrderNode toEntity(OrderNodeDTO dto) {
-        return new OrderNode(toDo(dto));
+        OrderNode orderNode = new OrderNode(toDo(dto));
+        List<OrderNodeFieldDTO> fields = dto.getFields();
+        List<OrderNodeResultTypeDTO> resultTypes = dto.getResultTypes();
+        List<OrderNodeRouteDTO> routes = dto.getRoutes();
+        orderNode.forceFillInfo(fieldAssembler.listDTOToEntity(fields), resultTypeAssembler.listDTOToEntity(resultTypes), routeAssembler.listDTOToEntity(routes));
+        return orderNode;
     }
 
     @Override

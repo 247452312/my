@@ -2,7 +2,9 @@ package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.OrderBaseNodeResultTypeDO;
 import indi.uhyils.pojo.entity.OrderBaseNodeResultType;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
+import java.util.List;
 
 /**
  * 工单节点处理结果样例表(OrderBaseNodeResultType)表 数据仓库层
@@ -14,4 +16,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
 public interface OrderBaseNodeResultTypeRepository extends BaseEntityRepository<OrderBaseNodeResultTypeDO, OrderBaseNodeResultType> {
 
 
+    /**
+     * 根据节点id获取节点结果类型
+     *
+     * @param nodeIds
+     *
+     * @return
+     */
+    List<OrderBaseNodeResultType> findNodeResultTypeByNodes(List<Identifier> nodeIds);
 }
