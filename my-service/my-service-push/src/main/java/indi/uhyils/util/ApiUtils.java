@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.CodeEnum;
 import indi.uhyils.pojo.DO.ApiDO;
 import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.entity.Api;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
@@ -30,7 +31,7 @@ public class ApiUtils {
      * @param apis 已经排好序的api们
      * @return 结果
      */
-    public static String callApi(List<ApiDO> apis, UserDTO userEntity, HashMap<String, String> parameter) {
+    public static String callApi(List<Api> apis, UserDTO userEntity, Map<String, String> parameter) {
         // 初始化调用群期间可传递的参数
         parameter.put("${username}", userEntity.getUserName());
         parameter.put("${nickName}", userEntity.getNickName());
@@ -74,7 +75,7 @@ public class ApiUtils {
         return result;
     }
 
-    public static String replaceString(HashMap<String, String> parameter, String head) {
+    public static String replaceString(Map<String, String> parameter, String head) {
         for (Map.Entry<String, String> en : parameter.entrySet()) {
             String key = en.getKey();
             String value = en.getValue();

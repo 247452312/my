@@ -1,7 +1,7 @@
 package indi.uhyils.util;
 
-import indi.uhyils.job.ExecutionJob;
-import indi.uhyils.job.JobConfig;
+import indi.uhyils.protocol.task.ExecutionJob;
+import indi.uhyils.protocol.task.JobConfig;
 import indi.uhyils.pojo.DO.JobDO;
 import org.quartz.*;
 import org.quartz.impl.triggers.CronTriggerImpl;
