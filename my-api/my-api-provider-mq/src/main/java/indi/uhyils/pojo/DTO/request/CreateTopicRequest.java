@@ -2,7 +2,7 @@ package indi.uhyils.pojo.DTO.request;
 
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.TopicType;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 
 /**
  * @Author uhyils <247452312@qq.com>

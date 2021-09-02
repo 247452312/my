@@ -2,7 +2,7 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.core.topic.Topic;
 import indi.uhyils.core.topic.TopicFactory;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.provider.MqInfoService;
 import org.springframework.stereotype.Service;

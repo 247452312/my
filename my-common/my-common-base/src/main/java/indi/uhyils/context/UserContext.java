@@ -1,7 +1,7 @@
 package indi.uhyils.context;
 
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.util.DefaultRequestBuildUtil;
+import indi.uhyils.util.DefaultCQEBuildUtil;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -32,7 +32,7 @@ public class UserContext {
     public static UserDTO doGet() {
         UserDTO userDO = USER.get();
         if (userDO == null) {
-            USER.set(DefaultRequestBuildUtil.getAdminDefaultRequest().getUser());
+            USER.set(DefaultCQEBuildUtil.getAdminDefaultCQE().getUser());
         }
         return USER.get();
     }

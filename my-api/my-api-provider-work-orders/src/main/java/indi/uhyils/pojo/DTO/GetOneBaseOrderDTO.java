@@ -16,9 +16,9 @@ public class GetOneBaseOrderDTO implements BaseDTO {
     /**
      * 这个工单相关的节点
      */
-    private List<OrderBaseNodeAboutDTO> orderBaseNodes;
+    private List<OrderBaseNodeDTO> orderBaseNodes;
 
-    public static GetOneBaseOrderDTO build(OrderBaseInfoDTO baseInfo, List<OrderBaseNodeAboutDTO> orderBaseNodes) {
+    public static GetOneBaseOrderDTO build(OrderBaseInfoDTO baseInfo, List<OrderBaseNodeDTO> orderBaseNodes) {
         GetOneBaseOrderDTO build = new GetOneBaseOrderDTO();
         build.setBaseInfo(baseInfo);
         build.setOrderBaseNodes(orderBaseNodes);
@@ -34,11 +34,11 @@ public class GetOneBaseOrderDTO implements BaseDTO {
         this.baseInfo = baseInfo;
     }
 
-    public List<OrderBaseNodeAboutDTO> getOrderBaseNodes() {
+    public List<OrderBaseNodeDTO> getOrderBaseNodes() {
         return orderBaseNodes;
     }
 
-    public void setOrderBaseNodes(List<OrderBaseNodeAboutDTO> orderBaseNodes) {
+    public void setOrderBaseNodes(List<OrderBaseNodeDTO> orderBaseNodes) {
         this.orderBaseNodes = orderBaseNodes;
     }
 }

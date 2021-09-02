@@ -7,6 +7,7 @@ import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.util.LogUtil;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -208,7 +209,7 @@ public class RedisPoolHandle {
         }
     }
 
-    public Long sadd(String key, ArrayList<String> values) {
+    public Long sadd(String key, List<String> values) {
         if (values == null || values.size() == 0) {
             return 0L;
         }

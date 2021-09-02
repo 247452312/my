@@ -4,7 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.util.DefaultRequestBuildUtil;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.util.DefaultCQEBuildUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 16时57分
  */
-public class WebResponse<T extends Serializable> implements Serializable {
+public class WebResponse implements Serializable {
 
 
     private Integer code;
@@ -26,10 +27,10 @@ public class WebResponse<T extends Serializable> implements Serializable {
     /**
      * 返回的数据
      */
-    private T data;
+    private Object data;
 
-    public static <T extends Serializable> WebResponse build(T data, String message, Integer code) {
-        WebResponse<T> serializableWebResponse = new WebResponse();
+    public static WebResponse build(Object data, String message, Integer code) {
+        WebResponse serializableWebResponse = new WebResponse();
         serializableWebResponse.setCode(code);
         serializableWebResponse.setData(data);
         serializableWebResponse.setMsg(message);
@@ -38,12 +39,12 @@ public class WebResponse<T extends Serializable> implements Serializable {
 
     public static <T extends Serializable> WebResponse build(T data, ServiceCode code) {
         if (code == ServiceCode.SPIDER_VERIFICATION) {
-            WebResponse<VerificationGetDTO> serializableWebResponse = new WebResponse<>();
+            WebResponse serializableWebResponse = new WebResponse();
             serializableWebResponse.setCode(code.getText());
 
             List args = new ArrayList();
-            args.add(DefaultRequestBuildUtil.getAdminDefaultRequest());
-            ServiceResult<JSONObject> serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(MyContext.VERIFICATION_CODE_INTERFACE, MyContext.GET_VERIFICATION_CODE_METHOD, args, new DefaultRequest());
+            args.add(DefaultCQEBuildUtil.getAdminDefaultCQE());
+            ServiceResult<JSONObject> serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(MyContext.VERIFICATION_CODE_INTERFACE, MyContext.GET_VERIFICATION_CODE_METHOD, args, new DefaultCQE());
             JSONObject verification = serviceResult.getData();
             VerificationGetDTO verificationGetResponse = verification.toJavaObject(VerificationGetDTO.class);
             serializableWebResponse.setData(verificationGetResponse);
@@ -51,22 +52,22 @@ public class WebResponse<T extends Serializable> implements Serializable {
             serializableWebResponse.setMsg(code.getMsg());
             return serializableWebResponse;
         }
-        WebResponse<T> serializableWebResponse = new WebResponse();
+        WebResponse serializableWebResponse = new WebResponse();
         serializableWebResponse.setCode(code.getText());
         serializableWebResponse.setData(data);
         serializableWebResponse.setMsg(code.getMsg());
         return serializableWebResponse;
     }
 
-    public static <T extends Serializable> WebResponse build(ServiceResult serviceResult) {
+    public static WebResponse build(ServiceResult serviceResult) {
         return build(serviceResult.getData(), serviceResult.getServiceMessage(), serviceResult.getServiceCode());
     }
 
-    public T getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

@@ -2,23 +2,22 @@ package indi.uhyils.aop;
 
 import indi.uhyils.context.MyContext;
 import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
 import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpQuery;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.protocol.rpc.provider.BlackListProvider;
 import indi.uhyils.redis.OffLineJedis;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
 import indi.uhyils.rpc.annotation.RpcReference;
-import indi.uhyils.protocol.rpc.provider.BlackListProvider;
-import indi.uhyils.util.DefaultRequestBuildUtil;
+import indi.uhyils.util.DefaultCQEBuildUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -125,8 +124,8 @@ public class IpSpiderTableAspect {
                 if (Boolean.FALSE.equals(init) || Boolean.TRUE.equals(canInit)) {
                     try {
                         // 去后台获取数据库中的ip黑名单
-                        DefaultCQE request = DefaultRequestBuildUtil.getAdminDefaultRequest();
-                        ServiceResult<ArrayList<String>> allIpBlackList = blackListService.getAllIpBlackList(request);
+                        DefaultCQE request = DefaultCQEBuildUtil.getAdminDefaultCQE();
+                        ServiceResult<List<String>> allIpBlackList = blackListService.getAllIpBlackList(request);
                         // 如果log服务挂了
                         if (allIpBlackList == null || !allIpBlackList.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
                             // 设置为不可用
@@ -228,9 +227,9 @@ public class IpSpiderTableAspect {
                 }
             });
             GetLogIntervalByIpQuery defaultRequest = new GetLogIntervalByIpQuery();
-            UserDO user = new UserDO();
+            UserDTO user = new UserDTO();
             user.setId(MyContext.ADMIN_USER_ID);
-            user.setUsername("admin");
+            user.setUserName("admin");
             defaultRequest.setUser(user);
             defaultRequest.setIp(ip);
             ServiceResult<Boolean> logIntervalByIp = blackListService.getLogIntervalByIp(defaultRequest);
@@ -280,7 +279,7 @@ public class IpSpiderTableAspect {
             } else if (frozenCount > MAX_FROZEN_COUNT) {
                 // 加入永久黑名单
                 AddBlackIpRequest build = AddBlackIpRequest.build(ip);
-                UserDO user = new UserDO();
+                UserDTO user = new UserDTO();
                 user.setId(MyContext.ADMIN_USER_ID);
                 build.setUser(user);
                 blackListService.addBlackIp(build);

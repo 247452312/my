@@ -2,7 +2,7 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.ApiDao;
 import indi.uhyils.pojo.DO.ApiDO;
-import indi.uhyils.pojo.DTO.request.GetByArgsAndGroupRequest;
+import indi.uhyils.pojo.DTO.request.GetByArgsAndGroupQuery;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
@@ -33,7 +33,7 @@ public class ApiProvider extends BaseDefaultProvider<ApiDO> implements indi.uhyi
     }
 
     @Override
-    public ServiceResult<Page<ApiDO>> getByArgsAndGroup(GetByArgsAndGroupRequest request) {
+    public ServiceResult<Page<ApiDO>> getByArgsAndGroup(GetByArgsAndGroupQuery request) {
         List<Arg> args = request.getArgs();
         Boolean paging = request.getPaging();
         Arg e = new Arg();

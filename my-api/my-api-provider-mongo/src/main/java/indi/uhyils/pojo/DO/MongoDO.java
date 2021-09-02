@@ -1,7 +1,8 @@
 package indi.uhyils.pojo.DO;
 
 import indi.uhyils.pojo.DO.base.BaseDbSaveable;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 
 /**
  * mongo传输数据集(此系统的mongo只存视频,图片,文件等)
@@ -28,7 +29,7 @@ public class MongoDO implements BaseDbSaveable {
     }
 
     @Override
-    public void preInsert(UserDO userDO){
+    public void preInsert(UserDTO userDO){
 
     }
 
@@ -43,7 +44,7 @@ public class MongoDO implements BaseDbSaveable {
     }
 
     @Override
-    public void preUpdate(UserDO userDO) {
+    public void preUpdate(UserDTO userDO) {
 
     }
 

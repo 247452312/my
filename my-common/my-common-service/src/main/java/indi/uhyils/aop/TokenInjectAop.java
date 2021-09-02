@@ -91,7 +91,7 @@ public class TokenInjectAop {
         }
 
         //获取token
-        DefaultCQE arg = AopUtil.getDefaultRequestInPjp(pjp);
+        DefaultCQE arg = AopUtil.getDefaultCQEInPjp(pjp);
         String token = arg.getToken();
 
 

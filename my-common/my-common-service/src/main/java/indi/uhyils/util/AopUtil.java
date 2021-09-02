@@ -23,7 +23,7 @@ public class AopUtil {
      *
      * @throws Exception 参数错误
      */
-    public static DefaultCQE getDefaultRequestInPjp(ProceedingJoinPoint pjp) throws Exception {
+    public static DefaultCQE getDefaultCQEInPjp(ProceedingJoinPoint pjp) throws Exception {
         Object[] objs = pjp.getArgs();
         boolean b = objs == null;
         boolean b1 = b || objs.length == 0;

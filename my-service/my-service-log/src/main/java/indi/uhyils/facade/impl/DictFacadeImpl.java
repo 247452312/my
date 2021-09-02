@@ -7,7 +7,7 @@ import indi.uhyils.pojo.DTO.request.GetByCodeQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.DictProvider;
 import indi.uhyils.rpc.annotation.RpcReference;
-import indi.uhyils.util.DefaultRequestBuildUtil;
+import indi.uhyils.util.DefaultCQEBuildUtil;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -27,8 +27,8 @@ public class DictFacadeImpl implements DictFacade {
     @Override
     public List<DictItemDTO> getByCode(String code) {
         GetByCodeQuery request = new GetByCodeQuery();
-        DefaultCQE adminDefaultRequest = DefaultRequestBuildUtil.getAdminDefaultRequest();
-        request.setUser(adminDefaultRequest.getUser());
+        DefaultCQE adminDefaultCQE = DefaultCQEBuildUtil.getAdminDefaultCQE();
+        request.setUser(adminDefaultCQE.getUser());
         request.setCode(code);
         ServiceResult<List<DictItemDTO>> byCode = dictProvider.getByCode(request);
         return byCode.validationAndGet();

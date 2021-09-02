@@ -1,7 +1,7 @@
 package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.core.topic.Topic;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 
 import java.util.ArrayList;

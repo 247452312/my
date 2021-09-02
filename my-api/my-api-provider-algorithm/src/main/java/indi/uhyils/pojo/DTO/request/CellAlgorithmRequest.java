@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+
+import indi.uhyils.pojo.cqe.DefaultCQE;
 
 /**
  * 调用算法请求值 这个类中包含了请求算法的所有需要的东西

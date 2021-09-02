@@ -1,8 +1,8 @@
 package indi.uhyils.protocol.rpc.provider;
 
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.welcome.WelcomeResponse;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 
 /**

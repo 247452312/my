@@ -7,7 +7,7 @@ import indi.uhyils.pojo.DTO.BaseDTO;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 21时02分
  */
-public class AddCommand<E extends BaseDTO> extends AbstractCommand {
+public class AddCommand<E> extends AbstractCommand {
 
     private E dto;
 

@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.request.SessionRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
-import java.io.Serializable;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -67,7 +66,7 @@ public class AllController {
             serviceResult = submit.get();
 
             // 修改字段类型为String,因为前端大数会失去精度
-            Serializable data = serviceResult.getData();
+            Object data = serviceResult.getData();
             if (data instanceof JSONObject) {
                 changeFieldTypeToString((JSONObject) data);
             } else if (data instanceof JSONArray) {

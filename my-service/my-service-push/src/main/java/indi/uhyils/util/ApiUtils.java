@@ -3,7 +3,7 @@ package indi.uhyils.util;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.CodeEnum;
 import indi.uhyils.pojo.DO.ApiDO;
-import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DTO.UserDTO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
@@ -30,9 +30,9 @@ public class ApiUtils {
      * @param apis 已经排好序的api们
      * @return 结果
      */
-    public static String callApi(List<ApiDO> apis, UserDO userEntity, HashMap<String, String> parameter) {
+    public static String callApi(List<ApiDO> apis, UserDTO userEntity, HashMap<String, String> parameter) {
         // 初始化调用群期间可传递的参数
-        parameter.put("${username}", userEntity.getUsername());
+        parameter.put("${username}", userEntity.getUserName());
         parameter.put("${nickName}", userEntity.getNickName());
         parameter.put("${mail}", userEntity.getMail());
         parameter.put("${phone}", userEntity.getPhone());

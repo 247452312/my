@@ -1,9 +1,9 @@
 package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.pojo.DO.ApiGroupDO;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
-import indi.uhyils.pojo.DTO.request.base.IdRequest;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public interface ApiGroupProvider extends DTOProvider<ApiGroupDO> {
      *
      * @return 结果
      */
-    ServiceResult<String> test(IdRequest request);
+    ServiceResult<String> test(IdQuery request);
 
     /**
      * 获取可以被订阅的所有api群

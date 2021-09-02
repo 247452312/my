@@ -1,8 +1,9 @@
 package indi.uhyils.job;
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.pojo.DO.UserDO;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.util.RpcApiUtil;
 
 import java.util.ArrayList;
@@ -35,9 +36,9 @@ public class JobRunnable implements Callable {
     /**
      * 调用用户
      */
-    private UserDO userEntity;
+    private UserDTO userEntity;
 
-    public JobRunnable(String interfaceName, String methodName, String params, String paramType, UserDO userEntity) {
+    public JobRunnable(String interfaceName, String methodName, String params, String paramType, UserDTO userEntity) {
         this.interfaceName = interfaceName;
         this.methodName = methodName;
         this.params = params;
@@ -48,8 +49,8 @@ public class JobRunnable implements Callable {
 
     @Override
     public Object call() throws Exception {
-        Class<DefaultRequest> aClass = (Class<DefaultRequest>) Class.forName(paramType == null ? "indi.uhyils.pojo.request.base.DefaultRequest" : paramType);
-        DefaultRequest defaultRequest = JSON.parseObject(params, aClass);
+        Class<DefaultCQE> aClass = (Class<DefaultCQE>) Class.forName(paramType == null ? "indi.uhyils.pojo.cqe.DefaultCQE" : paramType);
+        DefaultCQE defaultRequest = JSON.parseObject(params, aClass);
         defaultRequest.setUser(userEntity);
         ArrayList<Object> list = new ArrayList<>(1);
         list.add(defaultRequest);

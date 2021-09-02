@@ -1,7 +1,7 @@
 package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.pojo.DO.ApiDO;
-import indi.uhyils.pojo.DTO.request.GetByArgsAndGroupRequest;
+import indi.uhyils.pojo.DTO.request.GetByArgsAndGroupQuery;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
@@ -21,5 +21,5 @@ public interface ApiProvider extends DTOProvider<ApiDO> {
      *
      * @return 所有的指定组下的api
      */
-    ServiceResult<Page<ApiDO>> getByArgsAndGroup(GetByArgsAndGroupRequest request);
+    ServiceResult<Page<ApiDO>> getByArgsAndGroup(GetByArgsAndGroupQuery request);
 }

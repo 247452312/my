@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.DO;
 
 import indi.uhyils.pojo.DO.base.BaseDO;
+import indi.uhyils.pojo.DTO.UserDTO;
 
 /**
  * 定时任务
@@ -48,7 +49,7 @@ public class JobDO extends BaseDO {
     /**
      * 不计入数据库,只在执行任务时有效
      */
-    private UserDO userEntity;
+    private UserDTO userEntity;
 
 
     public String getCron() {
@@ -107,11 +108,11 @@ public class JobDO extends BaseDO {
         this.pause = pause;
     }
 
-    public UserDO getUserEntity() {
+    public UserDTO getUserEntity() {
         return userEntity;
     }
 
-    public void setUserEntity(UserDO userEntity) {
+    public void setUserEntity(UserDTO userEntity) {
         this.userEntity = userEntity;
     }
 }

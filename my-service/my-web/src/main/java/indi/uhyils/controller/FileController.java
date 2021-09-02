@@ -2,9 +2,9 @@ package indi.uhyils.controller;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.pojo.DTO.request.Action;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public class FileController {
             action.getArgs().put("token", action.getToken());
             List<Object> list = new ArrayList();
             list.add(action.getArgs());
-            serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultRequest());
+            serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultCQE());
 
             return WebResponse.build(serviceResult);
         } catch (Exception e) {

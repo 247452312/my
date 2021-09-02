@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
+
+import indi.uhyils.pojo.cqe.DefaultCQE;
 
 /**
  * 名称请求

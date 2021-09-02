@@ -1,8 +1,8 @@
 package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.pojo.DO.JobDO;
-import indi.uhyils.pojo.DTO.request.base.IdRequest;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
@@ -22,7 +22,7 @@ public interface JobProvider extends DTOProvider<JobDO> {
      *
      * @throws ClassNotFoundException 参数类型错误
      */
-    ServiceResult<Boolean> pause(IdRequest request) throws ClassNotFoundException;
+    ServiceResult<Boolean> pause(IdQuery request) throws ClassNotFoundException;
 
     /**
      * 开启定时任务
@@ -31,7 +31,7 @@ public interface JobProvider extends DTOProvider<JobDO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> start(IdRequest request);
+    ServiceResult<Boolean> start(IdQuery request);
 
     /**
      * 执行定时任务
@@ -42,5 +42,5 @@ public interface JobProvider extends DTOProvider<JobDO> {
      *
      * @throws ClassNotFoundException 参数类型错误
      */
-    ServiceResult<Boolean> test(IdRequest request) throws ClassNotFoundException;
+    ServiceResult<Boolean> test(IdQuery request) throws ClassNotFoundException;
 }

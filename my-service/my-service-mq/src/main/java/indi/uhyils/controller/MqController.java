@@ -4,15 +4,13 @@ import indi.uhyils.core.topic.Topic;
 import indi.uhyils.enum_.ServiceCode;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.MqLoginRequest;
-import indi.uhyils.pojo.DTO.request.base.DefaultRequest;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.DTO.response.WebResponse;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.protocol.rpc.provider.MqInfoService;
 import indi.uhyils.protocol.rpc.provider.MqProvider;
-import indi.uhyils.protocol.rpc.provider.UserProvider;
-import indi.uhyils.util.DefaultRequestBuildUtil;
+import indi.uhyils.util.DefaultCQEBuildUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,7 +53,7 @@ public class MqController {
         String password = request.getPassword();
         if (StringUtils.equals(username, USERNAME) && StringUtils.equals(password, PASSWORD)) {
             LoginCommand userRequest = new LoginCommand();
-            DefaultRequestBuildUtil.fillRequestByAdminRequest(userRequest);
+            DefaultCQEBuildUtil.fillRequestByAdminRequest(userRequest);
             userRequest.setUsername("admin");
             userRequest.setPassword("123456");
             ServiceResult<LoginDTO> login = userService.login(userRequest);
@@ -77,7 +75,7 @@ public class MqController {
      */
     @PostMapping("getAllTopic")
     public WebResponse<ArrayList<Topic>> getAllTopic(@RequestBody DefaultCQE request) throws NoSuchFieldException, IllegalAccessException {
-        DefaultRequestBuildUtil.fillRequestByAdminRequest(request);
+        DefaultCQEBuildUtil.fillRequestByAdminRequest(request);
         ServiceResult<ArrayList<Topic>> allInfo = mqInfoService.getAllInfo(request);
         return WebResponse.build(allInfo);
     }
