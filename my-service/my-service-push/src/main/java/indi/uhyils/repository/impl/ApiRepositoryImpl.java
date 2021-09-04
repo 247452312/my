@@ -41,4 +41,10 @@ public class ApiRepositoryImpl extends AbstractRepository<Api, ApiDO, ApiDao, Ap
         apiGroupDO.preUpdate();
         return dao.deleteAllByGroup(apiGroupDO);
     }
+
+    @Override
+    public List<Api> findAll() {
+        List<ApiDO> all = dao.getAll();
+        return assembler.listToEntity(all);
+    }
 }

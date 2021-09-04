@@ -3,6 +3,7 @@ package indi.uhyils.repository;
 import indi.uhyils.pojo.DO.OrderInfoDO;
 import indi.uhyils.pojo.entity.OrderInfo;
 import indi.uhyils.repository.base.BaseEntityRepository;
+import java.util.List;
 
 /**
  * 工单基础信息样例表(OrderInfo)表 数据仓库层
@@ -14,4 +15,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
 public interface OrderInfoRepository extends BaseEntityRepository<OrderInfoDO, OrderInfo> {
 
 
+    /**
+     * 根据type获取订单
+     *
+     * @param type
+     *
+     * @return
+     */
+    List<OrderInfo> findByType(Integer type);
 }

@@ -33,6 +33,15 @@ public enum OrderNodeStatusEnum {
         this.code = code;
     }
 
+    public static OrderNodeStatusEnum parse(Integer status) {
+        for (OrderNodeStatusEnum value : values()) {
+            if (value.code.equals(status)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }

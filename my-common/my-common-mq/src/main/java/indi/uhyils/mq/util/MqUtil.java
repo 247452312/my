@@ -117,10 +117,8 @@ public class MqUtil {
      *
      * @return
      *
-     * @throws IOException
-     * @throws TimeoutException
      */
-    public static void sendMsg(String exchange, String queue, String msg) throws IOException, TimeoutException {
+    public static void sendMsg(String exchange, String queue, String msg) {
         MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
         byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
         sendMsg(exchange, queue, bytes);

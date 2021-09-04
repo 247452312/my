@@ -9,6 +9,7 @@ import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.protocol.rpc.UserProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
@@ -86,6 +87,12 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
     @Override
     public ServiceResult<String> getNameById(IdQuery request) {
         String result = service.getNameById(request);
+        return ServiceResult.buildSuccessResult(result);
+    }
+
+    @Override
+    public ServiceResult<List<UserDTO>> getSampleUserByIds(IdsQuery request) {
+        List<UserDTO> result = service.getSampleUserByIds(request);
         return ServiceResult.buildSuccessResult(result);
     }
 }

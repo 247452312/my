@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.PushPageMsgDO;
+import indi.uhyils.repository.PushPageMsgRepository;
 
 /**
  * 推送日志信息表(PushPageMsg)表 数据库实体类

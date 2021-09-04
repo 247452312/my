@@ -32,4 +32,10 @@ public class ApiGroupRepositoryImpl extends AbstractRepository<ApiGroup, ApiGrou
         List<ApiGroupDO> canBeSubscribed = dao.getCanBeSubscribed();
         return assembler.listToEntity(canBeSubscribed);
     }
+
+    @Override
+    public List<ApiGroup> findAll() {
+        List<ApiGroupDO> all = dao.getAll();
+        return assembler.listToEntity(all);
+    }
 }

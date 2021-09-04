@@ -143,4 +143,19 @@
           and user_id = #{userId}
           and api_group_id = #{groupId}
     </select>
+
+    <select id="getByGroupId" resultType="indi.uhyils.pojo.DO.ApiSubscribeDO">
+        select
+        <include refid="columnList"/>
+        from sys_api_subscribe a
+        where a.delete_flag = 0
+        and api_group_id = #{id}
+    </select>
+
+    <select id="getAll" resultType="indi.uhyils.pojo.DO.ApiSubscribeDO">
+        select
+        <include refid="columnList"/>
+        from sys_api_subscribe a
+        where a.delete_flag = 0
+    </select>
 </mapper>

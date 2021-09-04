@@ -25,4 +25,30 @@ public interface ApiSubscribeRepository extends BaseEntityRepository<ApiSubscrib
      * @return
      */
     List<ApiSubscribe> findByGroupAndUserId(Identifier groupId, Identifier userId);
+
+    /**
+     * 根据groupId获取
+     *
+     * @param groupId
+     *
+     * @return
+     */
+    List<ApiSubscribe> findByGroupId(Identifier groupId);
+
+    /**
+     * 获取全部
+     *
+     * @return
+     */
+    List<ApiSubscribe> findAll();
+
+    /**
+     * 根据规定时间获取
+     *
+     * @param cron
+     *
+     * @return
+     */
+    List<ApiSubscribe> findByCron(String cron);
+
 }

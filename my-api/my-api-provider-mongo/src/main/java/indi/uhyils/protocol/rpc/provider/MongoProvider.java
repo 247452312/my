@@ -1,8 +1,8 @@
 package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.pojo.DTO.request.NameRequest;
-import indi.uhyils.pojo.DTO.request.base.ObjRequest;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 
 /**
@@ -20,7 +20,7 @@ public interface MongoProvider extends BaseProvider {
      *
      * @return fileName
      */
-    ServiceResult<String> add(ObjRequest<String> request);
+    ServiceResult<String> add(AddCommand<String> request);
 
     /**
      * 删除

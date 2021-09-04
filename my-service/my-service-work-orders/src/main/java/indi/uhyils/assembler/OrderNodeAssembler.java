@@ -2,11 +2,16 @@ package indi.uhyils.assembler;
 
 
 import indi.uhyils.annotation.Assembler;
+import indi.uhyils.builder.OrderApplyBuilder;
+import indi.uhyils.pojo.DO.OrderApplyDO;
 import indi.uhyils.pojo.DO.OrderNodeDO;
+import indi.uhyils.pojo.DTO.OrderApplyDTO;
 import indi.uhyils.pojo.DTO.OrderNodeDTO;
 import indi.uhyils.pojo.DTO.OrderNodeFieldDTO;
 import indi.uhyils.pojo.DTO.OrderNodeResultTypeDTO;
 import indi.uhyils.pojo.DTO.OrderNodeRouteDTO;
+import indi.uhyils.pojo.entity.OrderApply;
+import indi.uhyils.pojo.entity.OrderInfo;
 import indi.uhyils.pojo.entity.OrderNode;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +34,9 @@ public class OrderNodeAssembler extends AbstractAssembler<OrderNodeDO, OrderNode
 
     @Autowired
     private OrderNodeResultTypeAssembler resultTypeAssembler;
+
+    @Autowired
+    private OrderApplyAssembler applyAssembler;
 
     @Override
     public OrderNode toEntity(OrderNodeDO dO) {
@@ -53,6 +61,11 @@ public class OrderNodeAssembler extends AbstractAssembler<OrderNodeDO, OrderNode
     @Override
     protected Class<OrderNodeDTO> getDtoClass() {
         return OrderNodeDTO.class;
+    }
+
+    public OrderApply toApply(OrderNode orderNode, OrderInfo baseInfo) {
+        OrderApplyDTO orderApplyDTO = OrderApplyBuilder.buildTransApplyByOrderNode(toDTO(orderNode), baseInfo.toDo().getMonitorUserId());
+        return applyAssembler.toEntity(orderApplyDTO);
     }
 }
 

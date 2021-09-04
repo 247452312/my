@@ -23,7 +23,7 @@ public class OrderBuilder implements Serializable {
     public static OrderInfoDO transBaseInfo2Info(OrderBaseInfoDO baseInfo) {
         OrderInfoDO orderInfoEntity = new OrderInfoDO();
         orderInfoEntity.setPriority(baseInfo.getPriority());
-        orderInfoEntity.setQueryUserIds(baseInfo.getQueryUserIds());
+        orderInfoEntity.setQueryUserIds(Long.toString(baseInfo.getQueryUserIds()));
         orderInfoEntity.setLimitTime(baseInfo.getLimitTime());
         orderInfoEntity.setSon(baseInfo.getSon());
         orderInfoEntity.setMonitorUserId(baseInfo.getMonitorUserId());

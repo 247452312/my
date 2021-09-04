@@ -1,17 +1,17 @@
 package indi.uhyils.protocol.task;
 
+import indi.uhyils.assembler.JobAssembler;
 import indi.uhyils.dao.JobDao;
+import indi.uhyils.pojo.DO.JobDO;
 import indi.uhyils.pojo.DTO.JobDTO;
 import indi.uhyils.thread.ThreadPoolExecutorUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.ScheduledManager;
 import indi.uhyils.util.SpringUtil;
+import java.util.concurrent.ThreadPoolExecutor;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -29,19 +29,19 @@ public class ExecutionJob extends QuartzJobBean {
      * 执行定时任务
      *
      * @param jobExecutionContext
-     * @throws JobExecutionException
      */
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    protected void executeInternal(JobExecutionContext jobExecutionContext) {
         JobDTO quartzJob = (JobDTO) jobExecutionContext.getMergedJobDataMap().get(JobConfig.JOB_KEY);
         // 获取spring bean
         JobDao dao = SpringUtil.getBean(JobDao.class);
+        JobAssembler jobAssembler = SpringUtil.getBean(JobAssembler.class);
         ScheduledManager manager = SpringUtil.getBean(ScheduledManager.class);
         try {
             // 执行任务
             LogUtil.info(this, "任务准备执行，任务名称：" + quartzJob.getInterfaceName() + "");
             JobRunnable task = new JobRunnable(quartzJob.getInterfaceName(), quartzJob.getMethodName(),
-                    quartzJob.getParams(), quartzJob.getParamType(), quartzJob.getUser());
+                                               quartzJob.getParams(), quartzJob.getParamType(), quartzJob.getUser());
             EXECUTOR.submit(task);
             // 任务状态
             LogUtil.info(this, "任务执行完毕，任务名称：" + quartzJob.getName());
@@ -49,8 +49,10 @@ public class ExecutionJob extends QuartzJobBean {
             LogUtil.error(this, e);
             quartzJob.setPause(Boolean.FALSE);
             //更新状态
-            dao.update(quartzJob);
-            manager.deleteJob(quartzJob);
+            JobDO dO = jobAssembler.toDo(quartzJob);
+            dO.preUpdate();
+            dao.update(dO);
+            manager.deleteJob(dO);
         }
     }
 }

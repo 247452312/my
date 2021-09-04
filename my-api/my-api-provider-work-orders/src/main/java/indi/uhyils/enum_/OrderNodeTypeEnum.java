@@ -24,6 +24,15 @@ public enum OrderNodeTypeEnum {
         this.code = code;
     }
 
+    public static OrderNodeTypeEnum parse(Integer type) {
+        for (OrderNodeTypeEnum value : values()) {
+            if (value.code.equals(type)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }

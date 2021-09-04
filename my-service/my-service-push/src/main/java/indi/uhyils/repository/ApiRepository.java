@@ -32,4 +32,11 @@ public interface ApiRepository extends BaseEntityRepository<ApiDO, Api> {
      * @param groupId
      */
     Integer removeApiByGroup(ApiGroup groupId);
+
+    /**
+     * 获取全部
+     *
+     * @return
+     */
+    List<Api> findAll();
 }

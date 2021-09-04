@@ -8,6 +8,7 @@ import indi.uhyils.pojo.DTO.OrderInfoDTO;
 import indi.uhyils.pojo.entity.OrderInfo;
 import indi.uhyils.repository.OrderInfoRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
 
 
 /**
@@ -25,4 +26,9 @@ public class OrderInfoRepositoryImpl extends AbstractRepository<OrderInfo, Order
     }
 
 
+    @Override
+    public List<OrderInfo> findByType(Integer type) {
+        List<OrderInfoDO> orderByType = dao.getOrderByType(type);
+        return assembler.listToEntity(orderByType);
+    }
 }

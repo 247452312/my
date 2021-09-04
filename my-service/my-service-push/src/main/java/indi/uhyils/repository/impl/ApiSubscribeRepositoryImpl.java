@@ -32,4 +32,22 @@ public class ApiSubscribeRepositoryImpl extends AbstractRepository<ApiSubscribe,
         List<ApiSubscribeDO> apiSubscribeDOS = dao.getByGroupAndUserId(groupId.getId(), userId.getId());
         return assembler.listToEntity(apiSubscribeDOS);
     }
+
+    @Override
+    public List<ApiSubscribe> findByGroupId(Identifier groupId) {
+        List<ApiSubscribeDO> subscribeDOS = dao.getByGroupId(groupId.getId());
+        return assembler.listToEntity(subscribeDOS);
+    }
+
+    @Override
+    public List<ApiSubscribe> findAll() {
+        List<ApiSubscribeDO> list = dao.getAll();
+        return assembler.listToEntity(list);
+    }
+
+    @Override
+    public List<ApiSubscribe> findByCron(String cron) {
+        List<ApiSubscribeDO> byCron = dao.getByCron(cron);
+        return assembler.listToEntity(byCron);
+    }
 }

@@ -3,6 +3,8 @@ package indi.uhyils.repository.impl;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.OrderNodeAssembler;
 import indi.uhyils.dao.OrderNodeDao;
+import indi.uhyils.enum_.OrderNodeResultTypeEnum;
+import indi.uhyils.enum_.OrderNodeStatusEnum;
 import indi.uhyils.pojo.DO.OrderNodeDO;
 import indi.uhyils.pojo.DTO.OrderNodeDTO;
 import indi.uhyils.pojo.entity.OrderNode;
@@ -24,5 +26,16 @@ public class OrderNodeRepositoryImpl extends AbstractRepository<OrderNode, Order
         super(convert, dao);
     }
 
+
+    @Override
+    public void makeOrderFault(Long orderNodeId, String msg) {
+        dao.makeOrderFault(orderNodeId, OrderNodeStatusEnum.FAULT.getCode(), OrderNodeResultTypeEnum.FAULT.getCode(), msg);
+    }
+
+    @Override
+    public OrderNode findNext(OrderNode orderNode) {
+        OrderNodeDO nextNodeByNodeAndResult = dao.getNextNodeByNodeAndResult(orderNode.getId().getId(), orderNode.toDo().getResultId());
+        return assembler.toEntity(nextNodeByNodeAndResult);
+    }
 
 }

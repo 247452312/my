@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.DO.SendPageDO;
+import indi.uhyils.pojo.DO.PushPageMsgDO;
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -10,5 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface SendPageDao extends DefaultDao<SendPageDO> {
+public interface SendPageDao extends DefaultDao<PushPageMsgDO> {
+
 }

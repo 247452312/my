@@ -202,8 +202,8 @@ public class IpSpiderTableAspect {
                 String interfaceName = action.getInterfaceName();
                 String methodName = action.getMethodName();
                 if (interfaceName.equals(MyContext.VERIFICATION_CODE_INTERFACE) && methodName.equals(MyContext.VERIFICATION_CODE_METHOD)) {
-                    WebResponse<Boolean> proceed = (WebResponse<Boolean>) pjp.proceed();
-                    Boolean data = proceed.getData();
+                    WebResponse proceed = (WebResponse) pjp.proceed();
+                    Boolean data = (Boolean) proceed.getData();
                     // 验证码验证失败
                     if (!data) {
                         return faultVerification(jedis, ip);

@@ -41,4 +41,20 @@ public interface ApiSubscribeDao extends DefaultDao<ApiSubscribeDO> {
      * @return
      */
     List<ApiSubscribeDO> getByGroupAndUserId(@Param("groupId") Long groupId, @Param("userId") Long userId);
+
+    /**
+     * 根据groupId获取Subscribe
+     *
+     * @param id
+     *
+     * @return
+     */
+    List<ApiSubscribeDO> getByGroupId(Long id);
+
+    /**
+     * 获取全部
+     *
+     * @return
+     */
+    List<ApiSubscribeDO> getAll();
 }

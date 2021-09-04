@@ -5,9 +5,9 @@ import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.pojo.cqe.query.IdsQuery;
 import java.util.List;
 
 /**
@@ -108,4 +108,12 @@ public interface UserService extends BaseDoService<UserDTO> {
      */
     String getNameById(IdQuery request);
 
+    /**
+     * 根据id批量获取不填充角色的用户
+     *
+     * @param request
+     *
+     * @return
+     */
+    List<UserDTO> getSampleUserByIds(IdsQuery request);
 }

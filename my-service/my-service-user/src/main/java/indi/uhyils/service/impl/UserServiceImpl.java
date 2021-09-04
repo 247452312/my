@@ -10,6 +10,7 @@ import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.User;
@@ -130,4 +131,11 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
         User user = rep.find(new Identifier(request.getId()));
         return user.toDo().getNickName();
     }
+
+    @Override
+    public List<UserDTO> getSampleUserByIds(IdsQuery request) {
+        List<User> result = rep.findNoPage(request);
+        return assem.listEntityToDTO(result);
+    }
+
 }

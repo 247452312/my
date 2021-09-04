@@ -17,6 +17,7 @@ import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.OrderInfoService;
 import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -47,8 +48,8 @@ public class OrderInfoProviderImpl extends BaseDefaultProvider<OrderInfoDTO> imp
     }
 
     @Override
-    public ServiceResult<ArrayList<OrderInfoDTO>> getAllOrder(GetAllOrderQuery request) {
-        ArrayList<OrderInfoDTO> result = service.getAllOrder(request);
+    public ServiceResult<List<OrderInfoDTO>> getAllOrder(GetAllOrderQuery request) {
+        List<OrderInfoDTO> result = service.getAllOrder(request);
         return ServiceResult.buildSuccessResult(result);
     }
 
@@ -84,7 +85,7 @@ public class OrderInfoProviderImpl extends BaseDefaultProvider<OrderInfoDTO> imp
     }
 
     @Override
-    public ServiceResult<Boolean> approvalOrder(ApprovalOrderEvent request) throws Exception {
+    public ServiceResult<Boolean> approvalOrder(ApprovalOrderEvent request)  {
         Boolean result = service.approvalOrder(request);
         return ServiceResult.buildSuccessResult(result);
     }

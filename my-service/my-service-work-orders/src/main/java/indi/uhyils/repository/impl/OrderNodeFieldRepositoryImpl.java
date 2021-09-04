@@ -8,6 +8,7 @@ import indi.uhyils.pojo.DTO.OrderNodeFieldDTO;
 import indi.uhyils.pojo.entity.OrderNodeField;
 import indi.uhyils.repository.OrderNodeFieldRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
 
 
 /**
@@ -24,5 +25,17 @@ public class OrderNodeFieldRepositoryImpl extends AbstractRepository<OrderNodeFi
         super(convert, dao);
     }
 
+
+    @Override
+    public List<OrderNodeField> findByNodeId(Long nodeId) {
+        List<OrderNodeFieldDO> byOrderNodeId = dao.getByOrderNodeId(nodeId);
+        return assembler.listToEntity(byOrderNodeId);
+    }
+
+    @Override
+    public List<OrderNodeField> findByNodeIds(List<Long> nodeIds) {
+        List<OrderNodeFieldDO> byOrderNodeIds = dao.getByOrderNodeIds(nodeIds);
+        return assembler.listToEntity(byOrderNodeIds);
+    }
 
 }

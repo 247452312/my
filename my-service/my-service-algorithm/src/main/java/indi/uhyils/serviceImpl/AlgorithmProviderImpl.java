@@ -2,13 +2,12 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.dao.AlgorithmDao;
 import indi.uhyils.pojo.DO.AlgorithmDO;
-import indi.uhyils.pojo.DTO.request.CellAlgorithmRequest;
-import indi.uhyils.pojo.DTO.request.base.IdRequest;
-import indi.uhyils.pojo.DTO.response.CellAlgorithmResponse;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.rpc.annotation.RpcService;
+import indi.uhyils.pojo.DTO.request.CellAlgorithmRequest;
+import indi.uhyils.pojo.DTO.response.CellAlgorithmResponse;
+import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.protocol.rpc.provider.AlgorithmProvider;
-
+import indi.uhyils.rpc.annotation.RpcService;
 import javax.annotation.Resource;
 
 /**
@@ -30,7 +29,7 @@ public class AlgorithmProviderImpl implements AlgorithmProvider {
     }
 
     @Override
-    public ServiceResult<Double> getAlgorithmAccuracy(IdRequest request) {
+    public ServiceResult<Double> getAlgorithmAccuracy(IdQuery request) {
         AlgorithmDO byId = dao.getById(request.getId());
         return ServiceResult.buildSuccessResult("查询成功", byId.getAccuracy());
     }

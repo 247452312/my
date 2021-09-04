@@ -1,15 +1,12 @@
 package indi.uhyils.util;
 
-import indi.uhyils.context.MyContext;
-import indi.uhyils.dao.MsgDao;
 import indi.uhyils.enum_.PushTypeEnum;
 import indi.uhyils.pojo.DO.ApiGroupDO;
-import indi.uhyils.pojo.DO.MsgDO;
+import indi.uhyils.pojo.DTO.PushMsgDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.entity.ApiGroup;
 import indi.uhyils.util.mail.SendMail;
 import indi.uhyils.util.page.SendPage;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,14 +25,15 @@ public class PushUtils {
      * @param userEntity  目标用户
      * @param title       标题
      * @param sendContent 发送内容
+     *
      * @return
      */
-    public static Boolean emailPush(UserDTO userEntity, String title, String sendContent) throws Exception {
+    public static PushMsgDTO emailPush(UserDTO userEntity, String title, String sendContent) {
         String mail = userEntity.getMail();
         Boolean send = SendMail.send(mail, title, sendContent);
-        saveMsg(userEntity, title, sendContent, PushTypeEnum.EMAIL, send);
+        PushMsgDTO pushMsgDTO = makeMsg(userEntity, title, sendContent, PushTypeEnum.EMAIL, send);
         LogUtil.info(PushUtils.class, "向" + userEntity.getNickName() + " 发送邮件");
-        return send;
+        return pushMsgDTO;
     }
 
 
@@ -45,34 +43,17 @@ public class PushUtils {
      * @param userEntity  用户信息
      * @param title       标题
      * @param sendContent 发送内容
+     *
      * @return
      */
-    public static Boolean pagePush(UserDTO userEntity, String title, String sendContent) throws Exception {
+    public static PushMsgDTO pagePush(UserDTO userEntity, String title, String sendContent)  {
         Long userId = userEntity.getId();
         Boolean send = SendPage.send(userId, title, sendContent);
-        saveMsg(userEntity, title, sendContent, PushTypeEnum.PAGE, send);
+        PushMsgDTO pushMsgDTO = makeMsg(userEntity, title, sendContent, PushTypeEnum.PAGE, send);
         LogUtil.info(PushUtils.class, "向" + userEntity.getNickName() + " 页面推送");
-        return send;
+        return pushMsgDTO;
     }
 
-
-    /**
-     * 获取api结果内容
-     *
-     * @param userEntity     用户
-     * @param apiGroupEntity api群
-     * @return 内容
-     */
-    public static String getSendContent(UserDTO userEntity, ApiGroupDO apiGroupEntity) {
-        HashMap<String, String> parameter = new HashMap<>(16);
-        ApiUtils.callApi(apiGroupEntity.getApis(), userEntity, parameter);
-        String resultFormat = apiGroupEntity.getResultFormat();
-        // 获取最终要推送的结果
-        for (Map.Entry<String, String> entry : parameter.entrySet()) {
-            resultFormat = resultFormat.replaceAll(entry.getKey(), entry.getValue());
-        }
-        return resultFormat;
-    }
 
     /**
      * 保存到消息表中
@@ -82,19 +63,13 @@ public class PushUtils {
      * @param sendContent 内容
      * @param type        类型
      */
-    private static void saveMsg(UserDTO userEntity, String title, String sendContent, PushTypeEnum type, Boolean success) throws Exception {
-        MsgDao bean = SpringUtil.getBean(MsgDao.class);
-        MsgDO t;
+    private static PushMsgDTO makeMsg(UserDTO userEntity, String title, String sendContent, PushTypeEnum type, Boolean success) {
+        PushMsgDTO t;
         if (success) {
             t = MsgBuild.buildSuccessMsg(userEntity.getId(), title, sendContent, type);
         } else {
             t = MsgBuild.buildFaultMsg(userEntity.getId(), title, sendContent, type);
         }
-        DefaultCQE request = new DefaultCQE();
-        UserDTO user = new UserDTO();
-        user.setId(MyContext.ADMIN_USER_ID);
-        request.setUser(user);
-        t.preInsert(request);
-        bean.insert(t);
+        return t;
     }
 }

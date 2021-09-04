@@ -1,12 +1,12 @@
 package indi.uhyils.service;
 
 
+import indi.uhyils.pojo.DTO.DealOrderNodeDTO;
 import indi.uhyils.pojo.DTO.OrderNodeDTO;
 import indi.uhyils.pojo.cqe.command.DealOrderNodeCommand;
 import indi.uhyils.pojo.cqe.command.FailOrderNodeCommand;
-import indi.uhyils.pojo.cqe.command.IncapacityFailOrderNodeCommand;
-import indi.uhyils.pojo.DTO.DealOrderNodeDTO;
 import indi.uhyils.pojo.cqe.command.IdsCommand;
+import indi.uhyils.pojo.cqe.command.IncapacityFailOrderNodeCommand;
 
 /**
  * 工单节点样例表(OrderNode)表 内部服务接口
@@ -42,7 +42,7 @@ public interface OrderNodeService extends BaseDoService<OrderNodeDTO> {
      *
      * @return
      */
-    DealOrderNodeDTO dealOrderNode(DealOrderNodeCommand request) throws Exception;
+    DealOrderNodeDTO dealOrderNode(DealOrderNodeCommand request);
 
     /**
      * 工单节点(转交)失败(因处理人员无能力完成此节点,申请转交给其他人,则可以进行主动失败)
@@ -51,6 +51,6 @@ public interface OrderNodeService extends BaseDoService<OrderNodeDTO> {
      *
      * @return
      */
-    Boolean incapacityFailOrderNode(IncapacityFailOrderNodeCommand request) throws Exception;
+    Boolean incapacityFailOrderNode(IncapacityFailOrderNodeCommand request);
 
 }

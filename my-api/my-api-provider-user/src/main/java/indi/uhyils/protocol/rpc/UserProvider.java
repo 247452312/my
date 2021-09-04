@@ -2,12 +2,13 @@ package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.List;
 
@@ -111,6 +112,15 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      * @return 用户名称
      */
     ServiceResult<String> getNameById(IdQuery request);
+
+    /**
+     * 批量根据id获取用户
+     *
+     * @param request
+     *
+     * @return
+     */
+    ServiceResult<List<UserDTO>> getSampleUserByIds(IdsQuery request);
 
 
 }

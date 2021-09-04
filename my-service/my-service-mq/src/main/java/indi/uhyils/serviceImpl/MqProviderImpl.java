@@ -10,6 +10,13 @@ import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.RegisterType;
 import indi.uhyils.exception.UserException;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.CreateTopicRequest;
+import indi.uhyils.pojo.DTO.request.GetMessageRequest;
+import indi.uhyils.pojo.DTO.request.RegisterConsumerRequest;
+import indi.uhyils.pojo.DTO.request.RegisterProviderRequest;
+import indi.uhyils.pojo.DTO.request.RegisterPublishRequest;
+import indi.uhyils.pojo.DTO.request.RegisterSubscriberReqeust;
+import indi.uhyils.pojo.DTO.request.SendMessageRequest;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.protocol.rpc.provider.MqProvider;
 import indi.uhyils.util.LogUtil;
@@ -22,6 +29,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 @RpcService
 public class MqProviderImpl implements MqProvider {
+
     @Override
     public ServiceResult<Boolean> sendMessage(SendMessageRequest request) throws UserException {
         // 创建topic

@@ -2,7 +2,7 @@ package indi.uhyils.repository.impl;
 
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.PushPageMsgAssembler;
-import indi.uhyils.dao.PushPageMsgDao;
+import indi.uhyils.dao.SendPageDao;
 import indi.uhyils.pojo.DO.PushPageMsgDO;
 import indi.uhyils.pojo.DTO.PushPageMsgDTO;
 import indi.uhyils.pojo.entity.PushPageMsg;
@@ -18,9 +18,9 @@ import indi.uhyils.repository.base.AbstractRepository;
  * @date 文件创建日期 2021年09月02日 19时47分09秒
  */
 @Repository
-public class PushPageMsgRepositoryImpl extends AbstractRepository<PushPageMsg, PushPageMsgDO, PushPageMsgDao, PushPageMsgDTO, PushPageMsgAssembler> implements PushPageMsgRepository {
+public class PushPageMsgRepositoryImpl extends AbstractRepository<PushPageMsg, PushPageMsgDO, SendPageDao, PushPageMsgDTO, PushPageMsgAssembler> implements PushPageMsgRepository {
 
-    protected PushPageMsgRepositoryImpl(PushPageMsgAssembler convert, PushPageMsgDao dao) {
+    protected PushPageMsgRepositoryImpl(PushPageMsgAssembler convert, SendPageDao dao) {
         super(convert, dao);
     }
 

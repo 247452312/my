@@ -3,15 +3,14 @@ package indi.uhyils.serviceImpl;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.mongo.MongoManager;
-import indi.uhyils.pojo.DTO.request.NameRequest;
-import indi.uhyils.pojo.DTO.request.base.ObjRequest;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.rpc.annotation.RpcService;
+import indi.uhyils.pojo.DTO.request.NameRequest;
+import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.protocol.rpc.provider.MongoProvider;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.util.MD5Util;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -25,8 +24,8 @@ public class MongoProviderImpl implements MongoProvider {
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public ServiceResult<String> add(ObjRequest<String> request) {
-        String file = request.getData();
+    public ServiceResult<String> add(AddCommand<String> request) {
+        String file = request.getDto();
         String uuid = UUID.randomUUID().toString();
         String md5 = MD5Util.MD5Encode(uuid);
         boolean b1 = mongoManager.addFile(md5, file);

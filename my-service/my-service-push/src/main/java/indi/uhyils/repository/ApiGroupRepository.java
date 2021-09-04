@@ -21,4 +21,12 @@ public interface ApiGroupRepository extends BaseEntityRepository<ApiGroupDO, Api
      * @return
      */
     List<ApiGroup> getCanBeSubscribed();
+
+    /**
+     * 获取所有
+     *
+     * @return
+     */
+    List<ApiGroup> findAll();
+
 }

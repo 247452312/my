@@ -1,5 +1,6 @@
 package indi.uhyils.facade.impl;
 
+import indi.uhyils.annotation.Facade;
 import indi.uhyils.facade.DictFacade;
 import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
@@ -9,7 +10,6 @@ import indi.uhyils.protocol.rpc.DictProvider;
 import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.util.DefaultCQEBuildUtil;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
 
 /**
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @version 1.0
  * @date 文件创建日期 2021年08月31日 10时32分
  */
-@Component
+@Facade
 public class DictFacadeImpl implements DictFacade {
 
 

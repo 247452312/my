@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.response.trace;
 
-import indi.uhyils.pojo.DO.TraceInfoDO;
+import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import java.io.Serializable;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class OneTraceNode implements Serializable {
     /**
      * 信息
      */
-    private TraceInfoDO traceInfoEntity;
+    private TraceInfoDTO traceInfoEntity;
 
     public List<OneTraceNode> getLastLayerTrace() {
         return lastLayerTrace;
@@ -31,11 +31,11 @@ public class OneTraceNode implements Serializable {
         this.lastLayerTrace = lastLayerTrace;
     }
 
-    public TraceInfoDO getTraceInfoEntity() {
+    public TraceInfoDTO getTraceInfoEntity() {
         return traceInfoEntity;
     }
 
-    public void setTraceInfoEntity(TraceInfoDO traceInfoEntity) {
+    public void setTraceInfoEntity(TraceInfoDTO traceInfoEntity) {
         this.traceInfoEntity = traceInfoEntity;
     }
 

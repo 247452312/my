@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.PushMsgDO;
+import indi.uhyils.repository.PushMsgRepository;
 
 /**
  * 推送日志表(PushMsg)表 数据库实体类

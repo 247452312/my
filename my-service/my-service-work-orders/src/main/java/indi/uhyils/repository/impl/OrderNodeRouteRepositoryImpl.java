@@ -8,6 +8,8 @@ import indi.uhyils.pojo.DTO.OrderNodeRouteDTO;
 import indi.uhyils.pojo.entity.OrderNodeRoute;
 import indi.uhyils.repository.OrderNodeRouteRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -25,4 +27,15 @@ public class OrderNodeRouteRepositoryImpl extends AbstractRepository<OrderNodeRo
     }
 
 
+    @Override
+    public List<OrderNodeRoute> findByNodeId(Long nodeId) {
+        List<OrderNodeRouteDO> byOrderNodeIds = dao.getByOrderNodeIds(Arrays.asList(nodeId));
+        return assembler.listToEntity(byOrderNodeIds);
+    }
+
+    @Override
+    public List<OrderNodeRoute> findByNodeIds(List<Long> nodeIds) {
+        List<OrderNodeRouteDO> byOrderNodeIds = dao.getByOrderNodeIds(nodeIds);
+        return assembler.listToEntity(byOrderNodeIds);
+    }
 }

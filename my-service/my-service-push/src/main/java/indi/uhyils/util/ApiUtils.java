@@ -40,9 +40,10 @@ public class ApiUtils {
         String result = null;
         int apiIndex = 0;
         // 遍历api群中的每一个api(已经排好序)
-        for (ApiDO api : apis) {
-            String head = api.getHead();
-            String param = api.getParam();
+        for (Api api : apis) {
+            ApiDO apiDO = api.toDo();
+            String head = apiDO.getHead();
+            String param = apiDO.getParam();
             // 初始化head
             HashMap<String, String> httpHead = new HashMap<>(16);
             if (!StringUtils.isEmpty(head)) {
@@ -68,7 +69,7 @@ public class ApiUtils {
                 // 获取流
                 paramByte = param.getBytes(StandardCharsets.UTF_8);
             }
-            result = getHttpResultString(parameter, result, apiIndex, api, param, httpHead, paramByte);
+            result = getHttpResultString(parameter, result, apiIndex, apiDO, param, httpHead, paramByte);
             apiIndex++;
         }
         LogUtil.info(ApiUtils.class, "api调用群结束");
@@ -99,7 +100,7 @@ public class ApiUtils {
      * @param paramByte 参数byte
      * @return 此次http结果
      */
-    private static String getHttpResultString(HashMap<String, String> map, String result, int apiIndex, ApiDO api, String param, HashMap<String, String> httpHead, byte[] paramByte) {
+    private static String getHttpResultString(Map<String, String> map, String result, int apiIndex, ApiDO api, String param, HashMap<String, String> httpHead, byte[] paramByte) {
         HttpURLConnection con = null;
         BufferedReader read = null;
         OutputStream outputStream = null;

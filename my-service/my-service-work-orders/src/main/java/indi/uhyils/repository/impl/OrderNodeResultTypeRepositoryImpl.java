@@ -8,6 +8,7 @@ import indi.uhyils.pojo.DTO.OrderNodeResultTypeDTO;
 import indi.uhyils.pojo.entity.OrderNodeResultType;
 import indi.uhyils.repository.OrderNodeResultTypeRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
 
 
 /**
@@ -24,5 +25,17 @@ public class OrderNodeResultTypeRepositoryImpl extends AbstractRepository<OrderN
         super(convert, dao);
     }
 
+
+    @Override
+    public List<OrderNodeResultType> findByNodeId(Long nodeId) {
+        List<OrderNodeResultTypeDO> byOrderNodeId = dao.getByOrderNodeId(nodeId);
+        return assembler.listToEntity(byOrderNodeId);
+    }
+
+    @Override
+    public List<OrderNodeResultType> findByNodeIds(List<Long> nodeIds) {
+        List<OrderNodeResultTypeDO> byOrderNodeIds = dao.getByOrderNodeIds(nodeIds);
+        return assembler.listToEntity(byOrderNodeIds);
+    }
 
 }
