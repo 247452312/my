@@ -37,8 +37,8 @@ public class PowerRepositoryImpl extends AbstractRepository<Power, PowerDO, Powe
 
     @Override
     public List<Power> findByDeptId(Identifier deptId) {
-        ArrayList<PowerDO> powerDos = dao.getByArgsNoPage(Arrays.asList(new Arg("dept_id", "=", deptId.getId())), null);
-        return powerDos.stream().map(Power::new).collect(Collectors.toList());
+        List<PowerDO> powerDOS = dao.getByDept(deptId.getId());
+        return assembler.listToEntity(powerDOS);
     }
 
     @Override

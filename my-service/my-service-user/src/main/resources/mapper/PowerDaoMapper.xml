@@ -318,4 +318,21 @@
           and interface_name = #{interfaceName}
           and method_name = #{methodName}
     </select>
+
+    <select id="getByDept" resultMap="PowerMap">
+        select
+            a.id,
+            a.create_date,
+            a.create_user,
+            a.delete_flag,
+            a.remark,
+            a.update_date,
+            a.update_user,
+            a.interface_name,
+            a.method_name,
+            a.test
+        from sys_power a left join sys_dept_power b on a.id = b.power_id
+        where a.delete_flag = 0
+        and b.dept_id = #{deptId}
+    </select>
 </mapper>

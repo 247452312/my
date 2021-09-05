@@ -54,7 +54,7 @@ public abstract class AbstractEntity implements HaveIdEntity {
 
     @Override
     public boolean haveId() {
-        return id != null && id.getId() != null && id.getId() <= 0;
+        return id != null && id.getId() != null && id.getId() > 0;
     }
 
     @Override

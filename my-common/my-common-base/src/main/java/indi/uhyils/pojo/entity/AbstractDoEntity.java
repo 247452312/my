@@ -36,6 +36,10 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity 
         BeanUtil.copyProperties(source, data);
     }
 
+    public void upId() {
+        this.id = new Identifier(toDo().getId());
+    }
+
     /**
      * 转换为DO
      *
@@ -43,6 +47,10 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity 
      */
     public T toDo() {
         return data;
+    }
+
+    public <EN extends AbstractDoEntity<T>> void saveSelf(BaseEntityRepository<T, EN> repository) {
+        repository.save((EN) this);
     }
 
 

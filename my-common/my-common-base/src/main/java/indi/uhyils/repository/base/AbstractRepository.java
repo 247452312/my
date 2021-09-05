@@ -46,6 +46,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
             DO aDo = assembler.toDo(entity);
             aDo.preInsert();
             dao.insert(aDo);
+            entity.upId();
             return Identifier.build(aDo.getId());
         }
         boolean canUpdate = entity.canUpdate();

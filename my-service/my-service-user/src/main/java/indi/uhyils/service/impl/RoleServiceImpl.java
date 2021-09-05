@@ -62,7 +62,7 @@ public class RoleServiceImpl extends AbstractDoService<RoleDO, Role, RoleDTO, Ro
 
         roleId.cleanDeptLink(rep);
         roleId.forceInitDeptIds(request.getDeptIds().stream().map(Dept::new).collect(Collectors.toList()));
-        roleId.createDeptLink(rep);
+        roleId.mappingToDB(rep);
         return true;
     }
 

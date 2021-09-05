@@ -8,8 +8,10 @@ import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.RoleRepository;
+import indi.uhyils.repository.base.BaseEntityRepository;
 import indi.uhyils.util.AssertUtil;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -86,7 +88,12 @@ public class Role extends AbstractDoEntity<RoleDO> {
         return depts;
     }
 
-    public void createDeptLink(RoleRepository rep) {
+    /**
+     * 落库
+     *
+     * @param rep
+     */
+    public void mappingToDB(RoleRepository rep) {
         rep.addRoleDeptLink(this, depts);
     }
 
@@ -108,4 +115,5 @@ public class Role extends AbstractDoEntity<RoleDO> {
     public void removeSelf(RoleRepository rep) {
         rep.remove(getId());
     }
+
 }
