@@ -53,7 +53,7 @@
         var table = layui.table;
         var layer = layui.layer;
         $.reloadTable = function () {
-            pushRequest("PowerService", "getPowers", {}, function (data) {
+            pushRequest("PowerProvider", "getPowers", {}, function (data) {
                 // 渲染表格
                 table.render({
                     elem: '#munu-table'
@@ -99,7 +99,7 @@
                             });
                             break;
                         case 'initPower': // 初始化权限
-                            pushRequest("PowerService", "initPowerInProStart", {}, function (data) {
+                            pushRequest("PowerProvider", "initPowerInProStart", {}, function (data) {
                                 layer.msg("权限加载成功,新增加方法" + data + "个");
                                 table.render();
                             });
@@ -118,7 +118,7 @@
                     //console.log(obj)
                     if (obj.event === 'del') { // 删除
                         layer.confirm('真的删除行么', function (index) {
-                            pushRequest("PowerService", "deletePower", {id: data.id}, function (data) {
+                            pushRequest("PowerProvider", "deletePower", {id: data.id}, function (data) {
                                 layer.close(index);
                                 $.reloadTable();
                             });

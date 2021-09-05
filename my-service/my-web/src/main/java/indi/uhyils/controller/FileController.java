@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/file")
 public class FileController {
 
-    private static final String INTERFACE = "MongoService";
+    private static final String INTERFACE = "MongoProvider";
 
     private static final String METHOD_NAME = "getByFileName";
 

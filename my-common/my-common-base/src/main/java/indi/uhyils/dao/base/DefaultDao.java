@@ -27,6 +27,15 @@ public interface DefaultDao<T extends Serializable> extends BaseDao {
     T getById(Long id);
 
     /**
+     * 获取一个例子,所有表id不可重复,所以只取一个
+     *
+     * @param ids id
+     *
+     * @return 实例
+     */
+    List<T> getByIds(@Param("ids") List<Long> ids);
+
+    /**
      * 根据某些字段获取实例(不分页)
      *
      * @param args  条件

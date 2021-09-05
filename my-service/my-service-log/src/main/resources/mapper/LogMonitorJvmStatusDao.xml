@@ -29,7 +29,7 @@
         <include refid="columnList"/>
         from sys_log_monitor_jvm_status a
         where 1=1
-        <foreach item="item" index="index" collection="list">
+        <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
         order by time desc

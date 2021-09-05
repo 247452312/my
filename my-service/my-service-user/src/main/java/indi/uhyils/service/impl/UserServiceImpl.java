@@ -107,8 +107,7 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
         List<User> all = rep.findAll();
         // 填充角色
         User.batchInitRole(all, roleRepository, deptRepository, powerRepository, menuRepository);
-        List<UserDO> userDos = all.stream().map(AbstractDoEntity::toDo).collect(Collectors.toList());
-        return userDos.stream().map(assem::toDTO).collect(Collectors.toList());
+        return assem.listEntityToDTO(all);
     }
 
     @Override

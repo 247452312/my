@@ -73,7 +73,7 @@
         let func = $.getUrlParam('func');
 
         if (func == 'edit') { // 这是修改
-            pushRequest("OrderNodeRouteService", "getById", {
+            pushRequest("OrderNodeRouteProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -97,11 +97,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("OrderNodeRouteService", "insert", {data: data.field}, function () {
+                    pushRequest("OrderNodeRouteProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("OrderNodeRouteService", "update", {data: data.field}, function () {
+                    pushRequest("OrderNodeRouteProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

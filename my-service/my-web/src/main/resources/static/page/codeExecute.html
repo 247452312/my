@@ -52,7 +52,7 @@
     $("#execute").click(function () {
       let content = editor.txt.text();
       content.replace(/&nbsp;/g,"");
-      pushRequest("ParsingCodeService", "executeCode", {classValue: content}, function (data) {
+      pushRequest("ParsingCodeProvider", "executeCode", {classValue: content}, function (data) {
         layer.msg(JSON.stringify(data));
       });
     });

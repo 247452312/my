@@ -77,19 +77,28 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
                 LogDetailTypeEnum parse = LogDetailTypeEnum.parse(text.charAt(0));
                 switch (parse) {
                     case DETAIL:
-                        TraceDetailDTO traceDetailDO = new DetailTraceDeal().doDeal(text);
+                        TraceDetailDTO traceDetailDTO = new DetailTraceDeal().doDeal(text);
+                        if (traceDetailDTO == null) {
+                            break;
+                        }
                         AddCommand<TraceDetailDTO> addCommand = new AddCommand<>();
-                        addCommand.setDto(traceDetailDO);
+                        addCommand.setDto(traceDetailDTO);
                         traceDetailService.add(addCommand);
                         break;
                     case LOG:
                         TraceLogDTO traceDeal = new LogTraceDeal().doDeal(text);
+                        if (traceDeal == null) {
+                            break;
+                        }
                         AddCommand<TraceLogDTO> add = new AddCommand<>();
                         add.setDto(traceDeal);
                         traceLogService.add(add);
                         break;
                     case LINK:
                         TraceInfoDTO traceInfoDTO = new LinkTraceDeal().doDeal(text);
+                        if (traceInfoDTO == null) {
+                            break;
+                        }
                         AddCommand<TraceInfoDTO> traceInfoDTOAddCommand = new AddCommand<>();
                         traceInfoDTOAddCommand.setDto(traceInfoDTO);
                         traceInfoService.add(traceInfoDTOAddCommand);

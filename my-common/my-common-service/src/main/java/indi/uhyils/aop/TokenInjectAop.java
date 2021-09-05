@@ -50,12 +50,11 @@ public class TokenInjectAop {
     @Autowired
     private RedisPoolHandle redisPoolHandle;
 
-
     /**
      * 定义切入点，切入点为service包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public * indi.uhyils.service..*.*(..)))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.base.ServiceResult indi.uhyils.protocol..*.*(..)))")
     public void tokenInjectPoint() {
     }
 
@@ -116,7 +115,7 @@ public class TokenInjectAop {
 
             /* 查询是否有权限 */
             // 超级管理员直接放行
-            if (ADMIN.equals(userDTO.getUserName())) {
+            if (ADMIN.equals(userDTO.getUsername())) {
                 userDTO.setRoleId(MyContext.ADMIN_ROLE_ID);
                 arg.setUser(userDTO);
                 //执行方法
@@ -159,6 +158,7 @@ public class TokenInjectAop {
         build.setUser(userEntity);
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        return (ServiceResult) RpcApiUtil.rpcApiTool("PowerService", "checkUserHavePower", args, request);
+        Object o = RpcApiUtil.rpcApiTool("PowerProvider", "checkUserHavePower", args);
+        return (ServiceResult) o;
     }
 }

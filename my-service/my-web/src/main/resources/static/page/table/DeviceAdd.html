@@ -88,7 +88,7 @@
         let func = $.getUrlParam('func');
 
         if (func == 'edit') { // 这是修改
-            pushRequest("DeviceService", "getById", {
+            pushRequest("DeviceProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -114,11 +114,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("DeviceService", "insert", {data: data.field}, function () {
+                    pushRequest("DeviceProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("DeviceService", "update", {data: data.field}, function () {
+                    pushRequest("DeviceProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

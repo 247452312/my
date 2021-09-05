@@ -45,7 +45,7 @@
     };
     let traceId = $.getUrlParam('traceId');
 
-    pushRequest("TraceInfoService", "getLinkByTraceId", {
+    pushRequest("TraceInfoProvider", "getLinkByTraceId", {
       "value": traceId
     }, function (ooo) {
       table.render({

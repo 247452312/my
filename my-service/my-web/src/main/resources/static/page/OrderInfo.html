@@ -72,7 +72,7 @@
 
         $.reloadTable = function () {
             var reload = function (page, size, args) {
-                pushRequest("OrderInfoService", "getByArgs", {
+                pushRequest("OrderInfoProvider", "getByArgs", {
                     page: page,
                     size: size,
                     paging: true,

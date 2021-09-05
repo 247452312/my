@@ -72,7 +72,7 @@
 
         $.reloadTable = function () {
             var reload = function (page, size, args) {
-                pushRequest("OrderBaseNodeRouteService", "getByArgs", {
+                pushRequest("OrderBaseNodeRouteProvider", "getByArgs", {
                     page: page,
                     size: size,
                     paging: true,

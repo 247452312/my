@@ -13,7 +13,7 @@ import indi.uhyils.protocol.rpc.DictProvider;
 import indi.uhyils.protocol.rpc.MenuProvider;
 import indi.uhyils.rpc.annotation.RpcReference;
 import indi.uhyils.rpc.annotation.RpcService;
-import indi.uhyils.protocol.rpc.provider.DistributeProvider;
+import indi.uhyils.protocol.rpc.DistributeProvider;
 import indi.uhyils.protocol.rpc.provider.JvmProvider;
 import java.util.ArrayList;
 

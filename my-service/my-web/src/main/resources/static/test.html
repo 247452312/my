@@ -25,7 +25,7 @@
   layui.use('tree', function () {
     var tree = layui.tree;
 
-    pushRequest("TraceInfoService", "getLinkByTraceId", {value: '1706804689839849504'}, function (data) {
+    pushRequest("TraceInfoProvider", "getLinkByTraceId", {value: '1706804689839849504'}, function (data) {
       data = data.link.list;
       debugger;
       data = addTraceId(data);

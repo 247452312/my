@@ -27,7 +27,7 @@ public class ContentRepositoryImpl extends AbstractRepository<Content, ContentDO
 
     @Override
     public Content getByName(String honeInfo) {
-        dao.getByName(honeInfo);
-        return null;
+        ContentDO byName = dao.getByName(honeInfo);
+        return assembler.toEntity(byName);
     }
 }

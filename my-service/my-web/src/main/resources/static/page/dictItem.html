@@ -53,7 +53,7 @@
             $.reload(1, 10, []);
         };
         $.reload = function (page, size, args) {
-            pushRequest("DictService", "getByItemArgs", {
+            pushRequest("DictProvider", "getByItemArgs", {
                 dictId: dictId,
                 page: page,
                 size: size,
@@ -166,7 +166,7 @@
                 layer.confirm('是否确认删除字典项', {
                     btn: ['确认', '取消'] //按钮
                 }, function () {
-                    pushRequest("DictService", "deleteItem", {id: data.id}, function (data) {
+                    pushRequest("DictProvider", "deleteItem", {id: data.id}, function (data) {
                         layer.msg("删除成功");
                         $.defaultReload();
                     });

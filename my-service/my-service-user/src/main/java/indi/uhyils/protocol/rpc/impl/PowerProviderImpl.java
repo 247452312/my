@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
+import indi.uhyils.annotation.NoToken;
 import indi.uhyils.pojo.DTO.PowerDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetMethodNameByInterfaceNameQuery;
@@ -33,6 +34,7 @@ public class PowerProviderImpl extends BaseDefaultProvider<PowerDTO> implements 
     }
 
     @Override
+    @NoToken
     public ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerQuery request) {
         Boolean result = service.checkUserHavePower(request);
         return ServiceResult.buildSuccessResult(result);

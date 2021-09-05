@@ -95,7 +95,7 @@
         let func = $.getUrlParam('func');
 
         if (func == 'edit') { // 这是修改
-            pushRequest("OrderLogService", "getById", {
+            pushRequest("OrderLogProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -122,11 +122,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("OrderLogService", "insert", {data: data.field}, function () {
+                    pushRequest("OrderLogProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("OrderLogService", "update", {data: data.field}, function () {
+                    pushRequest("OrderLogProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

@@ -73,7 +73,7 @@
         let func = $.getUrlParam('func');
 
         if (func == 'edit') { // 这是修改
-            pushRequest("DeviceCallbackService", "getById", {
+            pushRequest("DeviceCallbackProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -97,11 +97,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("DeviceCallbackService", "insert", {data: data.field}, function () {
+                    pushRequest("DeviceCallbackProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("DeviceCallbackService", "update", {data: data.field}, function () {
+                    pushRequest("DeviceCallbackProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

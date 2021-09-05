@@ -33,7 +33,7 @@ public class ApiUtils {
      */
     public static String callApi(List<Api> apis, UserDTO userEntity, Map<String, String> parameter) {
         // 初始化调用群期间可传递的参数
-        parameter.put("${username}", userEntity.getUserName());
+        parameter.put("${username}", userEntity.getUsername());
         parameter.put("${nickName}", userEntity.getNickName());
         parameter.put("${mail}", userEntity.getMail());
         parameter.put("${phone}", userEntity.getPhone());

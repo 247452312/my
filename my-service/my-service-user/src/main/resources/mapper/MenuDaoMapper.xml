@@ -41,6 +41,30 @@
         where delete_flag = 0
           and id = #{id}
     </select>
+    <!--查询单个-->
+    <select id="getByIds" resultMap="MenuMap">
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               fid,
+               i_frame,
+               icon,
+               name,
+               sort,
+               target,
+               type,
+               url
+        from sys_menu
+        where delete_flag = 0
+        and id in
+        <foreach collection="ids" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
 
     <!--根据某些字段获取实例(不分页)-->
     <select id="getByArgsNoPage" resultMap="MenuMap">
@@ -172,49 +196,49 @@
 
     <!--通过主键修改数据-->
     <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.MenuDO">
-        update sys_menu set update_date = #{updateDate}
-                          , update_user = #{updateUser}
-        <if test="createDate != null">
-            , create_date = #{createDate}
+        update sys_menu set update_date = #{data.updateDate}
+                          , update_user = #{data.updateUser}
+        <if test="data.createDate != null">
+            , create_date = #{data.createDate}
         </if>
-        <if test="createUser != null">
-            , create_user = #{createUser}
+        <if test="data.createUser != null">
+            , create_user = #{data.createUser}
         </if>
-        <if test="deleteFlag != null">
-            , delete_flag = #{deleteFlag}
+        <if test="data.deleteFlag != null">
+            , delete_flag = #{data.deleteFlag}
         </if>
-        <if test="remark != null and remark != ''">
-            , remark = #{remark}
+        <if test="data.remark != null and data.remark != ''">
+            , remark = #{data.remark}
         </if>
-        <if test="updateDate != null">
-            , update_date = #{updateDate}
+        <if test="data.updateDate != null">
+            , update_date = #{data.updateDate}
         </if>
-        <if test="updateUser != null">
-            , update_user = #{updateUser}
+        <if test="data.updateUser != null">
+            , update_user = #{data.updateUser}
         </if>
-        <if test="fid != null">
-            , fid = #{fid}
+        <if test="data.fid != null">
+            , fid = #{data.fid}
         </if>
-        <if test="iFrame != null">
-            , i_frame = #{iFrame}
+        <if test="data.iFrame != null">
+            , i_frame = #{data.iFrame}
         </if>
-        <if test="icon != null and icon != ''">
-            , icon = #{icon}
+        <if test="data.icon != null and data.icon != ''">
+            , icon = #{data.icon}
         </if>
-        <if test="name != null and name != ''">
-            , name = #{name}
+        <if test="data.name != null and data.name != ''">
+            , name = #{data.name}
         </if>
-        <if test="sort != null">
-            , sort = #{sort}
+        <if test="data.sort != null">
+            , sort = #{data.sort}
         </if>
-        <if test="target != null and target != ''">
-            , target = #{target}
+        <if test="data.target != null and data.target != ''">
+            , target = #{data.target}
         </if>
-        <if test="type != null">
-            , type = #{type}
+        <if test="data.type != null">
+            , type = #{data.type}
         </if>
-        <if test="url != null and url != ''">
-            , url = #{url}
+        <if test="data.url != null and data.url != ''">
+            , url = #{data.url}
         </if>
         where delete_flag = 0
         <if test="args != null">
@@ -230,46 +254,46 @@
             update sys_menu set
             update_date = #{item.updateDate}
                 ,update_user = #{item.updateUser}
-            <if test="createDate != null">
+            <if test="item.createDate != null">
                 ,create_date = #{item.createDate}
             </if>
-            <if test="createUser != null">
+            <if test="item.createUser != null">
                 ,create_user = #{item.createUser}
             </if>
-            <if test="deleteFlag != null">
+            <if test="item.deleteFlag != null">
                 ,delete_flag = #{item.deleteFlag}
             </if>
-            <if test="remark != null and remark != ''">
+            <if test="item.remark != null and item.remark != ''">
                 ,remark = #{item.remark}
             </if>
-            <if test="updateDate != null">
+            <if test="item.updateDate != null">
                 ,update_date = #{item.updateDate}
             </if>
-            <if test="updateUser != null">
+            <if test="item.updateUser != null">
                 ,update_user = #{item.updateUser}
             </if>
-            <if test="fid != null">
+            <if test="item.fid != null">
                 ,fid = #{item.fid}
             </if>
-            <if test="iFrame != null">
+            <if test="item.iFrame != null">
                 ,i_frame = #{item.iFrame}
             </if>
-            <if test="icon != null and icon != ''">
+            <if test="item.icon != null and item.icon != ''">
                 ,icon = #{item.icon}
             </if>
-            <if test="name != null and name != ''">
+            <if test="item.name != null and item.name != ''">
                 , name = #{item.name}
             </if>
-            <if test="sort != null">
+            <if test="item.sort != null">
                 ,sort = #{item.sort}
             </if>
-            <if test="target != null and target != ''">
+            <if test="item.target != null and item.target != ''">
                 ,target = #{item.target}
             </if>
-            <if test="type != null">
+            <if test="item.type != null">
                 ,type = #{item.type}
             </if>
-            <if test="url != null and url != ''">
+            <if test="item.url != null and item.url != ''">
                 ,url = #{item.url}
             </if>
             where id = #{item.id}

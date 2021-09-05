@@ -28,8 +28,10 @@ public class UserAssembler extends AbstractAssembler<UserDO, User, UserDTO> {
     @Override
     public User toEntity(UserDTO dto) {
         User user = new User(toDo(dto));
-        Role role = roleAssembler.toEntity(dto.getRole());
-        user.forceInitRole(role);
+        if (dto.getRole() != null) {
+            Role role = roleAssembler.toEntity(dto.getRole());
+            user.forceInitRole(role);
+        }
         return user;
     }
 
@@ -51,8 +53,11 @@ public class UserAssembler extends AbstractAssembler<UserDO, User, UserDTO> {
     @Override
     public UserDTO toDTO(User entity) {
         UserDTO userDTO = super.toDTO(entity);
-        RoleDTO roleDTO = roleAssembler.toDTO(entity.role());
-        userDTO.setRole(roleDTO);
+        Role role = entity.role();
+        if (role != null) {
+            RoleDTO roleDTO = roleAssembler.toDTO(entity.role());
+            userDTO.setRole(roleDTO);
+        }
         return userDTO;
     }
 }

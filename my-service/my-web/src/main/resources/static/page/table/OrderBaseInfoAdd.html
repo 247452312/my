@@ -100,7 +100,7 @@
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
-        let users = pushRequest("UserService", "getUsers", {}, function (data) {
+        let users = pushRequest("UserProvider", "getUsers", {}, function (data) {
             let result = [];
             for (let i = 0; i < data.length; i++) {
                 let resultItem = {};
@@ -113,7 +113,7 @@
         for (let i = 0; i < users.length; i++) {
             $('[name=monitorUserId]').append('<option value="' + users[i].id + '">' + users[i].name + '</option>')
         }
-        pushRequest("DictService", "getByCode", {code: 'OrderType'}, function (data) {
+        pushRequest("DictProvider", "getByCode", {code: 'OrderType'}, function (data) {
             for (let i = 0; i < data.length; i++) {
                 $('[name=type]').append('<option value="' + data[i].value + '">' + data[i].text + '</option>');
             }
@@ -159,7 +159,7 @@
         let func = $.getUrlParam('func');
 
         if (func == 'edit') { // 这是修改
-            pushRequest("OrderBaseInfoService", "getById", {
+            pushRequest("OrderBaseInfoProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -189,11 +189,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("OrderBaseInfoService", "insert", {data: data.field}, function () {
+                    pushRequest("OrderBaseInfoProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("OrderBaseInfoService", "update", {data: data.field}, function () {
+                    pushRequest("OrderBaseInfoProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

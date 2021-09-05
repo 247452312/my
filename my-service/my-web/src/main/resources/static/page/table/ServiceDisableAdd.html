@@ -103,7 +103,7 @@
             }, function () {
                 // 关闭弹出层
                 layer.close(index);
-                pushRequest("ServiceControlService", "addOrEditMethodDisable", {data: data.field}, function () {
+                pushRequest("ServiceControlProvider", "addOrEditMethodDisable", {data: data.field}, function () {
                 });
                 closeAndReload();
             });

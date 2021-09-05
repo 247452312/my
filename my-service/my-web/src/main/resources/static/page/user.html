@@ -53,7 +53,7 @@
         var table = layui.table;
         var layer = layui.layer;
         $.reloadTable = function () {
-            pushRequest("UserService", "getUsers", {}, function (data) {
+            pushRequest("UserProvider", "getUsers", {}, function (data) {
                 // 渲染表格
                 table.render({
                     elem: '#munu-table'
@@ -121,7 +121,7 @@
                     //console.log(obj)
                     if (obj.event === 'del') { // 删除
                         layer.confirm('真的删除行么', function (index) {
-                            pushRequest("UserService", "delete", {id: data.id}, function (data) {
+                            pushRequest("UserProvider", "delete", {id: data.id}, function (data) {
                                 layer.close(index);
                                 $.reloadTable();
                             });

@@ -147,16 +147,17 @@
     //     type: 11,
     //     color: "rgb(0,0,0)"
     // });
-    pushRequest("UserService", "getUserByToken", {}, function (data) {
-        let base = download(data.headPortrait);
-        $("#head").append("<img style='border-radius: 10px;width: 50px;height: 50px;' src='" + base + "'>")
-    });
+
     layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             miniAdmin = layui.miniAdmin,
             miniTongji = layui.miniTongji;
 
+        pushRequest("UserProvider", "getUserByToken", {}, function (data) {
+            let base = download(data.headPortrait);
+            $("#head").append("<img style='border-radius: 10px;width: 50px;height: 50px;' src='" + base + "'>")
+        });
         var options = {
             iniUrl: "/action",    // 初始化接口
             // iniUrl: "api/init.json",    // 初始化接口
@@ -173,7 +174,7 @@
 
 
         $('.login-out').on("click", function () {
-            pushRequest('UserService', 'logout', {}, function (data) {
+            pushRequest('UserProvider', 'logout', {}, function (data) {
                 if (data === true) {
                     layer.msg('退出登录成功', function () {
                         window.location = '/login.html';

@@ -95,4 +95,13 @@ public interface DeptDao extends DefaultDao<DeptDO> {
      * @return 删除个数
      */
     Integer deleteRoleDeptMiddleByDeptId(Long id);
+
+    /**
+     * 根据roleId获取部门
+     *
+     * @param roleId
+     *
+     * @return
+     */
+    List<DeptDO> getByRoleId(Long roleId);
 }

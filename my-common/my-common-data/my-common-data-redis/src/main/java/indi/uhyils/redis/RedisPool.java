@@ -18,7 +18,7 @@ public class RedisPool {
     /**
      * jedis连接池
      */
-    private static JedisPool pool;
+    private volatile static JedisPool pool;
 
     /**
      * 是否初始化的标志 如果此类已经初始化,则表示整个类已经初始化过
@@ -28,7 +28,7 @@ public class RedisPool {
     /**
      * 初始化类型是否是正常的redis
      */
-    private static Boolean initTypeIsRedis = Boolean.TRUE;
+    private volatile static Boolean initTypeIsRedis = Boolean.TRUE;
 
     /**
      * 最大连接数

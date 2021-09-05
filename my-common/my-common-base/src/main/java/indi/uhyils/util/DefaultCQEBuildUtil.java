@@ -25,7 +25,7 @@ public final class DefaultCQEBuildUtil {
         DefaultCQE defaultRequest = new DefaultCQE();
         UserDTO user = new UserDTO();
         user.setId(MyContext.ADMIN_USER_ID);
-        user.setUserName("admin");
+        user.setUsername("admin");
         defaultRequest.setUser(user);
         return defaultRequest;
     }

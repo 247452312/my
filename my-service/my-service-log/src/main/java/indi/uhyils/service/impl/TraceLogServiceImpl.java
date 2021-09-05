@@ -4,7 +4,9 @@ import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.TraceLogAssembler;
 import indi.uhyils.pojo.DO.TraceLogDO;
 import indi.uhyils.pojo.DTO.TraceLogDTO;
+import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.entity.TraceLog;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.TraceLogRepository;
 import indi.uhyils.service.TraceLogService;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,5 @@ public class TraceLogServiceImpl extends AbstractDoService<TraceLogDO, TraceLog,
     public TraceLogServiceImpl(TraceLogAssembler assembler, TraceLogRepository repository) {
         super(assembler, repository);
     }
-
 
 }

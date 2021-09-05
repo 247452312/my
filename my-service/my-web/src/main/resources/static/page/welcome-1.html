@@ -698,7 +698,7 @@
             echarts.registerTheme('essos', themeJSON);
             var myChart = echarts.init(document.getElementById('echarts-records'), 'essos');
 
-            pushRequest("DistributeService", "getWelcomeData", {}, function (data) {
+            pushRequest("DistributeProvider", "getWelcomeData", {}, function (data) {
                 var versionInfo = data.versionInfoResponse.infos;
                 let $versionInfo = $("#version_info");
                 $versionInfo.empty();
@@ -765,7 +765,7 @@
         });
 
         function refreshJvmInfo() {
-            pushRequest("JvmService", "getJvmDataStatisticsResponse", {}, function (data) {
+            pushRequest("JvmProvider", "getJvmDataStatisticsResponse", {}, function (data) {
                 var myChart = echarts.init(document.getElementById('echarts-records'), 'essos');
                 extracted(myChart, data);
             })

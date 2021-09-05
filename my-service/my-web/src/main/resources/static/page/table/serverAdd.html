@@ -100,7 +100,7 @@
         let id = $.getUrlParam('id');
         let func = $.getUrlParam('func');
         if (func == 'edit') { // 这是修改
-            pushRequest("ServerService", "getById", {
+            pushRequest("ServerProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -134,11 +134,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("ServerService", "insert", {data: data.field}, function () {
+                    pushRequest("ServerProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("ServerService", "update", {data: data.field}, function () {
+                    pushRequest("ServerProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }
@@ -153,7 +153,7 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("ServerService", "testConnByData", {
+                    pushRequest("ServerProvider", "testConnByData", {
                         ip: data.field.ip,
                         port: data.field.port,
                         username: data.field.username,
@@ -163,7 +163,7 @@
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("ServerService", "testConnById", {id: data.field.id}, function (data) {
+                    pushRequest("ServerProvider", "testConnById", {id: data.field.id}, function (data) {
                         layer.msg(data);
                     });
                 }

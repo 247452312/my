@@ -81,9 +81,9 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
      */
     @Override
     public <E extends Identifier> List<EN> find(List<E> ids) {
-        String idsStr = "('" + ids.stream().map(Object::toString).collect(Collectors.joining("','")) + "')";
-        ArrayList<DO> byArgsNoPage = dao.getByArgsNoPage(Collections.singletonList(new Arg("id", "in", idsStr)), null);
-        return byArgsNoPage.stream().map(assembler::toEntity).collect(Collectors.toList());
+        List<Long> idList = ids.stream().map(t -> t.getId()).collect(Collectors.toList());
+        List<DO> byIds = dao.getByIds(idList);
+        return byIds.stream().map(assembler::toEntity).collect(Collectors.toList());
     }
 
     @Override

@@ -74,7 +74,7 @@
         let func = $.getUrlParam('func');
 
         if (func == 'edit') { // 这是修改
-            pushRequest("SceneService", "getById", {
+            pushRequest("SceneProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -98,11 +98,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("SceneService", "insert", {data: data.field}, function () {
+                    pushRequest("SceneProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("SceneService", "update", {data: data.field}, function () {
+                    pushRequest("SceneProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

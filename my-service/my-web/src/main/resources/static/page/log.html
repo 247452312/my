@@ -76,7 +76,7 @@
         layer = layui.layer,
         table = layui.table;
 
-    var logType = pushRequest("TraceInfoService", "getLogType", {}, function (data) {
+    var logType = pushRequest("TraceInfoProvider", "getLogType", {}, function (data) {
       $("[name='log_type']").empty();
       $("[name='log_type']").append('<option value="">请选择一个日志类型</option> ');
       for (let i = 0; i < data.length; i++) {
@@ -86,7 +86,7 @@
       return data;
     });
     var reload = function (page, size, args) {
-      pushRequest("TraceInfoService", "getTraceInfoByArgAndPage", {
+      pushRequest("TraceInfoProvider", "getTraceInfoByArgAndPage", {
         page: page,
         size: size,
         paging: true,
@@ -150,7 +150,7 @@
     /*form.on('select(interface_name)', function (data) {
       let value = data.value;
       if (value != "") {
-        pushRequest("PowerService", "getMethodNameByInterfaceName", {interfaceName: value}, function (data) {
+        pushRequest("PowerProvider", "getMethodNameByInterfaceName", {interfaceName: value}, function (data) {
           $("#method_name").empty();
           $("#method_name").append("<option value=''>请选择一个方法</option>");
           for (let i = 0; i < data.length; i++) {
@@ -193,7 +193,7 @@
       if (obj.event === 'rpcIdClick') {
         let traceId = data.traceId;
         let rpcId = data.rpcId;
-        pushRequest("TraceInfoService", "getLinkByTraceIdAndRpcId", {
+        pushRequest("TraceInfoProvider", "getLinkByTraceIdAndRpcId", {
           "traceId": traceId,
           "rpcId": rpcId
         }, function (ooo) {
@@ -224,7 +224,7 @@
           layer.full(index);
         });
       } else if (obj.event === 'hashClick') {
-        pushRequest("TraceDetailService", "getTraceDetailByHashCode", {
+        pushRequest("TraceDetailProvider", "getTraceDetailByHashCode", {
           "hashCode": data.hashCode,
           "type": data.logType
         }, function (ooo) {

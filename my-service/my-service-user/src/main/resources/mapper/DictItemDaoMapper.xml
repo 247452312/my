@@ -22,20 +22,32 @@
     <select id="getById" resultMap="DictItemMap">
         select
         id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
-        text, value, status
+        text, `value`, status
         from sys_dict_item
         where delete_flag = 0
         and id = #{id}
+    </select>
+    <!--查询多个-->
+    <select id="getByIds" resultMap="DictItemMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
+        text, `value`, status
+        from sys_dict_item
+        where delete_flag = 0
+        and id in
+        <foreach collection="ids" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
     </select>
 
     <!--根据某些字段获取实例(不分页)-->
     <select id="getByArgsNoPage" resultMap="DictItemMap">
         select
         id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
-        text, value, status
+        text, `value`, status
         from sys_dict_item
         where delete_flag = 0
-        <if test="list != null">
+        <if test="args != null">
             <foreach item="item" index="index" collection="args">
                 and ${item.name} ${item.symbol} #{item.data}
             </foreach>
@@ -52,7 +64,7 @@
     <select id="getByArgs" resultMap="DictItemMap">
         select
         id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
-        text, value, status
+        text, `value`, status
         from sys_dict_item
         where delete_flag = 0
         <if test="args != null">
@@ -78,7 +90,7 @@
     <insert id="insert" parameterType="indi.uhyils.pojo.DO.DictItemDO">
         insert into sys_dict_item(
         id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
-        text, value, status)
+        text, `value`, status)
         values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser},
         #{description}, #{dictId}, #{sortOrder}, #{text}, #{value}, #{status})
     </insert>
@@ -119,7 +131,7 @@
             ,text = #{text}
         </if>
         <if test="value != null and value != ''">
-            ,value = #{value}
+            ,`value` = #{value}
         </if>
         <if test="status != null">
             ,status = #{status}
@@ -130,43 +142,43 @@
     <!--通过主键修改数据-->
     <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.DictItemDO">
         update sys_dict_item set
-        update_date = #{updateDate}
-        ,update_user = #{updateUser}
-        <if test="createDate != null">
-            ,create_date = #{createDate}
+        update_date = #{data.updateDate}
+        ,update_user = #{data.updateUser}
+        <if test="data.createDate != null">
+            ,create_date = #{data.createDate}
         </if>
-        <if test="createUser != null">
-            ,create_user = #{createUser}
+        <if test="data.createUser != null">
+            ,create_user = #{data.createUser}
         </if>
-        <if test="deleteFlag != null">
-            ,delete_flag = #{deleteFlag}
+        <if test="data.deleteFlag != null">
+            ,delete_flag = #{data.deleteFlag}
         </if>
-        <if test="remark != null and remark != ''">
-            ,remark = #{remark}
+        <if test="data.remark != null and data.remark != ''">
+            ,remark = #{data.remark}
         </if>
-        <if test="updateDate != null">
-            ,update_date = #{updateDate}
+        <if test="data.updateDate != null">
+            ,update_date = #{data.updateDate}
         </if>
-        <if test="updateUser != null">
-            ,update_user = #{updateUser}
+        <if test="data.updateUser != null">
+            ,update_user = #{data.updateUser}
         </if>
-        <if test="description != null and description != ''">
-            ,description = #{description}
+        <if test="data.description != null and data.description != ''">
+            ,description = #{data.description}
         </if>
-        <if test="dictId != null">
-            ,dict_id = #{dictId}
+        <if test="data.dictId != null">
+            ,dict_id = #{data.dictId}
         </if>
-        <if test="sortOrder != null">
-            ,sort_order = #{sortOrder}
+        <if test="data.sortOrder != null">
+            ,sort_order = #{data.sortOrder}
         </if>
-        <if test="text != null and text != ''">
-            ,text = #{text}
+        <if test="data.text != null and data.text != ''">
+            ,text = #{data.text}
         </if>
-        <if test="value != null and value != ''">
-            ,value = #{value}
+        <if test="data.value != null and data.value != ''">
+            ,`value` = #{data.value}
         </if>
-        <if test="status != null">
-            ,status = #{status}
+        <if test="data.status != null">
+            ,status = #{data.status}
         </if>
         where delete_flag = 0
         <if test="args != null">
@@ -182,40 +194,40 @@
             update sys_dict_item set
             update_date = #{item.updateDate}
             ,update_user = #{item.updateUser}
-            <if test="createDate != null">
+            <if test="item.createDate != null">
                 ,create_date = #{item.createDate}
             </if>
-            <if test="createUser != null">
+            <if test="item.createUser != null">
                 ,create_user = #{item.createUser}
             </if>
-            <if test="deleteFlag != null">
+            <if test="item.deleteFlag != null">
                 ,delete_flag = #{item.deleteFlag}
             </if>
-            <if test="remark != null and remark != ''">
+            <if test="item.remark != null and item.remark != ''">
                 ,remark = #{item.remark}
             </if>
-            <if test="updateDate != null">
+            <if test="item.updateDate != null">
                 ,update_date = #{item.updateDate}
             </if>
-            <if test="updateUser != null">
+            <if test="item.updateUser != null">
                 ,update_user = #{item.updateUser}
             </if>
-            <if test="description != null and description != ''">
+            <if test="item.description != null and item.description != ''">
                 ,description = #{item.description}
             </if>
-            <if test="dictId != null">
+            <if test="item.dictId != null">
                 ,dict_id = #{item.dictId}
             </if>
-            <if test="sortOrder != null">
+            <if test="item.sortOrder != null">
                 ,sort_order = #{item.sortOrder}
             </if>
-            <if test="text != null and text != ''">
+            <if test="item.text != null and item.text != ''">
                 ,text = #{item.text}
             </if>
-            <if test="value != null and value != ''">
-                ,value = #{item.value}
+            <if test="item.value != null and item.value != ''">
+                ,`value` = #{item.value}
             </if>
-            <if test="status != null">
+            <if test="item.status != null">
                 ,status = #{item.status}
             </if>
             where id = #{item.id}
@@ -255,17 +267,19 @@
     </update>
 
 
-    <select id="getByDictId" resultType="indi.uhyils.pojo.DO.DictItemDO">
+    <select id="getByDictId" resultMap="DictItemMap">
         select
-        <include refid="columnList"/>
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
+        text, `value`, status
         from sys_dict_item a
         where dict_id = #{id}
         order by sort_order
     </select>
 
-    <select id="getByCode" resultType="indi.uhyils.pojo.DO.DictItemDO">
+    <select id="getByCode"  resultMap="DictItemMap">
         select
-        <include refid="columnList"/>
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
+        text, `value`, status
         from sys_dict_item a
         where dict_id = (select id from sys_dict where code = #{code})
     </select>

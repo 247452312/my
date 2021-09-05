@@ -91,7 +91,7 @@ public class RpcApiUtil {
     private static Object getServiceResult(String interfaceName, String methodName, List<Object> args, boolean async, String procotol) {
         try {
             if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
-                interfaceName = String.format("indi.uhyils.service.%s", interfaceName);
+                interfaceName = String.format("indi.uhyils.protocol.rpc.%s", interfaceName);
             }
             // 获取执行接口
             GenericService genericService = getGenericService(interfaceName, async, procotol);

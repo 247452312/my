@@ -1,4 +1,4 @@
-package indi.uhyils.protocol.rpc.provider;
+package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.request.NameRequest;
 import indi.uhyils.pojo.DTO.base.ServiceResult;

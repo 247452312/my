@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
+import indi.uhyils.annotation.NoToken;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.VerificationCommand;
 import indi.uhyils.pojo.DTO.response.VerificationGetDTO;
@@ -22,12 +23,14 @@ public class VerificationProviderImpl implements VerificationProvider {
     private VerificationService service;
 
     @Override
+    @NoToken
     public ServiceResult<VerificationGetDTO> getVerification(DefaultCQE request) throws IOException {
         VerificationGetDTO result = service.getVerification(request);
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
+    @NoToken
     public ServiceResult<Boolean> verification(VerificationCommand request) {
         Boolean result = service.verification(request);
         return ServiceResult.buildSuccessResult(result);

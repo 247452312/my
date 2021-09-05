@@ -27,6 +27,23 @@
         where delete_flag = 0
           and id = #{id}
     </select>
+    <!--查询多个-->
+    <select id="getByIds" resultMap="DeptMap">
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               name
+        from sys_dept
+        where delete_flag = 0
+        and id in
+        <foreach collection="ids" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
 
     <!--根据某些字段获取实例(不分页)-->
     <select id="getByArgsNoPage" resultMap="DeptMap">
@@ -40,7 +57,7 @@
                name
         from sys_dept
             where delete_flag = 0
-        <if test="list != null">
+        <if test="args != null">
             <foreach item="item" index="index" collection="args">
                 and ${item.name} ${item.symbol} #{item.data}
             </foreach>
@@ -120,28 +137,28 @@
 
     <!--通过主键修改数据-->
     <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.DeptDO">
-        update sys_dept set update_date = #{updateDate}
-                          , update_user = #{updateUser}
-        <if test="createDate != null">
-            , create_date = #{createDate}
+        update sys_dept set update_date = #{data.updateDate}
+                          , update_user = #{data.updateUser}
+        <if test="data.createDate != null">
+            , create_date = #{data.createDate}
         </if>
-        <if test="createUser != null">
-            , create_user = #{createUser}
+        <if test="data.createUser != null">
+            , create_user = #{data.createUser}
         </if>
-        <if test="deleteFlag != null">
-            , delete_flag = #{deleteFlag}
+        <if test="data.deleteFlag != null">
+            , delete_flag = #{data.deleteFlag}
         </if>
-        <if test="remark != null and remark != ''">
-            , remark = #{remark}
+        <if test="data.remark != null and data.remark != ''">
+            , remark = #{data.remark}
         </if>
-        <if test="updateDate != null">
-            , update_date = #{updateDate}
+        <if test="data.updateDate != null">
+            , update_date = #{data.updateDate}
         </if>
-        <if test="updateUser != null">
-            , update_user = #{updateUser}
+        <if test="data.updateUser != null">
+            , update_user = #{data.updateUser}
         </if>
-        <if test="name != null and name != ''">
-            , name = #{name}
+        <if test="data.name != null and data.name != ''">
+            , name = #{data.name}
         </if>
         where delete_flag = 0
         <if test="args != null">
@@ -157,25 +174,25 @@
             update sys_dept set
             update_date = #{item.updateDate}
                 ,update_user = #{item.updateUser}
-            <if test="createDate != null">
+            <if test="item.createDate != null">
                 ,create_date = #{item.createDate}
             </if>
-            <if test="createUser != null">
+            <if test="item.createUser != null">
                 ,create_user = #{item.createUser}
             </if>
-            <if test="deleteFlag != null">
+            <if test="item.deleteFlag != null">
                 ,delete_flag = #{item.deleteFlag}
             </if>
-            <if test="remark != null and remark != ''">
+            <if test="item.remark != null and item.remark != ''">
                 ,remark = #{item.remark}
             </if>
-            <if test="updateDate != null">
+            <if test="item.updateDate != null">
                 ,update_date = #{item.updateDate}
             </if>
-            <if test="updateUser != null">
+            <if test="item.updateUser != null">
                 ,update_user = #{item.updateUser}
             </if>
-            <if test="name != null and name != ''">
+            <if test="item.name != null and item.name != ''">
                 , name = #{item.name}
             </if>
             where id = #{item.id}
@@ -274,4 +291,19 @@
         from sys_role_dept
         where dept_id = #{deptId}
     </delete>
+
+    <select id="getByRoleId" resultMap="DeptMap">
+        select a.id,
+               a.create_date,
+               a.create_user,
+               a.delete_flag,
+               a.remark,
+               a.update_date,
+               a.update_user,
+               a.name
+        from sys_dept a
+                 left join sys_role_dept srd on a.id = srd.dept_id
+        where a.delete_flag = 0
+          and srd.role_id = #{roleId}
+    </select>
 </mapper>

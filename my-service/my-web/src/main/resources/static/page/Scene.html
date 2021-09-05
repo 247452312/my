@@ -71,7 +71,7 @@
 
         $.reloadTable = function () {
             var reload = function (page, size, args) {
-                pushRequest("SceneService", "getByArgs", {
+                pushRequest("SceneProvider", "getByArgs", {
                     page: page,
                     size: size,
                     paging: true,
@@ -169,7 +169,7 @@
                         var data = obj.data;
                         if (obj.event === 'del') { // 删除
                             layer.confirm('真的删除行么', function (index) {
-                                pushRequest("SceneService", "delete", {id: data.id}, function (data) {
+                                pushRequest("SceneProvider", "delete", {id: data.id}, function (data) {
                                     layer.close(index);
                                     $.reloadTable();
                                 });

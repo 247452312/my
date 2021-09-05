@@ -103,7 +103,7 @@
         let id = $.getUrlParam('id');
         let func = $.getUrlParam('func');
         /*获取可以作为定时任务的接口们*/
-        pushRequest("DictService", "getByCode", {code: 'job-interfaceName'}, function (data) {
+        pushRequest("DictProvider", "getByCode", {code: 'job-interfaceName'}, function (data) {
             $("[name='interfaceName']").empty();
             $("[name='interfaceName']").append('<option value="">请选择一个接口</option> ');
             for (let i = 0; i < data.length; i++) {
@@ -111,7 +111,7 @@
             }
             form.render('select');
         });
-        pushRequest("DictService", "getByCode", {code: 'job-paramType'}, function (data) {
+        pushRequest("DictProvider", "getByCode", {code: 'job-paramType'}, function (data) {
             $("[name='paramType']").empty();
             $("[name='paramType']").append('<option value="">请选择一个接口</option> ');
             for (let i = 0; i < data.length; i++) {
@@ -128,7 +128,7 @@
         });
 
         if (func == 'edit') { // 这是修改
-            pushRequest("JobService", "getById", {
+            pushRequest("JobProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -161,11 +161,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("JobService", "insert", {data: data.field}, function () {
+                    pushRequest("JobProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("JobService", "update", {data: data.field}, function () {
+                    pushRequest("JobProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

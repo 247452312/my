@@ -229,7 +229,7 @@ public class IpSpiderTableAspect {
             GetLogIntervalByIpQuery defaultRequest = new GetLogIntervalByIpQuery();
             UserDTO user = new UserDTO();
             user.setId(MyContext.ADMIN_USER_ID);
-            user.setUserName("admin");
+            user.setUsername("admin");
             defaultRequest.setUser(user);
             defaultRequest.setIp(ip);
             ServiceResult<Boolean> logIntervalByIp = blackListService.getLogIntervalByIp(defaultRequest);

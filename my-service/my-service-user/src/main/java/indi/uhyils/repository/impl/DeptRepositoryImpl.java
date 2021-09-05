@@ -7,7 +7,6 @@ import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DO.DeptMenuDO;
 import indi.uhyils.pojo.DO.DeptPowerDO;
 import indi.uhyils.pojo.DTO.DeptDTO;
-import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
 import indi.uhyils.pojo.entity.Dept;
@@ -17,7 +16,6 @@ import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,9 +37,8 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
 
     @Override
     public List<Dept> findByRoleId(Identifier roleId) {
-        Arg arg = new Arg("role_id", "=", roleId.getId());
-        ArrayList<DeptDO> byArgsNoPage = dao.getByArgsNoPage(Arrays.asList(arg), null);
-        return byArgsNoPage.stream().map(Dept::new).collect(Collectors.toList());
+        List<DeptDO> depts = dao.getByRoleId(roleId.getId());
+        return assembler.listToEntity(depts);
     }
 
     @Override

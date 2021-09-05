@@ -330,9 +330,9 @@ function bandUpFile(element, success) {
 function dealResponse(res, success, target = false) {
   let result = null;
   if (res.code >= 200 && res.code < 300) {
-    if (target) {
-      layer.msg(res.msg);
-    }
+    // if (target) {
+    //   top.layer.msg(res.msg);
+    // }
     result = success(res.data);
   } else {
     // code不为200

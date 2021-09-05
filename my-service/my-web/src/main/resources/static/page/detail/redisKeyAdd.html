@@ -71,7 +71,7 @@
         $('[name="db"]').attr('value', db);
         $('[name="redisId"]').attr('value', redisId);
         if (func == 'edit') { // 这是修改
-            pushRequest("RedisService", "getValueByKey", {
+            pushRequest("RedisProvider", "getValueByKey", {
                 data: {
                     db: db,
                     key: key,
@@ -101,7 +101,7 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') { // 添加key
-                    pushRequest("RedisService", "addKey", {data: data.field}, function (addKeyData) {
+                    pushRequest("RedisProvider", "addKey", {data: data.field}, function (addKeyData) {
                         if (addKeyData === 1) { // 代表添加成功
                             layer.msg("添加成功");
                             closeAndReload();
@@ -112,7 +112,7 @@
                                 content: 'key值已存在',
                                 btn: ['覆盖', '继续修改'],
                                 yes: function (index, layero) {
-                                    pushRequest("RedisService", "addKeyCover", {data: data.field}, function (addKeyCoverData) {
+                                    pushRequest("RedisProvider", "addKeyCover", {data: data.field}, function (addKeyCoverData) {
                                         if (addKeyCoverData === true) {
                                             layer.msg("添加成功");
                                         } else {
@@ -128,7 +128,7 @@
                         }
                     });
                 } else if (func === 'edit') { // 修改
-                    pushRequest("RedisService", "updateKey", {data: data.field}, function (updateKeyData) {
+                    pushRequest("RedisProvider", "updateKey", {data: data.field}, function (updateKeyData) {
                         if (updateKeyData === 1) { // 代表修改成功
                             parent.layer.msg("修改成功");
                             closeAndReload();
@@ -139,7 +139,7 @@
                                 content: '此key不存在',
                                 btn: ['新插入', '取消修改'],
                                 yes: function (index, layero) {
-                                    pushRequest("RedisService", "addKey", {data: data.field}, function (addKeyData) {
+                                    pushRequest("RedisProvider", "addKey", {data: data.field}, function (addKeyData) {
                                         parent.layer.msg("添加成功");
                                         closeAndReload();
                                     });

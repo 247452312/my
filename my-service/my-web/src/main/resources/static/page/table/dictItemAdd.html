@@ -81,7 +81,7 @@
         let func = $.getUrlParam('func');
         /* func是修改时 id就是item的id func是添加时 id是dict的id */
         if (func == 'edit') { // 这是修改
-            pushRequest("DictService", "getItemById", {
+            pushRequest("DictProvider", "getItemById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -116,11 +116,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("DictService", "insertItem", {data: data.field}, function () {
+                    pushRequest("DictProvider", "insertItem", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("DictService", "updateItem", {data: data.field}, function () {
+                    pushRequest("DictProvider", "updateItem", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

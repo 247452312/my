@@ -25,7 +25,7 @@ public class TimeLogAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public * indi.uhyils.service.impl.*.*(..))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.base.ServiceResult indi.uhyils.protocol..*.*(..))")
     public void logAspectPoint() {
     }
 

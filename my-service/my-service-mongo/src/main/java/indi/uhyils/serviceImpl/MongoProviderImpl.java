@@ -6,7 +6,7 @@ import indi.uhyils.mongo.MongoManager;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.NameRequest;
 import indi.uhyils.pojo.cqe.command.AddCommand;
-import indi.uhyils.protocol.rpc.provider.MongoProvider;
+import indi.uhyils.protocol.rpc.MongoProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.util.MD5Util;
 import java.util.UUID;

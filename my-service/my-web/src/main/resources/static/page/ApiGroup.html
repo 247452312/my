@@ -70,7 +70,7 @@
             $.reload(1, 10, []);
         };
         $.reload = function (page, size, args) {
-            pushRequest("ApiGroupService", "getByArgs", {
+            pushRequest("ApiGroupProvider", "getByArgs", {
                 page: page,
                 size: size,
                 paging: true,
@@ -199,7 +199,7 @@
                 layer.confirm('是否确认删除服务以及服务项', {
                     btn: ['确认', '取消'] //按钮
                 }, function () {
-                    pushRequest("ApiGroupService", "delete", {id: data.id}, function (data) {
+                    pushRequest("ApiGroupProvider", "delete", {id: data.id}, function (data) {
                         layer.msg("删除成功");
                         $.defaultReload();
                     });
@@ -209,7 +209,7 @@
                 layer.confirm('确认测试', {
                     btn: ['确认', '取消'] //按钮
                 }, function () {
-                    pushRequest("ApiGroupService", "test", {id: data.id}, function (data) {
+                    pushRequest("ApiGroupProvider", "test", {id: data.id}, function (data) {
                         layer.msg("返回data: " + data);
                         $.defaultReload();
                     });

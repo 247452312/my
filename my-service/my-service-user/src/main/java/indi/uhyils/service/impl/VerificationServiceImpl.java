@@ -28,7 +28,6 @@ public class VerificationServiceImpl implements VerificationService {
     private VerificationRepository rep;
 
     @Override
-    @NoToken
     public VerificationGetDTO getVerification(DefaultCQE request) throws IOException {
         Verification verification = new Verification(160, 60, 10);
         // 产生图片
@@ -43,7 +42,6 @@ public class VerificationServiceImpl implements VerificationService {
     }
 
     @Override
-    @NoToken
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
     public Boolean verification(VerificationCommand request) {
         Verification verification = new Verification(request.getKey(), request.getCode());

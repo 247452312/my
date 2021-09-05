@@ -94,15 +94,12 @@ public class HotSpotAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public * indi.uhyils.service.impl.*.*(..))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.base.ServiceResult indi.uhyils.protocol..*.*(..))")
     public void hotSpotAspectPoint() {
     }
 
     @Around("hotSpotAspectPoint()")
     public Object hotSpotAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
-        if (true) {
-            return pjp.proceed();
-        }
         // 如果 热点集群redis没有加载成功,则一段时间后自动重试一次
         if (!HotSpotRedisPool.initTypeIsRedis) {
             long lastTryTime = System.currentTimeMillis();

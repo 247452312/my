@@ -93,7 +93,7 @@
             var index = layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
             }, function () {
-                pushRequest("KproService", "projectGenerate", {list: [data.field]}, function (data) {
+                pushRequest("KproProvider", "projectGenerate", {list: [data.field]}, function (data) {
                     layer.alert(JSON.stringify(data));
                 });
                 layer.close(index);

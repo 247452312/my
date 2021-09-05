@@ -57,7 +57,7 @@
         switch (dataSources) {
             default:
             case 1: // 这里是字典
-                return pushRequest("DictService", "getByCode", {code: relationId}, function (data) {
+                return pushRequest("DictProvider", "getByCode", {code: relationId}, function (data) {
                     let result = [];
                     for (let i = 0; i < data.length; i++) {
                         let resultItem = {};
@@ -68,7 +68,7 @@
                     return result;
                 });
             case 2: // 用户
-                return pushRequest("UserService", "getUsers", {}, function (data) {
+                return pushRequest("UserProvider", "getUsers", {}, function (data) {
                     let result = [];
                     for (let i = 0; i < data.length; i++) {
                         let resultItem = {};
@@ -79,7 +79,7 @@
                     return result;
                 });
             case 3: // 其他工单
-                return pushRequest("OrderService", "getAllOrder", {type: relationId}, function (data) {
+                return pushRequest("OrderProvider", "getAllOrder", {type: relationId}, function (data) {
                     let result = [];
                     for (let i = 0; i < data.length; i++) {
                         let resultItem = {};
@@ -105,8 +105,8 @@
             return null;
         };
         let orderId = $.getUrlParam('id');
-        pushRequest("UserService", "getUsers", {}, function (userData) {
-            pushRequest("OrderService", "initOrder", {id: orderId}, function (data) {
+        pushRequest("UserProvider", "getUsers", {}, function (userData) {
+            pushRequest("OrderProvider", "initOrder", {id: orderId}, function (data) {
                 $('[name="orderId"]').val(data.newOrderId);
 
                 let orderNodeField = data.orderNodeField;
@@ -273,7 +273,7 @@
             }, function () {
                 // 关闭弹出层
                 layer.close(index);
-                pushRequest("OrderService", "commitOrder", result, function (data) {
+                pushRequest("OrderProvider", "commitOrder", result, function (data) {
                     if (data) {
                         layer.msg("成功");
                     } else {

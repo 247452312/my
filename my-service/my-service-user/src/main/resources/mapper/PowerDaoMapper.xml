@@ -31,6 +31,25 @@
         where delete_flag = 0
           and id = #{id}
     </select>
+    <!--查询单个-->
+    <select id="getByIds" resultMap="PowerMap">
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               interface_name,
+               method_name,
+               test
+        from sys_power
+        where delete_flag = 0
+        and id in
+        <foreach collection="ids" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
 
     <!--根据某些字段获取实例(不分页)-->
     <select id="getByArgsNoPage" resultMap="PowerMap">
@@ -46,7 +65,7 @@
                test
         from sys_power
             where delete_flag = 0
-        <if test="list != null">
+        <if test="args != null">
             <foreach item="item" index="index" collection="args">
                 and ${item.name} ${item.symbol} #{item.data}
             </foreach>
@@ -136,34 +155,34 @@
 
     <!--通过主键修改数据-->
     <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.PowerDO">
-        update sys_power set update_date = #{updateDate}
-                           , update_user = #{updateUser}
-        <if test="createDate != null">
-            , create_date = #{createDate}
+        update sys_power set update_date = #{data.updateDate}
+                           , update_user = #{data.updateUser}
+        <if test="data.createDate != null">
+            , create_date = #{data.createDate}
         </if>
-        <if test="createUser != null">
-            , create_user = #{createUser}
+        <if test="data.createUser != null">
+            , create_user = #{data.createUser}
         </if>
-        <if test="deleteFlag != null">
-            , delete_flag = #{deleteFlag}
+        <if test="data.deleteFlag != null">
+            , delete_flag = #{data.deleteFlag}
         </if>
-        <if test="remark != null and remark != ''">
-            , remark = #{remark}
+        <if test="data.remark != null and data.remark != ''">
+            , remark = #{data.remark}
         </if>
-        <if test="updateDate != null">
-            , update_date = #{updateDate}
+        <if test="data.updateDate != null">
+            , update_date = #{data.updateDate}
         </if>
-        <if test="updateUser != null">
-            , update_user = #{updateUser}
+        <if test="data.updateUser != null">
+            , update_user = #{data.updateUser}
         </if>
-        <if test="interfaceName != null and interfaceName != ''">
-            , interface_name = #{interfaceName}
+        <if test="data.interfaceName != null and data.interfaceName != ''">
+            , interface_name = #{data.interfaceName}
         </if>
-        <if test="methodName != null and methodName != ''">
-            , method_name = #{methodName}
+        <if test="data.methodName != null and data.methodName != ''">
+            , method_name = #{data.methodName}
         </if>
-        <if test="test != null and test != ''">
-            , test = #{test}
+        <if test="data.test != null and data.test != ''">
+            , test = #{data.test}
         </if>
         where delete_flag = 0
         <if test="args != null">
@@ -179,31 +198,31 @@
             update sys_power set
             update_date = #{item.updateDate}
                 ,update_user = #{item.updateUser}
-            <if test="createDate != null">
+            <if test="item.createDate != null">
                 ,create_date = #{item.createDate}
             </if>
-            <if test="createUser != null">
+            <if test="item.createUser != null">
                 ,create_user = #{item.createUser}
             </if>
-            <if test="deleteFlag != null">
+            <if test="item.deleteFlag != null">
                 ,delete_flag = #{item.deleteFlag}
             </if>
-            <if test="remark != null and remark != ''">
+            <if test="item.remark != null and item.remark != ''">
                 ,remark = #{item.remark}
             </if>
-            <if test="updateDate != null">
+            <if test="item.updateDate != null">
                 ,update_date = #{item.updateDate}
             </if>
-            <if test="updateUser != null">
+            <if test="item.updateUser != null">
                 ,update_user = #{item.updateUser}
             </if>
-            <if test="interfaceName != null and interfaceName != ''">
+            <if test="item.interfaceName != null and item.interfaceName != ''">
                 ,interface_name = #{item.interfaceName}
             </if>
-            <if test="methodName != null and methodName != ''">
+            <if test="item.methodName != null and item.methodName != ''">
                 ,method_name = #{item.methodName}
             </if>
-            <if test="test != null and test != ''">
+            <if test="item.test != null and item.test != ''">
                 ,test = #{item.test}
             </if>
             where id = #{item.id}
@@ -236,9 +255,18 @@
         where ${columnName} = #{value}
     </select>
 
-    <select id="getAll" resultType="indi.uhyils.pojo.DO.PowerDO">
+    <select id="getAll" resultMap="PowerMap">
         select
-        <include refid="columnList"/>
+            id,
+            create_date,
+            create_user,
+            delete_flag,
+            remark,
+            update_date,
+            update_user,
+            interface_name,
+            method_name,
+            test
         from sys_power a
         where delete_flag = 0
         ORDER BY interface_name, method_name

@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
+import indi.uhyils.annotation.NoToken;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
@@ -55,6 +56,7 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
     }
 
     @Override
+    @NoToken
     public ServiceResult<LoginDTO> login(LoginCommand request) {
         LoginDTO result = service.login(request);
         return ServiceResult.buildSuccessResult(result);

@@ -69,7 +69,7 @@
             laypage = layui.laypage,
             layer = layui.layer,
             table = layui.table;
-        let orderPriorityMap = pushRequest("DictService", "getByCode", {
+        let orderPriorityMap = pushRequest("DictProvider", "getByCode", {
             "code": "OrderPriority"
         }, function (data) {
             var map = {};

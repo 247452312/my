@@ -36,7 +36,7 @@ public class User extends AbstractDoEntity<UserDO> {
     /**
      * admin的id
      */
-    private static final Long ADMIN_USER_ID = 1L;
+    private static final Long ADMIN_USER_ID = 0L;
 
     private Role role;
 
@@ -128,8 +128,7 @@ public class User extends AbstractDoEntity<UserDO> {
         }
         Role role = roleRepository.find(new Identifier(data.getRoleId()));
         role.initDept(deptRepository, powerRepository, menuRepository);
-        RoleDO roleDO = role.toDo();
-        this.role = new Role(roleDO);
+        this.role = role;
 
     }
 
@@ -164,6 +163,7 @@ public class User extends AbstractDoEntity<UserDO> {
         /*查询是否正确*/
         User user = userRepository.checkLogin(this);
         BeanUtil.copyProperties(user.data, data);
+        this.id = user.id;
         this.token = user.toToken(salt, encodeRole);
         return this;
     }

@@ -71,7 +71,7 @@
 
         $.reloadTable = function () {
             var reload = function (page, size, args) {
-                pushRequest("DeviceCallbackService", "getByArgs", {
+                pushRequest("DeviceCallbackProvider", "getByArgs", {
                     page: page,
                     size: size,
                     paging: true,

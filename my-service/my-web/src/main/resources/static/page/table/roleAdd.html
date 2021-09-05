@@ -65,7 +65,7 @@
         let id = $.getUrlParam('id');
         let func = $.getUrlParam('func');
         if (func == 'edit') { // 这是修改
-            pushRequest("RoleService", "getById", {
+            pushRequest("RoleProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -89,11 +89,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("RoleService", "insert", {data: data.field}, function () {
+                    pushRequest("RoleProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("RoleService", "update", {data: data.field}, function () {
+                    pushRequest("RoleProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

@@ -49,7 +49,7 @@
         <include refid="columnList"/>
         from sys_order_base_node a
         where delete_flag = 0
-        <foreach item="item" index="index" collection="list">
+        <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
     </select>
@@ -63,8 +63,8 @@
         <foreach item="item" index="index" collection="args">
             and ${item.name} ${item.symbol} #{item.data}
         </foreach>
-        <if test="page != null and page != ''">
-            limit ${(page-1) * size},${size}
+        <if test="limit.page != null and limit.page != ''">
+            limit ${(limit.page-1) * limit.size},${limit.size}
         </if>
     </select>
 

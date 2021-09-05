@@ -48,7 +48,6 @@ public class PowerServiceImpl extends AbstractDoService<PowerDO, Power, PowerDTO
     }
 
     @Override
-    @NoToken
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_user", "sys_role", "sys_role_dept", "sys_dept", "sys_dept_power", "sys_power"})
     public Boolean checkUserHavePower(CheckUserHavePowerQuery request) {
         User userId = new User(request.getUserId());
