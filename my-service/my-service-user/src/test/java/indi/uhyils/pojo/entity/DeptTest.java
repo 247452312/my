@@ -10,6 +10,7 @@ import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.LogUtil;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,6 +45,7 @@ public class DeptTest extends BaseTest {
     private Long powerId;
 
     private Long menuId;
+
 
 
     @Override
@@ -97,6 +99,7 @@ public class DeptTest extends BaseTest {
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
+
 
     }
 
