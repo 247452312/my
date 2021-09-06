@@ -89,4 +89,11 @@ public interface DeptRepository extends BaseEntityRepository<DeptDO, Dept> {
      * @return
      */
     List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(Dept deptId);
+
+    /**
+     * 清除部门和role的关系
+     *
+     * @param dept
+     */
+    void cleanRole(Dept dept);
 }

@@ -62,7 +62,7 @@ public class MenuRepositoryImpl extends AbstractRepository<Menu, MenuDO, MenuDao
     @Override
     public List<Menu> findByDeptId(Identifier identifier) {
         List<MenuDO> byDeptIds = dao.getByDeptIds(Collections.singletonList(identifier.getId()));
-        return byDeptIds.stream().map(assembler::toEntity).collect(Collectors.toList());
+        return assembler.listToEntity(byDeptIds);
     }
 
     @Override

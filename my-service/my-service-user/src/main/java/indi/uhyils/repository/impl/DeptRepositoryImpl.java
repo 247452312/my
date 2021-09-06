@@ -90,5 +90,10 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
         return dao.getAllPowerWithHaveMark(deptId.getId().getId());
     }
 
+    @Override
+    public void cleanRole(Dept dept) {
+        dao.deleteRoleDeptMiddleByDeptId(dept.getId().getId());
+    }
+
 
 }

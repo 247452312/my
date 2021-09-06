@@ -8,10 +8,8 @@ import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.RoleRepository;
-import indi.uhyils.repository.base.BaseEntityRepository;
 import indi.uhyils.util.AssertUtil;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,6 +43,27 @@ public class Role extends AbstractDoEntity<RoleDO> {
         RoleDO roleDo = new RoleDO();
         roleDo.setId(roleDO.getRoleId());
         return roleDo;
+    }
+
+    public void addDept(List<Dept> depts, RoleRepository repository) {
+        List<Dept> newPowerIds = addDeptToEntity(depts);
+        repository.addRoleDeptLink(this, newPowerIds);
+
+    }
+
+    private List<Dept> addDeptToEntity(List<Dept> depts) {
+        if (this.depts == null) {
+            this.depts = new ArrayList<>(depts.size());
+        }
+        List<Dept> result = new ArrayList<>();
+        for (Dept newDeptId : depts) {
+            if (this.depts.contains(newDeptId)) {
+                continue;
+            }
+            this.depts.add(newDeptId);
+            result.add(newDeptId);
+        }
+        return result;
     }
 
     /**

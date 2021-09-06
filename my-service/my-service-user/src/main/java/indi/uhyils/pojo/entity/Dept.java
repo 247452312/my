@@ -137,14 +137,23 @@ public class Dept extends AbstractDoEntity<DeptDO> {
         if (CollectionUtil.isEmpty(menus)) {
             return;
         }
+        repository.cleanMenu(this);
+        this.menus = null;
     }
 
     public void removePowerLink(DeptRepository repository) {
         if (CollectionUtil.isEmpty(powers)) {
             return;
         }
+        repository.cleanPower(this);
+        this.powers = null;
     }
 
     public void removeRoleLink(DeptRepository repository) {
+        repository.cleanRole(this);
+    }
+
+    public List<Power> powers() {
+        return powers;
     }
 }
