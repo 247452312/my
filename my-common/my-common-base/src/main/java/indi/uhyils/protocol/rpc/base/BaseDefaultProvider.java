@@ -13,6 +13,7 @@ import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.service.BaseDoService;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -41,31 +42,33 @@ public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvide
      */
     @Override
     public ServiceResult<List<T>> queryByIds(IdsQuery query) {
-        List<T> result = getService().query(query);
+        List<Long> ids = query.getIds();
+        List<T> result = getService().query(ids.stream().map(Identifier::new).collect(Collectors.toList()));
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Long> add(AddCommand<T> addCommand) {
-        Long result = getService().add(addCommand);
+        Long result = getService().add(addCommand.getDto());
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Integer> change(ChangeCommand<T> changeCommand) {
-        Integer result = getService().update(changeCommand);
+        Integer result = getService().update(changeCommand.getDto(), changeCommand.getOrder());
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Integer> remove(RemoveCommand removeCommand) {
-        Integer result = getService().remove(removeCommand);
+        BaseArgQuery order = removeCommand.getOrder();
+        Integer result = getService().remove(order);
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Integer> remove(IdCommand id) {
-        Integer result = getService().remove(id);
+        Integer result = getService().remove(new Identifier(id.getId()));
         return ServiceResult.buildSuccessResult(result);
     }
 

@@ -27,7 +27,7 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
      *
      * @return
      */
-    Long add(AddCommand<E> addCommand);
+    Long add(E addCommand);
 
     /**
      * 根据id 删除
@@ -36,16 +36,16 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
      *
      * @return
      */
-    Integer remove(IdCommand id);
+    Integer remove(Identifier id);
 
     /**
      * 根据条件删除
      *
-     * @param removeCommand
+     * @param order
      *
      * @return
      */
-    Integer remove(RemoveCommand removeCommand);
+    Integer remove(BaseArgQuery order);
 
     /**
      * 查询
@@ -57,9 +57,9 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
     /**
      * 查询
      *
-     * @param order
+     * @param ids
      */
-    List<E> query(IdsQuery order);
+    List<E> query(List<Identifier> ids);
 
     /**
      * 查询
@@ -84,7 +84,7 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
      *
      * @return
      */
-    Integer update(ChangeCommand<E> changeCommand);
+    Integer update(E changeCommand,BaseArgQuery order);
 
 
     /**

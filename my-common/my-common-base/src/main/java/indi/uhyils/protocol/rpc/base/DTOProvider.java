@@ -21,7 +21,6 @@ import java.util.List;
  */
 public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
 
-
     /**
      * 根据某几列获取数据
      *
@@ -30,7 +29,6 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      * @return 分页数据(也可以设置不分页)
      */
     ServiceResult<Page<T>> query(BaseArgQuery query);
-
 
     /**
      * 根据id查询
@@ -50,7 +48,6 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      */
     ServiceResult<List<T>> queryByIds(IdsQuery query);
 
-
     /**
      * 插入
      *
@@ -59,7 +56,6 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      * @return 插入条数
      */
     ServiceResult<Long> add(AddCommand<T> addCommand);
-
 
     /**
      * 修改
@@ -87,7 +83,6 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      * @return 删除条数
      */
     ServiceResult<Integer> remove(IdCommand id);
-
 
     /**
      * 数量
