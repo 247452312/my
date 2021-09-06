@@ -8,13 +8,12 @@ import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.query.BaseArgQuery;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.HaveIdEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.util.AssertUtil;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,23 +94,23 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     }
 
     @Override
-    public <E extends BaseArgQuery> List<EN> findNoPage(E order) {
-        List<Arg> args = order.getArgs();
-        Limit limit = order.getLimit();
+    public List<EN> findNoPage(List<Arg> args, Order order) {
         List<DO> result;
-        if (limit.getPage()) {
-            result = dao.getByArgs(args, order.getOrder(), order.getLimit());
-        } else {
-            result = dao.getByArgsNoPage(args, order.getOrder());
-        }
+        result = dao.getByArgsNoPage(args, order);
         return result.stream().map(assembler::toEntity).collect(Collectors.toList());
     }
 
     @Override
-    public <E extends BaseArgQuery> Page<EN> find(E order) {
-        List<EN> noPageData = findNoPage(order);
-        int count = dao.countByArgs(order.getArgs());
-        return Page.build(noPageData, order.getLimit(), count);
+    public Page<EN> find(List<Arg> args, Order order, Limit limit) {
+        List<DO> noPageData;
+        if (limit.getPage()) {
+            noPageData = dao.getByArgs(args, order, limit);
+        } else {
+            noPageData = dao.getByArgsNoPage(args, order);
+        }
+        int count = dao.countByArgs(args);
+        List<EN> ens = assembler.listToEntity(noPageData);
+        return Page.build(ens, limit, count);
     }
 
     @Override
@@ -130,19 +129,19 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     }
 
     @Override
-    public <E extends BaseArgQuery> int remove(E order) {
-        List<EN> noPage = findNoPage(order);
+    public int remove(List<Arg> args, Limit limit) {
+        List<EN> noPage = findNoPage(args, null);
         return remove(noPage);
     }
 
     @Override
-    public <E extends BaseArgQuery> int change(EN entity, E query) {
-        return dao.updateByOrder(entity.toDo(), query.getArgs());
+    public int change(EN entity, List<Arg> args) {
+        return dao.updateByOrder(entity.toDo(), args);
     }
 
     @Override
-    public <E extends BaseArgQuery> int count(E order) {
-        return dao.countByArgs(order.getArgs());
+    public int count(List<Arg> args) {
+        return dao.countByArgs(args);
     }
 
 

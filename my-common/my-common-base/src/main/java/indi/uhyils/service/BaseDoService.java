@@ -2,12 +2,9 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.DTO.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.cqe.command.AddCommand;
-import indi.uhyils.pojo.cqe.command.ChangeCommand;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.command.RemoveCommand;
-import indi.uhyils.pojo.cqe.query.BaseArgQuery;
-import indi.uhyils.pojo.cqe.query.IdsQuery;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.type.Identifier;
 import java.util.List;
 
@@ -41,18 +38,18 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
     /**
      * 根据条件删除
      *
-     * @param order
+     * @param args
      *
      * @return
      */
-    Integer remove(BaseArgQuery order);
+    Integer remove(List<Arg> args);
 
     /**
      * 查询
      *
      * @param order
      */
-    Page<E> query(BaseArgQuery order);
+    Page<E> query(List<Arg> args, Order order, Limit limit);
 
     /**
      * 查询
@@ -64,9 +61,10 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
     /**
      * 查询
      *
+     * @param args
      * @param order
      */
-    List<E> queryNoPage(BaseArgQuery order);
+    List<E> queryNoPage(List<Arg> args, Order order);
 
     /**
      * 根据id获取DTO
@@ -81,18 +79,19 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
      * 修改
      *
      * @param changeCommand
+     * @param args
      *
      * @return
      */
-    Integer update(E changeCommand,BaseArgQuery order);
+    Integer update(E changeCommand, List<Arg> args);
 
 
     /**
      * 数量
      *
-     * @param order
+     * @param args
      *
      * @return
      */
-    Integer count(BaseArgQuery order);
+    Integer count(List<Arg> args);
 }

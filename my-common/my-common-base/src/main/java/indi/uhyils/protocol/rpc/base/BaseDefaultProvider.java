@@ -23,7 +23,7 @@ public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvide
 
     @Override
     public ServiceResult<Page<T>> query(BaseArgQuery query) {
-        Page<T> result = getService().query(query);
+        Page<T> result = getService().query(query.getArgs(), query.getOrder(), query.getLimit());
         return ServiceResult.buildSuccessResult(result);
     }
 
@@ -55,14 +55,14 @@ public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvide
 
     @Override
     public ServiceResult<Integer> change(ChangeCommand<T> changeCommand) {
-        Integer result = getService().update(changeCommand.getDto(), changeCommand.getOrder());
+        Integer result = getService().update(changeCommand.getDto(), changeCommand.getOrder().getArgs());
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Integer> remove(RemoveCommand removeCommand) {
         BaseArgQuery order = removeCommand.getOrder();
-        Integer result = getService().remove(order);
+        Integer result = getService().remove(order.getArgs());
         return ServiceResult.buildSuccessResult(result);
     }
 
@@ -74,7 +74,7 @@ public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvide
 
     @Override
     public ServiceResult<Integer> count(BaseArgQuery order) {
-        Integer result = getService().count(order);
+        Integer result = getService().count(order.getArgs());
         return ServiceResult.buildSuccessResult(result);
     }
 

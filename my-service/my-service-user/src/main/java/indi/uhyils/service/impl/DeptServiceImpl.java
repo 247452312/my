@@ -6,12 +6,7 @@ import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.request.PutMenusToDeptsCommand;
-import indi.uhyils.pojo.DTO.request.PutPowersToDeptCommand;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.command.IdsCommand;
-import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Menu;
 import indi.uhyils.pojo.entity.Power;
@@ -43,18 +38,19 @@ public class DeptServiceImpl extends AbstractDoService<DeptDO, Dept, DeptDTO, De
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
-    public Boolean putPowersToDept(PutPowersToDeptCommand request) {
-        Dept deptId = new Dept(request.getDeptId());
+    public Boolean putPowersToDept(Identifier deptId, List<Identifier> powerIds) {
+
+        Dept dept = new Dept(deptId.getId());
         // 清空之前这个部门的权限
-        deptId.cleanPower(rep);
-        deptId.addPower(request.getPowerIds().stream().map(Power::new).collect(Collectors.toList()), rep);
+        dept.cleanPower(rep);
+        dept.addPower(powerIds.stream().map(Identifier::getId).map(Power::new).collect(Collectors.toList()), rep);
         return true;
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
-    public Boolean deleteDeptPower(IdsCommand request) {
-        rep.deleteDeptPower(request.getIds());
+    public Boolean deleteDeptPower(List<Long> ids) {
+        rep.deleteDeptPower(ids);
         return true;
     }
 
@@ -70,21 +66,21 @@ public class DeptServiceImpl extends AbstractDoService<DeptDO, Dept, DeptDTO, De
     }
 
     @Override
-    public List<DeptDTO> getDepts(DefaultCQE request) {
+    public List<DeptDTO> getDepts() {
         List<Dept> depts = rep.findAll();
         return depts.stream().map(assem::toDTO).collect(Collectors.toList());
     }
 
     @Override
     @ReadWriteMark(tables = {"sys_dept_power", "sys_power"})
-    public List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(IdQuery request) {
-        return rep.getAllPowerWithHaveMark(new Dept(request.getId()));
+    public List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(Identifier deptId) {
+        return rep.getAllPowerWithHaveMark(new Dept(deptId.getId()));
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept", "sys_dept_power", "sys_dept_menu", "sys_role_dept"})
-    public Boolean deleteDept(IdCommand request) {
-        Dept dept = rep.find(new Identifier(request.getId()));
+    public Boolean deleteDept(Identifier deptId) {
+        Dept dept = rep.find(deptId);
         dept.removeMenuLink(rep);
         dept.removePowerLink(rep);
         dept.removeRoleLink(rep);

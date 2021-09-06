@@ -11,19 +11,17 @@ import indi.uhyils.pojo.DTO.DictDTO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.MenuDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.request.GetByCodeQuery;
-import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
 import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
 import indi.uhyils.pojo.DTO.response.VersionInfoDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.AddCommand;
-import indi.uhyils.pojo.cqe.command.ChangeCommand;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.Dict;
 import indi.uhyils.pojo.entity.DictItem;
 import indi.uhyils.pojo.entity.Menu;
+import indi.uhyils.pojo.entity.type.Code;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DictItemRepository;
 import indi.uhyils.repository.DictRepository;
 import indi.uhyils.repository.MenuRepository;
@@ -84,8 +82,7 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
-    public Boolean insertItem(AddCommand<DictItemDTO> request) {
-        DictItemDTO dto = request.getDto();
+    public Boolean insertItem(DictItemDTO dto) {
         DictItem dictItem = dictItemAssembler.toEntity(dto);
         dictItemRepository.save(dictItem);
         return true;
@@ -93,57 +90,56 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
-    public List<DictItemDTO> getItemByDictId(IdQuery request) {
-        Dict dictId = new Dict(request.getId());
-        dictId.fillItem(dictItemRepository);
-        return dictId.toItem().stream().map(dictItemAssembler::toDTO).collect(Collectors.toList());
+    public List<DictItemDTO> getItemByDictId(Identifier dictId) {
+        Dict dict = new Dict(dictId.getId());
+        dict.fillItem(dictItemRepository);
+        return dict.toItem().stream().map(dictItemAssembler::toDTO).collect(Collectors.toList());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
-    public Boolean updateItem(ChangeCommand<DictItemDTO> request) {
-        DictItemDTO dto = request.getDto();
+    public Boolean updateItem(DictItemDTO dto, List<Arg> args) {
         DictItem dict = dictItemAssembler.toEntity(dto);
-        dictItemRepository.save(dict);
+        dictItemRepository.change(dict, args);
         return true;
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
-    public Boolean deleteItem(IdCommand request) {
-        DictItem dictItemId = new DictItem(request.getId());
-        dictItemId.completion(dictItemRepository);
-        dictItemRepository.remove(Collections.singletonList(dictItemId));
+    public Boolean deleteItem(Identifier dictItemId) {
+        DictItem dictItem = new DictItem(dictItemId.getId());
+        dictItem.completion(dictItemRepository);
+        dictItemRepository.remove(Collections.singletonList(dictItem));
         return true;
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict_item"})
-    public Boolean cleanDictItem(IdCommand request) {
-        Dict dictId = new Dict(request.getId());
-        dictId.fillItem(dictItemRepository);
-        dictId.cleanItem(dictItemRepository);
+    public Boolean cleanDictItem(Identifier dictId) {
+        Dict dict = new Dict(dictId.getId());
+        dict.fillItem(dictItemRepository);
+        dict.cleanItem(dictItemRepository);
         return true;
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
-    public DictItemDTO getItemById(IdQuery request) {
-        DictItem dictItemId = new DictItem(request.getId());
-        dictItemId.completion(dictItemRepository);
-        return dictItemAssembler.toDTO(dictItemId);
+    public DictItemDTO getItemById(Identifier dictItemId) {
+        DictItem dictItem = new DictItem(dictItemId.getId());
+        dictItem.completion(dictItemRepository);
+        return dictItemAssembler.toDTO(dictItem);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
-    public Page<DictItemDTO> getByItemArgs(GetByItemArgsQuery request) {
-        Page<DictItem> dictItemPage = dictItemRepository.find(request);
+    public Page<DictItemDTO> getByItemArgs(Identifier dictId, List<Arg> args, Order order, Limit limit) {
+        Page<DictItem> dictItemPage = dictItemRepository.find(dictId, args, order, limit);
         return dictItemAssembler.toDTO(dictItemPage);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
-    public VersionInfoDTO getVersionInfoResponse(DefaultCQE request) {
+    public VersionInfoDTO getVersionInfoResponse() {
         Dict dictItemCode = new Dict(VERSION_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
@@ -152,7 +148,7 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
-    public LastPlanDTO getLastPlanResponse(DefaultCQE request) {
+    public LastPlanDTO getLastPlanResponse() {
         Dict dictItemCode = new Dict(LAST_PLAN_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
@@ -161,7 +157,7 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
-    public List<String> getAllMenuIcon(DefaultCQE request) {
+    public List<String> getAllMenuIcon() {
         Dict dictItemCode = new Dict(MENU_ICON_CLASS_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
@@ -170,15 +166,15 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"}, cacheType = CacheTypeEnum.ALL_TYPE)
-    public List<DictItemDTO> getByCode(GetByCodeQuery request) {
-        Dict dictItemCode = new Dict(request.getCode());
+    public List<DictItemDTO> getByCode(Code code) {
+        Dict dictItemCode = new Dict(code.getCode());
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         return item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict", "sys_dict_item"})
-    public QuickStartDTO getQuickStartResponse(DefaultCQE request) {
+    public QuickStartDTO getQuickStartResponse() {
         Dict dictItemCode = new Dict(QUICK_START_CODE);
         List<DictItem> item = dictItemCode.findItem(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());

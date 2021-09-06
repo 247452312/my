@@ -9,12 +9,14 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.IdsCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.protocol.rpc.DeptProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.DeptService;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 /**
@@ -34,13 +36,16 @@ public class DeptProviderImpl extends BaseDefaultProvider<DeptDTO> implements De
 
     @Override
     public ServiceResult<Boolean> putPowersToDept(PutPowersToDeptCommand request) throws Exception {
-        Boolean result = service.putPowersToDept(request);
+        Identifier deptId = new Identifier(request.getDeptId());
+        List<Identifier> powerIds = request.getPowerIds().stream().map(Identifier::new).collect(Collectors.toList());
+        Boolean result = service.putPowersToDept(deptId, powerIds);
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Boolean> deleteDeptPower(IdsCommand request) {
-        Boolean result = service.deleteDeptPower(request);
+        List<Long> ids = request.getIds();
+        Boolean result = service.deleteDeptPower(ids);
         return ServiceResult.buildSuccessResult(result);
     }
 
@@ -52,20 +57,22 @@ public class DeptProviderImpl extends BaseDefaultProvider<DeptDTO> implements De
 
     @Override
     public ServiceResult<List<DeptDTO>> getDepts(DefaultCQE request) {
-        List<DeptDTO> result = service.getDepts(request);
+        List<DeptDTO> result = service.getDepts();
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<List<GetAllPowerWithHaveMarkDTO>> getAllPowerWithHaveMark(IdQuery request) {
-        List<GetAllPowerWithHaveMarkDTO> result = service.getAllPowerWithHaveMark(request);
+        Identifier deptId = new Identifier(request.getId());
+        List<GetAllPowerWithHaveMarkDTO> result = service.getAllPowerWithHaveMark(deptId);
         return ServiceResult.buildSuccessResult(result);
 
     }
 
     @Override
     public ServiceResult<Boolean> deleteDept(IdCommand request) {
-        Boolean result = service.deleteDept(request);
+        Identifier deptId = new Identifier(request.getId());
+        Boolean result = service.deleteDept(deptId);
         return ServiceResult.buildSuccessResult(result);
 
     }

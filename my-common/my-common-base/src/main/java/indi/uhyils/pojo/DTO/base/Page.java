@@ -49,24 +49,24 @@ public class Page<T> implements Serializable {
     public Page() {
     }
 
-    public static <T extends Serializable> Page<T> build(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
+    public static <T> Page<T> build(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
         return new Page(list, size, pageNum, count, totalPage);
     }
 
-    public static <T extends Serializable> Page<T> build(List<T> list, Integer size, Integer pageNum, Integer count) {
+    public static <T> Page<T> build(List<T> list, Integer size, Integer pageNum, Integer count) {
         int remainder = count % size == 0 ? 0 : 1;
         return build(list, size, pageNum, count, count / size + remainder);
     }
 
-    public static <T extends Serializable> Page<T> build(List<T> list, BaseArgQuery order, Integer count) {
+    public static <T> Page<T> build(List<T> list, BaseArgQuery order, Integer count) {
         return build(list, order.getLimit(), count);
     }
 
-    public static <T extends Serializable> Page<T> build(List<T> list, Page<?> page) {
+    public static <T> Page<T> build(List<T> list, Page<?> page) {
         return build(list, page.getSize(), page.pageNum, page.count);
     }
 
-    public static <T extends Serializable> Page<T> build(List<T> list, Limit limit, Integer count) {
+    public static <T> Page<T> build(List<T> list, Limit limit, Integer count) {
         return build(list, limit.getSize(), limit.getNumber(), count);
     }
 
@@ -81,7 +81,7 @@ public class Page<T> implements Serializable {
      *
      * @return 包含分页信息的返回集
      */
-    public static <T extends Serializable> Page<T> build(BaseArgQuery query, List<T> list, Integer count, Integer totalPage) {
+    public static <T> Page<T> build(BaseArgQuery query, List<T> list, Integer count, Integer totalPage) {
         //代表分页
         Limit limit = query.getLimit();
         if (Boolean.TRUE.equals(limit.getPage())) {
@@ -101,7 +101,7 @@ public class Page<T> implements Serializable {
      *
      * @return 包含分页信息的返回集
      */
-    public static <T extends Serializable> Page<T> build(BaseArgQuery query, List<T> list, Integer count) {
+    public static <T> Page<T> build(BaseArgQuery query, List<T> list, Integer count) {
         Limit limit = query.getLimit();
         Integer totalPage = count / limit.getSize();
         if (count % limit.getSize() != 0) {

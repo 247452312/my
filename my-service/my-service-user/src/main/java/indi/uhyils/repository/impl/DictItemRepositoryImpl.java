@@ -8,8 +8,11 @@ import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.Dict;
 import indi.uhyils.pojo.entity.DictItem;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DictItemRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 import java.util.ArrayList;
@@ -53,6 +56,11 @@ public class DictItemRepositoryImpl extends AbstractRepository<DictItem, DictIte
     public List<DictItem> findItemByDictCode(String itemCode) {
         ArrayList<DictItemDO> byCode = dao.getByCode(itemCode);
         return byCode.stream().map(assembler::toEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<DictItem> find(Identifier dictId, List<Arg> args, Order order, Limit limit) {
+        return null;
     }
 
 }

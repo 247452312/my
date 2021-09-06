@@ -4,9 +4,9 @@ import indi.uhyils.assembler.BaseAssembler;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.command.RemoveCommand;
-import indi.uhyils.pojo.cqe.query.BaseArgQuery;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
@@ -43,13 +43,13 @@ public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends Abstra
     }
 
     @Override
-    public Integer remove(BaseArgQuery order) {
-        return rep.remove(order);
+    public Integer remove(List<Arg> args) {
+        return rep.remove(args, null);
     }
 
     @Override
-    public Page<DTO> query(BaseArgQuery order) {
-        Page<ENTITY> tPage = rep.find(order);
+    public Page<DTO> query(List<Arg> args, Order order, Limit limit) {
+        Page<ENTITY> tPage = rep.find(args, order, limit);
         return assem.pageToDTO(tPage);
     }
 
@@ -60,8 +60,8 @@ public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends Abstra
     }
 
     @Override
-    public List<DTO> queryNoPage(BaseArgQuery order) {
-        List<ENTITY> noPage = rep.findNoPage(order);
+    public List<DTO> queryNoPage(List<Arg> args, Order order) {
+        List<ENTITY> noPage = rep.findNoPage(args, order);
         return assem.listEntityToDTO(noPage);
     }
 
@@ -72,14 +72,14 @@ public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends Abstra
     }
 
     @Override
-    public Integer update(DTO dto, BaseArgQuery order) {
+    public Integer update(DTO dto, List<Arg> args) {
         ENTITY entity = assem.toEntity(dto);
-        return rep.change(entity, order);
+        return rep.change(entity, args);
     }
 
     @Override
-    public Integer count(BaseArgQuery order) {
-        return rep.count(order);
+    public Integer count(List<Arg> args) {
+        return rep.count(args);
     }
 
 }

@@ -3,8 +3,12 @@ package indi.uhyils.repository;
 import indi.uhyils.pojo.DO.DictItemDO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.Dict;
 import indi.uhyils.pojo.entity.DictItem;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
 
@@ -28,15 +32,6 @@ public interface DictItemRepository extends BaseEntityRepository<DictItemDO, Dic
     List<DictItem> findItemByDictId(Dict dictId);
 
     /**
-     * 查询
-     *
-     * @param query
-     *
-     * @return
-     */
-    Page<DictItem> find(GetByItemArgsQuery query);
-
-    /**
      * 根据itemCode获取所有item
      *
      * @param itemCode
@@ -44,4 +39,17 @@ public interface DictItemRepository extends BaseEntityRepository<DictItemDO, Dic
      * @return
      */
     List<DictItem> findItemByDictCode(String itemCode);
+
+    /**
+     * 根据条件查询
+     *
+     * @param dictId
+     * @param args
+     * @param order
+     * @param limit
+     *
+     * @return
+     */
+    Page<DictItem> find(Identifier dictId, List<Arg> args, Order order, Limit limit);
+
 }

@@ -2,7 +2,9 @@ package indi.uhyils.repository.base;
 
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.cqe.query.BaseArgQuery;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.HaveIdEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -65,20 +67,23 @@ public interface BaseEntityRepository<DO extends BaseDO, EN extends AbstractDoEn
     /**
      * 根据条件查询
      *
-     * @param order 主键id
+     * @param args  条件
+     * @param order 排序
      *
      * @return
      */
-    <E extends BaseArgQuery> List<EN> findNoPage(E order);
+    List<EN> findNoPage(List<Arg> args, Order order);
 
     /**
      * 根据条件分页查询
      *
-     * @param order 主键id
+     * @param args
+     * @param order
+     * @param limit
      *
      * @return
      */
-    <E extends BaseArgQuery> Page<EN> find(E order);
+    Page<EN> find(List<Arg> args, Order order, Limit limit);
 
 
     /**
@@ -102,25 +107,29 @@ public interface BaseEntityRepository<DO extends BaseDO, EN extends AbstractDoEn
     /**
      * 批量删除
      *
-     * @param order
+     * @param args  条件
+     * @param limit 删除n个
      *
      * @return
      */
-    <E extends BaseArgQuery> int remove(E order);
+    int remove(List<Arg> args, Limit limit);
 
     /**
      * 修改
      *
+     * @param entity
+     * @param args
+     *
      * @return
      */
-    <E extends BaseArgQuery> int change(EN entity, E query);
+    int change(EN entity, List<Arg> args);
 
     /**
      * 数量
      *
-     * @param order
+     * @param args
      *
      * @return
      */
-    <E extends BaseArgQuery> int count(E order);
+    int count(List<Arg> args);
 }
