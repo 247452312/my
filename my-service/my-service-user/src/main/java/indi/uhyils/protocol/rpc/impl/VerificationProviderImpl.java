@@ -25,14 +25,16 @@ public class VerificationProviderImpl implements VerificationProvider {
     @Override
     @NoToken
     public ServiceResult<VerificationGetDTO> getVerification(DefaultCQE request) throws IOException {
-        VerificationGetDTO result = service.getVerification(request);
+        VerificationGetDTO result = service.getVerification();
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     @NoToken
     public ServiceResult<Boolean> verification(VerificationCommand request) {
-        Boolean result = service.verification(request);
+        String key = request.getKey();
+        String code = request.getCode();
+        Boolean result = service.verification(key, code);
         return ServiceResult.buildSuccessResult(result);
     }
 }

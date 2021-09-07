@@ -4,12 +4,11 @@ import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.ContentAssembler;
 import indi.uhyils.assembler.MenuAssembler;
 import indi.uhyils.assembler.UserAssembler;
+import indi.uhyils.context.UserContext;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.MenuDTO;
 import indi.uhyils.pojo.DTO.MenuTreeBuilder;
-import indi.uhyils.pojo.DTO.request.GetByIFrameAndDeptsQuery;
-import indi.uhyils.pojo.DTO.request.PutDeptsToMenuCommand;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
 import indi.uhyils.pojo.DTO.response.IndexMenuTreeDTO;
@@ -17,14 +16,13 @@ import indi.uhyils.pojo.DTO.response.MenuHtmlTreeDTO;
 import indi.uhyils.pojo.DTO.response.info.MenuHomeInfo;
 import indi.uhyils.pojo.DTO.response.info.MenuLogoInfo;
 import indi.uhyils.pojo.DTO.response.info.MenuTreeDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.Content;
 import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Menu;
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.type.Iframe;
 import indi.uhyils.pojo.entity.type.MenuIframe;
 import indi.uhyils.repository.ContentRepository;
 import indi.uhyils.repository.DeptRepository;
@@ -87,18 +85,18 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
-    public Boolean putDeptsToMenu(PutDeptsToMenuCommand request) {
-        Menu menuId = new Menu(request.getMenuId());
-        menuId.cleanDept(rep);
-        menuId.addDepts(request.getDeptIds().stream().map(Dept::new).collect(Collectors.toList()), rep);
+    public Boolean putDeptsToMenu(Identifier menuId, List<Identifier> deptIds) {
+        Menu menu = new Menu(menuId);
+        menu.cleanDept(rep);
+        menu.addDepts(deptIds.stream().map(Dept::new).collect(Collectors.toList()), rep);
         return true;
     }
 
     @Override
     @ReadWriteMark(tables = {"sys_menu", "sys_content", "sys_dept", "sys_role_dept"})
-    public IndexMenuTreeDTO getIndexMenu(DefaultCQE request) {
+    public IndexMenuTreeDTO getIndexMenu() {
         // 初始化角色的权限
-        User user = userAssembler.toEntity(request.getUser());
+        User user = userAssembler.toEntity(UserContext.doGet());
         user.initRole(roleRepository, deptRepository, powerRepository, menuRepository);
 
         /* 1. 全取出来 */
@@ -122,13 +120,13 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
 
     @Override
     @ReadWriteMark(tables = {"sys_menu", "sys_content", "sys_dept", "sys_role_dept"})
-    public MenuHtmlTreeDTO getMenuTree(GetByIFrameAndDeptsQuery request) {
+    public MenuHtmlTreeDTO getMenuTree(Iframe iframe) {
         // 初始化角色的权限
-        User user = userAssembler.toEntity(request.getUser());
+        User user = userAssembler.toEntity(UserContext.doGet());
         user.initRole(roleRepository, deptRepository, powerRepository, menuRepository);
 
         /* 1. 全取出来 */
-        List<Menu> menus = rep.findByIframe(new MenuIframe(INDEX_IFRAME));
+        List<Menu> menus = rep.findByIframe(new MenuIframe(iframe.getIframe()));
         /* 2. 只取出来有用的 */
         menus = user.screenMenu(menus);
         List<MenuDTO> menuDTOS = menus.stream().map(assem::toDTO).collect(Collectors.toList());
@@ -137,31 +135,31 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
 
     @Override
     @ReadWriteMark(tables = {"sys_dept_menu", "sys_menu"})
-    public List<GetAllMenuWithHaveMarkDTO> getAllMenuWithHaveMark(IdQuery request) {
-        return rep.findAllMenuWithHaveMark(new Identifier(request));
+    public List<GetAllMenuWithHaveMarkDTO> getAllMenuWithHaveMark(Identifier deptId) {
+        return rep.findAllMenuWithHaveMark(deptId);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
-    public Boolean removeMenu(IdCommand request) {
+    public Boolean removeMenu(Identifier menuId) {
         /* 注:开启了事务 即@Transactional 参数propagation->事务传播类型,其中Propagation.REQUIRED为如果事务不存在,则创建新事物,如果事务存在,则加入
            isolation事务隔离级别 Isolation.DEFAULT默认隔离级别 */
 
-        Menu menuId = new Menu(request.getId());
-        menuId.completion(rep);
+        Menu menu = new Menu(menuId);
+        menu.completion(rep);
         // 清空对应的连接
-        menuId.cleanDept(rep);
+        menu.cleanDept(rep);
         // 删除自己以及子节点
-        menuId.removeSelf(rep, assem);
+        menu.removeSelf(rep, assem);
         return true;
     }
 
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu", "sys_dept"})
-    public List<GetDeptsByMenuIdDTO> getDeptsByMenuId(IdQuery request) {
-        return deptRepository.findByMenuId(new Menu(request.getId()));
+    public List<GetDeptsByMenuIdDTO> getDeptsByMenuId(Identifier menuId) {
+        return deptRepository.findByMenuId(new Menu(menuId));
     }
 
 }

@@ -9,7 +9,6 @@ import indi.uhyils.enum_.LogDetailTypeEnum;
 import indi.uhyils.pojo.DTO.TraceDetailDTO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import indi.uhyils.pojo.DTO.TraceLogDTO;
-import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.trace.DetailTraceDeal;
 import indi.uhyils.pojo.trace.LinkTraceDeal;
 import indi.uhyils.pojo.trace.LogTraceDeal;
@@ -81,27 +80,21 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
                         if (traceDetailDTO == null) {
                             break;
                         }
-                        AddCommand<TraceDetailDTO> addCommand = new AddCommand<>();
-                        addCommand.setDto(traceDetailDTO);
-                        traceDetailService.add(addCommand);
+                        traceDetailService.add(traceDetailDTO);
                         break;
                     case LOG:
                         TraceLogDTO traceDeal = new LogTraceDeal().doDeal(text);
                         if (traceDeal == null) {
                             break;
                         }
-                        AddCommand<TraceLogDTO> add = new AddCommand<>();
-                        add.setDto(traceDeal);
-                        traceLogService.add(add);
+                        traceLogService.add(traceDeal);
                         break;
                     case LINK:
                         TraceInfoDTO traceInfoDTO = new LinkTraceDeal().doDeal(text);
                         if (traceInfoDTO == null) {
                             break;
                         }
-                        AddCommand<TraceInfoDTO> traceInfoDTOAddCommand = new AddCommand<>();
-                        traceInfoDTOAddCommand.setDto(traceInfoDTO);
-                        traceInfoService.add(traceInfoDTOAddCommand);
+                        traceInfoService.add(traceInfoDTO);
                         break;
                     default:
                         LogUtil.error("前缀错误" + text.charAt(0));

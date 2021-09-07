@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.context.MyContext;
-import indi.uhyils.enum_.MethodType;
+import indi.uhyils.enum_.MethodTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
 import indi.uhyils.pojo.DTO.request.MethodDisableQuery;
@@ -45,16 +45,20 @@ public class MethodDisable extends AbstractEntity {
     /**
      * 方法类型
      */
-    private MethodType methodType;
+    private MethodTypeEnum methodType;
 
-    public MethodDisable(String className, String methodName, MethodType methodType) {
+    public MethodDisable(String className, String methodName, MethodTypeEnum methodType) {
         this.className = className;
         this.methodName = methodName;
         this.methodType = methodType;
     }
+    public MethodDisable(String className, String methodName) {
+        this.className = className;
+        this.methodName = methodName;
+    }
 
     public MethodDisable(MethodDisableQuery query) {
-        this(query.getClassName(), query.getMethodName(), MethodType.parse(query.getMethodType()));
+        this(query.getClassName(), query.getMethodName(), MethodTypeEnum.parse(query.getMethodType()));
     }
 
     public MethodDisable(DelMethodDisableCommand query) {
@@ -62,7 +66,7 @@ public class MethodDisable extends AbstractEntity {
     }
 
     public MethodDisable(MethodDisableDTO dto) {
-        this(dto.getClassName(), dto.getMethodName(), MethodType.parse(dto.getDisableType()));
+        this(dto.getClassName(), dto.getMethodName(), MethodTypeEnum.parse(dto.getDisableType()));
     }
 
     public void completionClassName() {

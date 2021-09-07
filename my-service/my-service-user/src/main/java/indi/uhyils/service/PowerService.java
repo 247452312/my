@@ -6,6 +6,9 @@ import indi.uhyils.pojo.DTO.request.GetMethodNameByInterfaceNameQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.type.InterfaceName;
+import indi.uhyils.pojo.entity.type.MethodName;
 import java.util.List;
 
 /**
@@ -20,57 +23,53 @@ public interface PowerService extends BaseDoService<PowerDTO> {
     /**
      * 获取所有的权限
      *
-     * @param request 请求
      *
      * @return 所有权限
      */
-    List<PowerDTO> getPowers(DefaultCQE request);
+    List<PowerDTO> getPowers();
 
     /**
      * 检查用户是否存在此权限
      *
-     * @param request 检查用户是否存在此权限请求
+     * @param interfaceName
+     * @param methodName
+     * @param userId
      *
      * @return 是否存在
      */
-    Boolean checkUserHavePower(CheckUserHavePowerQuery request);
+    Boolean checkUserHavePower(InterfaceName interfaceName, MethodName methodName, Identifier userId);
 
     /**
      * 删除权限->包括连接表
      *
-     * @param request
      *
      * @return
      */
-    Boolean deletePower(IdCommand request);
+    Boolean deletePower(Identifier powerId);
 
 
     /**
      * 获取所有interfaceName
      *
-     * @param request 原始请求
-     *
      * @return 所有interfaceName
      */
-    List<String> getInterfaces(DefaultCQE request);
+    List<String> getInterfaces();
 
 
     /**
      * 获取所有指定接口的方法
      *
-     * @param request 接口名称
      *
      * @return 对应方法
      */
-    List<String> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameQuery request);
+    List<String> getMethodNameByInterfaceName(InterfaceName interfaceName);
 
 
     /**
      * 初始化权限,如果权限不存在,则添加权限,如果权限已经存在,则不作任何修改
      *
-     * @param request 权限集
      *
      * @return 添加的权限
      */
-    Integer initPowerInProStart(DefaultCQE request);
+    Integer initPowerInProStart();
 }

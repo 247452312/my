@@ -45,6 +45,9 @@ public class User extends AbstractDoEntity<UserDO> {
     public User(UserDO userDO) {
         super(userDO);
     }
+    public User(Identifier userId) {
+        super(userId,new UserDO());
+    }
 
     public User(UserName userName, Password password) {
         super(parseUserNamePasswordToDO(userName, password));

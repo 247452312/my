@@ -5,6 +5,7 @@ import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.MenuDTO;
 import indi.uhyils.pojo.DTO.MenuTreeBuilder;
 import indi.uhyils.pojo.DTO.response.info.MenuTreeDTO;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.MenuIframe;
 import indi.uhyils.repository.MenuRepository;
 import java.util.ArrayList;
@@ -29,6 +30,9 @@ public class Menu extends AbstractDoEntity<MenuDO> {
     }
 
     public Menu(Long id) {
+        super(id, new MenuDO());
+    }
+    public Menu(Identifier id) {
         super(id, new MenuDO());
     }
 

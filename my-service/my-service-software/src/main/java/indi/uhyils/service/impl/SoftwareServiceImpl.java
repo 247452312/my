@@ -49,8 +49,7 @@ public class SoftwareServiceImpl extends AbstractDoService<SoftwareDO, Software,
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public Long add(AddCommand<SoftwareDTO> addCommand) {
-        SoftwareDTO dto = addCommand.getDto();
+    public Long add(SoftwareDTO dto) {
         Software software = assem.toEntity(dto);
         software.findServer(serverRepository);
         software.link();

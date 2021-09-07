@@ -9,8 +9,8 @@ import indi.uhyils.pojo.DO.TraceInfoDO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
-import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.cqe.query.BlackQuery;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.OnlineMonitors;
 import indi.uhyils.pojo.entity.Trace;
 import indi.uhyils.pojo.entity.TraceInfo;
@@ -74,7 +74,7 @@ public class TraceInfoRepositoryImpl extends AbstractRepository<TraceInfo, Trace
         args.add(new Arg("trace_id", "=", request.getTraceId()));
         args.add(new Arg("start_time", ">", request.getStartTime()));
         args.add(new Arg("type", "=", request.getType()));
-        return find((BlackQuery) request);
+        return find(args, request.getOrder(), request.getLimit());
     }
 
     @Override

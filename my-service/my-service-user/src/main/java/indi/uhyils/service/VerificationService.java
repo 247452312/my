@@ -1,8 +1,6 @@
 package indi.uhyils.service;
 
-import indi.uhyils.pojo.DTO.request.VerificationCommand;
 import indi.uhyils.pojo.DTO.response.VerificationGetDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
 import java.io.IOException;
 
 /**
@@ -15,19 +13,18 @@ public interface VerificationService extends BaseService {
     /**
      * 获取验证码
      *
-     * @param request 默认请求
-     *
      * @return 验证码与在redis中的key
      */
-    VerificationGetDTO getVerification(DefaultCQE request) throws IOException;
+    VerificationGetDTO getVerification() throws IOException;
 
 
     /**
      * 验证码验证
      *
-     * @param request
+     * @param key
+     * @param code
      *
      * @return
      */
-    Boolean verification(VerificationCommand request);
+    Boolean verification(String key, String code);
 }

@@ -5,11 +5,13 @@ import indi.uhyils.assembler.ApiAssembler;
 import indi.uhyils.pojo.DO.ApiDO;
 import indi.uhyils.pojo.DTO.ApiDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.request.GetByArgsAndGroupQuery;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.Api;
 import indi.uhyils.repository.ApiRepository;
 import indi.uhyils.service.ApiService;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -30,14 +32,14 @@ public class ApiServiceImpl extends AbstractDoService<ApiDO, Api, ApiDTO, ApiRep
 
 
     @Override
-    public Page<ApiDTO> getByArgsAndGroup(GetByArgsAndGroupQuery request) {
-        List<Arg> args = request.getArgs();
+    public Page<ApiDTO> getByArgsAndGroup(Long groupId, Order order, Limit limit) {
+        List<Arg> args = new ArrayList<>();
         Arg e = new Arg();
         e.setName("api_group_id");
         e.setSymbol("=");
-        e.setData(request.getGroupId());
+        e.setData(groupId);
         args.add(e);
-        Page<Api> apiPage = rep.find(request);
+        Page<Api> apiPage = rep.find(args, order, limit);
         return assem.pageToDTO(apiPage);
     }
 }

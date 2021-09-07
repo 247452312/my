@@ -5,7 +5,6 @@ import indi.uhyils.assembler.DeptAssembler;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DTO.DeptDTO;
-import indi.uhyils.pojo.DTO.request.PutMenusToDeptsCommand;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
 import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Menu;
@@ -57,11 +56,11 @@ public class DeptServiceImpl extends AbstractDoService<DeptDO, Dept, DeptDTO, De
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_menu"})
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
-    public Boolean putMenusToDept(PutMenusToDeptsCommand request) {
-        Dept deptId = new Dept(request.getDeptId());
+    public Boolean putMenusToDept(Identifier deptId, List<Identifier> menuIds) {
+        Dept dept = new Dept(deptId.getId());
         // 清空之前这个部门的按钮
-        deptId.cleanMenu(rep);
-        deptId.addMenu(request.getMenuIds().stream().map(Menu::new).collect(Collectors.toList()), rep);
+        dept.cleanMenu(rep);
+        dept.addMenu(menuIds.stream().map(Identifier::getId).map(Menu::new).collect(Collectors.toList()), rep);
         return true;
     }
 

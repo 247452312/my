@@ -7,7 +7,6 @@ import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.RoleDTO;
-import indi.uhyils.pojo.DTO.request.PutDeptsToRoleCommand;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
@@ -16,6 +15,7 @@ import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.AbstractEntity;
 import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Role;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.service.RoleService;
@@ -48,8 +48,8 @@ public class RoleServiceImpl extends AbstractDoService<RoleDO, Role, RoleDTO, Ro
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept", "sys_role_dept"})
-    public RoleDTO getRoleByRoleId(IdQuery request) {
-        Role role = new Role(request.getId());
+    public RoleDTO getRoleByRoleId(Identifier roleId) {
+        Role role = new Role(roleId);
         role.completion(rep);
         AssertUtil.assertTrue(role.toDo() != null, "查询失败");
         return assem.toDTO(role);
@@ -57,50 +57,50 @@ public class RoleServiceImpl extends AbstractDoService<RoleDO, Role, RoleDTO, Ro
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept"})
-    public Boolean putDeptsToRole(PutDeptsToRoleCommand request) {
-        Role roleId = new Role(request.getRoleId());
+    public Boolean putDeptsToRole(Identifier roleId, List<Identifier> deptIds) {
+        Role role = new Role(roleId);
 
-        roleId.cleanDeptLink(rep);
-        roleId.forceInitDeptIds(request.getDeptIds().stream().map(Dept::new).collect(Collectors.toList()));
-        roleId.mappingToDB(rep);
+        role.cleanDeptLink(rep);
+        role.forceInitDeptIds(deptIds.stream().map(Dept::new).collect(Collectors.toList()));
+        role.mappingToDB(rep);
         return true;
     }
 
     @Override
-    public Boolean deleteRoleDept(IdsCommand idsRequest) {
-        rep.removeRoleDeptLink(idsRequest.getIds());
+    public Boolean deleteRoleDept(List<Long> roleDeptId) {
+        rep.removeRoleDeptLink(roleDeptId);
         return true;
     }
 
     @Override
-    public List<RoleDTO> getRoles(DefaultCQE request) {
+    public List<RoleDTO> getRoles() {
         List<Role> roles = rep.getAll();
         return roles.stream().map(assem::toDTO).collect(Collectors.toList());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dept", "sys_role_dept"})
-    public List<DeptDTO> getUserDeptsByRoleId(IdQuery request) {
-        Role roleId = new Role(request.getId());
-        roleId.fillDeptIds(rep);
-        List<Dept> deptIds = roleId.deptIds();
+    public List<DeptDTO> getUserDeptsByRoleId(Identifier roleId) {
+        Role role = new Role(roleId);
+        role.fillDeptIds(rep);
+        List<Dept> deptIds = role.deptIds();
         List<Dept> list = deptRepository.find(deptIds.stream().map(AbstractEntity::getId).collect(Collectors.toList()));
         return list.stream().map(t -> deptAssembler.toDTO(t)).collect(Collectors.toList());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_role_dept", "sys_dept"})
-    public List<GetAllDeptWithHaveMarkDTO> getAllDeptWithHaveMark(IdQuery request) {
-        Role roleId = new Role(request.getId());
-        return roleId.toDeptWithHaveMark(rep);
+    public List<GetAllDeptWithHaveMarkDTO> getAllDeptWithHaveMark(Identifier roleId) {
+        Role role = new Role(roleId);
+        return role.toDeptWithHaveMark(rep);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_role_dept", "sys_user"})
-    public Boolean deleteRole(IdCommand request) {
-        Role roleId = new Role(request.getId());
-        roleId.cleanDeptLink(rep);
-        roleId.removeSelf(rep);
+    public Boolean deleteRole(Identifier roleId) {
+        Role role = new Role(roleId);
+        role.cleanDeptLink(rep);
+        role.removeSelf(rep);
         return true;
     }
 

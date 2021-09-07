@@ -5,7 +5,7 @@ package indi.uhyils.enum_;
  * @version 1.0
  * @date 文件创建日期 2021年08月28日 18时38分
  */
-public enum MethodType {
+public enum MethodTypeEnum {
     /**
      * 读接口
      */
@@ -17,16 +17,16 @@ public enum MethodType {
 
     private Integer type;
 
-    MethodType(Integer type) {
+    MethodTypeEnum(Integer type) {
         this.type = type;
     }
 
-    public static MethodType parse(Integer methodType) {
+    public static MethodTypeEnum parse(Integer methodType) {
         if (methodType == null) {
             return null;
         }
 
-        for (MethodType value : values()) {
+        for (MethodTypeEnum value : values()) {
             if (value.getType().equals(methodType)) {
                 return value;
             }

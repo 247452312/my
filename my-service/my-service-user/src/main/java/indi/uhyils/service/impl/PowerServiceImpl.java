@@ -1,17 +1,14 @@
 package indi.uhyils.service.impl;
 
-import indi.uhyils.annotation.NoToken;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.PowerAssembler;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.DTO.PowerDTO;
-import indi.uhyils.pojo.DTO.request.GetMethodNameByInterfaceNameQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
 import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.User;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.InterfaceName;
 import indi.uhyils.pojo.entity.type.MethodName;
 import indi.uhyils.pojo.entity.type.PowerInfo;
@@ -42,45 +39,45 @@ public class PowerServiceImpl extends AbstractDoService<PowerDO, Power, PowerDTO
 
 
     @Override
-    public List<PowerDTO> getPowers(DefaultCQE request) {
+    public List<PowerDTO> getPowers() {
         List<Power> powers = rep.getAll();
         return powers.stream().map(assem::toDTO).collect(Collectors.toList());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_user", "sys_role", "sys_role_dept", "sys_dept", "sys_dept_power", "sys_power"})
-    public Boolean checkUserHavePower(CheckUserHavePowerQuery request) {
-        User userId = new User(request.getUserId());
-        PowerInfo powerInfo = new PowerInfo(request.getInterfaceName(), request.getMethodName());
-        return userId.havePower(powerInfo, rep);
+    public Boolean checkUserHavePower(InterfaceName interfaceName, MethodName methodName, Identifier userId) {
+        User user = new User(userId);
+        PowerInfo powerInfo = new PowerInfo(interfaceName.getInterfaceName(), methodName.getMethodName());
+        return user.havePower(powerInfo, rep);
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dept_power"})
-    public Boolean deletePower(IdCommand request) {
-        Power powerId = new Power(request.getId());
-        powerId.removeSelfLink(rep);
-        powerId.removeSelf(rep);
+    public Boolean deletePower(Identifier powerId) {
+        Power power = new Power(powerId);
+        power.removeSelfLink(rep);
+        power.removeSelf(rep);
         return true;
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_power"})
-    public List<String> getInterfaces(DefaultCQE request) {
+    public List<String> getInterfaces() {
         return rep.getInterfaces();
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_power"})
-    public List<String> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameQuery request) {
-        InterfaceName interfaceName = new InterfaceName(request.getInterfaceName());
-        List<MethodName> methodName = interfaceName.getMethods(rep);
+    public List<String> getMethodNameByInterfaceName(InterfaceName interfaceName) {
+        InterfaceName name = new InterfaceName(interfaceName.getInterfaceName());
+        List<MethodName> methodName = name.getMethods(rep);
         return methodName.stream().map(MethodName::getMethodName).collect(Collectors.toList());
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_power"})
-    public Integer initPowerInProStart(DefaultCQE request) {
+    public Integer initPowerInProStart() {
         List<PowerInfo> powersSingle = null;
         try {
             powersSingle = ApiPowerInitUtil.getPowersSingle();

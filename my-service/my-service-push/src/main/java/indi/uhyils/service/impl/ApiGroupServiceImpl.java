@@ -8,6 +8,7 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.ApiGroup;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ApiGroupRepository;
 import indi.uhyils.repository.ApiRepository;
 import indi.uhyils.service.ApiGroupService;
@@ -47,7 +48,7 @@ public class ApiGroupServiceImpl extends AbstractDoService<ApiGroupDO, ApiGroup,
     }
 
     @Override
-    public Integer remove(IdCommand id) {
+    public Integer remove(Identifier id) {
         ApiGroup apiGroup = new ApiGroup(id.getId());
         apiGroup.removeSelf(rep);
         return apiGroup.removeApis(apiRepository);

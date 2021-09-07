@@ -31,6 +31,10 @@ public class Dept extends AbstractDoEntity<DeptDO> {
         super(parseIdToDO(id));
     }
 
+    public Dept(Identifier id) {
+        super(id, new DeptDO());
+    }
+
     public Dept(DeptDO deptDO, List<Power> powers) {
         super(deptDO);
         this.powers = powers;

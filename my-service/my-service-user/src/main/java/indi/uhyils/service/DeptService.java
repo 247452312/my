@@ -2,12 +2,7 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.DeptDTO;
-import indi.uhyils.pojo.DTO.request.PutMenusToDeptsCommand;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.command.IdsCommand;
-import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.type.Identifier;
 import java.util.List;
 
@@ -45,11 +40,12 @@ public interface DeptService extends BaseDoService<DeptDTO> {
     /**
      * 将许多菜单添加到一个权限集
      *
-     * @param request 将许多菜单添加到一个权限集的请求
+     * @param deptId
+     * @param menuIds
      *
      * @return 是否成功
      */
-    Boolean putMenusToDept(PutMenusToDeptsCommand request);
+    Boolean putMenusToDept(Identifier deptId, List<Identifier> menuIds);
 
     /**
      * 获取全部权限集

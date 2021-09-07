@@ -2,16 +2,11 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.UserAssembler;
+import indi.uhyils.context.UserContext;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.DTO.request.LoginCommand;
-import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.query.IdQuery;
-import indi.uhyils.pojo.cqe.query.IdsQuery;
-import indi.uhyils.pojo.entity.AbstractDoEntity;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -24,7 +19,6 @@ import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.service.UserService;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -65,28 +59,26 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
     }
 
     @Override
-    public UserDTO getUserById(IdQuery request) {
-        User user = rep.find(new Identifier(request.getId()));
+    public UserDTO getUserById(Identifier userId) {
+        User user = rep.find(userId);
         return assem.toDTO(user);
     }
 
     @Override
-    public String getUserToken(IdQuery request) {
-        User userId = new User(request.getId());
-        Token token = userId.toToken(salt, encodeRules);
+    public String getUserToken(Identifier userId) {
+        User user = new User(userId);
+        Token token = user.toToken(salt, encodeRules);
         return token.getToken();
     }
 
     @Override
-    public TokenInfo getTokenInfoByToken(DefaultCQE request) {
-        Token token = new Token(request.getToken());
-        TokenInfo tokenInfo = token.parseToTokenInfo(encodeRules, salt, rep);
-        return tokenInfo;
+    public TokenInfo getTokenInfoByToken(Token token) {
+        return token.parseToTokenInfo(encodeRules, salt, rep);
     }
 
     @Override
-    public LoginDTO login(LoginCommand request) {
-        User user = new User(new UserName(request.getUsername()), new Password(request.getPassword()));
+    public LoginDTO login(UserName userName, Password password) {
+        User user = new User(userName, password);
         user.login(rep, salt, encodeRules);
 
         //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
@@ -97,13 +89,13 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
     }
 
     @Override
-    public Boolean logout(DefaultCQE request) {
-        User user = new User(assem.toDo(request.getUser()));
+    public Boolean logout() {
+        User user = new User(assem.toDo(UserContext.doGet()));
         return user.logout(rep);
     }
 
     @Override
-    public List<UserDTO> getUsers(DefaultCQE request) {
+    public List<UserDTO> getUsers() {
         List<User> all = rep.findAll();
         // 填充角色
         User.batchInitRole(all, roleRepository, deptRepository, powerRepository, menuRepository);
@@ -111,30 +103,30 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
     }
 
     @Override
-    public UserDTO getUserByToken(DefaultCQE request) {
-        return request.getUser();
+    public UserDTO getUserByToken() {
+        return UserContext.doGet();
     }
 
     @Override
-    public String updatePassword(UpdatePasswordCommand request) {
-        User user = new User(assem.toDo(request.getUser()));
+    public String updatePassword(Password oldPassword, Password newPassword) {
+        User user = new User(assem.toDo(UserContext.doGet()));
         //检查密码是否正确
-        user.checkPassword(new Password(request.getOldPassword()), rep);
+        user.checkPassword(oldPassword, rep);
         // 修改到新密码
-        user.changeToNewPassword(new Password(request.getNewPassword()), rep);
+        user.changeToNewPassword(newPassword, rep);
         return "true";
     }
 
     @Override
-    public String getNameById(IdQuery request) {
-        User user = rep.find(new Identifier(request.getId()));
+    public String getNameById(Identifier userId) {
+        User user = rep.find(userId);
         return user.toDo().getNickName();
     }
 
     @Override
-    public List<UserDTO> getSampleUserByIds(IdsQuery request) {
-        List<User> result = rep.findNoPage(request);
-        return assem.listEntityToDTO(result);
+    public List<UserDTO> getSampleUserByIds(List<Identifier> userIds) {
+        List<User> users = rep.find(userIds);
+        return assem.listEntityToDTO(users);
     }
 
 }

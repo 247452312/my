@@ -2,7 +2,7 @@ package indi.uhyils.repository.impl;
 
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.context.MyContext;
-import indi.uhyils.enum_.MethodType;
+import indi.uhyils.enum_.MethodTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.entity.MethodDisable;
 import indi.uhyils.redis.RedisPoolHandle;
@@ -48,7 +48,7 @@ public class ServiceControlRepositoryImpl implements ServiceControlRepository {
     }
 
     @Override
-    public Boolean checkClassDisable(String className, MethodType methodType) {
+    public Boolean checkClassDisable(String className, MethodTypeEnum methodType) {
         if (methodType == null) {
             return true;
         }
@@ -64,7 +64,7 @@ public class ServiceControlRepositoryImpl implements ServiceControlRepository {
                     return Boolean.TRUE;
                 } else {
                     // 如果禁用接口模式对应传入的模式,就返回禁用
-                    if (MethodType.parse(classPowerInt).equals(methodType)) {
+                    if (MethodTypeEnum.parse(classPowerInt).equals(methodType)) {
                         return Boolean.FALSE;
                     }
                     return Boolean.TRUE;

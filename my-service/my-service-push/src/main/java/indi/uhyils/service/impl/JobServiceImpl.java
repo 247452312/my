@@ -2,15 +2,15 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.JobAssembler;
+import indi.uhyils.context.UserContext;
 import indi.uhyils.pojo.DO.JobDO;
 import indi.uhyils.pojo.DTO.JobDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.pojo.cqe.command.AddCommand;
-import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.Job;
 import indi.uhyils.repository.JobRepository;
 import indi.uhyils.service.JobService;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,21 +29,20 @@ public class JobServiceImpl extends AbstractDoService<JobDO, Job, JobDTO, JobRep
     }
 
     @Override
-    public Long add(AddCommand<JobDTO> addCommand) {
-        JobDTO dto = addCommand.getDto();
+    public Long add(JobDTO dto) {
         Job job = assem.toEntity(dto);
         rep.save(job);
-        job.fillUser(addCommand.getUser());
+        job.fillUser(UserContext.doGet());
         job.addSelfToJob();
         return 1L;
     }
 
     @Override
-    public Integer update(ChangeCommand<JobDTO> changeCommand) {
-        JobDTO dto = changeCommand.getDto();
+    public Integer update(JobDTO dto, List<Arg> args) {
         Job job = assem.toEntity(dto);
-        rep.save(job);
-        job.fillUser(changeCommand.getUser());
+        rep.change(job, args);
+        
+        job.fillUser(UserContext.doGet());
         job.delJob();
         job.addSelfToJob();
         return 1;

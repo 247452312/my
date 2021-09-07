@@ -4,6 +4,7 @@ import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.RoleDeptDO;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
@@ -25,6 +26,9 @@ public class Role extends AbstractDoEntity<RoleDO> {
 
     public Role(RoleDO roleDO) {
         super(roleDO);
+    }
+    public Role(Identifier roleId) {
+        super(roleId,new RoleDO());
     }
 
     public Role(Long id) {

@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.annotation.NoToken;
-import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
@@ -11,12 +10,17 @@ import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
+import indi.uhyils.pojo.entity.Token;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.type.Password;
+import indi.uhyils.pojo.entity.type.UserName;
 import indi.uhyils.protocol.rpc.UserProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.UserService;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -39,62 +43,71 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
 
     @Override
     public ServiceResult<UserDTO> getUserById(IdQuery request) {
-        UserDTO result = service.getUserById(request);
+        Identifier userId = new Identifier(request.getId());
+        UserDTO result = service.getUserById(userId);
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<String> getUserToken(IdQuery request) {
-        String result = service.getUserToken(request);
+        Identifier userId = new Identifier(request.getId());
+        String result = service.getUserToken(userId);
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<TokenInfo> getTokenInfoByToken(DefaultCQE request) {
-        TokenInfo result = service.getTokenInfoByToken(request);
+        Token token = new Token(request.getToken());
+        TokenInfo result = service.getTokenInfoByToken(token);
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     @NoToken
     public ServiceResult<LoginDTO> login(LoginCommand request) {
-        LoginDTO result = service.login(request);
+        UserName username = new UserName(request.getUsername());
+        Password password = new Password(request.getPassword());
+        LoginDTO result = service.login(username, password);
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<Boolean> logout(DefaultCQE request) {
-        Boolean result = service.logout(request);
+        Boolean result = service.logout();
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<List<UserDTO>> getUsers(DefaultCQE request) {
-        List<UserDTO> result = service.getUsers(request);
+        List<UserDTO> result = service.getUsers();
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<UserDTO> getUserByToken(DefaultCQE request) {
-        UserDTO result = service.getUserByToken(request);
+        UserDTO result = service.getUserByToken();
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<String> updatePassword(UpdatePasswordCommand request) {
-        String result = service.updatePassword(request);
+        Password oldPassword = new Password(request.getOldPassword());
+        Password newPassword = new Password(request.getNewPassword());
+        String result = service.updatePassword(oldPassword, newPassword);
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<String> getNameById(IdQuery request) {
-        String result = service.getNameById(request);
+        Identifier userId = new Identifier(request.getId());
+        String result = service.getNameById(userId);
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
     public ServiceResult<List<UserDTO>> getSampleUserByIds(IdsQuery request) {
-        List<UserDTO> result = service.getSampleUserByIds(request);
+        List<Identifier> userIds = request.getIds().stream().map(Identifier::new).collect(Collectors.toList());
+        List<UserDTO> result = service.getSampleUserByIds(userIds);
         return ServiceResult.buildSuccessResult(result);
     }
 }

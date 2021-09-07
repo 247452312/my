@@ -2,13 +2,12 @@ package indi.uhyils.service.impl;
 
 
 import indi.uhyils.annotation.ReadWriteMark;
+import indi.uhyils.enum_.MethodTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
-import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
-import indi.uhyils.pojo.DTO.request.MethodDisableQuery;
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.AddCommand;
 import indi.uhyils.pojo.entity.MethodDisable;
+import indi.uhyils.pojo.entity.type.InterfaceName;
+import indi.uhyils.pojo.entity.type.MethodName;
 import indi.uhyils.repository.ServiceControlRepository;
 import indi.uhyils.service.ServiceControlService;
 import java.util.List;
@@ -28,29 +27,29 @@ public class ServiceControlServiceImpl implements ServiceControlService {
     private ServiceControlRepository repository;
 
     @Override
-    public Boolean getMethodDisable(MethodDisableQuery request) {
-        MethodDisable methodDisable = new MethodDisable(request);
+    public Boolean getMethodDisable(InterfaceName interfaceName, MethodName methodName, MethodTypeEnum methodType) {
+        MethodDisable methodDisable = new MethodDisable(interfaceName.getInterfaceName(), methodName.getMethodName(), methodType);
         methodDisable.completionClassName();
         return methodDisable.checkInterfaceDisable(repository);
     }
 
     @Override
-    public List<MethodDisableDTO> getAllMethodDisable(DefaultCQE request) {
+    public List<MethodDisableDTO> getAllMethodDisable() {
         return repository.findAll();
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public Boolean addOrEditMethodDisable(AddCommand<MethodDisableDTO> request) {
-        MethodDisable methodDisable = new MethodDisable(request.getDto());
+    public Boolean addOrEditMethodDisable(MethodDisableDTO dto) {
+        MethodDisable methodDisable = new MethodDisable(dto);
         methodDisable.saveMethodDisable(repository);
         return true;
     }
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public Boolean delMethodDisable(DelMethodDisableCommand request) {
-        MethodDisable methodDisable = new MethodDisable(request);
+    public Boolean delMethodDisable(InterfaceName interfaceName, MethodName methodName) {
+        MethodDisable methodDisable = new MethodDisable(interfaceName.getInterfaceName(), methodName.getMethodName());
         methodDisable.del(repository);
         return true;
     }

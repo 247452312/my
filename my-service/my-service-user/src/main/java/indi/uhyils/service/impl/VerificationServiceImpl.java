@@ -1,11 +1,8 @@
 package indi.uhyils.service.impl;
 
-import indi.uhyils.annotation.NoToken;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.DTO.request.VerificationCommand;
 import indi.uhyils.pojo.DTO.response.VerificationGetDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.entity.Verification;
 import indi.uhyils.repository.VerificationRepository;
 import indi.uhyils.service.VerificationService;
@@ -28,7 +25,7 @@ public class VerificationServiceImpl implements VerificationService {
     private VerificationRepository rep;
 
     @Override
-    public VerificationGetDTO getVerification(DefaultCQE request) throws IOException {
+    public VerificationGetDTO getVerification() throws IOException {
         Verification verification = new Verification(160, 60, 10);
         // 产生图片
         verification.makeImg();
@@ -43,8 +40,8 @@ public class VerificationServiceImpl implements VerificationService {
 
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE)
-    public Boolean verification(VerificationCommand request) {
-        Verification verification = new Verification(request.getKey(), request.getCode());
+    public Boolean verification(String key, String code) {
+        Verification verification = new Verification(key, code);
         // 验证
         Boolean result = verification.verification(rep);
         // 一个验证码只有一次有效

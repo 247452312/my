@@ -2,11 +2,10 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.context.MyContext;
+import indi.uhyils.enum_.MethodTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
-import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
-import indi.uhyils.pojo.DTO.request.MethodDisableQuery;
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.AddCommand;
+import indi.uhyils.pojo.entity.type.InterfaceName;
+import indi.uhyils.pojo.entity.type.MethodName;
 import java.util.List;
 
 /**
@@ -32,18 +31,20 @@ public interface ServiceControlService extends BaseService {
     /**
      * 获取接口是否允许使用
      *
-     * @param request 接口名称
+     * @param interfaceName 接口名称
+     * @param methodName    方法名称
+     * @param methodType    方法类型
      *
      * @return
      */
-    Boolean getMethodDisable(MethodDisableQuery request);
+    Boolean getMethodDisable(InterfaceName interfaceName, MethodName methodName, MethodTypeEnum methodType);
 
     /**
      * 获取所有接口是否允许使用
      *
      * @return 全部接口
      */
-    List<MethodDisableDTO> getAllMethodDisable(DefaultCQE request);
+    List<MethodDisableDTO> getAllMethodDisable();
 
 
     /**
@@ -51,14 +52,15 @@ public interface ServiceControlService extends BaseService {
      *
      * @return 是否成功
      */
-    Boolean addOrEditMethodDisable(AddCommand<MethodDisableDTO> request);
+    Boolean addOrEditMethodDisable(MethodDisableDTO dto);
 
     /**
      * 删除对应的禁用接口项
      *
-     * @param request 删除请求
+     * @param interfaceName 要删除的接口
+     * @param methodName    要删除的方法
      *
      * @return 删除请求
      */
-    Boolean delMethodDisable(DelMethodDisableCommand request);
+    Boolean delMethodDisable(InterfaceName interfaceName, MethodName methodName);
 }

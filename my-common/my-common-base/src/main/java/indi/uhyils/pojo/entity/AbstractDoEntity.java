@@ -23,6 +23,13 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity 
         this.data = t;
     }
 
+    protected AbstractDoEntity(Identifier id, T t) {
+        super();
+        this.id = id;
+        this.data = t;
+        this.data.setId(id.getId());
+    }
+
     protected AbstractDoEntity(Long id, T t) {
         super();
         this.id = new Identifier(id);

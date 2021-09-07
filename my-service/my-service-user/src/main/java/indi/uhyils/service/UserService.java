@@ -2,12 +2,13 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.DTO.request.LoginCommand;
-import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
+import indi.uhyils.pojo.entity.Token;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.type.Password;
+import indi.uhyils.pojo.entity.type.UserName;
 import java.util.List;
 
 /**
@@ -20,11 +21,11 @@ public interface UserService extends BaseDoService<UserDTO> {
     /**
      * 注入信息用,一般不用
      *
-     * @param request 用户的idi
+     * @param userId 用户的id
      *
      * @return 用户
      */
-    UserDTO getUserById(IdQuery request);
+    UserDTO getUserById(Identifier userId);
 
 
     /**
@@ -36,84 +37,78 @@ public interface UserService extends BaseDoService<UserDTO> {
      * 规则修改为  ddhhmmss + 2位随机数(防重复) + 用户类型 + userId + salt 共8+2+1+16+3 = 30位
      * 如果是游客, 则userId随机生成一个16位数字序列作为这个游客的id
      *
-     * @param request 用户id
+     * @param userId 用户id
      *
      * @return 通过用户id和用户类型编译的token
      */
-    String getUserToken(IdQuery request);
+    String getUserToken(Identifier userId);
 
 
     /**
      * 根据token 获取token中包含的信息
      * 解析token
      *
-     * @param request 默认的信息
-     *
      * @return 解析后的token数据
      */
-    TokenInfo getTokenInfoByToken(DefaultCQE request);
+    TokenInfo getTokenInfoByToken(Token token);
 
 
     /**
      * 用户登录 包含从哪里登录的信息
      *
-     * @param request 用户登录所需要的条件
+     * @param userName 用户名
+     * @param password 密码
      *
      * @return 登录所需要的信息
      */
-    LoginDTO login(LoginCommand request);
+    LoginDTO login(UserName userName, Password password);
 
     /**
      * 登出(删除redis中的用户)
      *
-     * @param request 无参数
-     *
      * @return 是否登出成功
      */
-    Boolean logout(DefaultCQE request);
+    Boolean logout();
 
     /**
      * 获取全部用户
      *
-     * @param request 默认请求
-     *
      * @return 全部用户
      */
-    List<UserDTO> getUsers(DefaultCQE request);
+    List<UserDTO> getUsers();
 
     /**
      * 默认获取用户本身的方式
      *
-     * @param request 默认请求
-     *
      * @return 用户
      */
-    UserDTO getUserByToken(DefaultCQE request);
+    UserDTO getUserByToken();
 
     /**
      * 更新密码
      *
-     * @param request 修改密码请求
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
      *
      * @return 修改密码的返回
      */
-    String updatePassword(UpdatePasswordCommand request);
+    String updatePassword(Password oldPassword, Password newPassword);
 
     /**
      * 根据id获取用户名称
      *
-     * @param request id
+     * @param userId id
      *
      * @return 用户名称
      */
-    String getNameById(IdQuery request);
+    String getNameById(Identifier userId);
 
     /**
      * 根据id批量获取不填充角色的用户
      *
-     * @param request
+     * @param userIds
      *
      * @return
      */
-    List<UserDTO> getSampleUserByIds(IdsQuery request);
+    List<UserDTO> getSampleUserByIds(List<Identifier> userIds);
 }

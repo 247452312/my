@@ -3,7 +3,8 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.DTO.ApiDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.request.GetByArgsAndGroupQuery;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 
 /**
  * api表(Api)表 内部服务接口
@@ -18,10 +19,12 @@ public interface ApiService extends BaseDoService<ApiDTO> {
     /**
      * 获取所有的指定组下的api
      *
-     * @param request 筛选信息
+     * @param groupId 组id
+     * @param order   排序
+     * @param limit   分页
      *
      * @return 所有的指定组下的api
      */
-    Page<ApiDTO> getByArgsAndGroup(GetByArgsAndGroupQuery request);
+    Page<ApiDTO> getByArgsAndGroup(Long groupId, Order order, Limit limit);
 
 }
