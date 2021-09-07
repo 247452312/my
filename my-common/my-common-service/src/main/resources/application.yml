@@ -39,7 +39,7 @@ spring:
     # 连接保持空闲而不被驱逐的最小时间(ms)
     min-evictable-idle-time-millis: 300000
     # 配置监控统计拦截的filters（不配置则监控界面sql无法统计），监控统计filter:stat，防御sql注入filter:wall
-    filters: stat,tableSqlFilter,dbLogFilter,rowsLimit
+    filters: stat,tableSqlFilter,dbLogFilter,rowsLimit,standard
     # 支持合并多个DruidDataSource的监控数据
     use-global-data-source-stat: true
     # 通过connectProperties属性来打开mergeSql(Sql合并)功能；慢SQL记录(配置超过5秒就是慢，默认是3秒)
