@@ -83,7 +83,7 @@ public class AssertUtil {
         } catch (Throwable e) {
             return;
         }
-        AssertException assertException = new AssertException("no have exception");
+        AssertException assertException = new AssertException("没有异常的异常!");
         removeExceptionTrace(assertException, 2);
         LogUtil.error(assertException);
         throw assertException;
