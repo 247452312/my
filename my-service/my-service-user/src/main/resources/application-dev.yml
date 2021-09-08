@@ -13,6 +13,8 @@ spring:
     url: jdbc:mysql://prod:3306/my_user
     username: root
     password: 123456
+    ignore:
+      tables: sys_dept_menu,sys_dept_power,sys_role_dept
 id:
   organization:
     # 机构代码

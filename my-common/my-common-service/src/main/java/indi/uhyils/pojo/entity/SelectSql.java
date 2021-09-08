@@ -11,6 +11,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.ast.statement.SQLSubqueryTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.LogUtil;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class SelectSql extends Sql {
     private final SQLSelect sqlSelect;
 
     public SelectSql(Sql sql) {
-        super(sql.sql);
+        super(sql.sql, sql.ignoreTables);
         AssertUtil.assertTrue(SqlType.SELECT.equals(sql.sqlType), MessageFormat.format("类型错误{0} -> {1}", sql.sqlType.name(), SqlType.UPDATE.name()));
         SQLSelectStatement sqlStatement = (SQLSelectStatement) sql.sqlStatement;
         this.sqlSelect = sqlStatement.getSelect();
@@ -89,7 +90,10 @@ public class SelectSql extends Sql {
 
     @Override
     public String sql() {
-        return this.sql = sqlSelect.toString();
+        super.sql();
+        this.sql = sqlSelect.toString();
+        LogUtil.info("change++++\n" + sql);
+        return this.sql;
     }
 
     public List<SQLSelectQueryBlock> blockQuerys() {

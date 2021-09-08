@@ -13,6 +13,7 @@ import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLUpdateSetItem;
 import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
 import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.LogUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +36,7 @@ public class UpdateSql extends Sql {
     private final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
     public UpdateSql(Sql sql) {
-        super(sql.sql);
+        super(sql.sql, sql.ignoreTables);
         AssertUtil.assertTrue(SqlType.UPDATE.equals(sql.sqlType), "类型错误");
         this.sqlStatement = (SQLUpdateStatement) sql.sqlStatement;
     }
@@ -60,7 +61,17 @@ public class UpdateSql extends Sql {
         if (checkNameRepeat(left)) {
             return;
         }
-        String alias = sqlStatement.getTableSource().getAlias();
+        SQLTableSource tableSource = sqlStatement.getTableSource();
+        if (!(tableSource instanceof SQLExprTableSource)) {
+            // todo 暂时默认update语句没有连表
+            return;
+        }
+        SQLExprTableSource source = (SQLExprTableSource) tableSource;
+        // 配置不生效的表
+        if (ignoreTables.contains(source.getName().getSimpleName())) {
+            return;
+        }
+        String alias = tableSource.getAlias();
         SQLUpdateSetItem item = new SQLUpdateSetItem();
         if (alias != null) {
             item.setColumn(new SQLPropertyExpr(alias, left));
@@ -73,7 +84,10 @@ public class UpdateSql extends Sql {
 
     @Override
     public String sql() {
-        return this.sql = String.valueOf(sqlStatement);
+        super.sql();
+        this.sql = sqlStatement.toString();
+        LogUtil.info("change++++\n" + sql);
+        return this.sql;
     }
 
     public void fillDeleteFlag() {

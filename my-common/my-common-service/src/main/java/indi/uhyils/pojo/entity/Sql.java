@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -44,8 +45,11 @@ public class Sql extends AbstractEntity {
 
     protected SqlType sqlType;
 
-    public Sql(String sql) {
+    protected List<String> ignoreTables;
+
+    public Sql(String sql, List<String> ignoreTables) {
         this.sql = sql;
+        this.ignoreTables = ignoreTables;
     }
 
     public void parse() {
@@ -92,6 +96,7 @@ public class Sql extends AbstractEntity {
 
     protected SQLExpr getNewWhereCondition(SQLTableSource from, SQLExpr where) {
         List<SQLExprTableSource> sqlExprTableSources = parseTables(from);
+        sqlExprTableSources = sqlExprTableSources.stream().filter(t -> !ignoreTables.contains(t.getName().getSimpleName())).collect(Collectors.toList());
         if (CollectionUtil.isEmpty(sqlExprTableSources)) {
             return null;
         }

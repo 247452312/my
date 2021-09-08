@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import java.util.Arrays;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class UpdateSqlTest {
 
     @Test
     public void addStringSet() {
-        Sql sql = new Sql(sqlStr);
+        Sql sql = new Sql(sqlStr, Arrays.asList("biz_lis_sample"));
         UpdateSql updateSql = (UpdateSql) sql.transformation();
         updateSql.addStringSet("kiu", "2");
         String sql1 = updateSql.sql();
@@ -40,6 +41,26 @@ public class UpdateSqlTest {
         sql1 = updateSql.sql();
         System.out.println(sql1);
         System.out.println();
+    }
 
+    @Test
+    public void addStringSet2() {
+        String sqlStr = "update sys_user set a=2 where id = 2;update sys_user set a=3 where id = 3";
+        Sql sql = new Sql(sqlStr, Arrays.asList("biz_lis_sample"));
+        UpdateSql updateSql = (UpdateSql) sql.transformation();
+        updateSql.addStringSet("kiu", "2");
+        String sql1 = updateSql.sql();
+        System.out.println(sql1);
+        System.out.println();
+
+        updateSql.addLongSet("update_time", System.currentTimeMillis());
+        sql1 = updateSql.sql();
+        System.out.println(sql1);
+        System.out.println();
+
+        updateSql.fillDeleteFlag();
+        sql1 = updateSql.sql();
+        System.out.println(sql1);
+        System.out.println();
     }
 }

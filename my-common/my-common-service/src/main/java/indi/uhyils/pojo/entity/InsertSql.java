@@ -4,11 +4,13 @@ import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.expr.SQLCharExpr;
 import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
 import com.alibaba.druid.sql.ast.expr.SQLNumberExpr;
+import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLInsertStatement;
 import com.alibaba.druid.sql.ast.statement.SQLInsertStatement.ValuesClause;
 import com.alibaba.druid.sql.ast.statement.SQLSelect;
 import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
 import indi.uhyils.util.CollectionUtil;
+import indi.uhyils.util.LogUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +29,7 @@ public class InsertSql extends Sql {
     private SQLInsertStatement sqlStatement;
 
     public InsertSql(Sql sql) {
-        super(sql.sql);
+        super(sql.sql, sql.ignoreTables);
         this.sqlStatement = (SQLInsertStatement) sql.sqlStatement;
     }
 
@@ -44,7 +46,10 @@ public class InsertSql extends Sql {
 
     @Override
     public String sql() {
-        return this.sql = String.valueOf(sqlStatement);
+        super.sql();
+        this.sql = sqlStatement.toString();
+        LogUtil.info("change++++\n" + sql);
+        return this.sql;
     }
 
     public void addDateItem(String colName, long value) {
@@ -58,6 +63,11 @@ public class InsertSql extends Sql {
     public void addItem(String colName, SQLExpr value) {
         List<ValuesClause> valuesList = sqlStatement.getValuesList();
         if (CollectionUtil.isEmpty(valuesList)) {
+            return;
+        }
+        SQLExprTableSource tableSource = sqlStatement.getTableSource();
+        // 配置不生效的表
+        if (ignoreTables.contains(tableSource.getName().getSimpleName())) {
             return;
         }
         // 去重
