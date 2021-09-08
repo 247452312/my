@@ -72,6 +72,23 @@ public class AssertUtil {
         }
     }
 
+    /**
+     * 断言异常
+     *
+     * @param runnable
+     */
+    public static void assertException(Runnable runnable) {
+        try {
+            runnable.run();
+        } catch (Throwable e) {
+            return;
+        }
+        AssertException assertException = new AssertException("no have exception");
+        removeExceptionTrace(assertException, 2);
+        LogUtil.error(assertException);
+        throw assertException;
+    }
+
 
     /**
      * 删除异常的顶层堆栈信息

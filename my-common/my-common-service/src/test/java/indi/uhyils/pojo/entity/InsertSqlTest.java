@@ -43,7 +43,6 @@ public class InsertSqlTest {
         insertSql3.fillDeleteFlag();
         String sql3 = insertSql3.sql();
         System.out.println(sql3);
-
-
     }
+
 }
