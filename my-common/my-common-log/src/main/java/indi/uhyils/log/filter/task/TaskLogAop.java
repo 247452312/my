@@ -3,6 +3,7 @@ package indi.uhyils.log.filter.task;
 import indi.uhyils.context.MyTraceIdContext;
 import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.util.LogUtil;
+import java.text.MessageFormat;
 import java.util.function.Supplier;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -39,7 +40,7 @@ public class TaskLogAop {
             } catch (Throwable throwable) {
                 LogUtil.error(throwable);
             } finally {
-                LogUtil.info("定时任务结束!");
+                LogUtil.info(MessageFormat.format("{0}#{1}定时任务结束!", className, methodName));
             }
             return null;
         };

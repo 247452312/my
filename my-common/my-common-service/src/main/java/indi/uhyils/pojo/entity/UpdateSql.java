@@ -6,6 +6,7 @@ import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import com.alibaba.druid.sql.ast.expr.SQLCharExpr;
 import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
 import com.alibaba.druid.sql.ast.expr.SQLIntegerExpr;
+import com.alibaba.druid.sql.ast.expr.SQLNumberExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
@@ -19,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -91,8 +94,10 @@ public class UpdateSql extends Sql {
     }
 
     public void fillDeleteFlag() {
+        Map<String, SQLExpr> willChange = new HashMap<>(1);
+        willChange.put("delete_flag", new SQLNumberExpr(0));
         SQLTableSource tableSource = sqlStatement.getTableSource();
-        SQLBinaryOpExpr newWhere = getNewWhere(sqlStatement.getWhere(), Collections.singletonList((SQLExprTableSource) tableSource));
+        SQLBinaryOpExpr newWhere = getNewWhere(sqlStatement.getWhere(), Collections.singletonList((SQLExprTableSource) tableSource), willChange);
         sqlStatement.setWhere(newWhere);
         fillDeleteFlag(newWhere);
 
@@ -116,9 +121,11 @@ public class UpdateSql extends Sql {
     }
 
     private void fillDeleteFlag(SQLBinaryOpExpr expr) {
+        Map<String, SQLExpr> willChange = new HashMap<>(1);
+        willChange.put("delete_flag", new SQLNumberExpr(0));
         List<SQLSelectQueryBlock> queryBlocks = blockQuerys(expr);
         for (SQLSelectQueryBlock queryBlock : queryBlocks) {
-            fillDeleteFlag(queryBlock);
+            changeQueryWhere(queryBlock, willChange);
         }
     }
 

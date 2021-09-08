@@ -13,7 +13,9 @@ import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.LogUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -38,9 +40,11 @@ public class InsertSql extends Sql {
         if (query == null) {
             return;
         }
+        Map<String,SQLExpr> willChange = new HashMap<>(1);
+        willChange.put("delete_flag", new SQLNumberExpr(0));
         List<SQLSelectQueryBlock> queryBlocks = blockQuerys(query.getQuery());
         for (SQLSelectQueryBlock queryBlock : queryBlocks) {
-            fillDeleteFlag(queryBlock);
+            changeQueryWhere(queryBlock,willChange);
         }
     }
 

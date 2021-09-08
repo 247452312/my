@@ -6,7 +6,7 @@ import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOperator;
 import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
-import com.alibaba.druid.sql.ast.expr.SQLIntegerExpr;
+import com.alibaba.druid.sql.ast.expr.SQLNumberExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import com.alibaba.druid.sql.ast.expr.SQLQueryExpr;
 import com.alibaba.druid.sql.ast.statement.SQLDeleteStatement;
@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 
@@ -94,13 +95,13 @@ public class Sql extends AbstractEntity {
         }
     }
 
-    protected SQLExpr getNewWhereCondition(SQLTableSource from, SQLExpr where) {
+    protected SQLExpr getNewWhereCondition(SQLTableSource from, SQLExpr where, Map<String, SQLExpr> willChange) {
         List<SQLExprTableSource> sqlExprTableSources = parseTables(from);
         sqlExprTableSources = sqlExprTableSources.stream().filter(t -> !ignoreTables.contains(t.getName().getSimpleName())).collect(Collectors.toList());
         if (CollectionUtil.isEmpty(sqlExprTableSources)) {
             return null;
         }
-        return getNewWhere(where, sqlExprTableSources);
+        return getNewWhere(where, sqlExprTableSources, willChange);
     }
 
     private List<SQLExprTableSource> parseTables(SQLTableSource table) {
@@ -156,10 +157,10 @@ public class Sql extends AbstractEntity {
         }
     }
 
-    protected SQLBinaryOpExpr getNewWhere(SQLExpr where, List<SQLExprTableSource> tableSource) {
+    protected SQLBinaryOpExpr getNewWhere(SQLExpr where, List<SQLExprTableSource> tableSource, Map<String, SQLExpr> willChange) {
         String[] tableName = getTableName(tableSource);
         if (where == null) {
-            return getCondition(tableName);
+            return getCondition(willChange, tableName);
         }
 
         // 如果需要condition
@@ -173,7 +174,7 @@ public class Sql extends AbstractEntity {
         SQLBinaryOpExpr condition = new SQLBinaryOpExpr("mysql");
         condition.setLeft(where);
         condition.setOperator(SQLBinaryOperator.BooleanAnd);
-        condition.setRight(getCondition(tableName));
+        condition.setRight(getCondition(willChange, tableName));
         return condition;
     }
 
@@ -194,8 +195,8 @@ public class Sql extends AbstractEntity {
         return query instanceof SQLUnionQuery;
     }
 
-    public void fillDeleteFlag(SQLSelectQueryBlock queryBlock) {
-        SQLExpr newWhereCondition = getNewWhereCondition(queryBlock.getFrom(), queryBlock.getWhere());
+    public void changeQueryWhere(SQLSelectQueryBlock queryBlock, Map<String, SQLExpr> willChange) {
+        SQLExpr newWhereCondition = getNewWhereCondition(queryBlock.getFrom(), queryBlock.getWhere(), willChange);
         if (newWhereCondition == null) {
             return;
         }
@@ -251,19 +252,19 @@ public class Sql extends AbstractEntity {
      *
      * @return 拼接后的条件
      */
-    private SQLBinaryOpExpr getTenantIdCondition(String tableNameInfo) {
+    private SQLBinaryOpExpr getTenantIdCondition(String tableNameInfo, String colName, SQLExpr value) {
         SQLBinaryOpExpr tenantIdWhere = new SQLBinaryOpExpr("mysql");
         if (StringUtils.isEmpty(tableNameInfo)) {
             // 拼接新的条件
             tenantIdWhere.setOperator(SQLBinaryOperator.Equality);
-            tenantIdWhere.setLeft(new SQLIdentifierExpr("delete_flag"));
+            tenantIdWhere.setLeft(new SQLIdentifierExpr(colName));
             // 设置当前租户ID条件
-            tenantIdWhere.setRight(new SQLIntegerExpr(0));
+            tenantIdWhere.setRight(value);
         } else {
             // 拼接别名条件
-            tenantIdWhere.setLeft(new SQLPropertyExpr(tableNameInfo, "delete_flag"));
+            tenantIdWhere.setLeft(new SQLPropertyExpr(tableNameInfo, colName));
             tenantIdWhere.setOperator(SQLBinaryOperator.Equality);
-            tenantIdWhere.setRight(new SQLIntegerExpr(0));
+            tenantIdWhere.setRight(value);
         }
         return tenantIdWhere;
     }
@@ -271,33 +272,51 @@ public class Sql extends AbstractEntity {
     /**
      * 根据表信息拼接tenantId 条件
      *
-     * @param alias 表信息
+     * @param willChange 表信息
+     * @param alias      表信息
      *
      * @return 拼接后的条件
      */
-    private SQLBinaryOpExpr getCondition(String... alias) {
+    private SQLBinaryOpExpr getCondition(Map<String, SQLExpr> willChange, String... alias) {
         SQLBinaryOpExpr allCondition = new SQLBinaryOpExpr("mysql");
         for (int i = 0; i < alias.length; i++) {
-            SQLBinaryOpExpr thisTenantIdWhere = getTenantIdCondition(alias[i]);
+            SQLBinaryOpExpr where = mergeWhere(willChange, alias[i]);
             // 如果是最后一个且不是第一个则将当期table条件设置为右侧条件
             if (i > 0 && i == alias.length - 1) {
                 allCondition.setOperator(SQLBinaryOperator.BooleanAnd);
-                allCondition.setRight(thisTenantIdWhere);
+                allCondition.setRight(where);
                 break;
             }
             // 如果是只有一个table 则直接设置最终条件为当期table条件
             if (alias.length == 1) {
-                allCondition = thisTenantIdWhere;
+                allCondition = where;
                 break;
             }
             if (allCondition.getLeft() == null) {
-                allCondition.setLeft(thisTenantIdWhere);
+                allCondition.setLeft(where);
             } else {
-                SQLBinaryOpExpr condition = getAndCondition((SQLBinaryOpExpr) allCondition.getLeft(), thisTenantIdWhere);
+                SQLBinaryOpExpr condition = getAndCondition((SQLBinaryOpExpr) allCondition.getLeft(), where);
                 allCondition.setLeft(condition);
             }
         }
         return allCondition;
+    }
+
+    public SQLBinaryOpExpr mergeWhere(Map<String, SQLExpr> willChange, String alias1) {
+        SQLBinaryOpExpr result = null;
+        for (Entry<String, SQLExpr> entry : willChange.entrySet()) {
+            SQLBinaryOpExpr where = getTenantIdCondition(alias1, entry.getKey(), entry.getValue());
+            if (result == null) {
+                result = where;
+            } else {
+                SQLBinaryOpExpr temp = new SQLBinaryOpExpr("mysql");
+                temp.setLeft(result);
+                temp.setOperator(SQLBinaryOperator.BooleanAnd);
+                temp.setRight(where);
+                result = temp;
+            }
+        }
+        return result;
     }
 
     /**

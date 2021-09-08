@@ -3,6 +3,7 @@ package indi.uhyils.pojo.entity;
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLLimit;
 import com.alibaba.druid.sql.ast.SQLOrderBy;
+import com.alibaba.druid.sql.ast.expr.SQLNumberExpr;
 import com.alibaba.druid.sql.ast.expr.SQLQueryExpr;
 import com.alibaba.druid.sql.ast.statement.SQLSelect;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
@@ -14,7 +15,9 @@ import indi.uhyils.util.AssertUtil;
 import indi.uhyils.util.LogUtil;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -79,11 +82,14 @@ public class SelectSql extends Sql {
     }
 
     public void fillDeleteFlag(Boolean deleteFlag) {
+        Map<String, SQLExpr> willChange = new HashMap<>(1);
+        willChange.put("delete_flag", new SQLNumberExpr(deleteFlag ? 1 : 0));
         List<SQLSelectQueryBlock> queryBlocks = blockQuerys();
         for (SQLSelectQueryBlock queryBlock : queryBlocks) {
-            fillDeleteFlag(queryBlock);
+            changeQueryWhere(queryBlock, willChange);
         }
     }
+
     public void fillDeleteFlag() {
         fillDeleteFlag(false);
     }
