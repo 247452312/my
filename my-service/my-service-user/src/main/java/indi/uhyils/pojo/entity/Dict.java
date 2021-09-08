@@ -34,7 +34,7 @@ public class Dict extends AbstractDoEntity<DictDO> {
         return dictDO;
     }
 
-    public List<DictItem> findItem(DictItemRepository dictItemRepository) {
+    public List<DictItem> findItemByCode(DictItemRepository dictItemRepository) {
         AssertUtil.assertTrue(data.getCode() != null,"code不能为空");
         return dictItemRepository.findItemByDictCode(data.getCode());
     }
@@ -51,7 +51,8 @@ public class Dict extends AbstractDoEntity<DictDO> {
         if (CollectionUtil.isEmpty(dictItems)) {
             return;
         }
-        rep.remove(dictItems);
+        int remove = rep.remove(dictItems);
+        this.dictItems = null;
     }
 
 }

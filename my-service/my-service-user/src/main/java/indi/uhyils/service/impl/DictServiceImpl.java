@@ -141,7 +141,7 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public VersionInfoDTO getVersionInfoResponse() {
         Dict dictItemCode = new Dict(VERSION_CODE);
-        List<DictItem> item = dictItemCode.findItem(dictItemRepository);
+        List<DictItem> item = dictItemCode.findItemByCode(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
         return VersionInfoDTO.build(items);
     }
@@ -150,7 +150,7 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public LastPlanDTO getLastPlanResponse() {
         Dict dictItemCode = new Dict(LAST_PLAN_CODE);
-        List<DictItem> item = dictItemCode.findItem(dictItemRepository);
+        List<DictItem> item = dictItemCode.findItemByCode(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
         return LastPlanDTO.build(items);
     }
@@ -159,7 +159,7 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"})
     public List<String> getAllMenuIcon() {
         Dict dictItemCode = new Dict(MENU_ICON_CLASS_CODE);
-        List<DictItem> item = dictItemCode.findItem(dictItemRepository);
+        List<DictItem> item = dictItemCode.findItemByCode(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
         return items.stream().map(DictItemDTO::getValue).collect(Collectors.toList());
     }
@@ -168,7 +168,7 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_dict_item"}, cacheType = CacheTypeEnum.ALL_TYPE)
     public List<DictItemDTO> getByCode(Code code) {
         Dict dictItemCode = new Dict(code.getCode());
-        List<DictItem> item = dictItemCode.findItem(dictItemRepository);
+        List<DictItem> item = dictItemCode.findItemByCode(dictItemRepository);
         return item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
     }
 
@@ -176,7 +176,7 @@ public class DictServiceImpl extends AbstractDoService<DictDO, Dict, DictDTO, Di
     @ReadWriteMark(type = ReadWriteTypeEnum.WRITE, tables = {"sys_dict", "sys_dict_item"})
     public QuickStartDTO getQuickStartResponse() {
         Dict dictItemCode = new Dict(QUICK_START_CODE);
-        List<DictItem> item = dictItemCode.findItem(dictItemRepository);
+        List<DictItem> item = dictItemCode.findItemByCode(dictItemRepository);
         List<DictItemDTO> items = item.stream().map(t -> dictItemAssembler.toDTO(t)).collect(Collectors.toList());
         List<MenuDTO> result = items.stream().map(t -> new Menu(Long.valueOf(t.getValue()))).map(menuRepository::find).map(t -> menuAssembler.toDTO(t)).collect(Collectors.toList());
         result.stream().filter(t -> !t.getType()).map(MenuDTO::getName).forEach(t -> LogUtil.error("服务字典中快捷入口(" + t + ") 不是叶子结点"));
