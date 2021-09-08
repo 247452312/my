@@ -23,7 +23,11 @@ import com.alibaba.druid.sql.ast.statement.SQLUnionQuery;
 import indi.uhyils.util.AssertUtil;
 import indi.uhyils.util.CollectionUtil;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -139,7 +143,7 @@ public class SelectSql extends Sql {
             }
             return sqlExprTableSources;
         }
-        return new ArrayList<>();
+        return null;
     }
 
     private SQLBinaryOpExpr getNewWhere(SQLExpr where, List<SQLExprTableSource> tableSource) {
@@ -148,11 +152,44 @@ public class SelectSql extends Sql {
             return getCondition(tableName);
         }
 
+        // 如果需要condition
+        HashMap<String, Boolean> result = new HashMap<>();
+        needAddCondition(where, result);
+        tableName = Arrays.stream(tableName).filter(t -> !result.containsKey(t)).toArray(String[]::new);
+        if (tableName.length == 0) {
+            return (SQLBinaryOpExpr) where;
+        }
+
         SQLBinaryOpExpr condition = new SQLBinaryOpExpr("mysql");
         condition.setLeft(where);
         condition.setOperator(SQLBinaryOperator.BooleanAnd);
         condition.setRight(getCondition(tableName));
         return condition;
+    }
+
+    private void needAddCondition(SQLExpr where, Map<String, Boolean> result) {
+        if (where instanceof SQLBinaryOpExpr) {
+            SQLExpr left = ((SQLBinaryOpExpr) where).getLeft();
+
+            if ("delete_flag".equals(String.valueOf(left))) {
+                result.put("", true);
+                return;
+            }
+            SQLExpr right = ((SQLBinaryOpExpr) where).getRight();
+            needAddCondition(left, result);
+            needAddCondition(right, result);
+            return;
+        }
+
+        if (String.valueOf(where).contains("delete_flag")) {
+            if (where instanceof SQLPropertyExpr) {
+                String ownerName = ((SQLPropertyExpr) where).getOwnernName();
+                result.put(ownerName, true);
+                return;
+            }
+            result.put("", true);
+            return;
+        }
     }
 
     private String[] getTableName(List<SQLExprTableSource> tableSource) {
@@ -193,7 +230,7 @@ public class SelectSql extends Sql {
             if (allCondition.getLeft() == null) {
                 allCondition.setLeft(thisTenantIdWhere);
             } else {
-                SQLBinaryOpExpr condition = getAndCondition((SQLBinaryOpExpr)allCondition.getLeft(), thisTenantIdWhere);
+                SQLBinaryOpExpr condition = getAndCondition((SQLBinaryOpExpr) allCondition.getLeft(), thisTenantIdWhere);
                 allCondition.setLeft(condition);
             }
         }
@@ -203,8 +240,9 @@ public class SelectSql extends Sql {
     /**
      * 拼接and条件
      *
-     * @param left 左侧条件
+     * @param left  左侧条件
      * @param right 右侧条件
+     *
      * @return 拼接后的条件
      */
     private SQLBinaryOpExpr getAndCondition(SQLBinaryOpExpr left, SQLBinaryOpExpr right) {
@@ -219,6 +257,7 @@ public class SelectSql extends Sql {
      * 根据表信息拼接tenantId 条件
      *
      * @param tableNameInfo 表信息
+     *
      * @return 拼接后的条件
      */
     private SQLBinaryOpExpr getTenantIdCondition(String tableNameInfo) {

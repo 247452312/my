@@ -28,7 +28,8 @@ public class StandardFilter extends FilterEventAdapter {
             case SELECT:
                 SelectSql transformation = (SelectSql) sql.transformation();
                 transformation.fillDeleteFlag();
-                return super.connection_prepareStatement(chain, connection, transformation.sql());
+                String sqlResult = transformation.sql();
+                return super.connection_prepareStatement(chain, connection, sqlResult);
             case UPDATE:
             case INSERT:
             case DELETE:
