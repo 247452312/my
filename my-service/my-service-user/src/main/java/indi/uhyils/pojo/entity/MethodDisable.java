@@ -53,12 +53,7 @@ public class MethodDisable extends AbstractEntity {
         this.methodType = methodType;
     }
     public MethodDisable(String className, String methodName) {
-        this.className = className;
-        this.methodName = methodName;
-    }
-
-    public MethodDisable(MethodDisableQuery query) {
-        this(query.getClassName(), query.getMethodName(), MethodTypeEnum.parse(query.getMethodType()));
+        this(className, methodName, null);
     }
 
     public MethodDisable(DelMethodDisableCommand query) {
@@ -76,6 +71,7 @@ public class MethodDisable extends AbstractEntity {
     }
 
     public String toInterfaceMethodName() {
+        completionClassName();
         return className + METHOD_LINK_CLASS_SYMBOL + methodName;
     }
 

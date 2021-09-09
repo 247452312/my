@@ -113,6 +113,7 @@ public class ServiceControlRepositoryImpl implements ServiceControlRepository {
             if (StringUtils.isNotBlank(methodName)) {
                 String key = className + MethodDisable.METHOD_LINK_CLASS_SYMBOL + methodName;
                 Integer type = data.getDisableType();
+                type = type == null ? 0 : type;
                 jedis.hset(MyContext.SERVICE_USEABLE_SWITCH, key, type.toString());
             } else {
                 jedis.hset(MyContext.SERVICE_USEABLE_SWITCH, className, data.getDisableType().toString());
