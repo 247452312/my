@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.AlgorithmDao">
+    <resultMap type="indi.uhyils.pojo.DO.AlgorithmDO" id="AlgorithmMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="modelFilePath" column="model_file_path" jdbcType="VARCHAR"/>
+        <result property="accuracy" column="accuracy" jdbcType="NUMERIC"/>
+        <result property="inParamSize" column="in_param_size" jdbcType="INTEGER"/>
+        <result property="outParamSize" column="out_param_size" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="structure" column="structure" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="getById" resultMap="AlgorithmMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, name, model_file_path, accuracy,
+        in_param_size, out_param_size, type, structure
+        from sys_algorithm
+        where id = #{id}
+    </select>
+
+    <!--查询多个-->
+    <select id="getByIds" resultMap="AlgorithmMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, name, model_file_path, accuracy,
+        in_param_size, out_param_size, type, structure
+        from sys_algorithm
+        where id in
+        <foreach collection="ids" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <!--根据某些字段获取实例(不分页)-->
+    <select id="getByArgsNoPage" resultMap="AlgorithmMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, name, model_file_path, accuracy,
+        in_param_size, out_param_size, type, structure
+        from sys_algorithm
+        where 1=1
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
+    </select>
+
+    <!--根据某些字段获取实例(分页)-->
+    <select id="getByArgs" resultMap="AlgorithmMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, name, model_file_path, accuracy,
+        in_param_size, out_param_size, type, structure
+        from sys_algorithm
+        where 1=1
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+
+        <if test="order != null">
+            order by
+            <foreach collection="order.columns" item="item" index="index" separator=",">
+                ${item.columnName.name} ${item.symbol.name}
+            </foreach>
+        </if>
+
+        <if test="limit.number != null and limit.number != ''">
+            limit ${(limit.number-1) * limit.size},${ limit.number * limit.size}
+        </if>
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" parameterType="indi.uhyils.pojo.DO.AlgorithmDO">
+        insert into sys_algorithm(
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, name, model_file_path, accuracy,
+        in_param_size, out_param_size, type, structure)
+        values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser}, #{name},
+        #{modelFilePath}, #{accuracy}, #{inParamSize}, #{outParamSize}, #{type}, #{structure})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update" parameterType="indi.uhyils.pojo.DO.AlgorithmDO">
+        update sys_algorithm set
+        update_date = #{updateDate}
+        ,update_user = #{updateUser}
+        <if test="createDate != null">
+            ,create_date = #{createDate}
+        </if>
+        <if test="createUser != null">
+            ,create_user = #{createUser}
+        </if>
+        <if test="deleteFlag != null">
+            ,delete_flag = #{deleteFlag}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,remark = #{remark}
+        </if>
+        <if test="updateDate != null">
+            ,update_date = #{updateDate}
+        </if>
+        <if test="updateUser != null">
+            ,update_user = #{updateUser}
+        </if>
+        <if test="name != null and name != ''">
+            ,name = #{name}
+        </if>
+        <if test="modelFilePath != null and modelFilePath != ''">
+            ,model_file_path = #{modelFilePath}
+        </if>
+        <if test="accuracy != null">
+            ,accuracy = #{accuracy}
+        </if>
+        <if test="inParamSize != null">
+            ,in_param_size = #{inParamSize}
+        </if>
+        <if test="outParamSize != null">
+            ,out_param_size = #{outParamSize}
+        </if>
+        <if test="type != null">
+            ,type = #{type}
+        </if>
+        <if test="structure != null and structure != ''">
+            ,structure = #{structure}
+        </if>
+        where id = #{id}
+    </update>
+
+    <!--通过主键修改数据-->
+    <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.AlgorithmDO">
+        update sys_algorithm set
+        update_date = #{data.updateDate}
+        ,update_user = #{data.updateUser}
+        <if test="data.createDate != null">
+            ,create_date = #{data.createDate}
+        </if>
+        <if test="data.createUser != null">
+            ,create_user = #{data.createUser}
+        </if>
+        <if test="data.deleteFlag != null">
+            ,delete_flag = #{data.deleteFlag}
+        </if>
+        <if test="data.remark != null and data.remark != ''">
+            ,remark = #{data.remark}
+        </if>
+        <if test="data.updateDate != null">
+            ,update_date = #{data.updateDate}
+        </if>
+        <if test="data.updateUser != null">
+            ,update_user = #{data.updateUser}
+        </if>
+        <if test="data.name != null and data.name != ''">
+            ,name = #{data.name}
+        </if>
+        <if test="data.modelFilePath != null and data.modelFilePath != ''">
+            ,model_file_path = #{data.modelFilePath}
+        </if>
+        <if test="data.accuracy != null">
+            ,accuracy = #{data.accuracy}
+        </if>
+        <if test="data.inParamSize != null">
+            ,in_param_size = #{data.inParamSize}
+        </if>
+        <if test="data.outParamSize != null">
+            ,out_param_size = #{data.outParamSize}
+        </if>
+        <if test="data.type != null">
+            ,type = #{data.type}
+        </if>
+        <if test="data.structure != null and data.structure != ''">
+            ,structure = #{data.structure}
+        </if>
+        where delete_flag = 0
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+    </update>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.AlgorithmDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_algorithm set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="item.name != null and item.name != ''">
+                ,name = #{item.name}
+            </if>
+            <if test="item.modelFilePath != null and item.modelFilePath != ''">
+                ,model_file_path = #{item.modelFilePath}
+            </if>
+            <if test="item.accuracy != null">
+                ,accuracy = #{item.accuracy}
+            </if>
+            <if test="item.inParamSize != null">
+                ,in_param_size = #{item.inParamSize}
+            </if>
+            <if test="item.outParamSize != null">
+                ,out_param_size = #{item.outParamSize}
+            </if>
+            <if test="item.type != null">
+                ,type = #{item.type}
+            </if>
+            <if test="item.structure != null and item.structure != ''">
+                ,structure = #{item.structure}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <!--查询总条数-->
+    <select id="count" resultType="java.lang.Integer">
+        select count(*)
+        from sys_algorithm
+    </select>
+
+    <!--根据条件查询条数-->
+    <select id="countByArgs" resultType="java.lang.Integer">
+        select count(*)
+        from sys_algorithm
+        where 1=1
+        <if test="args != null">
+            <foreach item="item" index="index" collection="args">
+                and ${item.name} ${item.symbol} #{item.data}
+            </foreach>
+        </if>
+    </select>
+
+    <!--检查是否有重复-->
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        select count(*)
+        from sys_algorithm
+        where ${columnName} = #{value}
+    </select>
+</mapper>

@@ -1,10 +1,10 @@
-package indi.uhyils.protocol.rpc.provider;
+package indi.uhyils.protocol.rpc;
 
 
-import indi.uhyils.pojo.DTO.request.ProjectGenerateRequest;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.ProjectGenerateRequest;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 项目生成
@@ -21,5 +21,5 @@ public interface KproProvider extends BaseProvider {
      *
      * @return map<文件名, 内容>
      */
-    ServiceResult<HashMap<String, String>> projectGenerate(ProjectGenerateRequest request);
+    ServiceResult<Map<String, String>> projectGenerate(ProjectGenerateRequest request);
 }

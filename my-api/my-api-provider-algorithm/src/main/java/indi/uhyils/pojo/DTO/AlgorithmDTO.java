@@ -1,17 +1,16 @@
-package indi.uhyils.pojo.DO;
+package indi.uhyils.pojo.DTO;
 
-import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
- * 算法表(Algorithm)表 数据库实体类
+ * 算法表(Algorithm)表 对外数据传输载体
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年09月09日 20时58分05秒
+ * @date 文件创建日期 2021年09月09日 20时58分09秒
  */
-public class AlgorithmDO extends BaseDO {
+public class AlgorithmDTO extends IdDTO {
 
-    private static final long serialVersionUID = -76780493186880843L;
+    private static final long serialVersionUID = 839502688584316497L;
 
 
     /**

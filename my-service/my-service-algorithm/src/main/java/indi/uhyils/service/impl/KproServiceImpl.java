@@ -1,34 +1,35 @@
-package indi.uhyils.serviceImpl;
+package indi.uhyils.service.impl;
 
 import indi.uhyils.enum_.DbTypeEnum;
 import indi.uhyils.pojo.DTO.request.DbInformation;
-import indi.uhyils.pojo.DTO.request.ProjectGenerateRequest;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.rpc.annotation.RpcService;
-import indi.uhyils.protocol.rpc.provider.KproProvider;
+import indi.uhyils.service.KproService;
+import indi.uhyils.util.AssertUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.kpro.KproUtil;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import org.springframework.stereotype.Service;
+
 
 /**
- * 项目生成类
- *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年07月04日 18时31分
+ * @version 1.0
+ * @date 文件创建日期 2021年09月09日 21时23分
  */
-@RpcService
-public class KproProviderImpl implements KproProvider {
-
+@Service
+public class KproServiceImpl implements KproService {
 
     @Override
-    public ServiceResult<HashMap<String, String>> projectGenerate(ProjectGenerateRequest request) {
+    public Map<String, String> projectGenerate(List<DbInformation> list) {
         List<HashMap<String, String>> resultList = new ArrayList<>();
-        List<DbInformation> list = request.getList();
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 hh时mm分");
         String dateFormat = simpleDateFormat.format(date);
@@ -45,7 +46,7 @@ public class KproProviderImpl implements KproProvider {
                     resultList.add(KproUtil.getSqliteKpro(dbInformation, dateFormat));
                     break;
                 default:
-                    return ServiceResult.buildFailedResult("暂时不支持数据库类型", null);
+                    AssertUtil.assertTrue(false, "暂时不支持数据库类型");
             }
         }
         HashMap<String, String> result = new HashMap<>(16);
@@ -71,6 +72,6 @@ public class KproProviderImpl implements KproProvider {
                 LogUtil.error(this, e);
             }
         }
-        return ServiceResult.buildSuccessResult("生成成功", result);
+        return result;
     }
 }

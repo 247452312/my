@@ -5,6 +5,7 @@ import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.DO.RoleDO;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
@@ -105,7 +106,7 @@ public class DeptTest extends BaseTest {
 
     @Test
     public void addPower() throws Exception {
-        Dept dept = new Dept(deptId);
+        Dept dept = new Dept(new Identifier(deptId));
         dept.completion(deptRepository);
         Power power = new Power(powerId);
         power.completion(powerRepository);
