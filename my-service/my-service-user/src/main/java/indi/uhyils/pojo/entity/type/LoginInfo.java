@@ -1,15 +1,15 @@
-package indi.uhyils.pojo.entity;
+package indi.uhyils.pojo.entity.type;
 
+import indi.uhyils.pojo.entity.type.BaseType;
 import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.pojo.entity.type.UserName;
-import indi.uhyils.repository.UserRepository;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 09时15分
  */
-public class LoginInfo extends AbstractEntity {
+public class LoginInfo implements BaseType {
 
     private UserName username;
 

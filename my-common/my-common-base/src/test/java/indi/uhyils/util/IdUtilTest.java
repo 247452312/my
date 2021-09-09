@@ -29,7 +29,7 @@ public class IdUtilTest {
         int process = Runtime.getRuntime().availableProcessors();
         ThreadPoolExecutor executor = new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory(), new CallerRunsPolicy());
         Set<Long> set = Collections.synchronizedSet(new HashSet<>());
-        int size = 10000000;
+        int size = 100000;
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < size; i++) {
             executor.execute(() -> {

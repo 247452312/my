@@ -189,6 +189,7 @@ public class RedisLock {
             }
             Long incrBy = jedis.incrBy(key, -1L);
             if (incrBy == 0L) {
+                jedis.del(key);
                 return true;
             }
             return loopToWaitCountDownLatch(jedis, uniqueName);
@@ -220,7 +221,8 @@ public class RedisLock {
      * @throws InterruptedException
      */
     private boolean loopToWaitCountDownLatch(Redisable jedis, String uniqueName) throws InterruptedException {
-        while (Integer.parseInt(jedis.get(uniqueName)) <= 0 && !Thread.interrupted()) {
+        String key = REDIS_COUNT_DOWN_LATCH + uniqueName;
+        while (jedis.exists(key) && Integer.parseInt(jedis.get(key)) <= 0 && !Thread.interrupted()) {
             Thread.sleep(1000L);
         }
         return !Thread.interrupted();

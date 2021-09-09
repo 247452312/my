@@ -36,9 +36,12 @@ public class Menu extends AbstractDoEntity<MenuDO> {
         super(id, new MenuDO());
     }
 
+    public List<Dept> depts() {
+        return depts;
+    }
     public void removeSelf(MenuRepository rep, MenuAssembler assembler) {
         MenuTreeDTO node = findSelfNode(rep, assembler);
-        // 碾平为树
+        // 碾平树
         List<MenuDTO> menuDTOS = paveTree(node);
         List<Menu> collect = menuDTOS.stream().map(assembler::toEntity).collect(Collectors.toList());
         rep.remove(collect);

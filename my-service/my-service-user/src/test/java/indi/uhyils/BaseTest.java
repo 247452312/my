@@ -1,8 +1,10 @@
 package indi.uhyils;
 
+import indi.uhyils.util.AssertUtil;
 import indi.uhyils.util.LogUtil;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -34,5 +36,10 @@ public class BaseTest {
         LogUtil.info("after");
         long l = System.currentTimeMillis() - start;
         LogUtil.info("执行时间: " + l);
+    }
+
+    @Test
+    public void test() {
+        AssertUtil.assertTrue(true);
     }
 }
