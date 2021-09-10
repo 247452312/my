@@ -11,7 +11,7 @@ public class AssertUtilTest {
 
     @Test
     public void assertException() {
-        AssertUtil.assertException(()-> AssertUtil.assertException(() -> {
+        AssertUtil.assertException(() -> AssertUtil.assertException(() -> {
         }));
     }
 }

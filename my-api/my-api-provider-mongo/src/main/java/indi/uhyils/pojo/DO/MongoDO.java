@@ -29,12 +29,12 @@ public class MongoDO implements BaseDbSaveable {
     }
 
     @Override
-    public void preInsert(UserDTO userDO){
+    public void preInsert(UserDTO userDO) {
 
     }
 
     @Override
-    public void preInsert(){
+    public void preInsert() {
         // nothing to do
     }
 

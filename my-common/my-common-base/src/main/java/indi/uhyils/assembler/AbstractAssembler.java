@@ -63,6 +63,7 @@ public abstract class AbstractAssembler<DO extends BaseDO, ENTITY extends Abstra
     public List<ENTITY> listToEntity(List<DO> dos) {
         return dos.stream().map(t -> toEntity(t)).collect(Collectors.toList());
     }
+
     @Override
     public List<ENTITY> listDTOToEntity(List<DTO> dtos) {
         return dtos.stream().map(t -> toEntity(t)).collect(Collectors.toList());

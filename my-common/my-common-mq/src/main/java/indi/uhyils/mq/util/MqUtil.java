@@ -116,7 +116,6 @@ public class MqUtil {
      * @param msg      发送的信息的byte
      *
      * @return
-     *
      */
     public static void sendMsg(String exchange, String queue, String msg) {
         MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));

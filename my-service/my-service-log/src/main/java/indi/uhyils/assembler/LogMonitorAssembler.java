@@ -75,6 +75,5 @@ public class LogMonitorAssembler extends AbstractAssembler<LogMonitorDO, LogMoni
     }
 
 
-
 }
 

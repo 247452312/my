@@ -17,8 +17,8 @@ import indi.uhyils.pojo.DTO.request.RegisterProviderRequest;
 import indi.uhyils.pojo.DTO.request.RegisterPublishRequest;
 import indi.uhyils.pojo.DTO.request.RegisterSubscriberReqeust;
 import indi.uhyils.pojo.DTO.request.SendMessageRequest;
-import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.protocol.rpc.provider.MqProvider;
+import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -117,7 +117,7 @@ public class MqProviderImpl implements MqProvider {
 
     @Override
     public ServiceResult<Boolean> registerSubscriber(RegisterSubscriberReqeust request)
-            throws UserException {
+        throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
             return ServiceResult.buildSuccessResult(Boolean.FALSE);

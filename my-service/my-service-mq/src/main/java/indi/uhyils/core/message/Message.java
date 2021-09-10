@@ -2,7 +2,6 @@ package indi.uhyils.core.message;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.TopicType;
-
 import java.io.Serializable;
 
 /**
@@ -13,6 +12,7 @@ import java.io.Serializable;
  * @Version 1.0
  */
 public interface Message extends Serializable {
+
     /**
      * 获取消息
      *

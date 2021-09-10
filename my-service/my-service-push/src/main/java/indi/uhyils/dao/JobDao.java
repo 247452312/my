@@ -2,9 +2,8 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.JobDO;
-import org.apache.ibatis.annotations.Mapper;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 
 
 /**
@@ -25,6 +24,7 @@ public interface JobDao extends DefaultDao<JobDO> {
      * 暂停一个任务
      *
      * @param id
+     *
      * @return
      */
     Integer pause(Long id);
@@ -33,6 +33,7 @@ public interface JobDao extends DefaultDao<JobDO> {
      * 开启
      *
      * @param id id
+     *
      * @return 个数
      */
     Integer start(Long id);

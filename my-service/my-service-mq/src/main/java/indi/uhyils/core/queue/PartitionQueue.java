@@ -5,7 +5,6 @@ import indi.uhyils.core.register.Register;
 import indi.uhyils.core.register.logic.LogicEngineHelper;
 import indi.uhyils.core.topic.Topic;
 import indi.uhyils.exception.ExpressionInvalidException;
-
 import java.util.concurrent.Executor;
 
 /**
@@ -16,6 +15,7 @@ import java.util.concurrent.Executor;
  * @Version 1.0
  */
 public class PartitionQueue extends AbstractQueue {
+
     /**
      * 此队列对应的分区值
      */

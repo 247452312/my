@@ -1,8 +1,6 @@
 package indi.uhyils.pojo.DTO;
 
 
-import indi.uhyils.pojo.DTO.IdDTO;
-
 /**
  * 空间坐标表(Space)表 对外数据传输载体
  *

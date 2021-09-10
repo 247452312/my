@@ -1,7 +1,6 @@
 package indi.uhyils.core.register.logic;
 
 import indi.uhyils.exception.ExpressionInvalidException;
-
 import java.util.Arrays;
 
 /**
@@ -24,7 +23,9 @@ public class LogicEngineHelper {
      * @param expression 表达式
      * @param key        替换字符串中keyName的值
      * @param keyName    值的名称
+     *
      * @return
+     *
      * @throws ExpressionInvalidException
      */
     public static Boolean check(String expression, Object key, String keyName) throws ExpressionInvalidException {
@@ -61,7 +62,6 @@ public class LogicEngineHelper {
             return Boolean.FALSE;
         }
 
-
         for (Symbol value : VALUES) {
             final String sym = value.getSym();
             if (expression.contains(sym)) {
@@ -93,6 +93,7 @@ public class LogicEngineHelper {
      *
      * @param expression
      * @param key
+     *
      * @return
      */
     public static boolean check(String expression, Object key) throws ExpressionInvalidException {

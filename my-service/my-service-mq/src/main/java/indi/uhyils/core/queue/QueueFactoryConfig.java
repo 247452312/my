@@ -1,9 +1,8 @@
 package indi.uhyils.core.queue;
 
+import java.util.concurrent.TimeUnit;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author uhyils <247452312@qq.com>

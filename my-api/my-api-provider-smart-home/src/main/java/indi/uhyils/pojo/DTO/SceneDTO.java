@@ -1,8 +1,6 @@
 package indi.uhyils.pojo.DTO;
 
 
-import indi.uhyils.pojo.DTO.IdDTO;
-
 /**
  * 场景表(Scene)表 对外数据传输载体
  *

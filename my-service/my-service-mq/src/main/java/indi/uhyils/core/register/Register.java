@@ -3,7 +3,6 @@ package indi.uhyils.core.register;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.RegisterType;
-
 import java.io.Serializable;
 
 /**
@@ -40,6 +39,7 @@ public interface Register extends UrlLinkable, ChannelIdLinkable, Serializable {
      * 推送信息
      *
      * @param message
+     *
      * @return
      */
     Boolean pushMessage(Message message);

@@ -40,11 +40,11 @@ public class InsertSql extends Sql {
         if (query == null) {
             return;
         }
-        Map<String,SQLExpr> willChange = new HashMap<>(1);
+        Map<String, SQLExpr> willChange = new HashMap<>(1);
         willChange.put("delete_flag", new SQLNumberExpr(0));
         List<SQLSelectQueryBlock> queryBlocks = blockQuerys(query.getQuery());
         for (SQLSelectQueryBlock queryBlock : queryBlocks) {
-            changeQueryWhere(queryBlock,willChange);
+            changeQueryWhere(queryBlock, willChange);
         }
     }
 

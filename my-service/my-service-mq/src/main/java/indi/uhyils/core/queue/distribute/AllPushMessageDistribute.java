@@ -3,7 +3,6 @@ package indi.uhyils.core.queue.distribute;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.Queue;
 import indi.uhyils.core.register.Register;
-
 import java.util.Collection;
 
 /**

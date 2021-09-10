@@ -46,7 +46,7 @@ public class LogMonitorJvmStatus extends AbstractDoEntity<LogMonitorJvmStatusDO>
         if (fid() != null) {
             return;
         }
-        AssertUtil.assertTrue(unique != null,"服务状态缺少唯一标示" );
+        AssertUtil.assertTrue(unique != null, "服务状态缺少唯一标示");
         Identifier idByUnique = repository.getIdByUnique(unique);
         data.setFid(idByUnique.getId());
 

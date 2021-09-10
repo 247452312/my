@@ -1,10 +1,7 @@
 package indi.uhyils.pojo.trace;
 
 import indi.uhyils.context.MyTraceIdContext;
-import indi.uhyils.pojo.DO.TraceLogDO;
 import indi.uhyils.pojo.DTO.TraceLogDTO;
-import indi.uhyils.pojo.entity.TraceLog;
-import indi.uhyils.repository.base.BaseEntityRepository;
 
 
 /**

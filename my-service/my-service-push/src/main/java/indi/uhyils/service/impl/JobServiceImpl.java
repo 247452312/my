@@ -41,7 +41,7 @@ public class JobServiceImpl extends AbstractDoService<JobDO, Job, JobDTO, JobRep
     public Integer update(JobDTO dto, List<Arg> args) {
         Job job = assem.toEntity(dto);
         rep.change(job, args);
-        
+
         job.fillUser(UserContext.doGet());
         job.delJob();
         job.addSelfToJob();

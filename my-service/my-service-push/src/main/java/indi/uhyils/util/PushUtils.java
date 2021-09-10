@@ -1,14 +1,10 @@
 package indi.uhyils.util;
 
 import indi.uhyils.enum_.PushTypeEnum;
-import indi.uhyils.pojo.DO.ApiGroupDO;
 import indi.uhyils.pojo.DTO.PushMsgDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.entity.ApiGroup;
 import indi.uhyils.util.mail.SendMail;
 import indi.uhyils.util.page.SendPage;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 推送
@@ -46,7 +42,7 @@ public class PushUtils {
      *
      * @return
      */
-    public static PushMsgDTO pagePush(UserDTO userEntity, String title, String sendContent)  {
+    public static PushMsgDTO pagePush(UserDTO userEntity, String title, String sendContent) {
         Long userId = userEntity.getId();
         Boolean send = SendPage.send(userId, title, sendContent);
         PushMsgDTO pushMsgDTO = makeMsg(userEntity, title, sendContent, PushTypeEnum.PAGE, send);

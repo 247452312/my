@@ -14,10 +14,9 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.util.ByteProcessor;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * http协议发现者
@@ -28,11 +27,14 @@ import java.nio.charset.StandardCharsets;
  */
 @RpcSpi
 public class HttpProFinder implements Finder {
+
     /**
      * http请求名称
      */
     private static final String HTTP_NAME = "HTTP/1.1";
+
     private static final String HTTP = "HTTP";
+
     /**
      * http分隔符
      */
@@ -42,7 +44,8 @@ public class HttpProFinder implements Finder {
      * http请求的开头
      */
     private static final String[] HTTP_TYPES =
-            new String[]{"GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "OPTIONS", "CONNECT"};
+        new String[]{"GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "OPTIONS", "CONNECT"};
+
     /**
      * 要添加的解析器名称
      */
@@ -74,6 +77,7 @@ public class HttpProFinder implements Finder {
      *
      * @param byteBuf
      * @param crlfIndex
+     *
      * @return
      */
     private Boolean checkHttpName(ByteBuf byteBuf, int crlfIndex) {
@@ -118,8 +122,8 @@ public class HttpProFinder implements Finder {
         int secondCr = -1;
         while (byteBuf.isReadable()) {
             if (byteBuf.readByte() == (byte) '\r' && byteBuf.isReadable() && byteBuf.readByte() == (byte) '\n'
-                    && byteBuf.isReadable() && byteBuf.readByte() == (byte) '\r' && byteBuf.isReadable()
-                    && byteBuf.readByte() == (byte) '\n') {
+                && byteBuf.isReadable() && byteBuf.readByte() == (byte) '\r' && byteBuf.isReadable()
+                && byteBuf.readByte() == (byte) '\n') {
                 secondCr = byteBuf.readerIndex() - 4;
                 break;
             }

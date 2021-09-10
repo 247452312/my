@@ -5,9 +5,11 @@ import indi.uhyils.enum_.CodeEnum;
 import indi.uhyils.pojo.DO.ApiDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.Api;
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -15,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 负责api的发送等请求
@@ -29,6 +32,7 @@ public class ApiUtils {
      * 调用api群
      *
      * @param apis 已经排好序的api们
+     *
      * @return 结果
      */
     public static String callApi(List<Api> apis, UserDTO userEntity, Map<String, String> parameter) {
@@ -98,6 +102,7 @@ public class ApiUtils {
      * @param param     参数
      * @param httpHead  解析完成的请求头
      * @param paramByte 参数byte
+     *
      * @return 此次http结果
      */
     private static String getHttpResultString(Map<String, String> map, String result, int apiIndex, ApiDO api, String param, HashMap<String, String> httpHead, byte[] paramByte) {

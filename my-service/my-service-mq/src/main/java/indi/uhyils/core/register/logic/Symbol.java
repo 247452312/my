@@ -106,6 +106,7 @@ public enum Symbol {
      *
      * @param key    值
      * @param target 目标值
+     *
      * @return
      */
     public Boolean compare(Object key, String target) throws ExpressionInvalidException {

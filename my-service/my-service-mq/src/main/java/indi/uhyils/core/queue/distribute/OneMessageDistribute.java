@@ -3,7 +3,6 @@ package indi.uhyils.core.queue.distribute;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.Queue;
 import indi.uhyils.core.register.Register;
-
 import java.util.Collection;
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ public class OneMessageDistribute extends AbstractMessageDistributeRunnable {
     }
 
     @Override
-    public void sendMessage(Message message, Collection<Register> registers){
+    public void sendMessage(Message message, Collection<Register> registers) {
         Optional<Register> any = registers.stream().findAny();
         if (any.isPresent()) {
             Register register = any.get();

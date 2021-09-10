@@ -2,7 +2,6 @@ package indi.uhyils.pojo.DTO.response;
 
 import indi.uhyils.pojo.DTO.BaseDTO;
 import indi.uhyils.pojo.DTO.MenuDTO;
-import java.io.Serializable;
 import java.util.List;
 
 /**

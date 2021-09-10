@@ -4,7 +4,6 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-
 import java.io.Serializable;
 
 /**
@@ -20,18 +19,22 @@ public class ProtocolParsingModel implements Serializable {
      * 协议类型
      */
     private String protocolName;
+
     /**
      * ip
      */
     private String ip;
+
     /**
      * 方法名称
      */
     private String methodName;
+
     /**
      * 参数类型
      */
     private Class[] paramsType;
+
     /**
      * 参数名称
      */

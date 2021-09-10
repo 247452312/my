@@ -8,6 +8,7 @@ package indi.uhyils.pojo.cqe.query;
 public class KeyQuery implements BaseQuery {
 
     private Long redisId;
+
     private String key;
 
     public String getKey() {

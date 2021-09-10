@@ -3,7 +3,6 @@ package indi.uhyils.core.queue;
 import indi.uhyils.core.queue.distribute.AllPushMessageDistribute;
 import indi.uhyils.core.register.Register;
 import indi.uhyils.core.topic.Topic;
-
 import java.util.concurrent.Executor;
 
 /**

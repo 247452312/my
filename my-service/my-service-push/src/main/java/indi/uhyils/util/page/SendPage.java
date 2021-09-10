@@ -18,7 +18,7 @@ import indi.uhyils.util.SpringUtil;
  */
 public class SendPage {
 
-    public static Boolean send(Long userId, String title, String sendContent){
+    public static Boolean send(Long userId, String title, String sendContent) {
         // 获取dao
         SendPageDao bean = SpringUtil.getBean(SendPageDao.class);
         PushPageMsgAssembler assembler = SpringUtil.getBean(PushPageMsgAssembler.class);

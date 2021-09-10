@@ -10,7 +10,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.ReferenceCountUtil;
-
 import java.util.List;
 
 /**
@@ -26,6 +25,7 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
      * 尝试解析协议时,拆分协议的长度
      */
     private static final Integer TRY_FIND_BYTE_BUF_LENGTH = 100;
+
     /**
      * 协议解析器
      */

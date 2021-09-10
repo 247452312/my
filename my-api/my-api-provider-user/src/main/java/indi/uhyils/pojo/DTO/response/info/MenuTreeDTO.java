@@ -131,16 +131,16 @@ public class MenuTreeDTO implements BaseDTO {
         return menuDTO;
     }
 
+    public void setMenuDTO(MenuDTO menuDTO) {
+        this.menuDTO = menuDTO;
+    }
+
     public String getHref() {
         return href;
     }
 
     public void setHref(String href) {
         this.href = href;
-    }
-
-    public void setMenuDTO(MenuDTO menuDTO) {
-        this.menuDTO = menuDTO;
     }
 
     public List<MenuTreeDTO> getChild() {

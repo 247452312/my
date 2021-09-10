@@ -1,16 +1,23 @@
 package indi.uhyils.util;
 
+import static org.quartz.TriggerBuilder.newTrigger;
+
+import indi.uhyils.pojo.DO.JobDO;
 import indi.uhyils.protocol.task.ExecutionJob;
 import indi.uhyils.protocol.task.JobConfig;
-import indi.uhyils.pojo.DO.JobDO;
-import org.quartz.*;
+import java.util.Date;
+import javax.annotation.Resource;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.CronTrigger;
+import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
+import org.quartz.TriggerKey;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-import java.util.Date;
-
-import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
  * 定时任务管理类
@@ -29,14 +36,14 @@ public class ScheduledManager {
         try {
             // 构建job信息
             JobDetail jobDetail = JobBuilder.newJob(ExecutionJob.class).
-                    withIdentity(JobConfig.JOB_NAME + jobEntity.getId()).build();
+                withIdentity(JobConfig.JOB_NAME + jobEntity.getId()).build();
 
             //通过触发器名和cron 表达式创建 Trigger
             Trigger cronTrigger = newTrigger()
-                    .withIdentity(JobConfig.JOB_NAME + jobEntity.getId())
-                    .startNow()
-                    .withSchedule(CronScheduleBuilder.cronSchedule(jobEntity.getCron()))
-                    .build();
+                .withIdentity(JobConfig.JOB_NAME + jobEntity.getId())
+                .startNow()
+                .withSchedule(CronScheduleBuilder.cronSchedule(jobEntity.getCron()))
+                .build();
 
             cronTrigger.getJobDataMap().put(JobConfig.JOB_KEY, jobEntity);
 

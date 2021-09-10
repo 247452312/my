@@ -16,6 +16,7 @@ public class SendPageBuild {
      * @param userId  用户id
      * @param title   标题
      * @param content 内容
+     *
      * @return 页面推送
      */
     public static PushPageMsgDTO buildSendPage(Long userId, String title, String content) {

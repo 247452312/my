@@ -6,7 +6,6 @@ import indi.uhyils.context.MyContext;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.util.LogUtil;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

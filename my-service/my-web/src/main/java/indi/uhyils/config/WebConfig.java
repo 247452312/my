@@ -16,7 +16,7 @@ public class WebConfig {
 
 
     /**
-     *  审核线程池的对象
+     * 审核线程池的对象
      *
      * @return
      */

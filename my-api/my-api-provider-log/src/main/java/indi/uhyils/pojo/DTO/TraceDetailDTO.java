@@ -13,7 +13,6 @@ public class TraceDetailDTO extends TraceIdDTO {
     private static final long serialVersionUID = -20452659290526017L;
 
 
-
     private String hashCode;
 
     /**
@@ -34,7 +33,6 @@ public class TraceDetailDTO extends TraceIdDTO {
     private String otherOne;
 
     private String otherTwo;
-
 
 
     public String getHashCode() {

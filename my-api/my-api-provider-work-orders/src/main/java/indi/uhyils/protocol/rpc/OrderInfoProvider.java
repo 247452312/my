@@ -98,6 +98,6 @@ public interface OrderInfoProvider extends DTOProvider<OrderInfoDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> approvalOrder(ApprovalOrderEvent request) ;
+    ServiceResult<Boolean> approvalOrder(ApprovalOrderEvent request);
 }
 

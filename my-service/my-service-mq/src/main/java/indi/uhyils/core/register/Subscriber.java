@@ -11,6 +11,7 @@ import indi.uhyils.enum_.RegisterType;
  * @date 文件创建日期 2021年04月16日 09时02分
  */
 public class Subscriber extends AbstractRegister {
+
     private Subscriber(String url, Integer port, OutDealTypeEnum outDealTypeEnum) {
         super(url, null, outDealTypeEnum);
     }

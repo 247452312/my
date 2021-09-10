@@ -1,7 +1,6 @@
 package indi.uhyils.netty.util;
 
 import io.netty.channel.Channel;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,6 +24,7 @@ public class NettyChannelUtil {
      * 添加channel
      *
      * @param channel 长连接
+     *
      * @return
      */
     public static Boolean addChannel(Channel channel) {
@@ -41,6 +41,7 @@ public class NettyChannelUtil {
      * 添加channel
      *
      * @param channel 长连接
+     *
      * @return
      */
     public static Boolean addChannelIfNoContains(Channel channel) {
@@ -55,6 +56,7 @@ public class NettyChannelUtil {
      * 获取channel
      *
      * @param channelId
+     *
      * @return
      */
     public static Channel getChannel(String channelId) {
@@ -65,6 +67,7 @@ public class NettyChannelUtil {
      * 删除channel
      *
      * @param channelId
+     *
      * @return
      */
     public static Channel removeChannel(String channelId) {

@@ -6,7 +6,6 @@ import indi.uhyils.core.register.Register;
 import indi.uhyils.enum_.OutDealTypeEnum;
 import indi.uhyils.enum_.TopicType;
 import indi.uhyils.exception.ExpressionInvalidException;
-
 import java.io.Serializable;
 
 /**
@@ -17,6 +16,7 @@ import java.io.Serializable;
  * @Version 1.0
  */
 public interface Topic extends Serializable {
+
     /**
      * 获取topic名称
      *
@@ -49,6 +49,7 @@ public interface Topic extends Serializable {
      * 保存消息
      *
      * @param message 消息
+     *
      * @return
      */
     Boolean saveMessage(Message message) throws ExpressionInvalidException;
@@ -57,6 +58,7 @@ public interface Topic extends Serializable {
      * 添加新的注册者到这个topic上
      *
      * @param register
+     *
      * @return
      */
     Boolean addNewRegister(Register register) throws ExpressionInvalidException;
@@ -65,6 +67,7 @@ public interface Topic extends Serializable {
      * 设置队列工厂
      *
      * @param factory
+     *
      * @return
      */
     void setQueueFactory(QueueFactory factory);
@@ -73,6 +76,7 @@ public interface Topic extends Serializable {
      * 获取一条信息
      *
      * @param key 如果存在则添加,如果不存在就为null
+     *
      * @return
      */
     Message getMessage(String key) throws InterruptedException;

@@ -12,6 +12,7 @@ import indi.uhyils.exception.UserException;
  * @Version 1.0
  */
 public class MessageFactory {
+
     public static Message createMessage(JSONObject data, String key, Topic topic) throws UserException {
         TopicType topicType = topic.getTopicType();
         Message message;

@@ -2,14 +2,13 @@ package indi.uhyils.serviceImpl;
 
 import indi.uhyils.core.topic.Topic;
 import indi.uhyils.core.topic.TopicFactory;
-import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.provider.MqInfoService;
-import org.springframework.stereotype.Service;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -19,6 +18,7 @@ import java.util.Map;
  */
 @Service
 public class MqInfoServiceImpl implements MqInfoService {
+
     @Override
     public ServiceResult<ArrayList<Topic>> getAllInfo(DefaultCQE request) throws NoSuchFieldException, IllegalAccessException {
         Field topicMapField = TopicFactory.class.getDeclaredField("topicMap");

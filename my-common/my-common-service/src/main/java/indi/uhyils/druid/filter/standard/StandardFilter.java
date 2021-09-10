@@ -35,7 +35,7 @@ public class StandardFilter extends FilterEventAdapter {
 
     @Override
     public PreparedStatementProxy connection_prepareStatement(FilterChain chain, ConnectionProxy connection, String sqlStr) throws SQLException {
-        Sql sql = new Sql(sqlStr,ignoreTableNames);
+        Sql sql = new Sql(sqlStr, ignoreTableNames);
         sql.parse();
         Sql.SqlType type = sql.type();
         Long userId = getUserId();
