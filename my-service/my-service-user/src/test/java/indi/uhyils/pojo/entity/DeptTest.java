@@ -1,17 +1,22 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.BaseTest;
+import indi.uhyils.enum_.OrderSymbolEnum;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.DO.RoleDO;
+import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.cqe.query.Column;
+import indi.uhyils.pojo.cqe.query.ColumnName;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.util.AssertUtil;
-import indi.uhyils.util.LogUtil;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,7 +51,6 @@ public class DeptTest extends BaseTest {
     private Long powerId;
 
     private Long menuId;
-
 
 
     @Override
@@ -370,6 +374,32 @@ public class DeptTest extends BaseTest {
         List<Dept> depts2 = (List<Dept>) depts.get(role1);
         AssertUtil.assertTrue(depts2 != null);
         AssertUtil.assertTrue(depts2.size() == 0);
+    }
 
+    @Test
+    public void testPage() {
+        // dept
+        DeptDO deptDO = new DeptDO();
+        deptDO.setName("test");
+        for (int i = 0; i < 23; i++) {
+            deptDO.setId(null);
+            Dept dept = new Dept(deptDO);
+            deptRepository.save(dept);
+        }
+
+        Limit limit = new Limit();
+        limit.setPage(true);
+        limit.setNumber(0);
+        limit.setSize(10);
+        Order order = new Order();
+        Column column = new Column();
+        ColumnName columnName = new ColumnName();
+        columnName.setName("name");
+        column.setColumnName(columnName);
+        column.setSymbol(OrderSymbolEnum.ASC);
+        order.setColumns(Arrays.asList(column));
+        Page<Dept> deptPage = deptRepository.find(Arrays.asList(), order, limit);
+        AssertUtil.assertTrue(deptPage.getList().size() == 10);
+        AssertUtil.assertTrue(deptPage.getCount() >= 23);
     }
 }

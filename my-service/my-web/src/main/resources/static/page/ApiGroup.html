@@ -71,9 +71,11 @@
         };
         $.reload = function (page, size, args) {
             pushRequest("ApiGroupProvider", "getByArgs", {
-                page: page,
-                size: size,
-                paging: true,
+                limit:{
+                    page: page,
+                    size: size,
+                    paging: true
+                },
                 args: args
             }, function (data) {
                 table.render({

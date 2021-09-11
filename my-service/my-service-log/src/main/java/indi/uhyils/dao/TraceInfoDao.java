@@ -27,14 +27,6 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoDO> {
      */
     Long getCountByTypeAndStartTime(@Param("code") Integer code, @Param("time") Long time);
 
-    /**
-     * 获取traceInfo
-     *
-     * @param request
-     *
-     * @return
-     */
-    List<TraceInfoDO> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
 
     /**
      * 获取traceInfo
@@ -59,7 +51,7 @@ public interface TraceInfoDao extends DefaultDao<TraceInfoDO> {
      *
      * @return
      */
-    Integer getTraceStatisticsCount(BlackQuery request);
+    Long getTraceStatisticsCount(BlackQuery request);
 
     /**
      * 根据traceId 和 rpcId 获取详情

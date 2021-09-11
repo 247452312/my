@@ -2,7 +2,7 @@ package indi.uhyils.util.page;
 
 import indi.uhyils.assembler.PushPageMsgAssembler;
 import indi.uhyils.context.MyContext;
-import indi.uhyils.dao.SendPageDao;
+import indi.uhyils.dao.PushPageMsgDao;
 import indi.uhyils.pojo.DO.PushPageMsgDO;
 import indi.uhyils.pojo.DTO.PushPageMsgDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
@@ -20,7 +20,7 @@ public class SendPage {
 
     public static Boolean send(Long userId, String title, String sendContent) {
         // 获取dao
-        SendPageDao bean = SpringUtil.getBean(SendPageDao.class);
+        PushPageMsgDao bean = SpringUtil.getBean(PushPageMsgDao.class);
         PushPageMsgAssembler assembler = SpringUtil.getBean(PushPageMsgAssembler.class);
         // 获取要插入的bean
         PushPageMsgDTO sendPageEntity = SendPageBuild.buildSendPage(userId, title, sendContent);

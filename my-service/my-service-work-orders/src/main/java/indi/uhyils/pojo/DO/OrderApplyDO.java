@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,46 +9,54 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时58分48秒
+ * @date 文件创建日期 2021年09月11日 10时46分02秒
  */
+@TableName(value = "sys_order_apply")
 public class OrderApplyDO extends BaseDO {
 
-    private static final long serialVersionUID = 623434633159793646L;
+    private static final long serialVersionUID = 822118896954524886L;
 
 
     /**
      * 申请人,上一个节点的处理人
      */
+    @TableField
     private Long applyUserId;
 
     /**
      * 申请处理的工单id
      */
+    @TableField
     private Long orderId;
 
     /**
      * 工单节点id
      */
+    @TableField
     private Long orderNodeId;
 
     /**
      * 此工单监管人id
      */
+    @TableField
     private Long monitorUserId;
 
     /**
      * 目标人id
      */
+    @TableField
     private Long targetUserId;
 
     /**
      * 申请类型 0->转交申请
      */
+    @TableField
     private Integer type;
 
     /**
      * 申请状态 0->未查看 1->未受理 2->已受理 3->已同意 4->已驳回
      */
+    @TableField
     private Integer status;
 
 

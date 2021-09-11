@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.ContentDao">
+    <resultMap type="indi.uhyils.pojo.DO.ContentDO" id="ContentMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="title1" column="title1" jdbcType="VARCHAR"/>
+        <result property="title2" column="title2" jdbcType="VARCHAR"/>
+        <result property="title3" column="title3" jdbcType="VARCHAR"/>
+        <result property="title4" column="title4" jdbcType="VARCHAR"/>
+        <result property="title5" column="title5" jdbcType="VARCHAR"/>
+        <result property="title6" column="title6" jdbcType="VARCHAR"/>
+        <result property="var1" column="var1" jdbcType="VARCHAR"/>
+        <result property="var2" column="var2" jdbcType="VARCHAR"/>
+        <result property="var3" column="var3" jdbcType="VARCHAR"/>
+        <result property="var4" column="var4" jdbcType="VARCHAR"/>
+        <result property="var5" column="var5" jdbcType="VARCHAR"/>
+        <result property="var6" column="var6" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.ContentDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_content set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="item.name != null and item.name != ''">
+                ,name = #{item.name}
+            </if>
+            <if test="item.title1 != null and item.title1 != ''">
+                ,title1 = #{item.title1}
+            </if>
+            <if test="item.title2 != null and item.title2 != ''">
+                ,title2 = #{item.title2}
+            </if>
+            <if test="item.title3 != null and item.title3 != ''">
+                ,title3 = #{item.title3}
+            </if>
+            <if test="item.title4 != null and item.title4 != ''">
+                ,title4 = #{item.title4}
+            </if>
+            <if test="item.title5 != null and item.title5 != ''">
+                ,title5 = #{item.title5}
+            </if>
+            <if test="item.title6 != null and item.title6 != ''">
+                ,title6 = #{item.title6}
+            </if>
+            <if test="item.var1 != null and item.var1 != ''">
+                ,var1 = #{item.var1}
+            </if>
+            <if test="item.var2 != null and item.var2 != ''">
+                ,var2 = #{item.var2}
+            </if>
+            <if test="item.var3 != null and item.var3 != ''">
+                ,var3 = #{item.var3}
+            </if>
+            <if test="item.var4 != null and item.var4 != ''">
+                ,var4 = #{item.var4}
+            </if>
+            <if test="item.var5 != null and item.var5 != ''">
+                ,var5 = #{item.var5}
+            </if>
+            <if test="item.var6 != null and item.var6 != ''">
+                ,var6 = #{item.var6}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getByName" resultMap="ContentMap">
+        select
+        id,
+        create_date,
+        create_user,
+        delete_flag,
+        remark,
+        update_date,
+        update_user,
+        name,
+        title1,
+        title2,
+        title3,
+        title4,
+        title5,
+        title6,
+        var1,
+        var2,
+        var3,
+        var4,
+        var5,
+        var6
+        from sys_content a
+        where delete_flag = 0
+        and name = #{name}
+    </select>
+
+</mapper>

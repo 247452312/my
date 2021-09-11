@@ -78,7 +78,7 @@ public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends Abstra
     }
 
     @Override
-    public Integer count(List<Arg> args) {
+    public Long count(List<Arg> args) {
         return rep.count(args);
     }
 

@@ -51,7 +51,7 @@ public class ExecutionJob extends QuartzJobBean {
             //更新状态
             JobDO dO = jobAssembler.toDo(quartzJob);
             dO.preUpdate();
-            dao.update(dO);
+            dao.updateById(dO);
             manager.deleteJob(dO);
         }
     }

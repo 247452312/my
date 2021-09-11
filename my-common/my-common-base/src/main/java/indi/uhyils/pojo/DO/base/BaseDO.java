@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.DO.base;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import indi.uhyils.context.UserContext;
 import indi.uhyils.pojo.DTO.UserDTO;
 
@@ -14,31 +15,37 @@ public abstract class BaseDO extends BaseIdDO {
     /**
      * 创建时间
      */
+    @TableField(select = false)
     private Long createDate;
 
     /**
      * 创建人
      */
+    @TableField(select = false)
     private Long createUser;
 
     /**
      * 最后更新时间
      */
+    @TableField(select = false)
     private Long updateDate;
 
     /**
      * 更新人
      */
+    @TableField(select = false)
     private Long updateUser;
 
     /**
      * 删除标志 默认为0
      */
+    @TableField(select = false)
     private Boolean deleteFlag;
 
     /**
      * 备注
      */
+    @TableField(select = false)
     private String remark;
 
     @Override

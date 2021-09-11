@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.TraceDetailDao">
+    <resultMap type="indi.uhyils.pojo.DO.TraceDetailDO" id="TraceDetailMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="traceId" column="trace_id" jdbcType="INTEGER"/>
+        <result property="hashCode" column="hash_code" jdbcType="VARCHAR"/>
+        <result property="endTime" column="end_time" jdbcType="INTEGER"/>
+        <result property="useTime" column="use_time" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="otherOne" column="other_one" jdbcType="VARCHAR"/>
+        <result property="otherTwo" column="other_two" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="INTEGER"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.TraceDetailDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_trace_detail set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.traceId != null">
+                ,trace_id = #{item.traceId}
+            </if>
+            <if test="item.hashCode != null and item.hashCode != ''">
+                ,hash_code = #{item.hashCode}
+            </if>
+            <if test="item.endTime != null">
+                ,end_time = #{item.endTime}
+            </if>
+            <if test="item.useTime != null">
+                ,use_time = #{item.useTime}
+            </if>
+            <if test="item.type != null">
+                ,type = #{item.type}
+            </if>
+            <if test="item.otherOne != null and item.otherOne != ''">
+                ,other_one = #{item.otherOne}
+            </if>
+            <if test="item.otherTwo != null and item.otherTwo != ''">
+                ,other_two = #{item.otherTwo}
+            </if>
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null and item.createUser != ''">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null and item.updateUser != ''">
+                ,update_user = #{item.updateUser}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getTimeByIp" resultType="java.lang.Long">
+        select end_time
+        from sys_trace_detail
+        where other_two = #{ip}
+        and delete_flag = 0
+        order by end_time desc
+        limit #{size}
+    </select>
+</mapper>

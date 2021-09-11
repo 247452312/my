@@ -6,7 +6,7 @@ import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
-import indi.uhyils.protocol.rpc.provider.LogMonitorProvider;
+import indi.uhyils.protocol.rpc.LogMonitorProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.LogMonitorService;

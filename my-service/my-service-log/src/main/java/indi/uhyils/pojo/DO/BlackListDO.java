@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,16 +9,18 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月29日 16时58分52秒
+ * @date 文件创建日期 2021年09月11日 10时39分29秒
  */
+@TableName(value = "sys_black_list")
 public class BlackListDO extends BaseDO {
 
-    private static final long serialVersionUID = -90750627793561708L;
+    private static final long serialVersionUID = 312396996558425264L;
 
 
     /**
      * 用户ip
      */
+    @TableField
     private String ip;
 
 

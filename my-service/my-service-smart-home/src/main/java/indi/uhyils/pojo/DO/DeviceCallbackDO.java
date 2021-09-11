@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,26 +9,30 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时04分19秒
+ * @date 文件创建日期 2021年09月11日 10时15分37秒
  */
+@TableName(value = "sys_device_callback")
 public class DeviceCallbackDO extends BaseDO {
 
-    private static final long serialVersionUID = -44248131058536771L;
+    private static final long serialVersionUID = 606507188685476846L;
 
 
     /**
      * 有回调的设备id
      */
+    @TableField
     private Long deviceId;
 
     /**
      * 回调url
      */
+    @TableField
     private String url;
 
     /**
      * 意义
      */
+    @TableField
     private String meaning;
 
 

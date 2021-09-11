@@ -1,7 +1,7 @@
 package indi.uhyils.service;
 
 
-import indi.uhyils.pojo.DTO.request.DbInformation;
+import indi.uhyils.pojo.DTO.request.DbInformationDTO;
 import java.util.List;
 import java.util.Map;
 
@@ -20,5 +20,5 @@ public interface KproService extends BaseService {
      *
      * @return map<文件名, 内容>
      */
-    Map<String, String> projectGenerate(List<DbInformation> list);
+    Map<String, String> projectGenerate(List<DbInformationDTO> list);
 }

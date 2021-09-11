@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,41 +9,48 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时59分09秒
+ * @date 文件创建日期 2021年09月11日 10时46分05秒
  */
+@TableName(value = "sys_order_info")
 public class OrderInfoDO extends BaseDO {
 
-    private static final long serialVersionUID = -71571334208480376L;
+    private static final long serialVersionUID = -47058371114257621L;
 
 
     /**
      * 工单名称
      */
+    @TableField
     private String name;
 
     /**
      * 工单描述
      */
+    @TableField
     private String desc;
 
     /**
      * 优先级 0->普通 1->加急
      */
+    @TableField
     private Integer priority;
 
     /**
      * 是否是子流程
      */
+    @TableField
     private Integer son;
 
     /**
      * 监管人id
      */
+    @TableField
     private Long monitorUserId;
 
     /**
      * 可查询人id
      */
+    @TableField
     private String queryUserIds;
 
     /**
@@ -53,16 +62,19 @@ public class OrderInfoDO extends BaseDO {
      * 4->停用中
      * 5->回退中
      */
+    @TableField
     private Integer status;
 
     /**
      * 运行时限(分钟)
      */
+    @TableField
     private Integer limitTime;
 
     /**
      * 类型 dict的OrderType
      */
+    @TableField
     private Integer type;
 
 

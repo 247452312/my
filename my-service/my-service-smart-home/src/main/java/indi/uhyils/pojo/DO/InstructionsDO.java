@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,31 +9,36 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时04分22秒
+ * @date 文件创建日期 2021年09月11日 10时15分37秒
  */
+@TableName(value = "sys_instructions")
 public class InstructionsDO extends BaseDO {
 
-    private static final long serialVersionUID = 474993756422802760L;
+    private static final long serialVersionUID = 142229493471512946L;
 
 
     /**
      * 被动方设备id
      */
+    @TableField
     private Long passiveDeviceId;
 
     /**
      * 传递中介(路由器 or 红外线发射器)
      */
+    @TableField
     private String transmissionIntermediary;
 
     /**
      * 指令代码(与程序中的enum相对应)
      */
+    @TableField
     private Integer instructionsTypeCode;
 
     /**
      * 指令描述
      */
+    @TableField
     private String instructionsDescribe;
 
 

@@ -87,9 +87,11 @@
     });
     var reload = function (page, size, args) {
       pushRequest("TraceInfoProvider", "getTraceInfoByArgAndPage", {
-        page: page,
-        size: size,
-        paging: true,
+        limit:{
+          number: page,
+          size: size,
+          page: true
+        },
         traceId: args['traceId'],
         startTime: args['time'],
         type: args['type']

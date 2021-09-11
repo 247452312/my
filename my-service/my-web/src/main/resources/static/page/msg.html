@@ -39,9 +39,11 @@
         $.reloadTable = function () {
             var reload = function (page, size, args) {
                 pushRequest("MsgProvider", "getByArgs", {
-                    page: page,
-                    size: size,
-                    paging: true,
+                    limit:{
+          number: page,
+          size: size,
+          page: true
+        },
                     args: args
                 }, function (data) {
                     table.render({

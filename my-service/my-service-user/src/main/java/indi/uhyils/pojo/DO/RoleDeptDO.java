@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,15 +9,18 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时33分02秒
+ * @date 文件创建日期 2021年09月11日 08时53分19秒
  */
+@TableName(value = "sys_role_dept")
 public class RoleDeptDO extends BaseDO {
 
-    private static final long serialVersionUID = 629934802592353611L;
+    private static final long serialVersionUID = -25819619114186522L;
 
 
+    @TableField
     private Long deptId;
 
+    @TableField
     private Long roleId;
 
 

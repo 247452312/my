@@ -91,7 +91,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 根据条件查询出来的数量
      */
-    ServiceResult<Integer> count(BaseArgQuery order);
+    ServiceResult<Long> count(BaseArgQuery order);
 
 
 }

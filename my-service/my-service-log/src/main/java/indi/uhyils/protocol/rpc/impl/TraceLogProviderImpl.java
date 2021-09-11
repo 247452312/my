@@ -2,7 +2,7 @@ package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.TraceLogDTO;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
-import indi.uhyils.protocol.rpc.provider.TraceLogProvider;
+import indi.uhyils.protocol.rpc.TraceLogProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.TraceLogService;

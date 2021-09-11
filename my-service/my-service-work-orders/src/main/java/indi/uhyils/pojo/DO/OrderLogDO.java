@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,41 +9,48 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时59分15秒
+ * @date 文件创建日期 2021年09月11日 10时46分06秒
  */
+@TableName(value = "sys_order_log")
 public class OrderLogDO extends BaseDO {
 
-    private static final long serialVersionUID = -93680491410966065L;
+    private static final long serialVersionUID = 851502791971362500L;
 
 
     /**
      * 主表id
      */
+    @TableField
     private Long infoId;
 
     /**
      * 节点id
      */
+    @TableField
     private Long nodeId;
 
     /**
      * 处理人id(冗余)
      */
+    @TableField
     private Long dealUserId;
 
     /**
      * 监管人id(冗余)
      */
+    @TableField
     private Long monitorUserId;
 
     /**
      * 处理结果0->处理成功 1->处理失败 2->处理终止 3->已转交
      */
+    @TableField
     private Integer resultStatus;
 
     /**
      * 错误原因(只要不是处理成功就要填写此列)
      */
+    @TableField
     private String faultInfo;
 
 

@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,61 +9,72 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时58分59秒
+ * @date 文件创建日期 2021年09月11日 10时46分04秒
  */
+@TableName(value = "sys_order_base_node_field")
 public class OrderBaseNodeFieldDO extends BaseDO {
 
-    private static final long serialVersionUID = -69640920122550163L;
+    private static final long serialVersionUID = 411568119308593727L;
 
 
     /**
      * 节点id
      */
+    @TableField
     private Long baseOrderId;
 
     /**
      * 属性名称
      */
+    @TableField
     private String name;
 
     /**
      * 属性备注
      */
+    @TableField
     private String desc;
 
     /**
      * 默认值
      */
+    @TableField
     private String defaultValue;
 
     /**
      * 是否可以为空
      */
+    @TableField
     private Integer empty;
 
     /**
      * 是否可编辑
      */
+    @TableField
     private Integer edit;
 
     /**
      * 字段类型(1->编辑框 2->单选框 3->多选框 4->下拉框 5->文本框)
      */
+    @TableField
     private Integer type;
 
     /**
      * 数值类型 1->字符串 2->数值 3->只允许英文 4->email 5->日期)
      */
+    @TableField
     private Integer valueType;
 
     /**
      * 数据来源
      */
+    @TableField
     private Integer dataSources;
 
     /**
      * 如果是单选,多选,下拉框,那么具体的值关联id
      */
+    @TableField
     private Long relationId;
 
 

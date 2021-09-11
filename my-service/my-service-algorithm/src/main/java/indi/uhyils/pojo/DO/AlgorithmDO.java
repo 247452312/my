@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,46 +9,54 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年09月09日 20时58分05秒
+ * @date 文件创建日期 2021年09月11日 10时51分25秒
  */
+@TableName(value = "sys_algorithm")
 public class AlgorithmDO extends BaseDO {
 
-    private static final long serialVersionUID = -76780493186880843L;
+    private static final long serialVersionUID = -49241463737845804L;
 
 
     /**
      * 算法名称
      */
+    @TableField
     private String name;
 
     /**
      * 模型所在地
      */
+    @TableField
     private String modelFilePath;
 
     /**
      * 准确率
      */
+    @TableField
     private Double accuracy;
 
     /**
      * 输入参数
      */
+    @TableField
     private Integer inParamSize;
 
     /**
      * 输出参数
      */
+    @TableField
     private Integer outParamSize;
 
     /**
      * 算法类型(1->深度学习,2->神经网络)
      */
+    @TableField
     private Integer type;
 
     /**
      * 算法结构,load时用
      */
+    @TableField
     private String structure;
 
 

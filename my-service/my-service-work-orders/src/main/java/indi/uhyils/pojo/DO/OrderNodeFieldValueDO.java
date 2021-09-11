@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,21 +9,24 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时59分26秒
+ * @date 文件创建日期 2021年09月11日 10时46分08秒
  */
+@TableName(value = "sys_order_node_field_value")
 public class OrderNodeFieldValueDO extends BaseDO {
 
-    private static final long serialVersionUID = 848767190633057261L;
+    private static final long serialVersionUID = -54256949049460778L;
 
 
     /**
      * 对应节点属性的id
      */
+    @TableField
     private Long nodeFieldId;
 
     /**
      * 真实值
      */
+    @TableField
     private String realValue;
 
 

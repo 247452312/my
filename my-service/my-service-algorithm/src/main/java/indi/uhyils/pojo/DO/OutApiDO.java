@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,17 +9,21 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年09月09日 20时58分09秒
+ * @date 文件创建日期 2021年09月11日 10时51分26秒
  */
+@TableName(value = "sys_out_api")
 public class OutApiDO extends BaseDO {
 
-    private static final long serialVersionUID = 139265683255154420L;
+    private static final long serialVersionUID = 786414335526880360L;
 
 
+    @TableField
     private String appId;
 
+    @TableField
     private String secretId;
 
+    @TableField
     private String secretKey;
 
 

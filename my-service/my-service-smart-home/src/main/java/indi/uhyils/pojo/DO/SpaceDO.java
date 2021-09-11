@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,21 +9,24 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时04分34秒
+ * @date 文件创建日期 2021年09月11日 10时15分38秒
  */
+@TableName(value = "sys_space")
 public class SpaceDO extends BaseDO {
 
-    private static final long serialVersionUID = 702310551615725132L;
+    private static final long serialVersionUID = 203044128474060025L;
 
 
     /**
      * 父空间id
      */
+    @TableField
     private Long fid;
 
     /**
      * 空间坐标集 json point集合形式
      */
+    @TableField
     private String points;
 
 

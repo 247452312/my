@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,23 +9,30 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年09月02日 08时42分14秒
+ * @date 文件创建日期 2021年09月11日 10时14分02秒
  */
+@TableName(value = "sys_server")
 public class ServerDO extends BaseDO {
 
-    private static final long serialVersionUID = -59387410949853918L;
+    private static final long serialVersionUID = 479317963713620643L;
 
 
+    @TableField
     private String ip;
 
+    @TableField
     private String name;
 
+    @TableField
     private String password;
 
+    @TableField
     private Integer port;
 
+    @TableField
     private String username;
 
+    @TableField
     private Integer type;
 
 

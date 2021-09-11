@@ -93,5 +93,5 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
      *
      * @return
      */
-    Integer count(List<Arg> args);
+    Long count(List<Arg> args);
 }

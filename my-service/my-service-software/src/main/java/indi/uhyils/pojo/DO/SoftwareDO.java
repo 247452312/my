@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,35 +9,48 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年09月02日 08时42分19秒
+ * @date 文件创建日期 2021年09月11日 10时14分03秒
  */
+@TableName(value = "sys_software")
 public class SoftwareDO extends BaseDO {
 
-    private static final long serialVersionUID = 765275656860288550L;
+    private static final long serialVersionUID = -87740151705222023L;
 
 
+    @TableField
     private String other1;
 
+    @TableField
     private String other2;
 
+    @TableField
     private String password;
 
+    @TableField
     private Integer port;
 
+    @TableField
     private Long serverId;
 
+    @TableField
     private String startSh;
 
+    @TableField
     private Integer status;
 
+    @TableField
     private String statusSh;
 
+    @TableField
     private String stopSh;
 
+    @TableField
     private Integer type;
 
+    @TableField
     private String username;
 
+    @TableField
     private String version;
 
 

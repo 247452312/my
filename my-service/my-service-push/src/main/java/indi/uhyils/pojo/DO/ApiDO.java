@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,29 +9,39 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年09月02日 19时46分44秒
+ * @date 文件创建日期 2021年09月11日 10时16分22秒
  */
+@TableName(value = "sys_api")
 public class ApiDO extends BaseDO {
 
-    private static final long serialVersionUID = -80457404238327589L;
+    private static final long serialVersionUID = -68428008576716777L;
 
 
+    @TableField
     private Integer apiOrder;
 
+    @TableField
     private Integer frequency;
 
+    @TableField
     private String head;
 
+    @TableField
     private Boolean needRepeat;
 
+    @TableField
     private String param;
 
+    @TableField
     private String type;
 
+    @TableField
     private String url;
 
+    @TableField
     private String resultCode;
 
+    @TableField
     private Long apiGroupId;
 
 

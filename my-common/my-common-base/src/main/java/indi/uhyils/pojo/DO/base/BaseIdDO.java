@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO.base;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import indi.uhyils.context.UserContext;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
@@ -18,6 +20,7 @@ public abstract class BaseIdDO implements BaseDbSaveable {
     /**
      * id 一定是uuid的格式
      */
+    @TableId(value = "id",type = IdType.INPUT)
     private Long id;
 
 

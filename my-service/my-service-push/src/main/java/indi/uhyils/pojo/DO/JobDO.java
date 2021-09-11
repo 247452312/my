@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,40 +9,48 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年09月02日 19时46分56秒
+ * @date 文件创建日期 2021年09月11日 10时16分23秒
  */
+@TableName(value = "sys_job")
 public class JobDO extends BaseDO {
 
-    private static final long serialVersionUID = 953162321328791917L;
+    private static final long serialVersionUID = 455132750901452572L;
 
 
+    @TableField
     private String cron;
 
     /**
      * 接口名称
      */
+    @TableField
     private String interfaceName;
 
     /**
      * 方法名称
      */
+    @TableField
     private String methodName;
 
+    @TableField
     private String name;
 
     /**
      * 参数类型
      */
+    @TableField
     private String paramType;
 
     /**
      * 参数
      */
+    @TableField
     private String params;
 
     /**
      * 暂停
      */
+    @TableField
     private Boolean pause;
 
 

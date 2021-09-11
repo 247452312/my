@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,36 +9,42 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时04分14秒
+ * @date 文件创建日期 2021年09月11日 10时15分37秒
  */
+@TableName(value = "sys_device_arg")
 public class DeviceArgDO extends BaseDO {
 
-    private static final long serialVersionUID = -25312451653990654L;
+    private static final long serialVersionUID = -52694045146310252L;
 
 
     /**
      * 设备id
      */
+    @TableField
     private Long deviceId;
 
     /**
      * 与水平夹角(下为负 上为正)
      */
-    private Object directionX;
+    @TableField
+    private Double directionX;
 
     /**
      * 与正南夹角(均为正)
      */
-    private Object directionY;
+    @TableField
+    private Double directionY;
 
     /**
      * 是否可动
      */
+    @TableField
     private Integer canMove;
 
     /**
      * 是否可以转动
      */
+    @TableField
     private Integer canRotate;
 
 
@@ -49,20 +57,20 @@ public class DeviceArgDO extends BaseDO {
     }
 
 
-    public Object getDirectionX() {
+    public Double getDirectionX() {
         return directionX;
     }
 
-    public void setDirectionX(Object directionX) {
+    public void setDirectionX(Double directionX) {
         this.directionX = directionX;
     }
 
 
-    public Object getDirectionY() {
+    public Double getDirectionY() {
         return directionY;
     }
 
-    public void setDirectionY(Object directionY) {
+    public void setDirectionY(Double directionY) {
         this.directionY = directionY;
     }
 

@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,37 +9,51 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时32分17秒
+ * @date 文件创建日期 2021年09月11日 08时53分16秒
  */
+@TableName(value = "sys_content")
 public class ContentDO extends BaseDO {
 
-    private static final long serialVersionUID = 469001397577778806L;
+    private static final long serialVersionUID = 929385884287775426L;
 
 
+    @TableField
     private String name;
 
+    @TableField
     private String title1;
 
+    @TableField
     private String title2;
 
+    @TableField
     private String title3;
 
+    @TableField
     private String title4;
 
+    @TableField
     private String title5;
 
+    @TableField
     private String title6;
 
+    @TableField
     private String var1;
 
+    @TableField
     private String var2;
 
+    @TableField
     private String var3;
 
+    @TableField
     private String var4;
 
+    @TableField
     private String var5;
 
+    @TableField
     private String var6;
 
 

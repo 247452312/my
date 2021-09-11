@@ -31,14 +31,14 @@ public class Page<T> implements Serializable {
     /**
      * 总条数
      */
-    private Integer count;
+    private Long count;
 
     /**
      * 总页数.
      */
     private Integer totalPage;
 
-    public Page(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
+    public Page(List<T> list, Integer size, Integer pageNum, Long count, Integer totalPage) {
         this.list = list;
         this.size = size;
         this.pageNum = pageNum;
@@ -49,16 +49,16 @@ public class Page<T> implements Serializable {
     public Page() {
     }
 
-    public static <T> Page<T> build(List<T> list, Integer size, Integer pageNum, Integer count, Integer totalPage) {
+    public static <T> Page<T> build(List<T> list, Integer size, Integer pageNum, Long count, Integer totalPage) {
         return new Page(list, size, pageNum, count, totalPage);
     }
 
-    public static <T> Page<T> build(List<T> list, Integer size, Integer pageNum, Integer count) {
+    public static <T> Page<T> build(List<T> list, Integer size, Integer pageNum, Long count) {
         int remainder = count % size == 0 ? 0 : 1;
-        return build(list, size, pageNum, count, count / size + remainder);
+        return build(list, size, pageNum, count, (int) (count / size + remainder));
     }
 
-    public static <T> Page<T> build(List<T> list, BaseArgQuery order, Integer count) {
+    public static <T> Page<T> build(List<T> list, BaseArgQuery order, Long count) {
         return build(list, order.getLimit(), count);
     }
 
@@ -66,7 +66,7 @@ public class Page<T> implements Serializable {
         return build(list, page.getSize(), page.pageNum, page.count);
     }
 
-    public static <T> Page<T> build(List<T> list, Limit limit, Integer count) {
+    public static <T> Page<T> build(List<T> list, Limit limit, Long count) {
         return build(list, limit.getSize(), limit.getNumber(), count);
     }
 
@@ -81,13 +81,13 @@ public class Page<T> implements Serializable {
      *
      * @return 包含分页信息的返回集
      */
-    public static <T> Page<T> build(BaseArgQuery query, List<T> list, Integer count, Integer totalPage) {
+    public static <T> Page<T> build(BaseArgQuery query, List<T> list, Long count, Integer totalPage) {
         //代表分页
         Limit limit = query.getLimit();
         if (Boolean.TRUE.equals(limit.getPage())) {
             return build(list, limit.getSize(), limit.getNumber(), count, totalPage);
         } else {
-            return build(list, count, 1, count, 1);
+            return build(list, count.intValue(), 1, count, 1);
         }
     }
 
@@ -101,9 +101,9 @@ public class Page<T> implements Serializable {
      *
      * @return 包含分页信息的返回集
      */
-    public static <T> Page<T> build(BaseArgQuery query, List<T> list, Integer count) {
+    public static <T> Page<T> build(BaseArgQuery query, List<T> list, Long count) {
         Limit limit = query.getLimit();
-        Integer totalPage = count / limit.getSize();
+        Integer totalPage = count.intValue() / limit.getSize();
         if (count % limit.getSize() != 0) {
             totalPage++;
         }
@@ -112,7 +112,7 @@ public class Page<T> implements Serializable {
         if (Boolean.TRUE.equals(limit.getPage())) {
             return build(list, limit.getSize(), limit.getNumber(), count, totalPage);
         } else {
-            return build(list, count, 1, count, 1);
+            return build(list, count.intValue(), 1, count, 1);
         }
     }
 
@@ -140,11 +140,11 @@ public class Page<T> implements Serializable {
         this.pageNum = pageNum;
     }
 
-    public Integer getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

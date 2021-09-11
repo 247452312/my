@@ -1,71 +1,76 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
- * 每一个 -->微服务的集群<-- 中的每一个 -->微服务<-- 都会有这么一条JVM监控信息数据
- * {@db sys_MonitorDO}
+ * JVM日志表(LogMonitor)表 数据库实体类
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年06月19日 14时06分
+ * @version 1.0
+ * @date 文件创建日期 2021年09月11日 10时39分30秒
  */
+@TableName(value = "sys_log_monitor")
 public class LogMonitorDO extends BaseDO {
 
-    /**
-     * 微服务的名称 名称与微服务rpc的applicationName相同
-     */
-    private String serviceName;
+    private static final long serialVersionUID = -67844554285245726L;
+
 
     /**
-     * 微服务所在服务器的访问ip
+     * ip
      */
+    @TableField
     private String ip;
+
+    /**
+     * 服务名称
+     */
+    @TableField
+    private String serviceName;
 
     /**
      * jvm开启时间
      */
+    @TableField
     private Long time;
 
     /**
-     * 假想结束时间 默认是往后推30分钟,如果不更新则此处的结束
-     * 时间变成了真实的结束时间,也就是说,此条记录是静态的,并没
-     * 有储存微服务现在的状态,但是依旧可以通过endTime有没有超
-     * 出来判断微服务是否在半小时内离线
+     * jvm最大内存
      */
-    private Long endTime;
-
-    /**
-     * jvm总分配内存(堆内存 + 堆外内存)
-     */
+    @TableField
     private Double jvmTotalMem;
 
     /**
-     * jvm 堆分配最大内存
+     * 堆初始内存
      */
-    private Double heapTotalMem;
-
-    /**
-     * jvm 堆初始内存
-     */
+    @TableField
     private Double heapInitMem;
 
     /**
-     * jvm 非堆区分配最大内存
+     * 堆最大内存
      */
+    @TableField
+    private Double heapTotalMem;
+
+    /**
+     * 非堆区初始内存
+     */
+    @TableField
+    private Double noHeapInitMem;
+
+    /**
+     * 非堆区最大内存
+     */
+    @TableField
     private Double noHeapTotalMem;
 
     /**
-     * jvm非堆区初始内存
+     * 服务jvm结束假想时间
      */
-    private Double noHeapInitMem;
+    @TableField
+    private Long endTime;
 
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
 
     public String getIp() {
         return ip;
@@ -75,6 +80,16 @@ public class LogMonitorDO extends BaseDO {
         this.ip = ip;
     }
 
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+
     public Long getTime() {
         return time;
     }
@@ -83,13 +98,6 @@ public class LogMonitorDO extends BaseDO {
         this.time = time;
     }
 
-    public Long getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Long endTime) {
-        this.endTime = endTime;
-    }
 
     public Double getJvmTotalMem() {
         return jvmTotalMem;
@@ -99,13 +107,6 @@ public class LogMonitorDO extends BaseDO {
         this.jvmTotalMem = jvmTotalMem;
     }
 
-    public Double getHeapTotalMem() {
-        return heapTotalMem;
-    }
-
-    public void setHeapTotalMem(Double heapTotalMem) {
-        this.heapTotalMem = heapTotalMem;
-    }
 
     public Double getHeapInitMem() {
         return heapInitMem;
@@ -115,13 +116,15 @@ public class LogMonitorDO extends BaseDO {
         this.heapInitMem = heapInitMem;
     }
 
-    public Double getNoHeapTotalMem() {
-        return noHeapTotalMem;
+
+    public Double getHeapTotalMem() {
+        return heapTotalMem;
     }
 
-    public void setNoHeapTotalMem(Double noHeapTotalMem) {
-        this.noHeapTotalMem = noHeapTotalMem;
+    public void setHeapTotalMem(Double heapTotalMem) {
+        this.heapTotalMem = heapTotalMem;
     }
+
 
     public Double getNoHeapInitMem() {
         return noHeapInitMem;
@@ -131,44 +134,22 @@ public class LogMonitorDO extends BaseDO {
         this.noHeapInitMem = noHeapInitMem;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("{");
-        sb.append("            \"serviceName\":\"")
-          .append(serviceName).append('\"');
-        if (ip != null) {
-            sb.append(",            \"ip\":\"")
-              .append(ip).append('\"');
-        }
-        if (time != null) {
-            sb.append(",            \"time\":")
-              .append(time);
-        }
-        if (endTime != null) {
-            sb.append(",            \"endTime\":")
-              .append(endTime);
-        }
-        if (jvmTotalMem != null) {
-            sb.append(",            \"jvmTotalMem\":")
-              .append(jvmTotalMem);
-        }
-        if (heapTotalMem != null) {
-            sb.append(",            \"heapTotalMem\":")
-              .append(heapTotalMem);
-        }
-        if (heapInitMem != null) {
-            sb.append(",            \"heapInitMem\":")
-              .append(heapInitMem);
-        }
-        if (noHeapTotalMem != null) {
-            sb.append(",            \"noHeapTotalMem\":")
-              .append(noHeapTotalMem);
-        }
-        if (noHeapInitMem != null) {
-            sb.append(",            \"noHeapInitMem\":")
-              .append(noHeapInitMem);
-        }
-        sb.append('}');
-        return sb.toString();
+
+    public Double getNoHeapTotalMem() {
+        return noHeapTotalMem;
     }
+
+    public void setNoHeapTotalMem(Double noHeapTotalMem) {
+        this.noHeapTotalMem = noHeapTotalMem;
+    }
+
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
+    }
+
 }

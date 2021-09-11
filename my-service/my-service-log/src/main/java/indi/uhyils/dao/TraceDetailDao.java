@@ -16,15 +16,6 @@ public interface TraceDetailDao extends DefaultDao<TraceDetailDO> {
 
 
     /**
-     * 获取链路详情
-     *
-     * @param request
-     *
-     * @return
-     */
-    TraceDetailDO getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request);
-
-    /**
      * 获取指定ip用户访问的前size个时间
      *
      * @param ip

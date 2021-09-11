@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,22 +9,29 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年09月02日 19时46分52秒
+ * @date 文件创建日期 2021年09月11日 10时16分23秒
  */
+@TableName(value = "sys_api_subscribe")
 public class ApiSubscribeDO extends BaseDO {
 
-    private static final long serialVersionUID = -79924255067981146L;
+    private static final long serialVersionUID = 131605272516196413L;
 
 
+    @TableField
     private Long apiId;
 
+    @TableField
     private String cron;
 
+    @TableField
     private Integer type;
 
+    @TableField
     private Long userId;
 
+    @TableField
     private Long apiGroupId;
+
 
     public Long getApiId() {
         return apiId;

@@ -73,8 +73,8 @@ public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvide
     }
 
     @Override
-    public ServiceResult<Integer> count(BaseArgQuery order) {
-        Integer result = getService().count(order.getArgs());
+    public ServiceResult<Long> count(BaseArgQuery order) {
+        Long result = getService().count(order.getArgs());
         return ServiceResult.buildSuccessResult(result);
     }
 

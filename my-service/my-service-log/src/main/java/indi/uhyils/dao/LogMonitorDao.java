@@ -33,14 +33,6 @@ public interface LogMonitorDao extends DefaultDao<LogMonitorDO> {
      */
     Long getIdByJvmUniqueMark(JvmUniqueMark jvmUniqueMark);
 
-    /**
-     * 获取现在正在运行中的服务数量
-     *
-     * @param time 现在时间
-     *
-     * @return 现在正在运行中的服务数量
-     */
-    List<LogMonitorDO> getOnlineService(long time);
 
     /**
      * 查询监控主表是否重复

@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,46 +9,54 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时33分07秒
+ * @date 文件创建日期 2021年09月11日 08时53分19秒
  */
+@TableName(value = "sys_user")
 public class UserDO extends BaseDO {
 
-    private static final long serialVersionUID = -40419942074997720L;
+    private static final long serialVersionUID = 700505590518997236L;
 
 
     /**
      * 昵称
      */
+    @TableField
     private String nickName;
 
     /**
      * 密码
      */
+    @TableField
     private String password;
 
     /**
      * 角色id
      */
+    @TableField
     private Long roleId;
 
     /**
      * 用户名
      */
+    @TableField
     private String username;
 
     /**
      * 邮箱
      */
+    @TableField
     private String mail;
 
     /**
      * 电话
      */
+    @TableField
     private String phone;
 
     /**
      * 头像
      */
+    @TableField
     private String headPortrait;
 
 

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.DictItemDao">
+    <resultMap type="indi.uhyils.pojo.DO.DictItemDO" id="DictItemMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="dictId" column="dict_id" jdbcType="INTEGER"/>
+        <result property="sortOrder" column="sort_order" jdbcType="INTEGER"/>
+        <result property="text" column="text" jdbcType="VARCHAR"/>
+        <result property="value" column="value" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.DictItemDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_dict_item set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="item.description != null and item.description != ''">
+                ,description = #{item.description}
+            </if>
+            <if test="item.dictId != null">
+                ,dict_id = #{item.dictId}
+            </if>
+            <if test="item.sortOrder != null">
+                ,sort_order = #{item.sortOrder}
+            </if>
+            <if test="item.text != null and item.text != ''">
+                ,text = #{item.text}
+            </if>
+            <if test="item.value != null and item.value != ''">
+                ,value = #{item.value}
+            </if>
+            <if test="item.status != null">
+                ,status = #{item.status}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+
+    <update id="deleteByDictId">
+        update sys_dict_item
+        set delete_flag = 1
+        where dict_id = #{id}
+    </update>
+
+
+    <select id="getByDictId" resultMap="DictItemMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
+        text, `value`, status
+        from sys_dict_item a
+        where dict_id = #{id}
+        order by sort_order
+    </select>
+
+    <select id="getByCode"  resultMap="DictItemMap">
+        select
+        id, create_date, create_user, delete_flag, remark, update_date, update_user, description, dict_id, sort_order,
+        text, `value`, status
+        from sys_dict_item a
+        where dict_id = (select id from sys_dict where code = #{code})
+    </select>
+</mapper>

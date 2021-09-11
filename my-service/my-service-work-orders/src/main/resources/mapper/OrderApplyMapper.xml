@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.OrderApplyDao">
+    <resultMap type="indi.uhyils.pojo.DO.OrderApplyDO" id="OrderApplyMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="applyUserId" column="apply_user_id" jdbcType="INTEGER"/>
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="orderNodeId" column="order_node_id" jdbcType="INTEGER"/>
+        <result property="monitorUserId" column="monitor_user_id" jdbcType="INTEGER"/>
+        <result property="targetUserId" column="target_user_id" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.OrderApplyDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_order_apply set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="item.applyUserId != null">
+                ,apply_user_id = #{item.applyUserId}
+            </if>
+            <if test="item.orderId != null">
+                ,order_id = #{item.orderId}
+            </if>
+            <if test="item.orderNodeId != null">
+                ,order_node_id = #{item.orderNodeId}
+            </if>
+            <if test="item.monitorUserId != null">
+                ,monitor_user_id = #{item.monitorUserId}
+            </if>
+            <if test="item.targetUserId != null">
+                ,target_user_id = #{item.targetUserId}
+            </if>
+            <if test="item.type != null">
+                ,type = #{item.type}
+            </if>
+            <if test="item.status != null">
+                ,status = #{item.status}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+</mapper>

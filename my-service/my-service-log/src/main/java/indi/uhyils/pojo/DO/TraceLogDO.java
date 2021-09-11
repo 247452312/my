@@ -1,45 +1,71 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
+ * (TraceLog)表 数据库实体类
+ *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2021年08月02日 08时14分
+ * @version 1.0
+ * @date 文件创建日期 2021年09月11日 10时39分33秒
  */
-public class TraceLogDO extends TraceIdDoDO {
+@TableName(value = "sys_trace_log")
+public class TraceLogDO extends BaseDO {
 
-    /**
-     *
-     */
-    private Long nowTime;
+    private static final long serialVersionUID = 509955124701181441L;
 
-
-    /**
-     *
-     */
-    private String rpcId;
-
-    /**
-     *
-     */
-    private String log;
-
-    /**
-     * 日志等级
-     */
-    private String logLevel;
 
     /**
      * 日志名称
      */
+    @TableField
     private String loggerName;
 
+    /**
+     * 日志等级
+     */
+    @TableField
+    private String logLevel;
 
-    public Long getNowTime() {
-        return nowTime;
+    @TableField
+    private Long traceId;
+
+    @TableField
+    private String rpcId;
+
+    @TableField
+    private Long nowTime;
+
+    @TableField
+    private String log;
+
+
+    public String getLoggerName() {
+        return loggerName;
     }
 
-    public void setNowTime(Long nowTime) {
-        this.nowTime = nowTime;
+    public void setLoggerName(String loggerName) {
+        this.loggerName = loggerName;
+    }
+
+
+    public String getLogLevel() {
+        return logLevel;
+    }
+
+    public void setLogLevel(String logLevel) {
+        this.logLevel = logLevel;
+    }
+
+
+    public Long getTraceId() {
+        return traceId;
+    }
+
+    public void setTraceId(Long traceId) {
+        this.traceId = traceId;
     }
 
 
@@ -51,6 +77,16 @@ public class TraceLogDO extends TraceIdDoDO {
         this.rpcId = rpcId;
     }
 
+
+    public Long getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Long nowTime) {
+        this.nowTime = nowTime;
+    }
+
+
     public String getLog() {
         return log;
     }
@@ -58,22 +94,5 @@ public class TraceLogDO extends TraceIdDoDO {
     public void setLog(String log) {
         this.log = log;
     }
-
-    public String getLogLevel() {
-        return logLevel;
-    }
-
-    public void setLogLevel(String logLevel) {
-        this.logLevel = logLevel;
-    }
-
-    public String getLoggerName() {
-        return loggerName;
-    }
-
-    public void setLoggerName(String loggerName) {
-        this.loggerName = loggerName;
-    }
-
 
 }

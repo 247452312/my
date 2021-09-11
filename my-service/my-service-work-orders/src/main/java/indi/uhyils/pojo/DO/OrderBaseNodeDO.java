@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,81 +9,96 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时58分55秒
+ * @date 文件创建日期 2021年09月11日 10时46分03秒
  */
+@TableName(value = "sys_order_base_node")
 public class OrderBaseNodeDO extends BaseDO {
 
-    private static final long serialVersionUID = 965118371461432586L;
+    private static final long serialVersionUID = 432567844917016944L;
 
 
     /**
      * 基础表id
      */
+    @TableField
     private Long baseInfoId;
 
     /**
      * 节点名称
      */
+    @TableField
     private String name;
 
     /**
      * 节点描述
      */
+    @TableField
     private String desc;
 
     /**
      * 处理人id
      */
+    @TableField
     private Long runDealUserId;
 
     /**
      * 抄送人id
      */
+    @TableField
     private Long noticeUserId;
 
     /**
      * 处理类型 0->自动处理 1->人工处理
      */
+    @TableField
     private Integer runType;
 
     /**
      * 节点类型 0->开始节点 1->中间节点 2->结束节点
      */
+    @TableField
     private Integer type;
 
     /**
      * 限时(分钟)
      */
+    @TableField
     private Integer limitTime;
 
     /**
      * 节点初始化事件id
      */
+    @TableField
     private Long initApiId;
 
     /**
      * 节点执行事件id
      */
+    @TableField
     private Long runApiId;
 
     /**
      * 保存执行事件id
      */
+    @TableField
     private Long saveApiId;
 
     /**
      * 流转执行事件id
      */
+    @TableField
     private Long transApiId;
 
     /**
      * 是否同步(所有指向此节点的前提事件结束才执行此事件)
      */
+    @TableField
     private Integer sync;
 
     /**
      * 是否隐藏,如果隐藏,则在创建项目时不自动添加此节点
      */
+    @TableField
     private Integer hidden;
 
 

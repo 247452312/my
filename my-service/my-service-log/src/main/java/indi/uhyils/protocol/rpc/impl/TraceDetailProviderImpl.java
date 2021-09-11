@@ -5,7 +5,7 @@ import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetTraceDetailByHashCodeRequest;
 import indi.uhyils.pojo.DTO.response.GetTraceDetailByHashCodeResponse;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
-import indi.uhyils.protocol.rpc.provider.TraceDetailProvider;
+import indi.uhyils.protocol.rpc.TraceDetailProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.TraceDetailService;

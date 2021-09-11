@@ -34,6 +34,18 @@ public abstract class AbstractArgQuery extends DefaultCQE implements BaseArgQuer
         this.limit = limit;
     }
 
+    public void setArgs(List<Arg> args) {
+        this.args = args;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public void setLimit(Limit limit) {
+        this.limit = limit;
+    }
+
     @Override
     public List<Arg> getArgs() {
         return args;

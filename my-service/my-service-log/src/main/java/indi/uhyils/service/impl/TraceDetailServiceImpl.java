@@ -1,5 +1,7 @@
 package indi.uhyils.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.TraceDetailAssembler;
 import indi.uhyils.dao.TraceDetailDao;
@@ -34,7 +36,12 @@ public class TraceDetailServiceImpl extends AbstractDoService<TraceDetailDO, Tra
 
     @Override
     public GetTraceDetailByHashCodeResponse getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request) {
-        TraceDetailDO entity = dao.getTraceDetailByHashCode(request);
+        LambdaQueryWrapper<TraceDetailDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(TraceDetailDO::getHashCode, request.getHashCode());
+        queryWrapper.eq(TraceDetailDO::getType, request.getType());
+        queryWrapper.orderByDesc(TraceDetailDO::getEndTime);
+        queryWrapper.last("limit 1");
+        TraceDetailDO entity = dao.selectOne(queryWrapper);
         TraceDetailDTO traceDetailDTO = assem.toDTO(entity);
         return GetTraceDetailByHashCodeResponse.build(traceDetailDTO);
     }

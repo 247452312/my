@@ -71,16 +71,29 @@ public class TraceInfoRepositoryImpl extends AbstractRepository<TraceInfo, Trace
     @Override
     public Page<TraceInfo> find(GetTraceInfoByArgAndPageRequest request) {
         List<Arg> args = request.getArgs();
-        args.add(new Arg("trace_id", "=", request.getTraceId()));
-        args.add(new Arg("start_time", ">", request.getStartTime()));
-        args.add(new Arg("type", "=", request.getType()));
+        if (args == null) {
+            args = new ArrayList<>();
+        }
+        Long traceId = request.getTraceId();
+        if (traceId != null) {
+            args.add(new Arg("trace_id", "=", request.getTraceId()));
+        }
+        Long startTime = request.getStartTime();
+        if (startTime != null) {
+            args.add(new Arg("start_time", ">", startTime));
+        }
+
+        Integer type = request.getType();
+        if (type != null) {
+            args.add(new Arg("log_type", "=", type));
+        }
         return find(args, request.getOrder(), request.getLimit());
     }
 
     @Override
     public Page<TraceDetailStatisticsView> findView(BlackQuery request) {
         List<TraceDetailStatisticsView> traceStatistics = dao.getTraceStatistics(request);
-        Integer traceStatisticsCount = dao.getTraceStatisticsCount(request);
+        Long traceStatisticsCount = dao.getTraceStatisticsCount(request);
         return Page.build(traceStatistics, request.getLimit(), traceStatisticsCount);
     }
 

@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,19 +9,24 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时32分36秒
+ * @date 文件创建日期 2021年09月11日 08时53分18秒
  */
+@TableName(value = "sys_dict")
 public class DictDO extends BaseDO {
 
-    private static final long serialVersionUID = -96949308040097870L;
+    private static final long serialVersionUID = -94710615241811137L;
 
 
+    @TableField
     private String code;
 
+    @TableField
     private String description;
 
+    @TableField
     private String name;
 
+    @TableField
     private Integer type;
 
 

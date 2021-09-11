@@ -131,5 +131,5 @@ public interface BaseEntityRepository<DO extends BaseDO, EN extends AbstractDoEn
      *
      * @return
      */
-    int count(List<Arg> args);
+    long count(List<Arg> args);
 }

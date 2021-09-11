@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,27 +9,36 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月27日 08时32分47秒
+ * @date 文件创建日期 2021年09月11日 08时53分18秒
  */
+@TableName(value = "sys_menu")
 public class MenuDO extends BaseDO {
 
-    private static final long serialVersionUID = 584335319860855143L;
+    private static final long serialVersionUID = 266796507075887064L;
 
 
+    @TableField
     private Long fid;
 
+    @TableField
     private Integer iFrame;
 
+    @TableField
     private String icon;
 
+    @TableField
     private String name;
 
+    @TableField
     private Integer sort;
 
+    @TableField
     private String target;
 
+    @TableField
     private Boolean type;
 
+    @TableField
     private String url;
 
 

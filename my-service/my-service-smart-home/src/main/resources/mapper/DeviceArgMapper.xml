@@ -10,256 +10,52 @@
         <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
         <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
         <result property="deviceId" column="device_id" jdbcType="INTEGER"/>
-        <result property="directionX" column="direction_x" jdbcType="OTHER"/>
-        <result property="directionY" column="direction_y" jdbcType="OTHER"/>
+        <result property="directionX" column="direction_x" jdbcType="NUMERIC"/>
+        <result property="directionY" column="direction_y" jdbcType="NUMERIC"/>
         <result property="canMove" column="can_move" jdbcType="INTEGER"/>
         <result property="canRotate" column="can_rotate" jdbcType="INTEGER"/>
     </resultMap>
 
-    <!--查询单个-->
-    <select id="getById" resultMap="DeviceArgMap">
-        select id,
-               create_date,
-               create_user,
-               delete_flag,
-               remark,
-               update_date,
-               update_user,
-               device_id,
-               direction_x,
-               direction_y,
-               can_move,
-               can_rotate
-        from sys_device_arg
-        where delete_flag = 0
-          and id = #{id}
-    </select>
-
-    <!--根据某些字段获取实例(不分页)-->
-    <select id="getByArgsNoPage" resultMap="DeviceArgMap">
-        select id,
-               create_date,
-               create_user,
-               delete_flag,
-               remark,
-               update_date,
-               update_user,
-               device_id,
-               direction_x,
-               direction_y,
-               can_move,
-               can_rotate
-        from sys_device_arg
-            where delete_flag = 0
-        <if test="args != null">
-            <foreach item="item" index="index" collection="args">
-                and ${item.name} ${item.symbol} #{item.data}
-            </foreach>
-        </if>
-        <if test="order != null">
-            order by
-            <foreach collection="order.columns" item="item" index="index" separator=",">
-                ${item.columnName.name} ${item.symbol.name}
-            </foreach>
-        </if>
-    </select>
-
-    <!--根据某些字段获取实例(分页)-->
-    <select id="getByArgs" resultMap="DeviceArgMap">
-        select id,
-               create_date,
-               create_user,
-               delete_flag,
-               remark,
-               update_date,
-               update_user,
-               device_id,
-               direction_x,
-               direction_y,
-               can_move,
-               can_rotate
-        from sys_device_arg
-            where delete_flag = 0
-        <if test="args != null">
-            <foreach item="item" index="index" collection="args">
-                and ${item.name} ${item.symbol} #{item.data}
-            </foreach>
-        </if>
-
-        <if test="order != null">
-            order by
-            <foreach collection="order.columns" item="item" index="index" separator=",">
-                ${item.columnName.name} ${item.symbol.name}
-            </foreach>
-        </if>
-
-        <if test="limit.number != null and limit.number != ''">
-            limit ${(limit.number-1) * limit.size},${ limit.number * limit.size}
-        </if>
-    </select>
-
-
-    <!--新增所有列-->
-    <insert id="insert" parameterType="indi.uhyils.pojo.DO.DeviceArgDO">
-        insert into sys_device_arg(id, create_date, create_user, delete_flag, remark, update_date, update_user,
-                                   device_id, direction_x,
-                                   direction_y, can_move, can_rotate)
-        values (#{id}, #{createDate}, #{createUser}, #{deleteFlag}, #{remark}, #{updateDate}, #{updateUser},
-                #{deviceId}, #{directionX}, #{directionY}, #{canMove}, #{canRotate})
-    </insert>
-
-    <!--通过主键修改数据-->
-    <update id="update" parameterType="indi.uhyils.pojo.DO.DeviceArgDO">
-        update sys_device_arg set update_date = #{updateDate}
-                                , update_user = #{updateUser}
-        <if test="createDate != null">
-            , create_date = #{createDate}
-        </if>
-        <if test="createUser != null">
-            , create_user = #{createUser}
-        </if>
-        <if test="deleteFlag != null">
-            , delete_flag = #{deleteFlag}
-        </if>
-        <if test="remark != null and remark != ''">
-            , remark = #{remark}
-        </if>
-        <if test="updateDate != null">
-            , update_date = #{updateDate}
-        </if>
-        <if test="updateUser != null">
-            , update_user = #{updateUser}
-        </if>
-        <if test="deviceId != null">
-            , device_id = #{deviceId}
-        </if>
-        <if test="directionX != null">
-            , direction_x = #{directionX}
-        </if>
-        <if test="directionY != null">
-            , direction_y = #{directionY}
-        </if>
-        <if test="canMove != null">
-            , can_move = #{canMove}
-        </if>
-        <if test="canRotate != null">
-            , can_rotate = #{canRotate}
-        </if>
-        where id = #{id}
-    </update>
-
-    <!--通过主键修改数据-->
-    <update id="updateByOrder" parameterType="indi.uhyils.pojo.DO.DeviceArgDO">
-        update sys_device_arg set update_date = #{updateDate}
-                                , update_user = #{updateUser}
-        <if test="createDate != null">
-            , create_date = #{createDate}
-        </if>
-        <if test="createUser != null">
-            , create_user = #{createUser}
-        </if>
-        <if test="deleteFlag != null">
-            , delete_flag = #{deleteFlag}
-        </if>
-        <if test="remark != null and remark != ''">
-            , remark = #{remark}
-        </if>
-        <if test="updateDate != null">
-            , update_date = #{updateDate}
-        </if>
-        <if test="updateUser != null">
-            , update_user = #{updateUser}
-        </if>
-        <if test="deviceId != null">
-            , device_id = #{deviceId}
-        </if>
-        <if test="directionX != null">
-            , direction_x = #{directionX}
-        </if>
-        <if test="directionY != null">
-            , direction_y = #{directionY}
-        </if>
-        <if test="canMove != null">
-            , can_move = #{canMove}
-        </if>
-        <if test="canRotate != null">
-            , can_rotate = #{canRotate}
-        </if>
-        where delete_flag = 0
-        <if test="args != null">
-            <foreach item="item" index="index" collection="args">
-                and ${item.name} ${item.symbol} #{item.data}
-            </foreach>
-        </if>
-    </update>
-
     <!--批量通过主键修改数据-->
     <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.DeviceArgDO">
         <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
-            update sys_device_arg
-                set
-                update_date = #{item.updateDate}
-                ,update_user = #{item.updateUser}
-            <if test="createDate != null">
+            update sys_device_arg set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
                 ,create_date = #{item.createDate}
             </if>
-            <if test="createUser != null">
+            <if test="item.createUser != null">
                 ,create_user = #{item.createUser}
             </if>
-            <if test="deleteFlag != null">
+            <if test="item.deleteFlag != null">
                 ,delete_flag = #{item.deleteFlag}
             </if>
-            <if test="remark != null and remark != ''">
+            <if test="item.remark != null and item.remark != ''">
                 ,remark = #{item.remark}
             </if>
-            <if test="updateDate != null">
+            <if test="item.updateDate != null">
                 ,update_date = #{item.updateDate}
             </if>
-            <if test="updateUser != null">
+            <if test="item.updateUser != null">
                 ,update_user = #{item.updateUser}
             </if>
-            <if test="deviceId != null">
+            <if test="item.deviceId != null">
                 ,device_id = #{item.deviceId}
             </if>
-            <if test="directionX != null">
+            <if test="item.directionX != null">
                 ,direction_x = #{item.directionX}
             </if>
-            <if test="directionY != null">
+            <if test="item.directionY != null">
                 ,direction_y = #{item.directionY}
             </if>
-            <if test="canMove != null">
+            <if test="item.canMove != null">
                 ,can_move = #{item.canMove}
             </if>
-            <if test="canRotate != null">
+            <if test="item.canRotate != null">
                 ,can_rotate = #{item.canRotate}
             </if>
             where id = #{item.id}
         </foreach>
     </update>
-
-    <!--查询总条数-->
-    <select id="count" resultType="java.lang.Integer">
-        select count(*)
-        from sys_device_arg
-        where delete_flag = 0;
-    </select>
-
-    <!--根据条件查询条数-->
-    <select id="countByArgs" resultType="java.lang.Integer">
-        select count(*)
-        from sys_device_arg
-            where delete_flag = 0
-        <if test="args != null">
-            <foreach item="item" index="index" collection="args">
-                and ${item.name} ${item.symbol} #{item.data}
-            </foreach>
-        </if>
-    </select>
-
-    <!--检查是否有重复-->
-    <select id="checkRepeat" resultType="java.lang.Integer">
-        select count(*)
-        from sys_device_arg
-        where ${columnName} = #{value}
-    </select>
 </mapper>

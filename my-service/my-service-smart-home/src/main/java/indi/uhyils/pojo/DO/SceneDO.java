@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,26 +9,30 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时04分30秒
+ * @date 文件创建日期 2021年09月11日 10时15分38秒
  */
+@TableName(value = "sys_scene")
 public class SceneDO extends BaseDO {
 
-    private static final long serialVersionUID = 922758471860415660L;
+    private static final long serialVersionUID = 461074313333171420L;
 
 
     /**
      * 场景类型
      */
+    @TableField
     private Integer type;
 
     /**
      * 场景数值 温度 湿度等
      */
-    private Object value;
+    @TableField
+    private Double value;
 
     /**
      * 其他: 气氛 天气 动作等场景的模型id
      */
+    @TableField
     private Long otherModelId;
 
 
@@ -39,11 +45,11 @@ public class SceneDO extends BaseDO {
     }
 
 
-    public Object getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Object value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 

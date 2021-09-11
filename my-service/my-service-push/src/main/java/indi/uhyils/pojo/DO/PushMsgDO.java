@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,21 +9,27 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年09月02日 19时47分01秒
+ * @date 文件创建日期 2021年09月11日 10时16分24秒
  */
+@TableName(value = "sys_push_msg")
 public class PushMsgDO extends BaseDO {
 
-    private static final long serialVersionUID = 344144398685208141L;
+    private static final long serialVersionUID = 405566975672895779L;
 
 
+    @TableField
     private String content;
 
+    @TableField
     private Boolean success;
 
+    @TableField
     private Long target;
 
+    @TableField
     private String title;
 
+    @TableField
     private Integer type;
 
 

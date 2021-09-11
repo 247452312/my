@@ -1,5 +1,6 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.LogMonitorAssembler;
 import indi.uhyils.dao.LogMonitorDao;
@@ -32,7 +33,9 @@ public class LogMonitorRepositoryImpl extends AbstractRepository<LogMonitor, Log
 
     @Override
     public List<LogMonitor> analysisOnlineService() {
-        List<LogMonitorDO> onlineService = dao.getOnlineService(System.currentTimeMillis());
+        LambdaQueryWrapper<LogMonitorDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.ge(LogMonitorDO::getEndTime, System.currentTimeMillis());
+        List<LogMonitorDO> onlineService = dao.selectList(queryWrapper);
         return assembler.listToEntity(onlineService);
     }
 

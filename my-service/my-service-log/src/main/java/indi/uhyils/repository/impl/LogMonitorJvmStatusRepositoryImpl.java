@@ -1,5 +1,6 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.LogMonitorJvmStatusAssembler;
 import indi.uhyils.dao.LogMonitorJvmStatusDao;
@@ -29,7 +30,10 @@ public class LogMonitorJvmStatusRepositoryImpl extends AbstractRepository<LogMon
 
     @Override
     public List<LogMonitorJvmStatus> listLogMonitorJvmStatus(LogMonitor logMonitor) {
-        List<LogMonitorJvmStatusDO> byMonitorId = dao.getByMonitorId(logMonitor.id());
+        LambdaQueryWrapper<LogMonitorJvmStatusDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(LogMonitorJvmStatusDO::getFid, logMonitor.id());
+        queryWrapper.orderByAsc(LogMonitorJvmStatusDO::getTime);
+        List<LogMonitorJvmStatusDO> byMonitorId = dao.selectList(queryWrapper);
         return assembler.listToEntity(byMonitorId);
     }
 }

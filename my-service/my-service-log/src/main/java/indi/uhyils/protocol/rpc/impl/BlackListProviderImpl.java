@@ -6,7 +6,7 @@ import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
 import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
-import indi.uhyils.protocol.rpc.provider.BlackListProvider;
+import indi.uhyils.protocol.rpc.BlackListProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.BlackListService;

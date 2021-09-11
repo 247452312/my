@@ -1,10 +1,15 @@
 package indi.uhyils.repository.base;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import indi.uhyils.assembler.AbstractAssembler;
 import indi.uhyils.dao.base.DefaultDao;
+import indi.uhyils.enum_.OrderSymbolEnum;
+import indi.uhyils.enum_.Symbol;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.cqe.query.Column;
+import indi.uhyils.pojo.cqe.query.ColumnName;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.cqe.query.demo.Limit;
 import indi.uhyils.pojo.cqe.query.demo.Order;
@@ -54,7 +59,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
         }
         DO aDo = assembler.toDo(entity);
         aDo.preUpdate();
-        dao.update(aDo);
+        dao.updateById(aDo);
         return Identifier.build(aDo.getId());
     }
 
@@ -81,42 +86,44 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     @Override
     public <E extends Identifier> List<EN> find(List<E> ids) {
         List<Long> idList = ids.stream().map(t -> t.getId()).collect(Collectors.toList());
-        List<DO> byIds = dao.getByIds(idList);
+        List<DO> byIds = dao.selectBatchIds(idList);
         return byIds.stream().map(assembler::toEntity).collect(Collectors.toList());
     }
 
     @Override
     public <E extends Identifier> EN find(E id) {
         Long idValue = id.getId();
-        DO byId = dao.getById(idValue);
+        DO byId = dao.selectById(idValue);
         return assembler.toEntity(byId);
     }
 
     @Override
     public List<EN> findNoPage(List<Arg> args, Order order) {
         List<DO> result;
-        result = dao.getByArgsNoPage(args, order);
+        QueryWrapper<DO> queryWrapper = Symbol.makeWrapper(args);
+        fillWrapperOrder(order, queryWrapper);
+        result = dao.selectList(queryWrapper);
         return result.stream().map(assembler::toEntity).collect(Collectors.toList());
     }
 
+
     @Override
     public Page<EN> find(List<Arg> args, Order order, Limit limit) {
-        List<DO> noPageData;
-        if (limit.getPage()) {
-            noPageData = dao.getByArgs(args, order, limit);
-        } else {
-            noPageData = dao.getByArgsNoPage(args, order);
-        }
-        int count = dao.countByArgs(args);
-        List<EN> ens = assembler.listToEntity(noPageData);
-        return Page.build(ens, limit, count);
+        AssertUtil.assertTrue(limit != null, "分页参数不能为空");
+        QueryWrapper<DO> queryWrapper = Symbol.makeWrapper(args);
+        fillWrapperOrder(order, queryWrapper);
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<DO> page = makePage(limit);
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<DO> doPage = dao.selectPage(page, queryWrapper);
+        List<EN> ens = assembler.listToEntity(doPage.getRecords());
+        return Page.build(ens, limit, doPage.getTotal());
     }
+
 
     @Override
     public int remove(List<EN> entities) {
         AssertUtil.assertTrue(entities.stream().allMatch(HaveIdEntity::haveId), "删除时没有id");
         List<DO> doList = entities.stream().map(t -> assembler.toDo(t)).peek(BaseDO::changeToDelete).peek(BaseDO::preUpdate).collect(Collectors.toList());
-        return doList.stream().mapToInt(dao::update).sum();
+        return doList.stream().mapToInt(dao::updateById).sum();
     }
 
     @Override
@@ -135,12 +142,55 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
 
     @Override
     public int change(EN entity, List<Arg> args) {
-        return dao.updateByOrder(entity.toDo(), args);
+        QueryWrapper<DO> queryWrapper = Symbol.makeWrapper(args);
+        return dao.update(entity.toDo(), queryWrapper);
     }
 
     @Override
-    public int count(List<Arg> args) {
-        return dao.countByArgs(args);
+    public long count(List<Arg> args) {
+        QueryWrapper<DO> queryWrapper = Symbol.makeWrapper(args);
+        return dao.selectCount(queryWrapper);
+    }
+
+    /**
+     * 填充order
+     *
+     * @param order
+     * @param queryWrapper
+     */
+    protected void fillWrapperOrder(Order order, QueryWrapper<DO> queryWrapper) {
+        if (order == null || order.getColumns() == null) {
+            return;
+        }
+        for (Column column : order.getColumns()) {
+            ColumnName columnName = column.getColumnName();
+            OrderSymbolEnum symbol = column.getSymbol();
+            switch (symbol) {
+                case ASC:
+                    queryWrapper.orderByAsc(columnName.getName());
+                    break;
+                case DESC:
+                    queryWrapper.orderByDesc(columnName.getName());
+                    break;
+                default:
+                    AssertUtil.assertTrue(false, "排序符号不正确");
+            }
+        }
+    }
+
+
+    /**
+     * 获取分页入参
+     *
+     * @param limit
+     *
+     * @return
+     */
+    protected com.baomidou.mybatisplus.extension.plugins.pagination.Page<DO> makePage(Limit limit) {
+        if (limit == null || Boolean.FALSE.equals(limit.getPage())) {
+            return new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>();
+        }
+        return new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(limit.getNumber(), limit.getSize());
     }
 
 

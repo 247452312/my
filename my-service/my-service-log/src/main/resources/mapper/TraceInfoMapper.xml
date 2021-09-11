@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.TraceInfoDao">
+    <resultMap type="indi.uhyils.pojo.DO.TraceInfoDO" id="TraceInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="loggerName" column="logger_name" jdbcType="VARCHAR"/>
+        <result property="level" column="level" jdbcType="VARCHAR"/>
+        <result property="traceId" column="trace_id" jdbcType="INTEGER"/>
+        <result property="startTime" column="start_time" jdbcType="INTEGER"/>
+        <result property="logType" column="log_type" jdbcType="INTEGER"/>
+        <result property="ip" column="ip" jdbcType="VARCHAR"/>
+        <result property="rpcId" column="rpc_id" jdbcType="VARCHAR"/>
+        <result property="threadName" column="thread_name" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" jdbcType="VARCHAR"/>
+        <result property="useTime" column="use_time" jdbcType="INTEGER"/>
+        <result property="hashCode" column="hash_code" jdbcType="VARCHAR"/>
+        <result property="other" column="other" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="INTEGER"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="columnList">
+        a.trace_id     as traceId,
+        a.other        as other,
+        a.level        as level,
+        a.use_time     as useTime,
+        a.remark       as remark,
+        a.project_name as projectName,
+        a.logger_name  as loggerName,
+        a.update_date  as updateDate,
+        a.start_time   as startTime,
+        a.log_type     as logType,
+        a.ip           as ip,
+        a.update_user  as updateUser,
+        a.rpc_id       as rpcId,
+        a.hash_code    as hashCode,
+        a.thread_name  as threadName,
+        a.id           as id,
+        a.create_user  as createUser,
+        a.create_date  as createDate,
+        a.delete_flag  as deleteFlag
+    </sql>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.TraceInfoDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_trace_info set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.loggerName != null and item.loggerName != ''">
+                ,logger_name = #{item.loggerName}
+            </if>
+            <if test="item.level != null and item.level != ''">
+                ,level = #{item.level}
+            </if>
+            <if test="item.traceId != null">
+                ,trace_id = #{item.traceId}
+            </if>
+            <if test="item.startTime != null">
+                ,start_time = #{item.startTime}
+            </if>
+            <if test="item.logType != null">
+                ,log_type = #{item.logType}
+            </if>
+            <if test="item.ip != null and item.ip != ''">
+                ,ip = #{item.ip}
+            </if>
+            <if test="item.rpcId != null and item.rpcId != ''">
+                ,rpc_id = #{item.rpcId}
+            </if>
+            <if test="item.threadName != null and item.threadName != ''">
+                ,thread_name = #{item.threadName}
+            </if>
+            <if test="item.projectName != null and item.projectName != ''">
+                ,project_name = #{item.projectName}
+            </if>
+            <if test="item.useTime != null">
+                ,use_time = #{item.useTime}
+            </if>
+            <if test="item.hashCode != null and item.hashCode != ''">
+                ,hash_code = #{item.hashCode}
+            </if>
+            <if test="item.other != null and item.other != ''">
+                ,other = #{item.other}
+            </if>
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null and item.createUser != ''">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null and item.updateUser != ''">
+                ,update_user = #{item.updateUser}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+
+    <select id="getCountByTypeAndStartTime" resultType="java.lang.Long">
+        select count(*)
+        from sys_trace_info a
+        where a.log_type = #{code}
+        and a.start_time > #{time}
+    </select>
+
+
+
+    <select id="getTraceStatisticsCount" resultType="java.lang.Long">
+        select count(*)
+        from v_sys_trace_detail_statistics a
+    </select>
+    <select id="getTraceStatistics" resultType="indi.uhyils.pojo.DO.TraceDetailStatisticsView">
+        select a.time,
+        a.type,
+        a.type_name as typeName,
+        a.hash_code as hashCode,
+        a.count,
+        a.sum,
+        a.avg
+        from v_sys_trace_detail_statistics a
+        <if test="page != null and page != ''">
+            limit ${(page-1) * size} , ${page * size}
+        </if>
+    </select>
+
+    <select id="getTraceInfoByArgAndPageCount" resultType="java.lang.Integer">
+        select count(*)
+        from sys_trace_info a
+        where delete_flag = 0
+        <if test="traceId != null">
+            and trace_id = #{traceId}
+        </if>
+        <if test="startTime != null">
+            and start_time >= #{startTime}
+        </if>
+        <if test="type != null">
+            and log_type = #{type,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getLinkByTraceIdAndRpcIdPrefix" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
+        select
+        <include refid="columnList"/>
+        from sys_trace_info a
+        where delete_flag = 0
+        and trace_id = #{traceId}
+        and (rpc_id like '${rpcId}.%' or rpc_id = #{rpcId})
+    </select>
+
+    <select id="getTraceInfoByTraceId" resultType="indi.uhyils.pojo.DO.TraceInfoDO">
+        select
+        <include refid="columnList"/>
+        from sys_trace_info a
+        where delete_flag = 0
+        and trace_id = #{traceId}
+    </select>
+</mapper>

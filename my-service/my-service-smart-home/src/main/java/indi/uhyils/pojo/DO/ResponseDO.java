@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DO;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -7,26 +9,30 @@ import indi.uhyils.pojo.DO.base.BaseDO;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2021年08月31日 19时04分26秒
+ * @date 文件创建日期 2021年09月11日 10时15分37秒
  */
+@TableName(value = "sys_response")
 public class ResponseDO extends BaseDO {
 
-    private static final long serialVersionUID = -63512172140644258L;
+    private static final long serialVersionUID = -68151455180413955L;
 
 
     /**
      * 触发类型
      */
+    @TableField
     private Integer triggerType;
 
     /**
      * 触发场景id
      */
+    @TableField
     private Long tiggerSceneId;
 
     /**
      * 指令id
      */
+    @TableField
     private Long instructionsId;
 
     /**
@@ -34,6 +40,7 @@ public class ResponseDO extends BaseDO {
      * 2->网上批量导入
      * 3->机器自动学习
      */
+    @TableField
     private Integer manual;
 
 

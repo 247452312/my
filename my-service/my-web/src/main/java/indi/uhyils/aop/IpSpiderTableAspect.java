@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
 import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpQuery;
 import indi.uhyils.pojo.DTO.response.WebResponse;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.protocol.rpc.provider.BlackListProvider;
+import indi.uhyils.protocol.rpc.BlackListProvider;
 import indi.uhyils.redis.OffLineJedis;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;

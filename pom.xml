@@ -62,6 +62,7 @@
         <my.rpc.version>1.0.3.my-SNAPSHOT</my.rpc.version>
         <asm.version>9.2</asm.version>
         <javaparser.version>3.22.1</javaparser.version>
+        <mybatis.plus.spring.version>3.4.3.3</mybatis.plus.spring.version>
     </properties>
 
     <dependencyManagement>
@@ -180,6 +181,13 @@
                 <artifactId>mybatis</artifactId>
                 <version>${mybatis.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus.spring.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.apache.commons</groupId>

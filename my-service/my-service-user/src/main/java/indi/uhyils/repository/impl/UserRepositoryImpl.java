@@ -4,6 +4,7 @@ import com.alibaba.nacos.common.utils.CollectionUtils;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.UserAssembler;
 import indi.uhyils.dao.UserDao;
+import indi.uhyils.enum_.Symbol;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
@@ -66,7 +67,7 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
         List<Arg> objects = new ArrayList<>();
         objects.add(new Arg("username", "=", user.username().getUserName()));
         objects.add(new Arg("password", "=", user.password().toMD5Str()));
-        ArrayList<UserDO> byArgsNoPage = dao.getByArgsNoPage(objects, null);
+        List<UserDO> byArgsNoPage = dao.selectList(Symbol.makeWrapper(objects));
         AssertUtil.assertTrue(CollectionUtils.isNotEmpty(byArgsNoPage) && byArgsNoPage.size() == 1, "登录失败,用户名或密码不正确!");
         UserDO userDO = byArgsNoPage.get(0);
         return new User(userDO);
