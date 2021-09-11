@@ -2,7 +2,9 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.ContentDO;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 
 /**
@@ -11,13 +13,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ContentDao extends DefaultDao<ContentDO> {
-
-    /**
-     * 根据名称返回数据库中的系统常量信息
-     *
-     * @param name 常量名称
-     * @return 常量信息
-     */
-    ContentDO getByName(String name);
 
 }

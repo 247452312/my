@@ -7,7 +7,7 @@ import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.protocol.rpc.JvmProvider;
+import indi.uhyils.protocol.rpc.LogMonitorProvider;
 import indi.uhyils.rpc.annotation.RpcReference;
 
 
@@ -20,7 +20,7 @@ import indi.uhyils.rpc.annotation.RpcReference;
 public class JvmFacadeImpl implements JvmFacade {
 
     @RpcReference
-    private JvmProvider jvmProvider;
+    private LogMonitorProvider jvmProvider;
 
     @Override
     public JvmDataStatisticsDTO jvmStatisticDate() {

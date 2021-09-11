@@ -23,6 +23,8 @@ public enum Symbol {
     le("<="),
     like("like"),
     in("in"),
+    is_null("isNull"),
+    is_not_null("isNotNull"),
     likeRight("likeRight");
 
     private String code;

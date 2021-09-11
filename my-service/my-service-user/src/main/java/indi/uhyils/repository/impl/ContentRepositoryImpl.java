@@ -1,5 +1,6 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ContentAssembler;
 import indi.uhyils.dao.ContentDao;
@@ -27,7 +28,7 @@ public class ContentRepositoryImpl extends AbstractRepository<Content, ContentDO
 
     @Override
     public Content getByName(String honeInfo) {
-        ContentDO byName = dao.getByName(honeInfo);
+        ContentDO byName = dao.selectOne(Wrappers.<ContentDO>lambdaQuery().eq(ContentDO::getName, honeInfo));
         return assembler.toEntity(byName);
     }
 }

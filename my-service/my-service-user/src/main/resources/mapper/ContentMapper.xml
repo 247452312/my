@@ -90,32 +90,4 @@
             where id = #{item.id}
         </foreach>
     </update>
-
-    <select id="getByName" resultMap="ContentMap">
-        select
-        id,
-        create_date,
-        create_user,
-        delete_flag,
-        remark,
-        update_date,
-        update_user,
-        name,
-        title1,
-        title2,
-        title3,
-        title4,
-        title5,
-        title6,
-        var1,
-        var2,
-        var3,
-        var4,
-        var5,
-        var6
-        from sys_content a
-        where delete_flag = 0
-        and name = #{name}
-    </select>
-
 </mapper>
