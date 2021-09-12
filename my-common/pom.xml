@@ -21,6 +21,7 @@
         <module>my-common-hot-spot</module>
         <module>my-common-log</module>
         <module>my-common-util</module>
+        <module>my-common-event-bus</module>
     </modules>
 
 
