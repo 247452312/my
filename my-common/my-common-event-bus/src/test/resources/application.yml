@@ -1,0 +1,47 @@
+spring:
+  profiles:
+    active: dev
+  output:
+    ansi:
+      enabled: ALWAYS
+    devtools:
+      restart:
+        enabled: true  #设置开启热部署
+        additional-paths: src/main/java #重启目录
+        exclude: WEB-INF/**
+      freemarker:
+        cache: false    #页面不加载缓存，修改即时生效
+
+
+logging:
+  level:
+    indi.uhyils.dao: INFO
+token:
+  salt: my
+  encodeRules: my
+log-out:
+  dir-name: test
+  path: D:/my/logs
+redis:
+  normal:
+    ip: prod
+    port: 6379
+    password: uhyils-single
+  hotspot:
+    hosts: prod:26380;prod:26381;prod:26382
+    password: uhyils
+    sentinels: mymaster
+
+
+rabbit:
+  host: prod
+  port: 5672
+  username: uhyils
+  password: 123456
+
+id:
+  organization:
+    # 机构代码
+    code: 1
+server:
+  port: 8888
