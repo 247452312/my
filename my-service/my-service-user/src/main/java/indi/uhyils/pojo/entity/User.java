@@ -46,19 +46,13 @@ public class User extends AbstractDoEntity<UserDO> {
     public User(UserDO userDO) {
         super(userDO);
     }
+
     public User(Identifier userId) {
-        super(userId,new UserDO());
+        super(userId, new UserDO());
     }
 
     public User(UserName userName, Password password) {
         super(parseUserNamePasswordToDO(userName, password));
-    }
-
-    private static UserDO parseUserNamePasswordToDO(UserName userName, Password password) {
-        UserDO userDO = new UserDO();
-        userDO.setUsername(userName.getUserName());
-        userDO.setPassword(password.getPassword());
-        return userDO;
     }
 
     public User(Long id) {
@@ -68,6 +62,13 @@ public class User extends AbstractDoEntity<UserDO> {
     public User(UserDO userDO, RoleDO roleDO) {
         super(userDO);
         this.role = new Role(roleDO);
+    }
+
+    private static UserDO parseUserNamePasswordToDO(UserName userName, Password password) {
+        UserDO userDO = new UserDO();
+        userDO.setUsername(userName.getUserName());
+        userDO.setPassword(password.getPassword());
+        return userDO;
     }
 
     public static void batchInitRole(List<User> all, RoleRepository roleRepository, DeptRepository deptRepository, PowerRepository powerRepository, MenuRepository menuRepository) {
@@ -167,7 +168,7 @@ public class User extends AbstractDoEntity<UserDO> {
         /*查询是否正确*/
         User user = userRepository.checkLogin(this);
         BeanUtil.copyProperties(user.data, data);
-        this.id = user.id;
+        this.setUnique(user.unique);
         this.token = user.toToken(salt, encodeRole);
         return this;
     }
@@ -195,7 +196,7 @@ public class User extends AbstractDoEntity<UserDO> {
         sb.append(randomNum);
 
         // 用户id 19位
-        String str = getId().toString();
+        String str = getUnique().toString();
         long i = 19L - str.length();
         // long 最大19位 如果不够 最高位补0
         StringBuilder sbTemp = new StringBuilder(19);
@@ -207,7 +208,7 @@ public class User extends AbstractDoEntity<UserDO> {
         //盐 x位
         sb.append(salt);
 
-        return new Token(id.getId(), AESUtil.AESEncode(encodeRules, sb.toString()));
+        return new Token(getUnique().getId(), AESUtil.AESEncode(encodeRules, sb.toString()));
     }
 
     public Boolean havePower(PowerInfo powerInfo, PowerRepository rep) {

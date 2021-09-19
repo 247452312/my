@@ -17,29 +17,24 @@ import java.time.format.DateTimeFormatter;
  * @version 1.0
  * @date 文件创建日期 2021年08月24日 18时26分
  */
-public class Token extends AbstractEntity {
+public class Token extends AbstractEntity<String> {
 
     /**
      * 这个token对应的id
      */
     private final Identifier id;
 
-    /**
-     * token本身
-     */
-    private final String token;
-
     public Token(Long id, String token) {
         this.id = new Identifier(id);
-        this.token = token;
+        this.unique = token;
+
     }
 
     public Token(String token) {
-        this.token = token;
+        this.unique = token;
         this.id = parseTokenToId(token);
     }
 
-    @Override
     public Identifier getId() {
         return id;
     }
@@ -56,11 +51,11 @@ public class Token extends AbstractEntity {
     }
 
     public String getToken() {
-        return token;
+        return unique;
     }
 
     public TokenInfo parseToTokenInfo(String encodeRules, String salt, UserRepository userRepository) {
-        String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
+        String tokenInfoString = AESUtil.AESDecode(encodeRules, unique);
 
         assert tokenInfoString != null;
         String day = tokenInfoString.substring(0, 2);

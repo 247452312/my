@@ -6,7 +6,7 @@ import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.cqe.query.demo.Limit;
 import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
-import indi.uhyils.pojo.entity.base.HaveIdEntity;
+import indi.uhyils.pojo.entity.base.IdEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import java.util.List;
 
@@ -44,7 +44,7 @@ public interface BaseEntityRepository<DO extends BaseDO, EN extends AbstractDoEn
      *
      * @return
      */
-    <E extends HaveIdEntity> EN find(E id);
+    <E extends IdEntity> EN find(E id);
 
     /**
      * 根据id查询
@@ -103,6 +103,15 @@ public interface BaseEntityRepository<DO extends BaseDO, EN extends AbstractDoEn
      * @return
      */
     <E extends Identifier> int remove(E... ids);
+
+    /**
+     * 批量删除
+     *
+     * @param ids
+     *
+     * @return
+     */
+    <E extends Identifier> int removeByIds(List<E> ids);
 
     /**
      * 批量删除

@@ -49,7 +49,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
         if (apis != null) {
             return;
         }
-        this.apis = apiRepository.findByGroupId(id);
+        this.apis = apiRepository.findByGroupId(getUnique());
     }
 
     public void forceFillSubscribe(List<ApiSubscribe> subscribes) {
@@ -61,7 +61,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
         if (subscribes != null) {
             return;
         }
-        this.subscribes = repository.findByGroupId(id);
+        this.subscribes = repository.findByGroupId(getUnique());
     }
 
     public void forceFillApi(List<Api> apis) {
@@ -83,7 +83,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
     }
 
     public void removeSelf(ApiGroupRepository rep) {
-        rep.remove(id);
+        rep.remove(getUnique());
     }
 
     public Integer removeApis(ApiRepository rep) {
@@ -92,7 +92,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
 
     public List<PushMsgDTO> sendMsgToUser(UserFacade userFacade) {
         AssertUtil.assertTrue(subscribes != null, "没有初始化订阅用户");
-        List<UserDTO> byIds = userFacade.getByIds(subscribes.stream().map(t -> t.id.getId()).collect(Collectors.toList()));
+        List<UserDTO> byIds = userFacade.getByIds(subscribes.stream().map(t -> t.getUnique().getId()).collect(Collectors.toList()));
         return sendMsgToUser(byIds);
     }
 

@@ -31,10 +31,10 @@ public class AllApiGroup extends AbstractEntity {
         List<Api> apis = apiRepository.findAll();
         Map<Long, List<Api>> groupIdApiMap = apis.stream().collect(Collectors.groupingBy(t -> t.toDo().getApiGroupId()));
         for (ApiGroup group : groups) {
-            if (!groupIdApiMap.containsKey(group.id.getId())) {
+            if (!groupIdApiMap.containsKey(group.getUnique().getId())) {
                 continue;
             }
-            List<Api> groupApis = groupIdApiMap.get(group.id.getId());
+            List<Api> groupApis = groupIdApiMap.get(group.getUnique().getId());
             group.forceFillApi(groupApis);
         }
     }
@@ -43,10 +43,10 @@ public class AllApiGroup extends AbstractEntity {
         List<ApiSubscribe> subscribes = subscribeRepository.findByCron(cron);
         Map<Long, List<ApiSubscribe>> groupIdSubscribeMap = subscribes.stream().collect(Collectors.groupingBy(t -> t.toDo().getApiGroupId()));
         for (ApiGroup group : groups) {
-            if (!groupIdSubscribeMap.containsKey(group.id.getId())) {
+            if (!groupIdSubscribeMap.containsKey(group.getUnique().getId())) {
                 continue;
             }
-            List<ApiSubscribe> groupSubscribes = groupIdSubscribeMap.get(group.id.getId());
+            List<ApiSubscribe> groupSubscribes = groupIdSubscribeMap.get(group.getUnique().getId());
             group.forceFillSubscribe(groupSubscribes);
         }
     }

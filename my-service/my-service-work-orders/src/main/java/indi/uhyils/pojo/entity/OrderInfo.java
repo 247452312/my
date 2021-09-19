@@ -46,8 +46,8 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
 
     public void saveSelf(OrderInfoRepository rep) {
         toDo().setId(null);
-        this.id = null;
-        this.id = rep.save(this);
+        this.setUnique(null);
+        this.setUnique(rep.save(this));
         // 修改node的OrderId
         changeNodesOrderId();
     }
@@ -61,7 +61,7 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
             return;
         }
         for (OrderNode node : nodes) {
-            node.toDo().setBaseInfoId(id.getId());
+            node.toDo().setBaseInfoId(getUnique().getId());
         }
     }
 

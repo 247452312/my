@@ -11,43 +11,53 @@ import indi.uhyils.util.BeanUtil;
  * @version 1.0
  * @date 文件创建日期 2021年08月24日 17时59分
  */
-public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity {
+public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<Identifier> implements IdEntity {
 
     /**
      * 对应数据库DO
      */
-    protected final T data;
+    protected T data;
+
+    /**
+     * 数据库是否被修改
+     */
+    private boolean canUpdate;
 
     protected AbstractDoEntity(T t) {
-        super();
-        this.id = new Identifier(t.getId());
+        super(new Identifier(t.getId()));
         this.data = t;
+        this.canUpdate = false;
+    }
+
+    protected AbstractDoEntity() {
+        super();
     }
 
     protected AbstractDoEntity(Identifier id, T t) {
-        super();
-        this.id = id;
+        super(id);
         this.data = t;
         this.data.setId(id.getId());
     }
 
     protected AbstractDoEntity(Long id, T t) {
-        super();
-        this.id = new Identifier(id);
+        super(new Identifier(id));
         this.data = t;
         this.data.setId(id);
     }
 
     public <DO extends BaseDO, EN extends AbstractDoEntity<DO>> void completion(BaseEntityRepository<DO, EN> repository) {
-        AssertUtil.assertTrue(this.id != null, "id不存在 不能补全");
+        AssertUtil.assertTrue(this.unique != null, "数据库id不存在 不能补全");
         AbstractDoEntity<DO> dictItem = repository.find(this);
         AssertUtil.assertTrue(dictItem != null, "补全出的结果为空");
         DO source = dictItem.toDo();
         BeanUtil.copyProperties(source, data);
     }
 
+    /**
+     * 升级do中的id为id
+     */
     public void upId() {
-        this.id = new Identifier(toDo().getId());
+        this.unique = new Identifier(toDo().getId());
     }
 
     /**
@@ -63,6 +73,13 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity 
         repository.save((EN) this);
     }
 
+    public boolean canUpdate() {
+        return canUpdate;
+    }
+
+    public void onUpdate() {
+        this.canUpdate = true;
+    }
 
     public void perUpdate() {
         data.preUpdate();
@@ -70,6 +87,17 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity 
 
     public void perInsert() {
         data.preInsert();
+    }
+
+
+    @Override
+    public boolean haveId() {
+        return unique != null && unique.getId() != null && unique.getId() > 0;
+    }
+
+    @Override
+    public boolean notHaveId() {
+        return !haveId();
     }
 
 }

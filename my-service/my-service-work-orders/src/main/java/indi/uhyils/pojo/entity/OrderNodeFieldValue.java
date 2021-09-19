@@ -31,7 +31,7 @@ public class OrderNodeFieldValue extends AbstractDoEntity<OrderNodeFieldValueDO>
 
     private static OrderNodeFieldValueDO parseToNodeFieldValue(OrderNodeField field, String realValue) {
         OrderNodeFieldValueDO orderNodeFieldValueDO = new OrderNodeFieldValueDO();
-        orderNodeFieldValueDO.setNodeFieldId(field.id.getId());
+        orderNodeFieldValueDO.setNodeFieldId(field.getUnique().getId());
         orderNodeFieldValueDO.setRealValue(realValue);
         return orderNodeFieldValueDO;
     }

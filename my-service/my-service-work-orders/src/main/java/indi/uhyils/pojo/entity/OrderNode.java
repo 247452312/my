@@ -76,13 +76,12 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
      *
      * @param nodeRepository 节点
      */
-    public IdMapping saveSelf(
-        OrderNodeRepository nodeRepository) {
-        Long oldId = this.id.getId();
-        this.id = null;
+    public IdMapping saveSelf(OrderNodeRepository nodeRepository) {
+        Long oldId = this.getUnique().getId();
+        this.setUnique(null);
         toDo().setId(null);
         nodeRepository.save(this);
-        Long newId = this.id.getId();
+        Long newId = this.getUnique().getId();
         return IdMapping.build(newId, oldId);
     }
 
@@ -93,9 +92,9 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
         for (OrderNodeField field : fields) {
             OrderNodeFieldDO orderNodeFieldDO = field.toDo();
             orderNodeFieldDO.setBaseOrderNodeId(idMappings.get(orderNodeFieldDO.getBaseOrderNodeId()));
-            field.id = null;
+            field.setUnique(null);
             orderNodeFieldDO.setId(null);
-            field.id = fieldRepository.save(field);
+            field.setUnique(fieldRepository.save(field));
         }
     }
 
@@ -110,13 +109,13 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
             return;
         }
         for (OrderNodeResultType resultType : resultTypes) {
-            Long oldId = resultType.id.getId();
+            Long oldId = resultType.getUnique().getId();
             OrderNodeResultTypeDO orderNodeResultTypeDO = resultType.toDo();
             orderNodeResultTypeDO.setBaseNodeId(idMappings.get(orderNodeResultTypeDO.getBaseNodeId()));
             orderNodeResultTypeDO.setId(null);
-            resultType.id = null;
-            resultType.id = resultTypeRepository.save(resultType);
-            Long newId = resultType.id.getId();
+            resultType.setUnique(null);
+            resultType.setUnique(resultTypeRepository.save(resultType));
+            Long newId = resultType.getUnique().getId();
             idMappings.put(oldId, newId);
         }
 
@@ -126,8 +125,8 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
             orderNodeRouteDO.setPrevNodeId(idMappings.get(orderNodeRouteDO.getPrevNodeId()));
             orderNodeRouteDO.setResultId(idMappings.get(orderNodeRouteDO.getResultId()));
             orderNodeRouteDO.setId(null);
-            route.id = null;
-            route.id = routeRepository.save(route);
+            route.setUnique(null);
+            route.setUnique(routeRepository.save(route));
         }
     }
 
@@ -146,7 +145,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
     }
 
     public OrderNodeResultType createResultByTrans(OrderNodeResultTypeAssembler typeAssembler) {
-        OrderNodeResultTypeDTO transResult = OrderNodeResultTypeBuilder.build(id.getId(), "转交");
+        OrderNodeResultTypeDTO transResult = OrderNodeResultTypeBuilder.build(getUnique().getId(), "转交");
         return typeAssembler.toEntity(transResult);
 
     }
@@ -159,7 +158,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
     }
 
     public OrderNodeRoute createRoute(OrderNodeRouteRepository routeRepository, OrderNodeRouteAssembler routeAssembler, Identifier resultId, OrderNode lastNode) {
-        OrderNodeRouteDTO build = OrderNodeRouteBuilder.build(id.getId(), resultId.getId(), lastNode.id.getId());
+        OrderNodeRouteDTO build = OrderNodeRouteBuilder.build(getUnique().getId(), resultId.getId(), lastNode.getUnique().getId());
         OrderNodeRoute orderNodeRoute = routeAssembler.toEntity(build);
         routeRepository.save(orderNodeRoute);
         return orderNodeRoute;
@@ -173,7 +172,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
 
     public void fillField(OrderNodeFieldRepository fieldRepository) {
         if (this.fields == null) {
-            this.fields = fieldRepository.findByNodeId(id.getId());
+            this.fields = fieldRepository.findByNodeId(getUnique().getId());
         }
 
 
@@ -183,7 +182,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
         AssertUtil.assertTrue(this.fields != null, "节点属性本身信息不存在!");
 
         for (OrderNodeField field : fields) {
-            Long id = field.id.getId();
+            Long id = field.getUnique().getId();
             AssertUtil.assertTrue(orderNodeFieldValueMap.containsKey(id), field.toDo().getName() + " 未填写");
             String realValue = String.valueOf(orderNodeFieldValueMap.get(id));
             OrderNodeFieldValue orderNodeFieldValue = new OrderNodeFieldValue(field, realValue);

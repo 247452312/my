@@ -7,7 +7,7 @@ import indi.uhyils.pojo.cqe.query.IdQuery;
  * @version 1.0
  * @date 文件创建日期 2021年08月22日 15时39分
  */
-public class Identifier implements BaseType {
+public class Identifier implements BaseType, Comparable<Identifier> {
 
     private final Long id;
 
@@ -25,5 +25,13 @@ public class Identifier implements BaseType {
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(Identifier o) {
+        if (o == null) {
+            return -1;
+        }
+        return id.compareTo(o.id);
     }
 }

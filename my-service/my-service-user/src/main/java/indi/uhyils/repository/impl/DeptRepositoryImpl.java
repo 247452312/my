@@ -44,15 +44,15 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
     @Override
     public void addPowers(Dept deptId, Power power) {
         DeptPowerDO middle = new DeptPowerDO();
-        middle.setDeptId(deptId.getId().getId());
-        middle.setPowerId(power.getId().getId());
+        middle.setDeptId(deptId.getUnique().getId());
+        middle.setPowerId(power.getUnique().getId());
         middle.preInsert();
         dao.insertDeptPower(middle);
     }
 
     @Override
     public void cleanPower(Dept deptId) {
-        dao.deleteDeptPowerMiddleByDeptId(deptId.getId().getId());
+        dao.deleteDeptPowerMiddleByDeptId(deptId.getUnique().getId());
     }
 
     @Override
@@ -62,21 +62,21 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
 
     @Override
     public void cleanMenu(Dept deptId) {
-        dao.deleteDeptMenuMiddleByDeptId(deptId.getId().getId());
+        dao.deleteDeptMenuMiddleByDeptId(deptId.getUnique().getId());
     }
 
     @Override
     public void addMenu(Dept deptId, Menu menuId) {
         DeptMenuDO t = new DeptMenuDO();
-        t.setDeptId(deptId.getId().getId());
-        t.setMenuId(menuId.getId().getId());
+        t.setDeptId(deptId.getUnique().getId());
+        t.setMenuId(menuId.getUnique().getId());
         t.preInsert();
         dao.insertDeptMenu(t);
     }
 
     @Override
     public List<GetDeptsByMenuIdDTO> findByMenuId(Menu menuId) {
-        return dao.getByMenuId(menuId.getId().getId());
+        return dao.getByMenuId(menuId.getUnique().getId());
     }
 
     @Override
@@ -87,12 +87,12 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
 
     @Override
     public List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(Dept deptId) {
-        return dao.getAllPowerWithHaveMark(deptId.getId().getId());
+        return dao.getAllPowerWithHaveMark(deptId.getUnique().getId());
     }
 
     @Override
     public void cleanRole(Dept dept) {
-        dao.deleteRoleDeptMiddleByDeptId(dept.getId().getId());
+        dao.deleteRoleDeptMiddleByDeptId(dept.getUnique().getId());
     }
 
 

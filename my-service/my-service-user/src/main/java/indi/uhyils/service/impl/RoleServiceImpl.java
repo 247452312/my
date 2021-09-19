@@ -8,9 +8,9 @@ import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.RoleDTO;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
-import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Role;
+import indi.uhyils.pojo.entity.base.BaseEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.RoleRepository;
@@ -80,7 +80,7 @@ public class RoleServiceImpl extends AbstractDoService<RoleDO, Role, RoleDTO, Ro
         Role role = new Role(roleId);
         role.fillDeptIds(rep);
         List<Dept> deptIds = role.deptIds();
-        List<Dept> list = deptRepository.find(deptIds.stream().map(AbstractEntity::getId).collect(Collectors.toList()));
+        List<Dept> list = deptRepository.find(deptIds.stream().map(BaseEntity::getUnique).collect(Collectors.toList()));
         return list.stream().map(t -> deptAssembler.toDTO(t)).collect(Collectors.toList());
     }
 

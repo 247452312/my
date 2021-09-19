@@ -1,7 +1,5 @@
 package indi.uhyils.pojo.entity.base;
 
-import indi.uhyils.pojo.entity.type.Identifier;
-
 /**
  * entity不是一个可序列化的逻辑集合,真正的OOP中的对象
  *
@@ -9,52 +7,28 @@ import indi.uhyils.pojo.entity.type.Identifier;
  * @version 1.0
  * @date 文件创建日期 2021年08月22日 14时55分
  */
-public abstract class AbstractEntity implements HaveIdEntity {
+public abstract class AbstractEntity<T extends Comparable<T>> implements BaseEntity<T> {
 
     /**
      * id 是可以没有的
      */
-    public Identifier id;
-
-    /**
-     * 是否可以修改
-     */
-    private boolean canUpdate;
-
+    public T unique;
 
     protected AbstractEntity() {
-        this.canUpdate = false;
     }
 
-    protected AbstractEntity(Long id) {
-        this();
-        this.id = new Identifier(id);
-    }
-
-
-    @Override
-    public boolean canUpdate() {
-        return canUpdate;
+    protected AbstractEntity(T unique) {
+        this.unique = unique;
     }
 
     @Override
-    public Identifier getId() {
-        return id;
+    public T getUnique() {
+        return unique;
     }
 
     @Override
-    public boolean haveId() {
-        return id != null && id.getId() != null && id.getId() > 0;
+    public void setUnique(T unique) {
+        this.unique = unique;
     }
-
-    @Override
-    public boolean notHaveId() {
-        return !haveId();
-    }
-
-    public void onUpdate() {
-        this.canUpdate = true;
-    }
-
 }
 

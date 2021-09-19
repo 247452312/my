@@ -28,8 +28,9 @@ public class Role extends AbstractDoEntity<RoleDO> {
     public Role(RoleDO roleDO) {
         super(roleDO);
     }
+
     public Role(Identifier roleId) {
-        super(roleId,new RoleDO());
+        super(roleId, new RoleDO());
     }
 
     public Role(Long id) {
@@ -81,7 +82,7 @@ public class Role extends AbstractDoEntity<RoleDO> {
         if (this.depts != null) {
             return;
         }
-        this.depts = deptRepository.findByRoleId(id);
+        this.depts = deptRepository.findByRoleId(getUnique());
         for (Dept dept : depts) {
             dept.initMenus(menuRepository);
             dept.initPower(powerRepository);
@@ -137,7 +138,7 @@ public class Role extends AbstractDoEntity<RoleDO> {
     }
 
     public void removeSelf(RoleRepository rep) {
-        rep.remove(getId());
+        rep.remove(getUnique());
     }
 
 }

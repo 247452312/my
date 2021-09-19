@@ -2,7 +2,7 @@ package indi.uhyils.bus;
 
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseParentEvent;
-import indi.uhyils.protocol.register.Register;
+import indi.uhyils.protocol.register.base.Register;
 import indi.uhyils.util.AssertUtil;
 import indi.uhyils.util.CollectionUtil;
 import java.util.ArrayList;

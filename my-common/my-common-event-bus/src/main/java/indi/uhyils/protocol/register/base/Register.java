@@ -1,4 +1,4 @@
-package indi.uhyils.protocol.register;
+package indi.uhyils.protocol.register.base;
 
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import java.util.List;

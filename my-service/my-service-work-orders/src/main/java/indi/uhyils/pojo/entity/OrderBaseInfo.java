@@ -40,7 +40,7 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
      */
     public void fillNoHiddenNode(OrderBaseNodeRepository nodeRepository) {
         if (nodes == null) {
-            this.nodes = nodeRepository.findNoHiddenNodeById(id);
+            this.nodes = nodeRepository.findNoHiddenNodeById(getUnique());
         }
     }
 
@@ -54,10 +54,10 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
     }
 
     public void fillNodeRoute(OrderBaseNodeRouteRepository routeRepository) {
-        List<OrderBaseNodeRoute> routes = routeRepository.findNodeRouteByNodes(this.nodes.stream().map(t -> t.id).collect(Collectors.toList()));
+        List<OrderBaseNodeRoute> routes = routeRepository.findNodeRouteByNodes(this.nodes.stream().map(t -> t.getUnique()).collect(Collectors.toList()));
         Map<Long, List<OrderBaseNodeRoute>> nodeIdRouteMap = routes.stream().collect(Collectors.groupingBy(t -> t.toDo().getPrevNodeId()));
         for (OrderBaseNode node : this.nodes) {
-            Long id = node.id.getId();
+            Long id = node.getUnique().getId();
             List<OrderBaseNodeRoute> orderBaseNodeRoutes = nodeIdRouteMap.get(id);
             node.fillRoutes(orderBaseNodeRoutes);
         }
@@ -65,20 +65,20 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
     }
 
     public void fillNodeResultType(OrderBaseNodeResultTypeRepository resultTypeRepository) {
-        List<OrderBaseNodeResultType> resultTypes = resultTypeRepository.findNodeResultTypeByNodes(this.nodes.stream().map(t -> t.id).collect(Collectors.toList()));
+        List<OrderBaseNodeResultType> resultTypes = resultTypeRepository.findNodeResultTypeByNodes(this.nodes.stream().map(t -> t.getUnique()).collect(Collectors.toList()));
         Map<Long, List<OrderBaseNodeResultType>> nodeIdResultTypeMap = resultTypes.stream().collect(Collectors.groupingBy(t -> t.toDo().getBaseNodeId()));
         for (OrderBaseNode node : this.nodes) {
-            Long id = node.id.getId();
+            Long id = node.getUnique().getId();
             List<OrderBaseNodeResultType> orderBaseNodeResultTypes = nodeIdResultTypeMap.get(id);
             node.fillResultTypes(orderBaseNodeResultTypes);
         }
     }
 
     public void fillNodeField(OrderBaseNodeFieldRepository fieldRepository) {
-        List<OrderBaseNodeField> fields = fieldRepository.findNodeFieldByNodes(this.nodes.stream().map(t -> t.id).collect(Collectors.toList()));
+        List<OrderBaseNodeField> fields = fieldRepository.findNodeFieldByNodes(this.nodes.stream().map(t -> t.getUnique()).collect(Collectors.toList()));
         Map<Long, List<OrderBaseNodeField>> nodeIdFieldMap = fields.stream().collect(Collectors.groupingBy(t -> t.toDo().getBaseOrderId()));
         for (OrderBaseNode node : this.nodes) {
-            Long id = node.id.getId();
+            Long id = node.getUnique().getId();
             List<OrderBaseNodeField> fieldList = nodeIdFieldMap.get(id);
             node.fillFields(fieldList);
         }

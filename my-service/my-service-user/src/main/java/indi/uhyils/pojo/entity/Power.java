@@ -33,7 +33,7 @@ public class Power extends AbstractDoEntity<PowerDO> {
     }
 
     public void removeSelf(PowerRepository rep) {
-        rep.remove(this.getId());
+        rep.remove(this.getUnique());
     }
 
 }

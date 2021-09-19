@@ -8,13 +8,13 @@ import indi.uhyils.enum_.Symbol;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.cqe.query.demo.Column;
 import indi.uhyils.pojo.cqe.query.demo.ColumnName;
-import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.cqe.query.demo.Limit;
 import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
-import indi.uhyils.pojo.entity.base.HaveIdEntity;
+import indi.uhyils.pojo.entity.base.IdEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.util.AssertUtil;
 import java.util.Arrays;
@@ -70,9 +70,8 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
 
 
     @Override
-    public <E extends HaveIdEntity> EN find(E query) {
-        AssertUtil.assertTrue(query.haveId(), "根据id查询, 你id不存在?");
-        Identifier id = query.getId();
+    public <E extends IdEntity> EN find(E query) {
+        Identifier id = query.getUnique();
         return find(id);
     }
 
@@ -121,7 +120,6 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
 
     @Override
     public int remove(List<EN> entities) {
-        AssertUtil.assertTrue(entities.stream().allMatch(HaveIdEntity::haveId), "删除时没有id");
         List<DO> doList = entities.stream().map(t -> assembler.toDo(t)).peek(BaseDO::changeToDelete).peek(BaseDO::preUpdate).collect(Collectors.toList());
         return doList.stream().mapToInt(dao::updateById).sum();
     }
@@ -138,6 +136,13 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     public int remove(List<Arg> args, Limit limit) {
         List<EN> noPage = findNoPage(args, null);
         return remove(noPage);
+    }
+
+    @Override
+    public <E extends Identifier> int removeByIds(List<E> ids) {
+        List<EN> ens = find(ids);
+        List<DO> updateDos = ens.stream().peek(AbstractDoEntity::perUpdate).map(AbstractDoEntity::toDo).collect(Collectors.toList());
+        return dao.updateBatch(updateDos);
     }
 
     @Override

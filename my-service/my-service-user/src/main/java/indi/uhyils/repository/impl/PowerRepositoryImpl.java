@@ -49,12 +49,12 @@ public class PowerRepositoryImpl extends AbstractRepository<Power, PowerDO, Powe
 
     @Override
     public Boolean havePower(User userId, PowerInfo powerInfo) {
-        return dao.checkUserHavePower(userId.getId().getId(), powerInfo.getInterfaceName(), powerInfo.getMethodName()) != 0;
+        return dao.checkUserHavePower(userId.getUnique().getId(), powerInfo.getInterfaceName(), powerInfo.getMethodName()) != 0;
     }
 
     @Override
     public void removeDeptPowerByPowerId(Power powerId) {
-        dao.deleteDeptPowerMiddleByPowerId(powerId.getId().getId());
+        dao.deleteDeptPowerMiddleByPowerId(powerId.getUnique().getId());
     }
 
     @Override

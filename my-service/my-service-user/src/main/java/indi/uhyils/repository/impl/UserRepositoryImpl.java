@@ -75,12 +75,12 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
 
     @Override
     public Boolean checkCacheUserId(User userId) {
-        return redisPoolHandle.haveUserId(userId.getId().getId());
+        return redisPoolHandle.haveUserId(userId.getUnique().getId());
     }
 
     @Override
     public boolean removeUserInCacheById(User userId) {
-        return redisPoolHandle.removeUserById(userId.getId().getId());
+        return redisPoolHandle.removeUserById(userId.getUnique().getId());
     }
 
     @Override
@@ -95,7 +95,7 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
 
     @Override
     public void checkPassword(User user, Password password) {
-        Integer integer = dao.checkUserPassword(user.getId().getId(), password.toMD5Str());
+        Integer integer = dao.checkUserPassword(user.getUnique().getId(), password.toMD5Str());
         AssertUtil.assertTrue(integer == 1, "密码错误");
     }
 }

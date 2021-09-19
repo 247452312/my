@@ -36,7 +36,7 @@ public class DictItemRepositoryImpl extends AbstractRepository<DictItem, DictIte
 
     @Override
     public List<DictItem> findItemByDictId(Dict dictId) {
-        ArrayList<DictItemDO> byDictId = dao.getByDictId(dictId.getId().getId());
+        ArrayList<DictItemDO> byDictId = dao.getByDictId(dictId.getUnique().getId());
         return byDictId.stream().map(assembler::toEntity).collect(Collectors.toList());
     }
 

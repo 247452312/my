@@ -34,7 +34,7 @@ public class OrderNodeRepositoryImpl extends AbstractRepository<OrderNode, Order
 
     @Override
     public OrderNode findNext(OrderNode orderNode) {
-        OrderNodeDO nextNodeByNodeAndResult = dao.getNextNodeByNodeAndResult(orderNode.getId().getId(), orderNode.toDo().getResultId());
+        OrderNodeDO nextNodeByNodeAndResult = dao.getNextNodeByNodeAndResult(orderNode.getUnique().getId(), orderNode.toDo().getResultId());
         return assembler.toEntity(nextNodeByNodeAndResult);
     }
 

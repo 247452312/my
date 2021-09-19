@@ -32,15 +32,15 @@ public class RoleRepositoryImpl extends AbstractRepository<Role, RoleDO, RoleDao
 
     @Override
     public void cleanDeptLink(Role roleId) {
-        dao.deleteRoleDeptMiddleByRoleId(roleId.getId().getId());
+        dao.deleteRoleDeptMiddleByRoleId(roleId.getUnique().getId());
     }
 
     @Override
     public void addRoleDeptLink(Role roleId, List<Dept> deptIds) {
         RoleDeptDO roleDeptDO = new RoleDeptDO();
-        roleDeptDO.setRoleId(roleId.getId().getId());
+        roleDeptDO.setRoleId(roleId.getUnique().getId());
         for (Dept deptId : deptIds) {
-            roleDeptDO.setDeptId(deptId.getId().getId());
+            roleDeptDO.setDeptId(deptId.getUnique().getId());
             roleDeptDO.preInsert();
             dao.insertRoleDept(roleDeptDO);
         }
@@ -59,13 +59,13 @@ public class RoleRepositoryImpl extends AbstractRepository<Role, RoleDO, RoleDao
 
     @Override
     public List<Role> findRoleDeptLinkByRoleId(Role roleId) {
-        List<RoleDeptDO> roleDeptDOS = dao.getRoleDeptLinkByRoleId(roleId.getId().getId());
+        List<RoleDeptDO> roleDeptDOS = dao.getRoleDeptLinkByRoleId(roleId.getUnique().getId());
         return roleDeptDOS.stream().map(assembler::RoleDeptToEntity).collect(Collectors.toList());
     }
 
     @Override
     public List<GetAllDeptWithHaveMarkDTO> findDeptWithHaveMark(Role roleId) {
-        return dao.getAllDeptWithHaveMark(roleId.getId().getId());
+        return dao.getAllDeptWithHaveMark(roleId.getUnique().getId());
     }
 
 

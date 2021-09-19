@@ -55,10 +55,10 @@ public class MenuTest extends BaseTest {
 
         Menu m1 = new Menu(do1);
         repository.save(m1);
-        m1Id = m1.getId().getId();
+        m1Id = m1.getUnique().getId();
 
         MenuDO do2 = new MenuDO();
-        do2.setFid(m1.getId().getId());
+        do2.setFid(m1.getUnique().getId());
         do2.setIFrame(123);
         do2.setIcon("asd");
         do2.setName("asd");
@@ -69,14 +69,14 @@ public class MenuTest extends BaseTest {
 
         Menu m2 = new Menu(do2);
         repository.save(m2);
-        m2Id = m2.getId().getId();
+        m2Id = m2.getUnique().getId();
 
         // dept
         DeptDO deptDO = new DeptDO();
         deptDO.setName("test");
         Dept dept = new Dept(deptDO);
         deptRepository.save(dept);
-        deptId = dept.getId().getId();
+        deptId = dept.getUnique().getId();
 
 
     }

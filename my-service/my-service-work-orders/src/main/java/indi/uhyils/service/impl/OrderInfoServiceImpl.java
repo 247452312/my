@@ -225,7 +225,7 @@ public class OrderInfoServiceImpl extends AbstractDoService<OrderInfoDO, OrderIn
         OrderNode node = orderApply.node();
         node.addTestResult(resultByTrans, nodeRepository);
         /*4.新增此节点到下一节点的路由*/
-        node.createRoute(routeRepository, routeAssembler, resultByTrans.getId(), lastNode);
+        node.createRoute(routeRepository, routeAssembler, resultByTrans.getUnique(), lastNode);
 
         /*5.将下一节点置位等待开始*/
         lastNode.changeStatus(nodeRepository, OrderNodeStatusEnum.WAIT_STATUS);

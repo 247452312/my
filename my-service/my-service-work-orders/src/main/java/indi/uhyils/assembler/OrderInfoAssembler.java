@@ -84,7 +84,7 @@ public class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, OrderInfo
             noticeUserIds.put(orderNodeDO.getId(), orderNodeDO.getNoticeUserId());
         }
 
-        return InitOrderDTO.build(orderInfo.getId().getId(), orderNodeField, orderInfoDO.getMonitorUserId(), dealUserIds, noticeUserIds);
+        return InitOrderDTO.build(orderInfo.getUnique().getId(), orderNodeField, orderInfoDO.getMonitorUserId(), dealUserIds, noticeUserIds);
     }
 }
 

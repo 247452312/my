@@ -41,14 +41,14 @@ public class MenuRepositoryImpl extends AbstractRepository<Menu, MenuDO, MenuDao
 
     @Override
     public void cleanDept(Menu menuId) {
-        dao.deleteDeptMenuByMenuIds(Arrays.asList(menuId.getId().getId()));
+        dao.deleteDeptMenuByMenuIds(Arrays.asList(menuId.getUnique().getId()));
     }
 
     @Override
     public void addDept(Menu menuId, Dept newDeptId) {
         DeptMenuDO t = new DeptMenuDO();
-        t.setMenuId(menuId.getId().getId());
-        t.setDeptId(newDeptId.getId().getId());
+        t.setMenuId(menuId.getUnique().getId());
+        t.setDeptId(newDeptId.getUnique().getId());
         t.preInsert();
         deptDao.insertDeptMenu(t);
     }
