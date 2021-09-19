@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.DTO;
 
 
+import indi.uhyils.pojo.DTO.base.IdDTO;
+
 /**
  * 工单节点属性样例表(OrderBaseNodeField)表 对外数据传输载体
  *

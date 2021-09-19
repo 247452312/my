@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.TraceLogDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * (TraceLog)表 数据库实体类

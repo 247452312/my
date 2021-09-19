@@ -2,7 +2,7 @@ package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.NameRequest;
-import indi.uhyils.pojo.cqe.command.AddCommand;
+import indi.uhyils.pojo.cqe.command.base.AddCommand;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 
 /**

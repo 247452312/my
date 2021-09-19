@@ -3,6 +3,7 @@ package indi.uhyils.pojo.entity;
 import indi.uhyils.assembler.PushMsgAssembler;
 import indi.uhyils.facade.UserFacade;
 import indi.uhyils.pojo.DTO.PushMsgDTO;
+import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.repository.ApiGroupRepository;
 import indi.uhyils.repository.ApiRepository;
 import indi.uhyils.repository.ApiSubscribeRepository;

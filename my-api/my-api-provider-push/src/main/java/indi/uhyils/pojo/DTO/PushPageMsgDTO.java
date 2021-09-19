@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.DTO;
 
 
+import indi.uhyils.pojo.DTO.base.IdDTO;
+
 /**
  * 推送日志信息表(PushPageMsg)表 对外数据传输载体
  *

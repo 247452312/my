@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.cqe.command;
 
+import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
 import java.util.Map;
 
 /**

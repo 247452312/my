@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.response;
 
-import indi.uhyils.pojo.DTO.BaseDTO;
+import indi.uhyils.pojo.DTO.base.BaseDTO;
 
 /**
  * 获取所有的权限(携带羁绊登场)

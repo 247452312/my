@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.cqe.query;
+package indi.uhyils.pojo.cqe.query.base;
 
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.demo.Arg;

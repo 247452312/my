@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.ResponseDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 设备指令回应表(Response)表 数据库实体类

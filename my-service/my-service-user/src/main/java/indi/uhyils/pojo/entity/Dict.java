@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.DictDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.DictItemRepository;
 import indi.uhyils.util.AssertUtil;
 import indi.uhyils.util.CollectionUtil;

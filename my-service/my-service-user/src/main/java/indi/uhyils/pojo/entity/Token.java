@@ -2,6 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.context.MyContext;
 import indi.uhyils.pojo.DO.base.TokenInfo;
+import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.util.AESUtil;

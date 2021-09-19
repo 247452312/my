@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.cqe.event;
 
 
+import indi.uhyils.pojo.cqe.event.base.AbstractEvent;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月17日 18时25分

@@ -1,8 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.DictItemDO;
-import indi.uhyils.repository.DictItemRepository;
-import java.util.List;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 数据字典子项(DictItem)表 数据库实体类

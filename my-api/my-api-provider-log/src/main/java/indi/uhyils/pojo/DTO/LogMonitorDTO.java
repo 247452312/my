@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.DTO;
 
 
+import indi.uhyils.pojo.DTO.base.IdDTO;
+
 /**
  * JVM日志表(LogMonitor)表 对外数据传输载体
  *

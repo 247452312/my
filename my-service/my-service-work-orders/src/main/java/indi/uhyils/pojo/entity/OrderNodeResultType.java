@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.OrderNodeResultTypeDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 工单节点处理结果样例表(OrderNodeResultType)表 数据库实体类

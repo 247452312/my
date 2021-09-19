@@ -4,7 +4,7 @@ import indi.uhyils.context.MyContext;
 import indi.uhyils.enum_.MethodTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
-import indi.uhyils.pojo.DTO.request.MethodDisableQuery;
+import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.repository.ServiceControlRepository;
 import org.apache.commons.lang3.StringUtils;
 

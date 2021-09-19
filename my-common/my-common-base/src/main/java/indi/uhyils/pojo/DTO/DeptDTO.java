@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.DTO;
 
+import indi.uhyils.pojo.DTO.base.IdDTO;
 import java.util.List;
 
 /**

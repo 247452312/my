@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.DTO;
 
 
+import indi.uhyils.pojo.DTO.base.IdDTO;
+
 /**
  * 设备参数表(DeviceArg)表 对外数据传输载体
  *

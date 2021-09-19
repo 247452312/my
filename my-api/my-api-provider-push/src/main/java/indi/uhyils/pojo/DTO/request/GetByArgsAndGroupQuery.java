@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO.request;
 
 
-import indi.uhyils.pojo.cqe.query.AbstractArgQuery;
+import indi.uhyils.pojo.cqe.query.base.AbstractArgQuery;
 
 /**
  * @author uhyils <247452312@qq.com>

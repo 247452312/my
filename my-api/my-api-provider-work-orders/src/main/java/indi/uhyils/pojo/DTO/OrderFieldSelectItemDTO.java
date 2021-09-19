@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DTO;
 
+import indi.uhyils.pojo.DTO.base.BaseDTO;
+
 /**
  * 工单节点属性中下拉选项
  *

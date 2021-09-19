@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.cqe.command.AbstractCommand;
+import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
 
 /**
  * 获取权限菜单的请求

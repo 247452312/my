@@ -22,6 +22,7 @@ import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLUnionQuery;
 import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
+import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.util.CollectionUtil;
 import java.util.ArrayList;
 import java.util.Arrays;

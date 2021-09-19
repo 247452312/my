@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.cqe.command;
+package indi.uhyils.pojo.cqe.command.base;
 
 /**
  * @author uhyils <247452312@qq.com>

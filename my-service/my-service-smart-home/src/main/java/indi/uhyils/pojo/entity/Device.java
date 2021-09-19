@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.DeviceDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 设备表(Device)表 数据库实体类

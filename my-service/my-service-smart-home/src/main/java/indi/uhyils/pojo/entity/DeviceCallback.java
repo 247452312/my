@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.DeviceCallbackDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 设备回调表(DeviceCallback)表 数据库实体类

@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.cqe.event;
+package indi.uhyils.pojo.cqe.event.base;
 
 import indi.uhyils.pojo.cqe.BaseCQE;
 
@@ -10,5 +10,12 @@ import indi.uhyils.pojo.cqe.BaseCQE;
  * @date 文件创建日期 2021年08月25日 20时58分
  */
 public interface BaseEvent extends BaseCQE {
+
+    /**
+     * 获取幂等号
+     *
+     * @return
+     */
+    Long getSign();
 
 }

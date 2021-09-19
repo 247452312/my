@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO.request;
 
 
-import indi.uhyils.pojo.cqe.command.AbstractCommand;
+import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
 
 /**
  * 用户登录用request

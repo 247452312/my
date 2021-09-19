@@ -18,10 +18,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-common-base</artifactId>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

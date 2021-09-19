@@ -7,6 +7,7 @@ import indi.uhyils.facade.PushFacade;
 import indi.uhyils.pojo.DO.OrderInfoDO;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
 import indi.uhyils.pojo.IdMapping;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.OrderInfoRepository;
 import indi.uhyils.repository.OrderNodeFieldRepository;
 import indi.uhyils.repository.OrderNodeRepository;

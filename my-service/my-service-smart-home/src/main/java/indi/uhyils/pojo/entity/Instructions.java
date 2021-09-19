@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.InstructionsDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 说明书表(Instructions)表 数据库实体类

@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.repository.TraceInfoRepository;
 import indi.uhyils.util.NacosUtil;
 

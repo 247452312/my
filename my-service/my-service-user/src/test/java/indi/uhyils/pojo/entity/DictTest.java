@@ -40,18 +40,18 @@ public class DictTest extends BaseTest {
         dO.setType(DictTypeEnum.INTEGER.getCode());
         Dict dict = new Dict(dO);
         dictRepository.save(dict);
-        this.dictId = dict.id.getId();
+        this.dictId = dict.getId().getId();
 
         DictItemDO item = new DictItemDO();
         item.setDescription("itemDesc");
-        item.setDictId(dict.id.getId());
+        item.setDictId(dict.getId().getId());
         item.setSortOrder(1);
         item.setText("test");
         item.setValue("1");
         item.setStatus(1);
         DictItem dictItem = new DictItem(item);
         dictItemRepository.save(dictItem);
-        dictItemId = dictItem.id.getId();
+        dictItemId = dictItem.getId().getId();
     }
 
     @Test
@@ -60,7 +60,7 @@ public class DictTest extends BaseTest {
         List<DictItem> item = dict.findItemByCode(dictItemRepository);
         AssertUtil.assertTrue(CollectionUtil.isNotEmpty(item));
         AssertUtil.assertTrue(item.size() == 1);
-        AssertUtil.assertTrue(item.get(0).id.getId().equals(dictItemId));
+        AssertUtil.assertTrue(item.get(0).getId().getId().equals(dictItemId));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class DictTest extends BaseTest {
         List<DictItem> dictItems = dict.toItem();
         AssertUtil.assertTrue(CollectionUtil.isNotEmpty(dictItems));
         AssertUtil.assertTrue(dictItems.size() == 1);
-        AssertUtil.assertTrue(dictItems.get(0).id.getId().equals(dictItemId));
+        AssertUtil.assertTrue(dictItems.get(0).getId().getId().equals(dictItemId));
     }
 
 

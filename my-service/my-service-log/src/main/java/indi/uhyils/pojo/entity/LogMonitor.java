@@ -4,6 +4,7 @@ import indi.uhyils.enum_.ServiceQualityEnum;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.DO.LogMonitorDO;
 import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.LogMonitorJvmStatusRepository;
 import indi.uhyils.repository.LogMonitorRepository;
@@ -238,7 +239,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     public void addSelf(LogMonitorRepository rep) {
         Identifier save = rep.save(this);
         for (LogMonitorJvmStatus status : statuses) {
-            status.data.setFid(save.getId());
+            status.toDo().setFid(save.getId());
         }
     }
 
@@ -253,14 +254,14 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
             return;
         }
         for (LogMonitorJvmStatus status : statuses) {
-            Long time = status.data.getTime();
+            Long time = status.toDo().getTime();
             if (time > endTime) {
                 endTime = time;
                 lastEndTimeStatus = status;
             }
         }
         // 修改结束时间为假想时间
-        AssertUtil.assertTrue(lastEndTimeStatus.data != null && lastEndTimeStatus.data.getFid() != null, "假想时间所在状态没有fid");
+        AssertUtil.assertTrue(lastEndTimeStatus.toDo() != null && lastEndTimeStatus.toDo().getFid() != null, "假想时间所在状态没有fid");
         lastEndTimeStatus.changeEndTimeLag(rep);
 
     }

@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.cqe.query;
 
+import indi.uhyils.pojo.cqe.query.base.BaseQuery;
 import java.util.List;
 
 

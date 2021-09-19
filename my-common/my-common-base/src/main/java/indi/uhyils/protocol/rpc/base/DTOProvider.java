@@ -1,13 +1,13 @@
 package indi.uhyils.protocol.rpc.base;
 
-import indi.uhyils.pojo.DTO.BaseDbDTO;
+import indi.uhyils.pojo.DTO.base.BaseDbDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.pojo.cqe.command.AddCommand;
+import indi.uhyils.pojo.cqe.command.base.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RemoveCommand;
-import indi.uhyils.pojo.cqe.query.BaseArgQuery;
+import indi.uhyils.pojo.cqe.query.base.BaseArgQuery;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
 import java.util.List;

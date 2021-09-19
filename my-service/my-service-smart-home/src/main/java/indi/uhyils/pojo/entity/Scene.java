@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.SceneDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 场景表(Scene)表 数据库实体类

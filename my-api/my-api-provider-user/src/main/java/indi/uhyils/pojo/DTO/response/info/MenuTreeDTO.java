@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.response.info;
 
-import indi.uhyils.pojo.DTO.BaseDTO;
+import indi.uhyils.pojo.DTO.base.BaseDTO;
 import indi.uhyils.pojo.DTO.MenuDTO;
 import indi.uhyils.util.BeanUtil;
 import java.util.ArrayList;

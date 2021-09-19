@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.DTO;
 
 
+import indi.uhyils.pojo.DTO.base.IdDTO;
+
 /**
  * 节点间关联路由样例表(OrderBaseNodeRoute)表 对外数据传输载体
  *

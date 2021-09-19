@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.DTO;
+package indi.uhyils.pojo.DTO.base;
 
 /**
  * @author uhyils <247452312@qq.com>

@@ -5,8 +5,8 @@ import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.cqe.query.demo.Limit;
 import indi.uhyils.pojo.cqe.query.demo.Order;
-import indi.uhyils.pojo.entity.AbstractDoEntity;
-import indi.uhyils.pojo.entity.HaveIdEntity;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
+import indi.uhyils.pojo.entity.base.HaveIdEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import java.util.List;
 

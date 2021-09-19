@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.BlackListDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 黑名单(BlackList)表 数据库实体类

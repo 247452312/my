@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.OrderBaseInfoDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.OrderBaseNodeFieldRepository;
 import indi.uhyils.repository.OrderBaseNodeRepository;
 import indi.uhyils.repository.OrderBaseNodeResultTypeRepository;
@@ -54,7 +55,7 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
 
     public void fillNodeRoute(OrderBaseNodeRouteRepository routeRepository) {
         List<OrderBaseNodeRoute> routes = routeRepository.findNodeRouteByNodes(this.nodes.stream().map(t -> t.id).collect(Collectors.toList()));
-        Map<Long, List<OrderBaseNodeRoute>> nodeIdRouteMap = routes.stream().collect(Collectors.groupingBy(t -> t.data.getPrevNodeId()));
+        Map<Long, List<OrderBaseNodeRoute>> nodeIdRouteMap = routes.stream().collect(Collectors.groupingBy(t -> t.toDo().getPrevNodeId()));
         for (OrderBaseNode node : this.nodes) {
             Long id = node.id.getId();
             List<OrderBaseNodeRoute> orderBaseNodeRoutes = nodeIdRouteMap.get(id);
@@ -65,7 +66,7 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
 
     public void fillNodeResultType(OrderBaseNodeResultTypeRepository resultTypeRepository) {
         List<OrderBaseNodeResultType> resultTypes = resultTypeRepository.findNodeResultTypeByNodes(this.nodes.stream().map(t -> t.id).collect(Collectors.toList()));
-        Map<Long, List<OrderBaseNodeResultType>> nodeIdResultTypeMap = resultTypes.stream().collect(Collectors.groupingBy(t -> t.data.getBaseNodeId()));
+        Map<Long, List<OrderBaseNodeResultType>> nodeIdResultTypeMap = resultTypes.stream().collect(Collectors.groupingBy(t -> t.toDo().getBaseNodeId()));
         for (OrderBaseNode node : this.nodes) {
             Long id = node.id.getId();
             List<OrderBaseNodeResultType> orderBaseNodeResultTypes = nodeIdResultTypeMap.get(id);
@@ -75,7 +76,7 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
 
     public void fillNodeField(OrderBaseNodeFieldRepository fieldRepository) {
         List<OrderBaseNodeField> fields = fieldRepository.findNodeFieldByNodes(this.nodes.stream().map(t -> t.id).collect(Collectors.toList()));
-        Map<Long, List<OrderBaseNodeField>> nodeIdFieldMap = fields.stream().collect(Collectors.groupingBy(t -> t.data.getBaseOrderId()));
+        Map<Long, List<OrderBaseNodeField>> nodeIdFieldMap = fields.stream().collect(Collectors.groupingBy(t -> t.toDo().getBaseOrderId()));
         for (OrderBaseNode node : this.nodes) {
             Long id = node.id.getId();
             List<OrderBaseNodeField> fieldList = nodeIdFieldMap.get(id);

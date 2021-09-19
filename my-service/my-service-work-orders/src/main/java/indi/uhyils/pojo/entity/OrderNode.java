@@ -15,6 +15,7 @@ import indi.uhyils.pojo.DO.OrderNodeRouteDO;
 import indi.uhyils.pojo.DTO.OrderNodeResultTypeDTO;
 import indi.uhyils.pojo.DTO.OrderNodeRouteDTO;
 import indi.uhyils.pojo.IdMapping;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.OrderInfoRepository;
 import indi.uhyils.repository.OrderNodeFieldRepository;
@@ -151,7 +152,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
     }
 
     public void addTestResult(OrderNodeResultType result, OrderNodeRepository nodeRepository) {
-        data.setResultId(result.data.getId());
+        data.setResultId(result.toDo().getId());
         data.setResultType(OrderNodeResultTypeEnum.TRANSFER.getCode());
         onUpdate();
         nodeRepository.save(this);
@@ -183,7 +184,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
 
         for (OrderNodeField field : fields) {
             Long id = field.id.getId();
-            AssertUtil.assertTrue(orderNodeFieldValueMap.containsKey(id), field.data.getName() + " 未填写");
+            AssertUtil.assertTrue(orderNodeFieldValueMap.containsKey(id), field.toDo().getName() + " 未填写");
             String realValue = String.valueOf(orderNodeFieldValueMap.get(id));
             OrderNodeFieldValue orderNodeFieldValue = new OrderNodeFieldValue(field, realValue);
             orderNodeFieldValue.assertSelf();

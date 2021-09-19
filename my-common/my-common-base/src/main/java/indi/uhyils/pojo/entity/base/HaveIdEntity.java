@@ -1,5 +1,6 @@
-package indi.uhyils.pojo.entity;
+package indi.uhyils.pojo.entity.base;
 
+import indi.uhyils.pojo.entity.base.BaseEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 
 /**

@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.entity;
+package indi.uhyils.pojo.entity.base;
 
 import indi.uhyils.pojo.entity.event.Event;
 import java.io.Serializable;
@@ -18,16 +18,4 @@ public interface BaseEntity extends Serializable {
      * @return
      */
     boolean canUpdate();
-
-    /**
-     * 添加触发事件
-     *
-     * @param event 事件
-     */
-    void addEvent(Event event);
-
-    /**
-     * 执行剩下的所有event
-     */
-    void executeEvent();
 }

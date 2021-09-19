@@ -7,6 +7,7 @@ import indi.uhyils.enum_.PushTypeEnum;
 import indi.uhyils.facade.PushFacade;
 import indi.uhyils.pojo.DO.OrderApplyDO;
 import indi.uhyils.pojo.DO.OrderNodeDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.OrderApplyRepository;
 import indi.uhyils.repository.OrderInfoRepository;
@@ -44,9 +45,9 @@ public class OrderApply extends AbstractDoEntity<OrderApplyDO> {
         }
 
         this.orderNode = nodeRepository.find(new Identifier(toDo().getOrderNodeId()));
-        List<OrderNodeField> fields = fieldRepository.findByNodeId(orderNode.data.getId());
-        List<OrderNodeResultType> resultTypes = resultTypeRepository.findByNodeId(orderNode.data.getId());
-        List<OrderNodeRoute> route = routeRepository.findByNodeId(orderNode.data.getId());
+        List<OrderNodeField> fields = fieldRepository.findByNodeId(orderNode.toDo().getId());
+        List<OrderNodeResultType> resultTypes = resultTypeRepository.findByNodeId(orderNode.toDo().getId());
+        List<OrderNodeRoute> route = routeRepository.findByNodeId(orderNode.toDo().getId());
         this.orderNode.forceFillInfo(fields, resultTypes, route);
 
     }

@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DTO;
 
+import indi.uhyils.pojo.DTO.base.BaseDTO;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年02月14日 11时10分

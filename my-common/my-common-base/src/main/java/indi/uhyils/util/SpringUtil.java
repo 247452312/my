@@ -20,6 +20,7 @@ package indi.uhyils.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
+import java.util.List;
 import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
@@ -183,6 +184,16 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
         } catch (Exception e) {
             return Boolean.FALSE;
         }
+    }
+
+    /**
+     * 根据注解获取
+     *
+     * @param annotationClass
+     */
+    public static Map<String, Object> getByAnnotation(Class<? extends Annotation> annotationClass) {
+        return applicationContext.getBeansWithAnnotation(annotationClass);
+
     }
 
 

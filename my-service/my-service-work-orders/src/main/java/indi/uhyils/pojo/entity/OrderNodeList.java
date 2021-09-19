@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.repository.OrderNodeFieldRepository;
 import indi.uhyils.repository.OrderNodeRepository;
 import indi.uhyils.repository.OrderNodeResultTypeRepository;
@@ -57,21 +58,21 @@ public class OrderNodeList extends AbstractEntity {
     public void delFields(OrderNodeFieldRepository fieldRepository) {
         List<Long> collect = orderNodes.stream().map(t -> t.id.getId()).collect(Collectors.toList());
         List<OrderNodeField> byNodeIds = fieldRepository.findByNodeIds(collect);
-        List<OrderNodeField> fields = byNodeIds.stream().peek(t -> t.data.setDeleteFlag(true)).peek(AbstractEntity::onUpdate).collect(Collectors.toList());
+        List<OrderNodeField> fields = byNodeIds.stream().peek(t -> t.toDo().setDeleteFlag(true)).peek(AbstractEntity::onUpdate).collect(Collectors.toList());
         fieldRepository.save(fields);
     }
 
     public void delRoutes(OrderNodeRouteRepository routeRepository) {
         List<Long> collect = orderNodes.stream().map(t -> t.id.getId()).collect(Collectors.toList());
         List<OrderNodeRoute> routes = routeRepository.findByNodeIds(collect);
-        List<OrderNodeRoute> route = routes.stream().peek(t -> t.data.setDeleteFlag(true)).peek(AbstractEntity::onUpdate).collect(Collectors.toList());
+        List<OrderNodeRoute> route = routes.stream().peek(t -> t.toDo().setDeleteFlag(true)).peek(AbstractEntity::onUpdate).collect(Collectors.toList());
         routeRepository.save(route);
     }
 
     public void delResultType(OrderNodeResultTypeRepository resultTypeRepository) {
         List<Long> collect = orderNodes.stream().map(t -> t.id.getId()).collect(Collectors.toList());
         List<OrderNodeResultType> routes = resultTypeRepository.findByNodeIds(collect);
-        List<OrderNodeResultType> route = routes.stream().peek(t -> t.data.setDeleteFlag(true)).peek(AbstractEntity::onUpdate).collect(Collectors.toList());
+        List<OrderNodeResultType> route = routes.stream().peek(t -> t.toDo().setDeleteFlag(true)).peek(AbstractEntity::onUpdate).collect(Collectors.toList());
         resultTypeRepository.save(route);
     }
 

@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.cqe.event;
+package indi.uhyils.pojo.cqe.command.base;
 
 import indi.uhyils.pojo.cqe.DefaultCQE;
 
@@ -7,6 +7,6 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
  * @version 1.0
  * @date 文件创建日期 2021年08月26日 08时24分
  */
-public abstract class AbstractEvent extends DefaultCQE implements BaseEvent {
+public abstract class AbstractCommand extends DefaultCQE implements BaseCommand {
 
 }

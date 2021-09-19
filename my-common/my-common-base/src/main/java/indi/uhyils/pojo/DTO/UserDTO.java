@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DTO;
 
+import indi.uhyils.pojo.DTO.base.IdDTO;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0

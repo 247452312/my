@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.response;
 
-import indi.uhyils.pojo.DTO.BaseDTO;
+import indi.uhyils.pojo.DTO.base.BaseDTO;
 import java.util.List;
 import java.util.Map;
 

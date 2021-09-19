@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.pojo.cqe.command.AbstractCommand;
+import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
 import java.util.List;
 
 /**

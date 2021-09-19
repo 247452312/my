@@ -2,6 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.enum_.DbTypeEnum;
 import indi.uhyils.pojo.DTO.request.DbInformationDTO;
+import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.tool.ColumnInfo;
 import indi.uhyils.pojo.tool.TableInfo;
 import indi.uhyils.util.AssertUtil;

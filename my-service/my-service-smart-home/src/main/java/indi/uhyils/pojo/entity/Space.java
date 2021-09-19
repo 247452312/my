@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.SpaceDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 空间坐标表(Space)表 数据库实体类

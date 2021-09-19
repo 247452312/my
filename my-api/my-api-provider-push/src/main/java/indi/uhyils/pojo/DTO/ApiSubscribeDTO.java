@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.DTO;
 
 
+import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.request.SubscribeRequest;
 
 /**

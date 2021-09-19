@@ -11,7 +11,7 @@ import indi.uhyils.pojo.DTO.request.GetRedisKeysQuery;
 import indi.uhyils.pojo.DTO.request.RedisKeyAndValue;
 import indi.uhyils.pojo.DTO.response.GetInfosResponse;
 import indi.uhyils.pojo.DTO.response.OperateSoftwareResponse;
-import indi.uhyils.pojo.cqe.command.AddCommand;
+import indi.uhyils.pojo.cqe.command.base.AddCommand;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.IdsCommand;

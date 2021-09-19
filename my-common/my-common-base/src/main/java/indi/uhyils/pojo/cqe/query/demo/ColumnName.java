@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.cqe.query;
+package indi.uhyils.pojo.cqe.query.demo;
 
 import java.io.Serializable;
 

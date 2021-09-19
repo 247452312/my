@@ -2,12 +2,12 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.assembler.BaseAssembler;
 import indi.uhyils.pojo.DO.base.BaseDO;
-import indi.uhyils.pojo.DTO.IdDTO;
+import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.cqe.query.demo.Limit;
 import indi.uhyils.pojo.cqe.query.demo.Order;
-import indi.uhyils.pojo.entity.AbstractDoEntity;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import indi.uhyils.service.BaseDoService;

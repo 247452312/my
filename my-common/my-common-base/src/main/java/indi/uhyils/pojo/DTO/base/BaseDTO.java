@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.DTO;
+package indi.uhyils.pojo.DTO.base;
 
 import java.io.Serializable;
 

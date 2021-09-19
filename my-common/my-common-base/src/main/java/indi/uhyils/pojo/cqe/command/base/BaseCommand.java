@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.cqe.command;
+package indi.uhyils.pojo.cqe.command.base;
 
 import indi.uhyils.pojo.cqe.BaseCQE;
 

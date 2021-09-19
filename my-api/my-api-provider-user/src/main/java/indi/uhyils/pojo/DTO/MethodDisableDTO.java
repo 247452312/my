@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.DTO;
 
+import indi.uhyils.pojo.DTO.base.BaseDTO;
+
 /**
  * 方法禁用信息
  *

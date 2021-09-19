@@ -1,9 +1,9 @@
 package indi.uhyils.assembler;
 
 import indi.uhyils.pojo.DO.base.BaseDO;
-import indi.uhyils.pojo.DTO.IdDTO;
+import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.entity.AbstractDoEntity;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import java.util.List;
 
 /**

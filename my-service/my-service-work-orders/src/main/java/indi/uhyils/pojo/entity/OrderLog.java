@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.OrderLogDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 日志表(OrderLog)表 数据库实体类

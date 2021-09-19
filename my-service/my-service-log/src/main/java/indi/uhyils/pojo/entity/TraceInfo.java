@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.TraceInfoDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * (TraceInfo)表 数据库实体类

@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.cqe.command;
 
+import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
+
 /**
  * 申请失败转交节点请求
  *

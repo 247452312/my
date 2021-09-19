@@ -5,6 +5,7 @@ import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.MenuDTO;
 import indi.uhyils.pojo.DTO.MenuTreeBuilder;
 import indi.uhyils.pojo.DTO.response.info.MenuTreeDTO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.MenuIframe;
 import indi.uhyils.repository.MenuRepository;

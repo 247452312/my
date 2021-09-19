@@ -2,6 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.pojo.entity.type.PowerInfo;

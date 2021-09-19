@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.ApiDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.ApiRepository;
 
 /**

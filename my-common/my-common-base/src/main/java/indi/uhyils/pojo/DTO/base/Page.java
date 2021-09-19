@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.base;
 
-import indi.uhyils.pojo.cqe.query.BaseArgQuery;
+import indi.uhyils.pojo.cqe.query.base.BaseArgQuery;
 import indi.uhyils.pojo.cqe.query.demo.Limit;
 import java.io.Serializable;
 import java.util.List;

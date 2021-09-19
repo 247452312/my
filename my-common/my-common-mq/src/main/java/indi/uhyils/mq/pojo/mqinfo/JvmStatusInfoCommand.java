@@ -1,6 +1,6 @@
 package indi.uhyils.mq.pojo.mqinfo;
 
-import indi.uhyils.pojo.cqe.command.AbstractCommand;
+import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
 
 /**
  * 每个微服务定时任务中微服务的info 一下所有内存单位为m

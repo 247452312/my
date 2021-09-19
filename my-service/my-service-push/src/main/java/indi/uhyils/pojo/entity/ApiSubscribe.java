@@ -4,6 +4,7 @@ import indi.uhyils.enum_.PushTypeEnum;
 import indi.uhyils.pojo.DO.ApiSubscribeDO;
 import indi.uhyils.pojo.DTO.PushMsgDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ApiSubscribeRepository;
 import indi.uhyils.util.AssertUtil;
@@ -45,9 +46,9 @@ public class ApiSubscribe extends AbstractDoEntity<ApiSubscribeDO> {
     public PushMsgDTO sendMsg(ApiGroup apiGroup, UserDTO userDTO, String sendContent) {
         switch (Objects.requireNonNull(PushTypeEnum.prase(toDo().getType()))) {
             case PAGE:
-                return PushUtils.pagePush(userDTO, "my系统,订阅消息-" + apiGroup.data.getName(), sendContent);
+                return PushUtils.pagePush(userDTO, "my系统,订阅消息-" + apiGroup.toDo().getName(), sendContent);
             case EMAIL:
-                return PushUtils.emailPush(userDTO, "my系统,订阅邮件-" + apiGroup.data.getName(), sendContent);
+                return PushUtils.emailPush(userDTO, "my系统,订阅邮件-" + apiGroup.toDo().getName(), sendContent);
             default:
                 break;
         }

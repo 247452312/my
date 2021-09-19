@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.cqe.query;
 
+import indi.uhyils.pojo.cqe.query.base.AbstractArgQuery;
+
 /**
  * 检查用户是否存在此权限
  *

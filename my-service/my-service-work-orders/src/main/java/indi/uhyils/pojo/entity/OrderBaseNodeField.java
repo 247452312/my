@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.OrderBaseNodeFieldDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 工单节点属性样例表(OrderBaseNodeField)表 数据库实体类

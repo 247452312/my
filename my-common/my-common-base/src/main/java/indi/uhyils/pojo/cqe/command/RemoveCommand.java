@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.cqe.command;
 
-import indi.uhyils.pojo.cqe.query.BaseArgQuery;
+import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
+import indi.uhyils.pojo.cqe.query.base.BaseArgQuery;
 
 /**
  * 删除命令

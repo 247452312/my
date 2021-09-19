@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.OrderNodeRouteDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 节点间关联路由样例表(OrderNodeRoute)表 数据库实体类

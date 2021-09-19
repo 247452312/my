@@ -2,6 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.JobDO;
 import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.JobRepository;
 import indi.uhyils.util.ScheduledManager;
 import indi.uhyils.util.SpringUtil;

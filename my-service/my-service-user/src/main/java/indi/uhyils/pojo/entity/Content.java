@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.DO.ContentDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
 /**
  * 公共参数(Content)表 数据库实体类

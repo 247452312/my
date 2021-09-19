@@ -2,6 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.enum_.SoftwareStatusEnum;
 import indi.uhyils.pojo.DO.SoftwareDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ServerRepository;
 import indi.uhyils.repository.SoftwareRepository;
@@ -50,7 +51,7 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
 
     public void link() {
         AssertUtil.assertTrue(server != null, "连接不能没有 server");
-        boolean canConnect = SocketUtil.canConnect(server.data.getIp(), toDo().getPort());
+        boolean canConnect = SocketUtil.canConnect(server.toDo().getIp(), toDo().getPort());
         AssertUtil.assertTrue(canConnect, "不能连接");
     }
 

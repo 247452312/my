@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.trace;
 
-import indi.uhyils.pojo.DTO.IdDTO;
+import indi.uhyils.pojo.DTO.base.IdDTO;
 
 /**
  * 处理traceDeal
