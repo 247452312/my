@@ -37,7 +37,7 @@ public final class BeanUtil {
 
     public static <T> T copyProperties(@Nonnull Object source, @Nonnull T target) {
         BeanCopier copier = getBeanCopier(source.getClass(), target.getClass());
-        copier.copy(source, target, (Converter) null);
+        copier.copy(source, target, null);
         return target;
     }
 
@@ -68,7 +68,7 @@ public final class BeanUtil {
 
     private static BeanCopier getBeanCopier(Class<?> sourceClass, Class<?> targetClass) {
         String beanKey = generateKey(sourceClass, targetClass);
-        BeanCopier copier = (BeanCopier) BEAN_COPIER_CACHE.getIfPresent(beanKey);
+        BeanCopier copier = BEAN_COPIER_CACHE.getIfPresent(beanKey);
         if (Objects.isNull(copier)) {
             copier = BeanCopier.create(sourceClass, targetClass, false);
             BEAN_COPIER_CACHE.put(beanKey, copier);

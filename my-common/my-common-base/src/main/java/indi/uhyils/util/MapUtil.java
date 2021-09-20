@@ -40,10 +40,7 @@ public final class MapUtil {
         if (map == null) {
             return false;
         }
-        if (map.size() == 0) {
-            return false;
-        }
-        return true;
+        return map.size() != 0;
     }
 
     /**

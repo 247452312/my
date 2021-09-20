@@ -20,7 +20,7 @@ public enum CacheTypeEnum {
      */
     NOT_TYPE(3);
 
-    private Integer cacheType;
+    private final Integer cacheType;
 
     CacheTypeEnum(Integer cacheType) {
         this.cacheType = cacheType;

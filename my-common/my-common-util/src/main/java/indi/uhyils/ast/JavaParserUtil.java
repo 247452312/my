@@ -4,13 +4,20 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import indi.uhyils.ast.model.MethodNodeAllInfo;
 import indi.uhyils.ast.model.MethodNodeStatisticsInfo;
 import indi.uhyils.ast.model.ParseMethodNodeExcludeModel;
@@ -40,14 +47,104 @@ public class JavaParserUtil {
      */
     private static final JavaParser JAVA_PARSER = new JavaParser();
 
+    private static final Function<String, Boolean>[] skipMethodName = new Function[]{
+        t -> ((String) t).startsWith("get"),
+        t -> ((String) t).startsWith("set")
+    };
+
+
     public static void main(String[] args) throws FileNotFoundException {
         List<CompilationUnit> compilationUnits = parseProject(Arrays
-                                                                  .asList("D:\\share\\ideaSrc\\my\\my-common\\my-common-base\\src\\main\\java\\indi\\uhyils\\repository\\base\\AbstractRepository.java"));
-        Map<String, List<CompilationUnit>> collect = compilationUnits.stream()
-                                                                     .filter(t -> t.getPackageDeclaration().isPresent())
-                                                                     .filter(JavaParserUtil::filterInterface)
-                                                                     .collect(Collectors.groupingBy(JavaParserUtil::namedUnit));
+                                                                  .asList(
+                                                                      "/Users/uhyils/share/idea/self/my/my-common/my-common-util"));
+        Map<String, CompilationUnit> classNameUnitMap = compilationUnits.stream()
+                                                                        .filter(t -> t.getPackageDeclaration().isPresent())
+                                                                        .filter(JavaParserUtil::filterInterface)
+                                                                        .collect(Collectors.toMap(JavaParserUtil::namedUnit, t -> t, (key1, key2) -> key1));
 
+        //方法参数统计
+        methodDeepAnalysis(classNameUnitMap);
+
+        // 方法调用统计
+        methodLink(classNameUnitMap, "indi.uhyils.protocol.rpc.base.BaseDefaultProvider#queryById");
+
+    }
+
+    private static void methodLink(Map<String, CompilationUnit> collect, String methodName) {
+
+        Map<String, MethodDeclaration> methodLink = getMethodLink(collect);
+        for (Entry<String, MethodDeclaration> entry : methodLink.entrySet()) {
+            String methodAllName = entry.getKey();
+            MethodDeclaration value = entry.getValue();
+            Optional<BlockStmt> body = value.getBody();
+            if (!body.isPresent()) {
+                continue;
+            }
+            BlockStmt blockStmt = body.get();
+            NodeList<Statement> statements = blockStmt.getStatements();
+            for (Statement statement : statements) {
+                if (statement.isExpressionStmt()) {
+                    ExpressionStmt expressionStmt = statement.asExpressionStmt();
+                    Expression expression = expressionStmt.getExpression();
+                    if (expression instanceof VariableDeclarationExpr) {
+                        VariableDeclarator node = (VariableDeclarator) expression.getChildNodes().get(0);
+                        // 局部变量名称
+                        String variableName = node.getName().toString();
+                        Optional<Expression> initializer = node.getInitializer();
+                        if (initializer.isPresent()) {
+                            String s = initializer.get().toString();
+                            int i = 1;
+                        }
+                    } else {
+                        int i = 1;
+                    }
+                } else if (statement.isIfStmt()) {
+                    IfStmt ifStmt = statement.asIfStmt();
+                    Expression condition = ifStmt.getCondition();
+                    Statement thenStmt = ifStmt.getThenStmt();
+                    int i = 1;
+                } else {
+                    int i = 1;
+                }
+
+
+            }
+        }
+    }
+
+    private static Map<String, MethodDeclaration> getMethodLink(Map<String, CompilationUnit> collect) {
+        Map<String, MethodDeclaration> result = new HashMap<>();
+        for (Entry<String, CompilationUnit> entry : collect.entrySet()) {
+            String className = entry.getKey();
+            CompilationUnit value = entry.getValue();
+            Map<String, MethodDeclaration> methodResult = parseCompilationUnit(value, className);
+            result.putAll(methodResult);
+        }
+        return result;
+    }
+
+    private static Map<String, MethodDeclaration> parseCompilationUnit(Node value, String className) {
+        Map<String, MethodDeclaration> result = new HashMap<>();
+        List<Node> childNodes = value.getChildNodes();
+        if (CollectionUtil.isEmpty(childNodes)) {
+            return result;
+        }
+        for (Node childNode : childNodes) {
+            if (childNode instanceof MethodDeclaration) {
+                MethodDeclaration methodNode = (MethodDeclaration) childNode;
+                String methodName = methodNode.getName().toString();
+                if (Arrays.stream(skipMethodName).noneMatch(t -> t.apply(methodName))) {
+                    String classMethodName = className + "#" + methodName;
+                    result.put(classMethodName, methodNode);
+                }
+            } else {
+                result.putAll(parseCompilationUnit(childNode, className));
+            }
+        }
+        return result;
+    }
+
+    private static void methodDeepAnalysis(Map<String, CompilationUnit> collect) {
         //方法总复杂度
         long sum = 0L;
         //方法个数
@@ -61,27 +158,27 @@ public class JavaParserUtil {
         ParseMethodNodeExcludeModel build = ParseMethodNodeExcludeModel
             .build(Arrays.asList(testFunction, criteriaFunction, exampleFunction), Arrays.asList("equals"::equals, "hashCode"::equals, "toString"::equals));
 
-        for (Entry<String, List<CompilationUnit>> entry : collect.entrySet()) {
-            List<CompilationUnit> values = entry.getValue();
-            for (CompilationUnit value : values) {
-                List<Node> childNodes = value.getChildNodes();
-                for (Node childNode : childNodes) {
-                    MethodNodeAllInfo methodNodeInfo = parseMethodNode(childNode, build);
-                    if (methodNodeInfo == null) {
-                        continue;
-                    }
-                    sum += methodNodeInfo.getSum();
-                    count += methodNodeInfo.getCount();
-                    methodDeeps.putAll(methodNodeInfo.getMethodDeep());
+        for (Entry<String, CompilationUnit> entry : collect.entrySet()) {
+            CompilationUnit value = entry.getValue();
+            List<Node> childNodes = value.getChildNodes();
+            for (Node childNode : childNodes) {
+                MethodNodeAllInfo methodNodeInfo = parseMethodNode(childNode, build);
+                if (methodNodeInfo == null) {
+                    continue;
                 }
+                sum += methodNodeInfo.getSum();
+                count += methodNodeInfo.getCount();
+                methodDeeps.putAll(methodNodeInfo.getMethodDeep());
             }
 
         }
         printResult(sum, count, methodDeeps);
-
     }
 
     private static void printResult(long sum, int count, Map<String, MethodNodeStatisticsInfo> methodDeeps) {
+        if (methodDeeps.size() == 0) {
+            return;
+        }
         List<Entry<String, MethodNodeStatisticsInfo>> list = new ArrayList<>(methodDeeps.entrySet());
         list.sort(Comparator.comparingInt(t -> t.getValue().getSumComplexity()));
         int middleIndex = list.size() / 2;

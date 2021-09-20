@@ -75,10 +75,7 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
         if (applicationContext == null) {
             return false;
         }
-        if (!atomicBoolean) {
-            return false;
-        }
-        return true;
+        return atomicBoolean;
     }
 
     /**

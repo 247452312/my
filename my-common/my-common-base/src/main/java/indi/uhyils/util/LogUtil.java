@@ -64,7 +64,7 @@ public final class LogUtil {
     /**
      * 日志文件缓存地
      */
-    private static Map<String, Logger> loggerMap = new HashMap<>();
+    private static final Map<String, Logger> loggerMap = new HashMap<>();
 
     private LogUtil() {
         throw new IllegalStateException("Utility class");

@@ -41,7 +41,7 @@ public final class MD5Util {
                 }
                 buf.append(Integer.toHexString(i));
             }
-            return buf.toString().substring(8, 24);
+            return buf.substring(8, 24);
         } catch (NoSuchAlgorithmException e) {
             LogUtil.error(MD5Util.class, e);
         }

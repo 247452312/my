@@ -12,19 +12,19 @@ import java.util.Map;
  */
 public class Demo {
 
-    private static String s = "public class H {\n" +
-                              "    public int add(int a, int b) {\n" +
-                              "        return a + b;\n" +
-                              "    }\n" +
-                              "}";
+    private static final String s = "public class H {\n" +
+                                    "    public int add(int a, int b) {\n" +
+                                    "        return a + b;\n" +
+                                    "    }\n" +
+                                    "}";
 
-    private static String c = "public class C {\n" +
-                              "\n" +
-                              "    public int add(int a, int b) {\n" +
-                              "        H h = new H();\n" +
-                              "        return h.add(a, b);\n" +
-                              "    }\n" +
-                              "}";
+    private static final String c = "public class C {\n" +
+                                    "\n" +
+                                    "    public int add(int a, int b) {\n" +
+                                    "        H h = new H();\n" +
+                                    "        return h.add(a, b);\n" +
+                                    "    }\n" +
+                                    "}";
 
     public static void main(String[] args) throws Exception {
         JavaStringCompiler javaStringCompiler = new JavaStringCompiler();
