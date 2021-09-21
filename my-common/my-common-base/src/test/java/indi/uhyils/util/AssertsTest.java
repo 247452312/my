@@ -7,11 +7,11 @@ import org.junit.Test;
  * @version 1.0
  * @date 文件创建日期 2021年09月08日 14时10分
  */
-public class AssertUtilTest {
+public class AssertsTest {
 
     @Test
     public void assertException() {
-        AssertUtil.assertException(() -> AssertUtil.assertException(() -> {
+        Asserts.assertException(() -> Asserts.assertException(() -> {
         }));
     }
 }

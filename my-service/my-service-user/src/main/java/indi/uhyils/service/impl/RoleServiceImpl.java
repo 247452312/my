@@ -15,7 +15,7 @@ import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.service.RoleService;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class RoleServiceImpl extends AbstractDoService<RoleDO, Role, RoleDTO, Ro
     public RoleDTO getRoleByRoleId(Identifier roleId) {
         Role role = new Role(roleId);
         role.completion(rep);
-        AssertUtil.assertTrue(role.toDo() != null, "查询失败");
+        Asserts.assertTrue(role.toDo() != null, "查询失败");
         return assem.toDTO(role);
     }
 

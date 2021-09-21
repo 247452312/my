@@ -18,7 +18,7 @@ import indi.uhyils.repository.ApiRepository;
 import indi.uhyils.repository.ApiSubscribeRepository;
 import indi.uhyils.repository.PushMsgRepository;
 import indi.uhyils.service.PushMsgService;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,7 +69,7 @@ public class PushMsgServiceImpl extends AbstractDoService<PushMsgDO, PushMsg, Pu
     @Override
     public Boolean pushMsgToSomeone(PushMsgToSomeoneRequest request) {
         PushTypeEnum type = PushTypeEnum.prase(request.getType());
-        AssertUtil.assertTrue(type != null, "类型不正确");
+        Asserts.assertTrue(type != null, "类型不正确");
         UserDTO user = userFacade.getById(new Identifier(request.getUserId()));
         ApiSubscribe apiSubscribe = new ApiSubscribe();
         PushMsgDTO pushMsgDTO = apiSubscribe.sendMsg(user, request.getTitle(), request.getMsg(), type);

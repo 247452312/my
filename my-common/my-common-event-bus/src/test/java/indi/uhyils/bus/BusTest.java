@@ -8,7 +8,7 @@ import indi.uhyils.protocol.register.TestEvent;
 import indi.uhyils.protocol.register.TestEventRegister;
 import indi.uhyils.protocol.register.TestParentEvent;
 import indi.uhyils.protocol.register.TestParentEventBlank;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +35,10 @@ public class BusTest extends BaseTest {
 
     @Test
     public void pushEvent() {
-        AssertUtil.assertTrue(!TestEventRegister.b);
+        Asserts.assertTrue(!TestEventRegister.b);
         bus.commit(new TestParentEvent());
         bus.pushEvent();
-        AssertUtil.assertTrue(TestEventRegister.b);
+        Asserts.assertTrue(TestEventRegister.b);
         bus.commit(new TestParentEventBlank());
         bus.pushEvent();
     }
@@ -46,29 +46,29 @@ public class BusTest extends BaseTest {
     @Test
     public void commitAndPush() {
         TestEventRegister.b = false;
-        AssertUtil.assertTrue(!TestEventRegister.b);
+        Asserts.assertTrue(!TestEventRegister.b);
         bus.commitAndPush(new TestParentEvent());
-        AssertUtil.assertTrue(TestEventRegister.b);
+        Asserts.assertTrue(TestEventRegister.b);
     }
 
     @Test
     public void remove() {
         bus.commit(new TestParentEvent());
         List<BaseEvent> baseEvents = bus.get(AbstractEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
         bus.remove(AbstractEvent.class);
         baseEvents = bus.get(AbstractEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 0);
+        Asserts.assertTrue(baseEvents.size() == 0);
         baseEvents = bus.get(BaseEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
 
         baseEvents = bus.get(AbstractParentEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
         bus.remove(AbstractParentEvent.class);
         baseEvents = bus.get(AbstractParentEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 0);
+        Asserts.assertTrue(baseEvents.size() == 0);
         baseEvents = bus.get(BaseEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 0);
+        Asserts.assertTrue(baseEvents.size() == 0);
 
     }
 
@@ -78,34 +78,34 @@ public class BusTest extends BaseTest {
 
         // 添加进去两个 一个父类一个子类
         List<BaseEvent> baseEvents = bus.get(BaseEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 2);
+        Asserts.assertTrue(baseEvents.size() == 2);
         baseEvents = bus.get(AbstractEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
         baseEvents = bus.get(AbstractParentEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
 
         // 精确移除, 这一行移除不到东西
         bus.preciseRemove(AbstractEvent.class);
         baseEvents = bus.get(BaseEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 2);
+        Asserts.assertTrue(baseEvents.size() == 2);
         baseEvents = bus.get(AbstractEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
         baseEvents = bus.get(AbstractParentEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
 
         // 精确移除父类
         bus.preciseRemove(TestParentEvent.class);
         baseEvents = bus.get(AbstractEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
         baseEvents = bus.get(BaseEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
 
         // 精确移除子类
         bus.preciseRemove(TestEvent.class);
         baseEvents = bus.get(AbstractParentEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 0);
+        Asserts.assertTrue(baseEvents.size() == 0);
         baseEvents = bus.get(BaseEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 0);
+        Asserts.assertTrue(baseEvents.size() == 0);
     }
 
     @Test
@@ -113,11 +113,11 @@ public class BusTest extends BaseTest {
         bus.commit(new TestParentEvent());
 
         List<BaseEvent> baseEvents = bus.preciseGet(TestParentEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
         baseEvents = bus.preciseGet(TestEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 1);
+        Asserts.assertTrue(baseEvents.size() == 1);
         baseEvents = bus.preciseGet(AbstractEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 0);
+        Asserts.assertTrue(baseEvents.size() == 0);
 
     }
 
@@ -127,11 +127,11 @@ public class BusTest extends BaseTest {
         bus.cleanCommitEvent();
 
         List<BaseEvent> baseEvents = bus.preciseGet(TestParentEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 0);
+        Asserts.assertTrue(baseEvents.size() == 0);
         baseEvents = bus.preciseGet(TestEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 0);
+        Asserts.assertTrue(baseEvents.size() == 0);
         baseEvents = bus.preciseGet(AbstractEvent.class);
-        AssertUtil.assertTrue(baseEvents.size() == 0);
+        Asserts.assertTrue(baseEvents.size() == 0);
 
     }
 

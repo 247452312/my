@@ -9,7 +9,7 @@ import indi.uhyils.pojo.DTO.response.info.MenuTreeDTO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.util.Arrays;
 import java.util.List;
@@ -93,10 +93,10 @@ public class MenuTest extends BaseTest {
         menu.removeSelf(repository, assembler);
 
         Menu menu1 = new Menu(m1Id);
-        AssertUtil.assertException(() -> menu1.completion(repository));
+        Asserts.assertException(() -> menu1.completion(repository));
 
         Menu menu2 = new Menu(m2Id);
-        AssertUtil.assertException(() -> menu2.completion(repository));
+        Asserts.assertException(() -> menu2.completion(repository));
     }
 
     @Test
@@ -106,9 +106,9 @@ public class MenuTest extends BaseTest {
         MenuTreeDTO selfNode = menu.findSelfNode(repository, assembler);
         List<MenuTreeDTO> child = selfNode.getChild();
         MenuDTO menuDTO = selfNode.getMenuDTO();
-        AssertUtil.assertTrue(m1Id.equals(menuDTO.getId()));
-        AssertUtil.assertTrue(CollectionUtil.isNotEmpty(child));
-        AssertUtil.assertTrue(child.size() == 1);
+        Asserts.assertTrue(m1Id.equals(menuDTO.getId()));
+        Asserts.assertTrue(CollectionUtil.isNotEmpty(child));
+        Asserts.assertTrue(child.size() == 1);
     }
 
     @Test
@@ -118,7 +118,7 @@ public class MenuTest extends BaseTest {
         menu.toDo().setIFrame(123123123);
         MenuTreeDTO selfNode = menu.findSelfNode(repository, assembler);
 
-        AssertUtil.assertTrue(selfNode == null);
+        Asserts.assertTrue(selfNode == null);
     }
 
     @Test
@@ -130,13 +130,13 @@ public class MenuTest extends BaseTest {
         dept.addMenu(Arrays.asList(menu), deptRepository);
 
         menu.cleanDept(repository);
-        AssertUtil.assertTrue(menu.depts() == null);
+        Asserts.assertTrue(menu.depts() == null);
 
         Dept dept1 = new Dept(deptId);
         dept1.initMenus(repository);
         List<Menu> menus = dept1.menus();
 
-        AssertUtil.assertTrue(menus.size() == 0);
+        Asserts.assertTrue(menus.size() == 0);
     }
 
     @Test
@@ -146,16 +146,16 @@ public class MenuTest extends BaseTest {
         Menu menu = new Menu(new Identifier(m1Id));
         menu.addDepts(Arrays.asList(dept), repository);
         List<Dept> depts = menu.depts();
-        AssertUtil.assertTrue(depts.size() == 1);
+        Asserts.assertTrue(depts.size() == 1);
 
         menu.cleanDept(repository);
-        AssertUtil.assertTrue(menu.depts() == null);
+        Asserts.assertTrue(menu.depts() == null);
 
         Dept dept1 = new Dept(deptId);
         dept1.initMenus(repository);
         List<Menu> menus = dept1.menus();
 
-        AssertUtil.assertTrue(menus.size() == 0);
+        Asserts.assertTrue(menus.size() == 0);
     }
 
 }

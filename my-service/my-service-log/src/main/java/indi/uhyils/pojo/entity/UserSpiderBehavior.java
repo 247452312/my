@@ -2,7 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.repository.TraceDetailRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.MathUtil;
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class UserSpiderBehavior extends AbstractEntity {
      * @return
      */
     public Boolean judgeSpider(Integer frequency) {
-        AssertUtil.assertTrue(times != null, "没有填充lastTime");
+        Asserts.assertTrue(times != null, "没有填充lastTime");
         // 如果次数不够,代表不能判断,返回不是爬虫的判断
         if (!enoughTarget) {
             return false;

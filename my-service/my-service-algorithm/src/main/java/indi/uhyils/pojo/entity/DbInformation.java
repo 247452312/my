@@ -5,7 +5,7 @@ import indi.uhyils.pojo.DTO.request.DbInformationDTO;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.tool.ColumnInfo;
 import indi.uhyils.pojo.tool.TableInfo;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.kpro.KproStringUtil;
 import java.io.File;
@@ -139,9 +139,9 @@ public class DbInformation extends AbstractEntity {
         if (conn != null) {
             return conn;
         }
-        AssertUtil.assertTrue(this.url != null);
-        AssertUtil.assertTrue(this.userName != null);
-        AssertUtil.assertTrue(this.password != null);
+        Asserts.assertTrue(this.url != null);
+        Asserts.assertTrue(this.userName != null);
+        Asserts.assertTrue(this.password != null);
         switch (Objects.requireNonNull(DbTypeEnum.prase(this.type))) {
             case MYSQL:
                 Class.forName("com.mysql.jdbc.Driver");
@@ -149,7 +149,7 @@ public class DbInformation extends AbstractEntity {
             case ORACLE:
             case SQLITE:
             default:
-                AssertUtil.assertTrue(false, "暂时不支持数据库类型");
+                Asserts.assertTrue(false, "暂时不支持数据库类型");
         }
 
         return this.conn = DriverManager.getConnection(this.url, this.userName, this.password);
@@ -187,7 +187,7 @@ public class DbInformation extends AbstractEntity {
     }
 
     public void fillTableInfos() throws SQLException {
-        AssertUtil.assertTrue(conn != null);
+        Asserts.assertTrue(conn != null);
         DatabaseMetaData dmd;
         HashMap<String, TableInfo> stringTableInfoHashMap = new HashMap<>(16);
         /*获取数据库表们的信息*/

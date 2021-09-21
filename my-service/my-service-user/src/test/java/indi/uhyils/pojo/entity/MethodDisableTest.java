@@ -6,7 +6,7 @@ import indi.uhyils.enum_.MethodTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
 import indi.uhyils.repository.ServiceControlRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,7 +30,7 @@ public class MethodDisableTest extends BaseTest {
         MethodDisable methodDisable = new MethodDisable(dto);
         methodDisable.completionClassName();
         String s = methodDisable.toInterfaceMethodName();
-        AssertUtil.assertTrue(s.equals(MyContext.SERVICE_PACKAGE_PREFIX + classSingleName + "#" + method));
+        Asserts.assertTrue(s.equals(MyContext.SERVICE_PACKAGE_PREFIX + classSingleName + "#" + method));
     }
 
     @Test
@@ -38,17 +38,17 @@ public class MethodDisableTest extends BaseTest {
         MethodDisable methodDisable = new MethodDisable("UserProvider", "method", MethodTypeEnum.READ);
         methodDisable.saveMethodDisable(serviceControlRepository);
         Boolean aBoolean = methodDisable.checkInterfaceDisable(serviceControlRepository);
-        AssertUtil.assertTrue(!aBoolean);
+        Asserts.assertTrue(!aBoolean);
 
         DelMethodDisableCommand query = new DelMethodDisableCommand();
         query.setClassName("UserProvider");
         query.setMethodName("method");
         MethodDisable methodDisable2 = new MethodDisable(query);
         Boolean aBoolean1 = methodDisable2.checkInterfaceDisable(serviceControlRepository);
-        AssertUtil.assertTrue(!aBoolean1);
+        Asserts.assertTrue(!aBoolean1);
         methodDisable2.del(serviceControlRepository);
         Boolean aBoolean2 = methodDisable2.checkInterfaceDisable(serviceControlRepository);
-        AssertUtil.assertTrue(aBoolean2);
+        Asserts.assertTrue(aBoolean2);
 
     }
 
@@ -61,9 +61,9 @@ public class MethodDisableTest extends BaseTest {
         String methodName = methodDisableDTO.getMethodName();
         String className = methodDisableDTO.getClassName();
         Integer disableType = methodDisableDTO.getDisableType();
-        AssertUtil.assertTrue(disableType == null);
-        AssertUtil.assertTrue(classNameStr.equals(className));
-        AssertUtil.assertTrue(methodStr.equals(methodName));
+        Asserts.assertTrue(disableType == null);
+        Asserts.assertTrue(classNameStr.equals(className));
+        Asserts.assertTrue(methodStr.equals(methodName));
     }
 
 

@@ -10,7 +10,7 @@ import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.RoleRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +91,7 @@ public class Role extends AbstractDoEntity<RoleDO> {
 
 
     public List<Menu> menus() {
-        AssertUtil.assertTrue(depts != null, "没有初始化部门");
+        Asserts.assertTrue(depts != null, "没有初始化部门");
         List<Menu> result = new ArrayList<>();
         for (Dept dept : depts) {
             result.addAll(dept.menus());

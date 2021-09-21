@@ -9,19 +9,34 @@ import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
-import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
+import com.github.javaparser.ast.stmt.AssertStmt;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.BreakStmt;
+import com.github.javaparser.ast.stmt.ContinueStmt;
+import com.github.javaparser.ast.stmt.DoStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.ForEachStmt;
+import com.github.javaparser.ast.stmt.ForStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.stmt.SwitchEntry;
+import com.github.javaparser.ast.stmt.SwitchStmt;
+import com.github.javaparser.ast.stmt.SynchronizedStmt;
+import com.github.javaparser.ast.stmt.ThrowStmt;
+import com.github.javaparser.ast.stmt.TryStmt;
+import com.github.javaparser.ast.stmt.WhileStmt;
+import indi.uhyils.ast.link.MethodLineNode;
+import indi.uhyils.ast.link.MethodLineTypeEnum;
+import indi.uhyils.ast.link.NodeShape;
 import indi.uhyils.ast.model.MethodNodeAllInfo;
 import indi.uhyils.ast.model.MethodNodeStatisticsInfo;
 import indi.uhyils.ast.model.ParseMethodNodeExcludeModel;
 import indi.uhyils.util.CollectionUtil;
+import indi.uhyils.util.LogUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -53,10 +68,17 @@ public class JavaParserUtil {
     };
 
 
+    /**
+     * main test
+     *
+     * @param args
+     *
+     * @throws FileNotFoundException
+     */
     public static void main(String[] args) throws FileNotFoundException {
         List<CompilationUnit> compilationUnits = parseProject(Arrays
                                                                   .asList(
-                                                                      "/Users/uhyils/share/idea/self/my/my-common/my-common-util"));
+                                                                      "D:\\share\\ideaSrc\\my"));
         Map<String, CompilationUnit> classNameUnitMap = compilationUnits.stream()
                                                                         .filter(t -> t.getPackageDeclaration().isPresent())
                                                                         .filter(JavaParserUtil::filterInterface)
@@ -66,14 +88,66 @@ public class JavaParserUtil {
         methodDeepAnalysis(classNameUnitMap);
 
         // 方法调用统计
-        methodLink(classNameUnitMap, "indi.uhyils.protocol.rpc.base.BaseDefaultProvider#queryById");
+        methodLink(classNameUnitMap, "indi.uhyils.core.message.MessageFactory#createMessage");
 
     }
 
     private static void methodLink(Map<String, CompilationUnit> collect, String methodName) {
+        Map<String, MethodLineNode> methodLineNodeMap = makeMethodLineNode(collect);
+        MethodLineNode methodLineNode = methodLineNodeMap.get(methodName);
+        StringBuilder sb = new StringBuilder(";Example:\n");
+        if (methodLineNode.getBlockNode()) {
+            makeBlockMethodToDrawIo(methodLineNode, sb);
+        } else {
+            makeMethodToDrawIo(methodLineNode, sb);
+        }
+        System.out.println(sb.toString());
+    }
 
+    private static void makeMethodToDrawIo(MethodLineNode methodLineNode, StringBuilder sb) {
+        for (int i = 0; i < methodLineNode.getChildNodes().size(); i++) {
+            MethodLineNode childNode = methodLineNode.getChildNodes().get(i);
+            String language = methodLineNode.getLanguageOnArrow().get(i);
+            StringBuilder stringBuilder = makeDrawIoStr(methodLineNode, childNode, language);
+            sb.append(stringBuilder);
+        }
+    }
+
+    private static void makeBlockMethodToDrawIo(MethodLineNode methodLineNode, StringBuilder sb) {
+        MethodLineNode last = methodLineNode;
+        for (int i = 0; i < methodLineNode.getChildNodes().size(); i++) {
+            MethodLineNode childNode = methodLineNode.getChildNodes().get(i);
+            String language = methodLineNode.getLanguageOnArrow().get(i);
+            StringBuilder stringBuilder = makeDrawIoStr(last, childNode, language);
+            sb.append(stringBuilder);
+            last = childNode;
+        }
+    }
+
+    private static StringBuilder makeDrawIoStr(MethodLineNode last, MethodLineNode childNode, String language) {
+        StringBuilder sb = new StringBuilder();
+        String content = last.getContent();
+        String childNodeContent = childNode.getContent();
+        sb.append(content).append("->");
+        if (!"".equals(language)) {
+            sb.append(language);
+            sb.append("->");
+        }
+        sb.append(childNodeContent).append("\n");
+        if (childNode.getBlockNode()) {
+            makeBlockMethodToDrawIo(childNode, sb);
+        } else {
+            makeMethodToDrawIo(childNode, sb);
+        }
+        return sb;
+    }
+
+    private static Map<String, MethodLineNode> makeMethodLineNode(Map<String, CompilationUnit> collect) {
         Map<String, MethodDeclaration> methodLink = getMethodLink(collect);
+        Map<String, MethodLineNode> methodLineNodeMap = new HashMap<>(methodLink.size());
+        // 遍历每一个方法
         for (Entry<String, MethodDeclaration> entry : methodLink.entrySet()) {
+            // 方法全名 例如: A.B.C#getId
             String methodAllName = entry.getKey();
             MethodDeclaration value = entry.getValue();
             Optional<BlockStmt> body = value.getBody();
@@ -81,33 +155,207 @@ public class JavaParserUtil {
                 continue;
             }
             BlockStmt blockStmt = body.get();
-            NodeList<Statement> statements = blockStmt.getStatements();
-            for (Statement statement : statements) {
-                if (statement.isExpressionStmt()) {
-                    ExpressionStmt expressionStmt = statement.asExpressionStmt();
-                    Expression expression = expressionStmt.getExpression();
-                    if (expression instanceof VariableDeclarationExpr) {
-                        VariableDeclarator node = (VariableDeclarator) expression.getChildNodes().get(0);
-                        // 局部变量名称
-                        String variableName = node.getName().toString();
-                        Optional<Expression> initializer = node.getInitializer();
-                        if (initializer.isPresent()) {
-                            String s = initializer.get().toString();
-                            int i = 1;
-                        }
-                    } else {
-                        int i = 1;
-                    }
-                } else if (statement.isIfStmt()) {
-                    IfStmt ifStmt = statement.asIfStmt();
-                    Expression condition = ifStmt.getCondition();
-                    Statement thenStmt = ifStmt.getThenStmt();
-                    int i = 1;
-                } else {
-                    int i = 1;
-                }
+            MethodLineNode methodLineNode = new MethodLineNode();
+            methodLineNode.setMethodLineType(MethodLineTypeEnum.START);
+            methodLineNode.setNodeShape(NodeShape.circular);
+            methodLineNode.setContent(value, "方法开始节点:" + methodAllName);
+            parseBlockStmt(blockStmt, methodLineNode);
+            methodLineNodeMap.put(methodAllName, methodLineNode);
+        }
+        return methodLineNodeMap;
+    }
 
+    private static void parseBlockStmt(BlockStmt blockStmt, MethodLineNode methodLineNode) {
+        NodeList<Statement> statements = blockStmt.getStatements();
+        methodLineNode.setBlockNode(true);
+        parseStatement(statements, methodLineNode);
+    }
 
+    private static void parseStatement(NodeList<Statement> statements, MethodLineNode methodLineNode) {
+        // 遍历方法中的每一行
+        for (Statement statement : statements) {
+            // 如果是一个简单语句
+            if (statement.isExpressionStmt()) {
+                ExpressionStmt expressionStmt = statement.asExpressionStmt();
+                Expression expression = expressionStmt.getExpression();
+                // 简单语句没有逻辑
+                MethodLineNode methodNode = new MethodLineNode();
+                methodNode.setContent(statement, expression.toString());
+                methodNode.setNodeShape(NodeShape.square);
+                methodNode.setMethodLineType(MethodLineTypeEnum.NORMAL);
+                methodLineNode.addChildNode(methodNode, "");
+            } else if (statement.isIfStmt()) {
+                IfStmt ifStmt = statement.asIfStmt();
+                parseIfStmt(ifStmt, methodLineNode);
+            } else if (statement.isSwitchStmt()) {
+                SwitchStmt switchStmt = statement.asSwitchStmt();
+                MethodLineNode methodMode = parseSwitchStmt(switchStmt);
+                methodLineNode.addChildNode(methodMode, "switch");
+            } else if (statement.isReturnStmt()) {
+                ReturnStmt returnStmt = statement.asReturnStmt();
+                MethodLineNode methodNode = new MethodLineNode();
+                methodNode.setContent(returnStmt, "return:" + returnStmt.toString());
+                methodNode.setNodeShape(NodeShape.circular);
+                methodNode.setMethodLineType(MethodLineTypeEnum.END);
+                methodLineNode.addChildNode(methodNode, "return");
+            } else if (statement.isTryStmt()) {
+                TryStmt tryStmt = statement.asTryStmt();
+                MethodLineNode methodNode = new MethodLineNode();
+                methodNode.setContent(tryStmt, "try:" + tryStmt.getResources().toString());
+                methodNode.setNodeShape(NodeShape.square);
+                methodNode.setMethodLineType(MethodLineTypeEnum.TRY);
+                BlockStmt tryBlock = tryStmt.getTryBlock();
+                parseBlockStmt(tryBlock, methodNode);
+                methodLineNode.addChildNode(methodNode, "try");
+            } else if (statement.isForStmt()) {
+                ForStmt forStmt = statement.asForStmt();
+                MethodLineNode methodNode = parseForStmt(forStmt);
+                methodLineNode.addChildNode(methodNode, "for");
+            } else if (statement.isThrowStmt()) {
+                ThrowStmt throwStmt = statement.asThrowStmt();
+                MethodLineNode methodNode = new MethodLineNode();
+                methodNode.setContent(throwStmt, "throw:" + throwStmt.toString());
+                methodNode.setNodeShape(NodeShape.square);
+                methodNode.setMethodLineType(MethodLineTypeEnum.THROW);
+                methodLineNode.addChildNode(methodNode, "throw");
+            } else if (statement.isForEachStmt()) {
+                ForEachStmt forEachStmt = statement.asForEachStmt();
+                MethodLineNode methodNode = parseForEachStmt(forEachStmt);
+                methodLineNode.addChildNode(methodNode, "foreach");
+            } else if (statement.isAssertStmt()) {
+                AssertStmt assertStmt = statement.asAssertStmt();
+                MethodLineNode methodNode = new MethodLineNode();
+                methodNode.setContent(assertStmt, "assert:" + assertStmt.toString());
+                methodNode.setNodeShape(NodeShape.square);
+                methodNode.setMethodLineType(MethodLineTypeEnum.NORMAL);
+                methodLineNode.addChildNode(methodNode, "assert");
+            } else if (statement.isWhileStmt()) {
+                WhileStmt whileStmt = statement.asWhileStmt();
+                MethodLineNode methodNode = parseWhileStmt(whileStmt);
+                methodLineNode.addChildNode(methodNode, "while");
+            } else if (statement.isBlockStmt()) {
+                parseBlockStmt(statement.asBlockStmt(), methodLineNode);
+            } else if (statement.isSynchronizedStmt()) {
+                SynchronizedStmt synchronizedStmt = statement.asSynchronizedStmt();
+                MethodLineNode methodNode = parseSynchronizedStmt(synchronizedStmt);
+                methodLineNode.addChildNode(methodNode, "sync");
+            } else if (statement.isBreakStmt()) {
+                BreakStmt breakStmt = statement.asBreakStmt();
+                MethodLineNode methodNode = new MethodLineNode();
+                methodNode.setContent(breakStmt, "break:" + breakStmt.toString());
+                methodNode.setNodeShape(NodeShape.circular);
+                methodNode.setMethodLineType(MethodLineTypeEnum.END);
+                methodLineNode.addChildNode(methodNode, "break");
+            } else if (statement.isContinueStmt()) {
+                ContinueStmt continueStmt = statement.asContinueStmt();
+                MethodLineNode methodNode = new MethodLineNode();
+                methodNode.setContent(continueStmt, "continue:" + continueStmt.toString());
+                methodNode.setNodeShape(NodeShape.circular);
+                methodNode.setMethodLineType(MethodLineTypeEnum.END);
+                methodLineNode.addChildNode(methodNode, "continue");
+            } else if (statement.isDoStmt()) {
+                DoStmt doStmt = statement.asDoStmt();
+                MethodLineNode methodNode = parseDoStmt(doStmt);
+                methodLineNode.addChildNode(methodNode, "do_while");
+            } else {
+                String name = statement.getClass().getName();
+                LogUtil.error(name);
+            }
+        }
+    }
+
+    private static MethodLineNode parseDoStmt(DoStmt doStmt) {
+        MethodLineNode methodNode = new MethodLineNode();
+        methodNode.setContent(doStmt, "do_while:" + doStmt.getCondition().toString());
+        methodNode.setNodeShape(NodeShape.diamond);
+        methodNode.setMethodLineType(MethodLineTypeEnum.WHILE);
+        Statement body = doStmt.getBody();
+        parseBlockStmt((BlockStmt) body, methodNode);
+        return methodNode;
+    }
+
+    private static MethodLineNode parseSynchronizedStmt(SynchronizedStmt synchronizedStmt) {
+        MethodLineNode methodNode = new MethodLineNode();
+        methodNode.setContent(synchronizedStmt, "synchronized:" + synchronizedStmt.getExpression().toString());
+        methodNode.setNodeShape(NodeShape.diamond);
+        methodNode.setMethodLineType(MethodLineTypeEnum.WHILE);
+        Statement body = synchronizedStmt.getBody();
+        parseBlockStmt((BlockStmt) body, methodNode);
+        return methodNode;
+    }
+
+    private static MethodLineNode parseWhileStmt(WhileStmt whileStmt) {
+        MethodLineNode methodNode = new MethodLineNode();
+        methodNode.setContent(whileStmt, "while:" + whileStmt.getCondition().toString());
+        methodNode.setNodeShape(NodeShape.diamond);
+        methodNode.setMethodLineType(MethodLineTypeEnum.WHILE);
+        Statement body = whileStmt.getBody();
+        parseBlockStmt((BlockStmt) body, methodNode);
+        return methodNode;
+    }
+
+    private static MethodLineNode parseForEachStmt(ForEachStmt forEachStmt) {
+        MethodLineNode methodNode = new MethodLineNode();
+        methodNode.setContent(forEachStmt, "foreach:" + forEachStmt.getVariable().toString() + ":" + forEachStmt.getIterable().toString());
+        methodNode.setNodeShape(NodeShape.diamond);
+        methodNode.setMethodLineType(MethodLineTypeEnum.FOR);
+        Statement body = forEachStmt.getBody();
+        parseBlockStmt((BlockStmt) body, methodNode);
+        return methodNode;
+    }
+
+    private static MethodLineNode parseForStmt(ForStmt forStmt) {
+        MethodLineNode methodNode = new MethodLineNode();
+        methodNode.setContent(forStmt, "for:" + forStmt.getInitialization().toString() + ";" + forStmt.getCompare().get().toString() + ";" + forStmt.getUpdate().toString());
+        methodNode.setNodeShape(NodeShape.diamond);
+        methodNode.setMethodLineType(MethodLineTypeEnum.FOR);
+        Statement body = forStmt.getBody();
+        parseBlockStmt((BlockStmt) body, methodNode);
+        return methodNode;
+    }
+
+    private static MethodLineNode parseSwitchStmt(SwitchStmt switchStmt) {
+        MethodLineNode methodLineNode = new MethodLineNode();
+        methodLineNode.setContent(switchStmt, "switch:" + switchStmt.getSelector().toString());
+        methodLineNode.setNodeShape(NodeShape.diamond);
+        methodLineNode.setMethodLineType(MethodLineTypeEnum.SWITCH);
+        NodeList<SwitchEntry> entries = switchStmt.getEntries();
+        for (SwitchEntry entry : entries) {
+            MethodLineNode methodNode = new MethodLineNode();
+            methodNode.setContent(entry, entry.getLabels().toString());
+            NodeList<Statement> statements = entry.getStatements();
+            parseStatement(statements, methodNode);
+            methodLineNode.addChildNode(methodNode, "case: " + entry.getLabels().toString());
+        }
+        return methodLineNode;
+    }
+
+    private static void parseIfStmt(IfStmt ifStmt, MethodLineNode methodLineNode) {
+
+        MethodLineNode methodNode = new MethodLineNode();
+        methodNode.setMethodLineType(MethodLineTypeEnum.IF);
+        methodNode.setNodeShape(NodeShape.diamond);
+        methodNode.setContent(ifStmt, "if");
+        NodeList<Statement> nodes = new NodeList<>();
+        nodes.add(ifStmt.getThenStmt());
+        parseStatement(nodes, methodNode);
+        methodLineNode.addChildNode(methodNode, ifStmt.getCondition().toString());
+        Optional<Statement> elseStmt = ifStmt.getElseStmt();
+        if (elseStmt.isPresent()) {
+            Statement statement = elseStmt.get();
+            if (statement instanceof IfStmt) {
+                IfStmt ifStmt1 = (IfStmt) statement;
+                parseIfStmt(ifStmt1, methodLineNode);
+            } else if (statement instanceof BlockStmt) {
+                MethodLineNode elseNode = new MethodLineNode();
+                elseNode.setMethodLineType(MethodLineTypeEnum.IF);
+                elseNode.setNodeShape(NodeShape.diamond);
+                elseNode.setContent(statement, ifStmt.getCondition().toString() + ":else");
+                BlockStmt blockStmt = (BlockStmt) statement;
+                parseBlockStmt(blockStmt, elseNode);
+                methodLineNode.addChildNode(elseNode, "else");
+            } else {
+                int i = 1;
             }
         }
     }

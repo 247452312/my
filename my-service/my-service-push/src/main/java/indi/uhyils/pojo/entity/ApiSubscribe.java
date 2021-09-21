@@ -7,7 +7,7 @@ import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ApiSubscribeRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.PushUtils;
 import java.util.List;
@@ -40,7 +40,7 @@ public class ApiSubscribe extends AbstractDoEntity<ApiSubscribeDO> {
 
     public void checkRepeat(ApiSubscribeRepository rep) {
         List<ApiSubscribe> subscribes = rep.findByGroupAndUserId(new Identifier(toDo().getApiGroupId()), new Identifier(toDo().getUserId()));
-        AssertUtil.assertTrue(CollectionUtil.isEmpty(subscribes), "不能同时订阅同一个api两次");
+        Asserts.assertTrue(CollectionUtil.isEmpty(subscribes), "不能同时订阅同一个api两次");
     }
 
     public PushMsgDTO sendMsg(ApiGroup apiGroup, UserDTO userDTO, String sendContent) {

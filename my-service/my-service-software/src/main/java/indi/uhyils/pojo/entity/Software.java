@@ -6,7 +6,7 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ServerRepository;
 import indi.uhyils.repository.SoftwareRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SocketUtil;
 import indi.uhyils.util.SshUtils;
 import java.util.List;
@@ -38,21 +38,21 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
     public void start() {
         checkStatus(SoftwareStatusEnum.STOP);
         String startSh = toDo().getStartSh();
-        AssertUtil.assertTrue(StringUtils.isNotBlank(startSh));
+        Asserts.assertTrue(StringUtils.isNotBlank(startSh));
         SshUtils.execCommandBySsh(server.toDo(), startSh);
     }
 
     public void stop() {
         checkStatus(SoftwareStatusEnum.RUNNING);
         String stopSh = toDo().getStopSh();
-        AssertUtil.assertTrue(StringUtils.isNotBlank(stopSh));
+        Asserts.assertTrue(StringUtils.isNotBlank(stopSh));
         SshUtils.execCommandBySsh(server.toDo(), stopSh);
     }
 
     public void link() {
-        AssertUtil.assertTrue(server != null, "连接不能没有 server");
+        Asserts.assertTrue(server != null, "连接不能没有 server");
         boolean canConnect = SocketUtil.canConnect(server.toDo().getIp(), toDo().getPort());
-        AssertUtil.assertTrue(canConnect, "不能连接");
+        Asserts.assertTrue(canConnect, "不能连接");
     }
 
     public void close() {
@@ -87,7 +87,7 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
 
     public void checkStatus(SoftwareStatusEnum statusEnum) {
         SoftwareStatusEnum status = getStatus();
-        AssertUtil.assertTrue(status == statusEnum, "状态错误: " + status.name());
+        Asserts.assertTrue(status == statusEnum, "状态错误: " + status.name());
     }
 
     /**
@@ -97,7 +97,7 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
      */
     protected SoftwareStatusEnum getStatus() {
         String statusSh = toDo().getStatusSh();
-        AssertUtil.assertTrue(StringUtils.isNotBlank(statusSh));
+        Asserts.assertTrue(StringUtils.isNotBlank(statusSh));
         String status = SshUtils.execCommandBySsh(server.toDo(), statusSh);
         if (status.contains("ERROR")) {
             return SoftwareStatusEnum.ERROR;

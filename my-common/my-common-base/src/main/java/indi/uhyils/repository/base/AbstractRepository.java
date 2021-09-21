@@ -16,7 +16,7 @@ import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.base.IdEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -108,7 +108,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
 
     @Override
     public Page<EN> find(List<Arg> args, Order order, Limit limit) {
-        AssertUtil.assertTrue(limit != null, "分页参数不能为空");
+        Asserts.assertTrue(limit != null, "分页参数不能为空");
         QueryWrapper<DO> queryWrapper = Symbol.makeWrapper(args);
         fillWrapperOrder(order, queryWrapper);
         com.baomidou.mybatisplus.extension.plugins.pagination.Page<DO> page = makePage(limit);
@@ -178,7 +178,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
                     queryWrapper.orderByDesc(columnName.getName());
                     break;
                 default:
-                    AssertUtil.assertTrue(false, "排序符号不正确");
+                    Asserts.assertTrue(false, "排序符号不正确");
             }
         }
     }

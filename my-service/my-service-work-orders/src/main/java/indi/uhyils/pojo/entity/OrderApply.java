@@ -15,7 +15,7 @@ import indi.uhyils.repository.OrderNodeFieldRepository;
 import indi.uhyils.repository.OrderNodeRepository;
 import indi.uhyils.repository.OrderNodeResultTypeRepository;
 import indi.uhyils.repository.OrderNodeRouteRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 
 /**
@@ -53,7 +53,7 @@ public class OrderApply extends AbstractDoEntity<OrderApplyDO> {
     }
 
     public void changeThisNodeStatus(OrderNodeRepository orderNodeRepository, OrderNodeStatusEnum status) {
-        AssertUtil.assertTrue(orderNode != null, "节点没有初始化");
+        Asserts.assertTrue(orderNode != null, "节点没有初始化");
         orderNode.changeStatus(orderNodeRepository, status);
 
     }

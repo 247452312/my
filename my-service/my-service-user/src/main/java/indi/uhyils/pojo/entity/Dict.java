@@ -3,7 +3,7 @@ package indi.uhyils.pojo.entity;
 import indi.uhyils.pojo.DO.DictDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.DictItemRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class Dict extends AbstractDoEntity<DictDO> {
     }
 
     public List<DictItem> findItemByCode(DictItemRepository dictItemRepository) {
-        AssertUtil.assertTrue(data.getCode() != null,"code不能为空");
+        Asserts.assertTrue(data.getCode() != null, "code不能为空");
         return dictItemRepository.findItemByDictCode(data.getCode());
     }
 

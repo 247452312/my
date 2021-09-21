@@ -2,7 +2,7 @@ package indi.uhyils.enum_;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,7 +69,7 @@ public enum Symbol {
     public static <T> void fillWrapper(QueryWrapper<T> wrapper, Arg arg) {
         String symbol = arg.getSymbol();
         Symbol parse = Symbol.parse(symbol);
-        AssertUtil.assertTrue(parse != null, "符号不存在: " + arg.getSymbol());
+        Asserts.assertTrue(parse != null, "符号不存在: " + arg.getSymbol());
         switch (parse) {
             case EQ:
                 wrapper.eq(arg.getName(), arg.getData());
@@ -98,7 +98,7 @@ public enum Symbol {
                 wrapper.likeRight(arg.getName(), arg.getData());
                 return;
             default:
-                AssertUtil.assertTrue(false, "符号不存在: " + arg.getSymbol());
+                Asserts.assertTrue(false, "符号不存在: " + arg.getSymbol());
         }
     }
 

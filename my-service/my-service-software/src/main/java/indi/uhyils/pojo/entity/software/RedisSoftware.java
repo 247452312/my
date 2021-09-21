@@ -4,7 +4,7 @@ import indi.uhyils.pojo.DO.SoftwareDO;
 import indi.uhyils.pojo.DTO.response.GetInfosResponse;
 import indi.uhyils.pojo.entity.Software;
 import indi.uhyils.repository.SoftwareRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class RedisSoftware extends Software implements RedisSoftwareInterface {
     }
 
     public void initJedis() {
-        AssertUtil.assertTrue(server != null, "server不能为空");
+        Asserts.assertTrue(server != null, "server不能为空");
         if (jedis == null) {
             jedis = new Jedis(server.toDo().getIp(), toDo().getPort());
         }

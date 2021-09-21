@@ -1,6 +1,6 @@
 package indi.uhyils;
 
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -38,6 +38,6 @@ public class BaseTest {
 
     @Test
     public void test() {
-        AssertUtil.assertTrue(true);
+        Asserts.assertTrue(true);
     }
 }

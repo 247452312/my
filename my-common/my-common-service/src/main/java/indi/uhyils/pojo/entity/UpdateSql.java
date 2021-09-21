@@ -13,7 +13,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
 import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLUpdateSetItem;
 import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class UpdateSql extends Sql {
 
     public UpdateSql(Sql sql) {
         super(sql.sql, sql.ignoreTables);
-        AssertUtil.assertTrue(SqlType.UPDATE.equals(sql.sqlType), "类型错误");
+        Asserts.assertTrue(SqlType.UPDATE.equals(sql.sqlType), "类型错误");
         this.sqlStatement = (SQLUpdateStatement) sql.sqlStatement;
     }
 

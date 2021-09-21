@@ -8,7 +8,7 @@ import indi.uhyils.repository.OrderNodeFieldRepository;
 import indi.uhyils.repository.OrderNodeRepository;
 import indi.uhyils.repository.OrderNodeResultTypeRepository;
 import indi.uhyils.repository.OrderNodeRouteRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,7 +28,7 @@ public class OrderNodeList extends AbstractEntity<Identifiers> {
     }
 
     public void compareAndSaveDealUser(Map<Long, Long> dealUserIds) {
-        AssertUtil.assertTrue(dealUserIds != null, "处理人不能为空");
+        Asserts.assertTrue(dealUserIds != null, "处理人不能为空");
         for (OrderNode orderNode : orderNodes) {
             Long id = orderNode.getUnique().getId();
             Long dealUser = dealUserIds.get(id);
@@ -41,7 +41,7 @@ public class OrderNodeList extends AbstractEntity<Identifiers> {
     }
 
     public void compareAndSaveNoticeUser(Map<Long, Long> noticeUserIds) {
-        AssertUtil.assertTrue(noticeUserIds != null, "通知人不能为空");
+        Asserts.assertTrue(noticeUserIds != null, "通知人不能为空");
         for (OrderNode orderNode : orderNodes) {
             Long id = orderNode.getUnique().getId();
             Long noticeUser = noticeUserIds.get(id);

@@ -2,7 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.repository.VerificationRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -66,10 +66,10 @@ public class Verification extends AbstractEntity {
     }
 
     public void makeImg() throws IOException {
-        AssertUtil.assertTrue(width != null, "宽度不能为null");
-        AssertUtil.assertTrue(height != null, "长度不能为null");
-        AssertUtil.assertTrue(lines != null, "干扰线数量不能为null");
-        AssertUtil.assertTrue(font != null, "字体不能为null");
+        Asserts.assertTrue(width != null, "宽度不能为null");
+        Asserts.assertTrue(height != null, "长度不能为null");
+        Asserts.assertTrue(lines != null, "干扰线数量不能为null");
+        Asserts.assertTrue(font != null, "字体不能为null");
 
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics g = img.getGraphics();
@@ -111,7 +111,7 @@ public class Verification extends AbstractEntity {
     }
 
     public String findVerificationBase64() {
-        AssertUtil.assertTrue(img != null, "img没有初始化,请执行:makeImg");
+        Asserts.assertTrue(img != null, "img没有初始化,请执行:makeImg");
         if (base64 != null) {
             return base64;
         }
@@ -127,8 +127,8 @@ public class Verification extends AbstractEntity {
     }
 
     public Boolean verification(VerificationRepository rep) {
-        AssertUtil.assertTrue(code != null, "code不能为空");
-        AssertUtil.assertTrue(key != null, "key不能为空");
+        Asserts.assertTrue(code != null, "code不能为空");
+        Asserts.assertTrue(key != null, "key不能为空");
         return rep.verification(this);
     }
 

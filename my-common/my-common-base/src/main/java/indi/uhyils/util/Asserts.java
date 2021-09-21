@@ -8,7 +8,7 @@ import java.util.function.Supplier;
  * @version 1.0
  * @date 文件创建日期 2021年07月15日 22时06分
  */
-public class AssertUtil {
+public class Asserts {
 
     /**
      * 断言正确

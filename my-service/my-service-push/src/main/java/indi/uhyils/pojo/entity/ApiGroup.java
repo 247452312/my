@@ -12,7 +12,7 @@ import indi.uhyils.repository.ApiGroupRepository;
 import indi.uhyils.repository.ApiRepository;
 import indi.uhyils.repository.ApiSubscribeRepository;
 import indi.uhyils.util.ApiUtils;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +53,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
     }
 
     public void forceFillSubscribe(List<ApiSubscribe> subscribes) {
-        AssertUtil.assertTrue(subscribes != null, "入参list不能为null");
+        Asserts.assertTrue(subscribes != null, "入参list不能为null");
         this.subscribes = subscribes;
     }
 
@@ -70,7 +70,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
 
 
     public String callApi(UserDTO user) {
-        AssertUtil.assertTrue(this.apis != null, "api为空");
+        Asserts.assertTrue(this.apis != null, "api为空");
         Map<String, String> parameter = new HashMap<>(16);
         ApiUtils.callApi(apis, user, parameter);
         String resultFormat = toDo().getResultFormat();
@@ -91,7 +91,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
     }
 
     public List<PushMsgDTO> sendMsgToUser(UserFacade userFacade) {
-        AssertUtil.assertTrue(subscribes != null, "没有初始化订阅用户");
+        Asserts.assertTrue(subscribes != null, "没有初始化订阅用户");
         List<UserDTO> byIds = userFacade.getByIds(subscribes.stream().map(t -> t.getUnique().getId()).collect(Collectors.toList()));
         return sendMsgToUser(byIds);
     }

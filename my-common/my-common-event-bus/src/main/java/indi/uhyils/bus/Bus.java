@@ -3,7 +3,7 @@ package indi.uhyils.bus;
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseParentEvent;
 import indi.uhyils.protocol.register.base.Register;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -100,7 +100,7 @@ public class Bus {
             // 遍历所有的监听者
             for (Register register : registers) {
                 List<Class<? extends BaseEvent>> classes = register.targetEvent();
-                AssertUtil.assertTrue(CollectionUtil.isNotEmpty(classes));
+                Asserts.assertTrue(CollectionUtil.isNotEmpty(classes));
                 // 遍历所有的待发布事件
                 if (matchingEvent(register, next)) {
                     register.onEvent(next);

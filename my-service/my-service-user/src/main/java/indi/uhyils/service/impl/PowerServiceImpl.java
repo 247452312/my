@@ -5,7 +5,6 @@ import indi.uhyils.assembler.PowerAssembler;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.DTO.PowerDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -15,7 +14,7 @@ import indi.uhyils.pojo.entity.type.PowerInfo;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.service.PowerService;
 import indi.uhyils.util.ApiPowerInitUtil;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import java.io.IOException;
 import java.util.List;
@@ -83,7 +82,7 @@ public class PowerServiceImpl extends AbstractDoService<PowerDO, Power, PowerDTO
             powersSingle = ApiPowerInitUtil.getPowersSingle();
         } catch (IOException e) {
             LogUtil.error(this, e);
-            AssertUtil.assertTrue(false, "初始化power失败:" + e.getMessage());
+            Asserts.assertTrue(false, "初始化power失败:" + e.getMessage());
         }
         int newPowerCount = 0;
         for (PowerInfo powerSimpleDO : powersSingle) {

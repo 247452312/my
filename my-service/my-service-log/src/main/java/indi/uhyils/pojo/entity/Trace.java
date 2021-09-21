@@ -2,7 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.repository.TraceInfoRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 
 /**
@@ -22,8 +22,8 @@ public class Trace extends AbstractEntity {
     }
 
     public List<TraceInfo> findTraceInfoByTraceIdAndRpcId(TraceInfoRepository rep) {
-        AssertUtil.assertTrue(traceId != null, "traceId不能为空");
-        AssertUtil.assertTrue(rpcId != null, "rocId不能为空");
+        Asserts.assertTrue(traceId != null, "traceId不能为空");
+        Asserts.assertTrue(rpcId != null, "rocId不能为空");
         return rep.findTraceInfoByTraceIdAndRpcId(this);
     }
 

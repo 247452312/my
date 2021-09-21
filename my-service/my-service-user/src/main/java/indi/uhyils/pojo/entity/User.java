@@ -13,7 +13,7 @@ import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.util.AESUtil;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.BeanUtil;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.MD5Util;
@@ -147,7 +147,7 @@ public class User extends AbstractDoEntity<UserDO> {
     }
 
     public void assertRole() {
-        AssertUtil.assertTrue(role != null);
+        Asserts.assertTrue(role != null);
     }
 
     public List<Menu> screenMenu(List<Menu> menus) {
@@ -155,15 +155,15 @@ public class User extends AbstractDoEntity<UserDO> {
         if (Objects.equals(ADMIN_USER_ID, toDo().getId())) {
             return menus;
         }
-        AssertUtil.assertTrue(role != null, "权限没有初始化");
+        Asserts.assertTrue(role != null, "权限没有初始化");
         List<Menu> menu = role.menus();
         return menus.stream().filter(t -> CollectionUtil.contains(menu, t, entity -> entity.toDo().getId())).collect(Collectors.toList());
     }
 
 
     public User login(UserRepository userRepository, String salt, String encodeRole) {
-        AssertUtil.assertTrue(data.getUsername() != null);
-        AssertUtil.assertTrue(data.getPassword() != null);
+        Asserts.assertTrue(data.getUsername() != null);
+        Asserts.assertTrue(data.getPassword() != null);
 
         /*查询是否正确*/
         User user = userRepository.checkLogin(this);

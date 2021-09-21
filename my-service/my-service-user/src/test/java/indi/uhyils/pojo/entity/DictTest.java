@@ -6,7 +6,7 @@ import indi.uhyils.pojo.DO.DictDO;
 import indi.uhyils.pojo.DO.DictItemDO;
 import indi.uhyils.repository.DictItemRepository;
 import indi.uhyils.repository.DictRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.util.List;
 import org.junit.Before;
@@ -58,9 +58,9 @@ public class DictTest extends BaseTest {
     public void findItem() {
         Dict dict = new Dict("testCode");
         List<DictItem> item = dict.findItemByCode(dictItemRepository);
-        AssertUtil.assertTrue(CollectionUtil.isNotEmpty(item));
-        AssertUtil.assertTrue(item.size() == 1);
-        AssertUtil.assertTrue(item.get(0).getUnique().getId().equals(dictItemId));
+        Asserts.assertTrue(CollectionUtil.isNotEmpty(item));
+        Asserts.assertTrue(item.size() == 1);
+        Asserts.assertTrue(item.get(0).getUnique().getId().equals(dictItemId));
     }
 
     @Test
@@ -69,9 +69,9 @@ public class DictTest extends BaseTest {
         dict.completion(dictRepository);
         dict.fillItem(dictItemRepository);
         List<DictItem> dictItems = dict.toItem();
-        AssertUtil.assertTrue(CollectionUtil.isNotEmpty(dictItems));
-        AssertUtil.assertTrue(dictItems.size() == 1);
-        AssertUtil.assertTrue(dictItems.get(0).getUnique().getId().equals(dictItemId));
+        Asserts.assertTrue(CollectionUtil.isNotEmpty(dictItems));
+        Asserts.assertTrue(dictItems.size() == 1);
+        Asserts.assertTrue(dictItems.get(0).getUnique().getId().equals(dictItemId));
     }
 
 
@@ -84,8 +84,8 @@ public class DictTest extends BaseTest {
         Dict dict2 = new Dict(dictId);
         dict2.fillItem(dictItemRepository);
         List<DictItem> dictItems = dict2.toItem();
-        AssertUtil.assertTrue(dictItems != null);
-        AssertUtil.assertTrue(dictItems.size() == 0);
+        Asserts.assertTrue(dictItems != null);
+        Asserts.assertTrue(dictItems.size() == 0);
 
     }
 }

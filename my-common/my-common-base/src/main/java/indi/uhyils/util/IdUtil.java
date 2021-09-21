@@ -37,7 +37,7 @@ public class IdUtil {
     public synchronized long newId() {
         // 生成时间
         long time = System.currentTimeMillis();
-        AssertUtil.assertTrue(time >= lastTime, "系统时间不正确");
+        Asserts.assertTrue(time >= lastTime, "系统时间不正确");
         if (lastTime != time) {
             // 如果不是之前的毫秒,则sequence归零,继续生成序列号
             sequence.set(0L);

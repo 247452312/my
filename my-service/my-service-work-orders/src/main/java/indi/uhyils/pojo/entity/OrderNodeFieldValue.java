@@ -4,7 +4,7 @@ import indi.uhyils.context.MyContext;
 import indi.uhyils.enum_.OrderNodeFieldValueTypeEnum;
 import indi.uhyils.pojo.DO.OrderNodeFieldValueDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 
 /**
  * 订单节点属性真实值表(OrderNodeFieldValue)表 数据库实体类
@@ -37,27 +37,27 @@ public class OrderNodeFieldValue extends AbstractDoEntity<OrderNodeFieldValueDO>
     }
 
     public void assertSelf() {
-        AssertUtil.assertTrue(field != null, "属性不能为空");
+        Asserts.assertTrue(field != null, "属性不能为空");
         String realValue = data.getRealValue();
 
         OrderNodeFieldValueTypeEnum parse = OrderNodeFieldValueTypeEnum.parse(field.toDo().getValueType());
         switch (parse) {
             case DATE:
-                AssertUtil.assertTrue(realValue.matches(MyContext.DATE_REGEX), "类型错误,应该为日期类型:" + field.toDo().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.DATE_REGEX), "类型错误,应该为日期类型:" + field.toDo().getName());
                 break;
             case EMAIL:
-                AssertUtil.assertTrue(realValue.matches(MyContext.EMAIL_REGEX), "类型错误,应该为email类型:" + field.toDo().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.EMAIL_REGEX), "类型错误,应该为email类型:" + field.toDo().getName());
                 break;
             case VALUE:
-                AssertUtil.assertTrue(realValue.matches(MyContext.VALUE_REGEX), "类型错误,应该为数字类型:" + field.toDo().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.VALUE_REGEX), "类型错误,应该为数字类型:" + field.toDo().getName());
                 break;
             case STRING:
                 break;
             case ENGLISH:
-                AssertUtil.assertTrue(realValue.matches(MyContext.ENGLISH_REGEX), "类型错误,应该为英文类型:" + field.toDo().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.ENGLISH_REGEX), "类型错误,应该为英文类型:" + field.toDo().getName());
                 break;
             default:
-                AssertUtil.assertTrue(false, "类型错误,找不到指定类型:" + field.toDo().getName());
+                Asserts.assertTrue(false, "类型错误,找不到指定类型:" + field.toDo().getName());
                 break;
 
         }

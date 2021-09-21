@@ -3,7 +3,7 @@ package indi.uhyils.pojo.entity.base;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.BeanUtil;
 
 /**
@@ -46,9 +46,9 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
     }
 
     public <DO extends BaseDO, EN extends AbstractDoEntity<DO>> void completion(BaseEntityRepository<DO, EN> repository) {
-        AssertUtil.assertTrue(this.unique != null, "数据库id不存在 不能补全");
+        Asserts.assertTrue(this.unique != null, "数据库id不存在 不能补全");
         AbstractDoEntity<DO> dictItem = repository.find(this);
-        AssertUtil.assertTrue(dictItem != null, "补全出的结果为空");
+        Asserts.assertTrue(dictItem != null, "补全出的结果为空");
         DO source = dictItem.toDo();
         BeanUtil.copyProperties(source, data);
     }

@@ -13,7 +13,7 @@ import indi.uhyils.repository.OrderNodeFieldRepository;
 import indi.uhyils.repository.OrderNodeRepository;
 import indi.uhyils.repository.OrderNodeResultTypeRepository;
 import indi.uhyils.repository.OrderNodeRouteRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -95,7 +95,7 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
     public void changeOrderStatus(OrderInfoRepository rep, OrderStatusEnum code) {
         Integer status = data.getStatus();
         OrderStatusEnum statusEnum = OrderStatusEnum.parse(status);
-        AssertUtil.assertTrue(code != statusEnum, MessageFormat.format("工单状态为:{0} 要修改成:{1},状态相同不能更改", statusEnum.getName(), code.getName()));
+        Asserts.assertTrue(code != statusEnum, MessageFormat.format("工单状态为:{0} 要修改成:{1},状态相同不能更改", statusEnum.getName(), code.getName()));
         data.setStatus(code.getCode());
         onUpdate();
         rep.save(this);
@@ -104,7 +104,7 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
     public void noticeMonitor(OrderInfoAssembler assem, PushFacade pushFacade, PushTypeEnum pushType, OrderStatusEnum targetStatus) {
         OrderInfoDTO orderInfoDTO = assem.toDTO(this);
         Boolean pushResult = pushFacade.pushMsg(orderInfoDTO, data.getMonitorUserId(), targetStatus, pushType);
-        AssertUtil.assertTrue(pushResult, "推送失败");
+        Asserts.assertTrue(pushResult, "推送失败");
 
     }
 
@@ -118,7 +118,7 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
     public void contrastAndChangeOrderStatus(OrderInfoRepository rep, OrderStatusEnum status, OrderStatusEnum lastStatus) {
         // 订单现有状态
         OrderStatusEnum nowStatus = OrderStatusEnum.parse(data.getStatus());
-        AssertUtil.assertTrue(status == nowStatus, MessageFormat.format("工单状态为:{0} 设定状态为:{1},状态需要相同", nowStatus.getName(), status.getName()));
+        Asserts.assertTrue(status == nowStatus, MessageFormat.format("工单状态为:{0} 设定状态为:{1},状态需要相同", nowStatus.getName(), status.getName()));
         data.setStatus(lastStatus.getCode());
         onUpdate();
         rep.save(this);

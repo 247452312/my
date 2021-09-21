@@ -8,7 +8,7 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.LogMonitorJvmStatusRepository;
 import indi.uhyils.repository.LogMonitorRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -160,7 +160,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     }
 
     public List<ServiceQualityEnum> qualitys() {
-        AssertUtil.assertTrue(qualitys != null, "未分析结果");
+        Asserts.assertTrue(qualitys != null, "未分析结果");
         return qualitys;
     }
 
@@ -223,7 +223,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
 
     public void checkMonitorRepeat(LogMonitorRepository rep) {
         Integer i = rep.checkMonitorRepeat(unique);
-        AssertUtil.assertTrue(i == 0, "此服务已存在,不能重复启动");
+        Asserts.assertTrue(i == 0, "此服务已存在,不能重复启动");
     }
 
     /**
@@ -261,7 +261,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
             }
         }
         // 修改结束时间为假想时间
-        AssertUtil.assertTrue(lastEndTimeStatus.toDo() != null && lastEndTimeStatus.toDo().getFid() != null, "假想时间所在状态没有fid");
+        Asserts.assertTrue(lastEndTimeStatus.toDo() != null && lastEndTimeStatus.toDo().getFid() != null, "假想时间所在状态没有fid");
         lastEndTimeStatus.changeEndTimeLag(rep);
 
     }

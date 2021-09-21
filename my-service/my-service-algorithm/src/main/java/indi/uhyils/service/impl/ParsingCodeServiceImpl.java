@@ -2,7 +2,7 @@ package indi.uhyils.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.service.ParsingCodeService;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.ExceptionUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.compiler.JavaStringCompiler;
@@ -56,24 +56,24 @@ public class ParsingCodeServiceImpl implements ParsingCodeService {
             return JSON.toJSONString(invoke);
         } catch (IOException e) {
             LogUtil.error(e);
-            AssertUtil.assertTrue(false, "IO异常");
+            Asserts.assertTrue(false, "IO异常");
         } catch (ClassNotFoundException e) {
             LogUtil.error(e);
-            AssertUtil.assertTrue(false, "找不到正确的类名称,正确的类名称应为:" + FILE_NAME);
+            Asserts.assertTrue(false, "找不到正确的类名称,正确的类名称应为:" + FILE_NAME);
         } catch (InstantiationException e) {
             LogUtil.error(e);
-            AssertUtil.assertTrue(false, "初始化异常,类应该有空的构造器");
+            Asserts.assertTrue(false, "初始化异常,类应该有空的构造器");
         } catch (IllegalAccessException e) {
             LogUtil.error(e);
-            AssertUtil.assertTrue(false, "访问权限异常,方法应该是public," + EXECUTE_METHOD_NAME);
+            Asserts.assertTrue(false, "访问权限异常,方法应该是public," + EXECUTE_METHOD_NAME);
         } catch (NoSuchMethodException e) {
             LogUtil.error(e);
-            AssertUtil.assertTrue(false, "方法不存在异常,方法应该是: " + EXECUTE_METHOD_NAME);
+            Asserts.assertTrue(false, "方法不存在异常,方法应该是: " + EXECUTE_METHOD_NAME);
         } catch (InvocationTargetException e) {
             LogUtil.error(e);
-            AssertUtil.assertTrue(false, "方法执行异常,异常内容: \n" + ExceptionUtil.toString(e));
+            Asserts.assertTrue(false, "方法执行异常,异常内容: \n" + ExceptionUtil.toString(e));
         }
-        AssertUtil.assertTrue(false, "未知异常");
+        Asserts.assertTrue(false, "未知异常");
         return null;
     }
 }

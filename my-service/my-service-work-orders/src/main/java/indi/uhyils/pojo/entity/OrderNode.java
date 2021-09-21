@@ -23,7 +23,7 @@ import indi.uhyils.repository.OrderNodeFieldValueRepository;
 import indi.uhyils.repository.OrderNodeRepository;
 import indi.uhyils.repository.OrderNodeResultTypeRepository;
 import indi.uhyils.repository.OrderNodeRouteRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.BeanUtil;
 import indi.uhyils.util.CollectionUtil;
 import java.util.HashMap;
@@ -166,7 +166,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
 
     public void assertAllow() {
         OrderNodeStatusEnum statusEnum = OrderNodeStatusEnum.parse(data.getStatus());
-        AssertUtil.assertTrue(statusEnum == OrderNodeStatusEnum.IN_START, "节点处于不能被处理状态:" + statusEnum.getName());
+        Asserts.assertTrue(statusEnum == OrderNodeStatusEnum.IN_START, "节点处于不能被处理状态:" + statusEnum.getName());
 
     }
 
@@ -179,11 +179,11 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
     }
 
     public void assertAndSaveFieldValues(OrderNodeFieldValueRepository fieldValueRepository, Map<Long, Object> orderNodeFieldValueMap) {
-        AssertUtil.assertTrue(this.fields != null, "节点属性本身信息不存在!");
+        Asserts.assertTrue(this.fields != null, "节点属性本身信息不存在!");
 
         for (OrderNodeField field : fields) {
             Long id = field.getUnique().getId();
-            AssertUtil.assertTrue(orderNodeFieldValueMap.containsKey(id), field.toDo().getName() + " 未填写");
+            Asserts.assertTrue(orderNodeFieldValueMap.containsKey(id), field.toDo().getName() + " 未填写");
             String realValue = String.valueOf(orderNodeFieldValueMap.get(id));
             OrderNodeFieldValue orderNodeFieldValue = new OrderNodeFieldValue(field, realValue);
             orderNodeFieldValue.assertSelf();
@@ -202,7 +202,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
     }
 
     public OrderNode nextOrder(OrderNodeRepository rep) {
-        AssertUtil.assertTrue(data.getResultId() != null, "没有结果,不能路由到下一个节点");
+        Asserts.assertTrue(data.getResultId() != null, "没有结果,不能路由到下一个节点");
         return rep.findNext(this);
     }
 

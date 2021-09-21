@@ -14,7 +14,7 @@ import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.repository.base.AbstractRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,7 +68,7 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
         objects.add(new Arg("username", "=", user.username().getUserName()));
         objects.add(new Arg("password", "=", user.password().toMD5Str()));
         List<UserDO> byArgsNoPage = dao.selectList(Symbol.makeWrapper(objects));
-        AssertUtil.assertTrue(CollectionUtils.isNotEmpty(byArgsNoPage) && byArgsNoPage.size() == 1, "登录失败,用户名或密码不正确!");
+        Asserts.assertTrue(CollectionUtils.isNotEmpty(byArgsNoPage) && byArgsNoPage.size() == 1, "登录失败,用户名或密码不正确!");
         UserDO userDO = byArgsNoPage.get(0);
         return new User(userDO);
     }
@@ -96,6 +96,6 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
     @Override
     public void checkPassword(User user, Password password) {
         Integer integer = dao.checkUserPassword(user.getUnique().getId(), password.toMD5Str());
-        AssertUtil.assertTrue(integer == 1, "密码错误");
+        Asserts.assertTrue(integer == 1, "密码错误");
     }
 }

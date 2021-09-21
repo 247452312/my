@@ -7,7 +7,7 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.LogMonitorJvmStatusRepository;
 import indi.uhyils.repository.LogMonitorRepository;
-import indi.uhyils.util.AssertUtil;
+import indi.uhyils.util.Asserts;
 
 /**
  * JVM状态子表(LogMonitorJvmStatus)表 数据库实体类
@@ -35,7 +35,7 @@ public class LogMonitorJvmStatus extends AbstractDoEntity<LogMonitorJvmStatusDO>
      */
     public void changeEndTimeLag(LogMonitorRepository rep) {
         long realEndTime = (long) (data.getTime() + RabbitMqContent.OUT_TIME * 60 * 1000 * RabbitMqContent.OUT_TIME_PRO);
-        AssertUtil.assertTrue(data.getFid() != null);
+        Asserts.assertTrue(data.getFid() != null);
         rep.changeEndTimeLag(this, realEndTime);
     }
 
@@ -47,7 +47,7 @@ public class LogMonitorJvmStatus extends AbstractDoEntity<LogMonitorJvmStatusDO>
         if (fid() != null) {
             return;
         }
-        AssertUtil.assertTrue(unique != null, "服务状态缺少唯一标示");
+        Asserts.assertTrue(unique != null, "服务状态缺少唯一标示");
         Identifier idByUnique = repository.getIdByUnique(unique);
         data.setFid(idByUnique.getId());
 
