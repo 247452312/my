@@ -88,13 +88,14 @@ public class JavaParserUtil {
         methodDeepAnalysis(classNameUnitMap);
 
         // 方法调用统计
-        methodLink(classNameUnitMap, "indi.uhyils.core.message.MessageFactory#createMessage");
+        methodLink(classNameUnitMap, "indi.uhyils.ast.JavaParserUtil.parseStatement");
 
     }
 
-    private static void methodLink(Map<String, CompilationUnit> collect, String methodName) {
+    private static void methodLink(Map<String, CompilationUnit> collect, String methodAllName) {
+        methodAllName = transMethodName(methodAllName);
         Map<String, MethodLineNode> methodLineNodeMap = makeMethodLineNode(collect);
-        MethodLineNode methodLineNode = methodLineNodeMap.get(methodName);
+        MethodLineNode methodLineNode = methodLineNodeMap.get(methodAllName);
         StringBuilder sb = new StringBuilder(";Example:\n");
         if (methodLineNode.getBlockNode()) {
             makeBlockMethodToDrawIo(methodLineNode, sb);
@@ -102,6 +103,19 @@ public class JavaParserUtil {
             makeMethodToDrawIo(methodLineNode, sb);
         }
         System.out.println(sb.toString());
+    }
+
+    private static String transMethodName(String methodAllName) {
+        if (!methodAllName.contains("#")) {
+            int i = methodAllName.lastIndexOf(".");
+            if (i == -1) {
+                return methodAllName;
+            }
+            String className = methodAllName.substring(0, i);
+            String methodName = methodAllName.substring(i + 1);
+            methodAllName = className + "#" + methodName;
+        }
+        return methodAllName;
     }
 
     private static void makeMethodToDrawIo(MethodLineNode methodLineNode, StringBuilder sb) {
