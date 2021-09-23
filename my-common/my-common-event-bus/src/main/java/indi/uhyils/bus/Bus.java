@@ -100,7 +100,7 @@ public class Bus {
             // 遍历所有的监听者
             for (Register register : registers) {
                 List<Class<? extends BaseEvent>> classes = register.targetEvent();
-                Asserts.assertTrue(CollectionUtil.isNotEmpty(classes));
+                Asserts.assertTrue(CollectionUtil.isNotEmpty(classes), "监听者监听的事件不能为空");
                 // 遍历所有的待发布事件
                 if (matchingEvent(register, next)) {
                     register.onEvent(next);

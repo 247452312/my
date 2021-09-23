@@ -40,7 +40,6 @@ public class MyRunner {
     private static void init(String[] args) throws Exception {
         ClassLoader classLoader = MyRunner.class.getClassLoader();
         URL plugins = classLoader.getResource(APP_SOURCE);
-
         Map<String, byte[]> classAsmCache = new HashMap<>(1);
         classAsmCache.put("org.apache.catalina.webresources.TomcatURLStreamHandlerFactory", TomcatURLStreamHandlerFactoryDump.dump());
 

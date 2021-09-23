@@ -33,7 +33,11 @@ public abstract class AbstractParentEvent extends DefaultCQE implements BasePare
 
     @Override
     public List<BaseEvent> transToBaseEvent() {
-        List<BaseEvent> events = new ArrayList<>(transToBaseEvent0());
+        List<BaseEvent> baseEvents = transToBaseEvent0();
+        if (baseEvents == null) {
+            baseEvents = new ArrayList<>();
+        }
+        List<BaseEvent> events = new ArrayList<>(baseEvents);
         events.add(this);
         return events;
     }

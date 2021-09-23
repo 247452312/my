@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.slf4j.helpers.MessageFormatter;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -97,6 +98,10 @@ public final class LogUtil {
         writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.INFO);
     }
 
+    public static void info(String msg, String... params) {
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.INFO, params);
+    }
+
     public static void info(Class<?> cls, Throwable e) {
         writeLog(cls.getName(), null, e, LogLevelEnum.INFO);
     }
@@ -129,6 +134,10 @@ public final class LogUtil {
         writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.DEBUG);
     }
 
+    public static void debug(String msg, String... params) {
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.DEBUG, params);
+    }
+
     public static void debug(Class<?> cls, Throwable e) {
         writeLog(cls.getName(), null, e, LogLevelEnum.DEBUG);
     }
@@ -149,6 +158,10 @@ public final class LogUtil {
         writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.WARN);
     }
 
+    public static void warn(String msg, String... params) {
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.WARN, params);
+    }
+
     public static void warn(Class<?> cls, Throwable e) {
         writeLog(cls.getName(), null, e, LogLevelEnum.WARN);
     }
@@ -159,6 +172,10 @@ public final class LogUtil {
 
     public static void warn(Object obj, Throwable e) {
         warn(obj.getClass(), e);
+    }
+
+    public static void warn(Throwable e, String msg, String... params) {
+        writeLog(Thread.currentThread().getName(), msg, e, LogLevelEnum.WARN, params);
     }
 
     public static void error(Class<?> cls, String msg) {
@@ -191,6 +208,10 @@ public final class LogUtil {
 
     public static void error(Throwable e, String msg) {
         writeLog(Thread.currentThread().getName(), msg, e, LogLevelEnum.ERROR);
+    }
+
+    public static void error(Throwable e, String msg, String... params) {
+        writeLog(Thread.currentThread().getName(), msg, e, LogLevelEnum.ERROR, params);
     }
 
     public static void error(Object obj, Throwable e) {
@@ -279,7 +300,8 @@ public final class LogUtil {
      * @param msg         信息
      * @param logTypeEnum 类型
      */
-    private static void writeLog(String className, String msg, Throwable throwable, LogLevelEnum logTypeEnum) {
+    private static void writeLog(String className, String msg, Throwable throwable, LogLevelEnum logTypeEnum, String... params) {
+        msg = MessageFormatter.arrayFormat(msg, params).getMessage();
         if (msg != null && logTypeEnum != LogLevelEnum.DEBUG) {
             msg = String.format(LogDetailTypeEnum.LOG.getCode() + "%s|%s|%d|%s", MyTraceIdContext.getThraceId(), MyTraceIdContext.getAndAddRpcIdStr(), System.currentTimeMillis(), msg);
         }
