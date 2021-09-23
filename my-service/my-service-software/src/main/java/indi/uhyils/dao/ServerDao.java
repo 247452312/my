@@ -2,9 +2,8 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.ServerDO;
-import org.apache.ibatis.annotations.Mapper;
-
 import java.util.ArrayList;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -24,6 +23,7 @@ public interface ServerDao extends DefaultDao<ServerDO> {
      * 根据服务器id获取名称
      *
      * @param id id
+     *
      * @return 名称
      */
     String getNameById(Long id);

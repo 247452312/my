@@ -1,7 +1,7 @@
 package indi.uhyils.repository;
 
-import indi.uhyils.pojo.entity.DeviceArg;
 import indi.uhyils.pojo.DO.DeviceArgDO;
+import indi.uhyils.pojo.entity.DeviceArg;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**

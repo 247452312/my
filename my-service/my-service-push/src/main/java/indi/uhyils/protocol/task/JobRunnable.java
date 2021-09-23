@@ -3,9 +3,7 @@ package indi.uhyils.protocol.task;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.util.RpcApiUtil;
-
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -24,10 +22,12 @@ public class JobRunnable implements Callable {
      * 方法名称
      */
     private String methodName;
+
     /**
      * 参数
      */
     private String params;
+
     /**
      * 参数类型
      */

@@ -3,20 +3,19 @@ package indi.uhyils.protocol.rpc.impl;
 import indi.uhyils.pojo.DTO.InitOrderDTO;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.event.AgreeRecallOrderEvent;
-import indi.uhyils.pojo.cqe.event.ApprovalOrderEvent;
 import indi.uhyils.pojo.cqe.command.CommitOrderCommand;
 import indi.uhyils.pojo.cqe.command.FrozenOrderCommand;
-import indi.uhyils.pojo.cqe.query.GetAllOrderQuery;
+import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RecallOrderCommand;
 import indi.uhyils.pojo.cqe.command.RestartOrderCommand;
+import indi.uhyils.pojo.cqe.event.AgreeRecallOrderEvent;
+import indi.uhyils.pojo.cqe.event.ApprovalOrderEvent;
+import indi.uhyils.pojo.cqe.query.GetAllOrderQuery;
 import indi.uhyils.protocol.rpc.OrderInfoProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.OrderInfoService;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -85,7 +84,7 @@ public class OrderInfoProviderImpl extends BaseDefaultProvider<OrderInfoDTO> imp
     }
 
     @Override
-    public ServiceResult<Boolean> approvalOrder(ApprovalOrderEvent request)  {
+    public ServiceResult<Boolean> approvalOrder(ApprovalOrderEvent request) {
         Boolean result = service.approvalOrder(request);
         return ServiceResult.buildSuccessResult(result);
     }

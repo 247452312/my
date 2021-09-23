@@ -3,9 +3,9 @@ package indi.uhyils.repository.impl;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.InstructionsAssembler;
 import indi.uhyils.dao.InstructionsDao;
-import indi.uhyils.pojo.entity.Instructions;
 import indi.uhyils.pojo.DO.InstructionsDO;
 import indi.uhyils.pojo.DTO.InstructionsDTO;
+import indi.uhyils.pojo.entity.Instructions;
 import indi.uhyils.repository.InstructionsRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 

@@ -2,11 +2,10 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.OrderNodeDO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 import java.util.Set;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -20,6 +19,7 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeDO> {
      * 根据多个id批量获取
      *
      * @param nodeIds
+     *
      * @return
      */
     List<OrderNodeDO> getByIds(@Param("nodeIds") Set<Long> nodeIds);
@@ -39,6 +39,7 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeDO> {
      *
      * @param nodeId
      * @param resultId
+     *
      * @return
      */
     OrderNodeDO getNextNodeByNodeAndResult(@Param("nodeId") Long nodeId, @Param("resultId") Long resultId);
@@ -49,6 +50,7 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeDO> {
      * @param ids
      * @param updateUser
      * @param updateDate
+     *
      * @return
      */
     Integer deleteByIds(List<Long> ids, Long updateUser, Integer updateDate);
@@ -57,6 +59,7 @@ public interface OrderNodeDao extends DefaultDao<OrderNodeDO> {
      * 根据工单id获取全部的工单节点
      *
      * @param id
+     *
      * @return
      */
     List<OrderNodeDO> getByOrderId(Long id);

@@ -1,8 +1,8 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.ResponseDO;
 import org.apache.ibatis.annotations.Mapper;
-import indi.uhyils.dao.base.DefaultDao;
 
 /**
  * 设备指令回应表(Response)表 数据库访问层

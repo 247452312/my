@@ -2,14 +2,10 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.MenuDTO;
-import indi.uhyils.pojo.DTO.request.GetByIFrameAndDeptsQuery;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
 import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
 import indi.uhyils.pojo.DTO.response.IndexMenuTreeDTO;
 import indi.uhyils.pojo.DTO.response.MenuHtmlTreeDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Iframe;
 import java.util.List;

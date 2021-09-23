@@ -1,7 +1,7 @@
 package indi.uhyils.protocol.rpc;
 
-import indi.uhyils.protocol.rpc.base.DTOProvider;
 import indi.uhyils.pojo.DTO.SceneDTO;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
  * 场景表(Scene)表 Rpc对外访问层

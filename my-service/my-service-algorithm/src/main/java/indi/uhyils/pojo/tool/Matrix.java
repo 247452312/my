@@ -14,6 +14,7 @@ public class Matrix implements Serializable {
      * 行
      */
     private Integer x;
+
     /**
      * 列
      */

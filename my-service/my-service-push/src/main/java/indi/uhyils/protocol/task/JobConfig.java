@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
  */
 @Configuration
 public class JobConfig {
+
     /**
      * 每一个定时任务线程的名字前缀
      */

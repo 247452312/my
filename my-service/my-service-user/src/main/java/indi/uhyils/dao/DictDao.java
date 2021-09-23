@@ -17,6 +17,7 @@ public interface DictDao extends DefaultDao<DictDO> {
      * 根据字典code获取字典id
      *
      * @param code code
+     *
      * @return
      */
     Long getIdByCode(String code);

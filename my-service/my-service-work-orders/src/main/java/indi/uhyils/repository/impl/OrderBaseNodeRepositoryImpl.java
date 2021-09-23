@@ -2,21 +2,14 @@ package indi.uhyils.repository.impl;
 
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.OrderBaseNodeAssembler;
-import indi.uhyils.assembler.OrderBaseNodeRouteAssembler;
 import indi.uhyils.dao.OrderBaseNodeDao;
-import indi.uhyils.dao.OrderBaseNodeRouteDao;
 import indi.uhyils.pojo.DO.OrderBaseNodeDO;
-import indi.uhyils.pojo.DO.OrderBaseNodeRouteDO;
 import indi.uhyils.pojo.DTO.OrderBaseNodeDTO;
 import indi.uhyils.pojo.entity.OrderBaseNode;
-import indi.uhyils.pojo.entity.OrderBaseNodeRoute;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.OrderBaseNodeRepository;
-import indi.uhyils.repository.OrderBaseNodeRouteRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**

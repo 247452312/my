@@ -6,14 +6,13 @@ import indi.uhyils.util.WaveFileReader;
 import indi.uhyils.util.network.core.Datable;
 import indi.uhyils.util.network.data.ThreeDimensionalData;
 import indi.uhyils.util.network.data.TwoDimensionalData;
-import org.apache.commons.lang3.ArrayUtils;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * 输入类型处理
@@ -22,12 +21,14 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2020年07月25日 10时38分
  */
 public class InputDataDealUtil {
+
     static final int MAX = 1 << 30;
 
     /**
      * 获取图像数据
      *
      * @param image 图像
+     *
      * @return 数据
      */
     public static Datable getImageInputData(BufferedImage image) {
@@ -56,6 +57,7 @@ public class InputDataDealUtil {
      * 获取音频波形数据(声道 * 数据长度) 原始
      *
      * @param wavPath 文件路径
+     *
      * @return 二维数组 波形数据
      */
     public static Datable getWavInputData(String wavPath) {
@@ -72,6 +74,7 @@ public class InputDataDealUtil {
      * @param wavPath 文件
      * @param size    每帧大小 (毫秒)
      * @param shift   帧移 (大小)
+     *
      * @return 分帧后
      */
     public static Datable getWavInputData(String wavPath, Integer size, Integer shift) {

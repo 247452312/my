@@ -52,6 +52,7 @@ public class MethodDisable extends AbstractEntity {
         this.methodName = methodName;
         this.methodType = methodType;
     }
+
     public MethodDisable(String className, String methodName) {
         this(className, methodName, null);
     }

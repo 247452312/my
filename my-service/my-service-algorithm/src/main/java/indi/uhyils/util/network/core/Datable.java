@@ -7,6 +7,7 @@ package indi.uhyils.util.network.core;
  * @date 文件创建日期 2020年07月25日 09时41分
  */
 public interface Datable<T> {
+
     /**
      * 获取数据
      *

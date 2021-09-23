@@ -1,8 +1,8 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.SpaceDO;
 import org.apache.ibatis.annotations.Mapper;
-import indi.uhyils.dao.base.DefaultDao;
 
 /**
  * 空间坐标表(Space)表 数据库访问层

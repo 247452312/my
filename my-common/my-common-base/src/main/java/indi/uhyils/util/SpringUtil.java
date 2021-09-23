@@ -20,7 +20,6 @@ package indi.uhyils.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
-import java.util.List;
 import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;

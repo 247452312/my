@@ -2,9 +2,8 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.OrderBaseNodeDO;
-import org.apache.ibatis.annotations.Mapper;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -18,6 +17,7 @@ public interface OrderBaseNodeDao extends DefaultDao<OrderBaseNodeDO> {
      * 根据主表获取OrderNode
      *
      * @param baseInfoId 主表id
+     *
      * @return orderNode
      */
     List<OrderBaseNodeDO> getNoHiddenByOrderId(Long baseInfoId);
@@ -28,6 +28,7 @@ public interface OrderBaseNodeDao extends DefaultDao<OrderBaseNodeDO> {
      * @param ids
      * @param updateUser
      * @param updateDate
+     *
      * @return
      */
     Integer deleteByIds(List<Long> ids, Long updateUser, Integer updateDate);

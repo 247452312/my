@@ -16,6 +16,7 @@ public class MaxtrixMath {
      *
      * @param a a
      * @param b b
+     *
      * @return 结果
      */
     Matrix dotMultiplication(Matrix a, Matrix b) {
@@ -54,6 +55,7 @@ public class MaxtrixMath {
      * 获取纬度
      *
      * @param a 矩阵
+     *
      * @return 纬度
      */
     Latitude getLatitude(Matrix a) {

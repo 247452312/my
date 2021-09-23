@@ -3,15 +3,14 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.DTO.InitOrderDTO;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.event.AgreeRecallOrderEvent;
-import indi.uhyils.pojo.cqe.event.ApprovalOrderEvent;
 import indi.uhyils.pojo.cqe.command.CommitOrderCommand;
 import indi.uhyils.pojo.cqe.command.FrozenOrderCommand;
-import indi.uhyils.pojo.cqe.query.GetAllOrderQuery;
+import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RecallOrderCommand;
 import indi.uhyils.pojo.cqe.command.RestartOrderCommand;
-import java.util.ArrayList;
+import indi.uhyils.pojo.cqe.event.AgreeRecallOrderEvent;
+import indi.uhyils.pojo.cqe.event.ApprovalOrderEvent;
+import indi.uhyils.pojo.cqe.query.GetAllOrderQuery;
 import java.util.List;
 
 /**
@@ -97,6 +96,6 @@ public interface OrderInfoService extends BaseDoService<OrderInfoDTO> {
      *
      * @return
      */
-    Boolean approvalOrder(ApprovalOrderEvent request) ;
+    Boolean approvalOrder(ApprovalOrderEvent request);
 
 }

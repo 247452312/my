@@ -3,9 +3,9 @@ package indi.uhyils.repository.impl;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.SceneAssembler;
 import indi.uhyils.dao.SceneDao;
-import indi.uhyils.pojo.entity.Scene;
 import indi.uhyils.pojo.DO.SceneDO;
 import indi.uhyils.pojo.DTO.SceneDTO;
+import indi.uhyils.pojo.entity.Scene;
 import indi.uhyils.repository.SceneRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 

@@ -2,7 +2,6 @@ package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.OrderBaseNodeDO;
 import indi.uhyils.pojo.entity.OrderBaseNode;
-import indi.uhyils.pojo.entity.OrderBaseNodeRoute;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;

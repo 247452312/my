@@ -3,7 +3,6 @@ package indi.uhyils.assembler;
 
 import indi.uhyils.annotation.Assembler;
 import indi.uhyils.builder.OrderApplyBuilder;
-import indi.uhyils.pojo.DO.OrderApplyDO;
 import indi.uhyils.pojo.DO.OrderNodeDO;
 import indi.uhyils.pojo.DTO.OrderApplyDTO;
 import indi.uhyils.pojo.DTO.OrderNodeDTO;

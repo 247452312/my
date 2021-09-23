@@ -2,7 +2,6 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,4 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface LogMonitorJvmStatusDao extends DefaultDao<LogMonitorJvmStatusDO> {
+
 }

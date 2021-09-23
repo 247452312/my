@@ -5,10 +5,12 @@ package indi.uhyils.util.kpro;
  * @date 文件创建日期 2020年07月27日 08时03分
  */
 public class KproStringUtil {
+
     /**
      * 数据库名称转java文件名称
      *
      * @param dbName 数据库名称
+     *
      * @return java model名称
      */
     public static String dealDbNameToJavaFileName(String dbName) {

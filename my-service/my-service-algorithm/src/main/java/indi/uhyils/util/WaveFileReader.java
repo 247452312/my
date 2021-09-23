@@ -11,37 +11,69 @@ import java.io.IOException;
  * @date 文件创建日期 2020年07月25日 11时04分
  */
 public class WaveFileReader {
+
     static private int lenchunkdescriptor = 4;
+
     static private int lenchunksize = 4;
+
     static private int lenwaveflag = 4;
+
     static private int lenfmtubchunk = 4;
+
     static private int lensubchunk1size = 4;
+
     static private int lenaudioformat = 2;
+
     static private int lennumchannels = 2;
+
     static private int lensamplerate = 2;
+
     static private int lenbyterate = 4;
+
     static private int lenblockling = 2;
+
     static private int lenbitspersample = 2;
+
     static private int lendatasubchunk = 4;
+
     static private int lensubchunk2size = 4;
+
     private String filename = null;
+
     private Integer[][] data = null;
+
     private int len = 0;
+
     private String chunkdescriptor = null;
+
     private long chunksize = 0;
+
     private String waveflag = null;
+
     private String fmtubchunk = null;
+
     private long subchunk1size = 0;
+
     private int audioformat = 0;
+
     private int numchannels = 0;
+
     private long samplerate = 0;
+
     private long byterate = 0;
+
     private int blockalign = 0;
+
     private int bitspersample = 0;
+
     private String datasubchunk = null;
+
     private long subchunk2size = 0;
+
     private FileInputStream fis = null;
+
     private BufferedInputStream bis = null;
+
     private boolean issuccess = false;
 
     public WaveFileReader(String filename) {

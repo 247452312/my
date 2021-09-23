@@ -1,8 +1,8 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.DeviceArgDO;
 import org.apache.ibatis.annotations.Mapper;
-import indi.uhyils.dao.base.DefaultDao;
 
 /**
  * 设备参数表(DeviceArg)表 数据库访问层

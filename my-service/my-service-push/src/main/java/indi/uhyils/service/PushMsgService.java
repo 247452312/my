@@ -22,7 +22,7 @@ public interface PushMsgService extends BaseDoService<PushMsgDTO> {
      *
      * @return 是否成功
      */
-    Boolean push(CronRequest request) ;
+    Boolean push(CronRequest request);
 
     /**
      * 主动向某人推送一条消息
@@ -31,6 +31,6 @@ public interface PushMsgService extends BaseDoService<PushMsgDTO> {
      *
      * @return
      */
-    Boolean pushMsgToSomeone(PushMsgToSomeoneRequest request) ;
+    Boolean pushMsgToSomeone(PushMsgToSomeoneRequest request);
 
 }

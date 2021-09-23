@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MyRpc
 @EnableTransactionManagement
 public class PushApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(PushApplication.class, args);
     }

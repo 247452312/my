@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO.response;
 
-import indi.uhyils.pojo.DTO.base.BaseDTO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
+import indi.uhyils.pojo.DTO.base.BaseDTO;
 import java.util.List;
 
 /**

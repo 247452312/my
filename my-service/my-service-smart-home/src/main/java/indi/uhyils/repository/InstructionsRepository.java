@@ -1,7 +1,7 @@
 package indi.uhyils.repository;
 
-import indi.uhyils.pojo.entity.Instructions;
 import indi.uhyils.pojo.DO.InstructionsDO;
+import indi.uhyils.pojo.entity.Instructions;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**

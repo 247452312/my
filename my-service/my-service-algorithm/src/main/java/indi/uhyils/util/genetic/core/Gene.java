@@ -9,11 +9,14 @@ import java.util.Random;
  * @date 文件创建日期 2020年07月31日 09时28分
  */
 public class Gene implements Cloneable {
+
     public static Random random = new Random();
+
     /**
      * 显性
      */
     private Boolean dominance;
+
     /**
      * 值
      */
@@ -61,10 +64,10 @@ public class Gene implements Cloneable {
     public String toString() {
         final StringBuilder sb = new StringBuilder("{");
         sb.append("            \"dominance\":")
-                .append(dominance);
+          .append(dominance);
         if (value != null) {
             sb.append(",            \"value\":")
-                    .append(value);
+              .append(value);
         }
         sb.append('}');
         return sb.toString();

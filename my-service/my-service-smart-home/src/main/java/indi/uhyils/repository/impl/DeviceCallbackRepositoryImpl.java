@@ -3,9 +3,9 @@ package indi.uhyils.repository.impl;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.DeviceCallbackAssembler;
 import indi.uhyils.dao.DeviceCallbackDao;
-import indi.uhyils.pojo.entity.DeviceCallback;
 import indi.uhyils.pojo.DO.DeviceCallbackDO;
 import indi.uhyils.pojo.DTO.DeviceCallbackDTO;
+import indi.uhyils.pojo.entity.DeviceCallback;
 import indi.uhyils.repository.DeviceCallbackRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 

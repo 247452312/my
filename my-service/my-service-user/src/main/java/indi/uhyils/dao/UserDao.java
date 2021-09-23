@@ -5,11 +5,10 @@ import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.UserDO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -22,6 +21,7 @@ public interface UserDao extends DefaultDao<UserDO> {
      * 根据角色Id获取用户的角色
      *
      * @param roleId 角色id
+     *
      * @return 角色实例
      */
     RoleDO getUserRoleById(Long roleId);
@@ -30,6 +30,7 @@ public interface UserDao extends DefaultDao<UserDO> {
      * 根据角色id获取用户的权限集
      *
      * @param roleId 角色id
+     *
      * @return 用户的权限集
      */
     ArrayList<DeptDO> getUserDeptsByRoleId(Long roleId);
@@ -39,6 +40,7 @@ public interface UserDao extends DefaultDao<UserDO> {
      * 根据权限集id获取权限
      *
      * @param deptId 权限集id
+     *
      * @return 用户的权限
      */
     List<PowerDO> getUserPowerByDeptId(Long deptId);
@@ -55,6 +57,7 @@ public interface UserDao extends DefaultDao<UserDO> {
      *
      * @param id          用户id
      * @param oldPassword 旧密码
+     *
      * @return 是否正确
      */
     Integer checkUserPassword(@Param("id") Long id, @Param("password") String oldPassword);
@@ -63,6 +66,7 @@ public interface UserDao extends DefaultDao<UserDO> {
      * 获取用户名称
      *
      * @param id id
+     *
      * @return 用户名称
      */
     String getNameById(Long id);

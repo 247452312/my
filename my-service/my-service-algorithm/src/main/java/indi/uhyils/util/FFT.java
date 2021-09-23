@@ -5,11 +5,17 @@ package indi.uhyils.util;
  * @date 文件创建日期 2020年07月25日 14时18分
  */
 public final class FFT {
+
     final int MAXLOGM = 20; /* max FFT length 2^MAXLOGM */
+
     final double TWOPI = 6.28318530717958647692;
+
     final double SQHALF = 0.707106781186547524401;
+
     public int logm;
+
     int[] brseed = new int[4048];
+
     float[][] tab;
 
 
@@ -34,31 +40,25 @@ public final class FFT {
         int i, n;
         n = 1 << this.logm;
 
-
         if (x.length > n) {
             throw new Error("Tried to use a " + n
-                    + "-points FFT for a vector with " + x.length + " samples!");
+                            + "-points FFT for a vector with " + x.length + " samples!");
         }
-
 
         rsfft(x);
 
-
         float[] mag = new float[n / 2 + 1];
         mag[0] = x[0]; // DC frequency must be positive always
-
 
         if (n == 1) {
             return mag;
         }
         mag[n / 2] = (float) Math.abs(x[n / 2]); // pi (meaning: fs / 2)
 
-
         for (i = 1; i < n / 2; i++) {
             mag[i] = (float) Math.sqrt(x[i] * x[i] + x[n - i] * x[n - i]);
             // System.out.println(mag[i] + " " + x[i] + " " + x[n-i]);
         }
-
 
         return mag;
     }
@@ -73,29 +73,24 @@ public final class FFT {
         n = 1 << this.logm;
         if (inputData.length > n) {
             throw new Error("Tried to use a " + n
-                    + "-points FFT for a vector with " + inputData.length
-                    + " samples!");
+                            + "-points FFT for a vector with " + inputData.length
+                            + " samples!");
         }
-
 
         float[] x = new float[n];
         for (i = 0; i < inputData.length; i++) {
             x[i] = (float) inputData[i];
         }
 
-
         rsfft(x);
-
 
         double[] mag = new double[n / 2 + 1];
         mag[0] = x[0]; // DC frequency must be positive always
-
 
         if (n == 1) {
             return mag;
         }
         mag[n / 2] = Math.abs(x[n / 2]); // pi (meaning: fs / 2)
-
 
         for (i = 1; i < n / 2; i++) {
             mag[i] = Math.sqrt(x[i] * x[i] + x[n - i] * x[n - i]);
@@ -113,25 +108,20 @@ public final class FFT {
         int i, n;
         n = 1 << this.logm;
 
-
         float[] x = new float[n];
         for (i = 0; i < inputData.length; i++) {
             x[i] = (float) inputData[i];
         }
 
-
         rsfft(x);
-
 
         double[] mag = new double[n / 2 + 1];
         mag[0] = x[0]; // DC frequency must be positive always
-
 
         if (n == 1) {
             return mag;
         }
         mag[n / 2] = Math.abs(x[n / 2]); // pi (meaning: fs / 2)
-
 
         for (i = 1; i < n / 2; i++) {
             mag[i] = x[i] * x[i] + x[n - i] * x[n - i];
@@ -164,7 +154,6 @@ public final class FFT {
         /* creat table */
         // if(logm>=4) creattab(logm);
         /* Call recursive routine */
-
 
         rsrec(x, logm);
 
@@ -202,7 +191,6 @@ public final class FFT {
         // if(logm>=4) creattab(logm);
         /* Call recursive routine */
 
-
         rsirec(x, logm);
 
 
@@ -210,7 +198,6 @@ public final class FFT {
         m = 1 << logm;
         fac = (float) 2.0 / m;
         xp = 0;
-
 
         for (i = 0; i < m; i++) {
             x[xp++] *= fac;
@@ -238,7 +225,6 @@ public final class FFT {
             nel = m4 - 2;
             /* Initialize pointers */
 
-
             cn = 0;
             spcn = cn + nel;
             smcn = spcn + nel;
@@ -258,7 +244,6 @@ public final class FFT {
                 tab[rlogm - 4][cn++] = (float) c;
                 tab[rlogm - 4][spcn++] = (float) (-(s + c));
                 tab[rlogm - 4][smcn++] = (float) (s - c);
-
 
                 ang = 3 * n * TWOPI / m;
                 c = Math.cos(ang);
@@ -293,8 +278,7 @@ public final class FFT {
         try {
             if ((logm < 0) || (logm > MAXLOGM)) {
                 System.err.println("FFT length m is too big: log2(m) = " + logm
-                        + "is out of bounds [" + 0 + "," + MAXLOGM + "]");
-
+                                   + "is out of bounds [" + 0 + "," + MAXLOGM + "]");
 
                 throw new OutofborderException(logm);
             }
@@ -304,7 +288,6 @@ public final class FFT {
 
 
         /* Compute trivial cases */
-
 
         if (logm < 2) {
             /* length m = 2 */
@@ -354,7 +337,6 @@ public final class FFT {
             spcn = cn + nel;
             smcn = spcn + nel;
         }
-
 
         xr1++;
         xi1++;
@@ -438,7 +420,7 @@ public final class FFT {
         try {
             if ((logm < 0) || (logm > MAXLOGM)) {
                 System.err.println("FFT length m is too big: log2(m) = " + logm
-                        + "is out of bounds [" + 0 + "," + MAXLOGM + "]");
+                                   + "is out of bounds [" + 0 + "," + MAXLOGM + "]");
                 throw new OutofborderException(logm);
             }
         } catch (OutofborderException e) {
@@ -602,8 +584,7 @@ public final class FFT {
         try {
             if ((logm < 0) || (logm > MAXLOGM)) {
                 System.err.println("FFT length m is too big: log2(m) = " + logm
-                        + "is out of bounds [" + 0 + "," + MAXLOGM + "]");
-
+                                   + "is out of bounds [" + 0 + "," + MAXLOGM + "]");
 
                 throw new OutofborderException(logm);
             }
@@ -707,7 +688,6 @@ public final class FFT {
         xi1 = xi;
         xi2 = xi1 + m2;
 
-
         for (n = 0; n < m2; n++) {
             tmp1 = x[xr1] + x[xr2];
             x[xr2] = x[xr1] - x[xr2];
@@ -807,7 +787,6 @@ public final class FFT {
      * --------------------------------------------------------------------
      */
 
-
     // static int brseed[256]; /* Evans' seed table */
     // static int brsflg; /* flag for table building */
 
@@ -839,7 +818,6 @@ public final class FFT {
         int xp, xq, brp;
         int x0 = 0;
 
-
         lg2 = logm >> 1;
         n = 1 << lg2;
         if (logm != (logm >> 1) << 1) {
@@ -867,7 +845,6 @@ public final class FFT {
             xp = i;
             brp = 1;
 
-
             for (gno = 1; gno < brseed[off]; gno++) {
                 xp += n;
                 j = fj + brseed[brp++];
@@ -883,6 +860,7 @@ public final class FFT {
 
 
     class OutofborderException extends Exception {
+
         public OutofborderException(int logm) {
             super();
         }

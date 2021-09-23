@@ -2,8 +2,16 @@ package indi.uhyils.util;
 
 import indi.uhyils.enum_.OrderNodeStatusEnum;
 import indi.uhyils.enum_.OrderStatusEnum;
-import indi.uhyils.pojo.DO.*;
-
+import indi.uhyils.pojo.DO.OrderBaseInfoDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeFieldDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeResultTypeDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeRouteDO;
+import indi.uhyils.pojo.DO.OrderInfoDO;
+import indi.uhyils.pojo.DO.OrderNodeDO;
+import indi.uhyils.pojo.DO.OrderNodeFieldDO;
+import indi.uhyils.pojo.DO.OrderNodeResultTypeDO;
+import indi.uhyils.pojo.DO.OrderNodeRouteDO;
 import java.io.Serializable;
 
 /**
@@ -18,6 +26,7 @@ public class OrderBuilder implements Serializable {
      * 工单基础样例表复制到实例表中去
      *
      * @param baseInfo 工单基础样例表
+     *
      * @return 实例
      */
     public static OrderInfoDO transBaseInfo2Info(OrderBaseInfoDO baseInfo) {

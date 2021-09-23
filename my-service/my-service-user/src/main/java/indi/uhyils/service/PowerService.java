@@ -2,10 +2,6 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.PowerDTO;
-import indi.uhyils.pojo.DTO.request.GetMethodNameByInterfaceNameQuery;
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.InterfaceName;
 import indi.uhyils.pojo.entity.type.MethodName;
@@ -22,7 +18,6 @@ public interface PowerService extends BaseDoService<PowerDTO> {
 
     /**
      * 获取所有的权限
-     *
      *
      * @return 所有权限
      */
@@ -42,7 +37,6 @@ public interface PowerService extends BaseDoService<PowerDTO> {
     /**
      * 删除权限->包括连接表
      *
-     *
      * @return
      */
     Boolean deletePower(Identifier powerId);
@@ -59,7 +53,6 @@ public interface PowerService extends BaseDoService<PowerDTO> {
     /**
      * 获取所有指定接口的方法
      *
-     *
      * @return 对应方法
      */
     List<String> getMethodNameByInterfaceName(InterfaceName interfaceName);
@@ -67,7 +60,6 @@ public interface PowerService extends BaseDoService<PowerDTO> {
 
     /**
      * 初始化权限,如果权限不存在,则添加权限,如果权限已经存在,则不作任何修改
-     *
      *
      * @return 添加的权限
      */

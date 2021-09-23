@@ -16,7 +16,6 @@ import indi.uhyils.pojo.DTO.response.MenuHtmlTreeDTO;
 import indi.uhyils.pojo.DTO.response.info.MenuHomeInfo;
 import indi.uhyils.pojo.DTO.response.info.MenuLogoInfo;
 import indi.uhyils.pojo.DTO.response.info.MenuTreeDTO;
-import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.Content;
 import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Menu;

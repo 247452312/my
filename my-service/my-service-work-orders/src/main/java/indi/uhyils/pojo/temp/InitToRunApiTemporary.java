@@ -1,8 +1,7 @@
 package indi.uhyils.pojo.temp;
 
-import indi.uhyils.pojo.dto.ApiDealDto;
 import indi.uhyils.pojo.DO.OrderNodeDO;
-
+import indi.uhyils.pojo.dto.ApiDealDto;
 import java.io.Serializable;
 
 /**

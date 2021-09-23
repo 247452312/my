@@ -2,7 +2,6 @@ package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.DictItemDO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.request.GetByItemArgsQuery;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.cqe.query.demo.Limit;
 import indi.uhyils.pojo.cqe.query.demo.Order;

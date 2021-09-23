@@ -26,6 +26,7 @@ public enum ApiCodeEnum {
 
 
     private String name;
+
     private Integer code;
 
     ApiCodeEnum(String name, Integer code) {

@@ -4,8 +4,14 @@ import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.genetic.core.AbstractsInitialization;
 import indi.uhyils.util.genetic.core.DnaData;
 import indi.uhyils.util.genetic.core.FitnessFunction;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * 遗传算法
@@ -224,12 +230,12 @@ public class GeneticAlgorithm {
         }
         GeneticAlgorithm that = (GeneticAlgorithm) o;
         return Objects.equals(maxNum, that.maxNum) &&
-                Objects.equals(mutationProbability, that.mutationProbability) &&
-                Objects.equals(fitnessFunction, that.fitnessFunction) &&
-                Objects.equals(initialization, that.initialization) &&
-                Objects.equals(growthRate, that.growthRate) &&
-                Objects.equals(nonVariationRatio, that.nonVariationRatio) &&
-                Objects.equals(data, that.data);
+               Objects.equals(mutationProbability, that.mutationProbability) &&
+               Objects.equals(fitnessFunction, that.fitnessFunction) &&
+               Objects.equals(initialization, that.initialization) &&
+               Objects.equals(growthRate, that.growthRate) &&
+               Objects.equals(nonVariationRatio, that.nonVariationRatio) &&
+               Objects.equals(data, that.data);
     }
 
     @Override

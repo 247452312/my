@@ -33,8 +33,9 @@ public class TableInfo {
      */
     private ColumnInfo onlyKey;
 
-    public TableInfo(String tableName, Map<String, ColumnInfo> colums,
-                     ColumnInfo onlyKey) {
+    public TableInfo(
+        String tableName, Map<String, ColumnInfo> colums,
+        ColumnInfo onlyKey) {
         this.tableName = tableName;
         this.colums = colums;
         this.onlyKey = onlyKey;

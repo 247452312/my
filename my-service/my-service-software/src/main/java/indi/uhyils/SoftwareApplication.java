@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MyRpc
 @EnableTransactionManagement
 public class SoftwareApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(SoftwareApplication.class, args);
     }

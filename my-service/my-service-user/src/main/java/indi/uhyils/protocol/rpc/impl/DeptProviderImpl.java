@@ -53,7 +53,7 @@ public class DeptProviderImpl extends BaseDefaultProvider<DeptDTO> implements De
     public ServiceResult<Boolean> putMenusToDept(PutMenusToDeptsCommand request) {
         Identifier deptId = new Identifier(request.getDeptId());
         List<Identifier> menusId = request.getMenuIds().stream().map(Identifier::new).collect(Collectors.toList());
-        Boolean result = service.putMenusToDept(deptId,menusId);
+        Boolean result = service.putMenusToDept(deptId, menusId);
         return ServiceResult.buildSuccessResult(result);
     }
 

@@ -21,5 +21,4 @@ public class DictItem extends AbstractDoEntity<DictItemDO> {
     }
 
 
-
 }

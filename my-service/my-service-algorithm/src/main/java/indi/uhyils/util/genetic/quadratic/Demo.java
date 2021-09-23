@@ -2,8 +2,12 @@ package indi.uhyils.util.genetic.quadratic;
 
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.genetic.GeneticAlgorithm;
-import indi.uhyils.util.genetic.core.*;
-
+import indi.uhyils.util.genetic.core.AbstractsInitialization;
+import indi.uhyils.util.genetic.core.Data;
+import indi.uhyils.util.genetic.core.DnaData;
+import indi.uhyils.util.genetic.core.DoubleGene;
+import indi.uhyils.util.genetic.core.FitnessFunction;
+import indi.uhyils.util.genetic.core.Gene;
 import java.util.List;
 
 /**
@@ -11,6 +15,7 @@ import java.util.List;
  * @date 文件创建日期 2020年07月31日 09时25分
  */
 public class Demo {
+
     public static void main(String[] args) {
 
         AbstractsInitialization quadraticDataDataInitialization = new AbstractsInitialization() {

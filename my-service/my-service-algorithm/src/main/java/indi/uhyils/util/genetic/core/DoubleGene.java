@@ -11,10 +11,12 @@ import java.util.Random;
 public class DoubleGene {
 
     public static Random random = new Random();
+
     /**
      * 第一个基因
      */
     private Gene one;
+
     /**
      * 第二个基因
      */
@@ -25,6 +27,7 @@ public class DoubleGene {
      *
      * @param min
      * @param max
+     *
      * @return
      */
     public static DoubleGene build(Double min, Double max) {
@@ -81,10 +84,10 @@ public class DoubleGene {
     public String toString() {
         final StringBuilder sb = new StringBuilder("{");
         sb.append("            \"one\":")
-                .append(one);
+          .append(one);
         if (two != null) {
             sb.append(",            \"two\":")
-                    .append(two);
+              .append(two);
         }
         sb.append('}');
         return sb.toString();

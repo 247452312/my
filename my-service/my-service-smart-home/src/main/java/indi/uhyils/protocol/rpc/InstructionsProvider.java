@@ -1,7 +1,7 @@
 package indi.uhyils.protocol.rpc;
 
-import indi.uhyils.protocol.rpc.base.DTOProvider;
 import indi.uhyils.pojo.DTO.InstructionsDTO;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
  * 说明书表(Instructions)表 Rpc对外访问层

@@ -1,8 +1,6 @@
 package indi.uhyils.ast.link;
 
 
-import com.sun.org.apache.bcel.internal.generic.SWITCH;
-
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0

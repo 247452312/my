@@ -5,7 +5,6 @@ import indi.uhyils.assembler.ApiGroupAssembler;
 import indi.uhyils.pojo.DO.ApiGroupDO;
 import indi.uhyils.pojo.DTO.ApiGroupDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.ApiGroup;
 import indi.uhyils.pojo.entity.type.Identifier;

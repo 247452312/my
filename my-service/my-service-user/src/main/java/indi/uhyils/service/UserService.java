@@ -3,8 +3,6 @@ package indi.uhyils.service;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
-import indi.uhyils.pojo.cqe.query.IdQuery;
-import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;

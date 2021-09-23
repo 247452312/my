@@ -14,6 +14,7 @@ import java.util.List;
 public class TestEventRegister implements Register {
 
     public static Boolean b = false;
+
     @Override
     public List<Class<? extends BaseEvent>> targetEvent() {
         return Arrays.asList(TestEvent.class);

@@ -1,7 +1,7 @@
 package indi.uhyils.protocol.rpc;
 
-import indi.uhyils.protocol.rpc.base.DTOProvider;
 import indi.uhyils.pojo.DTO.DeviceArgDTO;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
  * 设备参数表(DeviceArg)表 Rpc对外访问层

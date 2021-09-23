@@ -1,11 +1,7 @@
 package indi.uhyils.dao.base;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import indi.uhyils.pojo.cqe.query.demo.Arg;
-import indi.uhyils.pojo.cqe.query.demo.Limit;
-import indi.uhyils.pojo.cqe.query.demo.Order;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

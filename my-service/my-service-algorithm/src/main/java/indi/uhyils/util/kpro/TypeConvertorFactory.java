@@ -13,6 +13,7 @@ import indi.uhyils.util.kpro.convertor.mysql.MysqlTypeConvertor;
  * @date 文件创建日期 2018-09-17 19:12
  */
 public class TypeConvertorFactory {
+
     public static TypeConvertor getTypeConvertor(DbTypeEnum type) {
         switch (type) {
             case MYSQL:

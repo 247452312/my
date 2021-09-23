@@ -1,8 +1,8 @@
 package indi.uhyils.dao;
 
+import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.InstructionsDO;
 import org.apache.ibatis.annotations.Mapper;
-import indi.uhyils.dao.base.DefaultDao;
 
 /**
  * 说明书表(Instructions)表 数据库访问层

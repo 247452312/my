@@ -3,9 +3,9 @@ package indi.uhyils.repository.impl;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.DeviceArgAssembler;
 import indi.uhyils.dao.DeviceArgDao;
-import indi.uhyils.pojo.entity.DeviceArg;
 import indi.uhyils.pojo.DO.DeviceArgDO;
 import indi.uhyils.pojo.DTO.DeviceArgDTO;
+import indi.uhyils.pojo.entity.DeviceArg;
 import indi.uhyils.repository.DeviceArgRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 

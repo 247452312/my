@@ -1,7 +1,7 @@
 package indi.uhyils.repository;
 
-import indi.uhyils.pojo.entity.DeviceCallback;
 import indi.uhyils.pojo.DO.DeviceCallbackDO;
+import indi.uhyils.pojo.entity.DeviceCallback;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**

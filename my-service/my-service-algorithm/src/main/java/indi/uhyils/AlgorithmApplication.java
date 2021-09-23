@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @MyRpc
 public class AlgorithmApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(AlgorithmApplication.class, args);
     }

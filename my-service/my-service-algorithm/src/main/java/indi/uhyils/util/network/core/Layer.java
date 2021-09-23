@@ -20,6 +20,7 @@ public interface Layer extends Cloneable {
      * 正向计算
      *
      * @param obj 上一层给的输入
+     *
      * @return 输出, 也是下一层的输出
      */
     Double[][][][] calculation(Double[][][] obj);
@@ -28,6 +29,7 @@ public interface Layer extends Cloneable {
      * 反向计算(注:要包含记录残差的过程)
      *
      * @param inData 输入误差
+     *
      * @return 上一层的误差
      */
     Object reverse(Double[] inData);

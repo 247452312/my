@@ -1,8 +1,7 @@
 package indi.uhyils.pojo.temp;
 
-import indi.uhyils.pojo.dto.ApiDealDto;
 import indi.uhyils.pojo.DO.OrderNodeDO;
-
+import indi.uhyils.pojo.dto.ApiDealDto;
 import java.io.Serializable;
 
 /**
@@ -10,6 +9,7 @@ import java.io.Serializable;
  * @date 文件创建日期 2020年11月22日 17时14分
  */
 public class RunToSaveApiTemporary implements Serializable {
+
     /**
      * 工单节点
      */

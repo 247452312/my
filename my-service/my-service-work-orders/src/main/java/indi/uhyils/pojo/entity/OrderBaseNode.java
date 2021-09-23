@@ -27,6 +27,14 @@ public class OrderBaseNode extends AbstractDoEntity<OrderBaseNodeDO> {
      */
     private List<OrderBaseNodeRoute> routes;
 
+    public OrderBaseNode(OrderBaseNodeDO dO) {
+        super(dO);
+    }
+
+    public OrderBaseNode(Long id) {
+        super(id, new OrderBaseNodeDO());
+    }
+
     public List<OrderBaseNodeField> fields() {
         return fields;
     }
@@ -37,14 +45,6 @@ public class OrderBaseNode extends AbstractDoEntity<OrderBaseNodeDO> {
 
     public List<OrderBaseNodeResultType> resultTypes() {
         return resultTypes;
-    }
-
-    public OrderBaseNode(OrderBaseNodeDO dO) {
-        super(dO);
-    }
-
-    public OrderBaseNode(Long id) {
-        super(id, new OrderBaseNodeDO());
     }
 
     public void forceFillFields(List<OrderBaseNodeField> fields) {

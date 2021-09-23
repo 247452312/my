@@ -2,10 +2,9 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.OrderBaseNodeRouteDO;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -19,6 +18,7 @@ public interface OrderBaseNodeRouteDao extends DefaultDao<OrderBaseNodeRouteDO> 
      * 根据节点id获取节点路由id
      *
      * @param nodeId 节点id
+     *
      * @return
      */
     List<OrderBaseNodeRouteDO> getByOrderNodeId(Long nodeId);
@@ -29,6 +29,7 @@ public interface OrderBaseNodeRouteDao extends DefaultDao<OrderBaseNodeRouteDO> 
      * @param ids
      * @param updateUser
      * @param updateDate
+     *
      * @return
      */
     Integer deleteByNodeIds(@Param("ids") List<Long> ids, Long updateUser, Integer updateDate);
@@ -37,6 +38,7 @@ public interface OrderBaseNodeRouteDao extends DefaultDao<OrderBaseNodeRouteDO> 
      * 根据工单节点获取所有的路由
      *
      * @param orderNodeIds
+     *
      * @return
      */
     List<OrderBaseNodeRouteDO> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);

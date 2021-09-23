@@ -1,14 +1,18 @@
 package indi.uhyils.util;
 
-import org.apache.tomcat.util.codec.binary.Base64;
-
-import javax.crypto.*;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 /**
  * 加密算法
@@ -17,6 +21,7 @@ import java.security.SecureRandom;
  * @date 文件创建日期 2020年04月26日 14时19分
  */
 public class AESUtil {
+
     public static final String AES = "AES";
 
     public static final String PROJECT_CODE = "utf-8";
@@ -32,6 +37,7 @@ public class AESUtil {
      *
      * @param encodeRules 加密规则
      * @param content     加密内容
+     *
      * @return 加密后密文
      */
     public static String AESEncode(String encodeRules, String content) {

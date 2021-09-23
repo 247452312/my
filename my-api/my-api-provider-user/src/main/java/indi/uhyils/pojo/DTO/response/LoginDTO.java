@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO.response;
 
-import indi.uhyils.pojo.DTO.base.BaseDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.DTO.base.BaseDTO;
 
 /**
  * @author uhyils <247452312@qq.com>

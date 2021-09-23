@@ -9,10 +9,12 @@ import indi.uhyils.util.network.core.Datable;
  * @date 文件创建日期 2020年07月25日 10时21分
  */
 public interface InputLayer {
+
     /**
      * 将输入修改为程序可以识别的格式
      *
      * @param obj 输入
+     *
      * @return 输入层输出
      */
     Datable changeToData(Object obj);

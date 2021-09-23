@@ -1,8 +1,8 @@
 package indi.uhyils.handler.impl.trans;
 
 import indi.uhyils.handler.TransApiHandler;
-import indi.uhyils.pojo.dto.ApiDealDto;
 import indi.uhyils.pojo.DO.OrderNodeDO;
+import indi.uhyils.pojo.dto.ApiDealDto;
 import indi.uhyils.pojo.temp.SaveToTransApiTemporary;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TransPurchasingHandlerImpl implements TransApiHandler {
+
     @Override
     public void trans(SaveToTransApiTemporary requestTemporary) {
         OrderNodeDO orderNode = requestTemporary.getOrderNode();

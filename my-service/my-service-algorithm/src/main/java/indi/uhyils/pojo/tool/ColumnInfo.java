@@ -14,10 +14,12 @@ public class ColumnInfo {
      * 数据类型
      */
     private String dataType;
+
     /**
      * 是不是key
      */
     private int keyType;
+
     /**
      * 列名称
      */

@@ -10,10 +10,12 @@ public class JavaPojoFileGetAndSet {
      * 字段名称
      */
     private String fieldString;
+
     /**
      * get方法名称
      */
     private String getString;
+
     /**
      * set方法名称
      */
@@ -36,7 +38,6 @@ public class JavaPojoFileGetAndSet {
         sb.append(";");
         this.fieldString = sb.toString();
         sb.delete(0, sb.length());
-
 
         // get方法string
         sb.append("public ");

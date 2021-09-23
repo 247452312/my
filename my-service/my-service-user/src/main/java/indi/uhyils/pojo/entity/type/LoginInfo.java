@@ -1,9 +1,5 @@
 package indi.uhyils.pojo.entity.type;
 
-import indi.uhyils.pojo.entity.type.BaseType;
-import indi.uhyils.pojo.entity.type.Password;
-import indi.uhyils.pojo.entity.type.UserName;
-
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0

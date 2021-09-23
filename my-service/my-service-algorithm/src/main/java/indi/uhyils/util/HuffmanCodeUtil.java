@@ -13,6 +13,7 @@ import java.util.Map;
  * @date 文件创建日期 2020年07月23日 08时27分
  */
 public class HuffmanCodeUtil {
+
     public static HashMap<String, Integer> getHuffmanCodeUtilOnFile(String dirPath) throws Exception {
         File dir = new File(dirPath);
         if (!dir.exists()) {
@@ -68,7 +69,6 @@ public class HuffmanCodeUtil {
             Double per1 = n1.getValue();
             Double per2 = n2.getValue();
 
-
             int second = 2;
             for (int i = second; i < nodes.size(); i++) {
                 Node node = nodes.get(i);
@@ -123,9 +123,13 @@ public class HuffmanCodeUtil {
     }
 
     private static class Node {
+
         private String key;
+
         private Double value;
+
         private Node left;
+
         private Node right;
 
         private Boolean ph;

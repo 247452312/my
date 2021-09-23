@@ -30,6 +30,7 @@ public interface Network {
      * 预测
      *
      * @param t 数据
+     *
      * @return 结果
      */
     Resultable predict(Datable t);

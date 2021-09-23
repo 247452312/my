@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.cglib.core.Converter;
 import org.springframework.util.CollectionUtils;
 
 /**

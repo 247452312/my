@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MyRpc
 @EnableTransactionManagement
 public class MongoApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(MongoApplication.class, args);
     }

@@ -4,10 +4,6 @@ package indi.uhyils.service;
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.RoleDTO;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
-import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.command.IdsCommand;
-import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.type.Identifier;
 import java.util.List;
 

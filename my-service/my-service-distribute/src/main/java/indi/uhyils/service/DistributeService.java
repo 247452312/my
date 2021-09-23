@@ -1,7 +1,6 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.DTO.response.welcome.WelcomeResponse;
-import indi.uhyils.pojo.cqe.DefaultCQE;
 
 /**
  * @author uhyils <247452312@qq.com>

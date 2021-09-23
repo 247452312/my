@@ -2,10 +2,9 @@ package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.pojo.DO.OrderBaseNodeFieldDO;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -19,6 +18,7 @@ public interface OrderBaseNodeFieldDao extends DefaultDao<OrderBaseNodeFieldDO> 
      * 根据节点id获取节点字段
      *
      * @param nodeId 节点id
+     *
      * @return
      */
     List<OrderBaseNodeFieldDO> getByOrderNodeId(Long nodeId);
@@ -29,6 +29,7 @@ public interface OrderBaseNodeFieldDao extends DefaultDao<OrderBaseNodeFieldDO> 
      * @param ids
      * @param updateUser
      * @param updateDate
+     *
      * @return
      */
     Integer deleteByNodeIds(@Param("ids") List<Long> ids, @Param("updateUser") Long updateUser, @Param("updateDate") Integer updateDate);
@@ -37,6 +38,7 @@ public interface OrderBaseNodeFieldDao extends DefaultDao<OrderBaseNodeFieldDO> 
      * 根据工单节点的id们获取所有的工单属性
      *
      * @param orderNodeIds
+     *
      * @return
      */
     List<OrderBaseNodeFieldDO> getByOrderNodeIds(@Param("orderNodeIds") List<Long> orderNodeIds);

@@ -45,7 +45,7 @@ public interface DictService extends BaseDoService<DictDTO> {
     /**
      * 修改字典项
      *
-     * @param dto   字典项
+     * @param dto  字典项
      * @param args 查询项
      *
      * @return 修改是否成功

@@ -4,6 +4,7 @@ package indi.uhyils.util.genetic.core;
  * 种群操作工具
  *
  * @param <T> 遗传算法中的个体
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月31日 08时14分
  */
@@ -37,6 +38,7 @@ public interface DataInitialization<T extends Data> {
      *
      * @param one      一个data
      * @param otherOne 另一个data
+     *
      * @return 下一代
      */
     T hybridization(T one, T otherOne);

@@ -5,7 +5,6 @@ import indi.uhyils.assembler.PowerAssembler;
 import indi.uhyils.dao.PowerDao;
 import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.DTO.PowerDTO;
-import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -15,7 +14,6 @@ import indi.uhyils.pojo.entity.type.PowerInfo;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

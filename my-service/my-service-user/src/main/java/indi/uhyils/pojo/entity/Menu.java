@@ -33,6 +33,7 @@ public class Menu extends AbstractDoEntity<MenuDO> {
     public Menu(Long id) {
         super(id, new MenuDO());
     }
+
     public Menu(Identifier id) {
         super(id, new MenuDO());
     }
@@ -40,6 +41,7 @@ public class Menu extends AbstractDoEntity<MenuDO> {
     public List<Dept> depts() {
         return depts;
     }
+
     public void removeSelf(MenuRepository rep, MenuAssembler assembler) {
         MenuTreeDTO node = findSelfNode(rep, assembler);
         // 碾平树
