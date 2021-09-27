@@ -1,8 +1,9 @@
 package indi.uhyils.pojo.cqe.query.demo;
 
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import indi.uhyils.enum_.Symbol;
+import indi.uhyils.util.ReflactUtil;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 自定义查询中的一个参数
@@ -33,17 +34,64 @@ public class Arg implements Serializable {
         this.data = data;
     }
 
+    public <T> Arg(SFunction<T, ?> name, String symbol, Object data) {
+        this.name = ReflactUtil.transSFunction(name);
+        this.symbol = symbol;
+        this.data = data;
+    }
+
     public Arg() {
     }
 
-    public static List<Arg> buildSingleArgs(String name, String symbol, String data) {
-        List<Arg> list = new ArrayList<>();
+    /**
+     * 创建一个arg
+     *
+     * @param name
+     * @param symbol
+     * @param data
+     *
+     * @return
+     */
+    public static Arg as(String name, String symbol, Object data) {
         Arg arg = new Arg();
         arg.setName(name);
         arg.setSymbol(symbol);
         arg.setData(data);
-        list.add(arg);
-        return list;
+        return arg;
+    }
+
+    /**
+     * 创建一个arg
+     *
+     * @param name
+     * @param symbol
+     * @param data
+     *
+     * @return
+     */
+    public static <T> Arg as(SFunction<T, ?> name, Symbol symbol, Object data) {
+        Arg arg = new Arg();
+        arg.setName(name);
+        arg.setSymbol(symbol.getCode());
+        arg.setData(data);
+        return arg;
+    }
+
+    /**
+     * 创建一个arg
+     *
+     * @param name
+     * @param symbol
+     * @param data
+     *
+     * @return
+     */
+    public static Arg as(String name, Symbol symbol, Object data) {
+        Arg arg = new Arg();
+        arg.setName(name);
+        arg.setSymbol(symbol.getCode());
+        arg.setData(data);
+        return arg;
     }
 
     public String getName() {
@@ -52,6 +100,10 @@ public class Arg implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public <T> void setName(SFunction<T, ?> name) {
+        this.name = ReflactUtil.transSFunction(name);
     }
 
     public String getSymbol() {

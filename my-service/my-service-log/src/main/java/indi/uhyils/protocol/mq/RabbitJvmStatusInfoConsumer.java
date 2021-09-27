@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.context.ApplicationContext;
 
 /**
+ * 监听JVM状态消息
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 11时33分
  */

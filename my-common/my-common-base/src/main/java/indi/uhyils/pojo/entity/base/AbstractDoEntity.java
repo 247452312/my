@@ -11,7 +11,7 @@ import indi.uhyils.util.BeanUtil;
  * @version 1.0
  * @date 文件创建日期 2021年08月24日 17时59分
  */
-public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<Identifier> implements IdEntity {
+public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<Identifier> implements DoEntity<T> {
 
     /**
      * 对应数据库DO
@@ -65,6 +65,7 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
      *
      * @return
      */
+    @Override
     public T toDo() {
         return data;
     }

@@ -76,16 +76,16 @@ public class TraceInfoRepositoryImpl extends AbstractRepository<TraceInfo, Trace
         }
         Long traceId = request.getTraceId();
         if (traceId != null) {
-            args.add(new Arg("trace_id", "=", request.getTraceId()));
+            args.add(new Arg(TraceInfoDTO::getTraceId, "=", request.getTraceId()));
         }
         Long startTime = request.getStartTime();
         if (startTime != null) {
-            args.add(new Arg("start_time", ">", startTime));
+            args.add(new Arg(TraceInfoDTO::getStartTime, ">", startTime));
         }
 
         Integer type = request.getType();
         if (type != null) {
-            args.add(new Arg("log_type", "=", type));
+            args.add(new Arg(TraceInfoDTO::getLogType, "=", type));
         }
         return find(args, request.getOrder(), request.getLimit());
     }

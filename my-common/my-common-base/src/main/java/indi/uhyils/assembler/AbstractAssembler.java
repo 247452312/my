@@ -3,8 +3,10 @@ package indi.uhyils.assembler;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.util.BeanUtil;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,6 +69,14 @@ public abstract class AbstractAssembler<DO extends BaseDO, ENTITY extends Abstra
     @Override
     public List<ENTITY> listDTOToEntity(List<DTO> dtos) {
         return dtos.stream().map(t -> toEntity(t)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Arg> toArgs(DTO dto) {
+        Class<? extends IdDTO> dtoClass = dto.getClass();
+        Method[] methods = dtoClass.getMethods();
+
+        return null;
     }
 
     @Override

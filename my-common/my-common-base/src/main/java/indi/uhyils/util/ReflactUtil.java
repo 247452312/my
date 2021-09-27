@@ -1,5 +1,7 @@
 package indi.uhyils.util;
 
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -95,4 +97,50 @@ public final class ReflactUtil {
 
     }
 
+    /**
+     * 获取function的名称
+     *
+     * @param func
+     * @param <T>
+     * @param <R>
+     *
+     * @return
+     *
+     * @throws Exception
+     */
+    public static <T, R> java.lang.invoke.SerializedLambda doSFunction(SFunction<T, R> func) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        // 直接调用writeReplace
+        Method writeReplace = func.getClass().getDeclaredMethod("writeReplace");
+        writeReplace.setAccessible(true);
+        //反射调用
+        Object sl = writeReplace.invoke(func);
+        return (java.lang.invoke.SerializedLambda) sl;
+    }
+
+    /**
+     * 获取function的名称(下划线)
+     *
+     * @param func
+     * @param <T>
+     * @param <R>
+     *
+     * @return
+     *
+     * @throws Exception
+     */
+    public static <T, R> String transSFunction(SFunction<T, R> func) {
+        SerializedLambda serializedLambda;
+        try {
+            serializedLambda = doSFunction(func);
+            // 获取method名称
+            String methodName = serializedLambda.getImplMethodName();
+            // 转化为属性名称
+            String fieldName = StringUtil.transMethodNameToFieldName(methodName);
+            // 转化为field名称
+            return StringUtil.toUnderline(fieldName);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            LogUtil.error(e);
+        }
+        return null;
+    }
 }

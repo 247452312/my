@@ -3,6 +3,7 @@ package indi.uhyils.assembler;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import java.util.List;
 
@@ -113,4 +114,13 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      * @return
      */
     List<ENTITY> listDTOToEntity(List<DTO> dtos);
+
+    /**
+     * dto to 查询参数
+     *
+     * @param dto
+     *
+     * @return
+     */
+    List<Arg> toArgs(DTO dto);
 }

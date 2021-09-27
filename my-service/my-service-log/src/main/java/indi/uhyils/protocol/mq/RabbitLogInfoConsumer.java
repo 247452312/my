@@ -5,10 +5,13 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import indi.uhyils.bus.Bus;
 import indi.uhyils.enum_.LogDetailTypeEnum;
 import indi.uhyils.pojo.DTO.TraceDetailDTO;
+import indi.uhyils.pojo.DTO.TraceIdDTO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import indi.uhyils.pojo.DTO.TraceLogDTO;
+import indi.uhyils.pojo.cqe.event.parent.LogReceiveParentEvent;
 import indi.uhyils.pojo.trace.DetailTraceDeal;
 import indi.uhyils.pojo.trace.LinkTraceDeal;
 import indi.uhyils.pojo.trace.LogTraceDeal;
@@ -24,10 +27,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 
 /**
+ * 监听日志消息
+ *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
  * @date 文件创建日期 2021年07月29日 14时14分
@@ -48,6 +54,9 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
     private final TraceInfoService traceInfoService;
 
     private final TraceLogService traceLogService;
+
+    @Autowired
+    private Bus bus;
 
     /**
      * @param channel
@@ -80,6 +89,7 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
                         if (traceDetailDTO == null) {
                             break;
                         }
+                        bus.commitAndPush(new LogReceiveParentEvent(traceDetailDTO));
                         traceDetailService.add(traceDetailDTO);
                         break;
                     case LOG:

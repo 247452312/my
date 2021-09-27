@@ -1,16 +1,20 @@
 package indi.uhyils.pojo.entity;
 
+import com.alibaba.fastjson.JSON;
 import indi.uhyils.BaseTest;
 import indi.uhyils.assembler.MenuAssembler;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.MenuDTO;
+import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.response.info.MenuTreeDTO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
+import indi.uhyils.util.ReflactUtil;
+import java.lang.invoke.SerializedLambda;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
@@ -39,6 +43,7 @@ public class MenuTest extends BaseTest {
 
     @Autowired
     private DeptRepository deptRepository;
+
 
     @Before
     public void setUp() throws Exception {
@@ -157,5 +162,14 @@ public class MenuTest extends BaseTest {
 
         Asserts.assertTrue(menus.size() == 0);
     }
+
+    @Test
+    public void sFunctionTest() throws Exception {
+        SerializedLambda serializedLambda = ReflactUtil.doSFunction(UserDTO::getId);
+        System.out.println("方法名：" + serializedLambda.getImplMethodName());
+        System.out.println("类名：" + serializedLambda.getImplClass());
+        System.out.println("serializedLambda：" + JSON.toJSONString(serializedLambda));
+    }
+
 
 }

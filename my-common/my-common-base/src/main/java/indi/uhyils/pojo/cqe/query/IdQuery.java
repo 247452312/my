@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.cqe.query;
 
+import indi.uhyils.enum_.Symbol;
 import indi.uhyils.pojo.cqe.query.base.AbstractArgQuery;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import java.util.Collections;
@@ -17,7 +18,7 @@ public class IdQuery extends AbstractArgQuery {
     private final Long id;
 
     public IdQuery(Long id) {
-        super(Collections.singletonList(new Arg("id", "=", id)));
+        super(Collections.singletonList(Arg.as(IdQuery::getId, Symbol.EQ, id)));
         this.id = id;
     }
 
