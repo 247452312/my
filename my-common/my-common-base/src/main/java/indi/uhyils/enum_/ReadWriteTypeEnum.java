@@ -10,12 +10,35 @@ public enum ReadWriteTypeEnum {
     /**
      * 读
      */
-    READ,
+    READ(1),
     /**
      * 写
      */
-    WRITE;
+    WRITE(2);
 
-    ReadWriteTypeEnum() {
+    private final Integer code;
+
+    ReadWriteTypeEnum(Integer code) {
+        this.code = code;
+    }
+
+    /**
+     * 解析code
+     *
+     * @param code
+     *
+     * @return
+     */
+    public static ReadWriteTypeEnum parse(Integer code) {
+        for (ReadWriteTypeEnum value : values()) {
+            if (value.getCode().equals(code)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    public Integer getCode() {
+        return code;
     }
 }

@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.facade.ServiceControlFacade;
 import indi.uhyils.pojo.DO.RelegationDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -28,6 +29,13 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
 
     public Relegation(RelegationDO dO) {
         super(dO);
+    }
+
+    public Relegation(String serviceName, String methodName) {
+        super(new RelegationDO());
+        RelegationDO dO = toDo();
+        dO.setServiceName(serviceName);
+        dO.setMethodName(methodName);
     }
 
     public Relegation(Long id) {
@@ -80,5 +88,29 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
         if (paramLength == null) {
             relegationDO.setParamLength(DEFAULT_PARAM_LENGTH);
         }
+    }
+
+    /**
+     * 降级
+     *
+     * @param facade
+     *
+     * @return
+     */
+    public boolean demotion(ServiceControlFacade facade) {
+        RelegationDO dO = this.toDo();
+        return facade.demotion(dO.getServiceName(), dO.getMethodName());
+    }
+
+    /**
+     * 服务恢复
+     *
+     * @param facade
+     *
+     * @return
+     */
+    public boolean recover(ServiceControlFacade facade) {
+        RelegationDO dO = this.toDo();
+        return facade.recover(dO.getServiceName(), dO.getMethodName());
     }
 }

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
  * @version 1.0
  * @date 文件创建日期 2021年09月19日 09时20分
  */
-@Component
 public class Bus {
 
     public ThreadLocal<List<BaseEvent>> events = new InheritableThreadLocal<>();

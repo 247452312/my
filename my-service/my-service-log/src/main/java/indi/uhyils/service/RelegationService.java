@@ -19,4 +19,24 @@ public interface RelegationService extends BaseDoService<RelegationDTO> {
      * @param event
      */
     void checkAndAddRelegation(CheckAndAddRelegationEvent event);
+
+    /**
+     * 降级
+     *
+     * @param serviceName
+     * @param methodName
+     *
+     * @return
+     */
+    Boolean demotion(String serviceName, String methodName);
+
+    /**
+     * 恢复
+     *
+     * @param serviceName
+     * @param methodName
+     *
+     * @return
+     */
+    Boolean recover(String serviceName, String methodName);
 }

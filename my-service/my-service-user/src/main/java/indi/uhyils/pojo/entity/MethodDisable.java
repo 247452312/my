@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.context.MyContext;
-import indi.uhyils.enum_.MethodTypeEnum;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
@@ -45,9 +45,9 @@ public class MethodDisable extends AbstractEntity {
     /**
      * 方法类型
      */
-    private MethodTypeEnum methodType;
+    private ReadWriteTypeEnum methodType;
 
-    public MethodDisable(String className, String methodName, MethodTypeEnum methodType) {
+    public MethodDisable(String className, String methodName, ReadWriteTypeEnum methodType) {
         this.className = className;
         this.methodName = methodName;
         this.methodType = methodType;
@@ -62,7 +62,7 @@ public class MethodDisable extends AbstractEntity {
     }
 
     public MethodDisable(MethodDisableDTO dto) {
-        this(dto.getClassName(), dto.getMethodName(), MethodTypeEnum.parse(dto.getDisableType()));
+        this(dto.getClassName(), dto.getMethodName(), ReadWriteTypeEnum.parse(dto.getDisableType()));
     }
 
     public void completionClassName() {
@@ -96,7 +96,7 @@ public class MethodDisable extends AbstractEntity {
         methodDisableDTO.setClassName(className);
         methodDisableDTO.setMethodName(methodName);
         if (methodType != null) {
-            methodDisableDTO.setDisableType(methodType.getType());
+            methodDisableDTO.setDisableType(methodType.getCode());
         }
         return methodDisableDTO;
 

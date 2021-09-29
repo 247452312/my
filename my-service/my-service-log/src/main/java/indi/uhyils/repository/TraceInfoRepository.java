@@ -84,17 +84,11 @@ public interface TraceInfoRepository extends BaseEntityRepository<TraceInfoDO, T
     Long findConcurrentNumber(Integer logType, Long startTime);
 
     /**
-     * 获取服务是否降级
+     * 获取服务降级当前等级
      *
      * @return
+     * @param defaultLevel
      */
-    Boolean findDegradationStatusInCache();
+    Long getRelegationLevel(Long defaultLevel);
 
-
-    /**
-     * 修改degradation
-     *
-     * @param degradation
-     */
-    void changeDegradation(boolean degradation);
 }

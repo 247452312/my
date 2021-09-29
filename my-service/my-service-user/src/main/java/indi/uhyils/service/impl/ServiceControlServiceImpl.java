@@ -2,7 +2,6 @@ package indi.uhyils.service.impl;
 
 
 import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.enum_.MethodTypeEnum;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.entity.MethodDisable;
@@ -27,7 +26,7 @@ public class ServiceControlServiceImpl implements ServiceControlService {
     private ServiceControlRepository repository;
 
     @Override
-    public Boolean getMethodDisable(InterfaceName interfaceName, MethodName methodName, MethodTypeEnum methodType) {
+    public Boolean getMethodDisable(InterfaceName interfaceName, MethodName methodName, ReadWriteTypeEnum methodType) {
         MethodDisable methodDisable = new MethodDisable(interfaceName.getInterfaceName(), methodName.getMethodName(), methodType);
         methodDisable.completionClassName();
         return methodDisable.checkInterfaceDisable(repository);

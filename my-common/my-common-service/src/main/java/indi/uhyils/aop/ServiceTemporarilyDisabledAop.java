@@ -89,7 +89,7 @@ public class ServiceTemporarilyDisabledAop {
             methodType = ReadWriteTypeEnum.READ;
         }
 
-        Boolean allowRun = redisPoolHandle.checkMethodDisable(targetClass, declaredMethod, methodType == ReadWriteTypeEnum.READ ? 1 : 2);
+        Boolean allowRun = redisPoolHandle.checkMethodDisable(targetClass, declaredMethod, methodType.getCode());
         if (allowRun) {
             return pjp.proceed();
         } else {

@@ -18,6 +18,8 @@ import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.redis.Redisable;
 import indi.uhyils.repository.TraceInfoRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import indi.uhyils.util.Asserts;
+import indi.uhyils.util.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +36,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TraceInfoRepositoryImpl extends AbstractRepository<TraceInfo, TraceInfoDO, TraceInfoDao, TraceInfoDTO, TraceInfoAssembler> implements TraceInfoRepository {
 
     /**
-     * 服务降级key
+     * 服务降级-等级key
      */
-    private static final String DEGRADATION_STATUS = "degradation";
+    private static final String DEGRADATION_LEVEL = "degradation_level";
 
     @Autowired
     private RedisPoolHandle redis;
@@ -103,17 +105,16 @@ public class TraceInfoRepositoryImpl extends AbstractRepository<TraceInfo, Trace
     }
 
     @Override
-    public Boolean findDegradationStatusInCache() {
+    public Long getRelegationLevel(Long defaultLevel) {
+        Asserts.assertTrue(defaultLevel != null);
         try (Redisable jedis = redis.getJedis()) {
-            String s = jedis.get(DEGRADATION_STATUS);
-            return "true".equals(s);
+            String levelStr = jedis.get(DEGRADATION_LEVEL);
+            if (StringUtil.isNotEmpty(levelStr)) {
+                return Long.parseLong(levelStr);
+            }
+            jedis.set(DEGRADATION_LEVEL, defaultLevel.toString());
+            return defaultLevel;
         }
     }
 
-    @Override
-    public void changeDegradation(boolean degradation) {
-        try (Redisable jedis = redis.getJedis()) {
-            jedis.set(DEGRADATION_STATUS, degradation ? "true" : "false");
-        }
-    }
 }

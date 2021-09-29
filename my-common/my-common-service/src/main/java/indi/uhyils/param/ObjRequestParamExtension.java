@@ -9,6 +9,7 @@ import indi.uhyils.rpc.spi.param.ParamTransExtension;
 import indi.uhyils.util.ClassUtil;
 import indi.uhyils.util.LogUtil;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
@@ -57,12 +58,14 @@ public class ObjRequestParamExtension implements ParamTransExtension {
         if (CollectionUtils.isEmpty(methodNameMethod)) {
             return arg;
         }
+        Type genericParameterType = methodNameMethod.get(0).getGenericParameterTypes()[methodTypeIndex];
         boolean addCommandType = parameterType.equals(AddCommand.class);
         if (addCommandType) {
+            ParameterizedType realParamType = (ParameterizedType) genericParameterType;
             String requestJson = JSON.toJSONString(arg);
-            String className = realClass.getGenericSuperclass().getTypeName();
-            if (className.contains(GENERIC_LEFT_BRACKET)) {
-                String substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
+            String paramTypeName = realParamType.getTypeName();
+            if (paramTypeName.contains(GENERIC_LEFT_BRACKET)) {
+                String substring = paramTypeName.substring(paramTypeName.indexOf(GENERIC_LEFT_BRACKET) + 1, paramTypeName.lastIndexOf(GENERIC_RIGHT_BRACKET));
                 if (PARADIGM_STRING.equals(substring)) {
                     Type genericInterface = null;
                     try {
@@ -71,8 +74,8 @@ public class ObjRequestParamExtension implements ParamTransExtension {
                         LogUtil.error(e);
                         return arg;
                     }
-                    className = genericInterface.getTypeName();
-                    substring = className.substring(className.indexOf(GENERIC_LEFT_BRACKET) + 1, className.lastIndexOf(GENERIC_RIGHT_BRACKET));
+                    paramTypeName = genericInterface.getTypeName();
+                    substring = paramTypeName.substring(paramTypeName.indexOf(GENERIC_LEFT_BRACKET) + 1, paramTypeName.lastIndexOf(GENERIC_RIGHT_BRACKET));
                 }
                 if (addCommandType) {
                     AddCommand objRequest = JSONObject.parseObject(requestJson, AddCommand.class);

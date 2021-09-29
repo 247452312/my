@@ -2,12 +2,20 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.RelegationAssembler;
+import indi.uhyils.facade.ServiceControlFacade;
 import indi.uhyils.pojo.DO.RelegationDO;
 import indi.uhyils.pojo.DTO.RelegationDTO;
+import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.event.CheckAndAddRelegationEvent;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.cqe.query.demo.Limit;
+import indi.uhyils.pojo.cqe.query.demo.Order;
 import indi.uhyils.pojo.entity.Relegation;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.RelegationRepository;
 import indi.uhyils.service.RelegationService;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,10 +29,13 @@ import org.springframework.stereotype.Service;
 @ReadWriteMark(tables = {"sys_relegation"})
 public class RelegationServiceImpl extends AbstractDoService<RelegationDO, Relegation, RelegationDTO, RelegationRepository, RelegationAssembler> implements RelegationService {
 
+    @Autowired
+    private ServiceControlFacade facade;
+
+
     public RelegationServiceImpl(RelegationAssembler assembler, RelegationRepository repository) {
         super(assembler, repository);
     }
-
 
     @Override
     public void checkAndAddRelegation(CheckAndAddRelegationEvent event) {
@@ -44,5 +55,46 @@ public class RelegationServiceImpl extends AbstractDoService<RelegationDO, Releg
         // 保存
         relegation.saveSelf(rep);
 
+    }
+
+    @Override
+    public Page<RelegationDTO> query(List<Arg> args, Order order, Limit limit) {
+        Page<RelegationDTO> query = super.query(args, order, limit);
+        List<RelegationDTO> list = query.getList();
+        facade.fillDisable(list);
+        return query;
+    }
+
+    @Override
+    public List<RelegationDTO> query(List<Identifier> ids) {
+        List<RelegationDTO> query = super.query(ids);
+        facade.fillDisable(query);
+        return query;
+    }
+
+    @Override
+    public List<RelegationDTO> queryNoPage(List<Arg> args, Order order) {
+        List<RelegationDTO> dtos = super.queryNoPage(args, order);
+        facade.fillDisable(dtos);
+        return dtos;
+    }
+
+    @Override
+    public RelegationDTO query(Identifier id) {
+        RelegationDTO query = super.query(id);
+        facade.fillDisable(query);
+        return query;
+    }
+
+    @Override
+    public Boolean demotion(String serviceName, String methodName) {
+        Relegation relegation = new Relegation(serviceName, methodName);
+        return relegation.demotion(facade);
+    }
+
+    @Override
+    public Boolean recover(String serviceName, String methodName) {
+        Relegation relegation = new Relegation(serviceName, methodName);
+        return relegation.recover(facade);
     }
 }

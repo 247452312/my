@@ -34,6 +34,10 @@ public class RelegationDTO extends IdDTO {
      */
     private Integer level;
 
+    /**
+     * 当前是否启用中(默认是启用中)
+     */
+    private Boolean disable = Boolean.TRUE;
 
     public String getServiceName() {
         return serviceName;
@@ -43,7 +47,6 @@ public class RelegationDTO extends IdDTO {
         this.serviceName = serviceName;
     }
 
-
     public String getMethodName() {
         return methodName;
     }
@@ -51,7 +54,6 @@ public class RelegationDTO extends IdDTO {
     public void setMethodName(String methodName) {
         this.methodName = methodName;
     }
-
 
     public Integer getParamLength() {
         return paramLength;
@@ -61,7 +63,6 @@ public class RelegationDTO extends IdDTO {
         this.paramLength = paramLength;
     }
 
-
     public Integer getLevel() {
         return level;
     }
@@ -70,4 +71,11 @@ public class RelegationDTO extends IdDTO {
         this.level = level;
     }
 
+    public Boolean getDisable() {
+        return disable;
+    }
+
+    public void setDisable(Boolean disable) {
+        this.disable = disable;
+    }
 }

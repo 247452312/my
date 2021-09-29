@@ -23,11 +23,21 @@ public final class DefaultCQEBuildUtil {
      */
     public static DefaultCQE getAdminDefaultCQE() {
         DefaultCQE defaultRequest = new DefaultCQE();
+        UserDTO user = getAdminUserDTO();
+        defaultRequest.setUser(user);
+        return defaultRequest;
+    }
+
+    /**
+     * 获取默认用户
+     *
+     * @return
+     */
+    public static UserDTO getAdminUserDTO() {
         UserDTO user = new UserDTO();
         user.setId(MyContext.ADMIN_USER_ID);
         user.setUsername("admin");
-        defaultRequest.setUser(user);
-        return defaultRequest;
+        return user;
     }
 
     /**

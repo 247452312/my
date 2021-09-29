@@ -1,6 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.enum_.MethodTypeEnum;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
@@ -32,7 +32,7 @@ public class ServiceControlProviderImpl implements ServiceControlProvider {
     public ServiceResult<Boolean> getMethodDisable(MethodDisableQuery request) {
         InterfaceName className = new InterfaceName(request.getClassName());
         MethodName methodName = new MethodName(request.getMethodName());
-        MethodTypeEnum methodType = MethodTypeEnum.parse(request.getMethodType());
+        ReadWriteTypeEnum methodType = ReadWriteTypeEnum.parse(request.getMethodType());
         Boolean result = service.getMethodDisable(className, methodName, methodType);
         return ServiceResult.buildSuccessResult(result);
     }

@@ -2,7 +2,7 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.context.MyContext;
-import indi.uhyils.enum_.MethodTypeEnum;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.entity.type.InterfaceName;
 import indi.uhyils.pojo.entity.type.MethodName;
@@ -37,7 +37,7 @@ public interface ServiceControlService extends BaseService {
      *
      * @return
      */
-    Boolean getMethodDisable(InterfaceName interfaceName, MethodName methodName, MethodTypeEnum methodType);
+    Boolean getMethodDisable(InterfaceName interfaceName, MethodName methodName, ReadWriteTypeEnum methodType);
 
     /**
      * 获取所有接口是否允许使用

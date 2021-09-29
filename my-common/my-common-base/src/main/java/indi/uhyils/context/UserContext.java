@@ -57,7 +57,7 @@ public class UserContext {
     public static UserDTO doGet() {
         UserDTO userDO = USER.get();
         if (userDO == null) {
-            USER.set(DefaultCQEBuildUtil.getAdminDefaultCQE().getUser());
+            USER.set(DefaultCQEBuildUtil.getAdminUserDTO());
         }
         return USER.get();
     }

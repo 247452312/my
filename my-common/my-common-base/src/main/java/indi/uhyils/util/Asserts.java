@@ -2,6 +2,7 @@ package indi.uhyils.util;
 
 import indi.uhyils.exception.AssertException;
 import java.util.function.Supplier;
+import org.slf4j.helpers.MessageFormatter;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -24,6 +25,16 @@ public class Asserts {
      * 断言正确
      *
      * @param condition 验证
+     * @param msg
+     */
+    public static void assertTrue(boolean condition, String msg, Object... params) {
+        assertTrue(condition, 3, msg, params);
+    }
+
+    /**
+     * 断言正确
+     *
+     * @param condition 验证
      */
     public static void assertTrue(boolean condition) {
         assertTrue(condition, 3, "断言错误");
@@ -36,9 +47,10 @@ public class Asserts {
      * @param removeLayerCount 要删除的顶层堆栈的层数
      * @param msg
      */
-    private static void assertTrue(boolean condition, int removeLayerCount, String msg) {
+    private static void assertTrue(boolean condition, int removeLayerCount, String msg, Object... params) {
         if (!condition) {
-            AssertException assertException = new AssertException("throw exception: " + msg);
+            msg = MessageFormatter.arrayFormat(msg, params).getMessage();
+            AssertException assertException = new AssertException("throw exception " + msg);
             removeExceptionTrace(assertException, removeLayerCount);
             LogUtil.error(assertException);
             throw assertException;

@@ -347,14 +347,11 @@ public class RedisPoolHandle {
 
 
     public Boolean removeByKey(String key) {
-        Redisable jedis = redisPool.getJedis();
 
-        try {
+        try (Redisable jedis = redisPool.getJedis()) {
             if (jedis.exists(key)) {
                 jedis.del(key);
             }
-        } finally {
-            jedis.close();
         }
         return Boolean.TRUE;
     }

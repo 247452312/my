@@ -5,6 +5,7 @@ import indi.uhyils.assembler.TraceInfoAssembler;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.facade.DictFacade;
+import indi.uhyils.facade.ServiceControlFacade;
 import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
 import indi.uhyils.pojo.DO.TraceInfoDO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
@@ -21,8 +22,11 @@ import indi.uhyils.pojo.cqe.query.TraceIdQuery;
 import indi.uhyils.pojo.entity.MonitorConcurrent;
 import indi.uhyils.pojo.entity.Trace;
 import indi.uhyils.pojo.entity.TraceInfo;
+import indi.uhyils.repository.RelegationRepository;
 import indi.uhyils.repository.TraceInfoRepository;
 import indi.uhyils.service.TraceInfoService;
+import indi.uhyils.util.Asserts;
+import indi.uhyils.util.CollectionUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +45,12 @@ public class TraceInfoServiceImpl extends AbstractDoService<TraceInfoDO, TraceIn
 
     @Autowired
     private DictFacade dictFacade;
+
+    @Autowired
+    private ServiceControlFacade serviceControlFacade;
+
+    @Autowired
+    private RelegationRepository repository;
 
     public TraceInfoServiceImpl(TraceInfoAssembler assembler, TraceInfoRepository repository) {
         super(assembler, repository);
@@ -88,13 +98,11 @@ public class TraceInfoServiceImpl extends AbstractDoService<TraceInfoDO, TraceIn
 
         //获取字典中人工设置的自动降级的并发数
         List<DictItemDTO> code = dictFacade.getByCode(MyContext.CONCURRENT_NUM_DICT_CODE);
+        Asserts.assertTrue(CollectionUtil.isNotEmpty(code));
         DictItemDTO dictItemEntity = code.get(0);
         Long concurrentNumberSetable = Long.parseLong(dictItemEntity.getValue());
-        MonitorConcurrent concurrent = new MonitorConcurrent(concurrentNumber, concurrentNumberSetable);
-
-        concurrent.syncDegradationStatus(rep);
-
-
+        MonitorConcurrent concurrent = new MonitorConcurrent(rep, repository, concurrentNumber, concurrentNumberSetable);
+        concurrent.syncDegradationStatus(repository, serviceControlFacade);
     }
 
     @Override

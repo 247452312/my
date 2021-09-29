@@ -1,6 +1,6 @@
 package indi.uhyils.repository;
 
-import indi.uhyils.enum_.MethodTypeEnum;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.entity.MethodDisable;
 import indi.uhyils.repository.base.BaseRepository;
@@ -32,7 +32,7 @@ public interface ServiceControlRepository extends BaseRepository {
      *
      * @return
      */
-    Boolean checkClassDisable(String className, MethodTypeEnum methodType);
+    Boolean checkClassDisable(String className, ReadWriteTypeEnum methodType);
 
     /**
      * 获取所有已经配置的接口禁用

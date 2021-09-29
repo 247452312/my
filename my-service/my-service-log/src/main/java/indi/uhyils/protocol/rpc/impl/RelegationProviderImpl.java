@@ -1,6 +1,9 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.RelegationDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.RelegationCoverCommand;
+import indi.uhyils.pojo.cqe.command.RelegationDemotionCommand;
 import indi.uhyils.protocol.rpc.RelegationProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
@@ -28,5 +31,17 @@ public class RelegationProviderImpl extends BaseDefaultProvider<RelegationDTO> i
         return service;
     }
 
+
+    @Override
+    public ServiceResult<Boolean> demotion(RelegationDemotionCommand cqe) {
+        Boolean result = service.demotion(cqe.getServiceName(), cqe.getMethodName());
+        return ServiceResult.buildSuccessResult(result);
+    }
+
+    @Override
+    public ServiceResult<Boolean> recover(RelegationCoverCommand cqe) {
+        Boolean result = service.recover(cqe.getServiceName(), cqe.getMethodName());
+        return ServiceResult.buildSuccessResult(result);
+    }
 }
 

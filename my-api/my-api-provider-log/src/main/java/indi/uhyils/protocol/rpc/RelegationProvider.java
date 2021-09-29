@@ -1,6 +1,9 @@
 package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.RelegationDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.RelegationCoverCommand;
+import indi.uhyils.pojo.cqe.command.RelegationDemotionCommand;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
@@ -12,5 +15,23 @@ import indi.uhyils.protocol.rpc.base.DTOProvider;
  */
 public interface RelegationProvider extends DTOProvider<RelegationDTO> {
 
+    /**
+     * 降级
+     *
+     * @param cqe
+     *
+     * @return
+     */
+    ServiceResult<Boolean> demotion(RelegationDemotionCommand cqe);
+
+
+    /**
+     * 恢复
+     *
+     * @param cqe
+     *
+     * @return
+     */
+    ServiceResult<Boolean> recover(RelegationCoverCommand cqe);
 }
 

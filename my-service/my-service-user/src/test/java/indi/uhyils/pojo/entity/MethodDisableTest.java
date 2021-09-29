@@ -2,7 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.BaseTest;
 import indi.uhyils.context.MyContext;
-import indi.uhyils.enum_.MethodTypeEnum;
+import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
 import indi.uhyils.repository.ServiceControlRepository;
@@ -35,7 +35,7 @@ public class MethodDisableTest extends BaseTest {
 
     @Test
     public void checkInterfaceDisable() {
-        MethodDisable methodDisable = new MethodDisable("UserProvider", "method", MethodTypeEnum.READ);
+        MethodDisable methodDisable = new MethodDisable("UserProvider", "method", ReadWriteTypeEnum.READ);
         methodDisable.saveMethodDisable(serviceControlRepository);
         Boolean aBoolean = methodDisable.checkInterfaceDisable(serviceControlRepository);
         Asserts.assertTrue(!aBoolean);
