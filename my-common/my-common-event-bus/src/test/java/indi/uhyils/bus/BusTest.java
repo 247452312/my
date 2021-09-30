@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BusTest extends BaseTest {
 
     @Autowired
-    public Bus bus;
+    public BusInterface bus;
 
     @Override
     public void setUp() throws Exception {

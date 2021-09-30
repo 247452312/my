@@ -1,60 +1,103 @@
 package indi.uhyils.bus;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
+import indi.uhyils.mq.util.MqUtil;
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseParentEvent;
 import indi.uhyils.protocol.register.base.Register;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
+import indi.uhyils.util.LogUtil;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.Resource;
-import org.springframework.stereotype.Component;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0
  * @date 文件创建日期 2021年09月19日 09时20分
  */
-public class Bus {
+public class Bus extends DefaultConsumer implements BusInterface {
+
+
+    /**
+     * class信息在json中的key
+     */
+    private static final String CLASS_JSON_KEY = "class";
+
+    /**
+     * 注册者
+     */
+    private final List<Register> registers;
 
     public ThreadLocal<List<BaseEvent>> events = new InheritableThreadLocal<>();
 
-    @Resource
-    private List<Register> registers = new ArrayList<>();
-
-    public Bus() {
+    public Bus(Channel channel, List<Register> registers) {
+        super(channel);
         events.set(new ArrayList<>());
+        this.registers = registers;
     }
+
+    @Override
+    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+        String text = new String(body, StandardCharsets.UTF_8);
+        JSONObject jsonObject = JSONObject.parseObject(text);
+        Asserts.assertTrue(jsonObject.containsKey(CLASS_JSON_KEY), "json中不存在class");
+
+        String className = jsonObject.getString(CLASS_JSON_KEY);
+
+        BaseEvent event = null;
+        try {
+            event = JSONObject.parseObject(text, (Type) Class.forName(className));
+        } catch (ClassNotFoundException e) {
+            LogUtil.error(e);
+        }
+        Asserts.assertTrue(event != null);
+        doPublishEvent(Collections.singletonList(event));
+    }
+
 
     /**
      * 提交事件
      *
      * @param event
      */
+    @Override
     public void commit(BaseParentEvent event) {
         List<BaseEvent> baseEvents = this.events.get();
         baseEvents.addAll(event.transToBaseEvent());
     }
 
     /**
-     * 清空待发布的事件
-     */
-    public void cleanCommitEvent() {
-        events.get().clear();
-    }
-
-    /**
      * 提交事件
      */
+    @Override
     public void commit(List<BaseParentEvent> events) {
         events.forEach(this::commit);
     }
 
     /**
+     * 清空待发布的事件
+     */
+    @Override
+    public void cleanCommitEvent() {
+        events.get().clear();
+    }
+
+    /**
      * 发布事件
      */
+    @Override
     public void pushEvent() {
         List<BaseEvent> baseEvents = events.get();
         if (CollectionUtil.isEmpty(baseEvents)) {
@@ -68,6 +111,7 @@ public class Bus {
      *
      * @param baseEvents
      */
+    @Override
     public void commitAndPush(List<BaseParentEvent> baseEvents) {
         if (CollectionUtil.isEmpty(baseEvents)) {
             return;
@@ -80,6 +124,7 @@ public class Bus {
      *
      * @param baseEvents
      */
+    @Override
     public void commitAndPush(BaseParentEvent baseEvents) {
         if (baseEvents == null) {
             return;
@@ -111,6 +156,65 @@ public class Bus {
     }
 
     /**
+     * 异步发布事件
+     */
+    @Override
+    public void syncPushEvent() {
+        List<BaseEvent> baseEvents = events.get();
+        if (CollectionUtil.isEmpty(baseEvents)) {
+            return;
+        }
+        doSyncPublishEvent(baseEvents);
+    }
+
+    /**
+     * 异步发布事件
+     *
+     * @param baseEvents
+     */
+    private void doSyncPublishEvent(List<BaseEvent> baseEvents) {
+        Iterator<BaseEvent> iterator = baseEvents.iterator();
+        while (iterator.hasNext()) {
+            BaseEvent next = iterator.next();
+            String msg = JSON.toJSONString(next);
+            JSONObject jsonObject = JSON.parseObject(msg);
+            Asserts.assertTrue(!jsonObject.containsKey(CLASS_JSON_KEY));
+            jsonObject.put(CLASS_JSON_KEY, next.getClass().getName());
+            msg = jsonObject.toJSONString();
+            MqUtil.sendMsg(BUS_EVENT_EXCHANGE_NAME, BUS_EVENT_QUEUE_NAME, msg);
+            iterator.remove();
+        }
+    }
+
+    /**
+     * 异步提交发布事件
+     *
+     * @param baseEvents
+     */
+    @Override
+    public void syncCommitAndPush(List<BaseParentEvent> baseEvents) {
+        if (CollectionUtil.isEmpty(baseEvents)) {
+            return;
+        }
+        baseEvents.forEach(this::syncCommitAndPush);
+    }
+
+    /**
+     * 异步提交发布事件
+     *
+     * @param baseEvent
+     */
+    @Override
+    public void syncCommitAndPush(BaseParentEvent baseEvent) {
+        if (baseEvent == null) {
+            return;
+        }
+        doSyncPublishEvent(baseEvent.transToBaseEvent());
+    }
+
+
+
+    /**
      * 是否可以匹配到事件
      * 发布父类事件子类不能收到,但是发布子类事件父类可以监听到
      * 例: 跑步运动员监听跑步发令枪,游泳运动员监听游泳发令枪, 发布发令枪事件时无反应,因为不知道是不是自己的发令枪, 但是监听发令枪的计时事件不关心是哪一个发令枪,所以两个发令枪都可以使计时事件开始
@@ -139,6 +243,7 @@ public class Bus {
      *
      * @return 被移除的事件
      */
+    @Override
     public List<BaseEvent> remove(Class<? extends BaseEvent> baseEventClass) {
         List<BaseEvent> result = new ArrayList<>();
         List<BaseEvent> baseEvents = events.get();
@@ -162,6 +267,7 @@ public class Bus {
      *
      * @return 被移除的事件
      */
+    @Override
     public List<BaseEvent> preciseRemove(Class<? extends BaseEvent> baseEventClass) {
         List<BaseEvent> result = new ArrayList<>();
         List<BaseEvent> baseEvents = events.get();
@@ -183,6 +289,7 @@ public class Bus {
      *
      * @return 还没有发布的指定事件
      */
+    @Override
     public List<BaseEvent> preciseGet(Class<? extends BaseEvent> baseEventClass) {
         List<BaseEvent> result = new ArrayList<>();
         List<BaseEvent> baseEvents = events.get();
@@ -201,6 +308,7 @@ public class Bus {
      *
      * @return 还没有发布的指定事件
      */
+    @Override
     public List<BaseEvent> get(Class<? extends BaseEvent> baseEventClass) {
         List<BaseEvent> result = new ArrayList<>();
         List<BaseEvent> baseEvents = events.get();
@@ -211,5 +319,6 @@ public class Bus {
         }
         return result;
     }
+
 
 }

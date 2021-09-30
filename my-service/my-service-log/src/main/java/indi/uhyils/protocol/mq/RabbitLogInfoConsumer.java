@@ -5,7 +5,7 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import indi.uhyils.bus.Bus;
+import indi.uhyils.bus.BusInterface;
 import indi.uhyils.enum_.LogDetailTypeEnum;
 import indi.uhyils.pojo.DTO.TraceDetailDTO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
@@ -53,7 +53,7 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
 
     private final TraceLogService traceLogService;
 
-    private final Bus bus;
+    private final BusInterface bus;
 
     /**
      * @param channel
@@ -61,7 +61,7 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
      */
     public RabbitLogInfoConsumer(Channel channel, ApplicationContext applicationContext) {
         super(channel);
-        this.bus = applicationContext.getBean(Bus.class);
+        this.bus = applicationContext.getBean(BusInterface.class);
         int process = Runtime.getRuntime().availableProcessors();
         executor = new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory(), new CallerRunsPolicy());
         traceDetailService = applicationContext.getBean(TraceDetailService.class);

@@ -57,7 +57,29 @@ public class MqUtil {
      * @param name             消费者的名称
      * @param consumerFunction 消费者创建逻辑
      */
-    public static void addConsumer(String exchange, String queue, String name, Function<Channel, Consumer> consumerFunction) throws IOException, TimeoutException {
+    public static <T extends Consumer> T addConsumer(String exchange, String queue, String name, Function<Channel, T> consumerFunction) throws IOException, TimeoutException {
+        RabbitFactory factory = SpringUtil.getBean(RabbitFactory.class);
+        Connection conn = factory.getConn();
+        Channel channel = conn.createChannel();
+        channel.exchangeDeclare(exchange, "direct", Boolean.FALSE, Boolean.FALSE, null);
+        channel.queueDeclare(queue, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null);
+        channel.queueBind(queue, exchange, queue);
+        T consumer = consumerFunction.apply(channel);
+        T proxyInstance = (T) Proxy.newProxyInstance(consumer.getClass().getClassLoader(), new Class[]{Consumer.class}, new MqInvocationHandler(consumer));
+        channel.basicConsume(queue, Boolean.FALSE, proxyInstance);
+        consumers.put(name, consumer);
+        return proxyInstance;
+    }
+
+    /**
+     * 添加消费者
+     *
+     * @param exchange         路由的名称
+     * @param queue            队列的名称
+     * @param name             消费者的名称
+     * @param consumerFunction 消费者创建逻辑
+     */
+    public static <T extends Consumer> T addConsumer(String exchange, String queue, String name, Class<T> interfaceClass, Function<Channel, ? extends T> consumerFunction) throws IOException, TimeoutException {
         RabbitFactory factory = SpringUtil.getBean(RabbitFactory.class);
         Connection conn = factory.getConn();
         Channel channel = conn.createChannel();
@@ -65,9 +87,10 @@ public class MqUtil {
         channel.queueDeclare(queue, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null);
         channel.queueBind(queue, exchange, queue);
         Consumer consumer = consumerFunction.apply(channel);
-        Consumer proxyInstance = (Consumer) Proxy.newProxyInstance(consumer.getClass().getClassLoader(), new Class[]{Consumer.class}, new MqInvocationHandler(consumer));
-        channel.basicConsume(queue, Boolean.FALSE, proxyInstance);
+        T proxyInstance = (T) Proxy.newProxyInstance(consumer.getClass().getClassLoader(), new Class[]{interfaceClass}, new MqInvocationHandler(consumer));
+        channel.basicConsume(queue, Boolean.TRUE, proxyInstance);
         consumers.put(name, consumer);
+        return proxyInstance;
     }
 
     /**

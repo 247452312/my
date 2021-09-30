@@ -1,6 +1,12 @@
 package indi.uhyils.config;
 
 import indi.uhyils.bus.Bus;
+import indi.uhyils.bus.BusInterface;
+import indi.uhyils.mq.util.MqUtil;
+import indi.uhyils.protocol.register.base.Register;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 public class BugConfig {
 
     @Bean
-    public Bus eventBus() {
-        return new Bus();
+    public BusInterface eventBus(List<Register> registers) throws IOException, TimeoutException {
+        return MqUtil.addConsumer(Bus.BUS_EVENT_EXCHANGE_NAME, Bus.BUS_EVENT_QUEUE_NAME, Bus.BUS_EVENT_QUEUE_NAME, BusInterface.class, channel -> new Bus(channel, registers));
     }
 }
