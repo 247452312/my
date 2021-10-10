@@ -2,6 +2,7 @@ package indi.uhyils.bus;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
@@ -9,12 +10,12 @@ import com.rabbitmq.client.Envelope;
 import indi.uhyils.mq.util.MqUtil;
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseParentEvent;
+import indi.uhyils.pojo.cqe.event.base.PackageEvent;
 import indi.uhyils.protocol.register.base.Register;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
-import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.EventUtil;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,12 +29,6 @@ import java.util.Objects;
  * @date 文件创建日期 2021年09月19日 09时20分
  */
 public class Bus extends DefaultConsumer implements BusInterface {
-
-
-    /**
-     * class信息在json中的key
-     */
-    private static final String CLASS_JSON_KEY = "class";
 
     /**
      * 注册者
@@ -51,21 +46,12 @@ public class Bus extends DefaultConsumer implements BusInterface {
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
         String text = new String(body, StandardCharsets.UTF_8);
-        JSONObject jsonObject = JSONObject.parseObject(text);
-        Asserts.assertTrue(jsonObject.containsKey(CLASS_JSON_KEY), "json中不存在class");
-
-        String className = jsonObject.getString(CLASS_JSON_KEY);
-
-        BaseEvent event = null;
-        try {
-            event = JSONObject.parseObject(text, (Type) Class.forName(className));
-        } catch (ClassNotFoundException e) {
-            LogUtil.error(e);
-        }
+        BaseEvent event = JSONObject.parseObject(text, BaseEvent.class);
         Asserts.assertTrue(event != null);
-        doPublishEvent(Collections.singletonList(event));
+        // 解析事件(打包,父类事件转为子类事件)
+        List<BaseEvent> trans = EventUtil.trans(event);
+        doPublishEvent(trans);
     }
-
 
     /**
      * 提交事件
@@ -75,7 +61,13 @@ public class Bus extends DefaultConsumer implements BusInterface {
     @Override
     public void commit(BaseParentEvent event) {
         List<BaseEvent> baseEvents = this.events.get();
-        baseEvents.addAll(event.transToBaseEvent());
+        // 打包事件不进行分解
+        if (event instanceof PackageEvent) {
+            baseEvents.add(event);
+        } else {
+            // 其他父类事件进行分解
+            baseEvents.addAll(event.transToBaseEvent());
+        }
     }
 
     /**
@@ -103,7 +95,9 @@ public class Bus extends DefaultConsumer implements BusInterface {
         if (CollectionUtil.isEmpty(baseEvents)) {
             return;
         }
-        doPublishEvent(baseEvents);
+        // 父类事件(打包事件)转化为子类事件
+        List<BaseEvent> trans = EventUtil.trans(baseEvents);
+        doPublishEvent(trans);
     }
 
     /**
@@ -129,6 +123,7 @@ public class Bus extends DefaultConsumer implements BusInterface {
         if (baseEvents == null) {
             return;
         }
+        // 同步发布事件均转化为子类事件发布
         doPublishEvent(baseEvents.transToBaseEvent());
     }
 
@@ -164,6 +159,7 @@ public class Bus extends DefaultConsumer implements BusInterface {
         if (CollectionUtil.isEmpty(baseEvents)) {
             return;
         }
+        // 不需要进行转化,直接发布,具体转化在消费处进行转化
         doSyncPublishEvent(baseEvents);
     }
 
@@ -176,11 +172,7 @@ public class Bus extends DefaultConsumer implements BusInterface {
         Iterator<BaseEvent> iterator = baseEvents.iterator();
         while (iterator.hasNext()) {
             BaseEvent next = iterator.next();
-            String msg = JSON.toJSONString(next);
-            JSONObject jsonObject = JSON.parseObject(msg);
-            Asserts.assertTrue(!jsonObject.containsKey(CLASS_JSON_KEY));
-            jsonObject.put(CLASS_JSON_KEY, next.getClass().getName());
-            msg = jsonObject.toJSONString();
+            String msg = JSON.toJSONString(next, SerializerFeature.WriteClassName);
             MqUtil.sendMsg(BUS_EVENT_EXCHANGE_NAME, BUS_EVENT_QUEUE_NAME, msg);
             iterator.remove();
         }
@@ -209,10 +201,15 @@ public class Bus extends DefaultConsumer implements BusInterface {
         if (baseEvent == null) {
             return;
         }
+        // 验证,是否是打包事件
+        if (baseEvent instanceof PackageEvent) {
+            // 打包事件不分解
+            doSyncPublishEvent(Collections.singletonList(baseEvent));
+            return;
+        }
+        // 父类事件分解后发布
         doSyncPublishEvent(baseEvent.transToBaseEvent());
     }
-
-
 
     /**
      * 是否可以匹配到事件

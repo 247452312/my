@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BugConfig {
 
+
     @Bean
     public BusInterface eventBus(List<Register> registers) throws IOException, TimeoutException {
         return MqUtil.addConsumer(Bus.BUS_EVENT_EXCHANGE_NAME, Bus.BUS_EVENT_QUEUE_NAME, Bus.BUS_EVENT_QUEUE_NAME, BusInterface.class, channel -> new Bus(channel, registers));
