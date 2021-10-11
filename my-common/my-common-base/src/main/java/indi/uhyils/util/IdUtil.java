@@ -21,7 +21,7 @@ public class IdUtil {
      */
     private final AtomicLong sequence = new AtomicLong(0L);
 
-    // todo 这个code在RPC初始化时需要从nacos中获取
+    // todo 这个code在RPC初始化时需要从nacos中获取这个应用在整个应用中的index
     @Value("${id.organization.code:-1}")
     private Long code;
 

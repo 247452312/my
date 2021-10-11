@@ -13,19 +13,11 @@ import indi.uhyils.util.SpringUtil;
  */
 public abstract class AbstractEvent extends DefaultCQE implements BaseEvent {
 
-    /**
-     * 幂等号
-     */
-    private final Long sign;
 
     protected AbstractEvent() {
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
-        sign = bean.newId();
+        setUnique(bean.newId());
     }
 
-    @Override
-    public Long getSign() {
-        return sign;
-    }
 
 }

@@ -18,7 +18,6 @@ import indi.uhyils.util.EventUtil;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -204,7 +203,8 @@ public class Bus extends DefaultConsumer implements BusInterface {
         // 验证,是否是打包事件
         if (baseEvent instanceof PackageEvent) {
             // 打包事件不分解
-            doSyncPublishEvent(Collections.singletonList(baseEvent));
+            List<BaseEvent> result = CollectionUtil.buildArrayList(baseEvent);
+            doSyncPublishEvent(result);
             return;
         }
         // 父类事件分解后发布
