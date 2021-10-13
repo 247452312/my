@@ -3,7 +3,6 @@ package indi.uhyils.bus;
 import com.rabbitmq.client.Consumer;
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseParentEvent;
-import indi.uhyils.pojo.cqe.event.base.PackageEvent;
 import java.util.List;
 
 /**

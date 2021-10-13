@@ -61,9 +61,9 @@ public class RedisSoftware extends Software implements RedisSoftwareInterface {
     public void initJedis() {
         Asserts.assertTrue(server != null, "server不能为空");
         if (jedis == null) {
-            jedis = new Jedis(server.toDo().getIp(), toDo().getPort());
+            jedis = new Jedis(server.toData().getIp(), toData().getPort());
         }
-        jedis.auth(toDo().getPassword());
+        jedis.auth(toData().getPassword());
     }
 
     @Override
@@ -84,8 +84,8 @@ public class RedisSoftware extends Software implements RedisSoftwareInterface {
     @Override
     public void initBaseInfo() {
         String redisVersion = getRedisNewVersion();
-        toDo().setVersion(redisVersion);
-        toDo().setStatus(getStatus().getStatus());
+        toData().setVersion(redisVersion);
+        toData().setStatus(getStatus().getStatus());
     }
 
     @Override

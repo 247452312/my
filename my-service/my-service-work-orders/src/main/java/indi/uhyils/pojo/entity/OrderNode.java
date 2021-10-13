@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.assembler.OrderNodeResultTypeAssembler;
 import indi.uhyils.assembler.OrderNodeRouteAssembler;
 import indi.uhyils.builder.OrderNodeResultTypeBuilder;
@@ -53,8 +54,9 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
      */
     private List<OrderNodeRoute> routes;
 
-    public OrderNode(OrderNodeDO dO) {
-        super(dO);
+    @Default
+    public OrderNode(OrderNodeDO data) {
+        super(data);
     }
 
     public OrderNode(Long id) {
@@ -79,7 +81,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
     public IdMapping saveSelf(OrderNodeRepository nodeRepository) {
         Long oldId = this.getUnique().getId();
         this.setUnique(null);
-        toDo().setId(null);
+        toData().setId(null);
         nodeRepository.save(this);
         Long newId = this.getUnique().getId();
         return IdMapping.build(newId, oldId);
@@ -90,7 +92,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
             return;
         }
         for (OrderNodeField field : fields) {
-            OrderNodeFieldDO orderNodeFieldDO = field.toDo();
+            OrderNodeFieldDO orderNodeFieldDO = field.toData();
             orderNodeFieldDO.setBaseOrderNodeId(idMappings.get(orderNodeFieldDO.getBaseOrderNodeId()));
             field.setUnique(null);
             orderNodeFieldDO.setId(null);
@@ -110,7 +112,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
         }
         for (OrderNodeResultType resultType : resultTypes) {
             Long oldId = resultType.getUnique().getId();
-            OrderNodeResultTypeDO orderNodeResultTypeDO = resultType.toDo();
+            OrderNodeResultTypeDO orderNodeResultTypeDO = resultType.toData();
             orderNodeResultTypeDO.setBaseNodeId(idMappings.get(orderNodeResultTypeDO.getBaseNodeId()));
             orderNodeResultTypeDO.setId(null);
             resultType.setUnique(null);
@@ -120,7 +122,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
         }
 
         for (OrderNodeRoute route : routes) {
-            OrderNodeRouteDO orderNodeRouteDO = route.toDo();
+            OrderNodeRouteDO orderNodeRouteDO = route.toData();
             orderNodeRouteDO.setNextNodeId(idMappings.get(orderNodeRouteDO.getNextNodeId()));
             orderNodeRouteDO.setPrevNodeId(idMappings.get(orderNodeRouteDO.getPrevNodeId()));
             orderNodeRouteDO.setResultId(idMappings.get(orderNodeRouteDO.getResultId()));
@@ -151,7 +153,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
     }
 
     public void addTestResult(OrderNodeResultType result, OrderNodeRepository nodeRepository) {
-        data.setResultId(result.toDo().getId());
+        data.setResultId(result.toData().getId());
         data.setResultType(OrderNodeResultTypeEnum.TRANSFER.getCode());
         onUpdate();
         nodeRepository.save(this);
@@ -183,7 +185,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
 
         for (OrderNodeField field : fields) {
             Long id = field.getUnique().getId();
-            Asserts.assertTrue(orderNodeFieldValueMap.containsKey(id), field.toDo().getName() + " 未填写");
+            Asserts.assertTrue(orderNodeFieldValueMap.containsKey(id), field.toData().getName() + " 未填写");
             String realValue = String.valueOf(orderNodeFieldValueMap.get(id));
             OrderNodeFieldValue orderNodeFieldValue = new OrderNodeFieldValue(field, realValue);
             orderNodeFieldValue.assertSelf();

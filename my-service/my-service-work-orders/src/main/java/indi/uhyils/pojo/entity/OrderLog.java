@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.OrderLogDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class OrderLog extends AbstractDoEntity<OrderLogDO> {
 
-    public OrderLog(OrderLogDO dO) {
-        super(dO);
+    @Default
+    public OrderLog(OrderLogDO data) {
+        super(data);
     }
 
     public OrderLog(Long id) {

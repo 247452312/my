@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.OrderBaseInfoDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.OrderBaseNodeFieldRepository;
@@ -21,8 +22,9 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
 
     private List<OrderBaseNode> nodes;
 
-    public OrderBaseInfo(OrderBaseInfoDO dO) {
-        super(dO);
+    @Default
+    public OrderBaseInfo(OrderBaseInfoDO data) {
+        super(data);
     }
 
     public OrderBaseInfo(Long id) {
@@ -55,7 +57,7 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
 
     public void fillNodeRoute(OrderBaseNodeRouteRepository routeRepository) {
         List<OrderBaseNodeRoute> routes = routeRepository.findNodeRouteByNodes(this.nodes.stream().map(t -> t.getUnique()).collect(Collectors.toList()));
-        Map<Long, List<OrderBaseNodeRoute>> nodeIdRouteMap = routes.stream().collect(Collectors.groupingBy(t -> t.toDo().getPrevNodeId()));
+        Map<Long, List<OrderBaseNodeRoute>> nodeIdRouteMap = routes.stream().collect(Collectors.groupingBy(t -> t.toData().getPrevNodeId()));
         for (OrderBaseNode node : this.nodes) {
             Long id = node.getUnique().getId();
             List<OrderBaseNodeRoute> orderBaseNodeRoutes = nodeIdRouteMap.get(id);
@@ -66,7 +68,7 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
 
     public void fillNodeResultType(OrderBaseNodeResultTypeRepository resultTypeRepository) {
         List<OrderBaseNodeResultType> resultTypes = resultTypeRepository.findNodeResultTypeByNodes(this.nodes.stream().map(t -> t.getUnique()).collect(Collectors.toList()));
-        Map<Long, List<OrderBaseNodeResultType>> nodeIdResultTypeMap = resultTypes.stream().collect(Collectors.groupingBy(t -> t.toDo().getBaseNodeId()));
+        Map<Long, List<OrderBaseNodeResultType>> nodeIdResultTypeMap = resultTypes.stream().collect(Collectors.groupingBy(t -> t.toData().getBaseNodeId()));
         for (OrderBaseNode node : this.nodes) {
             Long id = node.getUnique().getId();
             List<OrderBaseNodeResultType> orderBaseNodeResultTypes = nodeIdResultTypeMap.get(id);
@@ -76,7 +78,7 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
 
     public void fillNodeField(OrderBaseNodeFieldRepository fieldRepository) {
         List<OrderBaseNodeField> fields = fieldRepository.findNodeFieldByNodes(this.nodes.stream().map(t -> t.getUnique()).collect(Collectors.toList()));
-        Map<Long, List<OrderBaseNodeField>> nodeIdFieldMap = fields.stream().collect(Collectors.groupingBy(t -> t.toDo().getBaseOrderId()));
+        Map<Long, List<OrderBaseNodeField>> nodeIdFieldMap = fields.stream().collect(Collectors.groupingBy(t -> t.toData().getBaseOrderId()));
         for (OrderBaseNode node : this.nodes) {
             Long id = node.getUnique().getId();
             List<OrderBaseNodeField> fieldList = nodeIdFieldMap.get(id);

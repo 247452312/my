@@ -63,6 +63,7 @@
         <asm.version>9.2</asm.version>
         <javaparser.version>3.22.1</javaparser.version>
         <mybatis.plus.spring.version>3.4.3.3</mybatis.plus.spring.version>
+        <mapStruct.version>1.4.2.Final</mapStruct.version>
     </properties>
 
     <dependencyManagement>
@@ -390,6 +391,18 @@
                 <groupId>com.github.javaparser</groupId>
                 <artifactId>javaparser-core</artifactId>
                 <version>${javaparser.version}</version>
+            </dependency>
+
+            <!--mapStruct-->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapStruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapStruct.version}</version>
             </dependency>
 
         </dependencies>

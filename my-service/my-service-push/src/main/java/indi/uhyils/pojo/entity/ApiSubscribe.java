@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.enum_.PushTypeEnum;
 import indi.uhyils.pojo.DO.ApiSubscribeDO;
 import indi.uhyils.pojo.DTO.PushMsgDTO;
@@ -21,8 +22,9 @@ import java.util.Objects;
  */
 public class ApiSubscribe extends AbstractDoEntity<ApiSubscribeDO> {
 
-    public ApiSubscribe(ApiSubscribeDO dO) {
-        super(dO);
+    @Default
+    public ApiSubscribe(ApiSubscribeDO data) {
+        super(data);
     }
 
     public ApiSubscribe() {
@@ -39,16 +41,16 @@ public class ApiSubscribe extends AbstractDoEntity<ApiSubscribeDO> {
     }
 
     public void checkRepeat(ApiSubscribeRepository rep) {
-        List<ApiSubscribe> subscribes = rep.findByGroupAndUserId(new Identifier(toDo().getApiGroupId()), new Identifier(toDo().getUserId()));
+        List<ApiSubscribe> subscribes = rep.findByGroupAndUserId(new Identifier(toData().getApiGroupId()), new Identifier(toData().getUserId()));
         Asserts.assertTrue(CollectionUtil.isEmpty(subscribes), "不能同时订阅同一个api两次");
     }
 
     public PushMsgDTO sendMsg(ApiGroup apiGroup, UserDTO userDTO, String sendContent) {
-        switch (Objects.requireNonNull(PushTypeEnum.prase(toDo().getType()))) {
+        switch (Objects.requireNonNull(PushTypeEnum.prase(toData().getType()))) {
             case PAGE:
-                return PushUtils.pagePush(userDTO, "my系统,订阅消息-" + apiGroup.toDo().getName(), sendContent);
+                return PushUtils.pagePush(userDTO, "my系统,订阅消息-" + apiGroup.toData().getName(), sendContent);
             case EMAIL:
-                return PushUtils.emailPush(userDTO, "my系统,订阅邮件-" + apiGroup.toDo().getName(), sendContent);
+                return PushUtils.emailPush(userDTO, "my系统,订阅邮件-" + apiGroup.toData().getName(), sendContent);
             default:
                 break;
         }

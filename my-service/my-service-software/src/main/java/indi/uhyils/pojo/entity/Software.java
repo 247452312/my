@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.enum_.SoftwareStatusEnum;
 import indi.uhyils.pojo.DO.SoftwareDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
@@ -22,8 +23,9 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
 
     protected Server server;
 
-    public Software(SoftwareDO dO) {
-        super(dO);
+    @Default
+    public Software(SoftwareDO data) {
+        super(data);
     }
 
     public Software(Long id) {
@@ -37,21 +39,21 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
 
     public void start() {
         checkStatus(SoftwareStatusEnum.STOP);
-        String startSh = toDo().getStartSh();
+        String startSh = toData().getStartSh();
         Asserts.assertTrue(StringUtils.isNotBlank(startSh));
-        SshUtils.execCommandBySsh(server.toDo(), startSh);
+        SshUtils.execCommandBySsh(server.toData(), startSh);
     }
 
     public void stop() {
         checkStatus(SoftwareStatusEnum.RUNNING);
-        String stopSh = toDo().getStopSh();
+        String stopSh = toData().getStopSh();
         Asserts.assertTrue(StringUtils.isNotBlank(stopSh));
-        SshUtils.execCommandBySsh(server.toDo(), stopSh);
+        SshUtils.execCommandBySsh(server.toData(), stopSh);
     }
 
     public void link() {
         Asserts.assertTrue(server != null, "连接不能没有 server");
-        boolean canConnect = SocketUtil.canConnect(server.toDo().getIp(), toDo().getPort());
+        boolean canConnect = SocketUtil.canConnect(server.toData().getIp(), toData().getPort());
         Asserts.assertTrue(canConnect, "不能连接");
     }
 
@@ -73,7 +75,7 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
         if (server != null) {
             return;
         }
-        this.server = new Server(toDo().getServerId(), serverRepository);
+        this.server = new Server(toData().getServerId(), serverRepository);
 
     }
 
@@ -96,9 +98,9 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
      * @return
      */
     protected SoftwareStatusEnum getStatus() {
-        String statusSh = toDo().getStatusSh();
+        String statusSh = toData().getStatusSh();
         Asserts.assertTrue(StringUtils.isNotBlank(statusSh));
-        String status = SshUtils.execCommandBySsh(server.toDo(), statusSh);
+        String status = SshUtils.execCommandBySsh(server.toData(), statusSh);
         if (status.contains("ERROR")) {
             return SoftwareStatusEnum.ERROR;
         } else if (status.contains("STOP")) {

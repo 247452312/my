@@ -1,14 +1,18 @@
 package indi.uhyils.assembler;
 
+import indi.uhyils.enum_.Symbol;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
-import indi.uhyils.util.BeanUtil;
+import indi.uhyils.util.LogUtil;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.mapstruct.ap.spi.util.IntrospectorUtils;
 
 
 /**
@@ -18,84 +22,43 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO> implements BaseAssembler<DO, ENTITY, DTO> {
 
-    @Override
-    public DO toDo(ENTITY entity) {
-        return entity.toDo();
-    }
+    public static final String GET_METHOD_HEAD = "get";
 
     @Override
-    public DO toDo(DTO dto) {
-        Class<DO> doClass = getDoClass();
-        return BeanUtil.copyProperties(dto, doClass);
-    }
-
-    @Override
-    public DTO toDTO(ENTITY entity) {
-        DO source = entity.toDo();
-        Class<DTO> dtoClass = getDtoClass();
-        return BeanUtil.copyProperties(source, dtoClass);
-    }
-
-    @Override
-    public DTO toDTO(DO dO) {
-        Class<DTO> dtoClass = getDtoClass();
-        return BeanUtil.copyProperties(dO, dtoClass);
+    public List<Arg> toArgs(DTO dto) {
+        List<Arg> result = new ArrayList<>();
+        Class<? extends IdDTO> dtoClass = dto.getClass();
+        Method[] methods = dtoClass.getMethods();
+        try {
+            for (Method method : methods) {
+                if (!method.getName().startsWith(GET_METHOD_HEAD)) {
+                    continue;
+                }
+                Object invoke = method.invoke(dto);
+                if (invoke == null) {
+                    continue;
+                }
+                String substring = method.getName().substring(GET_METHOD_HEAD.length());
+                String fieldName = IntrospectorUtils.decapitalize(substring);
+                result.add(Arg.as(fieldName, Symbol.EQ, invoke));
+            }
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            LogUtil.error(e);
+            return null;
+        }
+        return result;
     }
 
     @Override
     public Page<DTO> pageToDTO(Page<ENTITY> page) {
-        Page<DTO> resultPage = new Page<>();
-        BeanUtil.copyProperties(page, resultPage);
-        List<DTO> dtos = page.getList().stream().map(this::toDTO).collect(Collectors.toList());
-        resultPage.setList(dtos);
-        return resultPage;
+        Page<DTO> result = new Page<>();
+        List<ENTITY> list = page.getList();
+        List<DTO> dtos = list.stream().map(t -> toDTO(t)).collect(Collectors.toList());
+        result.setList(dtos);
+        result.setSize(page.getSize());
+        result.setPageNum(page.getPageNum());
+        result.setCount(page.getCount());
+        result.setTotalPage(page.getTotalPage());
+        return result;
     }
-
-    @Override
-    public List<DTO> listEntityToDTO(List<ENTITY> noPage) {
-        return noPage.stream().map(this::toDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<DTO> listDoToDTO(List<DO> list) {
-        return list.stream().map(t -> this.toDTO(t)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ENTITY> listToEntity(List<DO> dos) {
-        return dos.stream().map(t -> toEntity(t)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ENTITY> listDTOToEntity(List<DTO> dtos) {
-        return dtos.stream().map(t -> toEntity(t)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Arg> toArgs(DTO dto) {
-        Class<? extends IdDTO> dtoClass = dto.getClass();
-        Method[] methods = dtoClass.getMethods();
-
-        return null;
-    }
-
-    @Override
-    public abstract ENTITY toEntity(DO dO);
-
-    @Override
-    public abstract ENTITY toEntity(DTO dto);
-
-    /**
-     * 获取do的类型
-     *
-     * @return
-     */
-    protected abstract Class<DO> getDoClass();
-
-    /**
-     * 获取dto的类型
-     *
-     * @return
-     */
-    protected abstract Class<DTO> getDtoClass();
 }

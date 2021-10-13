@@ -5,7 +5,9 @@ import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
+import java.util.ArrayList;
 import java.util.List;
+import org.mapstruct.Mapping;
 
 /**
  * 装配器
@@ -23,7 +25,9 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
-    DO toDo(ENTITY entity);
+    default DO toDo(ENTITY entity) {
+        return entity.toData();
+    }
 
     /**
      * DTO转DO
@@ -41,7 +45,10 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
-    DTO toDTO(ENTITY entity);
+    default DTO toDTO(ENTITY entity) {
+        DO dO = entity.toData();
+        return toDTO(dO);
+    }
 
     /**
      * entity转DTO
@@ -59,6 +66,7 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
+    @Mapping(source = ".", target = "data")
     ENTITY toEntity(DO dO);
 
     /**
@@ -68,6 +76,7 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
+    @Mapping(source = ".", target = "data")
     ENTITY toEntity(DTO dto);
 
     /**
@@ -86,7 +95,13 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
-    List<DTO> listEntityToDTO(List<ENTITY> noPage);
+    default List<DTO> listEntityToDTO(List<ENTITY> noPage) {
+        List<DTO> result = new ArrayList<>(noPage.size());
+        for (ENTITY entity : noPage) {
+            result.add(toDTO(entity));
+        }
+        return result;
+    }
 
     /**
      * 列表转DTO
@@ -104,6 +119,7 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
+    @Mapping(source = "list.empty", target = "list.empty.data")
     List<ENTITY> listToEntity(List<DO> dos);
 
     /**
@@ -113,6 +129,7 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
+    @Mapping(source = "list.empty", target = "list.empty.data")
     List<ENTITY> listDTOToEntity(List<DTO> dtos);
 
     /**

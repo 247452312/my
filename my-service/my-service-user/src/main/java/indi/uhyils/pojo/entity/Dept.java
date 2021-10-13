@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -24,8 +25,9 @@ public class Dept extends AbstractDoEntity<DeptDO> {
 
     private List<Menu> menus;
 
-    public Dept(DeptDO deptDO) {
-        super(deptDO);
+    @Default
+    public Dept(DeptDO data) {
+        super(data);
     }
 
     public Dept(Long id) {

@@ -1,13 +1,13 @@
 package indi.uhyils.assembler;
 
 
-import indi.uhyils.annotation.Assembler;
 import indi.uhyils.pojo.DO.OrderBaseInfoDO;
 import indi.uhyils.pojo.DTO.OrderBaseInfoDTO;
 import indi.uhyils.pojo.DTO.OrderBaseNodeDTO;
 import indi.uhyils.pojo.entity.OrderBaseInfo;
 import indi.uhyils.pojo.entity.OrderBaseNode;
 import java.util.List;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version 1.0
  * @date 文件创建日期 2021年08月31日 19时58分53秒
  */
-@Assembler
-public class OrderBaseInfoAssembler extends AbstractAssembler<OrderBaseInfoDO, OrderBaseInfo, OrderBaseInfoDTO> {
+@Mapper(componentModel = "spring")
+public abstract class OrderBaseInfoAssembler extends AbstractAssembler<OrderBaseInfoDO, OrderBaseInfo, OrderBaseInfoDTO> {
 
     @Autowired
     private OrderBaseNodeAssembler nodeAssembler;
@@ -38,18 +38,8 @@ public class OrderBaseInfoAssembler extends AbstractAssembler<OrderBaseInfoDO, O
     }
 
     @Override
-    protected Class<OrderBaseInfoDO> getDoClass() {
-        return OrderBaseInfoDO.class;
-    }
-
-    @Override
-    protected Class<OrderBaseInfoDTO> getDtoClass() {
-        return OrderBaseInfoDTO.class;
-    }
-
-    @Override
     public OrderBaseInfoDTO toDTO(OrderBaseInfo entity) {
-        OrderBaseInfoDTO orderBaseInfoDTO = super.toDTO(entity);
+        OrderBaseInfoDTO orderBaseInfoDTO = toDTO(entity.toData());
         List<OrderBaseNode> nodes = entity.nodes();
         List<OrderBaseNodeDTO> orderBaseNodeDTOList = nodeAssembler.listEntityToDTO(nodes);
         orderBaseInfoDTO.setNodes(orderBaseNodeDTOList);

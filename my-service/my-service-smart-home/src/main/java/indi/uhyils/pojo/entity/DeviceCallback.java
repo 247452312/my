@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.DeviceCallbackDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class DeviceCallback extends AbstractDoEntity<DeviceCallbackDO> {
 
-    public DeviceCallback(DeviceCallbackDO dO) {
-        super(dO);
+    @Default
+    public DeviceCallback(DeviceCallbackDO data) {
+        super(data);
     }
 
     public DeviceCallback(Long id) {

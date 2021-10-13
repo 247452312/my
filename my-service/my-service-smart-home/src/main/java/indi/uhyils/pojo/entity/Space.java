@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.SpaceDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class Space extends AbstractDoEntity<SpaceDO> {
 
-    public Space(SpaceDO dO) {
-        super(dO);
+    @Default
+    public Space(SpaceDO data) {
+        super(data);
     }
 
     public Space(Long id) {

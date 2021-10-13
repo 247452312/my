@@ -8,7 +8,7 @@
     <contextName>logback</contextName>
 
     <!-- 获取yml中的log地址 -->
-    <springProperty scope="context" name="log.path" source="log-out.path" defaultValue="/usr/my/logs"/>
+    <springProperty scope="context" name="log.path" source="log-out.path" defaultValue="D:/my/logs"/>
     <springProperty scope="context" name="log.dir.name" source="log-out.dir-name" defaultValue="defaultDir"/>
 
     <!--0. 日志格式和颜色渲染 -->

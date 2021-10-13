@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.enum_.OrderNodeFieldValueTypeEnum;
 import indi.uhyils.pojo.DO.OrderNodeFieldValueDO;
@@ -16,8 +17,9 @@ public class OrderNodeFieldValue extends AbstractDoEntity<OrderNodeFieldValueDO>
 
     private OrderNodeField field;
 
-    public OrderNodeFieldValue(OrderNodeFieldValueDO dO) {
-        super(dO);
+    @Default
+    public OrderNodeFieldValue(OrderNodeFieldValueDO data) {
+        super(data);
     }
 
     public OrderNodeFieldValue(Long id) {
@@ -40,24 +42,24 @@ public class OrderNodeFieldValue extends AbstractDoEntity<OrderNodeFieldValueDO>
         Asserts.assertTrue(field != null, "属性不能为空");
         String realValue = data.getRealValue();
 
-        OrderNodeFieldValueTypeEnum parse = OrderNodeFieldValueTypeEnum.parse(field.toDo().getValueType());
+        OrderNodeFieldValueTypeEnum parse = OrderNodeFieldValueTypeEnum.parse(field.toData().getValueType());
         switch (parse) {
             case DATE:
-                Asserts.assertTrue(realValue.matches(MyContext.DATE_REGEX), "类型错误,应该为日期类型:" + field.toDo().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.DATE_REGEX), "类型错误,应该为日期类型:" + field.toData().getName());
                 break;
             case EMAIL:
-                Asserts.assertTrue(realValue.matches(MyContext.EMAIL_REGEX), "类型错误,应该为email类型:" + field.toDo().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.EMAIL_REGEX), "类型错误,应该为email类型:" + field.toData().getName());
                 break;
             case VALUE:
-                Asserts.assertTrue(realValue.matches(MyContext.VALUE_REGEX), "类型错误,应该为数字类型:" + field.toDo().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.VALUE_REGEX), "类型错误,应该为数字类型:" + field.toData().getName());
                 break;
             case STRING:
                 break;
             case ENGLISH:
-                Asserts.assertTrue(realValue.matches(MyContext.ENGLISH_REGEX), "类型错误,应该为英文类型:" + field.toDo().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.ENGLISH_REGEX), "类型错误,应该为英文类型:" + field.toData().getName());
                 break;
             default:
-                Asserts.assertTrue(false, "类型错误,找不到指定类型:" + field.toDo().getName());
+                Asserts.assertTrue(false, "类型错误,找不到指定类型:" + field.toData().getName());
                 break;
 
         }

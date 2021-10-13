@@ -86,8 +86,9 @@ public interface TraceInfoRepository extends BaseEntityRepository<TraceInfoDO, T
     /**
      * 获取服务降级当前等级
      *
-     * @return
      * @param defaultLevel
+     *
+     * @return
      */
     Long getRelegationLevel(Long defaultLevel);
 

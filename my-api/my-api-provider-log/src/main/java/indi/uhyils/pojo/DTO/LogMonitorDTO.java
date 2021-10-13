@@ -33,27 +33,27 @@ public class LogMonitorDTO extends IdDTO {
     /**
      * jvm最大内存
      */
-    private Object jvmTotalMem;
+    private Double jvmTotalMem;
 
     /**
      * 堆初始内存
      */
-    private Object heapInitMem;
+    private Double heapInitMem;
 
     /**
      * 堆最大内存
      */
-    private Object heapTotalMem;
+    private Double heapTotalMem;
 
     /**
      * 非堆区初始内存
      */
-    private Object noHeapInitMem;
+    private Double noHeapInitMem;
 
     /**
      * 非堆区最大内存
      */
-    private Object noHeapTotalMem;
+    private Double noHeapTotalMem;
 
     /**
      * 服务jvm结束假想时间
@@ -87,51 +87,45 @@ public class LogMonitorDTO extends IdDTO {
         this.time = time;
     }
 
-
-    public Object getJvmTotalMem() {
+    public Double getJvmTotalMem() {
         return jvmTotalMem;
     }
 
-    public void setJvmTotalMem(Object jvmTotalMem) {
+    public void setJvmTotalMem(Double jvmTotalMem) {
         this.jvmTotalMem = jvmTotalMem;
     }
 
-
-    public Object getHeapInitMem() {
+    public Double getHeapInitMem() {
         return heapInitMem;
     }
 
-    public void setHeapInitMem(Object heapInitMem) {
+    public void setHeapInitMem(Double heapInitMem) {
         this.heapInitMem = heapInitMem;
     }
 
-
-    public Object getHeapTotalMem() {
+    public Double getHeapTotalMem() {
         return heapTotalMem;
     }
 
-    public void setHeapTotalMem(Object heapTotalMem) {
+    public void setHeapTotalMem(Double heapTotalMem) {
         this.heapTotalMem = heapTotalMem;
     }
 
-
-    public Object getNoHeapInitMem() {
+    public Double getNoHeapInitMem() {
         return noHeapInitMem;
     }
 
-    public void setNoHeapInitMem(Object noHeapInitMem) {
+    public void setNoHeapInitMem(Double noHeapInitMem) {
         this.noHeapInitMem = noHeapInitMem;
     }
 
-
-    public Object getNoHeapTotalMem() {
+    public Double getNoHeapTotalMem() {
         return noHeapTotalMem;
     }
 
-    public void setNoHeapTotalMem(Object noHeapTotalMem) {
+    public void setNoHeapTotalMem(Double noHeapTotalMem) {
         this.noHeapTotalMem = noHeapTotalMem;
     }
-
 
     public Long getEndTime() {
         return endTime;

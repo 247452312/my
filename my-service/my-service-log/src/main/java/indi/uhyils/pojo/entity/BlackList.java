@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.BlackListDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class BlackList extends AbstractDoEntity<BlackListDO> {
 
-    public BlackList(BlackListDO dO) {
-        super(dO);
+    @Default
+    public BlackList(BlackListDO data) {
+        super(data);
     }
 
 }

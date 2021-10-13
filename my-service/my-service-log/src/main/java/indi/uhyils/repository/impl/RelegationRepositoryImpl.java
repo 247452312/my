@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.RelegationAssembler;
 import indi.uhyils.dao.RelegationDao;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.RelegationDO;
 import indi.uhyils.pojo.DTO.RelegationDTO;
 import indi.uhyils.pojo.entity.Relegation;
@@ -42,7 +41,7 @@ public class RelegationRepositoryImpl extends AbstractRepository<Relegation, Rel
 
     @Override
     public boolean checkRepeat(Relegation relegation) {
-        RelegationDO relegationDO = relegation.toDo();
+        RelegationDO relegationDO = relegation.toData();
         LambdaQueryWrapper<RelegationDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(RelegationDO::getServiceName, relegationDO.getServiceName());
         queryWrapper.eq(RelegationDO::getMethodName, relegationDO.getMethodName());

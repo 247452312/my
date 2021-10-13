@@ -1,7 +1,6 @@
 package indi.uhyils.assembler;
 
 
-import indi.uhyils.annotation.Assembler;
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoCommand;
 import indi.uhyils.mq.pojo.mqinfo.JvmStatusInfoCommand;
@@ -11,6 +10,7 @@ import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
 import indi.uhyils.pojo.DTO.LogMonitorDTO;
 import indi.uhyils.pojo.entity.LogMonitor;
 import java.util.List;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -20,31 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version 1.0
  * @date 文件创建日期 2021年08月29日 16时58分53秒
  */
-@Assembler
-public class LogMonitorAssembler extends AbstractAssembler<LogMonitorDO, LogMonitor, LogMonitorDTO> {
+@Mapper(componentModel = "spring")
+public abstract class LogMonitorAssembler extends AbstractAssembler<LogMonitorDO, LogMonitor, LogMonitorDTO> {
 
     @Autowired
     private LogMonitorJvmStatusAssembler logMonitorJvmStatusAssembler;
 
-    @Override
-    public LogMonitor toEntity(LogMonitorDO dO) {
-        return new LogMonitor(dO);
-    }
-
-    @Override
-    public LogMonitor toEntity(LogMonitorDTO dto) {
-        return new LogMonitor(toDo(dto));
-    }
-
-    @Override
-    protected Class<LogMonitorDO> getDoClass() {
-        return LogMonitorDO.class;
-    }
-
-    @Override
-    protected Class<LogMonitorDTO> getDtoClass() {
-        return LogMonitorDTO.class;
-    }
 
     public LogMonitor jvmStartInfoToLogMonitor(JvmStartInfoCommand jvmStartInfo) {
         JvmUniqueMark jvmUniqueMark = jvmStartInfo.getJvmUniqueMark();

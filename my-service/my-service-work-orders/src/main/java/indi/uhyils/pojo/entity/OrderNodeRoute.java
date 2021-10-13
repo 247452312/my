@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.OrderNodeRouteDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class OrderNodeRoute extends AbstractDoEntity<OrderNodeRouteDO> {
 
-    public OrderNodeRoute(OrderNodeRouteDO dO) {
-        super(dO);
+    @Default
+    public OrderNodeRoute(OrderNodeRouteDO data) {
+        super(data);
     }
 
     public OrderNodeRoute(Long id) {

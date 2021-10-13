@@ -37,6 +37,6 @@ public class AlgorithmServiceImpl extends AbstractDoService<AlgorithmDO, Algorit
     @Override
     public Double getAlgorithmAccuracy(Identifier alId) {
         Algorithm algorithm = rep.find(alId);
-        return algorithm.toDo().getAccuracy();
+        return algorithm.toData().getAccuracy();
     }
 }

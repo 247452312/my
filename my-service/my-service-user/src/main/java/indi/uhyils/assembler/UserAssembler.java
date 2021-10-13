@@ -1,12 +1,12 @@
 package indi.uhyils.assembler;
 
-import indi.uhyils.annotation.Assembler;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DTO.RoleDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.entity.Role;
 import indi.uhyils.pojo.entity.User;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -14,16 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version 1.0
  * @date 文件创建日期 2021年08月26日 08时55分
  */
-@Assembler
-public class UserAssembler extends AbstractAssembler<UserDO, User, UserDTO> {
+@Mapper(componentModel = "spring")
+public abstract class UserAssembler extends AbstractAssembler<UserDO, User, UserDTO> {
 
     @Autowired
     private RoleAssembler roleAssembler;
-
-    @Override
-    public User toEntity(UserDO dO) {
-        return new User(dO);
-    }
 
     @Override
     public User toEntity(UserDTO dto) {
@@ -41,18 +36,8 @@ public class UserAssembler extends AbstractAssembler<UserDO, User, UserDTO> {
     }
 
     @Override
-    protected Class<UserDO> getDoClass() {
-        return UserDO.class;
-    }
-
-    @Override
-    protected Class<UserDTO> getDtoClass() {
-        return UserDTO.class;
-    }
-
-    @Override
     public UserDTO toDTO(User entity) {
-        UserDTO userDTO = super.toDTO(entity);
+        UserDTO userDTO = toDTO(entity.toData());
         Role role = entity.role();
         if (role != null) {
             RoleDTO roleDTO = roleAssembler.toDTO(entity.role());

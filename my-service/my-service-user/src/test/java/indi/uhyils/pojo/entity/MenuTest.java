@@ -120,7 +120,7 @@ public class MenuTest extends BaseTest {
     public void findSelfNode2() {
         Menu menu = new Menu(m1Id);
         menu.completion(repository);
-        menu.toDo().setIFrame(123123123);
+        menu.toData().setIFrame(123123123);
         MenuTreeDTO selfNode = menu.findSelfNode(repository, assembler);
 
         Asserts.assertTrue(selfNode == null);

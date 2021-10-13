@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.DictDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.DictItemRepository;
@@ -17,8 +18,9 @@ public class Dict extends AbstractDoEntity<DictDO> {
 
     private List<DictItem> dictItems;
 
-    public Dict(DictDO dO) {
-        super(dO);
+    @Default
+    public Dict(DictDO data) {
+        super(data);
     }
 
     public Dict(String code) {

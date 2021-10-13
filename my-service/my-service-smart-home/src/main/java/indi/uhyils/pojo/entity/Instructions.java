@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.InstructionsDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class Instructions extends AbstractDoEntity<InstructionsDO> {
 
-    public Instructions(InstructionsDO dO) {
-        super(dO);
+    @Default
+    public Instructions(InstructionsDO data) {
+        super(data);
     }
 
     public Instructions(Long id) {

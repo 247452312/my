@@ -35,7 +35,7 @@ public class OrderNodeList extends AbstractEntity<Identifiers> {
             if (dealUser == null) {
                 continue;
             }
-            orderNode.toDo().setRunDealUserId(dealUser);
+            orderNode.toData().setRunDealUserId(dealUser);
             orderNode.onUpdate();
         }
     }
@@ -48,7 +48,7 @@ public class OrderNodeList extends AbstractEntity<Identifiers> {
             if (noticeUser == null) {
                 continue;
             }
-            orderNode.toDo().setNoticeUserId(noticeUser);
+            orderNode.toData().setNoticeUserId(noticeUser);
             orderNode.onUpdate();
         }
 
@@ -61,21 +61,21 @@ public class OrderNodeList extends AbstractEntity<Identifiers> {
     public void delFields(OrderNodeFieldRepository fieldRepository) {
         List<Long> collect = orderNodes.stream().map(t -> t.getUnique().getId()).collect(Collectors.toList());
         List<OrderNodeField> byNodeIds = fieldRepository.findByNodeIds(collect);
-        List<OrderNodeField> fields = byNodeIds.stream().peek(t -> t.toDo().setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
+        List<OrderNodeField> fields = byNodeIds.stream().peek(t -> t.toData().setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
         fieldRepository.save(fields);
     }
 
     public void delRoutes(OrderNodeRouteRepository routeRepository) {
         List<Long> collect = orderNodes.stream().map(t -> t.getUnique().getId()).collect(Collectors.toList());
         List<OrderNodeRoute> routes = routeRepository.findByNodeIds(collect);
-        List<OrderNodeRoute> route = routes.stream().peek(t -> t.toDo().setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
+        List<OrderNodeRoute> route = routes.stream().peek(t -> t.toData().setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
         routeRepository.save(route);
     }
 
     public void delResultType(OrderNodeResultTypeRepository resultTypeRepository) {
         List<Long> collect = orderNodes.stream().map(t -> t.getUnique().getId()).collect(Collectors.toList());
         List<OrderNodeResultType> routes = resultTypeRepository.findByNodeIds(collect);
-        List<OrderNodeResultType> route = routes.stream().peek(t -> t.toDo().setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
+        List<OrderNodeResultType> route = routes.stream().peek(t -> t.toData().setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
         resultTypeRepository.save(route);
     }
 

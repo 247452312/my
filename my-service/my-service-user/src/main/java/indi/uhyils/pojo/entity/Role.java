@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.RoleDeptDO;
@@ -25,8 +26,9 @@ public class Role extends AbstractDoEntity<RoleDO> {
 
     private List<Dept> depts;
 
-    public Role(RoleDO roleDO) {
-        super(roleDO);
+    @Default
+    public Role(RoleDO data) {
+        super(data);
     }
 
     public Role(Identifier roleId) {

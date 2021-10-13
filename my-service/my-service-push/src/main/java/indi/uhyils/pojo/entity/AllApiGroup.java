@@ -29,7 +29,7 @@ public class AllApiGroup extends AbstractEntity {
 
     public void fillApi(ApiRepository apiRepository) {
         List<Api> apis = apiRepository.findAll();
-        Map<Long, List<Api>> groupIdApiMap = apis.stream().collect(Collectors.groupingBy(t -> t.toDo().getApiGroupId()));
+        Map<Long, List<Api>> groupIdApiMap = apis.stream().collect(Collectors.groupingBy(t -> t.toData().getApiGroupId()));
         for (ApiGroup group : groups) {
             if (!groupIdApiMap.containsKey(group.getUnique().getId())) {
                 continue;
@@ -41,7 +41,7 @@ public class AllApiGroup extends AbstractEntity {
 
     public void fillSubscribe(ApiSubscribeRepository subscribeRepository, String cron) {
         List<ApiSubscribe> subscribes = subscribeRepository.findByCron(cron);
-        Map<Long, List<ApiSubscribe>> groupIdSubscribeMap = subscribes.stream().collect(Collectors.groupingBy(t -> t.toDo().getApiGroupId()));
+        Map<Long, List<ApiSubscribe>> groupIdSubscribeMap = subscribes.stream().collect(Collectors.groupingBy(t -> t.toData().getApiGroupId()));
         for (ApiGroup group : groups) {
             if (!groupIdSubscribeMap.containsKey(group.getUnique().getId())) {
                 continue;

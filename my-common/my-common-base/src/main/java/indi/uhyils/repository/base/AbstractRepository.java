@@ -128,7 +128,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     public <E extends Identifier> int remove(E... ids) {
         List<EN> ens = find(Arrays.asList(ids));
 
-        List<DO> updateDos = ens.stream().peek(AbstractDoEntity::perUpdate).map(AbstractDoEntity::toDo).collect(Collectors.toList());
+        List<DO> updateDos = ens.stream().peek(AbstractDoEntity::perUpdate).map(AbstractDoEntity::toData).collect(Collectors.toList());
         return dao.updateBatch(updateDos);
     }
 
@@ -141,14 +141,14 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     @Override
     public <E extends Identifier> int removeByIds(List<E> ids) {
         List<EN> ens = find(ids);
-        List<DO> updateDos = ens.stream().peek(AbstractDoEntity::perUpdate).map(AbstractDoEntity::toDo).collect(Collectors.toList());
+        List<DO> updateDos = ens.stream().peek(AbstractDoEntity::perUpdate).map(AbstractDoEntity::toData).collect(Collectors.toList());
         return dao.updateBatch(updateDos);
     }
 
     @Override
     public int change(EN entity, List<Arg> args) {
         QueryWrapper<DO> queryWrapper = Symbol.makeWrapper(args);
-        return dao.update(entity.toDo(), queryWrapper);
+        return dao.update(entity.toData(), queryWrapper);
     }
 
     @Override

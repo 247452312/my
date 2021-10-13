@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.AlgorithmDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -13,8 +14,9 @@ import indi.uhyils.repository.AlgorithmRepository;
  */
 public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
 
-    public Algorithm(AlgorithmDO dO) {
-        super(dO);
+    @Default
+    public Algorithm(AlgorithmDO data) {
+        super(data);
     }
 
     public Algorithm(Long id) {

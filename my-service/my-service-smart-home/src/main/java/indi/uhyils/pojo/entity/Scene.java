@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.SceneDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class Scene extends AbstractDoEntity<SceneDO> {
 
-    public Scene(SceneDO dO) {
-        super(dO);
+    @Default
+    public Scene(SceneDO data) {
+        super(data);
     }
 
     public Scene(Long id) {

@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
@@ -43,8 +44,9 @@ public class User extends AbstractDoEntity<UserDO> {
 
     private Token token;
 
-    public User(UserDO userDO) {
-        super(userDO);
+    @Default
+    public User(UserDO data) {
+        super(data);
     }
 
     public User(Identifier userId) {
@@ -72,14 +74,14 @@ public class User extends AbstractDoEntity<UserDO> {
     }
 
     public static void batchInitRole(List<User> all, RoleRepository roleRepository, DeptRepository deptRepository, PowerRepository powerRepository, MenuRepository menuRepository) {
-        List<Identifier> roleIds = all.stream().filter(t -> t.role == null).map(t -> t.toDo().getRoleId()).distinct().map(Identifier::new).collect(Collectors.toList());
+        List<Identifier> roleIds = all.stream().filter(t -> t.role == null).map(t -> t.toData().getRoleId()).distinct().map(Identifier::new).collect(Collectors.toList());
         List<Role> roles = roleRepository.find(roleIds);
-        Map<Long, Role> idRoleMap = roles.stream().collect(Collectors.toMap(t -> t.toDo().getId(), t -> t));
+        Map<Long, Role> idRoleMap = roles.stream().collect(Collectors.toMap(t -> t.toData().getId(), t -> t));
         for (User user : all) {
             if (user.haveRole()) {
                 continue;
             }
-            Long roleId = user.toDo().getRoleId();
+            Long roleId = user.toData().getRoleId();
             Role role = idRoleMap.get(roleId);
             if (role == null) {
                 continue;
@@ -152,12 +154,12 @@ public class User extends AbstractDoEntity<UserDO> {
 
     public List<Menu> screenMenu(List<Menu> menus) {
         // 管理员直接放行
-        if (Objects.equals(ADMIN_USER_ID, toDo().getId())) {
+        if (Objects.equals(ADMIN_USER_ID, toData().getId())) {
             return menus;
         }
         Asserts.assertTrue(role != null, "权限没有初始化");
         List<Menu> menu = role.menus();
-        return menus.stream().filter(t -> CollectionUtil.contains(menu, t, entity -> entity.toDo().getId())).collect(Collectors.toList());
+        return menus.stream().filter(t -> CollectionUtil.contains(menu, t, entity -> entity.toData().getId())).collect(Collectors.toList());
     }
 
 
