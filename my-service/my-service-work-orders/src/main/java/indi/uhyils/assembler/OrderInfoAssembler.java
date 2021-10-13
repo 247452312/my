@@ -11,7 +11,6 @@ import indi.uhyils.pojo.DTO.OrderNodeDTO;
 import indi.uhyils.pojo.DTO.OrderNodeFieldDTO;
 import indi.uhyils.pojo.entity.OrderInfo;
 import indi.uhyils.pojo.entity.OrderNode;
-import indi.uhyils.util.BeanUtil;
 import java.util.HashMap;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -43,9 +42,7 @@ public abstract class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, 
         return orderInfo;
     }
 
-    public OrderInfoDTO baseInfoDTOToInfoDTO(OrderBaseInfoDTO order) {
-        return BeanUtil.copyProperties(order, OrderInfoDTO.class);
-    }
+    public abstract OrderInfoDTO baseInfoDTOToInfoDTO(OrderBaseInfoDTO order);
 
     public InitOrderDTO toInitOrderDTO(OrderInfo orderInfo) {
         OrderInfoDO orderInfoDO = orderInfo.toData();

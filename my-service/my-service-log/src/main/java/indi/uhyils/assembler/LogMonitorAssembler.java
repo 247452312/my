@@ -27,6 +27,13 @@ public abstract class LogMonitorAssembler extends AbstractAssembler<LogMonitorDO
     private LogMonitorJvmStatusAssembler logMonitorJvmStatusAssembler;
 
 
+    /**
+     * JVM启动信息与状态信息转换为entity
+     *
+     * @param jvmStartInfo
+     *
+     * @return
+     */
     public LogMonitor jvmStartInfoToLogMonitor(JvmStartInfoCommand jvmStartInfo) {
         JvmUniqueMark jvmUniqueMark = jvmStartInfo.getJvmUniqueMark();
         LogMonitorDO logMonitorDO = transJvmStartInfoToMonitorDO(jvmStartInfo);
@@ -36,7 +43,14 @@ public abstract class LogMonitorAssembler extends AbstractAssembler<LogMonitorDO
     }
 
 
-    public LogMonitorDO transJvmStartInfoToMonitorDO(JvmStartInfoCommand jvmStartInfo) {
+    /**
+     * JVM启动信息转化为monitor
+     *
+     * @param jvmStartInfo
+     *
+     * @return
+     */
+    private LogMonitorDO transJvmStartInfoToMonitorDO(JvmStartInfoCommand jvmStartInfo) {
         LogMonitorDO logMonitorEntity = new LogMonitorDO();
         JvmUniqueMark jvmUniqueMark = jvmStartInfo.getJvmUniqueMark();
         logMonitorEntity.setIp(jvmUniqueMark.getIp());

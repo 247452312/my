@@ -7,9 +7,6 @@ import indi.uhyils.pojo.DTO.TraceDetailStatisticsDTO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.entity.TraceInfo;
-import indi.uhyils.util.BeanUtil;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 
 /**
@@ -22,17 +19,16 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public abstract class TraceInfoAssembler extends AbstractAssembler<TraceInfoDO, TraceInfo, TraceInfoDTO> {
 
-    public TraceDetailStatisticsDTO viewToDTO(TraceDetailStatisticsView view) {
-        return BeanUtil.copyProperties(view, TraceDetailStatisticsDTO.class);
-    }
+    /**
+     * 视图模型转DTO
+     *
+     * @param view
+     *
+     * @return
+     */
+    public abstract TraceDetailStatisticsDTO viewToDTO(TraceDetailStatisticsView view);
 
 
-    public Page<TraceDetailStatisticsDTO> pageViewToDTO(Page<TraceDetailStatisticsView> result) {
-        Page<TraceDetailStatisticsDTO> resultPage = new Page<>();
-        BeanUtil.copyProperties(result, resultPage);
-        List<TraceDetailStatisticsDTO> dtos = result.getList().stream().map(this::viewToDTO).collect(Collectors.toList());
-        resultPage.setList(dtos);
-        return resultPage;
-    }
+    public abstract Page<TraceDetailStatisticsDTO> pageViewToDTO(Page<TraceDetailStatisticsView> result);
 }
 

@@ -19,9 +19,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public abstract class DictItemAssembler extends AbstractAssembler<DictItemDO, DictItem, DictItemDTO> {
 
-    public Page<DictItemDTO> toDTO(Page<DictItem> page) {
-        List<DictItemDTO> collect = page.getList().stream().map(this::toDTO).collect(Collectors.toList());
-        return Page.build(collect, page);
-    }
+    public abstract Page<DictItemDTO> toDTO(Page<DictItem> page);
 }
 
