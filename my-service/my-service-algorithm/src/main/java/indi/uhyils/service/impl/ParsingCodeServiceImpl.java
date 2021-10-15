@@ -71,7 +71,7 @@ public class ParsingCodeServiceImpl implements ParsingCodeService {
             Asserts.assertTrue(false, "方法不存在异常,方法应该是: " + EXECUTE_METHOD_NAME);
         } catch (InvocationTargetException e) {
             LogUtil.error(e);
-            Asserts.assertTrue(false, "方法执行异常,异常内容: \n" + ExceptionUtil.toString(e));
+            Asserts.assertTrue(false, "方法执行异常,异常内容: \n" + ExceptionUtil.parseException(e));
         }
         Asserts.assertTrue(false, "未知异常");
         return null;
