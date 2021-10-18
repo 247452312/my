@@ -22,31 +22,41 @@ import org.mapstruct.ap.spi.util.IntrospectorUtils;
  */
 public abstract class AbstractAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO> implements BaseAssembler<DO, ENTITY, DTO> {
 
+    /**
+     * get方法开头
+     */
     public static final String GET_METHOD_HEAD = "get";
 
     @Override
     public List<Arg> toArgs(DTO dto) {
         List<Arg> result = new ArrayList<>();
         Class<? extends IdDTO> dtoClass = dto.getClass();
+        /*DTO中所有属性获取都是public的get方法*/
         Method[] methods = dtoClass.getMethods();
         try {
             for (Method method : methods) {
                 if (!method.getName().startsWith(GET_METHOD_HEAD)) {
                     continue;
                 }
+                // 真实值
                 Object invoke = method.invoke(dto);
-                if (invoke == null) {
-                    continue;
+                if (invoke != null) {
+                    String substring = method.getName().substring(GET_METHOD_HEAD.length());
+                    String fieldName = IntrospectorUtils.decapitalize(substring);
+                    result.add(Arg.as(fieldName, Symbol.EQ, invoke));
                 }
-                String substring = method.getName().substring(GET_METHOD_HEAD.length());
-                String fieldName = IntrospectorUtils.decapitalize(substring);
-                result.add(Arg.as(fieldName, Symbol.EQ, invoke));
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             LogUtil.error(e);
             return null;
         }
         return result;
+    }
+
+    @Override
+    public DTO toDTO(ENTITY entity) {
+        DO aDo = entity.toData();
+        return toDTO(aDo);
     }
 
     @Override

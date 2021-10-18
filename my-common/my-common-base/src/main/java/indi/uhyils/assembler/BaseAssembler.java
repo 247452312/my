@@ -45,10 +45,7 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
-    default DTO toDTO(ENTITY entity) {
-        DO dO = entity.toData();
-        return toDTO(dO);
-    }
+    DTO toDTO(ENTITY entity);
 
     /**
      * entity转DTO
@@ -95,13 +92,7 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
-    default List<DTO> listEntityToDTO(List<ENTITY> noPage) {
-        List<DTO> result = new ArrayList<>(noPage.size());
-        for (ENTITY entity : noPage) {
-            result.add(toDTO(entity));
-        }
-        return result;
-    }
+     List<DTO> listEntityToDTO(List<ENTITY> noPage);
 
     /**
      * 列表转DTO

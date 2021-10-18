@@ -2,6 +2,7 @@ package indi.uhyils.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -29,6 +30,22 @@ public final class ExceptionUtil {
             exceptionStr = out.toString();
         }
         return exceptionStr;
+    }
+
+
+    /**
+     * 抛出线程异常
+     *
+     * @param e
+     *
+     * @throws Exception
+     */
+    public static void throwExecutionException(ExecutionException e) throws Exception {
+        Throwable cause = e.getCause();
+        if (cause instanceof Exception) {
+            throw (Exception) cause;
+        }
+        throw e;
     }
 
 }

@@ -64,6 +64,7 @@
         <javaparser.version>3.22.1</javaparser.version>
         <mybatis.plus.spring.version>3.4.3.3</mybatis.plus.spring.version>
         <mapStruct.version>1.4.2.Final</mapStruct.version>
+        <ojdbc.version>11.2.0.3</ojdbc.version>
     </properties>
 
     <dependencyManagement>
@@ -404,6 +405,13 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapStruct.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.oracle</groupId>
+                <artifactId>ojdbc6</artifactId>
+                <version>${ojdbc.version}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
