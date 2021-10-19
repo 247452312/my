@@ -65,6 +65,7 @@
         <mybatis.plus.spring.version>3.4.3.3</mybatis.plus.spring.version>
         <mapStruct.version>1.4.2.Final</mapStruct.version>
         <ojdbc.version>11.2.0.3</ojdbc.version>
+        <rocketmq.version>4.3.0</rocketmq.version>
     </properties>
 
     <dependencyManagement>
@@ -412,6 +413,11 @@
                 <version>${ojdbc.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-client</artifactId>
+                <version>${rocketmq.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

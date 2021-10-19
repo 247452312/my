@@ -30,6 +30,37 @@ public class MqInfoDTO extends IdDTO {
     private String tag;
 
 
+    /**
+     * MQ类型(0->rocketMQ 1->rabbitMQ)
+     */
+    private Integer type;
+
+    /**
+     * 用户名
+     */
+    private String username;
+
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
+     * 端口
+     */
+    private Integer port;
+
+    /**
+     * rocketMQ用
+     */
+    private String accessKey;
+
+    /**
+     * rocketMQ用
+     */
+    private String secretKey;
+
+
     public String getUrl() {
         return url;
     }
@@ -56,4 +87,51 @@ public class MqInfoDTO extends IdDTO {
         this.tag = tag;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
 }

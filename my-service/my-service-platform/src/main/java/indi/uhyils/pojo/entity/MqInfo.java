@@ -1,13 +1,12 @@
 package indi.uhyils.pojo.entity;
 
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import indi.uhyils.annotation.Default;
+import indi.uhyils.enum_.MqTypeEnum;
 import indi.uhyils.pojo.DO.MqInfoDO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.MqInfoRepository;
 import indi.uhyils.util.Asserts;
-import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.MQManager;
 
 /**
  * mq连接信息表(MqInfo)表 数据库实体类
@@ -39,28 +38,20 @@ public class MqInfo extends SourceInfo<MqInfoDO> {
     public Boolean testConnect() {
         MqInfoDO mqInfoDO = toData();
         Asserts.assertTrue(mqInfoDO != null);
-        // todo 数据库差的有点多啊
-        try {
-            Connection connection = null;
-            //定义一个连接工厂
-            ConnectionFactory factory = new ConnectionFactory();
-            //设置服务端地址（域名地址/ip）
-            factory.setHost(mqInfoDO.getUrl());
-            //设置服务器端口号
-            factory.setPort(5672);
-            //设置虚拟主机(相当于数据库中的库)
-            factory.setVirtualHost("/");
-            //设置用户名
-            factory.setUsername("");
-            //设置密码
-            factory.setPassword("888888");
-            connection = factory.newConnection();
-            connection.close();
-            return true;
-        } catch (Exception e) {
-            LogUtil.error(e, "mq连接失败,url:{}", mqInfoDO.getUrl());
-            return false;
+        Integer type = mqInfoDO.getType();
+        MqTypeEnum typeEnum = MqTypeEnum.parse(type);
+        Asserts.assertTrue(typeEnum != null);
+
+        switch (typeEnum) {
+            case RABBIT_MQ:
+                return MQManager.testConnectRabbitMQ(mqInfoDO.getUrl(), mqInfoDO.getPort(), mqInfoDO.getUsername(), mqInfoDO.getPassword());
+            case ROCKET_MQ:
+                return MQManager.testConnectRocketMQ(mqInfoDO.getUrl(), mqInfoDO.getAccessKey(), mqInfoDO.getSecretKey());
+            default:
+                Asserts.assertTrue(false, "暂不支持数据库类型");
+                return false;
         }
+
     }
 
 

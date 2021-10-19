@@ -47,7 +47,7 @@ public class HttpInfo extends SourceInfo<HttpInfoDO> {
                 try {
                     HttpUtil.sendHttpGet(httpInfoDO.getUrl(), new HashMap<>());
                 } catch (Exception e) {
-                    LogUtil.error(e, "尝试连接失败");
+                    LogUtil.error(e, "http尝试连接失败,url:{}", httpInfoDO.getUrl());
                     return false;
                 }
                 return true;
@@ -55,7 +55,7 @@ public class HttpInfo extends SourceInfo<HttpInfoDO> {
                 try {
                     HttpUtil.sendHttpPost(httpInfoDO.getUrl(), new HashMap<>(), new HashMap<>());
                 } catch (Exception e) {
-                    LogUtil.error(e, "尝试连接失败");
+                    LogUtil.error(e, "http尝试连接失败,url:{}", httpInfoDO.getUrl());
                     return false;
                 }
                 return true;
@@ -64,5 +64,4 @@ public class HttpInfo extends SourceInfo<HttpInfoDO> {
         }
         return false;
     }
-
 }

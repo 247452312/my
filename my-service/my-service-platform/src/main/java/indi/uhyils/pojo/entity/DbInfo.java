@@ -46,6 +46,7 @@ public class DbInfo extends SourceInfo<DbInfoDO> {
         DbInfoDO dbInfoDO = toData();
         Asserts.assertTrue(dbInfoDO != null);
         DbTypeEnum paras = DbTypeEnum.parse(dbInfoDO.getType());
+        Asserts.assertTrue(paras != null,"暂不支持数据库类型");
         switch (paras) {
             case ORACLE:
                 return testConnect(dbInfoDO, ORACLE_DRIVER);
