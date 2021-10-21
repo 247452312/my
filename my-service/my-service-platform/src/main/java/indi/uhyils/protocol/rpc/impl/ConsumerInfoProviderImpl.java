@@ -1,8 +1,10 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
-import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.ConsumerRegisterCommand;
 import indi.uhyils.protocol.rpc.ConsumerInfoProvider;
+import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.ConsumerInfoService;
@@ -28,5 +30,10 @@ public class ConsumerInfoProviderImpl extends BaseDefaultProvider<ConsumerInfoDT
         return service;
     }
 
-}
+    @Override
+    public ServiceResult<ConsumerInfoDTO> consumerRegister(ConsumerRegisterCommand command) {
+        ConsumerInfoDTO dto = service.consumerRegister(command);
+        return ServiceResult.buildSuccessResult(dto);
+    }
 
+}

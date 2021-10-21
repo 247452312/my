@@ -2,6 +2,7 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
+import indi.uhyils.pojo.cqe.command.ConsumerRegisterCommand;
 
 /**
  * 服务消费方信息表(ConsumerInfo)表 内部服务接口
@@ -12,4 +13,12 @@ import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
  */
 public interface ConsumerInfoService extends BaseDoService<ConsumerInfoDTO> {
 
+    /**
+     * 消费者注册
+     *
+     * @param command
+     *
+     * @return
+     */
+    ConsumerInfoDTO consumerRegister(ConsumerRegisterCommand command);
 }

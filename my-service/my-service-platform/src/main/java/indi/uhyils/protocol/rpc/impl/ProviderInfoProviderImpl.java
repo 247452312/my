@@ -1,8 +1,10 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.ProviderInfoDTO;
-import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.RegisterProviderCommand;
 import indi.uhyils.protocol.rpc.ProviderInfoProvider;
+import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.ProviderInfoService;
@@ -28,5 +30,10 @@ public class ProviderInfoProviderImpl extends BaseDefaultProvider<ProviderInfoDT
         return service;
     }
 
+    @Override
+    public ServiceResult<ProviderInfoDTO> registerProvider(RegisterProviderCommand command) {
+        ProviderInfoDTO result = service.registerProvider(command);
+        return ServiceResult.buildSuccessResult(result);
+    }
 }
 

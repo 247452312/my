@@ -1,10 +1,14 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.pojo.DO.ProviderInfoDO;
-import indi.uhyils.repository.ProviderInfoRepository;
-import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.annotation.Default;
+import indi.uhyils.pojo.DO.ProviderInfoDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.repository.ProviderInfoRepository;
+import indi.uhyils.util.Asserts;
+import indi.uhyils.util.IdUtil;
+import indi.uhyils.util.SpringUtil;
+import indi.uhyils.util.StringUtil;
 
 /**
  * 服务提供者表(ProviderInfo)表 数据库实体类
@@ -32,4 +36,29 @@ public class ProviderInfo extends AbstractDoEntity<ProviderInfoDO> {
         super(id, new ProviderInfoDO());
     }
 
+    /**
+     * 检查名称是否重复
+     *
+     * @param rep
+     */
+    public void checkNameRepeat(ProviderInfoRepository rep) {
+        ProviderInfoDO providerInfoDO = toData();
+        Asserts.assertTrue(providerInfoDO != null);
+        Boolean repeat = rep.checkNameRepeat(providerInfoDO.getName());
+        Asserts.assertTrue(!repeat, "名称不能重复");
+    }
+
+    /**
+     * 初始化默认信息
+     */
+    public void injDefaultInfo() {
+        ProviderInfoDO providerInfoDO = toData();
+        Asserts.assertTrue(providerInfoDO != null);
+        String uniqueKey = providerInfoDO.getUniqueKey();
+        if (StringUtil.isNotEmpty(uniqueKey)) {
+            return;
+        }
+        IdUtil bean = SpringUtil.getBean(IdUtil.class);
+        providerInfoDO.setUniqueKey(Long.toString(bean.newId()));
+    }
 }

@@ -1,7 +1,7 @@
 package indi.uhyils.repository;
 
-import indi.uhyils.pojo.entity.ProviderInfo;
 import indi.uhyils.pojo.DO.ProviderInfoDO;
+import indi.uhyils.pojo.entity.ProviderInfo;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**
@@ -14,4 +14,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
 public interface ProviderInfoRepository extends BaseEntityRepository<ProviderInfoDO, ProviderInfo> {
 
 
+    /**
+     * 检查名称是否重复
+     *
+     * @param name
+     *
+     * @return
+     */
+    Boolean checkNameRepeat(String name);
 }

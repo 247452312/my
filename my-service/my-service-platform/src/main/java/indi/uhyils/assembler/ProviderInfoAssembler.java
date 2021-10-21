@@ -1,10 +1,11 @@
 package indi.uhyils.assembler;
 
 
-import org.mapstruct.Mapper;
 import indi.uhyils.pojo.DO.ProviderInfoDO;
 import indi.uhyils.pojo.DTO.ProviderInfoDTO;
+import indi.uhyils.pojo.cqe.command.RegisterProviderCommand;
 import indi.uhyils.pojo.entity.ProviderInfo;
+import org.mapstruct.Mapper;
 
 /**
  * 服务提供者表(ProviderInfo)表 entity,DO,DTO转换工具
@@ -16,5 +17,13 @@ import indi.uhyils.pojo.entity.ProviderInfo;
 @Mapper(componentModel = "spring")
 public abstract class ProviderInfoAssembler extends AbstractAssembler<ProviderInfoDO, ProviderInfo, ProviderInfoDTO> {
 
+    /**
+     * 注册请求转entity
+     *
+     * @param command
+     *
+     * @return
+     */
+    public abstract ProviderInfo toEntity(RegisterProviderCommand command);
 }
 

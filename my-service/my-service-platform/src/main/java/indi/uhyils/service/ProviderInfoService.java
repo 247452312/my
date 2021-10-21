@@ -2,6 +2,7 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.ProviderInfoDTO;
+import indi.uhyils.pojo.cqe.command.RegisterProviderCommand;
 
 /**
  * 服务提供者表(ProviderInfo)表 内部服务接口
@@ -12,4 +13,12 @@ import indi.uhyils.pojo.DTO.ProviderInfoDTO;
  */
 public interface ProviderInfoService extends BaseDoService<ProviderInfoDTO> {
 
+    /**
+     * 注册生产者
+     *
+     * @param command
+     *
+     * @return
+     */
+    ProviderInfoDTO registerProvider(RegisterProviderCommand command);
 }

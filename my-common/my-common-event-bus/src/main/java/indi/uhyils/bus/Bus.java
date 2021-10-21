@@ -153,7 +153,7 @@ public class Bus extends DefaultConsumer implements BusInterface {
      * 异步发布事件
      */
     @Override
-    public void syncPushEvent() {
+    public void asyncPushEvent() {
         List<BaseEvent> baseEvents = events.get();
         if (CollectionUtil.isEmpty(baseEvents)) {
             return;
@@ -183,11 +183,11 @@ public class Bus extends DefaultConsumer implements BusInterface {
      * @param baseEvents
      */
     @Override
-    public void syncCommitAndPush(List<BaseParentEvent> baseEvents) {
+    public void asyncCommitAndPush(List<BaseParentEvent> baseEvents) {
         if (CollectionUtil.isEmpty(baseEvents)) {
             return;
         }
-        baseEvents.forEach(this::syncCommitAndPush);
+        baseEvents.forEach(this::asyncCommitAndPush);
     }
 
     /**
@@ -196,7 +196,7 @@ public class Bus extends DefaultConsumer implements BusInterface {
      * @param baseEvent
      */
     @Override
-    public void syncCommitAndPush(BaseParentEvent baseEvent) {
+    public void asyncCommitAndPush(BaseParentEvent baseEvent) {
         if (baseEvent == null) {
             return;
         }

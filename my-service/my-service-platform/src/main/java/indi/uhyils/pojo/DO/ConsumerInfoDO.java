@@ -53,6 +53,11 @@ public class ConsumerInfoDO extends BaseDO {
     @TableField
     private String name;
 
+    /**
+     * 状态(0->申请中 1->使用中 2->已停用)
+     */
+    @TableField
+    private Integer status;
 
     public String getResponsibilityTelPhone() {
         return responsibilityTelPhone;
@@ -107,4 +112,11 @@ public class ConsumerInfoDO extends BaseDO {
         this.name = name;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

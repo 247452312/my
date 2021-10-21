@@ -31,7 +31,7 @@ public class BusTest extends BaseTest {
         PackageEvent packageEvent = new PackageEvent();
         TestParentEvent baseEvent = new TestParentEvent();
         packageEvent.setEvents(Collections.singletonList(baseEvent));
-        bus.syncCommitAndPush(packageEvent);
+        bus.asyncCommitAndPush(packageEvent);
         Thread.sleep(3000L);
         Asserts.assertTrue(TestEvent.mark);
 

@@ -1,11 +1,14 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ConsumerInfoAssembler;
 import indi.uhyils.dao.ConsumerInfoDao;
-import indi.uhyils.pojo.entity.ConsumerInfo;
+import indi.uhyils.enum_.ConsumerStatusEnum;
 import indi.uhyils.pojo.DO.ConsumerInfoDO;
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
+import indi.uhyils.pojo.entity.ConsumerInfo;
 import indi.uhyils.repository.ConsumerInfoRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 
@@ -25,4 +28,13 @@ public class ConsumerInfoRepositoryImpl extends AbstractRepository<ConsumerInfo,
     }
 
 
+    @Override
+    public boolean checkNameRepeat(String name) {
+        LambdaQueryWrapper<ConsumerInfoDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(ConsumerInfoDO::getName, name);
+        queryWrapper.eq(ConsumerInfoDO::getStatus, ConsumerStatusEnum.USING.getCode());
+        Long count = dao.selectCount(queryWrapper);
+        // 数量不为零,就代表数据库中存在
+        return count != 0;
+    }
 }

@@ -1,7 +1,9 @@
 package indi.uhyils.protocol.rpc;
 
-import indi.uhyils.protocol.rpc.base.DTOProvider;
 import indi.uhyils.pojo.DTO.ProviderInfoDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.RegisterProviderCommand;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
  * 服务提供者表(ProviderInfo)表 Rpc对外访问层
@@ -12,5 +14,13 @@ import indi.uhyils.pojo.DTO.ProviderInfoDTO;
  */
 public interface ProviderInfoProvider extends DTOProvider<ProviderInfoDTO> {
 
+    /**
+     * 注册生产者
+     *
+     * @param command
+     *
+     * @return
+     */
+    ServiceResult<ProviderInfoDTO> registerProvider(RegisterProviderCommand command);
 }
 

@@ -1,11 +1,13 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ProviderInfoAssembler;
 import indi.uhyils.dao.ProviderInfoDao;
-import indi.uhyils.pojo.entity.ProviderInfo;
 import indi.uhyils.pojo.DO.ProviderInfoDO;
 import indi.uhyils.pojo.DTO.ProviderInfoDTO;
+import indi.uhyils.pojo.entity.ProviderInfo;
 import indi.uhyils.repository.ProviderInfoRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 
@@ -25,4 +27,11 @@ public class ProviderInfoRepositoryImpl extends AbstractRepository<ProviderInfo,
     }
 
 
+    @Override
+    public Boolean checkNameRepeat(String name) {
+        LambdaQueryWrapper<ProviderInfoDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(ProviderInfoDO::getName, name);
+        Long count = dao.selectCount(queryWrapper);
+        return count != 0;
+    }
 }

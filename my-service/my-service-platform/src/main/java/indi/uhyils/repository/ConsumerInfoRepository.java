@@ -1,7 +1,7 @@
 package indi.uhyils.repository;
 
-import indi.uhyils.pojo.entity.ConsumerInfo;
 import indi.uhyils.pojo.DO.ConsumerInfoDO;
+import indi.uhyils.pojo.entity.ConsumerInfo;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**
@@ -14,4 +14,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
 public interface ConsumerInfoRepository extends BaseEntityRepository<ConsumerInfoDO, ConsumerInfo> {
 
 
+    /**
+     * 查询重复
+     *
+     * @param name
+     *
+     * @return
+     */
+    boolean checkNameRepeat(String name);
 }

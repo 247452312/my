@@ -1,10 +1,11 @@
 package indi.uhyils.assembler;
 
 
-import org.mapstruct.Mapper;
 import indi.uhyils.pojo.DO.ConsumerInfoDO;
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
+import indi.uhyils.pojo.cqe.command.ConsumerRegisterCommand;
 import indi.uhyils.pojo.entity.ConsumerInfo;
+import org.mapstruct.Mapper;
 
 /**
  * 服务消费方信息表(ConsumerInfo)表 entity,DO,DTO转换工具
@@ -16,5 +17,13 @@ import indi.uhyils.pojo.entity.ConsumerInfo;
 @Mapper(componentModel = "spring")
 public abstract class ConsumerInfoAssembler extends AbstractAssembler<ConsumerInfoDO, ConsumerInfo, ConsumerInfoDTO> {
 
+    /**
+     * 入参转换
+     *
+     * @param command
+     *
+     * @return
+     */
+    public abstract ConsumerInfo toEntity(ConsumerRegisterCommand command);
 }
 

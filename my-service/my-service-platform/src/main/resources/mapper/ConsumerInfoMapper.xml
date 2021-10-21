@@ -17,6 +17,7 @@
         <result property="accessKey" column="access_key" jdbcType="VARCHAR"/>
         <result property="secretKey" column="secret_key" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--批量通过主键修改数据-->
@@ -60,6 +61,9 @@
             </if>
             <if test="item.name != null and item.name != ''">
                 ,name = #{item.name}
+            </if>
+            <if test="item.status != null ">
+                ,status = #{item.status}
             </if>
             where id = #{item.id}
         </foreach>
