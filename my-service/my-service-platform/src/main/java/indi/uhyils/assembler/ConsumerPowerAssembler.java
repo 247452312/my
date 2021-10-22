@@ -3,6 +3,7 @@ package indi.uhyils.assembler;
 
 import indi.uhyils.pojo.DO.ConsumerPowerDO;
 import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
+import indi.uhyils.pojo.cqe.command.AgreeForInterfacePowerCommand;
 import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
 import indi.uhyils.pojo.entity.ConsumerPower;
 import org.mapstruct.Mapper;
@@ -25,5 +26,14 @@ public abstract class ConsumerPowerAssembler extends AbstractAssembler<ConsumerP
      * @return
      */
     public abstract ConsumerPower toEntity(ApplyForInterfacePowerCommand command);
+
+    /**
+     * 转换入参
+     *
+     * @param command
+     *
+     * @return
+     */
+    public abstract ConsumerPower toEntity(AgreeForInterfacePowerCommand command);
 }
 

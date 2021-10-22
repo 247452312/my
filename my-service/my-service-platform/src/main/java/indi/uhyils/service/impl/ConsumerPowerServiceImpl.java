@@ -2,8 +2,10 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.ConsumerPowerAssembler;
+import indi.uhyils.enum_.ConsumerStatusEnum;
 import indi.uhyils.pojo.DO.ConsumerPowerDO;
 import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
+import indi.uhyils.pojo.cqe.command.AgreeForInterfacePowerCommand;
 import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
 import indi.uhyils.pojo.entity.ConsumerPower;
 import indi.uhyils.repository.ConsumerPowerRepository;
@@ -31,6 +33,15 @@ public class ConsumerPowerServiceImpl extends AbstractDoService<ConsumerPowerDO,
         ConsumerPower consumerPower = assem.toEntity(command);
         consumerPower.perInsert();
         consumerPower.checkRationality(rep);
+        consumerPower.saveSelf(rep);
+        return true;
+    }
+
+    @Override
+    public Boolean agreeForInterfacePower(AgreeForInterfacePowerCommand command) {
+        ConsumerPower consumerPower = assem.toEntity(command);
+        consumerPower.checkStatus(rep, ConsumerStatusEnum.REGISTTING);
+        consumerPower.changeToUsing();
         consumerPower.saveSelf(rep);
         return true;
     }

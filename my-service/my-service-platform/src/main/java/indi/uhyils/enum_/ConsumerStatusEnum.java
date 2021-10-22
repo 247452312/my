@@ -1,5 +1,7 @@
 package indi.uhyils.enum_;
 
+import java.util.Objects;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0
@@ -23,6 +25,15 @@ public enum ConsumerStatusEnum {
 
     ConsumerStatusEnum(Integer code) {
         this.code = code;
+    }
+
+    public static ConsumerStatusEnum parse(Integer status) {
+        for (ConsumerStatusEnum value : values()) {
+            if (Objects.equals(value.getCode(), status)) {
+                return value;
+            }
+        }
+        return null;
     }
 
     public Integer getCode() {

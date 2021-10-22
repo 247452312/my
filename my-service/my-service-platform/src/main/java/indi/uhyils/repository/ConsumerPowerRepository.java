@@ -1,5 +1,6 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.enum_.ConsumerStatusEnum;
 import indi.uhyils.pojo.DO.ConsumerPowerDO;
 import indi.uhyils.pojo.entity.ConsumerPower;
 import indi.uhyils.repository.base.BaseEntityRepository;
@@ -22,4 +23,14 @@ public interface ConsumerPowerRepository extends BaseEntityRepository<ConsumerPo
      * @return
      */
     Long countPowerByInterfaceAndConsumer(ConsumerPower consumerPower);
+
+    /**
+     * 根据消费者id和指定接口获取权限状态
+     *
+     * @param consumerPower
+     *
+     * @return
+     */
+    ConsumerStatusEnum findStatusByConsumerIdAndInterfaceId(ConsumerPower consumerPower);
+
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ConsumerPowerAssembler;
 import indi.uhyils.dao.ConsumerPowerDao;
+import indi.uhyils.enum_.ConsumerStatusEnum;
 import indi.uhyils.pojo.DO.ConsumerPowerDO;
 import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
 import indi.uhyils.pojo.entity.ConsumerPower;
@@ -36,5 +37,17 @@ public class ConsumerPowerRepositoryImpl extends AbstractRepository<ConsumerPowe
         queryWrapper.eq(ConsumerPowerDO::getInterfaceId, consumerPowerDO.getInterfaceId());
         queryWrapper.eq(ConsumerPowerDO::getConsumerId, consumerPowerDO.getConsumerId());
         return dao.selectCount(queryWrapper);
+    }
+
+    @Override
+    public ConsumerStatusEnum findStatusByConsumerIdAndInterfaceId(ConsumerPower consumerPower) {
+        ConsumerPowerDO consumerPowerDO = consumerPower.toData();
+        Asserts.assertTrue(consumerPowerDO != null);
+        LambdaQueryWrapper<ConsumerPowerDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(ConsumerPowerDO::getConsumerId, consumerPowerDO.getConsumerId());
+        queryWrapper.eq(ConsumerPowerDO::getInterfaceId, consumerPowerDO.getInterfaceId());
+        ConsumerPowerDO resultDO = dao.selectOne(queryWrapper);
+        Asserts.assertTrue(resultDO != null, "不存在指定权限申请");
+        return ConsumerStatusEnum.parse(resultDO.getStatus());
     }
 }

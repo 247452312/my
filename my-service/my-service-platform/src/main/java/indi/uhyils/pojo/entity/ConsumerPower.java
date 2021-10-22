@@ -50,4 +50,25 @@ public class ConsumerPower extends AbstractDoEntity<ConsumerPowerDO> {
         Long count = rep.countPowerByInterfaceAndConsumer(this);
         Asserts.assertTrue(count == 0, "不符合接口申请规则,请重新添加");
     }
+
+    /**
+     * 修改状态为使用中
+     */
+    public void changeToUsing() {
+        ConsumerPowerDO consumerPowerDO = toData();
+        Asserts.assertTrue(consumerPowerDO != null);
+        consumerPowerDO.setStatus(ConsumerStatusEnum.USING.getCode());
+    }
+
+    /**
+     * 检查状态是否为指定状态
+     *
+     * @param rep
+     * @param registting
+     */
+    public void checkStatus(ConsumerPowerRepository rep, ConsumerStatusEnum registting) {
+        ConsumerStatusEnum status = rep.findStatusByConsumerIdAndInterfaceId(this);
+        Asserts.assertTrue(status != null,"申请状态不能为空");
+        Asserts.assertTrue(status == registting,"权限申请状态不正确,可能已修改,请刷新查询");
+    }
 }

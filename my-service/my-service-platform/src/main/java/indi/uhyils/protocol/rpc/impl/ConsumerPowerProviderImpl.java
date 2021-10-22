@@ -2,9 +2,10 @@ package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.AgreeForInterfacePowerCommand;
 import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
-import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.protocol.rpc.ConsumerPowerProvider;
+import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.ConsumerPowerService;
@@ -33,6 +34,12 @@ public class ConsumerPowerProviderImpl extends BaseDefaultProvider<ConsumerPower
     @Override
     public ServiceResult<Boolean> applyForInterfacePower(ApplyForInterfacePowerCommand command) {
         Boolean result = service.applyForInterfacePower(command);
+        return ServiceResult.buildSuccessResult(result);
+    }
+
+    @Override
+    public ServiceResult<Boolean> agreeForInterfacePower(AgreeForInterfacePowerCommand command) {
+        Boolean result = service.agreeForInterfacePower(command);
         return ServiceResult.buildSuccessResult(result);
     }
 }
