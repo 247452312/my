@@ -2,6 +2,7 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
+import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
 
 /**
  * 接口信息表(InterfaceInfo)表 内部服务接口
@@ -11,5 +12,12 @@ import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
  * @date 文件创建日期 2021年10月18日 19时06分08秒
  */
 public interface InterfaceInfoService extends BaseDoService<InterfaceInfoDTO> {
-
+    /**
+     * 添加接口
+     *
+     * @param command
+     *
+     * @return
+     */
+    InterfaceInfoDTO addInterface(AddInterfaceCommand command);
 }

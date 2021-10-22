@@ -2,10 +2,11 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.InterfaceInfoAssembler;
-import indi.uhyils.repository.InterfaceInfoRepository;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
+import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
 import indi.uhyils.pojo.entity.InterfaceInfo;
+import indi.uhyils.repository.InterfaceInfoRepository;
 import indi.uhyils.service.InterfaceInfoService;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,13 @@ public class InterfaceInfoServiceImpl extends AbstractDoService<InterfaceInfoDO,
 
     public InterfaceInfoServiceImpl(InterfaceInfoAssembler assembler, InterfaceInfoRepository repository) {
         super(assembler, repository);
+    }
+
+    @Override
+    public InterfaceInfoDTO addInterface(AddInterfaceCommand command) {
+        InterfaceInfo interfaceInfo = assem.toEntity(command);
+        interfaceInfo.saveSelf(rep);
+        return assem.toDTO(interfaceInfo);
     }
 
 

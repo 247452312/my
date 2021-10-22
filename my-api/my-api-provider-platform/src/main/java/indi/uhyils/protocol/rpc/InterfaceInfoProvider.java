@@ -1,7 +1,9 @@
 package indi.uhyils.protocol.rpc;
 
-import indi.uhyils.protocol.rpc.base.DTOProvider;
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
  * 接口信息表(InterfaceInfo)表 Rpc对外访问层
@@ -12,5 +14,13 @@ import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
  */
 public interface InterfaceInfoProvider extends DTOProvider<InterfaceInfoDTO> {
 
+    /**
+     * 添加接口
+     *
+     * @param command
+     *
+     * @return
+     */
+    ServiceResult<InterfaceInfoDTO> addInterface(AddInterfaceCommand command);
 }
 

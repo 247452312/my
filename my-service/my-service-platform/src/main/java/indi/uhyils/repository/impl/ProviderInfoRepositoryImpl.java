@@ -34,4 +34,12 @@ public class ProviderInfoRepositoryImpl extends AbstractRepository<ProviderInfo,
         Long count = dao.selectCount(queryWrapper);
         return count != 0;
     }
+
+    @Override
+    public ProviderInfo findByUniqueKey(String providerUniqueKey) {
+        LambdaQueryWrapper<ProviderInfoDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(ProviderInfoDO::getUniqueKey, providerUniqueKey);
+        ProviderInfoDO providerInfoDO = dao.selectOne(queryWrapper);
+        return assembler.toEntity(providerInfoDO);
+    }
 }

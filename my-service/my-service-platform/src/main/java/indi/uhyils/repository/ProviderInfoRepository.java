@@ -22,4 +22,13 @@ public interface ProviderInfoRepository extends BaseEntityRepository<ProviderInf
      * @return
      */
     Boolean checkNameRepeat(String name);
+
+    /**
+     * 根据唯一标示获取生产者
+     *
+     * @param providerUniqueKey
+     *
+     * @return
+     */
+    ProviderInfo findByUniqueKey(String providerUniqueKey);
 }

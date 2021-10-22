@@ -1,8 +1,10 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
-import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
 import indi.uhyils.protocol.rpc.InterfaceInfoProvider;
+import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.BaseDoService;
 import indi.uhyils.service.InterfaceInfoService;
@@ -28,5 +30,10 @@ public class InterfaceInfoProviderImpl extends BaseDefaultProvider<InterfaceInfo
         return service;
     }
 
+    @Override
+    public ServiceResult<InterfaceInfoDTO> addInterface(AddInterfaceCommand command) {
+        InterfaceInfoDTO result = service.addInterface(command);
+        return ServiceResult.buildSuccessResult(result);
+    }
 }
 
