@@ -1,10 +1,10 @@
 package indi.uhyils.assembler;
 
 
-import org.mapstruct.Mapper;
 import indi.uhyils.pojo.DO.PlatformPowerDO;
 import indi.uhyils.pojo.DTO.PlatformPowerDTO;
 import indi.uhyils.pojo.entity.PlatformPower;
+import org.mapstruct.Mapper;
 
 /**
  * 接口权限表(PlatformPower)表 entity,DO,DTO转换工具

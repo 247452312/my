@@ -12,7 +12,7 @@
         <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
         <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
         <result property="consumerId" column="consumer_id" jdbcType="INTEGER"/>
-        <result property="powerId" column="power_id" jdbcType="INTEGER"/>
+        <result property="interfaceId" column="interface_id" jdbcType="INTEGER"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -43,8 +43,8 @@
             <if test="item.consumerId != null">
                 ,consumer_id = #{item.consumerId}
             </if>
-            <if test="item.powerId != null">
-                ,power_id = #{item.powerId}
+            <if test="item.interfaceId != null">
+                ,interface_id = #{item.interfaceId}
             </if>
             <if test="item.status != null">
                 ,status = #{item.status}

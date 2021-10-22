@@ -27,7 +27,7 @@ public class ConsumerPowerDO extends BaseDO {
      * 接口权限id
      */
     @TableField
-    private Long powerId;
+    private Long interfaceId;
 
     /**
      * 状态(0->申请中 1->已拥有)
@@ -45,12 +45,12 @@ public class ConsumerPowerDO extends BaseDO {
     }
 
 
-    public Long getPowerId() {
-        return powerId;
+    public Long getInterfaceId() {
+        return interfaceId;
     }
 
-    public void setPowerId(Long powerId) {
-        this.powerId = powerId;
+    public void setInterfaceId(Long interfaceId) {
+        this.interfaceId = interfaceId;
     }
 
 

@@ -2,6 +2,7 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
+import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
 
 /**
  * 消费方权限表(ConsumerPower)表 内部服务接口
@@ -12,4 +13,12 @@ import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
  */
 public interface ConsumerPowerService extends BaseDoService<ConsumerPowerDTO> {
 
+    /**
+     * 申请申请单权限
+     *
+     * @param command
+     *
+     * @return
+     */
+    Boolean applyForInterfacePower(ApplyForInterfacePowerCommand command);
 }

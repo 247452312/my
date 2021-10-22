@@ -1,10 +1,12 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.pojo.DO.ConsumerPowerDO;
-import indi.uhyils.repository.ConsumerPowerRepository;
-import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.annotation.Default;
+import indi.uhyils.enum_.ConsumerStatusEnum;
+import indi.uhyils.pojo.DO.ConsumerPowerDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.repository.ConsumerPowerRepository;
+import indi.uhyils.util.Asserts;
 
 /**
  * 消费方权限表(ConsumerPower)表 数据库实体类
@@ -32,4 +34,20 @@ public class ConsumerPower extends AbstractDoEntity<ConsumerPowerDO> {
         super(id, new ConsumerPowerDO());
     }
 
+    @Override
+    public void perInsert() {
+        super.perInsert();
+        // 默认为使用中
+        toData().setStatus(ConsumerStatusEnum.REGISTTING.getCode());
+    }
+
+    /**
+     * 检查是否可以添加
+     *
+     * @param rep
+     */
+    public void checkRationality(ConsumerPowerRepository rep) {
+        Long count = rep.countPowerByInterfaceAndConsumer(this);
+        Asserts.assertTrue(count == 0, "不符合接口申请规则,请重新添加");
+    }
 }

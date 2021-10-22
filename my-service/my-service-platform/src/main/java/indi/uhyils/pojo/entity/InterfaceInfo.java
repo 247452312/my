@@ -1,10 +1,10 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.pojo.DO.InterfaceInfoDO;
-import indi.uhyils.repository.InterfaceInfoRepository;
-import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.annotation.Default;
+import indi.uhyils.pojo.DO.InterfaceInfoDO;
+import indi.uhyils.pojo.entity.base.AbstractDoEntity;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.repository.InterfaceInfoRepository;
 
 /**
  * 接口信息表(InterfaceInfo)表 数据库实体类

@@ -1,7 +1,7 @@
 package indi.uhyils.repository;
 
-import indi.uhyils.pojo.entity.ConsumerPower;
 import indi.uhyils.pojo.DO.ConsumerPowerDO;
+import indi.uhyils.pojo.entity.ConsumerPower;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**
@@ -14,4 +14,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
 public interface ConsumerPowerRepository extends BaseEntityRepository<ConsumerPowerDO, ConsumerPower> {
 
 
+    /**
+     * 检查是否可以添加
+     *
+     * @param consumerPower
+     *
+     * @return
+     */
+    Long countPowerByInterfaceAndConsumer(ConsumerPower consumerPower);
 }

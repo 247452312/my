@@ -1,13 +1,16 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ConsumerPowerAssembler;
 import indi.uhyils.dao.ConsumerPowerDao;
-import indi.uhyils.pojo.entity.ConsumerPower;
 import indi.uhyils.pojo.DO.ConsumerPowerDO;
 import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
+import indi.uhyils.pojo.entity.ConsumerPower;
 import indi.uhyils.repository.ConsumerPowerRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import indi.uhyils.util.Asserts;
 
 
 /**
@@ -25,4 +28,13 @@ public class ConsumerPowerRepositoryImpl extends AbstractRepository<ConsumerPowe
     }
 
 
+    @Override
+    public Long countPowerByInterfaceAndConsumer(ConsumerPower consumerPower) {
+        ConsumerPowerDO consumerPowerDO = consumerPower.toData();
+        Asserts.assertTrue(consumerPowerDO != null);
+        LambdaQueryWrapper<ConsumerPowerDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(ConsumerPowerDO::getInterfaceId, consumerPowerDO.getInterfaceId());
+        queryWrapper.eq(ConsumerPowerDO::getConsumerId, consumerPowerDO.getConsumerId());
+        return dao.selectCount(queryWrapper);
+    }
 }

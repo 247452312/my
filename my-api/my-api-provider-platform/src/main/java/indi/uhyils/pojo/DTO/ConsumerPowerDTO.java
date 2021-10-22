@@ -22,7 +22,7 @@ public class ConsumerPowerDTO extends IdDTO {
     /**
      * 接口权限id
      */
-    private Long powerId;
+    private Long interfaceId;
 
     /**
      * 状态(0->申请中 1->已拥有)
@@ -39,12 +39,12 @@ public class ConsumerPowerDTO extends IdDTO {
     }
 
 
-    public Long getPowerId() {
-        return powerId;
+    public Long getInterfaceId() {
+        return interfaceId;
     }
 
-    public void setPowerId(Long powerId) {
-        this.powerId = powerId;
+    public void setInterfaceId(Long interfaceId) {
+        this.interfaceId = interfaceId;
     }
 
 

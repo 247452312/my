@@ -3,6 +3,7 @@ package indi.uhyils.protocol.rpc.impl;
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
+import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
 import indi.uhyils.protocol.rpc.InterfaceInfoProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;

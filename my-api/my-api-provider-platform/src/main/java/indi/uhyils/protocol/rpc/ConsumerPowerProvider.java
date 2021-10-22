@@ -1,7 +1,9 @@
 package indi.uhyils.protocol.rpc;
 
-import indi.uhyils.protocol.rpc.base.DTOProvider;
 import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
+import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
  * 消费方权限表(ConsumerPower)表 Rpc对外访问层
@@ -12,5 +14,13 @@ import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
  */
 public interface ConsumerPowerProvider extends DTOProvider<ConsumerPowerDTO> {
 
+    /**
+     * 申请申请单权限
+     *
+     * @param command
+     *
+     * @return
+     */
+    ServiceResult<Boolean> applyForInterfacePower(ApplyForInterfacePowerCommand command);
 }
 

@@ -5,6 +5,7 @@ import indi.uhyils.assembler.InterfaceInfoAssembler;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
 import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
+import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
 import indi.uhyils.pojo.entity.InterfaceInfo;
 import indi.uhyils.repository.InterfaceInfoRepository;
 import indi.uhyils.service.InterfaceInfoService;

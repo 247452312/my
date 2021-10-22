@@ -2,10 +2,11 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.ConsumerPowerAssembler;
-import indi.uhyils.repository.ConsumerPowerRepository;
 import indi.uhyils.pojo.DO.ConsumerPowerDO;
 import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
+import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
 import indi.uhyils.pojo.entity.ConsumerPower;
+import indi.uhyils.repository.ConsumerPowerRepository;
 import indi.uhyils.service.ConsumerPowerService;
 import org.springframework.stereotype.Service;
 
@@ -25,4 +26,12 @@ public class ConsumerPowerServiceImpl extends AbstractDoService<ConsumerPowerDO,
     }
 
 
+    @Override
+    public Boolean applyForInterfacePower(ApplyForInterfacePowerCommand command) {
+        ConsumerPower consumerPower = assem.toEntity(command);
+        consumerPower.perInsert();
+        consumerPower.checkRationality(rep);
+        consumerPower.saveSelf(rep);
+        return true;
+    }
 }

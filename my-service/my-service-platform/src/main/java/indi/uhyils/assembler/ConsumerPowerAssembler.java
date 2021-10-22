@@ -1,10 +1,11 @@
 package indi.uhyils.assembler;
 
 
-import org.mapstruct.Mapper;
 import indi.uhyils.pojo.DO.ConsumerPowerDO;
 import indi.uhyils.pojo.DTO.ConsumerPowerDTO;
+import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
 import indi.uhyils.pojo.entity.ConsumerPower;
+import org.mapstruct.Mapper;
 
 /**
  * 消费方权限表(ConsumerPower)表 entity,DO,DTO转换工具
@@ -16,5 +17,13 @@ import indi.uhyils.pojo.entity.ConsumerPower;
 @Mapper(componentModel = "spring")
 public abstract class ConsumerPowerAssembler extends AbstractAssembler<ConsumerPowerDO, ConsumerPower, ConsumerPowerDTO> {
 
+    /**
+     * 转换
+     *
+     * @param command
+     *
+     * @return
+     */
+    public abstract ConsumerPower toEntity(ApplyForInterfacePowerCommand command);
 }
 
