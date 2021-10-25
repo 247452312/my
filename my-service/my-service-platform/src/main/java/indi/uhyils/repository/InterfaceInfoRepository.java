@@ -1,8 +1,10 @@
 package indi.uhyils.repository;
 
-import indi.uhyils.pojo.entity.InterfaceInfo;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
+import indi.uhyils.pojo.entity.interfaces.InterfaceInfo;
+import indi.uhyils.pojo.entity.interfaces.InterfaceInterface;
 import indi.uhyils.repository.base.BaseEntityRepository;
+import java.util.List;
 
 /**
  * 接口信息表(InterfaceInfo)表 数据仓库层
@@ -14,4 +16,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
 public interface InterfaceInfoRepository extends BaseEntityRepository<InterfaceInfoDO, InterfaceInfo> {
 
 
+    /**
+     * 递归去获取树
+     *
+     * @param interfaceInfo
+     *
+     * @return
+     */
+    List<InterfaceInterface> findChildsInterface(InterfaceInfo interfaceInfo);
 }

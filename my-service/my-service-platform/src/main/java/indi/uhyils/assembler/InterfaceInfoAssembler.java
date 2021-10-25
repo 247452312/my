@@ -4,11 +4,14 @@ package indi.uhyils.assembler;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
 import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
-import indi.uhyils.pojo.entity.InterfaceInfo;
 import indi.uhyils.pojo.entity.ProviderInfo;
+import indi.uhyils.pojo.entity.interfaces.InterfaceInfo;
+import indi.uhyils.pojo.entity.interfaces.InterfaceInterface;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ProviderInfoRepository;
 import indi.uhyils.util.Asserts;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -49,5 +52,10 @@ public abstract class InterfaceInfoAssembler extends AbstractAssembler<Interface
      * @return
      */
     public abstract InterfaceInfoDO toDo(AddInterfaceCommand command);
+
+    public List<InterfaceInterface> listDoToEntityInterface(List<InterfaceInfoDO> childsInterface) {
+        List<InterfaceInfo> interfaceInfos = listToEntity(childsInterface);
+        return interfaceInfos.stream().map(t -> (InterfaceInterface) t).collect(Collectors.toList());
+    }
 }
 

@@ -1,8 +1,10 @@
 package indi.uhyils.protocol.rpc;
 
+import com.alibaba.fastjson.JSON;
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
+import indi.uhyils.pojo.cqe.command.InvokeInterfaceCommand;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
@@ -22,5 +24,14 @@ public interface InterfaceInfoProvider extends DTOProvider<InterfaceInfoDTO> {
      * @return
      */
     ServiceResult<InterfaceInfoDTO> addInterface(AddInterfaceCommand command);
+
+    /**
+     * 调用http接口
+     *
+     * @param command
+     *
+     * @return
+     */
+    ServiceResult<JSON> invokeInterface(InvokeInterfaceCommand command);
 }
 

@@ -1,9 +1,10 @@
 package indi.uhyils.protocol.rpc.impl;
 
+import com.alibaba.fastjson.JSON;
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
-import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
+import indi.uhyils.pojo.cqe.command.InvokeInterfaceCommand;
 import indi.uhyils.protocol.rpc.InterfaceInfoProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
@@ -34,6 +35,12 @@ public class InterfaceInfoProviderImpl extends BaseDefaultProvider<InterfaceInfo
     @Override
     public ServiceResult<InterfaceInfoDTO> addInterface(AddInterfaceCommand command) {
         InterfaceInfoDTO result = service.addInterface(command);
+        return ServiceResult.buildSuccessResult(result);
+    }
+
+    @Override
+    public ServiceResult<JSON> invokeInterface(InvokeInterfaceCommand command) {
+        JSON result = service.invokeInterface(command);
         return ServiceResult.buildSuccessResult(result);
     }
 }

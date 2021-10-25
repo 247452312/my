@@ -1,5 +1,7 @@
 package indi.uhyils.enum_;
 
+import java.util.Objects;
+
 /**
  * 资源类型
  *
@@ -28,5 +30,22 @@ public enum SourceTypeEnum {
     SourceTypeEnum(Integer code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    public static SourceTypeEnum parse(Integer type) {
+        for (SourceTypeEnum value : values()) {
+            if (Objects.equals(type, value.getCode())) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
     }
 }

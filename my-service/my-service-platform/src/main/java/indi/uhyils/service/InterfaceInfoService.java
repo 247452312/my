@@ -1,9 +1,10 @@
 package indi.uhyils.service;
 
 
+import com.alibaba.fastjson.JSON;
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
 import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
-import indi.uhyils.pojo.cqe.command.ApplyForInterfacePowerCommand;
+import indi.uhyils.pojo.cqe.command.InvokeInterfaceCommand;
 
 /**
  * 接口信息表(InterfaceInfo)表 内部服务接口
@@ -22,4 +23,13 @@ public interface InterfaceInfoService extends BaseDoService<InterfaceInfoDTO> {
      * @return
      */
     InterfaceInfoDTO addInterface(AddInterfaceCommand command);
+
+    /**
+     * 调用http接口
+     *
+     * @param command
+     *
+     * @return
+     */
+    JSON invokeInterface(InvokeInterfaceCommand command);
 }

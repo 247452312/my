@@ -4,6 +4,7 @@ import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import indi.uhyils.util.Asserts;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -64,7 +65,9 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
      * @return
      */
     @Override
+    @NotNull
     public T toData() {
+        Asserts.assertTrue(data != null);
         return data;
     }
 
