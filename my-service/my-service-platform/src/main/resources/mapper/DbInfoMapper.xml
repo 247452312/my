@@ -16,6 +16,7 @@
         <result property="type" column="type" jdbcType="INTEGER"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="sql" column="sql" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--批量通过主键修改数据-->
@@ -56,6 +57,9 @@
             </if>
             <if test="item.password != null and item.password != ''">
                 ,password = #{item.password}
+            </if>
+            <if test="item.sql != null and item.sql != ''">
+                ,sql = #{item.sql}
             </if>
             where id = #{item.id}
         </foreach>

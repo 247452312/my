@@ -1,13 +1,17 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ConsumerFilterAssembler;
 import indi.uhyils.dao.ConsumerFilterDao;
-import indi.uhyils.pojo.entity.ConsumerFilter;
 import indi.uhyils.pojo.DO.ConsumerFilterDO;
 import indi.uhyils.pojo.DTO.ConsumerFilterDTO;
+import indi.uhyils.pojo.entity.ConsumerFilter;
+import indi.uhyils.pojo.entity.interfaces.InterfaceInfo;
 import indi.uhyils.repository.ConsumerFilterRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
 
 
 /**
@@ -25,4 +29,12 @@ public class ConsumerFilterRepositoryImpl extends AbstractRepository<ConsumerFil
     }
 
 
+    @Override
+    public List<ConsumerFilter> findByConsumerAndInterface(Long consumerId, InterfaceInfo interfaceInfo) {
+        LambdaQueryWrapper<ConsumerFilterDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(ConsumerFilterDO::getInterfaceId, interfaceInfo.getUnique().getId());
+        queryWrapper.eq(ConsumerFilterDO::getConsumerId, consumerId);
+        List<ConsumerFilterDO> consumerFilterDOS = dao.selectList(queryWrapper);
+        return assembler.listToEntity(consumerFilterDOS);
+    }
 }

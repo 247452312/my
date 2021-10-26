@@ -31,5 +31,5 @@ public interface InterfaceInfoService extends BaseDoService<InterfaceInfoDTO> {
      *
      * @return
      */
-    JSON invokeInterface(InvokeInterfaceCommand command);
+    JSON invokeInterface(InvokeInterfaceCommand command) throws Exception;
 }

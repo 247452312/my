@@ -13,7 +13,15 @@ public class InvokeInterfaceCommand extends AbstractCommand {
 
     private static final long serialVersionUID = -1L;
 
+    /**
+     * 接口id
+     */
     private Long interfaceId;
+
+    /**
+     * 调用方id
+     */
+    private Long consumerId;
 
     /**
      * 入参
@@ -34,5 +42,13 @@ public class InvokeInterfaceCommand extends AbstractCommand {
 
     public void setParam(Map<String, Object> param) {
         this.param = param;
+    }
+
+    public Long getConsumerId() {
+        return consumerId;
+    }
+
+    public void setConsumerId(Long consumerId) {
+        this.consumerId = consumerId;
     }
 }

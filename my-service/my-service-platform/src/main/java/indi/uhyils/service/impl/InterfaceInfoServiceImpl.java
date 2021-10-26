@@ -9,6 +9,7 @@ import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
 import indi.uhyils.pojo.cqe.command.InvokeInterfaceCommand;
 import indi.uhyils.pojo.entity.interfaces.InterfaceInfo;
 import indi.uhyils.pojo.entity.interfaces.InterfaceInterface;
+import indi.uhyils.repository.ConsumerFilterRepository;
 import indi.uhyils.repository.DbInfoRepository;
 import indi.uhyils.repository.HttpInfoRepository;
 import indi.uhyils.repository.InterfaceInfoRepository;
@@ -38,6 +39,9 @@ public class InterfaceInfoServiceImpl extends AbstractDoService<InterfaceInfoDO,
     @Autowired
     private DbInfoRepository dbInfoRepository;
 
+    @Autowired
+    private ConsumerFilterRepository consumerFilterRepository;
+
     public InterfaceInfoServiceImpl(InterfaceInfoAssembler assembler, InterfaceInfoRepository repository) {
         super(assembler, repository);
     }
@@ -50,7 +54,7 @@ public class InterfaceInfoServiceImpl extends AbstractDoService<InterfaceInfoDO,
     }
 
     @Override
-    public JSON invokeInterface(InvokeInterfaceCommand command) {
+    public JSON invokeInterface(InvokeInterfaceCommand command) throws Exception {
         Long interfaceId = command.getInterfaceId();
         Asserts.assertTrue(interfaceId != null);
         InterfaceInfo interfaceInfo = new InterfaceInfo(interfaceId);
@@ -61,7 +65,7 @@ public class InterfaceInfoServiceImpl extends AbstractDoService<InterfaceInfoDO,
         // 转换为自身正确的类型, 例如HTTP接口转换为 HttpInterfaceInfoInterface
         interfaceInfo.findSourceAndFull(httpInfoRepository, mqInfoRepository, dbInfoRepository);
         InterfaceInterface interfaceInterface = interfaceInfo.transChildToMarkType();
-        return interfaceInterface.invoke(command.getParam());
+        return interfaceInterface.invoke(command.getConsumerId(), command.getParam(), consumerFilterRepository);
     }
 
 

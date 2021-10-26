@@ -5,7 +5,9 @@ import indi.uhyils.enum_.SourceTypeEnum;
 import indi.uhyils.pojo.DO.SourceInfoDO;
 import indi.uhyils.pojo.entity.SourceInfo;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.repository.ConsumerFilterRepository;
 import indi.uhyils.repository.InterfaceInfoRepository;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -26,11 +28,14 @@ public interface InterfaceInterface {
     /**
      * 执行
      *
+     *
+     * @param consumerId
      * @param map
      *
+     * @param consumerFilterRepository
      * @return
      */
-    JSON invoke(Map<String, Object> map);
+    JSON invoke(Long consumerId, Map<String, Object> map, ConsumerFilterRepository consumerFilterRepository) throws SQLException, Exception;
 
     /**
      * 获取子类

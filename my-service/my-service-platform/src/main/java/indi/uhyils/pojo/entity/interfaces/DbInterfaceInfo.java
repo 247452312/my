@@ -1,10 +1,17 @@
 package indi.uhyils.pojo.entity.interfaces;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import indi.uhyils.enum_.SourceTypeEnum;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
+import indi.uhyils.pojo.entity.ConsumerFilter;
+import indi.uhyils.pojo.entity.DbInfo;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.repository.ConsumerFilterRepository;
 import indi.uhyils.repository.InterfaceInfoRepository;
 import indi.uhyils.util.Asserts;
+import java.sql.Connection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,9 +39,14 @@ public class DbInterfaceInfo extends InterfaceInfo implements HttpInterfaceInfoI
     }
 
     @Override
-    public JSON invoke(Map<String, Object> map) {
+    public JSON invoke(Long consumerId, Map<String, Object> map, ConsumerFilterRepository consumerFilterRepository) throws Exception {
         InterfaceInfoDO interfaceInfoDO = toData();
-        // todo DB调用
-        return null;
+        Asserts.assertTrue(sourceInfo != null);
+        Asserts.assertTrue(sourceInfo.type() == SourceTypeEnum.DB);
+        DbInfo sourceInfo = (DbInfo) this.sourceInfo;
+        Connection conn = sourceInfo.getConnect();
+        List<ConsumerFilter> consumerFilters = consumerFilterRepository.findByConsumerAndInterface(consumerId, this);
+        List<Map<String, Object>> result = sourceInfo.execute(conn, map, consumerFilters);
+        return JSON.parseArray(JSONArray.toJSONString(result));
     }
 }

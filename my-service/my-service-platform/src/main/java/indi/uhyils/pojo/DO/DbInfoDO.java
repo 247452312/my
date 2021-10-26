@@ -47,6 +47,11 @@ public class DbInfoDO extends SourceInfoDO {
      */
     @TableField
     private String password;
+    /**
+     * sql语句
+     */
+    @TableField
+    private String sql;
 
 
     public String getName() {
@@ -91,6 +96,14 @@ public class DbInfoDO extends SourceInfoDO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSql() {
+        return sql;
+    }
+
+    public void setSql(String sql) {
+        this.sql = sql;
     }
 
     @Override

@@ -11,12 +11,14 @@ import indi.uhyils.pojo.entity.MqInfo;
 import indi.uhyils.pojo.entity.SourceInfo;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.repository.ConsumerFilterRepository;
 import indi.uhyils.repository.DbInfoRepository;
 import indi.uhyils.repository.HttpInfoRepository;
 import indi.uhyils.repository.InterfaceInfoRepository;
 import indi.uhyils.repository.MqInfoRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +98,7 @@ public class InterfaceInfo extends AbstractDoEntity<InterfaceInfoDO> implements 
     }
 
     @Override
-    public JSON invoke(Map<String, Object> map) {
+    public JSON invoke(Long consumerId, Map<String, Object> map, ConsumerFilterRepository consumerFilterRepository) throws SQLException, Exception {
         // todo invoke 要动态执行sql
         return null;
     }
@@ -223,7 +225,7 @@ public class InterfaceInfo extends AbstractDoEntity<InterfaceInfoDO> implements 
     /**
      * 转换为自身正确的类型, 例如HTTP接口转换为 HttpInterfaceInfoInterface
      *
-     * @return
+     * @return 本身节点的真实类型,如果是叶子结点,就会转换成httpInterface,MqInterface,DbInterface等,如果不是. 就返回 InterfaceInfo
      */
     public InterfaceInterface transChildToMarkType() {
         /*1.判断自身是否是叶子结点*/

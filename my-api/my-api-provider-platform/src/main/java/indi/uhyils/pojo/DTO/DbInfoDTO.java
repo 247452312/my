@@ -39,6 +39,11 @@ public class DbInfoDTO extends IdDTO {
      */
     private String password;
 
+    /**
+     * sql语句
+     */
+    private String sql;
+
 
     public String getName() {
         return name;
@@ -84,4 +89,11 @@ public class DbInfoDTO extends IdDTO {
         this.password = password;
     }
 
+    public String getSql() {
+        return sql;
+    }
+
+    public void setSql(String sql) {
+        this.sql = sql;
+    }
 }
