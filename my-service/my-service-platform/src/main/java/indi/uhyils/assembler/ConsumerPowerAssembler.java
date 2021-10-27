@@ -25,7 +25,28 @@ public abstract class ConsumerPowerAssembler extends AbstractAssembler<ConsumerP
      *
      * @return
      */
-    public abstract ConsumerPower toEntity(ApplyForInterfacePowerCommand command);
+    public ConsumerPower toEntity(ApplyForInterfacePowerCommand command) {
+        ConsumerPowerDO consumerPowerDO = toDo(command);
+        return new ConsumerPower(consumerPowerDO);
+    }
+
+    /**
+     * 转换为DO
+     *
+     * @param command
+     *
+     * @return
+     */
+    public abstract ConsumerPowerDO toDo(ApplyForInterfacePowerCommand command);
+
+    /**
+     * 转换为DO
+     *
+     * @param command
+     *
+     * @return
+     */
+    public abstract ConsumerPowerDO toDo(AgreeForInterfacePowerCommand command);
 
     /**
      * 转换入参
@@ -34,6 +55,9 @@ public abstract class ConsumerPowerAssembler extends AbstractAssembler<ConsumerP
      *
      * @return
      */
-    public abstract ConsumerPower toEntity(AgreeForInterfacePowerCommand command);
+    public ConsumerPower toEntity(AgreeForInterfacePowerCommand command) {
+        ConsumerPowerDO consumerPowerDO = toDo(command);
+        return new ConsumerPower(consumerPowerDO);
+    }
 }
 

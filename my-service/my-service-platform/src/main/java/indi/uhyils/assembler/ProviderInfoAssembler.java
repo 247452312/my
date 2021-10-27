@@ -24,6 +24,11 @@ public abstract class ProviderInfoAssembler extends AbstractAssembler<ProviderIn
      *
      * @return
      */
-    public abstract ProviderInfo toEntity(RegisterProviderCommand command);
+    public ProviderInfo toEntity(RegisterProviderCommand command) {
+        ProviderInfoDO providerInfoDO = toDo(command);
+        return new ProviderInfo(providerInfoDO);
+    }
+
+    public abstract ProviderInfoDO toDo(RegisterProviderCommand command);
 }
 

@@ -1,5 +1,6 @@
 package indi.uhyils.util;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +33,32 @@ public final class StringUtil {
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
             if (ch == c) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 父类字符串包含子类字符串数量
+     *
+     * @param str
+     * @param ch
+     *
+     * @return
+     */
+    public static int containsCount(String str, String ch) {
+        int count = 0;
+        char[] chars = ch.toCharArray();
+        for (int i = 0; i < str.length() - ch.length(); i++) {
+            boolean successMatch = true;
+            for (int j = 0; j < chars.length; j++) {
+                if (!Objects.equals(chars[j], str.charAt(i + j))) {
+                    successMatch = false;
+                    break;
+                }
+            }
+            if (successMatch) {
                 count++;
             }
         }

@@ -24,6 +24,11 @@ public abstract class ConsumerInfoAssembler extends AbstractAssembler<ConsumerIn
      *
      * @return
      */
-    public abstract ConsumerInfo toEntity(ConsumerRegisterCommand command);
+    public ConsumerInfo toEntity(ConsumerRegisterCommand command) {
+        ConsumerInfoDO consumerInfoDO = toDo(command);
+        return new ConsumerInfo(consumerInfoDO);
+    }
+
+    public abstract ConsumerInfoDO toDo(ConsumerRegisterCommand command);
 }
 

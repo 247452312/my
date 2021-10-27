@@ -39,7 +39,7 @@ public class InterfaceInfoProviderImpl extends BaseDefaultProvider<InterfaceInfo
     }
 
     @Override
-    public ServiceResult<JSON> invokeInterface(InvokeInterfaceCommand command) {
+    public ServiceResult<JSON> invokeInterface(InvokeInterfaceCommand command) throws Exception {
         JSON result = service.invokeInterface(command);
         return ServiceResult.buildSuccessResult(result);
     }

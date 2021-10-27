@@ -44,8 +44,11 @@ public class DbInterfaceInfo extends InterfaceInfo implements HttpInterfaceInfoI
         Asserts.assertTrue(sourceInfo != null);
         Asserts.assertTrue(sourceInfo.type() == SourceTypeEnum.DB);
         DbInfo sourceInfo = (DbInfo) this.sourceInfo;
+        // 获取连接
         Connection conn = sourceInfo.getConnect();
+        // 获取过滤器
         List<ConsumerFilter> consumerFilters = consumerFilterRepository.findByConsumerAndInterface(consumerId, this);
+        // 执行sql,过滤器在返回值上工作
         List<Map<String, Object>> result = sourceInfo.execute(conn, map, consumerFilters);
         return JSON.parseArray(JSONArray.toJSONString(result));
     }

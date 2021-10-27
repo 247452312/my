@@ -1,5 +1,7 @@
 package indi.uhyils.util;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -34,5 +36,64 @@ public final class MathUtil {
         }
         result /= times.size();
         return result;
+    }
+
+    /**
+     * 数组是否正序排列
+     *
+     * @param array
+     *
+     * @return
+     */
+    public static boolean isSort(Integer[] array) {
+        for (int i = 0; i < array.length - 1; i++) {
+            if (array[i] > array[i + 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * 计算字符串
+     *
+     * @param s
+     *
+     * @return
+     */
+    public static double calculate(String s) {
+        Deque<Integer> ops = new LinkedList<>();
+        ops.push(1);
+        int sign = 1;
+
+        double ret = 0;
+        int n = s.length();
+        int i = 0;
+        while (i < n) {
+            if (s.charAt(i) == ' ') {
+                i++;
+            } else if (s.charAt(i) == '+') {
+                sign = ops.peek();
+                i++;
+            } else if (s.charAt(i) == '-') {
+                sign = -ops.peek();
+                i++;
+            } else if (s.charAt(i) == '(') {
+                ops.push(sign);
+                i++;
+            } else if (s.charAt(i) == ')') {
+                ops.pop();
+                i++;
+            } else {
+                double num = 0;
+                while (i < n && Character.isDigit(s.charAt(i))) {
+                    num = num * 10 + s.charAt(i) - '0';
+                    i++;
+                }
+                ret += sign * num;
+            }
+        }
+        return ret;
     }
 }

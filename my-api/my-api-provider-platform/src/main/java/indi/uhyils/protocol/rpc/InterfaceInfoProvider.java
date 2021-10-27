@@ -32,6 +32,6 @@ public interface InterfaceInfoProvider extends DTOProvider<InterfaceInfoDTO> {
      *
      * @return
      */
-    ServiceResult<JSON> invokeInterface(InvokeInterfaceCommand command);
+    ServiceResult<JSON> invokeInterface(InvokeInterfaceCommand command) throws Exception;
 }
 

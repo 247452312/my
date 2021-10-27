@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 /**
  * 数据库连接表(DbInfo)表 数据库实体类
@@ -161,12 +162,37 @@ public class DbInfo extends SourceInfo<DbInfoDO> {
         while (ret.next()) {
             Map<String, Object> map = new HashMap<>();
             for (int i = 0; i < cot; i++) {
-                map.put(meta.getColumnName(i + 1), ret.getObject(i + 1));
+                String columnName = meta.getColumnName(i + 1);
+                Object value = ret.getObject(i + 1);
+                map.put(columnName, value);
             }
-            list.add(map);
+            Boolean canRead = makeFilter(map, consumerFilters);
+            if (Boolean.TRUE.equals(canRead)) {
+                list.add(map);
+            }
         }
 
         return list;
+    }
+
+    /**
+     * 执行filter来过滤一行
+     *
+     * @param line
+     * @param consumerFilters
+     *
+     * @return
+     */
+    private Boolean makeFilter(Map<String, Object> line, List<ConsumerFilter> consumerFilters) {
+        for (ConsumerFilter consumerFilter : consumerFilters) {
+            List<String> filterColNames = consumerFilter.toColList();
+            Map<String, Object> filterColValues = filterColNames.stream().collect(Collectors.toMap(t -> t, line::get));
+            Boolean success = consumerFilter.makeFilter(filterColValues);
+            if (Boolean.FALSE.equals(success)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
