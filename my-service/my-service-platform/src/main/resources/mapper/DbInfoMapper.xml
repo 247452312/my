@@ -16,7 +16,8 @@
         <result property="type" column="type" jdbcType="INTEGER"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
-        <result property="sql" column="sql" jdbcType="VARCHAR"/>
+        <result property="sqlStr" column="sql_str" jdbcType="VARCHAR"/>
+        <result property="providerId" column="provider_id" jdbcType="BIGINT"/>
     </resultMap>
 
     <!--批量通过主键修改数据-->
@@ -58,8 +59,11 @@
             <if test="item.password != null and item.password != ''">
                 ,password = #{item.password}
             </if>
-            <if test="item.sql != null and item.sql != ''">
-                ,sql = #{item.sql}
+            <if test="item.sqlStr != null and item.sqlStr != ''">
+                ,sql_str = #{item.sqlStr}
+            </if>
+            <if test="item.providerId != null and item.providerId != ''">
+                ,provider_id = #{item.providerId}
             </if>
             where id = #{item.id}
         </foreach>

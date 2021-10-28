@@ -15,7 +15,7 @@
         <result property="pid" column="pid" jdbcType="INTEGER"/>
         <result property="type" column="type" jdbcType="INTEGER"/>
         <result property="markId" column="mark_id" jdbcType="INTEGER"/>
-        <result property="sql" column="sql" jdbcType="VARCHAR"/>
+        <result property="sqlStr" column="sql_str" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--批量通过主键修改数据-->
@@ -54,8 +54,8 @@
             <if test="item.markId != null">
                 ,mark_id = #{item.markId}
             </if>
-            <if test="item.sql != null and item.sql != ''">
-                ,sql = #{item.sql}
+            <if test="item.sqlStr != null and item.sqlStr != ''">
+                ,sql_str = #{item.sqlStr}
             </if>
             where id = #{item.id}
         </foreach>

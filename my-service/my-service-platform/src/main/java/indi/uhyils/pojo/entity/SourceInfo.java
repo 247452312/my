@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.enum_.SourceTypeEnum;
+import indi.uhyils.enum_.InterfaceTypeEnum;
 import indi.uhyils.pojo.DO.SourceInfoDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -36,7 +36,7 @@ public abstract class SourceInfo<T extends SourceInfoDO> extends AbstractDoEntit
      *
      * @return
      */
-    public SourceTypeEnum type() {
+    public InterfaceTypeEnum type() {
         return toData().getSourceType();
     }
 

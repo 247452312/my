@@ -42,8 +42,12 @@ public class DbInfoDTO extends IdDTO {
     /**
      * sql语句
      */
-    private String sql;
+    private String sqlStr;
 
+    /**
+     * 所属生产者
+     */
+    private Long providerId;
 
     public String getName() {
         return name;
@@ -89,11 +93,19 @@ public class DbInfoDTO extends IdDTO {
         this.password = password;
     }
 
-    public String getSql() {
-        return sql;
+    public String getSqlStr() {
+        return sqlStr;
     }
 
-    public void setSql(String sql) {
-        this.sql = sql;
+    public void setSqlStr(String sqlStr) {
+        this.sqlStr = sqlStr;
+    }
+
+    public Long getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(Long providerId) {
+        this.providerId = providerId;
     }
 }

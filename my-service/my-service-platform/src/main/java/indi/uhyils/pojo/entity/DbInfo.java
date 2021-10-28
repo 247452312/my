@@ -6,8 +6,10 @@ import indi.uhyils.enum_.SqlTypeEnum;
 import indi.uhyils.pojo.DO.DbInfoDO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DbInfoRepository;
+import indi.uhyils.repository.DbManualRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.SpringUtil;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -96,8 +98,12 @@ public class DbInfo extends SourceInfo<DbInfoDO> {
      * @return
      */
     public Connection getConnect() {
-        DbInfoDO dbInfoDO = toData();
-        // todo 需要自定义数据库连接池
+        DbManualRepository rep = SpringUtil.getBean(DbManualRepository.class);
+        try {
+            rep.getConn(this);
+        } catch (SQLException e) {
+            LogUtil.error(e);
+        }
         return null;
     }
 
@@ -112,7 +118,7 @@ public class DbInfo extends SourceInfo<DbInfoDO> {
      */
     public List<Map<String, Object>> execute(Connection conn, Map<String, Object> map, List<ConsumerFilter> consumerFilters) throws SQLException {
         DbInfoDO dbInfoDO = toData();
-        String sql = dbInfoDO.getSql();
+        String sql = dbInfoDO.getSqlStr();
         SqlTypeEnum sqlTypeEnum = typeForSql(sql);
         for (Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
@@ -154,7 +160,6 @@ public class DbInfo extends SourceInfo<DbInfoDO> {
      * @return
      */
     private List<Map<String, Object>> parseResultSetAndClose(ResultSet ret, List<ConsumerFilter> consumerFilters) throws SQLException {
-        // todo filter 获取
         List<Map<String, Object>> list = new ArrayList<>();
         ResultSetMetaData meta = ret.getMetaData();
         int cot = meta.getColumnCount();

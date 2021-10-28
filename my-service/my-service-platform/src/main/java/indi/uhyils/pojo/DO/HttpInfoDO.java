@@ -2,8 +2,7 @@ package indi.uhyils.pojo.DO;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import indi.uhyils.enum_.SourceTypeEnum;
-import indi.uhyils.pojo.DO.base.BaseDO;
+import indi.uhyils.enum_.InterfaceTypeEnum;
 
 /**
  * http连接表(HttpInfo)表 数据库实体类
@@ -79,7 +78,7 @@ public class HttpInfoDO extends SourceInfoDO {
     }
 
     @Override
-    public SourceTypeEnum getSourceType() {
-        return SourceTypeEnum.HTTP;
+    public InterfaceTypeEnum getSourceType() {
+        return InterfaceTypeEnum.HTTP;
     }
 }

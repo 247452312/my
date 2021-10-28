@@ -37,7 +37,7 @@ public class InterfaceInfoDTO extends IdDTO {
     /**
      * sql语句,详情见sql规则文档
      */
-    private String sql;
+    private String sqlStr;
 
 
     public Long getProviderId() {
@@ -75,13 +75,11 @@ public class InterfaceInfoDTO extends IdDTO {
         this.markId = markId;
     }
 
-
-    public String getSql() {
-        return sql;
+    public String getSqlStr() {
+        return sqlStr;
     }
 
-    public void setSql(String sql) {
-        this.sql = sql;
+    public void setSqlStr(String sqlStr) {
+        this.sqlStr = sqlStr;
     }
-
 }

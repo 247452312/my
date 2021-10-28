@@ -78,6 +78,7 @@ public class ConsumerFilter extends AbstractDoEntity<ConsumerFilterDO> {
     public Boolean makeFilter(Map<String, Object> filterColValues) {
         if (this.filterRuleStr == null) {
             String rule = toData().getRule();
+            // rule字段为 名称->规则
             String[] split = rule.split("->");
             Asserts.assertTrue(split.length == 2, "规则不符合规则,rule:{}", rule);
             this.filterRuleStr = split[1];

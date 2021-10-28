@@ -2,7 +2,7 @@ package indi.uhyils.pojo.entity.interfaces;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import indi.uhyils.enum_.SourceTypeEnum;
+import indi.uhyils.enum_.InterfaceTypeEnum;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
 import indi.uhyils.pojo.entity.ConsumerFilter;
 import indi.uhyils.pojo.entity.DbInfo;
@@ -40,12 +40,12 @@ public class DbInterfaceInfo extends InterfaceInfo implements HttpInterfaceInfoI
 
     @Override
     public JSON invoke(Long consumerId, Map<String, Object> map, ConsumerFilterRepository consumerFilterRepository) throws Exception {
-        InterfaceInfoDO interfaceInfoDO = toData();
         Asserts.assertTrue(sourceInfo != null);
-        Asserts.assertTrue(sourceInfo.type() == SourceTypeEnum.DB);
+        Asserts.assertTrue(sourceInfo.type() == InterfaceTypeEnum.DB);
         DbInfo sourceInfo = (DbInfo) this.sourceInfo;
         // 获取连接
         Connection conn = sourceInfo.getConnect();
+        Asserts.assertTrue(conn != null, "数据库连接获取失败");
         // 获取过滤器
         List<ConsumerFilter> consumerFilters = consumerFilterRepository.findByConsumerAndInterface(consumerId, this);
         // 执行sql,过滤器在返回值上工作

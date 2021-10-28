@@ -2,7 +2,7 @@ package indi.uhyils.pojo.entity.interfaces;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.annotation.Default;
-import indi.uhyils.enum_.SourceTypeEnum;
+import indi.uhyils.enum_.InterfaceTypeEnum;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
 import indi.uhyils.pojo.DO.SourceInfoDO;
 import indi.uhyils.pojo.entity.DbInfo;
@@ -119,10 +119,10 @@ public class InterfaceInfo extends AbstractDoEntity<InterfaceInfoDO> implements 
     }
 
     @Override
-    public SourceTypeEnum toType() {
+    public InterfaceTypeEnum toType() {
         InterfaceInfoDO interfaceInfoDO = toData();
         Asserts.assertTrue(interfaceInfoDO != null);
-        return SourceTypeEnum.parse(interfaceInfoDO.getType());
+        return InterfaceTypeEnum.parse(interfaceInfoDO.getType());
     }
 
     @Override
@@ -155,8 +155,8 @@ public class InterfaceInfo extends AbstractDoEntity<InterfaceInfoDO> implements 
     public void findSourceAndFull(HttpInfoRepository httpInfoRepository, MqInfoRepository mqInfoRepository, DbInfoRepository dbInfoRepository) {
         // 如果本身就是叶子结点,就不需要批量查询数据库了,直接转换为子类型即可
         InterfaceInfoDO interfaceInfoDO = toData();
-        SourceTypeEnum parse = SourceTypeEnum.parse(interfaceInfoDO.getType());
-        Map<SourceTypeEnum, List<InterfaceInterface>> collect;
+        InterfaceTypeEnum parse = InterfaceTypeEnum.parse(interfaceInfoDO.getType());
+        Map<InterfaceTypeEnum, List<InterfaceInterface>> collect;
         if (parse != null) {
             // 代表自身是子节点
             collect = Stream.of(this).filter(t -> t.toType() != null).collect(Collectors.groupingBy(InterfaceInterface::toType));
@@ -168,7 +168,7 @@ public class InterfaceInfo extends AbstractDoEntity<InterfaceInfoDO> implements 
         List<SourceInfo<? extends SourceInfoDO>> sourceInfos = findSourceInfo(httpInfoRepository, mqInfoRepository, dbInfoRepository, collect);
         // 遍历子类
         for (InterfaceInterface interfaceInterface : flattenChild) {
-            SourceTypeEnum sourceTypeEnum = interfaceInterface.toType();
+            InterfaceTypeEnum sourceTypeEnum = interfaceInterface.toType();
             // 资源类型为空,代表不是叶子结点
             if (sourceTypeEnum == null) {
                 continue;
@@ -199,21 +199,21 @@ public class InterfaceInfo extends AbstractDoEntity<InterfaceInfoDO> implements 
      *
      * @return
      */
-    private List<SourceInfo<? extends SourceInfoDO>> findSourceInfo(HttpInfoRepository httpInfoRepository, MqInfoRepository mqInfoRepository, DbInfoRepository dbInfoRepository, Map<SourceTypeEnum, List<InterfaceInterface>> collect) {
+    private List<SourceInfo<? extends SourceInfoDO>> findSourceInfo(HttpInfoRepository httpInfoRepository, MqInfoRepository mqInfoRepository, DbInfoRepository dbInfoRepository, Map<InterfaceTypeEnum, List<InterfaceInterface>> collect) {
         List<SourceInfo<? extends SourceInfoDO>> result = new ArrayList<>();
-        List<InterfaceInterface> dbInterface = collect.get(SourceTypeEnum.DB);
+        List<InterfaceInterface> dbInterface = collect.get(InterfaceTypeEnum.DB);
         if (CollectionUtil.isNotEmpty(dbInterface)) {
             List<DbInfo> dbInfos = dbInfoRepository.find(dbInterface.stream().map(InterfaceInterface::toMarkId).map(Identifier::new).collect(Collectors.toList()));
             result.addAll(dbInfos);
         }
 
-        List<InterfaceInterface> mqInterface = collect.get(SourceTypeEnum.MQ);
+        List<InterfaceInterface> mqInterface = collect.get(InterfaceTypeEnum.MQ);
         if (CollectionUtil.isNotEmpty(mqInterface)) {
             List<MqInfo> mqInfos = mqInfoRepository.find(mqInterface.stream().map(InterfaceInterface::toMarkId).map(Identifier::new).collect(Collectors.toList()));
             result.addAll(mqInfos);
         }
 
-        List<InterfaceInterface> httpInterface = collect.get(SourceTypeEnum.HTTP);
+        List<InterfaceInterface> httpInterface = collect.get(InterfaceTypeEnum.HTTP);
         if (CollectionUtil.isNotEmpty(httpInterface)) {
             List<HttpInfo> httpInfos = httpInfoRepository.find(httpInterface.stream().map(InterfaceInterface::toMarkId).map(Identifier::new).collect(Collectors.toList()));
             result.addAll(httpInfos);

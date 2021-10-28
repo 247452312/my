@@ -9,7 +9,7 @@ import java.util.Objects;
  * @version 1.0
  * @date 文件创建日期 2021年10月17日 12时35分
  */
-public enum SourceTypeEnum {
+public enum InterfaceTypeEnum {
     /**
      *
      */
@@ -27,13 +27,13 @@ public enum SourceTypeEnum {
      */
     private final String name;
 
-    SourceTypeEnum(Integer code, String name) {
+    InterfaceTypeEnum(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static SourceTypeEnum parse(Integer type) {
-        for (SourceTypeEnum value : values()) {
+    public static InterfaceTypeEnum parse(Integer type) {
+        for (InterfaceTypeEnum value : values()) {
             if (Objects.equals(type, value.getCode())) {
                 return value;
             }

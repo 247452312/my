@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DO;
 
-import indi.uhyils.enum_.SourceTypeEnum;
+import indi.uhyils.enum_.InterfaceTypeEnum;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
@@ -15,5 +15,5 @@ public abstract class SourceInfoDO extends BaseDO {
      *
      * @return
      */
-    public abstract SourceTypeEnum getSourceType();
+    public abstract InterfaceTypeEnum getSourceType();
 }

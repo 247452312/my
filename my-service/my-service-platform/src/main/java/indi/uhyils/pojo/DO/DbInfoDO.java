@@ -2,8 +2,7 @@ package indi.uhyils.pojo.DO;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import indi.uhyils.enum_.SourceTypeEnum;
-import indi.uhyils.pojo.DO.base.BaseDO;
+import indi.uhyils.enum_.InterfaceTypeEnum;
 
 /**
  * 数据库连接表(DbInfo)表 数据库实体类
@@ -16,7 +15,6 @@ import indi.uhyils.pojo.DO.base.BaseDO;
 public class DbInfoDO extends SourceInfoDO {
 
     private static final long serialVersionUID = 326224445123463902L;
-
 
     /**
      * 名称
@@ -47,11 +45,19 @@ public class DbInfoDO extends SourceInfoDO {
      */
     @TableField
     private String password;
+
     /**
      * sql语句
      */
     @TableField
-    private String sql;
+    private String sqlStr;
+
+
+    /**
+     * 所属生产者
+     */
+    @TableField
+    private Long providerId;
 
 
     public String getName() {
@@ -98,16 +104,24 @@ public class DbInfoDO extends SourceInfoDO {
         this.password = password;
     }
 
-    public String getSql() {
-        return sql;
+    public String getSqlStr() {
+        return sqlStr;
     }
 
-    public void setSql(String sql) {
-        this.sql = sql;
+    public void setSqlStr(String sqlStr) {
+        this.sqlStr = sqlStr;
+    }
+
+    public Long getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(Long providerId) {
+        this.providerId = providerId;
     }
 
     @Override
-    public SourceTypeEnum getSourceType() {
-        return SourceTypeEnum.DB;
+    public InterfaceTypeEnum getSourceType() {
+        return InterfaceTypeEnum.DB;
     }
 }

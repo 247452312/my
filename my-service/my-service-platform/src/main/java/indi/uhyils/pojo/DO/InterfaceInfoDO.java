@@ -45,7 +45,7 @@ public class InterfaceInfoDO extends BaseDO {
      * sql语句,详情见sql规则文档
      */
     @TableField
-    private String sql;
+    private String sqlStr;
 
 
     public Long getProviderId() {
@@ -83,13 +83,11 @@ public class InterfaceInfoDO extends BaseDO {
         this.markId = markId;
     }
 
-
-    public String getSql() {
-        return sql;
+    public String getSqlStr() {
+        return sqlStr;
     }
 
-    public void setSql(String sql) {
-        this.sql = sql;
+    public void setSqlStr(String sqlStr) {
+        this.sqlStr = sqlStr;
     }
-
 }

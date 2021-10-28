@@ -68,5 +68,4 @@ public class InterfaceInfoServiceImpl extends AbstractDoService<InterfaceInfoDO,
         return interfaceInterface.invoke(command.getConsumerId(), command.getParam(), consumerFilterRepository);
     }
 
-
 }

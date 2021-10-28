@@ -52,7 +52,7 @@ public final class FilterRuleUtil {
      * @return
      */
     private static OrAndTree makeRuleStrToOrAndTree(String ruleStr) {
-        ruleStr = cleanBrackets(ruleStr);
+        ruleStr = cleanBrackets(ruleStr.trim());
         if (ruleCache.containsKey(ruleStr)) {
             // 如果缓存存在,就直接返回缓存
             return ruleCache.get(ruleStr);
@@ -117,7 +117,7 @@ public final class FilterRuleUtil {
             String[] split = ruleStr.split("\\|\\|");
             OrAndTree result = null;
             if (split.length != 1) {
-                String firstRuleStr = split[0];
+                String firstRuleStr = split[0].trim();
                 for (int i = keyList.size() - 1; i >= 0; i--) {
                     String key = keyList.get(i);
                     String value = keyValueMap.get(key);
@@ -125,7 +125,7 @@ public final class FilterRuleUtil {
                 }
                 OrAndTree firstOrAndTree = makeRuleStrToOrAndTree(firstRuleStr);
                 for (int i = 1; i < split.length; i++) {
-                    String next = split[i];
+                    String next = split[i].trim();
                     for (int j = keyList.size() - 1; j >= 0; j--) {
                         String key = keyList.get(j);
                         String value = keyValueMap.get(key);
@@ -141,7 +141,7 @@ public final class FilterRuleUtil {
                 result = firstOrAndTree;
             } else {
                 split = ruleStr.split("&&");
-                String firstRuleStr = split[0];
+                String firstRuleStr = split[0].trim();
                 for (int j = keyList.size() - 1; j >= 0; j--) {
                     String key = keyList.get(j);
                     String value = keyValueMap.get(key);
@@ -149,7 +149,7 @@ public final class FilterRuleUtil {
                 }
                 OrAndTree firstOrAndTree = makeRuleStrToOrAndTree(firstRuleStr);
                 for (int i = 1; i < split.length; i++) {
-                    String next = split[i];
+                    String next = split[i].trim();
                     for (int j = keyList.size() - 1; j >= 0; j--) {
                         String key = keyList.get(j);
                         String value = keyValueMap.get(key);

@@ -1,13 +1,12 @@
 package indi.uhyils.pojo.entity.interfaces;
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.enum_.SourceTypeEnum;
+import indi.uhyils.enum_.InterfaceTypeEnum;
 import indi.uhyils.pojo.DO.SourceInfoDO;
 import indi.uhyils.pojo.entity.SourceInfo;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ConsumerFilterRepository;
 import indi.uhyils.repository.InterfaceInfoRepository;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,14 +27,13 @@ public interface InterfaceInterface {
     /**
      * 执行
      *
-     *
      * @param consumerId
      * @param map
-     *
      * @param consumerFilterRepository
+     *
      * @return
      */
-    JSON invoke(Long consumerId, Map<String, Object> map, ConsumerFilterRepository consumerFilterRepository) throws SQLException, Exception;
+    JSON invoke(Long consumerId, Map<String, Object> map, ConsumerFilterRepository consumerFilterRepository) throws Exception;
 
     /**
      * 获取子类
@@ -65,7 +63,7 @@ public interface InterfaceInterface {
      *
      * @return
      */
-    SourceTypeEnum toType();
+    InterfaceTypeEnum toType();
 
     /**
      * 获取类型对应的id
