@@ -89,8 +89,8 @@ public class DbManualRepositoryImpl implements DbManualRepository {
     public Connection getConn(DbInfo dbInfo) throws SQLException {
         DbInfoDO dbInfoDO = dbInfo.toData();
         String name = dbInfoDO.getName();
-        Long providerId = dbInfoDO.getProviderId();
-        initDbForConsumer(new Identifier(providerId));
+        Identifier providerId = new Identifier(dbInfoDO.getProviderId());
+        initDbForConsumer(providerId);
         Map<String, DbInfoAndDataSource> providerDBMap = dbMap.get(providerId);
         Asserts.assertTrue(providerDBMap != null, "生产者数据库连接失败或无连接:{}", name);
         DbInfoAndDataSource dbInfoAndDataSource = providerDBMap.get(name);

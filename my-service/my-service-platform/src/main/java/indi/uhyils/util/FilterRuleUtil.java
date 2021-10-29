@@ -56,117 +56,103 @@ public final class FilterRuleUtil {
         if (ruleCache.containsKey(ruleStr)) {
             // 如果缓存存在,就直接返回缓存
             return ruleCache.get(ruleStr);
-        } else {
-            String tempCacheKey = ruleStr;
-            List<String> keyList = new ArrayList<>();
-            /*原值,key*/
-            Map<String, String> valueKeyMap = new HashMap<>();
-            /*key,原值*/
-            Map<String, String> keyValueMap = new HashMap<>();
+        }
+        String tempCacheKey = ruleStr;
+        List<String> keyList = new ArrayList<>();
+        /*原值,key*/
+        Map<String, String> valueKeyMap = new HashMap<>();
+        /*key,原值*/
+        Map<String, String> keyValueMap = new HashMap<>();
 
-            List<Integer> andIndexs = new ArrayList<>();
-            List<Integer> orIndexs = new ArrayList<>();
-            int ruleKeyIndex = 0;
-            Deque<Integer> frontBracketIndex = new ArrayDeque<>();
+        List<Integer> andIndexs = new ArrayList<>();
+        List<Integer> orIndexs = new ArrayList<>();
+        int ruleKeyIndex = 0;
+        Deque<Integer> frontBracketIndex = new ArrayDeque<>();
 
-            for (int i = 0; i < ruleStr.length(); i++) {
-                char c = ruleStr.charAt(i);
-                if (c == '(') {
-                    frontBracketIndex.push(i);
+        for (int i = 0; i < ruleStr.length(); i++) {
+            char c = ruleStr.charAt(i);
+            if (c == '(') {
+                frontBracketIndex.push(i);
+                continue;
+            }
+            if (c == ')') {
+                Integer index = frontBracketIndex.pop();
+                // 栈中的左括号还存在.说明还在括号中,不做操作
+                if (!frontBracketIndex.isEmpty()) {
                     continue;
                 }
-                if (c == ')') {
-                    Integer index = frontBracketIndex.pop();
-                    if (!frontBracketIndex.isEmpty()) {
-                        continue;
-                    }
-                    String substring = ruleStr.substring(index, i + 1);
-                    String key = RULE_KEY_INDEX.replace("index", "" + ruleKeyIndex++);
-                    valueKeyMap.put(substring, key);
-                    keyValueMap.put(key, substring);
-                    keyList.add(key);
-                }
-                // 没有在括号中
-                if (frontBracketIndex.isEmpty() && i < ruleStr.length() - 2) {
-                    String sym = ruleStr.substring(i, i + 2);
-                    if (!"&&".equals(sym) && !"||".equals(sym)) {
-                        continue;
-                    }
-                    if ("&&".equals(sym)) {
+                String substring = ruleStr.substring(index, i + 1);
+                String key = RULE_KEY_INDEX.replace("index", "" + ruleKeyIndex++);
+                valueKeyMap.put(substring, key);
+                keyValueMap.put(key, substring);
+                keyList.add(key);
+            }
+            // 没有在括号中
+            if (frontBracketIndex.isEmpty() && i < ruleStr.length() - 2) {
+                String sym = ruleStr.substring(i, i + 2);
+                switch (sym) {
+                    case "&&":
                         andIndexs.add(i);
-                        continue;
-                    }
-                    if ("||".equals(sym)) {
+                        break;
+                    case "||":
                         orIndexs.add(i);
-                    }
+                        break;
+                    default:
+                        break;
                 }
             }
-            // 没有&& 和 || 单纯的一个表达式
-            if (CollectionUtil.isEmpty(andIndexs) && CollectionUtil.isEmpty(orIndexs)) {
-                RuleTree ruleTree = makeRuleStrToRuleTree(ruleStr);
-                return new OrAndTree(ruleTree);
-            }
-            // 有&&和||
-            /*1.替换*/
-            for (Entry<String, String> entry : valueKeyMap.entrySet()) {
-                String value = entry.getKey();
-                String key = entry.getValue();
-                // 将原值替换为指定的key
-                ruleStr = ruleStr.replace(value, key);
-            }
-            String[] split = ruleStr.split("\\|\\|");
-            OrAndTree result = null;
-            if (split.length != 1) {
-                String firstRuleStr = split[0].trim();
-                for (int i = keyList.size() - 1; i >= 0; i--) {
-                    String key = keyList.get(i);
-                    String value = keyValueMap.get(key);
-                    firstRuleStr = firstRuleStr.replace(key, value);
-                }
-                OrAndTree firstOrAndTree = makeRuleStrToOrAndTree(firstRuleStr);
-                for (int i = 1; i < split.length; i++) {
-                    String next = split[i].trim();
-                    for (int j = keyList.size() - 1; j >= 0; j--) {
-                        String key = keyList.get(j);
-                        String value = keyValueMap.get(key);
-                        next = next.replace(key, value);
-                    }
-                    OrAndTree nextRuleTree = makeRuleStrToOrAndTree(next);
-                    // 或 树
-                    OrAndTree orAndTree = new OrAndTree(0);
-                    orAndTree.setLeftTree(firstOrAndTree);
-                    orAndTree.setRightTree(nextRuleTree);
-                    firstOrAndTree = orAndTree;
-                }
-                result = firstOrAndTree;
-            } else {
-                split = ruleStr.split("&&");
-                String firstRuleStr = split[0].trim();
-                for (int j = keyList.size() - 1; j >= 0; j--) {
-                    String key = keyList.get(j);
-                    String value = keyValueMap.get(key);
-                    firstRuleStr = firstRuleStr.replace(key, value);
-                }
-                OrAndTree firstOrAndTree = makeRuleStrToOrAndTree(firstRuleStr);
-                for (int i = 1; i < split.length; i++) {
-                    String next = split[i].trim();
-                    for (int j = keyList.size() - 1; j >= 0; j--) {
-                        String key = keyList.get(j);
-                        String value = keyValueMap.get(key);
-                        next = next.replace(key, value);
-                    }
-                    OrAndTree nextRuleTree = makeRuleStrToOrAndTree(next);
-                    // 且 树
-                    OrAndTree orAndTree = new OrAndTree(1);
-                    orAndTree.setLeftTree(firstOrAndTree);
-                    orAndTree.setRightTree(nextRuleTree);
-                    firstOrAndTree = orAndTree;
-                }
-                result = firstOrAndTree;
-            }
-            ruleCache.put(tempCacheKey, result);
-            return result;
         }
+        // 没有&& 和 || 单纯的一个表达式
+        if (CollectionUtil.isEmpty(andIndexs) && CollectionUtil.isEmpty(orIndexs)) {
+            RuleTree ruleTree = makeRuleStrToRuleTree(ruleStr);
+            return new OrAndTree(ruleTree);
+        }
+        // 有&&和||
+        /*1.替换*/
+        for (Entry<String, String> entry : valueKeyMap.entrySet()) {
+            String value = entry.getKey();
+            String key = entry.getValue();
+            // 将原值替换为指定的key
+            ruleStr = ruleStr.replace(value, key);
+        }
+        String[] split = ruleStr.split("\\|\\|");
+        OrAndTree result;
+        if (split.length != 1) {
+            OrAndTree firstOrAndTree = makeOrAndTree(keyList, keyValueMap, split[0]);
+            for (int i = 1; i < split.length; i++) {
+                OrAndTree nextRuleTree = makeOrAndTree(keyList, keyValueMap, split[i]);
+                // 或 树
+                OrAndTree orAndTree = new OrAndTree(0);
+                orAndTree.setLeftTree(firstOrAndTree);
+                orAndTree.setRightTree(nextRuleTree);
+                firstOrAndTree = orAndTree;
+            }
+            result = firstOrAndTree;
+        } else {
+            split = ruleStr.split("&&");
+            OrAndTree firstOrAndTree = makeOrAndTree(keyList, keyValueMap, split[0]);
+            for (int i = 1; i < split.length; i++) {
+                OrAndTree nextRuleTree = makeOrAndTree(keyList, keyValueMap, split[i]);
+                // 且 树
+                OrAndTree orAndTree = new OrAndTree(1);
+                orAndTree.setLeftTree(firstOrAndTree);
+                orAndTree.setRightTree(nextRuleTree);
+                firstOrAndTree = orAndTree;
+            }
+            result = firstOrAndTree;
+        }
+        ruleCache.put(tempCacheKey, result);
+        return result;
+    }
+
+    private static OrAndTree makeOrAndTree(List<String> keyList, Map<String, String> keyValueMap, String s) {
+        String next = s.trim();
+        for (int j = keyList.size() - 1; j >= 0; j--) {
+            String key = keyList.get(j);
+            String value = keyValueMap.get(key);
+            next = next.replace(key, value);
+        }
+        return makeRuleStrToOrAndTree(next);
     }
 
     /**
@@ -521,27 +507,8 @@ public final class FilterRuleUtil {
                 // xxx 形式
                 String paramKey = substring.substring(2, substring.length() - 1);
                 if (param.containsKey(paramKey)) {
-                    Object o = param.get(paramKey);
-                    Object rep = "";
-                    if (o instanceof Boolean) {
-                        rep = Boolean.TRUE.equals(o) ? 1 : 0;
-                    } else if (o instanceof String) {
-                        if ("true".equals(o)) {
-                            rep = 1;
-                        } else if ("false".equals(o)) {
-                            rep = 0;
-                        } else {
-                            rep = o;
-                        }
-                    } else if (o instanceof Number) {
-                        Number number = (Number) o;
-                        rep = number.doubleValue();
-                    } else if (o instanceof Date) {
-                        // todo date支持日期
-                        rep = ((Date) o).getTime();
-                    } else {
-                        Asserts.assertTrue(false, "报错,入参暂不允许除Boolean,String,Number之外的其他类型,传入类型:{}", o.getClass().getName());
-                    }
+                    Object paramItem = param.get(paramKey);
+                    Object rep = parseParamItem(paramItem);
                     changeValue = changeValue.replace(substring, rep.toString());
                 }
             }
@@ -552,6 +519,37 @@ public final class FilterRuleUtil {
                 return NumberUtils.toDouble(changeValue);
             }
             return changeValue;
+        }
+
+        /**
+         * 解析item为实际的返回
+         *
+         * @param paramItem
+         *
+         * @return
+         */
+        private Object parseParamItem(Object paramItem) {
+            Object rep = "";
+            if (paramItem instanceof Boolean) {
+                rep = Boolean.TRUE.equals(paramItem) ? 1 : 0;
+            } else if (paramItem instanceof String) {
+                if ("true".equals(paramItem)) {
+                    rep = 1;
+                } else if ("false".equals(paramItem)) {
+                    rep = 0;
+                } else {
+                    rep = paramItem;
+                }
+            } else if (paramItem instanceof Number) {
+                Number number = (Number) paramItem;
+                rep = number.doubleValue();
+            } else if (paramItem instanceof Date) {
+                // todo date支持日期
+                rep = ((Date) paramItem).getTime();
+            } else {
+                Asserts.assertTrue(false, "报错,入参暂不允许除Boolean,String,Number之外的其他类型,传入类型:{}", paramItem.getClass().getName());
+            }
+            return rep;
         }
 
         public Number makeNumberResult(Map<String, Object> param) {
@@ -628,22 +626,6 @@ public final class FilterRuleUtil {
         public OrAndTree(RuleTree ruleTree) {
             this.ruleTree = ruleTree;
         }
-/*
-
-        @Override
-        public String toString() {
-            if (ruleTree != null) {
-                return ruleTree.toString();
-            }
-            if (symbol == 1) {
-                return leftTree.toString() + "&&" + rightTree.toString();
-            } else if (symbol == 0) {
-                return leftTree.toString() + "||" + rightTree.toString();
-            }
-            Asserts.assertTrue(false, "错误");
-            return "";
-        }
-*/
 
         /**
          * 计算结果

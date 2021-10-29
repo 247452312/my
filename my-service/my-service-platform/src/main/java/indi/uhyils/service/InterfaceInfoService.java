@@ -30,6 +30,8 @@ public interface InterfaceInfoService extends BaseDoService<InterfaceInfoDTO> {
      * @param command
      *
      * @return
+     *
+     * @throws Exception
      */
     JSON invokeInterface(InvokeInterfaceCommand command) throws Exception;
 }
