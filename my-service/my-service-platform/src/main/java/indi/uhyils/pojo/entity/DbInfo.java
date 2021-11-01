@@ -100,7 +100,7 @@ public class DbInfo extends SourceInfo<DbInfoDO> {
     public Connection getConnect() {
         DbManualRepository rep = SpringUtil.getBean(DbManualRepository.class);
         try {
-            rep.getConn(this);
+            return rep.getConn(this);
         } catch (SQLException e) {
             LogUtil.error(e);
         }
@@ -190,8 +190,8 @@ public class DbInfo extends SourceInfo<DbInfoDO> {
      */
     private Boolean makeFilter(Map<String, Object> line, List<ConsumerFilter> consumerFilters) {
         for (ConsumerFilter consumerFilter : consumerFilters) {
-            List<String> filterColNames = consumerFilter.toColList();
-            Map<String, Object> filterColValues = filterColNames.stream().collect(Collectors.toMap(t -> t, line::get));
+            List<String> filterColNames = consumerFilter.toColMap();
+            Map<String, Object> filterColValues = filterColNames.stream().filter(line::containsKey).collect(Collectors.toMap(t -> t, line::get));
             Boolean success = consumerFilter.makeFilter(filterColValues);
             if (Boolean.FALSE.equals(success)) {
                 return false;

@@ -11,6 +11,7 @@ import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ProviderInfoRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public abstract class InterfaceInfoAssembler extends AbstractAssembler<Interface
 
     public List<InterfaceInterface> listDoToEntityInterface(List<InterfaceInfoDO> childsInterface) {
         if (CollectionUtil.isEmpty(childsInterface)) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
         List<InterfaceInfo> interfaceInfos = listToEntity(childsInterface);
         return interfaceInfos.stream().map(t -> (InterfaceInterface) t).collect(Collectors.toList());

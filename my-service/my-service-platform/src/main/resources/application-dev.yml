@@ -16,9 +16,3 @@ id:
   organization:
     # 机构代码
     code: 7
-task:
-  pool:
-    core_pool_size: 10
-    max_pool_size: 20
-    keep_alive_seconds: 3
-    queue_capacity: 100

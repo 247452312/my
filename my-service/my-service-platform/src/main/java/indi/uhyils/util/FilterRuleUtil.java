@@ -242,9 +242,9 @@ public final class FilterRuleUtil {
             Asserts.assertTrue(child != null && child.size() == 2, "节点公式不正确,不等号应该将公式分为两部分:{}", ruleTree);
             RuleTree leftTree = child.get(0);
             RuleTree rightTree = child.get(1);
-            Number leftNumber = leftTree.makeNumberResult(param);
-            Number rightNumber = rightTree.makeNumberResult(param);
-            return leftNumber.doubleValue() != rightNumber.doubleValue();
+            Object leftNumber = leftTree.makeObjectValue(param);
+            Object rightNumber = rightTree.makeObjectValue(param);
+            return !Objects.equals(leftNumber, rightNumber);
         }),
         /**
          * 大于

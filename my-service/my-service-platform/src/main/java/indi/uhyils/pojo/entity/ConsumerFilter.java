@@ -52,20 +52,19 @@ public class ConsumerFilter extends AbstractDoEntity<ConsumerFilterDO> {
      *
      * @return
      */
-    public List<String> toColList() {
-        if (this.filterColNames == null) {
-            ConsumerFilterDO consumerFilterDO = toData();
-            String rule = consumerFilterDO.getRule();
-            String[] split = rule.split("->");
-            Asserts.assertTrue(split.length == 2, "规则不符合规则,rule:{}", rule);
-            String colNameStr = split[0];
-            String[] colNames = colNameStr.split(",");
-            List<String> list = Arrays.asList(colNames);
-            this.filterColNames = list;
-            return list;
+    public List<String> toColMap() {
+        if (this.filterColNames != null) {
+            return this.filterColNames;
         }
-        return this.filterColNames;
-
+        ConsumerFilterDO consumerFilterDO = toData();
+        String rule = consumerFilterDO.getRule();
+        String[] split = rule.split("->");
+        Asserts.assertTrue(split.length == 2, "规则不符合规则,rule:{}", rule);
+        String colNameStr = split[0].trim();
+        String[] colNames = colNameStr.split(",");
+        List<String> list = Arrays.asList(colNames);
+        this.filterColNames = list;
+        return list;
     }
 
     /**

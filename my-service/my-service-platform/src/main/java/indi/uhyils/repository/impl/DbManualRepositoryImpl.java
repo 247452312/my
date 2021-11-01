@@ -157,6 +157,10 @@ public class DbManualRepositoryImpl implements DbManualRepository {
             DbInfoDO dbInfoDO = dbInfo.toData();
             DbTypeEnum parse = DbTypeEnum.parse(dbInfoDO.getType());
             Properties properties = new Properties();
+
+            properties.setProperty("url", dbInfoDO.getUrl());
+            properties.setProperty("username", dbInfoDO.getUsername());
+            properties.setProperty("password", dbInfoDO.getPassword());
             properties.setProperty("driverClassName", "com.mysql.cj.jdbc.Driver");
             properties.setProperty("initial-size", "1");
             properties.setProperty("max-active", "20");
