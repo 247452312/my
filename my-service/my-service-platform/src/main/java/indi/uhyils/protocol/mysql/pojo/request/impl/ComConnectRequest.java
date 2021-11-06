@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 
@@ -10,6 +11,10 @@ import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
  * @date 文件创建日期 2021年11月03日 18时42分
  */
 public class ComConnectRequest extends AbstractMysqlRequest {
+
+    public ComConnectRequest(MysqlHandler mysqlHandler) {
+        super(mysqlHandler);
+    }
 
     @Override
     protected void load() {

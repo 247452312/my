@@ -1,6 +1,7 @@
 package indi.uhyils.protocol.mysql.handler;
 
 import indi.uhyils.protocol.mysql.enums.MysqlHandlerStatusEnum;
+import indi.uhyils.protocol.mysql.pojo.entity.PrepareInfo;
 import io.netty.channel.ChannelInboundHandler;
 
 /**
@@ -21,4 +22,37 @@ public interface MysqlHandler extends ChannelInboundHandler {
      * 关闭
      */
     void closeOnFlush();
+
+    /**
+     * 获取错误数量
+     *
+     * @return
+     */
+    int getWarnCount();
+
+    /**
+     * 添加一次错误数量
+     */
+    void warnCountAdd();
+
+    /**
+     * 获取预处理sql
+     *
+     * @return
+     */
+    PrepareInfo getPrepareSql();
+
+    /**
+     * 获取预处理sql
+     *
+     * @return
+     */
+    PrepareInfo getPrepareSql(long prepareId);
+
+    /**
+     * 设置预处理的sql
+     *
+     * @param sql
+     */
+    long setPrepareSql(String sql);
 }

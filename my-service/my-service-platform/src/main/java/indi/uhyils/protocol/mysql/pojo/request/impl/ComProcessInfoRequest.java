@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 
@@ -11,6 +12,10 @@ import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
  */
 public class ComProcessInfoRequest extends AbstractMysqlRequest {
 
+    public ComProcessInfoRequest(MysqlHandler mysqlHandler) {
+        super(mysqlHandler);
+    }
+
     @Override
     protected void load() {
 
@@ -18,6 +23,7 @@ public class ComProcessInfoRequest extends AbstractMysqlRequest {
 
     @Override
     public MysqlResponse invoke() {
+        // todo 获取线程信息
         return null;
     }
 }

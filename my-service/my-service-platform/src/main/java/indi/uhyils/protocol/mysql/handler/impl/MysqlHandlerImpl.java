@@ -4,6 +4,7 @@ import indi.uhyils.protocol.mysql.decoder.impl.MysqlDecoderImpl;
 import indi.uhyils.protocol.mysql.enums.MysqlHandlerStatusEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.RequestAnalysis;
+import indi.uhyils.protocol.mysql.pojo.entity.PrepareInfo;
 import indi.uhyils.protocol.mysql.pojo.request.MysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
@@ -15,6 +16,9 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.net.InetSocketAddress;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 /**
@@ -27,6 +31,16 @@ import java.net.InetSocketAddress;
 public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements MysqlHandler {
 
     /**
+     * 预处理语句id
+     */
+    private static AtomicLong PREPARE_ID = new AtomicLong(0);
+
+    /**
+     * 预处理语句本地缓存
+     */
+    private static Map<Long, PrepareInfo> prepareCache = new ConcurrentHashMap<>();
+
+    /**
      * 连接
      */
     private Channel mysqlChannel;
@@ -37,10 +51,19 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
     private InetSocketAddress localAddress;
 
     /**
+     * 错误数量
+     */
+    private int warnCount;
+
+    /**
      * 创建完成之后默认是初见状态
      */
     private MysqlHandlerStatusEnum status = MysqlHandlerStatusEnum.FIRST_SIGHT;
 
+    /**
+     * 预处理语句id
+     */
+    private long prepareId;
 
     public MysqlHandlerImpl() {
     }
@@ -139,5 +162,33 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         if (mysqlChannel != null && mysqlChannel.isActive()) {
             mysqlChannel.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
         }
+    }
+
+    @Override
+    public int getWarnCount() {
+        return warnCount;
+    }
+
+    @Override
+    public void warnCountAdd() {
+        warnCount++;
+    }
+
+    @Override
+    public PrepareInfo getPrepareSql() {
+        return prepareCache.remove(prepareId);
+    }
+
+    @Override
+    public PrepareInfo getPrepareSql(long prepareId) {
+        return prepareCache.remove(prepareId);
+    }
+
+    @Override
+    public long setPrepareSql(String sql) {
+        long andIncrement = PREPARE_ID.getAndIncrement();
+        prepareCache.put(andIncrement, new PrepareInfo(sql));
+        prepareId = andIncrement;
+        return andIncrement;
     }
 }

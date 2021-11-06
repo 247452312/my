@@ -1,7 +1,11 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
+import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
+import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
+import indi.uhyils.protocol.mysql.pojo.response.impl.ErrResponse;
 
 
 /**
@@ -11,6 +15,10 @@ import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
  */
 public class ComDropDbRequest extends AbstractMysqlRequest {
 
+    public ComDropDbRequest(MysqlHandler mysqlHandler) {
+        super(mysqlHandler);
+    }
+
     @Override
     protected void load() {
 
@@ -18,6 +26,6 @@ public class ComDropDbRequest extends AbstractMysqlRequest {
 
     @Override
     public MysqlResponse invoke() {
-        return null;
+        return new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "请去对接平台配置页面删除表");
     }
 }

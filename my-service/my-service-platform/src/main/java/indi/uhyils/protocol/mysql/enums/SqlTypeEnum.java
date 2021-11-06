@@ -33,7 +33,11 @@ public enum SqlTypeEnum {
     /**
      * 切换数据库
      */
-    USE(6);
+    USE(6),
+    /**
+     * 刷新数据库
+     */
+    REFRESH(7);
 
     private final Integer code;
 

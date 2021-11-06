@@ -381,4 +381,11 @@ public class Proto {
         int len = (int) this.get_lenenc_int();
         return this.get_fixed_str(len, base64);
     }
+
+    public byte[] get_fixed_byte(int length) {
+        int start = offset;
+        byte[] result = new byte[length];
+        System.arraycopy(packet, start, result, length, length);
+        return result;
+    }
 }

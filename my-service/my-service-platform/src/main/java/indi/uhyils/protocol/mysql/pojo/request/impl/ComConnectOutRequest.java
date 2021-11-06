@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import java.io.Serializable;
@@ -11,6 +12,10 @@ import java.io.Serializable;
  * @date 文件创建日期 2021年11月03日 18时47分
  */
 public class ComConnectOutRequest extends AbstractMysqlRequest {
+
+    public ComConnectOutRequest(MysqlHandler mysqlHandler) {
+        super(mysqlHandler);
+    }
 
     @Override
     protected void load() {

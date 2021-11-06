@@ -1,6 +1,7 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
 import indi.uhyils.protocol.mysql.decoder.impl.Proto;
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 
@@ -49,6 +50,10 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
      * 数据库名称
      */
     private String dbName;
+
+    public MysqlAuthRequest(MysqlHandler mysqlHandler) {
+        super(mysqlHandler);
+    }
 
     @Override
     public MysqlResponse invoke() {

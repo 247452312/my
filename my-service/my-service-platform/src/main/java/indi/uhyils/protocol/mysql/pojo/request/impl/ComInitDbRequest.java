@@ -1,7 +1,17 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
+import indi.uhyils.protocol.mysql.decoder.impl.Proto;
+import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
+import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
+import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
+import indi.uhyils.protocol.mysql.pojo.response.impl.ErrResponse;
+import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
+import indi.uhyils.util.SpringUtil;
+import java.util.Locale;
+import java.util.Objects;
 
 
 /**
@@ -11,13 +21,37 @@ import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
  */
 public class ComInitDbRequest extends AbstractMysqlRequest {
 
+    /**
+     * 使用
+     */
+    private static final String SQL_START = "USE ";
+
+    private String sql;
+
+    public ComInitDbRequest(MysqlHandler mysqlHandler) {
+        super(mysqlHandler);
+    }
+
     @Override
     protected void load() {
+        Proto proto = new Proto(mysqlBytes, 4);
+        this.sql = proto.get_lenenc_str().trim().toUpperCase(Locale.ROOT);
 
     }
 
     @Override
     public MysqlResponse invoke() {
-        return null;
+        // use开头
+        if (!sql.startsWith(SQL_START)) {
+            return new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS);
+        }
+        // 数据库名称和标准名称一致
+        String dbName = sql.substring(SQL_START.length()).trim();
+        String root = SpringUtil.getProperty("mysql.db-name", "root");
+        if (Objects.equals(root, dbName)) {
+            return new OkResponse(SqlTypeEnum.USE);
+        }
+        // 不一致就报错
+        return new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "没有发现数据库: " + dbName + ",推荐: " + root);
     }
 }

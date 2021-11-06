@@ -1,7 +1,11 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
+import indi.uhyils.protocol.mysql.enums.MysqlRefreshEnum;
+import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
+import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
 
 
 /**
@@ -11,13 +15,21 @@ import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
  */
 public class ComRefreshRequest extends AbstractMysqlRequest {
 
+    private MysqlRefreshEnum refresh;
+
+    public ComRefreshRequest(MysqlHandler mysqlHandler) {
+        super(mysqlHandler);
+    }
+
+
     @Override
     protected void load() {
-
+        byte mysqlByte = mysqlBytes[1];
+        this.refresh = MysqlRefreshEnum.parse(mysqlByte);
     }
 
     @Override
     public MysqlResponse invoke() {
-        return null;
+        return new OkResponse(SqlTypeEnum.DELETE);
     }
 }

@@ -29,7 +29,7 @@ public enum MysqlServerStatusEnum {
      */
     SERVER_STATUS_DB_DROPPED(0x0100),
     /**
-     *
+     * 服务器状态没有反斜杠转义
      */
     SERVER_STATUS_NO_BACKSLASH_ESCAPES(0x0200),
     /**

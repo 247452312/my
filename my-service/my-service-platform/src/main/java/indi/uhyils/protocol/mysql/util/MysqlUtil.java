@@ -3,7 +3,6 @@ package indi.uhyils.protocol.mysql.util;
 import indi.uhyils.protocol.mysql.decoder.impl.Proto;
 import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,42 +48,15 @@ public final class MysqlUtil {
     }
 
     /**
-     * 合并多个属性为字节数组
+     * long转Length Coded Binary
+     *
+     * @param value
      *
      * @return
      */
-    public static byte[] mergeObjsToByte(long rowSize, long indexId, int serverStatus, int warnCount, String msg) {
-        List<byte[]> listResult = new ArrayList<>();
-        int count = 0;
-        // 添加影响行数报文
-        byte[] e = mergeLengthCodedBinary(rowSize);
-        listResult.add(e);
-        count += e.length;
-        // 添加索引id值
-        byte[] e1 = mergeLengthCodedBinary(indexId);
-        listResult.add(e1);
-        count += e1.length;
-        // 添加服务器状态
-        byte[] e2 = toBytes(serverStatus);
-        listResult.add(e2);
-        count += e2.length;
-        // 添加告警计数
-        byte[] e3 = toBytes(warnCount);
-        listResult.add(e3);
-        count += e3.length;
-        // 添加服务器消息
-        byte[] bytes1 = msg.getBytes(StandardCharsets.UTF_8);
-        listResult.add(bytes1);
-        count += bytes1.length;
-
-        byte[] result = new byte[count];
-        int index = 0;
-        for (byte[] bytes : listResult) {
-            System.arraycopy(bytes, 0, result, index, bytes.length);
-            index += bytes.length;
-        }
-        return result;
-
+    public static byte[] mergeLengthCodedBinary(long value) {
+        byte[] bytes = toBytes(value);
+        return byteToLengthCodeBinary(bytes);
     }
 
     /**
@@ -94,30 +66,84 @@ public final class MysqlUtil {
      *
      * @return
      */
-    public static byte[] mergeLengthCodedBinary(long value) {
+    public static byte[] mergeLengthCodedBinary(double value) {
         byte[] bytes = toBytes(value);
-        int size = bytes.length;
+        return byteToLengthCodeBinary(bytes);
+    }
 
-        byte[] lengthByte = new byte[0];
-        if (size == 0) {
-            lengthByte = new byte[]{(byte) 251};
-        } else if (value < 250) {
-            lengthByte = new byte[]{(byte) size};
-        } else if (size <= 2) {
-            lengthByte = new byte[3];
-            lengthByte[0] = (byte) 252;
-            System.arraycopy(bytes, 0, lengthByte, 1, 2);
-        } else if (size <= 3) {
-            lengthByte = new byte[4];
-            lengthByte[0] = (byte) 253;
-            System.arraycopy(bytes, 0, lengthByte, 1, 3);
-        } else if (size <= 8) {
-            lengthByte = new byte[9];
-            lengthByte[0] = (byte) 254;
-            int offset = 8 - bytes.length;
-            System.arraycopy(bytes, 0, lengthByte, 1 + offset, bytes.length);
+    private static byte[] toBytes(double value) {
+        long longValue = Double.doubleToRawLongBits(value);
+        byte[] byteRet = new byte[8];
+        for (int i = 0; i < 8; i++) {
+            byteRet[i] = (byte) ((longValue >> 8 * i) & 0xff);
         }
-        return lengthByte;
+        return byteRet;
+    }
+
+    /**
+     * 字节数组转 Length Coded Binary
+     *
+     * @param bytes
+     *
+     * @return
+     */
+    public static byte[] byteToLengthCodeBinary(byte[] bytes) {
+        // 数据真实长度
+        int length = bytes.length;
+        byte[] prefixByte;
+        if (length == 0) {
+            // 数据长度为0 前缀只有一个字节 且为251
+            prefixByte = new byte[]{(byte) 251};
+        } else if (length <= 250) {
+            // 数据真实长度不到251 则第一个字节就是数据真实长度
+            prefixByte = toBytes(length);
+        } else {
+            // 长度的字节
+            byte[] lengthByte = toBytes(length);
+            // 长度的字节的长度
+            int lengthByteLength = lengthByte.length;
+            // 长度字节的长度等于二
+            if (lengthByteLength == 2) {
+                prefixByte = new byte[3];
+                prefixByte[0] = (byte) 252;
+                System.arraycopy(lengthByte, 0, prefixByte, 1, lengthByteLength);
+            } else if (lengthByteLength == 3) {
+                prefixByte = new byte[4];
+                prefixByte[0] = (byte) 253;
+                System.arraycopy(lengthByte, 0, prefixByte, 1, lengthByteLength);
+            } else {
+                prefixByte = new byte[9];
+                prefixByte[0] = (byte) 254;
+                int offset = 8 - lengthByteLength;
+                System.arraycopy(lengthByte, 0, prefixByte, 1 + offset, lengthByteLength);
+            }
+        }
+
+        byte[] result = new byte[prefixByte.length + bytes.length];
+        System.arraycopy(prefixByte, 0, result, 0, prefixByte.length);
+        System.arraycopy(bytes, 0, result, prefixByte.length, bytes.length);
+        return result;
+    }
+
+    public static byte[] mergeLengthCodedBinary(String value) {
+        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+        return byteToLengthCodeBinary(bytes);
+
+    }
+
+    /**
+     * 字符串转 Null-Terminated String
+     *
+     * @param value
+     *
+     * @return
+     */
+    public static byte[] toNullTerminatedString(String value) {
+        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+        byte[] result = new byte[bytes.length + 1];
+        System.arraycopy(bytes, 0, result, 0, bytes.length);
+        result[bytes.length] = 0x00;
+        return result;
     }
 
     public static int getSize(long value) {
@@ -144,6 +170,112 @@ public final class MysqlUtil {
             value >>= 8;
         }
         return result;
+    }
+
+    /**
+     * long转byte数组
+     *
+     * @param value
+     *
+     * @return
+     */
+    public static byte[] toBytes(int value) {
+        int size = getSize(value);
+        byte[] result = new byte[size];
+        for (int i = size - 1; i >= 0 && value > 0; i--) {
+            result[i] = (byte) (value & 0xffL);
+            value >>= 4;
+        }
+        return result;
+    }
+
+    /**
+     * long转byte数组
+     *
+     * @param value
+     *
+     * @return
+     */
+    public static byte[] toBytes(short value) {
+        int size = getSize(value);
+        byte[] result = new byte[size];
+        for (int i = size - 1; i >= 0 && value > 0; i--) {
+            result[i] = (byte) (value & 0xffL);
+            value >>= 2;
+        }
+        return result;
+    }
+
+    /**
+     * 合并bytesList
+     *
+     * @param listResult
+     * @param count
+     *
+     * @return
+     */
+    public static byte[] mergeListBytes(List<byte[]> listResult, int count) {
+        byte[] result = new byte[count];
+        int index = 0;
+        for (byte[] bytes : listResult) {
+            System.arraycopy(bytes, 0, result, index, bytes.length);
+            index += bytes.length;
+        }
+        return result;
+    }
+
+    /**
+     * 合并bytesList
+     *
+     * @param listResult
+     *
+     * @return
+     */
+    public static byte[] mergeListBytes(List<byte[]> listResult) {
+        int count = 0;
+        for (byte[] bytes : listResult) {
+            count += bytes.length;
+        }
+        return mergeListBytes(listResult, count);
+    }
+
+    public static byte[] buildFixedInt(int size, long value) {
+        byte[] packet = new byte[size];
+
+        if (size == 8) {
+            packet[0] = (byte) ((value >> 0) & 0xFF);
+            packet[1] = (byte) ((value >> 8) & 0xFF);
+            packet[2] = (byte) ((value >> 16) & 0xFF);
+            packet[3] = (byte) ((value >> 24) & 0xFF);
+            packet[4] = (byte) ((value >> 32) & 0xFF);
+            packet[5] = (byte) ((value >> 40) & 0xFF);
+            packet[6] = (byte) ((value >> 48) & 0xFF);
+            packet[7] = (byte) ((value >> 56) & 0xFF);
+        } else if (size == 6) {
+            packet[0] = (byte) ((value >> 0) & 0xFF);
+            packet[1] = (byte) ((value >> 8) & 0xFF);
+            packet[2] = (byte) ((value >> 16) & 0xFF);
+            packet[3] = (byte) ((value >> 24) & 0xFF);
+            packet[4] = (byte) ((value >> 32) & 0xFF);
+            packet[5] = (byte) ((value >> 40) & 0xFF);
+        } else if (size == 4) {
+            packet[0] = (byte) ((value >> 0) & 0xFF);
+            packet[1] = (byte) ((value >> 8) & 0xFF);
+            packet[2] = (byte) ((value >> 16) & 0xFF);
+            packet[3] = (byte) ((value >> 24) & 0xFF);
+        } else if (size == 3) {
+            packet[0] = (byte) ((value >> 0) & 0xFF);
+            packet[1] = (byte) ((value >> 8) & 0xFF);
+            packet[2] = (byte) ((value >> 16) & 0xFF);
+        } else if (size == 2) {
+            packet[0] = (byte) ((value) & 0xFF);
+            packet[1] = (byte) ((value >> 8) & 0xFF);
+        } else if (size == 1) {
+            packet[0] = (byte) ((value) & 0xFF);
+        } else {
+            return null;
+        }
+        return packet;
     }
 
 }

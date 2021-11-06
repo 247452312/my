@@ -53,11 +53,11 @@ public final class RequestAnalysis {
         switch (status) {
             case FIRST_SIGHT:
                 // 初见状态默认请求是登录信息
-                MysqlAuthRequest mysqlAuthRequest = new MysqlAuthRequest();
+                MysqlAuthRequest mysqlAuthRequest = new MysqlAuthRequest(mysqlHandler);
                 mysqlAuthRequest.load(mysqlBytes);
                 return mysqlAuthRequest;
             case PASSED:
-                return loadCommand(mysqlBytes);
+                return loadCommand(mysqlHandler, mysqlBytes);
             case OVER:
                 // 结束状态不允许请求
                 mysqlHandler.closeOnFlush();
@@ -67,98 +67,98 @@ public final class RequestAnalysis {
         }
     }
 
-    private static MysqlRequest loadCommand(byte[] mysqlBytes) {
+    private static MysqlRequest loadCommand(MysqlHandler mysqlHandler, byte[] mysqlBytes) {
         Proto proto = new Proto(mysqlBytes, 3);
         long type = proto.getFixedInt(1);
         MysqlCommandTypeEnum parse = MysqlCommandTypeEnum.parse(type);
         MysqlRequest result = null;
         switch (parse) {
             case COM_PING:
-                result = new ComPingRequest();
+                result = new ComPingRequest(mysqlHandler);
                 break;
             case COM_QUIT:
-                result = new ComQuitRequest();
+                result = new ComQuitRequest(mysqlHandler);
                 break;
             case COM_TIME:
-                result = new ComTimeRequest();
+                result = new ComTimeRequest(mysqlHandler);
                 break;
             case COM_DEBUG:
-                result = new ComDebugRequest();
+                result = new ComDebugRequest(mysqlHandler);
                 break;
             case COM_QUERY:
-                result = new ComQueryRequest();
+                result = new ComQueryRequest(mysqlHandler);
                 break;
             case COM_SLEEP:
-                result = new ComSleepRequest();
+                result = new ComSleepRequest(mysqlHandler);
                 break;
             case COM_CONNECT:
-                result = new ComConnectRequest();
+                result = new ComConnectRequest(mysqlHandler);
                 break;
             case COM_DROP_DB:
-                result = new ComDropDbRequest();
+                result = new ComDropDbRequest(mysqlHandler);
                 break;
             case COM_INIT_DB:
-                result = new ComInitDbRequest();
+                result = new ComInitDbRequest(mysqlHandler);
                 break;
             case COM_REFRESH:
-                result = new ComRefreshRequest();
+                result = new ComRefreshRequest(mysqlHandler);
                 break;
             case COM_SHUTDOWN:
-                result = new ComShutdownRequest();
+                result = new ComShutdownRequest(mysqlHandler);
                 break;
             case COM_CREATE_DB:
-                result = new ComCreateDbRequest();
+                result = new ComCreateDbRequest(mysqlHandler);
                 break;
             case COM_FIELD_LIST:
-                result = new ComFieldListRequest();
+                result = new ComFieldListRequest(mysqlHandler);
                 break;
             case COM_SET_OPTION:
-                result = new ComSetOptionRequest();
+                result = new ComSetOptionRequest(mysqlHandler);
                 break;
             case COM_STATISTICS:
-                result = new ComStatisticsRequest();
+                result = new ComStatisticsRequest(mysqlHandler);
                 break;
             case COM_STMT_CLOSE:
-                result = new ComStmtCloseRequest();
+                result = new ComStmtCloseRequest(mysqlHandler);
                 break;
             case COM_STMT_FETCH:
-                result = new ComStmtFetchRequest();
+                result = new ComStmtFetchRequest(mysqlHandler);
                 break;
             case COM_STMT_RESET:
-                result = new ComStmtResetRequest();
+                result = new ComStmtResetRequest(mysqlHandler);
                 break;
             case COM_TABLE_DUMP:
-                result = new ComTableDumpRequest();
+                result = new ComTableDumpRequest(mysqlHandler);
                 break;
             case COM_BINLOG_DUMP:
-                result = new ComBinlogDumpRequest();
+                result = new ComBinlogDumpRequest(mysqlHandler);
                 break;
             case COM_CHANGE_USER:
-                result = new ComChangeUserRequest();
+                result = new ComChangeUserRequest(mysqlHandler);
                 break;
             case COM_CONNECT_OUT:
-                result = new ComConnectOutRequest();
+                result = new ComConnectOutRequest(mysqlHandler);
                 break;
             case COM_PROCESS_INFO:
-                result = new ComProcessInfoRequest();
+                result = new ComProcessInfoRequest(mysqlHandler);
                 break;
             case COM_PROCESS_KILL:
-                result = new ComProcessKillRequest();
+                result = new ComProcessKillRequest(mysqlHandler);
                 break;
             case COM_STMT_EXECUTE:
-                result = new ComStmtExecuteRequest();
+                result = new ComStmtExecuteRequest(mysqlHandler);
                 break;
             case COM_STMT_PREPARE:
-                result = new ComStmtPrepareRequest();
+                result = new ComStmtPrepareRequest(mysqlHandler);
                 break;
             case COM_DELAYED_INSERT:
-                result = new ComDelayedInsertRequest();
+                result = new ComDelayedInsertRequest(mysqlHandler);
                 break;
             case COM_REGISTER_SLAVE:
-                result = new ComRegisterSlaveRequest();
+                result = new ComRegisterSlaveRequest(mysqlHandler);
                 break;
             case COM_STMT_SEND_LONG_DATA:
-                result = new ComStmtSendLongDataRequest();
+                result = new ComStmtSendLongDataRequest(mysqlHandler);
                 break;
             default:
                 break;

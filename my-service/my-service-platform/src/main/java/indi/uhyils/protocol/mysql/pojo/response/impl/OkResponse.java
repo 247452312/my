@@ -5,6 +5,9 @@ import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
 import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import indi.uhyils.util.Asserts;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -75,11 +78,38 @@ public class OkResponse extends AbstractMysqlResponse {
     public byte[] toByteNoMarkIndex() {
         Asserts.assertTrue(sqlTypeEnum != null);
         Asserts.assertTrue(sqlTypeEnum != SqlTypeEnum.QUERY, "查询不能返回OK消息");
-        return MysqlUtil.mergeObjsToByte(rowLength, indexIdValue, serverStatus.getCode(), warnCount, msg);
+        return mergeOk();
     }
 
     public SqlTypeEnum getSqlTypeEnum() {
         return sqlTypeEnum;
+    }
+
+
+    private byte[] mergeOk() {
+        List<byte[]> listResult = new ArrayList<>();
+        int count = 0;
+        // 添加影响行数报文
+        byte[] e = MysqlUtil.mergeLengthCodedBinary(rowLength);
+        listResult.add(e);
+        count += e.length;
+        // 添加索引id值
+        byte[] e1 = MysqlUtil.mergeLengthCodedBinary(indexIdValue);
+        listResult.add(e1);
+        count += e1.length;
+        // 添加服务器状态
+        byte[] e2 = MysqlUtil.toBytes(serverStatus.getCode());
+        listResult.add(e2);
+        count += e2.length;
+        // 添加告警计数
+        byte[] e3 = MysqlUtil.toBytes(warnCount);
+        listResult.add(e3);
+        count += e3.length;
+        // 添加服务器消息
+        byte[] bytes1 = msg.getBytes(StandardCharsets.UTF_8);
+        listResult.add(bytes1);
+        count += bytes1.length;
+        return MysqlUtil.mergeListBytes(listResult, count);
     }
 
 
