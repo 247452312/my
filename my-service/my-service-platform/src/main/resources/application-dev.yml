@@ -1,8 +1,8 @@
 server:
-  port: 8006
+  port: 8009
 rpc:
   provider:
-    port: 20806
+    port: 20809
   application:
     name: provider-platform
 log-out:
@@ -16,3 +16,5 @@ id:
   organization:
     # 机构代码
     code: 7
+
+mysql-netty: 3300

@@ -15,10 +15,13 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import org.apache.commons.io.HexDump;
 
 
 /**
@@ -91,6 +94,7 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         //入口连接
         this.mysqlChannel = ctx.channel();
         this.localAddress = (InetSocketAddress) mysqlChannel.localAddress();
+
     }
 
     /**
@@ -108,6 +112,8 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
          * 因{@link MysqlDecoderImpl#decode} 所以这里一定为byte[]
          */
         byte[] mysqlBytes = (byte[]) msg;
+        String dump = dump(mysqlBytes);
+        LogUtil.info(dump);
         // 加载并解析请求
         MysqlRequest load = RequestAnalysis.load(this, mysqlBytes);
         if (load == null) {
@@ -125,6 +131,18 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         mysqlChannel.writeAndFlush(bufferToFlash);
 
 
+    }
+
+
+    private String dump(byte[] bytes) {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            HexDump.dump(bytes, 0, out, 0);
+            return out.toString();
+        } catch (IOException e) {
+            LogUtil.error(e);
+            return null;
+        }
     }
 
     /**

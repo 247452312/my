@@ -11,6 +11,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,7 @@ public class MysqlNettyServerImpl extends ChannelInitializer<SocketChannel> impl
      */
     private EventLoopGroup workerGroup;
 
+    @PostConstruct
     @Override
     public void init() throws InterruptedException {
         bossGroup = new NioEventLoopGroup(1);
@@ -45,7 +47,7 @@ public class MysqlNettyServerImpl extends ChannelInitializer<SocketChannel> impl
          .option(ChannelOption.SO_BACKLOG, 1024).childHandler(this);
         ChannelFuture f = b.bind(port).sync();
 
-        f.channel().closeFuture().sync();
+        f.channel().closeFuture();
     }
 
     @Override

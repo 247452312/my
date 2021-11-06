@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.mysql.pojo.entity;
 
+import indi.uhyils.util.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +66,15 @@ public class PrepareInfo {
     }
 
     public String replacePrepareSql(List<PrepareParamInfo> params) {
-
+        List<String> result = StringUtil.splitByIndexList(prepareInfo, "?", placeholderIndex);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < result.size(); i++) {
+            sb.append(result.get(i));
+            if (params.size() > i) {
+                Object paramValue = params.get(i).getParamValue();
+                sb.append(paramValue.toString());
+            }
+        }
+        return sb.toString();
     }
 }

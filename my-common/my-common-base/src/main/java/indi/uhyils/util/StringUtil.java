@@ -1,8 +1,12 @@
 package indi.uhyils.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -136,5 +140,39 @@ public final class StringUtil {
      */
     public static boolean isNotEmpty(final CharSequence cs) {
         return !isEmpty(cs);
+    }
+
+    /**
+     * 根据indexList将 srcStr切分成多块,其中切分字符为replaceStr
+     *
+     * @param srcStr
+     * @param replaceStr
+     * @param indexList
+     *
+     * @return
+     */
+    public static List<String> splitByIndexList(String srcStr, String replaceStr, List<Integer> indexList) {
+        int lastIndex = srcStr.length() - 1;
+        List<String> result = new ArrayList<>(indexList.size() + 1);
+        for (int i = indexList.size() - 1; i >= 0; i--) {
+            String substring = srcStr.substring(indexList.get(i), lastIndex);
+            result.add(substring);
+        }
+        result.add(srcStr.substring(0, indexList.get(0)));
+
+        Collections.reverse(result);
+        return result.stream().filter(t -> t.startsWith(replaceStr)).map(t -> t.replaceFirst(replaceStr, "")).collect(Collectors.toList());
+    }
+
+    /**
+     * 根据indexList将 srcStr切分成多块,其中切分字符为""
+     *
+     * @param srcStr
+     * @param indexList
+     *
+     * @return
+     */
+    public static List<String> splitByIndexList(String srcStr, List<Integer> indexList) {
+        return splitByIndexList(srcStr, "", indexList);
     }
 }
