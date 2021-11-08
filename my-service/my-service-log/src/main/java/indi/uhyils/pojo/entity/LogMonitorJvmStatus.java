@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
@@ -19,8 +20,9 @@ public class LogMonitorJvmStatus extends AbstractDoEntity<LogMonitorJvmStatusDO>
 
     private JvmUniqueMark unique;
 
-    public LogMonitorJvmStatus(LogMonitorJvmStatusDO dO) {
-        super(dO);
+    @Default
+    public LogMonitorJvmStatus(LogMonitorJvmStatusDO data) {
+        super(data);
     }
 
     public LogMonitorJvmStatus(LogMonitorJvmStatusDO dO, JvmUniqueMark unique) {

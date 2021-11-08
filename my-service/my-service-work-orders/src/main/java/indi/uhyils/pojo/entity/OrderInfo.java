@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.assembler.OrderInfoAssembler;
 import indi.uhyils.enum_.OrderStatusEnum;
 import indi.uhyils.enum_.PushTypeEnum;
@@ -31,9 +32,9 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
 
     private List<OrderNode> nodes;
 
-
-    public OrderInfo(OrderInfoDO dO) {
-        super(dO);
+    @Default
+    public OrderInfo(OrderInfoDO data) {
+        super(data);
     }
 
     public OrderInfo(Long id) {
@@ -45,7 +46,7 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
     }
 
     public void saveSelf(OrderInfoRepository rep) {
-        toDo().setId(null);
+        toData().setId(null);
         this.setUnique(null);
         this.setUnique(rep.save(this));
         // 修改node的OrderId
@@ -61,7 +62,7 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
             return;
         }
         for (OrderNode node : nodes) {
-            node.toDo().setBaseInfoId(getUnique().getId());
+            node.toData().setBaseInfoId(getUnique().getId());
         }
     }
 
@@ -83,9 +84,9 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
     }
 
     public void compareAndSave(OrderInfoRepository rep, Long monitorUserId) {
-        Long selfMonitor = toDo().getMonitorUserId();
+        Long selfMonitor = toData().getMonitorUserId();
         if (!Objects.equals(selfMonitor, monitorUserId)) {
-            toDo().setMonitorUserId(monitorUserId);
+            toData().setMonitorUserId(monitorUserId);
             this.onUpdate();
             rep.save(this);
         }

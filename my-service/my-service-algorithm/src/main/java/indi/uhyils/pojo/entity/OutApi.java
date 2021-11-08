@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.OutApiDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -13,8 +14,9 @@ import indi.uhyils.repository.OutApiRepository;
  */
 public class OutApi extends AbstractDoEntity<OutApiDO> {
 
-    public OutApi(OutApiDO dO) {
-        super(dO);
+    @Default
+    public OutApi(OutApiDO data) {
+        super(data);
     }
 
     public OutApi(Long id) {

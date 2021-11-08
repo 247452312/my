@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.OrderBaseNodeResultTypeDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class OrderBaseNodeResultType extends AbstractDoEntity<OrderBaseNodeResultTypeDO> {
 
-    public OrderBaseNodeResultType(OrderBaseNodeResultTypeDO dO) {
-        super(dO);
+    @Default
+    public OrderBaseNodeResultType(OrderBaseNodeResultTypeDO data) {
+        super(data);
     }
 
     public OrderBaseNodeResultType(Long id) {

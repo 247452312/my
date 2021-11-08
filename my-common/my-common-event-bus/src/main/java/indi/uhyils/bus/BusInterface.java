@@ -63,21 +63,21 @@ public interface BusInterface extends Consumer {
     /**
      * 异步发布事件
      */
-    void syncPushEvent();
+    void asyncPushEvent();
 
     /**
      * 批量异步提交并发送事件 (不发送存储事件)
      *
      * @param baseEvents
      */
-    void syncCommitAndPush(List<BaseParentEvent> baseEvents);
+    void asyncCommitAndPush(List<BaseParentEvent> baseEvents);
 
     /**
      * 异步提交并发送事件 (不发送存储事件)
      *
      * @param baseEvent
      */
-    void syncCommitAndPush(BaseParentEvent baseEvent);
+    void asyncCommitAndPush(BaseParentEvent baseEvent);
 
     /**
      * 移除还没有发布的指定事件(包括子类)

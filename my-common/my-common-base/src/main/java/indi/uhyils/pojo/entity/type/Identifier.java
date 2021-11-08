@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity.type;
 
 import indi.uhyils.pojo.cqe.query.IdQuery;
+import java.util.Objects;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -33,5 +34,22 @@ public class Identifier implements BaseType, Comparable<Identifier> {
             return -1;
         }
         return id.compareTo(o.id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Identifier that = (Identifier) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

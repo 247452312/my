@@ -1,9 +1,17 @@
 package indi.uhyils.bus;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import indi.uhyils.BaseTest;
+import indi.uhyils.bus.model.AEvent;
+import indi.uhyils.bus.model.BEvent;
+import indi.uhyils.pojo.cqe.event.base.BaseEvent;
+import indi.uhyils.pojo.cqe.event.base.BaseParentEvent;
+import indi.uhyils.pojo.cqe.event.base.PackageEvent;
 import indi.uhyils.util.Asserts;
-import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,16 +28,36 @@ public class BusTest extends BaseTest {
 
     @Test
     public void testSync() throws InterruptedException {
-        bus.syncCommitAndPush(new TestParentEvent());
+        PackageEvent packageEvent = new PackageEvent();
+        TestParentEvent baseEvent = new TestParentEvent();
+        packageEvent.setEvents(Collections.singletonList(baseEvent));
+        bus.asyncCommitAndPush(packageEvent);
         Thread.sleep(3000L);
         Asserts.assertTrue(TestEvent.mark);
 
     }
 
+
     @Test
-    public void testEventJson() throws ClassNotFoundException {
-        String msg = "{\"sign\":1712285201464296768,\"user\":{\"id\":0,\"username\":\"admin\"},\"class\":\"indi.uhyils.bus.TestEvent\"}";
-        Class<TestEvent> aClass = (Class<TestEvent>) Class.forName("indi.uhyils.bus.TestEvent");
-        TestEvent o = JSONObject.parseObject(msg, (Type) aClass);
+    public void testJSON() {
+        PackageEvent list = new PackageEvent();
+        List<BaseParentEvent> event = new ArrayList<>();
+        AEvent e = new AEvent();
+        e.setUnique(1L);
+        event.add(e);
+        BEvent b = new BEvent();
+        b.setUnique(2L);
+        event.add(b);
+        list.setEvents(event);
+
+        String s = JSON.toJSONString(list, SerializerFeature.WriteClassName);
+        System.out.println("fastJSON解析: " + s);
+
+        BaseEvent listEvent_ = JSON.parseObject(s, BaseEvent.class);
+        PackageEvent listEvent = (PackageEvent) listEvent_;
+        List<BaseParentEvent> targetEvents = listEvent.getEvents();
+        BaseEvent aEvent = targetEvents.get(0);
+        Long unique = aEvent.getUnique();
+        Asserts.assertTrue(unique == 1L);
     }
 }

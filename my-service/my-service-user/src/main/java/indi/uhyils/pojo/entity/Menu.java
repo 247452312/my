@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.assembler.MenuAssembler;
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.MenuDTO;
@@ -26,8 +27,9 @@ public class Menu extends AbstractDoEntity<MenuDO> {
 
     private List<Dept> depts;
 
-    public Menu(MenuDO menuDO) {
-        super(menuDO);
+    @Default
+    public Menu(MenuDO data) {
+        super(data);
     }
 
     public Menu(Long id) {
@@ -73,7 +75,7 @@ public class Menu extends AbstractDoEntity<MenuDO> {
      * @return
      */
     public MenuTreeDTO findSelfNode(MenuRepository rep, MenuAssembler assembler) {
-        MenuDO menuDO = toDo();
+        MenuDO menuDO = toData();
         Integer iFrame = menuDO.getIFrame();
         List<Menu> menus = rep.findByIframe(new MenuIframe(iFrame));
         MenuTreeBuilder menuTreeBuilder = new MenuTreeBuilder();

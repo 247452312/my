@@ -402,4 +402,12 @@ public class DeptTest extends BaseTest {
         Asserts.assertTrue(deptPage.getList().size() == 10);
         Asserts.assertTrue(deptPage.getCount() >= 23);
     }
+
+    @Test
+    public void testMybatisCache() {
+        Identifier id = new Identifier(1685466876918890528L);
+        DeptDO deptDO = deptRepository.find(id).toData();
+        DeptDO deptDO1 = deptRepository.find(id).toData();
+        Asserts.assertTrue(deptDO1 == deptDO, "一级缓存失效");
+    }
 }

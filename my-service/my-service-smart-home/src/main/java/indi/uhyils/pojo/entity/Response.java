@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.ResponseDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class Response extends AbstractDoEntity<ResponseDO> {
 
-    public Response(ResponseDO dO) {
-        super(dO);
+    @Default
+    public Response(ResponseDO data) {
+        super(data);
     }
 
     public Response(Long id) {

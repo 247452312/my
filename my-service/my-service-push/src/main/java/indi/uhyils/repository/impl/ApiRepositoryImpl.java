@@ -37,7 +37,7 @@ public class ApiRepositoryImpl extends AbstractRepository<Api, ApiDO, ApiDao, Ap
 
     @Override
     public Integer removeApiByGroup(ApiGroup groupId) {
-        ApiGroupDO apiGroupDO = groupId.toDo();
+        ApiGroupDO apiGroupDO = groupId.toData();
         apiGroupDO.preUpdate();
         return dao.deleteAllByGroup(apiGroupDO);
     }

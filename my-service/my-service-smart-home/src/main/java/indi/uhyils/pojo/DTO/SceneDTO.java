@@ -23,7 +23,7 @@ public class SceneDTO extends IdDTO {
     /**
      * 场景数值 温度 湿度等
      */
-    private Object value;
+    private Double value;
 
     /**
      * 其他: 气氛 天气 动作等场景的模型id
@@ -40,11 +40,11 @@ public class SceneDTO extends IdDTO {
     }
 
 
-    public Object getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Object value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 

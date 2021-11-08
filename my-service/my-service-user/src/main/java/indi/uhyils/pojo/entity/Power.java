@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -15,8 +16,9 @@ import indi.uhyils.repository.PowerRepository;
  */
 public class Power extends AbstractDoEntity<PowerDO> {
 
-    public Power(PowerDO powerDO) {
-        super(powerDO);
+    @Default
+    public Power(PowerDO data) {
+        super(data);
     }
 
     public Power(Identifier powerId) {

@@ -1,7 +1,6 @@
 package indi.uhyils.assembler;
 
 
-import indi.uhyils.annotation.Assembler;
 import indi.uhyils.enum_.OrderNodeTypeEnum;
 import indi.uhyils.pojo.DO.OrderInfoDO;
 import indi.uhyils.pojo.DO.OrderNodeDO;
@@ -12,9 +11,9 @@ import indi.uhyils.pojo.DTO.OrderNodeDTO;
 import indi.uhyils.pojo.DTO.OrderNodeFieldDTO;
 import indi.uhyils.pojo.entity.OrderInfo;
 import indi.uhyils.pojo.entity.OrderNode;
-import indi.uhyils.util.BeanUtil;
 import java.util.HashMap;
 import java.util.List;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -24,8 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version 1.0
  * @date 文件创建日期 2021年08月31日 19时59分13秒
  */
-@Assembler
-public class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, OrderInfo, OrderInfoDTO> {
+@Mapper(componentModel = "spring")
+public abstract class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, OrderInfo, OrderInfoDTO> {
 
     @Autowired
     private OrderNodeAssembler nodeAssembler;
@@ -33,10 +32,6 @@ public class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, OrderInfo
     @Autowired
     private OrderNodeFieldAssembler nodeFieldAssembler;
 
-    @Override
-    public OrderInfo toEntity(OrderInfoDO dO) {
-        return new OrderInfo(dO);
-    }
 
     @Override
     public OrderInfo toEntity(OrderInfoDTO dto) {
@@ -47,22 +42,10 @@ public class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, OrderInfo
         return orderInfo;
     }
 
-    @Override
-    protected Class<OrderInfoDO> getDoClass() {
-        return OrderInfoDO.class;
-    }
-
-    @Override
-    protected Class<OrderInfoDTO> getDtoClass() {
-        return OrderInfoDTO.class;
-    }
-
-    public OrderInfoDTO baseInfoDTOToInfoDTO(OrderBaseInfoDTO order) {
-        return BeanUtil.copyProperties(order, OrderInfoDTO.class);
-    }
+    public abstract OrderInfoDTO baseInfoDTOToInfoDTO(OrderBaseInfoDTO order);
 
     public InitOrderDTO toInitOrderDTO(OrderInfo orderInfo) {
-        OrderInfoDO orderInfoDO = orderInfo.toDo();
+        OrderInfoDO orderInfoDO = orderInfo.toData();
         List<OrderNode> nodes = orderInfo.nodes();
 
         // 创建之后的首节点的属性(返回给前台用)
@@ -73,7 +56,7 @@ public class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, OrderInfo
         HashMap<Long, Long> noticeUserIds = new HashMap<>(nodes.size());
 
         for (OrderNode node : nodes) {
-            OrderNodeDO orderNodeDO = node.toDo();
+            OrderNodeDO orderNodeDO = node.toData();
             Integer type = orderNodeDO.getType();
             OrderNodeTypeEnum orderNodeType = OrderNodeTypeEnum.parse(type);
             if (orderNodeType == OrderNodeTypeEnum.START) {

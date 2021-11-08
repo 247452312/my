@@ -28,17 +28,17 @@ public class LogMonitorJvmStatusDTO extends IdDTO {
     /**
      * 堆 使用内存
      */
-    private Object heapUseMem;
+    private Double heapUseMem;
 
     /**
      * 非堆区使用内存
      */
-    private Object noHeapUseMem;
+    private Double noHeapUseMem;
 
     /**
      * 总使用内存
      */
-    private Object useMem;
+    private Double useMem;
 
 
     public Long getFid() {
@@ -58,31 +58,27 @@ public class LogMonitorJvmStatusDTO extends IdDTO {
         this.time = time;
     }
 
-
-    public Object getHeapUseMem() {
+    public Double getHeapUseMem() {
         return heapUseMem;
     }
 
-    public void setHeapUseMem(Object heapUseMem) {
+    public void setHeapUseMem(Double heapUseMem) {
         this.heapUseMem = heapUseMem;
     }
 
-
-    public Object getNoHeapUseMem() {
+    public Double getNoHeapUseMem() {
         return noHeapUseMem;
     }
 
-    public void setNoHeapUseMem(Object noHeapUseMem) {
+    public void setNoHeapUseMem(Double noHeapUseMem) {
         this.noHeapUseMem = noHeapUseMem;
     }
 
-
-    public Object getUseMem() {
+    public Double getUseMem() {
         return useMem;
     }
 
-    public void setUseMem(Object useMem) {
+    public void setUseMem(Double useMem) {
         this.useMem = useMem;
     }
-
 }

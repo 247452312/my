@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.enum_.LogTypeEnum;
 import indi.uhyils.facade.ServiceControlFacade;
 import indi.uhyils.pojo.DO.RelegationDO;
@@ -27,13 +28,14 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
      */
     private LogTypeEnum logTypeEnum;
 
-    public Relegation(RelegationDO dO) {
-        super(dO);
+    @Default
+    public Relegation(RelegationDO data) {
+        super(data);
     }
 
     public Relegation(String serviceName, String methodName) {
         super(new RelegationDO());
-        RelegationDO dO = toDo();
+        RelegationDO dO = toData();
         dO.setServiceName(serviceName);
         dO.setMethodName(methodName);
     }
@@ -53,7 +55,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
 
     public Relegation(Integer type, String serviceName, String methodName) {
         super(new RelegationDO());
-        RelegationDO dO = toDo();
+        RelegationDO dO = toData();
         this.logTypeEnum = LogTypeEnum.parse(type);
         dO.setServiceName(serviceName);
         dO.setMethodName(methodName);
@@ -66,7 +68,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
      */
     public void validate() {
         Asserts.assertTrue(logTypeEnum == LogTypeEnum.RPC, "非RPC,不是接口");
-        Asserts.assertTrue(StringUtil.isNotEmpty(toDo().getServiceName()) && StringUtil.isNotEmpty(toDo().getMethodName()));
+        Asserts.assertTrue(StringUtil.isNotEmpty(toData().getServiceName()) && StringUtil.isNotEmpty(toData().getMethodName()));
     }
 
     /**
@@ -82,7 +84,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
      * 设置默认值
      */
     public void initDefault() {
-        RelegationDO relegationDO = toDo();
+        RelegationDO relegationDO = toData();
         Asserts.assertTrue(relegationDO != null);
         Integer paramLength = relegationDO.getParamLength();
         if (paramLength == null) {
@@ -98,7 +100,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
      * @return
      */
     public boolean demotion(ServiceControlFacade facade) {
-        RelegationDO dO = this.toDo();
+        RelegationDO dO = this.toData();
         return facade.demotion(dO.getServiceName(), dO.getMethodName());
     }
 
@@ -110,7 +112,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
      * @return
      */
     public boolean recover(ServiceControlFacade facade) {
-        RelegationDO dO = this.toDo();
+        RelegationDO dO = this.toData();
         return facade.recover(dO.getServiceName(), dO.getMethodName());
     }
 }

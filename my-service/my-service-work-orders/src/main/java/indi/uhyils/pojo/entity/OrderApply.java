@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.assembler.OrderInfoAssembler;
 import indi.uhyils.enum_.OrderNodeStatusEnum;
 import indi.uhyils.enum_.OrderStatusEnum;
@@ -31,8 +32,9 @@ public class OrderApply extends AbstractDoEntity<OrderApplyDO> {
      */
     private OrderNode orderNode;
 
-    public OrderApply(OrderApplyDO dO) {
-        super(dO);
+    @Default
+    public OrderApply(OrderApplyDO data) {
+        super(data);
     }
 
     public OrderApply(Long id) {
@@ -44,10 +46,10 @@ public class OrderApply extends AbstractDoEntity<OrderApplyDO> {
             return;
         }
 
-        this.orderNode = nodeRepository.find(new Identifier(toDo().getOrderNodeId()));
-        List<OrderNodeField> fields = fieldRepository.findByNodeId(orderNode.toDo().getId());
-        List<OrderNodeResultType> resultTypes = resultTypeRepository.findByNodeId(orderNode.toDo().getId());
-        List<OrderNodeRoute> route = routeRepository.findByNodeId(orderNode.toDo().getId());
+        this.orderNode = nodeRepository.find(new Identifier(toData().getOrderNodeId()));
+        List<OrderNodeField> fields = fieldRepository.findByNodeId(orderNode.toData().getId());
+        List<OrderNodeResultType> resultTypes = resultTypeRepository.findByNodeId(orderNode.toData().getId());
+        List<OrderNodeRoute> route = routeRepository.findByNodeId(orderNode.toData().getId());
         this.orderNode.forceFillInfo(fields, resultTypes, route);
 
     }
@@ -60,7 +62,7 @@ public class OrderApply extends AbstractDoEntity<OrderApplyDO> {
 
     public OrderNode copyToLastNode() {
         OrderNode copy = orderNode.copy();
-        OrderNodeDO orderNodeDO = copy.toDo();
+        OrderNodeDO orderNodeDO = copy.toData();
         orderNodeDO.setStatus(OrderStatusEnum.STOP.getCode());
         orderNodeDO.setName(orderNodeDO.getName() + "(转交)");
         orderNodeDO.setRunDealUserId(data.getTargetUserId());

@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.context.UserContext;
 import indi.uhyils.facade.UserFacade;
 import indi.uhyils.pojo.DO.ApiGroupDO;
@@ -31,8 +32,9 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
 
     private List<ApiSubscribe> subscribes;
 
-    public ApiGroup(ApiGroupDO dO) {
-        super(dO);
+    @Default
+    public ApiGroup(ApiGroupDO data) {
+        super(data);
     }
 
     public ApiGroup(Long id) {
@@ -73,7 +75,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
         Asserts.assertTrue(this.apis != null, "api为空");
         Map<String, String> parameter = new HashMap<>(16);
         ApiUtils.callApi(apis, user, parameter);
-        String resultFormat = toDo().getResultFormat();
+        String resultFormat = toData().getResultFormat();
         resultFormat = ApiUtils.replaceString(parameter, resultFormat);
         return resultFormat;
     }
@@ -102,7 +104,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
         List<PushMsgDTO> msgList = new ArrayList<>(subscribes.size());
         for (ApiSubscribe subscribe : subscribes) {
 
-            ApiSubscribeDO apiSubscribeDO = subscribe.toDo();
+            ApiSubscribeDO apiSubscribeDO = subscribe.toData();
             Long userId = apiSubscribeDO.getUserId();
             if (!idUserMap.containsKey(userId)) {
                 continue;

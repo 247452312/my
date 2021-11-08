@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.DeviceDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class Device extends AbstractDoEntity<DeviceDO> {
 
-    public Device(DeviceDO dO) {
-        super(dO);
+    @Default
+    public Device(DeviceDO data) {
+        super(data);
     }
 
     public Device(Long id) {

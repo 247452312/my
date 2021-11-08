@@ -51,6 +51,6 @@ public class ServerServiceImpl extends AbstractDoService<ServerDO, Server, Serve
     @Override
     public String getNameById(IdQuery request) {
         Server server = new Server(request.getId(), rep);
-        return server.toDo().getName();
+        return server.toData().getName();
     }
 }

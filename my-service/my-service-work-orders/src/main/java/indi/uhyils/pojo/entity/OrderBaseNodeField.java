@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.OrderBaseNodeFieldDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class OrderBaseNodeField extends AbstractDoEntity<OrderBaseNodeFieldDO> {
 
-    public OrderBaseNodeField(OrderBaseNodeFieldDO dO) {
-        super(dO);
+    @Default
+    public OrderBaseNodeField(OrderBaseNodeFieldDO data) {
+        super(data);
     }
 
     public OrderBaseNodeField(Long id) {

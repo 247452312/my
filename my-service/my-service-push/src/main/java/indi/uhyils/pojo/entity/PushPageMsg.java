@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.PushPageMsgDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.PushPageMsgRepository;
@@ -12,8 +13,9 @@ import indi.uhyils.repository.PushPageMsgRepository;
  */
 public class PushPageMsg extends AbstractDoEntity<PushPageMsgDO> {
 
-    public PushPageMsg(PushPageMsgDO dO) {
-        super(dO);
+    @Default
+    public PushPageMsg(PushPageMsgDO data) {
+        super(data);
     }
 
     public PushPageMsg(Long id) {

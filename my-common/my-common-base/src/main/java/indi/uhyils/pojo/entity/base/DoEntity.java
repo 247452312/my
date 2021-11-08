@@ -14,5 +14,5 @@ public interface DoEntity<T extends BaseDO> extends IdEntity {
      *
      * @return
      */
-    T toDo();
+    T toData();
 }

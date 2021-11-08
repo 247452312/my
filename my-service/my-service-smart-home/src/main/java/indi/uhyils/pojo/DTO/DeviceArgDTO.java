@@ -23,12 +23,12 @@ public class DeviceArgDTO extends IdDTO {
     /**
      * 与水平夹角(下为负 上为正)
      */
-    private Object directionX;
+    private Double directionX;
 
     /**
      * 与正南夹角(均为正)
      */
-    private Object directionY;
+    private Double directionY;
 
     /**
      * 是否可动
@@ -49,24 +49,21 @@ public class DeviceArgDTO extends IdDTO {
         this.deviceId = deviceId;
     }
 
-
-    public Object getDirectionX() {
+    public Double getDirectionX() {
         return directionX;
     }
 
-    public void setDirectionX(Object directionX) {
+    public void setDirectionX(Double directionX) {
         this.directionX = directionX;
     }
 
-
-    public Object getDirectionY() {
+    public Double getDirectionY() {
         return directionY;
     }
 
-    public void setDirectionY(Object directionY) {
+    public void setDirectionY(Double directionY) {
         this.directionY = directionY;
     }
-
 
     public Integer getCanMove() {
         return canMove;
@@ -76,7 +73,6 @@ public class DeviceArgDTO extends IdDTO {
         this.canMove = canMove;
     }
 
-
     public Integer getCanRotate() {
         return canRotate;
     }
@@ -84,5 +80,4 @@ public class DeviceArgDTO extends IdDTO {
     public void setCanRotate(Integer canRotate) {
         this.canRotate = canRotate;
     }
-
 }

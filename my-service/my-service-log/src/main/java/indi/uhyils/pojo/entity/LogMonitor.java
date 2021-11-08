@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.enum_.ServiceQualityEnum;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.DO.LogMonitorDO;
@@ -46,8 +47,9 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
      */
     private List<ServiceQualityEnum> qualitys;
 
-    public LogMonitor(LogMonitorDO dO) {
-        super(dO);
+    @Default
+    public LogMonitor(LogMonitorDO data) {
+        super(data);
     }
 
     public LogMonitor(JvmUniqueMark unique, LogMonitorDO logMonitorDO, List<LogMonitorJvmStatusDO> logMonitorJvmStatusDOS) {
@@ -59,7 +61,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
 
 
     public String echartKey() {
-        return toDo().getServiceName() + ":" + toDo().getIp();
+        return toData().getServiceName() + ":" + toData().getIp();
     }
 
     /**
@@ -77,7 +79,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
         /* 1.如果程序总内存除了刚刚启动以外一直在增加,判断为内存溢出,警告 */
         boolean memStillUp = true;
         for (int i = 1; i < statuses.size(); i++) {
-            if (statuses.get(i).toDo().getUseMem() <= statuses.get(i - 1).toDo().getUseMem()) {
+            if (statuses.get(i).toData().getUseMem() <= statuses.get(i - 1).toData().getUseMem()) {
                 memStillUp = Boolean.FALSE;
                 break;
             }
@@ -108,8 +110,8 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
         int noHeapLowCount = 0;
         for (LogMonitorJvmStatus statuses : statuses) {
             // 总内存超出
-            LogMonitorJvmStatusDO status = statuses.toDo();
-            LogMonitorDO monitor = toDo();
+            LogMonitorJvmStatusDO status = statuses.toData();
+            LogMonitorDO monitor = toData();
             if (status.getUseMem() > monitor.getJvmTotalMem() * outMaxPro) {
                 allMemOutCount++;
             } else if (status.getUseMem() < (monitor.getHeapInitMem() + monitor.getNoHeapInitMem()) * lowMinPro) {
@@ -165,7 +167,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     }
 
     public Long id() {
-        return toDo().getId();
+        return toData().getId();
     }
 
     public void initStatuses(LogMonitorJvmStatusRepository repository) {
@@ -186,12 +188,12 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     }
 
     public Long startTime() {
-        return toDo().getTime();
+        return toData().getTime();
     }
 
     public List makeEchart(long now) {
         LogMonitorJvmStatus logMonitorJvmStatusEntity = statuses.get(0);
-        Long startTime = logMonitorJvmStatusEntity.toDo().getTime();
+        Long startTime = logMonitorJvmStatusEntity.toData().getTime();
 
         SimpleDateFormat simpleDateFormat;
         if (now - startTime > (long) 24 * 60 * 60 * 1000) {
@@ -205,7 +207,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
         List<Double> noHeapMem = new ArrayList<>();
         List<Double> heapMem = new ArrayList<>();
         for (LogMonitorJvmStatus monitorStatus : statuses) {
-            LogMonitorJvmStatusDO logMonitorJvmStatusDO = monitorStatus.toDo();
+            LogMonitorJvmStatusDO logMonitorJvmStatusDO = monitorStatus.toData();
             Long time = logMonitorJvmStatusDO.getTime();
             String format = simpleDateFormat.format(new Date(time));
             xAxix.add(format);
@@ -239,7 +241,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     public void addSelf(LogMonitorRepository rep) {
         Identifier save = rep.save(this);
         for (LogMonitorJvmStatus status : statuses) {
-            status.toDo().setFid(save.getId());
+            status.toData().setFid(save.getId());
         }
     }
 
@@ -254,14 +256,14 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
             return;
         }
         for (LogMonitorJvmStatus status : statuses) {
-            Long time = status.toDo().getTime();
+            Long time = status.toData().getTime();
             if (time > endTime) {
                 endTime = time;
                 lastEndTimeStatus = status;
             }
         }
         // 修改结束时间为假想时间
-        Asserts.assertTrue(lastEndTimeStatus.toDo() != null && lastEndTimeStatus.toDo().getFid() != null, "假想时间所在状态没有fid");
+        Asserts.assertTrue(lastEndTimeStatus.toData() != null && lastEndTimeStatus.toData().getFid() != null, "假想时间所在状态没有fid");
         lastEndTimeStatus.changeEndTimeLag(rep);
 
     }

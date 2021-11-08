@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.ContentDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class Content extends AbstractDoEntity<ContentDO> {
 
-    public Content(ContentDO dO) {
-        super(dO);
+    @Default
+    public Content(ContentDO data) {
+        super(data);
     }
 
 }

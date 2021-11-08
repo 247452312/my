@@ -1,7 +1,6 @@
 package indi.uhyils.assembler;
 
 
-import indi.uhyils.annotation.Assembler;
 import indi.uhyils.builder.OrderApplyBuilder;
 import indi.uhyils.pojo.DO.OrderNodeDO;
 import indi.uhyils.pojo.DTO.OrderApplyDTO;
@@ -13,6 +12,7 @@ import indi.uhyils.pojo.entity.OrderApply;
 import indi.uhyils.pojo.entity.OrderInfo;
 import indi.uhyils.pojo.entity.OrderNode;
 import java.util.List;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -22,8 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version 1.0
  * @date 文件创建日期 2021年08月31日 19时59分20秒
  */
-@Assembler
-public class OrderNodeAssembler extends AbstractAssembler<OrderNodeDO, OrderNode, OrderNodeDTO> {
+@Mapper(componentModel = "spring")
+public abstract class OrderNodeAssembler extends AbstractAssembler<OrderNodeDO, OrderNode, OrderNodeDTO> {
 
     @Autowired
     private OrderNodeFieldAssembler fieldAssembler;
@@ -38,11 +38,6 @@ public class OrderNodeAssembler extends AbstractAssembler<OrderNodeDO, OrderNode
     private OrderApplyAssembler applyAssembler;
 
     @Override
-    public OrderNode toEntity(OrderNodeDO dO) {
-        return new OrderNode(dO);
-    }
-
-    @Override
     public OrderNode toEntity(OrderNodeDTO dto) {
         OrderNode orderNode = new OrderNode(toDo(dto));
         List<OrderNodeFieldDTO> fields = dto.getFields();
@@ -52,18 +47,8 @@ public class OrderNodeAssembler extends AbstractAssembler<OrderNodeDO, OrderNode
         return orderNode;
     }
 
-    @Override
-    protected Class<OrderNodeDO> getDoClass() {
-        return OrderNodeDO.class;
-    }
-
-    @Override
-    protected Class<OrderNodeDTO> getDtoClass() {
-        return OrderNodeDTO.class;
-    }
-
     public OrderApply toApply(OrderNode orderNode, OrderInfo baseInfo) {
-        OrderApplyDTO orderApplyDTO = OrderApplyBuilder.buildTransApplyByOrderNode(toDTO(orderNode), baseInfo.toDo().getMonitorUserId());
+        OrderApplyDTO orderApplyDTO = OrderApplyBuilder.buildTransApplyByOrderNode(toDTO(orderNode), baseInfo.toData().getMonitorUserId());
         return applyAssembler.toEntity(orderApplyDTO);
     }
 }

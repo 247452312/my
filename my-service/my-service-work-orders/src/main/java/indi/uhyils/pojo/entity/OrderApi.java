@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.OrderApiDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class OrderApi extends AbstractDoEntity<OrderApiDO> {
 
-    public OrderApi(OrderApiDO dO) {
-        super(dO);
+    @Default
+    public OrderApi(OrderApiDO data) {
+        super(data);
     }
 
     public OrderApi(Long id) {

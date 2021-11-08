@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.PushMsgDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.PushMsgRepository;
@@ -12,8 +13,9 @@ import indi.uhyils.repository.PushMsgRepository;
  */
 public class PushMsg extends AbstractDoEntity<PushMsgDO> {
 
-    public PushMsg(PushMsgDO dO) {
-        super(dO);
+    @Default
+    public PushMsg(PushMsgDO data) {
+        super(data);
     }
 
     public PushMsg(Long id) {

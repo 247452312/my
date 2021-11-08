@@ -16,6 +16,6 @@ public interface BaseEvent extends BaseCQE {
      *
      * @return
      */
-    Long getSign();
+    Long getUnique();
 
 }

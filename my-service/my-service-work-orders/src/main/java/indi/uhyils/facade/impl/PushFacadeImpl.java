@@ -41,8 +41,8 @@ public class PushFacadeImpl implements PushFacade {
     @Override
     public void noticeAutoNodeDeal(OrderNode orderNode, OrderNode pervOrder) {
         InitApiRequestTemporary msg = new InitApiRequestTemporary();
-        msg.setOrderNode(orderNode.toDo());
-        msg.setPervOrderNode(pervOrder.toDo());
+        msg.setOrderNode(orderNode.toData());
+        msg.setPervOrderNode(pervOrder.toData());
         MqUtil.sendMsg(OrderContent.ORDER_EXCHANGE, OrderContent.ORDER_AUTO_NODE_SEND_QUEUE, JSON.toJSONString(msg));
     }
 

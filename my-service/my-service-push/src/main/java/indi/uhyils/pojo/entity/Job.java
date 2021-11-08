@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.JobDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
@@ -19,8 +20,9 @@ public class Job extends AbstractDoEntity<JobDO> {
 
     private UserDTO user;
 
-    public Job(JobDO dO) {
-        super(dO);
+    @Default
+    public Job(JobDO data) {
+        super(data);
     }
 
     public Job(Long id) {
@@ -49,30 +51,30 @@ public class Job extends AbstractDoEntity<JobDO> {
 
     public void addSelfToJob() {
         initScheduled();
-        scheduledManager.addJob(toDo());
+        scheduledManager.addJob(toData());
 
     }
 
     public void delJob() {
         initScheduled();
-        scheduledManager.deleteJob(toDo());
+        scheduledManager.deleteJob(toData());
     }
 
     public void pause() {
         initScheduled();
-        toDo().setPause(true);
-        scheduledManager.pauseJob(toDo());
+        toData().setPause(true);
+        scheduledManager.pauseJob(toData());
 
     }
 
     public void start() {
         initScheduled();
-        toDo().setPause(false);
-        scheduledManager.resumeJob(toDo());
+        toData().setPause(false);
+        scheduledManager.resumeJob(toData());
     }
 
     public void test() {
         initScheduled();
-        scheduledManager.runJobNow(toDo());
+        scheduledManager.runJobNow(toData());
     }
 }

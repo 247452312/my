@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--$author-->
+<!--文件创建日期 2021年10月18日 19时06分04秒-->
+<mapper namespace="indi.uhyils.dao.ConsumerInfoDao">
+    <resultMap type="indi.uhyils.pojo.DO.ConsumerInfoDO" id="ConsumerInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="responsibilityTelPhone" column="responsibility_tel_phone" jdbcType="VARCHAR"/>
+        <result property="responsibilityName" column="responsibility_name" jdbcType="VARCHAR"/>
+        <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+        <result property="accessKey" column="access_key" jdbcType="VARCHAR"/>
+        <result property="secretKey" column="secret_key" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.ConsumerInfoDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_consumer_info set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="item.responsibilityTelPhone != null and item.responsibilityTelPhone != ''">
+                ,responsibility_tel_phone = #{item.responsibilityTelPhone}
+            </if>
+            <if test="item.responsibilityName != null and item.responsibilityName != ''">
+                ,responsibility_name = #{item.responsibilityName}
+            </if>
+            <if test="item.roleId != null">
+                ,role_id = #{item.roleId}
+            </if>
+            <if test="item.accessKey != null and item.accessKey != ''">
+                ,access_key = #{item.accessKey}
+            </if>
+            <if test="item.secretKey != null and item.secretKey != ''">
+                ,secret_key = #{item.secretKey}
+            </if>
+            <if test="item.name != null and item.name != ''">
+                ,name = #{item.name}
+            </if>
+            <if test="item.status != null ">
+                ,status = #{item.status}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+</mapper>

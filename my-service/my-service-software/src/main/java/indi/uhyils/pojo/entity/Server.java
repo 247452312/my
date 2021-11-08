@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.ServerDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.ServerRepository;
@@ -13,8 +14,9 @@ import indi.uhyils.util.SshUtils;
  */
 public class Server extends AbstractDoEntity<ServerDO> {
 
-    public Server(ServerDO dO) {
-        super(dO);
+    @Default
+    public Server(ServerDO data) {
+        super(data);
     }
 
     public Server(Long id, ServerRepository rep) {
@@ -27,6 +29,6 @@ public class Server extends AbstractDoEntity<ServerDO> {
     }
 
     public Boolean testConn() {
-        return SshUtils.testConn(toDo().getIp(), toDo().getPort(), toDo().getUsername(), toDo().getPassword());
+        return SshUtils.testConn(toData().getIp(), toData().getPort(), toData().getUsername(), toData().getPassword());
     }
 }

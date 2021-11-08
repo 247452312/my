@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.TraceDetailDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 
@@ -11,8 +12,9 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
  */
 public class TraceDetail extends AbstractDoEntity<TraceDetailDO> {
 
-    public TraceDetail(TraceDetailDO dO) {
-        super(dO);
+    @Default
+    public TraceDetail(TraceDetailDO data) {
+        super(data);
     }
 
 }
