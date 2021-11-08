@@ -94,6 +94,7 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         //入口连接
         this.mysqlChannel = ctx.channel();
         this.localAddress = (InetSocketAddress) mysqlChannel.localAddress();
+        LogUtil.info("mysql 连接!" + localAddress);
 
     }
 
@@ -113,6 +114,7 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
          */
         byte[] mysqlBytes = (byte[]) msg;
         String dump = dump(mysqlBytes);
+        LogUtil.info("mysql请求体");
         LogUtil.info(dump);
         // 加载并解析请求
         MysqlRequest load = RequestAnalysis.load(this, mysqlBytes);
@@ -124,6 +126,10 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         MysqlResponse invoke = load.invoke();
         // 返回byte
         byte[] bytes = invoke.toByte();
+
+        String responseBytes = dump(mysqlBytes);
+        LogUtil.info("mysql回应体");
+        LogUtil.info(responseBytes);
 
         // 组装为netty看得懂的字节数组类型
         ByteBuf bufferToFlash = ctx.alloc().buffer(MysqlUtil.getSize(bytes));
