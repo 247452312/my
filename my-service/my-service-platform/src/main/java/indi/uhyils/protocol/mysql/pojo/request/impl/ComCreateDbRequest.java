@@ -26,6 +26,6 @@ public class ComCreateDbRequest extends AbstractMysqlRequest {
 
     @Override
     public MysqlResponse invoke() {
-        return new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "请去对接平台配置页面建表");
+        return new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "请去对接平台配置页面建表");
     }
 }

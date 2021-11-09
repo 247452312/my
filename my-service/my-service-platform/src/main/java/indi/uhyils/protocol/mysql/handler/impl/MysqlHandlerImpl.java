@@ -7,6 +7,7 @@ import indi.uhyils.protocol.mysql.pojo.RequestAnalysis;
 import indi.uhyils.protocol.mysql.pojo.entity.PrepareInfo;
 import indi.uhyils.protocol.mysql.pojo.request.MysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
+import indi.uhyils.protocol.mysql.pojo.response.impl.AuthResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
@@ -15,13 +16,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import org.apache.commons.io.HexDump;
 
 
 /**
@@ -100,7 +98,10 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         this.mysqlChannel = ctx.channel();
         this.localAddress = (InetSocketAddress) mysqlChannel.localAddress();
         LogUtil.info("mysql 连接!" + localAddress);
-
+        AuthResponse authResponse = new AuthResponse(this);
+        byte[] msg = authResponse.toByte();
+        LogUtil.info("mysql服务端发送握手信息:\n" + MysqlUtil.dump(msg));
+        ctx.writeAndFlush(msg);
     }
 
     /**
@@ -118,8 +119,8 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
          * 因{@link MysqlDecoderImpl#decode} 所以这里一定为byte[]
          */
         byte[] mysqlBytes = (byte[]) msg;
-        String dump = dump(mysqlBytes);
-        LogUtil.info("mysql请求体");
+        String dump = MysqlUtil.dump(mysqlBytes);
+        LogUtil.info("mysql请求体:");
         LogUtil.info(dump);
         // 加载并解析请求
         MysqlRequest load = RequestAnalysis.load(this, mysqlBytes);
@@ -132,28 +133,18 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         // 返回byte
         byte[] bytes = invoke.toByte();
 
-        String responseBytes = dump(mysqlBytes);
-        LogUtil.info("mysql回应体");
+        String responseBytes = MysqlUtil.dump(mysqlBytes);
+        LogUtil.info("mysql回应体:");
         LogUtil.info(responseBytes);
 
         // 组装为netty看得懂的字节数组类型
-        ByteBuf bufferToFlash = ctx.alloc().buffer(MysqlUtil.getSize(bytes));
+        ByteBuf bufferToFlash = ctx.alloc().buffer(MysqlUtil.getBytesSize(bytes));
         // 返回执行结果
         mysqlChannel.writeAndFlush(bufferToFlash);
 
 
     }
 
-    private String dump(byte[] bytes) {
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            HexDump.dump(bytes, 0, out, 0);
-            return out.toString();
-        } catch (IOException e) {
-            LogUtil.error(e);
-            return null;
-        }
-    }
 
     /**
      * 异常时调用

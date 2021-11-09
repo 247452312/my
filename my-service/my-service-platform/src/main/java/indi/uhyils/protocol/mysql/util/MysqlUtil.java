@@ -1,9 +1,15 @@
 package indi.uhyils.protocol.mysql.util;
 
 import indi.uhyils.protocol.mysql.decoder.impl.Proto;
+import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import org.apache.commons.io.HexDump;
 
 
 /**
@@ -14,6 +20,18 @@ import java.util.List;
 public final class MysqlUtil {
 
     private MysqlUtil() {
+    }
+
+    public static final String dump(byte[] packet) {
+
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            HexDump.dump(packet, 0, out, 0);
+            return out.toString();
+        } catch (IOException e) {
+            LogUtil.error(e);
+            return "";
+        }
     }
 
     public static byte[] readPacket(ByteBuf in) {
@@ -27,7 +45,7 @@ public final class MysqlUtil {
         int offset = 0;
         int target = 3;
         in.readBytes(packet, offset, (target - offset));
-        size = getSize(packet);
+        size = getBytesSize(packet);
 
         byte[] packetTmp = new byte[size + 4];
         System.arraycopy(packet, 0, packetTmp, 0, 3);
@@ -43,7 +61,7 @@ public final class MysqlUtil {
         return packet;
     }
 
-    public static int getSize(byte[] packet) {
+    public static int getBytesSize(byte[] packet) {
         return (int) new Proto(packet).getFixedInt(3);
     }
 
@@ -146,10 +164,11 @@ public final class MysqlUtil {
         return result;
     }
 
-    public static int getSize(long value) {
+
+    public static int getBytesSize(long value) {
         int count = 0;
-        while (value > 0) {
-            value >>= 8;
+        while (value != 0) {
+            value >>= 4;
             count++;
         }
         return count;
@@ -163,10 +182,10 @@ public final class MysqlUtil {
      * @return
      */
     public static byte[] toBytes(long value) {
-        int size = getSize(value);
+        int size = getBytesSize(value);
         byte[] result = new byte[size];
-        for (int i = size - 1; i >= 0 && value > 0; i--) {
-            result[i] = (byte) (value & 0xffL);
+        for (int i = size - 1; i >= 0; i--) {
+            result[i] = (byte) (value & 0x0FFL);
             value >>= 8;
         }
         return result;
@@ -179,29 +198,14 @@ public final class MysqlUtil {
      *
      * @return
      */
-    public static byte[] toBytes(int value) {
-        int size = getSize(value);
-        byte[] result = new byte[size];
-        for (int i = size - 1; i >= 0 && value > 0; i--) {
-            result[i] = (byte) (value & 0xffL);
-            value >>= 4;
-        }
-        return result;
-    }
-
-    /**
-     * long转byte数组
-     *
-     * @param value
-     *
-     * @return
-     */
-    public static byte[] toBytes(short value) {
-        int size = getSize(value);
-        byte[] result = new byte[size];
-        for (int i = size - 1; i >= 0 && value > 0; i--) {
-            result[i] = (byte) (value & 0xffL);
-            value >>= 2;
+    public static byte[] toBytes(long value, int length) {
+        byte[] bytes = toBytes(value);
+        int size = bytes.length;
+        byte[] result = new byte[length];
+        if (length > size) {
+            System.arraycopy(bytes, 0, result, length - size, size);
+        } else {
+            System.arraycopy(bytes, size - length, result, 0, length);
         }
         return result;
     }
@@ -278,4 +282,32 @@ public final class MysqlUtil {
         return packet;
     }
 
+    /**
+     * 加密密码
+     *
+     * @param pass 密码
+     * @param seed 随机数
+     *
+     * @return
+     *
+     * @throws NoSuchAlgorithmException
+     */
+    public static final byte[] encodePassword(byte[] pass, byte[] seed) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-1");
+        } catch (NoSuchAlgorithmException e) {
+            LogUtil.error(e);
+        }
+        byte[] pass1 = md.digest(pass);
+        md.reset();
+        byte[] pass2 = md.digest(pass1);
+        md.reset();
+        md.update(seed);
+        byte[] pass3 = md.digest(pass2);
+        for (int i = 0; i < pass3.length; i++) {
+            pass3[i] = (byte) (pass3[i] ^ pass1[i]);
+        }
+        return pass3;
+    }
 }

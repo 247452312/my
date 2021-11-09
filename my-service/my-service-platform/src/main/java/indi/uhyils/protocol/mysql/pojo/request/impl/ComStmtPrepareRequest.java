@@ -36,6 +36,6 @@ public class ComStmtPrepareRequest extends AbstractMysqlRequest {
 
     @Override
     public MysqlResponse invoke() {
-        return new OkResponse(SqlTypeEnum.QUERY, 0L, prepareId, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, getMysqlHandler().getWarnCount(), "" + prepareId);
+        return new OkResponse(getMysqlHandler(), SqlTypeEnum.QUERY, 0L, prepareId, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, getMysqlHandler().getWarnCount(), "" + prepareId);
     }
 }

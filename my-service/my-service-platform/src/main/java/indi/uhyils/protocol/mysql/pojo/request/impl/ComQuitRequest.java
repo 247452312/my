@@ -26,9 +26,9 @@ public class ComQuitRequest extends AbstractMysqlRequest {
 
     @Override
     public MysqlResponse invoke() {
-        return new ErrResponse(
-            MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE,
-            MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS,
-            "?? 你竟然想关掉我? 脑子瓦特了?\n" + MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE.getMsg());
+        return new ErrResponse(getMysqlHandler(),
+                               MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE,
+                               MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS,
+                               "?? 你竟然想关掉我? 脑子瓦特了?\n" + MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE.getMsg());
     }
 }

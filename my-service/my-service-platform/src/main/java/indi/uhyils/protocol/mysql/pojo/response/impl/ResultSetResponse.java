@@ -3,6 +3,7 @@ package indi.uhyils.protocol.mysql.pojo.response.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.entity.FieldInfo;
 import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
@@ -39,7 +40,8 @@ public class ResultSetResponse extends AbstractMysqlResponse {
      */
     private int warnCount;
 
-    public ResultSetResponse(List<FieldInfo> fields, JSONArray jsonInfo, MysqlServerStatusEnum serverStatus, int warnCount) {
+    public ResultSetResponse(MysqlHandler mysqlHandler, List<FieldInfo> fields, JSONArray jsonInfo, MysqlServerStatusEnum serverStatus, int warnCount) {
+        super(mysqlHandler);
         this.fields = fields;
         this.jsonInfo = jsonInfo;
         this.serverStatus = serverStatus;

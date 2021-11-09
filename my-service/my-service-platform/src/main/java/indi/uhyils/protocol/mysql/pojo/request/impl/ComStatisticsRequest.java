@@ -51,6 +51,6 @@ public class ComStatisticsRequest extends AbstractMysqlRequest {
         jsonResult.put("executions_per_second", 0L);
         jsonArrayObj.add(jsonResult);
         MysqlHandler mysqlHandler = getMysqlHandler();
-        return new ResultSetResponse(fields, JSON.parseArray(JSON.toJSONString(jsonArrayObj)), MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, mysqlHandler.getWarnCount());
+        return new ResultSetResponse(getMysqlHandler(), fields, JSON.parseArray(JSON.toJSONString(jsonArrayObj)), MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, mysqlHandler.getWarnCount());
     }
 }

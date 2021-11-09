@@ -8,6 +8,7 @@ import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import indi.uhyils.util.MathUtil;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -36,7 +37,7 @@ public class AuthResponse extends AbstractMysqlResponse {
 
     private static final AtomicLong RANDOM_NUM = new AtomicLong(0);
 
-    protected AuthResponse(MysqlHandler mysqlHandler) {
+    public AuthResponse(MysqlHandler mysqlHandler) {
         super(mysqlHandler);
     }
 
@@ -48,12 +49,43 @@ public class AuthResponse extends AbstractMysqlResponse {
     @Override
 
     public byte getFirstByte() {
-        return 0x4A;
+        return 0x0A;
     }
 
     @Override
     public byte[] toByteNoMarkIndex() {
-        return new byte[0];
+        List<byte[]> results = new ArrayList<>();
+
+        results.add(toServerVersionInfo());
+
+        results.add(toServerThreadId());
+
+        byte[] e = toAuthPluginName();
+        byte[] randomHigh = new byte[8];
+        System.arraycopy(e, 0, randomHigh, 0, 8);
+        results.add(randomHigh);
+
+        results.add(new byte[]{0x00});
+
+        byte[] clientPower = toCapabilityFlag();
+        byte[] clientPowerLow = new byte[2];
+        System.arraycopy(clientPower, 2, clientPowerLow, 0, 2);
+        results.add(clientPowerLow);
+
+        results.add(new byte[]{toCharset()});
+
+        results.add(toMysqlStatus());
+
+        byte[] clientPowerHigh = new byte[2];
+        System.arraycopy(clientPower, 0, clientPowerHigh, 0, 2);
+        results.add(clientPowerHigh);
+        int value = e.length - END_OF_PROTO.getBytes(StandardCharsets.UTF_8).length - 2;
+        results.add(MysqlUtil.toBytes(value, 1));
+        results.add(new byte[10]);
+//        int length = Math.max(13, value - 8);
+//        results.add((length + "").getBytes(StandardCharsets.UTF_8));
+        results.add(e);
+        return MysqlUtil.mergeListBytes(results);
     }
 
     /**
@@ -75,31 +107,9 @@ public class AuthResponse extends AbstractMysqlResponse {
      * @return
      */
     private byte[] toServerThreadId() {
-        return MysqlUtil.toBytes(-1);
+        return MysqlUtil.toBytes(0x00000001L, 4);
     }
 
-    /**
-     * 获取挑战随机数
-     *
-     * @return
-     */
-    private byte[] toRandomNum() {
-        return MysqlUtil.toBytes(RANDOM_NUM.getAndIncrement());
-    }
-
-    /**
-     * 客户端权限
-     *
-     * @return
-     */
-    private byte[] toClientPower() {
-        ClientPowerEnum[] values = ClientPowerEnum.values();
-        int result = 0;
-        for (ClientPowerEnum clientPowerEnum : values) {
-            result |= clientPowerEnum.getCode();
-        }
-        return MysqlUtil.toBytes(result);
-    }
 
     /**
      * 字符编码集
@@ -107,7 +117,7 @@ public class AuthResponse extends AbstractMysqlResponse {
      * @return
      */
     private byte toCharset() {
-        return 0x2D;
+        return (byte) 0x2D;
     }
 
     /**
@@ -118,7 +128,7 @@ public class AuthResponse extends AbstractMysqlResponse {
     private byte[] toMysqlStatus() {
         MysqlServerStatusEnum serverStatusNoBackslashEscapes = MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES;
         int code = serverStatusNoBackslashEscapes.getCode();
-        return MysqlUtil.toBytes(code);
+        return MysqlUtil.toBytes(code, 2);
     }
 
     /**
@@ -131,6 +141,9 @@ public class AuthResponse extends AbstractMysqlResponse {
             ClientPowerEnum.CLIENT_LONG_PASSWORD,
             ClientPowerEnum.CLIENT_FOUND_ROWS,
             ClientPowerEnum.CLIENT_LONG_FLAG,
+            ClientPowerEnum.CLIENT_CONNECT_WITH_DB,
+            ClientPowerEnum.CLIENT_NO_SCHEMA,
+            ClientPowerEnum.CLIENT_COMPRESS,
             ClientPowerEnum.CLIENT_ODBC,
             ClientPowerEnum.CLIENT_LOCAL_FILES,
             ClientPowerEnum.CLIENT_IGNORE_SPACE,
@@ -140,13 +153,16 @@ public class AuthResponse extends AbstractMysqlResponse {
             ClientPowerEnum.CLIENT_IGNORE_SIGPIPE,
             ClientPowerEnum.CLIENT_TRANSACTIONS,
             ClientPowerEnum.CLIENT_RESERVED,
-            ClientPowerEnum.CLIENT_SECURE_CONNECTION
+            ClientPowerEnum.CLIENT_SECURE_CONNECTION,
+            ClientPowerEnum.CLIENT_MULTI_STATEMENTS,
+            ClientPowerEnum.CLIENT_MULTI_RESULTS
+
         );
         int result = 0;
         for (ClientPowerEnum clientPowerEnum : clientPowerEnums) {
             result |= clientPowerEnum.getCode();
         }
-        return MysqlUtil.toBytes(result);
+        return MysqlUtil.toBytes(result, 4);
     }
 
     /**
@@ -160,19 +176,14 @@ public class AuthResponse extends AbstractMysqlResponse {
         byte[] serverPassword = MysqlContext.SERVER_PASSWORD.getBytes(StandardCharsets.UTF_8);
         // 20位随机数
         byte[] randomBytes = RandomUtils.nextBytes(20);
-        // 加密一次的密码
-        byte[] encodeOnePassword = MathUtil.shaEncode(serverPassword);
-        // 加密的20位随机数
-        byte[] encodeRandom = MathUtil.shaEncode(randomBytes);
-        // 加密两次的密码
-        byte[] encodeTwoPassword = MathUtil.shaEncode(encodeOnePassword);
-        // 加密一次的密码和加密的20位随机数做异或操作
-        byte[] xorPasswordAndRandom = MathUtil.xor(encodeOnePassword, encodeRandom);
 
-        byte[] result = new byte[xorPasswordAndRandom.length + encodeTwoPassword.length];
-        System.arraycopy(xorPasswordAndRandom, 0, result, 0, xorPasswordAndRandom.length);
-        System.arraycopy(encodeTwoPassword, 0, result, xorPasswordAndRandom.length, encodeTwoPassword.length);
-        mysqlHandler.setPassword(result);
-        return encodeRandom;
+        byte[] bytes = MysqlUtil.encodePassword(serverPassword, randomBytes);
+        mysqlHandler.setPassword(bytes);
+        List<byte[]> result = new ArrayList<>();
+        result.add(MathUtil.shaEncode(randomBytes));
+        result.add(new byte[]{0x00});
+        result.add(END_OF_PROTO.getBytes(StandardCharsets.UTF_8));
+        result.add(new byte[]{0x00});
+        return MysqlUtil.mergeListBytes(result);
     }
 }

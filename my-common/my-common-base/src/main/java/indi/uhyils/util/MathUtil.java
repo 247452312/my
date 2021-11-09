@@ -121,22 +121,13 @@ public final class MathUtil {
     public static byte[] shaEncode(byte[] byteArray) {
         MessageDigest sha = null;
         try {
-            sha = MessageDigest.getInstance("SHA");
+            sha = MessageDigest.getInstance("SHA-1");
         } catch (Exception e) {
             LogUtil.error(e);
             return new byte[0];
         }
 
-        byte[] md5Bytes = sha.digest(byteArray);
-        StringBuilder hexValue = new StringBuilder();
-        for (byte md5Byte : md5Bytes) {
-            int val = md5Byte & 0xff;
-            if (val < 16) {
-                hexValue.append("0");
-            }
-            hexValue.append(Integer.toHexString(val));
-        }
-        return hexValue.toString().getBytes(StandardCharsets.UTF_8);
+        return sha.digest(byteArray);
     }
 
 

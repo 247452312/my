@@ -2,7 +2,10 @@ package indi.uhyils.protocol.mysql.pojo.response;
 
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.MysqlServerInfo;
+import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import indi.uhyils.util.SpringUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -25,13 +28,16 @@ public abstract class AbstractMysqlResponse implements MysqlResponse {
         mysqlServerInfo = SpringUtil.getBean(MysqlServerInfo.class);
         this.mysqlHandler = mysqlHandler;
     }
+
     @Override
     public byte[] toByte() {
-        byte[] bytes = toByteNoMarkIndex();
-        byte[] result = new byte[bytes.length + 1];
-        System.arraycopy(bytes, 0, result, 1, bytes.length);
-        result[0] = getFirstByte();
-        return result;
+        List<byte[]> result = new ArrayList<>();
+        byte[] e = toByteNoMarkIndex();
+        result.add(MysqlUtil.toBytes(e.length + 1, 1));
+        result.add(new byte[3]);
+        result.add(new byte[]{getFirstByte()});
+        result.add(e);
+        return MysqlUtil.mergeListBytes(result);
     }
 
     protected MysqlHandler getMysqlHandler() {

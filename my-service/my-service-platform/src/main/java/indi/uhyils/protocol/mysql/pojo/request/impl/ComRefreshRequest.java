@@ -30,6 +30,6 @@ public class ComRefreshRequest extends AbstractMysqlRequest {
 
     @Override
     public MysqlResponse invoke() {
-        return new OkResponse(SqlTypeEnum.DELETE);
+        return new OkResponse(getMysqlHandler(), SqlTypeEnum.DELETE);
     }
 }

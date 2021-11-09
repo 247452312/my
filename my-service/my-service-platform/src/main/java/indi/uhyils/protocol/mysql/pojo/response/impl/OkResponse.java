@@ -56,7 +56,7 @@ public class OkResponse extends AbstractMysqlResponse {
      * @param warnCount    告警计数
      * @param msg          带回的消息
      */
-    protected OkResponse(MysqlHandler mysqlHandler, SqlTypeEnum sqlTypeEnum, long rowLength, long indexIdValue, MysqlServerStatusEnum serverStatus, int warnCount, String msg) {
+    public OkResponse(MysqlHandler mysqlHandler, SqlTypeEnum sqlTypeEnum, long rowLength, long indexIdValue, MysqlServerStatusEnum serverStatus, int warnCount, String msg) {
         super(mysqlHandler);
         this.sqlTypeEnum = sqlTypeEnum;
         this.rowLength = rowLength;
