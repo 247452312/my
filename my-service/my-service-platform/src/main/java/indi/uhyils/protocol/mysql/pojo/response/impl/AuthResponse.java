@@ -1,12 +1,17 @@
 package indi.uhyils.protocol.mysql.pojo.response.impl;
 
+import indi.uhyils.protocol.mysql.context.MysqlContext;
 import indi.uhyils.protocol.mysql.enums.ClientPowerEnum;
+import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
+import indi.uhyils.util.MathUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import org.apache.commons.lang3.RandomUtils;
 
 
 /**
@@ -21,9 +26,19 @@ public class AuthResponse extends AbstractMysqlResponse {
     /**
      * mysql版本
      */
-    private static final String VERSION = "8.0.23";
+    private static final String VERSION = "8.0.20";
+
+    /**
+     * 协议结尾
+     */
+    private static final String END_OF_PROTO = "caching_sha2_password";
+
 
     private static final AtomicLong RANDOM_NUM = new AtomicLong(0);
+
+    protected AuthResponse(MysqlHandler mysqlHandler) {
+        super(mysqlHandler);
+    }
 
     /**
      * 认证报文为协议版本号,此处协议版本为10
@@ -33,7 +48,7 @@ public class AuthResponse extends AbstractMysqlResponse {
     @Override
 
     public byte getFirstByte() {
-        return 0x0A;
+        return 0x4A;
     }
 
     @Override
@@ -78,18 +93,9 @@ public class AuthResponse extends AbstractMysqlResponse {
      * @return
      */
     private byte[] toClientPower() {
-        List<ClientPowerEnum> clientPowerEnums = Arrays.asList(
-            ClientPowerEnum.CLIENT_FOUND_ROWS,
-            ClientPowerEnum.CLIENT_CONNECT_WITH_DB,
-            ClientPowerEnum.CLIENT_PROTOCOL_41,
-            ClientPowerEnum.CLIENT_INTERACTIVE,
-            ClientPowerEnum.CLIENT_SECURE_CONNECTION,
-            ClientPowerEnum.CLIENT_MULTI_STATEMENTS,
-            ClientPowerEnum.CLIENT_MULTI_RESULTS,
-            ClientPowerEnum.CLIENT_LONG_FLAG
-        );
+        ClientPowerEnum[] values = ClientPowerEnum.values();
         int result = 0;
-        for (ClientPowerEnum clientPowerEnum : clientPowerEnums) {
+        for (ClientPowerEnum clientPowerEnum : values) {
             result |= clientPowerEnum.getCode();
         }
         return MysqlUtil.toBytes(result);
@@ -101,6 +107,72 @@ public class AuthResponse extends AbstractMysqlResponse {
      * @return
      */
     private byte toCharset() {
-        return 33;
+        return 0x2D;
+    }
+
+    /**
+     * 服务器状态
+     *
+     * @return
+     */
+    private byte[] toMysqlStatus() {
+        MysqlServerStatusEnum serverStatusNoBackslashEscapes = MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES;
+        int code = serverStatusNoBackslashEscapes.getCode();
+        return MysqlUtil.toBytes(code);
+    }
+
+    /**
+     * 获取服务器权能标志
+     *
+     * @return
+     */
+    private byte[] toCapabilityFlag() {
+        List<ClientPowerEnum> clientPowerEnums = Arrays.asList(
+            ClientPowerEnum.CLIENT_LONG_PASSWORD,
+            ClientPowerEnum.CLIENT_FOUND_ROWS,
+            ClientPowerEnum.CLIENT_LONG_FLAG,
+            ClientPowerEnum.CLIENT_ODBC,
+            ClientPowerEnum.CLIENT_LOCAL_FILES,
+            ClientPowerEnum.CLIENT_IGNORE_SPACE,
+            ClientPowerEnum.CLIENT_PROTOCOL_41,
+            ClientPowerEnum.CLIENT_INTERACTIVE,
+            ClientPowerEnum.CLIENT_SSL,
+            ClientPowerEnum.CLIENT_IGNORE_SIGPIPE,
+            ClientPowerEnum.CLIENT_TRANSACTIONS,
+            ClientPowerEnum.CLIENT_RESERVED,
+            ClientPowerEnum.CLIENT_SECURE_CONNECTION
+        );
+        int result = 0;
+        for (ClientPowerEnum clientPowerEnum : clientPowerEnums) {
+            result |= clientPowerEnum.getCode();
+        }
+        return MysqlUtil.toBytes(result);
+    }
+
+    /**
+     * 挑战随机数 + 结尾
+     *
+     * @return
+     */
+    private byte[] toAuthPluginName() {
+        MysqlHandler mysqlHandler = getMysqlHandler();
+        // 密码
+        byte[] serverPassword = MysqlContext.SERVER_PASSWORD.getBytes(StandardCharsets.UTF_8);
+        // 20位随机数
+        byte[] randomBytes = RandomUtils.nextBytes(20);
+        // 加密一次的密码
+        byte[] encodeOnePassword = MathUtil.shaEncode(serverPassword);
+        // 加密的20位随机数
+        byte[] encodeRandom = MathUtil.shaEncode(randomBytes);
+        // 加密两次的密码
+        byte[] encodeTwoPassword = MathUtil.shaEncode(encodeOnePassword);
+        // 加密一次的密码和加密的20位随机数做异或操作
+        byte[] xorPasswordAndRandom = MathUtil.xor(encodeOnePassword, encodeRandom);
+
+        byte[] result = new byte[xorPasswordAndRandom.length + encodeTwoPassword.length];
+        System.arraycopy(xorPasswordAndRandom, 0, result, 0, xorPasswordAndRandom.length);
+        System.arraycopy(encodeTwoPassword, 0, result, xorPasswordAndRandom.length, encodeTwoPassword.length);
+        mysqlHandler.setPassword(result);
+        return encodeRandom;
     }
 }

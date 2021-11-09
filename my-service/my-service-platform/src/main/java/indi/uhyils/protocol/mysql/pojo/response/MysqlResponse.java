@@ -32,4 +32,6 @@ public interface MysqlResponse {
      * @return
      */
     byte[] toByteNoMarkIndex();
+
+
 }

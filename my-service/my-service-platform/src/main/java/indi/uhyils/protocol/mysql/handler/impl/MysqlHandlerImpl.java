@@ -68,6 +68,11 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
      */
     private long prepareId;
 
+    /**
+     * 加密后的密码
+     */
+    private byte[] password;
+
     public MysqlHandlerImpl() {
     }
 
@@ -138,7 +143,6 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
 
 
     }
-
 
     private String dump(byte[] bytes) {
         try {
@@ -214,5 +218,15 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         prepareCache.put(andIncrement, new PrepareInfo(sql));
         prepareId = andIncrement;
         return andIncrement;
+    }
+
+    @Override
+    public byte[] getPassword() {
+        return password;
+    }
+
+    @Override
+    public void setPassword(byte[] password) {
+        this.password = password;
     }
 }

@@ -2,6 +2,7 @@ package indi.uhyils.protocol.mysql.pojo.response.impl;
 
 import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import indi.uhyils.util.Asserts;
@@ -55,7 +56,8 @@ public class OkResponse extends AbstractMysqlResponse {
      * @param warnCount    告警计数
      * @param msg          带回的消息
      */
-    public OkResponse(SqlTypeEnum sqlTypeEnum, long rowLength, long indexIdValue, MysqlServerStatusEnum serverStatus, int warnCount, String msg) {
+    protected OkResponse(MysqlHandler mysqlHandler, SqlTypeEnum sqlTypeEnum, long rowLength, long indexIdValue, MysqlServerStatusEnum serverStatus, int warnCount, String msg) {
+        super(mysqlHandler);
         this.sqlTypeEnum = sqlTypeEnum;
         this.rowLength = rowLength;
         this.indexIdValue = indexIdValue;
@@ -64,7 +66,9 @@ public class OkResponse extends AbstractMysqlResponse {
         this.msg = msg;
     }
 
-    public OkResponse(SqlTypeEnum sqlTypeEnum) {
+
+    public OkResponse(MysqlHandler mysqlHandler, SqlTypeEnum sqlTypeEnum) {
+        super(mysqlHandler);
         this.sqlTypeEnum = sqlTypeEnum;
     }
 

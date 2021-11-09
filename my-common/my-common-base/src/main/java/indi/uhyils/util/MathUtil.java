@@ -1,5 +1,7 @@
 package indi.uhyils.util;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -95,5 +97,72 @@ public final class MathUtil {
             }
         }
         return ret;
+    }
+
+
+    /**
+     * @return
+     *
+     * @Comment SHA1实现
+     * @Author Ron
+     * @Date 2017年9月13日 下午3:30:36
+     */
+    public static String shaEncode(String inStr) {
+        return new String(shaEncode(inStr.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
+    }
+
+    /**
+     * @return
+     *
+     * @Comment SHA1实现
+     * @Author Ron
+     * @Date 2017年9月13日 下午3:30:36
+     */
+    public static byte[] shaEncode(byte[] byteArray) {
+        MessageDigest sha = null;
+        try {
+            sha = MessageDigest.getInstance("SHA");
+        } catch (Exception e) {
+            LogUtil.error(e);
+            return new byte[0];
+        }
+
+        byte[] md5Bytes = sha.digest(byteArray);
+        StringBuilder hexValue = new StringBuilder();
+        for (byte md5Byte : md5Bytes) {
+            int val = md5Byte & 0xff;
+            if (val < 16) {
+                hexValue.append("0");
+            }
+            hexValue.append(Integer.toHexString(val));
+        }
+        return hexValue.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
+
+    /**
+     * 异或
+     *
+     * @param encodeOnePassword
+     * @param encodeRandom
+     *
+     * @return
+     */
+    public static byte[] xor(byte[] encodeOnePassword, byte[] encodeRandom) {
+        byte[] first;
+        byte[] second;
+        if (encodeOnePassword.length > encodeRandom.length) {
+            first = encodeOnePassword;
+            second = new byte[encodeOnePassword.length];
+            System.arraycopy(encodeRandom, 0, second, encodeOnePassword.length - encodeRandom.length, encodeRandom.length);
+        } else {
+            first = encodeRandom;
+            second = new byte[encodeOnePassword.length];
+            System.arraycopy(encodeOnePassword, 0, second, encodeRandom.length - encodeOnePassword.length, encodeOnePassword.length);
+        }
+        for (int i = 0; i < first.length; i++) {
+            first[i] ^= second[i];
+        }
+        return first;
     }
 }

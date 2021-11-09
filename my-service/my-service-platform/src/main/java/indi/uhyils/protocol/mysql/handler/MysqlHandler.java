@@ -55,4 +55,18 @@ public interface MysqlHandler extends ChannelInboundHandler {
      * @param sql
      */
     long setPrepareSql(String sql);
+
+    /**
+     * 获取加密后的密码
+     *
+     * @return
+     */
+    byte[] getPassword();
+
+    /**
+     * 设置密码
+     *
+     * @param password
+     */
+    void setPassword(byte[] password);
 }

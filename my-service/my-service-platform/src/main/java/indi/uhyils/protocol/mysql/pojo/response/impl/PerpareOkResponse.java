@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.mysql.pojo.response.impl;
 
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.entity.FieldInfo;
 import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
@@ -43,6 +44,10 @@ public class PerpareOkResponse extends AbstractMysqlResponse {
      * 入参
      */
     private List<FieldInfo> param;
+
+    protected PerpareOkResponse(MysqlHandler mysqlHandler) {
+        super(mysqlHandler);
+    }
 
     @Override
     public byte getFirstByte() {

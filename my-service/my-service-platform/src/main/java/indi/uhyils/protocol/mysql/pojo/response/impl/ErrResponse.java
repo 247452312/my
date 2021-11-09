@@ -2,6 +2,7 @@ package indi.uhyils.protocol.mysql.pojo.response.impl;
 
 import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
+import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import java.nio.charset.StandardCharsets;
@@ -31,13 +32,15 @@ public class ErrResponse extends AbstractMysqlResponse {
      */
     private String msg;
 
-    public ErrResponse(MysqlErrCodeEnum errCode, MysqlServerStatusEnum status, String msg) {
+    public ErrResponse(MysqlHandler mysqlHandler, MysqlErrCodeEnum errCode, MysqlServerStatusEnum status, String msg) {
+        super(mysqlHandler);
         this.errCode = errCode;
         this.status = status;
         this.msg = msg;
     }
 
-    public ErrResponse(MysqlErrCodeEnum errCode, MysqlServerStatusEnum status) {
+    public ErrResponse(MysqlHandler mysqlHandler, MysqlErrCodeEnum errCode, MysqlServerStatusEnum status) {
+        super(mysqlHandler);
         this.errCode = errCode;
         this.status = status;
         this.msg = errCode.getMsg();
