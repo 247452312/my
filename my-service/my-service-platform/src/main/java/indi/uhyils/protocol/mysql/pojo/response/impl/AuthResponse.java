@@ -1,15 +1,12 @@
 package indi.uhyils.protocol.mysql.pojo.response.impl;
 
 import indi.uhyils.protocol.mysql.context.MysqlContext;
-import indi.uhyils.protocol.mysql.enums.ClientPowerEnum;
 import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
-import indi.uhyils.util.MathUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import org.apache.commons.lang3.RandomUtils;
@@ -65,7 +62,7 @@ public class AuthResponse extends AbstractMysqlResponse {
         System.arraycopy(e, 0, randomHigh, 0, 8);
         results.add(randomHigh);
 
-        results.add(new byte[]{0x00});
+        results.add(new byte[1]);
 
         byte[] clientPower = toCapabilityFlag();
         byte[] clientPowerLow = new byte[2];
@@ -79,12 +76,13 @@ public class AuthResponse extends AbstractMysqlResponse {
         byte[] clientPowerHigh = new byte[2];
         System.arraycopy(clientPower, 0, clientPowerHigh, 0, 2);
         results.add(clientPowerHigh);
-        int value = e.length - END_OF_PROTO.getBytes(StandardCharsets.UTF_8).length - 2;
-        results.add(MysqlUtil.toBytes(value, 1));
+        results.add(MysqlUtil.toBytes(e.length, 1));
         results.add(new byte[10]);
-//        int length = Math.max(13, value - 8);
-//        results.add((length + "").getBytes(StandardCharsets.UTF_8));
-        results.add(e);
+        byte[] randomLow = new byte[e.length - 8];
+        System.arraycopy(e, 8, randomLow, 0, e.length - 8);
+        results.add(randomLow);
+        results.add(END_OF_PROTO.getBytes(StandardCharsets.UTF_8));
+        results.add(new byte[1]);
         return MysqlUtil.mergeListBytes(results);
     }
 
@@ -137,7 +135,7 @@ public class AuthResponse extends AbstractMysqlResponse {
      * @return
      */
     private byte[] toCapabilityFlag() {
-        List<ClientPowerEnum> clientPowerEnums = Arrays.asList(
+        /*List<ClientPowerEnum> clientPowerEnums = Arrays.asList(
             ClientPowerEnum.CLIENT_LONG_PASSWORD,
             ClientPowerEnum.CLIENT_FOUND_ROWS,
             ClientPowerEnum.CLIENT_LONG_FLAG,
@@ -162,11 +160,12 @@ public class AuthResponse extends AbstractMysqlResponse {
         for (ClientPowerEnum clientPowerEnum : clientPowerEnums) {
             result |= clientPowerEnum.getCode();
         }
-        return MysqlUtil.toBytes(result, 4);
+        return MysqlUtil.toBytes(result, 4);*/
+        return new byte[]{(byte) 0xFF, (byte) 0xC7, (byte) 0xFF, (byte) 0xFF};
     }
 
     /**
-     * 挑战随机数 + 结尾
+     * 挑战随机数
      *
      * @return
      */
@@ -180,10 +179,10 @@ public class AuthResponse extends AbstractMysqlResponse {
         byte[] bytes = MysqlUtil.encodePassword(serverPassword, randomBytes);
         mysqlHandler.setPassword(bytes);
         List<byte[]> result = new ArrayList<>();
-        result.add(MathUtil.shaEncode(randomBytes));
+        result.add(randomBytes);
         result.add(new byte[]{0x00});
-        result.add(END_OF_PROTO.getBytes(StandardCharsets.UTF_8));
-        result.add(new byte[]{0x00});
+//        result.add(END_OF_PROTO.getBytes(StandardCharsets.UTF_8));
+//        result.add(new byte[]{0x00});
         return MysqlUtil.mergeListBytes(result);
     }
 }

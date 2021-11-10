@@ -167,7 +167,7 @@ public final class MysqlUtil {
 
     public static int getBytesSize(long value) {
         int count = 0;
-        while (value != 0) {
+        while (value > 0) {
             value >>= 4;
             count++;
         }

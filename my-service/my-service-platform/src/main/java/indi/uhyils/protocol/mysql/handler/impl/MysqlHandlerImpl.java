@@ -101,7 +101,13 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         AuthResponse authResponse = new AuthResponse(this);
         byte[] msg = authResponse.toByte();
         LogUtil.info("mysql服务端发送握手信息:\n" + MysqlUtil.dump(msg));
-        ctx.writeAndFlush(msg);
+        send(msg);
+    }
+
+    private void send(byte[] msg) {
+        ByteBuf buf = Unpooled.buffer();
+        buf.writeBytes(msg);
+        this.mysqlChannel.writeAndFlush(buf);
     }
 
     /**
@@ -120,8 +126,7 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
          */
         byte[] mysqlBytes = (byte[]) msg;
         String dump = MysqlUtil.dump(mysqlBytes);
-        LogUtil.info("mysql请求体:");
-        LogUtil.info(dump);
+        LogUtil.info("mysql请求体:\n" + dump);
         // 加载并解析请求
         MysqlRequest load = RequestAnalysis.load(this, mysqlBytes);
         if (load == null) {
@@ -134,13 +139,9 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         byte[] bytes = invoke.toByte();
 
         String responseBytes = MysqlUtil.dump(mysqlBytes);
-        LogUtil.info("mysql回应体:");
-        LogUtil.info(responseBytes);
+        LogUtil.info("mysql回应体:\n" + responseBytes);
 
-        // 组装为netty看得懂的字节数组类型
-        ByteBuf bufferToFlash = ctx.alloc().buffer(MysqlUtil.getBytesSize(bytes));
-        // 返回执行结果
-        mysqlChannel.writeAndFlush(bufferToFlash);
+        send(bytes);
 
 
     }
