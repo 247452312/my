@@ -1,9 +1,12 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
 import indi.uhyils.protocol.mysql.decoder.impl.Proto;
+import indi.uhyils.protocol.mysql.enums.ClientPowerEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
+import indi.uhyils.protocol.mysql.util.MysqlUtil;
+import jdk.nashorn.internal.ir.Flags;
 
 
 /**
@@ -21,10 +24,6 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
      */
     private long abilityFlags;
 
-    /**
-     * 客户端权能标志(扩展)
-     */
-    private long abilityFlags2;
 
     /**
      * 最大消息长度
@@ -44,12 +43,27 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
     /**
      * 挑战认证数据
      */
+    private long challengeLength;
+
+    /**
+     * 挑战认证数据
+     */
     private String challenge;
 
     /**
      * 数据库名称
      */
     private String dbName;
+
+    /**
+     * 序列id
+     */
+    private long sequenceId;
+
+    /**
+     * 插件名称 todo 未有效
+     */
+    private String pluginName;
 
     public MysqlAuthRequest(MysqlHandler mysqlHandler) {
         super(mysqlHandler);
@@ -63,29 +77,23 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
     @Override
     protected void load() {
         Proto proto = new Proto(mysqlBytes, 3);
-        this.abilityFlags = proto.getFixedInt(2);
-        this.abilityFlags2 = proto.getFixedInt(2);
+        this.sequenceId = proto.getFixedInt(1);
+        this.abilityFlags = proto.getFixedInt(4);
         this.maxMsgSize = proto.getFixedInt(4);
         this.charset = proto.getFixedInt(1);
         // 32位填充值
         proto.get_filler(23);
         this.username = proto.get_null_str();
-        long fixedInt = proto.getFixedInt(1);
-        long length = 0;
-        if (fixedInt <= 250) {
-            length = fixedInt;
-        } else if (fixedInt == 251) {
-            length = 0;
-        } else if (fixedInt == 252) {
-            length = proto.getFixedInt(2);
-        } else if (fixedInt == 253) {
-            length = proto.getFixedInt(3);
-        } else if (fixedInt == 254) {
-            length = proto.getFixedInt(8);
-        }
-        this.challenge = proto.get_fixed_str(length);
-        if (proto.has_remaining_data()) {
+
+        this.challengeLength = proto.get_lenenc_int();
+        this.challenge = proto.get_fixed_str(this.challengeLength, true);
+
+        if (MysqlUtil.hasAbility(this.abilityFlags, ClientPowerEnum.CLIENT_CONNECT_WITH_DB.getCode())) {
             this.dbName = proto.get_null_str();
+        }
+
+        if (MysqlUtil.hasAbility(this.abilityFlags,ClientPowerEnum.CLIENT_SECURE_CONNECTION.getCode())) {
+            this.pluginName = proto.get_null_str();
         }
     }
 
@@ -93,9 +101,6 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
         return abilityFlags;
     }
 
-    public long getAbilityFlags2() {
-        return abilityFlags2;
-    }
 
     public long getMaxMsgSize() {
         return maxMsgSize;
@@ -115,5 +120,17 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
 
     public String getDbName() {
         return dbName;
+    }
+
+    public long getChallengeLength() {
+        return challengeLength;
+    }
+
+    public long getSequenceId() {
+        return sequenceId;
+    }
+
+    public String getPluginName() {
+        return pluginName;
     }
 }

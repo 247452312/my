@@ -310,4 +310,16 @@ public final class MysqlUtil {
         }
         return pass3;
     }
+
+    /**
+     * 是否有权限
+     *
+     * @param ability       权限集
+     * @param targetAbility 指定权限
+     *
+     * @return
+     */
+    public static final boolean hasAbility(long ability, long targetAbility) {
+        return ((ability & targetAbility) == targetAbility);
+    }
 }

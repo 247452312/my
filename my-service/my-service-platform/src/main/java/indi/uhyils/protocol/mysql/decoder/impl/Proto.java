@@ -4,6 +4,7 @@
 package indi.uhyils.protocol.mysql.decoder.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
