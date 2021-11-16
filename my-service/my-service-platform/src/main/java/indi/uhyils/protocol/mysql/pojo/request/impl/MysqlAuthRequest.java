@@ -2,11 +2,12 @@ package indi.uhyils.protocol.mysql.pojo.request.impl;
 
 import indi.uhyils.protocol.mysql.decoder.impl.Proto;
 import indi.uhyils.protocol.mysql.enums.ClientPowerEnum;
+import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
+import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
-import jdk.nashorn.internal.ir.Flags;
 
 
 /**
@@ -71,7 +72,7 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
 
     @Override
     public MysqlResponse invoke() {
-        return null;
+        return new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL);
     }
 
     @Override
@@ -92,7 +93,7 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
             this.dbName = proto.get_null_str();
         }
 
-        if (MysqlUtil.hasAbility(this.abilityFlags,ClientPowerEnum.CLIENT_SECURE_CONNECTION.getCode())) {
+        if (MysqlUtil.hasAbility(this.abilityFlags, ClientPowerEnum.CLIENT_SECURE_CONNECTION.getCode())) {
             this.pluginName = proto.get_null_str();
         }
     }

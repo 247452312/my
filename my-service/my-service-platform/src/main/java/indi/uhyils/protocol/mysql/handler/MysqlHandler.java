@@ -16,7 +16,14 @@ public interface MysqlHandler extends ChannelInboundHandler {
      *
      * @return
      */
-    MysqlHandlerStatusEnum getStatus();
+    MysqlHandlerStatusEnum getAndIncrementStatus();
+
+    /**
+     * 设置状态
+     *
+     * @param status
+     */
+    void setStatus(MysqlHandlerStatusEnum status);
 
     /**
      * 关闭
@@ -69,4 +76,11 @@ public interface MysqlHandler extends ChannelInboundHandler {
      * @param password
      */
     void setPassword(byte[] password);
+
+    /**
+     * 获取auth时使用index
+     *
+     * @return
+     */
+    byte getLoginIndex();
 }

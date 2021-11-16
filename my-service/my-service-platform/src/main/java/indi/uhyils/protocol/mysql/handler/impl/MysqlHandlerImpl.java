@@ -19,6 +19,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -71,6 +72,8 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
      */
     private byte[] password;
 
+    private AtomicInteger loginIndex = new AtomicInteger(0);
+
     public MysqlHandlerImpl() {
     }
 
@@ -80,8 +83,24 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
      * @return
      */
     @Override
-    public MysqlHandlerStatusEnum getStatus() {
+    public MysqlHandlerStatusEnum getAndIncrementStatus() {
+        MysqlHandlerStatusEnum status = this.status;
+        switch (status) {
+            case FIRST_SIGHT:
+                this.status = MysqlHandlerStatusEnum.PASSED;
+                break;
+            case OVER:
+            case PASSED:
+            default:
+                break;
+
+        }
         return status;
+    }
+
+    @Override
+    public void setStatus(MysqlHandlerStatusEnum status) {
+        this.status = status;
     }
 
     /**
@@ -138,7 +157,7 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         // 返回byte
         byte[] bytes = invoke.toByte();
 
-        String responseBytes = MysqlUtil.dump(mysqlBytes);
+        String responseBytes = MysqlUtil.dump(bytes);
         LogUtil.info("mysql回应体:\n" + responseBytes);
 
         send(bytes);
@@ -220,5 +239,10 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
     @Override
     public void setPassword(byte[] password) {
         this.password = password;
+    }
+
+    @Override
+    public byte getLoginIndex() {
+        return (byte) loginIndex.getAndAdd(2);
     }
 }

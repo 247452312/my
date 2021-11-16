@@ -27,7 +27,7 @@ public class ComQueryRequest extends AbstractMysqlRequest {
     @Override
     protected void load() {
         Proto proto = new Proto(mysqlBytes, 4);
-        this.sql = proto.get_lenenc_str();
+        this.sql = proto.get_null_str();
     }
 
     @Override

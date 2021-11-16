@@ -24,12 +24,12 @@ public class AuthResponse extends AbstractMysqlResponse {
     /**
      * mysql版本
      */
-    private static final String VERSION = "8.0.20";
+    private static final String VERSION = "5.7.36";
 
     /**
      * 协议结尾
      */
-    private static final String END_OF_PROTO = "caching_sha2_password";
+    private static final String END_OF_PROTO = "mysql_native_password";
 
 
     private static final AtomicLong RANDOM_NUM = new AtomicLong(0);

@@ -34,7 +34,8 @@ public abstract class AbstractMysqlResponse implements MysqlResponse {
         List<byte[]> result = new ArrayList<>();
         byte[] e = toByteNoMarkIndex();
         result.add(MysqlUtil.toBytes(e.length + 1, 1));
-        result.add(new byte[3]);
+        result.add(new byte[2]);
+        result.add(new byte[]{mysqlHandler.getLoginIndex()});
         result.add(new byte[]{getFirstByte()});
         result.add(e);
         return MysqlUtil.mergeListBytes(result);

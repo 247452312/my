@@ -37,7 +37,11 @@ public enum SqlTypeEnum {
     /**
      * 刷新数据库
      */
-    REFRESH(7);
+    REFRESH(7),
+    /**
+     * 未知
+     */
+    NULL(8);
 
     private final Integer code;
 

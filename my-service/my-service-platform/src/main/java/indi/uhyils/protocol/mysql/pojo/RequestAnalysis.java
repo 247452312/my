@@ -49,7 +49,7 @@ public final class RequestAnalysis {
     }
 
     public static MysqlRequest load(MysqlHandler mysqlHandler, byte[] mysqlBytes) {
-        MysqlHandlerStatusEnum status = mysqlHandler.getStatus();
+        MysqlHandlerStatusEnum status = mysqlHandler.getAndIncrementStatus();
         switch (status) {
             case FIRST_SIGHT:
                 // 初见状态默认请求是登录信息
@@ -68,7 +68,7 @@ public final class RequestAnalysis {
     }
 
     private static MysqlRequest loadCommand(MysqlHandler mysqlHandler, byte[] mysqlBytes) {
-        Proto proto = new Proto(mysqlBytes, 3);
+        Proto proto = new Proto(mysqlBytes, 4);
         long type = proto.getFixedInt(1);
         MysqlCommandTypeEnum parse = MysqlCommandTypeEnum.parse(type);
         MysqlRequest result = null;
@@ -78,6 +78,7 @@ public final class RequestAnalysis {
                 break;
             case COM_QUIT:
                 result = new ComQuitRequest(mysqlHandler);
+                mysqlHandler.setStatus(MysqlHandlerStatusEnum.OVER);
                 break;
             case COM_TIME:
                 result = new ComTimeRequest(mysqlHandler);

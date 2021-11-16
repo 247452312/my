@@ -21,7 +21,7 @@ public class OkResponse extends AbstractMysqlResponse {
     /**
      * sql类型
      */
-    private final SqlTypeEnum sqlTypeEnum;
+    private SqlTypeEnum sqlTypeEnum;
 
     /**
      * 受影响行数
@@ -72,6 +72,10 @@ public class OkResponse extends AbstractMysqlResponse {
         this.sqlTypeEnum = sqlTypeEnum;
     }
 
+    public OkResponse(MysqlHandler mysqlHandler) {
+        super(mysqlHandler);
+    }
+
     @Override
     public byte getFirstByte() {
         // ok报文恒为0x00
@@ -81,7 +85,7 @@ public class OkResponse extends AbstractMysqlResponse {
     @Override
     public byte[] toByteNoMarkIndex() {
         Asserts.assertTrue(sqlTypeEnum != null);
-        Asserts.assertTrue(sqlTypeEnum != SqlTypeEnum.QUERY, "查询不能返回OK消息");
+        Asserts.assertTrue(sqlTypeEnum == null || sqlTypeEnum != SqlTypeEnum.QUERY, "查询不能返回OK消息");
         return mergeOk();
     }
 
@@ -92,28 +96,27 @@ public class OkResponse extends AbstractMysqlResponse {
 
     private byte[] mergeOk() {
         List<byte[]> listResult = new ArrayList<>();
-        int count = 0;
         // 添加影响行数报文
         byte[] e = MysqlUtil.mergeLengthCodedBinary(rowLength);
         listResult.add(e);
-        count += e.length;
         // 添加索引id值
         byte[] e1 = MysqlUtil.mergeLengthCodedBinary(indexIdValue);
         listResult.add(e1);
-        count += e1.length;
+        if (serverStatus == null) {
+            serverStatus = MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES;
+        }
         // 添加服务器状态
         byte[] e2 = MysqlUtil.toBytes(serverStatus.getCode());
         listResult.add(e2);
-        count += e2.length;
         // 添加告警计数
-        byte[] e3 = MysqlUtil.toBytes(warnCount);
+        byte[] e3 = MysqlUtil.toBytes(warnCount, 2);
         listResult.add(e3);
-        count += e3.length;
-        // 添加服务器消息
-        byte[] bytes1 = msg.getBytes(StandardCharsets.UTF_8);
-        listResult.add(bytes1);
-        count += bytes1.length;
-        return MysqlUtil.mergeListBytes(listResult, count);
+        if (msg != null) {
+            // 添加服务器消息
+            byte[] bytes1 = msg.getBytes(StandardCharsets.UTF_8);
+            listResult.add(bytes1);
+        }
+        return MysqlUtil.mergeListBytes(listResult);
     }
 
 

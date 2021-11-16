@@ -1,6 +1,7 @@
 package indi.uhyils.protocol.mysql.util;
 
 import indi.uhyils.protocol.mysql.decoder.impl.Proto;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 import java.io.ByteArrayOutputStream;
@@ -73,6 +74,10 @@ public final class MysqlUtil {
      * @return
      */
     public static byte[] mergeLengthCodedBinary(long value) {
+        Asserts.assertTrue(value >= 0, "long数值不能小于零");
+        if (value <= 250) {
+            return new byte[]{(byte) value};
+        }
         byte[] bytes = toBytes(value);
         return byteToLengthCodeBinary(bytes);
     }
@@ -112,9 +117,6 @@ public final class MysqlUtil {
         if (length == 0) {
             // 数据长度为0 前缀只有一个字节 且为251
             prefixByte = new byte[]{(byte) 251};
-        } else if (length <= 250) {
-            // 数据真实长度不到251 则第一个字节就是数据真实长度
-            prefixByte = toBytes(length);
         } else {
             // 长度的字节
             byte[] lengthByte = toBytes(length);
@@ -166,9 +168,17 @@ public final class MysqlUtil {
 
 
     public static int getBytesSize(long value) {
+        boolean complex = false;
+        if (value < 0) {
+            value = -value;
+            complex = true;
+        }
         int count = 0;
         while (value > 0) {
-            value >>= 4;
+            value >>= 8;
+            count++;
+        }
+        if (complex) {
             count++;
         }
         return count;
