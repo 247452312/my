@@ -6,6 +6,8 @@ import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.ErrResponse;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -25,10 +27,10 @@ public class ComQuitRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public MysqlResponse invoke() {
-        return new ErrResponse(getMysqlHandler(),
-                               MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE,
-                               MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS,
-                               "?? 你竟然想关掉我? 脑子瓦特了?\n" + MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE.getMsg());
+    public List<MysqlResponse> invoke() {
+        return Arrays.asList(new ErrResponse(getMysqlHandler(),
+                                             MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE,
+                                             MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS,
+                                             "?? 你竟然想关掉我? 脑子瓦特了?\n" + MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE.getMsg()));
     }
 }

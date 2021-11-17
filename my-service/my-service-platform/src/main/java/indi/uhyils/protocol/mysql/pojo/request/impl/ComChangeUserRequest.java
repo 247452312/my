@@ -3,7 +3,7 @@ package indi.uhyils.protocol.mysql.pojo.request.impl;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
-import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -23,7 +23,7 @@ public class ComChangeUserRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public MysqlResponse invoke() {
+    public List<MysqlResponse> invoke() {
         return null;
     }
 }

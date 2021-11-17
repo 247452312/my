@@ -10,6 +10,7 @@ import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.ResultSetResponse;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class ComStatisticsRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public MysqlResponse invoke() {
+    public List<MysqlResponse> invoke() {
         ArrayList<FieldInfo> fields = new ArrayList<>();
         fields.add(new FieldInfo(getMysqlServerInfo().getDbName(), STATIC_TABLE_NAME, STATIC_TABLE_NAME, "运行时间", "time", 3, FieldTypeEnum.FIELD_TYPE_LONG, FieldMarkEnum.TIMESTAMP_FLAG
             .getCode(), (byte) 3, null));
@@ -51,6 +52,7 @@ public class ComStatisticsRequest extends AbstractMysqlRequest {
         jsonResult.put("executions_per_second", 0L);
         jsonArrayObj.add(jsonResult);
         MysqlHandler mysqlHandler = getMysqlHandler();
-        return new ResultSetResponse(getMysqlHandler(), fields, JSON.parseArray(JSON.toJSONString(jsonArrayObj)), MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, mysqlHandler.getWarnCount());
+        return Arrays
+            .asList(new ResultSetResponse(getMysqlHandler(), fields, JSON.parseArray(JSON.toJSONString(jsonArrayObj)), MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, mysqlHandler.getWarnCount()));
     }
 }

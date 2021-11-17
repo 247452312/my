@@ -2,6 +2,7 @@ package indi.uhyils.protocol.mysql.handler;
 
 import indi.uhyils.protocol.mysql.enums.MysqlHandlerStatusEnum;
 import indi.uhyils.protocol.mysql.pojo.entity.PrepareInfo;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelInboundHandler;
 
 /**
@@ -12,11 +13,18 @@ import io.netty.channel.ChannelInboundHandler;
 public interface MysqlHandler extends ChannelInboundHandler {
 
     /**
-     * 获取此连接状态
+     * 获取此连接状态,并添加状态
      *
      * @return
      */
     MysqlHandlerStatusEnum getAndIncrementStatus();
+
+    /**
+     * 获取此连接状态
+     *
+     * @return
+     */
+    MysqlHandlerStatusEnum getStatus();
 
     /**
      * 设置状态
@@ -24,6 +32,20 @@ public interface MysqlHandler extends ChannelInboundHandler {
      * @param status
      */
     void setStatus(MysqlHandlerStatusEnum status);
+
+    /**
+     * 获取客户端发送过来的index序列
+     *
+     * @return
+     */
+    long index();
+
+    /**
+     * 修改index
+     *
+     * @param index
+     */
+    void changeIndex(long index);
 
     /**
      * 关闭
@@ -83,4 +105,11 @@ public interface MysqlHandler extends ChannelInboundHandler {
      * @return
      */
     byte getLoginIndex();
+
+    /**
+     * 获取客户端连接
+     *
+     * @return
+     */
+    Channel getClientChannel();
 }

@@ -49,6 +49,7 @@ public final class RequestAnalysis {
     }
 
     public static MysqlRequest load(MysqlHandler mysqlHandler, byte[] mysqlBytes) {
+        mysqlHandler.changeIndex(mysqlBytes[3]);
         MysqlHandlerStatusEnum status = mysqlHandler.getAndIncrementStatus();
         switch (status) {
             case FIRST_SIGHT:

@@ -9,6 +9,7 @@ import indi.uhyils.protocol.mysql.pojo.request.MysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.AuthResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
+import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -17,6 +18,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.net.InetSocketAddress;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,6 +34,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements MysqlHandler {
 
+
     /**
      * 预处理语句id
      */
@@ -41,6 +44,11 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
      * 预处理语句本地缓存
      */
     private static Map<Long, PrepareInfo> prepareCache = new ConcurrentHashMap<>();
+
+    /**
+     * client发过来的index
+     */
+    protected long index = -1;
 
     /**
      * 连接
@@ -99,8 +107,23 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
     }
 
     @Override
+    public MysqlHandlerStatusEnum getStatus() {
+        return status;
+    }
+
+    @Override
     public void setStatus(MysqlHandlerStatusEnum status) {
         this.status = status;
+    }
+
+    @Override
+    public long index() {
+        return index;
+    }
+
+    @Override
+    public void changeIndex(long index) {
+        this.index = index;
     }
 
     /**
@@ -145,7 +168,7 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
          */
         byte[] mysqlBytes = (byte[]) msg;
         String dump = MysqlUtil.dump(mysqlBytes);
-        LogUtil.info("mysql请求体:\n" + dump);
+        LogUtil.info("客户端发来请求:\n" + dump);
         // 加载并解析请求
         MysqlRequest load = RequestAnalysis.load(this, mysqlBytes);
         if (load == null) {
@@ -153,14 +176,17 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
             return;
         }
         // 执行请求并返回返回值
-        MysqlResponse invoke = load.invoke();
-        // 返回byte
-        byte[] bytes = invoke.toByte();
-
-        String responseBytes = MysqlUtil.dump(bytes);
-        LogUtil.info("mysql回应体:\n" + responseBytes);
-
-        send(bytes);
+        List<MysqlResponse> invokes = load.invoke();
+        if (CollectionUtil.isEmpty(invokes)) {
+            return;
+        }
+        for (MysqlResponse invoke : invokes) {
+            // 返回byte
+            byte[] bytes = invoke.toByte();
+            String responseBytes = MysqlUtil.dump(bytes);
+            LogUtil.info("mysql回应:\n" + responseBytes);
+            send(bytes);
+        }
 
 
     }
@@ -244,5 +270,10 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
     @Override
     public byte getLoginIndex() {
         return (byte) loginIndex.getAndAdd(2);
+    }
+
+    @Override
+    public Channel getClientChannel() {
+        return mysqlChannel;
     }
 }

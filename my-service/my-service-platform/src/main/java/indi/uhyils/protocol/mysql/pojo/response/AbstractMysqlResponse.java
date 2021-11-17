@@ -24,6 +24,11 @@ public abstract class AbstractMysqlResponse implements MysqlResponse {
      */
     protected MysqlServerInfo mysqlServerInfo;
 
+    /**
+     * client发过来的index
+     */
+    protected Integer index;
+
     protected AbstractMysqlResponse(MysqlHandler mysqlHandler) {
         mysqlServerInfo = SpringUtil.getBean(MysqlServerInfo.class);
         this.mysqlHandler = mysqlHandler;
@@ -35,7 +40,9 @@ public abstract class AbstractMysqlResponse implements MysqlResponse {
         byte[] e = toByteNoMarkIndex();
         result.add(MysqlUtil.toBytes(e.length + 1, 1));
         result.add(new byte[2]);
-        result.add(new byte[]{mysqlHandler.getLoginIndex()});
+        long realResponseIndex = mysqlHandler.index() + 1;
+        result.add(new byte[]{(byte) realResponseIndex});
+        mysqlHandler.changeIndex(realResponseIndex);
         result.add(new byte[]{getFirstByte()});
         result.add(e);
         return MysqlUtil.mergeListBytes(result);

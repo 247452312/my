@@ -3,6 +3,7 @@ package indi.uhyils.protocol.mysql.pojo.request.impl;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
+import java.util.List;
 
 
 /**
@@ -22,7 +23,7 @@ public class ComProcessInfoRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public MysqlResponse invoke() {
+    public List<MysqlResponse> invoke() {
         // todo 获取线程信息
         return null;
     }

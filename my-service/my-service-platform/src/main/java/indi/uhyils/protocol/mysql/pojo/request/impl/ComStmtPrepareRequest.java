@@ -7,6 +7,8 @@ import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -35,7 +37,7 @@ public class ComStmtPrepareRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public MysqlResponse invoke() {
-        return new OkResponse(getMysqlHandler(), SqlTypeEnum.QUERY, 0L, prepareId, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, getMysqlHandler().getWarnCount(), "" + prepareId);
+    public List<MysqlResponse> invoke() {
+        return Arrays.asList(new OkResponse(getMysqlHandler(), SqlTypeEnum.QUERY, 0L, prepareId, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, getMysqlHandler().getWarnCount(), "" + prepareId));
     }
 }

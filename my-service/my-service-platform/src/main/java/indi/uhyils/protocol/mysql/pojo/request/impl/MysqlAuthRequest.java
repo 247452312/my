@@ -8,6 +8,8 @@ import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -71,8 +73,9 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public MysqlResponse invoke() {
-        return new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL);
+    public List<MysqlResponse> invoke() {
+        // todo 密码认证
+        return Arrays.asList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
     }
 
     @Override

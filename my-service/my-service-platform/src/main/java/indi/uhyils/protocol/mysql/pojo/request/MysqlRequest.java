@@ -1,6 +1,7 @@
 package indi.uhyils.protocol.mysql.pojo.request;
 
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
+import java.util.List;
 
 /**
  * mysql客户端的请求
@@ -17,7 +18,7 @@ public interface MysqlRequest {
      *
      * @return 执行后的返回
      */
-    MysqlResponse invoke();
+    List<MysqlResponse> invoke();
 
 
     /**

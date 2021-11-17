@@ -10,6 +10,8 @@ import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.ErrResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
 import indi.uhyils.util.SpringUtil;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -40,18 +42,18 @@ public class ComInitDbRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public MysqlResponse invoke() {
+    public List<MysqlResponse> invoke() {
         // use开头
         if (!sql.startsWith(SQL_START)) {
-            return new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS);
+            return Arrays.asList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS));
         }
         // 数据库名称和标准名称一致
         String dbName = sql.substring(SQL_START.length()).trim();
         String root = SpringUtil.getProperty("mysql.db-name", "root");
         if (Objects.equals(root, dbName)) {
-            return new OkResponse(getMysqlHandler(), SqlTypeEnum.USE);
+            return Arrays.asList(new OkResponse(getMysqlHandler(), SqlTypeEnum.USE));
         }
         // 不一致就报错
-        return new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "没有发现数据库: " + dbName + ",推荐: " + root);
+        return Arrays.asList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "没有发现数据库: " + dbName + ",推荐: " + root));
     }
 }

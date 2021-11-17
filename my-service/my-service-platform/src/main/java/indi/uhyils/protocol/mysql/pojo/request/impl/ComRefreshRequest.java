@@ -6,6 +6,8 @@ import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -29,7 +31,7 @@ public class ComRefreshRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public MysqlResponse invoke() {
-        return new OkResponse(getMysqlHandler(), SqlTypeEnum.DELETE);
+    public List<MysqlResponse> invoke() {
+        return Arrays.asList(new OkResponse(getMysqlHandler(), SqlTypeEnum.DELETE));
     }
 }

@@ -32,7 +32,7 @@ public class ComFieldListRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public MysqlResponse invoke() {
+    public List<MysqlResponse> invoke() {
         /*1.根据tableName去数据库获取*/
         return null;
     }

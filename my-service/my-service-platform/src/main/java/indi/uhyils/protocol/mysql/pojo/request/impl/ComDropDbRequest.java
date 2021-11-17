@@ -6,6 +6,8 @@ import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.ErrResponse;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -25,7 +27,7 @@ public class ComDropDbRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public MysqlResponse invoke() {
-        return new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "请去对接平台配置页面删除表");
+    public List<MysqlResponse> invoke() {
+        return Arrays.asList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "请去对接平台配置页面删除表"));
     }
 }
