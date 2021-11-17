@@ -39,9 +39,13 @@ public enum SqlTypeEnum {
      */
     REFRESH(7),
     /**
+     * 设置
+     */
+    SET(8),
+    /**
      * 未知
      */
-    NULL(8);
+    NULL(9);
 
     private final Integer code;
 

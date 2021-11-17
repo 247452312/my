@@ -17,6 +17,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import com.alibaba.druid.sql.ast.statement.SQLSelectQuery;
 import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
 import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.alibaba.druid.sql.ast.statement.SQLSetStatement;
 import com.alibaba.druid.sql.ast.statement.SQLSubqueryTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLUnionQuery;
@@ -68,6 +69,8 @@ public class Sql extends AbstractEntity {
             this.sqlType = SqlType.INSERT;
         } else if (this.sqlStatement instanceof SQLDeleteStatement) {
             this.sqlType = SqlType.DELETE;
+        } else if (this.sqlStatement instanceof SQLSetStatement) {
+            this.sqlType = SqlType.SET;
         }
     }
 
@@ -90,6 +93,8 @@ public class Sql extends AbstractEntity {
                 return new SelectSql(this);
             case UPDATE:
                 return new UpdateSql(this);
+            case SET:
+                return new SetSql(this);
             default:
                 return null;
         }
@@ -368,6 +373,7 @@ public class Sql extends AbstractEntity {
         SELECT,
         UPDATE,
         INSERT,
-        DELETE
+        DELETE,
+        SET
     }
 }
