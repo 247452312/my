@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.mysql.pojo.response.impl;
 
-import indi.uhyils.protocol.mysql.context.MysqlContext;
 import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
@@ -170,14 +169,10 @@ public class AuthResponse extends AbstractMysqlResponse {
      * @return
      */
     private byte[] toAuthPluginName() {
-        MysqlHandler mysqlHandler = getMysqlHandler();
-        // 密码
-        byte[] serverPassword = MysqlContext.SERVER_PASSWORD.getBytes(StandardCharsets.UTF_8);
         // 20位随机数
         byte[] randomBytes = RandomUtils.nextBytes(20);
+        getMysqlHandler().setPassword(randomBytes);
 
-        byte[] bytes = MysqlUtil.encodePassword(serverPassword, randomBytes);
-        mysqlHandler.setPassword(bytes);
         List<byte[]> result = new ArrayList<>();
         result.add(randomBytes);
         result.add(new byte[]{0x00});

@@ -1,15 +1,26 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
+import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.protocol.mysql.MysqlExtension;
 import indi.uhyils.protocol.mysql.decoder.impl.Proto;
 import indi.uhyils.protocol.mysql.enums.ClientPowerEnum;
+import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
+import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
+import indi.uhyils.protocol.mysql.pojo.cqe.FindPasswordByNameQuery;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
+import indi.uhyils.protocol.mysql.pojo.response.impl.ErrResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
-import java.util.Arrays;
+import indi.uhyils.util.SpringUtil;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import org.apache.commons.codec.binary.Base64;
 
 
 /**
@@ -68,14 +79,31 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
      */
     private String pluginName;
 
+    /**
+     * mysql扩展点
+     */
+    private MysqlExtension mysqlExtension;
+
     public MysqlAuthRequest(MysqlHandler mysqlHandler) {
         super(mysqlHandler);
+        this.mysqlExtension = SpringUtil.getBean(MysqlExtension.class);
     }
 
     @Override
     public List<MysqlResponse> invoke() {
-        // todo 密码认证
-        return Arrays.asList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
+        byte[] seed = getMysqlHandler().getPassword();
+        ServiceResult<ConsumerInfoDTO> passwordByName = mysqlExtension.findPasswordByName(new FindPasswordByNameQuery(username));
+        ConsumerInfoDTO consumerInfoDTO = passwordByName.validationAndGet();
+        if (consumerInfoDTO == null) {
+            return Collections.singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "没有找到此用户"));
+        }
+        byte[] bytes = MysqlUtil.encodePassword(consumerInfoDTO.getSecretKey().getBytes(StandardCharsets.UTF_8), seed);
+        boolean equals = Objects.equals(Base64.encodeBase64String(bytes), challenge);
+        if (equals) {
+            return Collections.singletonList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
+        } else {
+            return Collections.singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "密码错误,密码请使用secretKey"));
+        }
     }
 
     @Override

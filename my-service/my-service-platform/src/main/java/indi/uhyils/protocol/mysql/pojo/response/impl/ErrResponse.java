@@ -54,23 +54,19 @@ public class ErrResponse extends AbstractMysqlResponse {
     @Override
     public byte[] toByteNoMarkIndex() {
         List<byte[]> listResult = new ArrayList<>();
-        int count = 0;
         // 错误编号
         byte[] e = MysqlUtil.mergeLengthCodedBinary(errCode.getCode());
         listResult.add(e);
-        count += e.length;
         // 服务器状态标志,恒为 '#'
         listResult.add(new byte[]{'#'});
         // 服务器状态
         byte[] e1 = MysqlUtil.mergeLengthCodedBinary(status.getCode());
         listResult.add(e1);
-        count += e1.length;
         // 添加服务器消息
         byte[] bytes1 = msg.getBytes(StandardCharsets.UTF_8);
         listResult.add(bytes1);
-        count += bytes1.length;
 
-        return MysqlUtil.mergeListBytes(listResult, count);
+        return MysqlUtil.mergeListBytes(listResult);
     }
 
 

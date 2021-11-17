@@ -332,4 +332,30 @@ public final class MysqlUtil {
     public static final boolean hasAbility(long ability, long targetAbility) {
         return ((ability & targetAbility) == targetAbility);
     }
+
+    /**
+     * 获取两个数组是否一致
+     *
+     * @param firstBytes
+     * @param secondBytes
+     *
+     * @return
+     */
+    public static boolean equals(byte[] firstBytes, byte[] secondBytes) {
+        if (firstBytes == null || secondBytes == null) {
+            return false;
+        }
+
+        if (firstBytes.length != secondBytes.length) {
+            return false;
+        }
+        for (int i = 0; i < firstBytes.length; i++) {
+            byte firstByte = firstBytes[i];
+            byte secondByte = secondBytes[i];
+            if (firstByte != secondByte) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
