@@ -1,26 +1,24 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
-import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.ast.statement.SQLDeleteStatement;
-import com.alibaba.druid.sql.ast.statement.SQLInsertStatement;
-import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
-import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
-import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
-import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
-import indi.uhyils.pojo.entity.SelectSql;
-import indi.uhyils.pojo.entity.Sql;
+import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.protocol.mysql.decoder.impl.Proto;
 import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
+import indi.uhyils.protocol.mysql.plan.MysqlPlan;
+import indi.uhyils.protocol.mysql.plan.PlanUtil;
+import indi.uhyils.protocol.mysql.pojo.entity.FieldInfo;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.ErrResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
-import indi.uhyils.util.Asserts;
+import indi.uhyils.protocol.mysql.pojo.response.impl.ResultSetResponse;
+import indi.uhyils.util.CollectionUtil;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -55,21 +53,33 @@ public class ComQueryRequest extends AbstractMysqlRequest {
                 .singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "sql语句不能为空"));
         }
 
-        SQLStatement sqlStatement = new MySqlStatementParser(sql).parseStatement();
-        Sql sqlEntity = new Sql(sql, null);
-        sqlEntity.parse();
-        if (sqlStatement instanceof SQLSelectStatement) {
-            SelectSql transformation = (SelectSql) sqlEntity.transformation();
-            List<SQLSelectQueryBlock> sqlSelectQueryBlocks = transformation.blockQuerys();
-        } else if (sqlStatement instanceof SQLUpdateStatement) {
-        } else if (sqlStatement instanceof SQLInsertStatement) {
-        } else if (sqlStatement instanceof SQLDeleteStatement) {
-        } else {
+        // 解析sql为执行计划
+        List<MysqlPlan> mysqlPlans = PlanUtil.parseSqlToPlan(sql);
+        // 执行计划为空, 返回执行成功,无信息
+        if (CollectionUtil.isEmpty(mysqlPlans)) {
             return Collections
                 .singletonList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
         }
 
-        Asserts.assertTrue(false, "不识别的sql语句:{}", sql);
-        return null;
+        // index, 结果集
+        Map<Integer, JSONArray> result = new HashMap<>(mysqlPlans.size());
+        // 此sql最终结果
+        JSONArray invokeResult = null;
+        // 此sql的最终列信息
+        List<FieldInfo> colInfos = null;
+        // 执行执行计划
+        for (MysqlPlan mysqlPlan : mysqlPlans) {
+            JSONArray rr = mysqlPlan.invoke(result);
+            invokeResult = rr;
+            colInfos = mysqlPlan.colInfos();
+            result.put(mysqlPlan.index(), rr);
+        }
+        // 如果没有结果, 说明不是一个常规的查询语句,返回ok即可,如果报错,则在外部已经进行了try,catch
+        if (CollectionUtil.isEmpty(invokeResult) && CollectionUtil.isEmpty(colInfos)) {
+            return Collections
+                .singletonList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
+        }
+        return Collections.singletonList(new ResultSetResponse(getMysqlHandler(), colInfos, invokeResult));
+
     }
 }

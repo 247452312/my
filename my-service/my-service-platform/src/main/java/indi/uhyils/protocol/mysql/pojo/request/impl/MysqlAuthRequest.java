@@ -15,6 +15,7 @@ import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.ErrResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SpringUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -98,7 +99,8 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
             return Collections.singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "没有找到此用户"));
         }
         byte[] bytes = MysqlUtil.encodePassword(consumerInfoDTO.getSecretKey().getBytes(StandardCharsets.UTF_8), seed);
-        boolean equals = Objects.equals(Base64.encodeBase64String(bytes), challenge);
+        String a = Base64.encodeBase64String(bytes);
+        boolean equals = Objects.equals(a, challenge);
         if (equals) {
             return Collections.singletonList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
         } else {
@@ -115,6 +117,7 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
         this.charset = proto.getFixedInt(1);
         // 32位填充值
         proto.get_filler(23);
+        Asserts.assertTrue(proto.has_remaining_data(), "暂不支持mysql的SSL连接,请在连接串后添加<useSSL=false>");
         this.username = proto.get_null_str();
 
         this.challengeLength = proto.get_lenenc_int();

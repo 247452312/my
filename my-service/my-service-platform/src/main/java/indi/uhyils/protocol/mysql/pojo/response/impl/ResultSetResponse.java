@@ -48,6 +48,14 @@ public class ResultSetResponse extends AbstractMysqlResponse {
         this.warnCount = warnCount;
     }
 
+    public ResultSetResponse(MysqlHandler mysqlHandler, List<FieldInfo> fields, JSONArray jsonInfo, MysqlServerStatusEnum serverStatus) {
+        this(mysqlHandler, fields, jsonInfo, serverStatus, mysqlHandler.getWarnCount());
+    }
+
+    public ResultSetResponse(MysqlHandler mysqlHandler, List<FieldInfo> fields, JSONArray jsonInfo) {
+        this(mysqlHandler, fields, jsonInfo, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, mysqlHandler.getWarnCount());
+    }
+
     @Override
     public byte getFirstByte() {
         return (byte) 0xFF;

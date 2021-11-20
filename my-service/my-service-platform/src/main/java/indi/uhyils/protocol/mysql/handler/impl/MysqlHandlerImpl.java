@@ -1,13 +1,17 @@
 package indi.uhyils.protocol.mysql.handler.impl;
 
+import indi.uhyils.exception.AssertException;
 import indi.uhyils.protocol.mysql.decoder.impl.MysqlDecoderImpl;
+import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.protocol.mysql.enums.MysqlHandlerStatusEnum;
+import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.RequestAnalysis;
 import indi.uhyils.protocol.mysql.pojo.entity.PrepareInfo;
 import indi.uhyils.protocol.mysql.pojo.request.MysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.pojo.response.impl.AuthResponse;
+import indi.uhyils.protocol.mysql.pojo.response.impl.ErrResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.LogUtil;
@@ -34,7 +38,6 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements MysqlHandler {
 
-
     /**
      * 预处理语句id
      */
@@ -49,6 +52,11 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
      * client发过来的index
      */
     protected long index = -1;
+
+    /**
+     * 当前所在dbName
+     */
+    private String dbName;
 
     /**
      * 连接
@@ -169,26 +177,30 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         byte[] mysqlBytes = (byte[]) msg;
         String dump = MysqlUtil.dump(mysqlBytes);
         LogUtil.info("客户端发来请求:\n" + dump);
-        // 加载并解析请求
-        MysqlRequest load = RequestAnalysis.load(this, mysqlBytes);
-        if (load == null) {
-            closeOnFlush();
-            return;
+        try {
+            // 加载并解析请求
+            MysqlRequest load = RequestAnalysis.load(this, mysqlBytes);
+            if (load == null) {
+                closeOnFlush();
+                return;
+            }
+            // 执行请求并返回返回值
+            List<MysqlResponse> invokes = load.invoke();
+            if (CollectionUtil.isEmpty(invokes)) {
+                return;
+            }
+            for (MysqlResponse invoke : invokes) {
+                // 返回byte
+                byte[] bytes = invoke.toByte();
+                String responseBytes = MysqlUtil.dump(bytes);
+                LogUtil.info("mysql回应:\n" + responseBytes);
+                send(bytes);
+            }
+        } catch (AssertException e) {
+            LogUtil.error(e, "解析错误");
+            MysqlResponse response = new ErrResponse(this, MysqlErrCodeEnum.EE_UNKNOWN_PROTOCOL_OPTION, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, e.getLocalizedMessage());
+            send(response.toByte());
         }
-        // 执行请求并返回返回值
-        List<MysqlResponse> invokes = load.invoke();
-        if (CollectionUtil.isEmpty(invokes)) {
-            return;
-        }
-        for (MysqlResponse invoke : invokes) {
-            // 返回byte
-            byte[] bytes = invoke.toByte();
-            String responseBytes = MysqlUtil.dump(bytes);
-            LogUtil.info("mysql回应:\n" + responseBytes);
-            send(bytes);
-        }
-
-
     }
 
 
@@ -275,5 +287,15 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
     @Override
     public Channel getClientChannel() {
         return mysqlChannel;
+    }
+
+    @Override
+    public String getDbName() {
+        return dbName;
+    }
+
+    @Override
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
     }
 }

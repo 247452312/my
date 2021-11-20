@@ -20,6 +20,8 @@ package indi.uhyils.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
@@ -190,6 +192,16 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
     public static Map<String, Object> getByAnnotation(Class<? extends Annotation> annotationClass) {
         return applicationContext.getBeansWithAnnotation(annotationClass);
 
+    }
+
+    public static <T> List<T> getBeans(Class<T> clazz) {
+        String[] beanNamesForType = applicationContext.getBeanNamesForType(clazz);
+        List<T> result = new ArrayList<>(beanNamesForType.length);
+        for (String beanName : beanNamesForType) {
+            T bean = applicationContext.getBean(beanName, clazz);
+            result.add(bean);
+        }
+        return result;
     }
 
 

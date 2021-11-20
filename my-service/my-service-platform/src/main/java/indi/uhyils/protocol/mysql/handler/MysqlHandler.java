@@ -112,4 +112,8 @@ public interface MysqlHandler extends ChannelInboundHandler {
      * @return
      */
     Channel getClientChannel();
+
+    String getDbName();
+
+    void setDbName(String dbName);
 }
