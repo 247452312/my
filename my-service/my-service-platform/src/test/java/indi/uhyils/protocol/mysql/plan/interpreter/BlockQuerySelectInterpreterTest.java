@@ -70,5 +70,29 @@ public class BlockQuerySelectInterpreterTest {
         Asserts.assertTrue(alias == null, "解析错误");
     }
 
+    /**
+     * join查询
+     */
+    @Test
+    public void doParse2() {
+        String sqlStr = "select a.*,b.* from sys_user a left join sys_role b on a.role_id = b.id where a.id = 1";
+        SQLSelectStatement sql = (SQLSelectStatement) new MySqlStatementParser(sqlStr).parseStatement();
+
+        SQLSelect select = sql.getSelect();
+        MySqlSelectQueryBlock query = (MySqlSelectQueryBlock) select.getQuery();
+        SQLTableSource from = query.getFrom();
+        String alias = from.getAlias();
+        Asserts.assertTrue(from instanceof SQLSubqueryTableSource, "解析错误");
+        Asserts.assertTrue(Objects.equals(alias, "a"), "解析错误");
+        SQLSubqueryTableSource tableSourceFrom = (SQLSubqueryTableSource) from;
+
+        select = tableSourceFrom.getSelect();
+        query = (MySqlSelectQueryBlock) select.getQuery();
+        from = query.getFrom();
+        alias = from.getAlias();
+        Asserts.assertTrue(from instanceof SQLExprTableSource, "解析错误");
+        Asserts.assertTrue(alias == null, "解析错误");
+    }
+
 
 }
