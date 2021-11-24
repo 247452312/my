@@ -1,10 +1,13 @@
 package indi.uhyils.protocol.mysql.plan.interpreter;
 
 import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.ast.statement.SQLAssignItem;
 import com.alibaba.druid.sql.ast.statement.SQLSetStatement;
 import indi.uhyils.protocol.mysql.plan.MysqlPlan;
+import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,6 +28,14 @@ public class SetInterpreter implements Interpreter {
 
     @Override
     public List<MysqlPlan> parse(SQLStatement sql) {
+        SQLSetStatement setSql = (SQLSetStatement) sql;
+        List<SQLAssignItem> items = setSql.getItems();
+        for (SQLAssignItem sqlAssignItem : items) {
+            // 要被改的变量名称
+            String target = sqlAssignItem.getTarget().toString();
+            // 改成什么
+            String value = sqlAssignItem.getValue().toString();
+        }
         // todo 暂时忽略set语句
         return new ArrayList<>();
     }
