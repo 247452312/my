@@ -94,5 +94,35 @@ public class BlockQuerySelectInterpreterTest {
         Asserts.assertTrue(alias == null, "解析错误");
     }
 
+    /**
+     * where测试
+     */
+    @Test
+    public void doParseWhere() {
+        String sqlStr = "select * from sys_user a where a.id = 1 and a.role_id in (select id from sys_role b where b.name = 'abc')";
+        SQLSelectStatement sql = (SQLSelectStatement) new MySqlStatementParser(sqlStr).parseStatement();
+
+        SQLSelect select = sql.getSelect();
+        MySqlSelectQueryBlock query = (MySqlSelectQueryBlock) select.getQuery();
+        SQLExpr where = query.getWhere();
+
+        String sqlStr2 = "select * from sys_user a where a.id = 1 and a.role_id in (1,2,3)";
+        SQLSelectStatement sql2 = (SQLSelectStatement) new MySqlStatementParser(sqlStr2).parseStatement();
+
+    }
+
+    /**
+     * selectList测试
+     */
+    @Test
+    public void doParseList() {
+        String sqlStr = "SELECT a.SCHEMA_NAME, DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME FROM information_schema.SCHEMATA a";
+        SQLSelectStatement sql = (SQLSelectStatement) new MySqlStatementParser(sqlStr).parseStatement();
+
+        MySqlSelectQueryBlock query = (MySqlSelectQueryBlock) sql.getSelect().getQuery();
+        List<SQLSelectItem> selectList = query.getSelectList();
+
+    }
+
 
 }

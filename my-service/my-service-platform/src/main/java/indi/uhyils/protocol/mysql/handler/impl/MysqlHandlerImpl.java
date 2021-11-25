@@ -39,6 +39,11 @@ import java.util.concurrent.atomic.AtomicLong;
 public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements MysqlHandler {
 
     /**
+     * mysql 系统类
+     */
+    public static ThreadLocal<MysqlHandler> MYSQL_HANDLER = new ThreadLocal<>();
+
+    /**
      * 预处理语句id
      */
     private static AtomicLong PREPARE_ID = new AtomicLong(0);
@@ -87,6 +92,11 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
      * 加密后的密码
      */
     private byte[] password;
+
+    /**
+     * 执行计划
+     */
+    private AtomicLong planIndex = new AtomicLong(0);
 
     private AtomicInteger loginIndex = new AtomicInteger(0);
 
@@ -149,9 +159,11 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         this.localAddress = (InetSocketAddress) mysqlChannel.localAddress();
         LogUtil.info("mysql 连接!" + localAddress);
         AuthResponse authResponse = new AuthResponse(this);
-        byte[] msg = authResponse.toByte();
-        LogUtil.info("mysql服务端发送握手信息:\n" + MysqlUtil.dump(msg));
-        send(msg);
+        List<byte[]> msgs = authResponse.toByte();
+        for (byte[] msg : msgs) {
+            LogUtil.info("mysql服务端发送握手信息:\n" + MysqlUtil.dump(msg));
+            send(msg);
+        }
     }
 
     private void send(byte[] msg) {
@@ -178,6 +190,7 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         String dump = MysqlUtil.dump(mysqlBytes);
         LogUtil.info("客户端发来请求:\n" + dump);
         try {
+            MYSQL_HANDLER.set(this);
             // 加载并解析请求
             MysqlRequest load = RequestAnalysis.load(this, mysqlBytes);
             if (load == null) {
@@ -191,15 +204,22 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
             }
             for (MysqlResponse invoke : invokes) {
                 // 返回byte
-                byte[] bytes = invoke.toByte();
-                String responseBytes = MysqlUtil.dump(bytes);
-                LogUtil.info("mysql回应:\n" + responseBytes);
-                send(bytes);
+                List<byte[]> bytes = invoke.toByte();
+                for (byte[] aByte : bytes) {
+                    String responseBytes = MysqlUtil.dump(aByte);
+                    LogUtil.info("mysql回应:\n" + responseBytes);
+                    send(aByte);
+                }
             }
         } catch (AssertException e) {
             LogUtil.error(e, "解析错误");
             MysqlResponse response = new ErrResponse(this, MysqlErrCodeEnum.EE_UNKNOWN_PROTOCOL_OPTION, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, e.getLocalizedMessage());
-            send(response.toByte());
+            List<byte[]> bytes = response.toByte();
+            for (byte[] aByte : bytes) {
+                send(aByte);
+            }
+        } finally {
+            MYSQL_HANDLER.remove();
         }
     }
 
@@ -297,5 +317,10 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
     @Override
     public void setDbName(String dbName) {
         this.dbName = dbName;
+    }
+
+    @Override
+    public Long getAndAddPlanIndex(Integer count) {
+        return planIndex.getAndAdd(count);
     }
 }

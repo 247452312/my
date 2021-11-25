@@ -35,17 +35,22 @@ public abstract class AbstractMysqlResponse implements MysqlResponse {
     }
 
     @Override
-    public byte[] toByte() {
-        List<byte[]> result = new ArrayList<>();
-        byte[] e = toByteNoMarkIndex();
-        result.add(MysqlUtil.toBytes(e.length + 1, 1));
-        result.add(new byte[2]);
-        long realResponseIndex = mysqlHandler.index() + 1;
-        result.add(new byte[]{(byte) realResponseIndex});
-        mysqlHandler.changeIndex(realResponseIndex);
-        result.add(new byte[]{getFirstByte()});
-        result.add(e);
-        return MysqlUtil.mergeListBytes(result);
+    public List<byte[]> toByte() {
+        List<byte[]> bytes = toByteNoMarkIndex();
+        List<byte[]> result = new ArrayList<>(bytes.size());
+        for (byte[] aByte : bytes) {
+            List<byte[]> aByteList = new ArrayList<>();
+            aByteList.add(MysqlUtil.toBytes(aByte.length + 1, 1));
+            aByteList.add(new byte[2]);
+            long realResponseIndex = mysqlHandler.index() + 1;
+            aByteList.add(new byte[]{(byte) realResponseIndex});
+            mysqlHandler.changeIndex(realResponseIndex);
+            aByteList.add(new byte[]{getFirstByte()});
+            aByteList.add(aByte);
+            result.add(MysqlUtil.mergeListBytes(aByteList));
+        }
+        return result;
+
     }
 
     protected MysqlHandler getMysqlHandler() {

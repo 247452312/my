@@ -1,7 +1,11 @@
 package indi.uhyils.protocol.mysql.plan;
 
+import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
+import com.alibaba.druid.sql.ast.expr.SQLBinaryOperator;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.protocol.mysql.plan.interpreter.Interpreter;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SpringUtil;
@@ -32,5 +36,45 @@ public final class PlanUtil {
         return null;
     }
 
+    /**
+     * 解析入参
+     *
+     * @param expr
+     *
+     * @return
+     */
+    public static JSONObject parasSQLBinaryOpExpr(SQLBinaryOpExpr expr) {
+        String paramName = expr.getLeft().toString();
+        SQLExpr right = expr.getRight();
+        SQLBinaryOperator operator = expr.getOperator();
+        switch (operator) {
+            case Is:
+            case Equality:
+                break;
+            // 大于
+            case GreaterThan:
+                paramName = paramName + "&>";
+                break;
+            // 小于
+            case LessThan:
+                paramName = paramName + "&<";
+                break;
+            // 大于等于
+            case GreaterThanOrEqual:
+                paramName = paramName + "&>=";
+                break;
+            // 大于等于
+            case LessThanOrEqual:
+                paramName = paramName + "&<=";
+                break;
+            default:
+                Asserts.assertTrue(false, "不支持操作符:{}", operator.toString());
+
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", paramName);
+        jsonObject.put("value", right);
+        return jsonObject;
+    }
 
 }

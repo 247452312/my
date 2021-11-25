@@ -116,4 +116,11 @@ public interface MysqlHandler extends ChannelInboundHandler {
     String getDbName();
 
     void setDbName(String dbName);
+
+    /**
+     * 获取计划游标
+     *
+     * @return
+     */
+    Long getAndAddPlanIndex(Integer count);
 }

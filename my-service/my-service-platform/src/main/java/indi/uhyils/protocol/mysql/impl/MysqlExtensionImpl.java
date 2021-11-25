@@ -1,9 +1,11 @@
 package indi.uhyils.protocol.mysql.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.mysql.MysqlExtension;
 import indi.uhyils.protocol.mysql.pojo.cqe.FindPasswordByNameQuery;
+import indi.uhyils.protocol.mysql.pojo.cqe.InvokePlanCommand;
 import indi.uhyils.service.ConsumerInfoService;
 import indi.uhyils.util.CollectionUtil;
 import java.util.List;
@@ -24,6 +26,9 @@ public class MysqlExtensionImpl implements MysqlExtension {
     @Autowired
     private ConsumerInfoService consumerInfoService;
 
+    @Autowired
+    private
+
     @Override
     public ServiceResult<ConsumerInfoDTO> findPasswordByName(FindPasswordByNameQuery query) {
         List<ConsumerInfoDTO> consumerInfoDTOS = consumerInfoService.queryNoPage(query.getArgs(), query.getOrder());
@@ -32,5 +37,10 @@ public class MysqlExtensionImpl implements MysqlExtension {
         }
         ConsumerInfoDTO consumerInfoDTO = consumerInfoDTOS.get(0);
         return ServiceResult.buildSuccessResult(consumerInfoDTO);
+    }
+
+    @Override
+    public ServiceResult<JSONArray> invokePlan(InvokePlanCommand command) {
+        return ServiceResult.buildSuccessResult(null);
     }
 }

@@ -7,6 +7,7 @@ import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -52,7 +53,7 @@ public class ErrResponse extends AbstractMysqlResponse {
     }
 
     @Override
-    public byte[] toByteNoMarkIndex() {
+    public List<byte[]> toByteNoMarkIndex() {
         List<byte[]> listResult = new ArrayList<>();
         // 错误编号
         byte[] e = MysqlUtil.mergeLengthCodedBinary(errCode.getCode());
@@ -66,7 +67,7 @@ public class ErrResponse extends AbstractMysqlResponse {
         byte[] bytes1 = msg.getBytes(StandardCharsets.UTF_8);
         listResult.add(bytes1);
 
-        return MysqlUtil.mergeListBytes(listResult);
+        return Arrays.asList(MysqlUtil.mergeListBytes(listResult));
     }
 
 

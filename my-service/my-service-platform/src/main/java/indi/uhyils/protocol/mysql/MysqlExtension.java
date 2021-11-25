@@ -1,8 +1,10 @@
 package indi.uhyils.protocol.mysql;
 
+import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.protocol.mysql.pojo.cqe.FindPasswordByNameQuery;
+import indi.uhyils.protocol.mysql.pojo.cqe.InvokePlanCommand;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 
 /**
@@ -13,12 +15,21 @@ import indi.uhyils.protocol.rpc.base.BaseProvider;
 public interface MysqlExtension extends BaseProvider {
 
     /**
-     * 根据一个名称获取对应的信息
+     * 根据一个消费者名称获取对应的信息
      *
      * @param query
      *
      * @return
      */
     ServiceResult<ConsumerInfoDTO> findPasswordByName(FindPasswordByNameQuery query);
+
+    /**
+     * 执行 执行计划
+     *
+     * @param command
+     *
+     * @return
+     */
+    ServiceResult<JSONArray> invokePlan(InvokePlanCommand command);
 
 }

@@ -62,7 +62,7 @@ public class ComQueryRequest extends AbstractMysqlRequest {
         }
 
         // index, 结果集
-        Map<Integer, JSONArray> result = new HashMap<>(mysqlPlans.size());
+        Map<Long, JSONArray> result = new HashMap<>(mysqlPlans.size());
         // 此sql最终结果
         JSONArray invokeResult = null;
         // 此sql的最终列信息
@@ -75,7 +75,7 @@ public class ComQueryRequest extends AbstractMysqlRequest {
             result.put(mysqlPlan.index(), rr);
         }
         // 如果没有结果, 说明不是一个常规的查询语句,返回ok即可,如果报错,则在外部已经进行了try,catch
-        if (CollectionUtil.isEmpty(invokeResult) && CollectionUtil.isEmpty(colInfos)) {
+        if (CollectionUtil.isEmpty(colInfos)) {
             return Collections
                 .singletonList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
         }

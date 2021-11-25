@@ -5,6 +5,7 @@ import indi.uhyils.protocol.mysql.pojo.entity.FieldInfo;
 import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,8 +56,8 @@ public class PerpareOkResponse extends AbstractMysqlResponse {
     }
 
     @Override
-    public byte[] toByteNoMarkIndex() {
-        return new byte[0];
+    public List<byte[]> toByteNoMarkIndex() {
+        return Arrays.asList(new byte[0]);
     }
 
     /**

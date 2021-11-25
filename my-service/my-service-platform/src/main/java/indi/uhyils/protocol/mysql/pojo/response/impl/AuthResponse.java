@@ -6,6 +6,7 @@ import indi.uhyils.protocol.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import org.apache.commons.lang3.RandomUtils;
@@ -49,7 +50,7 @@ public class AuthResponse extends AbstractMysqlResponse {
     }
 
     @Override
-    public byte[] toByteNoMarkIndex() {
+    public List<byte[]> toByteNoMarkIndex() {
         List<byte[]> results = new ArrayList<>();
 
         results.add(toServerVersionInfo());
@@ -82,7 +83,7 @@ public class AuthResponse extends AbstractMysqlResponse {
         results.add(randomLow);
         results.add(END_OF_PROTO.getBytes(StandardCharsets.UTF_8));
         results.add(new byte[1]);
-        return MysqlUtil.mergeListBytes(results);
+        return Arrays.asList(MysqlUtil.mergeListBytes(results));
     }
 
     /**

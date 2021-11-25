@@ -1,6 +1,8 @@
 package indi.uhyils.protocol.mysql.plan;
 
+import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.fastjson.JSONArray;
+import indi.uhyils.protocol.mysql.pojo.MysqlHandlerObserver;
 import indi.uhyils.protocol.mysql.pojo.entity.FieldInfo;
 import java.util.List;
 import java.util.Map;
@@ -13,14 +15,14 @@ import java.util.Map;
  * @version 1.0
  * @date 文件创建日期 2021年11月18日 11时31分
  */
-public interface MysqlPlan {
+public interface MysqlPlan extends MysqlHandlerObserver {
 
     /**
      * 这个执行计划指向的表名
      *
      * @return
      */
-    String table();
+    SQLTableSource table();
 
     /**
      * 这个执行计划的入参
@@ -28,20 +30,6 @@ public interface MysqlPlan {
      * @return
      */
     List<String> param();
-
-    /**
-     * 能走到索引的入参
-     *
-     * @return
-     */
-    List<String> indexParam();
-
-    /**
-     * 走不到索引的入参
-     *
-     * @return
-     */
-    List<String> noIndexParam();
 
     /**
      * 要查询的字段列表
@@ -55,7 +43,7 @@ public interface MysqlPlan {
      *
      * @return
      */
-    Integer index();
+    Long index();
 
     /**
      * 查询条件
@@ -78,6 +66,13 @@ public interface MysqlPlan {
      *
      * @return
      */
-    JSONArray invoke(Map<Integer, JSONArray> param);
+    JSONArray invoke(Map<Long, JSONArray> param);
+
+    /**
+     * 根据提前指定的参数获取结果
+     *
+     * @return
+     */
+    JSONArray invoke();
 
 }

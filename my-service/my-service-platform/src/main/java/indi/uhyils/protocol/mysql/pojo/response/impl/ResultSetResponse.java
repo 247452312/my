@@ -62,28 +62,23 @@ public class ResultSetResponse extends AbstractMysqlResponse {
     }
 
     @Override
-    public byte[] toByteNoMarkIndex() {
+    public List<byte[]> toByteNoMarkIndex() {
         List<byte[]> results = new ArrayList<>(5);
-        results.add(toResultSetHeader());
-        results.add(toFields());
-        results.add(toEof());
-        results.add(toRowData());
-        results.add(toEof());
-        return MysqlUtil.mergeListBytes(results);
-    }
-
-    /**
-     * 获取结果头
-     *
-     * @return
-     */
-    private byte[] toResultSetHeader() {
-        byte[] bytes = MysqlUtil.mergeLengthCodedBinary(jsonInfo.size());
-        // 添加额外信息 恒为251
-        byte[] result = new byte[bytes.length + 1];
-        System.arraycopy(bytes, 0, result, 0, bytes.length);
-        result[bytes.length] = (byte) 251;
-        return result;
+        List<byte[]> fields = toFields();
+        byte[] eof = toEof();
+        List<byte[]> rowDatas = toRowData();
+        // todo 这里不正确, 正确的resultSet应该返回多个数组, 1.col条数 2.col信息们 3.eof 4.result们 5.eof
+        /*1.col条数*/
+        results.add(MysqlUtil.mergeLengthCodedBinary(fields.size()));
+        /*2.col信息*/
+        results.addAll(fields);
+        /*3.eof*/
+        results.add(eof);
+        /*4.result*/
+        results.addAll(rowDatas);
+        /*5.eof*/
+        results.add(eof);
+        return results;
     }
 
     /**
@@ -91,15 +86,13 @@ public class ResultSetResponse extends AbstractMysqlResponse {
      *
      * @return
      */
-    private byte[] toFields() {
+    private List<byte[]> toFields() {
         List<byte[]> results = new ArrayList<>(jsonInfo.size());
-        int count = 0;
         for (FieldInfo field : fields) {
             byte[] bytes = field.toFieldBytes();
             results.add(bytes);
-            count += bytes.length;
         }
-        return MysqlUtil.mergeListBytes(results, count);
+        return results;
     }
 
     /**
@@ -120,7 +113,7 @@ public class ResultSetResponse extends AbstractMysqlResponse {
      *
      * @return
      */
-    private byte[] toRowData() {
+    private List<byte[]> toRowData() {
         List<byte[]> results = new ArrayList<>();
 
         for (int i = 0; i < jsonInfo.size(); i++) {
@@ -133,7 +126,7 @@ public class ResultSetResponse extends AbstractMysqlResponse {
                 results.add(byteData);
             }
         }
-        return MysqlUtil.mergeListBytes(results);
+        return results;
     }
 
     /**

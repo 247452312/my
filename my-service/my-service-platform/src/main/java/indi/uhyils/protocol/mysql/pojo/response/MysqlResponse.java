@@ -1,5 +1,7 @@
 package indi.uhyils.protocol.mysql.pojo.response;
 
+import java.util.List;
+
 /**
  * mysql协议返回类型
  *
@@ -15,7 +17,7 @@ public interface MysqlResponse {
      *
      * @return
      */
-    byte[] toByte();
+    List<byte[]> toByte();
 
 
     /**
@@ -31,7 +33,7 @@ public interface MysqlResponse {
      *
      * @return
      */
-    byte[] toByteNoMarkIndex();
+    List<byte[]> toByteNoMarkIndex();
 
 
 }

@@ -8,6 +8,7 @@ import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import indi.uhyils.util.Asserts;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -83,10 +84,10 @@ public class OkResponse extends AbstractMysqlResponse {
     }
 
     @Override
-    public byte[] toByteNoMarkIndex() {
+    public List<byte[]> toByteNoMarkIndex() {
         Asserts.assertTrue(sqlTypeEnum != null);
         Asserts.assertTrue(sqlTypeEnum == null || sqlTypeEnum != SqlTypeEnum.QUERY, "查询不能返回OK消息");
-        return mergeOk();
+        return Arrays.asList(mergeOk());
     }
 
     public SqlTypeEnum getSqlTypeEnum() {
