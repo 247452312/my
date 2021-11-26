@@ -18,7 +18,7 @@ public interface MysqlRequest {
      *
      * @return 执行后的返回
      */
-    List<MysqlResponse> invoke();
+    List<MysqlResponse> invoke() throws Exception;
 
 
     /**

@@ -66,13 +66,13 @@ public interface MysqlPlan extends MysqlHandlerObserver {
      *
      * @return
      */
-    JSONArray invoke(Map<Long, JSONArray> param);
+    JSONArray invoke(Map<Long, JSONArray> param) throws Exception;
 
     /**
      * 根据提前指定的参数获取结果
      *
      * @return
      */
-    JSONArray invoke();
+    JSONArray invoke() throws Exception;
 
 }

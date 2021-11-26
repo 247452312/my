@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.mysql.handler;
 
+import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
 import indi.uhyils.protocol.mysql.enums.MysqlHandlerStatusEnum;
 import indi.uhyils.protocol.mysql.pojo.entity.PrepareInfo;
 import io.netty.channel.Channel;
@@ -123,4 +124,19 @@ public interface MysqlHandler extends ChannelInboundHandler {
      * @return
      */
     Long getAndAddPlanIndex(Integer count);
+
+    /**
+     * 获取消费者信息
+     *
+     * @return
+     */
+    ConsumerInfoDTO getConsumerInfo();
+
+    /**
+     * 设置消费者信息
+     *
+     * @param consumerInfoDTO
+     */
+    void setConsumerInfo(ConsumerInfoDTO consumerInfoDTO);
+
 }

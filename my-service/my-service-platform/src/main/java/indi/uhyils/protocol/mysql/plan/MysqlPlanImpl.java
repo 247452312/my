@@ -3,13 +3,15 @@ package indi.uhyils.protocol.mysql.plan;
 import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.response.InvokeResponse;
 import indi.uhyils.protocol.mysql.MysqlExtension;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.handler.impl.MysqlHandlerImpl;
-import indi.uhyils.protocol.mysql.pojo.cqe.InvokePlanCommand;
+import indi.uhyils.protocol.mysql.pojo.cqe.InvokeCommand;
 import indi.uhyils.protocol.mysql.pojo.entity.FieldInfo;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SpringUtil;
+import indi.uhyils.util.StringUtil;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,11 @@ public class MysqlPlanImpl implements MysqlPlan {
      * 执行计划指向的表
      */
     private SQLTableSource table;
+
+    /**
+     * 执行计划指向的数据
+     */
+    private JSONArray tableSource;
 
     /**
      * 执行计划的入参名称
@@ -108,17 +115,55 @@ public class MysqlPlanImpl implements MysqlPlan {
     }
 
     @Override
-    public JSONArray invoke(Map<Long, JSONArray> param) {
+    public JSONArray invoke(Map<Long, JSONArray> param) throws Exception {
         if (this.params != null) {
             this.params.putAll(param);
             param = this.params;
         }
-        ServiceResult<JSONArray> jsonArrayServiceResult = mysqlExtension.invokePlan(InvokePlanCommand.build(this, param));
-        return jsonArrayServiceResult.validationAndGet();
+        /* todo 此处应该分类型进行执行, 1.不需要调用接口,from中的table被之前的执行计划代替了的 2.需要调用下层接口的 */
+        // 填充执行计划中的占位符
+        Map<String, Object> resultParams = fillPlanPlaceholder(param);
+        ServiceResult<InvokeResponse> jsonArrayServiceResult = mysqlExtension.invoke(InvokeCommand.build(resultParams, table.toString(), selectList, handler.getConsumerInfo().getId()));
+        InvokeResponse invokeResponse = jsonArrayServiceResult.validationAndGet();
+        if (invokeResponse == null) {
+            return null;
+        } else {
+            return invokeResponse.getResult();
+        }
+    }
+
+    /**
+     * 填充执行计划中的占位符
+     *
+     * @param param
+     */
+    private Map<String, Object> fillPlanPlaceholder(Map<Long, JSONArray> param) {
+        /*1. 处理table*/
+        String tableName = table.toString();
+        if (StringUtil.isNotEmpty(tableName) && tableName.startsWith("&")) {
+            String substring = tableName.substring(1);
+            long l = Long.parseLong(substring);
+            JSONArray jsonArray = param.get(l);
+            this.tableSource = jsonArray;
+        }
+        for (String select : selectList) {
+            if (select.startsWith("&")) {
+                String substring = select.substring(1);
+                long l = Long.parseLong(substring);
+                JSONArray jsonArray = param.get(l);
+                if (jsonArray == null || jsonArray.size() != 1) {
+                    continue;
+                }
+                Object o = jsonArray.get(0);
+
+            }
+        }
+        return null;
+        // todo 填充执行计划中的占位符
     }
 
     @Override
-    public JSONArray invoke() {
+    public JSONArray invoke() throws Exception {
         Asserts.assertTrue(params != null, "执行计划执行时,入参不能为空");
         return invoke(params);
     }

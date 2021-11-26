@@ -28,6 +28,16 @@ public class InvokeInterfaceCommand extends AbstractCommand {
      */
     private Map<String, Object> param;
 
+
+    public static InvokeInterfaceCommand build(Long interfaceId, Long consumerId, Map<String, Object> param) {
+        InvokeInterfaceCommand build = new InvokeInterfaceCommand();
+        build.interfaceId = interfaceId;
+        build.consumerId = consumerId;
+        build.param = param;
+        return build;
+
+    }
+
     public Long getInterfaceId() {
         return interfaceId;
     }

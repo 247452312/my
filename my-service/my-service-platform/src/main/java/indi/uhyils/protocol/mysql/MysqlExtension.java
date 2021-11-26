@@ -1,10 +1,10 @@
 package indi.uhyils.protocol.mysql;
 
-import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.response.InvokeResponse;
 import indi.uhyils.protocol.mysql.pojo.cqe.FindPasswordByNameQuery;
-import indi.uhyils.protocol.mysql.pojo.cqe.InvokePlanCommand;
+import indi.uhyils.protocol.mysql.pojo.cqe.InvokeCommand;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 
 /**
@@ -24,12 +24,12 @@ public interface MysqlExtension extends BaseProvider {
     ServiceResult<ConsumerInfoDTO> findPasswordByName(FindPasswordByNameQuery query);
 
     /**
-     * 执行 执行计划
+     * 执行
      *
      * @param command
      *
      * @return
      */
-    ServiceResult<JSONArray> invokePlan(InvokePlanCommand command);
+    ServiceResult<InvokeResponse> invoke(InvokeCommand command) throws Exception;
 
 }

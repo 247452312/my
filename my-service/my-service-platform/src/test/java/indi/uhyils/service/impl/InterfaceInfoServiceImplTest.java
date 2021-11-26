@@ -1,6 +1,7 @@
 package indi.uhyils.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.BaseTest;
 import indi.uhyils.pojo.cqe.command.InvokeInterfaceCommand;
 import indi.uhyils.service.InterfaceInfoService;
@@ -23,7 +24,7 @@ public class InterfaceInfoServiceImplTest extends BaseTest {
     public void invokeInterface() throws Exception {
         InvokeInterfaceCommand command = new InvokeInterfaceCommand();
         command.setInterfaceId(1L);
-        HashMap<String, Object> param = new HashMap<>();
+        HashMap<Long, JSONArray> param = new HashMap<>();
         command.setParam(param);
         command.setConsumerId(1L);
 

@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity.interfaces;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.enum_.InterfaceTypeEnum;
 import indi.uhyils.pojo.DO.SourceInfoDO;
 import indi.uhyils.pojo.entity.SourceInfo;
@@ -28,7 +29,7 @@ public interface InterfaceInterface {
      * 执行
      *
      * @param consumerId
-     * @param map
+     * @param map                      key->执行计划 value -> 执行计划结果 如果key为-1 则是此次查询入参
      * @param consumerFilterRepository
      *
      * @return

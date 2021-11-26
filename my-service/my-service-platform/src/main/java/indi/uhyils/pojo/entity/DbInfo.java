@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.entity;
 
+import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.annotation.Default;
 import indi.uhyils.enum_.DbTypeEnum;
 import indi.uhyils.enum_.SqlTypeEnum;

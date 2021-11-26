@@ -25,11 +25,11 @@ public interface InterfaceInfoService extends BaseDoService<InterfaceInfoDTO> {
     InterfaceInfoDTO addInterface(AddInterfaceCommand command);
 
     /**
-     * 调用http接口
+     * 调用接口
      *
      * @param command
      *
-     * @return
+     * @return 可能是JSONArray 也有可能是JSONObject
      *
      * @throws Exception
      */

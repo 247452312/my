@@ -47,7 +47,7 @@ public class ComQueryRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public List<MysqlResponse> invoke() {
+    public List<MysqlResponse> invoke() throws Exception {
         if (StringUtils.isBlank(sql)) {
             return Collections
                 .singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "sql语句不能为空"));

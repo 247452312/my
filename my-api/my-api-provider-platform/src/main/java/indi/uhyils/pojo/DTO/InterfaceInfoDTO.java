@@ -39,6 +39,11 @@ public class InterfaceInfoDTO extends IdDTO {
      */
     private String sqlStr;
 
+    /**
+     * 接口名称,在mysql中为表名
+     */
+    private String name;
+
 
     public Long getProviderId() {
         return providerId;
@@ -81,5 +86,13 @@ public class InterfaceInfoDTO extends IdDTO {
 
     public void setSqlStr(String sqlStr) {
         this.sqlStr = sqlStr;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

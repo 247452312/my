@@ -1,20 +1,29 @@
 package indi.uhyils.protocol.mysql.impl;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
+import indi.uhyils.enum_.Symbol;
+import indi.uhyils.pojo.DO.InterfaceInfoDO;
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
+import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.command.InvokeInterfaceCommand;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
+import indi.uhyils.pojo.response.InvokeResponse;
 import indi.uhyils.protocol.mysql.MysqlExtension;
 import indi.uhyils.protocol.mysql.pojo.cqe.FindPasswordByNameQuery;
-import indi.uhyils.protocol.mysql.pojo.cqe.InvokePlanCommand;
+import indi.uhyils.protocol.mysql.pojo.cqe.InvokeCommand;
 import indi.uhyils.service.ConsumerInfoService;
+import indi.uhyils.service.InterfaceInfoService;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 /**
- * mysql自定义扩展点
+ * mysql自定义扩展点实现
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
@@ -27,7 +36,7 @@ public class MysqlExtensionImpl implements MysqlExtension {
     private ConsumerInfoService consumerInfoService;
 
     @Autowired
-    private
+    private InterfaceInfoService interfaceInfoService;
 
     @Override
     public ServiceResult<ConsumerInfoDTO> findPasswordByName(FindPasswordByNameQuery query) {
@@ -39,8 +48,17 @@ public class MysqlExtensionImpl implements MysqlExtension {
         return ServiceResult.buildSuccessResult(consumerInfoDTO);
     }
 
+
     @Override
-    public ServiceResult<JSONArray> invokePlan(InvokePlanCommand command) {
+    public ServiceResult<InvokeResponse> invoke(InvokeCommand command) throws Exception {
+        String tableName = command.getTableName();
+        List<InterfaceInfoDTO> interfaceInfoDTOS = interfaceInfoService.queryNoPage(Collections.singletonList(Arg.as(InterfaceInfoDO::getName, Symbol.EQ, tableName)), null);
+        Asserts.assertTrue(interfaceInfoDTOS != null, "查询表名错误:无表名");
+        Asserts.assertTrue(interfaceInfoDTOS.size() == 1, "查询表名错误:表名不止一个");
+        InterfaceInfoDTO interfaceInfoDTO = interfaceInfoDTOS.get(0);
+
+        JSON json = interfaceInfoService.invokeInterface(InvokeInterfaceCommand.build(interfaceInfoDTO.getId(), command.getConsumerId(), command.getParams()));
+
         return ServiceResult.buildSuccessResult(null);
     }
 }

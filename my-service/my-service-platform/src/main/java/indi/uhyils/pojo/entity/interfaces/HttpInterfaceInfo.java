@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity.interfaces;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ConsumerFilterRepository;

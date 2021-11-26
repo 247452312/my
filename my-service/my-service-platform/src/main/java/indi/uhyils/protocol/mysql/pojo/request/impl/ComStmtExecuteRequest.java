@@ -76,7 +76,7 @@ public class ComStmtExecuteRequest extends AbstractMysqlRequest {
     }
 
     @Override
-    public List<MysqlResponse> invoke() {
+    public List<MysqlResponse> invoke() throws Exception {
         ComQueryRequest comQueryRequest = new ComQueryRequest(getMysqlHandler(), sql);
         return comQueryRequest.invoke();
     }

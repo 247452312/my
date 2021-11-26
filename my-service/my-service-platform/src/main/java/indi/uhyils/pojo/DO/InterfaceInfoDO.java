@@ -16,6 +16,11 @@ public class InterfaceInfoDO extends BaseDO {
 
     private static final long serialVersionUID = -68644526253503452L;
 
+    /**
+     * 接口名称,在mysql中为表名
+     */
+    @TableField
+    private String name;
 
     /**
      * 服务提供方id
@@ -89,5 +94,13 @@ public class InterfaceInfoDO extends BaseDO {
 
     public void setSqlStr(String sqlStr) {
         this.sqlStr = sqlStr;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

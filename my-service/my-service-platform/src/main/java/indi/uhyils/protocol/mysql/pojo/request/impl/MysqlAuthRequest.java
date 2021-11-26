@@ -98,6 +98,8 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
         if (consumerInfoDTO == null) {
             return Collections.singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "没有找到此用户"));
         }
+        getMysqlHandler().setConsumerInfo(consumerInfoDTO);
+
         byte[] bytes = MysqlUtil.encodePassword(consumerInfoDTO.getSecretKey().getBytes(StandardCharsets.UTF_8), seed);
         String a = Base64.encodeBase64String(bytes);
         boolean equals = Objects.equals(a, challenge);

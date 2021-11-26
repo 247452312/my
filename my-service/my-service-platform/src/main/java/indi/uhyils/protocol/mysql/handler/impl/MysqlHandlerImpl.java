@@ -1,6 +1,7 @@
 package indi.uhyils.protocol.mysql.handler.impl;
 
 import indi.uhyils.exception.AssertException;
+import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
 import indi.uhyils.protocol.mysql.decoder.impl.MysqlDecoderImpl;
 import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.protocol.mysql.enums.MysqlHandlerStatusEnum;
@@ -99,6 +100,11 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
     private AtomicLong planIndex = new AtomicLong(0);
 
     private AtomicInteger loginIndex = new AtomicInteger(0);
+
+    /**
+     * 消费者信息
+     */
+    private ConsumerInfoDTO consumerInfoDTO;
 
     public MysqlHandlerImpl() {
     }
@@ -223,7 +229,6 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         }
     }
 
-
     /**
      * 异常时调用
      *
@@ -322,5 +327,15 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
     @Override
     public Long getAndAddPlanIndex(Integer count) {
         return planIndex.getAndAdd(count);
+    }
+
+    @Override
+    public ConsumerInfoDTO getConsumerInfo() {
+        return consumerInfoDTO;
+    }
+
+    @Override
+    public void setConsumerInfo(ConsumerInfoDTO consumerInfoDTO) {
+        this.consumerInfoDTO = consumerInfoDTO;
     }
 }
