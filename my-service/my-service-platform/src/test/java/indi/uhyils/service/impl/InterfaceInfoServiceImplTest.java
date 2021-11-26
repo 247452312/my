@@ -24,7 +24,7 @@ public class InterfaceInfoServiceImplTest extends BaseTest {
     public void invokeInterface() throws Exception {
         InvokeInterfaceCommand command = new InvokeInterfaceCommand();
         command.setInterfaceId(1L);
-        HashMap<Long, JSONArray> param = new HashMap<>();
+        HashMap<String, Object> param = new HashMap<>();
         command.setParam(param);
         command.setConsumerId(1L);
 
