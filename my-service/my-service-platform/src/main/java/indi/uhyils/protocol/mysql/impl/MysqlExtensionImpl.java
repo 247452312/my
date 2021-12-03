@@ -1,6 +1,8 @@
 package indi.uhyils.protocol.mysql.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enum_.Symbol;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
@@ -58,7 +60,11 @@ public class MysqlExtensionImpl implements MysqlExtension {
         InterfaceInfoDTO interfaceInfoDTO = interfaceInfoDTOS.get(0);
 
         JSON json = interfaceInfoService.invokeInterface(InvokeInterfaceCommand.build(interfaceInfoDTO.getId(), command.getConsumerId(), command.getParams()));
-
-        return ServiceResult.buildSuccessResult(null);
+        if (json instanceof JSONObject) {
+            JSONObject resultJson = (JSONObject) json;
+            json = new JSONArray();
+            ((JSONArray) json).add(resultJson);
+        }
+        return ServiceResult.buildSuccessResult(InvokeResponse.build((JSONArray) json));
     }
 }

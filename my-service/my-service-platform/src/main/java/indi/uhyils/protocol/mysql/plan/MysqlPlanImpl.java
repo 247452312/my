@@ -9,7 +9,6 @@ import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.handler.impl.MysqlHandlerImpl;
 import indi.uhyils.protocol.mysql.pojo.cqe.InvokeCommand;
 import indi.uhyils.protocol.mysql.pojo.entity.FieldInfo;
-import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SpringUtil;
 import indi.uhyils.util.StringUtil;
 import java.util.HashMap;
@@ -85,28 +84,8 @@ public class MysqlPlanImpl implements MysqlPlan {
 
 
     @Override
-    public SQLTableSource table() {
-        return table;
-    }
-
-    @Override
-    public List<String> param() {
-        return paramNames;
-    }
-
-    @Override
-    public List<String> selectList() {
-        return selectList;
-    }
-
-    @Override
     public Long index() {
         return index;
-    }
-
-    @Override
-    public List<MysqlWhere> wheres() {
-        return wheres;
     }
 
     @Override
@@ -120,6 +99,7 @@ public class MysqlPlanImpl implements MysqlPlan {
             this.params.putAll(param);
             param = this.params;
         }
+
         /* todo 此处应该分类型进行执行, 1.不需要调用接口,from中的table被之前的执行计划代替了的 2.需要调用下层接口的 */
         // 填充执行计划中的占位符
         Map<String, Object> resultParams = fillPlanPlaceholder(param);
@@ -146,26 +126,11 @@ public class MysqlPlanImpl implements MysqlPlan {
             JSONArray jsonArray = param.get(l);
             this.tableSource = jsonArray;
         }
-        for (String select : selectList) {
-            if (select.startsWith("&")) {
-                String substring = select.substring(1);
-                long l = Long.parseLong(substring);
-                JSONArray jsonArray = param.get(l);
-                if (jsonArray == null || jsonArray.size() != 1) {
-                    continue;
-                }
-                Object o = jsonArray.get(0);
+        /*注,因为子查询都会被转为连表查询.所以这里不需要转换selectList*/
+        /*2. 处理where*/
 
-            }
-        }
         return null;
         // todo 填充执行计划中的占位符
-    }
-
-    @Override
-    public JSONArray invoke() throws Exception {
-        Asserts.assertTrue(params != null, "执行计划执行时,入参不能为空");
-        return invoke(params);
     }
 
     @Override

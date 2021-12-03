@@ -22,4 +22,11 @@ public class InvokeResponse implements Serializable {
     public void setResult(JSONArray result) {
         this.result = result;
     }
+
+    public static InvokeResponse build(JSONArray result){
+        InvokeResponse build = new InvokeResponse();
+        build.result = result;
+        return build;
+
+    }
 }

@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.mysql.plan;
 
-import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.protocol.mysql.pojo.MysqlHandlerObserver;
 import indi.uhyils.protocol.mysql.pojo.entity.FieldInfo;
@@ -18,25 +17,13 @@ import java.util.Map;
 public interface MysqlPlan extends MysqlHandlerObserver {
 
     /**
-     * 这个执行计划指向的表名
+     * 根据参数获取结果
+     *
+     * @param param 之前的结果集 执行计划index, 对应结果 注:执行计划index为-1则是实际入参
      *
      * @return
      */
-    SQLTableSource table();
-
-    /**
-     * 这个执行计划的入参
-     *
-     * @return
-     */
-    List<String> param();
-
-    /**
-     * 要查询的字段列表
-     *
-     * @return
-     */
-    List<String> selectList();
+    JSONArray invoke(Map<Long, JSONArray> param) throws Exception;
 
     /**
      * 该执行计划在执行计划组中的id
@@ -46,33 +33,9 @@ public interface MysqlPlan extends MysqlHandlerObserver {
     Long index();
 
     /**
-     * 查询条件
-     *
-     * @return
-     */
-    List<MysqlWhere> wheres();
-
-    /**
      * 获取结果列信息
      *
      * @return
      */
     List<FieldInfo> colInfos();
-
-    /**
-     * 根据参数获取结果
-     *
-     * @param param 之前的结果集 执行计划index, 对应结果
-     *
-     * @return
-     */
-    JSONArray invoke(Map<Long, JSONArray> param) throws Exception;
-
-    /**
-     * 根据提前指定的参数获取结果
-     *
-     * @return
-     */
-    JSONArray invoke() throws Exception;
-
 }
