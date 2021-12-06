@@ -37,7 +37,7 @@ public class HttpInterfaceInfo extends InterfaceInfo implements HttpInterfaceInf
     public JSON invoke(Long consumerId, Map<String, Object> map, ConsumerFilterRepository consumerFilterRepository) {
         InterfaceInfoDO interfaceInfoDO = toData();
         Asserts.assertTrue(interfaceInfoDO != null);
-        // todo HTTP调用
+        // todo 对接平台 HTTP调用
         return null;
     }
 }

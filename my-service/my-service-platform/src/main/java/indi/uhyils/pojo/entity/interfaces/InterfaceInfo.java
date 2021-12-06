@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.entity.interfaces;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.annotation.Default;
 import indi.uhyils.enum_.InterfaceTypeEnum;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
@@ -100,7 +99,7 @@ public class InterfaceInfo extends AbstractDoEntity<InterfaceInfoDO> implements 
 
     @Override
     public JSON invoke(Long consumerId, Map<String, Object> map, ConsumerFilterRepository consumerFilterRepository) throws SQLException, Exception {
-        // todo invoke 要动态执行sql
+        // todo invoke 对接平台 要动态执行sql
         return null;
     }
 
@@ -200,7 +199,8 @@ public class InterfaceInfo extends AbstractDoEntity<InterfaceInfoDO> implements 
      *
      * @return
      */
-    private List<SourceInfo<? extends SourceInfoDO>> findSourceInfo(HttpInfoRepository httpInfoRepository, MqInfoRepository mqInfoRepository, DbInfoRepository dbInfoRepository, Map<InterfaceTypeEnum, List<InterfaceInterface>> collect) {
+    private List<SourceInfo<? extends SourceInfoDO>> findSourceInfo(
+        HttpInfoRepository httpInfoRepository, MqInfoRepository mqInfoRepository, DbInfoRepository dbInfoRepository, Map<InterfaceTypeEnum, List<InterfaceInterface>> collect) {
         List<SourceInfo<? extends SourceInfoDO>> result = new ArrayList<>();
         List<InterfaceInterface> dbInterface = collect.get(InterfaceTypeEnum.DB);
         if (CollectionUtil.isNotEmpty(dbInterface)) {
@@ -226,7 +226,7 @@ public class InterfaceInfo extends AbstractDoEntity<InterfaceInfoDO> implements 
     /**
      * 转换为自身正确的类型, 例如HTTP接口转换为 HttpInterfaceInfoInterface
      *
-     * @return 本身节点的真实类型,如果是叶子结点,就会转换成httpInterface,MqInterface,DbInterface等,如果不是. 就返回 InterfaceInfo
+     * @return 本身节点的真实类型, 如果是叶子结点, 就会转换成httpInterface, MqInterface, DbInterface等, 如果不是. 就返回 InterfaceInfo
      */
     public InterfaceInterface transChildToMarkType() {
         /*1.判断自身是否是叶子结点*/

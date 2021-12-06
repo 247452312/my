@@ -66,7 +66,7 @@ public class UpdateSql extends Sql {
         }
         SQLTableSource tableSource = sqlStatement.getTableSource();
         if (!(tableSource instanceof SQLExprTableSource)) {
-            // todo 暂时默认update语句没有连表
+            // todo 对接平台 暂时默认update语句没有连表
             return;
         }
         SQLExprTableSource source = (SQLExprTableSource) tableSource;

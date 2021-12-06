@@ -36,7 +36,7 @@ public class MqInterfaceInfo extends InterfaceInfo implements HttpInterfaceInfoI
     public JSON invoke(Long consumerId, Map<String, Object> map, ConsumerFilterRepository consumerFilterRepository) {
         InterfaceInfoDO interfaceInfoDO = toData();
         Asserts.assertTrue(interfaceInfoDO != null);
-        // todo MQ调用
+        // todo 对接平台 MQ调用
         return null;
     }
 }
