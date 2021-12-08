@@ -5,7 +5,6 @@ import indi.uhyils.pojo.DTO.AlgorithmDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.CellAlgorithmRequest;
 import indi.uhyils.pojo.DTO.response.CellAlgorithmResponse;
-import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
@@ -25,13 +24,4 @@ public interface AlgorithmProvider extends DTOProvider<AlgorithmDTO> {
      */
     ServiceResult<CellAlgorithmResponse> cellAlgorithm(CellAlgorithmRequest request);
 
-
-    /**
-     * 获取某个算法的准确率
-     *
-     * @param request 算法id
-     *
-     * @return 准确率
-     */
-    ServiceResult<Double> getAlgorithmAccuracy(IdQuery request);
 }

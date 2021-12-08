@@ -25,12 +25,4 @@ public interface AlgorithmService extends BaseDoService<AlgorithmDTO> {
     CellAlgorithmResponse cellAlgorithm(CellAlgorithmRequest request);
 
 
-    /**
-     * 获取某个算法的准确率
-     *
-     * @param alId 算法id
-     *
-     * @return 准确率
-     */
-    Double getAlgorithmAccuracy(Identifier alId);
 }

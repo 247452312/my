@@ -21,34 +21,19 @@ public class AlgorithmDTO extends IdDTO {
     private String name;
 
     /**
-     * 模型所在地
+     * 模型文件所在地
      */
     private String modelFilePath;
 
     /**
-     * 准确率
+     * 是否需要文件
      */
-    private Double accuracy;
+    private Boolean needFile;
 
     /**
-     * 输入参数
+     * 算法体
      */
-    private Integer inParamSize;
-
-    /**
-     * 输出参数
-     */
-    private Integer outParamSize;
-
-    /**
-     * 算法类型(1->深度学习,2->神经网络)
-     */
-    private Integer type;
-
-    /**
-     * 算法结构,load时用
-     */
-    private String structure;
+    private String body;
 
 
     public String getName() {
@@ -68,49 +53,19 @@ public class AlgorithmDTO extends IdDTO {
         this.modelFilePath = modelFilePath;
     }
 
-
-    public Double getAccuracy() {
-        return accuracy;
+    public Boolean getNeedFile() {
+        return needFile;
     }
 
-    public void setAccuracy(Double accuracy) {
-        this.accuracy = accuracy;
+    public void setNeedFile(Boolean needFile) {
+        this.needFile = needFile;
     }
 
-
-    public Integer getInParamSize() {
-        return inParamSize;
+    public String getBody() {
+        return body;
     }
 
-    public void setInParamSize(Integer inParamSize) {
-        this.inParamSize = inParamSize;
+    public void setBody(String body) {
+        this.body = body;
     }
-
-
-    public Integer getOutParamSize() {
-        return outParamSize;
-    }
-
-    public void setOutParamSize(Integer outParamSize) {
-        this.outParamSize = outParamSize;
-    }
-
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-
-    public String getStructure() {
-        return structure;
-    }
-
-    public void setStructure(String structure) {
-        this.structure = structure;
-    }
-
 }

@@ -4,8 +4,6 @@ import indi.uhyils.pojo.DTO.AlgorithmDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.CellAlgorithmRequest;
 import indi.uhyils.pojo.DTO.response.CellAlgorithmResponse;
-import indi.uhyils.pojo.cqe.query.IdQuery;
-import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.protocol.rpc.AlgorithmProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
 import indi.uhyils.rpc.annotation.RpcService;
@@ -39,11 +37,5 @@ public class AlgorithmProviderImpl extends BaseDefaultProvider<AlgorithmDTO> imp
         return ServiceResult.buildSuccessResult(result);
     }
 
-    @Override
-    public ServiceResult<Double> getAlgorithmAccuracy(IdQuery request) {
-        Identifier alId = new Identifier(request.getId());
-        Double result = service.getAlgorithmAccuracy(alId);
-        return ServiceResult.buildSuccessResult(result);
-    }
 }
 

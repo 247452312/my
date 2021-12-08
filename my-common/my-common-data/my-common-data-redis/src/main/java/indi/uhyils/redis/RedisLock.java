@@ -5,7 +5,6 @@ import indi.uhyils.util.LogUtil;
 
 /**
  * redis实现的分布式锁
- * TODO 分布式计算写完之后一起测试
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月14日 17时26分

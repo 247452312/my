@@ -30,13 +30,10 @@ public class AlgorithmServiceImpl extends AbstractDoService<AlgorithmDO, Algorit
 
     @Override
     public CellAlgorithmResponse cellAlgorithm(CellAlgorithmRequest request) {
-        // TODO 算法暂时告一段落
-        return null;
+        Long algorithmId = request.getAlgorithmId();
+        Algorithm algorithm = rep.find(new Identifier(algorithmId));
+        Object result = algorithm.cell(request.getRequestBody());
+        return CellAlgorithmResponse.build(result);
     }
 
-    @Override
-    public Double getAlgorithmAccuracy(Identifier alId) {
-        Algorithm algorithm = rep.find(alId);
-        return algorithm.toData().getAccuracy();
-    }
 }
