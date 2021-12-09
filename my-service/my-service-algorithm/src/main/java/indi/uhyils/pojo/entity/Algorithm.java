@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.Default;
 import indi.uhyils.exception.AlgorithmException;
 import indi.uhyils.pojo.DO.AlgorithmDO;
@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -68,15 +69,14 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
     public Object cell(Object... requestBody) {
         AlgorithmDO algorithmDO = toData();
         String body = algorithmDO.getBody();
-        JSONArray jsonArray = JSON.parseArray(body);
+        JSONObject jsonObject = JSON.parseObject(body);
 
         JavaStringCompiler javaStringCompiler = new JavaStringCompiler();
-        HashMap<String, String> fileSourceMap = new HashMap<>(jsonArray.size());
-        // 解析java文件名称
-        for (Object fileBody : jsonArray) {
-            String fileBodyStr = (String) fileBody;
-            String fileName = parseFileName(fileBodyStr);
-            fileSourceMap.put(fileName + ".java", fileBodyStr);
+        HashMap<String, String> fileSourceMap = new HashMap<>(jsonObject.size());
+        for (Entry<String, Object> objectEntry : jsonObject.entrySet()) {
+            String fileName = objectEntry.getKey();
+            Object fileBodyStr = objectEntry.getValue();
+            fileSourceMap.put(fileName, fileBodyStr.toString());
         }
 
         Object invoke;
@@ -100,37 +100,4 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
         return invoke;
     }
 
-
-    /**
-     * 从java文件字符串中解析文件名称
-     *
-     * @param fileBodyStr
-     *
-     * @return
-     */
-    private String parseFileName(String fileBodyStr) {
-        StringBuilder result = new StringBuilder();
-        int index = fileBodyStr.indexOf(CLASS_NAME_INDEX_MARK);
-        boolean startIng = false;
-        for (int i = index + CLASS_NAME_INDEX_MARK.length(); i < fileBodyStr.length(); i++) {
-            char c = fileBodyStr.charAt(i);
-            if (!startIng) {
-                if (c == ' ') {
-                    startIng = true;
-                    while (fileBodyStr.length() > i && fileBodyStr.charAt(i) == ' ') {
-                        i++;
-                    }
-                }
-            }
-
-            if (startIng) {
-                char classNameChar = fileBodyStr.charAt(i);
-                if (classNameChar == ' ') {
-                    break;
-                }
-                result.append(classNameChar);
-            }
-        }
-        return result.toString();
-    }
 }

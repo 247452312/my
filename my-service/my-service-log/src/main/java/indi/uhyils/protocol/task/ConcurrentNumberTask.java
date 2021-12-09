@@ -20,7 +20,10 @@ public class ConcurrentNumberTask {
     private TraceInfoService service;
 
 
-    @Scheduled(cron = "*/2 * * * * ?")
+    /**
+     * 测试环境暂时关闭 todo
+     */
+//    @Scheduled(cron = "*/2 * * * * ?")
     public void demoSchedule() {
         service.monitorConcurrentNumber(new BlankCommand());
     }

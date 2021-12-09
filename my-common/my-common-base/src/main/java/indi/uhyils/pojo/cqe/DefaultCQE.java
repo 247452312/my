@@ -35,8 +35,9 @@ public class DefaultCQE implements BaseCQE {
     }
 
     public DefaultCQE() {
+        // 默认是没有用户登录的
         this.token = UserContext.getToken();
-        this.user = UserContext.doGet();
+        this.user = UserContext.get();
     }
 
     public String getToken() {

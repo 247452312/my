@@ -15,10 +15,16 @@ import java.util.Collections;
  */
 public class IdQuery extends AbstractArgQuery {
 
-    private final Long id;
+    private Long id;
 
     public IdQuery(Long id) {
         super(Collections.singletonList(Arg.as(IdQuery::getId, Symbol.EQ, id)));
+        this.id = id;
+    }
+    public IdQuery() {
+    }
+
+    public void setId(Long id) {
         this.id = id;
     }
 

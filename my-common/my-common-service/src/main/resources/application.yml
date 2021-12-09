@@ -55,7 +55,7 @@ rpc:
     timeout: 10000
     check: false
   provider:
-    timeout: 5000
+    timeout: 10000
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

@@ -12,13 +12,16 @@ import java.util.Map;
  */
 public class Demo {
 
-    private static final String s = "public class H {\n" +
+    private static final String s = "package indi.uhyils;"
+                                    + "public class H {\n" +
                                     "    public int add(int a, int b) {\n" +
                                     "        return a + b;\n" +
                                     "    }\n" +
                                     "}";
 
-    private static final String c = "public class C {\n" +
+    private static final String c = "package indi.uhyils.model;"
+                                    + "import indi.uhyils.H;"
+                                    + "public class C {\n" +
                                     "\n" +
                                     "    public int add(int a, int b) {\n" +
                                     "        H h = new H();\n" +
@@ -29,10 +32,10 @@ public class Demo {
     public static void main(String[] args) throws Exception {
         JavaStringCompiler javaStringCompiler = new JavaStringCompiler();
         HashMap<String, String> fileSourceMap = new HashMap<>(2);
-        fileSourceMap.put("H.java", s);
-        fileSourceMap.put("C.java", c);
+        fileSourceMap.put("indi/uhyils/H.java", s);
+        fileSourceMap.put("indi/uhyils/model/C.java", c);
         Map<String, byte[]> compile = javaStringCompiler.compile(fileSourceMap);
-        Class<?> c = javaStringCompiler.loadClass("C", compile);
+        Class<?> c = javaStringCompiler.loadClass("indi.uhyils.model.C", compile);
         Object o = c.newInstance();
         Method[] declaredMethods = c.getDeclaredMethods();
         Method add = declaredMethods[0];
