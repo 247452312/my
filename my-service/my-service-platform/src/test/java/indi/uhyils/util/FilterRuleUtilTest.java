@@ -2,7 +2,7 @@ package indi.uhyils.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author uhyils <247452312@qq.com>

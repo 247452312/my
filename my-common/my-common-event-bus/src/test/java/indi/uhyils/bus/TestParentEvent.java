@@ -16,7 +16,7 @@ public class TestParentEvent extends AbstractParentEvent {
     @Override
     protected List<BaseEvent> transToBaseEvent0() {
         return Arrays.asList(
-            new TestEvent()
+            new TestAEvent()
         );
     }
 

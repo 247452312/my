@@ -1,7 +1,7 @@
 package indi.uhyils.protocol.mysql.util;
 
 import indi.uhyils.util.Asserts;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author uhyils <247452312@qq.com>

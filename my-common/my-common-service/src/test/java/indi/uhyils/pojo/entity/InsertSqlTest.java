@@ -2,9 +2,9 @@ package indi.uhyils.pojo.entity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -15,12 +15,12 @@ public class InsertSqlTest {
 
     private String sqlStr;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         sqlStr = "insert into sys_user(name,nick_name) values(?,?)";
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
     }
 

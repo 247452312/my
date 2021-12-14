@@ -6,7 +6,7 @@ import indi.uhyils.BaseTest;
 import indi.uhyils.pojo.cqe.command.InvokeInterfaceCommand;
 import indi.uhyils.service.InterfaceInfoService;
 import java.util.HashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

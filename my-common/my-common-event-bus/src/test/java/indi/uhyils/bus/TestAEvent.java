@@ -8,7 +8,7 @@ import indi.uhyils.pojo.cqe.event.base.AbstractEvent;
  * @version 1.0
  * @date 文件创建日期 2021年09月29日 20时43分
  */
-public class TestEvent extends AbstractEvent {
+public class TestAEvent extends AbstractEvent {
 
     public volatile static boolean mark = false;
 }

@@ -1,10 +1,10 @@
 package indi.uhyils.pojo.entity.base;
 
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import indi.uhyils.util.Asserts;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author uhyils <247452312@qq.com>

@@ -7,7 +7,7 @@ import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import indi.uhyils.util.Asserts;
 import java.util.List;
 import java.util.Objects;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -24,8 +24,8 @@ public class SetInterpreterTest {
         SQLAssignItem sqlAssignItem = items.get(0);
         String target = sqlAssignItem.getTarget().toString();
         String value = sqlAssignItem.getValue().toString();
-        Asserts.assertTrue(Objects.equals(target,"NAMES"));
-        Asserts.assertTrue(Objects.equals(value,"utf8mb4"));
+        Asserts.assertTrue(Objects.equals(target, "NAMES"));
+        Asserts.assertTrue(Objects.equals(value, "utf8mb4"));
 
     }
 }

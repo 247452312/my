@@ -1,9 +1,9 @@
 package indi.uhyils.pojo.entity;
 
 import java.util.Arrays;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -14,12 +14,12 @@ public class UpdateSqlTest {
 
     private String sqlStr;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         sqlStr = "update sys_user a set name = ?, kik=? where id = (select * from biz_lis_sample b where b.sample_no = ?)";
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
     }
 

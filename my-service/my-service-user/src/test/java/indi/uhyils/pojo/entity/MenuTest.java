@@ -17,9 +17,9 @@ import indi.uhyils.util.ReflactUtil;
 import java.lang.invoke.SerializedLambda;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -45,7 +45,7 @@ public class MenuTest extends BaseTest {
     private DeptRepository deptRepository;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         MenuDO do1 = new MenuDO();
@@ -86,7 +86,7 @@ public class MenuTest extends BaseTest {
 
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
     }

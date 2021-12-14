@@ -167,11 +167,11 @@
                     data.field.url = '';
                 }
                 if (func === 'add') {
-                    pushRequest("MenuProvider", "insert", {data: data.field}, function () {
+                    pushRequest("MenuProvider", "add", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("MenuProvider", "update", {data: data.field}, function () {
+                    pushRequest("MenuProvider", "change", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

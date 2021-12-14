@@ -18,8 +18,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
-        <spring.version>5.2.5.RELEASE</spring.version>
+        <spring-boot.version>2.6.1</spring-boot.version>
+        <spring.version>5.3.13</spring.version>
         <org.dubbo.version>2.7.3</org.dubbo.version>
         <druid.version>1.1.22</druid.version>
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
@@ -52,6 +52,7 @@
         <dubbo.nacos.version>2.7.7</dubbo.nacos.version>
         <httpclient.version>4.5.13</httpclient.version>
         <httpcore.version>4.4.13</httpcore.version>
+        <javax.validation.version>2.0.1.Final</javax.validation.version>
         <tencentcloud.version>3.1.99</tencentcloud.version>
         <poi.version>4.1.2</poi.version>
         <asr.version>1.0</asr.version>
@@ -198,6 +199,12 @@
                 <version>${commons-lang3.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${javax.validation.version}</version>
+            </dependency>
+
             <!--MQ-->
             <dependency>
                 <groupId>com.rabbitmq</groupId>
@@ -212,14 +219,6 @@
                 <version>${quartz.version}</version>
             </dependency>
 
-            <!-- 单元测试 -->
-            <!--junit-->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
             <!--spring test-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -227,7 +226,7 @@
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
+            <!--<dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
@@ -259,7 +258,7 @@
                 <artifactId>powermock-module-junit4-rule</artifactId>
                 <version>${powermock.version}</version>
                 <scope>test</scope>
-            </dependency>
+            </dependency>-->
 
 
             <!-- dubbo -->

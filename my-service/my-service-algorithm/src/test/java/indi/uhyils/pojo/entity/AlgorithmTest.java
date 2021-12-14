@@ -8,7 +8,9 @@ import indi.uhyils.pojo.DTO.response.CellAlgorithmResponse;
 import indi.uhyils.service.AlgorithmService;
 import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,9 +35,9 @@ public class AlgorithmTest extends BaseTest {
         data.setId(123123L);
         data.setName("测试算法");
         data.setNeedFile(false);
-        List<String> body = new ArrayList<>(1);
-        body.add(s);
-        String body1 = JSON.toJSONString(body);
+        Map<String,String> algorithmMap = new HashMap<>(1);
+        algorithmMap.put("Algorithm.java",s);
+        String body1 = JSON.toJSONString(algorithmMap);
         data.setBody(body1);
         Algorithm algorithm = new Algorithm(data);
         Object cell = algorithm.cell(1, 1);

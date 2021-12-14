@@ -5,7 +5,7 @@ import indi.uhyils.pojo.DTO.RelegationDTO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.service.RelegationService;
 import indi.uhyils.util.Asserts;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

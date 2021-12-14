@@ -3,7 +3,7 @@ package indi.uhyils.util;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
-import org.springframework.lang.Nullable;
+import indi.uhyils.annotation.Nullable;
 
 /**
  * @author uhyils <247452312@qq.com>

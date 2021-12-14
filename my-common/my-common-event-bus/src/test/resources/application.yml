@@ -12,7 +12,9 @@ spring:
       freemarker:
         cache: false    #页面不加载缓存，修改即时生效
 
-
+rpc:
+  application:
+    name: test-event-bus
 logging:
   level:
     indi.uhyils.dao: INFO

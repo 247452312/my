@@ -1,12 +1,12 @@
 package indi.uhyils.netty.finder;
 
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.exception.UserException;
 import indi.uhyils.netty.model.ProtocolParsingModel;
 import indi.uhyils.rpc.spi.RpcSpiExtension;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-import javax.validation.constraints.NotNull;
 
 /**
  * 协议发现者

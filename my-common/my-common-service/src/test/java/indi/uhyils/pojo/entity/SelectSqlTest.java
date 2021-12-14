@@ -2,9 +2,9 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.util.LogUtil;
 import java.util.Arrays;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -15,7 +15,7 @@ public class SelectSqlTest {
 
     private String sqlStr;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         sqlStr = "select a.id,\n"
                  + "               a.create_date,\n"
@@ -30,7 +30,7 @@ public class SelectSqlTest {
                  + "        where srd.role_id = #{roleId}";
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
 
     }

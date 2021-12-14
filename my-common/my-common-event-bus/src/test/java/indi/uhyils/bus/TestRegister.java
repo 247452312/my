@@ -18,21 +18,21 @@ public class TestRegister implements Register {
     @Override
     public List<Class<? extends BaseEvent>> targetEvent() {
         return Arrays.asList(
-            TestEvent.class
+            TestAEvent.class
         );
     }
 
     @Override
     public void onEvent(BaseEvent event) {
-        if (event instanceof TestEvent) {
-            TestEvent testEvent = (TestEvent) event;
+        if (event instanceof TestAEvent) {
+            TestAEvent testEvent = (TestAEvent) event;
             dealTestEvent(testEvent);
         }
     }
 
 
-    public void dealTestEvent(TestEvent testEvent) {
+    public void dealTestEvent(TestAEvent testEvent) {
         System.out.println("test成功");
-        TestEvent.mark = true;
+        TestAEvent.mark = true;
     }
 }

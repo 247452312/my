@@ -9,8 +9,8 @@ import indi.uhyils.repository.DictRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -30,7 +30,7 @@ public class DictTest extends BaseTest {
 
     private Long dictItemId;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         DictDO dO = new DictDO();
