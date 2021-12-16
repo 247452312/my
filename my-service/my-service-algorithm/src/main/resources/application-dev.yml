@@ -25,3 +25,6 @@ id:
   organization:
     # 机构代码
     code: 2
+
+python:
+  home: C:\Users\Lenovo\AppData\Local\Programs\Python\Python38

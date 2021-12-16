@@ -66,6 +66,7 @@
         <mapStruct.version>1.4.2.Final</mapStruct.version>
         <ojdbc.version>11.2.0.3</ojdbc.version>
         <rocketmq.version>4.3.0</rocketmq.version>
+        <jython.version>2.7.2</jython.version>
     </properties>
 
     <dependencyManagement>
@@ -416,6 +417,14 @@
                 <artifactId>rocketmq-client</artifactId>
                 <version>${rocketmq.version}</version>
             </dependency>
+
+            <!-- org.python/jython -->
+            <dependency>
+                <groupId>org.python</groupId>
+                <artifactId>jython-standalone</artifactId>
+                <version>${jython.version}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

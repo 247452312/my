@@ -153,7 +153,7 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
         if (environment != null) {
             return environment.getProperty(key, defaultValue);
         }
-        return null;
+        return defaultValue;
     }
 
 

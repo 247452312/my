@@ -104,6 +104,12 @@
             <artifactId>hutool-all</artifactId>
         </dependency>
 
+        <!-- org.python/jython -->
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython-standalone</artifactId>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
