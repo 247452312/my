@@ -22,6 +22,15 @@ public class Asserts {
     }
 
     /**
+     * 断言错误
+     *
+     * @param msg
+     */
+    public static void assertWrong(String msg) {
+        assertTrue(false, 3, msg);
+    }
+
+    /**
      * 断言正确
      *
      * @param condition 验证

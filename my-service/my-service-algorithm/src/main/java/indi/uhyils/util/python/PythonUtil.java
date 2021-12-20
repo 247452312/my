@@ -6,11 +6,13 @@ import indi.uhyils.util.SpringUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import org.apache.commons.io.input.CharSequenceInputStream;
 import org.python.core.Py;
 import org.python.core.PyFunction;
 import org.python.core.PyObject;
@@ -149,6 +151,18 @@ public class PythonUtil {
      */
     public static Object executePython(String pythonStr) {
         return executePython(pythonStr, DEFAULT_PARAM);
+    }
+
+    /**
+     * 执行写好的python内容
+     *
+     * @param pythonStr python内容
+     *
+     * @return
+     */
+    public static Object executePython(String pythonStr, String methodName, Object[] params) throws IOException {
+        InputStream charSequenceInputStream = new CharSequenceInputStream(pythonStr, StandardCharsets.UTF_8);
+        return executePython(new InputStream[]{charSequenceInputStream}, methodName, params);
     }
 
 

@@ -11,6 +11,7 @@
         <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="modelFilePath" column="model_file_path" jdbcType="VARCHAR"/>
+        <result property="languageType" column="language_type" jdbcType="VARCHAR"/>
         <result property="needFile" column="need_file" jdbcType="TINYINT"/>
         <result property="body" column="body" jdbcType="VARCHAR"/>
     </resultMap>
@@ -20,7 +21,7 @@
         <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
             update sys_algorithm set
             update_date = #{item.updateDate}
-            ,update_user = #{item.updateUser}
+                ,update_user = #{item.updateUser}
             <if test="item.createDate != null">
                 ,create_date = #{item.createDate}
             </if>
@@ -40,7 +41,7 @@
                 ,update_user = #{item.updateUser}
             </if>
             <if test="item.name != null and item.name != ''">
-                ,name = #{item.name}
+                , name = #{item.name}
             </if>
             <if test="item.modelFilePath != null and item.modelFilePath != ''">
                 ,model_file_path = #{item.modelFilePath}
@@ -48,8 +49,11 @@
             <if test="item.needFile != null">
                 ,need_file = #{item.needFile}
             </if>
+            <if test="item.languageType != null">
+                ,language_type = #{item.languageType}
+            </if>
             <if test="item.body != null and item.body != ''">
-                ,body = #{item.body}
+                , body = #{item.body}
             </if>
 
             where id = #{item.id}

@@ -31,6 +31,11 @@ public class AlgorithmDTO extends IdDTO {
     private Boolean needFile;
 
     /**
+     * 代码语言类型
+     */
+    private Integer languageType;
+
+    /**
      * 算法体
      */
     private String body;
@@ -67,5 +72,13 @@ public class AlgorithmDTO extends IdDTO {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public Integer getLanguageType() {
+        return languageType;
+    }
+
+    public void setLanguageType(Integer languageType) {
+        this.languageType = languageType;
     }
 }

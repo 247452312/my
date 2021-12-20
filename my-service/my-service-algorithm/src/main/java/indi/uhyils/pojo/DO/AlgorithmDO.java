@@ -36,6 +36,12 @@ public class AlgorithmDO extends BaseDO {
     private Boolean needFile;
 
     /**
+     * 代码语言类型
+     */
+    @TableField
+    private Integer languageType;
+
+    /**
      * 算法体
      */
     @TableField
@@ -73,5 +79,13 @@ public class AlgorithmDO extends BaseDO {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public Integer getLanguageType() {
+        return languageType;
+    }
+
+    public void setLanguageType(Integer languageType) {
+        this.languageType = languageType;
     }
 }

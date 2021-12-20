@@ -3,13 +3,17 @@ package indi.uhyils.pojo.entity;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.Default;
+import indi.uhyils.enum_.LanguageTypeEnum;
 import indi.uhyils.exception.AlgorithmException;
 import indi.uhyils.pojo.DO.AlgorithmDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.AlgorithmRepository;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.compiler.JavaStringCompiler;
+import indi.uhyils.util.python.PythonUtil;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,11 +39,6 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
      * 启动方法名称
      */
     private static final String MAIN_METHOD_NAME = "cell";
-
-    /**
-     * 类名标识符
-     */
-    private static final String CLASS_NAME_INDEX_MARK = "public class";
 
     @Default
     public Algorithm(AlgorithmDO data) {
@@ -67,6 +66,46 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
      * @return
      */
     public Object cell(Object... requestBody) {
+        AlgorithmDO algorithmDO = toData();
+        Integer languageType = algorithmDO.getLanguageType();
+        LanguageTypeEnum languageTypeEnum = LanguageTypeEnum.parse(languageType);
+        switch (languageTypeEnum) {
+            case JAVA:
+                return cellJava(requestBody);
+            case PYTHON:
+                return cellPython(requestBody);
+            default:
+                Asserts.assertWrong("暂不支持语言类型");
+                return null;
+        }
+    }
+
+    /**
+     * 执行python
+     *
+     * @param requestBody
+     *
+     * @return
+     */
+    private Object cellPython(Object[] requestBody) {
+        AlgorithmDO algorithmDO = toData();
+        String body = algorithmDO.getBody();
+        try {
+            return PythonUtil.executePython(body, "__main__", requestBody);
+        } catch (IOException e) {
+            LogUtil.error(this, e);
+            return null;
+        }
+    }
+
+    /**
+     * 执行java
+     *
+     * @param requestBody
+     *
+     * @return
+     */
+    private Object cellJava(Object[] requestBody) {
         AlgorithmDO algorithmDO = toData();
         String body = algorithmDO.getBody();
         JSONObject jsonObject = JSON.parseObject(body);
