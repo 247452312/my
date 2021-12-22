@@ -75,7 +75,7 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
             case PYTHON:
                 return cellPython(requestBody);
             default:
-                Asserts.assertWrong("暂不支持语言类型");
+                Asserts.assertException("暂不支持语言类型");
                 return null;
         }
     }

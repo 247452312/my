@@ -175,4 +175,22 @@ public final class StringUtil {
     public static List<String> splitByIndexList(String srcStr, List<Integer> indexList) {
         return splitByIndexList(srcStr, "", indexList);
     }
+
+    /**
+     * 匹配并替换第一个
+     *
+     * @param str
+     * @param replaceStr
+     * @param targetStr
+     *
+     * @return
+     */
+    public static String replaceFirst(String str, String replaceStr, String targetStr) {
+        int i = str.indexOf(replaceStr);
+        if (i == -1) {
+            return str;
+        }
+        int last = i + replaceStr.length();
+        return str.substring(0, i) + targetStr + str.substring(last);
+    }
 }

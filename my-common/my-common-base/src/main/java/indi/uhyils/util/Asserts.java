@@ -26,7 +26,7 @@ public class Asserts {
      *
      * @param msg
      */
-    public static void assertWrong(String msg) {
+    public static void assertException(String msg) {
         assertTrue(false, 3, msg);
     }
 
