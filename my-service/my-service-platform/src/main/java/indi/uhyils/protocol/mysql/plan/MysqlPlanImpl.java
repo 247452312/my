@@ -52,10 +52,6 @@ public class MysqlPlanImpl implements MysqlPlan {
      */
     private List<String> selectList;
 
-    /**
-     * 执行计划条件
-     */
-    private List<MysqlWhere> wheres;
 
     /**
      * 列信息
@@ -150,9 +146,6 @@ public class MysqlPlanImpl implements MysqlPlan {
         this.selectList = selectList;
     }
 
-    public void setWheres(List<MysqlWhere> wheres) {
-        this.wheres = wheres;
-    }
 
     public void setParams(Map<Long, JSONArray> params) {
         for (Entry<Long, JSONArray> entry : params.entrySet()) {

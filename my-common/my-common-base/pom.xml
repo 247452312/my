@@ -53,6 +53,13 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
+
+        <!--数据库工具 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+
         <!-- httpcore -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
