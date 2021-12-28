@@ -1,6 +1,7 @@
 package indi.uhyils.util;
 
 import indi.uhyils.exception.AssertException;
+import java.util.Objects;
 import java.util.function.Supplier;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -26,7 +27,8 @@ public class Asserts {
      *
      * @param msg
      */
-    public static void assertException(String msg) {
+    public static void throwException(String msg, Object... params) {
+        msg = MessageFormatter.arrayFormat(msg, params).getMessage();
         assertTrue(false, 3, msg);
     }
 
@@ -47,6 +49,28 @@ public class Asserts {
      */
     public static void assertTrue(boolean condition) {
         assertTrue(condition, 3, "断言错误");
+    }
+
+    /**
+     * 断言相等
+     *
+     * @param firstObj  第一个实例
+     * @param secondObj 第二个实例
+     * @param msg       不相等时消息
+     * @param params    消息中的参数
+     */
+    public static void assertEqual(Object firstObj, Object secondObj, String msg, String... params) {
+        assertTrue(Objects.equals(firstObj, secondObj), 3, msg, params);
+    }
+
+    /**
+     * 断言相等
+     *
+     * @param firstObj  第一个实例
+     * @param secondObj 第二个实例
+     */
+    public static void assertEqual(Object firstObj, Object secondObj) {
+        assertTrue(Objects.equals(firstObj, secondObj), 3, "断言错误");
     }
 
     /**
@@ -98,7 +122,7 @@ public class Asserts {
      *
      * @param runnable
      */
-    public static void assertException(Runnable runnable) {
+    public static void AssertException(Runnable runnable) {
         try {
             runnable.run();
         } catch (Throwable e) {

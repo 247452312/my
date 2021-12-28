@@ -98,10 +98,10 @@ public class MenuTest extends BaseTest {
         menu.removeSelf(repository, assembler);
 
         Menu menu1 = new Menu(m1Id);
-        Asserts.assertException(() -> menu1.completion(repository));
+        Asserts.AssertException(() -> menu1.completion(repository));
 
         Menu menu2 = new Menu(m2Id);
-        Asserts.assertException(() -> menu2.completion(repository));
+        Asserts.AssertException(() -> menu2.completion(repository));
     }
 
     @Test

@@ -12,7 +12,7 @@ public class AssertsTest {
 
     @Test
     public void assertException() {
-        Asserts.assertException(() -> Asserts.assertException(() -> {
+        Asserts.AssertException(() -> Asserts.AssertException(() -> {
         }));
     }
 }
