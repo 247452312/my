@@ -159,7 +159,11 @@ public class AllController {
 
         @Override
         public ServiceResult call() throws Exception {
-            JSONObject result = (JSONObject) RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+            Object o = RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+            if (o instanceof ServiceResult) {
+                return (ServiceResult) o;
+            }
+            JSONObject result = (JSONObject) o;
             return JSON.toJavaObject(result, ServiceResult.class);
         }
     }

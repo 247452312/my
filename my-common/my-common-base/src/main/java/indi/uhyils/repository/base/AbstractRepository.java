@@ -17,6 +17,7 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.base.IdEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.util.Asserts;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -109,6 +110,9 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     @Override
     public Page<EN> find(List<Arg> args, Order order, Limit limit) {
         Asserts.assertTrue(limit != null, "分页参数不能为空");
+        if (args == null) {
+            args = new ArrayList<>();
+        }
         QueryWrapper<DO> queryWrapper = Symbol.makeWrapper(args);
         fillWrapperOrder(order, queryWrapper);
         com.baomidou.mybatisplus.extension.plugins.pagination.Page<DO> page = makePage(limit);

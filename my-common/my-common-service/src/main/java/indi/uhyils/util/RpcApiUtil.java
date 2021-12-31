@@ -2,9 +2,10 @@ package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.proxy.generic.GenericService;
 import indi.uhyils.rpc.spring.RpcConsumerBeanFieldInjectConfiguration;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -126,9 +127,12 @@ public class RpcApiUtil {
             Object serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.invoke(methodName, new String[]{parameterTypes}, arg)));
 
             return serviceResult;
+        } catch (InvocationTargetException e) {
+            LogUtil.error(RpcApiUtil.class, e.getCause());
+            return ServiceResult.buildErrorResult(e.getCause().getMessage());
         } catch (Exception e) {
             LogUtil.error(RpcApiUtil.class, e);
-            return null;
+            return ServiceResult.buildErrorResult(e.getMessage());
         }
     }
 

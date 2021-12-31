@@ -7,6 +7,7 @@ import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RemoveCommand;
 import indi.uhyils.pojo.cqe.command.base.AddCommand;
+import indi.uhyils.pojo.cqe.query.BlackQuery;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.pojo.cqe.query.base.BaseArgQuery;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvider<T> {
 
     @Override
-    public ServiceResult<Page<T>> query(BaseArgQuery query) {
+    public ServiceResult<Page<T>> query(BlackQuery query) {
         Page<T> result = getService().query(query.getArgs(), query.getOrder(), query.getLimit());
         return ServiceResult.buildSuccessResult(result);
     }
@@ -73,7 +74,7 @@ public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvide
     }
 
     @Override
-    public ServiceResult<Long> count(BaseArgQuery order) {
+    public ServiceResult<Long> count(BlackQuery order) {
         Long result = getService().count(order.getArgs());
         return ServiceResult.buildSuccessResult(result);
     }

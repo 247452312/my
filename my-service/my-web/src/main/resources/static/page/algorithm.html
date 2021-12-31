@@ -53,7 +53,7 @@
         var table = layui.table;
         var layer = layui.layer;
         $.reloadTable = function () {
-            pushRequest("AlgorithmProvider", "getByArgs", {}, function (data) {
+            pushRequest("AlgorithmProvider", "query", {}, function (data) {
                 // 渲染表格
                 table.render({
                     elem: '#munu-table'
