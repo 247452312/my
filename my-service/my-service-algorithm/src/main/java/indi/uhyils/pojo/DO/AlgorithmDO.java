@@ -24,16 +24,16 @@ public class AlgorithmDO extends BaseDO {
     private String name;
 
     /**
+     * 是否需要文件(如果为true,则需要填写模型所在地)
+     */
+    @TableField
+    private Boolean needFile;
+
+    /**
      * 模型所在地
      */
     @TableField
     private String modelFilePath;
-
-    /**
-     * 是否需要文件
-     */
-    @TableField
-    private Boolean needFile;
 
     /**
      * 代码语言类型

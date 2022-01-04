@@ -14,9 +14,9 @@ import java.util.List;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月31日 09时25分
  */
-public class Demo {
+public class Algorithm {
 
-    public static void main(String[] args) {
+    public static String cell() {
 
         AbstractsInitialization quadraticDataDataInitialization = new AbstractsInitialization() {
 
@@ -85,6 +85,7 @@ public class Demo {
             Double b = genes.get(1).get();
             return Math.abs(a * a + b);
         };
+        StringBuilder sb = new StringBuilder();
         GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(1500, 0.05, quadraticDataFitnessFunction, quadraticDataDataInitialization, 0.5, 0.1);
         geneticAlgorithm.init(0.01, -100.0, 100.0, -10000.0, 10000.0);
         geneticAlgorithm.iteration(20);
@@ -92,7 +93,11 @@ public class Demo {
             DnaData point = (DnaData) datum;
             Double a = point.getA();
             Double b = point.getB();
-            LogUtil.info(String.format("%f,%f", a, b));
+            String format = String.format("%f,%f", a, b);
+            LogUtil.info(format);
+            sb.append(format);
+            sb.append("\n");
         }
+        return sb.toString();
     }
 }

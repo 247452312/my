@@ -121,7 +121,11 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
         Object invoke;
         try {
             Map<String, byte[]> compile = javaStringCompiler.compile(fileSourceMap);
-            Class<?> c = javaStringCompiler.loadClass(MAIN_CLASS_NAME, compile);
+            Optional<String> firstMainFileName = compile.keySet().stream().filter(t -> t.endsWith(MAIN_CLASS_NAME)).findFirst();
+            if (!firstMainFileName.isPresent()) {
+                throw new AlgorithmException("不存在指定入口类:" + MAIN_CLASS_NAME);
+            }
+            Class<?> c = javaStringCompiler.loadClass(firstMainFileName.get(), compile);
             Object o = c.newInstance();
             Optional<Method> first = Arrays.stream(c.getDeclaredMethods()).filter(t -> Objects.equals(t.getName(), MAIN_METHOD_NAME)).findFirst();
             if (!first.isPresent()) {
