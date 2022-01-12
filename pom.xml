@@ -20,7 +20,7 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.6.1</spring-boot.version>
         <spring.version>5.3.13</spring.version>
-        <org.dubbo.version>2.7.3</org.dubbo.version>
+        <org.dubbo.version>2.7.15</org.dubbo.version>
         <druid.version>1.1.22</druid.version>
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
         <org.apache.dubbo.nacos.version>1.2.1</org.apache.dubbo.nacos.version>
