@@ -2,7 +2,7 @@ package indi.uhyils.util.formula.impl.node;
 
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
-import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.MapUtil;
 import indi.uhyils.util.StringUtil;
 import indi.uhyils.util.formula.FormulaNode;
 import indi.uhyils.util.formula.FormulaNodeFactory;
@@ -100,7 +100,6 @@ public abstract class AbstractFormulaNode implements FormulaNode {
 
             String substring = formula.substring(functionStartIndex, endBracketsIndex + 1);
             String name = getLastVarName();
-            LogUtil.info("方法替换:{},{}", name, substring);
             lastNodes.put(name, new FunctionFormulaNodeImpl(substring, function));
             formula = StringUtil.replaceFirst(formula, substring, name);
         }
@@ -217,9 +216,7 @@ public abstract class AbstractFormulaNode implements FormulaNode {
         if (!contains(varName)) {
             return "0";
         }
-        String s = haveVarNameDerivation(varName);
-        LogUtil.info(getFormula() + " 对" + varName + " 求导,结果为:" + s);
-        return s;
+        return haveVarNameDerivation(varName);
     }
 
     @Override

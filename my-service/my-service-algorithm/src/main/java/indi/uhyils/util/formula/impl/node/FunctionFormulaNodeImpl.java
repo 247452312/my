@@ -46,7 +46,6 @@ public class FunctionFormulaNodeImpl extends AbstractFormulaNode implements Form
     private void removeFunctionNameForFormula() {
         int start = formula.indexOf("(");
         int end = formula.lastIndexOf(")");
-        System.out.println(formula);
         formula = formula.substring(start + 1, end);
     }
 

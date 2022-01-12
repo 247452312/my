@@ -43,6 +43,10 @@ public final class MapUtil {
         return map.size() != 0;
     }
 
+    public static boolean isEmpty(Map map) {
+        return !isNotEmpty(map);
+    }
+
     /**
      * 批量插入,每个判断
      *

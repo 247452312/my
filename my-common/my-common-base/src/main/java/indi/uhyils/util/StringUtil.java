@@ -2,7 +2,9 @@ package indi.uhyils.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -192,5 +194,125 @@ public final class StringUtil {
         }
         int last = i + replaceStr.length();
         return str.substring(0, i) + targetStr + str.substring(last);
+    }
+
+    /**
+     * 根据下标和长度替换字符串
+     *
+     * @param original   起始字符串
+     * @param startIndex 起始下标
+     * @param length     长度
+     * @param targetStr  目标字符串
+     *
+     * @return
+     */
+    public static String replaceByIndexAndLength(String original, Integer startIndex, Integer length, String targetStr) {
+        String firstStr = original.substring(0, startIndex);
+        String secondStr = original.substring(startIndex + length);
+        return String.format("%s%s%s", firstStr, targetStr, secondStr);
+    }
+
+    /**
+     * 全包含
+     *
+     * @param targetStr
+     * @param chars
+     *
+     * @return
+     */
+    public static boolean allContains(String targetStr, char... chars) {
+        for (char aChar : chars) {
+            if (!targetStr.contains(aChar + "")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * 全不包含
+     *
+     * @param targetStr 目标字符串
+     * @param chars     目标字符组
+     *
+     * @return
+     */
+    public static boolean allNotContains(String targetStr, char... chars) {
+        for (char aChar : chars) {
+            if (targetStr.contains(aChar + "")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 查找指定项
+     *
+     * @param str     原始字符串
+     * @param findStr 待查找字符串
+     *
+     * @return
+     */
+    public static Map<Integer, String> find(String str, String findStr) {
+        String[] split = findStr.split("\\*");
+        List<List<Integer>> splitIndexList = new ArrayList<>();
+        for (String item : split) {
+            // 获取所有str中first的位置
+            List<Integer> result = new ArrayList<>();
+            int lastIndex = -1;
+            while (true) {
+                lastIndex = str.indexOf(item, lastIndex + 1);
+                if (lastIndex == -1) {
+                    break;
+                }
+                result.add(lastIndex);
+            }
+            splitIndexList.add(result);
+        }
+        if (split.length == 1) {
+            List<Integer> integers = splitIndexList.get(0);
+            Map<Integer, String> result = new HashMap<>();
+            integers.stream().forEach(t -> result.put(t, findStr));
+            return result;
+        }
+        // 以第一个分割块的结果为准
+        List<Integer> integers = splitIndexList.get(0);
+        Map<Integer, String> result = new HashMap<>();
+
+        // 切分段,也是结束点
+        Integer cutSegment = 0;
+        // 遍历第一个切分块
+        for (int index = 0; index != integers.size(); index++) {
+            // 起始点
+            Integer first = integers.get(index);
+            if (first < cutSegment) {
+                continue;
+            }
+            cutSegment = first + split[0].length();
+            int splitIndex = 1;
+            // 一直遍历到最后一个split,寻找符合条件的块
+            while (splitIndex != split.length) {
+                List<Integer> splitIndexs = splitIndexList.get(splitIndex);
+                int splitForThisIndex = cutSegment + split[splitIndex].length();
+                for (Integer integer : splitIndexs) {
+                    if (integer <= cutSegment) {
+                        continue;
+                    }
+                    cutSegment = integer;
+                    break;
+                }
+                cutSegment = cutSegment + split[splitIndex].length();
+                // 相等, 说明cutSegment没有变, 已经到了结束的地方,并且没有找到最后一个块
+                if (splitForThisIndex == cutSegment) {
+                    return result;
+                }
+                splitIndex++;
+            }
+            String substring = str.substring(first, cutSegment);
+            result.put(first, substring);
+        }
+        return result;
     }
 }
