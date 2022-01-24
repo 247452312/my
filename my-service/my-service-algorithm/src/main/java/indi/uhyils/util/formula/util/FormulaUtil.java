@@ -53,7 +53,7 @@ public class FormulaUtil {
             if (i == -1) {
                 continue;
             }
-            List<Integer> indexs = StringUtil.find(formula, name + "(*)");
+            Map<Integer, String> integerStringMap = StringUtil.find(formula, name + "(*)");
 
         }
         return null;
