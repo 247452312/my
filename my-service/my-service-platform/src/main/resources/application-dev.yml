@@ -8,13 +8,18 @@ rpc:
 log-out:
   dir-name: push
 spring:
+  main:
+    allow-circular-references: true
   datasource:
     url: jdbc:mysql://prod:3306/my_platform
     username: root
     password: 123456
+
 id:
   organization:
     # 机构代码
     code: 7
 
 mysql-netty: 3300
+
+

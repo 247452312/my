@@ -3,6 +3,7 @@ package indi.uhyils.protocol.mysql.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.annotation.NoToken;
 import indi.uhyils.enum_.Symbol;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
@@ -41,6 +42,7 @@ public class MysqlExtensionImpl implements MysqlExtension {
     private InterfaceInfoService interfaceInfoService;
 
     @Override
+    @NoToken
     public ServiceResult<ConsumerInfoDTO> findPasswordByName(FindPasswordByNameQuery query) {
         List<ConsumerInfoDTO> consumerInfoDTOS = consumerInfoService.queryNoPage(query.getArgs(), query.getOrder());
         if (CollectionUtil.isEmpty(consumerInfoDTOS)) {

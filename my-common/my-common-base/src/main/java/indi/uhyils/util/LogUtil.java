@@ -106,8 +106,8 @@ public final class LogUtil {
         writeLog(cls.getName(), null, e, LogLevelEnum.INFO);
     }
 
-    public static void info(Object obj, String msg) {
-        info(obj.getClass(), msg);
+    public static void info(Object obj, String msg, String... params) {
+        writeLog(obj.getClass().getName(), msg, null, LogLevelEnum.INFO, params);
     }
 
     public static void info(Object obj, Throwable e) {

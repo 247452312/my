@@ -3,6 +3,7 @@ package indi.uhyils.protocol.mysql.netty.impl;
 import indi.uhyils.protocol.mysql.decoder.impl.MysqlDecoderImpl;
 import indi.uhyils.protocol.mysql.handler.impl.MysqlHandlerImpl;
 import indi.uhyils.protocol.mysql.netty.MysqlNettyServer;
+import indi.uhyils.util.LogUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -42,6 +43,7 @@ public class MysqlNettyServerImpl extends ChannelInitializer<SocketChannel> impl
         bossGroup = new NioEventLoopGroup(1);
         workerGroup = new NioEventLoopGroup();
 
+        LogUtil.info("mysql端口开启,端口号:{}", port.toString());
         ServerBootstrap b = new ServerBootstrap();
         b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
          .option(ChannelOption.SO_BACKLOG, 1024).childHandler(this);
