@@ -8,6 +8,7 @@ import indi.uhyils.pojo.entity.LogMonitorJvmStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * JVM状态子表(LogMonitorJvmStatus)表 entity,DO,DTO转换工具
@@ -39,6 +40,7 @@ public abstract class LogMonitorJvmStatusAssembler extends AbstractAssembler<Log
      *
      * @return
      */
+    @Mapping(source = "jvmStatusInfo.totalUseMem", target = "useMem")
     public abstract LogMonitorJvmStatusDO transJvmStatusInfoToMonitorJvmStatusDetailDO(JvmStatusInfoCommand jvmStatusInfo, Long fid);
 
     /**

@@ -13,6 +13,7 @@ import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.pojo.cqe.query.base.BaseArgQuery;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.service.BaseDoService;
+import indi.uhyils.util.LogUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,12 @@ public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvide
     @Override
     public ServiceResult<List<T>> queryByIds(IdsQuery query) {
         List<Long> ids = query.getIds();
-        List<T> result = getService().query(ids.stream().map(Identifier::new).collect(Collectors.toList()));
+        List<T> result = null;
+        try {
+            result = getService().query(ids.stream().map(Identifier::new).collect(Collectors.toList()));
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+        }
         return ServiceResult.buildSuccessResult(result);
     }
 
