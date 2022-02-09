@@ -170,7 +170,7 @@ public class DbInformation extends AbstractEntity {
         try {
             switch (Objects.requireNonNull(DbTypeEnum.prase(this.type))) {
                 case MYSQL:
-                    Class.forName("com.mysql.jdbc.Driver");
+                    Class.forName("com.mysql.cj.jdbc.Driver");
                     break;
                 case ORACLE:
                 case SQLITE:
