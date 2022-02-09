@@ -1,0 +1,28 @@
+package ${package}.repository.impl;
+
+import ${package}.annotation.Repository;
+import ${package}.assembler.${className}Assembler;
+import ${package}.dao.${className}Dao;
+import ${package}.pojo.DO.${className}DO;
+import ${package}.pojo.DTO.${className}DTO;
+import ${package}.pojo.entity.${className};
+import ${package}.repository.${className}Repository;
+import ${package}.repository.base.AbstractRepository;
+
+
+/**
+* ${tableComment}(${className})表 仓库实现
+*
+* @author ${author}
+* @version 1.0
+* @date 文件创建日期 ${dateTime}
+*/
+@Repository
+public class ${className}RepositoryImpl extends AbstractRepository<${className}, ${className}DO, ${className}Dao, ${className}DTO, ${className}Assembler> implements ${className}Repository {
+
+    protected ${className}RepositoryImpl(${className}Assembler convert, ${className}Dao dao) {
+        super(convert, dao);
+    }
+
+
+}

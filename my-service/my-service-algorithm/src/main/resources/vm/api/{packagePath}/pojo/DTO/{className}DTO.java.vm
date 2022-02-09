@@ -1,0 +1,50 @@
+package ${package}.pojo.DTO;
+
+import ${package}.pojo.DTO.base.IdDTO;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+/**
+ * ${tableComment}表(${className})表 对外数据传输载体
+ *
+ * @author ${author}
+ * @version 1.0
+ * @date 文件创建日期 ${dateTime}
+ */
+public class ${className}DTO extends IdDTO {
+
+    private static final long serialVersionUID = -1L;
+    
+    #foreach ($column in $columns)
+        #if($column.smallName != 'id' && $column.smallName != 'remark' && $column.smallName != 'createUser' && $column.smallName != 'createDate' && $column.smallName != 'updateUser' && $column.smallName != 'updateDate')
+            #if($column.remark != '' || $column.remark)
+    /** $column.remark */
+            #end
+    private $column.javaType $column.smallName;
+        #end
+    #end
+    
+    #foreach ($column in $columns)
+        #if($column.smallName != 'id' && $column.smallName != 'remark' && $column.smallName != 'createUser' && $column.smallName != 'createDate' && $column.smallName != 'updateUser' && $column.smallName != 'updateDate')
+    public void set${column.bigName}(${column.javaType} ${column.smallName}) {
+            this.$column.smallName = $column.smallName;
+        }
+
+    public $column.javaType get${column.bigName}() {
+            return $column.smallName;
+        }
+        
+        #end
+    #end
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            #foreach ($column in $columns)
+                #if( $column.smallName != 'remark' && $column.smallName != 'createUser' && $column.smallName != 'createDate' && $column.smallName != 'updateUser' && $column.smallName != 'updateDate')
+                .append("${column.smallName}", get${column.bigName}())
+                #end
+            #end
+                .toString();
+    }
+
+}

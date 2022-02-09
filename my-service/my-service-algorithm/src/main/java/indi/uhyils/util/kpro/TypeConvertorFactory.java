@@ -1,7 +1,9 @@
 package indi.uhyils.util.kpro;
 
 
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.enum_.DbTypeEnum;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.kpro.convertor.mysql.MysqlTypeConvertor;
 
 /**
@@ -14,6 +16,7 @@ import indi.uhyils.util.kpro.convertor.mysql.MysqlTypeConvertor;
  */
 public class TypeConvertorFactory {
 
+    @NotNull
     public static TypeConvertor getTypeConvertor(DbTypeEnum type) {
         switch (type) {
             case MYSQL:
@@ -23,6 +26,7 @@ public class TypeConvertorFactory {
             case ORACLE:
                 // 暂无
             default:
+                Asserts.throwException("类型暂不支持");
                 return null;
         }
     }

@@ -62,6 +62,11 @@ public class DbInformationDTO {
      */
     private List<String> tables;
 
+    /**
+     * 作者
+     */
+    private String author;
+
     public List<String> getTables() {
         return tables;
     }
@@ -134,5 +139,13 @@ public class DbInformationDTO {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

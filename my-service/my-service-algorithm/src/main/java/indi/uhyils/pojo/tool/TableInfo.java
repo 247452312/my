@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.tool;
 
 
+import indi.uhyils.util.kpro.KproStringUtil;
 import java.util.Map;
 
 /**
@@ -17,6 +18,11 @@ public class TableInfo {
      * table名称
      */
     private String tableName;
+
+    /**
+     * class名称
+     */
+    private String className;
 
     /**
      * table描述
@@ -39,6 +45,7 @@ public class TableInfo {
         this.tableName = tableName;
         this.colums = colums;
         this.onlyKey = onlyKey;
+        this.className = KproStringUtil.dealDbNameToJavaFileName(tableName);
     }
 
     public TableInfo(String tableName, String tableComment, Map<String, ColumnInfo> colums, ColumnInfo onlyKey) {
@@ -46,6 +53,7 @@ public class TableInfo {
         this.tableComment = tableComment;
         this.colums = colums;
         this.onlyKey = onlyKey;
+        this.className = KproStringUtil.dealDbNameToJavaFileName(tableName);
     }
 
     public TableInfo() {
@@ -55,16 +63,9 @@ public class TableInfo {
         return tableName;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
 
     public Map<String, ColumnInfo> getColums() {
         return colums;
-    }
-
-    public void setColums(Map<String, ColumnInfo> colums) {
-        this.colums = colums;
     }
 
     public ColumnInfo getOnlyKey() {
@@ -79,9 +80,8 @@ public class TableInfo {
         return tableComment;
     }
 
-    public void setTableComment(String tableComment) {
-        this.tableComment = tableComment;
+    public String getClassName() {
+        return className;
     }
-
 
 }

@@ -94,6 +94,12 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!-- velocity代码生成使用模板 -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+        </dependency>
+
         <!-- tencentcloud-sdk-java -->
         <dependency>
             <groupId>com.tencentcloudapi</groupId>

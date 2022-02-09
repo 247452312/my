@@ -24,13 +24,8 @@ public class KproServiceImpl implements KproService {
     public Map<String, String> projectGenerate(List<DbInformationDTO> list) {
         List<DbInformation> informs = list.stream().map(DbInformation::new).collect(Collectors.toList());
         Map<String, String> resultList = new HashMap<>();
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 hh时mm分");
-        String now = simpleDateFormat.format(date);
         for (DbInformation inform : informs) {
-            inform.kpro();
             Map<String, String> result = inform.result();
-            inform.saveToLocal("d:/temp/");
             resultList.putAll(result);
         }
         return resultList;

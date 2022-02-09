@@ -1,0 +1,15 @@
+package ${package}.protocol.rpc;
+
+import ${package}.pojo.DTO.${className}DTO;
+import ${package}.protocol.rpc.base.DTOProvider;
+
+/**
+* ${tableComment}(${className})表 Rpc对外访问层
+*
+* @author ${author}
+* @version 1.0
+* @date 文件创建日期 ${dateTime}
+*/
+public interface ${className}Provider extends DTOProvider<${className}DTO> {
+
+}

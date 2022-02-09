@@ -1,0 +1,15 @@
+package ${package}.service;
+
+
+import ${package}.pojo.DTO.${className}DTO;
+
+/**
+* ${tableComment}(${className})表 内部服务接口
+*
+* @author ${author}
+* @version 1.0
+* @date 文件创建日期 ${dateTime}
+*/
+public interface ${className}Service extends BaseDoService<${className}DTO> {
+
+}
