@@ -2,6 +2,7 @@ package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.annotation.Nullable;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.proxy.generic.GenericService;
 import indi.uhyils.rpc.spring.RpcConsumerBeanFieldInjectConfiguration;
@@ -11,6 +12,7 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * rpc 泛化接口
@@ -48,7 +50,20 @@ public class RpcApiUtil {
      * @return 方法返回值
      */
     public static Object rpcApiTool(String interfaceName, String methodName, List<Object> args) {
-        return getServiceResult(interfaceName, methodName, args, Boolean.FALSE, DEFAULT_PROCOTOL);
+        return getServiceResult(interfaceName, methodName, null, args, Boolean.FALSE, DEFAULT_PROCOTOL);
+    }
+
+    /**
+     * rpc泛化接口调用类
+     *
+     * @param interfaceName 接口的名字,可以用全名或者接口名
+     * @param methodName    方法名
+     * @param args          方法参数
+     *
+     * @return 方法返回值
+     */
+    public static Object rpcApiTool(String interfaceName, String methodName, Map<String, String> headers, List<Object> args) {
+        return getServiceResult(interfaceName, methodName, headers, args, Boolean.FALSE, DEFAULT_PROCOTOL);
     }
 
     /**
@@ -61,7 +76,20 @@ public class RpcApiUtil {
      * @return 方法返回值
      */
     public static Object rpcApiTool(String interfaceName, String methodName, Object... args) {
-        return getServiceResult(interfaceName, methodName, Arrays.asList(args), Boolean.FALSE, DEFAULT_PROCOTOL);
+        return getServiceResult(interfaceName, methodName, null, Arrays.asList(args), Boolean.FALSE, DEFAULT_PROCOTOL);
+    }
+
+    /**
+     * rpc泛化接口调用类
+     *
+     * @param interfaceName 接口的名字,可以用全名或者接口名
+     * @param methodName    方法名
+     * @param args          方法参数
+     *
+     * @return 方法返回值
+     */
+    public static Object rpcApiTool(String interfaceName, String methodName, Map<String, String> headers, Object... args) {
+        return getServiceResult(interfaceName, methodName, headers, Arrays.asList(args), Boolean.FALSE, DEFAULT_PROCOTOL);
     }
 
     /**
@@ -74,7 +102,7 @@ public class RpcApiUtil {
      * @return 方法返回值
      */
     public static Object rpcApiToolAsync(String interfaceName, String methodName, List<Object> args) {
-        return getServiceResult(interfaceName, methodName, args, Boolean.TRUE, DEFAULT_PROCOTOL);
+        return getServiceResult(interfaceName, methodName, null, args, Boolean.TRUE, DEFAULT_PROCOTOL);
     }
 
     /**
@@ -87,10 +115,10 @@ public class RpcApiUtil {
      * @return 方法返回值
      */
     public static Object rpcApiToolAsync(String interfaceName, String methodName, Object args) {
-        return getServiceResult(interfaceName, methodName, Arrays.asList(args), Boolean.TRUE, DEFAULT_PROCOTOL);
+        return getServiceResult(interfaceName, methodName, null, Arrays.asList(args), Boolean.TRUE, DEFAULT_PROCOTOL);
     }
 
-    private static Object getServiceResult(String interfaceName, String methodName, List<Object> args, boolean async, String procotol) {
+    private static Object getServiceResult(String interfaceName, String methodName, @Nullable Map<String, String> headers, List<Object> args, boolean async, String procotol) {
         try {
             if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 interfaceName = String.format("indi.uhyils.protocol.rpc.%s", interfaceName);
@@ -124,7 +152,7 @@ public class RpcApiUtil {
                 genericService = value;
                 MAP.put(interfaceName, value);
             }
-            Object serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.invoke(methodName, new String[]{parameterTypes}, arg)));
+            Object serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.invoke(methodName, headers, new String[]{parameterTypes}, arg)));
 
             return serviceResult;
         } catch (InvocationTargetException e) {

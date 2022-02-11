@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @date 文件创建日期 2021年12月13日 08时57分
  */
 @Documented
-@Target(value = {ElementType.METHOD})
+@Target(value = {ElementType.METHOD,ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NotNull {
 

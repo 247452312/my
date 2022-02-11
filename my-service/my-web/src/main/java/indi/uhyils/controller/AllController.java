@@ -10,6 +10,11 @@ import indi.uhyils.pojo.DTO.request.SessionRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -41,6 +46,10 @@ public class AllController {
      */
     private static final String UNIQUE = "unique";
 
+    /**
+     * 不传递的header
+     */
+    private static final List<String> NON_TRANSITIVE_HEADER = Arrays.asList("sec-fetch-mode","content-length","referer","sec-fetch-site","accept-language","cookie","origin","accept","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","host","x-requested-with","connection","content-type","accept-encoding","user-agent","sec-fetch-dest");
 
     @Autowired
     @Qualifier("actionExecutor")
@@ -61,8 +70,10 @@ public class AllController {
 
         // 发送前处理
         dealActionBeforeCall(action);
+        // 获取有价值的headers
+        Map<String, String> headers = findHeaders(httpServletRequest);
         try {
-            Future<ServiceResult> submit = executor.submit(new ActionFuture(action));
+            Future<ServiceResult> submit = executor.submit(new ActionFuture(action, headers));
             serviceResult = submit.get();
 
             // 修改字段类型为String,因为前端大数会失去精度
@@ -89,6 +100,27 @@ public class AllController {
 
             }
         }*/
+    }
+
+    /**
+     * 从httpRequest中获取headers
+     *
+     * @param httpServletRequest
+     *
+     * @return
+     */
+    private Map<String, String> findHeaders(HttpServletRequest httpServletRequest) {
+        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
+        Map<String, String> map = new HashMap<>();
+        while (headerNames.hasMoreElements()) {
+            String headerKey = headerNames.nextElement();
+            if (NON_TRANSITIVE_HEADER.contains(headerKey)) {
+                continue;
+            }
+            String header = httpServletRequest.getHeader(headerKey);
+            map.put(headerKey, header);
+        }
+        return map;
     }
 
     private void changeFieldTypeToString(JSONObject data) {
@@ -153,13 +185,16 @@ public class AllController {
 
         private final Action action;
 
-        public ActionFuture(Action action) {
+        private final Map<String, String> headers;
+
+        public ActionFuture(Action action, Map<String, String> headers) {
             this.action = action;
+            this.headers = headers;
         }
 
         @Override
         public ServiceResult call() throws Exception {
-            Object o = RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+            Object o = RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), headers, action.getArgs());
             if (o instanceof ServiceResult) {
                 return (ServiceResult) o;
             }
