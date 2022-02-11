@@ -30,6 +30,12 @@ public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvide
     }
 
     @Override
+    public ServiceResult<List<T>> queryNoPage(BlackQuery query) {
+        List<T> result = getService().queryNoPage(query.getArgs(), query.getOrder());
+        return ServiceResult.buildSuccessResult(result);
+    }
+
+    @Override
     public ServiceResult<T> queryById(IdQuery query) {
         T result = getService().query(new Identifier(query.getId()));
         return ServiceResult.buildSuccessResult(result);

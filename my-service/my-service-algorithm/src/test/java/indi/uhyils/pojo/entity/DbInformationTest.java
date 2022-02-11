@@ -16,7 +16,7 @@ class DbInformationTest {
     @Test
     void fillTableInfos() {
         DbInformationDTO dto = new DbInformationDTO();
-        dto.setTables(Arrays.asList("sys_user"));
+        dto.setTables(Arrays.asList("sys_dynamic_code","sys_dynamic_code_history"));
         dto.setDbName("my_user");
         dto.setUrl("jdbc:mysql://prod:3306/my_user");
         dto.setType(DbTypeEnum.MYSQL.getTypeCode());
@@ -31,7 +31,7 @@ class DbInformationTest {
         db.fillTableInfos();
         Map<String, String> result = db.result();
 
-        KproUtil.saveToLocal("D:\\temp", result);
+        KproUtil.saveToLocal("D:\\my\\生成文件", result);
 
     }
 }

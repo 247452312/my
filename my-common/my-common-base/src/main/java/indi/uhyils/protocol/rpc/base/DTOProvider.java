@@ -32,6 +32,15 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
     ServiceResult<Page<T>> query(BlackQuery query);
 
     /**
+     * 根据某几列获取数据
+     *
+     * @param query 根据列名获取信息
+     *
+     * @return 数据
+     */
+    ServiceResult<List<T>> queryNoPage(BlackQuery query);
+
+    /**
      * 根据id查询
      *
      * @param query id

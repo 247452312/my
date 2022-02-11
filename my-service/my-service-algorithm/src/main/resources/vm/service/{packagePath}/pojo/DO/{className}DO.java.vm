@@ -18,9 +18,11 @@ public class ${className}DO extends BaseDO {
     private static final long serialVersionUID = -1L;
 
 #foreach ($column in $columns)
-    #if($column.smallName != 'id' && $column.smallName != 'remark' && $column.smallName != 'createUser' && $column.smallName != 'createDate' && $column.smallName != 'updateUser' && $column.smallName != 'updateDate')
+    #if($column.smallName != 'id' && $column.smallName != 'remark' && $column.smallName != 'createUser' && $column.smallName != 'createDate' && $column.smallName != 'updateUser' && $column.smallName != 'updateDate' && $column.smallName != 'deleteFlag')
         #if($column.remark != '' || $column.remark)
-    /** $column.remark */
+    /**
+     * $column.remark
+     */
         #end
     @TableField
     private $column.javaType $column.smallName;
@@ -28,7 +30,7 @@ public class ${className}DO extends BaseDO {
 #end
 
 #foreach ($column in $columns)
-    #if($column.smallName != 'id' && $column.smallName != 'remark' && $column.smallName != 'createUser' && $column.smallName != 'createDate' && $column.smallName != 'updateUser' && $column.smallName != 'updateDate')
+    #if($column.smallName != 'id' && $column.smallName != 'remark' && $column.smallName != 'createUser' && $column.smallName != 'createDate' && $column.smallName != 'updateUser' && $column.smallName != 'updateDate' && $column.smallName != 'deleteFlag')
     public void set${column.bigName}($column.javaType $column.smallName){
         this.$column.smallName = $column.smallName;
     }
@@ -44,7 +46,7 @@ public class ${className}DO extends BaseDO {
     public String toString() {
         return new ToStringBuilder(this)
             #foreach ($column in $columns)
-                #if( $column.smallName != 'remark' && $column.smallName != 'createUser' && $column.smallName != 'createDate' && $column.smallName != 'updateUser' && $column.smallName != 'updateDate')
+                #if( $column.smallName != 'remark' && $column.smallName != 'createUser' && $column.smallName != 'createDate' && $column.smallName != 'updateUser' && $column.smallName != 'updateDate' && $column.smallName != 'deleteFlag')
                 .append("${column.smallName}", get${column.bigName}())
                 #end
             #end
