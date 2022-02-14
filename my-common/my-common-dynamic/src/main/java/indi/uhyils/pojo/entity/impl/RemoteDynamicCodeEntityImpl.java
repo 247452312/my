@@ -1,9 +1,13 @@
 package indi.uhyils.pojo.entity.impl;
 
+import com.rabbitmq.client.ConfirmListener;
 import indi.uhyils.annotation.Nullable;
 import indi.uhyils.context.DynamicContext;
 import indi.uhyils.facade.DynamicCodeFacade;
 import indi.uhyils.loader.DynamicClassLoader;
+import indi.uhyils.mq.content.RabbitMqContent;
+import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoCommand;
+import indi.uhyils.mq.util.MqUtil;
 import indi.uhyils.pojo.DTO.DynamicCodeDTO;
 import indi.uhyils.pojo.entity.RemoteDynamicCodeEntityInterface;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -17,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 动态代码主表远程实体
@@ -47,8 +53,25 @@ public class RemoteDynamicCodeEntityImpl implements RemoteDynamicCodeEntityInter
     private List<DynamicCodeDTO> dynamicCodeDTOs;
 
 
+    /**
+     * 应用mark
+     */
+    private String mark;
+
+
     public RemoteDynamicCodeEntityImpl(Map<String, String> headers) {
         init(headers);
+    }
+
+    public RemoteDynamicCodeEntityImpl(List<DynamicCodeDTO> dynamicCodeDTOs) {
+        List<Integer> groupIds = dynamicCodeDTOs.stream().map(DynamicCodeDTO::getGroupId).distinct().collect(Collectors.toList());
+        Asserts.assertTrue(groupIds.size() == 1, "动态代码一次只能修改一个group");
+        this.dynamicCodeDTOs = dynamicCodeDTOs;
+        this.mark = SpringUtil.getProperty("dynamic.mark", "allService");
+        this.groupId = new Identifier(groupIds.get(0).longValue());
+        this.matchSuccess = true;
+        this.temp = false;
+
     }
 
     /**
@@ -59,6 +82,7 @@ public class RemoteDynamicCodeEntityImpl implements RemoteDynamicCodeEntityInter
     private void init(Map<String, String> headers) {
         String mark = headers.get(DynamicContext.APP_MARK_KEY);
         String serviceMark = SpringUtil.getProperty("dynamic.mark", "allService");
+        this.mark = serviceMark;
         // 如果没有匹配到,就直接执行并返回
         this.matchSuccess = Objects.equals(mark, serviceMark);
 
@@ -135,7 +159,19 @@ public class RemoteDynamicCodeEntityImpl implements RemoteDynamicCodeEntityInter
     public Object permanentDynamic(Supplier<Object> pjp) {
         // 1. 编译
         Map<String, byte[]> compile = compile();
-        // 2. 发送MQ消息,告诉本应用的其他机器也替换 todo
+        // 2. 发送MQ消息,告诉本应用的其他机器也替换
+        MqUtil.sendConfirmMsg(DynamicContext.DYNAMIC_MQ_EXCHANGE_NAME, this.mark, new ConfirmListener() {
+
+            @Override
+            public void handleAck(long l, boolean b) throws IOException {
+                LogUtil.warn(this, "动态代码替换任务处理成功");
+            }
+
+            @Override
+            public void handleNack(long l, boolean b) throws IOException {
+                LogUtil.warn(this, "动态代码替换任务处理失败");
+            }
+        }, dynamicCodeDTOs);
         // 3. 构建classLoader
         DynamicClassLoader dynamicClassLoader = new DynamicClassLoader(compile);
         // 4. 使用现在的ClassLoader替换,并且将使用的ClassLoader添加到 回滚ClassLoader的队列中

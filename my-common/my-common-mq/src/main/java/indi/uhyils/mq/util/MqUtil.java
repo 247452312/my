@@ -283,6 +283,30 @@ public class MqUtil {
         }, new String[]{exchange, queue}, exchange, queue);
 
     }
+    /**
+     * 推送信息到mq
+     *
+     * @param exchange 路由名称
+     * @param queue    队列名称
+     * @param listener 回应监听
+     * @param obj      发送的信息
+     *
+     * @return
+     */
+    public static void sendConfirmMsg(String exchange, String queue, ConfirmListener listener, Object obj) {
+        String msg = JSON.toJSONString(obj);
+        MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, () -> {
+            MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
+            byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
+            try {
+                sendConfirmMsg(exchange, queue, listener, bytes);
+            } catch (Exception e) {
+                LogUtil.error(e);
+            }
+            return null;
+        }, new String[]{exchange, queue}, exchange, queue);
+
+    }
 
 
     static class MqQueueInfo {
