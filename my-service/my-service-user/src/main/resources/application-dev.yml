@@ -19,3 +19,6 @@ id:
   organization:
     # 机构代码
     code: 10
+
+dynamic:
+  mark: dy_user

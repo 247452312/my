@@ -1,7 +1,6 @@
 package indi.uhyils.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.rpc.annotation.RpcSpi;
@@ -40,7 +39,7 @@ public class HystrixFilter implements ConsumerFilter {
      */
     private void addUnique(RpcData rpcData) throws InterruptedException {
         ArrayList list = JSON.parseObject(rpcData.content().getLine(RpcRequestContentEnum.ARG_MAP.getLine()), ArrayList.class, Feature.SupportAutoType);
-        DefaultCQE defaultRequest = ((JSONObject) list.get(0)).toJavaObject(DefaultCQE.class);
+        DefaultCQE defaultRequest = (DefaultCQE) list.get(0);
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
         defaultRequest.setUnique(bean.newId());
         List<DefaultCQE> defaultRequests = Arrays.asList(defaultRequest);

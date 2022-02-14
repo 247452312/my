@@ -49,7 +49,7 @@ public interface RemoteDynamicCodeEntityInterface extends IdEntity {
      *
      * @return
      */
-    Object permanentDynamic(Supplier<Object> pjp);
+    Object permanentDynamic(Supplier<Object> pjp, Boolean sendMq);
 
     /**
      * 从静态变量中替换classLoader

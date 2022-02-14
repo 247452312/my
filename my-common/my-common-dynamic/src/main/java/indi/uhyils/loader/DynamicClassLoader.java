@@ -24,6 +24,11 @@ public class DynamicClassLoader extends URLClassLoader {
     private Map<String, Class<?>> classMap = new HashMap<>();
 
     /**
+     * 动态代码组id
+     */
+    private final Integer groupId;
+
+    /**
      * 上一个classLoader
      */
     private DynamicClassLoader lastClassLoader;
@@ -33,9 +38,10 @@ public class DynamicClassLoader extends URLClassLoader {
      */
     private ClassLoader originalClassLoader;
 
-    public DynamicClassLoader(Map<String, byte[]> classBytes) {
+    public DynamicClassLoader(Map<String, byte[]> classBytes, Integer groupId) {
         super(new URL[0], DynamicClassLoader.class.getClassLoader());
         this.classBytes.putAll(classBytes);
+        this.groupId = groupId;
         ClassLoader classLoader = DynamicClassLoader.class.getClassLoader();
         if (classLoader instanceof DynamicClassLoader) {
             this.lastClassLoader = (DynamicClassLoader) classLoader;
@@ -71,4 +77,10 @@ public class DynamicClassLoader extends URLClassLoader {
             return aClass;
         }
     }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+
 }

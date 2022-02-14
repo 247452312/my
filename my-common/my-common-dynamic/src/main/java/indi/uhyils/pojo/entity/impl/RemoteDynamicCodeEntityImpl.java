@@ -5,8 +5,6 @@ import indi.uhyils.annotation.Nullable;
 import indi.uhyils.context.DynamicContext;
 import indi.uhyils.facade.DynamicCodeFacade;
 import indi.uhyils.loader.DynamicClassLoader;
-import indi.uhyils.mq.content.RabbitMqContent;
-import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoCommand;
 import indi.uhyils.mq.util.MqUtil;
 import indi.uhyils.pojo.DTO.DynamicCodeDTO;
 import indi.uhyils.pojo.entity.RemoteDynamicCodeEntityInterface;
@@ -14,6 +12,7 @@ import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
+import indi.uhyils.util.StringUtil;
 import indi.uhyils.util.compiler.JavaStringCompiler;
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,7 +21,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 动态代码主表远程实体
@@ -67,7 +65,7 @@ public class RemoteDynamicCodeEntityImpl implements RemoteDynamicCodeEntityInter
         List<Integer> groupIds = dynamicCodeDTOs.stream().map(DynamicCodeDTO::getGroupId).distinct().collect(Collectors.toList());
         Asserts.assertTrue(groupIds.size() == 1, "动态代码一次只能修改一个group");
         this.dynamicCodeDTOs = dynamicCodeDTOs;
-        this.mark = SpringUtil.getProperty("dynamic.mark", "allService");
+        this.mark = SpringUtil.getProperty(DynamicContext.DYNAMIC_MARK_KEY, DynamicContext.DYNAMIC_MARK_DEFAULT_VALUE);
         this.groupId = new Identifier(groupIds.get(0).longValue());
         this.matchSuccess = true;
         this.temp = false;
@@ -81,25 +79,28 @@ public class RemoteDynamicCodeEntityImpl implements RemoteDynamicCodeEntityInter
      */
     private void init(Map<String, String> headers) {
         String mark = headers.get(DynamicContext.APP_MARK_KEY);
-        String serviceMark = SpringUtil.getProperty("dynamic.mark", "allService");
+        String serviceMark = SpringUtil.getProperty(DynamicContext.DYNAMIC_MARK_KEY, DynamicContext.DYNAMIC_MARK_DEFAULT_VALUE);
         this.mark = serviceMark;
         // 如果没有匹配到,就直接执行并返回
         this.matchSuccess = Objects.equals(mark, serviceMark);
 
-        // 要替换的组id
-        String groupId = headers.get(DynamicContext.DYNAMIC_GROUP_CODE);
-        this.groupId = new Identifier(Long.parseLong(groupId));
-
-        // 是否是临时
-        String temp = headers.get(DynamicContext.TEMP_KEY);
-        if (Objects.equals(temp, DynamicContext.TEMP_VALUE_Y)) {
-            // 临时
-            this.temp = true;
-        } else if (Objects.equals(temp, DynamicContext.TEMP_VALUE_N)) {
-            // 永久
-            this.temp = false;
-        } else {
-            Asserts.throwException(DynamicContext.TEMP_KEY + "错误:{}", temp);
+        if (matchSuccess) {
+            // 要替换的组id
+            String groupId = headers.get(DynamicContext.DYNAMIC_GROUP_CODE);
+            if (StringUtil.isNotEmpty(groupId)) {
+                this.groupId = new Identifier(Long.parseLong(groupId));
+            }
+            // 是否是临时
+            String temp = headers.get(DynamicContext.TEMP_KEY);
+            if (Objects.equals(temp, DynamicContext.TEMP_VALUE_Y)) {
+                // 临时
+                this.temp = true;
+            } else if (Objects.equals(temp, DynamicContext.TEMP_VALUE_N)) {
+                // 永久
+                this.temp = false;
+            } else {
+                Asserts.throwException(DynamicContext.TEMP_KEY + "错误:{}", temp);
+            }
         }
     }
 
@@ -143,7 +144,7 @@ public class RemoteDynamicCodeEntityImpl implements RemoteDynamicCodeEntityInter
         // 1. 编译
         Map<String, byte[]> compile = compile();
         // 2. 获取临时替换后的classLoader
-        DynamicClassLoader dynamicClassLoader = new DynamicClassLoader(compile);
+        DynamicClassLoader dynamicClassLoader = new DynamicClassLoader(compile, groupId.getId().intValue());
         // 3. 临时classLoader替换当前线程classLoader
         ClassLoader classLoader = replaceClassLoaderToContent(dynamicClassLoader);
         // 4. 执行业务
@@ -156,28 +157,39 @@ public class RemoteDynamicCodeEntityImpl implements RemoteDynamicCodeEntityInter
     }
 
     @Override
-    public Object permanentDynamic(Supplier<Object> pjp) {
+    public Object permanentDynamic(Supplier<Object> pjp, Boolean sendMq) {
         // 1. 编译
         Map<String, byte[]> compile = compile();
-        // 2. 发送MQ消息,告诉本应用的其他机器也替换
-        MqUtil.sendConfirmMsg(DynamicContext.DYNAMIC_MQ_EXCHANGE_NAME, this.mark, new ConfirmListener() {
-
-            @Override
-            public void handleAck(long l, boolean b) throws IOException {
-                LogUtil.warn(this, "动态代码替换任务处理成功");
+        // 2. 过滤已经修改过的
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        if (contextClassLoader instanceof DynamicClassLoader) {
+            DynamicClassLoader dynamicClassLoader = (DynamicClassLoader) contextClassLoader;
+            int groupId = dynamicClassLoader.getGroupId();
+            if (Objects.equals(groupId, this.groupId.getId().intValue())) {
+                return pjp.get();
             }
+        }
+        // 3. 发送MQ消息,告诉本应用的其他机器也替换
+        if (sendMq) {
+            MqUtil.sendConfirmMsg(DynamicContext.DYNAMIC_MQ_EXCHANGE_NAME, this.mark, new ConfirmListener() {
 
-            @Override
-            public void handleNack(long l, boolean b) throws IOException {
-                LogUtil.warn(this, "动态代码替换任务处理失败");
-            }
-        }, dynamicCodeDTOs);
-        // 3. 构建classLoader
-        DynamicClassLoader dynamicClassLoader = new DynamicClassLoader(compile);
-        // 4. 使用现在的ClassLoader替换,并且将使用的ClassLoader添加到 回滚ClassLoader的队列中
+                @Override
+                public void handleAck(long l, boolean b) throws IOException {
+                    LogUtil.warn(this, "动态代码替换任务处理成功");
+                }
+
+                @Override
+                public void handleNack(long l, boolean b) throws IOException {
+                    LogUtil.warn(this, "动态代码替换任务处理失败");
+                }
+            }, dynamicCodeDTOs);
+        }
+        // 4. 构建classLoader
+        DynamicClassLoader dynamicClassLoader = new DynamicClassLoader(compile, groupId.getId().intValue());
+        // 5. 使用现在的ClassLoader替换,并且将使用的ClassLoader添加到 回滚ClassLoader的队列中
         replaceClassLoaderToContent(dynamicClassLoader);
         DynamicContext.nowClassLoader = dynamicClassLoader;
-        // 5. 执行业务
+        // 6. 执行业务
         return pjp.get();
     }
 
@@ -207,6 +219,10 @@ public class RemoteDynamicCodeEntityImpl implements RemoteDynamicCodeEntityInter
         for (DynamicCodeDTO dynamicCodeDTO : dynamicCodeDTOs) {
             String className = dynamicCodeDTO.getClassName();
             String content = dynamicCodeDTO.getContent();
+            // 替换为路径
+            if (className.contains(".")) {
+                className = className.replace(".", "/") + ".java";
+            }
             classCodes.put(className, content);
         }
         Map<String, byte[]> compile = null;

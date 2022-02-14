@@ -28,6 +28,16 @@ public class DynamicContext {
      */
     public static final String TEMP_VALUE_N = "0";
 
+    /**
+     * mark 配置文件中的key
+     */
+    public static final String DYNAMIC_MARK_KEY = "dynamic.mark";
+
+    /**
+     * mark默认值
+     */
+    public static final String DYNAMIC_MARK_DEFAULT_VALUE = "allService";
+
 
     /**
      * 动态代码组id

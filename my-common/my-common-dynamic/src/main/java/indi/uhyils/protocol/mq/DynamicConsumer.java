@@ -6,7 +6,6 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoCommand;
 import indi.uhyils.pojo.DTO.DynamicCodeDTO;
 import indi.uhyils.pojo.entity.RemoteDynamicCodeEntityInterface;
 import indi.uhyils.pojo.entity.impl.RemoteDynamicCodeEntityImpl;
@@ -39,7 +38,7 @@ public class DynamicConsumer extends DefaultConsumer {
         List<Integer> dyIds = dynamicCodeDTOList.stream().map(DynamicCodeDTO::getGroupId).distinct().collect(Collectors.toList());
         LogUtil.info(this, "接收到动态代码编译信息:{}", JSON.toJSONString(dyIds));
         RemoteDynamicCodeEntityInterface codeEntityInterface = new RemoteDynamicCodeEntityImpl(dynamicCodeDTOList);
-        codeEntityInterface.permanentDynamic(() -> null);
+        codeEntityInterface.permanentDynamic(() -> null, false);
 
         // 获取tag(队列中的唯一标示)
         long deliveryTag = envelope.getDeliveryTag();

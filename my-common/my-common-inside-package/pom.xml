@@ -63,6 +63,11 @@
                 <artifactId>my-common-event-bus</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-common-dynamic</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 
             <dependency>

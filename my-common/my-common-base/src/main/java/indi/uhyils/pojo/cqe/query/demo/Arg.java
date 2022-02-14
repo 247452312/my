@@ -71,7 +71,7 @@ public class Arg implements Serializable {
      */
     public static <T> Arg as(SFunction<T, ?> name, Symbol symbol, Object data) {
         Arg arg = new Arg();
-        arg.setName(name);
+        arg.setFunctionName(name);
         arg.setSymbol(symbol.getCode());
         arg.setData(data);
         return arg;
@@ -102,7 +102,7 @@ public class Arg implements Serializable {
         this.name = name;
     }
 
-    public <T> void setName(SFunction<T, ?> name) {
+    public <T> void setFunctionName(SFunction<T, ?> name) {
         this.name = ReflactUtil.transSFunction(name);
     }
 
