@@ -18,17 +18,18 @@ public class DynamicRunnerClassLoader extends URLClassLoader {
 
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
-        int i = 1;
         Boolean aBoolean = DynamicContext.CAN_APP_LOAD.get();
-        if (aBoolean) {
-            return super.loadClass(name);
-        } else {
+        if (aBoolean == null) {
+            DynamicContext.CAN_APP_LOAD.set(false);
+            aBoolean = false;
+        }
+        if (!aBoolean) {
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             if (contextClassLoader instanceof DynamicClassLoader) {
                 return contextClassLoader.loadClass(name);
             }
-            return super.loadClass(name);
         }
+        return super.loadClass(name);
 
     }
 
