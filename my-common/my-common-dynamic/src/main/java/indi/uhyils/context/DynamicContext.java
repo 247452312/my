@@ -9,6 +9,11 @@ package indi.uhyils.context;
 public class DynamicContext {
 
     /**
+     * 是否可以直接使用appLoader加载
+     */
+    public static final ThreadLocal<Boolean> CAN_APP_LOAD = new ThreadLocal<>();
+
+    /**
      * 应用mark 在header中的key
      */
     public static final String APP_MARK_KEY = "dynamic_app_mark";

@@ -1,5 +1,6 @@
 package indi.uhyils.loader;
 
+import indi.uhyils.context.DynamicContext;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -14,6 +15,11 @@ import java.util.Map;
 public class DynamicClassLoader extends URLClassLoader {
 
     /**
+     * 动态代码组id
+     */
+    private final Integer groupId;
+
+    /**
      * class全名 to 编译结果
      */
     private Map<String, byte[]> classBytes = new HashMap<>();
@@ -22,11 +28,6 @@ public class DynamicClassLoader extends URLClassLoader {
      * class 全名 to class本身
      */
     private Map<String, Class<?>> classMap = new HashMap<>();
-
-    /**
-     * 动态代码组id
-     */
-    private final Integer groupId;
 
     /**
      * 上一个classLoader
@@ -71,7 +72,13 @@ public class DynamicClassLoader extends URLClassLoader {
             if (bytes != null) {
                 return findClass(name);
             } else {
-                return super.loadClass(name);
+                Boolean canAppLoad = DynamicContext.CAN_APP_LOAD.get();
+                DynamicContext.CAN_APP_LOAD.set(true);
+                try {
+                    return super.loadClass(name);
+                } finally {
+                    DynamicContext.CAN_APP_LOAD.set(canAppLoad);
+                }
             }
         } else {
             return aClass;
