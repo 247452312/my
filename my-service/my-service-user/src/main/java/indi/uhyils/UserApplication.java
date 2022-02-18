@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class UserApplication {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         DynamicUtil.initDynamicClassLoader(args);
         SpringApplication.run(UserApplication.class, args);
     }

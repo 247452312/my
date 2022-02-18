@@ -1,6 +1,5 @@
 package indi.uhyils.loader;
 
-import indi.uhyils.context.DynamicContext;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -10,27 +9,71 @@ import java.net.URLClassLoader;
  */
 public class DynamicRunnerClassLoader extends URLClassLoader {
 
+    private final ClassLoader rootClassLoader;
+
     public DynamicRunnerClassLoader() {
-        super(new URL[0], DynamicRunnerClassLoader.class.getClassLoader());
-        // 默认不能用此类加载
-        DynamicContext.CAN_APP_LOAD.set(false);
+        this(new URL[0], DynamicRunnerClassLoader.class.getClassLoader());
+    }
+
+    public DynamicRunnerClassLoader(URL[] urls, ClassLoader classLoader) {
+        super(urls, classLoader);
+        ClassLoader cl = classLoader;
+        while (cl.getParent() != null) {
+            cl = cl.getParent();
+        }
+        this.rootClassLoader = cl;
     }
 
     @Override
-    public Class<?> loadClass(String name) throws ClassNotFoundException {
-        Boolean aBoolean = DynamicContext.CAN_APP_LOAD.get();
-        if (aBoolean == null) {
-            DynamicContext.CAN_APP_LOAD.set(false);
-            aBoolean = false;
+    public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+        try {
+            if (this.rootClassLoader != null) {
+                return this.rootClassLoader.loadClass(name);
+            }
+        } catch (Exception var4) {
         }
-        if (!aBoolean) {
+
+        if (checkFirst()) {
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-            if (contextClassLoader instanceof DynamicClassLoader) {
+            if (contextClassLoader.getClass().getName().equals(DynamicClassLoader.class.getName())) {
                 return contextClassLoader.loadClass(name);
             }
         }
-        return super.loadClass(name);
+        Class<?> loadedClass = this.findLoadedClass(name);
 
+        if (loadedClass == null) {
+            loadedClass = this.doLoadClass(name);
+        }
+        if (resolve) {
+            this.resolveClass(loadedClass);
+        }
+
+        return loadedClass;
+
+
+    }
+
+    private boolean checkFirst() {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        if (stackTrace.length <= 3) {
+            return false;
+        }
+        StackTraceElement stackTraceElement = stackTrace[5];
+        return !stackTraceElement.getClassName().equals(DynamicClassLoader.class.getName());
+    }
+
+    private Class<?> doLoadClass(String name) throws ClassNotFoundException {
+        try {
+            if (this.rootClassLoader != null) {
+                return this.rootClassLoader.loadClass(name);
+            }
+        } catch (Exception var4) {
+        }
+        try {
+            return this.findClass(name);
+        } catch (Exception var3) {
+            return super.loadClass(name, false);
+        }
     }
 
     @Override

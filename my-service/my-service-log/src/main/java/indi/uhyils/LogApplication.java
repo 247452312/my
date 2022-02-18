@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableScheduling
 public class LogApplication {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         DynamicUtil.initDynamicClassLoader(args);
         SpringApplication.run(LogApplication.class, args);
     }

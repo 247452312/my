@@ -1,6 +1,5 @@
 package indi.uhyils.loader;
 
-import indi.uhyils.context.DynamicContext;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -40,10 +39,10 @@ public class DynamicClassLoader extends URLClassLoader {
     private ClassLoader originalClassLoader;
 
     public DynamicClassLoader(Map<String, byte[]> classBytes, Integer groupId) {
-        super(new URL[0], DynamicClassLoader.class.getClassLoader());
+        super(new URL[0], Thread.currentThread().getContextClassLoader());
         this.classBytes.putAll(classBytes);
         this.groupId = groupId;
-        ClassLoader classLoader = DynamicClassLoader.class.getClassLoader();
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if (classLoader instanceof DynamicClassLoader) {
             this.lastClassLoader = (DynamicClassLoader) classLoader;
             this.originalClassLoader = lastClassLoader.originalClassLoader;
@@ -72,13 +71,7 @@ public class DynamicClassLoader extends URLClassLoader {
             if (bytes != null) {
                 return findClass(name);
             } else {
-                Boolean canAppLoad = DynamicContext.CAN_APP_LOAD.get();
-                DynamicContext.CAN_APP_LOAD.set(true);
-                try {
-                    return super.loadClass(name);
-                } finally {
-                    DynamicContext.CAN_APP_LOAD.set(canAppLoad);
-                }
+                return super.loadClass(name);
             }
         } else {
             return aClass;
