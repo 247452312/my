@@ -47,10 +47,7 @@ public class DynamicRunnerClassLoader extends URLClassLoader {
         if (resolve) {
             this.resolveClass(loadedClass);
         }
-
         return loadedClass;
-
-
     }
 
     private boolean checkFirst() {
@@ -74,10 +71,5 @@ public class DynamicRunnerClassLoader extends URLClassLoader {
         } catch (Exception var3) {
             return super.loadClass(name, false);
         }
-    }
-
-    @Override
-    protected Class<?> findClass(String name) throws ClassNotFoundException {
-        return super.findClass(name);
     }
 }

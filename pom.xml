@@ -22,7 +22,7 @@
         <spring.version>5.3.13</spring.version>
         <org.dubbo.version>2.7.3</org.dubbo.version>
         <druid.version>1.1.22</druid.version>
-        <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
+        <maven.compiler.plugin.version>3.10.0</maven.compiler.plugin.version>
         <org.apache.dubbo.nacos.version>1.2.1</org.apache.dubbo.nacos.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <fastjson.version>1.2.68</fastjson.version>
@@ -69,6 +69,7 @@
         <rocketmq.version>4.3.0</rocketmq.version>
         <jython.version>2.7.2</jython.version>
         <javassist.version>3.24.0-GA</javassist.version>
+        <auto-service.version>1.0</auto-service.version>
     </properties>
 
     <dependencyManagement>
@@ -439,6 +440,13 @@
                 <artifactId>javassist</artifactId>
                 <version>${javassist.version}</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.google.auto.service/auto-service -->
+            <dependency>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service</artifactId>
+                <version>${auto-service.version}</version>
             </dependency>
 
         </dependencies>

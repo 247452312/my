@@ -78,7 +78,7 @@ public class JavaParserUtil {
     public static void main(String[] args) throws FileNotFoundException {
         List<CompilationUnit> compilationUnits = parseProject(Arrays
                                                                   .asList(
-                                                                      "D:\\share\\ideaSrc\\my"));
+                                                                      "D:\\share\\ideaSrc\\lis-service"));
         Map<String, CompilationUnit> classNameUnitMap = compilationUnits.stream()
                                                                         .filter(t -> t.getPackageDeclaration().isPresent())
                                                                         .filter(JavaParserUtil::filterInterface)
@@ -87,8 +87,8 @@ public class JavaParserUtil {
         //方法参数统计
         methodDeepAnalysis(classNameUnitMap);
 
-        // 方法调用统计
-        methodLink(classNameUnitMap, "indi.uhyils.ast.JavaParserUtil.parseStatement");
+//         方法调用统计
+//        methodLink(classNameUnitMap, "indi.uhyils.ast.JavaParserUtil.parseStatement");
 
     }
 
