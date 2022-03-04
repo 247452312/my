@@ -70,6 +70,7 @@
         <jython.version>2.7.2</jython.version>
         <javassist.version>3.24.0-GA</javassist.version>
         <auto-service.version>1.0</auto-service.version>
+        <kotlin.version>1.6.20-RC</kotlin.version>
     </properties>
 
     <dependencyManagement>
@@ -447,6 +448,18 @@
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
                 <version>${auto-service.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib-jdk8</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-test</artifactId>
+                <version>${kotlin.version}</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>
