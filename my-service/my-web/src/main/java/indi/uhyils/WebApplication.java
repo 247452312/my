@@ -1,6 +1,5 @@
 package indi.uhyils;
 
-import indi.uhyils.loader.DynamicUtil;
 import indi.uhyils.rpc.annotation.MyRpc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,9 +17,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 public class WebApplication {
 
     public static void main(String[] args) throws Exception {
-        DynamicUtil.initDynamicClassLoader(args);
         SpringApplication.run(WebApplication.class, args);
     }
-
-
 }

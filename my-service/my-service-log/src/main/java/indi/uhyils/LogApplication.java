@@ -1,6 +1,5 @@
 package indi.uhyils;
 
-import indi.uhyils.loader.DynamicUtil;
 import indi.uhyils.rpc.annotation.MyRpc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class LogApplication {
 
     public static void main(String[] args) {
-        DynamicUtil.initDynamicClassLoader(args);
         SpringApplication.run(LogApplication.class, args);
     }
 }
