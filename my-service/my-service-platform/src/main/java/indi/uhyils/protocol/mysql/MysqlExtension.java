@@ -2,6 +2,8 @@ package indi.uhyils.protocol.mysql;
 
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.LoginCommand;
+import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.response.InvokeResponse;
 import indi.uhyils.protocol.mysql.pojo.cqe.FindPasswordByNameQuery;
 import indi.uhyils.protocol.mysql.pojo.cqe.InvokeCommand;
@@ -32,4 +34,12 @@ public interface MysqlExtension extends BaseProvider {
      */
     ServiceResult<InvokeResponse> invoke(InvokeCommand command) throws Exception;
 
+    /**
+     * Mysql协议的强制登录,无需校验密码的那种
+     *
+     * @param loginCommand
+     *
+     * @return
+     */
+    ServiceResult<LoginDTO> login(LoginCommand loginCommand);
 }

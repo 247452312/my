@@ -10,6 +10,7 @@ import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.User;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.repository.UserRepository;
@@ -55,6 +56,12 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
         String tokenStr = token.getToken();
         UserDTO userDto = redisPoolHandle.getUser(tokenStr);
         return assembler.toEntity(userDto);
+    }
+
+    @Override
+    public User findUserByIdInRedis(Identifier userId) {
+        UserDTO user = redisPoolHandle.getUser(userId.getId());
+        return assembler.toEntity(user);
     }
 
     @Override

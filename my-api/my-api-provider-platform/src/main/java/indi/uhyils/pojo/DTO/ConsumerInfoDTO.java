@@ -49,6 +49,11 @@ public class ConsumerInfoDTO extends IdDTO {
      */
     private Integer status;
 
+    /**
+     * 登录后此消费者的token
+     */
+    private String token;
+
 
     public String getResponsibilityTelPhone() {
         return responsibilityTelPhone;
@@ -109,5 +114,13 @@ public class ConsumerInfoDTO extends IdDTO {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

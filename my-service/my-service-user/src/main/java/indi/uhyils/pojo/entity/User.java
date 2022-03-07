@@ -17,6 +17,7 @@ import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.BeanUtil;
 import indi.uhyils.util.CollectionUtil;
+import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.MD5Util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -260,4 +261,24 @@ public class User extends AbstractDoEntity<UserDO> {
 
     }
 
+    /**
+     * 强制登录
+     *
+     * @param salt        盐
+     * @param encodeRules 加密信息
+     * @param idUtil
+     */
+    public User forceLogin(String salt, String encodeRules, IdUtil idUtil) {
+        Asserts.assertTrue(data.getUsername() != null);
+        Asserts.assertTrue(data.getPassword() != null);
+
+        /*token和缓存都需要使用id*/
+        long id = idUtil.newId();
+        this.setUnique(new Identifier(id));
+        toData().setId(id);
+
+        /*直接生成token*/
+        this.token = toToken(salt, encodeRules);
+        return this;
+    }
 }

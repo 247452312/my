@@ -37,7 +37,7 @@ public class InterfaceInfoDTO extends IdDTO {
     /**
      * sql语句,详情见sql规则文档
      */
-    private String sqlStr;
+    private String sql;
 
     /**
      * 接口名称,在mysql中为表名
@@ -80,12 +80,12 @@ public class InterfaceInfoDTO extends IdDTO {
         this.markId = markId;
     }
 
-    public String getSqlStr() {
-        return sqlStr;
+    public String getSql() {
+        return sql;
     }
 
-    public void setSqlStr(String sqlStr) {
-        this.sqlStr = sqlStr;
+    public void setSql(String sql) {
+        this.sql = sql;
     }
 
     public String getName() {

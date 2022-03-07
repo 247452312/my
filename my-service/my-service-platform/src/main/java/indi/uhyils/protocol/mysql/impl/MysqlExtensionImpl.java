@@ -5,10 +5,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.enum_.Symbol;
+import indi.uhyils.facade.UserFacade;
 import indi.uhyils.pojo.DO.InterfaceInfoDO;
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
 import indi.uhyils.pojo.DTO.InterfaceInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.LoginCommand;
+import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.cqe.command.InvokeInterfaceCommand;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.response.InvokeResponse;
@@ -41,6 +44,9 @@ public class MysqlExtensionImpl implements MysqlExtension {
     @Autowired
     private InterfaceInfoService interfaceInfoService;
 
+    @Autowired
+    private UserFacade userFacade;
+
     @Override
     @NoToken
     public ServiceResult<ConsumerInfoDTO> findPasswordByName(FindPasswordByNameQuery query) {
@@ -68,5 +74,11 @@ public class MysqlExtensionImpl implements MysqlExtension {
             ((JSONArray) json).add(resultJson);
         }
         return ServiceResult.buildSuccessResult(InvokeResponse.build((JSONArray) json));
+    }
+
+    @Override
+    public ServiceResult<LoginDTO> login(LoginCommand loginCommand) {
+        LoginDTO loginDTO = userFacade.forceLogin(loginCommand);
+        return ServiceResult.buildSuccessResult(loginDTO);
     }
 }

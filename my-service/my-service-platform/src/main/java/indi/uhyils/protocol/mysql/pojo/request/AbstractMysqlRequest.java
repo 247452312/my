@@ -1,5 +1,7 @@
 package indi.uhyils.protocol.mysql.pojo.request;
 
+import indi.uhyils.context.UserContext;
+import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.MysqlHandlerObserver;
 import indi.uhyils.protocol.mysql.pojo.MysqlServerInfo;
@@ -31,6 +33,11 @@ public abstract class AbstractMysqlRequest implements MysqlRequest, MysqlHandler
     protected AbstractMysqlRequest(MysqlHandler mysqlHandler) {
         mysqlServerInfo = SpringUtil.getBean(MysqlServerInfo.class);
         this.mysqlHandler = mysqlHandler;
+        ConsumerInfoDTO consumerInfo = mysqlHandler.getConsumerInfo();
+        if (consumerInfo != null) {
+            String token = consumerInfo.getToken();
+            UserContext.setToken(token);
+        }
     }
 
     @Override

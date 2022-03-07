@@ -97,7 +97,7 @@ public class UpdateSql extends Sql {
         Map<String, SQLExpr> willChange = new HashMap<>(1);
         willChange.put("delete_flag", new SQLNumberExpr(0));
         SQLTableSource tableSource = sqlStatement.getTableSource();
-        SQLBinaryOpExpr newWhere = getNewWhere(sqlStatement.getWhere(), Collections.singletonList((SQLExprTableSource) tableSource), willChange);
+        SQLExpr newWhere = getNewWhere(sqlStatement.getWhere(), Collections.singletonList((SQLExprTableSource) tableSource), willChange);
         sqlStatement.setWhere(newWhere);
         fillDeleteFlag(newWhere);
 
@@ -120,7 +120,7 @@ public class UpdateSql extends Sql {
         return false;
     }
 
-    private void fillDeleteFlag(SQLBinaryOpExpr expr) {
+    private void fillDeleteFlag(SQLExpr expr) {
         Map<String, SQLExpr> willChange = new HashMap<>(1);
         willChange.put("delete_flag", new SQLNumberExpr(0));
         List<SQLSelectQueryBlock> queryBlocks = blockQuerys(expr);

@@ -125,7 +125,6 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
             case PASSED:
             default:
                 break;
-
         }
         return status;
     }

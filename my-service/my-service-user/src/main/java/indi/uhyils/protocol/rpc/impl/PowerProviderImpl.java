@@ -44,8 +44,6 @@ public class PowerProviderImpl extends BaseDefaultProvider<PowerDTO> implements 
         Identifier userId = new Identifier(request.getUserId());
         Boolean result = service.checkUserHavePower(interfaceName, methodName, userId);
         return ServiceResult.buildSuccessResult(result);
-
-
     }
 
     @Override

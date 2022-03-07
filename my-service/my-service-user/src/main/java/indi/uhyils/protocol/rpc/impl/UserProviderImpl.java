@@ -110,4 +110,12 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
         List<UserDTO> result = service.getSampleUserByIds(userIds);
         return ServiceResult.buildSuccessResult(result);
     }
+
+    @Override
+    public ServiceResult<LoginDTO> forceLogin(LoginCommand request) {
+        UserName username = new UserName(request.getUsername());
+        Password password = new Password(request.getPassword());
+        LoginDTO result = service.forceLogin(username, password);
+        return ServiceResult.buildSuccessResult(result);
+    }
 }

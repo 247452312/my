@@ -109,4 +109,14 @@ public interface UserService extends BaseDoService<UserDTO> {
      * @return
      */
     List<UserDTO> getSampleUserByIds(List<Identifier> userIds);
+
+    /**
+     * 使用传过来的用户名密码强制登录,一般用于系统内其他协议进行登录
+     *
+     * @param username 用户名
+     * @param password 密码
+     *
+     * @return
+     */
+    LoginDTO forceLogin(UserName username, Password password);
 }

@@ -3,6 +3,7 @@ package indi.uhyils.repository;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.User;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
@@ -30,6 +31,15 @@ public interface UserRepository extends BaseEntityRepository<UserDO, User> {
      * @return
      */
     User findUserByTokenInRedis(Token token);
+
+    /**
+     * 根据id获取用户
+     *
+     * @param userId
+     *
+     * @return
+     */
+    User findUserByIdInRedis(Identifier userId);
 
     /**
      * 判断token是否存在

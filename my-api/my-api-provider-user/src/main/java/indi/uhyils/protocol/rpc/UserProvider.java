@@ -123,4 +123,12 @@ public interface UserProvider extends DTOProvider<UserDTO> {
     ServiceResult<List<UserDTO>> getSampleUserByIds(IdsQuery request);
 
 
+    /**
+     * 根据传过来的用户名密码强制登录,一般用于内部其他协议登录
+     *
+     * @param loginCommand
+     *
+     * @return
+     */
+    ServiceResult<LoginDTO> forceLogin(LoginCommand loginCommand);
 }

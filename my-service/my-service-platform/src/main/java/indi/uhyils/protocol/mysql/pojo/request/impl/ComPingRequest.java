@@ -1,8 +1,11 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
+import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.pojo.request.AbstractMysqlRequest;
 import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
+import indi.uhyils.protocol.mysql.pojo.response.impl.OkResponse;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -24,6 +27,7 @@ public class ComPingRequest extends AbstractMysqlRequest {
 
     @Override
     public List<MysqlResponse> invoke() {
-        return null;
+        return Collections
+            .singletonList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
     }
 }

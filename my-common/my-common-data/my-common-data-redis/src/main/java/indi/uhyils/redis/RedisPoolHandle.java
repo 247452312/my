@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.StringUtil;
 import java.lang.reflect.Method;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -102,7 +103,26 @@ public class RedisPoolHandle {
             jedis.close();
         }
         return null;
+    }
 
+    /**
+     * 根据用户id获取用户
+     *
+     * @param userId 用户id
+     *
+     * @return user
+     */
+    public UserDTO getUser(Long userId) {
+        Redisable jedis = redisPool.getJedis();
+        try {
+            String token = jedis.get(userId.toString());
+            if (StringUtil.isNotEmpty(token)) {
+                return getUser(token);
+            }
+        } finally {
+            jedis.close();
+        }
+        return null;
     }
 
     /**

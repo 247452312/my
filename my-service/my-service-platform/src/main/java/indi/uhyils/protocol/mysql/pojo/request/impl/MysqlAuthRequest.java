@@ -1,7 +1,10 @@
 package indi.uhyils.protocol.mysql.pojo.request.impl;
 
+import indi.uhyils.context.UserContext;
 import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.LoginCommand;
+import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.protocol.mysql.MysqlExtension;
 import indi.uhyils.protocol.mysql.decoder.impl.Proto;
 import indi.uhyils.protocol.mysql.enums.ClientPowerEnum;
@@ -98,16 +101,25 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
         if (consumerInfoDTO == null) {
             return Collections.singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "没有找到此用户"));
         }
-        getMysqlHandler().setConsumerInfo(consumerInfoDTO);
 
         byte[] bytes = MysqlUtil.encodePassword(consumerInfoDTO.getSecretKey().getBytes(StandardCharsets.UTF_8), seed);
         String a = Base64.encodeBase64String(bytes);
         boolean equals = Objects.equals(a, challenge);
         if (equals) {
-            return Collections.singletonList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
-        } else {
-            return Collections.singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "密码错误,密码请使用secretKey"));
+            LoginCommand loginCommand = new LoginCommand();
+            loginCommand.setUser(UserContext.doGet());
+            loginCommand.setUsername(consumerInfoDTO.getName());
+            loginCommand.setPassword(consumerInfoDTO.getSecretKey());
+            ServiceResult<LoginDTO> loginResponse = mysqlExtension.login(loginCommand);
+            LoginDTO loginDTO = loginResponse.validationAndGet();
+            if (loginDTO != null) {
+                String token = loginDTO.getToken();
+                consumerInfoDTO.setToken(token);
+                getMysqlHandler().setConsumerInfo(consumerInfoDTO);
+                return Collections.singletonList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
+            }
         }
+        return Collections.singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "密码错误,密码请使用secretKey"));
     }
 
     @Override

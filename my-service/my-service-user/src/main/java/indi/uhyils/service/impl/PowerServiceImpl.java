@@ -2,9 +2,11 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.PowerAssembler;
+import indi.uhyils.context.UserContext;
 import indi.uhyils.enum_.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.DTO.PowerDTO;
+import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -12,6 +14,7 @@ import indi.uhyils.pojo.entity.type.InterfaceName;
 import indi.uhyils.pojo.entity.type.MethodName;
 import indi.uhyils.pojo.entity.type.PowerInfo;
 import indi.uhyils.repository.PowerRepository;
+import indi.uhyils.repository.UserRepository;
 import indi.uhyils.service.PowerService;
 import indi.uhyils.util.ApiPowerInitUtil;
 import indi.uhyils.util.Asserts;
@@ -19,6 +22,7 @@ import indi.uhyils.util.LogUtil;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,6 +40,8 @@ public class PowerServiceImpl extends AbstractDoService<PowerDO, Power, PowerDTO
         super(assembler, repository);
     }
 
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<PowerDTO> getPowers() {
@@ -46,7 +52,8 @@ public class PowerServiceImpl extends AbstractDoService<PowerDO, Power, PowerDTO
     @Override
     @ReadWriteMark(type = ReadWriteTypeEnum.READ, tables = {"sys_user", "sys_role", "sys_role_dept", "sys_dept", "sys_dept_power", "sys_power"})
     public Boolean checkUserHavePower(InterfaceName interfaceName, MethodName methodName, Identifier userId) {
-        User user = new User(userId);
+        User user = userRepository.findUserByIdInRedis(userId);
+
         PowerInfo powerInfo = new PowerInfo(interfaceName.getInterfaceName(), methodName.getMethodName());
         return user.havePower(powerInfo, rep);
     }

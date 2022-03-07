@@ -162,7 +162,7 @@ public class Sql extends AbstractEntity {
         }
     }
 
-    protected SQLBinaryOpExpr getNewWhere(SQLExpr where, List<SQLExprTableSource> tableSource, Map<String, SQLExpr> willChange) {
+    protected SQLExpr getNewWhere(SQLExpr where, List<SQLExprTableSource> tableSource, Map<String, SQLExpr> willChange) {
         String[] tableName = getTableName(tableSource);
         if (where == null) {
             return getCondition(willChange, tableName);
@@ -173,7 +173,7 @@ public class Sql extends AbstractEntity {
         needAddCondition(where, result);
         tableName = Arrays.stream(tableName).filter(t -> !result.containsKey(t)).toArray(String[]::new);
         if (tableName.length == 0) {
-            return (SQLBinaryOpExpr) where;
+            return where;
         }
 
         SQLBinaryOpExpr condition = new SQLBinaryOpExpr("mysql");
