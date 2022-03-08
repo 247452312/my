@@ -2,8 +2,11 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
 import indi.uhyils.context.UserContext;
+import indi.uhyils.enum_.Symbol;
+import indi.uhyils.enums.UserStatusEnum;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;
@@ -21,6 +24,7 @@ import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.MD5Util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -122,17 +126,6 @@ public class User extends AbstractDoEntity<UserDO> {
     }
 
     /**
-     * 检查密码是否正确
-     *
-     * @param password
-     *
-     * @return
-     */
-    public boolean checkPassword(Password password) {
-        return Objects.equals(password.getPassword(), data.getPassword());
-    }
-
-    /**
      * 加密密码
      */
     public void encodePassword() {
@@ -163,10 +156,6 @@ public class User extends AbstractDoEntity<UserDO> {
      */
     public void forceInitRole(Role role) {
         this.role = role;
-    }
-
-    public void assertRole() {
-        Asserts.assertTrue(role != null);
     }
 
     public List<Menu> screenMenu(List<Menu> menus) {
@@ -303,5 +292,73 @@ public class User extends AbstractDoEntity<UserDO> {
         /*直接生成token*/
         this.token = toToken(salt, encodeRules);
         return this;
+    }
+
+    /**
+     * 申请一个用户
+     *
+     * @return
+     */
+    public Identifier apply(UserRepository userRepository) {
+        // 校验用户名
+        Asserts.assertTrue(userRepository.checkUserNameRepeat(this), "用户名重复");
+        return userRepository.save(this);
+    }
+
+    /**
+     * 通过用户申请
+     *
+     * @param userRepository
+     */
+    public void passApply(UserRepository userRepository) {
+        // 修改状态
+        this.changeStatus(UserStatusEnum.USING);
+        userRepository.change(this, Collections.singletonList(Arg.as(UserDO::getId, Symbol.EQ, this.unique.getId())));
+    }
+
+    /**
+     * 停止一个用户
+     *
+     * @param userRepository
+     */
+    public void stopUser(UserRepository userRepository) {
+        //修改状态
+        this.changeStatus(UserStatusEnum.STOPED);
+        userRepository.change(this, Collections.singletonList(Arg.as(UserDO::getId, Symbol.EQ, this.unique.getId())));
+    }
+
+    /**
+     * 修改用户状态
+     *
+     * @param status
+     */
+    private void changeStatus(UserStatusEnum status) {
+        toData().setStatus(status.getCode());
+    }
+
+
+    @Override
+    public void perInsert() {
+        // 常规填充
+        super.perInsert();
+        // 校验插入是否可以
+        validationInsert();
+        // 加密密码
+        encodePassword();
+
+    }
+
+    /**
+     * 插入前校验
+     */
+    private void validationInsert() {
+        UserDO userDO = toData();
+        String nickName = userDO.getNickName();
+        Asserts.assertTrue(nickName != null, "昵称不能为空");
+        Asserts.assertTrue(userDO.getPassword() != null, "密码不能为空");
+        Asserts.assertTrue(userDO.getRoleId() != null, "用户角色不能为空");
+        Asserts.assertTrue(userDO.getUsername() != null, "用户名不能为空");
+        Asserts.assertTrue(userDO.getMail() != null, "邮箱不能为空");
+        Asserts.assertTrue(userDO.getPhone() != null, "电话不能为空");
     }
 }

@@ -140,4 +140,25 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
         return LoginDTO.buildLoginSuccess(user.tokenValue(), assem.toDTO(user));
     }
 
+    @Override
+    public Boolean applyUser(UserDTO userDTO) {
+        User user = assem.toEntity(userDTO);
+        user.apply(rep);
+        return true;
+    }
+
+    @Override
+    public Boolean passApply(Identifier request) {
+        User user = new User(request.getId());
+        user.passApply(rep);
+        return true;
+    }
+
+    @Override
+    public Boolean stopUser(Identifier request) {
+        User user = new User(request);
+        user.stopUser(rep);
+        return true;
+    }
+
 }

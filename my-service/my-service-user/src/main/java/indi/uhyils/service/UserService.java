@@ -120,4 +120,31 @@ public interface UserService extends BaseDoService<UserDTO> {
      * @return
      */
     LoginDTO forceLogin(UserName username, Password password, Identifier roleId);
+
+    /**
+     * 申请一个用户
+     *
+     * @param userDTO
+     *
+     * @return
+     */
+    Boolean applyUser(UserDTO userDTO);
+
+    /**
+     * 通过一个用户的申请
+     *
+     * @param request
+     *
+     * @return
+     */
+    Boolean passApply(Identifier request);
+
+    /**
+     * 停用一个用户
+     *
+     * @param identifier
+     *
+     * @return
+     */
+    Boolean stopUser(Identifier identifier);
 }

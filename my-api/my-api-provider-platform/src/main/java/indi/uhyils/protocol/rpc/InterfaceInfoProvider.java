@@ -8,7 +8,7 @@ import indi.uhyils.pojo.cqe.command.InvokeInterfaceCommand;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 
 /**
- * 接口信息表(InterfaceInfo)表 Rpc对外访问层
+ * 接口信息表(节点)(InterfaceInfo)表 Rpc对外访问层
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0

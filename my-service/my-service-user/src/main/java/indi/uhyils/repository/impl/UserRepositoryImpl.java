@@ -1,10 +1,13 @@
 package indi.uhyils.repository.impl;
 
 import com.alibaba.nacos.common.utils.CollectionUtils;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.UserAssembler;
 import indi.uhyils.dao.UserDao;
 import indi.uhyils.enum_.Symbol;
+import indi.uhyils.enums.UserStatusEnum;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
@@ -77,6 +80,7 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
         List<UserDO> byArgsNoPage = dao.selectList(Symbol.makeWrapper(objects));
         Asserts.assertTrue(CollectionUtils.isNotEmpty(byArgsNoPage) && byArgsNoPage.size() == 1, "登录失败,用户名或密码不正确!");
         UserDO userDO = byArgsNoPage.get(0);
+        Asserts.assertEqual(UserStatusEnum.parse(userDO.getStatus()), UserStatusEnum.USING);
         return new User(userDO);
     }
 
@@ -104,5 +108,15 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
     public void checkPassword(User user, Password password) {
         Integer integer = dao.checkUserPassword(user.getUnique().getId(), password.toMD5Str());
         Asserts.assertTrue(integer == 1, "密码错误");
+    }
+
+    @Override
+    public boolean checkUserNameRepeat(User user) {
+        UserDO userDO = user.toData();
+        LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(UserDO::getUsername, userDO.getUsername());
+        // 停用的用户不算
+        queryWrapper.in(UserDO::getStatus, UserStatusEnum.USING.getCode(), UserStatusEnum.APPLYING.getCode());
+        return dao.selectCount(queryWrapper) != 0;
     }
 }

@@ -40,6 +40,11 @@ public class UserDTO extends IdDTO {
     private String headPortrait;
 
     /**
+     * 状态(0->申请中 1->使用中 2->已停用)
+     */
+    private Integer status;
+
+    /**
      * 用户角色
      */
     private Long roleId;
@@ -111,5 +116,13 @@ public class UserDTO extends IdDTO {
 
     public void setRole(RoleDTO role) {
         this.role = role;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

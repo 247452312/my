@@ -16,7 +16,8 @@
         a.phone,
         a.username,
         a.head_portrait as headPortrait,
-        a.role_id       as roleId
+        a.role_id       as roleId,
+        a.status
     </sql>
     <sql id="deptColumnList">
         a.id,
@@ -53,7 +54,7 @@
         a.name,
         a.level
     </sql>
-    
+
     <resultMap type="indi.uhyils.pojo.DO.UserDO" id="UserMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="createDate" column="create_date" jdbcType="INTEGER"/>
@@ -69,6 +70,7 @@
         <result property="mail" column="mail" jdbcType="VARCHAR"/>
         <result property="phone" column="phone" jdbcType="VARCHAR"/>
         <result property="headPortrait" column="head_portrait" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--批量通过主键修改数据-->
@@ -115,6 +117,9 @@
             </if>
             <if test="item.headPortrait != null and item.headPortrait != ''">
                 ,head_portrait = #{item.headPortrait}
+            </if>
+            <if test="item.status != null ">
+                ,status = #{item.status}
             </if>
             where id = #{item.id}
         </foreach>

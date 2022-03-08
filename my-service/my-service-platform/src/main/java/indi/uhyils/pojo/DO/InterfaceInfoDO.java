@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import indi.uhyils.pojo.DO.base.BaseDO;
 
 /**
- * 接口信息表(InterfaceInfo)表 数据库实体类
+ * 接口信息表(节点)(InterfaceInfo)表 数据库实体类
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0

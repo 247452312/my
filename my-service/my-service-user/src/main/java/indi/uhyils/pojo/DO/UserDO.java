@@ -59,6 +59,12 @@ public class UserDO extends BaseDO {
     @TableField
     private String headPortrait;
 
+    /**
+     * 状态(0->申请中 1->使用中 2->已停用)
+     */
+    @TableField
+    private Integer status;
+
 
     public String getNickName() {
         return nickName;
@@ -122,4 +128,11 @@ public class UserDO extends BaseDO {
         this.headPortrait = headPortrait;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

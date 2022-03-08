@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * 接口信息表(InterfaceInfo)表 数据库实体类
+ * 接口信息表(节点)(InterfaceInfo)表 数据库实体类
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年10月18日 19时06分08秒

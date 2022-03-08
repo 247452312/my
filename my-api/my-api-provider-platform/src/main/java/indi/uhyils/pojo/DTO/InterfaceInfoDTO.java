@@ -3,7 +3,7 @@ package indi.uhyils.pojo.DTO;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 
 /**
- * 接口信息表(InterfaceInfo)表 对外数据传输载体
+ * 接口信息表(节点)(InterfaceInfo)表 对外数据传输载体
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0

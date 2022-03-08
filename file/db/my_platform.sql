@@ -132,7 +132,7 @@ CREATE TABLE `sys_interface_info`  (
   `mark_id` bigint(0) NULL DEFAULT NULL COMMENT '类型对应的id,例如类型是0数据库,此字段就是数据库表id',
   `sql` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sql语句,详情见sql规则文档',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '接口信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '接口信息表(节点)' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_interface_info

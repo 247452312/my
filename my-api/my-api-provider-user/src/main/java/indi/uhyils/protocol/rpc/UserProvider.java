@@ -3,10 +3,12 @@ package indi.uhyils.protocol.rpc;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.ApplyUserCommand;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
@@ -131,4 +133,32 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      * @return
      */
     ServiceResult<LoginDTO> forceLogin(LoginCommand loginCommand);
+
+    /**
+     * 申请一个用户
+     *
+     * @param request
+     *
+     * @return
+     */
+    ServiceResult<Boolean> applyUser(ApplyUserCommand request);
+
+
+    /**
+     * 通过一个用户的申请
+     *
+     * @param request
+     *
+     * @return
+     */
+    ServiceResult<Boolean> passApply(IdCommand request);
+
+    /**
+     * 停用一个用户
+     *
+     * @param request
+     *
+     * @return
+     */
+    ServiceResult<Boolean> stopUser(IdCommand request);
 }

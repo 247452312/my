@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * 接口信息表(InterfaceInfo)表 仓库实现
+ * 接口信息表(节点)(InterfaceInfo)表 仓库实现
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0

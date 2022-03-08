@@ -7,7 +7,7 @@ import indi.uhyils.pojo.cqe.command.AddInterfaceCommand;
 import indi.uhyils.pojo.cqe.command.InvokeInterfaceCommand;
 
 /**
- * 接口信息表(InterfaceInfo)表 内部服务接口
+ * 接口信息表(节点)(InterfaceInfo)表 内部服务接口
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0

@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * 接口信息表(InterfaceInfo)表 内部服务实现类
+ * 接口信息表(节点)(InterfaceInfo)表 内部服务实现类
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0

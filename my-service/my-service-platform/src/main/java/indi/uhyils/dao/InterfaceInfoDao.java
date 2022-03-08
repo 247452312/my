@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import indi.uhyils.dao.base.DefaultDao;
 
 /**
- * 接口信息表(InterfaceInfo)表 数据库访问层
+ * 接口信息表(节点)(InterfaceInfo)表 数据库访问层
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0

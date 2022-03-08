@@ -13,7 +13,7 @@ import indi.uhyils.service.InterfaceInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * 接口信息表(InterfaceInfo)表 RPC对外访问实现
+ * 接口信息表(节点)(InterfaceInfo)表 RPC对外访问实现
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0

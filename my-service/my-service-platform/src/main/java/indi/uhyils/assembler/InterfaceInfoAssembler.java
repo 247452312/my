@@ -19,7 +19,7 @@ import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * 接口信息表(InterfaceInfo)表 entity,DO,DTO转换工具
+ * 接口信息表(节点)(InterfaceInfo)表 entity,DO,DTO转换工具
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0

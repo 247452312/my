@@ -100,4 +100,12 @@ public interface UserRepository extends BaseEntityRepository<UserDO, User> {
      */
     void checkPassword(User user, Password password);
 
+    /**
+     * 检查用户名是否重复
+     *
+     * @param user
+     *
+     * @return
+     */
+    boolean checkUserNameRepeat(User user);
 }
