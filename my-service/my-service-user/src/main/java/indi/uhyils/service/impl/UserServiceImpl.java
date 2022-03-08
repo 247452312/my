@@ -18,7 +18,6 @@ import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.service.UserService;
-import indi.uhyils.util.IdUtil;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,9 +52,6 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
 
     @Autowired
     private MenuRepository menuRepository;
-
-    @Autowired
-    private IdUtil idUtil;
 
 
     public UserServiceImpl(UserAssembler userAssembler, UserRepository userRepository) {
@@ -134,9 +130,9 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
     }
 
     @Override
-    public LoginDTO forceLogin(UserName username, Password password) {
-        User user = new User(username, password);
-        user.forceLogin(salt, encodeRules,idUtil);
+    public LoginDTO forceLogin(UserName username, Password password, Identifier roleId) {
+        User user = new User(username, password, roleId);
+        user.forceLogin(salt, encodeRules);
 
         // 注意 强制登录可以重复登录
         // 登录->加入缓存中

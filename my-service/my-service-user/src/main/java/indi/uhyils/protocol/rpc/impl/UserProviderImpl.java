@@ -115,7 +115,7 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
     public ServiceResult<LoginDTO> forceLogin(LoginCommand request) {
         UserName username = new UserName(request.getUsername());
         Password password = new Password(request.getPassword());
-        LoginDTO result = service.forceLogin(username, password);
+        LoginDTO result = service.forceLogin(username, password, new Identifier(request.getRoleId()));
         return ServiceResult.buildSuccessResult(result);
     }
 }

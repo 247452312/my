@@ -21,6 +21,20 @@ public class LoginCommand extends AbstractCommand {
      */
     private String password;
 
+    /**
+     * 强制赋权
+     */
+    private Long roleId;
+
+
+    public static LoginCommand build(String username, String password, Long roleId) {
+        LoginCommand build = new LoginCommand();
+        build.setUsername(username);
+        build.setPassword(password);
+        build.setRoleId(roleId);
+        return build;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -35,5 +49,13 @@ public class LoginCommand extends AbstractCommand {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 }

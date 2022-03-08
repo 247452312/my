@@ -11,6 +11,11 @@ import indi.uhyils.util.DefaultCQEBuildUtil;
  */
 public class UserContext {
 
+    /**
+     * mysql协议的角色id
+     */
+    public static final Long MYSQL_ROLE_ID = 2L;
+
     private static final ThreadLocal<UserDTO> USER = new ThreadLocal<>();
 
     private static final ThreadLocal<String> TOKEN = new ThreadLocal<>();

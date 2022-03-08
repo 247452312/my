@@ -37,6 +37,7 @@ public abstract class AbstractMysqlRequest implements MysqlRequest, MysqlHandler
         if (consumerInfo != null) {
             String token = consumerInfo.getToken();
             UserContext.setToken(token);
+            UserContext.setUser(consumerInfo.getLoginUser());
         }
     }
 

@@ -95,6 +95,7 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
 
     @Override
     public List<MysqlResponse> invoke() {
+        // 判断密码是否正确
         byte[] seed = getMysqlHandler().getPassword();
         ServiceResult<ConsumerInfoDTO> passwordByName = mysqlExtension.findPasswordByName(new FindPasswordByNameQuery(username));
         ConsumerInfoDTO consumerInfoDTO = passwordByName.validationAndGet();
@@ -106,15 +107,16 @@ public class MysqlAuthRequest extends AbstractMysqlRequest {
         String a = Base64.encodeBase64String(bytes);
         boolean equals = Objects.equals(a, challenge);
         if (equals) {
-            LoginCommand loginCommand = new LoginCommand();
+            // 调用系统权限登录
+            LoginCommand loginCommand = LoginCommand.build(consumerInfoDTO.getName(), consumerInfoDTO.getSecretKey(), UserContext.MYSQL_ROLE_ID);
             loginCommand.setUser(UserContext.doGet());
-            loginCommand.setUsername(consumerInfoDTO.getName());
-            loginCommand.setPassword(consumerInfoDTO.getSecretKey());
             ServiceResult<LoginDTO> loginResponse = mysqlExtension.login(loginCommand);
             LoginDTO loginDTO = loginResponse.validationAndGet();
             if (loginDTO != null) {
+                // 生成的token缓存在mysqlHandler中
                 String token = loginDTO.getToken();
                 consumerInfoDTO.setToken(token);
+                consumerInfoDTO.setLoginUser(loginDTO.getUserEntity());
                 getMysqlHandler().setConsumerInfo(consumerInfoDTO);
                 return Collections.singletonList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
             }

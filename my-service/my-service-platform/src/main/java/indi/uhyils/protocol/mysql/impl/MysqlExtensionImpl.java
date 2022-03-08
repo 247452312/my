@@ -64,7 +64,7 @@ public class MysqlExtensionImpl implements MysqlExtension {
         String tableName = command.getTableName();
         List<InterfaceInfoDTO> interfaceInfoDTOS = interfaceInfoService.queryNoPage(Collections.singletonList(Arg.as(InterfaceInfoDO::getName, Symbol.EQ, tableName)), null);
         Asserts.assertTrue(interfaceInfoDTOS != null, "查询表名错误:无表名");
-        Asserts.assertTrue(interfaceInfoDTOS.size() == 1, "查询表名错误:表名不止一个");
+        Asserts.assertTrue(interfaceInfoDTOS.size() == 1, "查询表名错误:表名不止一个,或者为空");
         InterfaceInfoDTO interfaceInfoDTO = interfaceInfoDTOS.get(0);
 
         JSON json = interfaceInfoService.invokeInterface(InvokeInterfaceCommand.build(interfaceInfoDTO.getId(), command.getConsumerId(), command.getParams()));

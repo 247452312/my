@@ -62,19 +62,16 @@ public class RedisPoolHandle {
      * @param user  user
      */
     public void addUser(String token, UserDTO user) {
-        Redisable jedis = redisPool.getJedis();
-        try {
+        try (Redisable jedis = redisPool.getJedis()) {
             String value = JSONObject.toJSONString(user);
-            jedis.append(token, value);
+            jedis.set(token, value);
             //半个小时
             jedis.expire(token, 60 * MyContext.LOGIN_TIME_OUT_MIN);
-            jedis.append(user.getId().toString(), token);
+            jedis.set(user.getId().toString(), token);
             jedis.expire(user.getId().toString(), 60 * MyContext.LOGIN_TIME_OUT_MIN);
 
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
-        } finally {
-            jedis.close();
         }
 
     }

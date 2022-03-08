@@ -110,8 +110,8 @@ public class TokenInjectAop {
         if (userDTO == null) {
             return ServiceResult.buildLoginOutResult();
         }
+        UserContext.setUser(userDTO);
         try {
-            UserContext.setUser(userDTO);
 
             /* 查询是否有权限 */
             // 超级管理员直接放行

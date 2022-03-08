@@ -54,6 +54,11 @@ public class ConsumerInfoDTO extends IdDTO {
      */
     private String token;
 
+    /**
+     * 登录的user
+     */
+    private UserDTO loginUser;
+
 
     public String getResponsibilityTelPhone() {
         return responsibilityTelPhone;
@@ -122,5 +127,13 @@ public class ConsumerInfoDTO extends IdDTO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public UserDTO getLoginUser() {
+        return loginUser;
+    }
+
+    public void setLoginUser(UserDTO loginUser) {
+        this.loginUser = loginUser;
     }
 }

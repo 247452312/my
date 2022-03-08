@@ -49,7 +49,7 @@ public class InterfaceInfoDO extends BaseDO {
     /**
      * sql语句,详情见sql规则文档
      */
-    @TableField
+    @TableField("`sql`")
     private String sql;
 
 

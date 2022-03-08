@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
+import indi.uhyils.context.UserContext;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
@@ -17,7 +18,6 @@ import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.BeanUtil;
 import indi.uhyils.util.CollectionUtil;
-import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.MD5Util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -65,6 +65,22 @@ public class User extends AbstractDoEntity<UserDO> {
     public User(UserDO userDO, RoleDO roleDO) {
         super(userDO);
         this.role = new Role(roleDO);
+    }
+
+    /**
+     * 强制登录用构造函数,不允许其他情况使用
+     *
+     * @param username
+     * @param password
+     * @param roleId
+     */
+    public User(UserName username, Password password, Identifier roleId) {
+        super(parseUserNamePasswordToDO(username, password));
+        this.toData().setRoleId(roleId.getId());
+        /*token和缓存都需要使用id*/
+        long id = String.format("%s&%s", data.getUsername(), data.getPassword()).hashCode();
+        this.setUnique(new Identifier(id));
+        toData().setId(id);
     }
 
     private static UserDO parseUserNamePasswordToDO(UserName userName, Password password) {
@@ -215,7 +231,20 @@ public class User extends AbstractDoEntity<UserDO> {
     }
 
     public Boolean havePower(PowerInfo powerInfo, PowerRepository rep) {
+        // 系统用户放行
+        if (this.isSysRole()) {
+            return true;
+        }
         return rep.havePower(this, powerInfo);
+    }
+
+    /**
+     * 判断此用户是不是系统用户
+     *
+     * @return
+     */
+    private boolean isSysRole() {
+        return Objects.equals(toData().getRoleId(), UserContext.MYSQL_ROLE_ID);
     }
 
 
@@ -266,16 +295,10 @@ public class User extends AbstractDoEntity<UserDO> {
      *
      * @param salt        盐
      * @param encodeRules 加密信息
-     * @param idUtil
      */
-    public User forceLogin(String salt, String encodeRules, IdUtil idUtil) {
+    public User forceLogin(String salt, String encodeRules) {
         Asserts.assertTrue(data.getUsername() != null);
         Asserts.assertTrue(data.getPassword() != null);
-
-        /*token和缓存都需要使用id*/
-        long id = idUtil.newId();
-        this.setUnique(new Identifier(id));
-        toData().setId(id);
 
         /*直接生成token*/
         this.token = toToken(salt, encodeRules);

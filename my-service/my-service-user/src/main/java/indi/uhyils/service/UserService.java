@@ -115,8 +115,9 @@ public interface UserService extends BaseDoService<UserDTO> {
      *
      * @param username 用户名
      * @param password 密码
+     * @param roleId   赋权角色
      *
      * @return
      */
-    LoginDTO forceLogin(UserName username, Password password);
+    LoginDTO forceLogin(UserName username, Password password, Identifier roleId);
 }
