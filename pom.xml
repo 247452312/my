@@ -20,10 +20,10 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.6.1</spring-boot.version>
         <spring.version>5.3.13</spring.version>
-        <org.dubbo.version>2.7.3</org.dubbo.version>
+<!--        <org.dubbo.version>2.7.3</org.dubbo.version>-->
         <druid.version>1.1.22</druid.version>
         <maven.compiler.plugin.version>3.10.0</maven.compiler.plugin.version>
-        <org.apache.dubbo.nacos.version>1.2.1</org.apache.dubbo.nacos.version>
+<!--        <org.apache.dubbo.nacos.version>1.2.1</org.apache.dubbo.nacos.version>-->
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <fastjson.version>1.2.68</fastjson.version>
         <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
@@ -272,7 +272,7 @@
             </dependency>-->
 
 
-            <!-- dubbo -->
+<!--            &lt;!&ndash; dubbo &ndash;&gt;
             <dependency>
                 <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo-spring-boot-starter</artifactId>
@@ -282,7 +282,7 @@
                 <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo</artifactId>
                 <version>${org.dubbo.version}</version>
-            </dependency>
+            </dependency>-->
 
             <dependency>
                 <groupId>com.alibaba</groupId>
