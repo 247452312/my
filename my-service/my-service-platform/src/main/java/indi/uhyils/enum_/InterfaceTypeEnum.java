@@ -14,8 +14,8 @@ public enum InterfaceTypeEnum {
      *
      */
     DB(0, "数据库"),
-    HTTP(1, "http"),
-    MQ(2, "mq");
+    MQ(1, "mq"),
+    HTTP(2, "http");
 
     /**
      * 类型

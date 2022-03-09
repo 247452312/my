@@ -133,7 +133,6 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
     public LoginDTO forceLogin(UserName username, Password password, Identifier roleId) {
         User user = new User(username, password, roleId);
         user.forceLogin(salt, encodeRules);
-
         // 注意 强制登录可以重复登录
         // 登录->加入缓存中
         user.addUserToRedis(rep);

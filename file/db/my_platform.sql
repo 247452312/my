@@ -128,7 +128,7 @@ CREATE TABLE `sys_interface_info`  (
   `provider_id` bigint(0) NULL DEFAULT NULL COMMENT '服务提供方id',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接口名称,在mysql中为表名',
   `pid` bigint(0) NULL DEFAULT NULL COMMENT '父类id,父类写连表sql,子类写接口',
-  `type` int(0) NULL DEFAULT NULL COMMENT '类型 0->数据库 1->mq 2->接口',
+  `type` int(0) NULL DEFAULT NULL COMMENT '类型 0->数据库 1->mq 2->接口(如果此值存在,则说明是叶子节点)',
   `mark_id` bigint(0) NULL DEFAULT NULL COMMENT '类型对应的id,例如类型是0数据库,此字段就是数据库表id',
   `sql` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'sql语句,详情见sql规则文档',
   PRIMARY KEY (`id`) USING BTREE

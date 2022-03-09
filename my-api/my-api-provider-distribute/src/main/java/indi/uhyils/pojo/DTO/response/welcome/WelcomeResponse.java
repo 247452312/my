@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.DTO.response.welcome;
 
+import indi.uhyils.pojo.DTO.response.AlgorithmStatisticsResponse;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
 import indi.uhyils.pojo.DTO.response.LastPlanDTO;

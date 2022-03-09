@@ -1,10 +1,10 @@
-package indi.uhyils.pojo.DTO.response.welcome;
+package indi.uhyils.pojo.DTO.response;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * TODO 这个类记得转移到算法模块里去 这里不是他应该呆的地方
+ * 算法训练统计数据
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月21日 07时26分

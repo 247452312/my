@@ -23,7 +23,7 @@ public class AddInterfaceCommand extends AbstractCommand {
     private Long pid;
 
     /**
-     * 类型 0->数据库 1->mq 2->接口
+     * 类型 0->数据库 1->mq 2->接口(如果此值存在,则说明是叶子节点)
      */
     private Integer type;
 
