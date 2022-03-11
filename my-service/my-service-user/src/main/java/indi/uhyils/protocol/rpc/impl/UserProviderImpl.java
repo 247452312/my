@@ -122,6 +122,7 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
     }
 
     @Override
+    @NoToken
     public ServiceResult<Boolean> applyUser(ApplyUserCommand request) {
         Boolean result = service.applyUser(request.getUserDTO());
         return ServiceResult.buildSuccessResult(result);

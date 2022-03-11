@@ -301,7 +301,8 @@ public class User extends AbstractDoEntity<UserDO> {
      */
     public Identifier apply(UserRepository userRepository) {
         // 校验用户名
-        Asserts.assertTrue(userRepository.checkUserNameRepeat(this), "用户名重复");
+        Asserts.assertTrue(!userRepository.checkUserNameRepeat(this), "用户名重复");
+        changeStatus(UserStatusEnum.APPLYING);
         return userRepository.save(this);
     }
 

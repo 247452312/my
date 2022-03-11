@@ -3,6 +3,7 @@ package indi.uhyils.service.impl;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.UserAssembler;
 import indi.uhyils.context.UserContext;
+import indi.uhyils.enums.UserStatusEnum;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;

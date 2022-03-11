@@ -2,7 +2,9 @@ package indi.uhyils.assembler;
 
 
 import indi.uhyils.pojo.DO.PlatformSourceDO;
+import indi.uhyils.pojo.DO.PlatformSourceInterfaceDO;
 import indi.uhyils.pojo.DTO.PlatformSourceDTO;
+import indi.uhyils.pojo.cqe.command.PublishHttpCommand;
 import indi.uhyils.pojo.entity.PlatformSource;
 import org.mapstruct.Mapper;
 
@@ -16,4 +18,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public abstract class PlatformSourceAssembler extends AbstractAssembler<PlatformSourceDO, PlatformSource, PlatformSourceDTO> {
 
+    public abstract PlatformSourceInterfaceDO toInterfaceDo(PublishHttpCommand dO);
 }

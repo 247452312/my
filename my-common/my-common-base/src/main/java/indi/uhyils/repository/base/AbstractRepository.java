@@ -47,8 +47,8 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     @Override
     public Identifier save(EN entity) {
         if (entity.notHaveId()) {
+            entity.perInsert();
             DO aDo = assembler.toDo(entity);
-            aDo.preInsert();
             dao.insert(aDo);
             entity.upId();
             return Identifier.build(aDo.getId());
@@ -58,8 +58,8 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
             DO aDo = assembler.toDo(entity);
             return Identifier.build(aDo.getId());
         }
+        entity.perUpdate();
         DO aDo = assembler.toDo(entity);
-        aDo.preUpdate();
         dao.updateById(aDo);
         return Identifier.build(aDo.getId());
     }

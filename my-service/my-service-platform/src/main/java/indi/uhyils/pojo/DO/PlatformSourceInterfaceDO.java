@@ -6,15 +6,15 @@ import indi.uhyils.pojo.DO.base.BaseDO;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
-* 接口资源表(PlatformSourceInterface)表 数据库实体类
-*
-* @author uhyils <247452312@qq.com>
-* @version 1.0
-* @date 文件创建日期 2022年03月11日 09时31分
-*/
+ * 接口资源表(PlatformSourceInterface)表 数据库实体类
+ *
+ * @author uhyils <247452312@qq.com>
+ * @version 1.0
+ * @date 文件创建日期 2022年03月11日 15时16分
+ */
 @TableName(value = "sys_platform_source_interface")
 public class PlatformSourceInterfaceDO extends BaseDO {
-    
+
     private static final long serialVersionUID = -1L;
 
     /**
@@ -28,10 +28,10 @@ public class PlatformSourceInterfaceDO extends BaseDO {
     @TableField
     private String requestType;
     /**
-     * 资源主表id
+     * 接口名称
      */
     @TableField
-    private Long sourceId;
+    private String interfaceName;
     /**
      * url地址
      */
@@ -42,6 +42,16 @@ public class PlatformSourceInterfaceDO extends BaseDO {
      */
     @TableField
     private String paramType;
+    /**
+     * 方法名称
+     */
+    @TableField
+    private String methodName;
+    /**
+     * 资源主表id
+     */
+    @TableField
+    private Long sourceId;
 
     public void setReturnType(String returnType){
         this.returnType = returnType;
@@ -50,8 +60,7 @@ public class PlatformSourceInterfaceDO extends BaseDO {
     public String getReturnType(){
         return returnType;
     }
-    
-    
+
     public void setRequestType(String requestType){
         this.requestType = requestType;
     }
@@ -59,21 +68,17 @@ public class PlatformSourceInterfaceDO extends BaseDO {
     public String getRequestType(){
         return requestType;
     }
-    
-    
-    
-    
-    public void setSourceId(Long sourceId){
-        this.sourceId = sourceId;
+
+    public void setInterfaceName(String interfaceName){
+        this.interfaceName = interfaceName;
     }
 
-    public Long getSourceId(){
-        return sourceId;
+    public String getInterfaceName(){
+        return interfaceName;
     }
-    
-    
-    
-    
+
+
+
     public void setUrl(String url){
         this.url = url;
     }
@@ -81,7 +86,7 @@ public class PlatformSourceInterfaceDO extends BaseDO {
     public String getUrl(){
         return url;
     }
-    
+
     public void setParamType(String paramType){
         this.paramType = paramType;
     }
@@ -89,17 +94,40 @@ public class PlatformSourceInterfaceDO extends BaseDO {
     public String getParamType(){
         return paramType;
     }
-    
+
+
+    public void setMethodName(String methodName){
+        this.methodName = methodName;
+    }
+
+    public String getMethodName(){
+        return methodName;
+    }
+
+
+
+    public void setSourceId(Long sourceId){
+        this.sourceId = sourceId;
+    }
+
+    public Long getSourceId(){
+        return sourceId;
+    }
+
+
+
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("returnType", getReturnType())
-                .append("requestType", getRequestType())
-                .append("id", getId())
-                .append("sourceId", getSourceId())
-                .append("url", getUrl())
-                .append("paramType", getParamType())
-                .toString();
+            .append("returnType", getReturnType())
+            .append("requestType", getRequestType())
+            .append("interfaceName", getInterfaceName())
+            .append("url", getUrl())
+            .append("paramType", getParamType())
+            .append("methodName", getMethodName())
+            .append("id", getId())
+            .append("sourceId", getSourceId())
+            .toString();
     }
 }
