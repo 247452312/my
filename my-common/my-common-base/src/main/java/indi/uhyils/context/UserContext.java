@@ -14,7 +14,7 @@ public class UserContext {
     /**
      * mysql协议的角色id
      */
-    public static final Long MYSQL_ROLE_ID = 2L;
+    public static final Long MYSQL_ROLE_ID = -1L;
 
     private static final ThreadLocal<UserDTO> USER = new ThreadLocal<>();
 
