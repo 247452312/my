@@ -2,19 +2,19 @@ package indi.uhyils.util.formula.impl.node;
 
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
-import indi.uhyils.util.MapUtil;
 import indi.uhyils.util.StringUtil;
 import indi.uhyils.util.formula.FormulaNode;
 import indi.uhyils.util.formula.FormulaNodeFactory;
 import indi.uhyils.util.formula.pojo.BracketsStackItem;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -48,7 +48,7 @@ public abstract class AbstractFormulaNode implements FormulaNode {
      */
     private Integer varIndex = 0;
 
-    public AbstractFormulaNode(String formula) {
+    protected AbstractFormulaNode(String formula) {
         this.formula = formula;
         lastNodes = new HashMap<>();
 
@@ -80,13 +80,12 @@ public abstract class AbstractFormulaNode implements FormulaNode {
             // 结束括号的下标
             int endBracketsIndex = -1;
 
+            // 查询括号的数量
             for (int j = i + 1; j < formula.length(); j++) {
                 char c = formula.charAt(j);
                 if (c == '(') {
                     bracketsCount++;
-                    continue;
-                }
-                if (c == ')') {
+                } else if (c == ')') {
                     if (bracketsCount == 0) {
                         endBracketsIndex = j;
                         break;
@@ -134,7 +133,7 @@ public abstract class AbstractFormulaNode implements FormulaNode {
      * 替换括号
      */
     protected void replaceBrackets() {
-        Stack<BracketsStackItem> stack = new Stack<>();
+        Deque<BracketsStackItem> stack = new ArrayDeque<>();
         Map<String, String> nameFormulaMap = new HashMap<>();
         for (int i = formula.length() - 1; i >= 0; i--) {
             char c = formula.charAt(i);
@@ -240,10 +239,10 @@ public abstract class AbstractFormulaNode implements FormulaNode {
         for (Entry<String, FormulaNode> entry : lastNodes.entrySet()) {
             String key = entry.getKey();
             FormulaNode value = entry.getValue();
-            String formula = value.getFormula();
-            formula = dealFormula(formula);
+            String tempFormula = value.getFormula();
+            tempFormula = dealFormula(tempFormula);
 
-            result = result.replace(key, formula);
+            result = result.replace(key, tempFormula);
         }
         return result;
     }

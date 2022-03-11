@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.mysql.handler.impl;
 
 import indi.uhyils.exception.AssertException;
-import indi.uhyils.pojo.DTO.ConsumerInfoDTO;
 import indi.uhyils.protocol.mysql.decoder.impl.MysqlDecoderImpl;
 import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.protocol.mysql.enums.MysqlHandlerStatusEnum;

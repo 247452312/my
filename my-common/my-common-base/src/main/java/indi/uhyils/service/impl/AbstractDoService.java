@@ -25,7 +25,7 @@ public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends Abstra
 
     protected final REP rep;
 
-    public AbstractDoService(ASSEM u, REP r) {
+    protected AbstractDoService(ASSEM u, REP r) {
         this.assem = u;
         this.rep = r;
     }

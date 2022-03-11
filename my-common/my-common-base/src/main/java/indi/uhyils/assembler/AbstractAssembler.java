@@ -10,6 +10,7 @@ import indi.uhyils.util.LogUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.ap.spi.util.IntrospectorUtils;
@@ -48,7 +49,7 @@ public abstract class AbstractAssembler<DO extends BaseDO, ENTITY extends Abstra
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             LogUtil.error(e);
-            return null;
+            return Collections.emptyList();
         }
         return result;
     }

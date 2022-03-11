@@ -13,6 +13,8 @@ import java.io.Serializable;
  */
 public class Arg implements Serializable {
 
+    private static final long serialVersionUID = -1L;
+
     /**
      * 字段名称
      */

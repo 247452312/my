@@ -15,20 +15,22 @@ import java.util.List;
  */
 public abstract class AbstractArgQuery extends DefaultCQE implements BaseArgQuery {
 
+    private static final long serialVersionUID = -1L;
+
     protected List<Arg> args;
 
     protected Order order;
 
     protected Limit limit;
 
-    public AbstractArgQuery() {
+    protected AbstractArgQuery() {
     }
 
-    public AbstractArgQuery(List<Arg> args) {
+    protected AbstractArgQuery(List<Arg> args) {
         this(args, new Order(), new Limit());
     }
 
-    public AbstractArgQuery(List<Arg> args, Order order, Limit limit) {
+    protected AbstractArgQuery(List<Arg> args, Order order, Limit limit) {
         this.args = args;
         this.order = order;
         this.limit = limit;

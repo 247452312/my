@@ -7,6 +7,6 @@ package indi.uhyils.protocol.mysql.plan.interpreter;
  */
 public abstract class AbstractInterpreter implements Interpreter {
 
-    public AbstractInterpreter() {
+    protected AbstractInterpreter() {
     }
 }

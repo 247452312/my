@@ -1,5 +1,6 @@
 package indi.uhyils.assembler;
 
+import indi.uhyils.annotation.Nullable;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
@@ -130,5 +131,6 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
+    @Nullable
     List<Arg> toArgs(DTO dto);
 }

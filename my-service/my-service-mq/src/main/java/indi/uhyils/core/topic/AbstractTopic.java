@@ -52,7 +52,7 @@ public abstract class AbstractTopic implements Topic {
     /**
      * 创建队列的工厂
      */
-    private QueueFactory queueFactory;
+    private transient QueueFactory queueFactory;
 
     protected AbstractTopic(String name) {
         this.name = name;
