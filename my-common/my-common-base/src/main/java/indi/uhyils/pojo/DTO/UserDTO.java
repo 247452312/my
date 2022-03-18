@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.DTO;
 
+import indi.uhyils.annotation.Nullable;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 
 /**
@@ -43,6 +44,11 @@ public class UserDTO extends IdDTO {
      * 状态(0->申请中 1->使用中 2->已停用)
      */
     private Integer status;
+
+    /**
+     * 用户登录token
+     */
+    private String token;
 
     /**
      * 用户角色
@@ -124,5 +130,14 @@ public class UserDTO extends IdDTO {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Nullable
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -108,4 +108,13 @@ public interface UserRepository extends BaseEntityRepository<UserDO, User> {
      * @return
      */
     boolean checkUserNameRepeat(User user);
+
+    /**
+     * 根据用户名获取用户
+     *
+     * @param name
+     *
+     * @return
+     */
+    List<User> findUserByUsername(String name);
 }

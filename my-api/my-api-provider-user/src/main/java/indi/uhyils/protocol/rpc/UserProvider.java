@@ -4,6 +4,7 @@ import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.ApplyUserCommand;
+import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
@@ -126,15 +127,6 @@ public interface UserProvider extends DTOProvider<UserDTO> {
 
 
     /**
-     * 根据传过来的用户名密码强制登录,一般用于内部其他协议登录
-     *
-     * @param loginCommand
-     *
-     * @return
-     */
-    ServiceResult<LoginDTO> forceLogin(LoginCommand loginCommand);
-
-    /**
      * 申请一个用户
      *
      * @param request
@@ -161,4 +153,13 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      * @return
      */
     ServiceResult<Boolean> stopUser(IdCommand request);
+
+    /**
+     * 根据用户名获取用户信息
+     *
+     * @param request 用户名 username
+     *
+     * @return
+     */
+    ServiceResult<List<UserDTO>> getUserByUserName(FindUserByNameQuery request);
 }

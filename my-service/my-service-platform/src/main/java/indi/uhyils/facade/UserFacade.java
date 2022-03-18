@@ -1,7 +1,10 @@
 package indi.uhyils.facade;
 
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -16,5 +19,14 @@ public interface UserFacade extends BaseFacade {
      *
      * @return
      */
-    LoginDTO forceLogin(LoginCommand loginCommand);
+    LoginDTO login(LoginCommand loginCommand);
+
+    /**
+     * 根据用户名获取用户
+     *
+     * @param query
+     *
+     * @return
+     */
+    List<UserDTO> getUserByUsername(FindUserByNameQuery query);
 }

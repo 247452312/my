@@ -68,6 +68,11 @@
                 <artifactId>my-common-platform</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-common-protocol-mysql</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 
             <dependency>

@@ -18,6 +18,8 @@
 package indi.uhyils.util;
 
 
+import indi.uhyils.annotation.NotNull;
+import indi.uhyils.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
@@ -132,6 +134,7 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
      *
      * @return 环境变量的值
      */
+    @Nullable
     public static String getProperty(String key) {
         Environment environment = getApplicationContext().getEnvironment();
         if (environment != null) {
@@ -148,6 +151,7 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
      *
      * @return 环境变量的值
      */
+    @NotNull
     public static String getProperty(String key, String defaultValue) {
         Environment environment = getApplicationContext().getEnvironment();
         if (environment != null) {

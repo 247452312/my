@@ -76,7 +76,7 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
     public User checkLogin(User user) {
         List<Arg> objects = new ArrayList<>();
         objects.add(new Arg(UserDTO::getUsername, "=", user.username().getUserName()));
-        objects.add(new Arg(UserDTO::getPassword, "=", user.password().toMD5Str()));
+        objects.add(new Arg(UserDTO::getPassword, "=", user.password().encode()));
         List<UserDO> byArgsNoPage = dao.selectList(Symbol.makeWrapper(objects));
         Asserts.assertTrue(CollectionUtils.isNotEmpty(byArgsNoPage) && byArgsNoPage.size() == 1, "登录失败,用户名或密码不正确!");
         UserDO userDO = byArgsNoPage.get(0);
@@ -106,7 +106,7 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
 
     @Override
     public void checkPassword(User user, Password password) {
-        Integer integer = dao.checkUserPassword(user.getUnique().getId(), password.toMD5Str());
+        Integer integer = dao.checkUserPassword(user.getUnique().getId(), password.encode());
         Asserts.assertTrue(integer == 1, "密码错误");
     }
 
@@ -118,5 +118,13 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
         // 停用的用户不算
         queryWrapper.in(UserDO::getStatus, UserStatusEnum.USING.getCode(), UserStatusEnum.APPLYING.getCode());
         return dao.selectCount(queryWrapper) != 0;
+    }
+
+    @Override
+    public List<User> findUserByUsername(String name) {
+        LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(UserDO::getUsername, name);
+        List<UserDO> userDOS = dao.selectList(queryWrapper);
+        return assembler.listToEntity(userDOS);
     }
 }

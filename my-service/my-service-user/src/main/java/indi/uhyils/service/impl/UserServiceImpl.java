@@ -3,10 +3,10 @@ package indi.uhyils.service.impl;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.UserAssembler;
 import indi.uhyils.context.UserContext;
-import indi.uhyils.enums.UserStatusEnum;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.User;
@@ -19,6 +19,8 @@ import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.service.UserService;
+import indi.uhyils.util.Asserts;
+import indi.uhyils.util.CollectionUtil;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -130,15 +132,6 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
         return assem.listEntityToDTO(users);
     }
 
-    @Override
-    public LoginDTO forceLogin(UserName username, Password password, Identifier roleId) {
-        User user = new User(username, password, roleId);
-        user.forceLogin(salt, encodeRules);
-        // 注意 强制登录可以重复登录
-        // 登录->加入缓存中
-        user.addUserToRedis(rep);
-        return LoginDTO.buildLoginSuccess(user.tokenValue(), assem.toDTO(user));
-    }
 
     @Override
     public Boolean applyUser(UserDTO userDTO) {
@@ -159,6 +152,13 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
         User user = new User(request);
         user.stopUser(rep);
         return true;
+    }
+
+    @Override
+    public List<UserDTO> getUserByUserName(FindUserByNameQuery request) {
+        List<User> users = rep.findUserByUsername(request.getName());
+        Asserts.assertTrue(CollectionUtil.isNotEmpty(users), "用户名不存在");
+        return assem.listEntityToDTO(users);
     }
 
 }

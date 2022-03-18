@@ -5,6 +5,7 @@ import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.ApplyUserCommand;
+import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
@@ -113,13 +114,6 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
         return ServiceResult.buildSuccessResult(result);
     }
 
-    @Override
-    public ServiceResult<LoginDTO> forceLogin(LoginCommand request) {
-        UserName username = new UserName(request.getUsername());
-        Password password = new Password(request.getPassword());
-        LoginDTO result = service.forceLogin(username, password, new Identifier(request.getRoleId()));
-        return ServiceResult.buildSuccessResult(result);
-    }
 
     @Override
     @NoToken
@@ -137,6 +131,12 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
     @Override
     public ServiceResult<Boolean> stopUser(IdCommand request) {
         Boolean result = service.stopUser(new Identifier(request.getId()));
+        return ServiceResult.buildSuccessResult(result);
+    }
+
+    @Override
+    public ServiceResult<List<UserDTO>> getUserByUserName(FindUserByNameQuery request) {
+        List<UserDTO> result = service.getUserByUserName(request);
         return ServiceResult.buildSuccessResult(result);
     }
 }

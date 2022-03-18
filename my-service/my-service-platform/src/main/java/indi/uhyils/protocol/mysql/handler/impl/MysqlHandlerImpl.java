@@ -1,18 +1,19 @@
 package indi.uhyils.protocol.mysql.handler.impl;
 
+import indi.uhyils.MysqlUtil;
+import indi.uhyils.enums.MysqlErrCodeEnum;
+import indi.uhyils.enums.MysqlHandlerStatusEnum;
+import indi.uhyils.enums.MysqlServerStatusEnum;
 import indi.uhyils.exception.AssertException;
+import indi.uhyils.handler.MysqlHandler;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.RequestAnalysis;
+import indi.uhyils.pojo.entity.PrepareInfo;
+import indi.uhyils.pojo.request.MysqlRequest;
+import indi.uhyils.pojo.response.MysqlResponse;
+import indi.uhyils.pojo.response.impl.AuthResponse;
+import indi.uhyils.pojo.response.impl.ErrResponse;
 import indi.uhyils.protocol.mysql.decoder.impl.MysqlDecoderImpl;
-import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
-import indi.uhyils.protocol.mysql.enums.MysqlHandlerStatusEnum;
-import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
-import indi.uhyils.protocol.mysql.handler.MysqlHandler;
-import indi.uhyils.protocol.mysql.pojo.RequestAnalysis;
-import indi.uhyils.protocol.mysql.pojo.entity.PrepareInfo;
-import indi.uhyils.protocol.mysql.pojo.request.MysqlRequest;
-import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
-import indi.uhyils.protocol.mysql.pojo.response.impl.AuthResponse;
-import indi.uhyils.protocol.mysql.pojo.response.impl.ErrResponse;
-import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.LogUtil;
 import io.netty.buffer.ByteBuf;
@@ -20,6 +21,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -36,7 +38,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @version 1.0
  * @date 文件创建日期 2021年11月03日 09时18分
  */
-public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements MysqlHandler {
+public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements MysqlHandler, ChannelInboundHandler {
 
     /**
      * mysql 系统类
@@ -103,7 +105,7 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
     /**
      * 消费者信息
      */
-    private ConsumerInfoDTO consumerInfoDTO;
+    private UserDTO userDTO;
 
     public MysqlHandlerImpl() {
     }
@@ -162,8 +164,10 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
         this.mysqlChannel = ctx.channel();
         this.localAddress = (InetSocketAddress) mysqlChannel.localAddress();
         LogUtil.info("mysql 连接!" + localAddress);
-        AuthResponse authResponse = new AuthResponse(this);
+        long index = index();
+        AuthResponse authResponse = new AuthResponse(index);
         List<byte[]> msgs = authResponse.toByte();
+        changeIndex(index + 1);
         for (byte[] msg : msgs) {
             LogUtil.info("mysql服务端发送握手信息:\n" + MysqlUtil.dump(msg));
             send(msg);
@@ -328,12 +332,12 @@ public class MysqlHandlerImpl extends ChannelInboundHandlerAdapter implements My
     }
 
     @Override
-    public ConsumerInfoDTO getConsumerInfo() {
-        return consumerInfoDTO;
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
     @Override
-    public void setConsumerInfo(ConsumerInfoDTO consumerInfoDTO) {
-        this.consumerInfoDTO = consumerInfoDTO;
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
 }

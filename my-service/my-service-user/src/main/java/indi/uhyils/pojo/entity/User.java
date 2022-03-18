@@ -21,7 +21,6 @@ import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.BeanUtil;
 import indi.uhyils.util.CollectionUtil;
-import indi.uhyils.util.MD5Util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -129,9 +128,8 @@ public class User extends AbstractDoEntity<UserDO> {
      * 加密密码
      */
     public void encodePassword() {
-        String password = data.getPassword();
-        String encodePassword = MD5Util.MD5Encode(password);
-        data.setPassword(encodePassword);
+        Password password = new Password(data.getPassword());
+        data.setPassword(password.encode());
     }
 
     /**
@@ -274,25 +272,11 @@ public class User extends AbstractDoEntity<UserDO> {
      * @param userRepository
      */
     public void changeToNewPassword(Password password, UserRepository userRepository) {
-        data.setPassword(password.toMD5Str());
+        data.setPassword(password.encode());
         userRepository.save(this);
 
     }
 
-    /**
-     * 强制登录
-     *
-     * @param salt        盐
-     * @param encodeRules 加密信息
-     */
-    public User forceLogin(String salt, String encodeRules) {
-        Asserts.assertTrue(data.getUsername() != null);
-        Asserts.assertTrue(data.getPassword() != null);
-
-        /*直接生成token*/
-        this.token = toToken(salt, encodeRules);
-        return this;
-    }
 
     /**
      * 申请一个用户

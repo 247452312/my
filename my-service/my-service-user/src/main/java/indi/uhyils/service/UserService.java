@@ -2,6 +2,7 @@ package indi.uhyils.service;
 
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -111,17 +112,6 @@ public interface UserService extends BaseDoService<UserDTO> {
     List<UserDTO> getSampleUserByIds(List<Identifier> userIds);
 
     /**
-     * 使用传过来的用户名密码强制登录,一般用于系统内其他协议进行登录
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @param roleId   赋权角色
-     *
-     * @return
-     */
-    LoginDTO forceLogin(UserName username, Password password, Identifier roleId);
-
-    /**
      * 申请一个用户
      *
      * @param userDTO
@@ -147,4 +137,13 @@ public interface UserService extends BaseDoService<UserDTO> {
      * @return
      */
     Boolean stopUser(Identifier identifier);
+
+    /**
+     * 根据用户名获取用户信息
+     *
+     * @param request
+     *
+     * @return
+     */
+    List<UserDTO> getUserByUserName(FindUserByNameQuery request);
 }
