@@ -1,6 +1,6 @@
 package indi.uhyils.protocol.mysql.decoder.impl;
 
-import indi.uhyils.MysqlUtil;
+import indi.uhyils.protocol.mysql.MysqlUtil;
 import indi.uhyils.protocol.mysql.decoder.MysqlDecoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

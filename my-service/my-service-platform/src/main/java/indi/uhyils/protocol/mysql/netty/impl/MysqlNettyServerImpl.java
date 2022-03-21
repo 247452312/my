@@ -1,7 +1,7 @@
 package indi.uhyils.protocol.mysql.netty.impl;
 
 import indi.uhyils.protocol.mysql.decoder.impl.MysqlDecoderImpl;
-import indi.uhyils.protocol.mysql.handler.impl.MysqlHandlerImpl;
+import indi.uhyils.protocol.mysql.handler.MysqlHandlerImpl;
 import indi.uhyils.protocol.mysql.netty.MysqlNettyServer;
 import indi.uhyils.util.LogUtil;
 import io.netty.bootstrap.ServerBootstrap;

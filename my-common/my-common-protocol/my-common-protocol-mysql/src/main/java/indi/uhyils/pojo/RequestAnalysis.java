@@ -90,7 +90,6 @@ public final class RequestAnalysis {
             case COM_DEBUG:
                 result = new ComDebugRequest(mysqlHandler);
                 break;
-
             case COM_SLEEP:
                 result = new ComSleepRequest(mysqlHandler);
                 break;

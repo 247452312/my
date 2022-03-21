@@ -2,11 +2,11 @@ package indi.uhyils.plan;
 
 import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.fastjson.JSONArray;
-import indi.uhyils.extension.MysqlExtension;
 import indi.uhyils.handler.MysqlHandler;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.handler.MysqlHandlerImpl;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.pojo.entity.FieldInfo;
+import indi.uhyils.service.MysqlService;
 import indi.uhyils.util.SpringUtil;
 import indi.uhyils.util.StringUtil;
 import java.util.HashMap;
@@ -15,20 +15,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
+ * 执行计划
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年11月25日 09时51分
  */
 public class MysqlPlanImpl implements MysqlPlan {
 
     /**
-     * 执行计划id
-     */
-    private final Long index;
-
-    /**
      * 系统参数
      */
     private final MysqlHandler handler;
+
+    /**
+     * 执行计划id
+     */
+    private final Long index;
 
     /**
      * 执行计划指向的表
@@ -50,26 +52,25 @@ public class MysqlPlanImpl implements MysqlPlan {
      */
     private List<String> selectList;
 
-
     /**
      * 列信息
      */
     private List<FieldInfo> fieldInfos;
 
     /**
-     * 实际的入参,可以提前指定
+     * 实际的入参,可以提前指定 key为执行计划id,如果key为-1 则代表实际入参
      */
     private Map<Long, JSONArray> params = new HashMap<>();
 
     /**
      * 实际执行类
      */
-    private MysqlExtension mysqlExtension;
+    private MysqlService mysqlExtension;
 
     public MysqlPlanImpl(Long index, MysqlHandler handler) {
         this.index = index;
         this.handler = handler;
-        this.mysqlExtension = SpringUtil.getBean(MysqlExtension.class);
+        this.mysqlExtension = SpringUtil.getBean(MysqlService.class);
     }
 
     public MysqlPlanImpl() {
@@ -112,7 +113,7 @@ public class MysqlPlanImpl implements MysqlPlan {
      * @param param
      */
     private Map<String, Object> fillPlanPlaceholder(Map<Long, JSONArray> param) {
-        /*1. 处理table*/
+        /*1. 处理table, table 如果是&开头, 则后面一定跟一个数字,假定数字为x, 这代表此查询查的是第x个执行计划的返回*/
         String tableName = table.toString();
         if (StringUtil.isNotEmpty(tableName) && tableName.startsWith("&")) {
             String substring = tableName.substring(1);
@@ -123,7 +124,7 @@ public class MysqlPlanImpl implements MysqlPlan {
         /*注,因为子查询都会被转为连表查询.所以这里不需要转换selectList*/
         /*2. 处理where*/
 
-        return null;
+        return new HashMap<>(0);
         // todo 填充执行计划中的占位符
     }
 
