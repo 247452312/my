@@ -24,7 +24,7 @@ public interface PlatformPublishNodeDao extends DefaultDao<PlatformPublishNodeDO
      *
      * @return
      */
-    PlatformPublishNodeDO createMyRpc(RpcInvokeCommand command);
+    PlatformPublishNodeDO findRpcPublishNode(RpcInvokeCommand command);
 
     /**
      * 创建一个http请求
@@ -33,5 +33,5 @@ public interface PlatformPublishNodeDao extends DefaultDao<PlatformPublishNodeDO
      *
      * @return
      */
-    PlatformPublishNodeDO createHttp(HttpInvokeCommand command);
+    PlatformPublishNodeDO findHttpPublishNode(HttpInvokeCommand command);
 }

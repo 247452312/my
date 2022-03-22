@@ -23,7 +23,7 @@ public interface PlatformPublishNodeRepository extends BaseEntityRepository<Plat
      *
      * @return
      */
-    PublishNode createRpc(RpcInvokeCommand command);
+    PublishNode findRpcPublishNode(RpcInvokeCommand command);
 
     /**
      * 创建一个http节点
@@ -32,5 +32,5 @@ public interface PlatformPublishNodeRepository extends BaseEntityRepository<Plat
      *
      * @return
      */
-    PublishNode createHttp(HttpInvokeCommand command);
+    PublishNode findHttpPublishNode(HttpInvokeCommand command);
 }

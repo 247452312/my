@@ -16,13 +16,7 @@ class DbInformationTest {
     @Test
     void fillTableInfos() {
         DbInformationDTO dto = new DbInformationDTO();
-        dto.setTables(Arrays.asList("sys_platform_internal_node",
-                                    "sys_platform_node_link",
-                                    "sys_platform_power",
-                                    "sys_platform_publish_node",
-                                    "sys_platform_source",
-                                    "sys_platform_source_db",
-                                    "sys_platform_source_interface"));
+        dto.setTables(Arrays.asList("sys_platform_publish_node"));
         dto.setDbName("my_platform");
         dto.setUrl("jdbc:mysql://prod:3306/my_platform");
         dto.setType(DbTypeEnum.MYSQL.getTypeCode());

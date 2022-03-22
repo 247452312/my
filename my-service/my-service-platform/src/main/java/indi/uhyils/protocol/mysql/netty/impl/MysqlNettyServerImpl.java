@@ -1,7 +1,7 @@
 package indi.uhyils.protocol.mysql.netty.impl;
 
-import indi.uhyils.protocol.mysql.decoder.impl.MysqlDecoderImpl;
-import indi.uhyils.protocol.mysql.handler.MysqlHandlerImpl;
+import indi.uhyils.protocol.mysql.decode.impl.MysqlDecoderImpl;
+import indi.uhyils.protocol.mysql.handler.impl.MysqlInfoHandlerImpl;
 import indi.uhyils.protocol.mysql.netty.MysqlNettyServer;
 import indi.uhyils.util.LogUtil;
 import io.netty.bootstrap.ServerBootstrap;
@@ -14,15 +14,13 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * @author uhyils <247452312@qq.com>
- * @version 1.0
- * @date 文件创建日期 2021年11月03日 08时45分
+ * @date 文件创建日期 2022年03月22日 09时18分
  */
-@Component
 public class MysqlNettyServerImpl extends ChannelInitializer<SocketChannel> implements MysqlNettyServer {
+
 
     @Value("${mysql-netty:3306}")
     private Integer port;
@@ -38,7 +36,6 @@ public class MysqlNettyServerImpl extends ChannelInitializer<SocketChannel> impl
     private EventLoopGroup workerGroup;
 
     @PostConstruct
-    @Override
     public void init() throws InterruptedException {
         bossGroup = new NioEventLoopGroup(1);
         workerGroup = new NioEventLoopGroup();
@@ -55,6 +52,7 @@ public class MysqlNettyServerImpl extends ChannelInitializer<SocketChannel> impl
     @Override
     protected void initChannel(SocketChannel ch) {
         // 由decoder解析 再交由handler处理
-        ch.pipeline().addLast(new MysqlDecoderImpl(), new MysqlHandlerImpl());
+        ch.pipeline().addLast(new MysqlDecoderImpl(), new MysqlInfoHandlerImpl());
     }
+
 }

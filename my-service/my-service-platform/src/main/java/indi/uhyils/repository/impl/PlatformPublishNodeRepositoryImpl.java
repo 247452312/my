@@ -29,14 +29,14 @@ public class PlatformPublishNodeRepositoryImpl extends AbstractRepository<Platfo
 
 
     @Override
-    public PublishNode createRpc(RpcInvokeCommand command) {
-        PlatformPublishNodeDO node = dao.createMyRpc(command);
+    public PublishNode findRpcPublishNode(RpcInvokeCommand command) {
+        PlatformPublishNodeDO node = dao.findRpcPublishNode(command);
         return assembler.toEntity(node);
     }
 
     @Override
-    public PublishNode createHttp(HttpInvokeCommand command) {
-        PlatformPublishNodeDO node = dao.createHttp(command);
+    public PublishNode findHttpPublishNode(HttpInvokeCommand command) {
+        PlatformPublishNodeDO node = dao.findHttpPublishNode(command);
         return assembler.toEntity(node);
     }
 }

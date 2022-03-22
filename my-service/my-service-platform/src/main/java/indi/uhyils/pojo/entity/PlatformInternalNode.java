@@ -5,6 +5,8 @@ import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.PlatformInternalNodeDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.node.InternalNode;
+import indi.uhyils.repository.PlatformInternalNodeRepository;
+import indi.uhyils.repository.PlatformPublishNodeRepository;
 
 /**
  * 内部节点表(PlatformInternalNode)表 数据库实体类
@@ -24,7 +26,7 @@ public class PlatformInternalNode extends AbstractDoEntity<PlatformInternalNodeD
     }
 
     @Override
-    public JSONArray invoke() {
+    public JSONArray invoke(PlatformPublishNodeRepository publishNodeRepository, PlatformInternalNodeRepository internalNodeRepository) {
         return null;
     }
 }

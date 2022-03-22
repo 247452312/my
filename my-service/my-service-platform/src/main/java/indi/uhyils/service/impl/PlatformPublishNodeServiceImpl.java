@@ -9,11 +9,12 @@ import indi.uhyils.pojo.cqe.command.HttpInvokeCommand;
 import indi.uhyils.pojo.cqe.command.RpcInvokeCommand;
 import indi.uhyils.pojo.entity.PlatformPublishNode;
 import indi.uhyils.pojo.entity.VirtualNodeImpl;
-import indi.uhyils.pojo.entity.node.PublishNode;
-import indi.uhyils.pojo.entity.node.VirtualNode;
+import indi.uhyils.pojo.entity.node.Node;
 import indi.uhyils.pojo.response.InvokeResponse;
+import indi.uhyils.repository.PlatformInternalNodeRepository;
 import indi.uhyils.repository.PlatformPublishNodeRepository;
 import indi.uhyils.service.PlatformPublishNodeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,27 +28,29 @@ import org.springframework.stereotype.Service;
 @ReadWriteMark(tables = {"sys_platform_publish_node"})
 public class PlatformPublishNodeServiceImpl extends AbstractDoService<PlatformPublishNodeDO, PlatformPublishNode, PlatformPublishNodeDTO, PlatformPublishNodeRepository, PlatformPublishNodeAssembler> implements PlatformPublishNodeService {
 
+    @Autowired
+    private PlatformInternalNodeRepository internalNodeRepository;
+
     public PlatformPublishNodeServiceImpl(PlatformPublishNodeAssembler assembler, PlatformPublishNodeRepository repository) {
         super(assembler, repository);
     }
 
-
     @Override
     public InvokeResponse mysqlInvoke(String sql) {
-        VirtualNode virtualNode = new VirtualNodeImpl(sql);
-        JSONArray invoke = virtualNode.invoke();
+        Node virtualNode = new VirtualNodeImpl(sql);
+        JSONArray invoke = virtualNode.invoke(rep, internalNodeRepository);
         return InvokeResponse.build(invoke);
     }
 
     @Override
     public InvokeResponse rpcInvoke(RpcInvokeCommand command) {
-        PublishNode publishNode = rep.createRpc(command);
-        return InvokeResponse.build(publishNode.invoke());
+        Node publishNode = rep.findRpcPublishNode(command);
+        return InvokeResponse.build(publishNode.invoke(rep, internalNodeRepository));
     }
 
     @Override
     public InvokeResponse httpInvoke(HttpInvokeCommand command) {
-        PublishNode publishNode = rep.createHttp(command);
-        return InvokeResponse.build(publishNode.invoke());
+        Node publishNode = rep.findHttpPublishNode(command);
+        return InvokeResponse.build(publishNode.invoke(rep, internalNodeRepository));
     }
 }

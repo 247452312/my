@@ -3,6 +3,11 @@ package indi.uhyils.pojo.entity;
 import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.node.VirtualNode;
+import indi.uhyils.repository.PlatformInternalNodeRepository;
+import indi.uhyils.repository.PlatformPublishNodeRepository;
+import indi.uhyils.util.mysql.plan.MysqlPlan;
+import indi.uhyils.util.mysql.plan.PlanUtil;
+import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -20,7 +25,9 @@ public class VirtualNodeImpl extends AbstractEntity<String> implements VirtualNo
     }
 
     @Override
-    public JSONArray invoke() {
+    public JSONArray invoke(PlatformPublishNodeRepository publishNodeRepository, PlatformInternalNodeRepository internalNodeRepository) {
+        List<MysqlPlan> mysqlPlans = PlanUtil.parseSqlToPlan(sql);
+
         return null;
     }
 }

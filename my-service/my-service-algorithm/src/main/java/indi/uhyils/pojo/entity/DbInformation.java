@@ -232,7 +232,11 @@ public class DbInformation extends AbstractEntity {
                     stringTableInfoHashMap.put(tableName, ti);
                     ResultSet rs2 = dmd.getColumns(null, "%", tableName, "%");
                     while (rs2.next()) {
-                        ColumnInfo ci = new ColumnInfo(rs2.getString("TYPE_NAME"), 0, rs2.getString("COLUMN_NAME"));
+                        String typeName = rs2.getString("TYPE_NAME");
+                        if (Objects.equals(typeName, "INT")) {
+                            typeName = "INTEGER";
+                        }
+                        ColumnInfo ci = new ColumnInfo(typeName, 0, rs2.getString("COLUMN_NAME"));
                         String bigName = KproStringUtil.dealDbNameToJavaFileName(ci.getName());
                         String smallName = bigName.substring(0, 1).toLowerCase() + bigName.substring(1);
                         ci.setBigName(bigName);
