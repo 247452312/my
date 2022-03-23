@@ -4,7 +4,6 @@ import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -28,5 +27,5 @@ public interface UserFacade extends BaseFacade {
      *
      * @return
      */
-    List<UserDTO> getUserByUsername(FindUserByNameQuery query);
+    UserDTO getUserByUsername(FindUserByNameQuery query);
 }

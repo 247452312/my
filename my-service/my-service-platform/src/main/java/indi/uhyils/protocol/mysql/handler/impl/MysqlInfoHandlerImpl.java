@@ -93,108 +93,109 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
         platformPublishNodeService = SpringUtil.getBean(platformPublishNodeService.getClass());
     }
 
-    private static MysqlCommand loadCommand(MysqlTcpInfo mysqlHandler, MysqlThisRequestInfo mysqlThisRequestInfo, MysqlCommandTypeEnum parse) {
+    private List<MysqlResponse> loadCommand(MysqlThisRequestInfo mysqlThisRequestInfo, MysqlCommandTypeEnum parse) throws Exception {
         MysqlCommand result = null;
         switch (parse) {
             /*这里是需要发送往后台进行处理的请求类型*/
             case COM_QUERY:
-                result = new ComQueryCommand(mysqlHandler);
+                result = new ComQueryCommand(mysqlTcpInfo, mysqlThisRequestInfo);
+                result.load(mysqlThisRequestInfo);
                 break;
             case COM_FIELD_LIST:
-                result = new ComFieldListCommand(mysqlHandler);
+                result = new ComFieldListCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_TABLE_DUMP:
-                result = new ComTableDumpCommand(mysqlHandler);
+                result = new ComTableDumpCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_STMT_EXECUTE:
-                result = new ComStmtExecuteCommand(mysqlHandler);
+                result = new ComStmtExecuteCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_STMT_PREPARE:
-                result = new ComStmtPrepareCommand(mysqlHandler);
+                result = new ComStmtPrepareCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_STMT_SEND_LONG_DATA:
-                result = new ComStmtSendLongDataCommand(mysqlHandler);
+                result = new ComStmtSendLongDataCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
-
 
             /* 这里是和服务器相关的请求类型*/
             case COM_PROCESS_INFO:
-                result = new ComProcessInfoCommand(mysqlHandler);
+                result = new ComProcessInfoCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_PROCESS_KILL:
-                result = new ComProcessKillCommand(mysqlHandler);
+                result = new ComProcessKillCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_STATISTICS:
-                result = new ComStatisticsCommand(mysqlHandler);
+                result = new ComStatisticsCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
 
-            /*这里是不需要发送往服务 器进行处理的请求类型*/
+
+            /*这里是不需要发送往服务器进行处理的请求类型*/
             case COM_PING:
-                result = new ComPingCommand(mysqlHandler);
+                result = new ComPingCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_QUIT:
-                result = new ComQuitCommand(mysqlHandler);
-                mysqlHandler.setStatus(MysqlHandlerStatusEnum.OVER);
+                result = new ComQuitCommand(mysqlTcpInfo, mysqlThisRequestInfo);
+                mysqlTcpInfo.setStatus(MysqlHandlerStatusEnum.OVER);
                 break;
             case COM_TIME:
-                result = new ComTimeCommand(mysqlHandler);
+                result = new ComTimeCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_DEBUG:
-                result = new ComDebugCommand(mysqlHandler);
+                result = new ComDebugCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_SLEEP:
-                result = new ComSleepCommand(mysqlHandler);
+                result = new ComSleepCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_CONNECT:
-                result = new ComConnectCommand(mysqlHandler);
+                result = new ComConnectCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_DROP_DB:
-                result = new ComDropDbCommand(mysqlHandler);
+                result = new ComDropDbCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_INIT_DB:
-                result = new ComInitDbCommand(mysqlHandler);
+                result = new ComInitDbCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_REFRESH:
-                result = new ComRefreshCommand(mysqlHandler);
+                result = new ComRefreshCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_SHUTDOWN:
-                result = new ComShutdownCommand(mysqlHandler);
+                result = new ComShutdownCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_CREATE_DB:
-                result = new ComCreateDbCommand(mysqlHandler);
+                result = new ComCreateDbCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_SET_OPTION:
-                result = new ComSetOptionCommand(mysqlHandler);
+                result = new ComSetOptionCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_STMT_CLOSE:
-                result = new ComStmtCloseCommand(mysqlHandler);
+                result = new ComStmtCloseCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_STMT_FETCH:
-                result = new ComStmtFetchCommand(mysqlHandler);
+                result = new ComStmtFetchCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_STMT_RESET:
-                result = new ComStmtResetCommand(mysqlHandler);
+                result = new ComStmtResetCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_BINLOG_DUMP:
-                result = new ComBinlogDumpCommand(mysqlHandler);
+                result = new ComBinlogDumpCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_CHANGE_USER:
-                result = new ComChangeUserCommand(mysqlHandler);
+                result = new ComChangeUserCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_CONNECT_OUT:
-                result = new ComConnectOutCommand(mysqlHandler);
+                result = new ComConnectOutCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_DELAYED_INSERT:
-                result = new ComDelayedInsertCommand(mysqlHandler);
+                result = new ComDelayedInsertCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             case COM_REGISTER_SLAVE:
-                result = new ComRegisterSlaveCommand(mysqlHandler);
+                result = new ComRegisterSlaveCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                 break;
             default:
                 break;
         }
-        result.load(mysqlThisRequestInfo);
-        return result;
+
+        return result.invoke();
     }
 
     /**
@@ -258,20 +259,18 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
             MysqlHandlerStatusEnum status = mysqlTcpInfo.getAndIncrementStatus();
             switch (status) {
                 case FIRST_SIGHT:
-                    MysqlCommand mysqlCommand = new MysqlAuthCommand(mysqlTcpInfo);
+                    MysqlAuthCommand mysqlCommand = new MysqlAuthCommand(mysqlTcpInfo, mysqlThisRequestInfo);
                     mysqlCommand.load(mysqlThisRequestInfo);
-                    service.login();
-                    List<MysqlResponse> invoke = mysqlCommand.invoke();
+                    MysqlResponse invoke = service.login(mysqlCommand);
                     sendResponse(invoke);
                     return;
                 case PASSED:
                     doDealRequest(mysqlThisRequestInfo);
+                    return;
                 case OVER:
                 default:
                     Asserts.throwException("请求已经结束,请不要再次请求");
             }
-
-
         } catch (AssertException e) {
             LogUtil.error(e, "解析错误");
             MysqlResponse response = new ErrResponse(mysqlTcpInfo, MysqlErrCodeEnum.EE_UNKNOWN_PROTOCOL_OPTION, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, e.getLocalizedMessage());
@@ -290,9 +289,7 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
             closeOnFlush();
             return;
         }
-        MysqlCommand mysqlCommand = loadCommand(mysqlTcpInfo, mysqlThisRequestInfo, load);
-        // 执行请求并返回返回值
-        List<MysqlResponse> invokes = mysqlCommand.invoke();
+        List<MysqlResponse> invokes = loadCommand(mysqlThisRequestInfo, load);
         sendResponse(invokes);
 
     }
@@ -307,13 +304,22 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
             return;
         }
         for (MysqlResponse invoke : invokes) {
-            // 返回byte
-            List<byte[]> bytes = invoke.toByte();
-            for (byte[] aByte : bytes) {
-                String responseBytes = MysqlUtil.dump(aByte);
-                LogUtil.info("mysql回应:\n" + responseBytes);
-                send(aByte);
-            }
+            sendResponse(invoke);
+        }
+    }
+
+    /**
+     * 发送回应
+     *
+     * @param invoke
+     */
+    private void sendResponse(MysqlResponse invoke) {
+        // 返回byte
+        List<byte[]> bytes = invoke.toByte();
+        for (byte[] aByte : bytes) {
+            String responseBytes = MysqlUtil.dump(aByte);
+            LogUtil.info("mysql回应:\n" + responseBytes);
+            send(aByte);
         }
     }
 

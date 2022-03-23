@@ -15,4 +15,11 @@ public interface MysqlTcpInfoObserver {
      */
     MysqlTcpInfo getMysqlTcpInfo();
 
+    /**
+     * 获取mysql此次请求的信息
+     *
+     * @return
+     */
+    MysqlThisRequestInfo getMysqlThisRequestInfo();
+
 }

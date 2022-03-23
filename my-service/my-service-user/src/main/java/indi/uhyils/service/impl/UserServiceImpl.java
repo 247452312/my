@@ -155,10 +155,12 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
     }
 
     @Override
-    public List<UserDTO> getUserByUserName(FindUserByNameQuery request) {
+    public UserDTO getUserByUserName(FindUserByNameQuery request) {
         List<User> users = rep.findUserByUsername(request.getName());
         Asserts.assertTrue(CollectionUtil.isNotEmpty(users), "用户名不存在");
-        return assem.listEntityToDTO(users);
+        Asserts.assertTrue(users.size() == 1, "同一个用户名只能有一条数据,{}", request.getName());
+        User user = users.get(0);
+        return assem.toDTO(user);
     }
 
 }

@@ -7,6 +7,7 @@ import indi.uhyils.pojo.response.impl.OkResponse;
 import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.protocol.mysql.history.decoder.Proto;
 import indi.uhyils.protocol.mysql.history.handler.MysqlHandler;
 import java.util.Arrays;
@@ -26,8 +27,8 @@ public class ComStmtPrepareCommand extends AbstractMysqlCommand {
      */
     private long prepareId;
 
-    public ComStmtPrepareCommand(MysqlTcpInfo mysqlHandler) {
-        super(mysqlHandler);
+    public ComStmtPrepareCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
     @Override

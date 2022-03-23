@@ -10,6 +10,7 @@ import indi.uhyils.protocol.mysql.enums.FieldMarkEnum;
 import indi.uhyils.protocol.mysql.enums.FieldTypeEnum;
 import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.protocol.mysql.history.handler.MysqlHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,8 +31,8 @@ public class ComStatisticsCommand extends AbstractMysqlCommand {
      */
     private static final String STATIC_TABLE_NAME = "static_info";
 
-    public ComStatisticsCommand(MysqlTcpInfo mysqlHandler) {
-        super(mysqlHandler);
+    public ComStatisticsCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
     @Override

@@ -9,6 +9,7 @@ import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.protocol.mysql.history.decoder.Proto;
 import indi.uhyils.util.SpringUtil;
 import java.util.Arrays;
@@ -31,8 +32,8 @@ public class ComInitDbCommand extends AbstractMysqlCommand {
 
     private String sql;
 
-    public ComInitDbCommand(MysqlTcpInfo mysqlHandler) {
-        super(mysqlHandler);
+    public ComInitDbCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
     @Override

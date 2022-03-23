@@ -2,6 +2,7 @@ package indi.uhyils.pojo.cqe;
 
 import indi.uhyils.enums.MysqlCommandTypeEnum;
 import indi.uhyils.pojo.response.MysqlResponse;
+import indi.uhyils.protocol.mysql.handler.MysqlTcpInfoObserver;
 import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年11月03日 09时38分
  */
-public interface MysqlCommand {
+public interface MysqlCommand extends MysqlTcpInfoObserver {
 
 
     /**

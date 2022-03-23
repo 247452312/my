@@ -161,5 +161,5 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return
      */
-    ServiceResult<List<UserDTO>> getUserByUserName(FindUserByNameQuery request);
+    ServiceResult<UserDTO> getUserByUserName(FindUserByNameQuery request);
 }

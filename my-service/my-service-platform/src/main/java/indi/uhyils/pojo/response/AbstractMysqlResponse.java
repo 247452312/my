@@ -2,6 +2,7 @@ package indi.uhyils.pojo.response;
 
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfoObserver;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +15,19 @@ import java.util.List;
 public abstract class AbstractMysqlResponse implements MysqlResponse, MysqlTcpInfoObserver {
 
     /**
-     * 此次连接的信息
+     * 此次tcp的信息
      */
     protected MysqlTcpInfo mysqlTcpInfo;
 
+    /**
+     * 此次请求的信息
+     */
+    protected MysqlThisRequestInfo mysqlThisRequestInfo;
+
     protected AbstractMysqlResponse(MysqlTcpInfo mysqlTcpInfo) {
         this.mysqlTcpInfo = mysqlTcpInfo;
-
     }
+
 
     @Override
     public List<byte[]> toByte() {
@@ -39,6 +45,11 @@ public abstract class AbstractMysqlResponse implements MysqlResponse, MysqlTcpIn
         }
         return result;
 
+    }
+
+    @Override
+    public MysqlThisRequestInfo getMysqlThisRequestInfo() {
+        return null;
     }
 
     @Override

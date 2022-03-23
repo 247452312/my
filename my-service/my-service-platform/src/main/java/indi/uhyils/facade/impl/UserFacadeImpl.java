@@ -9,7 +9,6 @@ import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.protocol.rpc.UserProvider;
 import indi.uhyils.rpc.annotation.RpcReference;
-import java.util.List;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -28,8 +27,8 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public List<UserDTO> getUserByUsername(FindUserByNameQuery query) {
-        ServiceResult<List<UserDTO>> result = userProvider.getUserByUserName(query);
+    public UserDTO getUserByUsername(FindUserByNameQuery query) {
+        ServiceResult<UserDTO> result = userProvider.getUserByUserName(query);
         return result.validationAndGet();
     }
 

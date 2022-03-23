@@ -145,5 +145,5 @@ public interface UserService extends BaseDoService<UserDTO> {
      *
      * @return
      */
-    List<UserDTO> getUserByUserName(FindUserByNameQuery request);
+    UserDTO getUserByUserName(FindUserByNameQuery request);
 }

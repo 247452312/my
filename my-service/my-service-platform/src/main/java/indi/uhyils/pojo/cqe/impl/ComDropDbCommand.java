@@ -7,6 +7,7 @@ import indi.uhyils.pojo.response.impl.ErrResponse;
 import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,8 +19,8 @@ import java.util.List;
  */
 public class ComDropDbCommand extends AbstractMysqlCommand {
 
-    public ComDropDbCommand(MysqlTcpInfo mysqlHandler) {
-        super(mysqlHandler);
+    public ComDropDbCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
     @Override

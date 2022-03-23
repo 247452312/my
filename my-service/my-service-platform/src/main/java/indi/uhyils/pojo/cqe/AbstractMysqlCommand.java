@@ -2,6 +2,7 @@ package indi.uhyils.pojo.cqe;
 
 import indi.uhyils.context.UserContext;
 import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfoObserver;
 import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
@@ -11,7 +12,7 @@ import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
  * @version 1.0
  * @date 文件创建日期 2021年11月03日 15时03分
  */
-public abstract class AbstractMysqlCommand implements MysqlCommand, MysqlTcpInfoObserver {
+public abstract class AbstractMysqlCommand extends AbstractCommand implements MysqlCommand, MysqlTcpInfoObserver {
 
     /**
      * mysql客户端连接
@@ -24,7 +25,7 @@ public abstract class AbstractMysqlCommand implements MysqlCommand, MysqlTcpInfo
      */
     protected MysqlThisRequestInfo mysqlThisRequestInfo;
 
-    protected AbstractMysqlCommand(MysqlTcpInfo mysqlTcpInfo) {
+    protected AbstractMysqlCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
         this.mysqlTcpInfo = mysqlTcpInfo;
         UserDTO userInfo = mysqlTcpInfo.getUserDTO();
         if (userInfo != null) {
@@ -32,6 +33,7 @@ public abstract class AbstractMysqlCommand implements MysqlCommand, MysqlTcpInfo
             UserContext.setToken(token);
             UserContext.setUser(userInfo);
         }
+        this.mysqlThisRequestInfo = mysqlThisRequestInfo;
     }
 
     @Override
@@ -44,6 +46,11 @@ public abstract class AbstractMysqlCommand implements MysqlCommand, MysqlTcpInfo
     public void load(MysqlThisRequestInfo mysqlThisRequestInfo) {
         this.mysqlThisRequestInfo = mysqlThisRequestInfo;
         load();
+    }
+
+    @Override
+    public MysqlThisRequestInfo getMysqlThisRequestInfo() {
+        return mysqlThisRequestInfo;
     }
 
     /**

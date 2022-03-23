@@ -1,32 +1,15 @@
 package indi.uhyils.pojo.cqe.impl;
 
-import indi.uhyils.context.UserContext;
+import indi.uhyils.enums.ClientPowerEnum;
 import indi.uhyils.enums.MysqlCommandTypeEnum;
-import indi.uhyils.extension.MysqlExtension;
-import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
-import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
-import indi.uhyils.pojo.DTO.request.LoginCommand;
-import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.cqe.AbstractMysqlCommand;
-import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.pojo.response.MysqlResponse;
-import indi.uhyils.pojo.response.impl.ErrResponse;
-import indi.uhyils.pojo.response.impl.OkResponse;
-import indi.uhyils.protocol.mysql.enums.ClientPowerEnum;
-import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
-import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
-import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
+import indi.uhyils.protocol.mysql.decode.Proto;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
-import indi.uhyils.protocol.mysql.history.MysqlUtil;
-import indi.uhyils.protocol.mysql.history.decoder.Proto;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
+import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import indi.uhyils.util.Asserts;
-import indi.uhyils.util.SpringUtil;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import org.apache.commons.codec.binary.Base64;
 
 
 /**
@@ -85,51 +68,19 @@ public class MysqlAuthCommand extends AbstractMysqlCommand {
      */
     private String pluginName;
 
-    /**
-     * mysql扩展点
-     */
-    private MysqlExtension mysqlExtension;
 
-    public MysqlAuthCommand(MysqlTcpInfo mysqlTcpInfo) {
-        super(mysqlTcpInfo);
-        this.mysqlExtension = SpringUtil.getBean(MysqlExtension.class);
+    public MysqlAuthCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
     @Override
     public List<MysqlResponse> invoke() {
-        // 1.判断密码是否正确
-        byte[] seed = getMysqlHandler().getPassword();
-        ServiceResult<UserDTO> passwordByName = mysqlExtension.findPasswordByName(FindUserByNameQuery.build(username));
-        UserDTO userDTO = passwordByName.validationAndGet();
-        if (userDTO == null) {
-            return Collections.singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "没有找到此用户"));
-        }
-        // 1.1 密码解密
-        Password password = new Password(userDTO.getPassword());
-        // 1.2 密码再次加密为mysql SHA-1
-        String decodePassword = password.decode();
-        byte[] bytes = MysqlUtil.encodePassword(decodePassword.getBytes(StandardCharsets.UTF_8), seed);
-        String userPassword = Base64.encodeBase64String(bytes);
-        boolean equals = Objects.equals(userPassword, challenge);
-        // 2. 密码正确则登录
-        if (equals) {
-            // 调用系统权限登录
-            LoginCommand loginCommand = LoginCommand.build(userDTO.getUsername(), userDTO.getPassword(), UserContext.MYSQL_ROLE_ID);
-            ServiceResult<LoginDTO> loginResponse = mysqlExtension.login(loginCommand);
-            LoginDTO loginDTO = loginResponse.validationAndGet();
-            if (loginDTO != null) {
-                // 生成的token缓存在mysqlHandler中
-                String token = loginDTO.getToken();
-                userDTO.setToken(token);
-                getMysqlHandler().setUserDTO(userDTO);
-                return Collections.singletonList(new OkResponse(getMysqlHandler(), SqlTypeEnum.NULL));
-            }
-        }
-        return Collections.singletonList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "密码错误,密码请使用secretKey"));
+        return null;
     }
 
     @Override
     protected void load() {
+        byte[] mysqlBytes = mysqlThisRequestInfo.getMysqlBytes();
         Proto proto = new Proto(mysqlBytes, 3);
         this.sequenceId = proto.getFixedInt(1);
         this.abilityFlags = proto.getFixedInt(4);
@@ -156,37 +107,72 @@ public class MysqlAuthCommand extends AbstractMysqlCommand {
         return abilityFlags;
     }
 
+    public void setAbilityFlags(long abilityFlags) {
+        this.abilityFlags = abilityFlags;
+    }
 
     public long getMaxMsgSize() {
         return maxMsgSize;
+    }
+
+    public void setMaxMsgSize(long maxMsgSize) {
+        this.maxMsgSize = maxMsgSize;
     }
 
     public long getCharset() {
         return charset;
     }
 
+    public void setCharset(long charset) {
+        this.charset = charset;
+    }
+
     public String getUsername() {
         return username;
     }
 
-    public String getChallenge() {
-        return challenge;
-    }
-
-    public String getDbName() {
-        return dbName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public long getChallengeLength() {
         return challengeLength;
     }
 
+    public void setChallengeLength(long challengeLength) {
+        this.challengeLength = challengeLength;
+    }
+
+    public String getChallenge() {
+        return challenge;
+    }
+
+    public void setChallenge(String challenge) {
+        this.challenge = challenge;
+    }
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
+
     public long getSequenceId() {
         return sequenceId;
     }
 
+    public void setSequenceId(long sequenceId) {
+        this.sequenceId = sequenceId;
+    }
+
     public String getPluginName() {
         return pluginName;
+    }
+
+    public void setPluginName(String pluginName) {
+        this.pluginName = pluginName;
     }
 
     @Override

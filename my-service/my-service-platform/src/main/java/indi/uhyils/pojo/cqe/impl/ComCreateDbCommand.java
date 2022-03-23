@@ -7,6 +7,7 @@ import indi.uhyils.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.pojo.response.MysqlResponse;
 import indi.uhyils.pojo.response.impl.ErrResponse;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,8 +19,8 @@ import java.util.List;
  */
 public class ComCreateDbCommand extends AbstractMysqlCommand {
 
-    public ComCreateDbCommand(MysqlTcpInfo mysqlTcpInfo) {
-        super(mysqlTcpInfo);
+    public ComCreateDbCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
     @Override

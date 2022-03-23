@@ -4,6 +4,7 @@ import indi.uhyils.enums.MysqlCommandTypeEnum;
 import indi.uhyils.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import java.util.List;
 
 
@@ -14,8 +15,8 @@ import java.util.List;
  */
 public class ComConnectCommand extends AbstractMysqlCommand {
 
-    public ComConnectCommand(MysqlTcpInfo mysqlHandler) {
-        super(mysqlHandler);
+    public ComConnectCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
     @Override

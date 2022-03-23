@@ -135,8 +135,8 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
     }
 
     @Override
-    public ServiceResult<List<UserDTO>> getUserByUserName(FindUserByNameQuery request) {
-        List<UserDTO> result = service.getUserByUserName(request);
+    public ServiceResult<UserDTO> getUserByUserName(FindUserByNameQuery request) {
+        UserDTO result = service.getUserByUserName(request);
         return ServiceResult.buildSuccessResult(result);
     }
 }

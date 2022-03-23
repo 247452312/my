@@ -8,6 +8,7 @@ import indi.uhyils.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.decode.Proto;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.protocol.mysql.handler.PrepareInfo;
 import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import java.util.ArrayList;
@@ -42,8 +43,8 @@ public class ComStmtExecuteCommand extends AbstractMysqlCommand {
      */
     private PrepareMarkEnum parse;
 
-    public ComStmtExecuteCommand(MysqlTcpInfo mysqlHandler) {
-        super(mysqlHandler);
+    public ComStmtExecuteCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
     @Override

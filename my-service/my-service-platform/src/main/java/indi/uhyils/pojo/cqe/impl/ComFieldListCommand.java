@@ -4,6 +4,7 @@ import indi.uhyils.enums.MysqlCommandTypeEnum;
 import indi.uhyils.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.protocol.mysql.history.decoder.Proto;
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class ComFieldListCommand extends AbstractMysqlCommand {
 
     private List<String> fieldList;
 
-    public ComFieldListCommand(MysqlTcpInfo mysqlHandler) {
-        super(mysqlHandler);
+    public ComFieldListCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
     @Override

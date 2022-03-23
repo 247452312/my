@@ -13,6 +13,7 @@ import indi.uhyils.pojo.response.impl.OkResponse;
 import indi.uhyils.pojo.response.impl.ResultSetResponse;
 import indi.uhyils.protocol.mysql.decode.Proto;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.util.CollectionUtil;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,13 +31,13 @@ public class ComQueryCommand extends AbstractMysqlCommand {
 
     private String sql;
 
-    public ComQueryCommand(MysqlTcpInfo mysqlTcpInfo, String sql) {
-        super(mysqlTcpInfo);
+    public ComQueryCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo, String sql) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
         this.sql = sql;
     }
 
-    public ComQueryCommand(MysqlTcpInfo mysqlTcpInfo) {
-        super(mysqlTcpInfo);
+    public ComQueryCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
     @Override

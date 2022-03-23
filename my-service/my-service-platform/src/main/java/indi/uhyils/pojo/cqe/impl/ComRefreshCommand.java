@@ -7,6 +7,7 @@ import indi.uhyils.pojo.response.impl.OkResponse;
 import indi.uhyils.protocol.mysql.enums.MysqlRefreshEnum;
 import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
+import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class ComRefreshCommand extends AbstractMysqlCommand {
 
     private MysqlRefreshEnum refresh;
 
-    public ComRefreshCommand(MysqlTcpInfo mysqlHandler) {
-        super(mysqlHandler);
+    public ComRefreshCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlTcpInfo, mysqlThisRequestInfo);
     }
 
 
