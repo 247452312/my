@@ -2,7 +2,6 @@ package indi.uhyils.protocol.mysql.handler;
 
 import indi.uhyils.enums.MysqlHandlerStatusEnum;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.util.mysql.pojo.entity.PrepareInfo;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.util.Map;
@@ -41,6 +40,22 @@ public class MysqlTcpInfo implements Serializable {
      */
     private UserDTO userDTO;
 
+    /**
+     * 密码 随机挑战数
+     */
+    private byte[] randomByte;
+
+
+    /**
+     * 错误数量
+     */
+    private int warnCount;
+
+    /**
+     * 预处理语句
+     */
+    private Map<Long, PrepareInfo> prepareSqlMap = new ConcurrentHashMap<>();
+
 
     public PrepareInfo getPrepareCache(long key) {
         return prepareCache.get(key);
@@ -62,8 +77,8 @@ public class MysqlTcpInfo implements Serializable {
         return index;
     }
 
-    public void setIndex(long index) {
-        this.index = index;
+    public void addIndex() {
+        index++;
     }
 
     public MysqlHandlerStatusEnum getStatus() {
@@ -93,5 +108,29 @@ public class MysqlTcpInfo implements Serializable {
                 break;
         }
         return status;
+    }
+
+    public byte[] getRandomByte() {
+        return randomByte;
+    }
+
+    public void setRandomByte(byte[] randomByte) {
+        this.randomByte = randomByte;
+    }
+
+    public void addWarnCount() {
+        warnCount++;
+    }
+
+    public int warnCount() {
+        return warnCount;
+    }
+
+    public PrepareInfo getPrepareSql(Long id) {
+        return prepareSqlMap.get(id);
+    }
+
+    public void setPrepareSql(Long id, PrepareInfo prepareSql) {
+        this.prepareSqlMap.put(id, prepareSql);
     }
 }

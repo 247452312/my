@@ -2,13 +2,13 @@ package indi.uhyils.util.mysql.plan;
 
 import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.fastjson.JSONArray;
+import indi.uhyils.pojo.DTO.FieldInfo;
 import indi.uhyils.protocol.mysql.history.handler.MysqlHandler;
 import indi.uhyils.protocol.mysql.history.handler.MysqlHandlerImpl;
 import indi.uhyils.protocol.mysql.history.service.MysqlService;
 import indi.uhyils.util.SpringUtil;
 import indi.uhyils.util.StringUtil;
 import indi.uhyils.util.mysql.pojo.cqe.InvokeCommand;
-import indi.uhyils.util.mysql.pojo.entity.FieldInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -1,8 +1,8 @@
 package indi.uhyils.util.mysql.plan;
 
 import com.alibaba.fastjson.JSONArray;
+import indi.uhyils.pojo.DTO.FieldInfo;
 import indi.uhyils.util.mysql.pojo.MysqlHandlerObserver;
-import indi.uhyils.util.mysql.pojo.entity.FieldInfo;
 import java.util.List;
 import java.util.Map;
 
