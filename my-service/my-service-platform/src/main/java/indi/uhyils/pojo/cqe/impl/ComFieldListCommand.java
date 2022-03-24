@@ -3,9 +3,9 @@ package indi.uhyils.pojo.cqe.impl;
 import indi.uhyils.enums.MysqlCommandTypeEnum;
 import indi.uhyils.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.pojo.response.MysqlResponse;
+import indi.uhyils.protocol.mysql.decode.Proto;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
-import indi.uhyils.protocol.mysql.history.decoder.Proto;
 import java.util.List;
 
 
@@ -26,7 +26,7 @@ public class ComFieldListCommand extends AbstractMysqlCommand {
 
     @Override
     protected void load() {
-        Proto proto = new Proto(mysqlBytes, 1);
+        Proto proto = new Proto(getMysqlThisRequestInfo().getMysqlBytes(), 1);
         this.tableName = proto.get_null_str();
         String lenencStr = proto.get_lenenc_str();
         // todo 测试传过来的是什么

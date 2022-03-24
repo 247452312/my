@@ -1,16 +1,16 @@
 package indi.uhyils.pojo.cqe.impl;
 
 import indi.uhyils.enums.MysqlCommandTypeEnum;
+import indi.uhyils.enums.MysqlErrCodeEnum;
+import indi.uhyils.enums.MysqlServerStatusEnum;
+import indi.uhyils.enums.SqlTypeEnum;
 import indi.uhyils.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.pojo.response.MysqlResponse;
 import indi.uhyils.pojo.response.impl.ErrResponse;
 import indi.uhyils.pojo.response.impl.OkResponse;
-import indi.uhyils.protocol.mysql.enums.MysqlErrCodeEnum;
-import indi.uhyils.protocol.mysql.enums.MysqlServerStatusEnum;
-import indi.uhyils.protocol.mysql.enums.SqlTypeEnum;
+import indi.uhyils.protocol.mysql.decode.Proto;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
-import indi.uhyils.protocol.mysql.history.decoder.Proto;
 import indi.uhyils.util.SpringUtil;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +38,7 @@ public class ComInitDbCommand extends AbstractMysqlCommand {
 
     @Override
     protected void load() {
-        Proto proto = new Proto(mysqlBytes, 4);
+        Proto proto = new Proto(mysqlThisRequestInfo.getMysqlBytes(), 4);
         this.sql = proto.get_lenenc_str().trim().toUpperCase(Locale.ROOT);
 
     }
@@ -47,16 +47,16 @@ public class ComInitDbCommand extends AbstractMysqlCommand {
     public List<MysqlResponse> invoke() {
         // use开头
         if (!sql.startsWith(SQL_START)) {
-            return Arrays.asList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS));
+            return Arrays.asList(new ErrResponse(mysqlTcpInfo, MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS));
         }
         // 数据库名称和标准名称一致
         String dbName = sql.substring(SQL_START.length()).trim();
         String root = SpringUtil.getProperty("mysql.db-name", "root");
         if (Objects.equals(root, dbName)) {
-            return Arrays.asList(new OkResponse(getMysqlHandler(), SqlTypeEnum.USE));
+            return Arrays.asList(new OkResponse(mysqlTcpInfo, SqlTypeEnum.USE));
         }
         // 不一致就报错
-        return Arrays.asList(new ErrResponse(getMysqlHandler(), MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "没有发现数据库: " + dbName + ",推荐: " + root));
+        return Arrays.asList(new ErrResponse(mysqlTcpInfo, MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "没有发现数据库: " + dbName + ",推荐: " + root));
     }
 
     @Override

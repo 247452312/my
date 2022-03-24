@@ -28,12 +28,5 @@ public interface MysqlResponse {
     byte getFirstByte();
 
 
-    /**
-     * 返回没有前面长度位或标志位的字节组
-     *
-     * @return
-     */
-    List<byte[]> toByteNoMarkIndex();
-
 
 }

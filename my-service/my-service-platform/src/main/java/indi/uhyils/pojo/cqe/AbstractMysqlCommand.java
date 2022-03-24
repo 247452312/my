@@ -34,6 +34,7 @@ public abstract class AbstractMysqlCommand extends AbstractCommand implements My
             UserContext.setUser(userInfo);
         }
         this.mysqlThisRequestInfo = mysqlThisRequestInfo;
+        load();
     }
 
     @Override
@@ -41,12 +42,6 @@ public abstract class AbstractMysqlCommand extends AbstractCommand implements My
         return mysqlTcpInfo;
     }
 
-
-    @Override
-    public void load(MysqlThisRequestInfo mysqlThisRequestInfo) {
-        this.mysqlThisRequestInfo = mysqlThisRequestInfo;
-        load();
-    }
 
     @Override
     public MysqlThisRequestInfo getMysqlThisRequestInfo() {

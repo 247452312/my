@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.entity.node;
 
-import com.alibaba.fastjson.JSONArray;
+import indi.uhyils.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.repository.PlatformInternalNodeRepository;
 import indi.uhyils.repository.PlatformPublishNodeRepository;
 
@@ -17,5 +17,7 @@ public interface Node {
      *
      * @return
      */
-    JSONArray invoke(PlatformPublishNodeRepository publishNodeRepository, PlatformInternalNodeRepository internalNodeRepository);
+    NodeInvokeResult invoke(PlatformPublishNodeRepository publishNodeRepository, PlatformInternalNodeRepository internalNodeRepository);
+
+
 }

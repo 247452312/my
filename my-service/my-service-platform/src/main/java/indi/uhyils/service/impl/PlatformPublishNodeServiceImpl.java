@@ -1,16 +1,10 @@
 package indi.uhyils.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.PlatformPublishNodeAssembler;
 import indi.uhyils.pojo.DO.PlatformPublishNodeDO;
 import indi.uhyils.pojo.DTO.PlatformPublishNodeDTO;
-import indi.uhyils.pojo.cqe.command.HttpInvokeCommand;
-import indi.uhyils.pojo.cqe.command.RpcInvokeCommand;
 import indi.uhyils.pojo.entity.PlatformPublishNode;
-import indi.uhyils.pojo.entity.VirtualNodeImpl;
-import indi.uhyils.pojo.entity.node.Node;
-import indi.uhyils.pojo.response.InvokeResponse;
 import indi.uhyils.repository.PlatformInternalNodeRepository;
 import indi.uhyils.repository.PlatformPublishNodeRepository;
 import indi.uhyils.service.PlatformPublishNodeService;
@@ -35,22 +29,4 @@ public class PlatformPublishNodeServiceImpl extends AbstractDoService<PlatformPu
         super(assembler, repository);
     }
 
-    @Override
-    public InvokeResponse mysqlInvoke(String sql) {
-        Node virtualNode = new VirtualNodeImpl(sql);
-        JSONArray invoke = virtualNode.invoke(rep, internalNodeRepository);
-        return InvokeResponse.build(invoke);
-    }
-
-    @Override
-    public InvokeResponse rpcInvoke(RpcInvokeCommand command) {
-        Node publishNode = rep.findRpcPublishNode(command);
-        return InvokeResponse.build(publishNode.invoke(rep, internalNodeRepository));
-    }
-
-    @Override
-    public InvokeResponse httpInvoke(HttpInvokeCommand command) {
-        Node publishNode = rep.findHttpPublishNode(command);
-        return InvokeResponse.build(publishNode.invoke(rep, internalNodeRepository));
-    }
 }

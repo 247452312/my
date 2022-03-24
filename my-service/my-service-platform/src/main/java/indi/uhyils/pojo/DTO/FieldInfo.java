@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO;
 
-import indi.uhyils.protocol.mysql.enums.FieldTypeEnum;
-import indi.uhyils.protocol.mysql.history.MysqlUtil;
+import indi.uhyils.enum_.FieldTypeEnum;
+import indi.uhyils.protocol.mysql.util.MysqlUtil;
 import java.util.ArrayList;
 import java.util.List;
 

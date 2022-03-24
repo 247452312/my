@@ -3,7 +3,6 @@ package indi.uhyils.pojo.cqe;
 import indi.uhyils.enums.MysqlCommandTypeEnum;
 import indi.uhyils.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfoObserver;
-import indi.uhyils.protocol.mysql.handler.MysqlThisRequestInfo;
 import java.util.List;
 
 /**
@@ -23,13 +22,6 @@ public interface MysqlCommand extends MysqlTcpInfoObserver {
      */
     List<MysqlResponse> invoke() throws Exception;
 
-
-    /**
-     * 加载客户端请求
-     *
-     * @param mysqlThisRequestInfo
-     */
-    void load(MysqlThisRequestInfo mysqlThisRequestInfo);
 
     /**
      * 类型

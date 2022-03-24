@@ -2,6 +2,7 @@ package indi.uhyils.protocol.mysql.handler;
 
 import indi.uhyils.enums.MysqlHandlerStatusEnum;
 import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.protocol.mysql.content.MysqlContent;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.util.Map;
@@ -132,5 +133,11 @@ public class MysqlTcpInfo implements Serializable {
 
     public void setPrepareSql(Long id, PrepareInfo prepareSql) {
         this.prepareSqlMap.put(id, prepareSql);
+    }
+
+    public long addPrepareSql(PrepareInfo prepareSql) {
+        long key = MysqlContent.getAndIncrementPrepareId();
+        setPrepareSql(key, prepareSql);
+        return key;
     }
 }

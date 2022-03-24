@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO;
 
 
-import indi.uhyils.enums.FieldTypeEnum;
+import indi.uhyils.enum_.FieldTypeEnum;
 
 /**
  * @author uhyils <247452312@qq.com>

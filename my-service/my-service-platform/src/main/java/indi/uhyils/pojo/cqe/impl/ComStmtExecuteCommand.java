@@ -4,7 +4,6 @@ import indi.uhyils.enum_.FieldTypeEnum;
 import indi.uhyils.enums.MysqlCommandTypeEnum;
 import indi.uhyils.enums.PrepareMarkEnum;
 import indi.uhyils.pojo.DTO.PrepareParamInfo;
-import indi.uhyils.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.pojo.response.MysqlResponse;
 import indi.uhyils.protocol.mysql.decode.Proto;
 import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
@@ -20,7 +19,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年11月03日 18时42分
  */
-public class ComStmtExecuteCommand extends AbstractMysqlCommand {
+public class ComStmtExecuteCommand extends MysqlSqlCommand {
 
     /**
      * 预处理语句
@@ -80,7 +79,7 @@ public class ComStmtExecuteCommand extends AbstractMysqlCommand {
 
     @Override
     public List<MysqlResponse> invoke() throws Exception {
-        ComQueryCommand comQueryRequest = new ComQueryCommand(getMysqlHandler(), sql);
+        ComQueryCommand comQueryRequest = new ComQueryCommand(mysqlTcpInfo, mysqlThisRequestInfo, sql);
         return comQueryRequest.invoke();
     }
 

@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.mysql.util;
 
+import indi.uhyils.pojo.entity.plan.MysqlPlan;
 import indi.uhyils.protocol.mysql.decode.Proto;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
@@ -19,19 +20,6 @@ import org.apache.commons.io.HexDump;
  * @date 文件创建日期 2022年03月18日 08时51分
  */
 public final class MysqlUtil {
-
-
-    /**
-     * 解析mysql协议
-     *
-     * @param mysqlProtocol mysql协议二进制
-     *
-     * @return
-     */
-    public static String analysisMysqlProtocolToSql(byte[] mysqlProtocol) {
-
-    }
-
 
     /**
      * 解析mysql语句

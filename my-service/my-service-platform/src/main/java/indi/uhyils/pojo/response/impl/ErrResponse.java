@@ -47,6 +47,10 @@ public class ErrResponse extends AbstractMysqlResponse {
         this.msg = errCode.getMsg();
     }
 
+    public static ErrResponse build(MysqlTcpInfo mysqlTcpInfo, MysqlErrCodeEnum errCode, MysqlServerStatusEnum status, String msg) {
+        return new ErrResponse(mysqlTcpInfo, errCode, status, msg);
+    }
+
     @Override
     public byte getFirstByte() {
         return (byte) 0xFF;

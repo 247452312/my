@@ -2,9 +2,6 @@ package indi.uhyils.service;
 
 
 import indi.uhyils.pojo.DTO.PlatformPublishNodeDTO;
-import indi.uhyils.pojo.cqe.command.HttpInvokeCommand;
-import indi.uhyils.pojo.cqe.command.RpcInvokeCommand;
-import indi.uhyils.pojo.response.InvokeResponse;
 
 /**
  * 发布节点表(PlatformPublishNode)表 内部服务接口
@@ -15,30 +12,4 @@ import indi.uhyils.pojo.response.InvokeResponse;
  */
 public interface PlatformPublishNodeService extends BaseDoService<PlatformPublishNodeDTO> {
 
-    /**
-     * 执行sql
-     *
-     * @param sql
-     *
-     * @return
-     */
-    InvokeResponse mysqlInvoke(String sql);
-
-    /**
-     * 执行rpc
-     *
-     * @param command
-     *
-     * @return
-     */
-    InvokeResponse rpcInvoke(RpcInvokeCommand command);
-
-    /**
-     * 执行http
-     *
-     * @param command
-     *
-     * @return
-     */
-    InvokeResponse httpInvoke(HttpInvokeCommand command);
 }
