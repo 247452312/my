@@ -2,6 +2,9 @@ package indi.uhyils.pojo.entity.plan;
 
 import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.DTO.FieldInfo;
+import indi.uhyils.pojo.entity.node.Node;
+import indi.uhyils.repository.PlatformInternalNodeRepository;
+import indi.uhyils.repository.PlatformPublishNodeRepository;
 import java.util.List;
 import java.util.Map;
 
@@ -21,14 +24,22 @@ public interface MysqlPlan {
     JSONArray invoke(Map<Long, JSONArray> resultMap);
 
     /**
-     * 执行计划出参(对应节点出参)
+     * 执行计划出参(对应节点出参)(实际出参-(select id,name from ...) ,并不是理论出参-(select * from ...))
      */
     List<FieldInfo> colInfos();
 
     /**
-     * 执行计划的顺序
+     * 初始化计划的下一个节点
+     *
+     * @param publishNodeRepository
+     * @param internalNodeRepository
+     */
+    void initNode(PlatformPublishNodeRepository publishNodeRepository, PlatformInternalNodeRepository internalNodeRepository);
+
+    /**
+     * 获取对应的节点
      *
      * @return
      */
-    Long index();
+    Node getNode();
 }

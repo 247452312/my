@@ -69,7 +69,7 @@ public class PlatformServiceImpl implements PlatformService {
     @Override
     public List<MysqlResponse> query(MysqlSqlCommand command) {
         String sql = command.getSql();
-        Node node = new VirtualNodeImpl(sql);
+        Node node = new VirtualNodeImpl(sql, command.getMysqlTcpInfo());
         // 最终结果
         NodeInvokeResult invoke = node.invoke(publishNodeRepository, internalNodeRepository);
         if (invoke == null || invoke.getJsonArray().isEmpty()) {

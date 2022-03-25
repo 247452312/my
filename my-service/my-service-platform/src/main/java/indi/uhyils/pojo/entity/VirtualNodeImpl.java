@@ -9,15 +9,16 @@ import indi.uhyils.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.pojo.entity.node.Sql;
 import indi.uhyils.pojo.entity.node.VirtualNode;
 import indi.uhyils.pojo.entity.plan.MysqlPlan;
+import indi.uhyils.protocol.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.repository.PlatformInternalNodeRepository;
 import indi.uhyils.repository.PlatformPublishNodeRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.SpringUtil;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -32,6 +33,11 @@ public class VirtualNodeImpl implements VirtualNode {
     private final Sql sql;
 
     /**
+     * mysql的tcp连接信息
+     */
+    private final MysqlTcpInfo mysqlTcpInfo;
+
+    /**
      * 执行计划
      */
     private List<MysqlPlan> plans;
@@ -41,8 +47,9 @@ public class VirtualNodeImpl implements VirtualNode {
      */
     private JSONArray result;
 
-    public VirtualNodeImpl(String sql) {
+    public VirtualNodeImpl(String sql, MysqlTcpInfo mysqlTcpInfo) {
         this.sql = new Sql(sql);
+        this.mysqlTcpInfo = mysqlTcpInfo;
     }
 
     public void analysisSqlToPlan(PlatformPublishNodeRepository publishNodeRepository, PlatformInternalNodeRepository internalNodeRepository) {
@@ -80,27 +87,25 @@ public class VirtualNodeImpl implements VirtualNode {
             return null;
         }
 
-        // index, 结果集
+        // <index, 结果集>
         Map<Long, JSONArray> resultMap = new HashMap<>(plans.size());
-        // 此sql最终结果
-        JSONArray invokeResult = null;
-        // 此sql的最终列信息
-        List<FieldInfo> colInfos = null;
+        List<FieldInfo> fieldInfos = new ArrayList<>();
+
         // 执行执行计划
         for (MysqlPlan mysqlPlan : plans) {
+            mysqlPlan.initNode(publishNodeRepository, internalNodeRepository);
+            fieldInfos.addAll(mysqlPlan.colInfos());
             JSONArray result = mysqlPlan.invoke(resultMap);
-//            invokeResult = result;
-//            colInfos = mysqlPlan.colInfos();
-            resultMap.put(mysqlPlan.index(), result);
+            resultMap.put(mysqlTcpInfo.index(), result);
+            mysqlTcpInfo.addIndex();
         }
-        List<Object> collect = resultMap.entrySet().stream().flatMap(t -> t.getValue().stream()).collect(Collectors.toList());
-        return new JSONArray(collect);
+
+        // 组合结果
+        JSONArray result = new JSONArray();
+
+        return NodeInvokeResult.build(fieldInfos, result);
 
     }
 
-    @Override
-    public List<FieldInfo> getFieldInfo() {
-        return null;
-    }
 
 }

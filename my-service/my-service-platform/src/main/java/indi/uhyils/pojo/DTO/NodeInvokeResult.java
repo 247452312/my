@@ -20,6 +20,15 @@ public class NodeInvokeResult implements Serializable {
      */
     private JSONArray jsonArray;
 
+
+    public static NodeInvokeResult build(List<FieldInfo> fieldInfos, JSONArray jsonArray) {
+        NodeInvokeResult build = new NodeInvokeResult();
+        build.setFieldInfos(fieldInfos);
+        build.setJsonArray(jsonArray);
+        return build;
+
+    }
+
     public List<FieldInfo> getFieldInfos() {
         return fieldInfos;
     }

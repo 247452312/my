@@ -57,6 +57,11 @@ public class FieldInfo {
      */
     private int length;
 
+    /**
+     * 本次返回在字段列表中的位置
+     */
+    private int index;
+
 
     /**
      * 列类型
@@ -78,17 +83,24 @@ public class FieldInfo {
      */
     private String defaultValue;
 
-    public FieldInfo(String dbName, String tableName, String tableRealName, String fieldName, String fieldRealName, int length, FieldTypeEnum fieldType, short fieldMark, byte accuracy, String defaultValue) {
+    /**
+     * 对应执行计划的顺序
+     */
+    private long planIndex;
+
+    public FieldInfo(String dbName, String tableName, String tableRealName, String fieldName, String fieldRealName, int length, int index, FieldTypeEnum fieldType, short fieldMark, byte accuracy, String defaultValue, long planIndex) {
         this.dbName = dbName;
         this.tableName = tableName;
         this.tableRealName = tableRealName;
         this.fieldName = fieldName;
         this.fieldRealName = fieldRealName;
         this.length = length;
+        this.index = index;
         this.fieldType = fieldType;
         this.fieldMark = fieldMark;
         this.accuracy = accuracy;
         this.defaultValue = defaultValue;
+        this.planIndex = planIndex;
     }
 
     public byte[] toFieldBytes() {
@@ -151,5 +163,13 @@ public class FieldInfo {
 
     public String getFieldName() {
         return fieldName;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public long getPlanIndex() {
+        return planIndex;
     }
 }
