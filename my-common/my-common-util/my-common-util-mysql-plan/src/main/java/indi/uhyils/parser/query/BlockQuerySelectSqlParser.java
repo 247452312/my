@@ -16,15 +16,14 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.druid.sql.dialect.mysql.ast.expr.MySqlCharExpr;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
-import com.alibaba.fastjson.JSONArray;
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.plan.MysqlPlan;
-import indi.uhyils.pojo.entity.plan.impl.MysqlPlanImpl;
+import indi.uhyils.pojo.MySqlListExpr;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
-import indi.uhyils.util.mysql.plan.PlanUtil;
-import indi.uhyils.util.mysql.plan.other.MySqlListExpr;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
@@ -44,10 +43,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     @Override
     protected boolean doCanParse(SQLSelectStatement sql) {
         SQLSelectQuery query = sql.getSelect().getQuery();
-        if (query instanceof MySqlSelectQueryBlock) {
-            return true;
-        }
-        return false;
+        return query instanceof MySqlSelectQueryBlock;
     }
 
     @Override
@@ -59,14 +55,15 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         MySqlSelectQueryBlock query = (MySqlSelectQueryBlock) select.getQuery();
         List<MysqlPlan> result = new ArrayList<>();
         // 如果 from 不是常规from 则转换from为另一个执行计划
-        transFrom(result, query);
+        SQLTableSource sqlTableSource = transFrom(result, query.getFrom());
+        query.setFrom(sqlTableSource);
         // 如果查询数据不是常规数据, 则转换为执行计划或者转换
         List<SQLSelectItem> sqlSelectItems = parseSelectList(result, query.getSelectList());
         // 解析where条件, 即入参
         List<SQLBinaryOpExpr> sqlBinaryOpExprs = parseSQLExprWhere(result, query.getWhere());
         // 制作执行计划
-        MysqlPlan outPlan = makePlan(sqlBinaryOpExprs, sqlSelectItems, query);
-        result.add(outPlan);
+        List<MysqlPlan> mysqlPlans = makePlan(sqlBinaryOpExprs, sqlSelectItems, query.getFrom());
+        result.addAll(mysqlPlans);
         return result;
     }
 
@@ -84,7 +81,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                     return plans.get(0);
                 });
                 result.add(newPlan);
-                return new SQLSelectItem(new MySqlCharExpr("&" + newPlan.index()), t.getAlias());
+                return new SQLSelectItem(new MySqlCharExpr("&" + newPlan.getId()), t.getAlias());
             }
             Asserts.assertTrue(false, "查询报错,子查询类型找不到:{}", t.toString());
             return null;
@@ -94,27 +91,28 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     /**
      * 制作执行计划
      *
-     * @param sqlBinaryOpExprs 条件
-     * @param sqlSelectItems
-     * @param query            查询
+     * @param params 条件-入参
+     * @param result 出参
+     * @param from   目标表(多个)
      *
      * @return
      */
-    private MysqlPlan makePlan(List<SQLBinaryOpExpr> sqlBinaryOpExprs, List<SQLSelectItem> sqlSelectItems, MySqlSelectQueryBlock query) {
-        MysqlPlan outPlan = new MysqlPlanImpl();
-        if (CollectionUtil.isNotEmpty(sqlBinaryOpExprs)) {
-            List<String> param = sqlBinaryOpExprs.stream().map(t -> t.getLeft().toString()).collect(Collectors.toList());
-            outPlan.setParamNames(param);
-            JSONArray params = new JSONArray();
-            for (SQLBinaryOpExpr sqlBinaryOpExpr : sqlBinaryOpExprs) {
-                params.add(PlanUtil.parasSQLBinaryOpExpr(sqlBinaryOpExpr));
-            }
-            outPlan.setParams(params);
-        }
-        SQLTableSource from = query.getFrom();
-        outPlan.setTable(from);
-        outPlan.setParamNames(sqlSelectItems.stream().map(t -> t.getExpr().toString()).collect(Collectors.toList()));
-        return outPlan;
+    @NotNull
+    private List<MysqlPlan> makePlan(List<SQLBinaryOpExpr> params, List<SQLSelectItem> result, SQLTableSource from) {
+//        MysqlPlan outPlan = new MysqlPlanImpl();
+//        if (CollectionUtil.isNotEmpty(params)) {
+//            List<String> param = params.stream().map(t -> t.getLeft().toString()).collect(Collectors.toList());
+//            outPlan.setParamNames(param);
+//            JSONArray params = new JSONArray();
+//            for (SQLBinaryOpExpr sqlBinaryOpExpr : params) {
+//                params.add(PlanUtil.parasSQLBinaryOpExpr(sqlBinaryOpExpr));
+//            }
+//            outPlan.setParams(params);
+//        }
+//        outPlan.setTable(from);
+//        outPlan.setParamNames(result.stream().map(t -> t.getExpr().toString()).collect(Collectors.toList()));
+//        return outPlan;
+        return Collections.emptyList();
     }
 
     /**
@@ -140,7 +138,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
             Asserts.assertTrue(CollectionUtil.isNotEmpty(mysqlPlans), "解析plan为空:{}", subQuery);
             plans.addAll(mysqlPlans);
             MysqlPlan mysqlPlan = mysqlPlans.get(0);
-            return Arrays.asList(new SQLBinaryOpExpr(expr, SQLBinaryOperator.Equality, new MySqlCharExpr(mysqlPlan.index() + "&")));
+            return Arrays.asList(new SQLBinaryOpExpr(expr, SQLBinaryOperator.Equality, new MySqlCharExpr(mysqlPlan.getId() + "&")));
         }
         if (where instanceof SQLInListExpr) {
             SQLInListExpr sqlInListExpr = (SQLInListExpr) where;
@@ -171,19 +169,19 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
      * 转换from为正常的逻辑
      *
      * @param plans
-     * @param query
+     * @param from
      */
-    private void transFrom(List<MysqlPlan> plans, MySqlSelectQueryBlock query) {
-        SQLTableSource from = query.getFrom();
+    private SQLTableSource transFrom(List<MysqlPlan> plans, SQLTableSource from) {
         if (!(from instanceof SQLExprTableSource)) {
-            reExecute(from.toString(), parse -> {
+            return reExecute(from.toString(), parse -> {
                 Asserts.assertTrue(CollectionUtil.isNotEmpty(parse), "解析plan为空:{}", from.toString());
                 plans.addAll(parse);
                 MysqlPlan fromFirstPlan = parse.get(0);
-                Long index = fromFirstPlan.index();
-                query.setFrom(new SQLExprTableSource(new MySqlCharExpr("&" + index), from.getAlias()));
+                long index = fromFirstPlan.getId();
+                return new SQLExprTableSource(new MySqlCharExpr("&" + index), from.getAlias());
             });
         }
+        return null;
     }
 
 

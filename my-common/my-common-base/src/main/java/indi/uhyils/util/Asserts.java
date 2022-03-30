@@ -122,7 +122,7 @@ public class Asserts {
      *
      * @param runnable
      */
-    public static void AssertException(Runnable runnable) {
+    public static void assertException(Runnable runnable) {
         try {
             runnable.run();
         } catch (Throwable e) {
@@ -132,6 +132,21 @@ public class Asserts {
         removeExceptionTrace(assertException, 2);
         LogUtil.error(assertException);
         throw assertException;
+    }
+
+    /**
+     * 断言无异常
+     *
+     * @param runnable
+     */
+    public static void assertNoException(Runnable runnable) {
+        try {
+            runnable.run();
+        } catch (Throwable e) {
+            LogUtil.error(e);
+            throw e;
+        }
+
     }
 
 
