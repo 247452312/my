@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>indi.uhyils</groupId>
-            <artifactId>my-common-base</artifactId>
+            <artifactId>my-common-service</artifactId>
         </dependency>
 
         <dependency>
@@ -32,6 +32,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
 </project>

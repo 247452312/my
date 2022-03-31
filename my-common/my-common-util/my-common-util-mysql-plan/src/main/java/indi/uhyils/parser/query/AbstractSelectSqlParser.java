@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 /**
  * 查询解释器
@@ -23,6 +24,7 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
      * sql解析
      */
     @Autowired
+    @Lazy
     private List<AbstractSelectSqlParser> selectInterpreters;
 
 

@@ -15,3 +15,4 @@ class PlanUtilTest extends BaseTest {
         Asserts.assertNoException(() -> PlanUtil.analysisSql(sql));
     }
 }
+

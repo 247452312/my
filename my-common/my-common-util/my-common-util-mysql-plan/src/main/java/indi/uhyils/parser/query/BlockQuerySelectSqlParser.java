@@ -1,6 +1,7 @@
 package indi.uhyils.parser.query;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
+import com.alibaba.druid.sql.ast.expr.SQLAllColumnExpr;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOperator;
 import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
@@ -71,7 +72,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         return selectList.stream().map(t -> {
             SQLExpr expr = t.getExpr();
             // 常规,直接返回
-            if (expr instanceof SQLPropertyExpr || expr instanceof SQLIdentifierExpr) {
+            if (expr instanceof SQLPropertyExpr || expr instanceof SQLIdentifierExpr || expr instanceof SQLAllColumnExpr) {
                 return t;
             }
             if (expr instanceof SQLQueryExpr) {
@@ -181,7 +182,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 return new SQLExprTableSource(new MySqlCharExpr("&" + index), from.getAlias());
             });
         }
-        return null;
+        return from;
     }
 
 
