@@ -11,7 +11,7 @@ class PlanUtilTest extends BaseTest {
 
     @Test
     void analysisSql() {
-        String sql = "select * from sys_user a where a.id = 12 ";
+        String sql = "select a.*,b.* from sys_user a left join sys_role b on a.role_id = b.id where a.id = 12 ";
         Asserts.assertNoException(() -> PlanUtil.analysisSql(sql));
     }
 }

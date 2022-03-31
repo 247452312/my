@@ -1,6 +1,6 @@
 package indi.uhyils.plan;
 
-import indi.uhyils.Placeholder;
+import indi.uhyils.pojo.Placeholder;
 import indi.uhyils.util.Asserts;
 import java.util.List;
 import java.util.Map;
