@@ -76,7 +76,7 @@ public class SqlTableSourceBinaryTree {
     }
 
     @NotNull
-    public Boolean level() {
+    public Boolean isLevel() {
         return leftTree == null && rightTree == null;
     }
 }

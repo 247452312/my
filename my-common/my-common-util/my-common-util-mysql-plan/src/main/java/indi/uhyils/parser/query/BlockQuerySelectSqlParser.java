@@ -20,7 +20,9 @@ import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import com.alibaba.druid.sql.dialect.mysql.ast.expr.MySqlCharExpr;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import indi.uhyils.annotation.NotNull;
+import indi.uhyils.plan.AbstractMysqlPlan;
 import indi.uhyils.plan.MysqlPlan;
+import indi.uhyils.plan.result.MysqlPlanResult;
 import indi.uhyils.pojo.MySqlListExpr;
 import indi.uhyils.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.util.Asserts;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
@@ -107,7 +110,11 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
      */
     @NotNull
     private List<MysqlPlan> makePlan(List<SQLBinaryOpExpr> params, List<SQLSelectItem> result, SqlTableSourceBinaryTree froms) {
+        if (froms.isLevel()) {
 
+        } else {
+
+        }
 //        MysqlPlan outPlan = new MysqlPlanImpl();
 //        if (CollectionUtil.isNotEmpty(params)) {
 //            List<String> param = params.stream().map(t -> t.getLeft().toString()).collect(Collectors.toList());
@@ -209,9 +216,24 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 long index = fromFirstPlan.getId();
                 return new SQLExprTableSource(new MySqlCharExpr("&" + index), from.getAlias());
             });
-            return new SqlTableSourceBinaryTree(sqlExprTableSource);
+            return pool.getOrCreateObject(sqlExprTableSource);
         } else {
-            return new SqlTableSourceBinaryTree(from);
+            return pool.getOrCreateObject(from);
+        }
+    }
+
+    /**
+     * 简单sql执行计划
+     */
+    public static class BlockQuerySelectSqlPlan extends AbstractMysqlPlan {
+
+        protected BlockQuerySelectSqlPlan(long id, String sql, Map<String, Object> params) {
+            super(id, sql, params);
+        }
+
+        @Override
+        public MysqlPlanResult invoke() {
+            return null;
         }
     }
 
