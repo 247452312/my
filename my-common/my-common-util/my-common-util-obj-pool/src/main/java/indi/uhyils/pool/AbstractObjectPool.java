@@ -45,6 +45,8 @@ public abstract class AbstractObjectPool<T> implements ObjectPool<T> {
      */
     private final ReferenceQueue<T> referenceQueue;
 
+    private final Object lock = new Object();
+
     protected AbstractObjectPool(Integer size, Class<T> objClass) {
         this.size = size;
         this.objClass = objClass;
@@ -76,12 +78,14 @@ public abstract class AbstractObjectPool<T> implements ObjectPool<T> {
 
     @Override
     public T getOrCreateObject() {
-        // 转移reference中的数据
-        transReference();
-        if (queue.isEmpty()) {
-            return createObject();
+        synchronized (lock) {
+            // 转移reference中的数据
+            transReference();
+            if (queue.isEmpty()) {
+                return createObject();
+            }
+            return queue.poll();
         }
-        return queue.poll();
     }
 
     /**

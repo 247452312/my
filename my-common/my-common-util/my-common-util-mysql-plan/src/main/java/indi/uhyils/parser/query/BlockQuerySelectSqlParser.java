@@ -58,15 +58,20 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     private List<MysqlPlan> parseSelect(SQLSelect select) {
         MySqlSelectQueryBlock query = (MySqlSelectQueryBlock) select.getQuery();
         List<MysqlPlan> result = new ArrayList<>();
+
         // 如果 from 不是常规from 则转换from为另一个执行计划
         SqlTableSourceBinaryTree sqlTableSource = transFrom(result, query.getFrom());
+
         // 如果查询数据不是常规数据, 则转换为执行计划或者转换
         List<SQLSelectItem> sqlSelectItems = parseSelectList(result, query.getSelectList());
+
         // 解析where条件, 即入参
         List<SQLBinaryOpExpr> sqlBinaryOpExprs = parseSQLExprWhere(result, query.getWhere());
+
         // 制作执行计划
         List<MysqlPlan> mysqlPlans = makePlan(sqlBinaryOpExprs, sqlSelectItems, sqlTableSource);
         result.addAll(mysqlPlans);
+
         return result;
     }
 
@@ -178,21 +183,19 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     private SqlTableSourceBinaryTree transFrom(List<MysqlPlan> plans, SQLTableSource from) {
         if (from instanceof SQLJoinTableSource) {
             SQLJoinTableSource sqlJoinTableSource = (SQLJoinTableSource) from;
-            SQLTableSource left = sqlJoinTableSource.getLeft();
-            SQLTableSource right = sqlJoinTableSource.getRight();
             JoinType joinType = sqlJoinTableSource.getJoinType();
-            SqlTableSourceBinaryTree lefts = transFrom(plans, left);
-            SqlTableSourceBinaryTree rights = transFrom(plans, right);
+            SqlTableSourceBinaryTree lefts = transFrom(plans, sqlJoinTableSource.getLeft());
+            SqlTableSourceBinaryTree rights = transFrom(plans, sqlJoinTableSource.getRight());
 
             switch (joinType) {
                 case JOIN:
                 case COMMA:
                 case INNER_JOIN:
-                    return new SqlTableSourceBinaryTree(lefts, rights, JoinType.INNER_JOIN);
+                    return pool.getOrCreateObject(lefts, rights, JoinType.INNER_JOIN);
                 case LEFT_OUTER_JOIN:
-                    return new SqlTableSourceBinaryTree(lefts, rights, JoinType.LEFT_OUTER_JOIN);
+                    return pool.getOrCreateObject(lefts, rights, JoinType.LEFT_OUTER_JOIN);
                 case RIGHT_OUTER_JOIN:
-                    return new SqlTableSourceBinaryTree(rights, lefts, JoinType.LEFT_OUTER_JOIN);
+                    return pool.getOrCreateObject(rights, lefts, JoinType.LEFT_OUTER_JOIN);
                 default:
                     Asserts.assertTrue(false, "sql连表条件不支持:{}", joinType.name_lcase);
                     return null;

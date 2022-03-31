@@ -5,6 +5,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import indi.uhyils.parser.SqlParser;
 import indi.uhyils.plan.MysqlPlan;
+import indi.uhyils.pojo.pool.SqlTableSourceBinaryTreePool;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -27,6 +28,8 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
     @Lazy
     private List<AbstractSelectSqlParser> selectInterpreters;
 
+    @Autowired
+    protected SqlTableSourceBinaryTreePool pool;
 
     @Override
     public boolean canParse(SQLStatement sql) {

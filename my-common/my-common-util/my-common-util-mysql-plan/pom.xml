@@ -32,7 +32,10 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-util-obj-pool</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

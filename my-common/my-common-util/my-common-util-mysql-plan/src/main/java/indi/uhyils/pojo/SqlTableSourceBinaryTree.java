@@ -40,23 +40,39 @@ public class SqlTableSourceBinaryTree {
         this.joinType = joinType;
     }
 
+    public SqlTableSourceBinaryTree() {
+    }
+
     public SqlTableSourceBinaryTree getLeftTree() {
         return leftTree;
     }
 
+    public void setLeftTree(SqlTableSourceBinaryTree leftTree) {
+        this.leftTree = leftTree;
+    }
 
     public SqlTableSourceBinaryTree getRightTree() {
         return rightTree;
     }
 
+    public void setRightTree(SqlTableSourceBinaryTree rightTree) {
+        this.rightTree = rightTree;
+    }
 
     public JoinType getJoinType() {
         return joinType;
     }
 
+    public void setJoinType(JoinType joinType) {
+        this.joinType = joinType;
+    }
 
     public SQLTableSource getTableSource() {
         return tableSource;
+    }
+
+    public void setTableSource(SQLTableSource tableSource) {
+        this.tableSource = tableSource;
     }
 
     @NotNull
