@@ -3,6 +3,7 @@ package indi.uhyils.parser;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import indi.uhyils.plan.MysqlPlan;
 import java.util.List;
+import java.util.Map;
 
 /**
  * sql解析器
@@ -22,6 +23,15 @@ public interface SqlParser {
      */
     boolean canParse(SQLStatement sql);
 
+
+    /**
+     * 将sql解释为执行计划
+     *
+     * @param sql
+     *
+     * @return
+     */
+    List<MysqlPlan> parse(SQLStatement sql, Map<Long, List<Map<String, Object>>> planResult);
 
     /**
      * 将sql解释为执行计划

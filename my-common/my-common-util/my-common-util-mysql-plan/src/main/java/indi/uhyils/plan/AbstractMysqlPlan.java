@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 public abstract class AbstractMysqlPlan implements MysqlPlan {
 
     /**
+     * 之前的结果
+     */
+    protected final Map<Long, List<Map<String, Object>>> planResult;
+
+    /**
      * 执行计划id
      */
     protected final long id;
@@ -28,10 +33,16 @@ public abstract class AbstractMysqlPlan implements MysqlPlan {
      */
     protected final Map<String, Object> params;
 
-    protected AbstractMysqlPlan(long id, String sql, Map<String, Object> params) {
+    protected AbstractMysqlPlan(long id, String sql, Map<String, Object> params, Map<Long, List<Map<String, Object>>> planResult) {
+        this.planResult = planResult;
         this.id = id;
         this.sql = sql;
         this.params = params;
+    }
+
+    @Override
+    public Map<Long, List<Map<String, Object>>> getPlanResult() {
+        return planResult;
     }
 
     @Override

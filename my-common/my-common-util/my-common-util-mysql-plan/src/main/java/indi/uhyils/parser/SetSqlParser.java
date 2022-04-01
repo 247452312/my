@@ -6,6 +6,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSetStatement;
 import indi.uhyils.plan.MysqlPlan;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,6 +23,12 @@ public class SetSqlParser implements SqlParser {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<MysqlPlan> parse(SQLStatement sql, Map<Long, List<Map<String, Object>>> planResult) {
+        // set 没有前置执行计划
+        return null;
     }
 
     @Override

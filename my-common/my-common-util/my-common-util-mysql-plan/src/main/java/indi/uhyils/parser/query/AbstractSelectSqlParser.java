@@ -6,7 +6,9 @@ import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import indi.uhyils.parser.SqlParser;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.pojo.pool.SqlTableSourceBinaryTreePool;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +23,15 @@ import org.springframework.context.annotation.Lazy;
  */
 public abstract class AbstractSelectSqlParser implements SqlParser {
 
+    @Autowired
+    protected SqlTableSourceBinaryTreePool pool;
+
     /**
      * sql解析
      */
     @Autowired
     @Lazy
     private List<AbstractSelectSqlParser> selectInterpreters;
-
-    @Autowired
-    protected SqlTableSourceBinaryTreePool pool;
 
     @Override
     public boolean canParse(SQLStatement sql) {
@@ -40,8 +42,13 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
     }
 
     @Override
+    public List<MysqlPlan> parse(SQLStatement sql, Map<Long, List<Map<String, Object>>> planResult) {
+        return doParse((SQLSelectStatement) sql, planResult);
+    }
+
+    @Override
     public List<MysqlPlan> parse(SQLStatement sql) {
-        return doParse((SQLSelectStatement) sql);
+        return doParse((SQLSelectStatement) sql, new HashMap<>());
     }
 
     /**
@@ -94,6 +101,6 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
      *
      * @return
      */
-    protected abstract List<MysqlPlan> doParse(SQLSelectStatement sql);
+    protected abstract List<MysqlPlan> doParse(SQLSelectStatement sql, Map<Long, List<Map<String, Object>>> planResult);
 
 }

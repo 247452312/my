@@ -8,7 +8,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年03月29日 08时40分
  */
-public interface MysqlPlan {
+public interface MysqlPlan extends PlanResultObserver {
 
     /**
      * 执行执行计划
