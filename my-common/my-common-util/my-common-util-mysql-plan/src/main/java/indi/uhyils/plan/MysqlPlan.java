@@ -1,5 +1,6 @@
 package indi.uhyils.plan;
 
+import indi.uhyils.enums.MysqlPlanTypeEnum;
 import indi.uhyils.plan.result.MysqlPlanResult;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +26,12 @@ public interface MysqlPlan extends PlanResultObserver {
     void complete(Map<Long, List<Map<String, Object>>> planArgs);
 
     /**
-     * 获取执行计划id
+     * 获取此执行计划的类型
      *
      * @return
      */
+    MysqlPlanTypeEnum type();
+
     long getId();
 
 }

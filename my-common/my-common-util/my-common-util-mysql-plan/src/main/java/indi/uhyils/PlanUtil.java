@@ -32,12 +32,12 @@ public final class PlanUtil {
      *
      * @return
      */
-    public static List<MysqlPlan> analysisSql(String sql) {
+    public static MysqlPlan analysisSql(String sql) {
         SQLStatement sqlStatement = new MySqlStatementParser(sql).parseStatement();
         List<SqlParser> beans = SpringUtil.getBeans(SqlParser.class);
         for (SqlParser bean : beans) {
             if (bean.canParse(sqlStatement)) {
-                return bean.parse(sqlStatement);
+                return bean.parse(sqlStatement).get(0);
             }
         }
         Asserts.assertTrue(false, "解析执行计划失败:{}", sql);

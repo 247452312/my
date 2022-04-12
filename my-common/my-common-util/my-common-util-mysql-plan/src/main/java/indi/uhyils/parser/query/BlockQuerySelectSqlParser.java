@@ -21,7 +21,6 @@ import com.alibaba.druid.sql.dialect.mysql.ast.expr.MySqlCharExpr;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlSelectQueryBlock;
 import indi.uhyils.annotation.NotNull;
 import indi.uhyils.plan.AbstractMysqlPlan;
-import indi.uhyils.plan.EmptyMysqlPlan;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.result.MysqlPlanResult;
 import indi.uhyils.pojo.MySqlListExpr;
@@ -33,7 +32,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.OptionalLong;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
@@ -62,32 +60,13 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
 
     private List<MysqlPlan> parseSelect(SQLSelect select, Map<Long, List<Map<String, Object>>> planResult) {
         MySqlSelectQueryBlock query = (MySqlSelectQueryBlock) select.getQuery();
-        List<MysqlPlan> result = new ArrayList<>();
-        OptionalLong max = planResult.keySet().stream().mapToLong(t -> t).max();
-        long emptyId = 0;
-        if (max.isPresent()) {
-            emptyId = max.getAsLong();
+        List<SQLSelectItem> selectList = query.getSelectList();
+        for (SQLSelectItem sqlSelectItem : selectList) {
+            SQLExpr expr = sqlSelectItem.getExpr();
+            String alias = sqlSelectItem.getAlias();
+            int i = 1;
         }
-        MysqlPlan mysqlPlan = new EmptyMysqlPlan(emptyId);
-        result.add(mysqlPlan);
-
-        // 如果 from 不是常规from 则转换from为另一个执行计划
-        SqlTableSourceBinaryTree sqlTableSource = transFrom(result, query.getFrom(), planResult);
-
-        // 如果查询数据不是常规数据, 则转换为执行计划或者转换
-        List<SQLSelectItem> sqlSelectItems = parseSelectList(result, query.getSelectList(), planResult);
-
-        // 解析where条件, 即入参
-        List<SQLBinaryOpExpr> sqlBinaryOpExprs = parseSQLExprWhere(result, query.getWhere(), planResult);
-
-        // where条件解析为map格式
-        Map<String, Object> param = parseParam(sqlBinaryOpExprs);
-
-        // 制作执行计划
-        List<MysqlPlan> mysqlPlans = makePlan(result, param, sqlSelectItems, sqlTableSource, planResult);
-        result.addAll(mysqlPlans);
-
-        return result;
+        return null;
     }
 
     /**

@@ -1,5 +1,7 @@
 package indi.uhyils.plan;
 
+import indi.uhyils.enums.MysqlPlanTypeEnum;
+import indi.uhyils.plan.result.MysqlPlanResult;
 import indi.uhyils.pojo.Placeholder;
 import indi.uhyils.util.Asserts;
 import java.util.List;
@@ -43,6 +45,16 @@ public abstract class AbstractMysqlPlan implements MysqlPlan {
     @Override
     public Map<Long, List<Map<String, Object>>> getPlanResult() {
         return planResult;
+    }
+
+    @Override
+    public MysqlPlanResult invoke() {
+        return null;
+    }
+
+    @Override
+    public MysqlPlanTypeEnum type() {
+        return null;
     }
 
     @Override
