@@ -94,7 +94,7 @@ public class MonitorConcurrent extends AbstractEntity<Long> {
         if (specifyConcurrency < realTimeConcurrency) {
             return DemotionTypeEnum.RECOVER;
         }
-        Asserts.assertTrue(false, "错误,并发数有问题,设定并发数为:{},(80%:{}) 实际并发数为:{}", specifyConcurrency, specifyConcurrency * 0.8, realTimeConcurrency);
+        Asserts.throwException("错误,并发数有问题,设定并发数为:{},(80%:{}) 实际并发数为:{}", specifyConcurrency, specifyConcurrency * 0.8, realTimeConcurrency);
         return null;
     }
 

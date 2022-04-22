@@ -74,7 +74,7 @@ public class VirtualNodeImpl implements VirtualNode {
                 return bean.parse(sqlStatement);
             }
         }
-        Asserts.assertTrue(false, "解析执行计划失败:{}", sql);
+        Asserts.throwException("解析执行计划失败:{}", sql);
         return null;
     }
 

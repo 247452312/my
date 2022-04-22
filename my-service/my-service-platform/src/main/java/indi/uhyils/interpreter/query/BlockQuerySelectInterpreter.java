@@ -86,7 +86,7 @@ public class BlockQuerySelectInterpreter extends AbstractSelectInterpreter {
                 result.add(newPlan);
                 return new SQLSelectItem(new MySqlCharExpr("&" + newPlan.index()), t.getAlias());
             }
-            Asserts.assertTrue(false, "查询报错,子查询类型找不到:{}", t.toString());
+            Asserts.throwException("查询报错,子查询类型找不到:{}", t.toString());
             return null;
         }).collect(Collectors.toList());
     }
@@ -149,7 +149,7 @@ public class BlockQuerySelectInterpreter extends AbstractSelectInterpreter {
             MySqlListExpr mySqlListExpr = new MySqlListExpr(targetList);
             return Arrays.asList(new SQLBinaryOpExpr(expr, SQLBinaryOperator.Equality, mySqlListExpr));
         }
-        Asserts.assertTrue(false, "sql_where解析错误,没有找到解析类型:{}", where);
+        Asserts.throwException("sql_where解析错误,没有找到解析类型:{}", where);
         return null;
     }
 

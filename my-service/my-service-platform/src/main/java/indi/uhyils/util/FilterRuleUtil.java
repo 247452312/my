@@ -491,7 +491,7 @@ public final class FilterRuleUtil {
                     Number number = (Number) valueObj;
                     return number.doubleValue() != 0.0;
                 }
-                Asserts.assertTrue(false, "单独的项目不允许执行");
+                Asserts.throwException("单独的项目不允许执行");
             }
             Asserts.assertTrue(symbol != null, "不识别的符号");
             return symbol.transformEntry(this, param);
@@ -547,7 +547,7 @@ public final class FilterRuleUtil {
                 // todo date支持日期
                 rep = ((Date) paramItem).getTime();
             } else {
-                Asserts.assertTrue(false, "报错,入参暂不允许除Boolean,String,Number之外的其他类型,传入类型:{}", paramItem.getClass().getName());
+                Asserts.throwException("报错,入参暂不允许除Boolean,String,Number之外的其他类型,传入类型:{}", paramItem.getClass().getName());
             }
             return rep;
         }
@@ -557,7 +557,7 @@ public final class FilterRuleUtil {
             if (NumberUtils.isParsable(o.toString())) {
                 return NumberUtils.toDouble(o.toString());
             }
-            Asserts.assertTrue(false, "指定值不是number,不能转换");
+            Asserts.throwException("指定值不是number,不能转换");
             return null;
         }
 
@@ -584,7 +584,7 @@ public final class FilterRuleUtil {
                         // todo date支持多种格式
                         str = Long.toString(((Date) o).getTime());
                     } else {
-                        Asserts.assertTrue(false, "报错,入参暂不允许除Boolean,String,Number之外的其他类型,传入类型:{}", o.getClass().getName());
+                        Asserts.throwException("报错,入参暂不允许除Boolean,String,Number之外的其他类型,传入类型:{}", o.getClass().getName());
                     }
                     changeValue = changeValue.replace(substring, str);
                 }
@@ -650,7 +650,7 @@ public final class FilterRuleUtil {
                 Boolean right = makeResults(param, orAndTree.getRightTree());
                 return left && right;
             }
-            Asserts.assertTrue(false, "符号类型不存在,:{}", symbol);
+            Asserts.throwException("符号类型不存在,:{}", symbol);
             return false;
         }
 

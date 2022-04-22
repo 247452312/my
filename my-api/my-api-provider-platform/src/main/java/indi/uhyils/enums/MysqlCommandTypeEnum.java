@@ -79,7 +79,7 @@ public enum MysqlCommandTypeEnum {
                 return value;
             }
         }
-        Asserts.assertTrue(false, "");
+        Asserts.throwException("");
         return null;
     }
 

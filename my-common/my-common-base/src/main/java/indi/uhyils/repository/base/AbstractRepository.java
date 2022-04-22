@@ -182,7 +182,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
                     queryWrapper.orderByDesc(columnName.getName());
                     break;
                 default:
-                    Asserts.assertTrue(false, "排序符号不正确");
+                    Asserts.throwException("排序符号不正确");
             }
         }
     }

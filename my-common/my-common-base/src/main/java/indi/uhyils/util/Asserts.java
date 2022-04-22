@@ -1,6 +1,8 @@
 package indi.uhyils.util;
 
 import indi.uhyils.exception.AssertException;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import org.slf4j.helpers.MessageFormatter;
@@ -147,6 +149,57 @@ public class Asserts {
             throw e;
         }
 
+    }
+
+    /**
+     * 断言指定类不为null
+     *
+     * @param obj
+     * @param <T> 任意类型
+     *
+     * @return
+     */
+    public static <T> T assertNotNull(T obj) {
+        assertTrue(obj != null, 4, "指定实例为空");
+        return obj;
+    }
+
+    /**
+     * 断言指定类不为null
+     *
+     * @param str
+     *
+     * @return
+     */
+    public static String assertNotNull(String str) {
+        assertTrue(StringUtil.isNotEmpty(str), 4, "指定字符串为空");
+        return str;
+    }
+
+    /**
+     * 断言执行容器不为空
+     *
+     * @param collection 容器
+     * @param <T>
+     *
+     * @return
+     */
+    public static <T extends Collection<?>> T assertNotEmpty(T collection) {
+        assertTrue(CollectionUtil.isNotEmpty(collection), 4, "指定容器为空");
+        return collection;
+    }
+
+    /**
+     * 断言执行容器不为空
+     *
+     * @param collection 容器
+     * @param <T>
+     *
+     * @return
+     */
+    public static <T extends Map<?, ?>> T assertNotEmpty(T collection) {
+        assertTrue(MapUtil.isNotEmpty(collection), 4, "指定容器为空");
+        return collection;
     }
 
 

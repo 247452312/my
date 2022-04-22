@@ -40,7 +40,7 @@ public final class PlanUtil {
                 return bean.parse(sqlStatement).get(0);
             }
         }
-        Asserts.assertTrue(false, "解析执行计划失败:{}", sql);
+        Asserts.throwException("解析执行计划失败:{}", sql);
         return null;
     }
 

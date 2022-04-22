@@ -49,7 +49,7 @@ public final class KproUtil {
             case ORACLE:
             case SQLITE:
             default:
-                Asserts.assertTrue(false, "暂时不支持数据库类型");
+                Asserts.throwException("暂时不支持数据库类型");
                 return null;
         }
     }

@@ -175,7 +175,7 @@ public class DbInformation extends AbstractEntity {
                 case ORACLE:
                 case SQLITE:
                 default:
-                    Asserts.assertTrue(false, "暂时不支持数据库类型");
+                    Asserts.throwException("暂时不支持数据库类型");
             }
             return this.conn = DriverManager.getConnection(this.url, this.userName, this.password);
         } catch (ClassNotFoundException | SQLException e) {

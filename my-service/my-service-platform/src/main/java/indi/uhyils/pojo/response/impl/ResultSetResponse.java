@@ -150,7 +150,7 @@ public class ResultSetResponse extends AbstractMysqlResponse {
         if (obj instanceof Double) {
             return MysqlUtil.mergeLengthCodedBinary((double) obj);
         }
-        Asserts.assertTrue(false, "mysql 数据暂未支持类型:" + obj.getClass().getName());
+        Asserts.throwException("mysql 数据暂未支持类型:" + obj.getClass().getName());
         return null;
     }
 

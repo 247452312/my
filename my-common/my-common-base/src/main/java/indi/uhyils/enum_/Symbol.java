@@ -98,7 +98,7 @@ public enum Symbol {
                 wrapper.likeRight(arg.getName(), arg.getData());
                 return;
             default:
-                Asserts.assertTrue(false, "符号不存在: " + arg.getSymbol());
+                Asserts.throwException("符号不存在: " + arg.getSymbol());
         }
     }
 

@@ -59,7 +59,7 @@ public class OrderNodeFieldValue extends AbstractDoEntity<OrderNodeFieldValueDO>
                 Asserts.assertTrue(realValue.matches(MyContext.ENGLISH_REGEX), "类型错误,应该为英文类型:" + field.toData().getName());
                 break;
             default:
-                Asserts.assertTrue(false, "类型错误,找不到指定类型:" + field.toData().getName());
+                Asserts.throwException("类型错误,找不到指定类型:" + field.toData().getName());
                 break;
 
         }

@@ -96,7 +96,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 result.add(newPlan);
                 return new SQLSelectItem(new MySqlCharExpr("&" + newPlan.getId()), t.getAlias());
             }
-            Asserts.assertTrue(false, "查询报错,子查询类型找不到:{}", t.toString());
+            Asserts.throwException("查询报错,子查询类型找不到:{}", t.toString());
             return null;
         }).collect(Collectors.toList());
     }
@@ -127,7 +127,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 case RIGHT_OUTER_JOIN:
                     return makeRightJoin(plans, params, result, froms, planResult);
                 default:
-                    Asserts.assertTrue(false, "无指定连表方案");
+                    Asserts.throwException("无指定连表方案");
             }
 
         }
@@ -209,7 +209,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
             MySqlListExpr mySqlListExpr = new MySqlListExpr(targetList);
             return Arrays.asList(new SQLBinaryOpExpr(expr, SQLBinaryOperator.Equality, mySqlListExpr));
         }
-        Asserts.assertTrue(false, "sql_where解析错误,没有找到解析类型:{}", where);
+        Asserts.throwException("sql_where解析错误,没有找到解析类型:{}", where);
         return null;
     }
 
@@ -251,7 +251,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 case RIGHT_OUTER_JOIN:
                     return pool.getOrCreateObject(rights, lefts, JoinType.LEFT_OUTER_JOIN);
                 default:
-                    Asserts.assertTrue(false, "sql连表条件不支持:{}", joinType.name_lcase);
+                    Asserts.throwException("sql连表条件不支持:{}", joinType.name_lcase);
                     return null;
             }
 
