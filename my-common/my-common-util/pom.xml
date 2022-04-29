@@ -30,6 +30,12 @@
             <groupId>indi.uhyils</groupId>
             <artifactId>my-common-base</artifactId>
         </dependency>
+        <!--spring test-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

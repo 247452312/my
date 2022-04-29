@@ -62,7 +62,7 @@
         <flink.version>1.13.1</flink.version>
         <my.rpc.version>1.0.3.1.my-SNAPSHOT</my.rpc.version>
         <asm.version>9.2</asm.version>
-        <javaparser.version>3.22.1</javaparser.version>
+        <javaparser.version>3.24.2</javaparser.version>
         <mybatis.plus.spring.version>3.4.3.3</mybatis.plus.spring.version>
         <mapStruct.version>1.4.2.Final</mapStruct.version>
         <ojdbc.version>11.2.0.3</ojdbc.version>
