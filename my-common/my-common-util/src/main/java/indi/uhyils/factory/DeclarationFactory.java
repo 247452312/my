@@ -1,5 +1,6 @@
 package indi.uhyils.factory;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.CompilationUnitWithLink;
 import com.github.javaparser.ast.FieldDeclarationWithLink;
 import com.github.javaparser.ast.ImportDeclaration;
@@ -7,11 +8,16 @@ import com.github.javaparser.ast.MethodDeclarationWithLink;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.VariableDeclaratorWithLink;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.nodeTypes.NodeWithType;
+import indi.uhyils.annotation.NotNull;
+import indi.uhyils.util.StringUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,10 +40,7 @@ public class DeclarationFactory extends AbstractFactory {
         NodeList<VariableDeclarator> variables = fieldDeclarationWithLink.getVariables();
         NodeList<VariableDeclarator> variableDeclaratorWithLinks = new NodeList<>();
         for (VariableDeclarator variable : variables) {
-            VariableDeclaratorWithLink node = new VariableDeclaratorWithLink(variable);
-            // 寻找node 对应的类型
-            CompilationUnitWithLink compilationUnitWithLink = findCompilationUnitWithLink(compilationUnit.getImports(), compilationUnit.getPackageDeclaration().orElse(null), node.getTypeAsString());
-            node.setTargetType(compilationUnitWithLink);
+            VariableDeclaratorWithLink node = createVariable(compilationUnit, variable);
             variableDeclaratorWithLinks.add(node);
         }
         fieldDeclarationWithLink.setVariables(variableDeclaratorWithLinks);
@@ -62,6 +65,47 @@ public class DeclarationFactory extends AbstractFactory {
         // 替换方法入参类型
         dealCompilationUnitMethodParams(methodDeclarationWithLink, imports, packageDeclaration);
         return methodDeclarationWithLink;
+    }
+
+    /**
+     * 创建一个未被扫描到的类
+     *
+     * @param name 类全名
+     *
+     * @return
+     */
+    public CompilationUnitWithLink createNotScannedCompilationUnitWithLink(String name) {
+        CompilationUnitWithLink compilationUnitWithLink = new CompilationUnitWithLink();
+
+        CompilationUnit target = new CompilationUnit();
+        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration();
+
+        SimpleName simpleName = new SimpleName(name);
+        simpleName.setIdentifier(StringUtil.transClassNameToSimpleName(name));
+
+        type.setName(simpleName);
+        NodeList<TypeDeclaration<?>> types = new NodeList<>();
+        types.add(type);
+        target.setTypes(types);
+        compilationUnitWithLink.setTarget(target);
+        return compilationUnitWithLink;
+    }
+
+    /**
+     * 创建变量
+     *
+     * @param compilationUnit
+     * @param variable
+     *
+     * @return
+     */
+    @NotNull
+    public VariableDeclaratorWithLink createVariable(CompilationUnitWithLink compilationUnit, VariableDeclarator variable) {
+        VariableDeclaratorWithLink node = new VariableDeclaratorWithLink(variable);
+        // 寻找node 对应的类型
+        CompilationUnitWithLink compilationUnitWithLink = findCompilationUnitWithLink(compilationUnit.getImports(), compilationUnit.getPackageDeclaration().orElse(null), node.getTypeAsString());
+        node.setTargetType(compilationUnitWithLink);
+        return node;
     }
 
     /**

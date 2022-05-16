@@ -1,57 +1,18 @@
-package com.github.javaparser.ast;
+package com.github.javaparser.ast.expr;
 
 import com.github.javaparser.Position;
 import com.github.javaparser.Range;
 import com.github.javaparser.TokenRange;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.CompilationUnitWithLink;
+import com.github.javaparser.ast.DataKey;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.comments.Comment;
-import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.ast.expr.ArrayAccessExpr;
-import com.github.javaparser.ast.expr.ArrayCreationExpr;
-import com.github.javaparser.ast.expr.ArrayInitializerExpr;
-import com.github.javaparser.ast.expr.AssignExpr;
-import com.github.javaparser.ast.expr.BinaryExpr;
-import com.github.javaparser.ast.expr.BooleanLiteralExpr;
-import com.github.javaparser.ast.expr.CastExpr;
-import com.github.javaparser.ast.expr.CharLiteralExpr;
-import com.github.javaparser.ast.expr.ClassExpr;
-import com.github.javaparser.ast.expr.ConditionalExpr;
-import com.github.javaparser.ast.expr.DoubleLiteralExpr;
-import com.github.javaparser.ast.expr.EnclosedExpr;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.FieldAccessExpr;
-import com.github.javaparser.ast.expr.InstanceOfExpr;
-import com.github.javaparser.ast.expr.IntegerLiteralExpr;
-import com.github.javaparser.ast.expr.LambdaExpr;
-import com.github.javaparser.ast.expr.LiteralExpr;
-import com.github.javaparser.ast.expr.LiteralStringValueExpr;
-import com.github.javaparser.ast.expr.LongLiteralExpr;
-import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
-import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.expr.MethodReferenceExpr;
-import com.github.javaparser.ast.expr.NameExpr;
-import com.github.javaparser.ast.expr.NormalAnnotationExpr;
-import com.github.javaparser.ast.expr.NullLiteralExpr;
-import com.github.javaparser.ast.expr.ObjectCreationExpr;
-import com.github.javaparser.ast.expr.PatternExpr;
-import com.github.javaparser.ast.expr.SimpleName;
-import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
-import com.github.javaparser.ast.expr.StringLiteralExpr;
-import com.github.javaparser.ast.expr.SwitchExpr;
-import com.github.javaparser.ast.expr.TextBlockLiteralExpr;
-import com.github.javaparser.ast.expr.ThisExpr;
-import com.github.javaparser.ast.expr.TypeExpr;
-import com.github.javaparser.ast.expr.UnaryExpr;
-import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.observer.AstObserver;
 import com.github.javaparser.ast.observer.ObservableProperty;
-import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitor;
-import com.github.javaparser.metamodel.MethodCallExprMetaModel;
-import com.github.javaparser.printer.Printer;
-import com.github.javaparser.printer.configuration.PrinterConfiguration;
-import com.github.javaparser.resolution.SymbolResolver;
-import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
+import com.github.javaparser.metamodel.ExpressionMetaModel;
 import com.github.javaparser.resolution.types.ResolvedType;
 import com.github.javaparser.utils.LineSeparator;
 import java.util.List;
@@ -64,141 +25,49 @@ import java.util.stream.Stream;
 
 /**
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2022年04月26日 09时41分
+ * @date 文件创建日期 2022年05月13日 11时34分
  */
-public class MethodCallExprWithLink extends MethodCallExpr {
+public class ExpressionWithLink extends Expression {
 
-    private MethodCallExpr target;
 
-    private MethodDeclarationWithLink targetMethod;
+    /**
+     * 表达式最终返回的类型
+     */
+    private CompilationUnitWithLink returnCompilationUnitWithLink;
 
-    public MethodCallExprWithLink(MethodCallExpr target) {
+    /**
+     * 原始target
+     */
+    private Expression target;
+
+    public ExpressionWithLink(Expression target) {
         this.target = target;
     }
 
-    public MethodDeclarationWithLink getTargetMethod() {
-        return targetMethod;
+    public CompilationUnitWithLink getReturnCompilationUnitWithLink() {
+        return returnCompilationUnitWithLink;
     }
 
-    public void setTargetMethod(MethodDeclarationWithLink targetMethod) {
-        this.targetMethod = targetMethod;
+    public void setReturnCompilationUnitWithLink(CompilationUnitWithLink returnCompilationUnitWithLink) {
+        this.returnCompilationUnitWithLink = returnCompilationUnitWithLink;
     }
 
-    @Override
-    public <R, A> R accept(GenericVisitor<R, A> v, A arg) {
-        return target.accept(v, arg);
+    public Expression getTarget() {
+        return target;
     }
 
-    @Override
-    public <A> void accept(VoidVisitor<A> v, A arg) {
-        target.accept(v, arg);
-    }
-
-    @Override
-    public NodeList<Expression> getArguments() {
-        return target.getArguments();
+    public void setTarget(Expression target) {
+        this.target = target;
     }
 
     @Override
-    public SimpleName getName() {
-        return target.getName();
-    }
-
-    @Override
-    public Optional<Expression> getScope() {
-        return target.getScope();
-    }
-
-    @Override
-    public MethodCallExpr setArguments(NodeList<Expression> arguments) {
-        if (target != null) {
-            return target.setArguments(arguments);
-        }
-        return null;
-    }
-
-    @Override
-    public MethodCallExpr setName(SimpleName name) {
-        if (target != null) {
-            return target.setName(name);
-        }
-        return null;
-    }
-
-    @Override
-    public MethodCallExpr setScope(Expression scope) {
-        if (target != null) {
-            return target.setScope(scope);
-        }
-        return null;
-    }
-
-    @Override
-    public Optional<NodeList<Type>> getTypeArguments() {
-        return target.getTypeArguments();
-    }
-
-    @Override
-    public MethodCallExpr setTypeArguments(NodeList<Type> typeArguments) {
-        if (target != null) {
-            return target.setTypeArguments(typeArguments);
-        }
-        return null;
-    }
-
-    @Override
-    public boolean remove(Node node) {
-        return target.remove(node);
-    }
-
-    @Override
-    public MethodCallExpr removeScope() {
-        return target.removeScope();
-    }
-
-    @Override
-    public MethodCallExpr clone() {
+    public Expression clone() {
         return target.clone();
     }
 
     @Override
-    public MethodCallExprMetaModel getMetaModel() {
+    public ExpressionMetaModel getMetaModel() {
         return target.getMetaModel();
-    }
-
-    @Override
-    public boolean replace(Node node, Node replacementNode) {
-        return target.replace(node, replacementNode);
-    }
-
-    @Override
-    public boolean isMethodCallExpr() {
-        return target.isMethodCallExpr();
-    }
-
-    @Override
-    public MethodCallExpr asMethodCallExpr() {
-        return target.asMethodCallExpr();
-    }
-
-    @Override
-    public void ifMethodCallExpr(Consumer<MethodCallExpr> action) {
-        target.ifMethodCallExpr(action);
-    }
-
-    @Override
-    public ResolvedMethodDeclaration resolve() {
-        return target.resolve();
-    }
-
-    @Override
-    public Optional<MethodCallExpr> toMethodCallExpr() {
-        return target.toMethodCallExpr();
-    }
-
-    @Override
-    public boolean isPolyExpression() {
-        return target.isPolyExpression();
     }
 
     @Override
@@ -409,6 +278,16 @@ public class MethodCallExprWithLink extends MethodCallExpr {
     @Override
     public MarkerAnnotationExpr asMarkerAnnotationExpr() {
         return target.asMarkerAnnotationExpr();
+    }
+
+    @Override
+    public boolean isMethodCallExpr() {
+        return target.isMethodCallExpr();
+    }
+
+    @Override
+    public MethodCallExpr asMethodCallExpr() {
+        return target.asMethodCallExpr();
     }
 
     @Override
@@ -628,6 +507,11 @@ public class MethodCallExprWithLink extends MethodCallExpr {
     }
 
     @Override
+    public void ifMethodCallExpr(Consumer<MethodCallExpr> action) {
+        target.ifMethodCallExpr(action);
+    }
+
+    @Override
     public void ifMethodReferenceExpr(Consumer<MethodReferenceExpr> action) {
         target.ifMethodReferenceExpr(action);
     }
@@ -661,7 +545,6 @@ public class MethodCallExprWithLink extends MethodCallExpr {
     public void ifStringLiteralExpr(Consumer<StringLiteralExpr> action) {
         target.ifStringLiteralExpr(action);
     }
-
 
     @Override
     public void ifThisExpr(Consumer<ThisExpr> action) {
@@ -794,6 +677,11 @@ public class MethodCallExprWithLink extends MethodCallExpr {
     }
 
     @Override
+    public Optional<MethodCallExpr> toMethodCallExpr() {
+        return target.toMethodCallExpr();
+    }
+
+    @Override
     public Optional<MethodReferenceExpr> toMethodReferenceExpr() {
         return target.toMethodReferenceExpr();
     }
@@ -911,6 +799,11 @@ public class MethodCallExprWithLink extends MethodCallExpr {
     @Override
     public boolean isStandaloneExpression() {
         return target.isStandaloneExpression();
+    }
+
+    @Override
+    public boolean isPolyExpression() {
+        return target.isPolyExpression();
     }
 
     @Override
@@ -1094,6 +987,11 @@ public class MethodCallExprWithLink extends MethodCallExpr {
     }
 
     @Override
+    public boolean remove(Node node) {
+        return target.remove(node);
+    }
+
+    @Override
     public Node removeComment() {
         return target.removeComment();
     }
@@ -1109,6 +1007,11 @@ public class MethodCallExprWithLink extends MethodCallExpr {
             return target.setParsed(parsed);
         }
         return null;
+    }
+
+    @Override
+    public boolean replace(Node node, Node replacementNode) {
+        return target.replace(node, replacementNode);
     }
 
     @Override
@@ -1227,34 +1130,6 @@ public class MethodCallExprWithLink extends MethodCallExpr {
     }
 
     @Override
-    public Expression getArgument(int i) {
-        return target.getArgument(i);
-    }
-
-    @Override
-    public MethodCallExpr addArgument(String arg) {
-        return target.addArgument(arg);
-    }
-
-    @Override
-    public MethodCallExpr addArgument(Expression arg) {
-        return target.addArgument(arg);
-    }
-
-    @Override
-    public MethodCallExpr setArgument(int i, Expression arg) {
-        if (target != null) {
-            return target.setArgument(i, arg);
-        }
-        return null;
-    }
-
-    @Override
-    public Optional<Expression> traverseScope() {
-        return target.traverseScope();
-    }
-
-    @Override
     public Optional<Position> getBegin() {
         return target.getBegin();
     }
@@ -1280,100 +1155,23 @@ public class MethodCallExprWithLink extends MethodCallExpr {
     }
 
     @Override
-    public MethodCallExpr setName(String name) {
-        if (target != null) {
-            return target.setName(name);
-        }
+    public <R, A> R accept(GenericVisitor<R, A> v, A arg) {
         return null;
     }
 
     @Override
-    public String getNameAsString() {
-        return target.getNameAsString();
-    }
-
-    @Override
-    public NameExpr getNameAsExpression() {
-        return target.getNameAsExpression();
-    }
-
-    @Override
-    public boolean isUsingDiamondOperator() {
-        return target.isUsingDiamondOperator();
-    }
-
-    @Override
-    public MethodCallExpr setDiamondOperator() {
-        if (target != null) {
-            return target.setDiamondOperator();
-        }
-        return null;
-    }
-
-    @Override
-    public MethodCallExpr removeTypeArguments() {
-        return target.removeTypeArguments();
-    }
-
-    @Override
-    public MethodCallExpr setTypeArguments(Type... typeArguments) {
-        if (target != null) {
-            return target.setTypeArguments(typeArguments);
-        }
-        return null;
-    }
-
-    @Override
-    protected void customInitialization() {
-        if (target != null) {
-            target.customInitialization();
-        }
+    public <A> void accept(VoidVisitor<A> v, A arg) {
 
     }
 
     @Override
-    protected Printer getPrinter() {
-        return target.getPrinter();
+    protected boolean isAssignmentContext() {
+        return target.isAssignmentContext();
     }
 
     @Override
-    protected Printer getPrinter(PrinterConfiguration configuration) {
-        return target.getPrinter(configuration);
+    protected boolean isInvocationContext() {
+        return target.isInvocationContext();
     }
 
-    @Override
-    protected Printer createDefaultPrinter() {
-        return target.createDefaultPrinter();
-    }
-
-    @Override
-    protected Printer createDefaultPrinter(PrinterConfiguration configuration) {
-        return target.createDefaultPrinter(configuration);
-    }
-
-    @Override
-    protected PrinterConfiguration getDefaultPrinterConfiguration() {
-        return target.getDefaultPrinterConfiguration();
-    }
-
-    @Override
-    protected void setAsParentNodeOf(Node childNode) {
-        if (target != null) {
-            target.setAsParentNodeOf(childNode);
-        }
-
-    }
-
-    @Override
-    protected void setAsParentNodeOf(NodeList<? extends Node> list) {
-        if (target != null) {
-            target.setAsParentNodeOf(list);
-        }
-
-    }
-
-    @Override
-    protected SymbolResolver getSymbolResolver() {
-        return target.getSymbolResolver();
-    }
 }

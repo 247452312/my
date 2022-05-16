@@ -47,6 +47,29 @@ public class CompilationUnitWithLink extends CompilationUnit {
     }
 
 
+    /**
+     * 根据node获取对应的type
+     *
+     * @param node
+     *
+     * @return
+     */
+    public TypeDeclaration<?> findTypeByNode(Node node) {
+        NodeList<TypeDeclaration<?>> types = this.getTypes();
+        if (types.size() == 1) {
+            return types.get(0);
+        }
+        Optional<Node> parentNode = node.getParentNode();
+        while (parentNode.isPresent()) {
+            Optional<Node> parentNode1 = parentNode.get().getParentNode();
+            if (parentNode1.isPresent() && parentNode1.get() == this) {
+                return (TypeDeclaration<?>) parentNode1.get();
+            }
+            parentNode = parentNode1;
+        }
+        return null;
+    }
+
     @Override
     public <R, A> R accept(GenericVisitor<R, A> v, A arg) {
         return target.accept(v, arg);

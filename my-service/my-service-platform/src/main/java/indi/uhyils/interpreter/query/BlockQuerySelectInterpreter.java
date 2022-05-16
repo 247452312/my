@@ -21,8 +21,6 @@ import indi.uhyils.pojo.entity.plan.MysqlPlan;
 import indi.uhyils.pojo.entity.plan.impl.MysqlPlanImpl;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
-import indi.uhyils.util.mysql.plan.PlanUtil;
-import indi.uhyils.util.mysql.plan.other.MySqlListExpr;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

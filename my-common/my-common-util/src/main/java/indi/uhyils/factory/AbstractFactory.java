@@ -57,6 +57,9 @@ public abstract class AbstractFactory implements AstFactory {
 
                 }
             }
+            if (targetCompilationUnit == null) {
+                targetCompilationUnit = new DeclarationFactory().createNotScannedCompilationUnitWithLink("java.util." + typeSimpleName);
+            }
             links.add(targetCompilationUnit);
         }
         return links;

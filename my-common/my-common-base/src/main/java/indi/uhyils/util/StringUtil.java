@@ -95,7 +95,7 @@ public final class StringUtil {
      *
      * @return
      */
-    public static Boolean isEmpty(final CharSequence cs) {
+    public static boolean isEmpty(final CharSequence cs) {
         return cs == null || cs.length() == 0;
     }
 
@@ -315,4 +315,34 @@ public final class StringUtil {
         }
         return result;
     }
+
+    /**
+     * 判断首字母是否大写
+     *
+     * @param scopeName
+     *
+     * @return
+     */
+    public static boolean isFirstUpperCase(String scopeName) {
+        if (isEmpty(scopeName)) {
+            return false;
+        }
+        return Character.isUpperCase(scopeName.charAt(0));
+    }
+
+    /**
+     * 将类全名转换成简单名称
+     *
+     * @param className
+     *
+     * @return
+     */
+    public static String transClassNameToSimpleName(String className) {
+        int lastIndex = className.lastIndexOf(".");
+        if (lastIndex == -1) {
+            return className;
+        }
+        return className.substring(lastIndex + 1);
+    }
+
 }

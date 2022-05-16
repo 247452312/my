@@ -3,6 +3,7 @@ package indi.uhyils;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.CompilationUnitWithLink;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ class JavaAstUtilTest {
 
     @org.junit.jupiter.api.Test
     void integrationCompilationUnit() throws FileNotFoundException {
-        List<CompilationUnit> compilationUnits = JavaAstUtil.loadProjectPath("F:\\share\\my\\my-common\\my-common-util\\src");
+        List<CompilationUnit> compilationUnits = JavaAstUtil.loadProjectPath("F:\\share\\my");
 
         List<CompilationUnitWithLink> compilationUnitWithLinks = JavaAstUtil.integrationCompilationUnit(compilationUnits);
         int i = 1;
@@ -27,6 +28,8 @@ class JavaAstUtilTest {
 
     @org.junit.jupiter.api.Test
     void temp() throws FileNotFoundException {
-        System.out.println(String.format("%04d", Long.MAX_VALUE));
+        List<Long> asd = new ArrayList<>();
+        boolean contains = asd.contains(null);
+        System.out.println(contains);
     }
 }

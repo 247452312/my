@@ -66,15 +66,15 @@ public class JavaAstUtil {
             InternalUtil.dealCompilationUnitImport(compilationUnit, result);
             // 替换属性
             InternalUtil.dealCompilationUnitFields(compilationUnit, result);
-            // 替换方法
+            // 替换方法(入参出参)
             InternalUtil.dealCompilationUnitMethods(compilationUnit, result);
-
         }
         // 这里要等第一批所有文件执行完成才能执行这里. 否则会有找不到的问题
         for (CompilationUnitWithLink compilationUnit : result) {
             // 替换方法中的每一行
             InternalUtil.dealCompilationUnitMethodRow(compilationUnit, result);
         }
+        InternalUtil.print();
         return result;
     }
 

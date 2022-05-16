@@ -46,7 +46,7 @@ public class MyUrlClassLoader extends ShareClassLoader {
             if (key.trim().equals(START_CLASS)) {
                 mainClass = value;
                 break;
-            } else if (key.trim().equals(MAIN_CLASS) && StringUtil.isBlack(mainClass)) {
+            } else if (key.trim().equals(MAIN_CLASS) && StringUtil.isEmpty(mainClass)) {
                 mainClass = value;
             }
         }

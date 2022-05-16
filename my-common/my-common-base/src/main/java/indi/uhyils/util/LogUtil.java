@@ -206,6 +206,10 @@ public final class LogUtil {
         error(obj.getClass(), msg);
     }
 
+    public static void error(String msg, String params) {
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.WARN, params);
+    }
+
     public static void error(Throwable e, String msg) {
         writeLog(Thread.currentThread().getName(), msg, e, LogLevelEnum.ERROR);
     }
