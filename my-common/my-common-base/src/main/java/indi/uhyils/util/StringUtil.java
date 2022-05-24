@@ -345,4 +345,16 @@ public final class StringUtil {
         return className.substring(lastIndex + 1);
     }
 
+    /**
+     * 删除类全名中的泛型
+     *
+     * @param className
+     *
+     * @return
+     */
+    public static String removeGenericsFromClassNames(String className) {
+        // todo
+        return className;
+    }
+
 }

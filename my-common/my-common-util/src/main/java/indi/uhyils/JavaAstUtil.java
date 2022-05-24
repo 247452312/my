@@ -1,15 +1,17 @@
 package indi.uhyils;
 
+import com.github.javaparser.AstContext;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.CompilationUnitWithLink;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import indi.uhyils.internal.InternalUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -22,6 +24,7 @@ public class JavaAstUtil {
      * java文件后缀
      */
     public static final String JAVA_FILE_SUFFIX = ".java";
+
 
     /**
      * 解析器
@@ -52,30 +55,35 @@ public class JavaAstUtil {
         return result;
     }
 
-    public static List<CompilationUnitWithLink> integrationCompilationUnit(List<CompilationUnit> compilationUnits) {
-        List<CompilationUnitWithLink> result = new ArrayList<>();
+    /**
+     * 转换CompilationUnit为带有目标link的属性
+     *
+     * @param compilationUnits
+     *
+     * @return
+     */
+    public static void integrationCompilationUnit(List<CompilationUnit> compilationUnits) {
+        // 初始化所有type
+        AstContext.initTypeCache(compilationUnits);
         for (CompilationUnit compilationUnit : compilationUnits) {
-            CompilationUnitWithLink linkCompilationUnitWithLink = new CompilationUnitWithLink();
-            linkCompilationUnitWithLink.setTarget(compilationUnit);
-            result.add(linkCompilationUnitWithLink);
-        }
-        for (CompilationUnitWithLink compilationUnit : result) {
             // 替换package
-            InternalUtil.dealCompilationUnitPackage(compilationUnit, result);
+            InternalUtil.dealCompilationUnitPackage(compilationUnit, compilationUnits);
             // 替换import
-            InternalUtil.dealCompilationUnitImport(compilationUnit, result);
+            InternalUtil.dealCompilationUnitImport(compilationUnit, compilationUnits);
+
+        }
+        for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换属性
-            InternalUtil.dealCompilationUnitFields(compilationUnit, result);
+            InternalUtil.dealCompilationUnitFields(compilationUnit);
             // 替换方法(入参出参)
-            InternalUtil.dealCompilationUnitMethods(compilationUnit, result);
+            InternalUtil.dealCompilationUnitMethods(compilationUnit);
         }
         // 这里要等第一批所有文件执行完成才能执行这里. 否则会有找不到的问题
-        for (CompilationUnitWithLink compilationUnit : result) {
+        for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换方法中的每一行
-            InternalUtil.dealCompilationUnitMethodRow(compilationUnit, result);
+            InternalUtil.dealCompilationUnitMethodRow(compilationUnit);
         }
         InternalUtil.print();
-        return result;
     }
 
     /**

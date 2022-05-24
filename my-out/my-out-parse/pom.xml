@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>indi.uhyils</groupId>
+        <artifactId>my-out</artifactId>
+        <version>0.3.0-my-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>my-out-parse</artifactId>
+
+    <name>my-out-parse</name>
+
+
+    <description>Java Parser and Abstract Syntax Tree for Java</description>
+    <packaging>jar</packaging>
+    <url>https://github.com/javaparser</url>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+    <dependencies>
+
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-base</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.28.0-GA</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>4.5.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.helger.maven</groupId>
+                <artifactId>ph-javacc-maven-plugin</artifactId>
+                <version>4.1.5</version>
+                <executions>
+                    <execution>
+                        <id>javacc</id>
+                        <goals>
+                            <goal>javacc</goal>
+                        </goals>
+                        <configuration>
+                            <grammarEncoding>${project.build.sourceEncoding}</grammarEncoding>
+                            <jdkVersion>${java.version}</jdkVersion>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Generate an OSGi-enabled MANIFEST during the build -->
+            <plugin>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>bnd-maven-plugin</artifactId>
+                <version>6.2.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>bnd-process</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <archive>
+                        <!-- Make sure the bnd-generated manifest is picked up, see MJAR-193 -->
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        <!-- Set module name -->
+                        <manifestEntries>
+                            <Automatic-Module-Name>com.github.javaparser.core</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <compilerArgs>
+                        <!-- This stores method parameter names in the class file, which are used by the metamodel generator -->
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/javacc-support</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>templating-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <id>filter-src</id>
+                        <goals>
+                            <goal>filter-sources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <developers>
+        <developer>
+            <name>Danny van Bruggen</name>
+            <url>https://github.com/matozoid</url>
+            <email>hexagonaal@gmail.com</email>
+            <id>matozoid</id>
+        </developer>
+        <developer>
+            <name>Júlio Vilmar Gesser</name>
+            <email>jgesser@gmail.com</email>
+            <id>jgesser@gmail.com</id>
+        </developer>
+        <developer>
+            <name>Sebastian Kirsch</name>
+            <url>https://github.com/sebastiankirsch</url>
+            <email>sebastian.kirsch@immobilienscout24.de</email>
+            <id>sebastiankirsch</id>
+        </developer>
+        <developer>
+            <name>André Rouél</name>
+            <url>https://github.com/before</url>
+            <id>before</id>
+        </developer>
+        <developer>
+            <name>Nicholas Smith</name>
+            <url>https://github.com/SmiddyPence</url>
+            <email>smiddypence@gmail.com</email>
+            <id>SmiddyPence</id>
+        </developer>
+        <developer>
+            <name>Federico Tomassetti</name>
+            <url>https://github.com/ftomassetti</url>
+            <email>federico@tomassetti.me</email>
+            <id>ftomassetti</id>
+        </developer>
+        <developer>
+            <name>Didier Villevalois</name>
+            <url>https://github.com/ptitjes</url>
+            <email>ptitjes@free.fr</email>
+            <id>ptitjes</id>
+        </developer>
+        <developer>
+            <name>Roger Howell</name>
+            <url>https://github.com/MysterAitch</url>
+            <id>MysterAitch</id>
+        </developer>
+        <developer>
+            <name>Roger Howell</name>
+            <url>https://github.com/MysterAitch</url>
+            <id>MysterAitch</id>
+        </developer>
+        <developer>
+            <name>Jean Pierre Lerbscher</name>
+            <url>https://github.com/jlerbsc</url>
+            <id>jlerbsc</id>
+        </developer>
+        <developer>
+            <name>Maarten Coene</name>
+            <url>https://github.com/maartenc</url>
+            <id>maartenc</id>
+        </developer>
+    </developers>
+
+    <contributors>
+        <contributor>
+            <name>Sebastian Kürten</name>
+            <url>https://github.com/sebkur</url>
+            <email>sebastian@topobyte.de</email>
+        </contributor>
+        <contributor>
+            <name>Junfei Liang</name>
+            <url>https://github.com/fly2best</url>
+            <email>fly2best@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Jarkko Miettinen</name>
+            <url>https://github.com/jmiettinen</url>
+        </contributor>
+        <contributor>
+            <name>Alexey Morozov</name>
+            <url>https://github.com/amorozov</url>
+            <email>morozov@altlinux.org</email>
+        </contributor>
+        <contributor>
+            <name>Donny Nadolny</name>
+            <url>https://github.com/dnadolny</url>
+            <email>donny.nadolny@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Raquel Pau</name>
+            <url>https://github.com/rpau</url>
+            <email>raquelpau@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Chao Shi</name>
+            <url>https://github.com/stepinto</url>
+            <email>stepinto@live.com</email>
+        </contributor>
+        <contributor>
+            <name>Michael Schieder</name>
+            <url>https://github.com/mschieder</url>
+            <email>michael.schieder@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>CRUZ Maximilien</name>
+            <url>https://github.com/DeepSnowNeeL</url>
+            <email>maximilien.cruz@gmail.com</email>
+        </contributor>
+    </contributors>
+
+
+    <scm>
+        <url>https://github.com/javaparser/javaparser.git</url>
+        <connection>scm:git:git://github.com/javaparser/javaparser.git</connection>
+        <developerConnection>scm:git:git@github.com:javaparser/javaparser.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <url>https://github.com/javaparser/javaparser/issues</url>
+        <system>GitHub Issue Tracker</system>
+    </issueManagement>
+
+
+    <profiles>
+        <profile>
+            <!-- doclint requires perfect JavaDoc, and fails the generation of javadoc on even minor problems -->
+            <!-- Ideally we will have perfectly formatted javadoc, but for now just disable it. -->
+            <id>doclint-java8-disable</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <!-- FIXME: Can this be removed? It appears to be a no-op, with be no action to be done when activated (e.g. set a parameter, configure a plugin, etc.) -->
+        </profile>
+        <profile>
+            <!-- This profile is intended for use when preparing and deploying a release. -->
+            <build>
+                <plugins>
+                    <!-- Update the readme with the new version number, but only when compiling a new release. -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-readme</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/doc</directory>
+                                            <includes>
+                                                <include>readme.md</include>
+                                            </includes>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                    <encoding>${project.build.sourceEncoding}</encoding>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Commit the updated readme file to the repo.  -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-scm-plugin</artifactId>
+                        <version>1.12.2</version>
+                        <configuration>
+                            <includes>readme.md</includes>
+                            <message>[maven-release-plugin] update readme</message>
+                            <!-- disabled here, as it will be pushed separately -->
+                            <!-- (either once the release has finished being prepared, or manually) -->
+                            <pushChanges>false</pushChanges>
+                        </configuration>
+                    </plugin>
+
+                    <!-- Source plugin - used to include source code within the release JAR -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Javadoc plugin - used to include javadoc within the release JAR -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.4.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- GPG plugin - used to sign the release JAR before pushing to OSSRH -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- Prevent `gpg` from using pinentry programs -->
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+            <id>run-release</id>
+        </profile>
+    </profiles>
+
+</project>

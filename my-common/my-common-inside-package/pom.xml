@@ -21,7 +21,6 @@
 
 
     <dependencyManagement>
-
         <dependencies>
             <dependency>
                 <groupId>indi.uhyils</groupId>
@@ -136,7 +135,6 @@
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
-
     </dependencyManagement>
 
     <build>

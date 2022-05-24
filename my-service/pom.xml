@@ -25,7 +25,6 @@
         <module>my-service-work-orders</module>
         <module>my-service-mq</module>
         <module>my-service-all</module>
-        <module>my-service-platform</module>
     </modules>
 
 

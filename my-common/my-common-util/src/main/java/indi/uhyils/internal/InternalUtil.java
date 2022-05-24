@@ -1,19 +1,10 @@
 package indi.uhyils.internal;
 
-import com.github.javaparser.ast.ClassOrInterfaceTypeWithLink;
+import com.github.javaparser.AstContext;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.CompilationUnitWithLink;
-import com.github.javaparser.ast.FieldDeclarationWithLink;
 import com.github.javaparser.ast.ImportDeclaration;
-import com.github.javaparser.ast.ImportDeclarationWithLink;
-import com.github.javaparser.ast.MethodCallExprWithLink;
-import com.github.javaparser.ast.MethodDeclarationWithLink;
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
-import com.github.javaparser.ast.PackageDeclarationWithLink;
-import com.github.javaparser.ast.VariableDeclaratorWithLink;
-import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
@@ -22,11 +13,24 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.ArrayAccessExpr;
+import com.github.javaparser.ast.expr.ArrayCreationExpr;
+import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.BinaryExpr;
+import com.github.javaparser.ast.expr.CastExpr;
+import com.github.javaparser.ast.expr.ClassExpr;
+import com.github.javaparser.ast.expr.ConditionalExpr;
+import com.github.javaparser.ast.expr.EnclosedExpr;
 import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.ExpressionWithLink;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
+import com.github.javaparser.ast.expr.InstanceOfExpr;
+import com.github.javaparser.ast.expr.LambdaExpr;
+import com.github.javaparser.ast.expr.LiteralExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.SimpleName;
+import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.AssertStmt;
 import com.github.javaparser.ast.stmt.BlockStmt;
@@ -43,17 +47,13 @@ import com.github.javaparser.ast.stmt.SynchronizedStmt;
 import com.github.javaparser.ast.stmt.ThrowStmt;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.stmt.WhileStmt;
-import com.github.javaparser.ast.type.ArrayType;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
-import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.Type;
 import indi.uhyils.annotation.NotNull;
-import indi.uhyils.annotation.Nullable;
-import indi.uhyils.factory.DeclarationFactory;
 import indi.uhyils.factory.ExprFactory;
-import indi.uhyils.factory.TypeFactory;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.StringUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,6 +62,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -81,17 +82,20 @@ public class InternalUtil {
      * @param compilationUnit
      * @param allCompilationUnit 所有扫描到的类
      */
-    public static void dealCompilationUnitPackage(CompilationUnitWithLink compilationUnit, List<CompilationUnitWithLink> allCompilationUnit) {
+    public static void dealCompilationUnitPackage(CompilationUnit compilationUnit, List<CompilationUnit> allCompilationUnit) {
         Optional<PackageDeclaration> packageDeclarationOptional = compilationUnit.getPackageDeclaration();
         if (!packageDeclarationOptional.isPresent()) {
             return;
         }
 
         PackageDeclaration packageDeclaration = packageDeclarationOptional.get();
-        PackageDeclarationWithLink packageDeclarationWithLink = new PackageDeclarationWithLink(packageDeclaration);
-        List<CompilationUnitWithLink> collect = allCompilationUnit.stream().filter(t -> t.getPackageDeclaration().isPresent()).filter(t -> Objects.equals(t.getPackageDeclaration().get().getName().asString(), packageDeclarationWithLink.getName().asString())).collect(Collectors.toList());
-        packageDeclarationWithLink.setOtherCompilationUnits(collect);
-        compilationUnit.setPackageDeclaration(packageDeclarationWithLink);
+        // 筛选出同一个package的
+        List<CompilationUnit> collect = allCompilationUnit.stream()
+                                                          .filter(t -> t.getPackageDeclaration().isPresent())
+                                                          .filter(t -> Objects.equals(t.getPackageDeclaration().get().getName().asString(),
+                                                                                      packageDeclaration.getName().asString()))
+                                                          .collect(Collectors.toList());
+        packageDeclaration.setOtherCompilationUnits(collect);
     }
 
     /**
@@ -100,64 +104,56 @@ public class InternalUtil {
      * @param compilationUnit
      * @param allCompilationUnit 所有扫描到的类
      */
-    public static void dealCompilationUnitImport(CompilationUnitWithLink compilationUnit, List<CompilationUnitWithLink> allCompilationUnit) {
+    public static void dealCompilationUnitImport(CompilationUnit compilationUnit, List<CompilationUnit> allCompilationUnit) {
         NodeList<ImportDeclaration> imports = compilationUnit.getImports();
-        NodeList<ImportDeclaration> targetList = new NodeList<>();
         for (ImportDeclaration importItem : imports) {
-            ImportDeclarationWithLink importDeclarationWithLink = new ImportDeclarationWithLink(importItem);
-            String importClassName = importDeclarationWithLink.getName().asString();
-            CompilationUnitWithLink compilationUnitWithLink = allCompilationUnit.stream()
-                                                                                .filter(
-                                                                                    t -> {
-                                                                                        PackageDeclaration packageDeclaration = t.getPackageDeclaration().orElse(null);
-                                                                                        if (packageDeclaration != null) {
-                                                                                            String packageName = packageDeclaration.getName().asString();
-                                                                                            return t.getTypes()
-                                                                                                    .stream()
-                                                                                                    .anyMatch(
-                                                                                                        item -> Objects.equals(packageName + "." + item.getName().asString(), importClassName)
-                                                                                                    );
-                                                                                        } else {
-                                                                                            return t.getTypes()
-                                                                                                    .stream()
-                                                                                                    .anyMatch(
-                                                                                                        item -> Objects.equals(item.getName().asString(), importClassName)
-                                                                                                    );
-                                                                                        }
+            String importClassName = importItem.getName().asString();
+            // 找到目标类型, 如果没有,就新建一个
+            TypeDeclaration<?> typeDeclaration = allCompilationUnit.stream()
+                                                                   .flatMap(t -> t.getTypes().stream())
+                                                                   .filter(
+                                                                       t -> {
+                                                                           Optional<CompilationUnit> typeCompilationUnit = t.findCompilationUnit();
+                                                                           if (!typeCompilationUnit.isPresent()) {
+                                                                               return false;
+                                                                           }
+                                                                           PackageDeclaration packageDeclaration = typeCompilationUnit.get().getPackageDeclaration().orElse(null);
+                                                                           if (packageDeclaration != null) {
+                                                                               String packageName = packageDeclaration.getName().asString();
+                                                                               return Objects.equals(packageName + "." + t.getName().asString(), importClassName);
+                                                                           } else {
+                                                                               return Objects.equals(t.getName().asString(), importClassName);
+                                                                           }
 
-                                                                                    }
-                                                                                )
-                                                                                .findFirst()
-                                                                                .orElse(null);
-            if (compilationUnitWithLink == null) {
-                compilationUnitWithLink = new DeclarationFactory().createNotScannedCompilationUnitWithLink(importClassName);
+                                                                       }
+                                                                   )
+                                                                   .findFirst()
+                                                                   .orElse(null);
+            if (typeDeclaration == null) {
+                typeDeclaration = new ClassOrInterfaceDeclaration();
+                typeDeclaration.setName(importClassName);
+                AstContext.allTypeCache.get().add(typeDeclaration);
             }
-            importDeclarationWithLink.setTargetCompilationUnit(compilationUnitWithLink);
-            targetList.add(importDeclarationWithLink);
+            importItem.setTargetType(typeDeclaration);
         }
-        compilationUnit.setImports(targetList);
     }
 
     /**
      * 替换 method
      *
      * @param compilationUnit
-     * @param allCompilationUnit 所有扫描到的类
      */
-    public static void dealCompilationUnitMethods(CompilationUnitWithLink compilationUnit, List<CompilationUnitWithLink> allCompilationUnit) {
+    public static void dealCompilationUnitMethods(CompilationUnit compilationUnit) {
         for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
-            NodeList<BodyDeclaration<?>> members = type.getMembers();
-            NodeList<BodyDeclaration<?>> targetList = new NodeList<>();
-            for (BodyDeclaration<?> member : members) {
-                if (!(member instanceof MethodDeclaration)) {
-                    targetList.add(member);
-                    continue;
+            List<MethodDeclaration> methods = type.getMethods();
+            for (MethodDeclaration method : methods) {
+                Type returnType = method.getType();
+                fillTypeTargetByAllCompilationUnit(compilationUnit, returnType);
+                for (Parameter parameter : method.getParameters()) {
+                    Type parameterType = parameter.getType();
+                    fillTypeTargetByAllCompilationUnit(compilationUnit, parameterType);
                 }
-                MethodDeclarationWithLink method = new DeclarationFactory().createMethod((MethodDeclaration) member, compilationUnit);
-                targetList.add(method);
-
             }
-            type.setMembers(targetList);
         }
     }
 
@@ -165,25 +161,60 @@ public class InternalUtil {
      * 替换 属性
      *
      * @param compilationUnit
-     * @param allCompilationUnit 所有扫描到的类
      */
-    public static void dealCompilationUnitFields(CompilationUnitWithLink compilationUnit, List<CompilationUnitWithLink> allCompilationUnit) {
+    public static void dealCompilationUnitFields(CompilationUnit compilationUnit) {
         for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
-            NodeList<BodyDeclaration<?>> members = type.getMembers();
-            NodeList<BodyDeclaration<?>> targetMembers = new NodeList<>();
+            for (FieldDeclaration member : type.getFields()) {
+                NodeList<VariableDeclarator> variables = member.getVariables();
 
-            for (BodyDeclaration<?> member : members) {
-                if (!(member instanceof FieldDeclaration)) {
-                    targetMembers.add(member);
-                    continue;
+                for (VariableDeclarator variable : variables) {
+                    Type variableType = variable.getType();
+                    fillTypeTargetByAllCompilationUnit(compilationUnit, variableType);
                 }
-                // 处理属性的每一个参数
-                FieldDeclarationWithLink fieldDeclarationWithLink = new DeclarationFactory().createField((FieldDeclaration) member, compilationUnit);
-                targetMembers.add(fieldDeclarationWithLink);
             }
-            type.setMembers(targetMembers);
         }
     }
+
+    /**
+     * 根据所有扫描的文件填充type的类型
+     *
+     * @param nameTypeMap
+     * @param variableType
+     */
+    private static void fillTypeTargetByAllCompilationUnit(CompilationUnit compilationUnit, Type variableType) {
+        if (variableType.isArrayType()) {
+            // todo 这里不应该直接覆盖
+            variableType = variableType.asArrayType().getComponentType();
+        }
+        Optional<TypeDeclaration<?>> typeTarget = compilationUnit.findTypeDeclaration(variableType);
+        Type finalVariableType = variableType;
+        typeTarget.ifPresent(finalVariableType::setTarget);
+    }
+
+    /**
+     * 获取一个type的全名
+     *
+     * @param typeSimpleName
+     *
+     * @return
+     */
+    private static String parseTypeAllName(Optional<CompilationUnit> compilation, String typeSimpleName) {
+        String packageName = null;
+        if (compilation.isPresent()) {
+            Optional<PackageDeclaration> typePackageDeclaration = compilation.get().getPackageDeclaration();
+            if (typePackageDeclaration.isPresent()) {
+                packageName = typePackageDeclaration.get().getName().asString();
+            }
+        }
+        String typeAllName;
+        if (StringUtil.isEmpty(packageName)) {
+            typeAllName = typeSimpleName;
+        } else {
+            typeAllName = packageName + "." + typeSimpleName;
+        }
+        return typeAllName;
+    }
+
 
     /**
      * 替换方法中的每一行
@@ -191,10 +222,9 @@ public class InternalUtil {
      * @param compilationUnit
      * @param allCompilationUnit 所有扫描到的类
      */
-    public static void dealCompilationUnitMethodRow(CompilationUnitWithLink compilationUnit, List<CompilationUnitWithLink> allCompilationUnit) {
+    public static void dealCompilationUnitMethodRow(CompilationUnit compilationUnit) {
         for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
-            List<MethodDeclarationWithLink> methods = type.getMethods().stream().map(t -> (MethodDeclarationWithLink) t).collect(Collectors.toList());
-            for (MethodDeclarationWithLink method : methods) {
+            for (MethodDeclaration method : type.getMethods()) {
                 dealMethodCallExprWithLink(method, compilationUnit);
             }
         }
@@ -208,7 +238,7 @@ public class InternalUtil {
      *
      * @return
      */
-    private static void dealMethodCallExprWithLink(MethodDeclarationWithLink method, CompilationUnitWithLink compilationUnit) {
+    private static void dealMethodCallExprWithLink(MethodDeclaration method, CompilationUnit compilationUnit) {
         Optional<BlockStmt> body = method.getBody();
         if (!body.isPresent()) {
             return;
@@ -216,35 +246,43 @@ public class InternalUtil {
         BlockStmt blockStmt = body.get();
         NodeList<Statement> statements = blockStmt.getStatements();
         //局部变量记录,用来判断局部变量的类型,用以之后推测方法所在地 <局部变量名称,局部变量>
-        Map<String, CompilationUnitWithLink> vars = new HashMap<>();
+        Map<String, TypeDeclaration<?>> vars = new HashMap<>();
 
         // 将入参放置进可用参数列表中
-        List<CompilationUnitWithLink> paramTypes = method.getParamTypes();
         NodeList<Parameter> parameters = method.getParameters();
-        List<String> parameterNames = parameters.stream().map(t -> t.getName().asString()).collect(Collectors.toList());
-        for (int i = 0; i < parameterNames.size(); i++) {
-            vars.put(parameterNames.get(i), paramTypes.get(i));
+        for (Parameter parameter : parameters) {
+            Optional<TypeDeclaration<?>> targetOptional = parameter.getType().getTarget();
+            targetOptional.ifPresent(typeDeclaration -> vars.put(parameter.getNameAsString(), typeDeclaration));
         }
 
         // 将类属性放入可用参数列表中
         TypeDeclaration<?> typeByNode = compilationUnit.findTypeByNode(method);
-        List<FieldDeclarationWithLink> fields = typeByNode.getFields().stream().map(t -> (FieldDeclarationWithLink) t).collect(Collectors.toList());
-        for (FieldDeclarationWithLink field : fields) {
-            List<VariableDeclaratorWithLink> variables = field.getVariables().stream().map(t -> (VariableDeclaratorWithLink) t).collect(Collectors.toList());
-            for (VariableDeclaratorWithLink variable : variables) {
-                vars.put(variable.getNameAsString(), variable.getTargetType());
+
+        List<FieldDeclaration> fields = typeByNode.getFields();
+        for (FieldDeclaration field : fields) {
+            List<VariableDeclarator> variables = field.getVariables();
+            for (VariableDeclarator variable : variables) {
+                Optional<TypeDeclaration<?>> targetOptional = variable.getType().getTarget();
+                targetOptional.ifPresent(typeDeclaration -> vars.put(variable.getNameAsString(), typeDeclaration));
             }
         }
 
         // 将相同包中的共有静态变量加入变量中去
         Optional<PackageDeclaration> packageDeclarationOptional = compilationUnit.getPackageDeclaration();
         if (packageDeclarationOptional.isPresent()) {
-            PackageDeclarationWithLink packageDeclarationWithLink = (PackageDeclarationWithLink) packageDeclarationOptional.get();
-            List<CompilationUnitWithLink> otherCompilationUnits = packageDeclarationWithLink.getOtherCompilationUnits();
-            for (CompilationUnitWithLink otherCompilationUnit : otherCompilationUnits) {
-                Map<String, CompilationUnitWithLink> canUseVariable = findCanUseVariable(otherCompilationUnit);
+            PackageDeclaration packageDeclarationWithLink = packageDeclarationOptional.get();
+            List<CompilationUnit> otherCompilationUnits = packageDeclarationWithLink.getOtherCompilationUnits();
+            for (CompilationUnit otherCompilationUnit : otherCompilationUnits) {
+                Map<String, TypeDeclaration<?>> canUseVariable = findCanUseVariable(otherCompilationUnit);
                 vars.putAll(canUseVariable);
             }
+
+        }
+        // 将 import中的类放到变量中去
+        NodeList<ImportDeclaration> imports = compilationUnit.getImports();
+        for (ImportDeclaration anImport : imports) {
+            String className = anImport.getName().getIdentifier();
+            anImport.getTargetType().ifPresent(t -> vars.put(className, t));
 
         }
 
@@ -257,25 +295,37 @@ public class InternalUtil {
     /**
      * 根据compilationUnit 去获取可以在局部代码中直接使用的变量
      *
-     * @param otherCompilationUnit
+     * @param compilationUnit
      *
      * @return
      */
-    public static Map<String, CompilationUnitWithLink> findCanUseVariable(CompilationUnitWithLink otherCompilationUnit) {
-        Map<String, CompilationUnitWithLink> vars = new HashMap<>();
+    public static Map<String, TypeDeclaration<?>> findCanUseVariable(CompilationUnit compilationUnit) {
+        Map<String, TypeDeclaration<?>> result = new HashMap<>();
+
+        // 1.同包中其他类中的非私有静态变量
+        // 2.util包中静态变量
+        // 3.同包中其他枚举类的枚举
+        // 4.util包中的枚举
+
+        // 静态变量
         List<VariableDeclarator> otherPackageVariables = new ArrayList<>();
+        // 枚举
         List<EnumConstantDeclaration> otherPackageEnumConstantDeclaration = new ArrayList<>();
-        for (TypeDeclaration<?> typeDeclaration : otherCompilationUnit.getTypes()) {
+
+        for (TypeDeclaration<?> typeDeclaration : compilationUnit.getTypes()) {
             if (typeDeclaration.isClassOrInterfaceDeclaration()) {
                 ClassOrInterfaceDeclaration classOrInterfaceDeclaration = typeDeclaration.asClassOrInterfaceDeclaration();
                 if (classOrInterfaceDeclaration.isInterface()) {
+                    // 接口中的全部
                     List<VariableDeclarator> collect = classOrInterfaceDeclaration.getFields().stream().flatMap(t -> t.getVariables().stream()).collect(Collectors.toList());
                     otherPackageVariables.addAll(collect);
                 } else {
-                    List<VariableDeclarator> collect = typeDeclaration.getFields().stream().filter(t -> t.isPublic() && t.isStatic()).flatMap(t -> t.getVariables().stream()).collect(Collectors.toList());
+                    //非接口中的静态非私有变量
+                    List<VariableDeclarator> collect = typeDeclaration.getFields().stream().filter(t -> !t.isPrivate() && t.isStatic()).flatMap(t -> t.getVariables().stream()).collect(Collectors.toList());
                     otherPackageVariables.addAll(collect);
                 }
             } else if (typeDeclaration.isEnumDeclaration()) {
+                // 枚举们
                 EnumDeclaration enumDeclaration = typeDeclaration.asEnumDeclaration();
                 List<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
                 otherPackageEnumConstantDeclaration.addAll(entries);
@@ -284,27 +334,18 @@ public class InternalUtil {
             }
         }
         for (VariableDeclarator variableDeclarator : otherPackageVariables) {
-            if (variableDeclarator instanceof VariableDeclaratorWithLink) {
-                VariableDeclaratorWithLink variable = (VariableDeclaratorWithLink) variableDeclarator;
-                vars.put(variable.getNameAsString(), variable.getTargetType());
-            } else {
-                LogUtil.error("局部变量转换错误:{}", variableDeclarator.getClass().getName());
-            }
+            Optional<TypeDeclaration<?>> targetOptional = variableDeclarator.getType().getTarget();
+            targetOptional.ifPresent(typeDeclaration -> result.put(variableDeclarator.getNameAsString(), typeDeclaration));
         }
+        // 枚举
         for (EnumConstantDeclaration enumConstantDeclaration : otherPackageEnumConstantDeclaration) {
-            EnumDeclaration enumDeclaration = (EnumDeclaration) enumConstantDeclaration.getParentNode().get();
+            EnumDeclaration enumDeclaration = (EnumDeclaration) enumConstantDeclaration.getParentNode().orElse(null);
             String classType = enumDeclaration.getName().asString();
             String fieldName = enumConstantDeclaration.getName().asString();
             String finalName = classType + "." + fieldName;
-            Node node = enumDeclaration.getParentNode().get();
-            if (node instanceof CompilationUnitWithLink) {
-                vars.put(finalName, (CompilationUnitWithLink) node);
-            } else {
-                CompilationUnitWithLink value = new CompilationUnitWithLink();
-                vars.put(fieldName, value.setTarget((CompilationUnit) node));
-            }
+            result.put(finalName, enumDeclaration);
         }
-        return vars;
+        return result;
     }
 
     /**
@@ -314,26 +355,27 @@ public class InternalUtil {
      * @param vars            局部变量表
      * @param statement       代码块
      */
-    private static void dealStatementWithLink(CompilationUnitWithLink compilationUnit, Map<String, CompilationUnitWithLink> vars, Statement statement) {
+    private static void dealStatementWithLink(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, Statement statement) {
         if (statement.isExpressionStmt()) {
             ExpressionStmt expressionStmt = statement.asExpressionStmt();
             Expression expression = expressionStmt.getExpression();
-            dealExpressionWithLink(compilationUnit, vars, expression);
+            dealExpression(compilationUnit, vars, expression);
         } else {
             if (statement.isSwitchStmt()) {
                 SwitchStmt switchStmt = statement.asSwitchStmt();
                 Expression selector = switchStmt.getSelector();
-                dealExpressionWithLink(compilationUnit, vars, selector);
+                dealExpression(compilationUnit, vars, selector);
                 NodeList<SwitchEntry> entries = switchStmt.getEntries();
                 List<Statement> collect = entries.stream().flatMap(t -> t.getStatements().stream()).collect(Collectors.toList());
-                Map<String, CompilationUnitWithLink> itemVars = new HashMap<>(vars);
+                Map<String, TypeDeclaration<?>> itemVars = new HashMap<>(vars);
                 for (Statement itemStatement : collect) {
                     dealStatementWithLink(compilationUnit, itemVars, itemStatement);
                 }
             } else if (statement.isIfStmt()) {
                 IfStmt ifStmt = statement.asIfStmt();
                 Expression condition = ifStmt.getCondition();
-                dealExpressionWithLink(compilationUnit, vars, condition);
+                dealExpression(compilationUnit, vars, condition);
+
                 Statement thenStmt = ifStmt.getThenStmt();
                 dealStatementWithLink(compilationUnit, vars, thenStmt);
                 Optional<Statement> elseStmt = ifStmt.getElseStmt();
@@ -344,16 +386,17 @@ public class InternalUtil {
             } else if (statement.isWhileStmt()) {
                 WhileStmt whileStmt = statement.asWhileStmt();
                 Expression condition = whileStmt.getCondition();
-                dealExpressionWithLink(compilationUnit, vars, condition);
+                dealExpression(compilationUnit, vars, condition);
                 Statement body = whileStmt.getBody();
                 dealStatementWithLink(compilationUnit, vars, body);
             } else if (statement.isTryStmt()) {
                 TryStmt tryStmt = statement.asTryStmt();
-                Map<String, CompilationUnitWithLink> tempVars = new HashMap<>(vars);
+                Map<String, TypeDeclaration<?>> tempVars = new HashMap<>(vars);
                 NodeList<Expression> resources = tryStmt.getResources();
                 for (Expression resource : resources) {
-                    dealExpressionWithLink(compilationUnit, tempVars, resource);
+                    dealExpression(compilationUnit, tempVars, resource);
                 }
+
                 Statement tryBlock = tryStmt.getTryBlock();
                 dealStatementWithLink(compilationUnit, tempVars, tryBlock);
 
@@ -369,55 +412,54 @@ public class InternalUtil {
             } else if (statement.isBlockStmt()) {
                 BlockStmt blockStmt = statement.asBlockStmt();
                 NodeList<Statement> statements = blockStmt.getStatements();
-                Map<String, CompilationUnitWithLink> itemVars = new HashMap<>(vars);
+                Map<String, TypeDeclaration<?>> itemVars = new HashMap<>(vars);
                 for (Statement item : statements) {
                     dealStatementWithLink(compilationUnit, itemVars, item);
                 }
             } else if (statement.isForEachStmt()) {
+                Map<String, TypeDeclaration<?>> newVars = new HashMap<>(vars);
                 ForEachStmt forEachStmt = statement.asForEachStmt();
-                Expression variable = forEachStmt.getVariable();
-                dealExpressionWithLink(compilationUnit, vars, variable);
+                VariableDeclarationExpr variable = forEachStmt.getVariable();
+                dealExpression(compilationUnit, newVars, variable);
+
                 Expression iterable = forEachStmt.getIterable();
-                dealExpressionWithLink(compilationUnit, vars, iterable);
+                dealExpression(compilationUnit, newVars, iterable);
+
                 Statement body = forEachStmt.getBody();
-                dealStatementWithLink(compilationUnit, vars, body);
+                dealStatementWithLink(compilationUnit, newVars, body);
             } else if (statement.isAssertStmt()) {
                 AssertStmt assertStmt = statement.asAssertStmt();
                 Expression check = assertStmt.getCheck();
-                dealExpressionWithLink(compilationUnit, vars, check);
+                dealExpression(compilationUnit, vars, check);
             } else if (statement.isSynchronizedStmt()) {
                 SynchronizedStmt synchronizedStmt = statement.asSynchronizedStmt();
                 Expression expression = synchronizedStmt.getExpression();
-                dealExpressionWithLink(compilationUnit, vars, expression);
+                dealExpression(compilationUnit, vars, expression);
                 BlockStmt body = synchronizedStmt.getBody();
                 dealStatementWithLink(compilationUnit, vars, body);
             } else if (statement.isReturnStmt()) {
                 ReturnStmt returnStmt = statement.asReturnStmt();
                 Optional<Expression> expression = returnStmt.getExpression();
-                if (expression.isPresent()) {
-                    dealExpressionWithLink(compilationUnit, vars, expression.get());
-                }
+                expression.ifPresent(value -> dealExpression(compilationUnit, vars, value));
             } else if (statement.isForStmt()) {
                 ForStmt forStmt = statement.asForStmt();
-                Map<String, CompilationUnitWithLink> tempVars = new HashMap<>(vars);
+                Map<String, TypeDeclaration<?>> tempVars = new HashMap<>(vars);
                 NodeList<Expression> initialization = forStmt.getInitialization();
                 for (Expression expression : initialization) {
-                    dealExpressionWithLink(compilationUnit, tempVars, expression);
+                    dealExpression(compilationUnit, tempVars, expression);
                 }
                 Optional<Expression> compare = forStmt.getCompare();
-                if (compare.isPresent()) {
-                    dealExpressionWithLink(compilationUnit, tempVars, compare.get());
-                }
+                compare.ifPresent(expression -> dealExpression(compilationUnit, tempVars, expression));
                 NodeList<Expression> update = forStmt.getUpdate();
                 for (Expression expression : update) {
-                    dealExpressionWithLink(compilationUnit, tempVars, expression);
+                    dealExpression(compilationUnit, tempVars, expression);
                 }
                 Statement body = forStmt.getBody();
                 dealStatementWithLink(compilationUnit, tempVars, body);
             } else if (statement.isThrowStmt()) {
                 ThrowStmt throwStmt = statement.asThrowStmt();
                 Expression expression = throwStmt.getExpression();
-                dealExpressionWithLink(compilationUnit, vars, expression);
+                dealExpression(compilationUnit, vars, expression);
             } else if (statement.isContinueStmt() || statement.isBreakStmt()) {
                 // do nothing
             } else {
@@ -433,32 +475,294 @@ public class InternalUtil {
      * @param vars
      * @param expression
      */
-    private static Expression dealExpressionWithLink(CompilationUnitWithLink compilationUnit, Map<String, CompilationUnitWithLink> vars, Expression expression) {
+    private static void dealExpression(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, Expression expression) {
         if (expression.isVariableDeclarationExpr()) {
-            VariableDeclarationExpr variableDeclarationExpr = expression.asVariableDeclarationExpr();
-            NodeList<VariableDeclarator> variables = variableDeclarationExpr.getVariables();
-            for (VariableDeclarator variable : variables) {
-                SimpleName name = variable.getName();
-                Type type = variable.getType();
-                // 判断类型是否是一个可以判断出来的局部变量
-                ClassOrInterfaceTypeWithLink withLinkType = judgeTypeClassAndMakeWithLinkType(compilationUnit, type);
-                if (withLinkType == null) {
-                    continue;
-                }
-                variable.setType(withLinkType);
-                vars.put(name.asString(), withLinkType.getTypeTarget());
-            }
-            return expression;
+            dealVariableDeclarationExpr(compilationUnit, vars, expression.asVariableDeclarationExpr());
+        } else if (expression.isMethodCallExpr()) {
+            dealMethodCallExpr(compilationUnit, vars, expression.asMethodCallExpr());
+        } else if (expression.isNameExpr()) {
+            dealNameExpr(compilationUnit, vars, expression.asNameExpr());
+        } else if (expression.isBinaryExpr()) {
+            dealBinaryExpr(compilationUnit, vars, expression.asBinaryExpr());
+        } else if (expression.isAssignExpr()) {
+            dealAssignExpr(compilationUnit, vars, expression.asAssignExpr());
+        } else if (expression.isLiteralExpr()) {
+            dealLiteralExpr(compilationUnit, vars, expression.asLiteralExpr());
+        } else if (expression.isObjectCreationExpr()) {
+            dealObjectCreationExpr(compilationUnit, vars, expression.asObjectCreationExpr());
+        } else if (expression.isUnaryExpr()) {
+            dealUnaryExpr(compilationUnit, vars, expression.asUnaryExpr());
+        } else if (expression.isArrayAccessExpr()) {
+            dealArrayAccessExpr(compilationUnit, vars, expression.asArrayAccessExpr());
+        } else if (expression.isCastExpr()) {
+            dealCastExpr(compilationUnit, vars, expression.asCastExpr());
+        } else if (expression.isThisExpr()) {
+            expression.setReturnType(compilationUnit.findTypeByNode(expression));
+        } else if (expression.isFieldAccessExpr()) {
+            dealFieldAccessExpr(compilationUnit, vars, expression.asFieldAccessExpr());
+        } else if (expression.isInstanceOfExpr()) {
+            dealInstanceOfExpr(compilationUnit, vars, expression.asInstanceOfExpr());
+        } else if (expression.isArrayCreationExpr()) {
+            dealArrayCreationExpr(compilationUnit, vars, expression.asArrayCreationExpr());
+        } else if (expression.isClassExpr()) {
+            dealClassExpr(compilationUnit, vars, expression.asClassExpr());
+        } else if (expression.isConditionalExpr()) {
+            dealConditionalExpr(compilationUnit, vars, expression.asConditionalExpr());
+        } else if (expression.isEnclosedExpr()) {
+            dealEnclosedExpr(compilationUnit, vars, expression.asEnclosedExpr());
+        } else if (expression.isLambdaExpr()) {
+            dealLambdaExpr(compilationUnit, vars, expression.asLambdaExpr());
+        } else if (expression.isSuperExpr()) {
+            LogUtil.warn("暂时不处理super表达式");
         } else {
-            if (expression.isMethodCallExpr()) {
-                return dealMethodCallExpression(compilationUnit, vars, expression.asMethodCallExpr());
-            } else if (expression.isAssignExpr() || expression.isNameExpr() || expression.isNullLiteralExpr() || expression.isBinaryExpr() || expression.isInstanceOfExpr() || expression.isObjectCreationExpr() || expression.isUnaryExpr() || expression.isUnaryExpr() || expression.getClass().getSimpleName().contains("Expr")) {
-                // do nothing
-            } else {
-                LogUtil.error("未知的表达式类型:{}", expression.getClass().getSimpleName());
-            }
+            LogUtil.error("未知的表达式类型:{}", expression.getClass().getSimpleName());
         }
-        return expression;
+    }
+
+    /**
+     * 处理lambda表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asLambdaExpr
+     */
+    private static void dealLambdaExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, LambdaExpr asLambdaExpr) {
+        Statement body = asLambdaExpr.getBody();
+        Map<String, TypeDeclaration<?>> newVars = new HashMap<>(vars);
+        dealStatementWithLink(compilationUnit, newVars, body);
+        ClassOrInterfaceDeclaration returnType = new ClassOrInterfaceDeclaration();
+        returnType.setName(Function.class.getSimpleName());
+        asLambdaExpr.setReturnType(returnType);
+    }
+
+    /**
+     * 处理括号表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asEnclosedExpr
+     */
+    private static void dealEnclosedExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, EnclosedExpr asEnclosedExpr) {
+        Expression inner = asEnclosedExpr.getInner();
+        dealExpression(compilationUnit, vars, inner);
+        inner.getReturnType().ifPresent(asEnclosedExpr::setReturnType);
+    }
+
+    /**
+     * 处理三目表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asConditionalExpr
+     */
+    private static void dealConditionalExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, ConditionalExpr asConditionalExpr) {
+        Expression condition = asConditionalExpr.getCondition();
+        dealExpression(compilationUnit, vars, condition);
+        Expression thenExpr = asConditionalExpr.getThenExpr();
+        dealExpression(compilationUnit, vars, thenExpr);
+        Expression elseExpr = asConditionalExpr.getElseExpr();
+        dealExpression(compilationUnit, vars, elseExpr);
+
+        Optional<TypeDeclaration<?>> returnType = thenExpr.getReturnType();
+        Optional<TypeDeclaration<?>> elseReturnType = elseExpr.getReturnType();
+        TypeDeclaration<?> exprReturnType = returnType.orElse(elseReturnType.orElse(null));
+        asConditionalExpr.setReturnType(exprReturnType);
+    }
+
+    /**
+     * 处理数组创建表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asArrayCreationExpr
+     */
+    private static void dealArrayCreationExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, ArrayCreationExpr asArrayCreationExpr) {
+        Type elementType = asArrayCreationExpr.getElementType();
+        elementType.fillTargetByCompilationUnit(compilationUnit);
+        elementType.getTarget().ifPresent(asArrayCreationExpr::setReturnType);
+    }
+
+    /**
+     * 处理class表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asClassExpr
+     */
+    private static void dealClassExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, ClassExpr asClassExpr) {
+        Type type = asClassExpr.getType();
+        type.fillTargetByCompilationUnit(compilationUnit);
+        type.getTarget().ifPresent(asClassExpr::setReturnType);
+    }
+
+    /**
+     * 处理 instanceOf
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asInstanceOfExpr
+     */
+    private static void dealInstanceOfExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, InstanceOfExpr asInstanceOfExpr) {
+        Expression expression = asInstanceOfExpr.getExpression();
+        dealExpression(compilationUnit, vars, expression);
+        TypeDeclaration<?> booleanType = compilationUnit.createNotScannedTypeDeclaration(Boolean.class.getSimpleName());
+        asInstanceOfExpr.setReturnType(booleanType);
+    }
+
+    /**
+     * 处理类型强转语句
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asCastExpr
+     */
+    private static void dealCastExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, CastExpr asCastExpr) {
+        Expression expression = asCastExpr.getExpression();
+        dealExpression(compilationUnit, vars, expression);
+        Type type = asCastExpr.getType();
+        type.fillTargetByCompilationUnit(compilationUnit);
+        type.getTarget().ifPresent(asCastExpr::setReturnType);
+    }
+
+    /**
+     * 处理数组选择表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asArrayAccessExpr
+     */
+    private static void dealArrayAccessExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, ArrayAccessExpr asArrayAccessExpr) {
+        Expression name = asArrayAccessExpr.getName();
+        dealExpression(compilationUnit, vars, name);
+        name.getReturnType().ifPresent(asArrayAccessExpr::setReturnType);
+    }
+
+    /**
+     * 处理一元表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asUnaryExpr
+     */
+    private static void dealUnaryExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, UnaryExpr asUnaryExpr) {
+        Expression expression = asUnaryExpr.getExpression();
+        dealExpression(compilationUnit, vars, expression);
+        TypeDeclaration<?> typeDeclaration = ExprFactory.calculationUnaryType(compilationUnit, vars, asUnaryExpr);
+        asUnaryExpr.setReturnType(typeDeclaration);
+    }
+
+    /**
+     * 处理new表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asObjectCreationExpr
+     */
+    private static void dealObjectCreationExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, final ObjectCreationExpr asObjectCreationExpr) {
+        ClassOrInterfaceType type = asObjectCreationExpr.getType();
+        Optional<TypeDeclaration<?>> typeDeclaration = compilationUnit.findTypeDeclaration(type);
+        typeDeclaration.orElseGet(() -> {
+            return null;
+        });
+        typeDeclaration.ifPresent(asObjectCreationExpr::setReturnType);
+    }
+
+    /**
+     * 处理一些不是类的表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asLiteralExpr
+     */
+    private static void dealLiteralExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, LiteralExpr asLiteralExpr) {
+        temp.add(asLiteralExpr.getClass().getName());
+    }
+
+    /**
+     * 处理无type赋值表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asAssignExpr
+     */
+    private static void dealAssignExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, AssignExpr asAssignExpr) {
+        Expression target = asAssignExpr.getTarget();
+        // 先处理符号右边的表达式
+        Expression value = asAssignExpr.getValue();
+        dealExpression(compilationUnit, vars, value);
+
+        dealExpression(compilationUnit, vars, target);
+        Optional<TypeDeclaration<?>> returnType = target.getReturnType();
+        returnType.ifPresent(asAssignExpr::setReturnType);
+
+    }
+
+    private static void dealFieldAccessExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, FieldAccessExpr fieldAccessExpr) {
+        Expression scope = fieldAccessExpr.getScope();
+        String fieldName = fieldAccessExpr.getNameAsString();
+        dealExpression(compilationUnit, vars, scope);
+
+        Optional<TypeDeclaration<?>> returnType = scope.getReturnType();
+        if (returnType.isPresent()) {
+            TypeDeclaration<?> typeDeclaration = returnType.get();
+            typeDeclaration.getFields().stream().flatMap(t -> t.getVariables().stream()).filter(t -> Objects.equals(t.getNameAsString(), fieldName)).findFirst().ifPresent(t -> {
+                fieldAccessExpr.setFieldLink(t);
+                Type type = t.getType();
+                type.getTarget().ifPresent(fieldAccessExpr::setReturnType);
+            });
+        }
+    }
+
+    /**
+     * 处理二元表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asBinaryExpr
+     */
+    private static void dealBinaryExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, BinaryExpr asBinaryExpr) {
+        TypeDeclaration<?> typeDeclaration = ExprFactory.calculationBinaryType(compilationUnit, vars, asBinaryExpr);
+        asBinaryExpr.setReturnType(typeDeclaration);
+    }
+
+    /**
+     * 处理名称表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param nameExpr
+     */
+    private static void dealNameExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, NameExpr nameExpr) {
+        String name = nameExpr.getNameAsString();
+        if (vars.containsKey(name)) {
+            nameExpr.setReturnType(vars.get(name));
+        }
+
+    }
+
+    /**
+     * 处理赋值表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param variableDeclarationExpr
+     */
+    private static void dealVariableDeclarationExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, VariableDeclarationExpr variableDeclarationExpr) {
+        NodeList<VariableDeclarator> variables = variableDeclarationExpr.getVariables();
+        // 赋值表达式有可能有多个 例如 int i=2,j=3
+        for (VariableDeclarator variable : variables) {
+            SimpleName name = variable.getName();
+            Type type = variable.getType();
+            type.fillTargetByCompilationUnit(compilationUnit);
+
+            Optional<Expression> initializer = variable.getInitializer();
+            Optional<TypeDeclaration<?>> target = type.getTarget();
+            if (initializer.isPresent()) {
+                Expression initializerExpression = initializer.get();
+                dealExpression(compilationUnit, vars, initializerExpression);
+            }
+            target.ifPresent(s -> vars.put(name.asString(), s));
+        }
     }
 
     /**
@@ -471,112 +775,63 @@ public class InternalUtil {
      * @return
      */
     @NotNull
-    private static Expression dealMethodCallExpression(CompilationUnitWithLink compilationUnit, Map<String, CompilationUnitWithLink> vars, MethodCallExpr expression) {
-        // 如果此方法已经被替换过,则不需要再次替换
-        if (expression instanceof MethodCallExprWithLink) {
-            return expression;
-        }
-        MethodCallExpr methodCallExpr = expression.asMethodCallExpr();
+    private static void dealMethodCallExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, MethodCallExpr expression) {
         // 方法调用方
-        Optional<Expression> scope = methodCallExpr.getScope();
+        Optional<Expression> scope = expression.getScope();
         // 方法名称
-        SimpleName methodName = methodCallExpr.getName();
+        SimpleName methodName = expression.getName();
         // 方法入参变量
-        NodeList<Expression> arguments = methodCallExpr.getArguments();
+        NodeList<Expression> arguments = expression.getArguments();
 
         // 1.通过方法调用方判断这个是哪个类的
-        CompilationUnit clazz = findCompilationByExpression(compilationUnit, vars, scope);
-        if (clazz == null) {
-            return expression;
+        TypeDeclaration<?> scopeReturnType;
+        if (scope.isPresent()) {
+            Expression scopeExpression = scope.get();
+            dealExpression(compilationUnit, vars, scopeExpression);
+            scopeReturnType = scopeExpression.getReturnType().orElse(null);
+        } else {
+            scopeReturnType = compilationUnit.findTypeByNode(expression);
         }
+        if (scopeReturnType == null) {
+            LogUtil.error("未找到调用方的类型");
+            return;
+        }
+
         // 2.通过方法名称判断这个方法是哪些
-        // 3.通过方法入参类型确定最终的方法是哪一个
-        // 4.注入
         // 相似的方法的名称
         String methodNameStr = methodName.asString();
-
         // 筛选出来的名称一致的方法
-        List<MethodDeclarationWithLink> nameSameMethods = clazz.getTypes()
-                                                               .stream()
-                                                               .flatMap(t -> t.getMethods().stream())
-                                                               .filter(t -> Objects.equals(t.getName().asString(), methodNameStr))
-                                                               .map(MethodDeclarationWithLink.class::cast)
-                                                               .collect(Collectors.toList());
+        List<MethodDeclaration> nameSameMethods = scopeReturnType.getMethods()
+                                                                 .stream()
+                                                                 .filter(t -> Objects.equals(t.getName().asString(), methodNameStr))
+                                                                 .map(MethodDeclaration.class::cast)
+                                                                 .collect(Collectors.toList());
         if (CollectionUtil.isEmpty(nameSameMethods)) {
-            return expression;
+            // 找到执行的类了 但是没找到对应方法
+            return;
         }
+
+        // 3.通过方法入参类型确定最终的方法是哪一个
         // 寻找代码中表达式调用的方法入参的类型
-        List<CompilationUnitWithLink> argumentsClazzList = null;
+        List<TypeDeclaration<?>> argumentsClazzList = null;
         try {
-            argumentsClazzList = findArgsType(compilationUnit, vars, arguments);
+            for (Expression argument : arguments) {
+                dealExpression(compilationUnit, vars, argument);
+            }
+            argumentsClazzList = arguments.stream().map(Expression::getReturnType).map(t -> t.orElse(null)).collect(Collectors.toList());
         } catch (Exception e) {
             LogUtil.error(e);
         }
 
         // 通过方法入参类型确定最终的方法是哪一个
-        final List<CompilationUnitWithLink> finalArgumentsClazzList = argumentsClazzList;
-        Optional<MethodDeclarationWithLink> first = nameSameMethods.stream().filter(t -> matchingMethodParamsType(finalArgumentsClazzList, t)).findFirst();
+        List<TypeDeclaration<?>> finalArgumentsClazzList = argumentsClazzList;
+        Optional<MethodDeclaration> first = nameSameMethods.stream().filter(t -> matchingMethodParamsType(t, finalArgumentsClazzList)).findFirst();
+
+        // 4.注入
         if (first.isPresent()) {
-            MethodDeclarationWithLink methodDeclarationWithLink = first.get();
-            MethodCallExprWithLink methodCallExprWithLink = new MethodCallExprWithLink(methodCallExpr);
-            methodCallExprWithLink.setTargetMethod(methodDeclarationWithLink);
-            return methodCallExprWithLink;
-        } else {
-            // 没有匹配到方法,直接返回了
-            return expression;
+            MethodDeclaration methodDeclarationWithLink = first.get();
+            expression.setMethodLink(methodDeclarationWithLink);
         }
-    }
-
-    @Nullable
-    public static CompilationUnitWithLink findCompilationByExpression(CompilationUnitWithLink compilationUnit, Map<String, CompilationUnitWithLink> vars, Optional<Expression> scope) {
-        // 调用方的类型
-        CompilationUnitWithLink clazz = null;
-
-        if (!scope.isPresent()) {
-            clazz = compilationUnit;
-        } else {
-            Expression scopeExpression = scope.get();
-            if (scopeExpression.isNameExpr()) {
-                NameExpr nameExpr = scopeExpression.asNameExpr();
-                String scopeName = nameExpr.getName().asString();
-                // 获取调用方的类型
-                clazz = findScopeInVarPool(compilationUnit, vars, scopeName);
-            } else if (scopeExpression.isMethodCallExpr()) {
-                // 先处理前面的方法,然后获取返回值
-                Expression beforeMethod = dealExpressionWithLink(compilationUnit, vars, scopeExpression);
-                MethodCallExpr callExpr = beforeMethod.asMethodCallExpr();
-                if (callExpr instanceof MethodCallExprWithLink) {
-                    MethodCallExprWithLink beforeMethodExpr = (MethodCallExprWithLink) callExpr;
-                    MethodDeclarationWithLink targetMethod = beforeMethodExpr.getTargetMethod();
-                    clazz = targetMethod.getReturnType();
-                }
-            } else {
-                LogUtil.error("未知的方法调用方:{}", scopeExpression.getClass().getSimpleName());
-            }
-        }
-        return clazz;
-    }
-
-    /**
-     * 获取代码段中方法调用入参的实际类型
-     *
-     * @param compilationUnit
-     * @param vars
-     * @param arguments
-     *
-     * @return
-     */
-    @NotNull
-    public static List<CompilationUnitWithLink> findArgsType(CompilationUnitWithLink compilationUnit, Map<String, CompilationUnitWithLink> vars, List<Expression> arguments) {
-        // 方法的实际入参
-        List<CompilationUnitWithLink> argumentsClazzList = new ArrayList<>(arguments.size());
-        // 替换入参类型
-        for (Expression argument : arguments) {
-            argument = dealExpressionWithLink(compilationUnit, vars, argument);
-            ExpressionWithLink expressionWithLink = new ExprFactory().createExpressionWithLink(compilationUnit, vars, argument);
-            argumentsClazzList.add(expressionWithLink.getReturnCompilationUnitWithLink());
-        }
-        return argumentsClazzList;
     }
 
 
@@ -588,100 +843,32 @@ public class InternalUtil {
      *
      * @return
      */
-    private static boolean matchingMethodParamsType(List<CompilationUnitWithLink> argumentsClazzList, MethodDeclarationWithLink method) {
-        List<CompilationUnitWithLink> paramTypes = method.getParamTypes();
+    private static boolean matchingMethodParamsType(MethodDeclaration method, List<TypeDeclaration<?>> argumentsClazzList) {
+        List<TypeDeclaration<?>> methodParamTypes = method.getParameters().stream().map(t -> t.getType().getTarget()).map(t -> t.orElse(null)).collect(Collectors.toList());
         // 其中一个为空,返回匹配不成功
-        if (paramTypes == null || argumentsClazzList == null) {
+        if (argumentsClazzList == null) {
             return false;
         }
         // 方法入参个数不一致,返回匹配不成功
-        if (paramTypes.size() != argumentsClazzList.size()) {
+        if (methodParamTypes.size() != argumentsClazzList.size()) {
             return false;
         }
         for (int i = 0; i < argumentsClazzList.size(); i++) {
             // 注意 这里是入参的类型, 是有可能为null的, 例: 入参是一个方法,并且这个方法不是在扫描类中,就找不到这个方法明确的返回值
-            CompilationUnitWithLink compilationUnit1 = argumentsClazzList.get(i);
-            CompilationUnitWithLink compilationUnitWithLink = paramTypes.get(i);
-            if (compilationUnit1 == null) {
+            TypeDeclaration<?> paramClazz = methodParamTypes.get(i);
+            TypeDeclaration<?> argumentClazz = argumentsClazzList.get(i);
+            if (argumentClazz == null || paramClazz == null) {
                 return false;
             }
-            if (!Objects.equals(compilationUnit1.getType(0).getName().asString(), compilationUnitWithLink.getType(0).getName().asString())) {
+            if (!Objects.equals(paramClazz.getName().asString(), argumentClazz.getName().asString())) {
                 return false;
             }
         }
         return true;
     }
 
-    /**
-     * 获取指定名称对应的类
-     *
-     * @param compilationUnit
-     * @param vars
-     * @param scopeName
-     *
-     * @return
-     */
-    private static CompilationUnitWithLink findScopeInVarPool(CompilationUnitWithLink compilationUnit, Map<String, CompilationUnitWithLink> vars, String scopeName) {
-
-        CompilationUnitWithLink compilationUnitWithLink = vars.get(scopeName);
-        if (compilationUnitWithLink != null) {
-            return compilationUnitWithLink;
-        }
-
-        List<ImportDeclarationWithLink> importDeclarationWithLinks = compilationUnit.getImports().stream().map(t -> (ImportDeclarationWithLink) t).collect(Collectors.toList());
-        Map<String, ImportDeclarationWithLink> importDeclarationWithLinkNameMap = importDeclarationWithLinks.stream().collect(Collectors.toMap(t -> t.getName().getIdentifier(), t -> t));
-        PackageDeclarationWithLink packageDeclarationWithLink = (PackageDeclarationWithLink) compilationUnit.getPackageDeclaration().orElse(null);
-        ImportDeclarationWithLink importDeclarationWithLink = importDeclarationWithLinkNameMap.get(scopeName);
-        if (importDeclarationWithLink != null) {
-            return importDeclarationWithLink.getTargetCompilationUnit();
-        } else {
-            List<CompilationUnitWithLink> otherCompilationUnits = packageDeclarationWithLink.getOtherCompilationUnits();
-            List<CompilationUnitWithLink> collect = otherCompilationUnits.stream().filter(t -> t.getTypes().stream().anyMatch(s -> Objects.equals(s.getName().asString(), scopeName))).collect(Collectors.toList());
-            if (CollectionUtil.isNotEmpty(collect)) {
-                return collect.get(0);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 判断type的类型 并且依据这个type创建一个带有连接的type
-     *
-     * @param compilationUnit
-     * @param type
-     *
-     * @return
-     */
-    @Nullable
-    public static ClassOrInterfaceTypeWithLink judgeTypeClassAndMakeWithLinkType(CompilationUnitWithLink compilationUnit, Type type) {
-        if (type instanceof ClassOrInterfaceType) {
-            return new TypeFactory().createType((ClassOrInterfaceType) type, compilationUnit);
-        } else if (type instanceof PrimitiveType) {
-            return transPrimitiveTypeToClassOrInterfaceTypeWithLink(type.asPrimitiveType());
-        } else if (type.isArrayType()) {
-            ArrayType arrayType = type.asArrayType();
-            Type componentType = arrayType.getComponentType();
-            return judgeTypeClassAndMakeWithLinkType(compilationUnit, componentType);
-        } else {
-            LogUtil.error("局部变量类型未找到:{}", type.getClass().getName());
-        }
-        return null;
-    }
-
-    /**
-     * 转换基本类型type为classOrInterfaceType
-     *
-     * @param primitiveType
-     *
-     * @return
-     */
-    private static ClassOrInterfaceTypeWithLink transPrimitiveTypeToClassOrInterfaceTypeWithLink(PrimitiveType primitiveType) {
-        String primitiveTypeName = primitiveType.getType().asString();
-        // 基本类型创建一个就好
-        return new TypeFactory().createPrimitiveType(primitiveTypeName);
-    }
 
     public static void print() {
-        temp.stream().forEach(System.out::println);
+        temp.forEach(System.out::println);
     }
 }

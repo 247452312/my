@@ -1,35 +1,31 @@
 package indi.uhyils;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.CompilationUnitWithLink;
+import indi.uhyils.util.LogUtil;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2022年04月26日 08时48分
+ * @date 文件创建日期 2022年04月25日 08时50分
  */
 class JavaAstUtilTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void loadProjectPath() throws FileNotFoundException {
-        List<CompilationUnit> compilationUnits = JavaAstUtil.loadProjectPath("F:\\share\\my\\my-common\\my-common-util\\src");
-        int i = 1;
+        List<CompilationUnit> compilationUnits = JavaAstUtil.loadProjectPath("D:\\share\\ideaSrc\\parseJavaAst");
+        return;
+
     }
 
-    @org.junit.jupiter.api.Test
-    void integrationCompilationUnit() throws FileNotFoundException {
+    @Test
+    void integrationComplationUnit() throws FileNotFoundException {
+        LogUtil.info("解析文件开始");
         List<CompilationUnit> compilationUnits = JavaAstUtil.loadProjectPath("F:\\share\\my");
-
-        List<CompilationUnitWithLink> compilationUnitWithLinks = JavaAstUtil.integrationCompilationUnit(compilationUnits);
+        LogUtil.info("解析文件完成,分析文件开始");
+        JavaAstUtil.integrationCompilationUnit(compilationUnits);
         int i = 1;
-    }
-
-    @org.junit.jupiter.api.Test
-    void temp() throws FileNotFoundException {
-        List<Long> asd = new ArrayList<>();
-        boolean contains = asd.contains(null);
-        System.out.println(contains);
+        return;
     }
 }

@@ -82,6 +82,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-out-inside-package</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/ch.ethz.ganymed/ganymed-ssh2 -->
             <dependency>
                 <groupId>ch.ethz.ganymed</groupId>
@@ -398,13 +405,6 @@
                 <version>${my.rpc.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/com.github.javaparser/javaparser-core -->
-            <dependency>
-                <groupId>com.github.javaparser</groupId>
-                <artifactId>javaparser-core</artifactId>
-                <version>${javaparser.version}</version>
-            </dependency>
-
             <!--mapStruct-->
             <dependency>
                 <groupId>org.mapstruct</groupId>
@@ -515,6 +515,7 @@
         <module>my-api</module>
         <module>my-service</module>
         <module>my-common</module>
+        <module>my-out</module>
     </modules>
 
     <profiles>

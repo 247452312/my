@@ -21,10 +21,9 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.github.javaparser/javaparser-core -->
         <dependency>
-            <groupId>com.github.javaparser</groupId>
-            <artifactId>javaparser-core</artifactId>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-out-parse</artifactId>
         </dependency>
         <dependency>
             <groupId>indi.uhyils</groupId>

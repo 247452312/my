@@ -102,6 +102,10 @@ public final class LogUtil {
         writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.INFO, params);
     }
 
+    public static void info(String msg, String params) {
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.INFO, params);
+    }
+
     public static void info(Class<?> cls, Throwable e) {
         writeLog(cls.getName(), null, e, LogLevelEnum.INFO);
     }
@@ -135,6 +139,10 @@ public final class LogUtil {
     }
 
     public static void debug(String msg, String... params) {
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.DEBUG, params);
+    }
+
+    public static void debug(String msg, String params) {
         writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.DEBUG, params);
     }
 
@@ -174,6 +182,14 @@ public final class LogUtil {
         warn(obj.getClass(), e);
     }
 
+    public static void warn(String msg, String params) {
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.WARN, params);
+    }
+
+    public static void warn(String msg, Object params) {
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.WARN, params.toString());
+    }
+
     public static void warn(Throwable e, String msg, String... params) {
         writeLog(Thread.currentThread().getName(), msg, e, LogLevelEnum.WARN, params);
     }
@@ -207,7 +223,7 @@ public final class LogUtil {
     }
 
     public static void error(String msg, String params) {
-        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.WARN, params);
+        writeLog(Thread.currentThread().getName(), msg, null, LogLevelEnum.ERROR, params);
     }
 
     public static void error(Throwable e, String msg) {
