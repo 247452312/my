@@ -10,8 +10,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -64,13 +64,13 @@ public class JavaAstUtil {
      */
     public static void integrationCompilationUnit(List<CompilationUnit> compilationUnits) {
         // 初始化所有type
-        AstContext.initTypeCache(compilationUnits);
+        Map<String, TypeDeclaration<?>> allCompilationUnit = AstContext.initTypeCache(compilationUnits);
         for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换package
             InternalUtil.dealCompilationUnitPackage(compilationUnit, compilationUnits);
             // 替换import
             InternalUtil.dealCompilationUnitImport(compilationUnit, compilationUnits);
-
+            compilationUnit.setAllTypeDeclaration(allCompilationUnit);
         }
         for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换属性

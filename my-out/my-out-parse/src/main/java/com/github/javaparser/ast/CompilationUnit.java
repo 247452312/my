@@ -30,7 +30,6 @@ import static com.github.javaparser.ast.Modifier.createModifierList;
 import static com.github.javaparser.utils.CodeGenerationUtils.subtractPaths;
 import static com.github.javaparser.utils.Utils.assertNotNull;
 
-import com.github.javaparser.AstContext;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.JavaToken;
 import com.github.javaparser.ParseResult;
@@ -44,11 +43,9 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.Name;
-import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.modules.ModuleDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.observer.ObservableProperty;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.visitor.CloneVisitor;
 import com.github.javaparser.ast.visitor.GenericVisitor;
@@ -73,6 +70,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -96,6 +94,11 @@ import java.util.stream.Collectors;
 public class CompilationUnit extends Node {
 
     private static final String JAVA_LANG = "java.lang";
+
+    /**
+     * 本次扫描中所有的类 key->类全名
+     */
+    private Map<String, TypeDeclaration<?>> allTypeDeclaration;
 
     @OptionalProperty
     private PackageDeclaration packageDeclaration;
@@ -140,6 +143,10 @@ public class CompilationUnit extends Node {
         return (importDeclaration.isAsterisk() ? new Name(importDeclaration.getName(), "*") : importDeclaration.getName()).getQualifier();
     }
 
+    public void setAllTypeDeclaration(Map<String, TypeDeclaration<?>> allTypeDeclaration) {
+        this.allTypeDeclaration = allTypeDeclaration;
+    }
+
     /**
      * 根据node获取对应的type
      *
@@ -165,17 +172,23 @@ public class CompilationUnit extends Node {
     }
 
     /**
-     * 寻找typeSimpleName
+     * 寻找 typeAllName
      *
-     * @param typeSimpleNames
+     * @param typeAllName
      *
      * @return
      */
     @NotNull
-    public Optional<TypeDeclaration<?>> findTypeDeclaration(final String typeSimpleNames) {
-        List<CompilationUnit> compilationUnit = findCompilationUnit(Collections.singletonList(typeSimpleNames));
-        CompilationUnit compilationUnit1 = compilationUnit.get(0);
-        return compilationUnit1.getTypes().stream().filter(t -> Objects.equals(t.getNameAsString(), typeSimpleNames)).findFirst();
+    public Optional<TypeDeclaration<?>> findTypeDeclaration(String typeAllName) {
+        typeAllName = StringUtil.removeGenericsFromClassNames(typeAllName);
+        if (typeAllName.contains(".") && allTypeDeclaration.containsKey(typeAllName)) {
+            return Optional.ofNullable(allTypeDeclaration.get(typeAllName));
+        } else {
+            List<CompilationUnit> compilationUnits = findCompilationUnit(Collections.singletonList(typeAllName));
+            CompilationUnit compilationUnit = compilationUnits.get(0);
+            String finalTypeAllName = typeAllName;
+            return compilationUnit.getTypes().stream().filter(t -> Objects.equals(t.getNameAsString(), finalTypeAllName)).findFirst();
+        }
     }
 
     /**
@@ -187,22 +200,8 @@ public class CompilationUnit extends Node {
      */
     @NotNull
     public Optional<TypeDeclaration<?>> findTypeDeclaration(Type type) {
-        if (type.isClassOrInterfaceType()) {
-            ClassOrInterfaceType classOrInterfaceType = type.asClassOrInterfaceType();
-            Optional<ClassOrInterfaceType> scope = classOrInterfaceType.getScope();
-            if (scope.isPresent()) {
-                int i = 1;
-            }
-            return findTypeDeclaration(type.asString());
-
-        } else {
-            return findTypeDeclaration(type.asString());
-
-        }
-
-
+        return findTypeDeclaration(type.asString());
     }
-
 
     public List<CompilationUnit> findCompilationUnit(List<String> typeSimpleNames) {
         List<CompilationUnit> links = new ArrayList<>();
@@ -233,7 +232,7 @@ public class CompilationUnit extends Node {
                 }
             }
             if (targetCompilationUnit == null) {
-                targetCompilationUnit = createNotScannedCompilationUnit("java.util." + typeSimpleName);
+                targetCompilationUnit = createNotScannedCompilationUnit("java.util", typeSimpleName);
             }
             links.add(targetCompilationUnit);
         }
@@ -247,34 +246,9 @@ public class CompilationUnit extends Node {
      *
      * @return
      */
-    public CompilationUnit createNotScannedCompilationUnit(String name) {
-        TypeDeclaration<?> notScannedTypeDeclaration = createNotScannedTypeDeclaration(name);
-        AstContext.allTypeCache.get().add(notScannedTypeDeclaration);
+    public CompilationUnit createNotScannedCompilationUnit(String packageName, String name) {
+        TypeDeclaration<?> notScannedTypeDeclaration = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(packageName, name);
         return notScannedTypeDeclaration.findCompilationUnit().orElse(null);
-    }
-
-    /**
-     * 创建一个未被扫描到的type
-     *
-     * @param name 类全名
-     *
-     * @return
-     */
-    @NotNull
-    public TypeDeclaration<?> createNotScannedTypeDeclaration(String name) {
-
-        CompilationUnit target = new CompilationUnit();
-        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration();
-
-        SimpleName simpleName = new SimpleName(name);
-        simpleName.setIdentifier(StringUtil.transClassNameToSimpleName(name));
-
-        type.setName(simpleName);
-        type.setParentNode(target);
-        NodeList<TypeDeclaration<?>> types = new NodeList<>();
-        types.add(type);
-        target.setTypes(types);
-        return type;
     }
 
     @Override

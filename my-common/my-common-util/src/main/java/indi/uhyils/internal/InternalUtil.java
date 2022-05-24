@@ -130,9 +130,8 @@ public class InternalUtil {
                                                                    .findFirst()
                                                                    .orElse(null);
             if (typeDeclaration == null) {
-                typeDeclaration = new ClassOrInterfaceDeclaration();
-                typeDeclaration.setName(importClassName);
-                AstContext.allTypeCache.get().add(typeDeclaration);
+                typeDeclaration = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(importItem.getName().getQualifier().flatMap(t -> Optional.ofNullable(t.asString())).orElse(null), importItem.getName().getIdentifier());
+                AstContext.addCache(typeDeclaration);
             }
             importItem.setTargetType(typeDeclaration);
         }
@@ -178,7 +177,7 @@ public class InternalUtil {
     /**
      * 根据所有扫描的文件填充type的类型
      *
-     * @param nameTypeMap
+     * @param compilationUnit
      * @param variableType
      */
     private static void fillTypeTargetByAllCompilationUnit(CompilationUnit compilationUnit, Type variableType) {
@@ -220,7 +219,6 @@ public class InternalUtil {
      * 替换方法中的每一行
      *
      * @param compilationUnit
-     * @param allCompilationUnit 所有扫描到的类
      */
     public static void dealCompilationUnitMethodRow(CompilationUnit compilationUnit) {
         for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
@@ -329,6 +327,8 @@ public class InternalUtil {
                 EnumDeclaration enumDeclaration = typeDeclaration.asEnumDeclaration();
                 List<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
                 otherPackageEnumConstantDeclaration.addAll(entries);
+            } else if (typeDeclaration.isAnnotationDeclaration()) {
+                // 注解跳过
             } else {
                 throw new RuntimeException("不支持的类类型:" + typeDeclaration.getClass().getName());
             }
@@ -605,7 +605,7 @@ public class InternalUtil {
     private static void dealInstanceOfExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, InstanceOfExpr asInstanceOfExpr) {
         Expression expression = asInstanceOfExpr.getExpression();
         dealExpression(compilationUnit, vars, expression);
-        TypeDeclaration<?> booleanType = compilationUnit.createNotScannedTypeDeclaration(Boolean.class.getSimpleName());
+        TypeDeclaration<?> booleanType = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Boolean.class.getPackage().getName(), Boolean.class.getSimpleName());
         asInstanceOfExpr.setReturnType(booleanType);
     }
 
@@ -675,7 +675,28 @@ public class InternalUtil {
      * @param asLiteralExpr
      */
     private static void dealLiteralExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, LiteralExpr asLiteralExpr) {
-        temp.add(asLiteralExpr.getClass().getName());
+        if (asLiteralExpr.isNullLiteralExpr()) {
+            TypeDeclaration<?> type = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(null, "null");
+            asLiteralExpr.setReturnType(type);
+        } else if (asLiteralExpr.isBooleanLiteralExpr()) {
+            TypeDeclaration<?> type = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Boolean.class.getPackage().getName(), Boolean.class.getSimpleName());
+            asLiteralExpr.setReturnType(type);
+        } else if (asLiteralExpr.isCharLiteralExpr()) {
+            TypeDeclaration<?> type = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Character.class.getPackage().getName(), Character.class.getSimpleName());
+            asLiteralExpr.setReturnType(type);
+        } else if (asLiteralExpr.isDoubleLiteralExpr()) {
+            TypeDeclaration<?> type = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Double.class.getPackage().getName(), Double.class.getSimpleName());
+            asLiteralExpr.setReturnType(type);
+        } else if (asLiteralExpr.isLongLiteralExpr()) {
+            TypeDeclaration<?> type = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Long.class.getPackage().getName(), Long.class.getSimpleName());
+            asLiteralExpr.setReturnType(type);
+        } else if (asLiteralExpr.isStringLiteralExpr()) {
+            TypeDeclaration<?> type = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(String.class.getPackage().getName(), String.class.getSimpleName());
+            asLiteralExpr.setReturnType(type);
+        } else if (asLiteralExpr.isIntegerLiteralExpr()) {
+            TypeDeclaration<?> type = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Integer.class.getPackage().getName(), Integer.class.getSimpleName());
+            asLiteralExpr.setReturnType(type);
+        }
     }
 
     /**
@@ -793,7 +814,7 @@ public class InternalUtil {
             scopeReturnType = compilationUnit.findTypeByNode(expression);
         }
         if (scopeReturnType == null) {
-            LogUtil.error("未找到调用方的类型");
+            LogUtil.warn("未找到调用方的类型:{}", expression.toString());
             return;
         }
 

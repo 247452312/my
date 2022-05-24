@@ -353,7 +353,28 @@ public final class StringUtil {
      * @return
      */
     public static String removeGenericsFromClassNames(String className) {
-        // todo
+        int start = className.indexOf("<");
+        if (start == -1) {
+            return className;
+        }
+        int end = start;
+        int preCount = 1;
+        for (int i = start + 1; i < className.length(); i++) {
+            char c = className.charAt(i);
+            if (c == '>') {
+                preCount--;
+                if (preCount == 0) {
+                    end = i;
+                    break;
+                }
+            } else if (c == '<') {
+                preCount++;
+            }
+        }
+        if (end != start) {
+            String removeFirstName = className.substring(0, start) + className.substring(end + 1);
+            return removeGenericsFromClassNames(removeFirstName);
+        }
         return className;
     }
 

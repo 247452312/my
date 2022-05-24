@@ -23,6 +23,7 @@ package com.github.javaparser.ast.body;
 import static com.github.javaparser.utils.Utils.assertNotNull;
 import static java.util.stream.Collectors.toList;
 
+import com.github.javaparser.AstContext;
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
 import com.github.javaparser.ast.CompilationUnit;
@@ -43,7 +44,10 @@ import com.github.javaparser.ast.visitor.CloneVisitor;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.TypeDeclarationMetaModel;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
+import indi.uhyils.annotation.NotNull;
+import indi.uhyils.util.StringUtil;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -84,6 +88,41 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
         setMembers(members);
         customInitialization();
     }
+
+
+    /**
+     * 创建一个未被扫描到的type
+     *
+     * @param packageName 包名
+     * @param className   类名
+     *
+     * @return
+     */
+    @NotNull
+    public static TypeDeclaration<?> createNotScannedTypeDeclarationAndAddCache(String packageName, String className) {
+        Map<String, TypeDeclaration<?>> allCompilationUnitMap = AstContext.getAllCompilationUnitMap();
+        String allName = packageName + "." + className;
+        if (allCompilationUnitMap.containsKey(allName)) {
+            return allCompilationUnitMap.get(allName);
+        }
+        CompilationUnit target = new CompilationUnit();
+        if (StringUtil.isNotEmpty(packageName)) {
+            target.setPackageDeclaration(packageName);
+        }
+        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration();
+
+        SimpleName simpleName = new SimpleName(className);
+//        simpleName.setIdentifier(StringUtil.transClassNameToSimpleName(className));
+
+        type.setName(simpleName);
+        type.setParentNode(target);
+        NodeList<TypeDeclaration<?>> types = new NodeList<>();
+        types.add(type);
+        target.setTypes(types);
+        AstContext.addCache(type);
+        return type;
+    }
+
 
     /**
      * Adds the given declaration to the specified type.

@@ -33,7 +33,7 @@ import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.ImportDeclarationMetaModel;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
-import indi.uhyils.annotation.Nullable;
+import indi.uhyils.annotation.NotNull;
 import java.util.Optional;
 
 /**
@@ -83,7 +83,7 @@ public class ImportDeclaration extends Node implements NodeWithName<ImportDeclar
         customInitialization();
     }
 
-    @Nullable
+    @NotNull
     public Optional<TypeDeclaration<?>> getTargetType() {
         return Optional.ofNullable(targetType);
     }

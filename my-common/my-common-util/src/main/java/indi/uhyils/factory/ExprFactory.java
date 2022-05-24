@@ -50,7 +50,7 @@ public class ExprFactory extends AbstractFactory {
             case GREATER_EQUALS:
             case XOR:
                 // 以上符号都是boolean类型
-                return compilationUnit.createNotScannedTypeDeclaration(Boolean.class.getSimpleName());
+                return TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Boolean.class.getPackage().getName(), Boolean.class.getSimpleName());
 
             case PLUS:
                 argsType = arguments.stream().map(Expression::getReturnType).map(t -> t.orElse(null)).collect(Collectors.toList());
@@ -101,7 +101,7 @@ public class ExprFactory extends AbstractFactory {
         switch (operator) {
             case LOGICAL_COMPLEMENT:
                 // 以上符号都是boolean类型
-                return compilationUnit.createNotScannedTypeDeclaration(Boolean.class.getSimpleName());
+                return TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Boolean.class.getPackage().getName(), Boolean.class.getSimpleName());
             case PREFIX_DECREMENT:
             case PREFIX_INCREMENT:
             case POSTFIX_DECREMENT:
@@ -166,101 +166,6 @@ public class ExprFactory extends AbstractFactory {
         } else {
             privi = privis[maxIndex];
         }
-        return compilationUnit.createNotScannedTypeDeclaration(privi);
+        return TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(null, privi);
     }
-    /*
-     *//**
-     * 创建一个带有目标类型的表达式
-     *
-     * @param compilationUnitWithLink
-     * @param vars
-     * @param expression
-     *
-     * @return
-     *//*
-    @NotNull
-    public Expression createExpressionWithLink(CompilationUnit compilationUnitWithLink, Map<String, CompilationUnit> vars, Expression expression) {
-        CompilationUnit returnType = null;
-        if (expression instanceof MethodCallExpr) {
-            MethodCallExpr methodCallExprWithLink = (MethodCallExpr) expression;
-            MethodDeclaration targetMethod = methodCallExprWithLink.getTargetMethod();
-            returnType = targetMethod.getReturnType();
-        } else if (expression.isNameExpr()) {
-            String argumentVarName = expression.asNameExpr().getName().asString();
-            returnType = InternalUtil.findScopeInVarPool(compilationUnitWithLink, vars, argumentVarName);
-
-        } else if (expression.isMethodCallExpr()) {
-            MethodCallExpr methodCallExpr1 = expression.asMethodCallExpr();
-            if (methodCallExpr1 instanceof MethodCallExpr) {
-                MethodCallExpr beforeMethodExpr = (MethodCallExpr) methodCallExpr1;
-                MethodDeclaration targetMethod = beforeMethodExpr.getTargetMethod();
-                returnType = targetMethod.getReturnType();
-            } else {
-                LogUtil.warn("未找到方法:{},的返回类型", expression.toString());
-            }
-        } else if (expression.isMethodReferenceExpr()) {
-            MethodReferenceExpr methodReferenceExpr = expression.asMethodReferenceExpr();
-
-            // 暂不支持methodReference 例如 objectSupplier::get
-            returnType = null;
-        } else if (expression.isLiteralExpr()) {
-            LiteralExpr literalExpr = expression.asLiteralExpr();
-            String simpleName = literalExpr.getClass().getSimpleName();
-            int lastIndexOf = simpleName.lastIndexOf("LiteralExpr");
-            if (lastIndexOf == -1) {
-                LogUtil.error("未知的入参类型:{}", expression.toString());
-            } else {
-                String substring = simpleName.substring(0, lastIndexOf);
-                returnType = new DeclarationFactory().createNotScannedCompilationUnit(substring);
-            }
-
-        } else if (expression.isFieldAccessExpr()) {
-            FieldAccessExpr fieldAccessExpr = expression.asFieldAccessExpr();
-            Expression scope = fieldAccessExpr.getScope();
-            Expression expressionWithLink = createExpressionWithLink(compilationUnitWithLink, vars, scope);
-            returnType = expressionWithLink.getReturnCompilationUnitWithLink();
-
-        } else if (expression.isArrayAccessExpr()) {
-            ArrayAccessExpr arrayAccessExpr = expression.asArrayAccessExpr();
-            returnType = vars.get(arrayAccessExpr.getName().toString());
-        } else if (expression.isBinaryExpr()) {
-            BinaryExpr binaryExpr = expression.asBinaryExpr();
-            returnType = calculationBinaryType(compilationUnitWithLink, vars, binaryExpr);
-        } else if (expression.isCastExpr()) {
-            Type type = expression.asCastExpr().getType();
-            ClassOrInterfaceType classOrInterfaceTypeWithLink = InternalUtil.judgeTypeClassAndMakeWithLinkType(compilationUnitWithLink, type);
-            returnType = classOrInterfaceTypeWithLink.getTypeTarget();
-        } else if (expression.isClassExpr()) {
-            returnType = new DeclarationFactory().createNotScannedCompilationUnitWithLink("Class");
-        } else if (expression.isLambdaExpr()) {
-            // todo lambda 暂时不进行处理
-            returnType = null;
-        } else if (expression.isThisExpr()) {
-            returnType = compilationUnitWithLink;
-        } else if (expression.isObjectCreationExpr()) {
-            ObjectCreationExpr objectCreationExpr = expression.asObjectCreationExpr();
-            String s = objectCreationExpr.getType().getName().asString();
-            returnType = InternalUtil.findScopeInVarPool(compilationUnitWithLink, vars, s);
-        } else if (expression.isArrayCreationExpr()) {
-            ArrayCreationExpr arrayCreationExpr = expression.asArrayCreationExpr();
-            Type elementType = arrayCreationExpr.getElementType();
-            returnType = InternalUtil.findScopeInVarPool(compilationUnitWithLink, vars, elementType.asString());
-        } else if (expression.isUnaryExpr()) {
-            UnaryExpr unaryExpr = expression.asUnaryExpr();
-            returnType = calculationUnaryType(compilationUnitWithLink, vars, unaryExpr);
-        } else if (expression.isEnclosedExpr()) {
-            EnclosedExpr enclosedExpr = expression.asEnclosedExpr();
-            return createExpressionWithLink(compilationUnitWithLink, vars, enclosedExpr.getInner());
-        } else if (expression.isInstanceOfExpr()) {
-            returnType = new DeclarationFactory().createNotScannedCompilationUnitWithLink(Boolean.class.getSimpleName());
-        } else if (expression.isSuperExpr()) {
-            LogUtil.warn("暂不支持super解析:{}", expression);
-        } else {
-            InternalUtil.temp.add(expression.getClass().getName());
-            LogUtil.error("未知的入参类型:{}", expression.toString());
-        }
-        Expression expressionWithLink = new Expression(expression);
-        expressionWithLink.setReturnCompilationUnitWithLink(returnType);
-        return expressionWithLink;
-    }*/
 }
