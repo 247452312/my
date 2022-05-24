@@ -22,7 +22,7 @@ class JavaAstUtilTest {
     @Test
     void integrationComplationUnit() throws FileNotFoundException {
         LogUtil.info("解析文件开始");
-        List<CompilationUnit> compilationUnits = JavaAstUtil.loadProjectPath("F:\\share\\my");
+        List<CompilationUnit> compilationUnits = JavaAstUtil.loadProjectPath("D:\\share\\ideaSrc\\lis-service");
         LogUtil.info("解析文件完成,分析文件开始");
         JavaAstUtil.integrationCompilationUnit(compilationUnits);
         int i = 1;

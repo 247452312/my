@@ -28,6 +28,7 @@ import com.github.javaparser.ast.AllFieldsConstructor;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithIdentifier;
 import com.github.javaparser.ast.nodeTypes.NodeWithTypeArguments;
 import com.github.javaparser.ast.observer.ObservableProperty;
@@ -65,6 +66,10 @@ public class MethodReferenceExpr extends Expression implements NodeWithTypeArgum
     @NonEmptyProperty
     private String identifier;
 
+
+
+    private MethodDeclaration methodLink;
+
     public MethodReferenceExpr() {
         this(null, new ClassExpr(), null, "empty");
     }
@@ -84,6 +89,14 @@ public class MethodReferenceExpr extends Expression implements NodeWithTypeArgum
         setTypeArguments(typeArguments);
         setIdentifier(identifier);
         customInitialization();
+    }
+
+    public MethodDeclaration getMethodLink() {
+        return methodLink;
+    }
+
+    public void setMethodLink(MethodDeclaration methodLink) {
+        this.methodLink = methodLink;
     }
 
     @Override

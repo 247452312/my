@@ -6,6 +6,7 @@ import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import indi.uhyils.internal.InternalUtil;
+import indi.uhyils.util.LogUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class JavaAstUtil {
     public static void integrationCompilationUnit(List<CompilationUnit> compilationUnits) {
         // 初始化所有type
         Map<String, TypeDeclaration<?>> allCompilationUnit = AstContext.initTypeCache(compilationUnits);
+        LogUtil.info("开始替换package和import");
         for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换package
             InternalUtil.dealCompilationUnitPackage(compilationUnit, compilationUnits);
@@ -72,12 +74,14 @@ public class JavaAstUtil {
             InternalUtil.dealCompilationUnitImport(compilationUnit, compilationUnits);
             compilationUnit.setAllTypeDeclaration(allCompilationUnit);
         }
+        LogUtil.info("开始替换属性和方法出入参");
         for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换属性
             InternalUtil.dealCompilationUnitFields(compilationUnit);
             // 替换方法(入参出参)
             InternalUtil.dealCompilationUnitMethods(compilationUnit);
         }
+        LogUtil.info("开始替换方法中的每一行");
         // 这里要等第一批所有文件执行完成才能执行这里. 否则会有找不到的问题
         for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换方法中的每一行

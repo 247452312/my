@@ -27,9 +27,11 @@ import com.github.javaparser.ast.expr.InstanceOfExpr;
 import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.LiteralExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.MethodReferenceExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.SimpleName;
+import com.github.javaparser.ast.expr.TypeExpr;
 import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.AssertStmt;
@@ -222,6 +224,7 @@ public class InternalUtil {
      */
     public static void dealCompilationUnitMethodRow(CompilationUnit compilationUnit) {
         for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
+            LogUtil.info("开始替换类:{}", type.getNameAsString());
             for (MethodDeclaration method : type.getMethods()) {
                 dealMethodCallExprWithLink(method, compilationUnit);
             }
@@ -360,111 +363,109 @@ public class InternalUtil {
             ExpressionStmt expressionStmt = statement.asExpressionStmt();
             Expression expression = expressionStmt.getExpression();
             dealExpression(compilationUnit, vars, expression);
-        } else {
-            if (statement.isSwitchStmt()) {
-                SwitchStmt switchStmt = statement.asSwitchStmt();
-                Expression selector = switchStmt.getSelector();
-                dealExpression(compilationUnit, vars, selector);
-                NodeList<SwitchEntry> entries = switchStmt.getEntries();
-                List<Statement> collect = entries.stream().flatMap(t -> t.getStatements().stream()).collect(Collectors.toList());
-                Map<String, TypeDeclaration<?>> itemVars = new HashMap<>(vars);
-                for (Statement itemStatement : collect) {
-                    dealStatementWithLink(compilationUnit, itemVars, itemStatement);
-                }
-            } else if (statement.isIfStmt()) {
-                IfStmt ifStmt = statement.asIfStmt();
-                Expression condition = ifStmt.getCondition();
-                dealExpression(compilationUnit, vars, condition);
-
-                Statement thenStmt = ifStmt.getThenStmt();
-                dealStatementWithLink(compilationUnit, vars, thenStmt);
-                Optional<Statement> elseStmt = ifStmt.getElseStmt();
-                if (elseStmt.isPresent()) {
-                    Statement statement1 = elseStmt.get();
-                    dealStatementWithLink(compilationUnit, vars, statement1);
-                }
-            } else if (statement.isWhileStmt()) {
-                WhileStmt whileStmt = statement.asWhileStmt();
-                Expression condition = whileStmt.getCondition();
-                dealExpression(compilationUnit, vars, condition);
-                Statement body = whileStmt.getBody();
-                dealStatementWithLink(compilationUnit, vars, body);
-            } else if (statement.isTryStmt()) {
-                TryStmt tryStmt = statement.asTryStmt();
-                Map<String, TypeDeclaration<?>> tempVars = new HashMap<>(vars);
-                NodeList<Expression> resources = tryStmt.getResources();
-                for (Expression resource : resources) {
-                    dealExpression(compilationUnit, tempVars, resource);
-                }
-
-                Statement tryBlock = tryStmt.getTryBlock();
-                dealStatementWithLink(compilationUnit, tempVars, tryBlock);
-
-                NodeList<CatchClause> catchClauses = tryStmt.getCatchClauses();
-                // todo catch 暂时不处理, 不重要
-
-                Optional<BlockStmt> finallyBlock = tryStmt.getFinallyBlock();
-                // finally里访问不到try里的代码
-                tempVars = new HashMap<>(vars);
-                if (finallyBlock.isPresent()) {
-                    dealStatementWithLink(compilationUnit, tempVars, finallyBlock.get());
-                }
-            } else if (statement.isBlockStmt()) {
-                BlockStmt blockStmt = statement.asBlockStmt();
-                NodeList<Statement> statements = blockStmt.getStatements();
-                Map<String, TypeDeclaration<?>> itemVars = new HashMap<>(vars);
-                for (Statement item : statements) {
-                    dealStatementWithLink(compilationUnit, itemVars, item);
-                }
-            } else if (statement.isForEachStmt()) {
-                Map<String, TypeDeclaration<?>> newVars = new HashMap<>(vars);
-                ForEachStmt forEachStmt = statement.asForEachStmt();
-                VariableDeclarationExpr variable = forEachStmt.getVariable();
-                dealExpression(compilationUnit, newVars, variable);
-
-                Expression iterable = forEachStmt.getIterable();
-                dealExpression(compilationUnit, newVars, iterable);
-
-                Statement body = forEachStmt.getBody();
-                dealStatementWithLink(compilationUnit, newVars, body);
-            } else if (statement.isAssertStmt()) {
-                AssertStmt assertStmt = statement.asAssertStmt();
-                Expression check = assertStmt.getCheck();
-                dealExpression(compilationUnit, vars, check);
-            } else if (statement.isSynchronizedStmt()) {
-                SynchronizedStmt synchronizedStmt = statement.asSynchronizedStmt();
-                Expression expression = synchronizedStmt.getExpression();
-                dealExpression(compilationUnit, vars, expression);
-                BlockStmt body = synchronizedStmt.getBody();
-                dealStatementWithLink(compilationUnit, vars, body);
-            } else if (statement.isReturnStmt()) {
-                ReturnStmt returnStmt = statement.asReturnStmt();
-                Optional<Expression> expression = returnStmt.getExpression();
-                expression.ifPresent(value -> dealExpression(compilationUnit, vars, value));
-            } else if (statement.isForStmt()) {
-                ForStmt forStmt = statement.asForStmt();
-                Map<String, TypeDeclaration<?>> tempVars = new HashMap<>(vars);
-                NodeList<Expression> initialization = forStmt.getInitialization();
-                for (Expression expression : initialization) {
-                    dealExpression(compilationUnit, tempVars, expression);
-                }
-                Optional<Expression> compare = forStmt.getCompare();
-                compare.ifPresent(expression -> dealExpression(compilationUnit, tempVars, expression));
-                NodeList<Expression> update = forStmt.getUpdate();
-                for (Expression expression : update) {
-                    dealExpression(compilationUnit, tempVars, expression);
-                }
-                Statement body = forStmt.getBody();
-                dealStatementWithLink(compilationUnit, tempVars, body);
-            } else if (statement.isThrowStmt()) {
-                ThrowStmt throwStmt = statement.asThrowStmt();
-                Expression expression = throwStmt.getExpression();
-                dealExpression(compilationUnit, vars, expression);
-            } else if (statement.isContinueStmt() || statement.isBreakStmt()) {
-                // do nothing
-            } else {
-                LogUtil.error("类型不正确:{}", statement.getClass().getSimpleName());
+        } else if (statement.isSwitchStmt()) {
+            SwitchStmt switchStmt = statement.asSwitchStmt();
+            Expression selector = switchStmt.getSelector();
+            dealExpression(compilationUnit, vars, selector);
+            NodeList<SwitchEntry> entries = switchStmt.getEntries();
+            List<Statement> collect = entries.stream().flatMap(t -> t.getStatements().stream()).collect(Collectors.toList());
+            Map<String, TypeDeclaration<?>> itemVars = new HashMap<>(vars);
+            for (Statement itemStatement : collect) {
+                dealStatementWithLink(compilationUnit, itemVars, itemStatement);
             }
+        } else if (statement.isIfStmt()) {
+            IfStmt ifStmt = statement.asIfStmt();
+            Expression condition = ifStmt.getCondition();
+            dealExpression(compilationUnit, vars, condition);
+
+            Statement thenStmt = ifStmt.getThenStmt();
+            dealStatementWithLink(compilationUnit, vars, thenStmt);
+            Optional<Statement> elseStmt = ifStmt.getElseStmt();
+            if (elseStmt.isPresent()) {
+                Statement statement1 = elseStmt.get();
+                dealStatementWithLink(compilationUnit, vars, statement1);
+            }
+        } else if (statement.isWhileStmt()) {
+            WhileStmt whileStmt = statement.asWhileStmt();
+            Expression condition = whileStmt.getCondition();
+            dealExpression(compilationUnit, vars, condition);
+            Statement body = whileStmt.getBody();
+            dealStatementWithLink(compilationUnit, vars, body);
+        } else if (statement.isTryStmt()) {
+            TryStmt tryStmt = statement.asTryStmt();
+            Map<String, TypeDeclaration<?>> tempVars = new HashMap<>(vars);
+            NodeList<Expression> resources = tryStmt.getResources();
+            for (Expression resource : resources) {
+                dealExpression(compilationUnit, tempVars, resource);
+            }
+
+            Statement tryBlock = tryStmt.getTryBlock();
+            dealStatementWithLink(compilationUnit, tempVars, tryBlock);
+
+            NodeList<CatchClause> catchClauses = tryStmt.getCatchClauses();
+            // todo catch 暂时不处理, 不重要
+
+            Optional<BlockStmt> finallyBlock = tryStmt.getFinallyBlock();
+            // finally里访问不到try里的代码
+            tempVars = new HashMap<>(vars);
+            if (finallyBlock.isPresent()) {
+                dealStatementWithLink(compilationUnit, tempVars, finallyBlock.get());
+            }
+        } else if (statement.isBlockStmt()) {
+            BlockStmt blockStmt = statement.asBlockStmt();
+            NodeList<Statement> statements = blockStmt.getStatements();
+            Map<String, TypeDeclaration<?>> itemVars = new HashMap<>(vars);
+            for (Statement item : statements) {
+                dealStatementWithLink(compilationUnit, itemVars, item);
+            }
+        } else if (statement.isForEachStmt()) {
+            Map<String, TypeDeclaration<?>> newVars = new HashMap<>(vars);
+            ForEachStmt forEachStmt = statement.asForEachStmt();
+            VariableDeclarationExpr variable = forEachStmt.getVariable();
+            dealExpression(compilationUnit, newVars, variable);
+
+            Expression iterable = forEachStmt.getIterable();
+            dealExpression(compilationUnit, newVars, iterable);
+
+            Statement body = forEachStmt.getBody();
+            dealStatementWithLink(compilationUnit, newVars, body);
+        } else if (statement.isAssertStmt()) {
+            AssertStmt assertStmt = statement.asAssertStmt();
+            Expression check = assertStmt.getCheck();
+            dealExpression(compilationUnit, vars, check);
+        } else if (statement.isSynchronizedStmt()) {
+            SynchronizedStmt synchronizedStmt = statement.asSynchronizedStmt();
+            Expression expression = synchronizedStmt.getExpression();
+            dealExpression(compilationUnit, vars, expression);
+            BlockStmt body = synchronizedStmt.getBody();
+            dealStatementWithLink(compilationUnit, vars, body);
+        } else if (statement.isReturnStmt()) {
+            ReturnStmt returnStmt = statement.asReturnStmt();
+            Optional<Expression> expression = returnStmt.getExpression();
+            expression.ifPresent(value -> dealExpression(compilationUnit, vars, value));
+        } else if (statement.isForStmt()) {
+            ForStmt forStmt = statement.asForStmt();
+            Map<String, TypeDeclaration<?>> tempVars = new HashMap<>(vars);
+            NodeList<Expression> initialization = forStmt.getInitialization();
+            for (Expression expression : initialization) {
+                dealExpression(compilationUnit, tempVars, expression);
+            }
+            Optional<Expression> compare = forStmt.getCompare();
+            compare.ifPresent(expression -> dealExpression(compilationUnit, tempVars, expression));
+            NodeList<Expression> update = forStmt.getUpdate();
+            for (Expression expression : update) {
+                dealExpression(compilationUnit, tempVars, expression);
+            }
+            Statement body = forStmt.getBody();
+            dealStatementWithLink(compilationUnit, tempVars, body);
+        } else if (statement.isThrowStmt()) {
+            ThrowStmt throwStmt = statement.asThrowStmt();
+            Expression expression = throwStmt.getExpression();
+            dealExpression(compilationUnit, vars, expression);
+        } else if (statement.isContinueStmt() || statement.isBreakStmt()) {
+            // do nothing
+        } else {
+            LogUtil.error("类型不正确:{}", statement.getClass().getSimpleName());
         }
     }
 
@@ -512,11 +513,80 @@ public class InternalUtil {
             dealEnclosedExpr(compilationUnit, vars, expression.asEnclosedExpr());
         } else if (expression.isLambdaExpr()) {
             dealLambdaExpr(compilationUnit, vars, expression.asLambdaExpr());
+        } else if (expression.isMethodReferenceExpr()) {
+            dealMethodReferenceExpr(compilationUnit, vars, expression.asMethodReferenceExpr());
+        } else if (expression.isTypeExpr()) {
+            dealTypeExpr(compilationUnit, vars, expression.asTypeExpr());
         } else if (expression.isSuperExpr()) {
             LogUtil.warn("暂时不处理super表达式");
         } else {
             LogUtil.error("未知的表达式类型:{}", expression.getClass().getSimpleName());
         }
+    }
+
+    /**
+     * 处理类型表达式
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asTypeExpr
+     */
+    private static void dealTypeExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, TypeExpr asTypeExpr) {
+        String typeString = asTypeExpr.getType().asString();
+        if (vars.containsKey(typeString)) {
+            asTypeExpr.setReturnType(vars.get(typeString));
+            return;
+        }
+
+        Type type = asTypeExpr.getType();
+        type.fillTargetByCompilationUnit(compilationUnit);
+        Optional<TypeDeclaration<?>> target = type.getTarget();
+        target.ifPresent(asTypeExpr::setReturnType);
+    }
+
+    /**
+     * 处理方法引用调用
+     *
+     * @param compilationUnit
+     * @param vars
+     * @param asMethodReferenceExpr
+     */
+    private static void dealMethodReferenceExpr(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, MethodReferenceExpr asMethodReferenceExpr) {
+        // 方法调用方
+        Expression scope = asMethodReferenceExpr.getScope();
+        // 方法名称
+        String methodName = asMethodReferenceExpr.getIdentifier();
+
+        // 1.通过方法调用方判断这个是哪个类的
+        TypeDeclaration<?> scopeReturnType;
+        dealExpression(compilationUnit, vars, scope);
+        scopeReturnType = scope.getReturnType().orElse(null);
+
+        if (scopeReturnType == null) {
+            LogUtil.warn("未找到调用方的类型:{}", asMethodReferenceExpr.toString());
+            return;
+        }
+
+        // 2.通过方法名称判断这个方法是哪些
+        // 筛选出来的名称一致的方法
+        List<MethodDeclaration> nameSameMethods = scopeReturnType.getMethods()
+                                                                 .stream()
+                                                                 .filter(t -> Objects.equals(t.getName().asString(), methodName))
+                                                                 .map(MethodDeclaration.class::cast)
+                                                                 .collect(Collectors.toList());
+        if (CollectionUtil.isEmpty(nameSameMethods)) {
+            // 找到执行的类了 但是没找到对应方法
+            return;
+        }
+
+//        Asserts.assertTrue(nameSameMethods != null && nameSameMethods.size() == 1, "方法引用找到两个相同的方法名称");
+
+        // todo 这里应该使用推理,判断方法引用引用的是哪个方法,暂时先不搞了
+
+
+        // 4.注入
+        MethodDeclaration methodDeclarationWithLink = nameSameMethods.get(0);
+        asMethodReferenceExpr.setMethodLink(methodDeclarationWithLink);
     }
 
     /**
@@ -804,6 +874,10 @@ public class InternalUtil {
         // 方法入参变量
         NodeList<Expression> arguments = expression.getArguments();
 
+        // 解析入参先
+        for (Expression argument : arguments) {
+            dealExpression(compilationUnit, vars, argument);
+        }
         // 1.通过方法调用方判断这个是哪个类的
         TypeDeclaration<?> scopeReturnType;
         if (scope.isPresent()) {
@@ -835,14 +909,8 @@ public class InternalUtil {
         // 3.通过方法入参类型确定最终的方法是哪一个
         // 寻找代码中表达式调用的方法入参的类型
         List<TypeDeclaration<?>> argumentsClazzList = null;
-        try {
-            for (Expression argument : arguments) {
-                dealExpression(compilationUnit, vars, argument);
-            }
-            argumentsClazzList = arguments.stream().map(Expression::getReturnType).map(t -> t.orElse(null)).collect(Collectors.toList());
-        } catch (Exception e) {
-            LogUtil.error(e);
-        }
+
+        argumentsClazzList = arguments.stream().map(Expression::getReturnType).map(t -> t.orElse(null)).collect(Collectors.toList());
 
         // 通过方法入参类型确定最终的方法是哪一个
         List<TypeDeclaration<?>> finalArgumentsClazzList = argumentsClazzList;
