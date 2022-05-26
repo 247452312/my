@@ -65,11 +65,13 @@ public abstract class AnnotationExpr extends Expression implements NodeWithName<
         customInitialization();
     }
 
+    @Override
     @Generated("com.github.javaparser.generator.core.node.PropertyGenerator")
     public Name getName() {
         return name;
     }
 
+    @Override
     @Generated("com.github.javaparser.generator.core.node.PropertyGenerator")
     public AnnotationExpr setName(final Name name) {
         assertNotNull(name);

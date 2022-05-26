@@ -706,7 +706,7 @@ public class Difference {
         JavaToken nextToken = next.get();
         Kind kind = Kind.valueOf(nextToken.getKind());
         if (isDiamondOperator(kind)) {
-            if (kind.GT.equals(kind)) {
+            if (Kind.GT.equals(kind)) {
                 nestedDiamondOperator--;
             } else {
                 nestedDiamondOperator++;
@@ -737,7 +737,7 @@ public class Difference {
         JavaToken nextToken = next.get();
         Kind kind = Kind.valueOf(nextToken.getKind());
         if (isBracket(kind)) {
-            if (kind.RBRACKET.equals(kind)) {
+            if (Kind.RBRACKET.equals(kind)) {
                 arrayLevel--;
             }
         }
@@ -755,14 +755,14 @@ public class Difference {
      * Returns true if the token is possibly a diamond operator
      */
     private boolean isDiamondOperator(Kind kind) {
-        return kind.GT.equals(kind) || kind.LT.equals(kind);
+        return Kind.GT.equals(kind) || Kind.LT.equals(kind);
     }
 
     /*
      * Returns true if the token is a bracket
      */
     private boolean isBracket(Kind kind) {
-        return kind.LBRACKET.equals(kind) || kind.RBRACKET.equals(kind);
+        return Kind.LBRACKET.equals(kind) || Kind.RBRACKET.equals(kind);
     }
 
     private boolean openBraceWasOnSameLine() {
