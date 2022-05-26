@@ -37,10 +37,12 @@ import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.AssertStmt;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
+import com.github.javaparser.ast.stmt.DoStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.ForEachStmt;
 import com.github.javaparser.ast.stmt.ForStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
+import com.github.javaparser.ast.stmt.LabeledStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.SwitchEntry;
@@ -224,7 +226,6 @@ public class InternalUtil {
      */
     public static void dealCompilationUnitMethodRow(CompilationUnit compilationUnit) {
         for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
-            LogUtil.info("开始替换类:{}", type.getNameAsString());
             for (MethodDeclaration method : type.getMethods()) {
                 dealMethodCallExprWithLink(method, compilationUnit);
             }
@@ -464,8 +465,23 @@ public class InternalUtil {
             dealExpression(compilationUnit, vars, expression);
         } else if (statement.isContinueStmt() || statement.isBreakStmt()) {
             // do nothing
+        } else if (statement.isLocalClassDeclarationStmt()) {
+            // todo 暂不支持这种 方法内部定义class的行为
+        } else if (statement.isEmptyStmt()) {
+            // 空
+        } else if (statement.isDoStmt()) {
+            DoStmt doStmt = statement.asDoStmt();
+            Statement body = doStmt.getBody();
+            Map<String, TypeDeclaration<?>> newVars = new HashMap<>(vars);
+            dealStatementWithLink(compilationUnit, newVars, body);
+            Expression condition = doStmt.getCondition();
+            dealExpression(compilationUnit, newVars, condition);
+        } else if (statement.isLabeledStmt()) {
+            LabeledStmt labeledStmt = statement.asLabeledStmt();
+            dealStatementWithLink(compilationUnit, vars, labeledStmt.getStatement());
         } else {
             LogUtil.error("类型不正确:{}", statement.getClass().getSimpleName());
+            temp.add(statement.getClass().getSimpleName());
         }
     }
 
@@ -518,7 +534,7 @@ public class InternalUtil {
         } else if (expression.isTypeExpr()) {
             dealTypeExpr(compilationUnit, vars, expression.asTypeExpr());
         } else if (expression.isSuperExpr()) {
-            LogUtil.warn("暂时不处理super表达式");
+            // 暂时不处理super表达式
         } else {
             LogUtil.error("未知的表达式类型:{}", expression.getClass().getSimpleName());
         }
@@ -563,7 +579,6 @@ public class InternalUtil {
         scopeReturnType = scope.getReturnType().orElse(null);
 
         if (scopeReturnType == null) {
-            LogUtil.warn("未找到调用方的类型:{}", asMethodReferenceExpr.toString());
             return;
         }
 
@@ -582,7 +597,6 @@ public class InternalUtil {
 //        Asserts.assertTrue(nameSameMethods != null && nameSameMethods.size() == 1, "方法引用找到两个相同的方法名称");
 
         // todo 这里应该使用推理,判断方法引用引用的是哪个方法,暂时先不搞了
-
 
         // 4.注入
         MethodDeclaration methodDeclarationWithLink = nameSameMethods.get(0);
@@ -888,7 +902,6 @@ public class InternalUtil {
             scopeReturnType = compilationUnit.findTypeByNode(expression);
         }
         if (scopeReturnType == null) {
-            LogUtil.warn("未找到调用方的类型:{}", expression.toString());
             return;
         }
 
@@ -959,5 +972,30 @@ public class InternalUtil {
 
     public static void print() {
         temp.forEach(System.out::println);
+    }
+
+    /**
+     * 替换填充继承以及接口实现
+     *
+     * @param compilationUnit
+     */
+    public static void dealCompilationUnitExtend(CompilationUnit compilationUnit) {
+        for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
+            if (type.isClassOrInterfaceDeclaration()) {
+                ClassOrInterfaceDeclaration classOrInterfaceDeclaration = type.asClassOrInterfaceDeclaration();
+                // 接口允许多继承
+                List<ClassOrInterfaceType> extendedTypes = classOrInterfaceDeclaration.getExtendedTypes();
+                List<ClassOrInterfaceType> implementedTypes = classOrInterfaceDeclaration.getImplementedTypes();
+                for (ClassOrInterfaceType extendedType : extendedTypes) {
+                    Optional<TypeDeclaration<?>> typeDeclaration = extendedType.fillTargetByCompilationUnit(compilationUnit);
+                    typeDeclaration.ifPresent(t -> t.addChild(type));
+                }
+                for (ClassOrInterfaceType implementedType : implementedTypes) {
+                    Optional<TypeDeclaration<?>> typeDeclaration = implementedType.fillTargetByCompilationUnit(compilationUnit);
+                    typeDeclaration.ifPresent(t -> t.addChild(type));
+                }
+
+            }
+        }
     }
 }

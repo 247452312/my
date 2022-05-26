@@ -85,9 +85,9 @@ public abstract class Type extends Node implements Resolvable<ResolvedType> {
     /**
      * 从指定类里获取自身指向的文件
      */
-    public boolean fillTargetByCompilationUnit(CompilationUnit target) {
+    public Optional<TypeDeclaration<?>> fillTargetByCompilationUnit(CompilationUnit target) {
         this.target = target.findTypeDeclaration(this).orElse(null);
-        return this.target == null;
+        return Optional.ofNullable(this.target);
 
     }
 

@@ -46,6 +46,7 @@ import com.github.javaparser.metamodel.TypeDeclarationMetaModel;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import indi.uhyils.annotation.NotNull;
 import indi.uhyils.util.StringUtil;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -64,9 +65,16 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
 
     private NodeList<BodyDeclaration<?>> members;
 
+    /**
+     * 子类
+     */
+    private List<TypeDeclaration<?>> childUnit = new ArrayList<>();
+
+
     public TypeDeclaration() {
         this(null, new NodeList<>(), new NodeList<>(), new SimpleName(), new NodeList<>());
     }
+
 
     public TypeDeclaration(NodeList<Modifier> modifiers, String name) {
         this(null, modifiers, new NodeList<>(), new SimpleName(name), new NodeList<>());
@@ -88,7 +96,6 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
         setMembers(members);
         customInitialization();
     }
-
 
     /**
      * 创建一个未被扫描到的type
@@ -121,6 +128,28 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
         target.setTypes(types);
         AstContext.addCache(type);
         return type;
+    }
+
+    /**
+     * 添加子类
+     *
+     * @param typeDeclarations
+     */
+    public void addChild(TypeDeclaration<?>... typeDeclarations) {
+        for (TypeDeclaration<?> typeDeclaration : typeDeclarations) {
+            if (!childUnit.contains(typeDeclaration)) {
+                childUnit.add(typeDeclaration);
+            }
+        }
+    }
+
+    /**
+     * 获取子类
+     *
+     * @return
+     */
+    public List<TypeDeclaration<?>> getChildType() {
+        return this.childUnit;
     }
 
 
@@ -326,4 +355,5 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
     }
 
     public abstract ResolvedReferenceTypeDeclaration resolve();
+
 }

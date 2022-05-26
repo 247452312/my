@@ -842,7 +842,6 @@ public class CompilationUnit extends Node {
         return super.replace(node, replacementNode);
     }
 
-
     /*
      * If there is no declared printer, returns a new default printer else returns a new printer with the current configuration
      */

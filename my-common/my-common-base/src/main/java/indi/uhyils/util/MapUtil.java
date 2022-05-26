@@ -1,9 +1,9 @@
 package indi.uhyils.util;
 
+import indi.uhyils.annotation.Nullable;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
-import indi.uhyils.annotation.Nullable;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -28,15 +28,33 @@ public final class MapUtil {
      */
     @Nullable
     public static <V, K> V putIfAbsent(Map<K, V> map, K key, Supplier<V> valueSupplier) {
-        V v = map.get(key);
-        if (v == null) {
-            v = map.put(key, valueSupplier.get());
-        }
-
-        return v;
+        return putIfAbsent(map, key, valueSupplier, true);
     }
 
-    public static boolean isNotEmpty(Map map) {
+    /**
+     * 同{@link Map#putIfAbsent(java.lang.Object, java.lang.Object)} 只是防止提前使用
+     *
+     * @param map           map本p
+     * @param key           key
+     * @param valueSupplier 执行后返回目标值的方法
+     * @param returnOld     是否返回旧值
+     * @param <K>           key的类型
+     * @param <V>           目标值的类型
+     *
+     * @return 如果map中存在, 则使用map中的, 如果不存在, 则使用supplier返回的
+     */
+    @Nullable
+    public static <V, K> V putIfAbsent(Map<K, V> map, K key, Supplier<V> valueSupplier, boolean returnOld) {
+        V v = map.get(key);
+        if (v != null) {
+            return v;
+        }
+        V value = valueSupplier.get();
+        return returnOld ? map.put(key, value) : value;
+
+    }
+
+    public static boolean isNotEmpty(Map<?, ?> map) {
         if (map == null) {
             return false;
         }

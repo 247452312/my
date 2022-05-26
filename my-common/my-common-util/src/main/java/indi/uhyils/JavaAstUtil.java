@@ -76,6 +76,8 @@ public class JavaAstUtil {
         }
         LogUtil.info("开始替换属性和方法出入参");
         for (CompilationUnit compilationUnit : compilationUnits) {
+            // 替换继承
+            InternalUtil.dealCompilationUnitExtend(compilationUnit);
             // 替换属性
             InternalUtil.dealCompilationUnitFields(compilationUnit);
             // 替换方法(入参出参)

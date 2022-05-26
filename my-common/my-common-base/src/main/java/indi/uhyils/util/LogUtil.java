@@ -79,11 +79,12 @@ public final class LogUtil {
     }
 
     public static boolean isDebugEnabled(Class<?> clazz) {
+//        return false;
         if (clazz == null) {
             return Boolean.FALSE;
         }
         String simpleName = clazz.getName();
-        Logger logger = MapUtil.putIfAbsent(loggerMap, simpleName, () -> LoggerFactory.getLogger(clazz));
+        Logger logger = MapUtil.putIfAbsent(loggerMap, simpleName, () -> LoggerFactory.getLogger(clazz), false);
         if (logger != null) {
             return logger.isDebugEnabled();
         }
@@ -325,14 +326,24 @@ public final class LogUtil {
         if (msg != null && logTypeEnum != LogLevelEnum.DEBUG) {
             msg = String.format(LogDetailTypeEnum.LOG.getCode() + "%s|%s|%d|%s", MyTraceIdContext.getThraceId(), MyTraceIdContext.getAndAddRpcIdStr(), System.currentTimeMillis(), msg);
         }
+        Logger logger = getLoggerByName(className);
+        choiceLogType(msg, throwable, logTypeEnum, logger);
+    }
+
+    /**
+     * 获取日志名称
+     *
+     * @param className
+     *
+     * @return
+     */
+    private static Logger getLoggerByName(String className) {
         if (loggerMap.containsKey(className)) {
-            Logger logger = loggerMap.get(className);
-            choiceLogType(msg, throwable, logTypeEnum, logger);
-            return;
+            return loggerMap.get(className);
         }
         Logger logger = LoggerFactory.getLogger(className);
         loggerMap.put(className, logger);
-        choiceLogType(msg, throwable, logTypeEnum, logger);
+        return logger;
     }
 
 
