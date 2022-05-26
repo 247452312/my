@@ -26,11 +26,11 @@ class JavaAstUtilTest {
     @Test
     void integrationCompilationUnit() throws FileNotFoundException {
         LogUtil.info("解析文件开始");
-        List<CompilationUnit> compilationUnits = JavaAstUtil.loadProjectPath("F:\\share\\my");
+        List<CompilationUnit> compilationUnits = JavaAstUtil.loadProjectPath("F:\\share\\my\\my-common\\my-common-base");
         LogUtil.info("解析文件完成,分析文件开始");
         JavaAstUtil.integrationCompilationUnit(compilationUnits);
 
-        TypeDeclaration<?> typeDeclaration = AstContext.getAllCompilationUnitMap().get("com.github.javaparser.ast.Node");
+        TypeDeclaration<?> typeDeclaration = AstContext.getAllCompilationUnitMap().get("indi.uhyils.pojo.cqe.BaseCQE");
         Asserts.assertTrue(typeDeclaration != null);
 
         System.out.println("graph TD;");
