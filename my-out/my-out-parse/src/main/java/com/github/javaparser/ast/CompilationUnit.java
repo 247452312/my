@@ -30,6 +30,7 @@ import static com.github.javaparser.ast.Modifier.createModifierList;
 import static com.github.javaparser.utils.CodeGenerationUtils.subtractPaths;
 import static com.github.javaparser.utils.Utils.assertNotNull;
 
+import com.github.javaparser.AstContext;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.JavaToken;
 import com.github.javaparser.ParseResult;
@@ -38,14 +39,20 @@ import com.github.javaparser.Position;
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.body.AnnotationDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.modules.ModuleDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.observer.ObservableProperty;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.visitor.CloneVisitor;
 import com.github.javaparser.ast.visitor.GenericVisitor;
@@ -69,6 +76,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -94,11 +102,6 @@ import java.util.stream.Collectors;
 public class CompilationUnit extends Node {
 
     private static final String JAVA_LANG = "java.lang";
-
-    /**
-     * 本次扫描中所有的类 key->类全名
-     */
-    private Map<String, TypeDeclaration<?>> allTypeDeclaration;
 
     @OptionalProperty
     private PackageDeclaration packageDeclaration;
@@ -143,8 +146,206 @@ public class CompilationUnit extends Node {
         return (importDeclaration.isAsterisk() ? new Name(importDeclaration.getName(), "*") : importDeclaration.getName()).getQualifier();
     }
 
-    public void setAllTypeDeclaration(Map<String, TypeDeclaration<?>> allTypeDeclaration) {
-        this.allTypeDeclaration = allTypeDeclaration;
+
+    /**
+     * 根据compilationUnit 去获取可以在局部代码中直接使用的变量
+     *
+     *
+     * @return
+     */
+    public Map<String, TypeDeclaration<?>> findCanUseVariable() {
+        Map<String, TypeDeclaration<?>> result = new HashMap<>();
+
+        // 1.同包中其他类中的非私有静态变量
+        // 2.util包中静态变量
+        // 3.同包中其他枚举类的枚举
+        // 4.util包中的枚举
+
+        // 静态变量
+        List<VariableDeclarator> otherPackageVariables = new ArrayList<>();
+        // 枚举
+        List<EnumConstantDeclaration> otherPackageEnumConstantDeclaration = new ArrayList<>();
+
+        for (TypeDeclaration<?> typeDeclaration : types) {
+            if (typeDeclaration.isClassOrInterfaceDeclaration()) {
+                ClassOrInterfaceDeclaration classOrInterfaceDeclaration = typeDeclaration.asClassOrInterfaceDeclaration();
+                if (classOrInterfaceDeclaration.isInterface()) {
+                    // 接口中的全部
+                    List<VariableDeclarator> collect = classOrInterfaceDeclaration.getFields().stream().flatMap(t -> t.getVariables().stream()).collect(Collectors.toList());
+                    otherPackageVariables.addAll(collect);
+                } else {
+                    //非接口中的静态非私有变量
+                    List<VariableDeclarator> collect = typeDeclaration.getFields().stream().filter(t -> !t.isPrivate() && t.isStatic()).flatMap(t -> t.getVariables().stream()).collect(Collectors.toList());
+                    otherPackageVariables.addAll(collect);
+                }
+            } else if (typeDeclaration.isEnumDeclaration()) {
+                // 枚举们
+                EnumDeclaration enumDeclaration = typeDeclaration.asEnumDeclaration();
+                List<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
+                otherPackageEnumConstantDeclaration.addAll(entries);
+            } else if (typeDeclaration.isAnnotationDeclaration()) {
+                // 注解跳过
+            } else {
+                throw new RuntimeException("不支持的类类型:" + typeDeclaration.getClass().getName());
+            }
+        }
+        for (VariableDeclarator variableDeclarator : otherPackageVariables) {
+            Optional<TypeDeclaration<?>> targetOptional = variableDeclarator.getType().getTarget();
+            targetOptional.ifPresent(typeDeclaration -> result.put(variableDeclarator.getNameAsString(), typeDeclaration));
+        }
+        // 枚举
+        for (EnumConstantDeclaration enumConstantDeclaration : otherPackageEnumConstantDeclaration) {
+            EnumDeclaration enumDeclaration = (EnumDeclaration) enumConstantDeclaration.getParentNode().orElse(null);
+            String classType = enumDeclaration.getName().asString();
+            String fieldName = enumConstantDeclaration.getName().asString();
+            String finalName = classType + "." + fieldName;
+            result.put(finalName, enumDeclaration);
+        }
+        return result;
+    }
+
+    /**
+     * 替换 属性
+     */
+    public void dealFields() {
+        for (TypeDeclaration<?> type : types) {
+            for (FieldDeclaration member : type.getFields()) {
+                NodeList<VariableDeclarator> variables = member.getVariables();
+
+                for (VariableDeclarator variable : variables) {
+                    Type variableType = variable.getType();
+                    fillTypeTargetByAllCompilationUnit(variableType);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 替换 method
+     */
+    public void dealMethods() {
+        for (TypeDeclaration<?> type : types) {
+            List<MethodDeclaration> methods = type.getMethods();
+            for (MethodDeclaration method : methods) {
+                Type returnType = method.getType();
+                fillTypeTargetByAllCompilationUnit(returnType);
+                for (Parameter parameter : method.getParameters()) {
+                    Type parameterType = parameter.getType();
+                    fillTypeTargetByAllCompilationUnit(parameterType);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 替换方法中的每一行
+     */
+    public void dealMethodRow() {
+        for (TypeDeclaration<?> type : types) {
+            type.dealMethodRow(this);
+
+        }
+    }
+
+    /**
+     * 替换填充继承以及接口实现
+     */
+    public void dealExtend() {
+        for (TypeDeclaration<?> type : types) {
+            if (type.isClassOrInterfaceDeclaration()) {
+                ClassOrInterfaceDeclaration classOrInterfaceDeclaration = type.asClassOrInterfaceDeclaration();
+                // 接口允许多继承
+                List<ClassOrInterfaceType> extendedTypes = classOrInterfaceDeclaration.getExtendedTypes();
+                List<ClassOrInterfaceType> implementedTypes = classOrInterfaceDeclaration.getImplementedTypes();
+                for (ClassOrInterfaceType extendedType : extendedTypes) {
+                    Optional<TypeDeclaration<?>> typeDeclaration = extendedType.fillTargetByCompilationUnit(this);
+                    typeDeclaration.ifPresent(t -> t.addChild(type));
+                }
+                for (ClassOrInterfaceType implementedType : implementedTypes) {
+                    Optional<TypeDeclaration<?>> typeDeclaration = implementedType.fillTargetByCompilationUnit(this);
+                    typeDeclaration.ifPresent(t -> t.addChild(type));
+                }
+
+            }
+        }
+    }
+
+    /**
+     * 处理类的import
+     *
+     * @param allCompilationUnit 所有扫描到的类
+     */
+    public void dealImport(List<CompilationUnit> allCompilationUnit) {
+        List<String> importName = imports.stream().map(NodeWithName::getNameAsString).distinct().collect(Collectors.toList());
+
+        // 预过滤, 只留下同一个package的 以及 import的类
+        List<TypeDeclaration<?>> filterType = allCompilationUnit.stream()
+                                                                .flatMap(t -> t.getTypes().stream())
+                                                                .filter(t -> {
+                                                                    Optional<CompilationUnit> typeCompilationUnit = t.findCompilationUnit();
+                                                                    if (!typeCompilationUnit.isPresent()) {
+                                                                        return false;
+                                                                    }
+                                                                    PackageDeclaration packageDeclaration = typeCompilationUnit.get().getPackageDeclaration().orElse(null);
+                                                                    if (packageDeclaration != null) {
+                                                                        String packageName = packageDeclaration.getName().asString();
+                                                                        return importName.contains(packageName + "." + t.getName().asString());
+                                                                    } else {
+                                                                        return importName.contains(t.getName().asString());
+                                                                    }
+                                                                })
+                                                                .collect(Collectors.toList());
+        for (ImportDeclaration importItem : imports) {
+            String importClassName = importItem.getName().asString();
+            // 找到目标类型, 如果没有,就新建一个
+            TypeDeclaration<?> typeDeclaration = filterType.stream()
+                                                           .filter(
+                                                               t -> {
+                                                                   Optional<CompilationUnit> typeCompilationUnit = t.findCompilationUnit();
+                                                                   if (!typeCompilationUnit.isPresent()) {
+                                                                       return false;
+                                                                   }
+                                                                   PackageDeclaration packageDeclaration = typeCompilationUnit.get().getPackageDeclaration().orElse(null);
+                                                                   if (packageDeclaration != null) {
+                                                                       String packageName = packageDeclaration.getName().asString();
+                                                                       return Objects.equals(packageName + "." + t.getName().asString(), importClassName);
+                                                                   } else {
+                                                                       return Objects.equals(t.getName().asString(), importClassName);
+                                                                   }
+
+                                                               }
+                                                           )
+                                                           .findFirst()
+                                                           .orElse(null);
+            if (typeDeclaration == null) {
+                typeDeclaration = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(importItem.getName().getQualifier().flatMap(t -> Optional.ofNullable(t.asString())).orElse(null), importItem.getName().getIdentifier());
+                AstContext.addCache(typeDeclaration);
+            }
+            importItem.setTargetType(typeDeclaration);
+        }
+    }
+
+    /**
+     * 处理类的package类
+     *
+     * @param allCompilationUnit 所有扫描到的类
+     */
+    public void dealPackage(List<CompilationUnit> allCompilationUnit) {
+        Optional<PackageDeclaration> packageDeclarationOptional = this.getPackageDeclaration();
+        if (!packageDeclarationOptional.isPresent()) {
+            return;
+        }
+
+        PackageDeclaration packageDeclaration = packageDeclarationOptional.get();
+        // 筛选出同一个package的
+        List<CompilationUnit> collect = allCompilationUnit.stream()
+                                                          .filter(t -> t.getPackageDeclaration().isPresent())
+                                                          .filter(t -> Objects.equals(t.getPackageDeclaration().get().getName().asString(),
+                                                                                      packageDeclaration.getName().asString()))
+                                                          .collect(Collectors.toList());
+        packageDeclaration.setOtherCompilationUnits(collect);
     }
 
     /**
@@ -181,8 +382,9 @@ public class CompilationUnit extends Node {
     @NotNull
     public Optional<TypeDeclaration<?>> findTypeDeclaration(String typeAllName) {
         typeAllName = StringUtil.removeGenericsFromClassNames(typeAllName);
-        if (typeAllName.contains(".") && allTypeDeclaration.containsKey(typeAllName)) {
-            return Optional.ofNullable(allTypeDeclaration.get(typeAllName));
+        Map<String, TypeDeclaration<?>> allCompilationUnitMap = AstContext.getAllCompilationUnitMap();
+        if (typeAllName.contains(".") && allCompilationUnitMap.containsKey(typeAllName)) {
+            return Optional.ofNullable(allCompilationUnitMap.get(typeAllName));
         } else {
             List<CompilationUnit> compilationUnits = findCompilationUnit(Collections.singletonList(typeAllName));
             CompilationUnit compilationUnit = compilationUnits.get(0);
@@ -863,6 +1065,21 @@ public class CompilationUnit extends Node {
         Printer printer = getPrinter().setConfiguration(config);
         printer(printer);
         return printer;
+    }
+
+    /**
+     * 根据所有扫描的文件填充type的类型
+     *
+     * @param variableType
+     */
+    private void fillTypeTargetByAllCompilationUnit(Type variableType) {
+        if (variableType.isArrayType()) {
+            // todo 这里不应该直接覆盖
+            variableType = variableType.asArrayType().getComponentType();
+        }
+        Optional<TypeDeclaration<?>> typeTarget = this.findTypeDeclaration(variableType);
+        Type finalVariableType = variableType;
+        typeTarget.ifPresent(finalVariableType::setTarget);
     }
 
     /**

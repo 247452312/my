@@ -24,6 +24,7 @@ import static com.github.javaparser.utils.CodeGenerationUtils.f;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -33,6 +34,9 @@ import com.github.javaparser.ast.visitor.CloneVisitor;
 import com.github.javaparser.metamodel.ExpressionMetaModel;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.resolution.types.ResolvedType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -807,7 +811,7 @@ public abstract class Expression extends Node {
         return false;
     }
 
-    /*
+    /**
      * 6.5.6.2. Qualified Expression Names
      * https://docs.oracle.com/javase/specs/jls/se7/html/jls-6.html#jls-6.5.6.2
      */
@@ -815,7 +819,7 @@ public abstract class Expression extends Node {
         return hasScope();
     }
 
-    /*
+    /**
      * Verify if the parent node is an assignment context.
      */
     public final boolean appearsInAssignmentContext() {
@@ -825,7 +829,7 @@ public abstract class Expression extends Node {
         return false;
     }
 
-    /*
+    /**
      * Verify if the parent node is an invocation context.
      */
     public final boolean appearsInInvocationContext() {
@@ -835,7 +839,7 @@ public abstract class Expression extends Node {
         return false;
     }
 
-    /*
+    /**
      * returns true if the scope of this expression does not define an type argument or if the expression has not a scope (the expression is not qualified)
      * or if there is a scope it uses <> to elide class type arguments
      * For exemple :
@@ -853,7 +857,15 @@ public abstract class Expression extends Node {
         return scope.elidesTypeArguments() && (!nwta.getTypeArguments().isPresent() || nwta.isUsingDiamondOperator());
     }
 
-    /*
+    /**
+     * 处理自己
+     *
+     * @param compilationUnit
+     * @param vars
+     */
+    public abstract void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars);
+
+    /**
      * Returns true if the expression is an assignment context. Default is false.
      * https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.2
      * 5.2. Assignment Contexts: Assignment contexts allow the value of an expression to be assigned (§15.26) to a variable;...
@@ -862,7 +874,7 @@ public abstract class Expression extends Node {
         return false;
     }
 
-    /*
+    /**
      * Returns true if the expression is an invocation context. Default is false.
      * https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.3
      * 5.3. Invocation Contexts
@@ -870,4 +882,6 @@ public abstract class Expression extends Node {
     protected boolean isInvocationContext() {
         return false;
     }
+
+
 }

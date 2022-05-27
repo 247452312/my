@@ -25,10 +25,12 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithIdentifier;
 import com.github.javaparser.ast.nodeTypes.NodeWithTypeArguments;
 import com.github.javaparser.ast.observer.ObservableProperty;
@@ -42,8 +44,13 @@ import com.github.javaparser.metamodel.NonEmptyProperty;
 import com.github.javaparser.metamodel.OptionalProperty;
 import com.github.javaparser.resolution.Resolvable;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
+import indi.uhyils.util.CollectionUtil;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Method reference expressions introduced in Java 8 specifically designed to simplify lambda Expressions.
@@ -65,7 +72,6 @@ public class MethodReferenceExpr extends Expression implements NodeWithTypeArgum
 
     @NonEmptyProperty
     private String identifier;
-
 
 
     private MethodDeclaration methodLink;
@@ -262,5 +268,42 @@ public class MethodReferenceExpr extends Expression implements NodeWithTypeArgum
     @Override
     public boolean isPolyExpression() {
         return true;
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        // 方法调用方
+        Expression scope = this.getScope();
+        // 方法名称
+        String methodName = this.getIdentifier();
+
+        // 1.通过方法调用方判断这个是哪个类的
+        TypeDeclaration<?> scopeReturnType;
+        scope.dealSelf(compilationUnit, vars);
+        scopeReturnType = scope.getReturnType().orElse(null);
+
+        if (scopeReturnType == null) {
+            return;
+        }
+
+        // 2.通过方法名称判断这个方法是哪些
+        // 筛选出来的名称一致的方法
+        List<MethodDeclaration> nameSameMethods = scopeReturnType.getMethods()
+                                                                 .stream()
+                                                                 .filter(t -> Objects.equals(t.getName().asString(), methodName))
+                                                                 .map(MethodDeclaration.class::cast)
+                                                                 .collect(Collectors.toList());
+        if (CollectionUtil.isEmpty(nameSameMethods)) {
+            // 找到执行的类了 但是没找到对应方法
+            return;
+        }
+
+//        Asserts.assertTrue(nameSameMethods != null && nameSameMethods.size() == 1, "方法引用找到两个相同的方法名称");
+
+        // todo 这里应该使用推理,判断方法引用引用的是哪个方法,暂时先不搞了
+
+        // 4.注入
+        MethodDeclaration methodDeclarationWithLink = nameSameMethods.get(0);
+        this.setMethodLink(methodDeclarationWithLink);
     }
 }

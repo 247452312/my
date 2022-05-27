@@ -24,9 +24,11 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.observer.ObservableProperty;
 import com.github.javaparser.ast.visitor.CloneVisitor;
@@ -35,6 +37,8 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.OptionalProperty;
 import com.github.javaparser.metamodel.TryStmtMetaModel;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -318,5 +322,25 @@ public class TryStmt extends Statement {
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<TryStmt> toTryStmt() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Map<String, TypeDeclaration<?>> tempVars = new HashMap<>(vars);
+        NodeList<Expression> resources = this.getResources();
+        for (Expression resource : resources) {
+            resource.dealSelf(compilationUnit, tempVars);
+        }
+
+        Statement tryBlock = this.getTryBlock();
+        tryBlock.dealSelf(compilationUnit, tempVars);
+
+        NodeList<CatchClause> catchClauses = this.getCatchClauses();
+        // todo catch 暂时不处理, 不重要
+
+        Optional<BlockStmt> finallyBlock = this.getFinallyBlock();
+        // finally里访问不到try里的代码
+        Map<String, TypeDeclaration<?>> newTempVars = new HashMap<>(vars);
+        finallyBlock.ifPresent(t -> t.dealSelf(compilationUnit, newTempVars));
     }
 }

@@ -100,4 +100,9 @@ public class NullLiteralExpr extends LiteralExpr {
     public Optional<NullLiteralExpr> toNullLiteralExpr() {
         return Optional.of(this);
     }
+
+    @Override
+    protected Class<?> getLiteralClass() {
+        return null;
+    }
 }

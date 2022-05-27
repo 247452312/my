@@ -24,8 +24,10 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.observer.ObservableProperty;
 import com.github.javaparser.ast.visitor.CloneVisitor;
@@ -34,6 +36,7 @@ import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.resolution.Resolvable;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedAnnotationDeclaration;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -149,5 +152,11 @@ public abstract class AnnotationExpr extends Expression implements NodeWithName<
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<AnnotationExpr> toAnnotationExpr() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        // 这是啥
+        int i = 1;
     }
 }

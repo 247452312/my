@@ -25,10 +25,12 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations;
 import com.github.javaparser.ast.nodeTypes.NodeWithVariables;
@@ -42,6 +44,7 @@ import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.NonEmptyProperty;
 import com.github.javaparser.metamodel.VariableDeclarationExprMetaModel;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -278,5 +281,24 @@ public class VariableDeclarationExpr extends Expression implements NodeWithFinal
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<VariableDeclarationExpr> toVariableDeclarationExpr() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        NodeList<VariableDeclarator> variables = this.getVariables();
+        // 赋值表达式有可能有多个 例如 int i=2,j=3
+        for (VariableDeclarator variable : variables) {
+            SimpleName name = variable.getName();
+            Type type = variable.getType();
+            type.fillTargetByCompilationUnit(compilationUnit);
+
+            Optional<Expression> initializer = variable.getInitializer();
+            Optional<TypeDeclaration<?>> target = type.getTarget();
+            if (initializer.isPresent()) {
+                Expression initializerExpression = initializer.get();
+                initializerExpression.dealSelf(compilationUnit, vars);
+            }
+            target.ifPresent(s -> vars.put(name.asString(), s));
+        }
     }
 }

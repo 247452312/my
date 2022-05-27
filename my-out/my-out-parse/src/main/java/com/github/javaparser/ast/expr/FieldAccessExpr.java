@@ -24,9 +24,11 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.nodeTypes.NodeWithScope;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
@@ -43,6 +45,8 @@ import com.github.javaparser.metamodel.OptionalProperty;
 import com.github.javaparser.resolution.Resolvable;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedValueDeclaration;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -276,6 +280,23 @@ public class FieldAccessExpr extends Expression implements NodeWithSimpleName<Fi
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<FieldAccessExpr> toFieldAccessExpr() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Expression scope = this.getScope();
+        String fieldName = this.getNameAsString();
+        scope.dealSelf(compilationUnit, vars);
+
+        Optional<TypeDeclaration<?>> returnType = scope.getReturnType();
+        if (returnType.isPresent()) {
+            TypeDeclaration<?> typeDeclaration = returnType.get();
+            typeDeclaration.getFields().stream().flatMap(t -> t.getVariables().stream()).filter(t -> Objects.equals(t.getNameAsString(), fieldName)).findFirst().ifPresent(t -> {
+                this.setFieldLink(t);
+                Type type = t.getType();
+                type.getTarget().ifPresent(this::setReturnType);
+            });
+        }
     }
 
     /**

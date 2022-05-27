@@ -24,8 +24,10 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.nodeTypes.NodeWithType;
 import com.github.javaparser.ast.observer.ObservableProperty;
@@ -36,6 +38,7 @@ import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.PatternExprMetaModel;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -172,6 +175,12 @@ public class PatternExpr extends Expression implements NodeWithSimpleName<Patter
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public void ifPatternExpr(Consumer<PatternExpr> action) {
         action.accept(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        // 这是啥
+        int i = 1;
     }
 
     @Override

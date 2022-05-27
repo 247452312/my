@@ -24,8 +24,10 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.BooleanLiteralExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.nodeTypes.NodeWithCondition;
@@ -37,6 +39,7 @@ import com.github.javaparser.metamodel.DerivedProperty;
 import com.github.javaparser.metamodel.IfStmtMetaModel;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.OptionalProperty;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -264,5 +267,19 @@ public class IfStmt extends Statement implements NodeWithCondition<IfStmt> {
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<IfStmt> toIfStmt() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Expression condition = this.getCondition();
+        condition.dealSelf(compilationUnit, vars);
+
+        Statement thenStmt = this.getThenStmt();
+        thenStmt.dealSelf(compilationUnit, vars);
+        Optional<Statement> elseStmt = this.getElseStmt();
+        if (elseStmt.isPresent()) {
+            Statement statement1 = elseStmt.get();
+            statement1.dealSelf(compilationUnit, vars);
+        }
     }
 }

@@ -24,8 +24,10 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.observer.ObservableProperty;
 import com.github.javaparser.ast.visitor.CloneVisitor;
 import com.github.javaparser.ast.visitor.GenericVisitor;
@@ -33,8 +35,14 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.BinaryExprMetaModel;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.printer.Stringable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * An expression with an expression on the left, an expression on the right, and an operator in the middle.
@@ -45,6 +53,11 @@ import java.util.function.Consumer;
  * @author Julio Vilmar Gesser
  */
 public class BinaryExpr extends Expression {
+
+    /**
+     * 基本类型排序
+     */
+    private static final String[] privis = new String[]{"byte", "short", "int", "long", "float", "double"};
 
     private Expression left;
 
@@ -194,6 +207,137 @@ public class BinaryExpr extends Expression {
         return Optional.of(this);
     }
 
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        TypeDeclaration<?> typeDeclaration = calculationBinaryType(compilationUnit, vars);
+        this.setReturnType(typeDeclaration);
+    }
+
+
+    /**
+     * 推测一个表达式返回值的类型
+     *
+     * @param compilationUnit
+     * @param vars
+     *
+     * @return
+     */
+    public TypeDeclaration<?> calculationBinaryType(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Operator operator = this.getOperator();
+        List<TypeDeclaration<?>> argsType;
+
+        //左右表达式
+        List<Expression> arguments = Arrays.asList(this.getLeft(), this.getRight());
+        switch (operator) {
+            case OR:
+            case AND:
+            case EQUALS:
+            case NOT_EQUALS:
+            case LESS:
+            case GREATER:
+            case LESS_EQUALS:
+            case GREATER_EQUALS:
+            case XOR:
+                // 以上符号都是boolean类型
+                return TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Boolean.class.getPackage().getName(), Boolean.class.getSimpleName());
+
+            case PLUS:
+                argsType = arguments.stream().map(Expression::getReturnType).map(t -> t.orElse(null)).collect(Collectors.toList());
+                TypeDeclaration<?> left = argsType.get(0);
+                TypeDeclaration<?> right = argsType.get(1);
+                if (left == null) {
+                    return right;
+                }
+                if (right == null) {
+                    return left;
+                }
+                if (Objects.equals(left.getName().asString(), "String")) {
+                    return left;
+                } else if (Objects.equals(right.getName().asString(), "String")) {
+                    return right;
+                }
+                /*这里没有return null 因为如果上面判断String不成立 则加入下方计算类型大军*/
+
+            case BINARY_OR:
+            case BINARY_AND:
+            case MINUS:
+            case DIVIDE:
+            case MULTIPLY:
+            case REMAINDER:
+                // 递归获取所有的表达式
+                List<Expression> expressions = this.splitBinaryExpression();
+                return calculationBinaryType(compilationUnit, vars, expressions);
+            case SIGNED_RIGHT_SHIFT:
+            case UNSIGNED_RIGHT_SHIFT:
+            case LEFT_SHIFT:
+                return this.getLeft().getReturnType().orElse(null);
+            default:
+        }
+        return null;
+    }
+
+    /**
+     * 推测一个表达式返回值的类型
+     *
+     * @param compilationUnit
+     * @param vars
+     *
+     * @return
+     */
+    public TypeDeclaration<?> calculationBinaryType(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars, List<Expression> expressions) {
+        // 如果是 "byte", "short", "int", "long", "float", "double" 其中一个,则判断是两个中较大的那个
+        int maxIndex = 0;
+        boolean haveLiteralExpr = false;
+        for (Expression expression : expressions) {
+            if (expression.isLiteralExpr()) {
+                haveLiteralExpr = true;
+                String expressionStr = expression.toString();
+                expressionStr = expressionStr.replace("LiteralExpr", "");
+                for (int j = 0; j < privis.length; j++) {
+                    String privi = privis[j];
+                    if (privi.equalsIgnoreCase(expressionStr)) {
+                        maxIndex = j;
+                    }
+                }
+            }
+        }
+        final String privi;
+        if (!haveLiteralExpr) {
+            // 如果没有,则默认是int
+            privi = "int";
+        } else {
+            privi = privis[maxIndex];
+        }
+        return TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(null, privi);
+    }
+
+    /**
+     * 拆分一堆
+     *
+     * @return
+     */
+    protected List<Expression> splitBinaryExpression() {
+        List<Expression> result = new ArrayList<>();
+        Expression right = this.getRight();
+        if (right.isBinaryExpr()) {
+            BinaryExpr rightBinaryExpr = right.asBinaryExpr();
+            result.addAll(rightBinaryExpr.splitBinaryExpression());
+        } else {
+            result.add(right);
+        }
+
+        Expression left = this.getLeft();
+        if (left.isBinaryExpr()) {
+            BinaryExpr rightBinaryExpr = left.asBinaryExpr();
+            result.addAll(rightBinaryExpr.splitBinaryExpression());
+        } else {
+            result.add(left);
+        }
+
+        return result;
+    }
+
+
     public enum Operator implements Stringable {
 
         OR("||"),
@@ -222,6 +366,7 @@ public class BinaryExpr extends Expression {
             this.codeRepresentation = codeRepresentation;
         }
 
+        @Override
         public String asString() {
             return codeRepresentation;
         }

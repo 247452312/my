@@ -24,10 +24,13 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithParameters;
 import com.github.javaparser.ast.observer.ObservableProperty;
 import com.github.javaparser.ast.stmt.BlockStmt;
@@ -40,8 +43,11 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.DerivedProperty;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.LambdaExprMetaModel;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * <h1>A lambda expression</h1>
@@ -275,5 +281,15 @@ public class LambdaExpr extends Expression implements NodeWithParameters<LambdaE
     @Override
     public boolean isPolyExpression() {
         return true;
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Statement body = this.getBody();
+        Map<String, TypeDeclaration<?>> newVars = new HashMap<>(vars);
+        body.dealSelf(compilationUnit, newVars);
+        ClassOrInterfaceDeclaration returnType = new ClassOrInterfaceDeclaration();
+        returnType.setName(Function.class.getSimpleName());
+        this.setReturnType(returnType);
     }
 }

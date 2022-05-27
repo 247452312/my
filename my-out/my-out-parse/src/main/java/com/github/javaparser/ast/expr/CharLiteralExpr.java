@@ -145,4 +145,10 @@ public class CharLiteralExpr extends LiteralStringValueExpr {
     public Optional<CharLiteralExpr> toCharLiteralExpr() {
         return Optional.of(this);
     }
+
+
+    @Override
+    protected Class<?> getLiteralClass() {
+        return Character.class;
+    }
 }

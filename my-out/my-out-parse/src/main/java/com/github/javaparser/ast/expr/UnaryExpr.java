@@ -24,8 +24,10 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithExpression;
 import com.github.javaparser.ast.observer.ObservableProperty;
 import com.github.javaparser.ast.visitor.CloneVisitor;
@@ -35,6 +37,7 @@ import com.github.javaparser.metamodel.DerivedProperty;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.UnaryExprMetaModel;
 import com.github.javaparser.printer.Stringable;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -179,6 +182,41 @@ public class UnaryExpr extends Expression implements NodeWithExpression<UnaryExp
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<UnaryExpr> toUnaryExpr() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Expression expression = this.getExpression();
+        expression.dealSelf(compilationUnit, vars);
+        TypeDeclaration<?> typeDeclaration = this.calculationUnaryType(compilationUnit, vars);
+        this.setReturnType(typeDeclaration);
+    }
+
+    /**
+     * 推测一个表达式返回值的类型
+     *
+     * @param compilationUnit
+     * @param vars
+     *
+     * @return
+     */
+    public TypeDeclaration<?> calculationUnaryType(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        UnaryExpr.Operator operator = this.getOperator();
+        switch (operator) {
+            case LOGICAL_COMPLEMENT:
+                // 以上符号都是boolean类型
+                return TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Boolean.class.getPackage().getName(), Boolean.class.getSimpleName());
+            case PREFIX_DECREMENT:
+            case PREFIX_INCREMENT:
+            case POSTFIX_DECREMENT:
+            case POSTFIX_INCREMENT:
+            case BITWISE_COMPLEMENT:
+            case MINUS:
+            case PLUS:
+                return this.getExpression().getReturnType().orElse(null);
+            default:
+        }
+        return null;
     }
 
     public enum Operator implements Stringable {

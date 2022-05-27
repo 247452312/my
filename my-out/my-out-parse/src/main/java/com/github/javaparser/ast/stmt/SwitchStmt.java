@@ -24,9 +24,11 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.nodeTypes.SwitchNode;
@@ -36,8 +38,12 @@ import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.SwitchStmtMetaModel;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * <h1>The switch statement</h1>
@@ -226,5 +232,17 @@ public class SwitchStmt extends Statement implements SwitchNode {
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<SwitchStmt> toSwitchStmt() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Expression selector = this.getSelector();
+        selector.dealSelf(compilationUnit, vars);
+        NodeList<SwitchEntry> entries = this.getEntries();
+        List<Statement> collect = entries.stream().flatMap(t -> t.getStatements().stream()).collect(Collectors.toList());
+        Map<String, TypeDeclaration<?>> itemVars = new HashMap<>(vars);
+        for (Statement itemStatement : collect) {
+            itemStatement.dealSelf(compilationUnit, itemVars);
+        }
     }
 }

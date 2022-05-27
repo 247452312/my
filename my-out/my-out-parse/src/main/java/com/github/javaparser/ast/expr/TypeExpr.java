@@ -24,8 +24,10 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithType;
 import com.github.javaparser.ast.observer.ObservableProperty;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
@@ -35,6 +37,7 @@ import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.TypeExprMetaModel;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -147,5 +150,19 @@ public class TypeExpr extends Expression implements NodeWithType<TypeExpr, Type>
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<TypeExpr> toTypeExpr() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        String typeString = this.getType().asString();
+        if (vars.containsKey(typeString)) {
+            this.setReturnType(vars.get(typeString));
+            return;
+        }
+
+        Type type = this.getType();
+        type.fillTargetByCompilationUnit(compilationUnit);
+        Optional<TypeDeclaration<?>> target = type.getTarget();
+        target.ifPresent(this::setReturnType);
     }
 }

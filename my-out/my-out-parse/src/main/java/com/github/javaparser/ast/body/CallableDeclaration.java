@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;

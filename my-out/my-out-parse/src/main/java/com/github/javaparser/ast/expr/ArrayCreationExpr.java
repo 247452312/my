@@ -30,6 +30,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.observer.ObservableProperty;
 import com.github.javaparser.ast.type.ArrayType;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
@@ -41,6 +42,7 @@ import com.github.javaparser.metamodel.ArrayCreationExprMetaModel;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.NonEmptyProperty;
 import com.github.javaparser.metamodel.OptionalProperty;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -280,5 +282,12 @@ public class ArrayCreationExpr extends Expression {
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<ArrayCreationExpr> toArrayCreationExpr() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Type elementType = this.getElementType();
+        elementType.fillTargetByCompilationUnit(compilationUnit);
+        elementType.getTarget().ifPresent(this::setReturnType);
     }
 }

@@ -22,8 +22,10 @@ package com.github.javaparser.ast.stmt;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.observer.ObservableProperty;
@@ -33,6 +35,7 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.OptionalProperty;
 import com.github.javaparser.metamodel.ReturnStmtMetaModel;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -180,5 +183,11 @@ public class ReturnStmt extends Statement {
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<ReturnStmt> toReturnStmt() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Optional<Expression> expression = this.getExpression();
+        expression.ifPresent(value -> value.dealSelf(compilationUnit, vars));
     }
 }

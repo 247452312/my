@@ -126,4 +126,10 @@ public class DoubleLiteralExpr extends LiteralStringValueExpr {
     public Optional<DoubleLiteralExpr> toDoubleLiteralExpr() {
         return Optional.of(this);
     }
+
+
+    @Override
+    protected Class<?> getLiteralClass() {
+        return Double.class;
+    }
 }

@@ -132,4 +132,10 @@ public class BooleanLiteralExpr extends LiteralExpr {
     public Optional<BooleanLiteralExpr> toBooleanLiteralExpr() {
         return Optional.of(this);
     }
+
+    @Override
+    protected Class<?> getLiteralClass() {
+        return Boolean.class;
+    }
+
 }

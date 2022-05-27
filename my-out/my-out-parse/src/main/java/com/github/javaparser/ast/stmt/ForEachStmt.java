@@ -24,9 +24,11 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.NameExpr;
@@ -38,6 +40,8 @@ import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.ForEachStmtMetaModel;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -231,6 +235,19 @@ public class ForEachStmt extends Statement implements NodeWithBody<ForEachStmt> 
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public void ifForEachStmt(Consumer<ForEachStmt> action) {
         action.accept(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Map<String, TypeDeclaration<?>> newVars = new HashMap<>(vars);
+        VariableDeclarationExpr variable = this.getVariable();
+        variable.dealSelf(compilationUnit, newVars);
+
+        Expression iterable = this.getIterable();
+        iterable.dealSelf(compilationUnit, newVars);
+
+        Statement body = this.getBody();
+        body.dealSelf(compilationUnit, newVars);
     }
 
     @Override

@@ -22,10 +22,13 @@ package com.github.javaparser.ast.expr;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.visitor.CloneVisitor;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.LiteralExprMetaModel;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -85,4 +88,24 @@ public abstract class LiteralExpr extends Expression {
     public Optional<LiteralExpr> toLiteralExpr() {
         return Optional.of(this);
     }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        Class<?> clazz = getLiteralClass();
+        TypeDeclaration<?> type;
+        if (clazz == null) {
+            type = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(null, "null");
+        } else {
+            type = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(clazz.getPackage().getName(), clazz.getSimpleName());
+        }
+        this.setReturnType(type);
+    }
+
+    /**
+     * 获取这个类型对应的class
+     *
+     * @return
+     */
+    protected abstract Class<?> getLiteralClass();
+
 }

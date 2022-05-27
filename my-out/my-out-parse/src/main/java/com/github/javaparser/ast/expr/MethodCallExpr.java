@@ -24,10 +24,12 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithArguments;
 import com.github.javaparser.ast.nodeTypes.NodeWithOptionalScope;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
@@ -45,8 +47,13 @@ import com.github.javaparser.resolution.Resolvable;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.types.ResolvedType;
+import indi.uhyils.util.CollectionUtil;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * A method call on an object or a class. <br>{@code circle.circumference()} <br>In {@code a.<String>bb(15);}, a
@@ -374,6 +381,93 @@ public class MethodCallExpr extends Expression implements NodeWithTypeArguments<
         return false;
     }
 
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        // 方法调用方
+        Optional<Expression> scope = this.getScope();
+        // 方法名称
+        SimpleName methodName = this.getName();
+        // 方法入参变量
+        NodeList<Expression> arguments = this.getArguments();
+
+        // 解析入参先
+        for (Expression argument : arguments) {
+            argument.dealSelf(compilationUnit, vars);
+        }
+        // 1.通过方法调用方判断这个是哪个类的
+        TypeDeclaration<?> scopeReturnType;
+        if (scope.isPresent()) {
+            Expression scopeExpression = scope.get();
+            scopeExpression.dealSelf(compilationUnit, vars);
+            scopeReturnType = scopeExpression.getReturnType().orElse(null);
+        } else {
+            scopeReturnType = compilationUnit.findTypeByNode(this);
+        }
+        if (scopeReturnType == null) {
+            return;
+        }
+
+        // 2.通过方法名称判断这个方法是哪些
+        // 相似的方法的名称
+        String methodNameStr = methodName.asString();
+        // 筛选出来的名称一致的方法
+        List<MethodDeclaration> nameSameMethods = scopeReturnType.getMethods()
+                                                                 .stream()
+                                                                 .filter(t -> Objects.equals(t.getName().asString(), methodNameStr))
+                                                                 .map(MethodDeclaration.class::cast)
+                                                                 .collect(Collectors.toList());
+        if (CollectionUtil.isEmpty(nameSameMethods)) {
+            // 找到执行的类了 但是没找到对应方法
+            return;
+        }
+
+        // 3.通过方法入参类型确定最终的方法是哪一个
+        // 寻找代码中表达式调用的方法入参的类型
+        List<TypeDeclaration<?>> argumentsClazzList = null;
+
+        argumentsClazzList = arguments.stream().map(Expression::getReturnType).map(t -> t.orElse(null)).collect(Collectors.toList());
+
+        // 通过方法入参类型确定最终的方法是哪一个
+        List<TypeDeclaration<?>> finalArgumentsClazzList = argumentsClazzList;
+        Optional<MethodDeclaration> first = nameSameMethods.stream().filter(t -> matchingMethodParamsType(t, finalArgumentsClazzList)).findFirst();
+
+        // 4.注入
+        if (first.isPresent()) {
+            MethodDeclaration methodDeclarationWithLink = first.get();
+            this.setMethodLink(methodDeclarationWithLink);
+        }
+    }
+    /**
+     * 匹配方法参数类型
+     *
+     * @param argumentsClazzList
+     * @param method
+     *
+     * @return
+     */
+    private static boolean matchingMethodParamsType(MethodDeclaration method, List<TypeDeclaration<?>> argumentsClazzList) {
+        List<TypeDeclaration<?>> methodParamTypes = method.getParameters().stream().map(t -> t.getType().getTarget()).map(t -> t.orElse(null)).collect(Collectors.toList());
+        // 其中一个为空,返回匹配不成功
+        if (argumentsClazzList == null) {
+            return false;
+        }
+        // 方法入参个数不一致,返回匹配不成功
+        if (methodParamTypes.size() != argumentsClazzList.size()) {
+            return false;
+        }
+        for (int i = 0; i < argumentsClazzList.size(); i++) {
+            // 注意 这里是入参的类型, 是有可能为null的, 例: 入参是一个方法,并且这个方法不是在扫描类中,就找不到这个方法明确的返回值
+            TypeDeclaration<?> paramClazz = methodParamTypes.get(i);
+            TypeDeclaration<?> argumentClazz = argumentsClazzList.get(i);
+            if (argumentClazz == null || paramClazz == null) {
+                return false;
+            }
+            if (!Objects.equals(paramClazz.getName().asString(), argumentClazz.getName().asString())) {
+                return false;
+            }
+        }
+        return true;
+    }
     /*
      * Returns true if the expression is an invocation context.
      * https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.3

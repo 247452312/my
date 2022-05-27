@@ -161,6 +161,11 @@ public class TextBlockLiteralExpr extends LiteralStringValueExpr {
         return translateEscapes();
     }
 
+    @Override
+    protected Class<?> getLiteralClass() {
+        return String.class;
+    }
+
     /**
      * @return is the line with index lineNr the last line in rawLines?
      */

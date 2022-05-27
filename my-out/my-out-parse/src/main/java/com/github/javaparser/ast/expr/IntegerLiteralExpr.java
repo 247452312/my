@@ -24,12 +24,15 @@ import static com.github.javaparser.utils.Utils.hasUnaryMinusAsParent;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.visitor.CloneVisitor;
 import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.IntegerLiteralExprMetaModel;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -185,5 +188,16 @@ public class IntegerLiteralExpr extends LiteralStringValueExpr {
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<IntegerLiteralExpr> toIntegerLiteralExpr() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        TypeDeclaration<?> type = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(Integer.class.getPackage().getName(), Integer.class.getSimpleName());
+        this.setReturnType(type);
+    }
+
+    @Override
+    protected Class<?> getLiteralClass() {
+        return Integer.class;
     }
 }

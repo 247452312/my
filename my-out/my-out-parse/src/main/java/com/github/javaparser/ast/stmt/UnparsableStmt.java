@@ -24,12 +24,15 @@ import static com.github.javaparser.ast.Node.Parsedness.UNPARSABLE;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.visitor.CloneVisitor;
 import com.github.javaparser.ast.visitor.GenericVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.metamodel.JavaParserMetaModel;
 import com.github.javaparser.metamodel.UnparsableStmtMetaModel;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -104,5 +107,11 @@ public class UnparsableStmt extends Statement {
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<UnparsableStmt> toUnparsableStmt() {
         return Optional.of(this);
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        // 这是啥
+        int i = 1;
     }
 }

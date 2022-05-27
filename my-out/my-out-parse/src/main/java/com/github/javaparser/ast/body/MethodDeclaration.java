@@ -25,10 +25,13 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AccessSpecifier;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
+import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.nodeTypes.NodeWithDeclaration;
@@ -46,6 +49,7 @@ import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStaticModifier;
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStrictfpModifier;
 import com.github.javaparser.ast.observer.ObservableProperty;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.Type;
@@ -58,6 +62,9 @@ import com.github.javaparser.metamodel.MethodDeclarationMetaModel;
 import com.github.javaparser.metamodel.OptionalProperty;
 import com.github.javaparser.resolution.Resolvable;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -367,5 +374,64 @@ public class MethodDeclaration extends CallableDeclaration<MethodDeclaration> im
     @Generated("com.github.javaparser.generator.core.node.TypeCastingGenerator")
     public Optional<MethodDeclaration> toMethodDeclaration() {
         return Optional.of(this);
+    }
+
+    /**
+     * 处理每一行
+     *
+     * @param compilationUnit
+     */
+    public void dealRow(CompilationUnit compilationUnit) {
+        Optional<BlockStmt> body = this.getBody();
+        if (!body.isPresent()) {
+            return;
+        }
+        BlockStmt blockStmt = body.get();
+        NodeList<Statement> statements = blockStmt.getStatements();
+        //局部变量记录,用来判断局部变量的类型,用以之后推测方法所在地 <局部变量名称,局部变量>
+        Map<String, TypeDeclaration<?>> vars = new HashMap<>();
+
+        // 将入参放置进可用参数列表中
+        NodeList<Parameter> parameters = this.getParameters();
+        for (Parameter parameter : parameters) {
+            Optional<TypeDeclaration<?>> targetOptional = parameter.getType().getTarget();
+            targetOptional.ifPresent(typeDeclaration -> vars.put(parameter.getNameAsString(), typeDeclaration));
+        }
+
+        // 将类属性放入可用参数列表中
+        TypeDeclaration<?> typeByNode = compilationUnit.findTypeByNode(this);
+
+        List<FieldDeclaration> fields = typeByNode.getFields();
+        for (FieldDeclaration field : fields) {
+            List<VariableDeclarator> variables = field.getVariables();
+            for (VariableDeclarator variable : variables) {
+                Optional<TypeDeclaration<?>> targetOptional = variable.getType().getTarget();
+                targetOptional.ifPresent(typeDeclaration -> vars.put(variable.getNameAsString(), typeDeclaration));
+            }
+        }
+
+        // 将相同包中的共有静态变量加入变量中去
+        Optional<PackageDeclaration> packageDeclarationOptional = compilationUnit.getPackageDeclaration();
+        if (packageDeclarationOptional.isPresent()) {
+            PackageDeclaration packageDeclarationWithLink = packageDeclarationOptional.get();
+            List<CompilationUnit> otherCompilationUnits = packageDeclarationWithLink.getOtherCompilationUnits();
+            for (CompilationUnit otherCompilationUnit : otherCompilationUnits) {
+                Map<String, TypeDeclaration<?>> canUseVariable = otherCompilationUnit.findCanUseVariable();
+                vars.putAll(canUseVariable);
+            }
+
+        }
+        // 将 import中的类放到变量中去
+        NodeList<ImportDeclaration> imports = compilationUnit.getImports();
+        for (ImportDeclaration anImport : imports) {
+            String className = anImport.getName().getIdentifier();
+            anImport.getTargetType().ifPresent(t -> vars.put(className, t));
+
+        }
+
+        for (Statement statement : statements) {
+            // 处理方法中的每一个代码块中的方法
+            statement.dealSelf(compilationUnit, vars);
+        }
     }
 }

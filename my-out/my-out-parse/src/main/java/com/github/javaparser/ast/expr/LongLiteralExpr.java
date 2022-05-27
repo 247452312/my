@@ -192,4 +192,9 @@ public class LongLiteralExpr extends LiteralStringValueExpr {
     public Optional<LongLiteralExpr> toLongLiteralExpr() {
         return Optional.of(this);
     }
+
+    @Override
+    protected Class<?> getLiteralClass() {
+        return Long.class;
+    }
 }

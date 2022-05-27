@@ -24,10 +24,12 @@ import static com.github.javaparser.utils.Utils.assertNotNull;
 
 import com.github.javaparser.TokenRange;
 import com.github.javaparser.ast.AllFieldsConstructor;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Generated;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithArguments;
 import com.github.javaparser.ast.nodeTypes.NodeWithOptionalScope;
 import com.github.javaparser.ast.nodeTypes.NodeWithType;
@@ -45,6 +47,7 @@ import com.github.javaparser.metamodel.OptionalProperty;
 import com.github.javaparser.resolution.Resolvable;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedConstructorDeclaration;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -392,5 +395,15 @@ public class ObjectCreationExpr extends Expression implements NodeWithTypeArgume
     @Override
     public boolean isPolyExpression() {
         return isUsingDiamondOperator() && (appearsInInvocationContext() || appearsInAssignmentContext());
+    }
+
+    @Override
+    public void dealSelf(CompilationUnit compilationUnit, Map<String, TypeDeclaration<?>> vars) {
+        ClassOrInterfaceType type = this.getType();
+        Optional<TypeDeclaration<?>> typeDeclaration = compilationUnit.findTypeDeclaration(type);
+        typeDeclaration.orElseGet(() -> {
+            return null;
+        });
+        typeDeclaration.ifPresent(this::setReturnType);
     }
 }

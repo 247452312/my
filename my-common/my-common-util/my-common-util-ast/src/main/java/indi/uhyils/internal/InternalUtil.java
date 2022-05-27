@@ -34,6 +34,7 @@ import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.expr.TypeExpr;
 import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
+import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.stmt.AssertStmt;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
@@ -80,119 +81,11 @@ public class InternalUtil {
 
     public static final Set<String> temp = new HashSet<>();
 
-    /**
-     * 处理类的package类
-     *
-     * @param compilationUnit
-     * @param allCompilationUnit 所有扫描到的类
-     */
-    public static void dealCompilationUnitPackage(CompilationUnit compilationUnit, List<CompilationUnit> allCompilationUnit) {
-        Optional<PackageDeclaration> packageDeclarationOptional = compilationUnit.getPackageDeclaration();
-        if (!packageDeclarationOptional.isPresent()) {
-            return;
-        }
 
-        PackageDeclaration packageDeclaration = packageDeclarationOptional.get();
-        // 筛选出同一个package的
-        List<CompilationUnit> collect = allCompilationUnit.stream()
-                                                          .filter(t -> t.getPackageDeclaration().isPresent())
-                                                          .filter(t -> Objects.equals(t.getPackageDeclaration().get().getName().asString(),
-                                                                                      packageDeclaration.getName().asString()))
-                                                          .collect(Collectors.toList());
-        packageDeclaration.setOtherCompilationUnits(collect);
-    }
 
-    /**
-     * 处理类的import
-     *
-     * @param compilationUnit
-     * @param allCompilationUnit 所有扫描到的类
-     */
-    public static void dealCompilationUnitImport(CompilationUnit compilationUnit, List<CompilationUnit> allCompilationUnit) {
-        NodeList<ImportDeclaration> imports = compilationUnit.getImports();
-        for (ImportDeclaration importItem : imports) {
-            String importClassName = importItem.getName().asString();
-            // 找到目标类型, 如果没有,就新建一个
-            TypeDeclaration<?> typeDeclaration = allCompilationUnit.stream()
-                                                                   .flatMap(t -> t.getTypes().stream())
-                                                                   .filter(
-                                                                       t -> {
-                                                                           Optional<CompilationUnit> typeCompilationUnit = t.findCompilationUnit();
-                                                                           if (!typeCompilationUnit.isPresent()) {
-                                                                               return false;
-                                                                           }
-                                                                           PackageDeclaration packageDeclaration = typeCompilationUnit.get().getPackageDeclaration().orElse(null);
-                                                                           if (packageDeclaration != null) {
-                                                                               String packageName = packageDeclaration.getName().asString();
-                                                                               return Objects.equals(packageName + "." + t.getName().asString(), importClassName);
-                                                                           } else {
-                                                                               return Objects.equals(t.getName().asString(), importClassName);
-                                                                           }
 
-                                                                       }
-                                                                   )
-                                                                   .findFirst()
-                                                                   .orElse(null);
-            if (typeDeclaration == null) {
-                typeDeclaration = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(importItem.getName().getQualifier().flatMap(t -> Optional.ofNullable(t.asString())).orElse(null), importItem.getName().getIdentifier());
-                AstContext.addCache(typeDeclaration);
-            }
-            importItem.setTargetType(typeDeclaration);
-        }
-    }
 
-    /**
-     * 替换 method
-     *
-     * @param compilationUnit
-     */
-    public static void dealCompilationUnitMethods(CompilationUnit compilationUnit) {
-        for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
-            List<MethodDeclaration> methods = type.getMethods();
-            for (MethodDeclaration method : methods) {
-                Type returnType = method.getType();
-                fillTypeTargetByAllCompilationUnit(compilationUnit, returnType);
-                for (Parameter parameter : method.getParameters()) {
-                    Type parameterType = parameter.getType();
-                    fillTypeTargetByAllCompilationUnit(compilationUnit, parameterType);
-                }
-            }
-        }
-    }
 
-    /**
-     * 替换 属性
-     *
-     * @param compilationUnit
-     */
-    public static void dealCompilationUnitFields(CompilationUnit compilationUnit) {
-        for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
-            for (FieldDeclaration member : type.getFields()) {
-                NodeList<VariableDeclarator> variables = member.getVariables();
-
-                for (VariableDeclarator variable : variables) {
-                    Type variableType = variable.getType();
-                    fillTypeTargetByAllCompilationUnit(compilationUnit, variableType);
-                }
-            }
-        }
-    }
-
-    /**
-     * 根据所有扫描的文件填充type的类型
-     *
-     * @param compilationUnit
-     * @param variableType
-     */
-    private static void fillTypeTargetByAllCompilationUnit(CompilationUnit compilationUnit, Type variableType) {
-        if (variableType.isArrayType()) {
-            // todo 这里不应该直接覆盖
-            variableType = variableType.asArrayType().getComponentType();
-        }
-        Optional<TypeDeclaration<?>> typeTarget = compilationUnit.findTypeDeclaration(variableType);
-        Type finalVariableType = variableType;
-        typeTarget.ifPresent(finalVariableType::setTarget);
-    }
 
     /**
      * 获取一个type的全名
@@ -972,30 +865,5 @@ public class InternalUtil {
 
     public static void print() {
         temp.forEach(System.out::println);
-    }
-
-    /**
-     * 替换填充继承以及接口实现
-     *
-     * @param compilationUnit
-     */
-    public static void dealCompilationUnitExtend(CompilationUnit compilationUnit) {
-        for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
-            if (type.isClassOrInterfaceDeclaration()) {
-                ClassOrInterfaceDeclaration classOrInterfaceDeclaration = type.asClassOrInterfaceDeclaration();
-                // 接口允许多继承
-                List<ClassOrInterfaceType> extendedTypes = classOrInterfaceDeclaration.getExtendedTypes();
-                List<ClassOrInterfaceType> implementedTypes = classOrInterfaceDeclaration.getImplementedTypes();
-                for (ClassOrInterfaceType extendedType : extendedTypes) {
-                    Optional<TypeDeclaration<?>> typeDeclaration = extendedType.fillTargetByCompilationUnit(compilationUnit);
-                    typeDeclaration.ifPresent(t -> t.addChild(type));
-                }
-                for (ClassOrInterfaceType implementedType : implementedTypes) {
-                    Optional<TypeDeclaration<?>> typeDeclaration = implementedType.fillTargetByCompilationUnit(compilationUnit);
-                    typeDeclaration.ifPresent(t -> t.addChild(type));
-                }
-
-            }
-        }
     }
 }

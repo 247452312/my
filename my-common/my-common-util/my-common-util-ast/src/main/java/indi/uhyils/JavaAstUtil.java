@@ -4,14 +4,12 @@ import com.github.javaparser.AstContext;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.TypeDeclaration;
 import indi.uhyils.internal.InternalUtil;
 import indi.uhyils.util.LogUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -65,29 +63,29 @@ public class JavaAstUtil {
      */
     public static void integrationCompilationUnit(List<CompilationUnit> compilationUnits) {
         // 初始化所有type
-        Map<String, TypeDeclaration<?>> allCompilationUnit = AstContext.initTypeCache(compilationUnits);
+        AstContext.initTypeCache(compilationUnits);
         LogUtil.info("开始替换package和import");
         for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换package
-            InternalUtil.dealCompilationUnitPackage(compilationUnit, compilationUnits);
+            compilationUnit.dealPackage(compilationUnits);
             // 替换import
-            InternalUtil.dealCompilationUnitImport(compilationUnit, compilationUnits);
-            compilationUnit.setAllTypeDeclaration(allCompilationUnit);
+            compilationUnit.dealImport(compilationUnits);
         }
         LogUtil.info("开始替换属性和方法出入参");
         for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换继承
-            InternalUtil.dealCompilationUnitExtend(compilationUnit);
+            compilationUnit.dealExtend();
             // 替换属性
-            InternalUtil.dealCompilationUnitFields(compilationUnit);
+            compilationUnit.dealFields();
             // 替换方法(入参出参)
-            InternalUtil.dealCompilationUnitMethods(compilationUnit);
+            compilationUnit.dealMethods();
         }
         LogUtil.info("开始替换方法中的每一行");
         // 这里要等第一批所有文件执行完成才能执行这里. 否则会有找不到的问题
         for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换方法中的每一行
-            InternalUtil.dealCompilationUnitMethodRow(compilationUnit);
+            compilationUnit.dealMethodRow();
+//            InternalUtil.dealCompilationUnitMethodRow(compilationUnit);
         }
         InternalUtil.print();
     }

@@ -108,7 +108,12 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
     @NotNull
     public static TypeDeclaration<?> createNotScannedTypeDeclarationAndAddCache(String packageName, String className) {
         Map<String, TypeDeclaration<?>> allCompilationUnitMap = AstContext.getAllCompilationUnitMap();
-        String allName = packageName + "." + className;
+        String allName;
+        if (StringUtil.isNotEmpty(packageName)) {
+            allName = packageName + "." + className;
+        } else {
+            allName = className;
+        }
         if (allCompilationUnitMap.containsKey(allName)) {
             return allCompilationUnitMap.get(allName);
         }
@@ -356,4 +361,14 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
 
     public abstract ResolvedReferenceTypeDeclaration resolve();
 
+    /**
+     * 处理方法行
+     *
+     * @param compilationUnit
+     */
+    public void dealMethodRow(CompilationUnit compilationUnit) {
+        for (MethodDeclaration method : getMethods()) {
+            method.dealRow(compilationUnit);
+        }
+    }
 }
