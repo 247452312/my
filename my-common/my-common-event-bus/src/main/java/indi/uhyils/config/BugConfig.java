@@ -22,6 +22,6 @@ public class BugConfig {
 
     @Bean
     public BusInterface eventBus(List<Register> registers) throws IOException, TimeoutException {
-        return MqUtil.addConsumer(Bus.BUS_EVENT_EXCHANGE_NAME, Bus.BUS_EVENT_QUEUE_NAME, Bus.BUS_EVENT_QUEUE_NAME, BusInterface.class, channel -> new Bus(channel, registers));
+        return MqUtil.addConsumer(BusInterface.BUS_EVENT_EXCHANGE_NAME, BusInterface.BUS_EVENT_QUEUE_NAME, BusInterface.BUS_EVENT_QUEUE_NAME, BusInterface.class, channel -> new Bus(channel, registers));
     }
 }
