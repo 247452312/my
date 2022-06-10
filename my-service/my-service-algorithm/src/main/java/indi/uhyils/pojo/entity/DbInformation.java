@@ -192,84 +192,6 @@ public class DbInformation extends AbstractEntity {
         fillDerivedInfo();
     }
 
-    /**
-     * 填充根据数据库信息衍生的信息
-     */
-    private void fillDerivedInfo() {
-        for (Entry<String, TableInfo> entry : this.tableInfos.entrySet()) {
-            TableInfo value = entry.getValue();
-            TypeConvertor typeConvertor = TypeConvertorFactory.getTypeConvertor(DbTypeEnum.prase(type));
-            for (Entry<String, ColumnInfo> columnInfoEntity : value.getColums().entrySet()) {
-                ColumnInfo columnInfo = columnInfoEntity.getValue();
-                String dataType = columnInfo.getDataType();
-                String javaType = typeConvertor.databaseType2JavaType(dataType);
-                columnInfo.setJavaType(javaType);
-            }
-        }
-    }
-
-    /**
-     * 填充数据库相关信息
-     */
-    private void fillDBInfo() {
-        Asserts.assertTrue(conn != null);
-        DatabaseMetaData dmd;
-        HashMap<String, TableInfo> stringTableInfoHashMap = new HashMap<>(16);
-        try {
-            /*获取数据库表们的信息*/
-            dmd = conn.getMetaData();
-            // 这里table可以使用正则,只要getTables允许
-            for (String table : tables) {
-                ResultSet rs = dmd.getTables(dbName, "%", table, new String[]{"TABLE"});
-                while (rs.next()) {
-                    String tableName = (String) rs.getObject("TABLE_NAME");
-                    String tableComment = (String) rs.getObject("REMARKS");
-                    if (stringTableInfoHashMap.containsKey(tableName)) {
-                        continue;
-                    }
-                    /*获取table信息*/
-                    TableInfo ti = new TableInfo(tableName, tableComment, new HashMap<>(16), new ColumnInfo());
-                    stringTableInfoHashMap.put(tableName, ti);
-                    ResultSet rs2 = dmd.getColumns(null, "%", tableName, "%");
-                    while (rs2.next()) {
-                        String typeName = rs2.getString("TYPE_NAME");
-                        if (Objects.equals(typeName, "INT")) {
-                            typeName = "INTEGER";
-                        }
-                        ColumnInfo ci = new ColumnInfo(typeName, 0, rs2.getString("COLUMN_NAME"));
-                        String bigName = KproStringUtil.dealDbNameToJavaFileName(ci.getName());
-                        String smallName = bigName.substring(0, 1).toLowerCase() + bigName.substring(1);
-                        ci.setBigName(bigName);
-                        ci.setSmallName(smallName);
-                        ci.setRemark(rs2.getString("REMARKS"));
-                        ti.getColums().put(rs2.getString("COLUMN_NAME"), ci);
-                    }
-                    rs2.close();
-
-                    /*获取唯一字段信息*/
-                    ResultSet rs3 = dmd.getPrimaryKeys(dbName, null, tableName);
-                    while (rs3.next()) {
-                        ColumnInfo ci2 = ti.getColums().get(rs3.getString("COLUMN_NAME"));
-                        ci2.setKeyType(1);
-                        ti.setOnlyKey(ci2);
-                    }
-                    rs3.close();
-                }
-                rs.close();
-            }
-        } catch (SQLException e) {
-            LogUtil.error(this, e);
-        } finally {
-            try {
-                conn.close();
-                conn = null;
-            } catch (SQLException e) {
-                LogUtil.error(this, e);
-            }
-        }
-        this.tableInfos = stringTableInfoHashMap;
-    }
-
     public DbTypeEnum getType() {
         return DbTypeEnum.prase(type);
     }
@@ -308,12 +230,89 @@ public class DbInformation extends AbstractEntity {
             velocityContext.put("dateTime", dateTime);
             velocityContext.put("tableName", tableName);
             velocityContext.put("className", tableInfo.getClassName());
-            velocityContext.put("columns", tableInfo.getColums().values());
+            velocityContext.put("columns", tableInfo.getColums());
             velocityContext.put("pkColumn", tableInfo.getOnlyKey());
             results.add(velocityContext);
         }
         return results;
 
 
+    }
+
+    /**
+     * 填充根据数据库信息衍生的信息
+     */
+    private void fillDerivedInfo() {
+        for (Entry<String, TableInfo> entry : this.tableInfos.entrySet()) {
+            TableInfo value = entry.getValue();
+            TypeConvertor typeConvertor = TypeConvertorFactory.getTypeConvertor(DbTypeEnum.prase(type));
+            for (ColumnInfo columnInfoEntity : value.getColums()) {
+                String dataType = columnInfoEntity.getDataType();
+                String javaType = typeConvertor.databaseType2JavaType(dataType);
+                columnInfoEntity.setJavaType(javaType);
+            }
+        }
+    }
+
+    /**
+     * 填充数据库相关信息
+     */
+    private void fillDBInfo() {
+        Asserts.assertTrue(conn != null);
+        DatabaseMetaData dmd;
+        HashMap<String, TableInfo> stringTableInfoHashMap = new HashMap<>(16);
+        try {
+            /*获取数据库表们的信息*/
+            dmd = conn.getMetaData();
+            // 这里table可以使用正则,只要getTables允许
+            for (String table : tables) {
+                ResultSet rs = dmd.getTables(dbName, "%", table, new String[]{"TABLE"});
+                while (rs.next()) {
+                    String tableName = (String) rs.getObject("TABLE_NAME");
+                    String tableComment = (String) rs.getObject("REMARKS");
+                    if (stringTableInfoHashMap.containsKey(tableName)) {
+                        continue;
+                    }
+                    /*获取table信息*/
+                    TableInfo ti = new TableInfo(tableName, tableComment, new ArrayList<>(16), new ColumnInfo());
+                    stringTableInfoHashMap.put(tableName, ti);
+                    ResultSet rs2 = dmd.getColumns(null, "%", tableName, "%");
+                    while (rs2.next()) {
+                        String typeName = rs2.getString("TYPE_NAME");
+                        if (Objects.equals(typeName, "INT")) {
+                            typeName = "INTEGER";
+                        }
+                        ColumnInfo ci = new ColumnInfo(typeName, 0, rs2.getString("COLUMN_NAME"));
+                        String bigName = KproStringUtil.dealDbNameToJavaFileName(ci.getName());
+                        String smallName = bigName.substring(0, 1).toLowerCase() + bigName.substring(1);
+                        ci.setBigName(bigName);
+                        ci.setSmallName(smallName);
+                        ci.setRemark(rs2.getString("REMARKS"));
+                        ti.getColums().add(ci);
+                    }
+                    rs2.close();
+
+                    /*获取唯一字段信息*/
+                    ResultSet rs3 = dmd.getPrimaryKeys(dbName, null, tableName);
+                    while (rs3.next()) {
+                        ColumnInfo ci2 = ti.getColumByName(rs3.getString("COLUMN_NAME"));
+                        ci2.setKeyType(1);
+                        ti.setOnlyKey(ci2);
+                    }
+                    rs3.close();
+                }
+                rs.close();
+            }
+        } catch (SQLException e) {
+            LogUtil.error(this, e);
+        } finally {
+            try {
+                conn.close();
+                conn = null;
+            } catch (SQLException e) {
+                LogUtil.error(this, e);
+            }
+        }
+        this.tableInfos = stringTableInfoHashMap;
     }
 }

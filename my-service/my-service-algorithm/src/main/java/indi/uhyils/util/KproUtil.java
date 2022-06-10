@@ -15,6 +15,7 @@ import java.util.Properties;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -90,19 +91,32 @@ public final class KproUtil {
      */
     private static List<String> getTemplateList() {
         List<String> results = new ArrayList<>();
-        results.add("vm/api/{packagePath}/pojo/DTO/{className}DTO.java.vm");
-        results.add("vm/api/{packagePath}/protocol/rpc/{className}Provider.java.vm");
-        results.add("vm/service/{packagePath}/assembler/{className}Assembler.java.vm");
-        results.add("vm/service/{packagePath}/dao/{className}Dao.java.vm");
-        results.add("vm/service/{packagePath}/pojo/DO/{className}DO.java.vm");
-        results.add("vm/service/{packagePath}/pojo/entity/{className}.java.vm");
-        results.add("vm/service/mapper/{className}Mapper.xml.vm");
-        results.add("vm/service/{packagePath}/repository/{className}Repository.java.vm");
-        results.add("vm/service/{packagePath}/repository/impl/{className}RepositoryImpl.java.vm");
-        results.add("vm/service/{packagePath}/protocol/rpc/impl/{className}ProviderImpl.java.vm");
-        results.add("vm/service/{packagePath}/service/{className}Service.java.vm");
-        results.add("vm/service/{packagePath}/service/impl/{className}ServiceImpl.java.vm");
-        return results;
+        ClassPathResource resource = new ClassPathResource("vm");
+        try {
+            File file = resource.getFile();
+            List<File> files = parseFiles(file);
+            for (File itemFile : files) {
+                String replace = itemFile.getPath().replace(file.getPath(), "").replace("\\", "/");
+                results.add("vm" + replace);
+            }
+            return results;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static List<File> parseFiles(File file) {
+        if (file.isFile()) {
+            List<File> files = new ArrayList<>();
+            files.add(file);
+            return files;
+        }
+        List<File> result = new ArrayList<>();
+        for (File listFile : file.listFiles()) {
+            result.addAll(parseFiles(listFile));
+        }
+        return result;
     }
 
     /**

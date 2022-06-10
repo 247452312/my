@@ -2,7 +2,8 @@ package indi.uhyils.pojo.tool;
 
 
 import indi.uhyils.util.kpro.KproStringUtil;
-import java.util.Map;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 数据库表信息 model
@@ -32,23 +33,15 @@ public class TableInfo {
     /**
      * 列信息
      */
-    private Map<String, ColumnInfo> colums;
+    private List<ColumnInfo> colums;
 
     /**
      * 主键
      */
     private ColumnInfo onlyKey;
 
-    public TableInfo(
-        String tableName, Map<String, ColumnInfo> colums,
-        ColumnInfo onlyKey) {
-        this.tableName = tableName;
-        this.colums = colums;
-        this.onlyKey = onlyKey;
-        this.className = KproStringUtil.dealDbNameToJavaFileName(tableName);
-    }
 
-    public TableInfo(String tableName, String tableComment, Map<String, ColumnInfo> colums, ColumnInfo onlyKey) {
+    public TableInfo(String tableName, String tableComment, List<ColumnInfo> colums, ColumnInfo onlyKey) {
         this.tableName = tableName;
         this.tableComment = tableComment;
         this.colums = colums;
@@ -64,8 +57,17 @@ public class TableInfo {
     }
 
 
-    public Map<String, ColumnInfo> getColums() {
+    public List<ColumnInfo> getColums() {
         return colums;
+    }
+
+    public ColumnInfo getColumByName(String name) {
+        for (ColumnInfo colum : colums) {
+            if (Objects.equals(colum.getName(), name)) {
+                return colum;
+            }
+        }
+        return null;
     }
 
     public ColumnInfo getOnlyKey() {
