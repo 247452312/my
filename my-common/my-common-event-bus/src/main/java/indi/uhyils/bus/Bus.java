@@ -73,8 +73,10 @@ public class Bus extends DefaultConsumer implements BusInterface {
      * 提交事件
      */
     @Override
-    public void commit(List<BaseParentEvent> events) {
-        events.forEach(this::commit);
+    public void commit(BaseParentEvent... events) {
+        for (BaseParentEvent event : events) {
+            commit(event);
+        }
     }
 
     /**
@@ -105,11 +107,13 @@ public class Bus extends DefaultConsumer implements BusInterface {
      * @param baseEvents
      */
     @Override
-    public void commitAndPush(List<BaseParentEvent> baseEvents) {
+    public void commitAndPush(BaseParentEvent... baseEvents) {
         if (CollectionUtil.isEmpty(baseEvents)) {
             return;
         }
-        baseEvents.forEach(this::commitAndPush);
+        for (BaseParentEvent baseEvent : baseEvents) {
+            commitAndPush(baseEvent);
+        }
     }
 
     /**
@@ -127,29 +131,6 @@ public class Bus extends DefaultConsumer implements BusInterface {
     }
 
     /**
-     * 发布事件
-     *
-     * @param events
-     */
-    private void doPublishEvent(List<BaseEvent> events) {
-        Iterator<BaseEvent> iterator = events.iterator();
-        while (iterator.hasNext()) {
-            BaseEvent next = iterator.next();
-            // 遍历所有的监听者
-            for (Register register : registers) {
-                List<Class<? extends BaseEvent>> classes = register.targetEvent();
-                Asserts.assertTrue(CollectionUtil.isNotEmpty(classes), "监听者监听的事件不能为空");
-                // 遍历所有的待发布事件
-                if (matchingEvent(register, next)) {
-                    register.onEvent(next);
-                }
-            }
-            // 发布后删除事件
-            iterator.remove();
-        }
-    }
-
-    /**
      * 异步发布事件
      */
     @Override
@@ -163,31 +144,18 @@ public class Bus extends DefaultConsumer implements BusInterface {
     }
 
     /**
-     * 异步发布事件
-     *
-     * @param baseEvents
-     */
-    private void doSyncPublishEvent(List<BaseEvent> baseEvents) {
-        Iterator<BaseEvent> iterator = baseEvents.iterator();
-        while (iterator.hasNext()) {
-            BaseEvent next = iterator.next();
-            String msg = JSON.toJSONString(next, SerializerFeature.WriteClassName);
-            MqUtil.sendMsg(BUS_EVENT_EXCHANGE_NAME, BUS_EVENT_QUEUE_NAME, msg);
-            iterator.remove();
-        }
-    }
-
-    /**
      * 异步提交发布事件
      *
      * @param baseEvents
      */
     @Override
-    public void asyncCommitAndPush(List<BaseParentEvent> baseEvents) {
+    public void asyncCommitAndPush(BaseParentEvent... baseEvents) {
         if (CollectionUtil.isEmpty(baseEvents)) {
             return;
         }
-        baseEvents.forEach(this::asyncCommitAndPush);
+        for (BaseParentEvent baseEvent : baseEvents) {
+            asyncCommitAndPush(baseEvent);
+        }
     }
 
     /**
@@ -209,28 +177,6 @@ public class Bus extends DefaultConsumer implements BusInterface {
         }
         // 父类事件分解后发布
         doSyncPublishEvent(baseEvent.transToBaseEvent());
-    }
-
-    /**
-     * 是否可以匹配到事件
-     * 发布父类事件子类不能收到,但是发布子类事件父类可以监听到
-     * 例: 跑步运动员监听跑步发令枪,游泳运动员监听游泳发令枪, 发布发令枪事件时无反应,因为不知道是不是自己的发令枪, 但是监听发令枪的计时事件不关心是哪一个发令枪,所以两个发令枪都可以使计时事件开始
-     *
-     * @param register  事件监听器
-     * @param baseEvent 事件
-     *
-     * @return
-     */
-    private boolean matchingEvent(Register register, BaseEvent baseEvent) {
-        // 遍历所有这个监听者监听的事件类型
-        for (Class<? extends BaseEvent> eventClass : register.targetEvent()) {
-            // 父类.isAssignableFrom(子类)
-            if (eventClass.isAssignableFrom(baseEvent.getClass())) {
-                // 一个监听者只能监听一个事件一次
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -315,6 +261,66 @@ public class Bus extends DefaultConsumer implements BusInterface {
             }
         }
         return result;
+    }
+
+    /**
+     * 发布事件
+     *
+     * @param events
+     */
+    private void doPublishEvent(List<BaseEvent> events) {
+        Iterator<BaseEvent> iterator = events.iterator();
+        while (iterator.hasNext()) {
+            BaseEvent next = iterator.next();
+            // 遍历所有的监听者
+            for (Register register : registers) {
+                List<Class<? extends BaseEvent>> classes = register.targetEvent();
+                Asserts.assertTrue(CollectionUtil.isNotEmpty(classes), "监听者监听的事件不能为空");
+                // 遍历所有的待发布事件
+                if (matchingEvent(register, next)) {
+                    register.onEvent(next);
+                }
+            }
+            // 发布后删除事件
+            iterator.remove();
+        }
+    }
+
+    /**
+     * 异步发布事件
+     *
+     * @param baseEvents
+     */
+    private void doSyncPublishEvent(List<BaseEvent> baseEvents) {
+        Iterator<BaseEvent> iterator = baseEvents.iterator();
+        while (iterator.hasNext()) {
+            BaseEvent next = iterator.next();
+            String msg = JSON.toJSONString(next, SerializerFeature.WriteClassName);
+            MqUtil.sendMsg(BUS_EVENT_EXCHANGE_NAME, BUS_EVENT_QUEUE_NAME, msg);
+            iterator.remove();
+        }
+    }
+
+    /**
+     * 是否可以匹配到事件
+     * 发布父类事件子类不能收到,但是发布子类事件父类可以监听到
+     * 例: 跑步运动员监听跑步发令枪,游泳运动员监听游泳发令枪, 发布发令枪事件时无反应,因为不知道是不是自己的发令枪, 但是监听发令枪的计时事件不关心是哪一个发令枪,所以两个发令枪都可以使计时事件开始
+     *
+     * @param register  事件监听器
+     * @param baseEvent 事件
+     *
+     * @return
+     */
+    private boolean matchingEvent(Register register, BaseEvent baseEvent) {
+        // 遍历所有这个监听者监听的事件类型
+        for (Class<? extends BaseEvent> eventClass : register.targetEvent()) {
+            // 父类.isAssignableFrom(子类)
+            if (eventClass.isAssignableFrom(baseEvent.getClass())) {
+                // 一个监听者只能监听一个事件一次
+                return true;
+            }
+        }
+        return false;
     }
 
 

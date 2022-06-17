@@ -34,7 +34,7 @@ public interface BusInterface extends Consumer {
      *
      * @param events
      */
-    void commit(List<BaseParentEvent> events);
+    void commit(BaseParentEvent... events);
 
     /**
      * 清空事件
@@ -51,7 +51,7 @@ public interface BusInterface extends Consumer {
      *
      * @param baseEvents
      */
-    void commitAndPush(List<BaseParentEvent> baseEvents);
+    void commitAndPush(BaseParentEvent... baseEvents);
 
     /**
      * 提交并发送事件 (不发送存储事件)
@@ -70,7 +70,7 @@ public interface BusInterface extends Consumer {
      *
      * @param baseEvents
      */
-    void asyncCommitAndPush(List<BaseParentEvent> baseEvents);
+    void asyncCommitAndPush(BaseParentEvent... baseEvents);
 
     /**
      * 异步提交并发送事件 (不发送存储事件)
