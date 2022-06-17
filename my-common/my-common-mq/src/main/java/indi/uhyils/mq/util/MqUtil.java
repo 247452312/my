@@ -10,7 +10,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.Envelope;
 import indi.uhyils.context.MyTraceIdContext;
-import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.enums.LogTypeEnum;
 import indi.uhyils.mq.pojo.rabbit.RabbitFactory;
 import indi.uhyils.pojo.other.RpcTraceInfo;
 import indi.uhyils.util.LogUtil;

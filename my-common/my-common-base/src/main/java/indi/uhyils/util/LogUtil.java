@@ -3,9 +3,9 @@ package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.context.MyTraceIdContext;
-import indi.uhyils.enum_.LogDetailTypeEnum;
-import indi.uhyils.enum_.LogLevelEnum;
-import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.enums.LogDetailTypeEnum;
+import indi.uhyils.enums.LogLevelEnum;
+import indi.uhyils.enums.LogTypeEnum;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;

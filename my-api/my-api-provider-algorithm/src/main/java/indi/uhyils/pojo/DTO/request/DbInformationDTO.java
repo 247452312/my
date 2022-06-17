@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * 前端传入的数据库信息,除了标记前端不传的{@link DbInformationDTO#bigProjectName}和{@link DbInformationDTO#smallProjectName}之外 其他的都属于必传项
- * 其中类型见{@link indi.uhyils.enum_.DbTypeEnum} 暂时支持mysql oracle 两种
+ * 其中类型见{@link indi.uhyils.enums.DbTypeEnum} 暂时支持mysql oracle 两种
  * 其中 {@link DbInformationDTO#tables} 可以使用_匹配单个字符 或者使用%匹配多个字符
  *
  * @author uhyils <247452312@qq.com>

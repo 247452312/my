@@ -1,7 +1,7 @@
 package indi.uhyils.util;
 
-import indi.uhyils.enum_.OrderNodeStatusEnum;
-import indi.uhyils.enum_.OrderStatusEnum;
+import indi.uhyils.enums.OrderNodeStatusEnum;
+import indi.uhyils.enums.OrderStatusEnum;
 import indi.uhyils.pojo.DO.OrderBaseInfoDO;
 import indi.uhyils.pojo.DO.OrderBaseNodeDO;
 import indi.uhyils.pojo.DO.OrderBaseNodeFieldDO;

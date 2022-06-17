@@ -3,7 +3,7 @@ package indi.uhyils.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.request.SessionRequest;

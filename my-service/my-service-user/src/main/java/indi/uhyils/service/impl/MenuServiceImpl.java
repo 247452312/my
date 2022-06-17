@@ -5,7 +5,7 @@ import indi.uhyils.assembler.ContentAssembler;
 import indi.uhyils.assembler.MenuAssembler;
 import indi.uhyils.assembler.UserAssembler;
 import indi.uhyils.context.UserContext;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
+import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.MenuDTO;
 import indi.uhyils.pojo.DTO.MenuTreeBuilder;

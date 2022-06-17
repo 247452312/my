@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
-import indi.uhyils.enum_.SoftwareStatusEnum;
+import indi.uhyils.enums.SoftwareStatusEnum;
 import indi.uhyils.pojo.DO.SoftwareDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;

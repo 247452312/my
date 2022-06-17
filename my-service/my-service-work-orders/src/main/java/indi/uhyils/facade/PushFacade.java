@@ -1,7 +1,7 @@
 package indi.uhyils.facade;
 
-import indi.uhyils.enum_.OrderStatusEnum;
-import indi.uhyils.enum_.PushTypeEnum;
+import indi.uhyils.enums.OrderStatusEnum;
+import indi.uhyils.enums.PushTypeEnum;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
 import indi.uhyils.pojo.entity.OrderNode;
 

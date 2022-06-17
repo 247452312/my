@@ -1,7 +1,7 @@
 package indi.uhyils.builder;
 
-import indi.uhyils.enum_.OrderApplyStatusEnum;
-import indi.uhyils.enum_.OrderApplyTypeEnum;
+import indi.uhyils.enums.OrderApplyStatusEnum;
+import indi.uhyils.enums.OrderApplyTypeEnum;
 import indi.uhyils.pojo.DTO.OrderApplyDTO;
 import indi.uhyils.pojo.DTO.OrderNodeDTO;
 

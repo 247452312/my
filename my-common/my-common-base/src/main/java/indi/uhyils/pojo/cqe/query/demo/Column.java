@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.cqe.query.demo;
 
-import indi.uhyils.enum_.OrderSymbolEnum;
+import indi.uhyils.enums.OrderSymbolEnum;
 import java.io.Serializable;
 
 

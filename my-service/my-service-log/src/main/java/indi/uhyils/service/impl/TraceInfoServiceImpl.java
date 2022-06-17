@@ -3,7 +3,7 @@ package indi.uhyils.service.impl;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.TraceInfoAssembler;
 import indi.uhyils.context.MyContext;
-import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.enums.LogTypeEnum;
 import indi.uhyils.facade.DictFacade;
 import indi.uhyils.facade.ServiceControlFacade;
 import indi.uhyils.pojo.DO.TraceDetailStatisticsView;

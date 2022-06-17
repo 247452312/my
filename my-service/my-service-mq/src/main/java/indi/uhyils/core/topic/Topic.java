@@ -3,8 +3,8 @@ package indi.uhyils.core.topic;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.QueueFactory;
 import indi.uhyils.core.register.Register;
-import indi.uhyils.enum_.OutDealTypeEnum;
-import indi.uhyils.enum_.TopicType;
+import indi.uhyils.enums.OutDealTypeEnum;
+import indi.uhyils.enums.TopicType;
 import indi.uhyils.exception.ExpressionInvalidException;
 import java.io.Serializable;
 

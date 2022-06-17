@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.enum_.OutDealTypeEnum;
+import indi.uhyils.enums.OutDealTypeEnum;
 
 /**
  * 注册消费者

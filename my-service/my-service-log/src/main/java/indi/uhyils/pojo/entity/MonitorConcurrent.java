@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.enum_.DemotionTypeEnum;
+import indi.uhyils.enums.DemotionTypeEnum;
 import indi.uhyils.facade.ServiceControlFacade;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.repository.RelegationRepository;

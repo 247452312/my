@@ -3,7 +3,7 @@ package indi.uhyils.pojo.entity;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.Default;
-import indi.uhyils.enum_.LanguageTypeEnum;
+import indi.uhyils.enums.LanguageTypeEnum;
 import indi.uhyils.exception.AlgorithmException;
 import indi.uhyils.pojo.DO.AlgorithmDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;

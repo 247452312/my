@@ -1,7 +1,7 @@
 package indi.uhyils.aop;
 
 import indi.uhyils.context.MyContext;
-import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.Action;

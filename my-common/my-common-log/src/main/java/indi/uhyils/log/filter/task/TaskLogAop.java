@@ -1,7 +1,7 @@
 package indi.uhyils.log.filter.task;
 
 import indi.uhyils.context.MyTraceIdContext;
-import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.enums.LogTypeEnum;
 import indi.uhyils.util.LogUtil;
 import java.text.MessageFormat;
 import java.util.function.Supplier;

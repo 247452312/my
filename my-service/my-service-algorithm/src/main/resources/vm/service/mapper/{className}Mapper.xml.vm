@@ -3,34 +3,19 @@
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${package}.dao.${className}Dao">
-    <resultMap
-            type="${package}.pojo.DO.${className}DO"
-            id="${className}Map">
+    <resultMap type="${package}.pojo.DO.${className}DO" id="${className}Map">
         #foreach ($column in $columns)
-            <result property="$column.smallName"
-                    column="$column.name"
-                    jdbcType="$column.dataType"/>
+            <result property="$column.smallName" column="$column.name" jdbcType="$column.dataType"/>
         #end
     </resultMap>
 
     <!--批量通过主键修改数据-->
     <update id="updateBatch"
             parameterType="${package}.pojo.DO.${className}DO">
-        <foreach
-                collection="list"
-                item="item"
-                index="index"
-                open="begin"
-                close=";end;"
-                separator=";">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
             update ${tableName}
-            set
-            update_date
-            =
-            #{item.updateDate}
-            ,update_user
-            =
-            #{item.updateUser}
+            set update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
             #foreach($column in $columns)
             #if($column.name != $pkColumn.name)
               <if test="$column.smallName != null#if($column.javaType == 'String') and $column.smallName != ''#end">

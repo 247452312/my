@@ -2,7 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
 import indi.uhyils.context.UserContext;
-import indi.uhyils.enum_.Symbol;
+import indi.uhyils.enums.Symbol;
 import indi.uhyils.enums.UserStatusEnum;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.UserDO;

@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.base;
 
-import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.HotSpotDTO;
 import indi.uhyils.rpc.util.RpcAssertUtil;
 import java.io.Serializable;

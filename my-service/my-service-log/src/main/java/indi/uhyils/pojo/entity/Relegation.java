@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
-import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.enums.LogTypeEnum;
 import indi.uhyils.facade.ServiceControlFacade;
 import indi.uhyils.pojo.DO.RelegationDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;

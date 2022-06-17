@@ -1,9 +1,11 @@
 package indi.uhyils.pojo.cqe.query.demo;
 
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import indi.uhyils.enum_.Symbol;
+import indi.uhyils.enums.Symbol;
 import indi.uhyils.util.ReflactUtil;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 自定义查询中的一个参数
@@ -77,6 +79,20 @@ public class Arg implements Serializable {
         arg.setSymbol(symbol.getCode());
         arg.setData(data);
         return arg;
+    }
+
+    /**
+     * 创建只有一个arg的list
+     *
+     * @param name
+     * @param symbol
+     * @param data
+     *
+     * @return
+     */
+    public static <T> List<Arg> asSingle(SFunction<T, ?> name, Symbol symbol, Object data) {
+        Arg as = as(name, symbol, data);
+        return Collections.singletonList(as);
     }
 
     /**

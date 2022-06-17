@@ -3,7 +3,7 @@ package indi.uhyils.repository.impl;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.TraceInfoAssembler;
 import indi.uhyils.dao.TraceInfoDao;
-import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.enums.LogTypeEnum;
 import indi.uhyils.pojo.DO.TraceDetailStatisticsView;
 import indi.uhyils.pojo.DO.TraceInfoDO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;

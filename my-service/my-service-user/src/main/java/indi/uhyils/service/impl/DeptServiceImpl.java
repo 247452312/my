@@ -2,7 +2,7 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.DeptAssembler;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
+import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;

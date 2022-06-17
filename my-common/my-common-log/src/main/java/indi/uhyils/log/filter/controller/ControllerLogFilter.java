@@ -1,7 +1,7 @@
 package indi.uhyils.log.filter.controller;
 
 import indi.uhyils.context.MyTraceIdContext;
-import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.enums.LogTypeEnum;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 import java.io.IOException;

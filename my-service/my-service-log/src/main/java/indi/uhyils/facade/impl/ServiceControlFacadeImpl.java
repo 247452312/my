@@ -2,7 +2,7 @@ package indi.uhyils.facade.impl;
 
 import indi.uhyils.annotation.Facade;
 import indi.uhyils.context.UserContext;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
+import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.facade.ServiceControlFacade;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.DTO.RelegationDTO;

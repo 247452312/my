@@ -21,6 +21,14 @@ public final class CollectionUtil {
         return collection == null || collection.isEmpty();
     }
 
+    public static <T> boolean isEmpty(T[] array) {
+        return array == null || array.length != 0;
+    }
+
+    public static <T> boolean isNotEmpty(T[] array) {
+        return !isEmpty(array);
+    }
+
     public static boolean isNotEmpty(Collection<?> collection) {
         return !isEmpty(collection);
     }

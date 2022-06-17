@@ -1,7 +1,7 @@
 package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.CodeEnum;
+import indi.uhyils.enums.CodeEnum;
 import indi.uhyils.pojo.DO.ApiDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.Api;

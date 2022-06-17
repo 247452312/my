@@ -1,7 +1,7 @@
 package indi.uhyils.assembler;
 
 
-import indi.uhyils.enum_.OrderNodeTypeEnum;
+import indi.uhyils.enums.OrderNodeTypeEnum;
 import indi.uhyils.pojo.DO.OrderInfoDO;
 import indi.uhyils.pojo.DO.OrderNodeDO;
 import indi.uhyils.pojo.DTO.InitOrderDTO;

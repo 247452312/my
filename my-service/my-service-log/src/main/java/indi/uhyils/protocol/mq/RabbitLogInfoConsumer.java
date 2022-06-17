@@ -6,7 +6,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import indi.uhyils.bus.BusInterface;
-import indi.uhyils.enum_.LogDetailTypeEnum;
+import indi.uhyils.enums.LogDetailTypeEnum;
 import indi.uhyils.pojo.DTO.TraceDetailDTO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import indi.uhyils.pojo.DTO.TraceLogDTO;

@@ -2,7 +2,7 @@ package indi.uhyils.pojo.DTO.response;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.MyContext;
-import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.util.DefaultCQEBuildUtil;

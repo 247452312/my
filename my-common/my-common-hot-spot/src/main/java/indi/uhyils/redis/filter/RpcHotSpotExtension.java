@@ -2,7 +2,7 @@ package indi.uhyils.redis.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.HotSpotDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;

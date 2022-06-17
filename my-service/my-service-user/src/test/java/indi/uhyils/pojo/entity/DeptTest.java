@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.BaseTest;
-import indi.uhyils.enum_.OrderSymbolEnum;
+import indi.uhyils.enums.OrderSymbolEnum;
 import indi.uhyils.pojo.DO.DeptDO;
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DO.PowerDO;

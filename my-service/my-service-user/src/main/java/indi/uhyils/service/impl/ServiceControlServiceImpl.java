@@ -2,7 +2,7 @@ package indi.uhyils.service.impl;
 
 
 import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
+import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.entity.MethodDisable;
 import indi.uhyils.pojo.entity.type.InterfaceName;

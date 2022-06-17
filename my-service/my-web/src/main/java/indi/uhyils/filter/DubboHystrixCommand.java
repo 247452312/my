@@ -9,7 +9,7 @@ import com.netflix.hystrix.exception.HystrixRuntimeException;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.exchange.enum_.RpcRequestContentEnum;
+import indi.uhyils.rpc.exchange.enums.RpcRequestContentEnum;
 import indi.uhyils.rpc.exchange.pojo.content.RpcResponseContent;
 import indi.uhyils.rpc.exchange.pojo.data.NormalRpcRequestFactory;
 import indi.uhyils.rpc.exchange.pojo.data.RpcData;

@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
-import indi.uhyils.enum_.ServiceQualityEnum;
+import indi.uhyils.enums.ServiceQualityEnum;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.DO.LogMonitorDO;
 import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;

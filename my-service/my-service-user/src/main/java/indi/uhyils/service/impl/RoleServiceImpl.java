@@ -3,7 +3,7 @@ package indi.uhyils.service.impl;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.DeptAssembler;
 import indi.uhyils.assembler.RoleAssembler;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
+import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.RoleDTO;

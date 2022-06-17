@@ -1,7 +1,7 @@
 package indi.uhyils.aop;
 
 import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
+import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
 import java.lang.reflect.Method;

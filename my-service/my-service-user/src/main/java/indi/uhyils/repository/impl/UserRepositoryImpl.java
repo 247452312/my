@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.UserAssembler;
 import indi.uhyils.dao.UserDao;
-import indi.uhyils.enum_.Symbol;
+import indi.uhyils.enums.Symbol;
 import indi.uhyils.enums.UserStatusEnum;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DTO.UserDTO;

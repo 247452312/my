@@ -1,7 +1,7 @@
 package indi.uhyils.annotation;
 
-import indi.uhyils.enum_.CacheTypeEnum;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
+import indi.uhyils.enums.CacheTypeEnum;
+import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

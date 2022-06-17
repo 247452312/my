@@ -2,7 +2,7 @@ package indi.uhyils.util.kpro;
 
 
 import indi.uhyils.annotation.NotNull;
-import indi.uhyils.enum_.DbTypeEnum;
+import indi.uhyils.enums.DbTypeEnum;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.kpro.convertor.mysql.MysqlTypeConvertor;
 

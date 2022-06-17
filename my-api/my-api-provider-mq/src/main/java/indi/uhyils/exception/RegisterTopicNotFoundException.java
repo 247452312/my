@@ -1,6 +1,6 @@
 package indi.uhyils.exception;
 
-import indi.uhyils.enum_.OutDealTypeEnum;
+import indi.uhyils.enums.OutDealTypeEnum;
 
 /**
  * @author uhyils <247452312@qq.com>

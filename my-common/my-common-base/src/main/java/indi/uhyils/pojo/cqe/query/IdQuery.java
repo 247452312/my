@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.cqe.query;
 
-import indi.uhyils.enum_.Symbol;
+import indi.uhyils.enums.Symbol;
 import indi.uhyils.pojo.cqe.query.base.AbstractArgQuery;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import java.util.Collections;

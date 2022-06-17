@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
-import indi.uhyils.enum_.PushTypeEnum;
+import indi.uhyils.enums.PushTypeEnum;
 import indi.uhyils.pojo.DO.ApiSubscribeDO;
 import indi.uhyils.pojo.DTO.PushMsgDTO;
 import indi.uhyils.pojo.DTO.UserDTO;

@@ -1,7 +1,7 @@
 package indi.uhyils.controller;
 
 import indi.uhyils.core.topic.Topic;
-import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.MqLoginRequest;

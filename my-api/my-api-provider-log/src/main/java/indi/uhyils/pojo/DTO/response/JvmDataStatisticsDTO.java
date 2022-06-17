@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.DTO.response;
 
-import indi.uhyils.enum_.ServiceQualityEnum;
+import indi.uhyils.enums.ServiceQualityEnum;
 import indi.uhyils.pojo.DTO.base.BaseDTO;
 import java.util.List;
 import java.util.Map;

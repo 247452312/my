@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.enum_.DbTypeEnum;
+import indi.uhyils.enums.DbTypeEnum;
 import indi.uhyils.pojo.DTO.request.DbInformationDTO;
 import indi.uhyils.util.KproUtil;
 import java.util.Arrays;
@@ -16,13 +16,13 @@ class DbInformationTest {
     @Test
     void fillTableInfos() {
         DbInformationDTO dto = new DbInformationDTO();
-        dto.setTables(Arrays.asList("sys_platform_publish_node"));
-        dto.setDbName("my_platform");
-        dto.setUrl("jdbc:mysql://prod:3306/my_platform");
+        dto.setTables(Arrays.asList("sys_param"));
+        dto.setDbName("my_user");
+        dto.setUrl("jdbc:mysql://prod:3306/my_user");
         dto.setType(DbTypeEnum.MYSQL.getTypeCode());
         dto.setUserName("root");
         dto.setPassword("123456");
-        dto.setProjectName("my-service-platform");
+        dto.setProjectName("my-service-user");
         dto.setPort(3306);
         dto.setAuthor("uhyils <247452312@qq.com>");
 

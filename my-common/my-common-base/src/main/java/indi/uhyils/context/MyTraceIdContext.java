@@ -1,8 +1,8 @@
 package indi.uhyils.context;
 
 import com.google.common.base.Supplier;
-import indi.uhyils.enum_.LogDetailTypeEnum;
-import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.enums.LogDetailTypeEnum;
+import indi.uhyils.enums.LogTypeEnum;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;

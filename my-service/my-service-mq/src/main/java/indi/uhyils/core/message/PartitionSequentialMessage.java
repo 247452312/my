@@ -1,7 +1,7 @@
 package indi.uhyils.core.message;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.TopicType;
+import indi.uhyils.enums.TopicType;
 
 /**
  * 分区顺序消息

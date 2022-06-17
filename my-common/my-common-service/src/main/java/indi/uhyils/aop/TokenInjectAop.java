@@ -4,13 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.NoToken;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.context.UserContext;
-import indi.uhyils.enum_.ServiceCode;
+import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
 import indi.uhyils.redis.RedisPoolHandle;
 import indi.uhyils.util.AopUtil;
+import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -77,14 +78,16 @@ public class TokenInjectAop {
     public Object tokenInjectAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
 
         //NoToken注释的方法直接放行 不需要token
-        String className = pjp.getTarget().getClass().getCanonicalName();
+        Class<?> targetClass = pjp.getTarget().getClass();
+        String className = targetClass.getCanonicalName();
         String methodName = pjp.getSignature().getName();
 
         Signature signature = pjp.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         Method targetMethod = methodSignature.getMethod();
-        NoToken[] annotationsByType = targetMethod.getAnnotationsByType(NoToken.class);
-        if (annotationsByType != null && annotationsByType.length != 0) {
+        NoToken[] methodNoTokenAnnotation = targetMethod.getAnnotationsByType(NoToken.class);
+        NoToken[] classNoTokenAnnotation = targetClass.getAnnotationsByType(NoToken.class);
+        if (CollectionUtil.isNotEmpty(methodNoTokenAnnotation) || CollectionUtil.isNotEmpty(classNoTokenAnnotation)) {
             //执行方法
             return pjp.proceed();
         }

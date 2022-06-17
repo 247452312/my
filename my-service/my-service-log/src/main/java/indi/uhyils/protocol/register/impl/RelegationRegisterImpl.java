@@ -1,6 +1,6 @@
 package indi.uhyils.protocol.register.impl;
 
-import indi.uhyils.enum_.LogTypeEnum;
+import indi.uhyils.enums.LogTypeEnum;
 import indi.uhyils.pojo.DTO.TraceDetailDTO;
 import indi.uhyils.pojo.cqe.event.CheckAndAddRelegationEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;

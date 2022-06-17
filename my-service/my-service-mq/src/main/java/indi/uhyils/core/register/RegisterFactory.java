@@ -1,8 +1,8 @@
 package indi.uhyils.core.register;
 
 import indi.uhyils.core.topic.Topic;
-import indi.uhyils.enum_.OutDealTypeEnum;
-import indi.uhyils.enum_.RegisterType;
+import indi.uhyils.enums.OutDealTypeEnum;
+import indi.uhyils.enums.RegisterType;
 import indi.uhyils.exception.ExpressionInvalidException;
 import indi.uhyils.exception.NotFoundRegisterTypeException;
 import indi.uhyils.exception.RegisterTopicNotFoundException;

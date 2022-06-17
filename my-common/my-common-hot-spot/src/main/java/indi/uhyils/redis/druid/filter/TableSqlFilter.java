@@ -7,7 +7,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
 import com.alibaba.druid.stat.TableStat;
-import indi.uhyils.enum_.CacheTypeEnum;
+import indi.uhyils.enums.CacheTypeEnum;
 import indi.uhyils.redis.aop.HotSpotAop;
 import indi.uhyils.util.SpringUtil;
 import java.util.ArrayList;

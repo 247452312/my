@@ -2,7 +2,7 @@ package indi.uhyils.core.register;
 
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.topic.Topic;
-import indi.uhyils.enum_.OutDealTypeEnum;
+import indi.uhyils.enums.OutDealTypeEnum;
 import indi.uhyils.util.PushUtil;
 
 /**

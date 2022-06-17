@@ -1,6 +1,6 @@
 package indi.uhyils.assembler;
 
-import indi.uhyils.enum_.Symbol;
+import indi.uhyils.enums.Symbol;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;

@@ -2,7 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
 import indi.uhyils.context.MyContext;
-import indi.uhyils.enum_.OrderNodeFieldValueTypeEnum;
+import indi.uhyils.enums.OrderNodeFieldValueTypeEnum;
 import indi.uhyils.pojo.DO.OrderNodeFieldValueDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.util.Asserts;

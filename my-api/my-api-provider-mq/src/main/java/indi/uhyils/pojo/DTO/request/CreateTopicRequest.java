@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO.request;
 
-import indi.uhyils.enum_.OutDealTypeEnum;
-import indi.uhyils.enum_.TopicType;
+import indi.uhyils.enums.OutDealTypeEnum;
+import indi.uhyils.enums.TopicType;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 
 /**

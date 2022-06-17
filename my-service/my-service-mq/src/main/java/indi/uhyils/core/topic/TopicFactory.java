@@ -1,8 +1,8 @@
 package indi.uhyils.core.topic;
 
 import indi.uhyils.core.queue.QueueFactory;
-import indi.uhyils.enum_.OutDealTypeEnum;
-import indi.uhyils.enum_.TopicType;
+import indi.uhyils.enums.OutDealTypeEnum;
+import indi.uhyils.enums.TopicType;
 import indi.uhyils.exception.PartitionTopicNoKeyException;
 import indi.uhyils.exception.TopicTypeNoEqualException;
 import indi.uhyils.exception.TopicTypeNotFoundException;

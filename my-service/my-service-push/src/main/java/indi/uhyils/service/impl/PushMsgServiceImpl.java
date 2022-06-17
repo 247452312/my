@@ -2,7 +2,7 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.PushMsgAssembler;
-import indi.uhyils.enum_.PushTypeEnum;
+import indi.uhyils.enums.PushTypeEnum;
 import indi.uhyils.facade.UserFacade;
 import indi.uhyils.pojo.DO.PushMsgDO;
 import indi.uhyils.pojo.DTO.PushMsgDTO;

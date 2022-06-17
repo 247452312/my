@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DTO.request;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.TopicType;
+import indi.uhyils.enums.TopicType;
 
 
 /**

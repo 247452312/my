@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.BaseTest;
-import indi.uhyils.enum_.DictTypeEnum;
+import indi.uhyils.enums.DictTypeEnum;
 import indi.uhyils.pojo.DO.DictDO;
 import indi.uhyils.pojo.DO.DictItemDO;
 import indi.uhyils.repository.DictItemRepository;

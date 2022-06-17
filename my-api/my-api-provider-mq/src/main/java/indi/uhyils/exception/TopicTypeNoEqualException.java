@@ -1,6 +1,6 @@
 package indi.uhyils.exception;
 
-import indi.uhyils.enum_.TopicType;
+import indi.uhyils.enums.TopicType;
 
 /**
  * @Author uhyils <247452312@qq.com>

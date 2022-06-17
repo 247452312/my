@@ -1,8 +1,8 @@
 package indi.uhyils.core.register;
 
 import indi.uhyils.core.message.Message;
-import indi.uhyils.enum_.OutDealTypeEnum;
-import indi.uhyils.enum_.RegisterType;
+import indi.uhyils.enums.OutDealTypeEnum;
+import indi.uhyils.enums.RegisterType;
 import java.io.Serializable;
 
 /**

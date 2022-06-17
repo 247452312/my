@@ -14,7 +14,7 @@ public class PushMsgToSomeoneRequest extends DefaultCQE {
     private Long userId;
 
     /**
-     * 推送方式{@link indi.uhyils.enum_.PushTypeEnum}
+     * 推送方式{@link indi.uhyils.enums.PushTypeEnum}
      */
     private Integer type;
 

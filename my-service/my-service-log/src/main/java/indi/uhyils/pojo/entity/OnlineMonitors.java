@@ -1,6 +1,6 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.enum_.ServiceQualityEnum;
+import indi.uhyils.enums.ServiceQualityEnum;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
 import indi.uhyils.pojo.entity.base.AbstractEntity;

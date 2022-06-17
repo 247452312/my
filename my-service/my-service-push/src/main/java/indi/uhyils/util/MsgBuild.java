@@ -1,6 +1,6 @@
 package indi.uhyils.util;
 
-import indi.uhyils.enum_.PushTypeEnum;
+import indi.uhyils.enums.PushTypeEnum;
 import indi.uhyils.pojo.DTO.PushMsgDTO;
 
 /**
