@@ -106,6 +106,10 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
         return result.stream().map(assembler::toEntity).collect(Collectors.toList());
     }
 
+    @Override
+    public List<EN> findNoPage(List<Arg> args) {
+        return findNoPage(args, null);
+    }
 
     @Override
     public Page<EN> find(List<Arg> args, Order order, Limit limit) {
