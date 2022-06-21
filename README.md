@@ -49,7 +49,6 @@ my is a Java project for many technologies.
 user-log-web 即可最小化运行
 
 ## Contributing(贡献)
-
 Pull
 requests
 are
@@ -105,6 +104,5 @@ joining
 上.所以不要到github上请求合并代码
 
 ## License
-
 [MIT](https://choosealicense.com/licenses/mit/)  
 [本项目许可说明](LICENSE)
