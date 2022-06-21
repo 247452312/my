@@ -49,59 +49,16 @@ my is a Java project for many technologies.
 user-log-web 即可最小化运行
 
 ## Contributing(贡献)
-Pull
-requests
-are
-welcome.
-For
-major
-changes,
-please
-open
-an
-issue
-first
-to
-discuss
-what
-you
-would
-like
-to
-change.  
-欢迎拉取请求。对于重大更改，请先打开一个问题，讨论您想要更改的内容  
-Please
-make
-sure
-to
-update
-tests
-as
-appropriate.  
-请确保根据需要更新测试  
-Now
-I
-am
-the
-only
-one
-maintaining
-this
-project.
-I
-look
-forward
-to
-new
-people
-joining  
-现在此项目只有我一个人在维护,期待有新人加入  
+* Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.  
+* 欢迎拉取请求。对于重大更改，请先打开一个问题，讨论您想要更改的内容  
+* Please make sure to update tests as appropriate.  
+* 请确保根据需要更新测试  
+* Now I am the only one maintaining this project. I look forward to new people joining  
+* 现在此项目只有我一个人在维护,期待有新人加入  
 [贡献者公约](code_of_conduct.md)  
 [如何贡献](CONTRIBUTING-template.md)
 
-目前项目主要是在 [gitee](https://gitee.com/Kar98/my)
-上维护.上传时自动同步到 [github](https://github.com/247452312/my)
-上.所以不要到github上请求合并代码
+目前项目主要是在 [gitee](https://gitee.com/Kar98/my) 上维护.上传时自动同步到 [github](https://github.com/247452312/my) 上.所以不要到github上请求合并代码
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)  
