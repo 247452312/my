@@ -2,9 +2,12 @@ package indi.uhyils.util;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -64,5 +67,22 @@ public final class CollectionUtil {
         List<T> result = new ArrayList<>(baseEvent.length);
         Collections.addAll(result, baseEvent);
         return result;
+    }
+
+    /**
+     * 给array添加新的元素
+     *
+     * @param arrays
+     * @param arg
+     * @param <T>
+     *
+     * @return
+     */
+    public static <T> T[] arrayAdd(T[] arrays, T... arg) {
+        int arrayLength = arrays.length;
+        T[] newArrays = Arrays.copyOf(arrays, arrayLength + arg.length);
+        System.arraycopy(arrays, 0, newArrays, 0, arrayLength);
+        System.arraycopy(arg, 0, newArrays, arrayLength, arg.length);
+        return newArrays;
     }
 }

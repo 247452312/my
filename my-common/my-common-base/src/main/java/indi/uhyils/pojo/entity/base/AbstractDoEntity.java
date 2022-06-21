@@ -5,6 +5,7 @@ import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import indi.uhyils.util.Asserts;
+import indi.uhyils.util.BeanUtil;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -91,7 +92,6 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
         data.preInsert();
     }
 
-
     @Override
     public boolean haveId() {
         return unique != null && unique.getId() != null && unique.getId() > 0;
@@ -100,6 +100,16 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
     @Override
     public boolean notHaveId() {
         return !haveId();
+    }
+
+    /**
+     * 从另一个entity中复制来
+     *
+     * @param entity
+     */
+    protected void copyOf(DoEntity<T> entity) {
+        BeanUtil.copyProperties(this.data, entity.toData());
+        this.unique = entity.getUnique();
     }
 
 }

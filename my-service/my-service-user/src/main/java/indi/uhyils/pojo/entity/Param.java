@@ -45,7 +45,6 @@ public class Param extends AbstractDoEntity<ParamDO> {
      * 刷新当前参数到redis
      */
     private void flushToRedis(ParamRepository repository) {
-        final ParamDO paramDO = toData();
-        repository.flushParam(paramDO.getUserId(), paramDO.getKey());
+        repository.flushParam(this);
     }
 }

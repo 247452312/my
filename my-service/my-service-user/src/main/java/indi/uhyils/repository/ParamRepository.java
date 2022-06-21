@@ -27,5 +27,5 @@ public interface ParamRepository extends BaseEntityRepository<ParamDO, Param> {
      * @param userId
      * @param key
      */
-    void flushParam(Long userId, String key);
+    void flushParam(Param param);
 }

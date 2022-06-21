@@ -1,6 +1,5 @@
-package indi.uhyils.pojo.DTO.response;
+package indi.uhyils.pojo.DTO;
 
-import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.BaseDTO;
 
 /**

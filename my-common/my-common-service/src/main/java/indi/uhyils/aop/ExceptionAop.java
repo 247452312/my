@@ -1,6 +1,7 @@
 package indi.uhyils.aop;
 
 import indi.uhyils.exception.AssertException;
+import indi.uhyils.exception.ServiceResultException;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.util.LogUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -34,6 +35,9 @@ public class ExceptionAop {
     public Object exceptionAroundAspect(ProceedingJoinPoint pjp) throws Exception {
         try {
             return pjp.proceed();
+        } catch (ServiceResultException e) {
+            LogUtil.error(e);
+            return e.getSr();
         } catch (AssertException e) {
             LogUtil.error(e.getMessage());
             return ServiceResult.buildFailedResult(e.getMessage());

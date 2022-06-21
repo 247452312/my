@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.facade.UserFacade;
 import indi.uhyils.pojo.DO.ApiGroupDO;
 import indi.uhyils.pojo.DO.ApiSubscribeDO;
@@ -81,7 +81,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
     }
 
     public String callApi() {
-        return callApi(UserContext.doGet());
+        return callApi(UserInfoHelper.doGet());
     }
 
     public void removeSelf(ApiGroupRepository rep) {

@@ -1,11 +1,13 @@
 package indi.uhyils.assembler;
 
+import indi.uhyils.enums.UserTypeEnum;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DTO.RoleDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.entity.Role;
 import indi.uhyils.pojo.entity.User;
+import indi.uhyils.pojo.entity.Visiter;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,12 +39,35 @@ public abstract class UserAssembler extends AbstractAssembler<UserDO, User, User
 
     @Override
     public UserDTO toDTO(User entity) {
+        if (entity instanceof Visiter) {
+            return visiterToDTO((Visiter) entity);
+        }
         UserDTO userDTO = toDTO(entity.toData());
         Role role = entity.role();
+        userDTO.setUserType(UserTypeEnum.USER.getCode());
         if (role != null) {
             RoleDTO roleDTO = roleAssembler.toDTO(entity.role());
             userDTO.setRole(roleDTO);
         }
         return userDTO;
+    }
+
+    private UserDTO visiterToDTO(Visiter visiter) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserType(UserTypeEnum.VISITER.getCode());
+
+        userDTO.setNickName("游客");
+        userDTO.setUsername(null);
+        userDTO.setPassword(null);
+        userDTO.setMail(null);
+        userDTO.setPhone(null);
+        userDTO.setHeadPortrait(null);
+        userDTO.setRoleId(null);
+        userDTO.setRole(null);
+        // 使用中
+        userDTO.setStatus(1);
+        userDTO.setToken(visiter.tokenValue());
+        return userDTO;
+
     }
 }

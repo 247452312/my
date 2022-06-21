@@ -2,14 +2,15 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.UserAssembler;
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.DO.base.TokenInfo;
+import indi.uhyils.pojo.DTO.LoginDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
-import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.User;
+import indi.uhyils.pojo.entity.Visiter;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.pojo.entity.type.UserName;
@@ -22,6 +23,7 @@ import indi.uhyils.service.UserService;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -93,7 +95,7 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
 
     @Override
     public Boolean logout() {
-        User user = new User(assem.toDo(UserContext.doGet()));
+        User user = new User(assem.toDo(UserInfoHelper.doGet()));
         return user.logout(rep);
     }
 
@@ -107,12 +109,12 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
 
     @Override
     public UserDTO getUserByToken() {
-        return UserContext.doGet();
+        return UserInfoHelper.doGet();
     }
 
     @Override
     public String updatePassword(Password oldPassword, Password newPassword) {
-        User user = new User(assem.toDo(UserContext.doGet()));
+        User user = new User(assem.toDo(UserInfoHelper.doGet()));
         //检查密码是否正确
         user.checkPassword(oldPassword, rep);
         // 修改到新密码
@@ -161,6 +163,16 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
         Asserts.assertTrue(users.size() == 1, "同一个用户名只能有一条数据,{}", request.getName());
         User user = users.get(0);
         return assem.toDTO(user);
+    }
+
+    @Override
+    public LoginDTO visiterLogin() {
+        final Optional<String> userIp = UserInfoHelper.getUserIp();
+        Asserts.assertTrue(userIp.isPresent(), "获取用户ip失败");
+
+        final User visiter = new Visiter(userIp.get());
+        visiter.login(rep, salt, encodeRules);
+        return LoginDTO.buildLoginSuccess(visiter.tokenValue(), assem.toDTO(visiter));
     }
 
 }

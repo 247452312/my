@@ -4,7 +4,7 @@ import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.ContentAssembler;
 import indi.uhyils.assembler.MenuAssembler;
 import indi.uhyils.assembler.UserAssembler;
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DO.MenuDO;
 import indi.uhyils.pojo.DTO.MenuDTO;
@@ -95,7 +95,7 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
     @ReadWriteMark(tables = {"sys_menu", "sys_content", "sys_dept", "sys_role_dept"})
     public IndexMenuTreeDTO getIndexMenu() {
         // 初始化角色的权限
-        User user = userAssembler.toEntity(UserContext.doGet());
+        User user = userAssembler.toEntity(UserInfoHelper.doGet());
         user.initRole(roleRepository, deptRepository, powerRepository, menuRepository);
 
         /* 1. 全取出来 */
@@ -121,7 +121,7 @@ public class MenuServiceImpl extends AbstractDoService<MenuDO, Menu, MenuDTO, Me
     @ReadWriteMark(tables = {"sys_menu", "sys_content", "sys_dept", "sys_role_dept"})
     public MenuHtmlTreeDTO getMenuTree(Iframe iframe) {
         // 初始化角色的权限
-        User user = userAssembler.toEntity(UserContext.doGet());
+        User user = userAssembler.toEntity(UserInfoHelper.doGet());
         user.initRole(roleRepository, deptRepository, powerRepository, menuRepository);
 
         /* 1. 全取出来 */

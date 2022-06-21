@@ -1,11 +1,13 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.context.MyContext;
+import indi.uhyils.enums.UserTypeEnum;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.util.AESUtil;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SpringUtil;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -39,15 +41,13 @@ public class Token extends AbstractEntity<String> {
         return id;
     }
 
-    private Identifier parseTokenToId(String token) {
-        String salt = SpringUtil.getProperty("token.salt");
-        assert salt != null;
-        String encodeRules = SpringUtil.getProperty("token.encodeRules");
-        assert encodeRules != null;
-        String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
-        assert tokenInfoString != null;
-        long id = Long.parseLong(tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length()));
-        return new Identifier(id);
+    /**
+     * 获取此token对应的用户类型
+     *
+     * @return
+     */
+    public UserTypeEnum tokenUserType() {
+        return UserTypeEnum.getByCode(this.unique.substring(0, 2));
     }
 
     public String getToken() {
@@ -95,5 +95,18 @@ public class Token extends AbstractEntity<String> {
             tokenInfo.setTimeOut(!aBoolean);
         }
         return tokenInfo;
+    }
+
+    private Identifier parseTokenToId(String token) {
+        final UserTypeEnum userTypeEnum = tokenUserType();
+        Asserts.assertTrue(userTypeEnum == UserTypeEnum.USER, "token不是用户类型");
+        String salt = SpringUtil.getProperty("token.salt");
+        assert salt != null;
+        String encodeRules = SpringUtil.getProperty("token.encodeRules");
+        assert encodeRules != null;
+        String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
+        assert tokenInfoString != null;
+        long id = Long.parseLong(tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length()));
+        return new Identifier(id);
     }
 }

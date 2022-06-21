@@ -1,9 +1,9 @@
 package indi.uhyils.service;
 
 import indi.uhyils.pojo.DO.base.TokenInfo;
+import indi.uhyils.pojo.DTO.LoginDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
-import indi.uhyils.pojo.DTO.response.LoginDTO;
 import indi.uhyils.pojo.entity.Token;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;
@@ -146,4 +146,12 @@ public interface UserService extends BaseDoService<UserDTO> {
      * @return
      */
     UserDTO getUserByUserName(FindUserByNameQuery request);
+
+    /**
+     * 游客登录
+     *
+     * @return
+     */
+    LoginDTO visiterLogin();
+
 }

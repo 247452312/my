@@ -82,4 +82,13 @@ public enum ServiceCode {
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
+    public static ServiceCode getByText(Integer text) {
+        for (ServiceCode code : ServiceCode.values()) {
+            if (code.getText().equals(text)) {
+                return code;
+            }
+        }
+        return null;
+    }
 }

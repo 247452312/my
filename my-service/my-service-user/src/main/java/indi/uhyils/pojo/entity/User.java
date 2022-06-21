@@ -1,9 +1,10 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.enums.Symbol;
 import indi.uhyils.enums.UserStatusEnum;
+import indi.uhyils.enums.UserTypeEnum;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.UserDO;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
@@ -19,7 +20,6 @@ import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.util.AESUtil;
 import indi.uhyils.util.Asserts;
-import indi.uhyils.util.BeanUtil;
 import indi.uhyils.util.CollectionUtil;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -46,12 +46,13 @@ public class User extends AbstractDoEntity<UserDO> {
 
     private Role role;
 
-    private Token token;
+    protected Token token;
 
     @Default
     public User(UserDO data) {
         super(data);
     }
+
 
     public User(Identifier userId) {
         super(userId, new UserDO());
@@ -173,8 +174,7 @@ public class User extends AbstractDoEntity<UserDO> {
 
         /*查询是否正确*/
         User user = userRepository.checkLogin(this);
-        BeanUtil.copyProperties(user.data, data);
-        this.setUnique(user.unique);
+        this.copyOf(user);
         this.token = user.toToken(salt, encodeRole);
         return this;
     }
@@ -191,6 +191,9 @@ public class User extends AbstractDoEntity<UserDO> {
     public Token toToken(String salt, String encodeRules) {
         StringBuilder sb = new StringBuilder(26 + salt.length());
 
+        // 用户类型 2位
+        sb.append(UserTypeEnum.USER.getCode());
+
         //生成日期部分 8位
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddhhmmss");
@@ -201,11 +204,11 @@ public class User extends AbstractDoEntity<UserDO> {
         //两位随机数 两位
         sb.append(randomNum);
 
-        // 用户id 19位
+        // 用户id 17位
         String str = getUnique().toString();
-        long i = 19L - str.length();
-        // long 最大19位 如果不够 最高位补0
-        StringBuilder sbTemp = new StringBuilder(19);
+        long i = 17L - str.length();
+        // long 最大17位 如果不够 最高位补0
+        StringBuilder sbTemp = new StringBuilder(17);
         for (int j = 0; j < i; j++) {
             sbTemp.append("0");
         }
@@ -225,16 +228,6 @@ public class User extends AbstractDoEntity<UserDO> {
         return rep.havePower(this, powerInfo);
     }
 
-    /**
-     * 判断此用户是不是系统用户
-     *
-     * @return
-     */
-    private boolean isSysRole() {
-        return Objects.equals(toData().getRoleId(), UserContext.MYSQL_ROLE_ID);
-    }
-
-
     public void removeUserInRedis(UserRepository userRepository) {
         //检查是否已经登录,如果已经登录,则将之前已登录的挤下来
         Boolean haveUserId = userRepository.checkCacheUserId(this);
@@ -247,7 +240,6 @@ public class User extends AbstractDoEntity<UserDO> {
     public void addUserToRedis(UserRepository userRepository) {
         userRepository.cacheUser(token, this);
     }
-
 
     public String tokenValue() {
         return token.getToken();
@@ -276,7 +268,6 @@ public class User extends AbstractDoEntity<UserDO> {
         userRepository.save(this);
 
     }
-
 
     /**
      * 申请一个用户
@@ -312,16 +303,6 @@ public class User extends AbstractDoEntity<UserDO> {
         userRepository.change(this, Collections.singletonList(Arg.as(UserDO::getId, Symbol.EQ, this.unique.getId())));
     }
 
-    /**
-     * 修改用户状态
-     *
-     * @param status
-     */
-    private void changeStatus(UserStatusEnum status) {
-        toData().setStatus(status.getCode());
-    }
-
-
     @Override
     public void perInsert() {
         // 常规填充
@@ -331,6 +312,24 @@ public class User extends AbstractDoEntity<UserDO> {
         // 加密密码
         encodePassword();
 
+    }
+
+    /**
+     * 判断此用户是不是系统用户
+     *
+     * @return
+     */
+    private boolean isSysRole() {
+        return Objects.equals(toData().getRoleId(), UserInfoHelper.MYSQL_ROLE_ID);
+    }
+
+    /**
+     * 修改用户状态
+     *
+     * @param status
+     */
+    private void changeStatus(UserStatusEnum status) {
+        toData().setStatus(status.getCode());
     }
 
     /**

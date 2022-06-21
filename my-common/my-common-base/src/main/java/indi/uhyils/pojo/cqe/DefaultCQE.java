@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.cqe;
 
 
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.pojo.DTO.UserDTO;
 
 /**
@@ -36,8 +36,8 @@ public class DefaultCQE implements BaseCQE {
 
     public DefaultCQE() {
         // 默认是没有用户登录的
-        this.token = UserContext.getToken();
-        this.user = UserContext.get();
+        UserInfoHelper.getToken().ifPresent(this::setToken);
+        UserInfoHelper.get().ifPresent(this::setUser);
     }
 
     public String getToken() {

@@ -2,7 +2,7 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.JobAssembler;
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.pojo.DO.JobDO;
 import indi.uhyils.pojo.DTO.JobDTO;
 import indi.uhyils.pojo.cqe.query.IdQuery;
@@ -32,7 +32,7 @@ public class JobServiceImpl extends AbstractDoService<JobDO, Job, JobDTO, JobRep
     public Long add(JobDTO dto) {
         Job job = assem.toEntity(dto);
         rep.save(job);
-        job.fillUser(UserContext.doGet());
+        job.fillUser(UserInfoHelper.doGet());
         job.addSelfToJob();
         return 1L;
     }
@@ -42,7 +42,7 @@ public class JobServiceImpl extends AbstractDoService<JobDO, Job, JobDTO, JobRep
         Job job = assem.toEntity(dto);
         rep.change(job, args);
 
-        job.fillUser(UserContext.doGet());
+        job.fillUser(UserInfoHelper.doGet());
         job.delJob();
         job.addSelfToJob();
         return 1;

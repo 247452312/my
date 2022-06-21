@@ -1,7 +1,7 @@
 package indi.uhyils.facade.impl;
 
 import indi.uhyils.annotation.Facade;
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.facade.ServiceControlFacade;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
@@ -45,7 +45,7 @@ public class ServiceControlFacadeImpl implements ServiceControlFacade {
 
     @Override
     public void fillDisable(List<RelegationDTO> dtos) {
-        ServiceResult<List<MethodDisableDTO>> allMethodDisable = provider.getAllMethodDisable(UserContext.makeCQE());
+        ServiceResult<List<MethodDisableDTO>> allMethodDisable = provider.getAllMethodDisable(UserInfoHelper.makeCQE());
         List<MethodDisableDTO> result = allMethodDisable.validationAndGet();
         for (RelegationDTO dto : dtos) {
             for (MethodDisableDTO disableDTO : result) {

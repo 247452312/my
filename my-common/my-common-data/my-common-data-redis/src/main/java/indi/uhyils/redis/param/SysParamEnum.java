@@ -1,6 +1,6 @@
 package indi.uhyils.redis.param;
 
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.redis.RedisPool;
 import indi.uhyils.redis.Redisable;
@@ -52,6 +52,25 @@ public enum SysParamEnum {
     }
 
     /**
+     * 刷新缓存
+     *
+     * @param userId
+     * @param value
+     * @param pool
+     *
+     * @return
+     */
+    public Boolean flush(Long userId, String value, RedisPool pool) {
+        final String redisKey = SystemParamContext.compileRedisKey(userId, this.key);
+        try (final Redisable jedis = pool.getJedis()) {
+            jedis.set(redisKey, value);
+            jedis.expire(redisKey, SystemParamContext.REDIS_PARAM_EXPIRE_TIME);
+            return true;
+        }
+
+    }
+
+    /**
      * 查询参数
      *
      * @param redisPool redis连接池
@@ -91,12 +110,11 @@ public enum SysParamEnum {
      * @return
      */
     protected String findUserValue(RedisPool redisPool, SystemParamNotFoundCallBack callBack) {
-        UserDTO userDTO = UserContext.get();
-        if (userDTO == null) {
-            return findValue(SystemParamContext.REDIS_PARAM_SYSTEM_USER_ID, redisPool, callBack);
+        final Optional<UserDTO> userDTO = UserInfoHelper.get();
+        if (userDTO.isPresent()) {
+            return findValue(userDTO.get().getId(), redisPool, callBack);
         } else {
-            return findValue(userDTO.getId(), redisPool, callBack);
-
+            return findValue(SystemParamContext.REDIS_PARAM_SYSTEM_USER_ID, redisPool, callBack);
         }
     }
 

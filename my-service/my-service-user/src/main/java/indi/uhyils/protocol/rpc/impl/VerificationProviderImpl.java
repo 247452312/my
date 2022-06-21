@@ -1,6 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.annotation.NoToken;
+import indi.uhyils.annotation.NoLogin;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.VerificationCommand;
 import indi.uhyils.pojo.DTO.response.VerificationGetDTO;
@@ -23,14 +23,14 @@ public class VerificationProviderImpl implements VerificationProvider {
     private VerificationService service;
 
     @Override
-    @NoToken
+    @NoLogin
     public ServiceResult<VerificationGetDTO> getVerification(DefaultCQE request) throws IOException {
         VerificationGetDTO result = service.getVerification();
         return ServiceResult.buildSuccessResult(result);
     }
 
     @Override
-    @NoToken
+    @NoLogin
     public ServiceResult<Boolean> verification(VerificationCommand request) {
         String key = request.getKey();
         String code = request.getCode();

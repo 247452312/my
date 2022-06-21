@@ -1,6 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.annotation.NoToken;
+import indi.uhyils.annotation.NoLogin;
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.RoleDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
@@ -33,7 +33,7 @@ public class RoleProviderImpl extends BaseDefaultProvider<RoleDTO> implements Ro
 
 
     @Override
-    @NoToken
+    @NoLogin
     public ServiceResult<RoleDTO> getRoleByRoleId(IdQuery request) {
         Identifier roleId = new Identifier(request.getId());
         RoleDTO result = service.getRoleByRoleId(roleId);

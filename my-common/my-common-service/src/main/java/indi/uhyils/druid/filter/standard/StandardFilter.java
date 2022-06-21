@@ -4,7 +4,7 @@ import com.alibaba.druid.filter.FilterChain;
 import com.alibaba.druid.filter.FilterEventAdapter;
 import com.alibaba.druid.proxy.jdbc.ConnectionProxy;
 import com.alibaba.druid.proxy.jdbc.PreparedStatementProxy;
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.InsertSql;
 import indi.uhyils.pojo.entity.SelectSql;
@@ -67,7 +67,7 @@ public class StandardFilter extends FilterEventAdapter {
     }
 
     private Long getUserId() {
-        UserDTO userDTO = UserContext.doGet();
+        UserDTO userDTO = UserInfoHelper.doGet();
         Long userId;
         if (userDTO != null) {
             userId = userDTO.getId();

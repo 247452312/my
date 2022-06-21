@@ -1,7 +1,7 @@
 package indi.uhyils.pojo.DO.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.pojo.DTO.UserDTO;
 
 /**
@@ -68,7 +68,7 @@ public abstract class BaseDO extends BaseIdDO {
 
     @Override
     public void preUpdate() {
-        preUpdate(UserContext.doGet());
+        preUpdate(UserInfoHelper.doGet());
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class BaseDO extends BaseIdDO {
      */
     @Override
     public void preInsert() {
-        preInsert(UserContext.doGet());
+        preInsert(UserInfoHelper.doGet());
     }
 
 

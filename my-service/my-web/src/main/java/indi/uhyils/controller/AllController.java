@@ -3,11 +3,13 @@ package indi.uhyils.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.request.SessionRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
+import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.util.Arrays;
@@ -49,7 +51,7 @@ public class AllController {
     /**
      * 不传递的header
      */
-    private static final List<String> NON_TRANSITIVE_HEADER = Arrays.asList("sec-fetch-mode","content-length","referer","sec-fetch-site","accept-language","cookie","origin","accept","sec-ch-ua","sec-ch-ua-mobile","sec-ch-ua-platform","host","x-requested-with","connection","content-type","accept-encoding","user-agent","sec-fetch-dest");
+    private static final List<String> NON_TRANSITIVE_HEADER = Arrays.asList("sec-fetch-mode", "content-length", "referer", "sec-fetch-site", "accept-language", "cookie", "origin", "accept", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform", "host", "x-requested-with", "connection", "content-type", "accept-encoding", "user-agent", "sec-fetch-dest");
 
     @Autowired
     @Qualifier("actionExecutor")
@@ -73,7 +75,7 @@ public class AllController {
         // 获取有价值的headers
         Map<String, String> headers = findHeaders(httpServletRequest);
         try {
-            Future<ServiceResult> submit = executor.submit(new ActionFuture(action, headers));
+            Future<ServiceResult> submit = executor.submit(new ActionFuture(action, headers, httpServletRequest));
             serviceResult = submit.get();
 
             // 修改字段类型为String,因为前端大数会失去精度
@@ -100,6 +102,23 @@ public class AllController {
 
             }
         }*/
+    }
+
+    @PostMapping("/getSession")
+    public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
+        LogUtil.info(this, "getSession: " + sessionRequest.getAttrName());
+        HttpSession session = request.getSession();
+        LogUtil.info(this, "result: " + session.getAttribute(sessionRequest.getAttrName()));
+        return session.getAttribute(sessionRequest.getAttrName());
+    }
+
+    @PostMapping("/setSession")
+    public boolean setSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
+        LogUtil.info(this, "setSession: " + sessionRequest.getAttrName());
+        LogUtil.info(this, "sessionData : " + sessionRequest.getData());
+        HttpSession session = request.getSession();
+        session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
+        return Boolean.TRUE;
     }
 
     /**
@@ -164,42 +183,34 @@ public class AllController {
         action.getArgs().put(TOKEN, action.getToken());
     }
 
-    @PostMapping("/getSession")
-    public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
-        LogUtil.info(this, "getSession: " + sessionRequest.getAttrName());
-        HttpSession session = request.getSession();
-        LogUtil.info(this, "result: " + session.getAttribute(sessionRequest.getAttrName()));
-        return session.getAttribute(sessionRequest.getAttrName());
-    }
-
-    @PostMapping("/setSession")
-    public boolean setSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
-        LogUtil.info(this, "setSession: " + sessionRequest.getAttrName());
-        LogUtil.info(this, "sessionData : " + sessionRequest.getData());
-        HttpSession session = request.getSession();
-        session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
-        return Boolean.TRUE;
-    }
-
     private static class ActionFuture implements Callable<ServiceResult> {
 
         private final Action action;
 
         private final Map<String, String> headers;
 
-        public ActionFuture(Action action, Map<String, String> headers) {
+        private final HttpServletRequest httpServletRequest;
+
+        public ActionFuture(Action action, Map<String, String> headers, HttpServletRequest httpServletRequest) {
             this.action = action;
             this.headers = headers;
+            this.httpServletRequest = httpServletRequest;
         }
 
         @Override
         public ServiceResult call() throws Exception {
+            pushIp();
             Object o = RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), headers, action.getArgs());
             if (o instanceof ServiceResult) {
                 return (ServiceResult) o;
             }
             JSONObject result = (JSONObject) o;
             return JSON.toJavaObject(result, ServiceResult.class);
+        }
+
+        private void pushIp() {
+            String ip = IpUtil.getServletIP(httpServletRequest);
+            UserInfoHelper.setIp(ip);
         }
     }
 

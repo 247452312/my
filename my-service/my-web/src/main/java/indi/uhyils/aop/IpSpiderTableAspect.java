@@ -1,6 +1,7 @@
 package indi.uhyils.aop;
 
 import indi.uhyils.context.MyContext;
+import indi.uhyils.context.SpiderContext;
 import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
@@ -38,54 +39,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class IpSpiderTableAspect {
 
-    /**
-     * 黑名单 在redis中的key
-     *
-     * @ps 在redis中 黑名单是set格式的
-     */
-    private static final String IP_BLACK_REDIS_KEY = "ip_black_redis_key";
-
-    /**
-     * 临时冻结等级 在redis中的key
-     *
-     * @ps hash结构 key为ip value为冻结等级
-     */
-    private static final String IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY = "ip_black_temp_frozen_level_redis_key";
-
-    /**
-     * 临时冻结到期时间 在redis中的key
-     *
-     * @ps hash结构 key为ip value为冻结开始时间
-     */
-    private static final String IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY = "ip_black_temp_frozen_time_out_redis_key";
-
-    /**
-     * 错误次数
-     *
-     * @ps hash结构 key:ip,value:count
-     */
-    private static final String IP_TEMP_RECORD_KEY_COUNT = "ip_temp_record_key_count";
-
-    /**
-     * 最大错误次数
-     */
-    private static final Integer WRONG_COUNT = 3;
-
-    /**
-     * 首次被冻结时间
-     */
-    private static final Long FIRST_FROZEN_TIME = 3 * 60 * 1000L;
-
-    /**
-     * 第二次冻结时间
-     */
-    private static final Long SECOND_FROZEN_TIME = 60 * 60 * 1000L;
-
-    /**
-     * 最大冻结次数 如果第三次冻结,则清除冻结次数并加入永久黑名单
-     */
-    private static final Long MAX_FROZEN_COUNT = 2L;
-
 
     @RpcReference
     private BlackListProvider blackListService;
@@ -109,48 +62,6 @@ public class IpSpiderTableAspect {
      */
     @Pointcut("execution(public * indi.uhyils.controller.AllController.action(..)))")
     public void ipSpiderTableAspectPoint() {
-    }
-
-    /**
-     * 初始化redis中的黑名单
-     *
-     * @return 是否成功 不成功的原因是多方面的, 首先 redis没有开, 其次 log服务没有开
-     */
-    @PostConstruct
-    private boolean init() {
-        // 没有初始化并且可以初始化
-        if (Boolean.FALSE.equals(init) && Boolean.TRUE.equals(canInit)) {
-            synchronized (this) {
-                if (Boolean.FALSE.equals(init) || Boolean.TRUE.equals(canInit)) {
-                    try {
-                        // 去后台获取数据库中的ip黑名单
-                        DefaultCQE request = DefaultCQEBuildUtil.getAdminDefaultCQE();
-                        ServiceResult<List<String>> allIpBlackList = blackListService.getAllIpBlackList(request);
-                        // 如果log服务挂了
-                        if (allIpBlackList == null || !allIpBlackList.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
-                            // 设置为不可用
-                            canInit = Boolean.FALSE;
-                            return Boolean.FALSE;
-                        }
-                        // 将黑名单存入redis
-                        Long sadd = redisPoolHandle.sadd(IP_BLACK_REDIS_KEY, allIpBlackList.getData());
-                        // 如果redis不可用
-                        if (sadd == -1L) {
-                            canInit = Boolean.FALSE;
-                            return Boolean.FALSE;
-                        }
-                        init = Boolean.TRUE;
-                        return Boolean.TRUE;
-                    } catch (Exception e) {
-                        LogUtil.error(this, e);
-                        canInit = Boolean.FALSE;
-                        return Boolean.FALSE;
-                    }
-                }
-            }
-        }
-        return Boolean.TRUE;
-
     }
 
     @Around("ipSpiderTableAspectPoint()")
@@ -178,16 +89,16 @@ public class IpSpiderTableAspect {
 
             /*检查临时冻结列表 以及黑名单列表*/
             // 是否在黑名单中
-            Boolean contains = jedis.sismember(IP_BLACK_REDIS_KEY, ip);
+            Boolean contains = jedis.sismember(SpiderContext.IP_BLACK_REDIS_KEY, ip);
             if (contains) {
                 return WebResponse.build(null, ServiceCode.REFUSE_VISIT);
             }
             /* 是否在临时禁用名单中*/
-            String hget = jedis.hget(IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip);
+            String hget = jedis.hget(SpiderContext.IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip);
             long level = Long.parseLong(hget == null ? "0" : hget);
             // 查询此用户有没有冻结等级
             if (level != 0) {
-                String outTimeStr = jedis.hget(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip);
+                String outTimeStr = jedis.hget(SpiderContext.IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip);
                 long timeEnd = Long.parseLong(outTimeStr == null ? "0" : outTimeStr);
                 // 如果冻结时间没有过
                 if (timeEnd > System.currentTimeMillis()) {
@@ -195,7 +106,7 @@ public class IpSpiderTableAspect {
                 }
             }
             /*查询此ip是否被临时记录*/
-            Boolean tempRecord = jedis.hexists(IP_TEMP_RECORD_KEY_COUNT, ip);
+            Boolean tempRecord = jedis.hexists(SpiderContext.IP_TEMP_RECORD_KEY_COUNT, ip);
             // 如果被记录
             if (tempRecord) {
                 /*验证 验证码 是否正确*/
@@ -210,7 +121,7 @@ public class IpSpiderTableAspect {
                     }
                     /*验证码验证成功*/
                     //清空验证码错误次数
-                    jedis.hdel(IP_TEMP_RECORD_KEY_COUNT, ip);
+                    jedis.hdel(SpiderContext.IP_TEMP_RECORD_KEY_COUNT, ip);
                     // 这里没法返回上一个页面,只能返回验证码验证成功的逻辑
                     return proceed;
                 }
@@ -242,7 +153,7 @@ public class IpSpiderTableAspect {
             if (!logIntervalByIp.getData()) {
                 return completableFuture.get();
             }
-            jedis.hincrby(IP_TEMP_RECORD_KEY_COUNT, ip);
+            jedis.hincrby(SpiderContext.IP_TEMP_RECORD_KEY_COUNT, ip);
             return WebResponse.build(null, ServiceCode.SPIDER_VERIFICATION);
         } catch (Throwable throwable) {
             LogUtil.error(this, throwable);
@@ -250,6 +161,48 @@ public class IpSpiderTableAspect {
         } finally {
             jedis.close();
         }
+    }
+
+    /**
+     * 初始化redis中的黑名单
+     *
+     * @return 是否成功 不成功的原因是多方面的, 首先 redis没有开, 其次 log服务没有开
+     */
+    @PostConstruct
+    private boolean init() {
+        // 没有初始化并且可以初始化
+        if (Boolean.FALSE.equals(init) && Boolean.TRUE.equals(canInit)) {
+            synchronized (this) {
+                if (Boolean.FALSE.equals(init) || Boolean.TRUE.equals(canInit)) {
+                    try {
+                        // 去后台获取数据库中的ip黑名单
+                        DefaultCQE request = DefaultCQEBuildUtil.getAdminDefaultCQE();
+                        ServiceResult<List<String>> allIpBlackList = blackListService.getAllIpBlackList(request);
+                        // 如果log服务挂了
+                        if (allIpBlackList == null || !allIpBlackList.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
+                            // 设置为不可用
+                            canInit = Boolean.FALSE;
+                            return Boolean.FALSE;
+                        }
+                        // 将黑名单存入redis
+                        Long sadd = redisPoolHandle.sadd(SpiderContext.IP_BLACK_REDIS_KEY, allIpBlackList.getData());
+                        // 如果redis不可用
+                        if (sadd == -1L) {
+                            canInit = Boolean.FALSE;
+                            return Boolean.FALSE;
+                        }
+                        init = Boolean.TRUE;
+                        return Boolean.TRUE;
+                    } catch (Exception e) {
+                        LogUtil.error(this, e);
+                        canInit = Boolean.FALSE;
+                        return Boolean.FALSE;
+                    }
+                }
+            }
+        }
+        return Boolean.TRUE;
+
     }
 
     /**
@@ -261,22 +214,22 @@ public class IpSpiderTableAspect {
      */
     private Object faultVerification(Redisable jedis, String ip) {
         // 获取自增后的验证码输入错误的次数
-        Long count = jedis.hincrby(IP_TEMP_RECORD_KEY_COUNT, ip);
+        Long count = jedis.hincrby(SpiderContext.IP_TEMP_RECORD_KEY_COUNT, ip);
         // 错误超过一定的次数
-        if (count > WRONG_COUNT) {
+        if (count > SpiderContext.WRONG_COUNT) {
             long now = System.currentTimeMillis();
             // 获取此次被冻结的次数
-            long frozenCount = jedis.hincrby(IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip);
-            String outTime = jedis.hget(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip);
+            long frozenCount = jedis.hincrby(SpiderContext.IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip);
+            String outTime = jedis.hget(SpiderContext.IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip);
             /* 如果之前是冻结等级为1 并且已经过了冻结结束时间3分钟,设置冻结等级为1
              *  如果之前冻结等级为2 并且已经过了冻结结束时间 1小时 设置冻结等级为1*/
-            if (frozenCount == 2 && now - Long.parseLong(outTime) > FIRST_FROZEN_TIME) {
-                jedis.hset(IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip, "1");
-                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(now + FIRST_FROZEN_TIME));
-            } else if (frozenCount == 3 && now - Long.parseLong(outTime) > SECOND_FROZEN_TIME) {
-                jedis.hset(IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip, "1");
-                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(now + FIRST_FROZEN_TIME));
-            } else if (frozenCount > MAX_FROZEN_COUNT) {
+            if (frozenCount == 2 && now - Long.parseLong(outTime) > SpiderContext.FIRST_FROZEN_TIME) {
+                jedis.hset(SpiderContext.IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip, "1");
+                jedis.hset(SpiderContext.IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(now + SpiderContext.FIRST_FROZEN_TIME));
+            } else if (frozenCount == 3 && now - Long.parseLong(outTime) > SpiderContext.SECOND_FROZEN_TIME) {
+                jedis.hset(SpiderContext.IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip, "1");
+                jedis.hset(SpiderContext.IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(now + SpiderContext.FIRST_FROZEN_TIME));
+            } else if (frozenCount > SpiderContext.MAX_FROZEN_COUNT) {
                 // 加入永久黑名单
                 AddBlackIpRequest build = AddBlackIpRequest.build(ip);
                 UserDTO user = new UserDTO();
@@ -284,16 +237,16 @@ public class IpSpiderTableAspect {
                 build.setUser(user);
                 blackListService.addBlackIp(build);
                 // 清空临时冻结
-                jedis.hdel(IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip);
-                jedis.hdel(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip);
+                jedis.hdel(SpiderContext.IP_BLACK_TEMP_FROZEN_LEVEL_REDIS_KEY, ip);
+                jedis.hdel(SpiderContext.IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip);
                 /*被冻结了两次,但是这个ip无知无觉,继续访问数据,一眼就看出他不是人, 大威天龙!!!*/
                 return WebResponse.build(null, ServiceCode.REFUSE_VISIT);
             } else if (frozenCount == 1) {
                 //冻结第一个等级 (3分钟)
-                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(System.currentTimeMillis() + FIRST_FROZEN_TIME));
+                jedis.hset(SpiderContext.IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(System.currentTimeMillis() + SpiderContext.FIRST_FROZEN_TIME));
             } else if (frozenCount == 2) {
                 //冻结第二个等级 (一小时)
-                jedis.hset(IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(System.currentTimeMillis() + SECOND_FROZEN_TIME));
+                jedis.hset(SpiderContext.IP_BLACK_TEMP_FROZEN_TIME_OUT_REDIS_KEY, ip, Long.toString(System.currentTimeMillis() + SpiderContext.SECOND_FROZEN_TIME));
             }
             //告知前端您已被冻结以及冻结等级
             return WebResponse.build(frozenCount, ServiceCode.FROZEN_TEMP);

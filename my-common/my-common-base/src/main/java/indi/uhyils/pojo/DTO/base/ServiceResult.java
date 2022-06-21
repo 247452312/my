@@ -161,6 +161,19 @@ public class ServiceResult<T> implements Serializable {
         return new ServiceResult<>(build, ServiceCode.SUCCESS_REDIS.getText(), null);
     }
 
+    /**
+     * 通用构建
+     *
+     * @param data 返回的数据
+     * @param sc   返回的类型
+     * @param <T>
+     *
+     * @return
+     */
+    public static <T> ServiceResult<T> build(T data, ServiceCode sc) {
+        return new ServiceResult<>(data, sc.getText(), sc.getMsg());
+    }
+
     public T getData() {
         return data;
     }

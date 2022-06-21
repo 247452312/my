@@ -2,7 +2,7 @@ package indi.uhyils.pojo.DO.base;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import indi.uhyils.context.UserContext;
+import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.util.IdUtil;
@@ -51,7 +51,7 @@ public abstract class BaseIdDO implements BaseDbSaveable {
      */
     @Override
     public void preInsert() {
-        preInsert(UserContext.doGet());
+        preInsert(UserInfoHelper.doGet());
     }
 
     @Override

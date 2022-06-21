@@ -26,6 +26,11 @@ public class UserDTO extends IdDTO {
     private String password;
 
     /**
+     * 用户类型{@link indi.uhyils.enums.UserTypeEnum
+     */
+    private String userType;
+
+    /**
      * 邮箱
      */
     private String mail;
@@ -139,5 +144,13 @@ public class UserDTO extends IdDTO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }
