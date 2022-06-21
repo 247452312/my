@@ -2,7 +2,7 @@ package indi.uhyils.pojo.DTO.base;
 
 import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.HotSpotDTO;
-import indi.uhyils.rpc.util.RpcAssertUtil;
+import indi.uhyils.util.Asserts;
 import java.io.Serializable;
 
 /**
@@ -207,9 +207,9 @@ public class ServiceResult<T> implements Serializable {
         if (ServiceCode.SUCCESS.getText().equals(this.getServiceCode())) {
             return getData();
         } else if (ServiceCode.SUCCESS_REDIS.getText().equals(this.getServiceCode())) {
-            RpcAssertUtil.assertTrue(false, "rpc结果通过redis存储.请自行处理或者引入: my-common-hot-spot");
+            Asserts.assertTrue(false, "rpc结果通过redis存储.请自行处理或者引入: my-common-hot-spot");
         } else {
-            RpcAssertUtil.assertTrue(false, this.toErrorString());
+            Asserts.assertTrue(false, this.toErrorString());
         }
         return null;
     }

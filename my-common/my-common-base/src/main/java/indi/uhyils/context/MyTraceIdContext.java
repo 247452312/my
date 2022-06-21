@@ -1,6 +1,5 @@
 package indi.uhyils.context;
 
-import com.google.common.base.Supplier;
 import indi.uhyils.enums.LogDetailTypeEnum;
 import indi.uhyils.enums.LogTypeEnum;
 import indi.uhyils.util.IdUtil;
@@ -10,6 +9,7 @@ import indi.uhyils.util.SpringUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
 /**
  * traceId生成的地方
