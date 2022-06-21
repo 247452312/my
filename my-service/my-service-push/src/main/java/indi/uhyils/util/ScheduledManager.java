@@ -1,16 +1,23 @@
 package indi.uhyils.util;
 
-import indi.uhyils.job.ExecutionJob;
-import indi.uhyils.job.JobConfig;
-import indi.uhyils.pojo.model.JobEntity;
-import org.quartz.*;
+import static org.quartz.TriggerBuilder.newTrigger;
+
+import indi.uhyils.pojo.DO.JobDO;
+import indi.uhyils.protocol.task.ExecutionJob;
+import indi.uhyils.protocol.task.JobConfig;
+import java.util.Date;
+import javax.annotation.Resource;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.CronTrigger;
+import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
+import org.quartz.TriggerKey;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-import java.util.Date;
-
-import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
  * 定时任务管理类
@@ -25,18 +32,18 @@ public class ScheduledManager {
     @Resource
     private Scheduler scheduler;
 
-    public boolean addJob(JobEntity jobEntity) {
+    public boolean addJob(JobDO jobEntity) {
         try {
             // 构建job信息
             JobDetail jobDetail = JobBuilder.newJob(ExecutionJob.class).
-                    withIdentity(JobConfig.JOB_NAME + jobEntity.getId()).build();
+                withIdentity(JobConfig.JOB_NAME + jobEntity.getId()).build();
 
             //通过触发器名和cron 表达式创建 Trigger
             Trigger cronTrigger = newTrigger()
-                    .withIdentity(JobConfig.JOB_NAME + jobEntity.getId())
-                    .startNow()
-                    .withSchedule(CronScheduleBuilder.cronSchedule(jobEntity.getCron()))
-                    .build();
+                .withIdentity(JobConfig.JOB_NAME + jobEntity.getId())
+                .startNow()
+                .withSchedule(CronScheduleBuilder.cronSchedule(jobEntity.getCron()))
+                .build();
 
             cronTrigger.getJobDataMap().put(JobConfig.JOB_KEY, jobEntity);
 
@@ -62,7 +69,7 @@ public class ScheduledManager {
      *
      * @param quartzJob /
      */
-    public boolean updateJobCron(JobEntity quartzJob) {
+    public boolean updateJobCron(JobDO quartzJob) {
         try {
             TriggerKey triggerKey = TriggerKey.triggerKey(JobConfig.JOB_NAME + quartzJob.getId());
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
@@ -95,7 +102,7 @@ public class ScheduledManager {
      *
      * @param quartzJob /
      */
-    public boolean deleteJob(JobEntity quartzJob) {
+    public boolean deleteJob(JobDO quartzJob) {
         try {
             JobKey jobKey = JobKey.jobKey(JobConfig.JOB_NAME + quartzJob.getId());
             scheduler.pauseJob(jobKey);
@@ -112,7 +119,7 @@ public class ScheduledManager {
      *
      * @param quartzJob /
      */
-    public boolean resumeJob(JobEntity quartzJob) {
+    public boolean resumeJob(JobDO quartzJob) {
         try {
             TriggerKey triggerKey = TriggerKey.triggerKey(JobConfig.JOB_NAME + quartzJob.getId());
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
@@ -134,7 +141,7 @@ public class ScheduledManager {
      *
      * @param quartzJob /
      */
-    public boolean runJobNow(JobEntity quartzJob) {
+    public boolean runJobNow(JobDO quartzJob) {
         try {
             TriggerKey triggerKey = TriggerKey.triggerKey(JobConfig.JOB_NAME + quartzJob.getId());
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
@@ -158,7 +165,7 @@ public class ScheduledManager {
      *
      * @param quartzJob /
      */
-    public boolean pauseJob(JobEntity quartzJob) {
+    public boolean pauseJob(JobDO quartzJob) {
         try {
             JobKey jobKey = JobKey.jobKey(JobConfig.JOB_NAME + quartzJob.getId());
             scheduler.pauseJob(jobKey);

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.UserDao">
+
+    <sql id="columnList">
+        a.id,
+        a.create_date   as 'createDate',
+        a.create_user   as createUser,
+        a.update_date   as 'updateDate',
+        a.update_user   as updateUser,
+        a.delete_flag   as deleteFlag,
+        a.remark,
+
+        a.nick_name     as nickName,
+        a.mail,
+        a.phone,
+        a.username,
+        a.head_portrait as headPortrait,
+        a.role_id       as roleId,
+        a.status
+    </sql>
+    <sql id="deptColumnList">
+        a.id,
+        a.create_date as 'createDate',
+        a.create_user as createUser,
+        a.update_date as 'updateDate',
+        a.update_user as updateUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+
+        a.name
+    </sql>
+    <sql id="powerColumnList">
+        a.id,
+        a.create_date    as 'createDate',
+        a.create_user    as createUser,
+        a.update_date    as 'updateDate',
+        a.update_user    as updateUser,
+        a.delete_flag    as deleteFlag,
+        a.remark,
+
+        a.interface_name as interfaceName,
+        a.method_name    as methodName
+    </sql>
+    <sql id="roleColumnList">
+        a.id,
+        a.create_date as 'createDate',
+        a.create_user as createUser,
+        a.update_date as 'updateDate',
+        a.update_user as updateUser,
+        a.delete_flag as deleteFlag,
+        a.remark,
+
+        a.name,
+        a.level
+    </sql>
+
+    <resultMap type="indi.uhyils.pojo.DO.UserDO" id="UserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="mail" column="mail" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="headPortrait" column="head_portrait" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.UserDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_user set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="item.nickName != null and item.nickName != ''">
+                ,nick_name = #{item.nickName}
+            </if>
+            <if test="item.password != null and item.password != ''">
+                ,password = #{item.password}
+            </if>
+            <if test="item.roleId != null">
+                ,role_id = #{item.roleId}
+            </if>
+            <if test="item.username != null and item.username != ''">
+                ,username = #{item.username}
+            </if>
+            <if test="item.mail != null and item.mail != ''">
+                ,mail = #{item.mail}
+            </if>
+            <if test="item.phone != null and item.phone != ''">
+                ,phone = #{item.phone}
+            </if>
+            <if test="item.headPortrait != null and item.headPortrait != ''">
+                ,head_portrait = #{item.headPortrait}
+            </if>
+            <if test="item.status != null ">
+                ,status = #{item.status}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+
+    <select id="getUserRoleById" resultType="indi.uhyils.pojo.DO.RoleDO">
+        select
+        <include refid="roleColumnList"/>
+        from sys_role a
+        where
+        id = #{roleId}
+    </select>
+
+    <select id="getUserDeptsByRoleId" resultType="indi.uhyils.pojo.DO.DeptDO">
+        select
+        <include refid="deptColumnList"/>
+        from sys_dept a right join sys_role_dept b on a.id = b.dept_id where b.role_id = #{roleId}
+    </select>
+
+    <select id="getUserPowerByDeptId" resultType="indi.uhyils.pojo.DO.PowerDO">
+        select
+        <include refid="powerColumnList"/>
+        from sys_power a right join sys_dept_power b on a.id = b.power_id where b.dept_id = #{deptId}
+    </select>
+
+    <select id="getAll" resultType="indi.uhyils.pojo.DO.UserDO">
+        select
+        <include refid="columnList"/>
+        from sys_user a
+        where delete_flag = 0
+    </select>
+
+    <select id="checkUserPassword" resultType="java.lang.Integer">
+        select count(*)
+        from sys_user
+        where delete_flag = 0
+        and password = #{password}
+        and id = #{id}
+    </select>
+    <select id="getNameById" resultType="java.lang.String">
+        select nick_name
+        from sys_user
+        where id = #{id}
+    </select>
+</mapper>

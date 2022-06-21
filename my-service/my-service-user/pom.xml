@@ -69,9 +69,10 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
         <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-common-rpc-spring-start</artifactId>
+            <groupId>io.github.247452312</groupId>
+            <artifactId>my-rpc-spring-start</artifactId>
         </dependency>
 
         <!--zookeeper-->
@@ -86,6 +87,17 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

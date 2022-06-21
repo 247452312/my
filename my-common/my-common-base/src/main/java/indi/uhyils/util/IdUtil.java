@@ -1,11 +1,9 @@
 package indi.uhyils.util;
 
-import indi.uhyils.content.Content;
-import indi.uhyils.exception.IdGenerationException;
+import indi.uhyils.context.MyContext;
+import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 本项目id生产规则
@@ -18,8 +16,13 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 public class IdUtil {
 
-    // todo 这个code在RPC初始化时需要从nacos中获取
-    @Value("${id.organization.code:1}")
+    /**
+     * 序列号
+     */
+    private final AtomicLong sequence = new AtomicLong(0L);
+
+    // todo 这个code在RPC初始化时需要从nacos中获取这个应用在整个应用中的index
+    @Value("${id.organization.code:-1}")
     private Long code;
 
     /**
@@ -27,58 +30,40 @@ public class IdUtil {
      */
     private volatile Long lastTime = 0L;
 
-    /**
-     * 序列号
-     */
-    private AtomicLong sequence = new AtomicLong(0L);
-
-    private static void extracted() {
-        // 生成时间
-        long time = System.currentTimeMillis();
-
-        // 获取序列号
-        long sq = 0L;
-
-        // 从配置文件中获取 代表学校码
-        long distributedResult = (1 & Content.DISTRIBUTED_MASK) << Content.DISTRIBUTED_DISPLACEMENT;
-
-        //时间戳
-        long timeResult = (time & Content.TIME_MASK) << Content.TIME_DISPLACEMENT;
-
-        // 序列数
-        long sqResult = (sq & Content.SEQUENCE_MASK) << Content.SEQUENCE_DISPLACEMENT;
-
-        long l = timeResult | sqResult | distributedResult;
-        LogUtil.info(Long.toString(l));
+    public void setCode(Long code) {
+        this.code = code;
     }
 
-    public long newId() throws IdGenerationException, InterruptedException {
+    public synchronized long newId() {
         // 生成时间
         long time = System.currentTimeMillis();
-        if (lastTime > time) {
-            throw new IdGenerationException("系统时间不正确");
-        }
+        Asserts.assertTrue(time >= lastTime, "系统时间不正确");
         if (lastTime != time) {
             // 如果不是之前的毫秒,则sequence归零,继续生成序列号
             sequence.set(0L);
             lastTime = time;
         }
-
         // 获取序列号
         long sq = sequence.getAndIncrement();
+
         // 如果序列号超出,则阻塞到下一个毫秒继续获取序列号
-        if (sq > Content.SEQUENCE_MASK) {
-            Thread.sleep(1L);
+        if (sq > MyContext.SEQUENCE_MASK) {
+            try {
+                Thread.sleep(1L);
+            } catch (InterruptedException e) {
+                LogUtil.error(e);
+                Thread.currentThread().interrupt();
+            }
             return newId();
         }
         // 从配置文件中获取 代表学校码
-        long distributedResult = (code & Content.DISTRIBUTED_MASK) << Content.DISTRIBUTED_DISPLACEMENT;
+        long distributedResult = (code & MyContext.DISTRIBUTED_MASK) << MyContext.DISTRIBUTED_DISPLACEMENT;
 
         //时间戳
-        long timeResult = (time & Content.TIME_MASK) << Content.TIME_DISPLACEMENT;
+        long timeResult = (time & MyContext.TIME_MASK) << MyContext.TIME_DISPLACEMENT;
 
         // 序列数
-        long sqResult = (sq & Content.SEQUENCE_MASK) << Content.SEQUENCE_DISPLACEMENT;
+        long sqResult = (sq & MyContext.SEQUENCE_MASK) << MyContext.SEQUENCE_DISPLACEMENT;
 
         return timeResult | sqResult | distributedResult;
     }

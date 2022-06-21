@@ -1,0 +1,15 @@
+package ${package}.repository;
+
+import ${package}.pojo.DO.${className}DO;
+import ${package}.pojo.entity.${className};
+import ${package}.repository.base.BaseEntityRepository;
+
+/**
+* ${tableComment}(${className})表 数据仓库层
+*
+* @author ${author}
+* @version 1.0
+* @date 文件创建日期 ${dateTime}
+*/
+public interface ${className}Repository extends BaseEntityRepository<${className}DO, ${className}> {
+}

@@ -1,17 +1,18 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.SceneEntity;
+import indi.uhyils.pojo.DO.SceneDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * (Scene)表 数据库访问层
+ * 场景表(Scene)表 数据库访问层
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年08月29日 10时47分53秒
+ * @version 1.0
+ * @date 文件创建日期 2021年08月31日 19时04分31秒
  */
 @Mapper
-public interface SceneDao extends DefaultDao<SceneEntity> {
+public interface SceneDao extends DefaultDao<SceneDO> {
 
 
 }

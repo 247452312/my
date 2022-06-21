@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 192.168.1.101
+ Source Server         : mac
  Source Server Type    : MySQL
- Source Server Version : 80020
- Source Host           : 192.168.1.101:3306
+ Source Server Version : 80024
+ Source Host           : prod:3306
  Source Schema         : my_order
 
  Target Server Type    : MySQL
- Target Server Version : 80020
+ Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 09/12/2020 18:56:20
+ Date: 14/02/2022 09:30:01
 */
 
 SET NAMES utf8mb4;
@@ -89,6 +89,7 @@ CREATE TABLE `sys_order_base_info`  (
 -- ----------------------------
 -- Records of sys_order_base_info
 -- ----------------------------
+INSERT INTO `sys_order_base_info` VALUES (1685736299651137568, 1607643413, 0, b'0', NULL, 1607643413, 0, '单事务工单', '单事务工单', 0, 0, 0, 1, 1, 60);
 
 -- ----------------------------
 -- Table structure for sys_order_base_node
@@ -122,6 +123,8 @@ CREATE TABLE `sys_order_base_node`  (
 -- ----------------------------
 -- Records of sys_order_base_node
 -- ----------------------------
+INSERT INTO `sys_order_base_node` VALUES (1685769026380234784, 1607674623, 0, b'0', NULL, 1607674623, 0, 1685736299651137568, '起始节点', '起始节点,请输入要告知对方的信息', 0, 0, 0, 0, 60, NULL, NULL, NULL, NULL, 0, 0);
+INSERT INTO `sys_order_base_node` VALUES (1685769092066181152, 1607674686, 0, b'0', NULL, 1607674686, 0, 1685736299651137568, '对方节点', '对方节点', 0, 0, 0, 2, 60, NULL, NULL, NULL, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for sys_order_base_node_field
@@ -151,6 +154,10 @@ CREATE TABLE `sys_order_base_node_field`  (
 -- ----------------------------
 -- Records of sys_order_base_node_field
 -- ----------------------------
+INSERT INTO `sys_order_base_node_field` VALUES (1685769256076050464, 1607674842, '0', b'0', NULL, 1607674842, 0, 1685769026380234784, '标题', '标题', '无', 0, 1, 1, 1, NULL, NULL);
+INSERT INTO `sys_order_base_node_field` VALUES (1685769338857979936, 1607674921, '0', b'0', NULL, 1607674921, 0, 1685769026380234784, '内容', '单事务节点内容', '无', 0, 1, 5, 1, NULL, NULL);
+INSERT INTO `sys_order_base_node_field` VALUES (1685769399457284128, 1607674979, '0', b'0', NULL, 1607674979, 0, 1685769092066181152, '处理结果标题', '处理结果标题', '无', 0, 1, 0, 1, NULL, NULL);
+INSERT INTO `sys_order_base_node_field` VALUES (1685769467227799584, 1607675044, '0', b'0', NULL, 1607675044, 0, 1685769092066181152, '处理结果内容', '处理结果内容', '无', 0, 1, 5, 1, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_order_base_node_result_type
@@ -172,6 +179,10 @@ CREATE TABLE `sys_order_base_node_result_type`  (
 -- ----------------------------
 -- Records of sys_order_base_node_result_type
 -- ----------------------------
+INSERT INTO `sys_order_base_node_result_type` VALUES (1685769564134047776, 1607675136, 0, b'0', NULL, 1607675170, 0, 1685769026380234784, '单节点事务发送成功');
+INSERT INTO `sys_order_base_node_result_type` VALUES (1685769572049748000, 1607675144, 0, b'0', NULL, 1607675174, 0, 1685769026380234784, '单节点事务发送失败');
+INSERT INTO `sys_order_base_node_result_type` VALUES (1685769583705718816, 1607675155, 0, b'0', NULL, 1607675155, 0, 1685769092066181152, '单节点事务处理成功');
+INSERT INTO `sys_order_base_node_result_type` VALUES (1685769719072686112, 1607675284, 0, b'0', NULL, 1607675284, 0, 1685769092066181152, '单节点事务处理失败');
 
 -- ----------------------------
 -- Table structure for sys_order_base_node_route
@@ -194,6 +205,7 @@ CREATE TABLE `sys_order_base_node_route`  (
 -- ----------------------------
 -- Records of sys_order_base_node_route
 -- ----------------------------
+INSERT INTO `sys_order_base_node_route` VALUES (1685769857262420000, 1607675416, 0, b'0', NULL, 1607675416, 0, 1685769026380234784, 1685769564134047776, 1685769092066181152);
 
 -- ----------------------------
 -- Table structure for sys_order_info
@@ -222,6 +234,7 @@ CREATE TABLE `sys_order_info`  (
 -- ----------------------------
 -- Records of sys_order_info
 -- ----------------------------
+INSERT INTO `sys_order_info` VALUES (1685850790926745632, 1607752600, 0, b'0', NULL, 1607752600, 0, '单事务工单', '单事务工单', 0, 0, 0, '1', 1, 60, NULL);
 
 -- ----------------------------
 -- Table structure for sys_order_log
@@ -283,6 +296,8 @@ CREATE TABLE `sys_order_node`  (
 -- ----------------------------
 -- Records of sys_order_node
 -- ----------------------------
+INSERT INTO `sys_order_node` VALUES (1685850790934085664, 1607752600, 0, b'0', NULL, 1607752600, 0, 1685850790926745632, '起始节点', '起始节点,请输入要告知对方的信息', 0, 0, 0, NULL, 0, 60, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `sys_order_node` VALUES (1685850790959251488, 1607752600, 0, b'0', NULL, 1607752600, 0, 1685850790926745632, '对方节点', '对方节点', 0, 0, 0, NULL, 2, 60, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL);
 
 -- ----------------------------
 -- Table structure for sys_order_node_field
@@ -312,6 +327,10 @@ CREATE TABLE `sys_order_node_field`  (
 -- ----------------------------
 -- Records of sys_order_node_field
 -- ----------------------------
+INSERT INTO `sys_order_node_field` VALUES (1685850790948765728, 1607752600, 0, b'0', NULL, 1607752600, 0, 1685850790934085664, '标题', '标题', '无', 0, 1, 1, 1, NULL, NULL);
+INSERT INTO `sys_order_node_field` VALUES (1685850790951911456, 1607752600, 0, b'0', NULL, 1607752600, 0, 1685850790934085664, '内容', '单事务节点内容', '无', 0, 1, 5, 1, NULL, NULL);
+INSERT INTO `sys_order_node_field` VALUES (1685850790968688672, 1607752600, 0, b'0', NULL, 1607752600, 0, 1685850790959251488, '处理结果标题', '处理结果标题', '无', 0, 1, 0, 1, NULL, NULL);
+INSERT INTO `sys_order_node_field` VALUES (1685850790972882976, 1607752600, 0, b'0', NULL, 1607752600, 0, 1685850790959251488, '处理结果内容', '处理结果内容', '无', 0, 1, 5, 1, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_order_node_field_value
@@ -333,6 +352,8 @@ CREATE TABLE `sys_order_node_field_value`  (
 -- ----------------------------
 -- Records of sys_order_node_field_value
 -- ----------------------------
+INSERT INTO `sys_order_node_field_value` VALUES (1685850803421577248, 1607752612, 0, b'0', NULL, 1607752612, 0, 1685850790948765728, 'test 标题');
+INSERT INTO `sys_order_node_field_value` VALUES (1685850803424722976, 1607752612, 0, b'0', NULL, 1607752612, 0, 1685850790951911456, 'test 内容');
 
 -- ----------------------------
 -- Table structure for sys_order_node_result_type
@@ -354,6 +375,10 @@ CREATE TABLE `sys_order_node_result_type`  (
 -- ----------------------------
 -- Records of sys_order_node_result_type
 -- ----------------------------
+INSERT INTO `sys_order_node_result_type` VALUES (1685850790954008608, 1607752600, 0, b'0', NULL, 1607752600, 0, 1685850790934085664, '单节点事务发送成功');
+INSERT INTO `sys_order_node_result_type` VALUES (1685850790957154336, 1607752600, 0, b'0', NULL, 1607752600, 0, 1685850790934085664, '单节点事务发送失败');
+INSERT INTO `sys_order_node_result_type` VALUES (1685850790974980128, 1607752600, 0, b'0', NULL, 1607752600, 0, 1685850790959251488, '单节点事务处理成功');
+INSERT INTO `sys_order_node_result_type` VALUES (1685850790976028704, 1607752600, 0, b'0', NULL, 1607752600, 0, 1685850790959251488, '单节点事务处理失败');
 
 -- ----------------------------
 -- Table structure for sys_order_node_route
@@ -376,5 +401,6 @@ CREATE TABLE `sys_order_node_route`  (
 -- ----------------------------
 -- Records of sys_order_node_route
 -- ----------------------------
+INSERT INTO `sys_order_node_route` VALUES (1685850790978125856, 1607752600, 0, b'0', NULL, 1607752600, 0, NULL, NULL, 1685850790959251488);
 
 SET FOREIGN_KEY_CHECKS = 1;

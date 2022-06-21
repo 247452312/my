@@ -1,0 +1,99 @@
+package indi.uhyils.repository.impl;
+
+import indi.uhyils.annotation.Repository;
+import indi.uhyils.assembler.DeptAssembler;
+import indi.uhyils.dao.DeptDao;
+import indi.uhyils.pojo.DO.DeptDO;
+import indi.uhyils.pojo.DO.DeptMenuDO;
+import indi.uhyils.pojo.DO.DeptPowerDO;
+import indi.uhyils.pojo.DTO.DeptDTO;
+import indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO;
+import indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO;
+import indi.uhyils.pojo.entity.Dept;
+import indi.uhyils.pojo.entity.Menu;
+import indi.uhyils.pojo.entity.Power;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.repository.DeptRepository;
+import indi.uhyils.repository.base.AbstractRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+/**
+ * 仓库
+ *
+ * @author uhyils <247452312@qq.com>
+ * @version 1.0
+ * @date 文件创建日期 2021年08月24日 17时27分
+ */
+@Repository
+public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao, DeptDTO, DeptAssembler> implements DeptRepository {
+
+
+    protected DeptRepositoryImpl(DeptAssembler assembler, DeptDao dao) {
+        super(assembler, dao);
+    }
+
+    @Override
+    public List<Dept> findByRoleId(Identifier roleId) {
+        List<DeptDO> depts = dao.getByRoleId(roleId.getId());
+        return assembler.listToEntity(depts);
+    }
+
+    @Override
+    public void addPowers(Dept deptId, Power power) {
+        DeptPowerDO middle = new DeptPowerDO();
+        middle.setDeptId(deptId.getUnique().getId());
+        middle.setPowerId(power.getUnique().getId());
+        middle.preInsert();
+        dao.insertDeptPower(middle);
+    }
+
+    @Override
+    public void cleanPower(Dept deptId) {
+        dao.deleteDeptPowerMiddleByDeptId(deptId.getUnique().getId());
+    }
+
+    @Override
+    public void deleteDeptPower(List<Long> ids) {
+        dao.deleteDeptPower(ids);
+    }
+
+    @Override
+    public void cleanMenu(Dept deptId) {
+        dao.deleteDeptMenuMiddleByDeptId(deptId.getUnique().getId());
+    }
+
+    @Override
+    public void addMenu(Dept deptId, Menu menuId) {
+        DeptMenuDO t = new DeptMenuDO();
+        t.setDeptId(deptId.getUnique().getId());
+        t.setMenuId(menuId.getUnique().getId());
+        t.preInsert();
+        dao.insertDeptMenu(t);
+    }
+
+    @Override
+    public List<GetDeptsByMenuIdDTO> findByMenuId(Menu menuId) {
+        return dao.getByMenuId(menuId.getUnique().getId());
+    }
+
+    @Override
+    public List<Dept> findAll() {
+        ArrayList<DeptDO> all = dao.getAll();
+        return all.stream().map(assembler::toEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(Dept deptId) {
+        return dao.getAllPowerWithHaveMark(deptId.getUnique().getId());
+    }
+
+    @Override
+    public void cleanRole(Dept dept) {
+        dao.deleteRoleDeptMiddleByDeptId(dept.getUnique().getId());
+    }
+
+
+}

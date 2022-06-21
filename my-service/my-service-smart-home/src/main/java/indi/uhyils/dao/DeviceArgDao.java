@@ -1,17 +1,18 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.DeviceArgEntity;
+import indi.uhyils.pojo.DO.DeviceArgDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * (DeviceArg)表 数据库访问层
+ * 设备参数表(DeviceArg)表 数据库访问层
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年08月29日 10时47分42秒
+ * @version 1.0
+ * @date 文件创建日期 2021年08月31日 19时04分15秒
  */
 @Mapper
-public interface DeviceArgDao extends DefaultDao<DeviceArgEntity> {
+public interface DeviceArgDao extends DefaultDao<DeviceArgDO> {
 
 
 }

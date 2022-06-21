@@ -8,10 +8,12 @@ import java.util.Collection;
  * @date 文件创建日期 2021年04月18日 15时33分
  */
 public class CollectionUtils {
+
     /**
      * 判断是否为空或无
      *
      * @param collection
+     *
      * @return
      */
     public static <T> Boolean isEmpty(Collection<T> collection) {
@@ -22,6 +24,7 @@ public class CollectionUtils {
      * 判断集合不为空
      *
      * @param collection
+     *
      * @return
      */
     public static <T> Boolean isNotEmpty(Collection<T> collection) {

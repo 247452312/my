@@ -14,9 +14,10 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({
-        HotSpotAop.class,
-        HotSpotRedisPool.class,
-        TableSqlFilter.class
-})
+            HotSpotAop.class,
+            HotSpotRedisPool.class,
+            TableSqlFilter.class
+        })
 public class HotSpotConfiguration {
+
 }

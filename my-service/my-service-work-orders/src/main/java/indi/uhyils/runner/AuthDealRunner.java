@@ -5,14 +5,13 @@ import com.rabbitmq.client.Connection;
 import indi.uhyils.content.OrderContent;
 import indi.uhyils.handler.rabbit.OrderAutoDealConsumer;
 import indi.uhyils.mq.pojo.rabbit.RabbitFactory;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 自动处理工单的地方

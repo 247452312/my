@@ -1,18 +1,14 @@
 package indi.uhyils.util;
 
-import com.alibaba.fastjson.JSONObject;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
-import indi.uhyils.content.Content;
-import indi.uhyils.pojo.request.model.LinkNode;
+import indi.uhyils.context.MyContext;
 import indi.uhyils.util.disruptor.JsonEvent;
 import indi.uhyils.util.disruptor.JsonEventConsumer;
 import indi.uhyils.util.disruptor.JsonEventFactory;
 import indi.uhyils.util.disruptor.JsonEventProducerWithTranslator;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.Executors;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 日志推送请求
@@ -35,28 +31,6 @@ public class LogPushUtils {
         PRODUCER = new JsonEventProducerWithTranslator(ringBuffer);
     }
 
-    public static void pushLog(String exceptionDetail, String interfaceName, String methodName, Object params, LinkNode<String> link, HttpServletRequest request, String token, Integer serviceCode) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("class", "indi.uhyils.pojo.model.LogEntity");
-        // 说明有错误信息,类型是错误
-        if (StringUtils.isNotEmpty(exceptionDetail)) {
-            jsonObject.put("logType", serviceCode);
-            jsonObject.put("exceptionDetail", exceptionDetail);
-        } else {
-            jsonObject.put("logType", serviceCode);
-        }
-
-        jsonObject.put("interfaceName", interfaceName);
-        jsonObject.put("methodName", methodName);
-        jsonObject.put("params", JSONObject.toJSONString(params));
-        jsonObject.put("time", System.currentTimeMillis());
-        jsonObject.put("ip", getIpAddress(request));
-        jsonObject.put("userId", token);
-        jsonObject.put("link", parseString(link));
-
-        String json = jsonObject.toJSONString();
-        PRODUCER.onData(json, token);
-    }
 
     public static String getIpAddress(HttpServletRequest request) {
         String ip = null;
@@ -64,22 +38,22 @@ public class LogPushUtils {
         //X-Forwarded-For：Squid 服务代理
         String ipAddresses = request.getHeader("X-Forwarded-For");
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || Content.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || MyContext.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
             //Proxy-Client-IP：apache 服务代理
             ipAddresses = request.getHeader("Proxy-Client-IP");
         }
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || Content.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || MyContext.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
             //WL-Proxy-Client-IP：weblogic 服务代理
             ipAddresses = request.getHeader("WL-Proxy-Client-IP");
         }
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || Content.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || MyContext.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
             //HTTP_CLIENT_IP：有些代理服务器
             ipAddresses = request.getHeader("HTTP_CLIENT_IP");
         }
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || Content.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || MyContext.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
             //X-Real-IP：nginx服务代理
             ipAddresses = request.getHeader("X-Real-IP");
         }
@@ -90,20 +64,9 @@ public class LogPushUtils {
         }
 
         //还是不能获取到，最后再通过request.getRemoteAddr();获取
-        if (ip == null || ip.length() == 0 || Content.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
+        if (ip == null || ip.length() == 0 || MyContext.UN_KNOW.equalsIgnoreCase(ipAddresses)) {
             ip = request.getRemoteAddr();
         }
         return ip;
-    }
-
-    private static String parseString(LinkNode<String> link) {
-        StringBuilder sb = new StringBuilder();
-        LinkNode<String> p = link;
-        while (p != null) {
-            sb.append(p.getData());
-            sb.append("-->");
-            p = p.getLinkNode();
-        }
-        return sb.toString();
     }
 }

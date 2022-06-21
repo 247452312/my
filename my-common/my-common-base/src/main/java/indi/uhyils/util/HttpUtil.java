@@ -1,6 +1,10 @@
 package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSONObject;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -15,28 +19,31 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * http请求类
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月26日 10时56分
  */
-public class HttpUtil {
+public final class HttpUtil {
+
     /**
      * 返回成功状态码
      */
     private static final int SUCCESS_CODE = 200;
+
+    private HttpUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 发送GET请求
      *
      * @param url  请求url
      * @param head 请求参数
+     *
      * @return JSON或者字符串
+     *
      * @throws Exception
      */
     public static Object sendHttpGet(String url, Map<String, Object> head) throws Exception {
@@ -80,7 +87,8 @@ public class HttpUtil {
                 /**
                  * 通过EntityUitls获取返回内容
                  */
-                String result = EntityUtils.toString(entity, "UTF-8");
+                String result = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+
                 /**
                  * 转换成json,根据合法性返回json或者字符串
                  */
@@ -96,8 +104,12 @@ public class HttpUtil {
         } catch (Exception e) {
             LogUtil.error(HttpUtil.class, "HttpClientService-line: " + 100 + ", Exception: " + e);
         } finally {
-            response.close();
-            client.close();
+            if (response != null) {
+                response.close();
+            }
+            if (client != null) {
+                client.close();
+            }
         }
         return null;
     }
@@ -108,18 +120,20 @@ public class HttpUtil {
      *
      * @param url  请求url
      * @param head 请求参数
+     *
      * @return JSON或者字符串
+     *
      * @throws Exception
      */
     public static Object sendHttpsGet(String url, Map<String, Object> head) throws Exception {
         JSONObject jsonObject = null;
-        CloseableHttpClient client = null;
         CloseableHttpResponse response = null;
-        try {
+        try (
             /**
              * 创建HttpClient对象
              */
-            client = new SSLClient();
+            CloseableHttpClient client = new SSLClient()
+        ) {
             /**
              * 创建URIBuilder
              */
@@ -152,7 +166,7 @@ public class HttpUtil {
                 /**
                  * 通过EntityUitls获取返回内容
                  */
-                String result = EntityUtils.toString(entity, "UTF-8");
+                String result = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                 /**
                  * 转换成json,根据合法性返回json或者字符串
                  */
@@ -168,8 +182,9 @@ public class HttpUtil {
         } catch (Exception e) {
             LogUtil.error(HttpUtil.class, "HttpClientService-line: " + 100 + ", Exception: " + e);
         } finally {
-            response.close();
-            client.close();
+            if (response != null) {
+                response.close();
+            }
         }
         return null;
     }
@@ -180,7 +195,9 @@ public class HttpUtil {
      * @param url    url
      * @param heads  请求头
      * @param params 参数
+     *
      * @return JSON或者字符串
+     *
      * @throws Exception
      */
     public static Object sendHttpPost(String url, Map<String, Object> heads, Map<String, Object> params) throws Exception {
@@ -199,7 +216,7 @@ public class HttpUtil {
             /**
              * 包装成一个Entity对象
              */
-            StringEntity entity = new UrlEncodedFormEntity(getParams(params), "UTF-8");
+            StringEntity entity = new UrlEncodedFormEntity(getParams(params), StandardCharsets.UTF_8);
             /**
              * 设置请求的内容
              */
@@ -223,7 +240,7 @@ public class HttpUtil {
                 /**
                  * 通过EntityUitls获取返回内容
                  */
-                String result = EntityUtils.toString(response.getEntity(), "UTF-8");
+                String result = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
                 /**
                  * 转换成json,根据合法性返回json或者字符串
                  */
@@ -239,8 +256,12 @@ public class HttpUtil {
         } catch (Exception e) {
             LogUtil.error(HttpUtil.class, e);
         } finally {
-            response.close();
-            client.close();
+            if (response != null) {
+                response.close();
+            }
+            if (client != null) {
+                client.close();
+            }
         }
         return null;
     }
@@ -252,7 +273,9 @@ public class HttpUtil {
      * @param url    url
      * @param heads  请求头
      * @param params 参数
+     *
      * @return JSON或者字符串
+     *
      * @throws Exception
      */
     public static Object sendHttpsPost(String url, Map<String, Object> heads, Map<String, Object> params) throws Exception {
@@ -299,20 +322,21 @@ public class HttpUtil {
                 /**
                  * 转换成json,根据合法性返回json或者字符串
                  */
-                try {
-                    jsonObject = JSONObject.parseObject(result);
-                    return jsonObject;
-                } catch (Exception e) {
-                    return result;
-                }
+                jsonObject = JSONObject.parseObject(result);
+                return jsonObject;
+
             } else {
                 LogUtil.error(HttpUtil.class, "请求失败");
             }
         } catch (Exception e) {
             LogUtil.error(HttpUtil.class, e);
         } finally {
-            response.close();
-            client.close();
+            if (response != null) {
+                response.close();
+            }
+            if (client != null) {
+                client.close();
+            }
         }
         return null;
     }
@@ -321,6 +345,7 @@ public class HttpUtil {
      * 组织请求参数{参数名和参数值下标保持一致}
      *
      * @param params 参数数组
+     *
      * @return 参数对象
      */
     private static List<NameValuePair> getParams(Map<String, Object> params) {
@@ -335,6 +360,7 @@ public class HttpUtil {
      * 组织请求参数{参数名和参数值下标保持一致}
      *
      * @param heads 参数数组
+     *
      * @return 参数对象
      */
     private static List<BasicHeader> getHeads(Map<String, Object> heads) {

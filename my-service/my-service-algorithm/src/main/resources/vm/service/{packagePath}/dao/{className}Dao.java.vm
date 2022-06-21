@@ -1,0 +1,18 @@
+package ${package}.dao;
+
+import ${package}.dao.base.DefaultDao;
+import ${package}.pojo.DO.${className}DO;
+import org.apache.ibatis.annotations.Mapper;
+
+
+/**
+* ${tableComment}(${className})表 mapper
+*
+* @author ${author}
+* @version 1.0
+* @date 文件创建日期 ${dateTime}
+*/
+@Mapper
+public interface ${className}Dao extends DefaultDao<${className}DO> {
+
+}

@@ -72,10 +72,12 @@
 
         $.reloadTable = function () {
             var reload = function (page, size, args) {
-                pushRequest("ResponseService", "getByArgs", {
-                    page: page,
-                    size: size,
-                    paging: true,
+                pushRequest("ResponseProvider", "getByArgs", {
+                    limit:{
+          number: page,
+          size: size,
+          page: true
+        },
                     args: args
                 }, function (data) {
                     table.render({

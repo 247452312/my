@@ -11,7 +11,11 @@ import java.util.function.Supplier;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月03日 07时15分
  */
-public class ListenerUtil {
+public final class ListenerUtil {
+
+    private ListenerUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 添加监听

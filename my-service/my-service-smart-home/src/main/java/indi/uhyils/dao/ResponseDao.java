@@ -1,17 +1,18 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.ResponseEntity;
+import indi.uhyils.pojo.DO.ResponseDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * (Response)表 数据库访问层
+ * 设备指令回应表(Response)表 数据库访问层
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年08月29日 10时47分52秒
+ * @version 1.0
+ * @date 文件创建日期 2021年08月31日 19时04分27秒
  */
 @Mapper
-public interface ResponseDao extends DefaultDao<ResponseEntity> {
+public interface ResponseDao extends DefaultDao<ResponseDO> {
 
 
 }

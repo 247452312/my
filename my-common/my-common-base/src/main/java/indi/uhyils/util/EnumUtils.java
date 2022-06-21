@@ -2,7 +2,11 @@ package indi.uhyils.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 处理enum信息的工具
@@ -10,7 +14,7 @@ import java.util.*;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月13日 12时44分
  */
-public class EnumUtils {
+public final class EnumUtils {
 
 
     /**
@@ -18,8 +22,12 @@ public class EnumUtils {
      */
     private static final String GET_METHOD_PREFIX = "get";
 
-    public static ArrayList<Map<String, Object>> getEnumList(Class en) {
-        ArrayList<Map<String, Object>> result = new ArrayList<>();
+    private EnumUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static List<Map<String, Object>> getEnumList(Class en) {
+        List<Map<String, Object>> result = new ArrayList<>();
         Enum[] enumConstants = (Enum[]) en.getEnumConstants();
         Method[] methods = en.getMethods();
         List<Method> getMethods = new ArrayList<>();
@@ -42,7 +50,6 @@ public class EnumUtils {
             });
             result.add(map);
         });
-
 
         return result;
     }

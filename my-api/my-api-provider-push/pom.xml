@@ -2,15 +2,15 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>my-api</artifactId>
         <groupId>indi.uhyils</groupId>
+        <artifactId>my-api</artifactId>
         <version>0.3.0-my-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
+    <artifactId>my-api-provider-push</artifactId>
     <version>0.3.0-my-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <artifactId>my-api-provider-push</artifactId>
     <dependencies>
         <dependency>
             <groupId>indi.uhyils</groupId>

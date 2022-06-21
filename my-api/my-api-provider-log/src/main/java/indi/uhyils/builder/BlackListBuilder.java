@@ -1,6 +1,7 @@
 package indi.uhyils.builder;
 
-import indi.uhyils.pojo.model.BlackListEntity;
+
+import indi.uhyils.pojo.DTO.BlackListDTO;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -12,10 +13,11 @@ public class BlackListBuilder {
      * 根据id创建一个黑名单
      *
      * @param ip
+     *
      * @return
      */
-    public static BlackListEntity buildByIp(String ip) {
-        BlackListEntity blackListEntity = new BlackListEntity();
+    public static BlackListDTO buildByIp(String ip) {
+        BlackListDTO blackListEntity = new BlackListDTO();
         blackListEntity.setIp(ip);
         return blackListEntity;
     }

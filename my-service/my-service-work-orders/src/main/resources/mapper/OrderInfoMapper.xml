@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.OrderInfoDao">
+    <resultMap type="indi.uhyils.pojo.DO.OrderInfoDO" id="OrderInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="desc" column="desc" jdbcType="VARCHAR"/>
+        <result property="priority" column="priority" jdbcType="INTEGER"/>
+        <result property="son" column="son" jdbcType="INTEGER"/>
+        <result property="monitorUserId" column="monitor_user_id" jdbcType="INTEGER"/>
+        <result property="queryUserIds" column="query_user_ids" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="limitTime" column="limit_time" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="columnList">
+        a.remark          as remark,
+        a.priority        as priority,
+        a.update_date     as updateDate,
+        a.query_user_ids  as queryUserIds,
+        a.limit_time      as limitTime,
+        a.update_user     as updateUser,
+        a.son             as son,
+        a.monitor_user_id as monitorUserId,
+        a.name            as name,
+        a.id              as id,
+        a.create_user     as createUser,
+        a.create_date     as createDate,
+        a.delete_flag     as deleteFlag,
+        a.type,
+        a.`desc`,
+        a.status          as status
+    </sql>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.OrderInfoDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_order_info set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="item.name != null and item.name != ''">
+                ,name = #{item.name}
+            </if>
+            <if test="item.desc != null and item.desc != ''">
+                ,`desc` = #{item.desc}
+            </if>
+            <if test="item.priority != null">
+                ,priority = #{item.priority}
+            </if>
+            <if test="item.son != null">
+                ,son = #{item.son}
+            </if>
+            <if test="item.monitorUserId != null">
+                ,monitor_user_id = #{item.monitorUserId}
+            </if>
+            <if test="item.queryUserIds != null and item.queryUserIds != ''">
+                ,query_user_ids = #{item.queryUserIds}
+            </if>
+            <if test="item.status != null">
+                ,status = #{item.status}
+            </if>
+            <if test="item.limitTime != null">
+                ,limit_time = #{item.limitTime}
+            </if>
+            <if test="item.type != null">
+                ,type = #{item.type}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+    <select id="getOrderByType" resultType="indi.uhyils.pojo.DO.OrderInfoDO">
+        select
+        <include refid="columnList"/>
+        from sys_order_info a
+        where delete_flag = 0
+        and type = #{type}
+    </select>
+</mapper>

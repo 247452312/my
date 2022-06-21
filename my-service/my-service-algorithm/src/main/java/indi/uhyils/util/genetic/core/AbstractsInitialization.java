@@ -13,10 +13,12 @@ import java.util.Random;
 public abstract class AbstractsInitialization implements DataInitialization<DnaData> {
 
     protected Random random = new Random();
+
     /**
      * 随机因子
      */
     protected Double[] range;
+
     /**
      * 多远距离算同一个点
      */

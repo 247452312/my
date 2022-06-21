@@ -2,17 +2,18 @@ package indi.uhyils.redis.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.response.HotSpotResponse;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.enums.ServiceCode;
+import indi.uhyils.pojo.DTO.HotSpotDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.exchange.pojo.content.impl.RpcResponseContentImpl;
+import indi.uhyils.rpc.exchange.pojo.data.RpcData;
 import indi.uhyils.rpc.netty.spi.step.template.ConsumerResponseObjectExtension;
 import indi.uhyils.util.ObjectByteUtil;
 import indi.uhyils.util.SpringUtil;
-import redis.clients.jedis.Jedis;
-
 import java.nio.charset.StandardCharsets;
+import redis.clients.jedis.Jedis;
 
 /**
  * 如果返回值是缓存信息,那么应该获取真实的数据 然后返回
@@ -27,27 +28,31 @@ public class RpcHotSpotExtension implements ConsumerResponseObjectExtension {
      * 如果返回值是缓存,那么应该获取真实的数据 然后返回
      *
      * @param serviceResult
-     * @param json
+     * @param rpcData
+     *
      * @return
      */
-    private static ServiceResult getRealServiceResult(ServiceResult serviceResult, String json) {
+    private static ServiceResult getRealServiceResult(ServiceResult serviceResult, RpcData rpcData) {
+        RpcResponseContentImpl content = (RpcResponseContentImpl) rpcData.content();
+        String json = content.getResponseContent();
         // 如果返回值是缓存
         if (serviceResult.getServiceCode().equals(ServiceCode.SUCCESS_REDIS.getText())) {
-            JSONObject jsonObject = JSON.parseObject(json);
-            Object data = jsonObject.get("data");
-            HotSpotResponse hotSpotResponse = JSON.parseObject(JSON.toJSONString(data), HotSpotResponse.class);
-            String key = hotSpotResponse.getKey();
-            String hkey = hotSpotResponse.getHkey();
             HotSpotRedisPool bean = SpringUtil.getBean(HotSpotRedisPool.class);
-            Jedis jedis = bean.getJedis();
-            byte[] hget = jedis.hget(key.getBytes(StandardCharsets.UTF_8), hkey.getBytes(StandardCharsets.UTF_8));
-            serviceResult = ObjectByteUtil.toObject(hget, ServiceResult.class);
+            try (Jedis jedis = bean.getJedis()) {
+                JSONObject jsonObject = JSON.parseObject(json);
+                Object data = jsonObject.get("data");
+                HotSpotDTO hotSpotResponse = JSON.parseObject(JSON.toJSONString(data), HotSpotDTO.class);
+                String key = hotSpotResponse.getKey();
+                String hkey = hotSpotResponse.getHkey();
+                byte[] hget = jedis.hget(key.getBytes(StandardCharsets.UTF_8), hkey.getBytes(StandardCharsets.UTF_8));
+                serviceResult = ObjectByteUtil.toObject(hget, ServiceResult.class);
+            }
         }
         return serviceResult;
     }
 
     @Override
-    public Object doFilter(Object obj, String json) {
-        return getRealServiceResult((ServiceResult) obj, json);
+    public Object doFilter(Object obj, RpcData rpcData) {
+        return getRealServiceResult((ServiceResult) obj, rpcData);
     }
 }

@@ -1,0 +1,24 @@
+package ${package}.pojo.entity;
+
+import ${package}.annotation.Default;
+import ${package}.pojo.DO.${className}DO;
+import ${package}.pojo.entity.base.AbstractDoEntity;
+
+/**
+* ${tableComment}(${className})表 数据库实体类
+*
+* @author ${author}
+* @date 文件创建日期 ${dateTime}
+*/
+public class ${className} extends AbstractDoEntity<${className}DO> {
+
+  @Default
+  public ${className}(${className}DO data) {
+      super(data);
+  }
+
+  public ${className}(Long id) {
+      super(id, new ${className}DO());
+  }
+
+}

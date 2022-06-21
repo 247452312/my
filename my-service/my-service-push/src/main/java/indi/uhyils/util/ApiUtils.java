@@ -1,12 +1,15 @@
 package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.CodeEnum;
-import indi.uhyils.pojo.model.ApiEntity;
-import indi.uhyils.pojo.model.UserEntity;
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.*;
+import indi.uhyils.enums.CodeEnum;
+import indi.uhyils.pojo.DO.ApiDO;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.entity.Api;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -14,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 负责api的发送等请求
@@ -28,20 +32,22 @@ public class ApiUtils {
      * 调用api群
      *
      * @param apis 已经排好序的api们
+     *
      * @return 结果
      */
-    public static String callApi(List<ApiEntity> apis, UserEntity userEntity, HashMap<String, String> parameter) {
+    public static String callApi(List<Api> apis, UserDTO userEntity, Map<String, String> parameter) {
         // 初始化调用群期间可传递的参数
-        parameter.put("${username}", userEntity.getUserName());
+        parameter.put("${username}", userEntity.getUsername());
         parameter.put("${nickName}", userEntity.getNickName());
         parameter.put("${mail}", userEntity.getMail());
         parameter.put("${phone}", userEntity.getPhone());
         String result = null;
         int apiIndex = 0;
         // 遍历api群中的每一个api(已经排好序)
-        for (ApiEntity api : apis) {
-            String head = api.getHead();
-            String param = api.getParam();
+        for (Api api : apis) {
+            ApiDO apiDO = api.toData();
+            String head = apiDO.getHead();
+            String param = apiDO.getParam();
             // 初始化head
             HashMap<String, String> httpHead = new HashMap<>(16);
             if (!StringUtils.isEmpty(head)) {
@@ -67,14 +73,14 @@ public class ApiUtils {
                 // 获取流
                 paramByte = param.getBytes(StandardCharsets.UTF_8);
             }
-            result = getHttpResultString(parameter, result, apiIndex, api, param, httpHead, paramByte);
+            result = getHttpResultString(parameter, result, apiIndex, apiDO, param, httpHead, paramByte);
             apiIndex++;
         }
         LogUtil.info(ApiUtils.class, "api调用群结束");
         return result;
     }
 
-    public static String replaceString(HashMap<String, String> parameter, String head) {
+    public static String replaceString(Map<String, String> parameter, String head) {
         for (Map.Entry<String, String> en : parameter.entrySet()) {
             String key = en.getKey();
             String value = en.getValue();
@@ -96,9 +102,10 @@ public class ApiUtils {
      * @param param     参数
      * @param httpHead  解析完成的请求头
      * @param paramByte 参数byte
+     *
      * @return 此次http结果
      */
-    private static String getHttpResultString(HashMap<String, String> map, String result, int apiIndex, ApiEntity api, String param, HashMap<String, String> httpHead, byte[] paramByte) {
+    private static String getHttpResultString(Map<String, String> map, String result, int apiIndex, ApiDO api, String param, HashMap<String, String> httpHead, byte[] paramByte) {
         HttpURLConnection con = null;
         BufferedReader read = null;
         OutputStream outputStream = null;
@@ -184,7 +191,7 @@ public class ApiUtils {
         return result;
     }
 
-    private static void setHttpHead(ApiEntity api, HashMap<String, String> httpHead, HttpURLConnection con) {
+    private static void setHttpHead(ApiDO api, HashMap<String, String> httpHead, HttpURLConnection con) {
         // 设置请求头
         LogUtil.info(ApiUtils.class, "发送http请求: " + api.getUrl());
         LogUtil.info(ApiUtils.class, "请求头开始: ");

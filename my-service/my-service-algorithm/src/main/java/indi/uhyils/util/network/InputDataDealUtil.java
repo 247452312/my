@@ -1,19 +1,11 @@
 package indi.uhyils.util.network;
 
-import indi.uhyils.util.DoubleArrayUtil;
-import indi.uhyils.util.MFCC;
-import indi.uhyils.util.WaveFileReader;
 import indi.uhyils.util.network.core.Datable;
 import indi.uhyils.util.network.data.ThreeDimensionalData;
-import indi.uhyils.util.network.data.TwoDimensionalData;
-import org.apache.commons.lang3.ArrayUtils;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
 
 /**
  * 输入类型处理
@@ -22,12 +14,14 @@ import java.util.stream.Collectors;
  * @date 文件创建日期 2020年07月25日 10时38分
  */
 public class InputDataDealUtil {
+
     static final int MAX = 1 << 30;
 
     /**
      * 获取图像数据
      *
      * @param image 图像
+     *
      * @return 数据
      */
     public static Datable getImageInputData(BufferedImage image) {
@@ -51,13 +45,17 @@ public class InputDataDealUtil {
     public static Datable getImageInputData(String imagePath) throws IOException {
         return getImageInputData(ImageIO.read(new File(imagePath)));
     }
+    /*
 
-    /**
-     * 获取音频波形数据(声道 * 数据长度) 原始
-     *
-     * @param wavPath 文件路径
-     * @return 二维数组 波形数据
      */
+/**
+ * 获取音频波形数据(声道 * 数据长度) 原始
+ *
+ * @param wavPath 文件路径
+ *
+ * @return 二维数组 波形数据
+ *//*
+
     public static Datable getWavInputData(String wavPath) {
         WaveFileReader wfr = new WaveFileReader(wavPath);
         Integer[][] data = wfr.getData();
@@ -66,22 +64,29 @@ public class InputDataDealUtil {
         return twoDimensionalData;
     }
 
-    /**
-     * 获取音频数据 (只有第一声道 每帧大小 * 位移数 ->MFCC) 预加重 + 分帧 + 加窗
-     *
-     * @param wavPath 文件
-     * @param size    每帧大小 (毫秒)
-     * @param shift   帧移 (大小)
-     * @return 分帧后
-     */
+    */
+/**
+ * 获取音频数据 (只有第一声道 每帧大小 * 位移数 ->MFCC) 预加重 + 分帧 + 加窗
+ *
+ * @param wavPath 文件
+ * @param size    每帧大小 (毫秒)
+ * @param shift   帧移 (大小)
+ *
+ * @return 分帧后
+ *//*
+
     public static Datable getWavInputData(String wavPath, Integer size, Integer shift) {
         WaveFileReader wfr = new WaveFileReader(wavPath);
         // 只获取第一声道
         Integer[] data = wfr.getData()[0];
         Double[] dataDouble = new Double[data.length];
-        /* 预加重*/
+        */
+    /* 预加重*//*
+
         dataDouble = Arrays.stream(data).map(integer -> 1 - 0.97 * (1.0 / integer)).collect(Collectors.toList()).toArray(dataDouble);
-        /*分帧*/
+        */
+    /*分帧*//*
+
         // 获取采样率
         int fs = (int) wfr.getSampleRate();
         // 数组总长度
@@ -111,7 +116,9 @@ public class InputDataDealUtil {
             // 汉明窗的N
             int hammingN = result[i].length;
             for (int j = 0; j < result[i].length; j++) {
-                /*加窗(汉明窗)*/
+                */
+    /*加窗(汉明窗)*//*
+
                 result[i][j] *= (1 - hammingA) - hammingA * Math.cos(2 * Math.PI * j / (hammingN - 1));
             }
             parameters[i] = mfcc.getParameters(ArrayUtils.toPrimitive(result[i]));
@@ -121,6 +128,7 @@ public class InputDataDealUtil {
         return twoDimensionalData;
 
     }
+*/
 
     /**
      * Returns a power of two size for the given target capacity.
@@ -137,14 +145,4 @@ public class InputDataDealUtil {
     }
 
 
-    public static void main(String[] args) {
-        Datable wavInputData = getWavInputData("D:\\share\\ideaSrc\\speechRecognition\\data\\data_thchs30\\data\\A2_0.wav", 256, 128);
-        Double[][] data = (Double[][]) wavInputData.getData();
-        for (Double[] datum : data) {
-            for (Double integer : datum) {
-                System.out.printf(integer + " ");
-            }
-            System.out.println();
-        }
-    }
 }

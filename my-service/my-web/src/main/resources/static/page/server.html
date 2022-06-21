@@ -69,7 +69,7 @@
             $ = layui.jquery;
 
         $.reload = function (page, size, args) {
-            pushRequest("ServerService", "getByArgs", {
+            pushRequest("ServerProvider", "getByArgs", {
                 page: page,
                 size: size,
                 paging: true,
@@ -179,7 +179,7 @@
             //console.log(obj)
             if (obj.event === 'del') { // 删除
                 layer.confirm('真的删除行么', function (index) {
-                    pushRequest("ServerService", "delete", {id: data.id}, function (data) {
+                    pushRequest("ServerProvider", "delete", {id: data.id}, function (data) {
                         layer.close(index);
                         $.reload(1, 10, [
                             {

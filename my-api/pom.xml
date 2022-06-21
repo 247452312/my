@@ -2,14 +2,14 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>my</artifactId>
         <groupId>indi.uhyils</groupId>
+        <artifactId>my</artifactId>
         <version>0.3.0-my-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <version>0.3.0-my-SNAPSHOT</version>
     <artifactId>my-api</artifactId>
+    <version>0.3.0-my-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>my-api-provider-user</module>
@@ -22,6 +22,7 @@
         <module>my-api-provider-smart-home</module>
         <module>my-api-provider-work-orders</module>
         <module>my-api-provider-mq</module>
+        <module>my-api-provider-platform</module>
     </modules>
 
 

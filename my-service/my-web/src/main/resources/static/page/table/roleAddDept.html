@@ -49,7 +49,7 @@
         };
         let roleId = $.getUrlParam('id');
 
-        pushRequest("RoleService", "getAllDeptWithHaveMark", {id: roleId}, function (data) {
+        pushRequest("RoleProvider", "getAllDeptWithHaveMark", {id: roleId}, function (data) {
             layer.msg("查询到权限集");
             list = [];
             for (let i = 0; i < data.length; i++) {
@@ -81,7 +81,7 @@
                     }
                     obj.roleId = roleId;
                     obj.class = 'indi.uhyils.pojo.request.PutDeptsToRoleRequest';
-                    pushRequest("RoleService", "putDeptsToRole", obj, function (data) {
+                    pushRequest("RoleProvider", "putDeptsToRole", obj, function (data) {
                         layer.msg("成功");
 
                         var iframeIndex = parent.layer.getFrameIndex(window.name);

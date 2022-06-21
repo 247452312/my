@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import indi.uhyils.core.message.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -13,10 +12,12 @@ import java.nio.charset.StandardCharsets;
  * @date 文件创建日期 2021年05月08日 08时01分
  */
 public class NettyMessageUtil {
+
     /**
      * 消息转byteBuf
      *
      * @param message
+     *
      * @return
      */
     public static ByteBuf msgToByte(Message message) {

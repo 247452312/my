@@ -1,19 +1,21 @@
 package indi.uhyils.filter;
 
-import com.netflix.hystrix.*;
+import com.netflix.hystrix.HystrixCommand;
+import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.HystrixCommandKey;
+import com.netflix.hystrix.HystrixCommandProperties;
+import com.netflix.hystrix.HystrixThreadPoolProperties;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.enums.RpcResponseTypeEnum;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
-import indi.uhyils.rpc.exchange.enum_.RpcRequestContentEnum;
-import indi.uhyils.rpc.exchange.pojo.RpcData;
-import indi.uhyils.rpc.exchange.pojo.demo.factory.NormalRpcRequestFactory;
-import indi.uhyils.rpc.exchange.pojo.factory.RpcFactoryProducer;
-import indi.uhyils.rpc.exchange.pojo.response.content.RpcResponseContent;
+import indi.uhyils.rpc.exchange.enums.RpcRequestContentEnum;
+import indi.uhyils.rpc.exchange.pojo.content.RpcResponseContent;
+import indi.uhyils.rpc.exchange.pojo.data.NormalRpcRequestFactory;
+import indi.uhyils.rpc.exchange.pojo.data.RpcData;
+import indi.uhyils.rpc.exchange.pojo.data.RpcFactoryProducer;
 import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
-import indi.uhyils.rpc.netty.spi.filter.invoker.RpcResult;
-import indi.uhyils.rpc.netty.spi.filter.invoker.RpcResultImpl;
 
 
 /**
@@ -22,13 +24,14 @@ import indi.uhyils.rpc.netty.spi.filter.invoker.RpcResultImpl;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月19日 15时43分
  */
-public class DubboHystrixCommand extends HystrixCommand<RpcResult> {
+public class DubboHystrixCommand extends HystrixCommand<RpcData> {
 
 
     /**
      * 默认线程池大小 16
      */
     private static final int DEFAULT_THREADPOOL_CORE_SIZE = 1 << 4;
+
     /**
      * 10秒内失败阈值
      */
@@ -45,54 +48,53 @@ public class DubboHystrixCommand extends HystrixCommand<RpcResult> {
     private static final int ERROR_RATE = 50;
 
     private final RpcInvoker invoker;
+
     private final FilterContext invocation;
 
     public DubboHystrixCommand(RpcInvoker invoker, FilterContext invocation) {
 
-        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(invocation.getRpcResult().get().content().getLine(RpcRequestContentEnum.SERVICE_NAME.getLine())))
-                .andCommandKey(HystrixCommandKey.Factory.asKey(String.format("%s_%d", invocation.getRpcResult().get().content().getLine(RpcRequestContentEnum.METHOD_NAME.getLine()),
-                        invocation.getRpcResult().get().content().getLine(RpcRequestContentEnum.METHOD_PARAM_TYPE.getLine()).split("\n").length)))
-                .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
-                        //10秒钟内至少19此请求失败，熔断器才发挥起作用
-                        .withCircuitBreakerRequestVolumeThreshold(FAIL_THRESHOLD_PER_10_SECOND)
-                        //熔断器中断请求30秒后会进入半打开状态,放部分流量过去重试
-                        .withCircuitBreakerSleepWindowInMilliseconds(RETRY_SECOND * 1000)
-                        //错误率达到50开启熔断保护
-                        .withCircuitBreakerErrorThresholdPercentage(ERROR_RATE)
-                        //使用dubbo的超时，禁用这里的超时
-                        .withExecutionTimeoutEnabled(Boolean.FALSE))
-                //获取线程池大小
-                .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(8)));
+        super(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(invocation.getRequestData().content().getLine(RpcRequestContentEnum.SERVICE_NAME.getLine())))
+                    .andCommandKey(HystrixCommandKey.Factory.asKey(String.format("%s_%d", invocation.getRequestData().content().getLine(RpcRequestContentEnum.METHOD_NAME.getLine()),
+                                                                                 invocation.getRequestData().content().getLine(RpcRequestContentEnum.METHOD_PARAM_TYPE.getLine())
+                                                                                           .split("\n").length)))
+                    .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
+                                                                          //10秒钟内至少19此请求失败，熔断器才发挥起作用
+                                                                          .withCircuitBreakerRequestVolumeThreshold(FAIL_THRESHOLD_PER_10_SECOND)
+                                                                          //熔断器中断请求30秒后会进入半打开状态,放部分流量过去重试
+                                                                          .withCircuitBreakerSleepWindowInMilliseconds(RETRY_SECOND * 1000)
+                                                                          //错误率达到50开启熔断保护
+                                                                          .withCircuitBreakerErrorThresholdPercentage(ERROR_RATE)
+                                                                          //使用rpc的超时，禁用这里的超时
+                                                                          .withExecutionTimeoutEnabled(Boolean.FALSE))
+                    //获取线程池大小
+                    .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter().withCoreSize(8)));
         this.invoker = invoker;
         this.invocation = invocation;
     }
 
 
     @Override
-    protected RpcResult getFallback() {
+    protected RpcData getFallback() {
         NormalRpcRequestFactory build = (NormalRpcRequestFactory) RpcFactoryProducer.build(RpcTypeEnum.REQUEST);
-        ServiceResult sr = ServiceResult.buildFailedResult("您好,您请求的服务暂时不可用,请一分钟后重试!", null, null);
-        RpcData rpcData = build.createFallback(invocation.getRpcResult().get(), sr);
+        ServiceResult sr = ServiceResult.buildFailedResult("您好,您请求的服务暂时不可用,请一分钟后重试!", null);
+        RpcData rpcData = build.createFallback(invocation.getRequestData(), sr);
         try {
-            RpcResultImpl rpcResult = new RpcResultImpl();
-            rpcResult.set(rpcData);
-            return rpcResult;
+            return rpcData;
         } catch (RuntimeException ex) {
             throw ex;
         }
     }
 
     @Override
-    protected RpcResult run() throws Exception {
-        RpcResult result = invoker.invoke(invocation);
-        RpcData rpcData = result.get();
-        RpcResponseContent content = (RpcResponseContent) rpcData.content();
+    protected RpcData run() throws Exception {
+        RpcData result = invoker.invoke(invocation);
+        RpcResponseContent content = (RpcResponseContent) result.content();
         RpcResponseTypeEnum parse = RpcResponseTypeEnum.parse(content.responseType());
         // 如果远程调用异常，抛出异常就会调用getFallback()方法去执行降级逻辑
         if (parse == RpcResponseTypeEnum.EXCEPTION) {
             throw new HystrixRuntimeException(HystrixRuntimeException.FailureType.COMMAND_EXCEPTION,
-                    DubboHystrixCommand.class, content.getResponseContent(),
-                    null, null);
+                                              DubboHystrixCommand.class, content.getResponseContent(),
+                                              null, null);
         }
 
         return result;

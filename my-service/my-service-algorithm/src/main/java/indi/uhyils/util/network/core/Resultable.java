@@ -7,4 +7,5 @@ package indi.uhyils.util.network.core;
  * @date 文件创建日期 2020年07月25日 09时44分
  */
 public interface Resultable {
+
 }

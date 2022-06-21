@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 192.168.1.101
+ Source Server         : mac
  Source Server Type    : MySQL
- Source Server Version : 80020
- Source Host           : 192.168.1.101:3306
+ Source Server Version : 80024
+ Source Host           : prod:3306
  Source Schema         : my_smart_home
 
  Target Server Type    : MySQL
- Target Server Version : 80020
+ Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 09/12/2020 18:56:31
+ Date: 14/02/2022 09:39:43
 */
 
 SET NAMES utf8mb4;

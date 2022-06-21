@@ -13,6 +13,7 @@ public interface InitApiHandler {
      * 自动节点初始化
      *
      * @param requestTemporary
+     *
      * @return
      */
     InitToRunApiTemporary init(InitApiRequestTemporary requestTemporary);

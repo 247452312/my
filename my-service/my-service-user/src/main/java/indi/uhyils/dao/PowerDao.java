@@ -1,25 +1,25 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.PowerEntity;
+import indi.uhyils.pojo.DO.PowerDO;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.ArrayList;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface PowerDao extends DefaultDao<PowerEntity> {
+public interface PowerDao extends DefaultDao<PowerDO> {
 
     /**
      * 获取所有表权限
      *
      * @return 所有表权限
      */
-    ArrayList<PowerEntity> getAll();
+    ArrayList<PowerDO> getAll();
 
     /**
      * 查询该用户是否有这个权限
@@ -28,6 +28,7 @@ public interface PowerDao extends DefaultDao<PowerEntity> {
      * @param userId        用户id
      * @param interfaceName 接口名称
      * @param methodName    方法名称
+     *
      * @return 查询数量 大于0表示存在
      */
     Integer checkUserHavePower(@Param("userId") Long userId, @Param("interfaceName") String interfaceName, @Param("methodName") String methodName);
@@ -36,6 +37,7 @@ public interface PowerDao extends DefaultDao<PowerEntity> {
      * 根据权限id删除权限集-权限中间表
      *
      * @param id 权限id
+     *
      * @return 删除数量
      */
     Integer deleteDeptPowerMiddleByPowerId(Long id);
@@ -51,6 +53,7 @@ public interface PowerDao extends DefaultDao<PowerEntity> {
      * 获取指定接口的方法
      *
      * @param interfaceName 接口
+     *
      * @return 对应的方法
      */
     ArrayList<String> getMethodNameByInterfaceName(String interfaceName);
@@ -60,7 +63,17 @@ public interface PowerDao extends DefaultDao<PowerEntity> {
      *
      * @param interfaceName 接口名称
      * @param methodName    方法名称
+     *
      * @return 数量
      */
     Integer checkPower(@Param("interfaceName") String interfaceName, @Param("methodName") String methodName);
+
+    /**
+     * 根据部门获取权限
+     *
+     * @param deptId
+     *
+     * @return
+     */
+    List<PowerDO> getByDept(Long deptId);
 }

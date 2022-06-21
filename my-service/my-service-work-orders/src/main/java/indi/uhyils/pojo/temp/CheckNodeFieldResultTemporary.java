@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.temp;
 
-import indi.uhyils.pojo.model.OrderNodeFieldEntity;
-
+import indi.uhyils.pojo.DO.OrderNodeFieldDO;
 import java.util.Map;
 
 /**
@@ -18,7 +17,7 @@ public class CheckNodeFieldResultTemporary {
     /**
      * 详细结果
      */
-    private Map<OrderNodeFieldEntity, Boolean> detailResult;
+    private Map<OrderNodeFieldDO, Boolean> detailResult;
 
     public Boolean getAllow() {
         return allow;
@@ -28,15 +27,15 @@ public class CheckNodeFieldResultTemporary {
         this.allow = allow;
     }
 
-    public Map<OrderNodeFieldEntity, Boolean> getDetailResult() {
+    public Map<OrderNodeFieldDO, Boolean> getDetailResult() {
         return detailResult;
     }
 
-    public void setDetailResult(Map<OrderNodeFieldEntity, Boolean> detailResult) {
+    public void setDetailResult(Map<OrderNodeFieldDO, Boolean> detailResult) {
         this.detailResult = detailResult;
     }
 
-    public void put(OrderNodeFieldEntity orderNodeFieldEntity, Boolean allow) {
+    public void put(OrderNodeFieldDO orderNodeFieldEntity, Boolean allow) {
         this.detailResult.put(orderNodeFieldEntity, allow);
         if (!allow) {
             this.allow = false;

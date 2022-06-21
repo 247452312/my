@@ -4,7 +4,7 @@ import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.distribute.AbstractMessageDistributeRunnable;
 import indi.uhyils.core.register.Register;
 import indi.uhyils.core.topic.Topic;
-
+import indi.uhyils.util.LogUtil;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -24,24 +24,28 @@ public abstract class AbstractQueue implements Queue {
      * 队列
      */
     private final LinkedBlockingQueue<Message> queue;
+
     /**
      * 主题
      */
     protected Topic topic;
+
     /**
      * 所有队列共用的线程池
      */
     protected Executor executor;
+
     /**
      * 符合此队列的消息消费者
      */
     protected List<Register> consumer;
+
     /**
      * 此队列的消息分发者
      */
     protected AbstractMessageDistributeRunnable distribute;
 
-    public AbstractQueue(Topic topic, Executor executor) {
+    protected AbstractQueue(Topic topic, Executor executor) {
         this.topic = topic;
         this.executor = executor;
         // 默认使用阻塞链表队列
@@ -59,9 +63,10 @@ public abstract class AbstractQueue implements Queue {
         try {
             return queue.take();
         } catch (InterruptedException e) {
-            e.printStackTrace();
-            return null;
+            LogUtil.error(e);
+            Thread.currentThread().interrupt();
         }
+        return null;
     }
 
     @Override
@@ -77,7 +82,8 @@ public abstract class AbstractQueue implements Queue {
                 result[i] = queue.poll(3L, TimeUnit.MINUTES);
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LogUtil.error(e);
+            Thread.currentThread().interrupt();
         }
         return result;
     }
@@ -99,7 +105,8 @@ public abstract class AbstractQueue implements Queue {
         try {
             queue.put(message);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LogUtil.error(e);
+            Thread.currentThread().interrupt();
             return Boolean.FALSE;
         }
         return Boolean.TRUE;

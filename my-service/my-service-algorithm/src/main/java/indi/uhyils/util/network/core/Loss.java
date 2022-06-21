@@ -13,6 +13,7 @@ public interface Loss {
      *
      * @param result 数据集
      * @param label  标签
+     *
      * @return 损失值
      */
     Double[] getLossNum(Resultable result, Resultable label);

@@ -7,6 +7,7 @@ package indi.uhyils.util.network.core;
  * @date 文件创建日期 2020年07月25日 09时58分
  */
 public class TrainResult {
+
     /**
      * 准确率
      */
@@ -16,6 +17,7 @@ public class TrainResult {
      * 训练遍数
      */
     private Integer times;
+
     /**
      * 每次训练分片大小
      */
@@ -25,6 +27,7 @@ public class TrainResult {
      * 训练时间
      */
     private Long trainTime;
+
     /**
      * 模型路径
      */

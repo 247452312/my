@@ -1,7 +1,6 @@
 package indi.uhyils.netty.util;
 
 import io.netty.channel.ChannelHandlerContext;
-
 import java.net.InetSocketAddress;
 
 
@@ -16,6 +15,7 @@ public class IpUtil {
      * 获取请求者的ip
      *
      * @param ctx
+     *
      * @return
      */
     public static String getAddressStr(ChannelHandlerContext ctx) {

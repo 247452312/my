@@ -3,7 +3,6 @@ package indi.uhyils.core.queue.distribute;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.queue.Queue;
 import indi.uhyils.core.register.Register;
-
 import java.util.Collection;
 
 /**
@@ -18,7 +17,7 @@ public class AllPushMessageDistribute extends AbstractMessageDistributeRunnable 
     }
 
     @Override
-    public void sendMessage(Message message, Collection<Register> registers) throws Throwable {
+    public void sendMessage(Message message, Collection<Register> registers) {
         registers.forEach(t -> t.pushMessage(message));
     }
 

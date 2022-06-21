@@ -1,0 +1,19 @@
+package ${package}.assembler;
+
+
+import ${package}.pojo.DO.${className}DO;
+import ${package}.pojo.DTO.${className}DTO;
+import ${package}.pojo.entity.${className};
+import org.mapstruct.Mapper;
+
+/**
+* ${tableComment}(${className})表 entity,DO,DTO转换工具
+*
+* @author ${author}
+* @version 1.0
+* @date 文件创建日期 ${dateTime}
+*/
+@Mapper(componentModel = "spring")
+public abstract class ${className}Assembler extends AbstractAssembler<${className}DO, ${className}, ${className}DTO> {
+
+}

@@ -1,7 +1,8 @@
 package indi.uhyils.aop;
 
-import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.util.AopUtil;
+import indi.uhyils.exception.AssertException;
+import indi.uhyils.exception.ServiceResultException;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.util.LogUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -26,7 +27,7 @@ public class ExceptionAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..))))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.base.ServiceResult indi.uhyils.protocol..*.*(..))))")
     public void exceptionAspectPoint() {
     }
 
@@ -34,9 +35,15 @@ public class ExceptionAop {
     public Object exceptionAroundAspect(ProceedingJoinPoint pjp) throws Exception {
         try {
             return pjp.proceed();
+        } catch (ServiceResultException e) {
+            LogUtil.error(e);
+            return e.getSr();
+        } catch (AssertException e) {
+            LogUtil.error(e.getMessage());
+            return ServiceResult.buildFailedResult(e.getMessage());
         } catch (Throwable e) {
             LogUtil.error(this, e);
-            return ServiceResult.buildErrorResult(e.getMessage(), AopUtil.getDefaultRequestInPjp(pjp));
+            return ServiceResult.buildErrorResult(e.getMessage());
         }
     }
 }

@@ -5,7 +5,6 @@ import indi.uhyils.util.LogUtil;
 
 /**
  * redis实现的分布式锁
- * TODO 分布式计算写完之后一起测试
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月14日 17时26分
@@ -21,26 +20,32 @@ public class RedisLock {
      * 默认尝试加锁次数
      */
     private static final Integer MAX_LOCK_COUNT = 3;
+
     /**
      * 锁名称 = lock_ + 传入的名称
      */
     private String lockName;
+
     /**
      * 锁的重入数量
      */
     private String lockCountName;
+
     /**
      * redis线程池
      */
     private RedisPool pool;
+
     /**
      * 加锁的线程
      */
     private Thread thread;
+
     /**
      * 这把锁持有时的value
      */
     private String value;
+
     /**
      * 默认持有锁3分钟
      */
@@ -172,6 +177,7 @@ public class RedisLock {
      * 使用分布式CountDownLatch
      *
      * @param uniqueName
+     *
      * @return
      */
     public boolean countDown(String uniqueName) throws RedisCountDownLatchExistsException, InterruptedException {
@@ -182,6 +188,7 @@ public class RedisLock {
             }
             Long incrBy = jedis.incrBy(key, -1L);
             if (incrBy == 0L) {
+                jedis.del(key);
                 return true;
             }
             return loopToWaitCountDownLatch(jedis, uniqueName);
@@ -192,6 +199,7 @@ public class RedisLock {
      * 获取指定countDownLatch的count
      *
      * @param uniqueName
+     *
      * @return
      */
     public int getCountDownLatchCount(String uniqueName) {
@@ -206,11 +214,14 @@ public class RedisLock {
      *
      * @param jedis
      * @param uniqueName
+     *
      * @return
+     *
      * @throws InterruptedException
      */
     private boolean loopToWaitCountDownLatch(Redisable jedis, String uniqueName) throws InterruptedException {
-        while (Integer.parseInt(jedis.get(uniqueName)) <= 0 && !Thread.interrupted()) {
+        String key = REDIS_COUNT_DOWN_LATCH + uniqueName;
+        while (jedis.exists(key) && Integer.parseInt(jedis.get(key)) <= 0 && !Thread.interrupted()) {
             Thread.sleep(1000L);
         }
         return !Thread.interrupted();
@@ -221,7 +232,9 @@ public class RedisLock {
      *
      * @param uniqueName
      * @param count
+     *
      * @return
+     *
      * @throws RedisCountDownLatchExistsException
      */
     public boolean createCountDownLatch(String uniqueName, Integer count) throws RedisCountDownLatchExistsException {
@@ -234,7 +247,9 @@ public class RedisLock {
      * @param uniqueName    这个countDownLatch的名称
      * @param count         要创建的数量
      * @param expireSeconds 超时时间(-1为不设置)
+     *
      * @return
+     *
      * @throws RedisCountDownLatchExistsException
      */
     public boolean createCountDownLatch(String uniqueName, Integer count, Integer expireSeconds) throws RedisCountDownLatchExistsException {

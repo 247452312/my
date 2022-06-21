@@ -1,10 +1,9 @@
 package indi.uhyils.redis;
 
-import redis.clients.jedis.Jedis;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import redis.clients.jedis.Jedis;
 
 /**
  * Redisable的jedis实现 用来在获取jedis时使用
@@ -13,6 +12,7 @@ import java.util.Map;
  * @date 文件创建日期 2020年08月06日 06时52分
  */
 public class MyJedis implements Redisable {
+
     /**
      * jedis
      */

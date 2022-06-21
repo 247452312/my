@@ -69,7 +69,7 @@
             laypage = layui.laypage,
             layer = layui.layer,
             table = layui.table;
-        let orderPriorityMap = pushRequest("DictService", "getByCode", {
+        let orderPriorityMap = pushRequest("DictProvider", "getByCode", {
             "code": "OrderPriority"
         }, function (data) {
             var map = {};
@@ -82,9 +82,11 @@
         $.reloadTable = function () {
             var reload = function (page, size, args) {
                 pushRequest("OrderBaseInfoService", "getByArgs", {
-                    page: page,
-                    size: size,
-                    paging: true,
+                    limit:{
+          number: page,
+          size: size,
+          page: true
+        },
                     args: args
                 }, function (data) {
                     table.render({

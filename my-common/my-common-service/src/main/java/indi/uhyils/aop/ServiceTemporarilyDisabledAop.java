@@ -1,11 +1,13 @@
 package indi.uhyils.aop;
 
 import indi.uhyils.annotation.ReadWriteMark;
-import indi.uhyils.enum_.ReadWriteTypeEnum;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.enums.ReadWriteTypeEnum;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.redis.RedisPoolHandle;
-import indi.uhyils.util.AopUtil;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,11 +15,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 方法临时禁用aop
@@ -38,7 +35,7 @@ public class ServiceTemporarilyDisabledAop {
      * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)) || execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.service.base.DefaultEntityService.*(..))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.base.ServiceResult indi.uhyils.protocol..*.*(..)))")
     public void serviceTemporarilyDisabledAspectPoint() {
     }
 
@@ -92,13 +89,11 @@ public class ServiceTemporarilyDisabledAop {
             methodType = ReadWriteTypeEnum.READ;
         }
 
-
-        Boolean allowRun = redisPoolHandle.checkMethodDisable(targetClass, declaredMethod, methodType == ReadWriteTypeEnum.READ ? 1 : 2);
+        Boolean allowRun = redisPoolHandle.checkMethodDisable(targetClass, declaredMethod, methodType.getCode());
         if (allowRun) {
             return pjp.proceed();
         } else {
-            DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
-            return ServiceResult.buildFailedResult("请求接口已被禁用", null, arg);
+            return ServiceResult.buildFailedResult("请求接口已被禁用", null);
         }
 
 

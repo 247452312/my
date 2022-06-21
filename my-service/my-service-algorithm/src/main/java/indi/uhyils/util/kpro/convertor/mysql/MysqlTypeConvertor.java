@@ -19,20 +19,20 @@ public class MysqlTypeConvertor implements TypeConvertor {
             return null;
         }
         if ("bigint".equalsIgnoreCase(databaseType) ||
-                "int unsigned".equalsIgnoreCase(databaseType)) {
+            "int unsigned".equalsIgnoreCase(databaseType)) {
             return "Long";
         }
         if ("varchar".equalsIgnoreCase(databaseType) ||
-                "char".equalsIgnoreCase(databaseType) ||
-                "MEDIUMTEXT".equalsIgnoreCase(databaseType) ||
-                "text".equalsIgnoreCase(databaseType)) {
+            "char".equalsIgnoreCase(databaseType) ||
+            "MEDIUMTEXT".equalsIgnoreCase(databaseType) ||
+            "text".equalsIgnoreCase(databaseType)) {
             return "String";
         }
         if ("int".equalsIgnoreCase(databaseType) ||
-                "tinyint".equalsIgnoreCase(databaseType) ||
-                "smallint".equalsIgnoreCase(databaseType) ||
-                "integer".equalsIgnoreCase(databaseType) ||
-                databaseType.contains("INT")) {
+            "tinyint".equalsIgnoreCase(databaseType) ||
+            "smallint".equalsIgnoreCase(databaseType) ||
+            "integer".equalsIgnoreCase(databaseType) ||
+            databaseType.contains("INT")) {
             return "Integer";
         }
         if ("double".equalsIgnoreCase(databaseType)) {
@@ -42,7 +42,7 @@ public class MysqlTypeConvertor implements TypeConvertor {
             return "Float";
         }
         if ("datetime".equalsIgnoreCase(databaseType)) {
-            return "java.sql.Date";
+            return "Date";
         }
         if ("text".equalsIgnoreCase(databaseType)) {
             return "String";
@@ -55,16 +55,16 @@ public class MysqlTypeConvertor implements TypeConvertor {
         }
 
         if ("date".equalsIgnoreCase(databaseType)) {
-            return "java.sql.Date";
+            return "Date";
         }
         if ("time".equalsIgnoreCase(databaseType)) {
-            return "java.sql.Time";
+            return "Date";
         }
         if ("timestamp".equalsIgnoreCase(databaseType)) {
-            return "java.sql.Timestamp";
+            return "Date";
         }
         if ("boolean".equalsIgnoreCase(databaseType) ||
-                "bit".equalsIgnoreCase(databaseType)) {
+            "bit".equalsIgnoreCase(databaseType)) {
             return "Boolean";
         }
         return null;
@@ -73,7 +73,6 @@ public class MysqlTypeConvertor implements TypeConvertor {
 
     @Override
     public String javaType2DatabaseType(String javaType) {
-
 
         return null;
     }

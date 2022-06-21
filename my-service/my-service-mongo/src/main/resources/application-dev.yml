@@ -19,3 +19,7 @@ mongo:
     maxSize: 10
     keepAliveTime: 50000
 
+id:
+  organization:
+    # 机构代码
+    code: 5

@@ -38,10 +38,12 @@
 
         $.reloadTable = function () {
             var reload = function (page, size, args) {
-                pushRequest("ApiSubscribeService", "getByArgs", {
-                    page: page,
-                    size: size,
-                    paging: true,
+                pushRequest("ApiSubscribeProvider", "getByArgs", {
+                    limit:{
+          number: page,
+          size: size,
+          page: true
+        },
                     args: args
                 }, function (data) {
                     table.render({
@@ -56,7 +58,7 @@
                             {field: 'cron', title: '发送时间'},
                             {
                                 title: '订阅用户', templet: function (d) {
-                                    return pushRequest("UserService", "getNameById", {id: d.userId}, function (data) {
+                                    return pushRequest("UserProvider", "getNameById", {id: d.userId}, function (data) {
                                         return data;
 
                                     })
@@ -145,7 +147,7 @@
                         //console.log(obj)
                         if (obj.event === 'del') { // 删除
                             layer.confirm('真的删除行么', function (index) {
-                                pushRequest("ApiSubscribeService", "delete", {id: data.id}, function (data) {
+                                pushRequest("ApiSubscribeProvider", "delete", {id: data.id}, function (data) {
                                     layer.close(index);
                                     $.reloadTable();
                                 });

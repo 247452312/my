@@ -67,7 +67,7 @@
         let func = $.getUrlParam('func');
 
         if (func == 'edit') { // 这是修改
-            pushRequest("SpaceService", "getById", {
+            pushRequest("SpaceProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -90,11 +90,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("SpaceService", "insert", {data: data.field}, function () {
+                    pushRequest("SpaceProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("SpaceService", "update", {data: data.field}, function () {
+                    pushRequest("SpaceProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

@@ -65,7 +65,7 @@ layui.define(["jquery", "miniMenu", "element", "miniTab", "miniTheme"], function
             }
 
             if (options.iniUrl == "/action") {
-                pushRequest("MenuService", "getIndexMenu", {}, function (data) {
+                pushRequest("MenuProvider", "getIndexMenu", {}, function (data) {
                         sortNode(data.menuInfo);
                         miniAdmin.renderLogo(data.logoInfo);
                         miniAdmin.renderClear(options.clearUrl);

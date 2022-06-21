@@ -2,12 +2,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>my-common</artifactId>
         <groupId>indi.uhyils</groupId>
+        <artifactId>my-common</artifactId>
         <version>0.3.0-my-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>my-common-service</artifactId>
 
@@ -24,7 +24,16 @@
         </dependency>
         <dependency>
             <groupId>indi.uhyils</groupId>
-            <artifactId>my-common-rpc-spring-start</artifactId>
+            <artifactId>my-common-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-event-bus</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
+        <dependency>
+            <groupId>io.github.247452312</groupId>
+            <artifactId>my-rpc-spring-start</artifactId>
         </dependency>
         <dependency>
             <groupId>indi.uhyils</groupId>
@@ -34,6 +43,12 @@
         <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>amqp-client</artifactId>
+        </dependency>
+
+        <!-- hystrix-core 熔断 -->
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+            <artifactId>hystrix-core</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
@@ -47,12 +62,15 @@
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-        </dependency>
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
 

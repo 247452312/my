@@ -1,9 +1,9 @@
 package indi.uhyils.builder;
 
-import indi.uhyils.enum_.OrderApplyStatusEnum;
-import indi.uhyils.enum_.OrderApplyTypeEnum;
-import indi.uhyils.pojo.model.OrderApplyEntity;
-import indi.uhyils.pojo.model.OrderNodeEntity;
+import indi.uhyils.enums.OrderApplyStatusEnum;
+import indi.uhyils.enums.OrderApplyTypeEnum;
+import indi.uhyils.pojo.DTO.OrderApplyDTO;
+import indi.uhyils.pojo.DTO.OrderNodeDTO;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -15,10 +15,11 @@ public class OrderApplyBuilder {
      * 根据工单节点创建转交申请
      *
      * @param orderNode
+     *
      * @return
      */
-    public static OrderApplyEntity buildTransApplyByOrderNode(OrderNodeEntity orderNode, Long monitorUserId) {
-        OrderApplyEntity orderApplyEntity = new OrderApplyEntity();
+    public static OrderApplyDTO buildTransApplyByOrderNode(OrderNodeDTO orderNode, Long monitorUserId) {
+        OrderApplyDTO orderApplyEntity = new OrderApplyDTO();
         orderApplyEntity.setApplyUserId(orderNode.getNoticeUserId());
         orderApplyEntity.setOrderId(orderNode.getBaseInfoId());
         orderApplyEntity.setOrderNodeId(orderNode.getId());

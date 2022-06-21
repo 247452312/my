@@ -72,10 +72,12 @@
 
         $.reloadTable = function () {
             var reload = function (page, size, args) {
-                pushRequest("OrderBaseNodeService", "getByArgs", {
-                    page: page,
-                    size: size,
-                    paging: true,
+                pushRequest("OrderBaseNodeProvider", "getByArgs", {
+                    limit:{
+                        page: page,
+                        size: size,
+                        paging: true
+                    },
                     args: args
                 }, function (data) {
                     table.render({
@@ -181,7 +183,7 @@
                         var data = obj.data;
                         if (obj.event === 'del') { // 删除
                             layer.confirm('真的删除行么', function (index) {
-                                pushRequest("OrderBaseNodeService", "delete", {id: data.id}, function (data) {
+                                pushRequest("OrderBaseNodeProvider", "delete", {id: data.id}, function (data) {
                                     layer.close(index);
                                     $.reloadTable();
                                 });

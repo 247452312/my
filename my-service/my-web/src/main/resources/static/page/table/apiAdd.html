@@ -121,7 +121,7 @@
         let id = $.getUrlParam('id');
         let func = $.getUrlParam('func');
 
-        pushRequest("DictService", "getByCode", {code: 'result-code'}, function (data) {
+        pushRequest("DictProvider", "getByCode", {code: 'result-code'}, function (data) {
             $("[name='resultCode']").empty();
             $("[name='resultCode']").append('<option value="">请选择结果编码</option> ');
             for (let i = 0; i < data.length; i++) {
@@ -131,7 +131,7 @@
         });
 
         if (func == 'edit') { // 这是修改
-            pushRequest("ApiService", "getById", {
+            pushRequest("ApiProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -169,12 +169,12 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("ApiService", "insert", {data: data.field}, function () {
+                    pushRequest("ApiProvider", "insert", {data: data.field}, function () {
                         closeAndReload();
                     });
 
                 } else if (func === 'edit') {
-                    pushRequest("ApiService", "update", {data: data.field}, function () {
+                    pushRequest("ApiProvider", "update", {data: data.field}, function () {
                         closeAndReload();
                     });
 

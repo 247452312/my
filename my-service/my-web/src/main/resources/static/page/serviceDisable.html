@@ -53,7 +53,7 @@
         var table = layui.table;
         var layer = layui.layer;
         $.reloadTable = function () {
-            pushRequest("ServiceControlService", "getAllMethodDisable", {}, function (data) {
+            pushRequest("ServiceControlProvider", "getAllMethodDisable", {}, function (data) {
                 // 渲染表格
                 table.render({
                     elem: '#munu-table'
@@ -113,7 +113,7 @@
                     //console.log(obj)
                     if (obj.event === 'del') { // 删除
                         layer.confirm('真的删除行么', function (index) {
-                            pushRequest("ServiceControlService", "delMethodDisable", {
+                            pushRequest("ServiceControlProvider", "delMethodDisable", {
                                 className: data.className,
                                 methodName: data.methodName
                             }, function (data) {

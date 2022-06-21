@@ -9,13 +9,19 @@ import java.security.NoSuchAlgorithmException;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月26日 14时46分
  */
-public class MD5Util {
+public final class MD5Util {
+
     public static final String MD5 = "MD5";
+
+    private MD5Util() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * MD5加密
      *
      * @param str 待加密的字符串
+     *
      * @return 密文(16位)
      */
     public static String MD5Encode(String str) {
@@ -35,7 +41,7 @@ public class MD5Util {
                 }
                 buf.append(Integer.toHexString(i));
             }
-            return buf.toString().substring(8, 24);
+            return buf.substring(8, 24);
         } catch (NoSuchAlgorithmException e) {
             LogUtil.error(MD5Util.class, e);
         }

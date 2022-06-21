@@ -1,13 +1,12 @@
 package indi.uhyils.core.register;
 
 import indi.uhyils.core.topic.Topic;
-import indi.uhyils.enum_.OutDealTypeEnum;
-import indi.uhyils.enum_.RegisterType;
+import indi.uhyils.enums.OutDealTypeEnum;
+import indi.uhyils.enums.RegisterType;
 import indi.uhyils.exception.ExpressionInvalidException;
 import indi.uhyils.exception.NotFoundRegisterTypeException;
 import indi.uhyils.exception.RegisterTopicNotFoundException;
 import indi.uhyils.exception.UserException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,11 +41,14 @@ public class RegisterFactory {
      * @param type
      * @param ip
      * @param topic
+     *
      * @return
+     *
      * @throws UserException
      */
-    public static Register createOrGetUrlRegister(RegisterType type, String ip, Topic topic,
-                                                  OutDealTypeEnum outDealTypeEnum) throws UserException {
+    public static Register createOrGetUrlRegister(
+        RegisterType type, String ip, Topic topic,
+        OutDealTypeEnum outDealTypeEnum) throws UserException {
         Register oneRegister = findOneUrlRegister(type, ip, topic.getName());
         if (oneRegister != null) {
             return oneRegister;
@@ -76,11 +78,14 @@ public class RegisterFactory {
      *
      * @param type
      * @param topic
+     *
      * @return
+     *
      * @throws UserException
      */
-    public static Register createOrGetRegister(RegisterType type, String channelId, Topic topic,
-                                               OutDealTypeEnum outDealTypeEnum) throws UserException {
+    public static Register createOrGetRegister(
+        RegisterType type, String channelId, Topic topic,
+        OutDealTypeEnum outDealTypeEnum) throws UserException {
         Register oneRegister = findOneRegister(type, channelId, topic.getName());
         if (oneRegister != null) {
             return oneRegister;
@@ -110,6 +115,7 @@ public class RegisterFactory {
      *
      * @param url
      * @param topic
+     *
      * @return
      */
     private static Register createNewUrlProvider(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
@@ -125,6 +131,7 @@ public class RegisterFactory {
      * 创建一个新的消息提供者
      *
      * @param topic
+     *
      * @return
      */
     private static Register createNewProvider(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
@@ -141,6 +148,7 @@ public class RegisterFactory {
      *
      * @param url
      * @param topic
+     *
      * @return
      */
     private static Register createNewUrlConsumer(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
@@ -156,6 +164,7 @@ public class RegisterFactory {
      * 创建一个新的消息消费者
      *
      * @param topic
+     *
      * @return
      */
     private static Register createNewConsumer(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
@@ -172,6 +181,7 @@ public class RegisterFactory {
      *
      * @param url
      * @param topic
+     *
      * @return
      */
     private static Register createNewUrlPublish(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
@@ -187,6 +197,7 @@ public class RegisterFactory {
      * 创建一个新的消息发布者
      *
      * @param topic
+     *
      * @return
      */
     private static Register createNewPublish(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
@@ -203,6 +214,7 @@ public class RegisterFactory {
      *
      * @param url
      * @param topic
+     *
      * @return
      */
     private static Register createNewUrlSubscriber(String url, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
@@ -218,6 +230,7 @@ public class RegisterFactory {
      * 创建一个新的消息订阅者
      *
      * @param topic
+     *
      * @return
      */
     private static Register createNewSubscriber(String channelId, Topic topic, OutDealTypeEnum outDealTypeEnum) throws ExpressionInvalidException, RegisterTopicNotFoundException {
@@ -235,6 +248,7 @@ public class RegisterFactory {
      * @param type
      * @param url
      * @param topicName
+     *
      * @return
      */
     public static Collection<Register> findUrlRegister(RegisterType type, String url, String topicName) {
@@ -262,6 +276,7 @@ public class RegisterFactory {
      *
      * @param type
      * @param topicName
+     *
      * @return
      */
     public static Collection<Register> findRegister(RegisterType type, String channelId, String topicName) {
@@ -290,7 +305,9 @@ public class RegisterFactory {
      * @param type
      * @param url
      * @param topicName
+     *
      * @return
+     *
      * @throws UserException
      */
     public static Register findOneUrlRegister(RegisterType type, String url, String topicName) {
@@ -307,7 +324,9 @@ public class RegisterFactory {
      *
      * @param type
      * @param topicName
+     *
      * @return
+     *
      * @throws UserException
      */
     public static Register findOneRegister(RegisterType type, String channelId, String topicName) {

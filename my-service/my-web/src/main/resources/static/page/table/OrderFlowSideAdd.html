@@ -73,7 +73,7 @@
         let func = $.getUrlParam('func');
 
         if (func == 'edit') { // 这是修改
-            pushRequest("OrderFlowSideService", "getById", {
+            pushRequest("OrderFlowSideProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -97,11 +97,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("OrderFlowSideService", "insert", {data: data.field}, function () {
+                    pushRequest("OrderFlowSideProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("OrderFlowSideService", "update", {data: data.field}, function () {
+                    pushRequest("OrderFlowSideProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

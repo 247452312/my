@@ -9,6 +9,7 @@ import indi.uhyils.util.network.core.Datable;
  * @date 文件创建日期 2020年07月25日 10时43分
  */
 public class TwoDimensionalData<T> implements Datable<T> {
+
     T[][] data;
 
     @Override

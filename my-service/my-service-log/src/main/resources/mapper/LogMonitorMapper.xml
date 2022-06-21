@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.LogMonitorDao">
+    <resultMap type="indi.uhyils.pojo.DO.LogMonitorDO" id="LogMonitorMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="ip" column="ip" jdbcType="VARCHAR"/>
+        <result property="serviceName" column="service_name" jdbcType="VARCHAR"/>
+        <result property="time" column="time" jdbcType="INTEGER"/>
+        <result property="jvmTotalMem" column="jvm_total_mem" jdbcType="NUMERIC"/>
+        <result property="heapInitMem" column="heap_init_mem" jdbcType="NUMERIC"/>
+        <result property="heapTotalMem" column="heap_total_mem" jdbcType="NUMERIC"/>
+        <result property="noHeapInitMem" column="no_heap_init_mem" jdbcType="NUMERIC"/>
+        <result property="noHeapTotalMem" column="no_heap_total_mem" jdbcType="NUMERIC"/>
+        <result property="endTime" column="end_time" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.LogMonitorDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_log_monitor set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.ip != null and item.ip != ''">
+                ,ip = #{item.ip}
+            </if>
+            <if test="item.serviceName != null and item.serviceName != ''">
+                ,service_name = #{item.serviceName}
+            </if>
+            <if test="item.time != null">
+                ,time = #{item.time}
+            </if>
+            <if test="item.jvmTotalMem != null">
+                ,jvm_total_mem = #{item.jvmTotalMem}
+            </if>
+            <if test="item.heapInitMem != null">
+                ,heap_init_mem = #{item.heapInitMem}
+            </if>
+            <if test="item.heapTotalMem != null">
+                ,heap_total_mem = #{item.heapTotalMem}
+            </if>
+            <if test="item.noHeapInitMem != null">
+                ,no_heap_init_mem = #{item.noHeapInitMem}
+            </if>
+            <if test="item.noHeapTotalMem != null">
+                ,no_heap_total_mem = #{item.noHeapTotalMem}
+            </if>
+            <if test="item.endTime != null">
+                ,end_time = #{item.endTime}
+            </if>
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <update id="changeEndTime">
+        update sys_log_monitor a
+        set a.end_time = #{endTime}
+        where a.id = #{id}
+    </update>
+
+    <select id="getIdByJvmUniqueMark" parameterType="indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark"
+            resultType="java.lang.Long">
+        select id
+        from sys_log_monitor
+        where service_name = #{serviceName}
+        and time = #{time}
+        and ip = #{ip}
+    </select>
+
+    <select id="checkMonitorRepeat" parameterType="indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark"
+            resultType="java.lang.Integer">
+        select count(*)
+        from sys_log_monitor
+        where service_name = #{serviceName}
+        and ip = #{ip}
+        and time = #{time}
+    </select>
+    <update id="updateMonitorThatRepeatByIpAndName">
+        update sys_log_monitor
+        set end_time = #{now}
+        where service_name = #{serviceName}
+        and ip = #{ip}
+        and end_time > #{now}
+    </update>
+
+</mapper>

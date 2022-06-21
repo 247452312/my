@@ -1,29 +1,30 @@
 package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.annotation.NoToken;
-import indi.uhyils.content.Content;
-import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.model.UserEntity;
-import indi.uhyils.pojo.request.CheckUserHavePowerRequest;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.response.base.ServiceResult;
+import indi.uhyils.context.MyContext;
+import indi.uhyils.context.UserInfoHelper;
+import indi.uhyils.enums.ServiceCode;
+import indi.uhyils.enums.UserTypeEnum;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
+import indi.uhyils.pojo.entity.NoTokenInterfaceInvoker;
+import indi.uhyils.pojo.entity.PublicInterfaceInvoker;
 import indi.uhyils.redis.RedisPoolHandle;
-import indi.uhyils.rpc.spring.util.RpcApiUtil;
 import indi.uhyils.util.AopUtil;
+import indi.uhyils.util.Asserts;
+import indi.uhyils.util.RpcApiUtil;
+import java.util.ArrayList;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 /**
  * token转用户信息切面(包含验证)
@@ -50,12 +51,11 @@ public class TokenInjectAop {
     @Autowired
     private RedisPoolHandle redisPoolHandle;
 
-
     /**
-     * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
+     * 定义切入点，切入点为service包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.response.base.ServiceResult indi.uhyils.serviceImpl.*.*(..)))")
+    @Pointcut("execution(public indi.uhyils.pojo.DTO.base.ServiceResult indi.uhyils.protocol..*.*(..)))")
     public void tokenInjectPoint() {
     }
 
@@ -69,74 +69,88 @@ public class TokenInjectAop {
      * 6. 查询正常用户是否登录
      *
      * @param pjp pjp
+     *
      * @return pjp 的返回值
+     *
      * @throws Throwable pjp执行出错
      */
     @Around("tokenInjectPoint()")
     public Object tokenInjectAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
 
+        // public接口直接放行,不进行解析token的动作
+        if (PublicInterfaceInvoker.checkAnnotation(pjp)) {
+            return PublicInterfaceInvoker.create(pjp).invoke();
+        }
+        //NoLogin注释的方法直接放行 不需要登录
+        if (NoTokenInterfaceInvoker.checkAnnotation(pjp)) {
+            return NoTokenInterfaceInvoker.create(pjp).invoke();
+        }
 
-        //NoToken注释的方法直接放行 不需要token
         String className = pjp.getTarget().getClass().getCanonicalName();
         String methodName = pjp.getSignature().getName();
 
-        Signature signature = pjp.getSignature();
-        MethodSignature methodSignature = (MethodSignature) signature;
-        Method targetMethod = methodSignature.getMethod();
-        NoToken[] annotationsByType = targetMethod.getAnnotationsByType(NoToken.class);
-        if (annotationsByType != null && annotationsByType.length != 0) {
-            //执行方法
-            return pjp.proceed();
-        }
-
         //获取token
-        DefaultRequest arg = AopUtil.getDefaultRequestInPjp(pjp);
+        DefaultCQE arg = AopUtil.getDefaultCQEInPjp(pjp);
         String token = arg.getToken();
 
 
         /* 查询有没有登录 */
         if (StringUtils.isEmpty(token) && arg.getUser() == null) {
-            return ServiceResult.buildNoLoginResult(arg);
+            return ServiceResult.buildNoLoginResult();
         }
 
-        /* 查询是否超时 */
-        UserEntity userEntity;
+        UserDTO userDTO;
         // 如果参数中携带了用户,则不需要去再次查询用户
         if (arg.getUser() != null) {
-            userEntity = arg.getUser();
+            userDTO = arg.getUser();
+            if (!Objects.equals(userDTO.getUserType(), UserTypeEnum.USER.getCode())) {
+                Asserts.assertTrue(false, "用户类型不正确");
+            }
         } else {
-            userEntity = redisPoolHandle.getUser(token);
+            final UserTypeEnum byCode = UserTypeEnum.getByCode(token.substring(0, 2));
+            Asserts.assertTrue(byCode == UserTypeEnum.USER, "用户类型不正确");
+            userDTO = redisPoolHandle.getUser(token);
         }
-        if (userEntity == null) {
-            return ServiceResult.buildLoginOutResult(arg);
+        /* 查询是否超时 */
+        if (userDTO == null) {
+            return ServiceResult.buildLoginOutResult();
         }
+        UserInfoHelper.setUser(userDTO);
+        try {
+            // 权限检验
+            return checkPowerAndDoProceed(pjp, className, methodName, arg, token, userDTO);
+        } finally {
+            UserInfoHelper.clean();
+        }
+    }
 
+    private Object checkPowerAndDoProceed(ProceedingJoinPoint pjp, String className, String methodName, DefaultCQE arg, String token, UserDTO userDTO) throws Throwable {
         /* 查询是否有权限 */
         // 超级管理员直接放行
-        if (ADMIN.equals(userEntity.getUserName())) {
-            userEntity.setRoleId(Content.ADMIN_ROLE_ID);
-            arg.setUser(userEntity);
+        if (ADMIN.equals(userDTO.getUsername())) {
+            userDTO.setRoleId(MyContext.ADMIN_ROLE_ID);
+            arg.setUser(userDTO);
             //执行方法
-            return pjp.proceed(new DefaultRequest[]{arg});
+            return pjp.proceed(new DefaultCQE[]{arg});
         }
-
 
         String substring = className.substring(className.lastIndexOf('.') + 1);
         if (substring.contains(IMPL)) {
             substring = substring.substring(0, substring.length() - 4);
         }
-        ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userEntity, userEntity.getId(), substring, methodName, token, arg);
+        ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userDTO, userDTO.getId(), substring, methodName, token, arg);
         if (!ServiceCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
             return checkUserHavePowerServiceResult;
         }
         Boolean havePower = (Boolean) checkUserHavePowerServiceResult.getData();
         if (!havePower) {
-            return ServiceResult.buildNoAuthResult(arg);
+            return ServiceResult.buildNoAuthResult();
         }
 
-        arg.setUser(userEntity);
+        arg.setUser(userDTO);
         //执行方法
-        return pjp.proceed(new DefaultRequest[]{arg});
+        return pjp.proceed(new DefaultCQE[]{arg});
+
     }
 
     /**
@@ -145,15 +159,16 @@ public class TokenInjectAop {
      * @param id            用户id
      * @param interfaceName 权限接口名
      * @param methodName    权限方法名
+     *
      * @return 是否有权限
      */
-    private ServiceResult<JSONObject> checkUserHavePower(UserEntity userEntity, Long id, String interfaceName, String methodName, String token, DefaultRequest request) {
-        CheckUserHavePowerRequest build = CheckUserHavePowerRequest.build(interfaceName, methodName, id);
+    private ServiceResult<JSONObject> checkUserHavePower(UserDTO userEntity, Long id, String interfaceName, String methodName, String token, DefaultCQE request) {
+        CheckUserHavePowerQuery build = CheckUserHavePowerQuery.build(interfaceName, methodName, id);
         build.setToken(token);
-        build.setRequestLink(request.getRequestLink());
         build.setUser(userEntity);
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        return RpcApiUtil.rpcApiTool("PowerService", "checkUserHavePower", args, request);
+        JSONObject o = (JSONObject) RpcApiUtil.rpcApiTool("PowerProvider", "checkUserHavePower", args);
+        return o.toJavaObject(ServiceResult.class);
     }
 }

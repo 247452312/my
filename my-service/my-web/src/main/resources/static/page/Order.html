@@ -48,7 +48,7 @@
             form = layui.form,
             laypage = layui.laypage,
             layer = layui.layer;
-        pushRequest("OrderBaseInfoService", "getAllBaseOrderIdAndName", {}, function (data) {
+        pushRequest("OrderBaseInfoProvider", "getAllBaseOrderIdAndName", {}, function (data) {
             let $button = $("#button-target");
             $button.empty();
             for (let i = 0; i < data.length; i++) {

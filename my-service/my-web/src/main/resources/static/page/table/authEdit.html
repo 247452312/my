@@ -50,7 +50,7 @@
         };
         let menuId = $.getUrlParam('id');
 
-        pushRequest("MenuService", "getDeptsByMenuId", {id: menuId}, function (data) {
+        pushRequest("MenuProvider", "getDeptsByMenuId", {id: menuId}, function (data) {
             layer.msg("查询到权限集");
             list = [];
             for (let i = 0; i < data.length; i++) {
@@ -82,7 +82,7 @@
                     }
                     obj.menuId = menuId;
                     obj.class = 'indi.uhyils.pojo.request.PutDeptsToMenuRequest';
-                    pushRequest("DeptService", "putDeptsToMenu", obj, function (data) {
+                    pushRequest("DeptProvider", "putDeptsToMenu", obj, function (data) {
                         layer.msg("成功");
 
                         var iframeIndex = parent.layer.getFrameIndex(window.name);

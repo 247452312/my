@@ -1,0 +1,98 @@
+spring:
+  profiles:
+    active: dev
+  output:
+    ansi:
+      enabled: ALWAYS
+    devtools:
+      restart:
+        enabled: true  #设置开启热部署
+        additional-paths: src/main/java #重启目录
+        exclude: WEB-INF/**
+      freemarker:
+        cache: false    #页面不加载缓存，修改即时生效
+  datasource:
+    url: jdbc:mysql://prod:3306/my_user
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 初始化物理连接个数
+    initial-size: 1
+    # 最大连接池数量
+    max-active: 20
+    # 最小连接池数量
+    min-idle: 5
+    # 获取连接时最大等待时间(ms)
+    max-wait: 60000
+    # 开启缓存preparedStatement(PSCache)
+    pool-prepared-statements: true
+    # 启用PSCache后，指定每个连接上PSCache的大小
+    max-pool-prepared-statement-per-connection-size: 20
+    # 用来检测连接是否有效的sql
+    validation-query: select 'x'
+    # 申请连接时不检测连接是否有效
+    test-on-borrow: false
+    # 归还连接时不检测连接是否有效
+    test-on-return: false
+    # 申请连接时检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效（不影响性能）
+    test-while-idle: true
+    # 检测连接的间隔时间，若连接空闲时间 >= minEvictableIdleTimeMillis，则关闭物理连接
+    time-between-eviction-runs-millis: 60000
+    # 连接保持空闲而不被驱逐的最小时间(ms)
+    min-evictable-idle-time-millis: 300000
+    # 配置监控统计拦截的filters（不配置则监控界面sql无法统计），监控统计filter:stat，防御sql注入filter:wall
+    filters: stat,tableSqlFilter,dbLogFilter,rowsLimit,standard
+    # 支持合并多个DruidDataSource的监控数据
+    use-global-data-source-stat: true
+    # 通过connectProperties属性来打开mergeSql(Sql合并)功能；慢SQL记录(配置超过5秒就是慢，默认是3秒)
+    connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+rpc:
+  application:
+    name: provider-test
+  metadata-report:
+    address: nacos://prod:8848
+  registry:
+    host: prod
+    port: 8848
+  consumer:
+    timeout: 10000
+    check: false
+  provider:
+    port: 28888
+    timeout: 5000
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: indi.uhyils.dao
+logging:
+  level:
+    indi.uhyils.dao: INFO
+token:
+  salt: my
+  encodeRules: my
+log-out:
+  dir-name: test
+  path: D:/my/logs
+redis:
+  normal:
+    ip: prod
+    port: 6379
+    password: uhyils-single
+  hotspot:
+    hosts: prod:26380;prod:26381;prod:26382
+    password: uhyils
+    sentinels: mymaster
+
+
+rabbit:
+  host: prod
+  port: 5672
+  username: uhyils
+  password: 123456
+
+id:
+  organization:
+    # 机构代码
+    code: 1
+server:
+  port: 8888

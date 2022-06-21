@@ -1,15 +1,14 @@
 package indi.uhyils.core.topic;
 
 import indi.uhyils.core.queue.QueueFactory;
-import indi.uhyils.enum_.OutDealTypeEnum;
-import indi.uhyils.enum_.TopicType;
+import indi.uhyils.enums.OutDealTypeEnum;
+import indi.uhyils.enums.TopicType;
 import indi.uhyils.exception.PartitionTopicNoKeyException;
 import indi.uhyils.exception.TopicTypeNoEqualException;
 import indi.uhyils.exception.TopicTypeNotFoundException;
 import indi.uhyils.exception.UserException;
-import indi.uhyils.pojo.request.SendMessageRequest;
+import indi.uhyils.pojo.DTO.request.SendMessageRequest;
 import indi.uhyils.util.SpringUtil;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,12 +25,14 @@ public class TopicFactory {
      * 根据消息创建或获取一个topic
      *
      * @param request
+     *
      * @return
+     *
      * @throws UserException
      */
     public static Topic createOrGetTopic(SendMessageRequest request) throws UserException {
         return createOrGetTopic(request.getTopic(), request.getType(), OutDealTypeEnum.PASSIVE, OutDealTypeEnum.ACTIVE,
-                request.getKey());
+                                request.getKey());
     }
 
     public static Topic getByTopicName(String topicName) {
@@ -42,6 +43,7 @@ public class TopicFactory {
      * 根据消息创建或获取一个topic
      *
      * @return
+     *
      * @throws UserException
      */
 
@@ -53,11 +55,14 @@ public class TopicFactory {
      * 根据消息和消息接收推送类型创建或获取一个topic
      *
      * @param request
+     *
      * @return
+     *
      * @throws UserException
      */
-    public static Topic createOrGetTopic(SendMessageRequest request, OutDealTypeEnum receiveType,
-                                         OutDealTypeEnum pushType) throws UserException {
+    public static Topic createOrGetTopic(
+        SendMessageRequest request, OutDealTypeEnum receiveType,
+        OutDealTypeEnum pushType) throws UserException {
         return createOrGetTopic(request.getTopic(), request.getType(), receiveType, pushType, null);
     }
 
@@ -69,11 +74,14 @@ public class TopicFactory {
      * @param receiveType 主题接收消息的策略
      * @param pushType    主题分发信息的策略
      * @param key         如果是分区消息,则他的key
+     *
      * @return
+     *
      * @throws UserException
      */
-    public static Topic createOrGetTopic(String topicName, TopicType userType, OutDealTypeEnum receiveType,
-                                         OutDealTypeEnum pushType, String key) throws UserException {
+    public static Topic createOrGetTopic(
+        String topicName, TopicType userType, OutDealTypeEnum receiveType,
+        OutDealTypeEnum pushType, String key) throws UserException {
 
         if (TOPIC_MAP.containsKey(topicName)) {
             Topic topic = TOPIC_MAP.get(topicName);
@@ -93,8 +101,9 @@ public class TopicFactory {
         return topic;
     }
 
-    private static Topic newTopic(String topic, TopicType type, OutDealTypeEnum receiveType, OutDealTypeEnum pushType,
-                                  String key) throws UserException {
+    private static Topic newTopic(
+        String topic, TopicType type, OutDealTypeEnum receiveType, OutDealTypeEnum pushType,
+        String key) throws UserException {
         Topic result;
         switch (type) {
             case NORMAL_MSG:

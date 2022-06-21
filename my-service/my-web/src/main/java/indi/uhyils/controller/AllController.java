@@ -3,27 +3,32 @@ package indi.uhyils.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.request.Action;
-import indi.uhyils.pojo.request.SessionRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.pojo.response.WebResponse;
-import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.redis.hotspot.HotSpotRedisPool;
-import indi.uhyils.rpc.spring.util.RpcApiUtil;
-import indi.uhyils.util.LogPushUtils;
+import indi.uhyils.context.UserInfoHelper;
+import indi.uhyils.enums.ServiceCode;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.Action;
+import indi.uhyils.pojo.DTO.request.SessionRequest;
+import indi.uhyils.pojo.DTO.response.WebResponse;
+import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.RpcApiUtil;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -37,58 +42,44 @@ public class AllController {
      * 用户登录时携带的token的名称
      */
     private static final String TOKEN = "token";
+
     /**
      * 保证请求幂等性, 不会在前一个相同幂等id执行结束前执行方法
      */
     private static final String UNIQUE = "unique";
-    /**
-     * 热点缓存
-     */
-    @Autowired
-    private HotSpotRedisPool redisPool;
 
     /**
-     * action 添加链路跟踪起点
-     *
-     * @param action
+     * 不传递的header
      */
-    public static void actionAddRequestLink(Action action) {
-        HashMap<String, Object> requestLink = new HashMap<>(2);
-        requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
-        requestLink.put("data", "页面请求");
-        action.getArgs().put("requestLink", requestLink);
-    }
+    private static final List<String> NON_TRANSITIVE_HEADER = Arrays.asList("sec-fetch-mode", "content-length", "referer", "sec-fetch-site", "accept-language", "cookie", "origin", "accept", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform", "host", "x-requested-with", "connection", "content-type", "accept-encoding", "user-agent", "sec-fetch-dest");
+
+    @Autowired
+    @Qualifier("actionExecutor")
+    private ThreadPoolTaskExecutor executor;
 
     /**
      * 默认返回所有的方法
      *
      * @param action             包含请求参数的信息
      * @param httpServletRequest 请求,暂时没用,日后或许有用
+     *
      * @return 向界面返回的值
      */
     @PostMapping("action")
     public WebResponse action(@RequestBody Action action, HttpServletRequest httpServletRequest) {
-        //错误日志
-        String eMsg = null;
-        // 链路跟踪
-        LinkNode<String> link = null;
         // 服务返回信息
-        ServiceResult serviceResult = null;
+        ServiceResult serviceResult;
 
         // 发送前处理
         dealActionBeforeCall(action);
+        // 获取有价值的headers
+        Map<String, String> headers = findHeaders(httpServletRequest);
         try {
-            serviceResult = RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), action.getArgs());
+            Future<ServiceResult> submit = executor.submit(new ActionFuture(action, headers, httpServletRequest));
+            serviceResult = submit.get();
 
-            /* 打印链路跟踪 */
-            link = serviceResult.getRequestLink();
-            LogUtil.linkPrint(link);
-
-            if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
-                eMsg = serviceResult.getServiceMessage();
-            }
             // 修改字段类型为String,因为前端大数会失去精度
-            Serializable data = serviceResult.getData();
+            Object data = serviceResult.getData();
             if (data instanceof JSONObject) {
                 changeFieldTypeToString((JSONObject) data);
             } else if (data instanceof JSONArray) {
@@ -98,9 +89,10 @@ public class AllController {
         } catch (Exception e) {
             // 如果失败,就返回微服务传回来的错误信息与提示
             LogUtil.error(this, e);
-            eMsg = e.getMessage();
             return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
-        } finally {
+        }
+        // disruptor 注释了. 以后想用在别的地方当做参考
+        /*finally {
             if (serviceResult != null) {
                 try {
                     LogPushUtils.pushLog(eMsg, action.getInterfaceName(), action.getMethodName(), action.getArgs(), link, httpServletRequest, action.getToken(), serviceResult.getServiceCode());
@@ -109,14 +101,51 @@ public class AllController {
                 }
 
             }
-        }
+        }*/
     }
 
+    @PostMapping("/getSession")
+    public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
+        LogUtil.info(this, "getSession: " + sessionRequest.getAttrName());
+        HttpSession session = request.getSession();
+        LogUtil.info(this, "result: " + session.getAttribute(sessionRequest.getAttrName()));
+        return session.getAttribute(sessionRequest.getAttrName());
+    }
+
+    @PostMapping("/setSession")
+    public boolean setSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
+        LogUtil.info(this, "setSession: " + sessionRequest.getAttrName());
+        LogUtil.info(this, "sessionData : " + sessionRequest.getData());
+        HttpSession session = request.getSession();
+        session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
+        return Boolean.TRUE;
+    }
+
+    /**
+     * 从httpRequest中获取headers
+     *
+     * @param httpServletRequest
+     *
+     * @return
+     */
+    private Map<String, String> findHeaders(HttpServletRequest httpServletRequest) {
+        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
+        Map<String, String> map = new HashMap<>();
+        while (headerNames.hasMoreElements()) {
+            String headerKey = headerNames.nextElement();
+            if (NON_TRANSITIVE_HEADER.contains(headerKey)) {
+                continue;
+            }
+            String header = httpServletRequest.getHeader(headerKey);
+            map.put(headerKey, header);
+        }
+        return map;
+    }
 
     private void changeFieldTypeToString(JSONObject data) {
         // 因前端大数会失去精度, 所以要转变类型,全部转换为String类型的
         if (data != null) {
-            for (Map.Entry<String, Object> entry : data.entrySet()) {
+            for (Entry<String, Object> entry : data.entrySet()) {
                 String s = entry.getKey();
                 Object value = entry.getValue();
                 if (value instanceof JSONObject) {
@@ -152,25 +181,37 @@ public class AllController {
         LogUtil.info(this, "param: " + JSON.toJSONString(action));
         // token修改到arg中
         action.getArgs().put(TOKEN, action.getToken());
-        // 添加链路跟踪
-        actionAddRequestLink(action);
     }
 
-    @PostMapping("/getSession")
-    public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
-        LogUtil.info(this, "getSession: " + sessionRequest.getAttrName());
-        HttpSession session = request.getSession();
-        LogUtil.info(this, "result: " + session.getAttribute(sessionRequest.getAttrName()));
-        return session.getAttribute(sessionRequest.getAttrName());
-    }
+    private static class ActionFuture implements Callable<ServiceResult> {
 
-    @PostMapping("/setSession")
-    public boolean setSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
-        LogUtil.info(this, "setSession: " + sessionRequest.getAttrName());
-        LogUtil.info(this, "sessionData : " + sessionRequest.getData());
-        HttpSession session = request.getSession();
-        session.setAttribute(sessionRequest.getAttrName(), sessionRequest.getData());
-        return Boolean.TRUE;
+        private final Action action;
+
+        private final Map<String, String> headers;
+
+        private final HttpServletRequest httpServletRequest;
+
+        public ActionFuture(Action action, Map<String, String> headers, HttpServletRequest httpServletRequest) {
+            this.action = action;
+            this.headers = headers;
+            this.httpServletRequest = httpServletRequest;
+        }
+
+        @Override
+        public ServiceResult call() throws Exception {
+            pushIp();
+            Object o = RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), headers, action.getArgs());
+            if (o instanceof ServiceResult) {
+                return (ServiceResult) o;
+            }
+            JSONObject result = (JSONObject) o;
+            return JSON.toJavaObject(result, ServiceResult.class);
+        }
+
+        private void pushIp() {
+            String ip = IpUtil.getServletIP(httpServletRequest);
+            UserInfoHelper.setIp(ip);
+        }
     }
 
 }

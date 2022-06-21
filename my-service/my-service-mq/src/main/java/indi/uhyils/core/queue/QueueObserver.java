@@ -8,6 +8,7 @@ package indi.uhyils.core.queue;
  * @Version 1.0
  */
 public interface QueueObserver {
+
     /**
      * 获取队列
      *

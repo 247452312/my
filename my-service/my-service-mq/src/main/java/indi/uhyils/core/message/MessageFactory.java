@@ -2,7 +2,7 @@ package indi.uhyils.core.message;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.core.topic.Topic;
-import indi.uhyils.enum_.TopicType;
+import indi.uhyils.enums.TopicType;
 import indi.uhyils.exception.TopicTypeNotFoundException;
 import indi.uhyils.exception.UserException;
 
@@ -12,6 +12,7 @@ import indi.uhyils.exception.UserException;
  * @Version 1.0
  */
 public class MessageFactory {
+
     public static Message createMessage(JSONObject data, String key, Topic topic) throws UserException {
         TopicType topicType = topic.getTopicType();
         Message message;

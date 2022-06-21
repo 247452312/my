@@ -1,15 +1,14 @@
 package indi.uhyils.core.queue;
 
 import indi.uhyils.core.topic.Topic;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 队列工厂
@@ -25,6 +24,7 @@ public class QueueFactory {
      * 队列使用的线程池
      */
     protected Executor queueExecutor;
+
     @Autowired
     private QueueFactoryConfig config;
 
@@ -34,13 +34,14 @@ public class QueueFactory {
     @PostConstruct
     public void init() {
         this.queueExecutor = new ThreadPoolExecutor(config.getCoresize(), config.getMaxsize(), config.getAlive(),
-                config.getTimeUnit(), new ArrayBlockingQueue<>(300), new QueueThreadFactory());
+                                                    config.getTimeUnit(), new ArrayBlockingQueue<>(300), new QueueThreadFactory());
     }
 
     /**
      * 创建一个默认的队列
      *
      * @param topic
+     *
      * @return
      */
     public Queue createNormalQueue(Topic topic) {
@@ -51,6 +52,7 @@ public class QueueFactory {
      * 创建一个默认的队列
      *
      * @param topic
+     *
      * @return
      */
     public Queue createPartitionQueue(Topic topic, String key) {
@@ -58,6 +60,7 @@ public class QueueFactory {
     }
 
     private class QueueThreadFactory implements ThreadFactory {
+
         /**
          * thread prefix
          */

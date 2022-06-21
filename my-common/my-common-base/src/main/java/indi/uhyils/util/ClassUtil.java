@@ -1,23 +1,29 @@
 package indi.uhyils.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Proxy;
+import java.util.Objects;
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.support.AopUtils;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Proxy;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2021年01月23日 14时11分
  */
-public class ClassUtil {
+public final class ClassUtil {
+
+    private ClassUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 剥去springAop等代理类的外衣,获取真实的类的类型
      *
      * @param value
+     *
      * @return
+     *
      * @throws Exception
      */
     public static Class<?> getRealClass(Object value) throws Exception {
@@ -27,10 +33,14 @@ public class ClassUtil {
         }
         Class<?> clazz = value.getClass();
         if (AopUtils.isAopProxy(value)) {
+            Object realObj;
             if (AopUtils.isJdkDynamicProxy(value)) {
-                clazz = getJdkDynamicProxyTargetObject(value).getClass();
+                realObj = getJdkDynamicProxyTargetObject(value);
             } else {
-                clazz = getCglibProxyTargetObject(value).getClass();
+                realObj = getCglibProxyTargetObject(value);
+            }
+            if (realObj != null) {
+                clazz = realObj.getClass();
             }
         }
         if (Proxy.isProxyClass(clazz)) {
@@ -40,6 +50,36 @@ public class ClassUtil {
         return clazz;
     }
 
+    /**
+     * 剥去springAop等代理类的外衣,获取真实的类
+     *
+     * @param value
+     *
+     * @return
+     *
+     * @throws Exception
+     */
+    public static Object getRealObj(Object value) throws Exception {
+        // 防止这里key是spring的aop类 或者 proxy代理
+        if (!AopUtils.isAopProxy(value) && !Proxy.isProxyClass(value.getClass())) {
+            return value;
+        }
+        Object result = value;
+        if (AopUtils.isAopProxy(value.getClass())) {
+            if (AopUtils.isJdkDynamicProxy(value)) {
+                result = getJdkDynamicProxyTargetObject(value);
+            } else {
+                result = getCglibProxyTargetObject(value);
+            }
+        }
+        if (result != null && Proxy.isProxyClass(result.getClass())) {
+            result = getTarget(result);
+        }
+        if (Objects.equals(result, value)) {
+            return value;
+        }
+        return getRealObj(result);
+    }
 
     /**
      * JDK动态代理方式被代理类的获取
@@ -66,7 +106,26 @@ public class ClassUtil {
         Object dynamicAdvisedInterceptor = h.get(proxy);
         Field advised = dynamicAdvisedInterceptor.getClass().getDeclaredField("advised");
         advised.setAccessible(Boolean.TRUE);
-        Object target = ((AdvisedSupport) advised.get(dynamicAdvisedInterceptor)).getTargetSource().getTarget();
-        return target;
+        return ((AdvisedSupport) advised.get(dynamicAdvisedInterceptor)).getTargetSource().getTarget();
+    }
+
+    /**
+     * 获取proxy真实对象
+     *
+     * @param proxy
+     *
+     * @return
+     *
+     * @throws Exception
+     */
+    private static Object getTarget(Object proxy) throws NoSuchFieldException, IllegalAccessException {
+        Field field = proxy.getClass().getSuperclass().getDeclaredField("h");
+        field.setAccessible(true);
+        //获取指定对象中此字段的值
+        //获取Proxy对象中的此字段的值
+        Object o = field.get(proxy);
+        Field person = o.getClass().getDeclaredField("target");
+        person.setAccessible(true);
+        return person.get(o);
     }
 }

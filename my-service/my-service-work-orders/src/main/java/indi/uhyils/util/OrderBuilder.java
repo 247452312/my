@@ -1,9 +1,17 @@
 package indi.uhyils.util;
 
-import indi.uhyils.enum_.OrderNodeStatusEnum;
-import indi.uhyils.enum_.OrderStatusEnum;
-import indi.uhyils.pojo.model.*;
-
+import indi.uhyils.enums.OrderNodeStatusEnum;
+import indi.uhyils.enums.OrderStatusEnum;
+import indi.uhyils.pojo.DO.OrderBaseInfoDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeFieldDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeResultTypeDO;
+import indi.uhyils.pojo.DO.OrderBaseNodeRouteDO;
+import indi.uhyils.pojo.DO.OrderInfoDO;
+import indi.uhyils.pojo.DO.OrderNodeDO;
+import indi.uhyils.pojo.DO.OrderNodeFieldDO;
+import indi.uhyils.pojo.DO.OrderNodeResultTypeDO;
+import indi.uhyils.pojo.DO.OrderNodeRouteDO;
 import java.io.Serializable;
 
 /**
@@ -18,12 +26,13 @@ public class OrderBuilder implements Serializable {
      * 工单基础样例表复制到实例表中去
      *
      * @param baseInfo 工单基础样例表
+     *
      * @return 实例
      */
-    public static OrderInfoEntity transBaseInfo2Info(OrderBaseInfoEntity baseInfo) {
-        OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
+    public static OrderInfoDO transBaseInfo2Info(OrderBaseInfoDO baseInfo) {
+        OrderInfoDO orderInfoEntity = new OrderInfoDO();
         orderInfoEntity.setPriority(baseInfo.getPriority());
-        orderInfoEntity.setQueryUserIds(baseInfo.getQueryUserIds());
+        orderInfoEntity.setQueryUserIds(Long.toString(baseInfo.getQueryUserIds()));
         orderInfoEntity.setLimitTime(baseInfo.getLimitTime());
         orderInfoEntity.setSon(baseInfo.getSon());
         orderInfoEntity.setMonitorUserId(baseInfo.getMonitorUserId());
@@ -33,8 +42,8 @@ public class OrderBuilder implements Serializable {
         return orderInfoEntity;
     }
 
-    public static OrderNodeEntity transBaseNode2Node(OrderBaseNodeEntity node, Long infoId) {
-        OrderNodeEntity nodeEntity = new OrderNodeEntity();
+    public static OrderNodeDO transBaseNode2Node(OrderBaseNodeDO node, Long infoId) {
+        OrderNodeDO nodeEntity = new OrderNodeDO();
         nodeEntity.setSaveApiId(node.getSaveApiId());
         nodeEntity.setInitApiId(node.getInitApiId());
         nodeEntity.setRunType(node.getRunType());
@@ -53,8 +62,8 @@ public class OrderBuilder implements Serializable {
     }
 
 
-    public static OrderNodeFieldEntity transBaseField2Field(OrderBaseNodeFieldEntity orderBaseNodeFieldEntity, Long nodeId) {
-        OrderNodeFieldEntity orderNodeFieldEntity = new OrderNodeFieldEntity();
+    public static OrderNodeFieldDO transBaseField2Field(OrderBaseNodeFieldDO orderBaseNodeFieldEntity, Long nodeId) {
+        OrderNodeFieldDO orderNodeFieldEntity = new OrderNodeFieldDO();
         orderNodeFieldEntity.setValueType(orderBaseNodeFieldEntity.getValueType());
         orderNodeFieldEntity.setEdit(orderBaseNodeFieldEntity.getEdit());
         orderNodeFieldEntity.setDefaultValue(orderBaseNodeFieldEntity.getDefaultValue());
@@ -68,16 +77,16 @@ public class OrderBuilder implements Serializable {
         return orderNodeFieldEntity;
     }
 
-    public static OrderNodeResultTypeEntity transBaseResultType2ResultType(OrderBaseNodeResultTypeEntity orderBaseNodeResultTypeEntity, Long nodeId) {
-        OrderNodeResultTypeEntity orderNodeResultTypeEntity = new OrderNodeResultTypeEntity();
+    public static OrderNodeResultTypeDO transBaseResultType2ResultType(OrderBaseNodeResultTypeDO orderBaseNodeResultTypeEntity, Long nodeId) {
+        OrderNodeResultTypeDO orderNodeResultTypeEntity = new OrderNodeResultTypeDO();
         orderNodeResultTypeEntity.setBaseNodeId(nodeId);
         orderNodeResultTypeEntity.setDealResultName(orderBaseNodeResultTypeEntity.getDealResultName());
 
         return orderNodeResultTypeEntity;
     }
 
-    public static OrderNodeRouteEntity transBaseRoute2Route(OrderBaseNodeRouteEntity orderBaseNodeRouteEntity, Long nodeId) {
-        OrderNodeRouteEntity orderNodeRouteEntity = new OrderNodeRouteEntity();
+    public static OrderNodeRouteDO transBaseRoute2Route(OrderBaseNodeRouteDO orderBaseNodeRouteEntity, Long nodeId) {
+        OrderNodeRouteDO orderNodeRouteEntity = new OrderNodeRouteDO();
         orderNodeRouteEntity.setPrevNodeId(nodeId);
         orderNodeRouteEntity.setNextNodeId(orderBaseNodeRouteEntity.getNextNodeId());
         return orderNodeRouteEntity;

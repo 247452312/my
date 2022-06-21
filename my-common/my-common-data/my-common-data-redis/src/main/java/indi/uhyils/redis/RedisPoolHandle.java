@@ -2,17 +2,17 @@ package indi.uhyils.redis;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.content.Content;
-import indi.uhyils.pojo.model.UserEntity;
+import indi.uhyils.context.MyContext;
+import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.StringUtil;
+import java.lang.reflect.Method;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.exceptions.JedisConnectionException;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 /**
  * 懒加载,除了用到redis
@@ -28,27 +28,29 @@ public class RedisPoolHandle {
      * impl
      */
     private static final String IMPL = "Impl";
+
     /**
      * 检查方法是否允许执行所需要执行的lua脚本
      */
     private static String checkMethodDisableLua = "if redis.call(\"HEXISTS\",KEYS[2]) then\n" +
-            "    return redis.call(\"HGET\",KEYS[2])\n" +
-            "elseif redis.call(\"HEXISTS\",KEYS[1]) then\n" +
-            "    local classType = redis.call(\"HGET\",KEYS[1])\n" +
-            "    if classType == 0 then\n" +
-            "\n" +
-            "    elseif classType == 1 then\n" +
-            "        if KEYS[3] == 1 then\n" +
-            "            return 1\n" +
-            "    elseif classType == 2 then\n" +
-            "        if KEYS[3] == 2 then\n" +
-            "            return 1\n" +
-            "    elseif classType == 3 then\n" +
-            "        return 1\n" +
-            "    end\n" +
-            "else\n" +
-            "    return 0\n" +
-            "end\n";
+                                                  "    return redis.call(\"HGET\",KEYS[2])\n" +
+                                                  "elseif redis.call(\"HEXISTS\",KEYS[1]) then\n" +
+                                                  "    local classType = redis.call(\"HGET\",KEYS[1])\n" +
+                                                  "    if classType == 0 then\n" +
+                                                  "\n" +
+                                                  "    elseif classType == 1 then\n" +
+                                                  "        if KEYS[3] == 1 then\n" +
+                                                  "            return 1\n" +
+                                                  "    elseif classType == 2 then\n" +
+                                                  "        if KEYS[3] == 2 then\n" +
+                                                  "            return 1\n" +
+                                                  "    elseif classType == 3 then\n" +
+                                                  "        return 1\n" +
+                                                  "    end\n" +
+                                                  "else\n" +
+                                                  "    return 0\n" +
+                                                  "end\n";
+
     @Autowired
     private RedisPool redisPool;
 
@@ -59,20 +61,17 @@ public class RedisPoolHandle {
      * @param token token
      * @param user  user
      */
-    public void addUser(String token, UserEntity user) {
-        Redisable jedis = redisPool.getJedis();
-        try {
+    public void addUser(String token, UserDTO user) {
+        try (Redisable jedis = redisPool.getJedis()) {
             String value = JSONObject.toJSONString(user);
-            jedis.append(token, value);
+            jedis.set(token, value);
             //半个小时
-            jedis.expire(token, 60 * Content.LOGIN_TIME_OUT_MIN);
-            jedis.append(user.getId().toString(), token);
-            jedis.expire(user.getId().toString(), 60 * Content.LOGIN_TIME_OUT_MIN);
+            jedis.expire(token, 60 * MyContext.LOGIN_TIME_OUT_MIN);
+            jedis.set(user.getId().toString(), token);
+            jedis.expire(user.getId().toString(), 60 * MyContext.LOGIN_TIME_OUT_MIN);
 
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
-        } finally {
-            jedis.close();
         }
 
     }
@@ -81,18 +80,19 @@ public class RedisPoolHandle {
      * 前台有操作都会经过这个方法, 通过token获取user, 同时刷新redis中用户的存在时间
      *
      * @param token token
+     *
      * @return user
      */
-    public UserEntity getUser(String token) {
+    public UserDTO getUser(String token) {
         Redisable jedis = redisPool.getJedis();
         try {
             String userJson = jedis.get(token);
             if (StringUtils.isEmpty(userJson)) {
                 return null;
             }
-            UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
-            jedis.expire(token, 60 * Content.LOGIN_TIME_OUT_MIN);
-            jedis.expire(userEntity.getId().toString(), 60 * Content.LOGIN_TIME_OUT_MIN);
+            UserDTO userEntity = JSON.parseObject(userJson, UserDTO.class);
+            jedis.expire(token, 60 * MyContext.LOGIN_TIME_OUT_MIN);
+            jedis.expire(userEntity.getId().toString(), 60 * MyContext.LOGIN_TIME_OUT_MIN);
             return userEntity;
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
@@ -100,13 +100,33 @@ public class RedisPoolHandle {
             jedis.close();
         }
         return null;
+    }
 
+    /**
+     * 根据用户id获取用户
+     *
+     * @param userId 用户id
+     *
+     * @return user
+     */
+    public UserDTO getUser(Long userId) {
+        Redisable jedis = redisPool.getJedis();
+        try {
+            String token = jedis.get(userId.toString());
+            if (StringUtil.isNotEmpty(token)) {
+                return getUser(token);
+            }
+        } finally {
+            jedis.close();
+        }
+        return null;
     }
 
     /**
      * 是否存在token
      *
      * @param token
+     *
      * @return
      */
     public Boolean haveToken(String token) {
@@ -159,7 +179,7 @@ public class RedisPoolHandle {
             if (StringUtils.isEmpty(userJson)) {
                 return Boolean.TRUE;
             }
-            UserEntity userEntity = JSON.parseObject(userJson, UserEntity.class);
+            UserDTO userEntity = JSON.parseObject(userJson, UserDTO.class);
             Long id = userEntity.getId();
             Long del = jedis.del(id.toString(), token);
             return del != 0;
@@ -205,7 +225,7 @@ public class RedisPoolHandle {
         }
     }
 
-    public Long sadd(String key, ArrayList<String> values) {
+    public Long sadd(String key, List<String> values) {
         if (values == null || values.size() == 0) {
             return 0L;
         }
@@ -287,6 +307,7 @@ public class RedisPoolHandle {
      * @param targetClass    目标class
      * @param declaredMethod 目标方法
      * @param readWriteType  方法的类型 1->读接口 2->写接口
+     *
      * @return 是否允许执行
      */
     public Boolean checkMethodDisable(Class<?> targetClass, Method declaredMethod, Integer readWriteType) {
@@ -297,32 +318,31 @@ public class RedisPoolHandle {
         }
         String methodName = className + "#" + declaredMethod.getName();
         return checkMethodDisable(className, methodName, readWriteType);
-
-
     }
 
     /**
      * 检查方法是否允许执行
      *
-     * @param className     目标class
-     * @param methodName    目标className+#+methodName
-     * @param readWriteType 方法的类型 1->读接口 2->写接口
+     * @param className      目标class
+     * @param methodFullName 目标className+#+methodFullName
+     * @param readWriteType  方法的类型 1->读接口 2->写接口
+     *
      * @return 是否允许执行
      */
-    public Boolean checkMethodDisable(String className, String methodName, Integer readWriteType) {
-        Redisable jedis = redisPool.getJedis();
+    public Boolean checkMethodDisable(String className, String methodFullName, Integer readWriteType) {
 
-        try {
-            Boolean exists = jedis.exists(Content.SERVICE_USEABLE_SWITCH);
+        try (Redisable jedis = redisPool.getJedis()) {
+            Boolean exists = jedis.exists(MyContext.SERVICE_USEABLE_SWITCH);
+            // 如果不存在这个hash串,则全部放行
             if (!exists) {
                 return Boolean.TRUE;
             }
-            String methodPower = jedis.hget(Content.SERVICE_USEABLE_SWITCH, methodName);
+            String methodPower = jedis.hget(MyContext.SERVICE_USEABLE_SWITCH, methodFullName);
             if (methodPower != null) {
                 //如果是0返回不禁用.如果不是0返回禁用
                 return 0 == Integer.parseInt(methodPower);
             } else {
-                String classPower = jedis.hget(Content.SERVICE_USEABLE_SWITCH, className);
+                String classPower = jedis.hget(MyContext.SERVICE_USEABLE_SWITCH, className);
                 if (classPower != null) {
                     int classPowerInt = Integer.parseInt(classPower);
                     if (classPowerInt == 3) {
@@ -339,20 +359,16 @@ public class RedisPoolHandle {
                 }
                 return Boolean.TRUE;
             }
-        } finally {
-            jedis.close();
         }
     }
 
-    public Boolean removeByKey(String key) {
-        Redisable jedis = redisPool.getJedis();
 
-        try {
+    public Boolean removeByKey(String key) {
+
+        try (Redisable jedis = redisPool.getJedis()) {
             if (jedis.exists(key)) {
                 jedis.del(key);
             }
-        } finally {
-            jedis.close();
         }
         return Boolean.TRUE;
     }

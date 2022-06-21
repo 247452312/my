@@ -12,6 +12,7 @@ public interface TransApiHandler {
      * 自动节点转移到下一个节点
      *
      * @param requestTemporary
+     *
      * @return
      */
     void trans(SaveToTransApiTemporary requestTemporary);

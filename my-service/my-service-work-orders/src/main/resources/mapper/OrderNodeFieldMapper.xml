@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.OrderNodeFieldDao">
+    <resultMap type="indi.uhyils.pojo.DO.OrderNodeFieldDO" id="OrderNodeFieldMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="baseOrderNodeId" column="base_order_node_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="desc" column="desc" jdbcType="VARCHAR"/>
+        <result property="defaultValue" column="default_value" jdbcType="VARCHAR"/>
+        <result property="empty" column="empty" jdbcType="INTEGER"/>
+        <result property="edit" column="edit" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="valueType" column="value_type" jdbcType="INTEGER"/>
+        <result property="dataSources" column="data_sources" jdbcType="INTEGER"/>
+        <result property="relationId" column="relation_id" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="columnList">
+        a.value_type         as valueType,
+        a.edit               as edit,
+        a.default_value      as defaultValue,
+        a.remark             as remark,
+        a.type               as type,
+        a.update_date        as updateDate,
+        a.empty,
+        a.update_user        as updateUser,
+        a.name               as name,
+        a.id                 as id,
+        a.create_user        as createUser,
+        a.create_date        as createDate,
+        a.delete_flag        as deleteFlag,
+        a.base_order_node_id as baseOrderNodeId,
+        a.`desc`
+    </sql>
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.OrderNodeFieldDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_order_node_field set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="item.baseOrderNodeId != null">
+                ,base_order_node_id = #{item.baseOrderNodeId}
+            </if>
+            <if test="item.name != null and item.name != ''">
+                ,name = #{item.name}
+            </if>
+            <if test="item.desc != null and item.desc != ''">
+                ,`desc` = #{item.desc}
+            </if>
+            <if test="item.defaultValue != null and item.defaultValue != ''">
+                ,default_value = #{item.defaultValue}
+            </if>
+            <if test="item.empty != null">
+                ,empty = #{item.empty}
+            </if>
+            <if test="item.edit != null">
+                ,edit = #{item.edit}
+            </if>
+            <if test="item.type != null">
+                ,type = #{item.type}
+            </if>
+            <if test="item.valueType != null">
+                ,value_type = #{item.valueType}
+            </if>
+            <if test="item.dataSources != null">
+                ,data_sources = #{item.dataSources}
+            </if>
+            <if test="item.relationId != null">
+                ,relation_id = #{item.relationId}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+    <select id="getByOrderNodeId" resultType="indi.uhyils.pojo.DO.OrderNodeFieldDO">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_field a
+        where delete_flag = 0
+        and base_order_node_id = #{orderNodeId}
+    </select>
+    <select id="getByOrderNodeIds" resultType="indi.uhyils.pojo.DO.OrderNodeFieldDO">
+        select
+        <include refid="columnList"/>
+        from sys_order_node_field a
+        where delete_flag = 0
+        and base_order_node_id in
+        <foreach collection="orderNodeIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

@@ -4,7 +4,6 @@ package indi.uhyils.util.mail;
 import cn.hutool.extra.mail.Mail;
 import cn.hutool.extra.mail.MailAccount;
 import indi.uhyils.util.LogUtil;
-
 import java.util.ArrayList;
 
 /**
@@ -14,12 +13,16 @@ import java.util.ArrayList;
 public class SendMail {
 
     private static final String HOST = "smtp.qq.com";
+
     private static final String PORT = "465";
+
     /**
      * stmp密码
      */
     private static final String PASS = "*************";
+
     private static final String USER = "uhyils";
+
     private static final String FROM_USER = "uhyils@qq.com";
 
     public static Boolean send(String mail, String title, String content) {
@@ -56,15 +59,15 @@ public class SendMail {
         try {
             int size = emailVo.getTos().size();
             Mail.create(account)
-                    .setTos(emailVo.getTos().toArray(new String[size]))
-                    .setTitle(emailVo.getSubject())
-                    .setContent(emailVo.getContent())
-                    //抄送给自己防止邮箱发送出现554
-                    .setCcs(emailConfig.getFromUser())
-                    .setHtml(Boolean.TRUE)
-                    //关闭session
-                    .setUseGlobalSession(false)
-                    .send();
+                .setTos(emailVo.getTos().toArray(new String[size]))
+                .setTitle(emailVo.getSubject())
+                .setContent(emailVo.getContent())
+                //抄送给自己防止邮箱发送出现554
+                .setCcs(emailConfig.getFromUser())
+                .setHtml(Boolean.TRUE)
+                //关闭session
+                .setUseGlobalSession(false)
+                .send();
             return Boolean.TRUE;
         } catch (Exception e) {
             LogUtil.error(SendMail.class, e);

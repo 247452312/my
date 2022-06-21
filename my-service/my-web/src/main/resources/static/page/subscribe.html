@@ -111,7 +111,7 @@
             form = layui.form,
             step = layui.step;
 
-        pushRequest("DictService", "getByCode", {"code": "job_cron"}, function (data) {
+        pushRequest("DictProvider", "getByCode", {"code": "job_cron"}, function (data) {
             for (let i = 0; i < data.length; i++) {
                 $("[name='cron']").empty();
                 $("[name='cron']").append('<option value="">请选择一个订阅时间</option> ');
@@ -121,7 +121,7 @@
                 form.render('select');
             }
         });
-        pushRequest("ApiGroupService", "getCanBeSubscribed", {}, function (data) {
+        pushRequest("ApiGroupProvider", "getCanBeSubscribed", {}, function (data) {
             for (let i = 0; i < data.length; i++) {
                 $("[name='apiGroup_last']").empty();
                 $("[name='apiGroup_last']").append('<option value="">请选择一个服务</option> ');
@@ -131,7 +131,7 @@
                 form.render('select');
             }
         });
-        pushRequest("DictService", "getByCode", {"code": "pushType"}, function (data) {
+        pushRequest("DictProvider", "getByCode", {"code": "pushType"}, function (data) {
             for (let i = 0; i < data.length; i++) {
                 $("[name='sendType']").empty();
                 $("[name='sendType']").append('<option value="">请选择一个服务方式</option> ');
@@ -164,7 +164,7 @@
         });
 
         form.on('submit(formStep2)', function (data) {
-            pushRequest("ApiSubscribeService", "subscribe", data.field, function (data1) {
+            pushRequest("ApiSubscribeProvider", "subscribe", data.field, function (data1) {
                 step.next('#stepForm');
             });
             return false;

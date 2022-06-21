@@ -1,24 +1,24 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.OrderInfoEntity;
+import indi.uhyils.pojo.DO.OrderInfoDO;
+import java.util.ArrayList;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.ArrayList;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年11月09日 10时11分
  */
 @Mapper
-public interface OrderInfoDao extends DefaultDao<OrderInfoEntity> {
+public interface OrderInfoDao extends DefaultDao<OrderInfoDO> {
 
 
     /**
      * 获取一个工单的状态
      *
      * @param orderId
+     *
      * @return
      */
     Integer getOrderStatusById(Long orderId);
@@ -35,7 +35,8 @@ public interface OrderInfoDao extends DefaultDao<OrderInfoEntity> {
      * 根据类型获取其他工单
      *
      * @param type
+     *
      * @return
      */
-    ArrayList<OrderInfoEntity> getOrderByType(Integer type);
+    ArrayList<OrderInfoDO> getOrderByType(Integer type);
 }

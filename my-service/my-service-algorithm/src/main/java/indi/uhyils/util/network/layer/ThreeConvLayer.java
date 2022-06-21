@@ -11,10 +11,12 @@ import indi.uhyils.util.network.core.Network;
  * @date 文件创建日期 2020年07月25日 13时24分
  */
 public class ThreeConvLayer implements Layer {
+
     /**
      * 整个神经网络
      */
     private Network network;
+
     /**
      * 激活函数
      */
@@ -30,6 +32,7 @@ public class ThreeConvLayer implements Layer {
      * 卷积核的高
      */
     private Integer kernelHeight;
+
     /**
      * 卷积核的宽
      */

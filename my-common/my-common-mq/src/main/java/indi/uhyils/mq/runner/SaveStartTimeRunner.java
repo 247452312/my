@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(1)
 public class SaveStartTimeRunner implements ApplicationRunner {
+
     @Override
     public void run(ApplicationArguments args) {
         RabbitMqContent.init();

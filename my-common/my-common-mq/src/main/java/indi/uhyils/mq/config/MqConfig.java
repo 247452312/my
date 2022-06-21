@@ -17,10 +17,13 @@ public class MqConfig {
 
     @Value("${rabbit.host}")
     private String host;
+
     @Value("${rabbit.port}")
     private Integer port;
+
     @Value("${rabbit.username}")
     private String username;
+
     @Value("${rabbit.password}")
     private String password;
 

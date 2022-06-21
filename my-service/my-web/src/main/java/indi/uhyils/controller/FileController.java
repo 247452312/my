@@ -1,25 +1,24 @@
 package indi.uhyils.controller;
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.enum_.ServiceCode;
-import indi.uhyils.pojo.request.Action;
-import indi.uhyils.pojo.request.base.DefaultRequest;
-import indi.uhyils.pojo.request.model.LinkNode;
-import indi.uhyils.pojo.response.WebResponse;
-import indi.uhyils.pojo.response.base.ServiceResult;
-import indi.uhyils.rpc.spring.util.RpcApiUtil;
-import indi.uhyils.util.LogPushUtils;
+import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.pojo.DTO.request.Action;
+import indi.uhyils.pojo.DTO.response.WebResponse;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.util.LogUtil;
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
+import indi.uhyils.util.RpcApiUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import static indi.uhyils.controller.AllController.actionAddRequestLink;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -30,15 +29,14 @@ import static indi.uhyils.controller.AllController.actionAddRequestLink;
 @RequestMapping("/file")
 public class FileController {
 
-    private static final String INTERFACE = "MongoService";
+    private static final String INTERFACE = "MongoProvider";
+
     private static final String METHOD_NAME = "getByFileName";
 
     private static final String TOKEN = "token";
 
     @RequestMapping("/down/{fileName}/{token}")
     public String down(@PathVariable String token, @PathVariable String fileName, HttpServletRequest request) {
-        String eMsg = null;
-        LinkNode<String> link = null;
         ServiceResult serviceResult = null;
         Map<String, Object> args = new HashMap<>(3);
 
@@ -46,71 +44,36 @@ public class FileController {
             token = new String(Base64.decodeBase64(token));
             args.put("token", token);
             args.put("name", fileName);
-            HashMap<String, Object> requestLink = new HashMap<>(2);
-            requestLink.put("class", "indi.uhyils.pojo.request.model.LinkNode");
-            requestLink.put("data", "页面请求");
-            args.put("requestLink", requestLink);
-            serviceResult = RpcApiUtil.rpcApiTool(INTERFACE, METHOD_NAME, args);
-            link = serviceResult.getRequestLink();
-            LogUtil.linkPrint(link);
-            if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
-                eMsg = serviceResult.getServiceMessage();
-            }
+
+            serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, METHOD_NAME, args);
+
             ServiceResult<String> sr = serviceResult;
             return sr.getData();
         } catch (Exception e) {
             LogUtil.error(this, e);
-            eMsg = e.getMessage();
             return null;
-        } finally {
-            if (serviceResult != null) {
-                try {
-                    LogPushUtils.pushLog(eMsg, INTERFACE, METHOD_NAME, args, link, request, token, serviceResult.getServiceCode());
-                } catch (Exception e) {
-                    LogUtil.error(this, e);
-                }
-
-            }
         }
     }
 
     @RequestMapping("/up")
     public WebResponse up(@RequestBody Action action, HttpServletRequest request) {
         String methodName = "add";
-        String eMsg = null;
-        LinkNode<String> link = null;
         ServiceResult serviceResult = null;
 
         LogUtil.info(this, "param: " + JSON.toJSONString(action));
         // token修改到arg中
         action.getArgs().put(TOKEN, action.getToken());
-        // 添加链路跟踪
-        actionAddRequestLink(action);
 
         try {
             action.getArgs().put("token", action.getToken());
             List<Object> list = new ArrayList();
             list.add(action.getArgs());
-            serviceResult = RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultRequest());
-            link = serviceResult.getRequestLink();
-            LogUtil.linkPrint(link);
-            if (!serviceResult.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
-                eMsg = serviceResult.getServiceMessage();
-            }
+            serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultCQE());
+
             return WebResponse.build(serviceResult);
         } catch (Exception e) {
             LogUtil.error(this, e);
-            eMsg = e.getMessage();
             return null;
-        } finally {
-            if (serviceResult != null) {
-                try {
-                    LogPushUtils.pushLog(eMsg, INTERFACE, methodName, action.getArgs(), link, request, action.getToken(), serviceResult.getServiceCode());
-                } catch (Exception e) {
-                    LogUtil.error(this, e);
-                }
-
-            }
         }
     }
 

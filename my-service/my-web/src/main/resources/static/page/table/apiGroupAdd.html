@@ -73,7 +73,7 @@
         let func = $.getUrlParam('func');
 
         if (func == 'edit') { // 这是修改
-            pushRequest("ApiGroupService", "getById", {
+            pushRequest("ApiGroupProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="name"]').attr('value', data.name);
@@ -105,11 +105,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("ApiGroupService", "insert", {data: data.field}, function () {
+                    pushRequest("ApiGroupProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("ApiGroupService", "update", {data: data.field}, function () {
+                    pushRequest("ApiGroupProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

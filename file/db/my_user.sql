@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 192.168.1.101
+ Source Server         : mac
  Source Server Type    : MySQL
- Source Server Version : 80020
- Source Host           : 192.168.1.101:3306
+ Source Server Version : 80024
+ Source Host           : prod:3306
  Source Schema         : my_user
 
  Target Server Type    : MySQL
- Target Server Version : 80020
+ Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 09/12/2020 18:56:42
+ Date: 14/02/2022 09:40:25
 */
 
 SET NAMES utf8mb4;
@@ -140,6 +140,7 @@ INSERT INTO `sys_dict` VALUES (1685467061020524576, 1592348794, 0, b'0', NULL, 1
 INSERT INTO `sys_dict` VALUES (1685467061022621728, 1604036329, 0, b'0', NULL, 1604036329, 0, 'doc_iframe', '文档适用场景', '文档适用场景', 0);
 INSERT INTO `sys_dict` VALUES (1685467061024718880, 1593215861, 0, b'0', NULL, 1593215861, 0, 'job-interfaceName', '定时任务可用接口', '定时任务可用接口', 1);
 INSERT INTO `sys_dict` VALUES (1685467061027864608, 1592298770, 0, b'1', NULL, 1592348263, 0, 'serviceCode', '页面请求后台时返回的编码', '请求返回值', 0);
+INSERT INTO `sys_dict` VALUES (1685647517794959392, 1607558744, 0, b'0', NULL, 1607558744, 0, 'OrderType', '订单类型', '订单类型', 0);
 
 -- ----------------------------
 -- Table structure for sys_dict_item
@@ -845,6 +846,53 @@ INSERT INTO `sys_dict_item` VALUES (676, 1592348628, 0, b'0', NULL, 1592348628, 
 INSERT INTO `sys_dict_item` VALUES (677, 1593391158, 0, b'0', NULL, 1593391158, 0, '订阅推送', 1685467061024718880, 2, '定时推送接口', 'PushService', NULL);
 INSERT INTO `sys_dict_item` VALUES (678, 1592348628, 0, b'0', NULL, 1592348628, 0, 'fa-whatsapp', 1685467061014233120, 635, 'fa-whatsapp', 'fa fa-whatsapp', NULL);
 INSERT INTO `sys_dict_item` VALUES (679, 1592348628, 0, b'0', NULL, 1592348628, 0, 'fa-umbrella', 1685467061014233120, 316, 'fa-umbrella', 'fa fa-umbrella', NULL);
+INSERT INTO `sys_dict_item` VALUES (1685647718291079200, 1607558935, 0, b'0', NULL, 1607558935, 0, '开发内部工单', 1685647517794959392, 1, '开发内部工单', '1', NULL);
+
+-- ----------------------------
+-- Table structure for sys_dynamic_code
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dynamic_code`;
+CREATE TABLE `sys_dynamic_code`  (
+  `id` bigint(0) NOT NULL,
+  `create_date` bigint(0) NULL DEFAULT NULL,
+  `create_user` bigint(0) NULL DEFAULT NULL,
+  `delete_flag` bit(1) NULL DEFAULT NULL,
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `update_date` bigint(0) NULL DEFAULT NULL,
+  `update_user` bigint(0) NULL DEFAULT NULL,
+  `service_mark` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用标记,每个应用自行配置自己的标记',
+  `class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类名称',
+  `content` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件内容',
+  `group_id` int(0) NULL DEFAULT NULL COMMENT '组名称',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '动态代码主表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_dynamic_code
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_dynamic_code_history
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dynamic_code_history`;
+CREATE TABLE `sys_dynamic_code_history`  (
+  `id` bigint(0) NOT NULL,
+  `create_date` bigint(0) NULL DEFAULT NULL,
+  `create_user` bigint(0) NULL DEFAULT NULL,
+  `delete_flag` bit(1) NULL DEFAULT NULL,
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `update_date` bigint(0) NULL DEFAULT NULL,
+  `update_user` bigint(0) NULL DEFAULT NULL,
+  `service_mark` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '应用标记,每个应用自行配置自己的标记',
+  `class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类名称',
+  `content` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件内容',
+  `group_id` int(0) NULL DEFAULT NULL COMMENT '组名称',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '动态代码历史记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_dynamic_code_history
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -943,6 +991,8 @@ INSERT INTO `sys_menu` VALUES (1685590241869561888, 1591524787, 0, b'0', NULL, 1
 INSERT INTO `sys_menu` VALUES (1685590241871659040, 1591421962, 0, b'0', NULL, 1591421962, 0, 1685590241841250336, 1, 'fa fa-adjust', '分步表单', 2, '_self', b'1', 'page/form-step.html');
 INSERT INTO `sys_menu` VALUES (1685590241873756192, 1591422352, 0, b'0', NULL, 1591422352, 0, 1685590241826570272, 1, 'fa fa-adjust', '按钮1', 1, '', b'0', '');
 INSERT INTO `sys_menu` VALUES (1685590241875853344, 1591524846, 0, b'0', NULL, 1592801046, 0, 1685590241752121376, 1, 'fa fa-user', '用户管理', 1, '_self', b'1', 'page/user.html');
+INSERT INTO `sys_menu` VALUES (1685838935606951968, 1607741294, 0, b'0', NULL, 1607741294, 0, 1685590241754218528, 1, 'fa fa-reorder', '工单正式节点', 6, '', b'0', '');
+INSERT INTO `sys_menu` VALUES (1685839021221085216, 1607741376, 0, b'0', NULL, 1607741376, 0, 1685838935606951968, 1, 'fa fa-circle-o', '所有工单选择', 1, '_self', b'1', '/page/Order.html');
 
 -- ----------------------------
 -- Table structure for sys_power
@@ -1092,14 +1142,14 @@ CREATE TABLE `sys_user`  (
   `username` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `mail` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `phone` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `head_portrait` bigint(0) NULL DEFAULT NULL,
+  `head_portrait` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (0, 1, 0, b'0', '这个号是超级管理员', 1594204605, 0, '超级管理员', '49ba59abbe56e057', 0, 'admin', '247452312@qq.com', '17864217772', 0);
+INSERT INTO `sys_user` VALUES (0, 1, 0, b'0', '这个号是超级管理员', -1453475, 0, '超级管理员', '49ba59abbe56e057', 0, 'admin', '247452312@qq.com', '17864217772', '1859777892434e39');
 INSERT INTO `sys_user` VALUES (1, 1591513241, 0, b'0', NULL, 1591513241, 0, '测试用户', 'ad97df80a4e03cb5', 1, 'uhyils', NULL, NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

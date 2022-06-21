@@ -14,10 +14,17 @@ public class ColumnInfo {
      * 数据类型
      */
     private String dataType;
+
+    /**
+     * java类型
+     */
+    private String javaType;
+
     /**
      * 是不是key
      */
     private int keyType;
+
     /**
      * 列名称
      */
@@ -95,5 +102,11 @@ public class ColumnInfo {
         this.remark = remark;
     }
 
+    public String getJavaType() {
+        return javaType;
+    }
 
+    public void setJavaType(String javaType) {
+        this.javaType = javaType;
+    }
 }

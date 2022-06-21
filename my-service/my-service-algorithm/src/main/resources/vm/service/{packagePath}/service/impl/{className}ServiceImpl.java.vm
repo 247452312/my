@@ -1,0 +1,28 @@
+package ${package}.service.impl;
+
+import ${package}.annotation.ReadWriteMark;
+import ${package}.assembler.${className}Assembler;
+import ${package}.pojo.DO.${className}DO;
+import ${package}.pojo.DTO.${className}DTO;
+import ${package}.pojo.entity.${className};
+import ${package}.repository.${className}Repository;
+import ${package}.service.${className}Service;
+import org.springframework.stereotype.Service;
+
+/**
+* ${tableComment}(${className})表 内部服务实现类
+*
+* @author ${author}
+* @version 1.0
+* @date 文件创建日期 ${dateTime}
+*/
+@Service
+@ReadWriteMark(tables = {"${tableName}"})
+public class ${className}ServiceImpl extends AbstractDoService<${className}DO, ${className}, ${className}DTO, ${className}Repository, ${className}Assembler> implements ${className}Service {
+
+    public ${className}ServiceImpl(${className}Assembler assembler, ${className}Repository repository) {
+        super(assembler, repository);
+    }
+
+
+}

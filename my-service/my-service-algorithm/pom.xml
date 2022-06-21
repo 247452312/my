@@ -69,9 +69,10 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
         <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-common-rpc-spring-start</artifactId>
+            <groupId>io.github.247452312</groupId>
+            <artifactId>my-rpc-spring-start</artifactId>
         </dependency>
 
         <!--zookeeper-->
@@ -93,6 +94,12 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!-- velocity代码生成使用模板 -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+        </dependency>
+
         <!-- tencentcloud-sdk-java -->
         <dependency>
             <groupId>com.tencentcloudapi</groupId>
@@ -101,6 +108,12 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
+        </dependency>
+
+        <!-- org.python/jython -->
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython-standalone</artifactId>
         </dependency>
 
     </dependencies>

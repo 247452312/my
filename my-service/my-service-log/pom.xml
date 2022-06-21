@@ -2,28 +2,15 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>my-service</artifactId>
         <groupId>indi.uhyils</groupId>
+        <artifactId>my-service</artifactId>
         <version>0.3.0-my-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <version>0.3.0-my-SNAPSHOT</version>
     <artifactId>my-service-log</artifactId>
+    <version>0.3.0-my-SNAPSHOT</version>
     <packaging>jar</packaging>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <!-- Import dependency management from Spring Boot -->
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
 
@@ -66,11 +53,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
         <dependency>
-            <groupId>indi.uhyils</groupId>
-            <artifactId>my-common-rpc-spring-start</artifactId>
+            <groupId>io.github.247452312</groupId>
+            <artifactId>my-rpc-spring-start</artifactId>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -100,6 +87,19 @@
 
 
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>

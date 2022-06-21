@@ -1,16 +1,15 @@
 package indi.uhyils.util;
 
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 /**
  * https 证书
@@ -18,19 +17,23 @@ import java.security.cert.X509Certificate;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年07月26日 11时04分
  */
-public class SSLClient extends DefaultHttpClient {
+public final class SSLClient extends DefaultHttpClient {
+
     public SSLClient() throws Exception {
         super();
         SSLContext ctx = SSLContext.getInstance("TLS");
         X509TrustManager tm = new X509TrustManager() {
+
             @Override
-            public void checkClientTrusted(X509Certificate[] chain,
-                                           String authType) throws CertificateException {
+            public void checkClientTrusted(
+                X509Certificate[] chain,
+                String authType) throws CertificateException {
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] chain,
-                                           String authType) throws CertificateException {
+            public void checkServerTrusted(
+                X509Certificate[] chain,
+                String authType) throws CertificateException {
             }
 
             @Override

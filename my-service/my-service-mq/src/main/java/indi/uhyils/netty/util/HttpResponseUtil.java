@@ -1,18 +1,24 @@
 package indi.uhyils.netty.util;
 
+import static io.netty.handler.codec.http.HttpConstants.COLON;
+import static io.netty.handler.codec.http.HttpConstants.CR;
+import static io.netty.handler.codec.http.HttpConstants.LF;
+
 import com.alibaba.fastjson.JSONObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
 import io.netty.util.AsciiString;
 import io.netty.util.CharsetUtil;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Map;
-
-import static io.netty.handler.codec.http.HttpConstants.*;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -63,6 +69,7 @@ public class HttpResponseUtil {
      * 获取一个成功的response
      *
      * @param returnObj
+     *
      * @return
      */
     public static FullHttpResponse getOkResponse(Object returnObj) {
@@ -73,6 +80,7 @@ public class HttpResponseUtil {
      * 获取一个response
      *
      * @param returnObj
+     *
      * @return
      */
     public static FullHttpResponse getResponse(Object returnObj, HttpResponseStatus status) {

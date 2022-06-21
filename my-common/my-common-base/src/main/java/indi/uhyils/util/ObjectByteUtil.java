@@ -1,17 +1,27 @@
 package indi.uhyils.util;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年08月28日 14时06分
  */
-public class ObjectByteUtil {
+public final class ObjectByteUtil {
+
+    private ObjectByteUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 对象转数组
      *
      * @param obj
+     *
      * @return
      */
     public static byte[] toByteArray(Object obj) {
@@ -31,6 +41,7 @@ public class ObjectByteUtil {
      * 数组转对象
      *
      * @param bytes
+     *
      * @return
      */
     public static <T> T toObject(byte[] bytes, Class<T> clazz) {

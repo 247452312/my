@@ -112,7 +112,7 @@
             /* 3.添加input的name */
             $('#headPortrait').val(name);
         });
-        pushRequest("RoleService", "getRoles", {}, function (data) {
+        pushRequest("RoleProvider", "getRoles", {}, function (data) {
             for (let i = 0; i < data.length; i++) {
                 let roleId = data[i].id;
                 let name = data[i].name;
@@ -122,7 +122,7 @@
         });
 
         if (func == 'edit') { // 这是修改
-            pushRequest("UserService", "getUserById", {
+            pushRequest("UserProvider", "getUserById", {
                 id: id
             }, function (data) {
 
@@ -163,11 +163,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("UserService", "insert", {data: data.field}, function () {
+                    pushRequest("UserProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("UserService", "update", {data: data.field}, function () {
+                    pushRequest("UserProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

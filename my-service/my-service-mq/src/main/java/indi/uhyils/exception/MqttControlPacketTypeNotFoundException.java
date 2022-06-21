@@ -6,6 +6,7 @@ package indi.uhyils.exception;
  * @date 文件创建日期 2021年04月26日 19时12分
  */
 public class MqttControlPacketTypeNotFoundException extends UserException {
+
     public MqttControlPacketTypeNotFoundException(byte code) {
         super("MQTT报文 控制报文类型(MQTT Control Packet type)错误:" + code);
     }

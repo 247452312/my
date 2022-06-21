@@ -1,6 +1,14 @@
 package indi.uhyils.util;
 
-import java.lang.reflect.*;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import java.lang.invoke.SerializedLambda;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import javax.annotation.Nonnull;
+import org.slf4j.helpers.MessageFormatter;
 
 /**
  * 反射工具类
@@ -8,15 +16,20 @@ import java.lang.reflect.*;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月27日 16时46分
  */
-public class ReflactUtil {
+public final class ReflactUtil {
 
+    private ReflactUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * 获取实例中的某个属性的值
      *
      * @param obj      实例
      * @param attrName 属性
+     *
      * @return 属性的值
+     *
      * @throws NoSuchMethodException
      * @throws InvocationTargetException
      * @throws IllegalAccessException
@@ -39,7 +52,9 @@ public class ReflactUtil {
      *
      * @param object
      * @param attrName
+     *
      * @return
+     *
      * @throws NoSuchFieldException
      * @throws IllegalAccessException
      */
@@ -67,4 +82,65 @@ public class ReflactUtil {
         return null;
     }
 
+    private static String format(@Nonnull String message, Object... args) {
+        return MessageFormatter.arrayFormat(message, args).getMessage();
+    }
+
+    public static <T> T newInstance(Class<T> tClass) {
+        try {
+            T t = tClass.newInstance();
+            return t;
+        } catch (IllegalAccessException | InstantiationException e) {
+            LogUtil.error(e, format("Create new instance of {} failed: {}", tClass, e.getMessage()));
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    /**
+     * 获取function的名称
+     *
+     * @param func
+     * @param <T>
+     * @param <R>
+     *
+     * @return
+     *
+     * @throws Exception
+     */
+    public static <T, R> java.lang.invoke.SerializedLambda doSFunction(SFunction<T, R> func) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        // 直接调用writeReplace
+        Method writeReplace = func.getClass().getDeclaredMethod("writeReplace");
+        writeReplace.setAccessible(true);
+        //反射调用
+        Object sl = writeReplace.invoke(func);
+        return (java.lang.invoke.SerializedLambda) sl;
+    }
+
+    /**
+     * 获取function的名称(下划线)
+     *
+     * @param func
+     * @param <T>
+     * @param <R>
+     *
+     * @return
+     *
+     * @throws Exception
+     */
+    public static <T, R> String transSFunction(SFunction<T, R> func) {
+        SerializedLambda serializedLambda;
+        try {
+            serializedLambda = doSFunction(func);
+            // 获取method名称
+            String methodName = serializedLambda.getImplMethodName();
+            // 转化为属性名称
+            String fieldName = StringUtil.transMethodNameToFieldName(methodName);
+            // 转化为field名称
+            return StringUtil.toUnderline(fieldName);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            LogUtil.error(e);
+        }
+        return null;
+    }
 }

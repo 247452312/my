@@ -65,7 +65,7 @@
         var treetable = layui.treetable;
         var layer = layui.layer;
         $.reloadTable = function () {
-            pushRequest("MenuService", "getMenuTree", {iFrame: 1}, function (data) {
+            pushRequest("MenuProvider", "getMenuTree", {iFrame: 1}, function (data) {
                 debugger;
                 // 渲染表格
                 layer.load(2);
@@ -160,7 +160,7 @@
                 layer.confirm('是否确认删除', {
                     btn: ['确认', '取消'] //按钮
                 }, function () {
-                    pushRequest("MenuService", "deleteMenu", {id: data.id}, function (data) {
+                    pushRequest("MenuProvider", "deleteMenu", {id: data.id}, function (data) {
                         if (data == true) {
                             layer.msg('删除成功', {icon: 1});
                             $.reloadTable();

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.ApiGroupDao">
+    <resultMap type="indi.uhyils.pojo.DO.ApiGroupDO" id="ApiGroupMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="resultFormat" column="result_format" jdbcType="VARCHAR"/>
+        <result property="subscribe" column="subscribe" jdbcType="BOOLEAN"/>
+    </resultMap>
+    <sql id="columnList">
+        a.id,
+        a.create_date   as createDate,
+        a.create_user   as createUser,
+        a.delete_flag   as deleteFlag,
+        a.remark,
+        a.update_date   as updateDate,
+        a.update_user   as updateUser,
+
+
+        a.name,
+        a.result_format as resultFormat,
+        a.subscribe
+    </sql>
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.ApiGroupDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_api_group set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="item.name != null and item.name != ''">
+                ,name = #{item.name}
+            </if>
+            <if test="item.resultFormat != null and item.resultFormat != ''">
+                ,result_format = #{item.resultFormat}
+            </if>
+            <if test="item.subscribe != null">
+                ,subscribe = #{item.subscribe}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getAll" resultType="indi.uhyils.pojo.DO.ApiGroupDO">
+        select
+        <include refid="columnList"/>
+        from sys_api_group a
+        where delete_flag = 0
+    </select>
+    <select id="getCanBeSubscribed" resultType="indi.uhyils.pojo.DO.ApiGroupDO">
+        select
+        <include refid="columnList"/>
+        from sys_api_group a
+        where delete_flag = 0 and subscribe = 1
+    </select>
+</mapper>

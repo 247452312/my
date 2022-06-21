@@ -1,11 +1,11 @@
 package indi.uhyils.util.mail;
 
+import java.nio.charset.StandardCharsets;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
-import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
  * @author uhyils@qq.com
  */
 public class EncryptUtils {
+
     private static String strParam = "Passw0rd";
 
     private static Cipher cipher;
@@ -38,7 +39,7 @@ public class EncryptUtils {
         SecretKey secretKey = keyFactory.generateSecret(desKeySpec);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
         return byte2hex(
-                cipher.doFinal(source.getBytes(StandardCharsets.UTF_8))).toUpperCase();
+            cipher.doFinal(source.getBytes(StandardCharsets.UTF_8))).toUpperCase();
     }
 
     /**

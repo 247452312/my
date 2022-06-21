@@ -18,12 +18,19 @@
 package indi.uhyils.util;
 
 
+import indi.uhyils.annotation.NotNull;
+import indi.uhyils.annotation.Nullable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
-
-import java.lang.annotation.Annotation;
-import java.util.Map;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.env.Environment;
 
 /**
  * 存储spring上下文缓存的地方
@@ -31,7 +38,9 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月27日 16时46分
  */
-public class SpringUtil implements ApplicationContextInitializer {
+public class SpringUtil implements ApplicationContextInitializer, ApplicationListener<ContextRefreshedEvent> {
+
+    private volatile static Boolean atomicBoolean = Boolean.FALSE;
 
     private static ApplicationContext applicationContext = null;
 
@@ -41,7 +50,10 @@ public class SpringUtil implements ApplicationContextInitializer {
      * @return applicationContext
      */
     public static ApplicationContext getApplicationContext() {
-        return applicationContext;
+        if (applicationContext != null) {
+            return applicationContext;
+        }
+        return (ApplicationContext) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[]{ApplicationContext.class}, (proxy, method, args) -> null);
     }
 
 
@@ -50,6 +62,7 @@ public class SpringUtil implements ApplicationContextInitializer {
      *
      * @param clazz
      * @param <T>
+     *
      * @return
      */
     public static <T extends Annotation> Map<String, Object> getBeansWithAnnotation(Class<T> clazz) {
@@ -57,9 +70,31 @@ public class SpringUtil implements ApplicationContextInitializer {
     }
 
     /**
+     * 判断spring是否初始化
+     *
+     * @return
+     */
+    public static boolean isStart() {
+        if (applicationContext == null) {
+            return false;
+        }
+        return atomicBoolean;
+    }
+
+    /**
+     * 判断spring是否初始化
+     *
+     * @return
+     */
+    public static boolean isNotStart() {
+        return !isStart();
+    }
+
+    /**
      * 通过name获取 Bean.
      *
      * @param name bean名称
+     *
      * @return bean
      */
     public static Object getBean(String name) {
@@ -72,6 +107,7 @@ public class SpringUtil implements ApplicationContextInitializer {
      *
      * @param clazz class
      * @param <T>   类型
+     *
      * @return 对应类型的bean
      */
     public static <T> T getBean(Class<T> clazz) {
@@ -84,6 +120,7 @@ public class SpringUtil implements ApplicationContextInitializer {
      * @param name  bean名称
      * @param clazz class
      * @param <T>   类型
+     *
      * @return 对应的bean
      */
     public static <T> T getBean(String name, Class<T> clazz) {
@@ -94,10 +131,33 @@ public class SpringUtil implements ApplicationContextInitializer {
      * 通过key 获取环境变量
      *
      * @param key 环境变量的key
+     *
      * @return 环境变量的值
      */
+    @Nullable
     public static String getProperty(String key) {
-        return getApplicationContext().getEnvironment().getProperty(key);
+        Environment environment = getApplicationContext().getEnvironment();
+        if (environment != null) {
+            return environment.getProperty(key);
+        }
+        return null;
+    }
+
+    /**
+     * 通过key 获取环境变量
+     *
+     * @param key          环境变量的key
+     * @param defaultValue 默认值
+     *
+     * @return 环境变量的值
+     */
+    @NotNull
+    public static String getProperty(String key, String defaultValue) {
+        Environment environment = getApplicationContext().getEnvironment();
+        if (environment != null) {
+            return environment.getProperty(key, defaultValue);
+        }
+        return defaultValue;
     }
 
 
@@ -105,6 +165,7 @@ public class SpringUtil implements ApplicationContextInitializer {
      * 通过key 查询是否存在bean
      *
      * @param beanName bean名称
+     *
      * @return 是否存在
      */
     public static Boolean containsBean(String beanName) {
@@ -115,6 +176,7 @@ public class SpringUtil implements ApplicationContextInitializer {
      * 通过key 查询是否存在bean
      *
      * @param beanClass bean名称
+     *
      * @return 是否存在
      */
     public static <T> Boolean containsBean(Class<T> beanClass) {
@@ -126,6 +188,26 @@ public class SpringUtil implements ApplicationContextInitializer {
         }
     }
 
+    /**
+     * 根据注解获取
+     *
+     * @param annotationClass
+     */
+    public static Map<String, Object> getByAnnotation(Class<? extends Annotation> annotationClass) {
+        return applicationContext.getBeansWithAnnotation(annotationClass);
+
+    }
+
+    public static <T> List<T> getBeans(Class<T> clazz) {
+        String[] beanNamesForType = applicationContext.getBeanNamesForType(clazz);
+        List<T> result = new ArrayList<>(beanNamesForType.length);
+        for (String beanName : beanNamesForType) {
+            T bean = applicationContext.getBean(beanName, clazz);
+            result.add(bean);
+        }
+        return result;
+    }
+
 
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
@@ -133,5 +215,10 @@ public class SpringUtil implements ApplicationContextInitializer {
             LogUtil.info(SpringUtil.class, "set applicationContext");
             SpringUtil.applicationContext = applicationContext;
         }
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        atomicBoolean = true;
     }
 }

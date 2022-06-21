@@ -1,7 +1,7 @@
 package indi.uhyils.dao;
 
 import indi.uhyils.dao.base.DefaultDao;
-import indi.uhyils.pojo.model.ContentEntity;
+import indi.uhyils.pojo.DO.ContentDO;
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -10,14 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 文件创建日期 2020年04月25日 13时03分
  */
 @Mapper
-public interface ContentDao extends DefaultDao<ContentEntity> {
-
-    /**
-     * 根据名称返回数据库中的系统常量信息
-     *
-     * @param name 常量名称
-     * @return 常量信息
-     */
-    ContentEntity getByName(String name);
+public interface ContentDao extends DefaultDao<ContentDO> {
 
 }

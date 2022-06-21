@@ -1,20 +1,24 @@
 package indi.uhyils.redis;
 
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -26,7 +30,7 @@ public class RedisLockTest {
 
     private RedisPool redisPool;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         redisPool = new RedisPool();
         Class<? extends RedisPool> clazz = redisPool.getClass();
@@ -40,15 +44,15 @@ public class RedisLockTest {
 
         Field password = clazz.getDeclaredField("password");
         password.setAccessible(true);
-        password.set(redisPool, "uhyils-single");
+        password.set(redisPool, "uhyils");
 
         Method initPool = clazz.getDeclaredMethod("initPool");
         initPool.setAccessible(true);
         Object invoke = initPool.invoke(redisPool);
-        Assert.assertTrue((Boolean) invoke);
+        Asserts.assertTrue((Boolean) invoke);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
     }
 
@@ -57,7 +61,7 @@ public class RedisLockTest {
         String abc = "abc";
         RedisLock redisLock = new RedisLock(abc, redisPool, "test");
         String lockName = redisLock.getLockName();
-        Assert.assertEquals(abc, lockName);
+        Asserts.assertTrue(Objects.equals(abc, lockName));
     }
 
     @Test
@@ -85,7 +89,7 @@ public class RedisLockTest {
                         int start = integer.getAndAdd(1);
                         Thread.sleep(10L);
                         int end = integer.getAndAdd(1);
-                        Assert.assertFalse(map.containsKey(start));
+                        Asserts.assertTrue(!map.containsKey(start));
                         map.put(start, end);
                         LogUtil.info(this, "end" + index);
                         return true;
@@ -101,11 +105,11 @@ public class RedisLockTest {
         }
         List<Future<Boolean>> collect = callables.stream().map(executor::submit).collect(Collectors.toList());
         for (Future<Boolean> callable : collect) {
-            Assert.assertTrue(callable.get());
+            Asserts.assertTrue(callable.get());
         }
 
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            Assert.assertTrue(entry.getKey() + 1 == entry.getValue());
+            Asserts.assertTrue(entry.getKey() + 1 == entry.getValue());
         }
     }
 
@@ -128,6 +132,6 @@ public class RedisLockTest {
             }
         }
         boolean b = redisLock.countDown(uniqueName);
-        Assert.assertTrue(b);
+        Asserts.assertTrue(b);
     }
 }

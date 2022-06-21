@@ -1,10 +1,12 @@
 package indi.uhyils.util.page;
 
-import indi.uhyils.content.Content;
-import indi.uhyils.dao.SendPageDao;
-import indi.uhyils.pojo.model.SendPageEntity;
-import indi.uhyils.pojo.model.UserEntity;
-import indi.uhyils.pojo.request.base.DefaultRequest;
+import indi.uhyils.assembler.PushPageMsgAssembler;
+import indi.uhyils.context.MyContext;
+import indi.uhyils.dao.PushPageMsgDao;
+import indi.uhyils.pojo.DO.PushPageMsgDO;
+import indi.uhyils.pojo.DTO.PushPageMsgDTO;
+import indi.uhyils.pojo.DTO.UserDTO;
+import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.util.SendPageBuild;
 import indi.uhyils.util.SpringUtil;
 
@@ -15,19 +17,23 @@ import indi.uhyils.util.SpringUtil;
  * @date 文件创建日期 2020年06月29日 08时22分
  */
 public class SendPage {
-    public static Boolean send(Long userId, String title, String sendContent) throws Exception {
+
+    public static Boolean send(Long userId, String title, String sendContent) {
         // 获取dao
-        SendPageDao bean = SpringUtil.getBean(SendPageDao.class);
+        PushPageMsgDao bean = SpringUtil.getBean(PushPageMsgDao.class);
+        PushPageMsgAssembler assembler = SpringUtil.getBean(PushPageMsgAssembler.class);
         // 获取要插入的bean
-        SendPageEntity sendPageEntity = SendPageBuild.buildSendPage(userId, title, sendContent);
+        PushPageMsgDTO sendPageEntity = SendPageBuild.buildSendPage(userId, title, sendContent);
         // 构造系统请求
-        DefaultRequest request = new DefaultRequest();
-        UserEntity user = new UserEntity();
-        user.setId(Content.ADMIN_USER_ID);
+        DefaultCQE request = new DefaultCQE();
+        UserDTO user = new UserDTO();
+        user.setId(MyContext.ADMIN_USER_ID);
         request.setUser(user);
-        sendPageEntity.preInsert(request);
+        PushPageMsgDO pushPageMsgDO = assembler.toDo(sendPageEntity);
+
+        pushPageMsgDO.preInsert(request);
         //插入
-        bean.insert(sendPageEntity);
+        bean.insert(pushPageMsgDO);
         return Boolean.TRUE;
     }
 }

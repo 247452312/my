@@ -2,12 +2,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>my-common</artifactId>
         <groupId>indi.uhyils</groupId>
+        <artifactId>my-common</artifactId>
         <version>0.3.0-my-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>my-common-hot-spot</artifactId>
     <dependencies>
@@ -39,7 +39,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
+        <dependency>
+            <groupId>io.github.247452312</groupId>
+            <artifactId>my-rpc-spring-start</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>

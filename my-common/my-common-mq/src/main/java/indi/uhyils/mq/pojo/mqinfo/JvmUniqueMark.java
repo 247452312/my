@@ -1,10 +1,9 @@
 package indi.uhyils.mq.pojo.mqinfo;
 
 import indi.uhyils.mq.content.RabbitMqContent;
+import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.io.Serializable;
 
 /**
  * jvm唯一标示
@@ -16,15 +15,18 @@ import java.io.Serializable;
 public class JvmUniqueMark implements Serializable {
 
     private static JvmUniqueMark jvmUniqueMark;
+
     /**
      * 服务名称
      */
     @Value("${rpc.application.name}")
     private String serviceName;
+
     /**
      * 服务所在ip -> 区分集群信息
      */
     private String ip;
+
     /**
      * 时间戳 --> 区分同一服务的另一个时间戳
      */

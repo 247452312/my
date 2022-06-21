@@ -73,7 +73,7 @@
             table = layui.table;
 
         /*获取可以作为定时任务的接口们*/
-        pushRequest("DictService", "getByCode", {code: 'job-interfaceName'}, function (data) {
+        pushRequest("DictProvider", "getByCode", {code: 'job-interfaceName'}, function (data) {
             $("[name='interfaceName']").empty();
             $("[name='interfaceName']").append('<option value="">请选择一个接口</option> ');
             for (let i = 0; i < data.length; i++) {
@@ -83,10 +83,12 @@
         });
         $.reloadTable = function () {
             var reload = function (page, size, args) {
-                pushRequest("JobService", "getByArgs", {
-                    page: page,
-                    size: size,
-                    paging: true,
+                pushRequest("JobProvider", "getByArgs", {
+                    limit:{
+          number: page,
+          size: size,
+          page: true
+        },
                     args: args
                 }, function (data) {
                     table.render({
@@ -195,7 +197,7 @@
                         //console.log(obj)
                         if (obj.event === 'del') { // 删除
                             layer.confirm('真的删除行么', function (index) {
-                                pushRequest("JobService", "delete", {id: data.id}, function (data) {
+                                pushRequest("JobProvider", "delete", {id: data.id}, function (data) {
                                     layer.close(index);
                                     $.reloadTable();
                                 });
@@ -215,7 +217,7 @@
                             });
                         } else if (obj.event === 'pause') { // 暂停
                             layer.confirm('不是不小心点到了?', function (index) {
-                                pushRequest("JobService", "pause", {id: data.id}, function (data) {
+                                pushRequest("JobProvider", "pause", {id: data.id}, function (data) {
                                     layer.msg("停止定时任务成功");
                                     layer.close(index);
                                     $.reloadTable();
@@ -223,7 +225,7 @@
                             });
                         } else if (obj.event === 'start') { // 开始
                             layer.confirm('不是不小心点到了?', function (index) {
-                                pushRequest("JobService", "start", {id: data.id}, function (data) {
+                                pushRequest("JobProvider", "start", {id: data.id}, function (data) {
                                     layer.msg("开启定时任务消息已发出");
                                     layer.close(index);
                                     $.reloadTable();
@@ -231,7 +233,7 @@
                             });
                         } else if (obj.event === 'test') { // 执行
                             layer.confirm('不是不小心点到了?', function (index) {
-                                pushRequest("JobService", "test", {id: data.id}, function (data) {
+                                pushRequest("JobProvider", "test", {id: data.id}, function (data) {
                                     layer.msg("执行开始");
                                     layer.close(index);
                                     $.reloadTable();

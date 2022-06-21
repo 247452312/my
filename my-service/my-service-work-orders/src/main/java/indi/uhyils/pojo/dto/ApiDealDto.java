@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.dto;
 
-import indi.uhyils.enum_.ApiCodeEnum;
-
+import indi.uhyils.enums.ApiCodeEnum;
 import java.io.Serializable;
 
 /**

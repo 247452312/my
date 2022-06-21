@@ -3,7 +3,6 @@ package indi.uhyils.core.queue;
 import indi.uhyils.core.message.Message;
 import indi.uhyils.core.register.Register;
 import indi.uhyils.exception.ExpressionInvalidException;
-
 import java.util.List;
 
 /**
@@ -40,6 +39,7 @@ public interface Queue extends TopicObserver {
      * 获取n个
      *
      * @param count
+     *
      * @return
      */
     Message[] getMany(Integer count);
@@ -62,6 +62,7 @@ public interface Queue extends TopicObserver {
      * 保存信息
      *
      * @param message
+     *
      * @return
      */
     Boolean saveMessage(Message message);
@@ -78,6 +79,7 @@ public interface Queue extends TopicObserver {
      * 尝试将注册者注册到此队列
      *
      * @param register
+     *
      * @return 是否可以注册
      */
     Boolean tryToRegister(Register register) throws ExpressionInvalidException;

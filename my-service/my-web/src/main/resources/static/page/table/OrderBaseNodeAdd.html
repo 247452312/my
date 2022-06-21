@@ -145,7 +145,7 @@
         let func = $.getUrlParam('func');
 
         if (func == 'edit') { // 这是修改
-            pushRequest("OrderBaseNodeService", "getById", {
+            pushRequest("OrderBaseNodeProvider", "getById", {
                 id: id
             }, function (data) {
                 $('[name="id"]').attr('value', data.id);
@@ -182,11 +182,11 @@
                 // 关闭弹出层
                 layer.close(index);
                 if (func === 'add') {
-                    pushRequest("OrderBaseNodeService", "insert", {data: data.field}, function () {
+                    pushRequest("OrderBaseNodeProvider", "insert", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("OrderBaseNodeService", "update", {data: data.field}, function () {
+                    pushRequest("OrderBaseNodeProvider", "update", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }

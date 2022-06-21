@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.DeptDao">
+    <resultMap type="indi.uhyils.pojo.DO.DeptDO" id="DeptMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BOOLEAN"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch" parameterType="indi.uhyils.pojo.DO.DeptDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_dept set
+            update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+            <if test="item.createDate != null">
+                ,create_date = #{item.createDate}
+            </if>
+            <if test="item.createUser != null">
+                ,create_user = #{item.createUser}
+            </if>
+            <if test="item.deleteFlag != null">
+                ,delete_flag = #{item.deleteFlag}
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                ,remark = #{item.remark}
+            </if>
+            <if test="item.updateDate != null">
+                ,update_date = #{item.updateDate}
+            </if>
+            <if test="item.updateUser != null">
+                ,update_user = #{item.updateUser}
+            </if>
+            <if test="item.name != null and item.name != ''">
+                ,name = #{item.name}
+            </if>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <insert id="insertDeptPower" parameterType="indi.uhyils.pojo.DO.DeptPowerDO">
+        insert into sys_dept_power(id, dept_id, power_id)
+        values (#{id}, #{deptId}, #{powerId})
+    </insert>
+
+    <delete id="deleteDeptPower" parameterType="java.lang.String">
+        delete
+        from sys_dept_power where id in
+        <foreach item="ids" index="index" collection="list" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <insert id="insertDeptMenu" parameterType="indi.uhyils.pojo.DO.DeptMenuDO">
+        insert into sys_dept_menu(id, dept_id, menu_id)
+        VALUES (#{id}, #{deptId}, #{menuId})
+    </insert>
+
+    <select id="getByMenuId" resultType="indi.uhyils.pojo.DTO.response.GetDeptsByMenuIdDTO">
+        select a.id                                                                                 deptId,
+        a.name                                                                               deptName,
+        (select count(*) = 1 from sys_dept_menu where menu_id = #{id} and dept_id = a.id) as mark
+        from sys_dept a
+        where delete_flag = 0
+    </select>
+
+    <select id="getAll" resultMap="DeptMap">
+        select id,
+               create_date,
+               create_user,
+               delete_flag,
+               remark,
+               update_date,
+               update_user,
+               name
+        from sys_dept a
+        where delete_flag = 0
+    </select>
+
+    <delete id="deleteDeptMenuMiddleByDeptId">
+        delete
+        from sys_dept_menu
+        where dept_id = #{deptId}
+    </delete>
+
+    <select id="getAllPowerWithHaveMark" resultType="indi.uhyils.pojo.DTO.response.GetAllPowerWithHaveMarkDTO">
+        select a.id                                                                                   powerId,
+        a.interface_name                                                                       interfaceName,
+        a.method_name                                                                          methodName,
+        (select count(*) = 1 from sys_dept_power where dept_id = #{id} and power_id = a.id) as mark
+        from sys_power a
+        where delete_flag = 0
+    </select>
+
+    <delete id="deleteDeptPowerMiddleByDeptId">
+        delete
+        from sys_dept_power
+        where dept_id = #{deptId}
+    </delete>
+
+
+    <delete id="deleteRoleDeptMiddleByDeptId">
+        delete
+        from sys_role_dept
+        where dept_id = #{deptId}
+    </delete>
+
+    <select id="getByRoleId" resultMap="DeptMap">
+        select a.id,
+        a.create_date,
+        a.create_user,
+        a.delete_flag,
+        a.remark,
+        a.update_date,
+        a.update_user,
+        a.name
+        from sys_dept a
+        left join sys_role_dept srd on a.id = srd.dept_id
+        where a.delete_flag = 0
+        and srd.role_id = #{roleId}
+    </select>
+
+</mapper>

@@ -46,7 +46,7 @@
             arg = {};
             arg.username = a.username;
             arg.password = a.password;
-            pushRequest("UserService", "login", arg, function (data) {
+            pushRequest("UserProvider", "login", arg, function (data) {
                 if ($('.login-save-user').is(':checked')) {
                     setCookie("username", a.username, 7);
                     setCookie("password", a.password, 7);
@@ -66,7 +66,7 @@
             if (username != null && username != "") {
                 arg.username = username;
                 arg.password = password;
-                pushRequest("UserService", "login", arg, function (data) {
+                pushRequest("UserProvider", "login", arg, function (data) {
                     setCookie("token", data.token, 1);
                     setAttrBySession("userInfo", data.userEntity);
                     setAttrBySession("token", {token: data.token});

@@ -114,7 +114,7 @@
         };
         let id = $.getUrlParam('id');
         let func = $.getUrlParam('func');
-        pushRequest("DictService", "getAllMenuIcon", {}, function (data) {
+        pushRequest("DictProvider", "getAllMenuIcon", {}, function (data) {
             let $menuIcon = $("#menu_icon");
             $menuIcon.empty();
             $menuIcon.append("<option value=\"\">请选择</option>");
@@ -122,7 +122,7 @@
                 $menuIcon.append('<option value="' + data[i] + '" icon="' + data[i] + '">' + data[i] + '</option>')
             }
         });
-        pushRequest("MenuService", "getById", {
+        pushRequest("MenuProvider", "queryById", {
             id: id
         }, function (data) {
             $('[name="iFrame"]').attr('value', data.iFrame);
@@ -167,11 +167,11 @@
                     data.field.url = '';
                 }
                 if (func === 'add') {
-                    pushRequest("MenuService", "insert", {data: data.field}, function () {
+                    pushRequest("MenuProvider", "add", {data: data.field}, function () {
                     });
                     closeAndReload();
                 } else if (func === 'edit') {
-                    pushRequest("MenuService", "update", {data: data.field}, function () {
+                    pushRequest("MenuProvider", "change", {data: data.field}, function () {
                     });
                     closeAndReload();
                 }
