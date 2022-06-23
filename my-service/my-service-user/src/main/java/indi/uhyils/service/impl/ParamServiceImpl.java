@@ -2,7 +2,7 @@ package indi.uhyils.service.impl;
 
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.assembler.ParamAssembler;
-import indi.uhyils.bus.Bus;
+import indi.uhyils.bus.BusInterface;
 import indi.uhyils.pojo.DO.ParamDO;
 import indi.uhyils.pojo.DTO.ParamDTO;
 import indi.uhyils.pojo.cqe.FlushAllSysEvent;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class ParamServiceImpl extends AbstractDoService<ParamDO, Param, ParamDTO, ParamRepository, ParamAssembler> implements ParamService {
 
     @Autowired
-    private Bus bus;
+    private BusInterface bus;
 
     public ParamServiceImpl(ParamAssembler assembler, ParamRepository repository) {
         super(assembler, repository);

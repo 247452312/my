@@ -1,11 +1,11 @@
 package indi.uhyils.pojo.entity.base;
 
-import indi.uhyils.annotation.NotNull;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.BeanUtil;
+import java.util.Optional;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -50,14 +50,17 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
         Asserts.assertTrue(this.unique != null, "数据库id不存在 不能补全");
         AbstractDoEntity<DO> dictItem = repository.find(this);
         Asserts.assertTrue(dictItem != null, "补全出的结果为空");
-        this.data = dictItem.toData();
+        final Optional<DO> data = dictItem.toData();
+        data.ifPresent(t -> this.data = t);
     }
 
     /**
      * 升级do中的id为id
      */
     public void upId() {
-        this.unique = new Identifier(toData().getId());
+        final Optional<T> t = toData();
+        Asserts.assertTrue(t.isPresent(), "领域不存在数据(data)");
+        this.unique = new Identifier(t.get().getId());
     }
 
     /**
@@ -66,10 +69,8 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
      * @return
      */
     @Override
-    @NotNull
-    public T toData() {
-        Asserts.assertTrue(data != null);
-        return data;
+    public Optional<T> toData() {
+        return Optional.of(data);
     }
 
     public <EN extends AbstractDoEntity<T>> void saveSelf(BaseEntityRepository<T, EN> repository) {
@@ -108,8 +109,10 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
      * @param entity
      */
     protected void copyOf(DoEntity<T> entity) {
-        BeanUtil.copyProperties(this.data, entity.toData());
-        this.unique = entity.getUnique();
+        final Optional<T> target = entity.toData();
+        target.ifPresent(t -> BeanUtil.copyProperties(this.data, t));
+        final Optional<Identifier> unique = entity.getUnique();
+        unique.ifPresent(t -> this.unique = t);
     }
 
 }

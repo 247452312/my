@@ -5,6 +5,8 @@ import indi.uhyils.pojo.DO.PowerDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.PowerRepository;
+import indi.uhyils.util.Asserts;
+import java.util.Optional;
 
 
 /**
@@ -35,7 +37,9 @@ public class Power extends AbstractDoEntity<PowerDO> {
     }
 
     public void removeSelf(PowerRepository rep) {
-        rep.remove(this.getUnique());
+        final Optional<Identifier> unique = this.getUnique();
+        Asserts.assertTrue(unique.isPresent(), "唯一标识");
+        rep.remove(unique.get());
     }
 
 }

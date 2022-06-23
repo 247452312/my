@@ -320,7 +320,7 @@ public class CompilationUnit extends Node {
                                                            .findFirst()
                                                            .orElse(null);
             if (typeDeclaration == null) {
-                typeDeclaration = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(importItem.getName().getQualifier().flatMap(t -> Optional.ofNullable(t.asString())).orElse(null), importItem.getName().getIdentifier());
+                typeDeclaration = TypeDeclaration.createNotScannedTypeDeclarationAndAddCache(importItem.getName().getQualifier().map(Name::asString).orElse(null), importItem.getName().getIdentifier());
                 AstContext.addCache(typeDeclaration);
             }
             importItem.setTargetType(typeDeclaration);

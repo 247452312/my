@@ -15,6 +15,7 @@ import indi.uhyils.pojo.entity.Power;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,15 +45,15 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
     @Override
     public void addPowers(Dept deptId, Power power) {
         DeptPowerDO middle = new DeptPowerDO();
-        middle.setDeptId(deptId.getUnique().getId());
-        middle.setPowerId(power.getUnique().getId());
+        middle.setDeptId(deptId.getUnique().map(Identifier::getId).orElse(null));
+        middle.setPowerId(power.getUnique().map(Identifier::getId).orElse(null));
         middle.preInsert();
         dao.insertDeptPower(middle);
     }
 
     @Override
     public void cleanPower(Dept deptId) {
-        dao.deleteDeptPowerMiddleByDeptId(deptId.getUnique().getId());
+        dao.deleteDeptPowerMiddleByDeptId(deptId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("未找到deptId")));
     }
 
     @Override
@@ -61,22 +62,23 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
     }
 
     @Override
-    public void cleanMenu(Dept deptId) {
-        dao.deleteDeptMenuMiddleByDeptId(deptId.getUnique().getId());
+    public void cleanMenu(Dept deptEntity) {
+        final Long deptId = deptEntity.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("未找到deptId"));
+        dao.deleteDeptMenuMiddleByDeptId(deptId);
     }
 
     @Override
     public void addMenu(Dept deptId, Menu menuId) {
-        DeptMenuDO t = new DeptMenuDO();
-        t.setDeptId(deptId.getUnique().getId());
-        t.setMenuId(menuId.getUnique().getId());
-        t.preInsert();
-        dao.insertDeptMenu(t);
+        DeptMenuDO dO = new DeptMenuDO();
+        dO.setDeptId(deptId.getUnique().map(Identifier::getId).orElse(null));
+        dO.setMenuId(menuId.getUnique().map(Identifier::getId).orElse(null));
+        dO.preInsert();
+        dao.insertDeptMenu(dO);
     }
 
     @Override
     public List<GetDeptsByMenuIdDTO> findByMenuId(Menu menuId) {
-        return dao.getByMenuId(menuId.getUnique().getId());
+        return dao.getByMenuId(menuId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("未找到menuId")));
     }
 
     @Override
@@ -87,12 +89,12 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
 
     @Override
     public List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(Dept deptId) {
-        return dao.getAllPowerWithHaveMark(deptId.getUnique().getId());
+        return dao.getAllPowerWithHaveMark(deptId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("未找到deptId")));
     }
 
     @Override
     public void cleanRole(Dept dept) {
-        dao.deleteRoleDeptMiddleByDeptId(dept.getUnique().getId());
+        dao.deleteRoleDeptMiddleByDeptId(dept.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("未找到deptId")));
     }
 
 

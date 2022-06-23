@@ -33,8 +33,8 @@ public class Identifiers implements BaseType, Comparable<Identifiers> {
         } else if (ids.size() < o.ids.size()) {
             return -1;
         } else {
-            long sum = ids.stream().mapToLong(t -> t.getId()).sum();
-            long oSum = o.ids.stream().mapToLong(t -> t.getId()).sum();
+            long sum = ids.stream().mapToLong(Identifier::getId).sum();
+            long oSum = o.ids.stream().mapToLong(Identifier::getId).sum();
             return Long.compare(sum, oSum);
         }
 

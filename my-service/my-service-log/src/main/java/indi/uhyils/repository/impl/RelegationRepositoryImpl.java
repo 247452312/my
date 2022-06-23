@@ -41,7 +41,7 @@ public class RelegationRepositoryImpl extends AbstractRepository<Relegation, Rel
 
     @Override
     public boolean checkRepeat(Relegation relegation) {
-        RelegationDO relegationDO = relegation.toData();
+        RelegationDO relegationDO = relegation.toData().orElseThrow(() -> Asserts.makeException("接口降级时未找到对应信息"));
         LambdaQueryWrapper<RelegationDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(RelegationDO::getServiceName, relegationDO.getServiceName());
         queryWrapper.eq(RelegationDO::getMethodName, relegationDO.getMethodName());

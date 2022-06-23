@@ -4,6 +4,7 @@ import indi.uhyils.exception.AssertException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -13,6 +14,34 @@ import org.slf4j.helpers.MessageFormatter;
  * @date 文件创建日期 2021年07月15日 22时06分
  */
 public class Asserts {
+
+    /**
+     * 断言正常并且返回异常
+     *
+     * @return
+     */
+    public static Optional<AssertException> assertTrueAndGetException(boolean condition, String msg, Object... params) {
+        final AssertException assertException = assertTrueAndGetException(condition, 3, msg, params);
+        return Optional.ofNullable(assertException);
+    }
+
+    /**
+     * 断言正常并且返回异常
+     *
+     * @return
+     */
+    public static AssertException makeException(String msg, Object... params) {
+        return assertTrueAndGetException(false, 3, msg, params);
+    }
+
+    /**
+     * 断言正常并且返回异常
+     *
+     * @return
+     */
+    public static AssertException throwOptionalException() {
+        return assertTrueAndGetException(false, 4, "Optional异常");
+    }
 
     /**
      * 断言正确
@@ -90,6 +119,23 @@ public class Asserts {
             LogUtil.error(assertException);
             throw assertException;
         }
+    }
+
+    /**
+     * 断言正确
+     *
+     * @param condition        验证
+     * @param removeLayerCount 要删除的顶层堆栈的层数
+     * @param msg
+     */
+    private static AssertException assertTrueAndGetException(boolean condition, int removeLayerCount, String msg, Object... params) {
+        if (!condition) {
+            msg = MessageFormatter.arrayFormat(msg, params).getMessage();
+            AssertException assertException = new AssertException("throw exception " + msg);
+            removeExceptionTrace(assertException, removeLayerCount);
+            return assertException;
+        }
+        return null;
     }
 
 

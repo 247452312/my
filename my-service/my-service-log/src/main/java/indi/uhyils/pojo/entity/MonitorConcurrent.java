@@ -70,7 +70,7 @@ public class MonitorConcurrent extends AbstractEntity<Long> {
         this.specifyConcurrency = specifyConcurrency;
         this.type = initType();
         if (type != DemotionTypeEnum.NULL) {
-            this.beDowngraded = repository.findDegradationLowInterfaceByLevel(getUnique());
+            this.beDowngraded = repository.findDegradationLowInterfaceByLevel(getUnique().orElseThrow(() -> Asserts.makeException("未找到降级唯一标识")));
         } else {
             this.beDowngraded = null;
         }
@@ -120,14 +120,14 @@ public class MonitorConcurrent extends AbstractEntity<Long> {
         synchronized (MonitorConcurrent.class) {
             if (type == DemotionTypeEnum.RECOVER) {
                 // 如果已经恢复到正常等级,则不需要进行恢复
-                if (getUnique() == LEVEL) {
+                if (getUnique().orElseThrow(() -> Asserts.makeException("未找到降级领域唯一标识")) == LEVEL) {
                     return;
                 }
                 // 恢复
                 option = recoveryLowInterface(facade);
             } else if (type == DemotionTypeEnum.DOWN) {
                 // 现在已经降级到最终节点,不能再次降级
-                if (getUnique() == 0) {
+                if (getUnique().orElseThrow(() -> Asserts.makeException("未找到降级领域唯一标识")) == 0) {
                     LogUtil.error("服务降级已经降级到最后节点,不能再次进行降级");
                     return;
                 }

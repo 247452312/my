@@ -13,6 +13,7 @@ import indi.uhyils.pojo.entity.type.MethodName;
 import indi.uhyils.pojo.entity.type.PowerInfo;
 import indi.uhyils.repository.PowerRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,12 +48,16 @@ public class PowerRepositoryImpl extends AbstractRepository<Power, PowerDO, Powe
 
     @Override
     public Boolean havePower(User userId, PowerInfo powerInfo) {
-        return dao.checkUserHavePower(userId.getUnique().getId(), powerInfo.getInterfaceName(), powerInfo.getMethodName()) != 0;
+        return dao.checkUserHavePower(
+            userId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("未找到用户id")),
+            powerInfo.getInterfaceName(),
+            powerInfo.getMethodName())
+               != 0;
     }
 
     @Override
     public void removeDeptPowerByPowerId(Power powerId) {
-        dao.deleteDeptPowerMiddleByPowerId(powerId.getUnique().getId());
+        dao.deleteDeptPowerMiddleByPowerId(powerId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("未找到权限id")));
     }
 
     @Override

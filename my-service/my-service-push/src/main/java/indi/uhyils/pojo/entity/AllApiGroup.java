@@ -2,12 +2,16 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.assembler.PushMsgAssembler;
 import indi.uhyils.facade.UserFacade;
+import indi.uhyils.pojo.DO.ApiDO;
+import indi.uhyils.pojo.DO.ApiSubscribeDO;
 import indi.uhyils.pojo.DTO.PushMsgDTO;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ApiGroupRepository;
 import indi.uhyils.repository.ApiRepository;
 import indi.uhyils.repository.ApiSubscribeRepository;
 import indi.uhyils.repository.PushMsgRepository;
+import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,24 +33,24 @@ public class AllApiGroup extends AbstractEntity {
 
     public void fillApi(ApiRepository apiRepository) {
         List<Api> apis = apiRepository.findAll();
-        Map<Long, List<Api>> groupIdApiMap = apis.stream().collect(Collectors.groupingBy(t -> t.toData().getApiGroupId()));
+        Map<Long, List<Api>> groupIdApiMap = apis.stream().collect(Collectors.groupingBy(t -> t.toData().map(ApiDO::getApiGroupId).orElseThrow(Asserts::throwOptionalException)));
         for (ApiGroup group : groups) {
-            if (!groupIdApiMap.containsKey(group.getUnique().getId())) {
+            if (!groupIdApiMap.containsKey(group.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException))) {
                 continue;
             }
-            List<Api> groupApis = groupIdApiMap.get(group.getUnique().getId());
+            List<Api> groupApis = groupIdApiMap.get(group.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException));
             group.forceFillApi(groupApis);
         }
     }
 
     public void fillSubscribe(ApiSubscribeRepository subscribeRepository, String cron) {
         List<ApiSubscribe> subscribes = subscribeRepository.findByCron(cron);
-        Map<Long, List<ApiSubscribe>> groupIdSubscribeMap = subscribes.stream().collect(Collectors.groupingBy(t -> t.toData().getApiGroupId()));
+        Map<Long, List<ApiSubscribe>> groupIdSubscribeMap = subscribes.stream().collect(Collectors.groupingBy(t -> t.toData().map(ApiSubscribeDO::getApiGroupId).orElseThrow(Asserts::throwOptionalException)));
         for (ApiGroup group : groups) {
-            if (!groupIdSubscribeMap.containsKey(group.getUnique().getId())) {
+            if (!groupIdSubscribeMap.containsKey(group.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException))) {
                 continue;
             }
-            List<ApiSubscribe> groupSubscribes = groupIdSubscribeMap.get(group.getUnique().getId());
+            List<ApiSubscribe> groupSubscribes = groupIdSubscribeMap.get(group.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException));
             group.forceFillSubscribe(groupSubscribes);
         }
     }

@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity.base;
 
 import indi.uhyils.pojo.DO.base.BaseDO;
+import java.util.Optional;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -14,5 +15,5 @@ public interface DoEntity<T extends BaseDO> extends IdEntity {
      *
      * @return
      */
-    T toData();
+    Optional<T> toData();
 }

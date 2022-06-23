@@ -8,6 +8,7 @@ import indi.uhyils.enums.PushTypeEnum;
 import indi.uhyils.facade.PushFacade;
 import indi.uhyils.pojo.DO.OrderApplyDO;
 import indi.uhyils.pojo.DO.OrderNodeDO;
+import indi.uhyils.pojo.DO.base.BaseIdDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.OrderApplyRepository;
@@ -46,10 +47,10 @@ public class OrderApply extends AbstractDoEntity<OrderApplyDO> {
             return;
         }
 
-        this.orderNode = nodeRepository.find(new Identifier(toData().getOrderNodeId()));
-        List<OrderNodeField> fields = fieldRepository.findByNodeId(orderNode.toData().getId());
-        List<OrderNodeResultType> resultTypes = resultTypeRepository.findByNodeId(orderNode.toData().getId());
-        List<OrderNodeRoute> route = routeRepository.findByNodeId(orderNode.toData().getId());
+        this.orderNode = nodeRepository.find(new Identifier(toData().map(OrderApplyDO::getOrderNodeId).orElseThrow(Asserts::throwOptionalException)));
+        List<OrderNodeField> fields = fieldRepository.findByNodeId(orderNode.toData().map(BaseIdDO::getId).orElseThrow(Asserts::throwOptionalException));
+        List<OrderNodeResultType> resultTypes = resultTypeRepository.findByNodeId(orderNode.toData().map(BaseIdDO::getId).orElseThrow(Asserts::throwOptionalException));
+        List<OrderNodeRoute> route = routeRepository.findByNodeId(orderNode.toData().map(BaseIdDO::getId).orElseThrow(Asserts::throwOptionalException));
         this.orderNode.forceFillInfo(fields, resultTypes, route);
 
     }
@@ -62,7 +63,7 @@ public class OrderApply extends AbstractDoEntity<OrderApplyDO> {
 
     public OrderNode copyToLastNode() {
         OrderNode copy = orderNode.copy();
-        OrderNodeDO orderNodeDO = copy.toData();
+        OrderNodeDO orderNodeDO = copy.toData().orElseThrow(Asserts::throwOptionalException);
         orderNodeDO.setStatus(OrderStatusEnum.STOP.getCode());
         orderNodeDO.setName(orderNodeDO.getName() + "(转交)");
         orderNodeDO.setRunDealUserId(data.getTargetUserId());

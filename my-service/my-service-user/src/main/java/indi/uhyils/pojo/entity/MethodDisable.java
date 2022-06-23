@@ -6,6 +6,7 @@ import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.repository.ServiceControlRepository;
+import indi.uhyils.util.Asserts;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -62,7 +63,7 @@ public class MethodDisable extends AbstractEntity {
     }
 
     public MethodDisable(MethodDisableDTO dto) {
-        this(dto.getClassName(), dto.getMethodName(), ReadWriteTypeEnum.parse(dto.getDisableType()));
+        this(dto.getClassName(), dto.getMethodName(), ReadWriteTypeEnum.parse(dto.getDisableType()).orElseThrow(() -> Asserts.makeException("未找到方法禁用类型:{}", dto.getDisableType())));
     }
 
     public void completionClassName() {

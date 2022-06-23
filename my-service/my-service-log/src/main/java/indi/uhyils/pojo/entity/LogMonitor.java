@@ -5,6 +5,7 @@ import indi.uhyils.enums.ServiceQualityEnum;
 import indi.uhyils.mq.pojo.mqinfo.JvmUniqueMark;
 import indi.uhyils.pojo.DO.LogMonitorDO;
 import indi.uhyils.pojo.DO.LogMonitorJvmStatusDO;
+import indi.uhyils.pojo.DO.base.BaseIdDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.LogMonitorJvmStatusRepository;
@@ -60,8 +61,14 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     }
 
 
+    /**
+     * 界面图标echart的key
+     *
+     * @return
+     */
     public String echartKey() {
-        return toData().getServiceName() + ":" + toData().getIp();
+        final LogMonitorDO logMonitorDO = toData().orElseThrow(() -> Asserts.makeException("未找到日志监控"));
+        return logMonitorDO.getServiceName() + ":" + logMonitorDO.getIp();
     }
 
     /**
@@ -79,7 +86,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
         /* 1.如果程序总内存除了刚刚启动以外一直在增加,判断为内存溢出,警告 */
         boolean memStillUp = true;
         for (int i = 1; i < statuses.size(); i++) {
-            if (statuses.get(i).toData().getUseMem() <= statuses.get(i - 1).toData().getUseMem()) {
+            if (statuses.get(i).toData().orElseThrow(() -> Asserts.makeException("未找到监控日志")).getUseMem() <= statuses.get(i - 1).toData().orElseThrow(() -> Asserts.makeException("未找到监控日志")).getUseMem()) {
                 memStillUp = Boolean.FALSE;
                 break;
             }
@@ -110,8 +117,8 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
         int noHeapLowCount = 0;
         for (LogMonitorJvmStatus statuses : statuses) {
             // 总内存超出
-            LogMonitorJvmStatusDO status = statuses.toData();
-            LogMonitorDO monitor = toData();
+            LogMonitorJvmStatusDO status = statuses.toData().orElseThrow(() -> Asserts.makeException("未找到内存日志"));
+            LogMonitorDO monitor = toData().orElseThrow(() -> Asserts.makeException("未找到监控日志"));
             if (status.getUseMem() > monitor.getJvmTotalMem() * outMaxPro) {
                 allMemOutCount++;
             } else if (status.getUseMem() < (monitor.getHeapInitMem() + monitor.getNoHeapInitMem()) * lowMinPro) {
@@ -167,7 +174,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     }
 
     public Long id() {
-        return toData().getId();
+        return toData().map(BaseIdDO::getId).orElseThrow(() -> Asserts.makeException("未找到id"));
     }
 
     public void initStatuses(LogMonitorJvmStatusRepository repository) {
@@ -188,12 +195,12 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     }
 
     public Long startTime() {
-        return toData().getTime();
+        return toData().map(LogMonitorDO::getTime).orElseThrow(() -> Asserts.makeException("未找到data"));
     }
 
     public List makeEchart(long now) {
         LogMonitorJvmStatus logMonitorJvmStatusEntity = statuses.get(0);
-        Long startTime = logMonitorJvmStatusEntity.toData().getTime();
+        Long startTime = logMonitorJvmStatusEntity.toData().map(LogMonitorJvmStatusDO::getTime).orElseThrow(() -> Asserts.makeException("未找到data"));
 
         SimpleDateFormat simpleDateFormat;
         if (now - startTime > (long) 24 * 60 * 60 * 1000) {
@@ -207,7 +214,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
         List<Double> noHeapMem = new ArrayList<>();
         List<Double> heapMem = new ArrayList<>();
         for (LogMonitorJvmStatus monitorStatus : statuses) {
-            LogMonitorJvmStatusDO logMonitorJvmStatusDO = monitorStatus.toData();
+            LogMonitorJvmStatusDO logMonitorJvmStatusDO = monitorStatus.toData().orElseThrow(() -> Asserts.makeException("未找到data"));
             Long time = logMonitorJvmStatusDO.getTime();
             String format = simpleDateFormat.format(new Date(time));
             xAxix.add(format);
@@ -241,7 +248,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
     public void addSelf(LogMonitorRepository rep) {
         Identifier save = rep.save(this);
         for (LogMonitorJvmStatus status : statuses) {
-            status.toData().setFid(save.getId());
+            status.toData().orElseThrow(() -> Asserts.makeException("未找到data")).setFid(save.getId());
         }
     }
 
@@ -256,14 +263,14 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
             return;
         }
         for (LogMonitorJvmStatus status : statuses) {
-            Long time = status.toData().getTime();
+            Long time = status.toData().orElseThrow(() -> Asserts.makeException("未找到JVM状态的实体")).getTime();
             if (time > endTime) {
                 endTime = time;
                 lastEndTimeStatus = status;
             }
         }
         // 修改结束时间为假想时间
-        Asserts.assertTrue(lastEndTimeStatus.toData() != null && lastEndTimeStatus.toData().getFid() != null, "假想时间所在状态没有fid");
+        Asserts.assertTrue(lastEndTimeStatus != null && lastEndTimeStatus.toData().isPresent() && lastEndTimeStatus.toData().get().getFid() != null, "假想时间所在状态没有fid");
         lastEndTimeStatus.changeEndTimeLag(rep);
 
     }

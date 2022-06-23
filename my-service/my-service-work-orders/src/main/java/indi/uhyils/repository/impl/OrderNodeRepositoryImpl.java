@@ -8,8 +8,10 @@ import indi.uhyils.enums.OrderNodeStatusEnum;
 import indi.uhyils.pojo.DO.OrderNodeDO;
 import indi.uhyils.pojo.DTO.OrderNodeDTO;
 import indi.uhyils.pojo.entity.OrderNode;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.OrderNodeRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import indi.uhyils.util.Asserts;
 
 
 /**
@@ -34,7 +36,7 @@ public class OrderNodeRepositoryImpl extends AbstractRepository<OrderNode, Order
 
     @Override
     public OrderNode findNext(OrderNode orderNode) {
-        OrderNodeDO nextNodeByNodeAndResult = dao.getNextNodeByNodeAndResult(orderNode.getUnique().getId(), orderNode.toData().getResultId());
+        OrderNodeDO nextNodeByNodeAndResult = dao.getNextNodeByNodeAndResult(orderNode.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException), orderNode.toData().map(OrderNodeDO::getResultId).orElseThrow(Asserts::throwOptionalException));
         return assembler.toEntity(nextNodeByNodeAndResult);
     }
 

@@ -21,6 +21,8 @@ import indi.uhyils.repository.base.AbstractRepository;
 import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -86,17 +88,21 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
 
     @Override
     public Boolean checkCacheUserId(User userId) {
-        return redisPoolHandle.haveUserId(userId.getUnique().getId());
+        final Optional<Long> aLong = userId.getUnique().map(Identifier::getId);
+        return aLong.map(redisPoolHandle::haveUserId).orElse(false);
     }
 
     @Override
     public boolean removeUserInCacheById(User userId) {
-        return redisPoolHandle.removeUserById(userId.getUnique().getId());
+        final Optional<Identifier> unique = userId.getUnique();
+        return unique.map(t -> redisPoolHandle.removeUserById(t.getId())).orElse(false);
     }
 
     @Override
     public void cacheUser(Token token, User user) {
-        redisPoolHandle.addUser(token.getToken(), assembler.toDTO(user));
+        final UserDTO userDTO = assembler.toDTO(user);
+        Asserts.assertTrue(Objects.isNull(userDTO), "没有找到用户信息.无法进行缓存");
+        redisPoolHandle.addUser(token.getToken(), userDTO);
     }
 
     @Override
@@ -106,13 +112,16 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
 
     @Override
     public void checkPassword(User user, Password password) {
-        Integer integer = dao.checkUserPassword(user.getUnique().getId(), password.encode());
+        final Optional<Identifier> unique = user.getUnique();
+        final Integer integer = unique.map(t -> dao.checkUserPassword(t.getId(), password.encode())).orElse(0);
         Asserts.assertTrue(integer == 1, "密码错误");
     }
 
     @Override
     public boolean checkUserNameRepeat(User user) {
-        UserDO userDO = user.toData();
+        final Optional<UserDO> userDOOpt = user.toData();
+        Asserts.assertTrue(userDOOpt.isPresent(), "用户信息错误,无法进行分析用户名称是否重复");
+        UserDO userDO = userDOOpt.get();
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(UserDO::getUsername, userDO.getUsername());
         // 停用的用户不算

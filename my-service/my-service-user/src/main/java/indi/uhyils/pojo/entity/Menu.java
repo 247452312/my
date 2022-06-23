@@ -13,6 +13,7 @@ import indi.uhyils.repository.MenuRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -75,7 +76,11 @@ public class Menu extends AbstractDoEntity<MenuDO> {
      * @return
      */
     public MenuTreeDTO findSelfNode(MenuRepository rep, MenuAssembler assembler) {
-        MenuDO menuDO = toData();
+        final Optional<MenuDO> menuDOOpt = toData();
+        if (!menuDOOpt.isPresent()) {
+            return null;
+        }
+        MenuDO menuDO = menuDOOpt.get();
         Integer iFrame = menuDO.getIFrame();
         List<Menu> menus = rep.findByIframe(new MenuIframe(iFrame));
         MenuTreeBuilder menuTreeBuilder = new MenuTreeBuilder();

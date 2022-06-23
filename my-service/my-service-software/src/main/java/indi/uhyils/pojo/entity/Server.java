@@ -4,6 +4,7 @@ import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.ServerDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.ServerRepository;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SshUtils;
 
 /**
@@ -29,6 +30,7 @@ public class Server extends AbstractDoEntity<ServerDO> {
     }
 
     public Boolean testConn() {
-        return SshUtils.testConn(toData().getIp(), toData().getPort(), toData().getUsername(), toData().getPassword());
+        final ServerDO serverDO = toData().orElseThrow(() -> Asserts.makeException("未找到data"));
+        return SshUtils.testConn(serverDO.getIp(), serverDO.getPort(), serverDO.getUsername(), serverDO.getPassword());
     }
 }

@@ -6,8 +6,8 @@ import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.mapstruct.Mapping;
 
 /**
@@ -26,8 +26,9 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
+    @Nullable
     default DO toDo(ENTITY entity) {
-        return entity.toData();
+        return entity.toData().orElse(null);
     }
 
     /**
@@ -93,7 +94,7 @@ public interface BaseAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntit
      *
      * @return
      */
-     List<DTO> listEntityToDTO(List<ENTITY> noPage);
+    List<DTO> listEntityToDTO(List<ENTITY> noPage);
 
     /**
      * 列表转DTO

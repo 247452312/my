@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.entity.base;
 
+import java.util.Optional;
+
 /**
  * entity不是一个可序列化的逻辑集合,真正的OOP中的对象
  *
@@ -22,8 +24,8 @@ public abstract class AbstractEntity<T extends Comparable<T>> implements BaseEnt
     }
 
     @Override
-    public T getUnique() {
-        return unique;
+    public Optional<T> getUnique() {
+        return Optional.ofNullable(unique);
     }
 
     @Override

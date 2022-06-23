@@ -24,18 +24,18 @@ public class OrderNodeList extends AbstractEntity<Identifiers> {
 
     public OrderNodeList(List<OrderNode> orderNodes) {
         this.orderNodes = orderNodes;
-        setUnique(new Identifiers(orderNodes.stream().map(AbstractEntity::getUnique).collect(Collectors.toList())));
+        setUnique(new Identifiers(orderNodes.stream().map(AbstractEntity::getUnique).map(t -> t.orElseThrow(Asserts::throwOptionalException)).collect(Collectors.toList())));
     }
 
     public void compareAndSaveDealUser(Map<Long, Long> dealUserIds) {
         Asserts.assertTrue(dealUserIds != null, "处理人不能为空");
         for (OrderNode orderNode : orderNodes) {
-            Long id = orderNode.getUnique().getId();
+            Long id = orderNode.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException);
             Long dealUser = dealUserIds.get(id);
             if (dealUser == null) {
                 continue;
             }
-            orderNode.toData().setRunDealUserId(dealUser);
+            orderNode.toData().orElseThrow(Asserts::throwOptionalException).setRunDealUserId(dealUser);
             orderNode.onUpdate();
         }
     }
@@ -43,12 +43,12 @@ public class OrderNodeList extends AbstractEntity<Identifiers> {
     public void compareAndSaveNoticeUser(Map<Long, Long> noticeUserIds) {
         Asserts.assertTrue(noticeUserIds != null, "通知人不能为空");
         for (OrderNode orderNode : orderNodes) {
-            Long id = orderNode.getUnique().getId();
+            Long id = orderNode.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException);
             Long noticeUser = noticeUserIds.get(id);
             if (noticeUser == null) {
                 continue;
             }
-            orderNode.toData().setNoticeUserId(noticeUser);
+            orderNode.toData().orElseThrow(Asserts::throwOptionalException).setNoticeUserId(noticeUser);
             orderNode.onUpdate();
         }
 
@@ -59,28 +59,28 @@ public class OrderNodeList extends AbstractEntity<Identifiers> {
     }
 
     public void delFields(OrderNodeFieldRepository fieldRepository) {
-        List<Long> collect = orderNodes.stream().map(t -> t.getUnique().getId()).collect(Collectors.toList());
+        List<Long> collect = orderNodes.stream().map(t -> t.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException)).collect(Collectors.toList());
         List<OrderNodeField> byNodeIds = fieldRepository.findByNodeIds(collect);
-        List<OrderNodeField> fields = byNodeIds.stream().peek(t -> t.toData().setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
+        List<OrderNodeField> fields = byNodeIds.stream().peek(t -> t.toData().orElseThrow(Asserts::throwOptionalException).setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
         fieldRepository.save(fields);
     }
 
     public void delRoutes(OrderNodeRouteRepository routeRepository) {
-        List<Long> collect = orderNodes.stream().map(t -> t.getUnique().getId()).collect(Collectors.toList());
+        List<Long> collect = orderNodes.stream().map(t -> t.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException)).collect(Collectors.toList());
         List<OrderNodeRoute> routes = routeRepository.findByNodeIds(collect);
-        List<OrderNodeRoute> route = routes.stream().peek(t -> t.toData().setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
+        List<OrderNodeRoute> route = routes.stream().peek(t -> t.toData().orElseThrow(Asserts::throwOptionalException).setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
         routeRepository.save(route);
     }
 
     public void delResultType(OrderNodeResultTypeRepository resultTypeRepository) {
-        List<Long> collect = orderNodes.stream().map(t -> t.getUnique().getId()).collect(Collectors.toList());
+        List<Long> collect = orderNodes.stream().map(t -> t.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException)).collect(Collectors.toList());
         List<OrderNodeResultType> routes = resultTypeRepository.findByNodeIds(collect);
-        List<OrderNodeResultType> route = routes.stream().peek(t -> t.toData().setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
+        List<OrderNodeResultType> route = routes.stream().peek(t -> t.toData().orElseThrow(Asserts::throwOptionalException).setDeleteFlag(true)).peek(AbstractDoEntity::onUpdate).collect(Collectors.toList());
         resultTypeRepository.save(route);
     }
 
     public void delSelf(OrderNodeRepository rep) {
-        Identifiers unique = getUnique();
+        Identifiers unique = getUnique().orElseThrow(Asserts::throwOptionalException);
         List<Identifier> ids = unique.getIds();
         rep.removeByIds(ids);
     }

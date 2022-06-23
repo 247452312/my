@@ -11,6 +11,8 @@ import indi.uhyils.pojo.DTO.OrderNodeDTO;
 import indi.uhyils.pojo.DTO.OrderNodeFieldDTO;
 import indi.uhyils.pojo.entity.OrderInfo;
 import indi.uhyils.pojo.entity.OrderNode;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.util.Asserts;
 import java.util.HashMap;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -45,7 +47,7 @@ public abstract class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, 
     public abstract OrderInfoDTO baseInfoDTOToInfoDTO(OrderBaseInfoDTO order);
 
     public InitOrderDTO toInitOrderDTO(OrderInfo orderInfo) {
-        OrderInfoDO orderInfoDO = orderInfo.toData();
+        OrderInfoDO orderInfoDO = orderInfo.toData().orElseThrow(Asserts::throwOptionalException);
         List<OrderNode> nodes = orderInfo.nodes();
 
         // 创建之后的首节点的属性(返回给前台用)
@@ -56,7 +58,7 @@ public abstract class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, 
         HashMap<Long, Long> noticeUserIds = new HashMap<>(nodes.size());
 
         for (OrderNode node : nodes) {
-            OrderNodeDO orderNodeDO = node.toData();
+            OrderNodeDO orderNodeDO = node.toData().orElseThrow(Asserts::throwOptionalException);
             Integer type = orderNodeDO.getType();
             OrderNodeTypeEnum orderNodeType = OrderNodeTypeEnum.parse(type);
             if (orderNodeType == OrderNodeTypeEnum.START) {
@@ -67,7 +69,7 @@ public abstract class OrderInfoAssembler extends AbstractAssembler<OrderInfoDO, 
             noticeUserIds.put(orderNodeDO.getId(), orderNodeDO.getNoticeUserId());
         }
 
-        return InitOrderDTO.build(orderInfo.getUnique().getId(), orderNodeField, orderInfoDO.getMonitorUserId(), dealUserIds, noticeUserIds);
+        return InitOrderDTO.build(orderInfo.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException), orderNodeField, orderInfoDO.getMonitorUserId(), dealUserIds, noticeUserIds);
     }
 }
 

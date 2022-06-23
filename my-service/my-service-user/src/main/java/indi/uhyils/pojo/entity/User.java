@@ -7,6 +7,7 @@ import indi.uhyils.enums.UserStatusEnum;
 import indi.uhyils.enums.UserTypeEnum;
 import indi.uhyils.pojo.DO.RoleDO;
 import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.DO.base.BaseIdDO;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -27,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -44,9 +46,9 @@ public class User extends AbstractDoEntity<UserDO> {
      */
     private static final Long ADMIN_USER_ID = 0L;
 
-    private Role role;
-
     protected Token token;
+
+    private Role role;
 
     @Default
     public User(UserDO data) {
@@ -80,11 +82,14 @@ public class User extends AbstractDoEntity<UserDO> {
      */
     public User(UserName username, Password password, Identifier roleId) {
         super(parseUserNamePasswordToDO(username, password));
-        this.toData().setRoleId(roleId.getId());
+        final Optional<UserDO> userDOOpt = this.toData();
+        Asserts.assertTrue(userDOOpt.isPresent(), "用户信息不存在");
+        final UserDO userDO = userDOOpt.get();
+        userDO.setRoleId(roleId.getId());
         /*token和缓存都需要使用id*/
         long id = String.format("%s&%s", data.getUsername(), data.getPassword()).hashCode();
         this.setUnique(new Identifier(id));
-        toData().setId(id);
+        userDO.setId(id);
     }
 
     private static UserDO parseUserNamePasswordToDO(UserName userName, Password password) {
@@ -95,20 +100,30 @@ public class User extends AbstractDoEntity<UserDO> {
     }
 
     public static void batchInitRole(List<User> all, RoleRepository roleRepository, DeptRepository deptRepository, PowerRepository powerRepository, MenuRepository menuRepository) {
-        List<Identifier> roleIds = all.stream().filter(t -> t.role == null).map(t -> t.toData().getRoleId()).distinct().map(Identifier::new).collect(Collectors.toList());
+        List<Identifier> roleIds = all.stream()
+                                      .filter(t -> t.role == null)
+                                      .map(t -> t.toData().map(UserDO::getRoleId).orElse(null))
+                                      .distinct()
+                                      .map(Identifier::new)
+                                      .collect(Collectors.toList());
         List<Role> roles = roleRepository.find(roleIds);
-        Map<Long, Role> idRoleMap = roles.stream().collect(Collectors.toMap(t -> t.toData().getId(), t -> t));
+        Map<Long, Role> idRoleMap = roles.stream().collect(Collectors.toMap(t -> t.toData().map(BaseIdDO::getId).orElse(null), t -> t));
         for (User user : all) {
             if (user.haveRole()) {
                 continue;
             }
-            Long roleId = user.toData().getRoleId();
-            Role role = idRoleMap.get(roleId);
-            if (role == null) {
-                continue;
+            final Optional<UserDO> userDOOpt = user.toData();
+            if (userDOOpt.isPresent()) {
+                final UserDO userDO = userDOOpt.get();
+                Long roleId = userDO.getRoleId();
+                Role role = idRoleMap.get(roleId);
+                if (role == null) {
+                    continue;
+                }
+                role.initDept(deptRepository, powerRepository, menuRepository);
+                user.forceInitRole(role);
             }
-            role.initDept(deptRepository, powerRepository, menuRepository);
-            user.forceInitRole(role);
+
         }
     }
 
@@ -159,12 +174,16 @@ public class User extends AbstractDoEntity<UserDO> {
 
     public List<Menu> screenMenu(List<Menu> menus) {
         // 管理员直接放行
-        if (Objects.equals(ADMIN_USER_ID, toData().getId())) {
-            return menus;
+        final Optional<UserDO> userDO = toData();
+        if (userDO.isPresent()) {
+            if (Objects.equals(ADMIN_USER_ID, userDO.get().getId())) {
+                return menus;
+            }
+
         }
         Asserts.assertTrue(role != null, "权限没有初始化");
         List<Menu> menu = role.menus();
-        return menus.stream().filter(t -> CollectionUtil.contains(menu, t, entity -> entity.toData().getId())).collect(Collectors.toList());
+        return menus.stream().filter(t -> CollectionUtil.contains(menu, t, entity -> entity.toData().map(BaseIdDO::getId).orElse(null))).collect(Collectors.toList());
     }
 
 
@@ -205,7 +224,10 @@ public class User extends AbstractDoEntity<UserDO> {
         sb.append(randomNum);
 
         // 用户id 17位
-        String str = getUnique().toString();
+        final Optional<Identifier> uniqueOpt = getUnique();
+        Asserts.assertTrue(uniqueOpt.isPresent(), "唯一标示不存在,生成token失败");
+        final Identifier identifier = uniqueOpt.get();
+        String str = identifier.toString();
         long i = 17L - str.length();
         // long 最大17位 如果不够 最高位补0
         StringBuilder sbTemp = new StringBuilder(17);
@@ -217,7 +239,7 @@ public class User extends AbstractDoEntity<UserDO> {
         //盐 x位
         sb.append(salt);
 
-        return new Token(getUnique().getId(), AESUtil.AESEncode(encodeRules, sb.toString()));
+        return new Token(identifier.getId(), AESUtil.AESEncode(encodeRules, sb.toString()));
     }
 
     public Boolean havePower(PowerInfo powerInfo, PowerRepository rep) {
@@ -320,7 +342,11 @@ public class User extends AbstractDoEntity<UserDO> {
      * @return
      */
     private boolean isSysRole() {
-        return Objects.equals(toData().getRoleId(), UserInfoHelper.MYSQL_ROLE_ID);
+        final Optional<UserDO> userDO = toData();
+        if (userDO.isPresent()) {
+            return Objects.equals(userDO.get().getRoleId(), UserInfoHelper.MYSQL_ROLE_ID);
+        }
+        return false;
     }
 
     /**
@@ -329,14 +355,17 @@ public class User extends AbstractDoEntity<UserDO> {
      * @param status
      */
     private void changeStatus(UserStatusEnum status) {
-        toData().setStatus(status.getCode());
+        final Optional<UserDO> userDOOpt = toData();
+        final UserDO userDO = userDOOpt.get();
+        userDO.setStatus(status.getCode());
     }
 
     /**
      * 插入前校验
      */
     private void validationInsert() {
-        UserDO userDO = toData();
+        final Optional<UserDO> userDOOpt = toData();
+        UserDO userDO = userDOOpt.get();
         String nickName = userDO.getNickName();
         Asserts.assertTrue(nickName != null, "昵称不能为空");
         Asserts.assertTrue(userDO.getPassword() != null, "密码不能为空");

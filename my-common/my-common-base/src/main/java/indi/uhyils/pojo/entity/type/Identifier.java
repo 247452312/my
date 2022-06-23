@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.entity.type;
 
 import indi.uhyils.pojo.cqe.query.IdQuery;
+import indi.uhyils.util.Asserts;
 import java.util.Objects;
 
 /**
@@ -13,6 +14,7 @@ public class Identifier implements BaseType, Comparable<Identifier> {
     private final Long id;
 
     public Identifier(Long id) {
+        Asserts.assertTrue(id != null, "生成id时 id不能为null");
         this.id = id;
     }
 

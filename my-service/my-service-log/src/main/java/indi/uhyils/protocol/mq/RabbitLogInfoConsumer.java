@@ -17,6 +17,7 @@ import indi.uhyils.pojo.trace.LogTraceDeal;
 import indi.uhyils.service.TraceDetailService;
 import indi.uhyils.service.TraceInfoService;
 import indi.uhyils.service.TraceLogService;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -80,7 +81,7 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
             String text = new String(body, StandardCharsets.UTF_8);
             try {
                 text = text.substring(1, text.length() - 1);
-                LogDetailTypeEnum parse = LogDetailTypeEnum.parse(text.charAt(0));
+                LogDetailTypeEnum parse = LogDetailTypeEnum.parse(text.charAt(0)).orElseThrow(() -> Asserts.makeException("日志标志对应类型不存在"));
                 switch (parse) {
                     case DETAIL:
                         TraceDetailDTO traceDetailDTO = new DetailTraceDeal().doDeal(text);

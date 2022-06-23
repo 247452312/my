@@ -2,10 +2,13 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.enums.UserTypeEnum;
 import indi.uhyils.pojo.DO.UserDO;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.UserRepository;
 import indi.uhyils.util.AESUtil;
+import indi.uhyils.util.Asserts;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -63,6 +66,8 @@ public class Visiter extends User {
         //盐 x位
         sb.append(salt);
 
-        return new Token(getUnique().getId(), AESUtil.AESEncode(encodeRules, sb.toString()));
+        final Optional<Identifier> unique = getUnique();
+        Asserts.assertTrue(unique.isPresent(), "唯一标示不存在,不能进行token生成");
+        return new Token(unique.get().getId(), AESUtil.AESEncode(encodeRules, sb.toString()));
     }
 }

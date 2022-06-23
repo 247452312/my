@@ -1,5 +1,7 @@
 package indi.uhyils.enums;
 
+import java.util.Optional;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0
@@ -25,13 +27,14 @@ public enum LogDetailTypeEnum {
         this.code = code;
     }
 
-    public static LogDetailTypeEnum parse(char ch) {
+    public static Optional<LogDetailTypeEnum> parse(char ch) {
         for (LogDetailTypeEnum value : values()) {
             if (value.getCode() == ch) {
-                return value;
+                return Optional.of(value);
             }
         }
-        throw new RuntimeException("没有发现指定的前缀" + ch);
+        return Optional.empty();
+        //        throw new RuntimeException("没有发现指定的前缀" + ch);
     }
 
     public Character getCode() {

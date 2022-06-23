@@ -6,9 +6,11 @@ import indi.uhyils.enums.OrderStatusEnum;
 import indi.uhyils.enums.PushTypeEnum;
 import indi.uhyils.facade.PushFacade;
 import indi.uhyils.pojo.DO.OrderInfoDO;
+import indi.uhyils.pojo.DO.OrderNodeDO;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
 import indi.uhyils.pojo.IdMapping;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.OrderInfoRepository;
 import indi.uhyils.repository.OrderNodeFieldRepository;
 import indi.uhyils.repository.OrderNodeRepository;
@@ -21,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 工单基础信息样例表(OrderInfo)表 数据库实体类
@@ -46,7 +49,7 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
     }
 
     public void saveSelf(OrderInfoRepository rep) {
-        toData().setId(null);
+        toData().orElseThrow(Asserts::throwOptionalException).setId(null);
         this.setUnique(null);
         this.setUnique(rep.save(this));
         // 修改node的OrderId
@@ -62,7 +65,8 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
             return;
         }
         for (OrderNode node : nodes) {
-            node.toData().setBaseInfoId(getUnique().getId());
+            final OrderNodeDO orderNodeDO = node.toData().orElseThrow(Asserts::throwOptionalException);
+            orderNodeDO.setBaseInfoId(getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException));
         }
     }
 
@@ -84,9 +88,10 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
     }
 
     public void compareAndSave(OrderInfoRepository rep, Long monitorUserId) {
-        Long selfMonitor = toData().getMonitorUserId();
+        final OrderInfoDO orderInfoDO = toData().orElseThrow(Asserts::throwOptionalException);
+        Long selfMonitor = orderInfoDO.getMonitorUserId();
         if (!Objects.equals(selfMonitor, monitorUserId)) {
-            toData().setMonitorUserId(monitorUserId);
+            orderInfoDO.setMonitorUserId(monitorUserId);
             this.onUpdate();
             rep.save(this);
         }

@@ -47,7 +47,7 @@ public class Token extends AbstractEntity<String> {
      * @return
      */
     public UserTypeEnum tokenUserType() {
-        return UserTypeEnum.getByCode(this.unique.substring(0, 2));
+        return UserTypeEnum.getByCode(this.unique.substring(0, 2)).orElse(null);
     }
 
     public String getToken() {

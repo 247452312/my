@@ -46,7 +46,7 @@ public class ParamRepositoryImpl extends AbstractRepository<Param, ParamDO, Para
 
     @Override
     public void flushParam(Param param) {
-        final ParamDO paramDO = param.toData();
+        final ParamDO paramDO = param.toData().orElseThrow(() -> Asserts.makeException("刷新系统参数失败"));
         final String key = paramDO.getKey();
         final Optional<SysParamEnum> sysParamEnumOpt = SysParamEnum.parseEnum(key);
         Asserts.assertTrue(sysParamEnumOpt.isPresent(), "参数键值不存在");

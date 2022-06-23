@@ -14,6 +14,7 @@ import indi.uhyils.pojo.entity.DictItem;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DictItemRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +37,7 @@ public class DictItemRepositoryImpl extends AbstractRepository<DictItem, DictIte
 
     @Override
     public List<DictItem> findItemByDictId(Dict dictId) {
-        ArrayList<DictItemDO> byDictId = dao.getByDictId(dictId.getUnique().getId());
+        ArrayList<DictItemDO> byDictId = dao.getByDictId(dictId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("字典项查询失败")));
         return byDictId.stream().map(assembler::toEntity).collect(Collectors.toList());
     }
 

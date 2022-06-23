@@ -13,6 +13,7 @@ import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.DeptRepository;
 import indi.uhyils.service.DeptService;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -67,7 +68,7 @@ public class DeptServiceImpl extends AbstractDoService<DeptDO, Dept, DeptDTO, De
     @Override
     public List<DeptDTO> getDepts() {
         List<Dept> depts = rep.findAll();
-        return depts.stream().map(assem::toDTO).collect(Collectors.toList());
+        return depts.stream().map(assem::toDTO).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     @Override

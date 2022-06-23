@@ -7,6 +7,7 @@ import indi.uhyils.service.ParamService;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class FlushSysRegister implements Register {
 
     @Autowired
+    @Lazy
     private ParamService service;
 
     @Override

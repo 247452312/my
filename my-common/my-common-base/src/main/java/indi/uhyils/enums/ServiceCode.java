@@ -1,5 +1,7 @@
 package indi.uhyils.enums;
 
+import java.util.Optional;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月23日 15时10分
@@ -67,6 +69,15 @@ public enum ServiceCode {
         this.msg = msg;
     }
 
+    public static Optional<ServiceCode> getByText(Integer text) {
+        for (ServiceCode code : ServiceCode.values()) {
+            if (code.getText().equals(text)) {
+                return Optional.of(code);
+            }
+        }
+        return Optional.empty();
+    }
+
     public Integer getText() {
         return text;
     }
@@ -81,14 +92,5 @@ public enum ServiceCode {
 
     public void setMsg(String msg) {
         this.msg = msg;
-    }
-
-    public static ServiceCode getByText(Integer text) {
-        for (ServiceCode code : ServiceCode.values()) {
-            if (code.getText().equals(text)) {
-                return code;
-            }
-        }
-        return null;
     }
 }

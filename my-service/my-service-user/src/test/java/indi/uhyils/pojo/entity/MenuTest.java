@@ -60,10 +60,10 @@ public class MenuTest extends BaseTest {
 
         Menu m1 = new Menu(do1);
         repository.save(m1);
-        m1Id = m1.getUnique().getId();
+        m1Id = m1.getUnique().get().getId();
 
         MenuDO do2 = new MenuDO();
-        do2.setFid(m1.getUnique().getId());
+        do2.setFid(m1.getUnique().get().getId());
         do2.setIFrame(123);
         do2.setIcon("asd");
         do2.setName("asd");
@@ -74,14 +74,14 @@ public class MenuTest extends BaseTest {
 
         Menu m2 = new Menu(do2);
         repository.save(m2);
-        m2Id = m2.getUnique().getId();
+        m2Id = m2.getUnique().get().getId();
 
         // dept
         DeptDO deptDO = new DeptDO();
         deptDO.setName("test");
         Dept dept = new Dept(deptDO);
         deptRepository.save(dept);
-        deptId = dept.getUnique().getId();
+        deptId = dept.getUnique().get().getId();
 
 
     }
@@ -120,7 +120,7 @@ public class MenuTest extends BaseTest {
     public void findSelfNode2() {
         Menu menu = new Menu(m1Id);
         menu.completion(repository);
-        menu.toData().setIFrame(123123123);
+        menu.toData().get().setIFrame(123123123);
         MenuTreeDTO selfNode = menu.findSelfNode(repository, assembler);
 
         Asserts.assertTrue(selfNode == null);

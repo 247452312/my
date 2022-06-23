@@ -1,5 +1,7 @@
 package indi.uhyils.enums;
 
+import java.util.Optional;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0
@@ -22,13 +24,13 @@ public enum LogTypeEnum {
         this.code = code;
     }
 
-    public static LogTypeEnum parse(Integer code) {
+    public static Optional<LogTypeEnum> parse(Integer code) {
         for (LogTypeEnum value : values()) {
             if (value.getCode().equals(code)) {
-                return value;
+                return Optional.of(value);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public Integer getCode() {

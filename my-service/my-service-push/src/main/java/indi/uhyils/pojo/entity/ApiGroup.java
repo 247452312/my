@@ -9,6 +9,7 @@ import indi.uhyils.pojo.DTO.PushMsgDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ApiGroupRepository;
 import indi.uhyils.repository.ApiRepository;
 import indi.uhyils.repository.ApiSubscribeRepository;
@@ -51,7 +52,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
         if (apis != null) {
             return;
         }
-        this.apis = apiRepository.findByGroupId(getUnique());
+        this.apis = apiRepository.findByGroupId(getUnique().orElseThrow(() -> Asserts.makeException("未找到唯一标识")));
     }
 
     public void forceFillSubscribe(List<ApiSubscribe> subscribes) {
@@ -63,7 +64,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
         if (subscribes != null) {
             return;
         }
-        this.subscribes = repository.findByGroupId(getUnique());
+        this.subscribes = repository.findByGroupId(getUnique().orElseThrow(Asserts::throwOptionalException));
     }
 
     public void forceFillApi(List<Api> apis) {
@@ -75,7 +76,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
         Asserts.assertTrue(this.apis != null, "api为空");
         Map<String, String> parameter = new HashMap<>(16);
         ApiUtils.callApi(apis, user, parameter);
-        String resultFormat = toData().getResultFormat();
+        String resultFormat = toData().map(ApiGroupDO::getResultFormat).orElseThrow(Asserts::throwOptionalException);
         resultFormat = ApiUtils.replaceString(parameter, resultFormat);
         return resultFormat;
     }
@@ -85,7 +86,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
     }
 
     public void removeSelf(ApiGroupRepository rep) {
-        rep.remove(getUnique());
+        rep.remove(getUnique().orElseThrow(Asserts::throwOptionalException));
     }
 
     public Integer removeApis(ApiRepository rep) {
@@ -94,7 +95,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
 
     public List<PushMsgDTO> sendMsgToUser(UserFacade userFacade) {
         Asserts.assertTrue(subscribes != null, "没有初始化订阅用户");
-        List<UserDTO> byIds = userFacade.getByIds(subscribes.stream().map(t -> t.getUnique().getId()).collect(Collectors.toList()));
+        List<UserDTO> byIds = userFacade.getByIds(subscribes.stream().map(t -> t.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException)).collect(Collectors.toList()));
         return sendMsgToUser(byIds);
     }
 
@@ -104,7 +105,7 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
         List<PushMsgDTO> msgList = new ArrayList<>(subscribes.size());
         for (ApiSubscribe subscribe : subscribes) {
 
-            ApiSubscribeDO apiSubscribeDO = subscribe.toData();
+            ApiSubscribeDO apiSubscribeDO = subscribe.toData().orElseThrow(Asserts::throwOptionalException);
             Long userId = apiSubscribeDO.getUserId();
             if (!idUserMap.containsKey(userId)) {
                 continue;

@@ -20,6 +20,7 @@ import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -72,8 +73,9 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
 
     @Override
     public <E extends IdEntity> EN find(E query) {
-        Identifier id = query.getUnique();
-        return find(id);
+        final Optional<Identifier> id = query.getUnique();
+        Asserts.assertTrue(id.isPresent(), "单个查询中不存在id");
+        return find(id.get());
     }
 
     /**
@@ -136,7 +138,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     public <E extends Identifier> int remove(E... ids) {
         List<EN> ens = find(Arrays.asList(ids));
 
-        List<DO> updateDos = ens.stream().peek(AbstractDoEntity::perUpdate).map(AbstractDoEntity::toData).collect(Collectors.toList());
+        List<DO> updateDos = ens.stream().peek(AbstractDoEntity::perUpdate).map(AbstractDoEntity::toData).map(Optional::get).collect(Collectors.toList());
         return dao.updateBatch(updateDos);
     }
 
@@ -149,14 +151,16 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     @Override
     public <E extends Identifier> int removeByIds(List<E> ids) {
         List<EN> ens = find(ids);
-        List<DO> updateDos = ens.stream().peek(AbstractDoEntity::perUpdate).map(AbstractDoEntity::toData).collect(Collectors.toList());
+        List<DO> updateDos = ens.stream().peek(AbstractDoEntity::perUpdate).map(AbstractDoEntity::toData).map(Optional::get).collect(Collectors.toList());
         return dao.updateBatch(updateDos);
     }
 
     @Override
     public int change(EN entity, List<Arg> args) {
         QueryWrapper<DO> queryWrapper = Symbol.makeWrapper(args);
-        return dao.update(entity.toData(), queryWrapper);
+        final Optional<DO> aDo = entity.toData();
+        Asserts.assertTrue(aDo.isPresent(), "修改时不存在修改对应的值");
+        return dao.update(aDo.get(), queryWrapper);
     }
 
     @Override

@@ -125,7 +125,7 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
     @Override
     public String getNameById(Identifier userId) {
         User user = rep.find(userId);
-        return user.toData().getNickName();
+        return user.toData().map(UserDO::getNickName).orElse(null);
     }
 
     @Override

@@ -11,6 +11,7 @@ import indi.uhyils.pojo.entity.ApiGroup;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ApiRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 
 
@@ -37,7 +38,7 @@ public class ApiRepositoryImpl extends AbstractRepository<Api, ApiDO, ApiDao, Ap
 
     @Override
     public Integer removeApiByGroup(ApiGroup groupId) {
-        ApiGroupDO apiGroupDO = groupId.toData();
+        ApiGroupDO apiGroupDO = groupId.toData().orElseThrow(Asserts::throwOptionalException);
         apiGroupDO.preUpdate();
         return dao.deleteAllByGroup(apiGroupDO);
     }

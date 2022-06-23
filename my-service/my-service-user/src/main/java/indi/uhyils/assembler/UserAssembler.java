@@ -8,6 +8,8 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.entity.Role;
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.Visiter;
+import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,8 +44,13 @@ public abstract class UserAssembler extends AbstractAssembler<UserDO, User, User
         if (entity instanceof Visiter) {
             return visiterToDTO((Visiter) entity);
         }
-        UserDTO userDTO = toDTO(entity.toData());
-        Role role = entity.role();
+        return entity.toData().map(t -> fillTypeAndRole(entity, t)).orElse(null);
+    }
+
+    @NotNull
+    private UserDTO fillTypeAndRole(User entity, UserDO t) {
+        final Role role = entity.role();
+        final UserDTO userDTO = toDTO(t);
         userDTO.setUserType(UserTypeEnum.USER.getCode());
         if (role != null) {
             RoleDTO roleDTO = roleAssembler.toDTO(entity.role());

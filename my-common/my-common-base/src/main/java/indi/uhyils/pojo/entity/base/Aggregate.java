@@ -1,5 +1,7 @@
 package indi.uhyils.pojo.entity.base;
 
+import java.util.Optional;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0
@@ -12,7 +14,7 @@ public interface Aggregate<T extends Comparable<T>> {
      *
      * @return
      */
-    T getUnique();
+    Optional<T> getUnique();
 
 
     /**

@@ -5,6 +5,7 @@ import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.util.Asserts;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -34,13 +35,13 @@ public enum Symbol {
     }
 
 
-    public static Symbol parse(String code) {
+    public static Optional<Symbol> parse(String code) {
         for (Symbol value : values()) {
             if (Objects.equals(value.getCode(), code)) {
-                return value;
+                return Optional.of(value);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -68,9 +69,10 @@ public enum Symbol {
      */
     public static <T> void fillWrapper(QueryWrapper<T> wrapper, Arg arg) {
         String symbol = arg.getSymbol();
-        Symbol parse = Symbol.parse(symbol);
-        Asserts.assertTrue(parse != null, "符号不存在: " + arg.getSymbol());
-        switch (parse) {
+        Optional<Symbol> parse = Symbol.parse(symbol);
+
+        Asserts.assertTrue(parse.isPresent(), "符号不存在: " + arg.getSymbol());
+        switch (parse.get()) {
             case EQ:
                 wrapper.eq(arg.getName(), arg.getData());
                 return;

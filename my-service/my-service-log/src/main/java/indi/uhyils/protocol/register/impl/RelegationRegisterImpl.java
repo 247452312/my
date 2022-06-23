@@ -6,6 +6,7 @@ import indi.uhyils.pojo.cqe.event.CheckAndAddRelegationEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import indi.uhyils.protocol.register.RelegationRegister;
 import indi.uhyils.service.RelegationService;
+import indi.uhyils.util.Asserts;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class RelegationRegisterImpl implements RelegationRegister {
         TraceDetailDTO traceDetailDTO = event.getTraceDetailDTO();
         if (traceDetailDTO != null) {
             Integer type = traceDetailDTO.getType();
-            LogTypeEnum parse = LogTypeEnum.parse(type);
+            LogTypeEnum parse = LogTypeEnum.parse(type).orElseThrow(() -> Asserts.makeException("降级监听: 未找到日志链路类型"));
             if (parse != LogTypeEnum.RPC) {
                 return;
             }

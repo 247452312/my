@@ -2,6 +2,7 @@ package indi.uhyils.assembler;
 
 
 import indi.uhyils.builder.OrderApplyBuilder;
+import indi.uhyils.pojo.DO.OrderInfoDO;
 import indi.uhyils.pojo.DO.OrderNodeDO;
 import indi.uhyils.pojo.DTO.OrderApplyDTO;
 import indi.uhyils.pojo.DTO.OrderNodeDTO;
@@ -11,6 +12,7 @@ import indi.uhyils.pojo.DTO.OrderNodeRouteDTO;
 import indi.uhyils.pojo.entity.OrderApply;
 import indi.uhyils.pojo.entity.OrderInfo;
 import indi.uhyils.pojo.entity.OrderNode;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +50,7 @@ public abstract class OrderNodeAssembler extends AbstractAssembler<OrderNodeDO, 
     }
 
     public OrderApply toApply(OrderNode orderNode, OrderInfo baseInfo) {
-        OrderApplyDTO orderApplyDTO = OrderApplyBuilder.buildTransApplyByOrderNode(toDTO(orderNode), baseInfo.toData().getMonitorUserId());
+        OrderApplyDTO orderApplyDTO = OrderApplyBuilder.buildTransApplyByOrderNode(toDTO(orderNode), baseInfo.toData().map(OrderInfoDO::getMonitorUserId).orElseThrow(Asserts::throwOptionalException));
         return applyAssembler.toEntity(orderApplyDTO);
     }
 }

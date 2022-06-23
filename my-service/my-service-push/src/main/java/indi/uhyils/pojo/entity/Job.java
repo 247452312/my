@@ -5,6 +5,7 @@ import indi.uhyils.pojo.DO.JobDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.JobRepository;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.ScheduledManager;
 import indi.uhyils.util.SpringUtil;
 
@@ -51,30 +52,33 @@ public class Job extends AbstractDoEntity<JobDO> {
 
     public void addSelfToJob() {
         initScheduled();
-        scheduledManager.addJob(toData());
+        scheduledManager.addJob(toData().orElseThrow(Asserts::throwOptionalException));
 
     }
 
     public void delJob() {
         initScheduled();
-        scheduledManager.deleteJob(toData());
+        scheduledManager.deleteJob(toData().orElseThrow(Asserts::throwOptionalException));
     }
 
     public void pause() {
         initScheduled();
-        toData().setPause(true);
-        scheduledManager.pauseJob(toData());
+        final JobDO jobDO = toData().orElseThrow(Asserts::throwOptionalException);
+        jobDO.setPause(true);
+        scheduledManager.pauseJob(jobDO);
 
     }
 
     public void start() {
         initScheduled();
-        toData().setPause(false);
-        scheduledManager.resumeJob(toData());
+        final JobDO jobDO = toData().orElseThrow(Asserts::throwOptionalException);
+        jobDO.setPause(false);
+        scheduledManager.resumeJob(jobDO);
     }
 
     public void test() {
         initScheduled();
-        scheduledManager.runJobNow(toData());
+        final JobDO jobDO = toData().orElseThrow(Asserts::throwOptionalException);
+        scheduledManager.runJobNow(jobDO);
     }
 }

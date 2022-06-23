@@ -14,6 +14,7 @@ import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.MenuIframe;
 import indi.uhyils.repository.MenuRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import indi.uhyils.util.Asserts;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,14 +42,14 @@ public class MenuRepositoryImpl extends AbstractRepository<Menu, MenuDO, MenuDao
 
     @Override
     public void cleanDept(Menu menuId) {
-        dao.deleteDeptMenuByMenuIds(Arrays.asList(menuId.getUnique().getId()));
+        dao.deleteDeptMenuByMenuIds(Arrays.asList(menuId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("清空dept失败,没有id"))));
     }
 
     @Override
     public void addDept(Menu menuId, Dept newDeptId) {
         DeptMenuDO t = new DeptMenuDO();
-        t.setMenuId(menuId.getUnique().getId());
-        t.setDeptId(newDeptId.getUnique().getId());
+        t.setMenuId(menuId.getUnique().map(Identifier::getId).orElse(null));
+        t.setDeptId(newDeptId.getUnique().map(Identifier::getId).orElse(null));
         t.preInsert();
         deptDao.insertDeptMenu(t);
     }

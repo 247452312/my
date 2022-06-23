@@ -2,6 +2,7 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
 import indi.uhyils.enums.SoftwareStatusEnum;
+import indi.uhyils.pojo.DO.ServerDO;
 import indi.uhyils.pojo.DO.SoftwareDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -39,21 +40,21 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
 
     public void start() {
         checkStatus(SoftwareStatusEnum.STOP);
-        String startSh = toData().getStartSh();
+        String startSh = toData().orElseThrow(() -> Asserts.makeException("未找到data")).getStartSh();
         Asserts.assertTrue(StringUtils.isNotBlank(startSh));
-        SshUtils.execCommandBySsh(server.toData(), startSh);
+        SshUtils.execCommandBySsh(server.toData().orElseThrow(() -> Asserts.makeException("未找到data")), startSh);
     }
 
     public void stop() {
         checkStatus(SoftwareStatusEnum.RUNNING);
-        String stopSh = toData().getStopSh();
+        String stopSh = toData().map(SoftwareDO::getStopSh).orElseThrow(() -> Asserts.makeException("未找到data"));
         Asserts.assertTrue(StringUtils.isNotBlank(stopSh));
-        SshUtils.execCommandBySsh(server.toData(), stopSh);
+        SshUtils.execCommandBySsh(server.toData().orElseThrow(() -> Asserts.makeException("未找到data")), stopSh);
     }
 
     public void link() {
         Asserts.assertTrue(server != null, "连接不能没有 server");
-        boolean canConnect = SocketUtil.canConnect(server.toData().getIp(), toData().getPort());
+        boolean canConnect = SocketUtil.canConnect(server.toData().map(ServerDO::getIp).orElseThrow(() -> Asserts.makeException("未找到data")), toData().map(SoftwareDO::getPort).orElseThrow(() -> Asserts.makeException("未找到data")));
         Asserts.assertTrue(canConnect, "不能连接");
     }
 
@@ -75,7 +76,7 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
         if (server != null) {
             return;
         }
-        this.server = new Server(toData().getServerId(), serverRepository);
+        this.server = new Server(toData().map(SoftwareDO::getServerId).orElseThrow(() -> Asserts.makeException("未找到data")), serverRepository);
 
     }
 
@@ -98,9 +99,9 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
      * @return
      */
     protected SoftwareStatusEnum getStatus() {
-        String statusSh = toData().getStatusSh();
+        String statusSh = toData().map(SoftwareDO::getStatusSh).orElseThrow(() -> Asserts.makeException("未找到data"));
         Asserts.assertTrue(StringUtils.isNotBlank(statusSh));
-        String status = SshUtils.execCommandBySsh(server.toData(), statusSh);
+        String status = SshUtils.execCommandBySsh(server.toData().orElseThrow(() -> Asserts.makeException("未找到data")), statusSh);
         if (status.contains("ERROR")) {
             return SoftwareStatusEnum.ERROR;
         } else if (status.contains("STOP")) {

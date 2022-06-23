@@ -45,7 +45,7 @@ public class ApiUtils {
         int apiIndex = 0;
         // 遍历api群中的每一个api(已经排好序)
         for (Api api : apis) {
-            ApiDO apiDO = api.toData();
+            ApiDO apiDO = api.toData().orElseThrow(() -> Asserts.makeException("未找到data"));
             String head = apiDO.getHead();
             String param = apiDO.getParam();
             // 初始化head

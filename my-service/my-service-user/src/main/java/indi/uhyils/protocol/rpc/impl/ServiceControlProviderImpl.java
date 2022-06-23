@@ -12,6 +12,7 @@ import indi.uhyils.pojo.entity.type.MethodName;
 import indi.uhyils.protocol.rpc.ServiceControlProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.ServiceControlService;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,7 +33,7 @@ public class ServiceControlProviderImpl implements ServiceControlProvider {
     public ServiceResult<Boolean> getMethodDisable(MethodDisableQuery request) {
         InterfaceName className = new InterfaceName(request.getClassName());
         MethodName methodName = new MethodName(request.getMethodName());
-        ReadWriteTypeEnum methodType = ReadWriteTypeEnum.parse(request.getMethodType());
+        ReadWriteTypeEnum methodType = ReadWriteTypeEnum.parse(request.getMethodType()).orElseThrow(() -> Asserts.makeException("方法禁用时,未查询到方法类型"));
         Boolean result = service.getMethodDisable(className, methodName, methodType);
         return ServiceResult.buildSuccessResult(result);
     }

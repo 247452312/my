@@ -11,6 +11,7 @@ import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.entity.Server;
 import indi.uhyils.repository.ServerRepository;
 import indi.uhyils.service.ServerService;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SshUtils;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,6 @@ public class ServerServiceImpl extends AbstractDoService<ServerDO, Server, Serve
     @Override
     public String getNameById(IdQuery request) {
         Server server = new Server(request.getId(), rep);
-        return server.toData().getName();
+        return server.toData().map(ServerDO::getName).orElseThrow(() -> Asserts.makeException("未找到data"));
     }
 }

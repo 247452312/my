@@ -66,7 +66,7 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
      * @return
      */
     public Object cell(Object... requestBody) {
-        AlgorithmDO algorithmDO = toData();
+        AlgorithmDO algorithmDO = toData().orElseThrow(Asserts::throwOptionalException);
         Integer languageType = algorithmDO.getLanguageType();
         LanguageTypeEnum languageTypeEnum = LanguageTypeEnum.parse(languageType);
         switch (languageTypeEnum) {
@@ -88,7 +88,7 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
      * @return
      */
     private Object cellPython(Object[] requestBody) {
-        AlgorithmDO algorithmDO = toData();
+        AlgorithmDO algorithmDO = toData().orElseThrow(Asserts::throwOptionalException);
         String body = algorithmDO.getBody();
         try {
             return PythonUtil.executePython(body, "__main__", requestBody);
@@ -106,7 +106,7 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
      * @return
      */
     private Object cellJava(Object[] requestBody) {
-        AlgorithmDO algorithmDO = toData();
+        AlgorithmDO algorithmDO = toData().orElseThrow(Asserts::throwOptionalException);
         String body = algorithmDO.getBody();
         JSONObject jsonObject = JSON.parseObject(body);
 

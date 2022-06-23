@@ -3,9 +3,12 @@ package indi.uhyils.pojo.entity;
 import indi.uhyils.annotation.Default;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.enums.OrderNodeFieldValueTypeEnum;
+import indi.uhyils.pojo.DO.OrderNodeFieldDO;
 import indi.uhyils.pojo.DO.OrderNodeFieldValueDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.util.Asserts;
+import java.util.Optional;
 
 /**
  * 订单节点属性真实值表(OrderNodeFieldValue)表 数据库实体类
@@ -33,7 +36,7 @@ public class OrderNodeFieldValue extends AbstractDoEntity<OrderNodeFieldValueDO>
 
     private static OrderNodeFieldValueDO parseToNodeFieldValue(OrderNodeField field, String realValue) {
         OrderNodeFieldValueDO orderNodeFieldValueDO = new OrderNodeFieldValueDO();
-        orderNodeFieldValueDO.setNodeFieldId(field.getUnique().getId());
+        orderNodeFieldValueDO.setNodeFieldId(field.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException));
         orderNodeFieldValueDO.setRealValue(realValue);
         return orderNodeFieldValueDO;
     }
@@ -42,24 +45,25 @@ public class OrderNodeFieldValue extends AbstractDoEntity<OrderNodeFieldValueDO>
         Asserts.assertTrue(field != null, "属性不能为空");
         String realValue = data.getRealValue();
 
-        OrderNodeFieldValueTypeEnum parse = OrderNodeFieldValueTypeEnum.parse(field.toData().getValueType());
+        final OrderNodeFieldDO orderNodeFieldDO = field.toData().orElseThrow(Asserts::throwOptionalException);
+        OrderNodeFieldValueTypeEnum parse = OrderNodeFieldValueTypeEnum.parse(orderNodeFieldDO.getValueType());
         switch (parse) {
             case DATE:
-                Asserts.assertTrue(realValue.matches(MyContext.DATE_REGEX), "类型错误,应该为日期类型:" + field.toData().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.DATE_REGEX), "类型错误,应该为日期类型:" + orderNodeFieldDO.getName());
                 break;
             case EMAIL:
-                Asserts.assertTrue(realValue.matches(MyContext.EMAIL_REGEX), "类型错误,应该为email类型:" + field.toData().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.EMAIL_REGEX), "类型错误,应该为email类型:" + orderNodeFieldDO.getName());
                 break;
             case VALUE:
-                Asserts.assertTrue(realValue.matches(MyContext.VALUE_REGEX), "类型错误,应该为数字类型:" + field.toData().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.VALUE_REGEX), "类型错误,应该为数字类型:" + orderNodeFieldDO.getName());
                 break;
             case STRING:
                 break;
             case ENGLISH:
-                Asserts.assertTrue(realValue.matches(MyContext.ENGLISH_REGEX), "类型错误,应该为英文类型:" + field.toData().getName());
+                Asserts.assertTrue(realValue.matches(MyContext.ENGLISH_REGEX), "类型错误,应该为英文类型:" + orderNodeFieldDO.getName());
                 break;
             default:
-                Asserts.throwException("类型错误,找不到指定类型:" + field.toData().getName());
+                Asserts.throwException("类型错误,找不到指定类型:" + orderNodeFieldDO.getName());
                 break;
 
         }

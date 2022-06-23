@@ -14,6 +14,7 @@ import indi.uhyils.pojo.entity.OrderNode;
 import indi.uhyils.pojo.temp.InitApiRequestTemporary;
 import indi.uhyils.protocol.rpc.PushMsgProvider;
 import indi.uhyils.rpc.annotation.RpcReference;
+import indi.uhyils.util.Asserts;
 
 
 /**
@@ -41,8 +42,8 @@ public class PushFacadeImpl implements PushFacade {
     @Override
     public void noticeAutoNodeDeal(OrderNode orderNode, OrderNode pervOrder) {
         InitApiRequestTemporary msg = new InitApiRequestTemporary();
-        msg.setOrderNode(orderNode.toData());
-        msg.setPervOrderNode(pervOrder.toData());
+        msg.setOrderNode(orderNode.toData().orElseThrow(Asserts::throwOptionalException));
+        msg.setPervOrderNode(pervOrder.toData().orElseThrow(Asserts::throwOptionalException));
         MqUtil.sendMsg(OrderContent.ORDER_EXCHANGE, OrderContent.ORDER_AUTO_NODE_SEND_QUEUE, JSON.toJSONString(msg));
     }
 

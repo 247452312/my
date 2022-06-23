@@ -1,5 +1,7 @@
 package indi.uhyils.enums;
 
+import java.util.Optional;
+
 /**
  * 标识是读还是写
  *
@@ -29,13 +31,13 @@ public enum ReadWriteTypeEnum {
      *
      * @return
      */
-    public static ReadWriteTypeEnum parse(Integer code) {
+    public static Optional<ReadWriteTypeEnum> parse(Integer code) {
         for (ReadWriteTypeEnum value : values()) {
             if (value.getCode().equals(code)) {
-                return value;
+                return Optional.of(value);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public Integer getCode() {

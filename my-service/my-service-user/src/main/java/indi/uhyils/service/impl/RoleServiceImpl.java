@@ -17,6 +17,7 @@ import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.service.RoleService;
 import indi.uhyils.util.Asserts;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,8 +48,9 @@ public class RoleServiceImpl extends AbstractDoService<RoleDO, Role, RoleDTO, Ro
     public RoleDTO getRoleByRoleId(Identifier roleId) {
         Role role = new Role(roleId);
         role.completion(rep);
-        Asserts.assertTrue(role.toData() != null, "查询失败");
-        return assem.toDTO(role);
+        final Optional<RoleDO> roleDOOpt = role.toData();
+        Asserts.assertTrue(roleDOOpt.isPresent(), "查询失败");
+        return assem.toDTO(roleDOOpt.get());
     }
 
     @Override
@@ -80,8 +82,8 @@ public class RoleServiceImpl extends AbstractDoService<RoleDO, Role, RoleDTO, Ro
         Role role = new Role(roleId);
         role.fillDeptIds(rep);
         List<Dept> deptIds = role.deptIds();
-        List<Dept> list = deptRepository.find(deptIds.stream().map(BaseEntity::getUnique).collect(Collectors.toList()));
-        return list.stream().map(t -> deptAssembler.toDTO(t)).collect(Collectors.toList());
+        List<Dept> list = deptRepository.find(deptIds.stream().map(BaseEntity::getUnique).map(Optional::get).collect(Collectors.toList()));
+        return list.stream().map(deptAssembler::toDTO).collect(Collectors.toList());
     }
 
     @Override

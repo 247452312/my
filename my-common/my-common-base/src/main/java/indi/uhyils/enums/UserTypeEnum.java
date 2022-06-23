@@ -1,6 +1,7 @@
 package indi.uhyils.enums;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -22,13 +23,13 @@ public enum UserTypeEnum {
         this.name = name;
     }
 
-    public static UserTypeEnum getByCode(String code) {
+    public static Optional<UserTypeEnum> getByCode(String code) {
         for (UserTypeEnum userTypeEnum : UserTypeEnum.values()) {
             if (Objects.equals(userTypeEnum.getCode(), code)) {
-                return userTypeEnum;
+                return Optional.of(userTypeEnum);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public String getCode() {

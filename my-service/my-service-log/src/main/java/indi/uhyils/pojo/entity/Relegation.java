@@ -9,6 +9,7 @@ import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.RelegationRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.StringUtil;
+import java.util.Optional;
 
 /**
  * 接口降级策略(Relegation)表 数据库实体类
@@ -35,9 +36,12 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
 
     public Relegation(String serviceName, String methodName) {
         super(new RelegationDO());
-        RelegationDO dO = toData();
-        dO.setServiceName(serviceName);
-        dO.setMethodName(methodName);
+        final Optional<RelegationDO> relegationDO = toData();
+        relegationDO.ifPresent(dO -> {
+            dO.setServiceName(serviceName);
+            dO.setMethodName(methodName);
+        });
+
     }
 
     public Relegation(Long id) {
@@ -55,10 +59,12 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
 
     public Relegation(Integer type, String serviceName, String methodName) {
         super(new RelegationDO());
-        RelegationDO dO = toData();
-        this.logTypeEnum = LogTypeEnum.parse(type);
-        dO.setServiceName(serviceName);
-        dO.setMethodName(methodName);
+        final Optional<RelegationDO> relegationDO = toData();
+        relegationDO.ifPresent(dO -> {
+            this.logTypeEnum = LogTypeEnum.parse(type).get();
+            dO.setServiceName(serviceName);
+            dO.setMethodName(methodName);
+        });
     }
 
     /**
@@ -68,7 +74,8 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
      */
     public void validate() {
         Asserts.assertTrue(logTypeEnum == LogTypeEnum.RPC, "非RPC,不是接口");
-        Asserts.assertTrue(StringUtil.isNotEmpty(toData().getServiceName()) && StringUtil.isNotEmpty(toData().getMethodName()));
+        final RelegationDO relegationDO = toData().orElseThrow(() -> Asserts.makeException("没有查到接口信息"));
+        Asserts.assertTrue(StringUtil.isNotEmpty(relegationDO.getServiceName()) && StringUtil.isNotEmpty(relegationDO.getMethodName()));
     }
 
     /**
@@ -84,8 +91,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
      * 设置默认值
      */
     public void initDefault() {
-        RelegationDO relegationDO = toData();
-        Asserts.assertTrue(relegationDO != null);
+        RelegationDO relegationDO = toData().orElseThrow(() -> Asserts.makeException("未找到降级接口"));
         Integer paramLength = relegationDO.getParamLength();
         if (paramLength == null) {
             relegationDO.setParamLength(DEFAULT_PARAM_LENGTH);
@@ -100,7 +106,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
      * @return
      */
     public boolean demotion(ServiceControlFacade facade) {
-        RelegationDO dO = this.toData();
+        RelegationDO dO = this.toData().orElseThrow(() -> Asserts.makeException("未找到降级接口"));
         return facade.demotion(dO.getServiceName(), dO.getMethodName());
     }
 
@@ -112,7 +118,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
      * @return
      */
     public boolean recover(ServiceControlFacade facade) {
-        RelegationDO dO = this.toData();
+        RelegationDO dO = this.toData().orElseThrow(() -> Asserts.makeException("未找到降级接口"));
         return facade.recover(dO.getServiceName(), dO.getMethodName());
     }
 }

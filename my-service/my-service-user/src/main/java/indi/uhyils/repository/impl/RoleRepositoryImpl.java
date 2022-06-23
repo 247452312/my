@@ -9,9 +9,12 @@ import indi.uhyils.pojo.DTO.RoleDTO;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
 import indi.uhyils.pojo.entity.Dept;
 import indi.uhyils.pojo.entity.Role;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.RoleRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import indi.uhyils.util.Asserts;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -32,17 +35,21 @@ public class RoleRepositoryImpl extends AbstractRepository<Role, RoleDO, RoleDao
 
     @Override
     public void cleanDeptLink(Role roleId) {
-        dao.deleteRoleDeptMiddleByRoleId(roleId.getUnique().getId());
+        dao.deleteRoleDeptMiddleByRoleId(roleId.getUnique().map(t -> t.getId()).orElseThrow(() -> Asserts.makeException("角色id不存在")));
     }
 
     @Override
     public void addRoleDeptLink(Role roleId, List<Dept> deptIds) {
         RoleDeptDO roleDeptDO = new RoleDeptDO();
-        roleDeptDO.setRoleId(roleId.getUnique().getId());
+        roleDeptDO.setRoleId(roleId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("roleId不存在")));
         for (Dept deptId : deptIds) {
-            roleDeptDO.setDeptId(deptId.getUnique().getId());
-            roleDeptDO.preInsert();
-            dao.insertRoleDept(roleDeptDO);
+            final Optional<Identifier> unique = deptId.getUnique();
+            unique.ifPresent(identifier -> {
+                roleDeptDO.setDeptId(identifier.getId());
+                roleDeptDO.preInsert();
+                dao.insertRoleDept(roleDeptDO);
+            });
+
         }
     }
 
@@ -59,13 +66,13 @@ public class RoleRepositoryImpl extends AbstractRepository<Role, RoleDO, RoleDao
 
     @Override
     public List<Role> findRoleDeptLinkByRoleId(Role roleId) {
-        List<RoleDeptDO> roleDeptDOS = dao.getRoleDeptLinkByRoleId(roleId.getUnique().getId());
+        List<RoleDeptDO> roleDeptDOS = dao.getRoleDeptLinkByRoleId(roleId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("未找到roleId")));
         return roleDeptDOS.stream().map(assembler::RoleDeptToEntity).collect(Collectors.toList());
     }
 
     @Override
     public List<GetAllDeptWithHaveMarkDTO> findDeptWithHaveMark(Role roleId) {
-        return dao.getAllDeptWithHaveMark(roleId.getUnique().getId());
+        return dao.getAllDeptWithHaveMark(roleId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("roleId不存在")));
     }
 
 

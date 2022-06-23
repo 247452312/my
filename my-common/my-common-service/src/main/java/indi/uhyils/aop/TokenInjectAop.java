@@ -17,6 +17,7 @@ import indi.uhyils.util.Asserts;
 import indi.uhyils.util.RpcApiUtil;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -107,8 +108,9 @@ public class TokenInjectAop {
                 Asserts.assertTrue(false, "用户类型不正确");
             }
         } else {
-            final UserTypeEnum byCode = UserTypeEnum.getByCode(token.substring(0, 2));
-            Asserts.assertTrue(byCode == UserTypeEnum.USER, "用户类型不正确");
+            final Optional<UserTypeEnum> byCode = UserTypeEnum.getByCode(token.substring(0, 2));
+            Asserts.assertTrue(byCode.isPresent(), "用户类型不存在");
+            Asserts.assertTrue(byCode.get() == UserTypeEnum.USER, "用户类型不正确");
             userDTO = redisPoolHandle.getUser(token);
         }
         /* 查询是否超时 */

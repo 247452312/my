@@ -7,6 +7,7 @@ import indi.uhyils.pojo.entity.OrderBaseNode;
 import indi.uhyils.pojo.entity.OrderBaseNodeField;
 import indi.uhyils.pojo.entity.OrderBaseNodeResultType;
 import indi.uhyils.pojo.entity.OrderBaseNodeRoute;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public abstract class OrderBaseNodeAssembler extends AbstractAssembler<OrderBase
 
     @Override
     public OrderBaseNodeDTO toDTO(OrderBaseNode entity) {
-        OrderBaseNodeDTO orderBaseNodeDTO = toDTO(entity.toData());
+        OrderBaseNodeDTO orderBaseNodeDTO = toDTO(entity.toData().orElseThrow(Asserts::throwOptionalException));
         orderBaseNodeDTO.setFields(fieldAssembler.listEntityToDTO(entity.fields()));
         orderBaseNodeDTO.setRoutes(routeAssembler.listEntityToDTO(entity.routes()));
         orderBaseNodeDTO.setResultTypes(resultTypeAssembler.listEntityToDTO(entity.resultTypes()));
