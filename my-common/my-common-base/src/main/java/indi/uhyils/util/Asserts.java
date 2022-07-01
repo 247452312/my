@@ -174,6 +174,8 @@ public class Asserts {
         try {
             runnable.run();
         } catch (Throwable e) {
+            LogUtil.info("成功报错");
+            LogUtil.error(e);
             return;
         }
         AssertException assertException = new AssertException("没有异常的异常!");

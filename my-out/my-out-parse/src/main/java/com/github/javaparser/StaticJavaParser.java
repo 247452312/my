@@ -43,6 +43,7 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.javadoc.Javadoc;
+import indi.uhyils.MyThreadLocal;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -57,7 +58,11 @@ import java.nio.file.Path;
 public final class StaticJavaParser {
 
     // use ThreadLocal to resolve possible concurrency issues.
-    private static ThreadLocal<ParserConfiguration> localConfiguration = ThreadLocal.withInitial(() -> new ParserConfiguration());
+    private static MyThreadLocal<ParserConfiguration> localConfiguration = new MyThreadLocal<>();
+
+    static {
+        localConfiguration.set(new ParserConfiguration());
+    }
 
     private StaticJavaParser() {
     }

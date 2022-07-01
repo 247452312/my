@@ -6,10 +6,10 @@
     <parent>
         <groupId>indi.uhyils</groupId>
         <artifactId>my-api</artifactId>
-        <version>0.3.0-my-SNAPSHOT</version>
+        <version>0.3.1-my-SNAPSHOT</version>
     </parent>
     <artifactId>my-api-provider-smart-home</artifactId>
-    <version>0.3.0-my-SNAPSHOT</version>
+    <version>0.3.1-my-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>indi.uhyils</groupId>

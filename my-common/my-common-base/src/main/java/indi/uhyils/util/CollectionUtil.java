@@ -1,13 +1,12 @@
 package indi.uhyils.util;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -25,7 +24,7 @@ public final class CollectionUtil {
     }
 
     public static <T> boolean isEmpty(T[] array) {
-        return array == null || array.length != 0;
+        return array == null || array.length == 0;
     }
 
     public static <T> boolean isNotEmpty(T[] array) {
@@ -85,4 +84,47 @@ public final class CollectionUtil {
         System.arraycopy(arg, 0, newArrays, arrayLength, arg.length);
         return newArrays;
     }
+
+    /**
+     * 复制数组
+     *
+     * @param array  原始数组
+     * @param pos    偏移
+     * @param length 长度
+     * @param <T>
+     *
+     * @return
+     */
+    public static <T> T[] arrayCopy(T[] array, int pos, int length) {
+        Asserts.assertTrue(isNotEmpty(array));
+
+        final Class<? extends Object[]> newType = array.getClass();
+        T[] copy = (newType == Object[].class)
+            ? (T[]) new Object[length]
+            : (T[]) Array.newInstance(newType.getComponentType(), length);
+        System.arraycopy(array, pos, copy, 0, Math.min(array.length, length));
+        return copy;
+    }
+
+    /**
+     * 复制数组
+     *
+     * @param array 原始数组
+     * @param pos   偏移
+     * @param <T>
+     *
+     * @return
+     */
+    public static <T> T[] arrayCopy(T[] array, int pos) {
+        Asserts.assertTrue(isNotEmpty(array));
+        final int length = array.length - pos;
+
+        final Class<? extends Object[]> newType = array.getClass();
+        T[] copy = (newType == Object[].class)
+            ? (T[]) new Object[length]
+            : (T[]) Array.newInstance(newType.getComponentType(), length);
+        System.arraycopy(array, pos, copy, 0, length);
+        return copy;
+    }
+
 }

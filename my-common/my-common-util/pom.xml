@@ -8,11 +8,12 @@
         <module>my-common-util-mysql-plan</module>
         <module>my-common-util-obj-pool</module>
         <module>my-common-util-ast</module>
+        <module>my-common-util-trace-executor</module>
     </modules>
     <parent>
         <groupId>indi.uhyils</groupId>
         <artifactId>my-common</artifactId>
-        <version>0.3.0-my-SNAPSHOT</version>
+        <version>0.3.1-my-SNAPSHOT</version>
     </parent>
 
     <artifactId>my-common-util</artifactId>

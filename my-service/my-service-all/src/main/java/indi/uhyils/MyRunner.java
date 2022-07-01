@@ -45,7 +45,7 @@ public class MyRunner {
 
         File pluginsFile = new File(plugins.getPath());
         int process = Runtime.getRuntime().availableProcessors();
-        Executor executor = new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory(), new CallerRunsPolicy());
+        Executor executor = MyExecutorWrapper.createByThreadPoolExecutor(new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory(), new CallerRunsPolicy()));
         File[] pluginsDirs = pluginsFile.listFiles();
         Map<String, MyUrlClassLoader> map = new HashMap<>(pluginsDirs.length);
         for (File pluginDir : pluginsDirs) {

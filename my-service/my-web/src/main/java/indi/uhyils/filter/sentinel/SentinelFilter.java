@@ -1,5 +1,10 @@
-package indi.uhyils.filter;
+package indi.uhyils.filter.sentinel;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
 import indi.uhyils.pojo.cqe.DefaultCQE;
@@ -17,27 +22,43 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 熔断器
- *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年08月19日 15时43分
+ * @date 文件创建日期 2022年06月29日 09时10分
  */
 @RpcSpi(order = Integer.MIN_VALUE)
-public class HystrixFilter implements ConsumerFilter {
+public class SentinelFilter implements ConsumerFilter {
+
+    private static void initFlowQpsRule(String key, Double count, Integer grade, String limitApp) {
+        List<FlowRule> rules = new ArrayList<>();
+        FlowRule rule = new FlowRule();
+        rule.setResource(key);
+        // set limit qps to 20
+        rule.setCount(count);
+        // rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
+        rule.setGrade(grade);
+        rule.setLimitApp(limitApp);
+        rules.add(rule);
+        FlowRuleManager.loadRules(rules);
+    }
 
     @Override
     public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
         addUnique(invokerContext.getRequestData());
-        DubboHystrixCommand command = new DubboHystrixCommand(invoker, invokerContext);
-        return command.execute();
+        try (Entry entry = SphU.entry("1")) {
+            return invoker.invoke(invokerContext);
+        } catch (BlockException e) {
+            throw new RuntimeException(e);
+        }
+
     }
+
 
     /**
      * 添加业务位唯一标示
      *
      * @param rpcData
      */
-    private void addUnique(RpcData rpcData) throws InterruptedException {
+    private void addUnique(RpcData rpcData) {
         ArrayList list = JSON.parseObject(rpcData.content().getLine(RpcRequestContentEnum.ARG_MAP.getLine()), ArrayList.class, Feature.SupportAutoType);
         DefaultCQE defaultRequest = (DefaultCQE) list.get(0);
         IdUtil bean = SpringUtil.getBean(IdUtil.class);
@@ -46,4 +67,5 @@ public class HystrixFilter implements ConsumerFilter {
         rpcData.content().contentArray()[RpcRequestContentEnum.ARG_MAP.getLine()] = JSON.toJSONString(defaultRequests);
 
     }
+
 }

@@ -1,5 +1,6 @@
 package indi.uhyils.core.queue;
 
+import indi.uhyils.MyExecutorWrapper;
 import indi.uhyils.core.topic.Topic;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
@@ -33,8 +34,8 @@ public class QueueFactory {
 
     @PostConstruct
     public void init() {
-        this.queueExecutor = new ThreadPoolExecutor(config.getCoresize(), config.getMaxsize(), config.getAlive(),
-                                                    config.getTimeUnit(), new ArrayBlockingQueue<>(300), new QueueThreadFactory());
+        this.queueExecutor = MyExecutorWrapper.createByThreadPoolExecutor(new ThreadPoolExecutor(config.getCoresize(), config.getMaxsize(), config.getAlive(),
+                                                                                                 config.getTimeUnit(), new ArrayBlockingQueue<>(300), new QueueThreadFactory()));
     }
 
     /**

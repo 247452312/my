@@ -9,7 +9,6 @@ import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -32,7 +31,7 @@ public final class IpUtil {
     }
 
     public static String getIp() {
-        if (!StringUtils.isEmpty(localIp)) {
+        if (!StringUtil.isEmpty(localIp)) {
             return localIp;
         }
 

@@ -5,6 +5,7 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import indi.uhyils.MyExecutorWrapper;
 import indi.uhyils.bus.BusInterface;
 import indi.uhyils.enums.LogDetailTypeEnum;
 import indi.uhyils.pojo.DTO.TraceDetailDTO;
@@ -64,7 +65,7 @@ public class RabbitLogInfoConsumer extends DefaultConsumer {
         super(channel);
         this.bus = applicationContext.getBean(BusInterface.class);
         int process = Runtime.getRuntime().availableProcessors();
-        executor = new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory(), new CallerRunsPolicy());
+        executor = MyExecutorWrapper.createByThreadPoolExecutor(new ThreadPoolExecutor(process, process * 2, 3000L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(100), new LogDealThreadFactory(), new CallerRunsPolicy()));
         traceDetailService = applicationContext.getBean(TraceDetailService.class);
         traceInfoService = applicationContext.getBean(TraceInfoService.class);
         traceLogService = applicationContext.getBean(TraceLogService.class);

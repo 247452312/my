@@ -110,7 +110,7 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
      */
     protected void copyOf(DoEntity<T> entity) {
         final Optional<T> target = entity.toData();
-        target.ifPresent(t -> BeanUtil.copyProperties(this.data, t));
+        target.ifPresent(t -> BeanUtil.copyProperties(t, this.data));
         final Optional<Identifier> unique = entity.getUnique();
         unique.ifPresent(t -> this.unique = t);
     }

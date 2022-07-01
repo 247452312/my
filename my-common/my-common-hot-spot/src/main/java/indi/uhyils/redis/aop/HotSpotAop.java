@@ -1,6 +1,7 @@
 package indi.uhyils.redis.aop;
 
 import com.alibaba.fastjson.JSON;
+import indi.uhyils.MyThreadLocal;
 import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.context.HotSpotContext;
 import indi.uhyils.enums.CacheTypeEnum;
@@ -80,7 +81,7 @@ public class HotSpotAop {
     /**
      * 注解的ThreadLocal
      */
-    private final ThreadLocal<CacheTypeEnum> markThreadLocal = new ThreadLocal<>();
+    private final MyThreadLocal<CacheTypeEnum> markThreadLocal = new MyThreadLocal<>();
 
     @Autowired
     private HotSpotRedisPool hotSpotRedisPool;
@@ -283,7 +284,7 @@ public class HotSpotAop {
 
     }
 
-    public ThreadLocal<CacheTypeEnum> getMarkThreadLocal() {
+    public MyThreadLocal<CacheTypeEnum> getMarkThreadLocal() {
         return markThreadLocal;
     }
 

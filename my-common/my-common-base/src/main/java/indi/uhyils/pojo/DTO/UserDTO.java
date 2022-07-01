@@ -65,6 +65,11 @@ public class UserDTO extends IdDTO {
      */
     private RoleDTO role;
 
+    /**
+     * 用户对应ip
+     */
+    private String ip;
+
     public String getNickName() {
         return nickName;
     }
@@ -152,5 +157,13 @@ public class UserDTO extends IdDTO {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

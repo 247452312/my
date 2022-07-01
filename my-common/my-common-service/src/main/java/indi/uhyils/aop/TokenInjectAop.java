@@ -104,14 +104,18 @@ public class TokenInjectAop {
         // 如果参数中携带了用户,则不需要去再次查询用户
         if (arg.getUser() != null) {
             userDTO = arg.getUser();
-            if (!Objects.equals(userDTO.getUserType(), UserTypeEnum.USER.getCode())) {
+            if (Objects.equals(userDTO.getUsername(), ADMIN)) {
+                // 放行
+            } else if (!Objects.equals(userDTO.getUserType(), UserTypeEnum.USER.getCode())) {
                 Asserts.assertTrue(false, "用户类型不正确");
             }
         } else {
-            final Optional<UserTypeEnum> byCode = UserTypeEnum.getByCode(token.substring(0, 2));
+            final Optional<UserDTO> user = redisPoolHandle.getUser(token);
+            Asserts.assertTrue(user.isPresent(), "根据token未找到用户登录数据");
+            userDTO = user.get();
+            final Optional<UserTypeEnum> byCode = UserTypeEnum.getByCode(userDTO.getUserType());
             Asserts.assertTrue(byCode.isPresent(), "用户类型不存在");
             Asserts.assertTrue(byCode.get() == UserTypeEnum.USER, "用户类型不正确");
-            userDTO = redisPoolHandle.getUser(token);
         }
         /* 查询是否超时 */
         if (userDTO == null) {

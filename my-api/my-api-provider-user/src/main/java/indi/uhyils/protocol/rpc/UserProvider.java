@@ -9,6 +9,7 @@ import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.command.BlankCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
@@ -79,7 +80,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return
      */
-    ServiceResult<LoginDTO> visiterLogin(AbstractCommand request);
+    ServiceResult<LoginDTO> visiterLogin(BlankCommand request);
 
     /**
      * 登出(删除redis中的用户)

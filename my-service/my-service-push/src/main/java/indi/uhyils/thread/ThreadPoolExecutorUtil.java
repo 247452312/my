@@ -1,5 +1,6 @@
 package indi.uhyils.thread;
 
+import indi.uhyils.MyExecutorWrapper;
 import indi.uhyils.util.SpringUtil;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -14,13 +15,13 @@ public class ThreadPoolExecutorUtil {
 
     public static ThreadPoolExecutor getPoll() {
         AsyncTaskProperties properties = SpringUtil.getBean(AsyncTaskProperties.class);
-        return new ThreadPoolExecutor(
+        return MyExecutorWrapper.createByThreadPoolExecutor(new ThreadPoolExecutor(
             properties.getCorePoolSize(),
             properties.getMaxPoolSize(),
             properties.getKeepAliveSeconds(),
             TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(properties.getQueueCapacity()),
             new TheadFactoryName()
-        );
+        ));
     }
 }

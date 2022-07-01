@@ -21,7 +21,6 @@ import indi.uhyils.repository.base.AbstractRepository;
 import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -59,8 +58,11 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
     @Override
     public User findUserByTokenInRedis(Token token) {
         String tokenStr = token.getToken();
-        UserDTO userDto = redisPoolHandle.getUser(tokenStr);
-        return assembler.toEntity(userDto);
+        final Optional<UserDTO> userDTOOpt = redisPoolHandle.getUser(tokenStr);
+        if (!userDTOOpt.isPresent()) {
+            return null;
+        }
+        return assembler.toEntity(userDTOOpt.get());
     }
 
     @Override
@@ -101,7 +103,7 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
     @Override
     public void cacheUser(Token token, User user) {
         final UserDTO userDTO = assembler.toDTO(user);
-        Asserts.assertTrue(Objects.isNull(userDTO), "没有找到用户信息.无法进行缓存");
+        Asserts.assertTrue(userDTO != null, "没有找到用户信息.无法进行缓存");
         redisPoolHandle.addUser(token.getToken(), userDTO);
     }
 

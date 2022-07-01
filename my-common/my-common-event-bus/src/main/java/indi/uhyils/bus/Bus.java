@@ -7,6 +7,7 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import indi.uhyils.MyThreadLocal;
 import indi.uhyils.mq.util.MqUtil;
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseParentEvent;
@@ -34,7 +35,7 @@ public class Bus extends DefaultConsumer implements BusInterface {
      */
     private final List<Register> registers;
 
-    public ThreadLocal<List<BaseEvent>> events = new InheritableThreadLocal<>();
+    public MyThreadLocal<List<BaseEvent>> events = new MyThreadLocal<>();
 
     public Bus(Channel channel, List<Register> registers) {
         super(channel);

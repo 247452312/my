@@ -1,5 +1,6 @@
 package indi.uhyils.context;
 
+import indi.uhyils.MyThreadLocal;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.util.DefaultCQEBuildUtil;
@@ -22,11 +23,11 @@ public class UserInfoHelper {
      */
     public static final String USER_IP_RPC_KEY = "user_ip";
 
-    private static final ThreadLocal<UserDTO> USER = new ThreadLocal<>();
+    private static final MyThreadLocal<UserDTO> USER = new MyThreadLocal<>();
 
-    private static final ThreadLocal<String> TOKEN = new ThreadLocal<>();
+    private static final MyThreadLocal<String> TOKEN = new MyThreadLocal<>();
 
-    private static final ThreadLocal<String> IP = new ThreadLocal<>();
+    private static final MyThreadLocal<String> IP = new MyThreadLocal<>();
 
     public static UserDTO setUser(UserDTO userDO) {
         UserDTO lastUser = USER.get();

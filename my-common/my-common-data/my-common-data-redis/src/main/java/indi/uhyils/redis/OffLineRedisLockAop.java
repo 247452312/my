@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Lazy
 @Component
 @Aspect
-public class OffLineRedisAop {
+public class OffLineRedisLockAop {
 
     /**
      * 定义切入点，切入点为offlineRedis类的所有函数

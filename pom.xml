@@ -7,7 +7,7 @@
 
     <groupId>indi.uhyils</groupId>
     <artifactId>my</artifactId>
-    <version>0.3.0-my-SNAPSHOT</version>
+    <version>0.3.1-my-SNAPSHOT</version>
     <name>my</name>
     <packaging>pom</packaging>
 
@@ -20,10 +20,10 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.6.1</spring-boot.version>
         <spring.version>5.3.13</spring.version>
-<!--        <org.dubbo.version>2.7.3</org.dubbo.version>-->
+        <!--        <org.dubbo.version>2.7.3</org.dubbo.version>-->
         <druid.version>1.1.22</druid.version>
         <maven.compiler.plugin.version>3.10.0</maven.compiler.plugin.version>
-<!--        <org.apache.dubbo.nacos.version>1.2.1</org.apache.dubbo.nacos.version>-->
+        <!--        <org.apache.dubbo.nacos.version>1.2.1</org.apache.dubbo.nacos.version>-->
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <fastjson.version>1.2.69</fastjson.version>
         <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
@@ -56,7 +56,7 @@
         <tencentcloud.version>3.1.99</tencentcloud.version>
         <poi.version>4.1.2</poi.version>
         <asr.version>1.0</asr.version>
-        <hystrix.version>1.5.18</hystrix.version>
+        <sentinel.version>1.8.4</sentinel.version>
         <es.version>7.9.1</es.version>
         <netty.version>4.1.54.Final</netty.version>
         <flink.version>1.13.1</flink.version>
@@ -183,11 +183,11 @@
                 <version>${druid.version}</version>
             </dependency>
 
-            <!-- hystrix-core 熔断 -->
+            <!-- sentinel-core 熔断 -->
             <dependency>
-                <groupId>com.netflix.hystrix</groupId>
-                <artifactId>hystrix-core</artifactId>
-                <version>${hystrix.version}</version>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-core</artifactId>
+                <version>${sentinel.version}</version>
             </dependency>
 
 
@@ -279,17 +279,17 @@
             </dependency>-->
 
 
-<!--            &lt;!&ndash; dubbo &ndash;&gt;
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-spring-boot-starter</artifactId>
-                <version>${org.dubbo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo</artifactId>
-                <version>${org.dubbo.version}</version>
-            </dependency>-->
+            <!--            &lt;!&ndash; dubbo &ndash;&gt;
+                        <dependency>
+                            <groupId>org.apache.dubbo</groupId>
+                            <artifactId>dubbo-spring-boot-starter</artifactId>
+                            <version>${org.dubbo.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.apache.dubbo</groupId>
+                            <artifactId>dubbo</artifactId>
+                            <version>${org.dubbo.version}</version>
+                        </dependency>-->
 
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -448,6 +448,12 @@
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
                 <version>${auto-service.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>27.1-jre</version>
             </dependency>
 
             <dependency>

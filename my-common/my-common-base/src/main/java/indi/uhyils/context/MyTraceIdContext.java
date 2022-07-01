@@ -1,5 +1,6 @@
 package indi.uhyils.context;
 
+import indi.uhyils.MyThreadLocal;
 import indi.uhyils.enums.LogDetailTypeEnum;
 import indi.uhyils.enums.LogTypeEnum;
 import indi.uhyils.util.IdUtil;
@@ -43,17 +44,17 @@ public class MyTraceIdContext {
     /**
      * 保存traceId的地方
      */
-    private static final ThreadLocal<Long> thraceId = new InheritableThreadLocal<>();
+    private static final MyThreadLocal<Long> thraceId = new MyThreadLocal<>();
 
     /**
      * 保存上一次调用链顺序的地方
      */
-    private static final ThreadLocal<List<Integer>> rpcId = new InheritableThreadLocal<>();
+    private static final MyThreadLocal<List<Integer>> rpcId = new MyThreadLocal<>();
 
     /**
      * 这一次调用的RPCid
      */
-    private static final ThreadLocal<AtomicInteger> thisRpcId = new InheritableThreadLocal<>();
+    private static final MyThreadLocal<AtomicInteger> thisRpcId = new MyThreadLocal<>();
 
     /**
      * 项目名称

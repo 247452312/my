@@ -1,5 +1,7 @@
 package indi.uhyils.druid.filter.limit;
 
+import indi.uhyils.MyThreadLocal;
+
 /**
  * @author uhyils <247452312@qq.com>
  * @version 1.0
@@ -7,9 +9,9 @@ package indi.uhyils.druid.filter.limit;
  */
 public class RowsLimitThreadContext {
 
-    private static ThreadLocal<Boolean> rowsLimitEnableThreadLocal = new ThreadLocal();
+    private static MyThreadLocal<Boolean> rowsLimitEnableThreadLocal = new MyThreadLocal();
 
-    private static ThreadLocal<Integer> rowsLimitSizeThreadLocal = new ThreadLocal();
+    private static MyThreadLocal<Integer> rowsLimitSizeThreadLocal = new MyThreadLocal();
 
     public static Integer getRowsLimitSizeInCurrentThread() {
         return rowsLimitSizeThreadLocal.get();

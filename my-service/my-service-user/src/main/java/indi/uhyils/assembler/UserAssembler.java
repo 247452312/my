@@ -74,6 +74,7 @@ public abstract class UserAssembler extends AbstractAssembler<UserDO, User, User
         // 使用中
         userDTO.setStatus(1);
         userDTO.setToken(visiter.tokenValue());
+        userDTO.setIp(visiter.ip());
         return userDTO;
 
     }

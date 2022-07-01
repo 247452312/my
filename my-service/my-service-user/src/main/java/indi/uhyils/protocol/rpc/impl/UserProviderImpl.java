@@ -11,8 +11,8 @@ import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.pojo.cqe.command.BlankCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.pojo.entity.Token;
@@ -62,7 +62,7 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
     }
 
     @Override
-    @NoLogin
+    @Public
     public ServiceResult<LoginDTO> login(LoginCommand request) {
         UserName username = new UserName(request.getUsername());
         Password password = new Password(request.getPassword());
@@ -72,7 +72,7 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
 
     @Override
     @Public
-    public ServiceResult<LoginDTO> visiterLogin(AbstractCommand request) {
+    public ServiceResult<LoginDTO> visiterLogin(BlankCommand request) {
         LoginDTO loginDTO = service.visiterLogin();
         return ServiceResult.buildSuccessResult(loginDTO);
     }

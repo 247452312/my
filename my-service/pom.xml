@@ -6,11 +6,11 @@
     <parent>
         <groupId>indi.uhyils</groupId>
         <artifactId>my</artifactId>
-        <version>0.3.0-my-SNAPSHOT</version>
+        <version>0.3.1-my-SNAPSHOT</version>
     </parent>
     <artifactId>my-service</artifactId>
 
-    <version>0.3.0-my-SNAPSHOT</version>
+    <version>0.3.1-my-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>my-service-user</module>

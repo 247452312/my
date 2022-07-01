@@ -6,13 +6,18 @@
     <parent>
         <groupId>indi.uhyils</groupId>
         <artifactId>my-common</artifactId>
-        <version>0.3.0-my-SNAPSHOT</version>
+        <version>0.3.1-my-SNAPSHOT</version>
     </parent>
 
     <artifactId>my-common-base</artifactId>
 
 
     <dependencies>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-util-trace-executor</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -38,6 +43,14 @@
             <artifactId>validation-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
         <!--mapStruct-->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -76,11 +89,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
-        <dependency>
-            <groupId>io.github.247452312</groupId>
-            <artifactId>my-rpc-spring-start</artifactId>
         </dependency>
     </dependencies>
 

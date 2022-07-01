@@ -172,6 +172,8 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
 
         final User visiter = new Visiter(userIp.get());
         visiter.login(rep, salt, encodeRules);
+        // 登录->游客也加入缓存中
+        visiter.addUserToRedis(rep);
         return LoginDTO.buildLoginSuccess(visiter.tokenValue(), assem.toDTO(visiter));
     }
 

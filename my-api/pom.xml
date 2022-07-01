@@ -6,10 +6,10 @@
     <parent>
         <groupId>indi.uhyils</groupId>
         <artifactId>my</artifactId>
-        <version>0.3.0-my-SNAPSHOT</version>
+        <version>0.3.1-my-SNAPSHOT</version>
     </parent>
     <artifactId>my-api</artifactId>
-    <version>0.3.0-my-SNAPSHOT</version>
+    <version>0.3.1-my-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>my-api-provider-user</module>

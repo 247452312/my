@@ -20,11 +20,8 @@ public class Visiter extends User {
     /**
      * 游客访问的ip
      */
-    private String ip;
+    private final String ip;
 
-    public Visiter(UserDO data) {
-        super(data);
-    }
 
     public Visiter(String ip) {
         super(new UserDO());
@@ -69,5 +66,14 @@ public class Visiter extends User {
         final Optional<Identifier> unique = getUnique();
         Asserts.assertTrue(unique.isPresent(), "唯一标示不存在,不能进行token生成");
         return new Token(unique.get().getId(), AESUtil.AESEncode(encodeRules, sb.toString()));
+    }
+
+    @Override
+    public void addUserToRedis(UserRepository userRepository) {
+        super.addUserToRedis(userRepository);
+    }
+
+    public String ip() {
+        return ip;
     }
 }

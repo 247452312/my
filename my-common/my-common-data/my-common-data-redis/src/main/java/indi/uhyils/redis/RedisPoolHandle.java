@@ -8,6 +8,7 @@ import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.StringUtil;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -83,23 +84,23 @@ public class RedisPoolHandle {
      *
      * @return user
      */
-    public UserDTO getUser(String token) {
+    public Optional<UserDTO> getUser(String token) {
         Redisable jedis = redisPool.getJedis();
         try {
             String userJson = jedis.get(token);
             if (StringUtils.isEmpty(userJson)) {
-                return null;
+                return Optional.empty();
             }
             UserDTO userEntity = JSON.parseObject(userJson, UserDTO.class);
             jedis.expire(token, 60 * MyContext.LOGIN_TIME_OUT_MIN);
             jedis.expire(userEntity.getId().toString(), 60 * MyContext.LOGIN_TIME_OUT_MIN);
-            return userEntity;
+            return Optional.of(userEntity);
         } catch (JedisConnectionException e) {
             LogUtil.error(this, e);
         } finally {
             jedis.close();
         }
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -114,7 +115,7 @@ public class RedisPoolHandle {
         try {
             String token = jedis.get(userId.toString());
             if (StringUtil.isNotEmpty(token)) {
-                return getUser(token);
+                return getUser(token).orElse(null);
             }
         } finally {
             jedis.close();

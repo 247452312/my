@@ -56,6 +56,9 @@ public class IdUtil {
             }
             return newId();
         }
+        if (code == null) {
+            code = -1L;
+        }
         // 从配置文件中获取 代表学校码
         long distributedResult = (code & MyContext.DISTRIBUTED_MASK) << MyContext.DISTRIBUTED_DISPLACEMENT;
 

@@ -1,6 +1,5 @@
 package indi.uhyils.util;
 
-import indi.uhyils.rpc.util.RpcAssertUtil;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +42,7 @@ public class IdUtilTest {
         executor.shutdown();
         long useTime = System.currentTimeMillis() - startTime;
         System.out.println(useTime);
-        RpcAssertUtil.assertTrue(set.size() == size, set.size() + " " + size);
+        Asserts.assertTrue(set.size() == size, set.size() + " " + size);
 
     }
 

@@ -6,7 +6,7 @@
     <parent>
         <groupId>indi.uhyils</groupId>
         <artifactId>my-common</artifactId>
-        <version>0.3.0-my-SNAPSHOT</version>
+        <version>0.3.1-my-SNAPSHOT</version>
     </parent>
 
     <artifactId>my-common-service</artifactId>
@@ -30,6 +30,10 @@
             <groupId>indi.uhyils</groupId>
             <artifactId>my-common-event-bus</artifactId>
         </dependency>
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-data-redis</artifactId>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
         <dependency>
             <groupId>io.github.247452312</groupId>
@@ -43,12 +47,6 @@
         <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>amqp-client</artifactId>
-        </dependency>
-
-        <!-- hystrix-core 熔断 -->
-        <dependency>
-            <groupId>com.netflix.hystrix</groupId>
-            <artifactId>hystrix-core</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->

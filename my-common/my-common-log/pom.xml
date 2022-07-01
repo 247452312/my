@@ -6,7 +6,7 @@
     <parent>
         <groupId>indi.uhyils</groupId>
         <artifactId>my-common</artifactId>
-        <version>0.3.0-my-SNAPSHOT</version>
+        <version>0.3.1-my-SNAPSHOT</version>
     </parent>
 
     <artifactId>my-common-log</artifactId>
@@ -20,6 +20,10 @@
         <dependency>
             <groupId>indi.uhyils</groupId>
             <artifactId>my-common-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.247452312</groupId>
+            <artifactId>my-rpc-spring-start</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>

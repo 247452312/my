@@ -8,7 +8,7 @@ import indi.uhyils.exception.ServiceResultException;
 import indi.uhyils.pojo.DTO.LoginDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
-import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
+import indi.uhyils.pojo.cqe.command.BlankCommand;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.RpcApiUtil;
@@ -78,13 +78,13 @@ public class NoTokenInterfaceInvoker extends AbstractAnnotationInterfaceInvoker 
      * @return 登录结果
      */
     private LoginDTO visiterLogin() {
-        AbstractCommand build = new AbstractCommand() {
-
-        };
+        BlankCommand build = new BlankCommand();
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        JSONObject o = (JSONObject) RpcApiUtil.rpcApiTool("UserProvider", "visiterLogin", args);
-        final ServiceResult<?> serviceResult = o.toJavaObject(ServiceResult.class);
+        final Object o1 = RpcApiUtil.rpcApiTool("UserProvider", "visiterLogin", args);
+        JSONObject o = (JSONObject) o1;
+        final ServiceResult serviceResult = o.toJavaObject(ServiceResult.class);
+
         if (Objects.equals(serviceResult.getServiceCode(), ServiceCode.SUCCESS.getText())) {
             final JSONObject data = (JSONObject) serviceResult.getData();
             return data.toJavaObject(LoginDTO.class);
