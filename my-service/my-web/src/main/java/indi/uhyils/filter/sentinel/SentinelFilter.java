@@ -42,7 +42,7 @@ public class SentinelFilter implements ConsumerFilter {
     }
 
     @Override
-    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
+    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws  InterruptedException {
         addUnique(invokerContext.getRequestData());
         try (Entry entry = SphU.entry("1")) {
             return invoker.invoke(invokerContext);

@@ -22,7 +22,7 @@ public class IpConsumerFilter implements ConsumerFilter {
 
 
     @Override
-    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
+    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws InterruptedException {
         Optional<String> ipOpt = UserInfoHelper.getUserIp();
         ipOpt.ifPresent(ip -> {
             final AbstractRpcData requestData = (AbstractRpcData) invokerContext.getRequestData();

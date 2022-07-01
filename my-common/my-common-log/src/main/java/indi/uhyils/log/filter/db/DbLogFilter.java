@@ -45,14 +45,19 @@ public class DbLogFilter extends FilterEventAdapter {
             LogUtil.debug(this, sql);
         }
         String sqlType = getSqlType(sql);
-        return MyTraceIdContext.printLogInfo(LogTypeEnum.DB, () -> {
-            try {
-                return super.preparedStatement_execute(chain, statement);
-            } catch (SQLException e) {
-                LogUtil.error(this, e);
-            }
+        try {
+            return MyTraceIdContext.printLogInfo(LogTypeEnum.DB, () -> {
+                try {
+                    return super.preparedStatement_execute(chain, statement);
+                } catch (SQLException e) {
+                    LogUtil.error(this, e);
+                }
+                return false;
+            }, new String[]{sqlType}, preparedSql);
+        } catch (Throwable throwable) {
+            LogUtil.error(this, throwable);
             return false;
-        }, new String[]{sqlType}, preparedSql);
+        }
     }
 
     /**

@@ -26,7 +26,7 @@ import java.util.List;
 public class RpcReceiveLogFilter implements ProviderFilter {
 
     @Override
-    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
+    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws InterruptedException {
         AbstractRpcData requestData = (AbstractRpcData) invokerContext.getRequestData();
         RpcHeader traceInfo = requestData.getHeader(MyTraceIdContext.RPC_HEADER_TRACE_INFO);
         if (traceInfo != null) {

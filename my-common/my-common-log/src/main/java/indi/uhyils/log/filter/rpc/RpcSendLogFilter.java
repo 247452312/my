@@ -15,7 +15,7 @@ import indi.uhyils.rpc.exchange.pojo.head.RpcHeaderFactory;
 import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.filter.filter.ConsumerFilter;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
-import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.SupplierWithException;
 import java.util.List;
 
 
@@ -33,17 +33,17 @@ public class RpcSendLogFilter implements ConsumerFilter {
         List<Integer> nextRpcIds = MyTraceIdContext.getNextRpcIds();
         AbstractRpcData requestData = (AbstractRpcData) invokerContext.getRequestData();
         RpcContent content = requestData.content();
-        return MyTraceIdContext.printLogInfo(LogTypeEnum.RPC, () -> {
-                                                 try {
-                                                     addRpcTraceInfoToRpcHeader(requestData, nextRpcIds);
-                                                     return invoker.invoke(invokerContext);
-                                                 } catch (RpcException | ClassNotFoundException | InterruptedException e) {
-                                                     LogUtil.error(this, e);
-                                                 }
-                                                 return null;
-                                             }, new String[]{parseContentInfo(content, RpcRequestContentEnum.SERVICE_NAME),
-                                                 parseContentInfo(content, RpcRequestContentEnum.METHOD_NAME)}, parseContentInfo(content, RpcRequestContentEnum.SERVICE_NAME),
-                                             parseContentInfo(content, RpcRequestContentEnum.METHOD_NAME));
+        final SupplierWithException<RpcData> rpcDataSupplierWithException = () -> {
+            addRpcTraceInfoToRpcHeader(requestData, nextRpcIds);
+            return invoker.invoke(invokerContext);
+        };
+        try {
+            return MyTraceIdContext.printLogInfo(LogTypeEnum.RPC, rpcDataSupplierWithException, new String[]{parseContentInfo(content, RpcRequestContentEnum.SERVICE_NAME),
+                                                     parseContentInfo(content, RpcRequestContentEnum.METHOD_NAME)}, parseContentInfo(content, RpcRequestContentEnum.SERVICE_NAME),
+                                                 parseContentInfo(content, RpcRequestContentEnum.METHOD_NAME));
+        } catch (Throwable throwable) {
+            throw new RpcException(throwable);
+        }
     }
 
     private String parseContentInfo(RpcContent content, RpcRequestContentEnum methodName) {

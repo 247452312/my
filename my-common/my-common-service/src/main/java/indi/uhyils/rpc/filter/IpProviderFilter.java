@@ -18,7 +18,7 @@ import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
 public class IpProviderFilter implements ProviderFilter {
 
     @Override
-    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws RpcException, ClassNotFoundException, InterruptedException {
+    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws InterruptedException {
         final AbstractRpcData requestData = (AbstractRpcData) invokerContext.getRequestData();
         final RpcHeader header = requestData.getHeader(UserInfoHelper.USER_IP_RPC_KEY);
 

@@ -7,10 +7,10 @@ import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
+import indi.uhyils.util.SupplierWithException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 
 /**
  * traceId生成的地方
@@ -277,7 +277,7 @@ public class MyTraceIdContext {
      *
      * @return
      */
-    public static <T> T printLogInfo(LogTypeEnum logType, Supplier<T> supplier, String[] other, String... additional) {
+    public static <T> T printLogInfo(LogTypeEnum logType, SupplierWithException<T> supplier, String[] other, String... additional) throws Throwable {
         String rpcIdStr = getAndAddRpcIdStr();
         long startTime = System.currentTimeMillis();
         try {
@@ -329,9 +329,12 @@ public class MyTraceIdContext {
      *
      * @return
      */
-    public static <T> T onlyOnePrintLogInfo(LogTypeEnum logType, Supplier<T> supplier, String[] other, String... additional) {
+    public static <T> T onlyOnePrintLogInfo(LogTypeEnum logType, SupplierWithException<T> supplier, String[] other, String... additional) {
         try {
             return printLogInfo(logType, supplier, other, additional);
+        } catch (Throwable throwable) {
+            LogUtil.error(MyTraceIdContext.class, throwable);
+            return null;
         } finally {
             MyTraceIdContext.clean();
         }

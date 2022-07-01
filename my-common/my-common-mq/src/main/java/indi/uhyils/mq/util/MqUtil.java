@@ -1,7 +1,6 @@
 package indi.uhyils.mq.util;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.base.Supplier;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
@@ -15,6 +14,7 @@ import indi.uhyils.mq.pojo.rabbit.RabbitFactory;
 import indi.uhyils.pojo.other.RpcTraceInfo;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
+import indi.uhyils.util.SupplierWithException;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -123,11 +123,16 @@ public class MqUtil {
      * @return
      */
     private static void sendMsg(String exchange, String queue, byte[] bytes) {
-        Supplier direct = () -> {
+        SupplierWithException<?> direct = () -> {
             doSendMsg(exchange, queue, bytes);
             return null;
         };
-        MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, direct, new String[]{exchange, queue}, exchange, queue);
+        try {
+            MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, direct, new String[]{exchange, queue}, exchange, queue);
+        } catch (Throwable throwable) {
+            LogUtil.error(MqUtil.class, throwable);
+        }
+
 
     }
 
@@ -221,7 +226,7 @@ public class MqUtil {
      */
     private static void sendConfirmMsg(String exchange, String queue, ConfirmListener listener, byte[] bytes) throws IOException, TimeoutException {
 
-        Supplier direct = () -> {
+        SupplierWithException<?> direct = () -> {
             MqQueueInfo key = new MqQueueInfo(exchange, queue);
             Channel channel = null;
             if (CHANNEL_MAP.containsKey(key)) {
@@ -257,7 +262,11 @@ public class MqUtil {
             }
             return null;
         };
-        MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, direct, new String[]{exchange, queue}, exchange, queue);
+        try {
+            MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, direct, new String[]{exchange, queue}, exchange, queue);
+        } catch (Throwable throwable) {
+            LogUtil.error(throwable);
+        }
     }
 
     /**
@@ -271,18 +280,23 @@ public class MqUtil {
      * @return
      */
     public static void sendConfirmMsg(String exchange, String queue, ConfirmListener listener, String msg) {
-        MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, () -> {
-            MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
-            byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
-            try {
-                sendConfirmMsg(exchange, queue, listener, bytes);
-            } catch (Exception e) {
-                LogUtil.error(e);
-            }
-            return null;
-        }, new String[]{exchange, queue}, exchange, queue);
+        try {
+            MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, () -> {
+                MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
+                byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
+                try {
+                    sendConfirmMsg(exchange, queue, listener, bytes);
+                } catch (Exception e) {
+                    LogUtil.error(e);
+                }
+                return null;
+            }, new String[]{exchange, queue}, exchange, queue);
+        } catch (Throwable throwable) {
+            LogUtil.error(throwable);
+        }
 
     }
+
     /**
      * 推送信息到mq
      *
@@ -295,16 +309,20 @@ public class MqUtil {
      */
     public static void sendConfirmMsg(String exchange, String queue, ConfirmListener listener, Object obj) {
         String msg = JSON.toJSONString(obj);
-        MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, () -> {
-            MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
-            byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
-            try {
-                sendConfirmMsg(exchange, queue, listener, bytes);
-            } catch (Exception e) {
-                LogUtil.error(e);
-            }
-            return null;
-        }, new String[]{exchange, queue}, exchange, queue);
+        try {
+            MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, () -> {
+                MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
+                byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
+                try {
+                    sendConfirmMsg(exchange, queue, listener, bytes);
+                } catch (Exception e) {
+                    LogUtil.error(e);
+                }
+                return null;
+            }, new String[]{exchange, queue}, exchange, queue);
+        } catch (Throwable throwable) {
+            LogUtil.error(throwable);
+        }
 
     }
 
