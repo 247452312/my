@@ -150,7 +150,6 @@ public class CompilationUnit extends Node {
     /**
      * 根据compilationUnit 去获取可以在局部代码中直接使用的变量
      *
-     *
      * @return
      */
     public Map<String, TypeDeclaration<?>> findCanUseVariable() {

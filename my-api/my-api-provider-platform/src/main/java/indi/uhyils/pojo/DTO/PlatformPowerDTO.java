@@ -13,53 +13,54 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class PlatformPowerDTO extends IdDTO {
 
     private static final long serialVersionUID = -1L;
-    
+
     /**
      * 用户id
      */
     private Long userId;
+
     /**
      * 发布节点id
      */
     private Long publishNodeId;
+
     /**
      * 0->申请中 1->使用中 2->已停止
      */
     private Integer status;
-    
-    public void setUserId(Long userId) {
-            this.userId = userId;
-        }
 
     public Long getUserId() {
-            return userId;
-        }
-        
-    public void setPublishNodeId(Long publishNodeId) {
-            this.publishNodeId = publishNodeId;
-        }
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public Long getPublishNodeId() {
-            return publishNodeId;
-        }
-        
-    public void setStatus(Integer status) {
-            this.status = status;
-        }
+        return publishNodeId;
+    }
+
+    public void setPublishNodeId(Long publishNodeId) {
+        this.publishNodeId = publishNodeId;
+    }
 
     public Integer getStatus() {
-            return status;
-        }
-        
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("userId", getUserId())
-                .append("id", getId())
-                .append("publishNodeId", getPublishNodeId())
-                .append("status", getStatus())
-                .toString();
+            .append("userId", getUserId())
+            .append("id", getId())
+            .append("publishNodeId", getPublishNodeId())
+            .append("status", getStatus())
+            .toString();
     }
 
 }

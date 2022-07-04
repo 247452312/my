@@ -4,7 +4,6 @@ package indi.uhyils.service;
 import indi.uhyils.pojo.DTO.AlgorithmDTO;
 import indi.uhyils.pojo.DTO.request.CellAlgorithmRequest;
 import indi.uhyils.pojo.DTO.response.CellAlgorithmResponse;
-import indi.uhyils.pojo.entity.type.Identifier;
 
 /**
  * 算法表(Algorithm)表 内部服务接口

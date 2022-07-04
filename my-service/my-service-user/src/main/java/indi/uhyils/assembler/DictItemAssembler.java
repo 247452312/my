@@ -5,8 +5,6 @@ import indi.uhyils.pojo.DO.DictItemDO;
 import indi.uhyils.pojo.DTO.DictItemDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.entity.DictItem;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 
 /**

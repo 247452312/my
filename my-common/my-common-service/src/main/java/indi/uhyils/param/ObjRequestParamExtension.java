@@ -85,16 +85,16 @@ public class ObjRequestParamExtension implements ParamTransExtension {
                     return objRequest;
 
                 }
-//                else if (objsRequestEquals) {
-//                    ObjsRequest<Serializable> objsRequest = JSONObject.parseObject(requestJson, ObjsRequest.class);
-//                    List<Serializable> list = objsRequest.getList();
-//                    List<Serializable> targetList = new ArrayList<>(list.size());
-//                    for (Serializable serializable : list) {
-//                        targetList.add((Serializable) JSONObject.parseObject(JSON.toJSONString(serializable), Class.forName(substring)));
-//                    }
-//                    objsRequest.setList(targetList);
-//                    return objsRequest;
-//                }
+                //                else if (objsRequestEquals) {
+                //                    ObjsRequest<Serializable> objsRequest = JSONObject.parseObject(requestJson, ObjsRequest.class);
+                //                    List<Serializable> list = objsRequest.getList();
+                //                    List<Serializable> targetList = new ArrayList<>(list.size());
+                //                    for (Serializable serializable : list) {
+                //                        targetList.add((Serializable) JSONObject.parseObject(JSON.toJSONString(serializable), Class.forName(substring)));
+                //                    }
+                //                    objsRequest.setList(targetList);
+                //                    return objsRequest;
+                //                }
             }
         }
         return arg;

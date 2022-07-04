@@ -85,7 +85,7 @@ public class JavaAstUtil {
         for (CompilationUnit compilationUnit : compilationUnits) {
             // 替换方法中的每一行
             compilationUnit.dealMethodRow();
-//            InternalUtil.dealCompilationUnitMethodRow(compilationUnit);
+            //            InternalUtil.dealCompilationUnitMethodRow(compilationUnit);
         }
         InternalUtil.print();
     }

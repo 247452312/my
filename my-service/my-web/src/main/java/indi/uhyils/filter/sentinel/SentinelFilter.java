@@ -9,7 +9,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.rpc.annotation.RpcSpi;
-import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.enums.RpcRequestContentEnum;
 import indi.uhyils.rpc.exchange.pojo.data.RpcData;
 import indi.uhyils.rpc.netty.spi.filter.FilterContext;
@@ -42,7 +41,7 @@ public class SentinelFilter implements ConsumerFilter {
     }
 
     @Override
-    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws  InterruptedException {
+    public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws InterruptedException {
         addUnique(invokerContext.getRequestData());
         try (Entry entry = SphU.entry("1")) {
             return invoker.invoke(invokerContext);

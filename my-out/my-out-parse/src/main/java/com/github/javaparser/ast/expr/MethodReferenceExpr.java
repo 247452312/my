@@ -298,7 +298,7 @@ public class MethodReferenceExpr extends Expression implements NodeWithTypeArgum
             return;
         }
 
-//        Asserts.assertTrue(nameSameMethods != null && nameSameMethods.size() == 1, "方法引用找到两个相同的方法名称");
+        //        Asserts.assertTrue(nameSameMethods != null && nameSameMethods.size() == 1, "方法引用找到两个相同的方法名称");
 
         // todo 这里应该使用推理,判断方法引用引用的是哪个方法,暂时先不搞了
 

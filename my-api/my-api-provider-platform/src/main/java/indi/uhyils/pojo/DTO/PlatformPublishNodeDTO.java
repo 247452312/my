@@ -104,12 +104,12 @@ public class PlatformPublishNodeDTO extends IdDTO {
         this.sql = sql;
     }
 
-    public void setProtocolType(Integer protocolType) {
-        this.protocolType = protocolType;
-    }
-
     public Integer getProtocolType() {
         return protocolType;
+    }
+
+    public void setProtocolType(Integer protocolType) {
+        this.protocolType = protocolType;
     }
 
     public String getDbName() {
@@ -120,12 +120,12 @@ public class PlatformPublishNodeDTO extends IdDTO {
         this.dbName = dbName;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public Long getUserId() {
         return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getMethodName() {
@@ -136,12 +136,12 @@ public class PlatformPublishNodeDTO extends IdDTO {
         this.methodName = methodName;
     }
 
-    public void setNodeId(Long nodeId) {
-        this.nodeId = nodeId;
-    }
-
     public Long getNodeId() {
         return nodeId;
+    }
+
+    public void setNodeId(Long nodeId) {
+        this.nodeId = nodeId;
     }
 
     @Override
@@ -156,9 +156,9 @@ public class PlatformPublishNodeDTO extends IdDTO {
             .append("dbName", getDbName())
             .append("userId", getUserId())
             .append("methodName", getMethodName())
-                .append("id", getId())
-                .append("nodeId", getNodeId())
-                .toString();
+            .append("id", getId())
+            .append("nodeId", getNodeId())
+            .toString();
     }
 
 }

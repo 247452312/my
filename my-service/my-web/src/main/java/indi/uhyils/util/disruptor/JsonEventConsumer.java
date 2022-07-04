@@ -23,6 +23,6 @@ public class JsonEventConsumer implements EventHandler<JsonEvent> {
      */
     @Override
     public void onEvent(JsonEvent jsonEvent, long l, boolean b) throws Exception {
-//        logService.pushRequestLog(ObjRequest.build(JSONObject.parseObject(jsonEvent.getValue(), LogEntity.class), jsonEvent.getToken()));
+        //        logService.pushRequestLog(ObjRequest.build(JSONObject.parseObject(jsonEvent.getValue(), LogEntity.class), jsonEvent.getToken()));
     }
 }

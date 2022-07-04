@@ -21,7 +21,13 @@
 
 package com.github.javaparser.printer;
 
-import static com.github.javaparser.GeneratedJavaParserConstants.*;
+import static com.github.javaparser.GeneratedJavaParserConstants.GT;
+import static com.github.javaparser.GeneratedJavaParserConstants.LBRACE;
+import static com.github.javaparser.GeneratedJavaParserConstants.LPAREN;
+import static com.github.javaparser.GeneratedJavaParserConstants.LT;
+import static com.github.javaparser.GeneratedJavaParserConstants.RBRACE;
+import static com.github.javaparser.GeneratedJavaParserConstants.RPAREN;
+import static com.github.javaparser.GeneratedJavaParserConstants.YIELD;
 import static com.github.javaparser.ast.observer.ObservableProperty.ANNOTATIONS;
 import static com.github.javaparser.ast.observer.ObservableProperty.ASTERISK;
 import static com.github.javaparser.ast.observer.ObservableProperty.BODY;

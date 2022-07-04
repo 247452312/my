@@ -509,9 +509,9 @@ public class ParserConfiguration {
                         // Set the line ending on the root node
                         rootNode.setData(Node.LINE_SEPARATOR_KEY, detectedLineSeparator);
 
-//                                // Set the line ending on all children of the root node -- FIXME: Should ignore """textblocks"""
-//                                rootNode.findAll(Node.class)
-//                                        .forEach(node -> node.setData(Node.LINE_SEPARATOR_KEY, detectedLineSeparator));
+                        //                                // Set the line ending on all children of the root node -- FIXME: Should ignore """textblocks"""
+                        //                                rootNode.findAll(Node.class)
+                        //                                        .forEach(node -> node.setData(Node.LINE_SEPARATOR_KEY, detectedLineSeparator));
                     }
                 );
             }

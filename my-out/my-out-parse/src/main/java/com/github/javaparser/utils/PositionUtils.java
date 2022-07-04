@@ -179,15 +179,15 @@ public final class PositionUtils {
             throw new IllegalArgumentException("Cannot compare the positions of nodes if contained node does not have a range.");
         }
 
-//        // FIXME: Not all nodes seem to have the compilation unit available?
-//        if (!Objects.equals(container.findCompilationUnit(), other.findCompilationUnit())) {
-//            // Allow the check to complete if they are both within a known CU (i.e. the CUs are the same),
-//            // ... or both not within a CU (i.e. both are Optional.empty())
-//            return false;
-//        }
+        //        // FIXME: Not all nodes seem to have the compilation unit available?
+        //        if (!Objects.equals(container.findCompilationUnit(), other.findCompilationUnit())) {
+        //            // Allow the check to complete if they are both within a known CU (i.e. the CUs are the same),
+        //            // ... or both not within a CU (i.e. both are Optional.empty())
+        //            return false;
+        //        }
 
         final boolean nodeCanHaveAnnotations = container instanceof NodeWithAnnotations;
-//        final boolean hasAnnotations = PositionUtils.getLastAnnotation(container) != null;
+        //        final boolean hasAnnotations = PositionUtils.getLastAnnotation(container) != null;
         if (!ignoringAnnotations || PositionUtils.getLastAnnotation(container) == null) {
             // No special consideration required - perform simple range check.
             return container.containsWithinRange(other);
@@ -207,8 +207,8 @@ public final class PositionUtils {
         Range rangeWithoutAnnotations = container.getRange().get()
                                                  .withBegin(nodeWithoutAnnotations.getBegin().get());
         return rangeWithoutAnnotations
-//                .contains(other.getRange().get());
-.strictlyContains(other.getRange().get());
+            //                .contains(other.getRange().get());
+            .strictlyContains(other.getRange().get());
 
     }
 

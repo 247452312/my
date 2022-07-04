@@ -1,6 +1,5 @@
 package indi.uhyils.util;
 
-import indi.uhyils.util.LogUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

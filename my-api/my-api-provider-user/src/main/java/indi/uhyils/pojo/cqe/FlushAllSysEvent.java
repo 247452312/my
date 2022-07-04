@@ -1,6 +1,5 @@
 package indi.uhyils.pojo.cqe;
 
-import indi.uhyils.pojo.cqe.event.base.AbstractEvent;
 import indi.uhyils.pojo.cqe.event.base.AbstractParentEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import java.util.List;

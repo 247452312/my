@@ -65,6 +65,7 @@ public interface BaseDoService<E extends IdDTO> extends BaseService {
      * @param order
      */
     List<E> queryNoPage(List<Arg> args, Order order);
+
     /**
      * 查询
      *

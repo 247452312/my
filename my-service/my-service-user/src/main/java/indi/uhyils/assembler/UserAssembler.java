@@ -8,7 +8,6 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.entity.Role;
 import indi.uhyils.pojo.entity.User;
 import indi.uhyils.pojo.entity.Visiter;
-import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;

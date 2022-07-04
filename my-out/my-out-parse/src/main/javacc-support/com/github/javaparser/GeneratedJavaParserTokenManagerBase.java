@@ -21,7 +21,9 @@
 
 package com.github.javaparser;
 
-import static com.github.javaparser.GeneratedJavaParserConstants.*;
+import static com.github.javaparser.GeneratedJavaParserConstants.JAVADOC_COMMENT;
+import static com.github.javaparser.GeneratedJavaParserConstants.MULTI_LINE_COMMENT;
+import static com.github.javaparser.GeneratedJavaParserConstants.SINGLE_LINE_COMMENT;
 
 import com.github.javaparser.ast.comments.BlockComment;
 import com.github.javaparser.ast.comments.Comment;

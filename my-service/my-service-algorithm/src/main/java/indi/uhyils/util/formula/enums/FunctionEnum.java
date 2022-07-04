@@ -4,7 +4,6 @@ import com.google.common.collect.Maps.EntryTransformer;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.formula.FormulaNode;
 import indi.uhyils.util.formula.FormulaNodeFactory;
-import indi.uhyils.util.formula.impl.node.NormalFormulaNodeImpl;
 import java.util.Objects;
 
 /**

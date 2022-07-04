@@ -18,87 +18,92 @@ public class PlatformSourceInterfaceDTO extends IdDTO {
      * 结果类型demo 同param_type
      */
     private String returnType;
+
     /**
      * 请求类型,例如HTTP中的post请求或者get请求
      */
     private String requestType;
+
     /**
      * 接口名称
      */
     private String interfaceName;
+
     /**
      * url地址
      */
     private String url;
+
     /**
      * 入参类型demo json形式,实际使用时入参需要匹配此规则
      */
     private String paramType;
+
     /**
      * 方法名称
      */
     private String methodName;
+
     /**
      * 资源主表id
      */
     private Long sourceId;
 
-    public void setReturnType(String returnType) {
-        this.returnType = returnType;
-    }
-
     public String getReturnType() {
         return returnType;
     }
 
-    public void setRequestType(String requestType) {
-        this.requestType = requestType;
+    public void setReturnType(String returnType) {
+        this.returnType = returnType;
     }
 
     public String getRequestType() {
         return requestType;
     }
 
-    public void setInterfaceName(String interfaceName) {
-        this.interfaceName = interfaceName;
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
     }
 
     public String getInterfaceName() {
         return interfaceName;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setInterfaceName(String interfaceName) {
+        this.interfaceName = interfaceName;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setParamType(String paramType) {
-        this.paramType = paramType;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getParamType() {
         return paramType;
     }
 
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
+    public void setParamType(String paramType) {
+        this.paramType = paramType;
     }
 
     public String getMethodName() {
         return methodName;
     }
 
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
     }
 
     public Long getSourceId() {
         return sourceId;
     }
 
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
+    }
 
     @Override
     public String toString() {

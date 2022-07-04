@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import indi.uhyils.context.MyTraceIdContext;
 import indi.uhyils.pojo.other.RpcTraceInfo;
 import indi.uhyils.rpc.annotation.RpcSpi;
-import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.data.AbstractRpcData;
 import indi.uhyils.rpc.exchange.pojo.data.RpcData;
 import indi.uhyils.rpc.exchange.pojo.head.RpcHeader;

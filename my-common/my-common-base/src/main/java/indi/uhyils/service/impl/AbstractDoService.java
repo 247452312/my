@@ -64,6 +64,7 @@ public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends Abstra
         List<ENTITY> noPage = rep.findNoPage(args, order);
         return assem.listEntityToDTO(noPage);
     }
+
     @Override
     public List<DTO> queryNoPage(List<Arg> args) {
         List<ENTITY> noPage = rep.findNoPage(args, null);

@@ -21,14 +21,15 @@ public class IdQuery extends AbstractArgQuery {
         super(Collections.singletonList(Arg.as(IdQuery::getId, Symbol.EQ, id)));
         this.id = id;
     }
-    public IdQuery() {
-    }
 
-    public void setId(Long id) {
-        this.id = id;
+    public IdQuery() {
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -1,7 +1,6 @@
 package indi.uhyils.pojo.entity.type;
 
 import indi.uhyils.pojo.cqe.query.IdQuery;
-import indi.uhyils.util.Asserts;
 import java.util.Objects;
 
 /**

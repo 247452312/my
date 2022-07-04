@@ -21,7 +21,20 @@
 
 package com.github.javaparser.printer.lexicalpreservation;
 
-import static com.github.javaparser.GeneratedJavaParserConstants.*;
+import static com.github.javaparser.GeneratedJavaParserConstants.BOOLEAN;
+import static com.github.javaparser.GeneratedJavaParserConstants.BYTE;
+import static com.github.javaparser.GeneratedJavaParserConstants.CHAR;
+import static com.github.javaparser.GeneratedJavaParserConstants.DOUBLE;
+import static com.github.javaparser.GeneratedJavaParserConstants.FLOAT;
+import static com.github.javaparser.GeneratedJavaParserConstants.INT;
+import static com.github.javaparser.GeneratedJavaParserConstants.JAVADOC_COMMENT;
+import static com.github.javaparser.GeneratedJavaParserConstants.LBRACKET;
+import static com.github.javaparser.GeneratedJavaParserConstants.LONG;
+import static com.github.javaparser.GeneratedJavaParserConstants.MULTI_LINE_COMMENT;
+import static com.github.javaparser.GeneratedJavaParserConstants.RBRACKET;
+import static com.github.javaparser.GeneratedJavaParserConstants.SHORT;
+import static com.github.javaparser.GeneratedJavaParserConstants.SINGLE_LINE_COMMENT;
+import static com.github.javaparser.GeneratedJavaParserConstants.SPACE;
 import static com.github.javaparser.TokenTypes.eolTokenKind;
 import static com.github.javaparser.utils.Utils.assertNotNull;
 import static com.github.javaparser.utils.Utils.decapitalize;

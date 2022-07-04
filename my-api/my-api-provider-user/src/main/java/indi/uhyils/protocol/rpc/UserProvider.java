@@ -11,7 +11,6 @@ import indi.uhyils.pojo.DTO.request.UpdatePasswordCommand;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.BlankCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
-import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;

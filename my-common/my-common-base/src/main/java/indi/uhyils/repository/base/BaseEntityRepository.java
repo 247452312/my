@@ -73,10 +73,11 @@ public interface BaseEntityRepository<DO extends BaseDO, EN extends AbstractDoEn
      * @return
      */
     List<EN> findNoPage(List<Arg> args, Order order);
+
     /**
      * 根据条件查询
      *
-     * @param args  条件
+     * @param args 条件
      *
      * @return
      */

@@ -121,6 +121,38 @@ public class MethodCallExpr extends Expression implements NodeWithTypeArguments<
         customInitialization();
     }
 
+    /**
+     * 匹配方法参数类型
+     *
+     * @param argumentsClazzList
+     * @param method
+     *
+     * @return
+     */
+    private static boolean matchingMethodParamsType(MethodDeclaration method, List<TypeDeclaration<?>> argumentsClazzList) {
+        List<TypeDeclaration<?>> methodParamTypes = method.getParameters().stream().map(t -> t.getType().getTarget()).map(t -> t.orElse(null)).collect(Collectors.toList());
+        // 其中一个为空,返回匹配不成功
+        if (argumentsClazzList == null) {
+            return false;
+        }
+        // 方法入参个数不一致,返回匹配不成功
+        if (methodParamTypes.size() != argumentsClazzList.size()) {
+            return false;
+        }
+        for (int i = 0; i < argumentsClazzList.size(); i++) {
+            // 注意 这里是入参的类型, 是有可能为null的, 例: 入参是一个方法,并且这个方法不是在扫描类中,就找不到这个方法明确的返回值
+            TypeDeclaration<?> paramClazz = methodParamTypes.get(i);
+            TypeDeclaration<?> argumentClazz = argumentsClazzList.get(i);
+            if (argumentClazz == null || paramClazz == null) {
+                return false;
+            }
+            if (!Objects.equals(paramClazz.getName().asString(), argumentClazz.getName().asString())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public Optional<MethodDeclaration> getMethodLink() {
         return Optional.ofNullable(methodLink);
     }
@@ -437,37 +469,7 @@ public class MethodCallExpr extends Expression implements NodeWithTypeArguments<
             this.setMethodLink(methodDeclarationWithLink);
         }
     }
-    /**
-     * 匹配方法参数类型
-     *
-     * @param argumentsClazzList
-     * @param method
-     *
-     * @return
-     */
-    private static boolean matchingMethodParamsType(MethodDeclaration method, List<TypeDeclaration<?>> argumentsClazzList) {
-        List<TypeDeclaration<?>> methodParamTypes = method.getParameters().stream().map(t -> t.getType().getTarget()).map(t -> t.orElse(null)).collect(Collectors.toList());
-        // 其中一个为空,返回匹配不成功
-        if (argumentsClazzList == null) {
-            return false;
-        }
-        // 方法入参个数不一致,返回匹配不成功
-        if (methodParamTypes.size() != argumentsClazzList.size()) {
-            return false;
-        }
-        for (int i = 0; i < argumentsClazzList.size(); i++) {
-            // 注意 这里是入参的类型, 是有可能为null的, 例: 入参是一个方法,并且这个方法不是在扫描类中,就找不到这个方法明确的返回值
-            TypeDeclaration<?> paramClazz = methodParamTypes.get(i);
-            TypeDeclaration<?> argumentClazz = argumentsClazzList.get(i);
-            if (argumentClazz == null || paramClazz == null) {
-                return false;
-            }
-            if (!Objects.equals(paramClazz.getName().asString(), argumentClazz.getName().asString())) {
-                return false;
-            }
-        }
-        return true;
-    }
+
     /*
      * Returns true if the expression is an invocation context.
      * https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.3

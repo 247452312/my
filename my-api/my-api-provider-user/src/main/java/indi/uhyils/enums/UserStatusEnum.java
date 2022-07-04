@@ -23,15 +23,6 @@ public enum UserStatusEnum {
         this.name = name;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-
     public static UserStatusEnum parse(Integer code) {
         for (UserStatusEnum value : values()) {
             if (Objects.equals(value.getCode(), code)) {
@@ -39,5 +30,13 @@ public enum UserStatusEnum {
             }
         }
         return null;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
     }
 }

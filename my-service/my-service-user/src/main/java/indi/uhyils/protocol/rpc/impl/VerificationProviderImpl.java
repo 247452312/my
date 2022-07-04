@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.annotation.NoLogin;
 import indi.uhyils.annotation.Public;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.VerificationCommand;

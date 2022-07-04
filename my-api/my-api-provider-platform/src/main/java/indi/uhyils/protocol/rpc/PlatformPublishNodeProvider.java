@@ -13,5 +13,4 @@ import indi.uhyils.protocol.rpc.base.DTOProvider;
 public interface PlatformPublishNodeProvider extends DTOProvider<PlatformPublishNodeDTO> {
 
 
-
 }

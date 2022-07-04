@@ -15,6 +15,12 @@ public class CellAlgorithmResponse implements Serializable {
      */
     private Object result;
 
+    public static CellAlgorithmResponse build(Object result) {
+        CellAlgorithmResponse build = new CellAlgorithmResponse();
+        build.result = result;
+        return build;
+
+    }
 
     public Object getResult() {
         return result;
@@ -22,11 +28,5 @@ public class CellAlgorithmResponse implements Serializable {
 
     public void setResult(Object result) {
         this.result = result;
-    }
-    public static CellAlgorithmResponse build(Object result){
-        CellAlgorithmResponse build = new CellAlgorithmResponse();
-        build.result = result;
-        return build;
-
     }
 }

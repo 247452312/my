@@ -18,18 +18,22 @@ public class PublishRpcCommand extends AbstractCommand {
      * 结果类型demo 同param_type
      */
     private String returnType;
+
     /**
      * 请求类型,例如HTTP中的post请求或者get请求
      */
     private String requestType;
+
     /**
      * 接口名称
      */
     private String interfaceName;
+
     /**
      * 入参类型demo json形式,实际使用时入参需要匹配此规则
      */
     private String paramType;
+
     /**
      * 方法名称
      */

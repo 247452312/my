@@ -124,7 +124,7 @@ public abstract class TypeDeclaration<T extends TypeDeclaration<?>> extends Body
         ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration();
 
         SimpleName simpleName = new SimpleName(className);
-//        simpleName.setIdentifier(StringUtil.transClassNameToSimpleName(className));
+        //        simpleName.setIdentifier(StringUtil.transClassNameToSimpleName(className));
 
         type.setName(simpleName);
         type.setParentNode(target);

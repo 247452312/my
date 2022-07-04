@@ -10,7 +10,6 @@ import indi.uhyils.pojo.cqe.command.base.AddCommand;
 import indi.uhyils.pojo.cqe.query.BlackQuery;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
-import indi.uhyils.pojo.cqe.query.base.BaseArgQuery;
 import java.util.List;
 
 /**

@@ -13,53 +13,54 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class PlatformSourceDTO extends IdDTO {
 
     private static final long serialVersionUID = -1L;
-    
+
     /**
      * 组id 自动归组 各个组类型不一致,例如DB类,url一致则为同一组
      */
     private Long groupId;
+
     /**
      * 对外的table名称
      */
     private String name;
+
     /**
      * 类型 0->数据库 1->接口
      */
     private Integer type;
-    
-    public void setGroupId(Long groupId) {
-            this.groupId = groupId;
-        }
 
     public Long getGroupId() {
-            return groupId;
-        }
-        
-    public void setName(String name) {
-            this.name = name;
-        }
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
 
     public String getName() {
-            return name;
-        }
-        
-    public void setType(Integer type) {
-            this.type = type;
-        }
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getType() {
-            return type;
-        }
-        
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("groupId", getGroupId())
-                .append("name", getName())
-                .append("id", getId())
-                .append("type", getType())
-                .toString();
+            .append("groupId", getGroupId())
+            .append("name", getName())
+            .append("id", getId())
+            .append("type", getType())
+            .toString();
     }
 
 }

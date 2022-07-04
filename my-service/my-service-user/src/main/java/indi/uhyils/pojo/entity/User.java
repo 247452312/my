@@ -183,6 +183,7 @@ public class User extends AbstractDoEntity<UserDO> {
         }
         Asserts.assertTrue(role != null, "权限没有初始化");
         List<Menu> menu = role.menus();
+        // 取交集
         return menus.stream().filter(t -> CollectionUtil.contains(menu, t, entity -> entity.toData().map(BaseIdDO::getId).orElse(null))).collect(Collectors.toList());
     }
 

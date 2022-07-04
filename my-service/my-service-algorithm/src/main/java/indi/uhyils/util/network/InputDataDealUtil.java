@@ -48,13 +48,13 @@ public class InputDataDealUtil {
     /*
 
      */
-/**
- * 获取音频波形数据(声道 * 数据长度) 原始
- *
- * @param wavPath 文件路径
- *
- * @return 二维数组 波形数据
- *//*
+    /**
+     * 获取音频波形数据(声道 * 数据长度) 原始
+     *
+     * @param wavPath 文件路径
+     *
+     * @return 二维数组 波形数据
+     *//*
 
     public static Datable getWavInputData(String wavPath) {
         WaveFileReader wfr = new WaveFileReader(wavPath);
@@ -65,15 +65,15 @@ public class InputDataDealUtil {
     }
 
     */
-/**
- * 获取音频数据 (只有第一声道 每帧大小 * 位移数 ->MFCC) 预加重 + 分帧 + 加窗
- *
- * @param wavPath 文件
- * @param size    每帧大小 (毫秒)
- * @param shift   帧移 (大小)
- *
- * @return 分帧后
- *//*
+    /**
+     * 获取音频数据 (只有第一声道 每帧大小 * 位移数 ->MFCC) 预加重 + 分帧 + 加窗
+     *
+     * @param wavPath 文件
+     * @param size    每帧大小 (毫秒)
+     * @param shift   帧移 (大小)
+     *
+     * @return 分帧后
+     *//*
 
     public static Datable getWavInputData(String wavPath, Integer size, Integer shift) {
         WaveFileReader wfr = new WaveFileReader(wavPath);

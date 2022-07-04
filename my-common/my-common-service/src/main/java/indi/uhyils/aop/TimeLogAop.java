@@ -73,10 +73,10 @@ public class TimeLogAop {
      * @param proceed    返回值
      */
     private void after(String className, String methodName, double v, Object proceed) {
-//        if (LogUtil.isDebugEnabled(this)) {
+        //        if (LogUtil.isDebugEnabled(this)) {
         LogUtil.info(this, String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));
         LogUtil.info(this, String.format("   返回值为:%s", JSONObject.toJSONString(proceed)));
-//        }
+        //        }
     }
 
     /**
@@ -87,7 +87,7 @@ public class TimeLogAop {
      * @param methodName 方法名
      */
     private void before(ProceedingJoinPoint pjp, String className, String methodName) {
-//        if (LogUtil.isDebugEnabled(this)) {
+        //        if (LogUtil.isDebugEnabled(this)) {
         StringBuilder sb = new StringBuilder();
         Object[] args = pjp.getArgs();
         sb.append("方法开始执行:  ");
@@ -103,6 +103,6 @@ public class TimeLogAop {
         }
         LogUtil.info(this, "---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
         LogUtil.info(this, sb.toString());
-//        }
+        //        }
     }
 }

@@ -3,7 +3,6 @@ package indi.uhyils.protocol.task;
 import indi.uhyils.pojo.cqe.command.BlankCommand;
 import indi.uhyils.service.TraceInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,7 +22,7 @@ public class ConcurrentNumberTask {
     /**
      * 测试环境暂时关闭 todo
      */
-//    @Scheduled(cron = "*/2 * * * * ?")
+    //    @Scheduled(cron = "*/2 * * * * ?")
     public void demoSchedule() {
         service.monitorConcurrentNumber(new BlankCommand());
     }

@@ -2,7 +2,6 @@ package indi.uhyils.rpc.filter;
 
 import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.rpc.annotation.RpcSpi;
-import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.exchange.pojo.data.AbstractRpcData;
 import indi.uhyils.rpc.exchange.pojo.data.RpcData;
 import indi.uhyils.rpc.exchange.pojo.head.RpcHeader;

@@ -29,7 +29,6 @@ import static com.github.javaparser.ast.Modifier.createModifierList;
 import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.toList;
 
-import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;

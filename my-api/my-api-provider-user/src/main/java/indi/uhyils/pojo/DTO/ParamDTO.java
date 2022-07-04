@@ -13,66 +13,68 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class ParamDTO extends IdDTO {
 
     private static final long serialVersionUID = -1L;
-    
+
     /**
      * 系统参数key
      */
     private String key;
+
     /**
      * 描述
      */
     private String desc;
+
     /**
      * 系统参数值
      */
     private String value;
+
     /**
      * 用户id,如果用户id为-1则代表是全局参数
      */
     private Long userId;
-    
-    public void setKey(String key) {
-            this.key = key;
-        }
 
     public String getKey() {
-            return key;
-        }
-        
-    public void setDesc(String desc) {
-            this.desc = desc;
-        }
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public String getDesc() {
-            return desc;
-        }
-        
-    public void setValue(String value) {
-            this.value = value;
-        }
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     public String getValue() {
-            return value;
-        }
-        
-    public void setUserId(Long userId) {
-            this.userId = userId;
-        }
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public Long getUserId() {
-            return userId;
-        }
-        
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("id", getId())
-                .append("key", getKey())
-                .append("desc", getDesc())
-                .append("value", getValue())
-                .append("userId", getUserId())
-                .toString();
+            .append("id", getId())
+            .append("key", getKey())
+            .append("desc", getDesc())
+            .append("value", getValue())
+            .append("userId", getUserId())
+            .toString();
     }
 
 }

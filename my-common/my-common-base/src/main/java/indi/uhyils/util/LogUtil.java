@@ -79,7 +79,7 @@ public final class LogUtil {
     }
 
     public static boolean isDebugEnabled(Class<?> clazz) {
-//        return false;
+        //        return false;
         if (clazz == null) {
             return Boolean.FALSE;
         }

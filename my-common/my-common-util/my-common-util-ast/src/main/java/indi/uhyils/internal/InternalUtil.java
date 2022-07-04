@@ -1,6 +1,5 @@
 package indi.uhyils.internal;
 
-import com.github.javaparser.AstContext;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
@@ -34,7 +33,6 @@ import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.expr.TypeExpr;
 import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
-import com.github.javaparser.ast.nodeTypes.NodeWithName;
 import com.github.javaparser.ast.stmt.AssertStmt;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
@@ -80,11 +78,6 @@ public class InternalUtil {
 
 
     public static final Set<String> temp = new HashSet<>();
-
-
-
-
-
 
 
     /**
@@ -487,7 +480,7 @@ public class InternalUtil {
             return;
         }
 
-//        Asserts.assertTrue(nameSameMethods != null && nameSameMethods.size() == 1, "方法引用找到两个相同的方法名称");
+        //        Asserts.assertTrue(nameSameMethods != null && nameSameMethods.size() == 1, "方法引用找到两个相同的方法名称");
 
         // todo 这里应该使用推理,判断方法引用引用的是哪个方法,暂时先不搞了
 
