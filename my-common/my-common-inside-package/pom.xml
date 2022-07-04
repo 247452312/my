@@ -121,11 +121,6 @@
             </dependency>
             <dependency>
                 <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-smart-home</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
                 <artifactId>my-api-provider-work-orders</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -19,7 +19,6 @@
         <module>my-api-provider-push</module>
         <module>my-api-provider-mongo</module>
         <module>my-api-provider-algorithm</module>
-        <module>my-api-provider-smart-home</module>
         <module>my-api-provider-work-orders</module>
         <module>my-api-provider-mq</module>
         <module>my-api-provider-platform</module>
