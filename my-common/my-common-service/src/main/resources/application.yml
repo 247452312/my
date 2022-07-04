@@ -52,10 +52,10 @@ rpc:
     host: prod
     port: 8848
   consumer:
-    timeout: 10000
+    timeout: 30000
     check: false
   provider:
-    timeout: 10000
+    timeout: 30000
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

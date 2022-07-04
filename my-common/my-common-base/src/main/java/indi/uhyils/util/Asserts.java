@@ -114,7 +114,7 @@ public class Asserts {
     private static void assertTrue(boolean condition, int removeLayerCount, String msg, Object... params) {
         if (!condition) {
             msg = MessageFormatter.arrayFormat(msg, params).getMessage();
-            AssertException assertException = new AssertException("throw exception " + msg);
+            AssertException assertException = new AssertException("断言异常: " + msg);
             removeExceptionTrace(assertException, removeLayerCount);
             LogUtil.error(assertException);
             throw assertException;
@@ -131,7 +131,7 @@ public class Asserts {
     private static AssertException assertTrueAndGetException(boolean condition, int removeLayerCount, String msg, Object... params) {
         if (!condition) {
             msg = MessageFormatter.arrayFormat(msg, params).getMessage();
-            AssertException assertException = new AssertException("throw exception " + msg);
+            AssertException assertException = new AssertException("断言异常: " + msg);
             removeExceptionTrace(assertException, removeLayerCount);
             return assertException;
         }
@@ -159,7 +159,7 @@ public class Asserts {
     private static void assertTrue(boolean condition, int removeLayerCount, Supplier<String> msgFunction) {
         if (!condition) {
             String msg = msgFunction.get();
-            AssertException AssertException = new AssertException("throw exception: " + msg);
+            AssertException AssertException = new AssertException("断言异常: " + msg);
             removeExceptionTrace(AssertException, removeLayerCount);
             throw AssertException;
         }
