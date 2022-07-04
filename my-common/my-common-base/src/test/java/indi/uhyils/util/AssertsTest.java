@@ -1,6 +1,8 @@
 package indi.uhyils.util;
 
 
+import com.alibaba.fastjson.JSONObject;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -14,5 +16,18 @@ public class AssertsTest {
     public void assertException() {
         Asserts.assertException(() -> Asserts.assertException(() -> {
         }));
+    }
+
+    @Test
+    public void testOptionToJson() {
+        Optional<String> optionalS = Optional.ofNullable("asd");
+
+        final String s1 = optionalS.toString();
+        System.out.println(s1);
+        final String str = JSONObject.toJSONString(optionalS);
+        System.out.println(str);
+        optionalS = Optional.ofNullable(null);
+        final String s = JSONObject.toJSONString(optionalS);
+        System.out.println(s);
     }
 }
