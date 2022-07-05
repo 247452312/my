@@ -64,7 +64,6 @@ public abstract class UserAssembler extends AbstractAssembler<UserDO, User, User
 
         userDTO.setNickName("游客");
         userDTO.setUsername(null);
-        userDTO.setPassword(null);
         userDTO.setMail(null);
         userDTO.setPhone(null);
         userDTO.setHeadPortrait(null);

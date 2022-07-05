@@ -79,8 +79,8 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
     @Override
     public User checkLogin(User user) {
         List<Arg> objects = new ArrayList<>();
-        objects.add(new Arg(UserDTO::getUsername, "=", user.username().getUserName()));
-        objects.add(new Arg(UserDTO::getPassword, "=", user.password().encode()));
+        objects.add(new Arg(UserDO::getUsername, "=", user.username().getUserName()));
+        objects.add(new Arg(UserDO::getPassword, "=", user.password().encode()));
         List<UserDO> byArgsNoPage = dao.selectList(Symbol.makeWrapper(objects));
         Asserts.assertTrue(CollectionUtils.isNotEmpty(byArgsNoPage) && byArgsNoPage.size() == 1, "登录失败,用户名或密码不正确!");
         UserDO userDO = byArgsNoPage.get(0);

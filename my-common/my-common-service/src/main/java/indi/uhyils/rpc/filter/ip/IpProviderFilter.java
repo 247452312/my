@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.filter;
+package indi.uhyils.rpc.filter.ip;
 
 import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.rpc.annotation.RpcSpi;
