@@ -56,6 +56,8 @@ rpc:
     check: false
   provider:
     timeout: 30000
+  custom:
+    exceptionExtensionSpi: selfExceptionExtension
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
