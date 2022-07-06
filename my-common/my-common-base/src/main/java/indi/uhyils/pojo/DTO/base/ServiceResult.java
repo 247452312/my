@@ -81,6 +81,18 @@ public class ServiceResult<T> implements Serializable {
     }
 
     /**
+     * 创建一个断言异常的返回
+     *
+     * @param msg
+     *
+     * @return
+     */
+    public static ServiceResult<?> buildAssertFailedResult(String msg) {
+        return new ServiceResult<>(null, ServiceCode.ASSERT_EXCEPTION.getText(), msg);
+
+    }
+
+    /**
      * 构建一个逻辑失败的返回
      *
      * @param businessMessage 给前台的返回
@@ -208,14 +220,11 @@ public class ServiceResult<T> implements Serializable {
             return getData();
         } else if (ServiceCode.SUCCESS_REDIS.getText().equals(this.getServiceCode())) {
             Asserts.assertTrue(false, "rpc结果通过redis存储.请自行处理或者引入: my-common-hot-spot");
+        } else if (ServiceCode.ASSERT_EXCEPTION.getText().equals(this.getServiceCode())) {
+            Asserts.assertTrue(false, getServiceMessage());
         } else {
-            Asserts.assertTrue(false, this.toErrorString());
+            throw new RuntimeException(getServiceMessage());
         }
         return null;
     }
-
-    private String toErrorString() {
-        return String.format("error,serviceCode: %s, serviceMessage: %s ", this.getServiceCode(), this.getServiceMessage());
-    }
-
 }

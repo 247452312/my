@@ -8,56 +8,19 @@ import java.util.Optional;
  */
 public enum ServiceCode {
     /**
-     * 操作成功
+     *
      */
     SUCCESS(200, "操作成功"),
-
-    /**
-     * 操作成功,返回值缓存在redis中
-     */
     SUCCESS_REDIS(201, "操作成功,返回值缓存在redis中"),
-
-    /**
-     * 前台传值错误
-     */
     REQUEST_PARAM_ERROR(400, "前台传值错误"),
-
-    /**
-     * 没有权限错误
-     */
     NONE_AUTH_ERROR(401, "您没有权限"),
-
-    /**
-     * 登录已过期
-     */
     LOGIN_TIME_OUT_ERROR(402, "登录已过期"),
-
-    /**
-     * 未登录
-     */
     NO_LOGIN__ERROR(403, "未登录"),
-
-    /**
-     * 爬虫验证
-     */
     SPIDER_VERIFICATION(404, "爬虫验证"),
-    /**
-     * 业务已经执行完毕的爬虫验证
-     */
+    ASSERT_EXCEPTION(408, "断言异常"),
     SPIDER_VERIFICATION_RUN(407, "您的请求已经被执行,请填写爬虫验证"),
-    /**
-     * 临时冻结
-     */
     FROZEN_TEMP(405, "临时冻结"),
-
-    /**
-     * 拒绝此ip访问
-     */
     REFUSE_VISIT(406, "您已被拒绝访问"),
-
-    /**
-     * 服务器内部错误
-     */
     ERROR(500, "服务器内部错误");
 
     private Integer text;
