@@ -111,7 +111,7 @@ public class TokenInjectAop {
             }
         } else {
             final Optional<UserDTO> user = redisPoolHandle.getUser(token);
-            Asserts.assertTrue(user.isPresent(), "根据token未找到用户登录数据");
+            Asserts.assertTrue(user.isPresent(), "登录已过期");
             userDTO = user.get();
             final Optional<UserTypeEnum> byCode = UserTypeEnum.getByCode(userDTO.getUserType());
             Asserts.assertTrue(byCode.isPresent(), "用户类型不存在");
