@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -78,6 +80,40 @@ public class Bus extends DefaultConsumer implements BusInterface {
         for (BaseParentEvent event : events) {
             commit(event);
         }
+    }
+
+    @Override
+    public void commitAndPushWithTransactional(BaseParentEvent... events) {
+        final boolean actualTransactionActive = TransactionSynchronizationManager.isActualTransactionActive();
+        // 没有事务的时候走正常的路径
+        if (!actualTransactionActive) {
+            commitAndPush(events);
+            return;
+        }
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                commitAndPush(events);
+            }
+        });
+    }
+
+    @Override
+    public void commitAndPushWithTransactional(BaseParentEvent events) {
+        final boolean actualTransactionActive = TransactionSynchronizationManager.isActualTransactionActive();
+        // 没有事务的时候走正常的路径
+        if (!actualTransactionActive) {
+            commitAndPush(events);
+            return;
+        }
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                commitAndPush(events);
+            }
+        });
     }
 
     /**

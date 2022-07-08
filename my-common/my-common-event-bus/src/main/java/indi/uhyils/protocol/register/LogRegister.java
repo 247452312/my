@@ -24,6 +24,15 @@ public class LogRegister implements Register {
 
     @Override
     public void onEvent(BaseEvent event) {
+        //        debugLog(event);
+        info(event);
+    }
+
+    private void info(BaseEvent event) {
+        LogUtil.info(MessageFormat.format("事件:{0}发布", event.getClass()));
+    }
+
+    private void debugLog(BaseEvent event) {
         if (LogUtil.isDebugEnabled(this)) {
             LogUtil.debug(MessageFormat.format("事件:{0}发布", event.getClass()));
         }

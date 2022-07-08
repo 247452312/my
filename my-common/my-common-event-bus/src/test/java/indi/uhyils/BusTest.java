@@ -15,10 +15,12 @@ import indi.uhyils.protocol.register.TestEventRegister;
 import indi.uhyils.protocol.register.TestParentEvent;
 import indi.uhyils.protocol.register.TestParentEventBlank;
 import indi.uhyils.util.Asserts;
+import indi.uhyils.util.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author uhyils <247452312@qq.com>

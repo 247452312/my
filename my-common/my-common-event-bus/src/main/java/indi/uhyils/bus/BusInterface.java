@@ -4,6 +4,7 @@ import com.rabbitmq.client.Consumer;
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseParentEvent;
 import java.util.List;
+import org.springframework.transaction.TransactionStatus;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -35,6 +36,21 @@ public interface BusInterface extends Consumer {
      * @param events
      */
     void commit(BaseParentEvent... events);
+
+    /**
+     * 提交事务消息
+     *
+     * @param events
+     */
+    void commitAndPushWithTransactional(BaseParentEvent... events);
+
+    /**
+     * 提交事务消息
+     *
+     * @param events
+     */
+    void commitAndPushWithTransactional(BaseParentEvent events);
+
 
     /**
      * 清空事件
