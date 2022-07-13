@@ -92,10 +92,12 @@ public class Bus extends DefaultConsumer implements BusInterface {
         }
 
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+
             @Override
             public void afterCommit() {
                 commitAndPush(events);
             }
+
         });
     }
 
@@ -109,6 +111,7 @@ public class Bus extends DefaultConsumer implements BusInterface {
         }
 
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+
             @Override
             public void afterCommit() {
                 commitAndPush(events);

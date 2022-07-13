@@ -15,7 +15,6 @@ import indi.uhyils.protocol.register.TestEventRegister;
 import indi.uhyils.protocol.register.TestParentEvent;
 import indi.uhyils.protocol.register.TestParentEventBlank;
 import indi.uhyils.util.Asserts;
-import indi.uhyils.util.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -164,6 +163,23 @@ public class BusTest extends BaseTest {
         Long unique = aEvent.getUnique();
         Asserts.assertTrue(unique == 1L || unique == 2L);
         bus.cleanCommitEvent();
+    }
+
+    @Test
+    @Transactional
+    public void testTrans() {
+        PackageEvent list = new PackageEvent();
+        List<BaseParentEvent> event = new ArrayList<>();
+        AEvent e = new AEvent();
+        e.setUnique(1L);
+        event.add(e);
+        BEvent b = new BEvent();
+        b.setUnique(2L);
+        event.add(b);
+        list.setEvents(event);
+
+        bus.commitAndPushWithTransactional(list);
+        System.out.println("hello");
     }
 
 }

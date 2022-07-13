@@ -11,6 +11,11 @@ spring:
         exclude: WEB-INF/**
       freemarker:
         cache: false    #页面不加载缓存，修改即时生效
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:sqlite:test.db
+
 
 rpc:
   application:

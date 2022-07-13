@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年04月20日 12时05分
  */
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
 @EnableTransactionManagement
 public class TestApplication {
 
