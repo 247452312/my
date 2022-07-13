@@ -1,4 +1,3 @@
-event-bus支持事务
 RPC自定义序列化
 RPC合并多个请求
 mysql对接系统完善
