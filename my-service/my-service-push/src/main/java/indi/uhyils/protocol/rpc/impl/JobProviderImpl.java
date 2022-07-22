@@ -31,21 +31,18 @@ public class JobProviderImpl extends BaseDefaultProvider<JobDTO> implements JobP
     }
 
     @Override
-    public ServiceResult<Boolean> pause(IdQuery request) {
-        Boolean result = service.pause(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean pause(IdQuery request) {
+        return service.pause(request);
     }
 
     @Override
-    public ServiceResult<Boolean> start(IdQuery request) {
-        Boolean result = service.start(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean start(IdQuery request) {
+        return service.start(request);
     }
 
     @Override
-    public ServiceResult<Boolean> test(IdQuery request) {
-        Boolean result = service.test(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean test(IdQuery request) {
+        return service.test(request);
     }
 }
 

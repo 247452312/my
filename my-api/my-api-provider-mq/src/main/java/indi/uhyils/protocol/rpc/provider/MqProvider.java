@@ -26,7 +26,7 @@ public interface MqProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> sendMessage(SendMessageRequest request) throws UserException;
+    Boolean sendMessage(SendMessageRequest request) throws UserException;
 
     /**
      * 获取消息
@@ -35,7 +35,7 @@ public interface MqProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<JSONObject> getMessage(GetMessageRequest request) throws UserException;
+    JSONObject getMessage(GetMessageRequest request) throws UserException;
 
     /**
      * 创建主题
@@ -44,7 +44,7 @@ public interface MqProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> createTopic(CreateTopicRequest request) throws UserException;
+    Boolean createTopic(CreateTopicRequest request) throws UserException;
 
     /**
      * 注册一个生产者
@@ -53,7 +53,7 @@ public interface MqProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> registerProvider(RegisterProviderRequest request) throws UserException;
+    Boolean registerProvider(RegisterProviderRequest request) throws UserException;
 
     /**
      * 注册一个消费者
@@ -62,7 +62,7 @@ public interface MqProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> registerConsumer(RegisterConsumerRequest request) throws UserException;
+    Boolean registerConsumer(RegisterConsumerRequest request) throws UserException;
 
     /**
      * 注册一个发布者
@@ -71,7 +71,7 @@ public interface MqProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> registerPublish(RegisterPublishRequest request) throws UserException;
+    Boolean registerPublish(RegisterPublishRequest request) throws UserException;
 
     /**
      * 注册一个订阅者
@@ -80,5 +80,5 @@ public interface MqProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> registerSubscriber(RegisterSubscriberReqeust request) throws UserException;
+    Boolean registerSubscriber(RegisterSubscriberReqeust request) throws UserException;
 }

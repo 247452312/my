@@ -33,15 +33,13 @@ public class OrderBaseInfoProviderImpl extends BaseDefaultProvider<OrderBaseInfo
     }
 
     @Override
-    public ServiceResult<List<OrderBaseInfoDTO>> getAllBaseOrderIdAndName(DefaultCQE request) {
-        List<OrderBaseInfoDTO> result = service.getAllBaseOrderIdAndName(request);
-        return ServiceResult.buildSuccessResult(result);
+    public List<OrderBaseInfoDTO> getAllBaseOrderIdAndName(DefaultCQE request) {
+        return service.getAllBaseOrderIdAndName(request);
     }
 
     @Override
-    public ServiceResult<OrderBaseInfoDTO> getOneOrder(IdQuery request) {
-        OrderBaseInfoDTO result = service.getOneOrder(request);
-        return ServiceResult.buildSuccessResult(result);
+    public OrderBaseInfoDTO getOneOrder(IdQuery request) {
+        return service.getOneOrder(request);
     }
 
 }

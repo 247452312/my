@@ -3,7 +3,6 @@ package indi.uhyils.protocol.rpc.impl;
 import indi.uhyils.annotation.Public;
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.RoleDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.PutDeptsToRoleCommand;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
@@ -34,52 +33,45 @@ public class RoleProviderImpl extends BaseDefaultProvider<RoleDTO> implements Ro
 
     @Override
     @Public
-    public ServiceResult<RoleDTO> getRoleByRoleId(IdQuery request) {
+    public RoleDTO getRoleByRoleId(IdQuery request) {
         Identifier roleId = new Identifier(request.getId());
-        RoleDTO result = service.getRoleByRoleId(roleId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getRoleByRoleId(roleId);
     }
 
     @Override
-    public ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleCommand request) {
+    public Boolean putDeptsToRole(PutDeptsToRoleCommand request) {
         Identifier roleId = new Identifier(request.getRoleId());
         List<Identifier> deptIds = request.getDeptIds().stream().map(Identifier::new).collect(Collectors.toList());
-        Boolean result = service.putDeptsToRole(roleId, deptIds);
-        return ServiceResult.buildSuccessResult(result);
+        return service.putDeptsToRole(roleId, deptIds);
     }
 
     @Override
-    public ServiceResult<Boolean> deleteRoleDept(IdsCommand idsRequest) {
+    public Boolean deleteRoleDept(IdsCommand idsRequest) {
         List<Long> roleDeptId = idsRequest.getIds();
-        Boolean result = service.deleteRoleDept(roleDeptId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.deleteRoleDept(roleDeptId);
     }
 
     @Override
-    public ServiceResult<List<RoleDTO>> getRoles(DefaultCQE request) {
-        List<RoleDTO> result = service.getRoles();
-        return ServiceResult.buildSuccessResult(result);
+    public List<RoleDTO> getRoles(DefaultCQE request) {
+        return service.getRoles();
     }
 
     @Override
-    public ServiceResult<List<DeptDTO>> getUserDeptsByRoleId(IdQuery request) {
+    public List<DeptDTO> getUserDeptsByRoleId(IdQuery request) {
         Identifier roleId = new Identifier(request.getId());
-        List<DeptDTO> result = service.getUserDeptsByRoleId(roleId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getUserDeptsByRoleId(roleId);
     }
 
     @Override
-    public ServiceResult<List<GetAllDeptWithHaveMarkDTO>> getAllDeptWithHaveMark(IdQuery request) {
+    public List<GetAllDeptWithHaveMarkDTO> getAllDeptWithHaveMark(IdQuery request) {
         Identifier roleId = new Identifier(request.getId());
-        List<GetAllDeptWithHaveMarkDTO> result = service.getAllDeptWithHaveMark(roleId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getAllDeptWithHaveMark(roleId);
     }
 
     @Override
-    public ServiceResult<Boolean> deleteRole(IdCommand request) {
+    public Boolean deleteRole(IdCommand request) {
         Identifier roleId = new Identifier(request.getId());
-        Boolean result = service.deleteRole(roleId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.deleteRole(roleId);
     }
 
     @Override

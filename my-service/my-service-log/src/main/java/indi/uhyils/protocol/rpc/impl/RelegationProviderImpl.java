@@ -33,15 +33,13 @@ public class RelegationProviderImpl extends BaseDefaultProvider<RelegationDTO> i
 
 
     @Override
-    public ServiceResult<Boolean> demotion(RelegationDemotionCommand cqe) {
-        Boolean result = service.demotion(cqe.getServiceName(), cqe.getMethodName());
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean demotion(RelegationDemotionCommand cqe) {
+        return service.demotion(cqe.getServiceName(), cqe.getMethodName());
     }
 
     @Override
-    public ServiceResult<Boolean> recover(RelegationCoverCommand cqe) {
-        Boolean result = service.recover(cqe.getServiceName(), cqe.getMethodName());
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean recover(RelegationCoverCommand cqe) {
+        return service.recover(cqe.getServiceName(), cqe.getMethodName());
     }
 }
 

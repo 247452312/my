@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.enums.ServiceCode;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.exception.ServiceResultException;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.request.SessionRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -68,28 +69,36 @@ public class AllController {
     @PostMapping("action")
     public WebResponse action(@RequestBody Action action, HttpServletRequest httpServletRequest) {
         // 服务返回信息
-        ServiceResult serviceResult;
+        Object data;
 
         // 发送前处理
         dealActionBeforeCall(action);
         // 获取有价值的headers
         Map<String, String> headers = findHeaders(httpServletRequest);
         try {
-            Future<ServiceResult> submit = executor.submit(new ActionFuture(action, headers, httpServletRequest));
-            serviceResult = submit.get();
+            Future<Object> submit = executor.submit(new ActionFuture(action, headers, httpServletRequest));
+            data = submit.get();
 
             // 修改字段类型为String,因为前端大数会失去精度
-            Object data = serviceResult.getData();
             if (data instanceof JSONObject) {
                 changeFieldTypeToString((JSONObject) data);
             } else if (data instanceof JSONArray) {
                 changeFieldTypeToString((JSONArray) data);
             }
-            return WebResponse.build(serviceResult);
+            return WebResponse.build(data, null, ServiceCode.SUCCESS.getText());
+        } catch (ExecutionException e) {
+            final Throwable cause = e.getCause();
+            LogUtil.error(this, cause);
+            if (cause instanceof ServiceResultException) {
+                final ServiceResultException serviceResultException = (ServiceResultException) cause;
+                return WebResponse.build(null, serviceResultException.getMsg(), serviceResultException.getErrorCode());
+            } else {
+                return WebResponse.build(null, e.getMessage(), ServiceCode.ERROR.getText());
+            }
         } catch (Exception e) {
             // 如果失败,就返回微服务传回来的错误信息与提示
             LogUtil.error(this, e);
-            return WebResponse.build(null, ServiceCode.ERROR.getMsg(), ServiceCode.ERROR.getText());
+            return WebResponse.build(null, e.getMessage(), ServiceCode.ERROR.getText());
         }
         // disruptor 注释了. 以后想用在别的地方当做参考
         /*finally {
@@ -183,7 +192,7 @@ public class AllController {
         action.getArgs().put(TOKEN, action.getToken());
     }
 
-    private static class ActionFuture implements Callable<ServiceResult> {
+    private static class ActionFuture implements Callable<Object> {
 
         private final Action action;
 
@@ -198,14 +207,15 @@ public class AllController {
         }
 
         @Override
-        public ServiceResult call() throws Exception {
+        public Object call() throws Exception {
             pushIp();
-            Object o = RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), headers, action.getArgs());
-            if (o instanceof ServiceResult) {
-                return (ServiceResult) o;
+            try {
+                return RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), headers, action.getArgs());
+            } catch (Exception e) {
+                throw e;
+            } catch (Throwable throwable) {
+                throw new Exception(throwable);
             }
-            JSONObject result = (JSONObject) o;
-            return JSON.toJavaObject(result, ServiceResult.class);
         }
 
         private void pushIp() {

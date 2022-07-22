@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.InitOrderDTO;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.CommitOrderCommand;
 import indi.uhyils.pojo.cqe.command.FrozenOrderCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
@@ -41,52 +40,44 @@ public class OrderInfoProviderImpl extends BaseDefaultProvider<OrderInfoDTO> imp
 
 
     @Override
-    public ServiceResult<InitOrderDTO> initOrder(IdCommand request) {
-        InitOrderDTO result = service.initOrder(request);
-        return ServiceResult.buildSuccessResult(result);
+    public InitOrderDTO initOrder(IdCommand request) {
+        return service.initOrder(request);
     }
 
     @Override
-    public ServiceResult<List<OrderInfoDTO>> getAllOrder(GetAllOrderQuery request) {
-        List<OrderInfoDTO> result = service.getAllOrder(request);
-        return ServiceResult.buildSuccessResult(result);
+    public List<OrderInfoDTO> getAllOrder(GetAllOrderQuery request) {
+        return service.getAllOrder(request);
     }
 
 
     @Override
-    public ServiceResult<Boolean> commitOrder(CommitOrderCommand request) {
-        Boolean result = service.commitOrder(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean commitOrder(CommitOrderCommand request) {
+        return service.commitOrder(request);
     }
 
     @Override
-    public ServiceResult<Boolean> recallOrder(RecallOrderCommand request) {
-        Boolean result = service.recallOrder(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean recallOrder(RecallOrderCommand request) {
+        return service.recallOrder(request);
     }
 
     @Override
-    public ServiceResult<Boolean> agreeRecallOrder(AgreeRecallOrderEvent request) {
-        Boolean result = service.agreeRecallOrder(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean agreeRecallOrder(AgreeRecallOrderEvent request) {
+        return service.agreeRecallOrder(request);
     }
 
     @Override
-    public ServiceResult<Boolean> frozenOrder(FrozenOrderCommand request) {
-        Boolean result = service.frozenOrder(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean frozenOrder(FrozenOrderCommand request) {
+        return service.frozenOrder(request);
     }
 
     @Override
-    public ServiceResult<Boolean> restartOrder(RestartOrderCommand request) {
-        Boolean result = service.restartOrder(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean restartOrder(RestartOrderCommand request) {
+        return service.restartOrder(request);
     }
 
     @Override
-    public ServiceResult<Boolean> approvalOrder(ApprovalOrderEvent request) {
-        Boolean result = service.approvalOrder(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean approvalOrder(ApprovalOrderEvent request) {
+        return service.approvalOrder(request);
     }
 }
 

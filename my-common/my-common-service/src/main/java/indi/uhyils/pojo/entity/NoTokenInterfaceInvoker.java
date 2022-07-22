@@ -3,17 +3,13 @@ package indi.uhyils.pojo.entity;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.NoLogin;
 import indi.uhyils.context.UserInfoHelper;
-import indi.uhyils.enums.ServiceCode;
-import indi.uhyils.exception.ServiceResultException;
 import indi.uhyils.pojo.DTO.LoginDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.BlankCommand;
 import indi.uhyils.util.AopUtil;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.util.ArrayList;
-import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -77,19 +73,13 @@ public class NoTokenInterfaceInvoker extends AbstractAnnotationInterfaceInvoker 
      *
      * @return 登录结果
      */
-    private LoginDTO visiterLogin() {
+    private LoginDTO visiterLogin() throws Throwable {
         BlankCommand build = new BlankCommand();
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
         final Object o1 = RpcApiUtil.rpcApiTool("UserProvider", "visiterLogin", args);
         JSONObject o = (JSONObject) o1;
-        final ServiceResult serviceResult = o.toJavaObject(ServiceResult.class);
-
-        if (Objects.equals(serviceResult.getServiceCode(), ServiceCode.SUCCESS.getText())) {
-            final JSONObject data = (JSONObject) serviceResult.getData();
-            return data.toJavaObject(LoginDTO.class);
-        }
-        throw new ServiceResultException(serviceResult);
+        return o.toJavaObject(LoginDTO.class);
     }
 
 }

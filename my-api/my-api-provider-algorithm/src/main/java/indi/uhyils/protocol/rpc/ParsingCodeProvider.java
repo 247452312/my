@@ -21,5 +21,5 @@ public interface ParsingCodeProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<ExecuteCodeResponse> executeCode(ExecuteCodeRequest request);
+    ExecuteCodeResponse executeCode(ExecuteCodeRequest request);
 }

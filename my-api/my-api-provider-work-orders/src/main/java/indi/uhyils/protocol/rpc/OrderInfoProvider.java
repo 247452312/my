@@ -31,7 +31,7 @@ public interface OrderInfoProvider extends DTOProvider<OrderInfoDTO> {
      *
      * @return 插入后的id
      */
-    ServiceResult<InitOrderDTO> initOrder(IdCommand request);
+    InitOrderDTO initOrder(IdCommand request);
 
     /**
      * 根据类型获取全部工单
@@ -40,7 +40,7 @@ public interface OrderInfoProvider extends DTOProvider<OrderInfoDTO> {
      *
      * @return
      */
-    ServiceResult<List<OrderInfoDTO>> getAllOrder(GetAllOrderQuery request);
+    List<OrderInfoDTO> getAllOrder(GetAllOrderQuery request);
 
 
     /**
@@ -50,7 +50,7 @@ public interface OrderInfoProvider extends DTOProvider<OrderInfoDTO> {
      *
      * @return 工单
      */
-    ServiceResult<Boolean> commitOrder(CommitOrderCommand request);
+    Boolean commitOrder(CommitOrderCommand request);
 
     /**
      * 撤回工单
@@ -59,7 +59,7 @@ public interface OrderInfoProvider extends DTOProvider<OrderInfoDTO> {
      *
      * @return 是否发送信息到审批人成功
      */
-    ServiceResult<Boolean> recallOrder(RecallOrderCommand request);
+    Boolean recallOrder(RecallOrderCommand request);
 
 
     /**
@@ -69,7 +69,7 @@ public interface OrderInfoProvider extends DTOProvider<OrderInfoDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> agreeRecallOrder(AgreeRecallOrderEvent request);
+    Boolean agreeRecallOrder(AgreeRecallOrderEvent request);
 
 
     /**
@@ -79,7 +79,7 @@ public interface OrderInfoProvider extends DTOProvider<OrderInfoDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> frozenOrder(FrozenOrderCommand request);
+    Boolean frozenOrder(FrozenOrderCommand request);
 
     /**
      * 重启工单(对应冻结)
@@ -88,7 +88,7 @@ public interface OrderInfoProvider extends DTOProvider<OrderInfoDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> restartOrder(RestartOrderCommand request);
+    Boolean restartOrder(RestartOrderCommand request);
 
 
     /**
@@ -98,6 +98,6 @@ public interface OrderInfoProvider extends DTOProvider<OrderInfoDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> approvalOrder(ApprovalOrderEvent request);
+    Boolean approvalOrder(ApprovalOrderEvent request);
 }
 

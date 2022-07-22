@@ -31,7 +31,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return
      */
-    ServiceResult<SoftwareDTO> reload(IdCommand request);
+    SoftwareDTO reload(IdCommand request);
 
 
     /**
@@ -41,7 +41,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return 返回信息
      */
-    ServiceResult<OperateSoftwareResponse> start(IdCommand request);
+    OperateSoftwareResponse start(IdCommand request);
 
 
     /**
@@ -51,7 +51,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return 返回信息
      */
-    ServiceResult<OperateSoftwareResponse> stop(IdCommand request);
+    OperateSoftwareResponse stop(IdCommand request);
 
 
     /**
@@ -61,7 +61,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return 删除是否成功
      */
-    ServiceResult<Boolean> deleteManyRedis(IdsCommand request);
+    Boolean deleteManyRedis(IdsCommand request);
 
 
     /**
@@ -71,7 +71,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> reloadManyRedis(IdsCommand request);
+    Boolean reloadManyRedis(IdsCommand request);
 
     /**
      * 开启选中的redis
@@ -80,7 +80,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> startManyRedis(IdsCommand request);
+    Boolean startManyRedis(IdsCommand request);
 
     /**
      * 停止选中的redis
@@ -89,7 +89,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> stopManyRedis(IdsCommand request);
+    Boolean stopManyRedis(IdsCommand request);
 
 
     /**
@@ -99,7 +99,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return redis的key
      */
-    ServiceResult<List<String>> getRedisKeys(GetRedisKeysQuery request);
+    List<String> getRedisKeys(GetRedisKeysQuery request);
 
     /**
      * 获取redis仓库名称
@@ -108,7 +108,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return 仓库名称
      */
-    ServiceResult<Integer> getRedisDb(IdQuery request);
+    Integer getRedisDb(IdQuery request);
 
     /**
      * 添加新的key 如果成功返回1 如果有重复 返回2
@@ -117,7 +117,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return 如果成功 返回1 如果有重复 返回2
      */
-    ServiceResult<Integer> addKey(AddCommand<RedisKeyAndValue> request);
+    Integer addKey(AddCommand<RedisKeyAndValue> request);
 
     /**
      * 添加新的key 如果成功返回1
@@ -127,7 +127,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return 如果成功 返回1 如果有重复 返回2
      */
-    ServiceResult<Integer> addKeyCover(AddCommand<RedisKeyAndValue> request);
+    Integer addKeyCover(AddCommand<RedisKeyAndValue> request);
 
     /**
      * 修改key值
@@ -136,7 +136,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return 1->成功 2->没有此key
      */
-    ServiceResult<Integer> updateKey(ChangeCommand<RedisKeyAndValue> request);
+    Integer updateKey(ChangeCommand<RedisKeyAndValue> request);
 
 
     /**
@@ -146,7 +146,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return
      */
-    ServiceResult<String> getValueByKey(KeyQuery request);
+    String getValueByKey(KeyQuery request);
 
 
     /**
@@ -156,7 +156,7 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> deleteRedisByKey(ChangeCommand<RedisKeyAndValue> request);
+    Boolean deleteRedisByKey(ChangeCommand<RedisKeyAndValue> request);
 
 
     /**
@@ -166,6 +166,6 @@ public interface SoftwareProvider extends DTOProvider<SoftwareDTO> {
      *
      * @return jedis.info()
      */
-    ServiceResult<List<GetInfosResponse>> getInfos(IdQuery request);
+    List<GetInfosResponse> getInfos(IdQuery request);
 }
 

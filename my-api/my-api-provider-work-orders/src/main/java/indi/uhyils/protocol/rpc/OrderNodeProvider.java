@@ -22,7 +22,7 @@ public interface OrderNodeProvider extends DTOProvider<OrderNodeDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> deleteByIds(IdsCommand request);
+    Boolean deleteByIds(IdsCommand request);
 
     /**
      * 工单节点失败(主动将工单节点置为失败)(处理人员经过核实,客观上不能完成此操作,例:审批时客户填写不合格)
@@ -31,7 +31,7 @@ public interface OrderNodeProvider extends DTOProvider<OrderNodeDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> failOrderNode(FailOrderNodeCommand request);
+    Boolean failOrderNode(FailOrderNodeCommand request);
 
     /**
      * 处理工单节点
@@ -40,7 +40,7 @@ public interface OrderNodeProvider extends DTOProvider<OrderNodeDTO> {
      *
      * @return
      */
-    ServiceResult<DealOrderNodeDTO> dealOrderNode(DealOrderNodeCommand request) throws Exception;
+    DealOrderNodeDTO dealOrderNode(DealOrderNodeCommand request) throws Exception;
 
     /**
      * 工单节点(转交)失败(因处理人员无能力完成此节点,申请转交给其他人,则可以进行主动失败)
@@ -49,5 +49,5 @@ public interface OrderNodeProvider extends DTOProvider<OrderNodeDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeCommand request) throws Exception;
+    Boolean incapacityFailOrderNode(IncapacityFailOrderNodeCommand request) throws Exception;
 }

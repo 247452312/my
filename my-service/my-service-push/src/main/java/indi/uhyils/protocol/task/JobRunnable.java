@@ -3,6 +3,7 @@ package indi.uhyils.protocol.task;
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
+import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
@@ -54,7 +55,12 @@ public class JobRunnable implements Callable {
         defaultRequest.setUser(userEntity);
         ArrayList<Object> list = new ArrayList<>(1);
         list.add(defaultRequest);
-        RpcApiUtil.rpcApiToolAsync(interfaceName, methodName, list);
+        try {
+            RpcApiUtil.rpcApiToolAsync(interfaceName, methodName, list);
+        } catch (Throwable throwable) {
+            LogUtil.error(throwable, "定时任务执行失败");
+            return Boolean.FALSE;
+        }
         return Boolean.TRUE;
     }
 }

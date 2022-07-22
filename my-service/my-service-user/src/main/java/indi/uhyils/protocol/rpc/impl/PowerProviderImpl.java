@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.annotation.Public;
 import indi.uhyils.pojo.DTO.PowerDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetMethodNameByInterfaceNameQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
@@ -30,49 +29,43 @@ public class PowerProviderImpl extends BaseDefaultProvider<PowerDTO> implements 
     private PowerService service;
 
     @Override
-    public ServiceResult<List<PowerDTO>> getPowers(DefaultCQE request) {
-        List<PowerDTO> result = service.getPowers();
-        return ServiceResult.buildSuccessResult(result);
+    public List<PowerDTO> getPowers(DefaultCQE request) {
+        return service.getPowers();
 
     }
 
     @Override
     @Public
-    public ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerQuery request) {
+    public Boolean checkUserHavePower(CheckUserHavePowerQuery request) {
         InterfaceName interfaceName = new InterfaceName(request.getInterfaceName());
         MethodName methodName = new MethodName(request.getMethodName());
         Identifier userId = new Identifier(request.getUserId());
-        Boolean result = service.checkUserHavePower(interfaceName, methodName, userId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.checkUserHavePower(interfaceName, methodName, userId);
     }
 
     @Override
-    public ServiceResult<Boolean> deletePower(IdCommand request) {
+    public Boolean deletePower(IdCommand request) {
         Identifier powerId = new Identifier(request.getId());
-        Boolean result = service.deletePower(powerId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.deletePower(powerId);
 
     }
 
     @Override
-    public ServiceResult<List<String>> getInterfaces(DefaultCQE request) {
-        List<String> result = service.getInterfaces();
-        return ServiceResult.buildSuccessResult(result);
+    public List<String> getInterfaces(DefaultCQE request) {
+        return service.getInterfaces();
 
     }
 
     @Override
-    public ServiceResult<List<String>> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameQuery request) {
+    public List<String> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameQuery request) {
         InterfaceName interfaceName = new InterfaceName(request.getInterfaceName());
-        List<String> result = service.getMethodNameByInterfaceName(interfaceName);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getMethodNameByInterfaceName(interfaceName);
 
     }
 
     @Override
-    public ServiceResult<Integer> initPowerInProStart(DefaultCQE request) {
-        Integer result = service.initPowerInProStart();
-        return ServiceResult.buildSuccessResult(result);
+    public Integer initPowerInProStart(DefaultCQE request) {
+        return service.initPowerInProStart();
 
     }
 

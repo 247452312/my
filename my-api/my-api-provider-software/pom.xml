@@ -6,11 +6,11 @@
     <parent>
         <groupId>indi.uhyils</groupId>
         <artifactId>my-api</artifactId>
-        <version>0.3.1-my-SNAPSHOT</version>
+        <version>2.0.0.0.my-SNAPSHOT</version>
     </parent>
 
     <artifactId>my-api-provider-software</artifactId>
-    <version>0.3.1-my-SNAPSHOT</version>
+    <version>2.0.0.0.my-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>indi.uhyils</groupId>

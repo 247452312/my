@@ -34,12 +34,11 @@ public class ApiProviderImpl extends BaseDefaultProvider<ApiDTO> implements ApiP
     }
 
     @Override
-    public ServiceResult<Page<ApiDTO>> getByArgsAndGroup(GetByArgsAndGroupQuery request) {
+    public Page<ApiDTO> getByArgsAndGroup(GetByArgsAndGroupQuery request) {
         Long groupId = request.getGroupId();
         Order order = request.getOrder();
         Limit limit = request.getLimit();
-        Page<ApiDTO> result = service.getByArgsAndGroup(groupId, order, limit);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getByArgsAndGroup(groupId, order, limit);
     }
 }
 

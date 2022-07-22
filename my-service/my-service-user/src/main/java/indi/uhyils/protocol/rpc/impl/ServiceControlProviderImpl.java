@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
 import indi.uhyils.pojo.DTO.request.MethodDisableQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
@@ -30,32 +29,28 @@ public class ServiceControlProviderImpl implements ServiceControlProvider {
     private ServiceControlService service;
 
     @Override
-    public ServiceResult<Boolean> getMethodDisable(MethodDisableQuery request) {
+    public Boolean getMethodDisable(MethodDisableQuery request) {
         InterfaceName className = new InterfaceName(request.getClassName());
         MethodName methodName = new MethodName(request.getMethodName());
         ReadWriteTypeEnum methodType = ReadWriteTypeEnum.parse(request.getMethodType()).orElseThrow(() -> Asserts.makeException("方法禁用时,未查询到方法类型"));
-        Boolean result = service.getMethodDisable(className, methodName, methodType);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getMethodDisable(className, methodName, methodType);
     }
 
     @Override
-    public ServiceResult<List<MethodDisableDTO>> getAllMethodDisable(DefaultCQE request) {
-        List<MethodDisableDTO> result = service.getAllMethodDisable();
-        return ServiceResult.buildSuccessResult(result);
+    public List<MethodDisableDTO> getAllMethodDisable(DefaultCQE request) {
+        return service.getAllMethodDisable();
     }
 
     @Override
-    public ServiceResult<Boolean> addOrEditMethodDisable(AddCommand<MethodDisableDTO> request) {
+    public Boolean addOrEditMethodDisable(AddCommand<MethodDisableDTO> request) {
         MethodDisableDTO dto = request.getDto();
-        Boolean result = service.addOrEditMethodDisable(dto);
-        return ServiceResult.buildSuccessResult(result);
+        return service.addOrEditMethodDisable(dto);
     }
 
     @Override
-    public ServiceResult<Boolean> delMethodDisable(DelMethodDisableCommand request) {
+    public Boolean delMethodDisable(DelMethodDisableCommand request) {
         InterfaceName interfaceName = new InterfaceName(request.getClassName());
         MethodName methodName = new MethodName(request.getMethodName());
-        Boolean result = service.delMethodDisable(interfaceName, methodName);
-        return ServiceResult.buildSuccessResult(result);
+        return service.delMethodDisable(interfaceName, methodName);
     }
 }

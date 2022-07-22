@@ -48,7 +48,7 @@ public class OrderAutoDealConsumer extends DefaultConsumer {
 
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-        InitApiRequestTemporary initApiRequestTemporary = ObjectByteUtil.toObject(body, InitApiRequestTemporary.class);
+        InitApiRequestTemporary initApiRequestTemporary = ObjectByteUtil.toObject(body);
         OrderNodeDO orderNodeEntity = initApiRequestTemporary.getOrderNode();
 
         // 初始化方法

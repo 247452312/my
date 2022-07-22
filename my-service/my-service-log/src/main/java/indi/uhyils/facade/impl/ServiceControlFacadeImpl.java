@@ -6,7 +6,6 @@ import indi.uhyils.enums.ReadWriteTypeEnum;
 import indi.uhyils.facade.ServiceControlFacade;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
 import indi.uhyils.pojo.DTO.RelegationDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
 import indi.uhyils.pojo.cqe.command.base.AddCommand;
 import indi.uhyils.protocol.rpc.ServiceControlProvider;
@@ -30,8 +29,7 @@ public class ServiceControlFacadeImpl implements ServiceControlFacade {
     public boolean demotion(String serviceName, String methodName) {
         AddCommand<MethodDisableDTO> request = new AddCommand<>();
         request.setDto(MethodDisableDTO.build(serviceName, methodName, ReadWriteTypeEnum.READ.getCode()));
-        ServiceResult<Boolean> result = provider.addOrEditMethodDisable(request);
-        return result.validationAndGet();
+        return provider.addOrEditMethodDisable(request);
     }
 
     @Override
@@ -39,14 +37,12 @@ public class ServiceControlFacadeImpl implements ServiceControlFacade {
         DelMethodDisableCommand request = new DelMethodDisableCommand();
         request.setClassName(serviceName);
         request.setMethodName(methodName);
-        ServiceResult<Boolean> result = provider.delMethodDisable(request);
-        return result.validationAndGet();
+        return provider.delMethodDisable(request);
     }
 
     @Override
     public void fillDisable(List<RelegationDTO> dtos) {
-        ServiceResult<List<MethodDisableDTO>> allMethodDisable = provider.getAllMethodDisable(UserInfoHelper.makeCQE());
-        List<MethodDisableDTO> result = allMethodDisable.validationAndGet();
+        List<MethodDisableDTO> result = provider.getAllMethodDisable(UserInfoHelper.makeCQE());
         for (RelegationDTO dto : dtos) {
             for (MethodDisableDTO disableDTO : result) {
                 String className = disableDTO.getClassName();

@@ -25,7 +25,7 @@ public interface ServerProvider extends DTOProvider<ServerDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> testConnByData(TestConnByDataRequest request);
+    Boolean testConnByData(TestConnByDataRequest request);
 
     /**
      * 测试服务器链接
@@ -34,7 +34,7 @@ public interface ServerProvider extends DTOProvider<ServerDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> testConnById(IdCommand request);
+    Boolean testConnById(IdCommand request);
 
     /**
      * 获取所有服务器信息
@@ -43,7 +43,7 @@ public interface ServerProvider extends DTOProvider<ServerDTO> {
      *
      * @return 所有服务器信息
      */
-    ServiceResult<List<ServerDTO>> getServersIdAndName(DefaultCQE request);
+    List<ServerDTO> getServersIdAndName(DefaultCQE request);
 
 
     /**
@@ -53,7 +53,7 @@ public interface ServerProvider extends DTOProvider<ServerDTO> {
      *
      * @return 服务器名称
      */
-    ServiceResult<String> getNameById(IdQuery request);
+    String getNameById(IdQuery request);
 
 }
 

@@ -21,5 +21,5 @@ public interface ParamProvider extends DTOProvider<ParamDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> flushAllSys(FlushAllSysEvent event);
+    Boolean flushAllSys(FlushAllSysEvent event);
 }

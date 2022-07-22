@@ -4,7 +4,6 @@ import indi.uhyils.context.MyContext;
 import indi.uhyils.context.SpiderContext;
 import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
 import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpQuery;
@@ -143,14 +142,16 @@ public class IpSpiderTableAspect {
             user.setUsername("admin");
             defaultRequest.setUser(user);
             defaultRequest.setIp(ip);
-            ServiceResult<Boolean> logIntervalByIp = blackListService.getLogIntervalByIp(defaultRequest);
-            // 如果log服务挂了
-            if (!logIntervalByIp.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
+            Boolean logIntervalByIp = null;
+            try {
+                logIntervalByIp = blackListService.getLogIntervalByIp(defaultRequest);
+            } catch (Exception e) {
+                // 如果log服务挂了
                 return completableFuture.get();
             }
 
             // 如果不是爬虫
-            if (!logIntervalByIp.getData()) {
+            if (!logIntervalByIp) {
                 return completableFuture.get();
             }
             jedis.hincrby(SpiderContext.IP_TEMP_RECORD_KEY_COUNT, ip);
@@ -177,15 +178,17 @@ public class IpSpiderTableAspect {
                     try {
                         // 去后台获取数据库中的ip黑名单
                         DefaultCQE request = DefaultCQEBuildUtil.getAdminDefaultCQE();
-                        ServiceResult<List<String>> allIpBlackList = blackListService.getAllIpBlackList(request);
-                        // 如果log服务挂了
-                        if (allIpBlackList == null || !allIpBlackList.getServiceCode().equals(ServiceCode.SUCCESS.getText())) {
+                        List<String> allIpBlackList = null;
+                        try {
+                            allIpBlackList = blackListService.getAllIpBlackList(request);
+                        } catch (Exception e) {
+                            // 如果log服务挂了
                             // 设置为不可用
                             canInit = Boolean.FALSE;
                             return Boolean.FALSE;
                         }
                         // 将黑名单存入redis
-                        Long sadd = redisPoolHandle.sadd(SpiderContext.IP_BLACK_REDIS_KEY, allIpBlackList.getData());
+                        Long sadd = redisPoolHandle.sadd(SpiderContext.IP_BLACK_REDIS_KEY, allIpBlackList);
                         // 如果redis不可用
                         if (sadd == -1L) {
                             canInit = Boolean.FALSE;

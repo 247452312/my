@@ -33,7 +33,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return 用户
      */
-    ServiceResult<UserDTO> getUserById(IdQuery request);
+    UserDTO getUserById(IdQuery request);
 
 
     /**
@@ -49,7 +49,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return 通过用户id和用户类型编译的token
      */
-    ServiceResult<String> getUserToken(IdQuery request);
+    String getUserToken(IdQuery request);
 
 
     /**
@@ -60,7 +60,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return 解析后的token数据
      */
-    ServiceResult<TokenInfo> getTokenInfoByToken(DefaultCQE request);
+    TokenInfo getTokenInfoByToken(DefaultCQE request);
 
 
     /**
@@ -70,7 +70,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return 登录所需要的信息
      */
-    ServiceResult<LoginDTO> login(LoginCommand request);
+    LoginDTO login(LoginCommand request);
 
     /**
      * 游客登录
@@ -79,7 +79,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return
      */
-    ServiceResult<LoginDTO> visiterLogin(BlankCommand request);
+    LoginDTO visiterLogin(BlankCommand request);
 
     /**
      * 登出(删除redis中的用户)
@@ -88,7 +88,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return 是否登出成功
      */
-    ServiceResult<Boolean> logout(DefaultCQE request);
+    Boolean logout(DefaultCQE request);
 
     /**
      * 获取全部用户
@@ -97,7 +97,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return 全部用户
      */
-    ServiceResult<List<UserDTO>> getUsers(DefaultCQE request);
+    List<UserDTO> getUsers(DefaultCQE request);
 
     /**
      * 默认获取用户本身的方式
@@ -106,7 +106,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return 用户
      */
-    ServiceResult<UserDTO> getUserByToken(DefaultCQE request);
+    UserDTO getUserByToken(DefaultCQE request);
 
     /**
      * 更新密码
@@ -115,7 +115,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return 修改密码的返回
      */
-    ServiceResult<String> updatePassword(UpdatePasswordCommand request);
+    String updatePassword(UpdatePasswordCommand request);
 
     /**
      * 根据id获取用户名称
@@ -124,7 +124,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return 用户名称
      */
-    ServiceResult<String> getNameById(IdQuery request);
+    String getNameById(IdQuery request);
 
     /**
      * 批量根据id获取用户
@@ -133,7 +133,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return
      */
-    ServiceResult<List<UserDTO>> getSampleUserByIds(IdsQuery request);
+    List<UserDTO> getSampleUserByIds(IdsQuery request);
 
 
     /**
@@ -143,7 +143,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> applyUser(ApplyUserCommand request);
+    Boolean applyUser(ApplyUserCommand request);
 
 
     /**
@@ -153,7 +153,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> passApply(IdCommand request);
+    Boolean passApply(IdCommand request);
 
     /**
      * 停用一个用户
@@ -162,7 +162,7 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> stopUser(IdCommand request);
+    Boolean stopUser(IdCommand request);
 
     /**
      * 根据用户名获取用户信息
@@ -171,5 +171,5 @@ public interface UserProvider extends DTOProvider<UserDTO> {
      *
      * @return
      */
-    ServiceResult<UserDTO> getUserByUserName(FindUserByNameQuery request);
+    UserDTO getUserByUserName(FindUserByNameQuery request);
 }

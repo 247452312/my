@@ -24,6 +24,6 @@ public interface DistributeProvider extends BaseProvider {
      *
      * @throws Exception 远程调用错误
      */
-    ServiceResult<WelcomeResponse> getWelcomeData(DefaultCQE request) throws Exception;
+    WelcomeResponse getWelcomeData(DefaultCQE request) throws Exception;
 
 }

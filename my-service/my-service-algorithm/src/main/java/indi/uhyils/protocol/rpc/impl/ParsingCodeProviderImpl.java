@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.ExecuteCodeRequest;
 import indi.uhyils.pojo.DTO.response.ExecuteCodeResponse;
 import indi.uhyils.protocol.rpc.ParsingCodeProvider;
@@ -21,8 +20,8 @@ public class ParsingCodeProviderImpl implements ParsingCodeProvider {
     private ParsingCodeService service;
 
     @Override
-    public ServiceResult<ExecuteCodeResponse> executeCode(ExecuteCodeRequest request) {
+    public ExecuteCodeResponse executeCode(ExecuteCodeRequest request) {
         String result = service.executeCode(request.getClassValue());
-        return ServiceResult.buildSuccessResult(ExecuteCodeResponse.build(result));
+        return ExecuteCodeResponse.build(result);
     }
 }

@@ -29,7 +29,7 @@ public interface MenuProvider extends DTOProvider<MenuDTO> {
      *
      * @return 主页菜单 包括主页信息 logo信息 菜单信息
      */
-    ServiceResult<IndexMenuTreeDTO> getIndexMenu(DefaultCQE request);
+    IndexMenuTreeDTO getIndexMenu(DefaultCQE request);
 
 
     /**
@@ -39,7 +39,7 @@ public interface MenuProvider extends DTOProvider<MenuDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> putDeptsToMenu(PutDeptsToMenuCommand request);
+    Boolean putDeptsToMenu(PutDeptsToMenuCommand request);
 
     /**
      * 获取菜单tree,并将格式转为前台的格式(menu.html用)
@@ -48,7 +48,7 @@ public interface MenuProvider extends DTOProvider<MenuDTO> {
      *
      * @return 格式处理好菜单
      */
-    ServiceResult<MenuHtmlTreeDTO> getMenuTree(GetByIFrameAndDeptsQuery request);
+    MenuHtmlTreeDTO getMenuTree(GetByIFrameAndDeptsQuery request);
 
 
     /**
@@ -59,7 +59,7 @@ public interface MenuProvider extends DTOProvider<MenuDTO> {
      *
      * @return 是否删除成功
      */
-    ServiceResult<Boolean> removeMenu(IdCommand req);
+    Boolean removeMenu(IdCommand req);
 
     /**
      * 根据菜单id获取属于这个菜单的权限集以及全部权限集
@@ -68,7 +68,7 @@ public interface MenuProvider extends DTOProvider<MenuDTO> {
      *
      * @return 权限集们
      */
-    ServiceResult<List<GetDeptsByMenuIdDTO>> getDeptsByMenuId(IdQuery req);
+    List<GetDeptsByMenuIdDTO> getDeptsByMenuId(IdQuery req);
 
     /**
      * 获取所有叶子菜单(包含羁绊标记)
@@ -77,6 +77,6 @@ public interface MenuProvider extends DTOProvider<MenuDTO> {
      *
      * @return 所有叶子菜单(包含羁绊标记)
      */
-    ServiceResult<List<GetAllMenuWithHaveMarkDTO>> getAllMenuWithHaveMark(IdQuery request);
+    List<GetAllMenuWithHaveMarkDTO> getAllMenuWithHaveMark(IdQuery request);
 
 }

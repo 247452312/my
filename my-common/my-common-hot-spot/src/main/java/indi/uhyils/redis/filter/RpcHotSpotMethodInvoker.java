@@ -1,4 +1,4 @@
-package indi.uhyils.redis.aop;
+package indi.uhyils.redis.filter;
 
 import com.alibaba.fastjson.JSON;
 import indi.uhyils.MyThreadLocal;
@@ -12,34 +12,28 @@ import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
+import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.netty.callback.MethodInvoker;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.MD5Util;
 import indi.uhyils.util.ObjectByteUtil;
+import indi.uhyils.util.SupplierWithException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 /**
- * 热点aop
- *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年09月18日 08时24分
+ * @date 文件创建日期 2022年07月20日 10时18分
  */
-@Component
-@Aspect
-@Order(50)
-public class HotSpotAop {
+@RpcSpi
+public class RpcHotSpotMethodInvoker implements MethodInvoker {
+
 
     /**
      * redis写脚本
@@ -91,33 +85,37 @@ public class HotSpotAop {
      */
     private Long lastTryTime;
 
-    /**
-     * 定义切入点，切入点为indi.uhyils.serviceImpl包中的所有类的所有函数
-     * 通过@Pointcut注解声明频繁使用的切点表达式
-     */
-    @Pointcut("execution(public indi.uhyils.pojo.DTO.base.ServiceResult indi.uhyils.protocol..*.*(..))")
-    public void hotSpotAspectPoint() {
-    }
 
-    @Around("hotSpotAspectPoint()")
-    public Object hotSpotAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
+    @Override
+    public Object doMethodInvoke(Object target, Method method, Object[] args) throws Throwable {
+        final SupplierWithException<Object> objectSupplier = () -> {
+            method.setAccessible(true);
+            return method.invoke(target, args);
+        };
+        final Class<?> targetClass = target.getClass();
+        final String serviceName = targetClass.getName();
+
+        final String className = targetClass.getSimpleName();
+
+        final String methodName = method.getName();
+
         // 如果 热点集群redis没有加载成功,则一段时间后自动重试一次
         if (!HotSpotRedisPool.initTypeIsRedis) {
             long lastTryTime = System.currentTimeMillis();
             if (this.lastTryTime == null) {
                 // 失败后第一次调用
                 this.lastTryTime = lastTryTime;
-                return pjp.proceed();
+                return objectSupplier.get();
             } else {
                 // 判断是否超过一秒
                 if (lastTryTime - this.lastTryTime > RETRY_INTERVAL) {
                     this.lastTryTime = lastTryTime;
                     Boolean initSuccess = hotSpotRedisPool.initPool();
                     if (!initSuccess) {
-                        return pjp.proceed();
+                        return objectSupplier.get();
                     }
                 } else {
-                    return pjp.proceed();
+                    return objectSupplier.get();
                 }
             }
         }
@@ -128,10 +126,6 @@ public class HotSpotAop {
         //此接口的热点缓存类型
         CacheTypeEnum cacheType = null;
         /*首先获取类上的注解*/
-        Class<?> targetClass = pjp.getTarget().getClass();
-
-        String className = targetClass.getSimpleName();
-        String methodName = pjp.getSignature().getName();
 
         ReadWriteMark declaredAnnotation = targetClass.getDeclaredAnnotation(ReadWriteMark.class);
         if (declaredAnnotation != null) {
@@ -151,10 +145,10 @@ public class HotSpotAop {
         Method declaredMethod = null;
         for (Class clazz : classList) {
             Method[] declaredMethods = clazz.getDeclaredMethods();
-            for (Method method : declaredMethods) {
-                String name = method.getName();
+            for (Method declaredMethodItem : declaredMethods) {
+                String name = declaredMethodItem.getName();
                 if (name.equals(methodName)) {
-                    declaredMethod = method;
+                    declaredMethod = declaredMethodItem;
                     break;
                 }
             }
@@ -173,25 +167,26 @@ public class HotSpotAop {
         /*首先查询此接口是写接口还是读接口*/
         if (mark == null) {
             //此处说明类上,接口上都没有此接口的信息,那么就正常执行,什么都不发生
-            return pjp.proceed();
+            return objectSupplier.get();
         } else {
-            DefaultCQE arg = (DefaultCQE) pjp.getArgs()[0];
+            DefaultCQE arg = (DefaultCQE) args[0];
             UserDTO user = arg.getUser();
             switch (mark) {
                 //此处是读接口应该做的方法
                 case READ:
-                    return doHotSpotRead(tables, className, methodName, cacheType, user, pjp);
+                    return doHotSpotRead(tables, className, methodName, cacheType, user, arg, objectSupplier);
                 //此处是写接口应该用到的方法
                 case WRITE:
                     markThreadLocal.set(cacheType);
-                    Object proceed = pjp.proceed();
+                    Object proceed = objectSupplier.get();
                     markThreadLocal.remove();
                     return proceed;
                 default:
-                    return pjp.proceed();
+                    return objectSupplier.get();
             }
         }
     }
+
 
     /**
      * 写接口应该做的方法
@@ -213,13 +208,12 @@ public class HotSpotAop {
     /**
      * 读接口应该做的方法
      */
-    private Object doHotSpotRead(List<String> tables, String className, String methodName, CacheTypeEnum cacheType, UserDTO user, ProceedingJoinPoint pjp) throws Throwable {
+    private Object doHotSpotRead(List<String> tables, String className, String methodName, CacheTypeEnum cacheType, UserDTO user, DefaultCQE arg, SupplierWithException<Object> supplier) throws Throwable {
         //如果此接口不允许缓存
         if (CacheTypeEnum.NOT_TYPE.equals(cacheType)) {
-            return pjp.proceed();
+            return supplier.get();
         }
 
-        Object arg = pjp.getArgs()[0];
         Class<?> aClass = arg.getClass();
         String simpleName = aClass.getSimpleName();
         String format;
@@ -255,7 +249,7 @@ public class HotSpotAop {
             boolean canGetCache = (Long) eval == 1L;
             // 如果检查redis中的table更新了
             if (!canGetCache) {
-                Object proceed = pjp.proceed();
+                Object proceed = supplier.get();
                 ServiceResult sr = (ServiceResult) proceed;
                 // 如果接口不是成功,那么不进入缓存
                 if (!ServiceCode.SUCCESS.getText().equals(sr.getServiceCode())) {
@@ -276,7 +270,7 @@ public class HotSpotAop {
                 jedis.eval(UPDATE_CACHE.getBytes(StandardCharsets.UTF_8), updateKeys, updateArgv);
                 return proceed;
             }
-            LogUtil.info(HotSpotAop.class, String.format("接口<%s#%s> 读取redis中的缓存热点数据", className, methodName));
+            LogUtil.info(this.getClass(), String.format("接口<%s#%s> 读取redis中的缓存热点数据", className, methodName));
 
             ServiceResult<HotSpotDTO> hotSpotResponse = ServiceResult.buildHotSpotHaveResult(format, HotSpotContext.HOTSPOT_HASH_DATA_KEY);
             return hotSpotResponse;

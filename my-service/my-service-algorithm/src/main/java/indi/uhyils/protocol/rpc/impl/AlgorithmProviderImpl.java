@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.AlgorithmDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.CellAlgorithmRequest;
 import indi.uhyils.pojo.DTO.response.CellAlgorithmResponse;
 import indi.uhyils.protocol.rpc.AlgorithmProvider;
@@ -32,9 +31,9 @@ public class AlgorithmProviderImpl extends BaseDefaultProvider<AlgorithmDTO> imp
     }
 
     @Override
-    public ServiceResult<CellAlgorithmResponse> cellAlgorithm(CellAlgorithmRequest request) {
+    public CellAlgorithmResponse cellAlgorithm(CellAlgorithmRequest request) {
         CellAlgorithmResponse result = service.cellAlgorithm(request);
-        return ServiceResult.buildSuccessResult(result);
+        return result;
     }
 
 }

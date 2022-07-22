@@ -1,12 +1,12 @@
 package indi.uhyils.aop;
 
-import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.context.UserInfoHelper;
-import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.enums.UserTypeEnum;
+import indi.uhyils.exception.LoginOutException;
+import indi.uhyils.exception.NoAuthException;
+import indi.uhyils.exception.NoLoginException;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.CheckUserHavePowerQuery;
 import indi.uhyils.pojo.entity.NoTokenInterfaceInvoker;
@@ -56,7 +56,7 @@ public class TokenInjectAop {
      * 定义切入点，切入点为service包中的所有类的所有函数
      * 通过@Pointcut注解声明频繁使用的切点表达式
      */
-    @Pointcut("execution(public indi.uhyils.pojo.DTO.base.ServiceResult indi.uhyils.protocol..*.*(..)))")
+    @Pointcut("execution(public * indi.uhyils.protocol.rpc..*.*(..)))")
     public void tokenInjectPoint() {
     }
 
@@ -97,7 +97,7 @@ public class TokenInjectAop {
 
         /* 查询有没有登录 */
         if (StringUtils.isEmpty(token) && arg.getUser() == null) {
-            return ServiceResult.buildNoLoginResult();
+            throw new NoLoginException();
         }
 
         UserDTO userDTO;
@@ -119,7 +119,7 @@ public class TokenInjectAop {
         }
         /* 查询是否超时 */
         if (userDTO == null) {
-            return ServiceResult.buildLoginOutResult();
+            throw new LoginOutException();
         }
         UserInfoHelper.setUser(userDTO);
         try {
@@ -144,13 +144,10 @@ public class TokenInjectAop {
         if (substring.contains(IMPL)) {
             substring = substring.substring(0, substring.length() - 4);
         }
-        ServiceResult checkUserHavePowerServiceResult = checkUserHavePower(userDTO, userDTO.getId(), substring, methodName, token, arg);
-        if (!ServiceCode.SUCCESS.getText().equals(checkUserHavePowerServiceResult.getServiceCode())) {
-            return checkUserHavePowerServiceResult;
-        }
-        Boolean havePower = (Boolean) checkUserHavePowerServiceResult.getData();
+        final Boolean havePower = checkUserHavePower(userDTO, userDTO.getId(), substring, methodName, token, arg);
+
         if (!havePower) {
-            return ServiceResult.buildNoAuthResult();
+            throw new NoAuthException();
         }
 
         arg.setUser(userDTO);
@@ -168,13 +165,13 @@ public class TokenInjectAop {
      *
      * @return 是否有权限
      */
-    private ServiceResult<JSONObject> checkUserHavePower(UserDTO userEntity, Long id, String interfaceName, String methodName, String token, DefaultCQE request) {
+    private Boolean checkUserHavePower(UserDTO userEntity, Long id, String interfaceName, String methodName, String token, DefaultCQE request) throws Throwable {
         CheckUserHavePowerQuery build = CheckUserHavePowerQuery.build(interfaceName, methodName, id);
         build.setToken(token);
         build.setUser(userEntity);
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        JSONObject o = (JSONObject) RpcApiUtil.rpcApiTool("PowerProvider", "checkUserHavePower", args);
-        return o.toJavaObject(ServiceResult.class);
+        Object o = RpcApiUtil.rpcApiTool("PowerProvider", "checkUserHavePower", args);
+        return (Boolean) o;
     }
 }

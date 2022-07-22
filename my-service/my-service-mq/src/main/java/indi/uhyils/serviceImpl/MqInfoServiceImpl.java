@@ -7,6 +7,7 @@ import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.provider.MqInfoService;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,10 @@ import org.springframework.stereotype.Service;
 public class MqInfoServiceImpl implements MqInfoService {
 
     @Override
-    public ServiceResult<ArrayList<Topic>> getAllInfo(DefaultCQE request) throws NoSuchFieldException, IllegalAccessException {
+    public ArrayList<Topic> getAllInfo(DefaultCQE request) throws NoSuchFieldException, IllegalAccessException {
         Field topicMapField = TopicFactory.class.getDeclaredField("topicMap");
         topicMapField.setAccessible(true);
         Map<String, Topic> topicMap = (Map<String, Topic>) topicMapField.get(TopicFactory.class);
-        return ServiceResult.buildSuccessResult(new ArrayList<>(topicMap.values()));
+        return new ArrayList<>(topicMap.values());
     }
 }

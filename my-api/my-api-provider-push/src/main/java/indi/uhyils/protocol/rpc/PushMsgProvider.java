@@ -23,7 +23,7 @@ public interface PushMsgProvider extends DTOProvider<PushMsgDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> push(CronRequest request);
+    Boolean push(CronRequest request);
 
     /**
      * 主动向某人推送一条消息
@@ -32,7 +32,7 @@ public interface PushMsgProvider extends DTOProvider<PushMsgDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request);
+    Boolean pushMsgToSomeone(PushMsgToSomeoneRequest request);
 
 }
 

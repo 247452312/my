@@ -8,8 +8,8 @@ import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.alibaba.druid.sql.dialect.mysql.visitor.MySqlSchemaStatVisitor;
 import com.alibaba.druid.stat.TableStat;
 import indi.uhyils.enums.CacheTypeEnum;
-import indi.uhyils.redis.aop.HotSpotAop;
-import indi.uhyils.util.SpringUtil;
+import indi.uhyils.redis.filter.RpcHotSpotMethodInvoker;
+import indi.uhyils.rpc.netty.callback.MethodInvokerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +28,10 @@ public class TableSqlFilter extends FilterEventAdapter {
     /**
      * 工具人
      */
-    private final HotSpotAop util;
+    private final RpcHotSpotMethodInvoker util;
 
     public TableSqlFilter() {
-        util = SpringUtil.getBean(HotSpotAop.class);
+        util = (RpcHotSpotMethodInvoker) MethodInvokerFactory.createMethodInvoker();
     }
 
 

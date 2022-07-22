@@ -9,7 +9,6 @@ import indi.uhyils.core.topic.TopicFactory;
 import indi.uhyils.enums.OutDealTypeEnum;
 import indi.uhyils.enums.RegisterType;
 import indi.uhyils.exception.UserException;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.CreateTopicRequest;
 import indi.uhyils.pojo.DTO.request.GetMessageRequest;
 import indi.uhyils.pojo.DTO.request.RegisterConsumerRequest;
@@ -31,19 +30,19 @@ import org.apache.commons.lang3.StringUtils;
 public class MqProviderImpl implements MqProvider {
 
     @Override
-    public ServiceResult<Boolean> sendMessage(SendMessageRequest request) throws UserException {
+    public Boolean sendMessage(SendMessageRequest request) throws UserException {
         // 创建topic
         Topic topic = TopicFactory.createOrGetTopic(request);
         Message message = MessageFactory.createMessage(request.getData(), request.getKey(), topic);
         // 保存消息到topic
-        return ServiceResult.buildSuccessResult(topic.saveMessage(message));
+        return topic.saveMessage(message);
     }
 
     @Override
-    public ServiceResult<JSONObject> getMessage(GetMessageRequest request) {
+    public JSONObject getMessage(GetMessageRequest request) {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
-            return ServiceResult.buildSuccessResult("不存在topic", null);
+            return null;
         }
         Message message = null;
         try {
@@ -52,13 +51,13 @@ public class MqProviderImpl implements MqProvider {
             LogUtil.error(this, e);
         }
         if (message == null) {
-            return ServiceResult.buildSuccessResult("不存在信息", null);
+            return null;
         }
-        return ServiceResult.buildSuccessResult(message.getData());
+        return message.getData();
     }
 
     @Override
-    public ServiceResult<Boolean> createTopic(CreateTopicRequest request) throws UserException {
+    public Boolean createTopic(CreateTopicRequest request) throws UserException {
         // 接收默认值
         OutDealTypeEnum receiveType = request.getReceiveType();
         if (receiveType == null) {
@@ -70,63 +69,63 @@ public class MqProviderImpl implements MqProvider {
             pushType = OutDealTypeEnum.PASSIVE;
         }
         TopicFactory.createOrGetTopic(request.getName(), request.getType(), receiveType, pushType, request.getKey());
-        return ServiceResult.buildSuccessResult(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public ServiceResult<Boolean> registerProvider(RegisterProviderRequest request) throws UserException {
+    public Boolean registerProvider(RegisterProviderRequest request) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
-            return ServiceResult.buildSuccessResult(Boolean.FALSE);
+            return Boolean.FALSE;
         }
         if (StringUtils.isBlank(request.getChannelId())) {
             topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.PROVIDER, request.getUrl(), topic, request.getBehavior()));
         } else {
             topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PROVIDER, request.getChannelId(), topic, request.getBehavior()));
         }
-        return ServiceResult.buildSuccessResult(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public ServiceResult<Boolean> registerConsumer(RegisterConsumerRequest request) throws UserException {
+    public Boolean registerConsumer(RegisterConsumerRequest request) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
-            return ServiceResult.buildSuccessResult(Boolean.FALSE);
+            return Boolean.FALSE;
         }
         if (StringUtils.isBlank(request.getChannelId())) {
             topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.COMSUMER, request.getUrl(), topic, request.getBehavior()));
         } else {
             topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.COMSUMER, request.getChannelId(), topic, request.getBehavior()));
         }
-        return ServiceResult.buildSuccessResult(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public ServiceResult<Boolean> registerPublish(RegisterPublishRequest request) throws UserException {
+    public Boolean registerPublish(RegisterPublishRequest request) throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
-            return ServiceResult.buildSuccessResult(Boolean.FALSE);
+            return Boolean.FALSE;
         }
         if (StringUtils.isBlank(request.getChannelId())) {
             topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.PUBLISH, request.getUrl(), topic, request.getBehavior()));
         } else {
             topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.PUBLISH, request.getChannelId(), topic, request.getBehavior()));
         }
-        return ServiceResult.buildSuccessResult(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public ServiceResult<Boolean> registerSubscriber(RegisterSubscriberReqeust request)
+    public Boolean registerSubscriber(RegisterSubscriberReqeust request)
         throws UserException {
         Topic topic = TopicFactory.getByTopicName(request.getTopicName());
         if (topic == null) {
-            return ServiceResult.buildSuccessResult(Boolean.FALSE);
+            return Boolean.FALSE;
         }
         if (StringUtils.isBlank(request.getChannelId())) {
             topic.addNewRegister(RegisterFactory.createOrGetUrlRegister(RegisterType.SUBSCRIBER, request.getUrl(), topic, request.getBehavior()));
         } else {
             topic.addNewRegister(RegisterFactory.createOrGetRegister(RegisterType.SUBSCRIBER, request.getChannelId(), topic, request.getBehavior()));
         }
-        return ServiceResult.buildSuccessResult(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 }

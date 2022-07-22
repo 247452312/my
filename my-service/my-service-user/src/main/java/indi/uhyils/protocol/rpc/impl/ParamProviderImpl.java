@@ -25,8 +25,8 @@ public class ParamProviderImpl extends BaseDefaultProvider<ParamDTO> implements 
     private ParamService service;
 
     @Override
-    public ServiceResult<Boolean> flushAllSys(FlushAllSysEvent event) {
-        return ServiceResult.buildSuccessResult(service.flushAllGlobal(event));
+    public Boolean flushAllSys(FlushAllSysEvent event) {
+        return service.flushAllGlobal(event);
     }
 
 

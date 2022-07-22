@@ -32,7 +32,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> insertItem(AddCommand<DictItemDTO> request);
+    Boolean insertItem(AddCommand<DictItemDTO> request);
 
 
     /**
@@ -42,7 +42,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 字典项
      */
-    ServiceResult<List<DictItemDTO>> getItemByDictId(IdQuery request);
+    List<DictItemDTO> getItemByDictId(IdQuery request);
 
     /**
      * 修改字典项
@@ -51,7 +51,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 修改是否成功
      */
-    ServiceResult<Boolean> updateItem(ChangeCommand<DictItemDTO> request);
+    Boolean updateItem(ChangeCommand<DictItemDTO> request);
 
     /**
      * 删除字典项
@@ -60,7 +60,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 是否删除成功
      */
-    ServiceResult<Boolean> deleteItem(IdCommand request);
+    Boolean deleteItem(IdCommand request);
 
 
     /**
@@ -70,7 +70,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> cleanDictItem(IdCommand request);
+    Boolean cleanDictItem(IdCommand request);
 
 
     /**
@@ -80,7 +80,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 字典项
      */
-    ServiceResult<DictItemDTO> getItemById(IdQuery request);
+    DictItemDTO getItemById(IdQuery request);
 
     /**
      * 根据某几列获取item数据
@@ -89,7 +89,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 分页数据(也可以设置不分页)
      */
-    ServiceResult<Page<DictItemDTO>> getByItemArgs(GetByItemArgsQuery request);
+    Page<DictItemDTO> getByItemArgs(GetByItemArgsQuery request);
 
 
     /**
@@ -99,7 +99,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 版本信息
      */
-    ServiceResult<VersionInfoDTO> getVersionInfoResponse(DefaultCQE request);
+    VersionInfoDTO getVersionInfoResponse(DefaultCQE request);
 
 
     /**
@@ -109,7 +109,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 下一步计划
      */
-    ServiceResult<LastPlanDTO> getLastPlanResponse(DefaultCQE request);
+    LastPlanDTO getLastPlanResponse(DefaultCQE request);
 
 
     /**
@@ -119,7 +119,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 图标class
      */
-    ServiceResult<List<String>> getAllMenuIcon(DefaultCQE request);
+    List<String> getAllMenuIcon(DefaultCQE request);
 
 
     /**
@@ -129,7 +129,7 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return code对应的字典对应的所有项
      */
-    ServiceResult<List<DictItemDTO>> getByCode(GetByCodeQuery request);
+    List<DictItemDTO> getByCode(GetByCodeQuery request);
 
 
     /**
@@ -139,5 +139,5 @@ public interface DictProvider extends DTOProvider<DictDTO> {
      *
      * @return 开始界面快捷入口信息
      */
-    ServiceResult<QuickStartDTO> getQuickStartResponse(DefaultCQE request);
+    QuickStartDTO getQuickStartResponse(DefaultCQE request);
 }

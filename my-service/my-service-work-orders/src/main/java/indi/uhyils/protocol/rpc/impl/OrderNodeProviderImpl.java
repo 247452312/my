@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.DealOrderNodeDTO;
 import indi.uhyils.pojo.DTO.OrderNodeDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.DealOrderNodeCommand;
 import indi.uhyils.pojo.cqe.command.FailOrderNodeCommand;
 import indi.uhyils.pojo.cqe.command.IdsCommand;
@@ -35,27 +34,23 @@ public class OrderNodeProviderImpl extends BaseDefaultProvider<OrderNodeDTO> imp
     }
 
     @Override
-    public ServiceResult<Boolean> deleteByIds(IdsCommand request) {
-        Boolean result = service.deleteByIds(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean deleteByIds(IdsCommand request) {
+        return service.deleteByIds(request);
     }
 
     @Override
-    public ServiceResult<Boolean> failOrderNode(FailOrderNodeCommand request) {
-        Boolean result = service.failOrderNode(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean failOrderNode(FailOrderNodeCommand request) {
+        return service.failOrderNode(request);
     }
 
     @Override
-    public ServiceResult<DealOrderNodeDTO> dealOrderNode(DealOrderNodeCommand request) throws Exception {
-        DealOrderNodeDTO result = service.dealOrderNode(request);
-        return ServiceResult.buildSuccessResult(result);
+    public DealOrderNodeDTO dealOrderNode(DealOrderNodeCommand request) throws Exception {
+        return service.dealOrderNode(request);
     }
 
     @Override
-    public ServiceResult<Boolean> incapacityFailOrderNode(IncapacityFailOrderNodeCommand request) throws Exception {
-        Boolean result = service.incapacityFailOrderNode(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean incapacityFailOrderNode(IncapacityFailOrderNodeCommand request) throws Exception {
+        return service.incapacityFailOrderNode(request);
     }
 }
 

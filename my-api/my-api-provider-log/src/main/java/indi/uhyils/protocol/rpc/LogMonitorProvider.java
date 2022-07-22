@@ -23,7 +23,7 @@ public interface LogMonitorProvider extends DTOProvider<LogMonitorDTO> {
      *
      * @return JVM数据统计信息
      */
-    ServiceResult<JvmDataStatisticsDTO> getJvmDataStatisticsResponse(DefaultCQE request);
+    JvmDataStatisticsDTO getJvmDataStatisticsResponse(DefaultCQE request);
 
 
     /**
@@ -33,7 +33,7 @@ public interface LogMonitorProvider extends DTOProvider<LogMonitorDTO> {
      *
      * @return JVM历史信息 -> 存活的
      */
-    ServiceResult<JvmInfoLogDTO> getJvmInfoLogResponse(DefaultCQE request);
+    JvmInfoLogDTO getJvmInfoLogResponse(DefaultCQE request);
 
 }
 

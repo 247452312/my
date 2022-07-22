@@ -31,9 +31,8 @@ public class ApiSubscribeProviderImpl extends BaseDefaultProvider<ApiSubscribeDT
     }
 
     @Override
-    public ServiceResult<Boolean> subscribe(SubscribeRequest request) {
-        Boolean result = service.subscribe(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean subscribe(SubscribeRequest request) {
+        return service.subscribe(request);
     }
 }
 

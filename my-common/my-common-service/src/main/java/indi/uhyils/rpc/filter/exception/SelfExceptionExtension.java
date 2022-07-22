@@ -11,6 +11,7 @@ import indi.uhyils.rpc.exchange.pojo.data.factory.ResponseRpcFactory;
 import indi.uhyils.rpc.exchange.pojo.data.factory.RpcFactoryProducer;
 import indi.uhyils.rpc.exchange.pojo.head.RpcHeader;
 import indi.uhyils.rpc.netty.spi.step.template.ProviderResponseExceptionExtension;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -36,6 +37,12 @@ public class SelfExceptionExtension implements ProviderResponseExceptionExtensio
 
     @Override
     public RpcData onThrowable(RpcData rpcData, Throwable th) {
-        return ((ResponseRpcFactory) RpcFactoryProducer.build(RpcTypeEnum.RESPONSE)).createErrorResponse(rpcData.unique(), th, HeaderContext.get().entrySet().stream().map(t -> new RpcHeader(t.getKey(), t.getValue())).toArray(RpcHeader[]::new));
+        final ResponseRpcFactory build = (ResponseRpcFactory) RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
+        final Map<String, String> headerMap = HeaderContext.get();
+        RpcHeader[] rpcHeaders = new RpcHeader[0];
+        if (headerMap != null) {
+            rpcHeaders = headerMap.entrySet().stream().map(t -> new RpcHeader(t.getKey(), t.getValue())).toArray(RpcHeader[]::new);
+        }
+        return build.createErrorResponse(rpcData.unique(), th, rpcHeaders);
     }
 }

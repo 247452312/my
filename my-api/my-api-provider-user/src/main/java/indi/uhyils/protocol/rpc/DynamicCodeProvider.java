@@ -22,5 +22,5 @@ public interface DynamicCodeProvider extends DTOProvider<DynamicCodeDTO> {
      *
      * @return
      */
-    ServiceResult<List<DynamicCodeDTO>> getByGroupId(GetByGroupIdQuery query);
+    List<DynamicCodeDTO> getByGroupId(GetByGroupIdQuery query);
 }

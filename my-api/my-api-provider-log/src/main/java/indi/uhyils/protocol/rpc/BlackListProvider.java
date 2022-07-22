@@ -23,7 +23,7 @@ public interface BlackListProvider extends DTOProvider<BlackListDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> getLogIntervalByIp(GetLogIntervalByIpQuery request);
+    Boolean getLogIntervalByIp(GetLogIntervalByIpQuery request);
 
     /**
      * 获取所有的ip黑名单
@@ -32,7 +32,7 @@ public interface BlackListProvider extends DTOProvider<BlackListDTO> {
      *
      * @return 所有的ip黑名单
      */
-    ServiceResult<List<String>> getAllIpBlackList(DefaultCQE request);
+    List<String> getAllIpBlackList(DefaultCQE request);
 
     /**
      * 添加黑名单
@@ -43,5 +43,5 @@ public interface BlackListProvider extends DTOProvider<BlackListDTO> {
      *
      * @throws InterruptedException
      */
-    ServiceResult<Boolean> addBlackIp(AddBlackIpRequest request);
+    Boolean addBlackIp(AddBlackIpRequest request);
 }

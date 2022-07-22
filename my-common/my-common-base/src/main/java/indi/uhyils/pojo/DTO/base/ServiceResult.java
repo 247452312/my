@@ -1,8 +1,8 @@
 package indi.uhyils.pojo.DTO.base;
 
 import indi.uhyils.enums.ServiceCode;
+import indi.uhyils.exception.ServiceResultException;
 import indi.uhyils.pojo.DTO.HotSpotDTO;
-import indi.uhyils.util.Asserts;
 import java.io.Serializable;
 
 /**
@@ -42,18 +42,6 @@ public class ServiceResult<T> implements Serializable {
     public ServiceResult() {
     }
 
-    /**
-     * 构建一个逻辑成功的返回
-     *
-     * @param businessMessage 给前台返回的信息
-     * @param t               请求返回值
-     * @param <T>             请求返回值
-     *
-     * @return 一个code是200 代表成功的返回
-     */
-    public static <T> ServiceResult<T> buildSuccessResult(String businessMessage, T t) {
-        return new ServiceResult<>(t, ServiceCode.SUCCESS.getText(), businessMessage);
-    }
 
     /**
      * 构建一个逻辑成功的返回
@@ -219,12 +207,9 @@ public class ServiceResult<T> implements Serializable {
         if (ServiceCode.SUCCESS.getText().equals(this.getServiceCode())) {
             return getData();
         } else if (ServiceCode.SUCCESS_REDIS.getText().equals(this.getServiceCode())) {
-            Asserts.assertTrue(false, "rpc结果通过redis存储.请自行处理或者引入: my-common-hot-spot");
-        } else if (ServiceCode.ASSERT_EXCEPTION.getText().equals(this.getServiceCode())) {
-            Asserts.assertTrue(false, getServiceMessage());
+            throw new ServiceResultException(this.getServiceCode(), "rpc结果通过redis存储.请自行处理或者引入: my-common-hot-spot");
         } else {
-            throw new RuntimeException(getServiceMessage());
+            throw new ServiceResultException(this.getServiceCode(), this.getServiceMessage());
         }
-        return null;
     }
 }

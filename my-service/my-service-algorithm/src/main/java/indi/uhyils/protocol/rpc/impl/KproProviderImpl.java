@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.DbInformationDTO;
 import indi.uhyils.pojo.DTO.request.ProjectGenerateRequest;
 import indi.uhyils.protocol.rpc.KproProvider;
@@ -23,9 +22,9 @@ public class KproProviderImpl implements KproProvider {
     private KproService service;
 
     @Override
-    public ServiceResult<Map<String, String>> projectGenerate(ProjectGenerateRequest request) {
+    public Map<String, String> projectGenerate(ProjectGenerateRequest request) {
         List<DbInformationDTO> list = request.getList();
         Map<String, String> result = service.projectGenerate(list);
-        return ServiceResult.buildSuccessResult(result);
+        return result;
     }
 }
