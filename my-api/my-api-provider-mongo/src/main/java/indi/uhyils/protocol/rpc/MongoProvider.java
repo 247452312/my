@@ -20,7 +20,7 @@ public interface MongoProvider extends BaseProvider {
      *
      * @return fileName
      */
-    ServiceResult<String> add(AddCommand<String> request);
+    String add(AddCommand<String> request);
 
     /**
      * 删除
@@ -29,7 +29,7 @@ public interface MongoProvider extends BaseProvider {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> delete(NameRequest request);
+    Boolean delete(NameRequest request);
 
 
     /**
@@ -39,5 +39,5 @@ public interface MongoProvider extends BaseProvider {
      *
      * @return base64
      */
-    ServiceResult<String> getByFileName(NameRequest request);
+    String getByFileName(NameRequest request);
 }

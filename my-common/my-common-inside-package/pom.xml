@@ -7,7 +7,7 @@
     <groupId>indi.uhyils</groupId>
 
     <artifactId>my-common-inside-package</artifactId>
-    <version>0.3.1-my-SNAPSHOT</version>
+    <version>2.0.0.0.my-SNAPSHOT</version>
     <description>my 内部项目版本控制</description>
     <packaging>pom</packaging>
 

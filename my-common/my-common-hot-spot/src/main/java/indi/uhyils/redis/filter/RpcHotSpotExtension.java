@@ -32,7 +32,7 @@ public class RpcHotSpotExtension implements ConsumerResponseObjectExtension {
      *
      * @return
      */
-    private static ServiceResult getRealServiceResult(ServiceResult serviceResult, RpcData rpcData) {
+    private static Object getRealServiceResult(ServiceResult<?> serviceResult, RpcData rpcData) {
         RpcResponseContentImpl content = (RpcResponseContentImpl) rpcData.content();
         String json = content.getResponseContent();
         // 如果返回值是缓存
@@ -45,7 +45,7 @@ public class RpcHotSpotExtension implements ConsumerResponseObjectExtension {
                 String key = hotSpotResponse.getKey();
                 String hkey = hotSpotResponse.getHkey();
                 byte[] hget = jedis.hget(key.getBytes(StandardCharsets.UTF_8), hkey.getBytes(StandardCharsets.UTF_8));
-                serviceResult = ObjectByteUtil.toObject(hget, ServiceResult.class);
+                return ObjectByteUtil.toObject(hget);
             }
         }
         return serviceResult;
@@ -53,6 +53,9 @@ public class RpcHotSpotExtension implements ConsumerResponseObjectExtension {
 
     @Override
     public Object doFilter(Object obj, RpcData rpcData) {
-        return getRealServiceResult((ServiceResult) obj, rpcData);
+        if (obj instanceof ServiceResult) {
+            return getRealServiceResult((ServiceResult<?>) obj, rpcData);
+        }
+        return obj;
     }
 }

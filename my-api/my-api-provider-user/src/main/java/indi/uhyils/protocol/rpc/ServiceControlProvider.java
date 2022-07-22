@@ -36,14 +36,14 @@ public interface ServiceControlProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> getMethodDisable(MethodDisableQuery request);
+    Boolean getMethodDisable(MethodDisableQuery request);
 
     /**
      * 获取所有接口是否允许使用
      *
      * @return 全部接口
      */
-    ServiceResult<List<MethodDisableDTO>> getAllMethodDisable(DefaultCQE request);
+    List<MethodDisableDTO> getAllMethodDisable(DefaultCQE request);
 
 
     /**
@@ -51,7 +51,7 @@ public interface ServiceControlProvider extends BaseProvider {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> addOrEditMethodDisable(AddCommand<MethodDisableDTO> request);
+    Boolean addOrEditMethodDisable(AddCommand<MethodDisableDTO> request);
 
     /**
      * 删除对应的禁用接口项
@@ -60,5 +60,5 @@ public interface ServiceControlProvider extends BaseProvider {
      *
      * @return 删除请求
      */
-    ServiceResult<Boolean> delMethodDisable(DelMethodDisableCommand request);
+    Boolean delMethodDisable(DelMethodDisableCommand request);
 }

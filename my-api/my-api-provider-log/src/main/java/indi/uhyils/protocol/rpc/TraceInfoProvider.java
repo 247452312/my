@@ -27,7 +27,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDTO> {
      *
      * @return
      */
-    ServiceResult<List<TraceInfoDTO>> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request);
+    List<TraceInfoDTO> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request);
 
     /**
      * 根据traceId获取这一串
@@ -36,7 +36,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDTO> {
      *
      * @return
      */
-    ServiceResult<List<TraceInfoDTO>> getLinkByTraceId(TraceIdQuery request);
+    List<TraceInfoDTO> getLinkByTraceId(TraceIdQuery request);
 
 
     /**
@@ -46,7 +46,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDTO> {
      *
      * @return
      */
-    ServiceResult<Page<TraceInfoDTO>> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
+    Page<TraceInfoDTO> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request);
 
     /**
      * 获取日志归档信息
@@ -55,7 +55,7 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDTO> {
      *
      * @return
      */
-    ServiceResult<Page<TraceDetailStatisticsDTO>> getTraceStatistics(BlackQuery request);
+    Page<TraceDetailStatisticsDTO> getTraceStatistics(BlackQuery request);
 
     /**
      * 获取日志类型
@@ -64,6 +64,6 @@ public interface TraceInfoProvider extends DTOProvider<TraceInfoDTO> {
      *
      * @return
      */
-    ServiceResult<List<LogTypeDTO>> getLogType(DefaultCQE request);
+    List<LogTypeDTO> getLogType(DefaultCQE request);
 
 }

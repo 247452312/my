@@ -3,7 +3,6 @@ package indi.uhyils.controller;
 import indi.uhyils.core.topic.Topic;
 import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.LoginDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
 import indi.uhyils.pojo.DTO.request.MqLoginRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
@@ -58,10 +57,9 @@ public class MqController {
             DefaultCQEBuildUtil.fillRequestByAdminRequest(userRequest);
             userRequest.setUsername("admin");
             userRequest.setPassword("123456");
-            ServiceResult<LoginDTO> login = userService.login(userRequest);
-            LoginDTO data = login.getData();
+            LoginDTO data = userService.login(userRequest);
             if (data != null && data.getSuccess()) {
-                return WebResponse.build(data.getToken(), login.getServiceMessage(), login.getServiceCode());
+                return WebResponse.build(data.getToken(), "登录成功", ServiceCode.SUCCESS.getText());
             }
         }
         return WebResponse.build(null, "登录密码错误,正确用户名密码为:" + USERNAME + "/" + PASSWORD, ServiceCode.SUCCESS.getText());
@@ -80,8 +78,8 @@ public class MqController {
     @PostMapping("getAllTopic")
     public WebResponse<ArrayList<Topic>> getAllTopic(@RequestBody DefaultCQE request) throws NoSuchFieldException, IllegalAccessException {
         DefaultCQEBuildUtil.fillRequestByAdminRequest(request);
-        ServiceResult<ArrayList<Topic>> allInfo = mqInfoService.getAllInfo(request);
-        return WebResponse.build(allInfo);
+        ArrayList<Topic> allInfo = mqInfoService.getAllInfo(request);
+        return WebResponse.build(allInfo, null, ServiceCode.SUCCESS.getText());
     }
 
 }

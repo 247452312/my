@@ -3,7 +3,6 @@ package indi.uhyils.facade.impl;
 import indi.uhyils.annotation.Facade;
 import indi.uhyils.facade.UserFacade;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.pojo.cqe.query.IdsQuery;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -25,13 +24,11 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public UserDTO getById(Identifier userId) {
-        ServiceResult<UserDTO> userById = userProvider.getUserById(new IdQuery(userId.getId()));
-        return userById.validationAndGet();
+        return userProvider.getUserById(new IdQuery(userId.getId()));
     }
 
     @Override
     public List<UserDTO> getByIds(List<Long> userIds) {
-        ServiceResult<List<UserDTO>> sampleUserByIds = userProvider.getSampleUserByIds(new IdsQuery(userIds));
-        return sampleUserByIds.validationAndGet();
+        return userProvider.getSampleUserByIds(new IdsQuery(userIds));
     }
 }

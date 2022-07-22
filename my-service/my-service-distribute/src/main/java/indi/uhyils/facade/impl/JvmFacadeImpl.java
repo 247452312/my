@@ -3,7 +3,6 @@ package indi.uhyils.facade.impl;
 import indi.uhyils.annotation.Facade;
 import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.facade.JvmFacade;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
@@ -25,13 +24,12 @@ public class JvmFacadeImpl implements JvmFacade {
     @Override
     public JvmDataStatisticsDTO jvmStatisticDate() {
         DefaultCQE request = UserInfoHelper.makeCQE();
-        ServiceResult<JvmDataStatisticsDTO> jvmDataStatisticsResponse = jvmProvider.getJvmDataStatisticsResponse(request);
-        return jvmDataStatisticsResponse.validationAndGet();
+        return jvmProvider.getJvmDataStatisticsResponse(request);
     }
 
     @Override
     public JvmInfoLogDTO jvmInfoLog() {
         DefaultCQE request = UserInfoHelper.makeCQE();
-        return jvmProvider.getJvmInfoLogResponse(request).validationAndGet();
+        return jvmProvider.getJvmInfoLogResponse(request);
     }
 }

@@ -35,27 +35,23 @@ public class ServerProviderImpl extends BaseDefaultProvider<ServerDTO> implement
     }
 
     @Override
-    public ServiceResult<Boolean> testConnByData(TestConnByDataRequest request) {
-        Boolean result = service.testConnByData(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean testConnByData(TestConnByDataRequest request) {
+        return service.testConnByData(request);
     }
 
     @Override
-    public ServiceResult<Boolean> testConnById(IdCommand request) {
-        Boolean result = service.testConnById(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean testConnById(IdCommand request) {
+        return service.testConnById(request);
     }
 
     @Override
-    public ServiceResult<List<ServerDTO>> getServersIdAndName(DefaultCQE request) {
-        List<ServerDTO> result = service.getServersIdAndName(request);
-        return ServiceResult.buildSuccessResult(result);
+    public List<ServerDTO> getServersIdAndName(DefaultCQE request) {
+        return service.getServersIdAndName(request);
     }
 
     @Override
-    public ServiceResult<String> getNameById(IdQuery request) {
-        String result = service.getNameById(request);
-        return ServiceResult.buildSuccessResult(result);
+    public String getNameById(IdQuery request) {
+        return service.getNameById(request);
     }
 }
 

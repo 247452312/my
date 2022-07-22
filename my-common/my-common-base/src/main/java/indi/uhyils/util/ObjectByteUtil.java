@@ -44,7 +44,7 @@ public final class ObjectByteUtil {
      *
      * @return
      */
-    public static <T> T toObject(byte[] bytes, Class<T> clazz) {
+    public static <T> T toObject(byte[] bytes) {
         Object obj = null;
         try {
             ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new ByteArrayInputStream(bytes)));

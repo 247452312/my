@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc.base;
 
 import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RemoveCommand;
@@ -24,21 +23,18 @@ import java.util.stream.Collectors;
 public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvider<T> {
 
     @Override
-    public ServiceResult<Page<T>> query(BlackQuery query) {
-        Page<T> result = getService().query(query.getArgs(), query.getOrder(), query.getLimit());
-        return ServiceResult.buildSuccessResult(result);
+    public Page<T> query(BlackQuery query) {
+        return getService().query(query.getArgs(), query.getOrder(), query.getLimit());
     }
 
     @Override
-    public ServiceResult<List<T>> queryNoPage(BlackQuery query) {
-        List<T> result = getService().queryNoPage(query.getArgs(), query.getOrder());
-        return ServiceResult.buildSuccessResult(result);
+    public List<T> queryNoPage(BlackQuery query) {
+        return getService().queryNoPage(query.getArgs(), query.getOrder());
     }
 
     @Override
-    public ServiceResult<T> queryById(IdQuery query) {
-        T result = getService().query(new Identifier(query.getId()));
-        return ServiceResult.buildSuccessResult(result);
+    public T queryById(IdQuery query) {
+        return getService().query(new Identifier(query.getId()));
     }
 
     /**
@@ -49,7 +45,7 @@ public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvide
      * @return 单条
      */
     @Override
-    public ServiceResult<List<T>> queryByIds(IdsQuery query) {
+    public List<T> queryByIds(IdsQuery query) {
         List<Long> ids = query.getIds();
         List<T> result = null;
         try {
@@ -57,38 +53,33 @@ public abstract class BaseDefaultProvider<T extends IdDTO> implements DTOProvide
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
-        return ServiceResult.buildSuccessResult(result);
+        return result;
     }
 
     @Override
-    public ServiceResult<Long> add(AddCommand<T> addCommand) {
-        Long result = getService().add(addCommand.getDto());
-        return ServiceResult.buildSuccessResult(result);
+    public Long add(AddCommand<T> addCommand) {
+        return getService().add(addCommand.getDto());
     }
 
     @Override
-    public ServiceResult<Integer> change(ChangeCommand<T> changeCommand) {
-        Integer result = getService().update(changeCommand.getDto(), changeCommand.getOrder().getArgs());
-        return ServiceResult.buildSuccessResult(result);
+    public Integer change(ChangeCommand<T> changeCommand) {
+        return getService().update(changeCommand.getDto(), changeCommand.getOrder().getArgs());
     }
 
     @Override
-    public ServiceResult<Integer> remove(RemoveCommand removeCommand) {
+    public Integer remove(RemoveCommand removeCommand) {
         BaseArgQuery order = removeCommand.getOrder();
-        Integer result = getService().remove(order.getArgs());
-        return ServiceResult.buildSuccessResult(result);
+        return getService().remove(order.getArgs());
     }
 
     @Override
-    public ServiceResult<Integer> remove(IdCommand id) {
-        Integer result = getService().remove(new Identifier(id.getId()));
-        return ServiceResult.buildSuccessResult(result);
+    public Integer remove(IdCommand id) {
+        return getService().remove(new Identifier(id.getId()));
     }
 
     @Override
-    public ServiceResult<Long> count(BlackQuery order) {
-        Long result = getService().count(order.getArgs());
-        return ServiceResult.buildSuccessResult(result);
+    public Long count(BlackQuery order) {
+        return getService().count(order.getArgs());
     }
 
     /**

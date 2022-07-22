@@ -3,7 +3,6 @@ package indi.uhyils.facade.impl;
 import indi.uhyils.annotation.Facade;
 import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.facade.DictFacade;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.LastPlanDTO;
 import indi.uhyils.pojo.DTO.response.QuickStartDTO;
 import indi.uhyils.pojo.DTO.response.VersionInfoDTO;
@@ -24,20 +23,17 @@ public class DictFacadeImpl implements DictFacade {
 
     @Override
     public QuickStartDTO quickStartInfo() {
-        ServiceResult<QuickStartDTO> quickStartResponse = provider.getQuickStartResponse(UserInfoHelper.makeCQE());
-        return quickStartResponse.validationAndGet();
+        return provider.getQuickStartResponse(UserInfoHelper.makeCQE());
     }
 
     @Override
     public VersionInfoDTO versionInfo() {
-        ServiceResult<VersionInfoDTO> versionInfoResponse = provider.getVersionInfoResponse(UserInfoHelper.makeCQE());
-        return versionInfoResponse.validationAndGet();
+        return provider.getVersionInfoResponse(UserInfoHelper.makeCQE());
     }
 
     @Override
     public LastPlanDTO lastPlan() {
-        ServiceResult<LastPlanDTO> lastPlanResponse = provider.getLastPlanResponse(UserInfoHelper.makeCQE());
-        return lastPlanResponse.validationAndGet();
+        return provider.getLastPlanResponse(UserInfoHelper.makeCQE());
     }
 
 }

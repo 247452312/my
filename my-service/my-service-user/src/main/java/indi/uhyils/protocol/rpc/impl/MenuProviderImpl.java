@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.MenuDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetByIFrameAndDeptsQuery;
 import indi.uhyils.pojo.DTO.request.PutDeptsToMenuCommand;
 import indi.uhyils.pojo.DTO.response.GetAllMenuWithHaveMarkDTO;
@@ -35,49 +34,43 @@ public class MenuProviderImpl extends BaseDefaultProvider<MenuDTO> implements Me
     private MenuService service;
 
     @Override
-    public ServiceResult<Boolean> putDeptsToMenu(PutDeptsToMenuCommand request) {
+    public Boolean putDeptsToMenu(PutDeptsToMenuCommand request) {
         Identifier menuId = new Identifier(request.getMenuId());
         List<Identifier> deptIds = request.getDeptIds().stream().map(Identifier::new).collect(Collectors.toList());
-        Boolean result = service.putDeptsToMenu(menuId, deptIds);
-        return ServiceResult.buildSuccessResult(result);
+        return service.putDeptsToMenu(menuId, deptIds);
     }
 
     @Override
-    public ServiceResult<IndexMenuTreeDTO> getIndexMenu(DefaultCQE request) {
-        IndexMenuTreeDTO result = service.getIndexMenu();
-        return ServiceResult.buildSuccessResult(result);
+    public IndexMenuTreeDTO getIndexMenu(DefaultCQE request) {
+        return service.getIndexMenu();
 
     }
 
     @Override
-    public ServiceResult<MenuHtmlTreeDTO> getMenuTree(GetByIFrameAndDeptsQuery request) {
+    public MenuHtmlTreeDTO getMenuTree(GetByIFrameAndDeptsQuery request) {
         Iframe iframe = new Iframe(request.getiFrame());
-        MenuHtmlTreeDTO result = service.getMenuTree(iframe);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getMenuTree(iframe);
 
     }
 
     @Override
-    public ServiceResult<Boolean> removeMenu(IdCommand request) {
+    public Boolean removeMenu(IdCommand request) {
         Identifier menuId = new Identifier(request.getId());
-        Boolean result = service.removeMenu(menuId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.removeMenu(menuId);
 
     }
 
     @Override
-    public ServiceResult<List<GetDeptsByMenuIdDTO>> getDeptsByMenuId(IdQuery request) {
+    public List<GetDeptsByMenuIdDTO> getDeptsByMenuId(IdQuery request) {
         Identifier menuId = new Identifier(request.getId());
-        List<GetDeptsByMenuIdDTO> result = service.getDeptsByMenuId(menuId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getDeptsByMenuId(menuId);
 
     }
 
     @Override
-    public ServiceResult<List<GetAllMenuWithHaveMarkDTO>> getAllMenuWithHaveMark(IdQuery request) {
+    public List<GetAllMenuWithHaveMarkDTO> getAllMenuWithHaveMark(IdQuery request) {
         Identifier deptId = new Identifier(request.getId());
-        List<GetAllMenuWithHaveMarkDTO> result = service.getAllMenuWithHaveMark(deptId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getAllMenuWithHaveMark(deptId);
 
     }
 

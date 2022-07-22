@@ -21,7 +21,7 @@ public interface JobProvider extends DTOProvider<JobDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> pause(IdQuery request);
+    Boolean pause(IdQuery request);
 
     /**
      * 开启定时任务
@@ -30,7 +30,7 @@ public interface JobProvider extends DTOProvider<JobDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> start(IdQuery request);
+    Boolean start(IdQuery request);
 
     /**
      * 执行定时任务
@@ -39,7 +39,7 @@ public interface JobProvider extends DTOProvider<JobDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> test(IdQuery request);
+    Boolean test(IdQuery request);
 
 }
 

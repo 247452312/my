@@ -1,9 +1,7 @@
 package indi.uhyils.util;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.annotation.Nullable;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.rpc.proxy.generic.GenericService;
 import indi.uhyils.rpc.spring.RpcConsumerBeanFieldInjectConfiguration;
 import java.lang.reflect.InvocationTargetException;
@@ -49,7 +47,7 @@ public class RpcApiUtil {
      *
      * @return 方法返回值
      */
-    public static Object rpcApiTool(String interfaceName, String methodName, List<Object> args) {
+    public static Object rpcApiTool(String interfaceName, String methodName, List<Object> args) throws Throwable {
         return getServiceResult(interfaceName, methodName, null, args, Boolean.FALSE, DEFAULT_PROCOTOL);
     }
 
@@ -62,7 +60,7 @@ public class RpcApiUtil {
      *
      * @return 方法返回值
      */
-    public static Object rpcApiTool(String interfaceName, String methodName, Map<String, String> headers, List<Object> args) {
+    public static Object rpcApiTool(String interfaceName, String methodName, Map<String, String> headers, List<Object> args) throws Throwable {
         return getServiceResult(interfaceName, methodName, headers, args, Boolean.FALSE, DEFAULT_PROCOTOL);
     }
 
@@ -75,7 +73,7 @@ public class RpcApiUtil {
      *
      * @return 方法返回值
      */
-    public static Object rpcApiTool(String interfaceName, String methodName, Object... args) {
+    public static Object rpcApiTool(String interfaceName, String methodName, Object... args) throws Throwable {
         return getServiceResult(interfaceName, methodName, null, Arrays.asList(args), Boolean.FALSE, DEFAULT_PROCOTOL);
     }
 
@@ -88,7 +86,7 @@ public class RpcApiUtil {
      *
      * @return 方法返回值
      */
-    public static Object rpcApiTool(String interfaceName, String methodName, Map<String, String> headers, Object... args) {
+    public static Object rpcApiTool(String interfaceName, String methodName, Map<String, String> headers, Object... args) throws Throwable {
         return getServiceResult(interfaceName, methodName, headers, Arrays.asList(args), Boolean.FALSE, DEFAULT_PROCOTOL);
     }
 
@@ -101,7 +99,7 @@ public class RpcApiUtil {
      *
      * @return 方法返回值
      */
-    public static Object rpcApiToolAsync(String interfaceName, String methodName, List<Object> args) {
+    public static Object rpcApiToolAsync(String interfaceName, String methodName, List<Object> args) throws Throwable {
         return getServiceResult(interfaceName, methodName, null, args, Boolean.TRUE, DEFAULT_PROCOTOL);
     }
 
@@ -114,17 +112,17 @@ public class RpcApiUtil {
      *
      * @return 方法返回值
      */
-    public static Object rpcApiToolAsync(String interfaceName, String methodName, Object args) {
+    public static Object rpcApiToolAsync(String interfaceName, String methodName, Object args) throws Throwable {
         return getServiceResult(interfaceName, methodName, null, Arrays.asList(args), Boolean.TRUE, DEFAULT_PROCOTOL);
     }
 
-    private static Object getServiceResult(String interfaceName, String methodName, @Nullable Map<String, String> headers, List<Object> args, boolean async, String procotol) {
+    private static Object getServiceResult(String interfaceName, String methodName, @Nullable Map<String, String> headers, List<Object> args, boolean async, String procotol) throws Throwable {
         try {
             if (!interfaceName.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
                 interfaceName = String.format("indi.uhyils.protocol.rpc.%s", interfaceName);
             }
             // 获取执行接口
-            GenericService genericService = getGenericService(interfaceName, async, procotol);
+            GenericService<?> genericService = getGenericService(interfaceName, async, procotol);
 
 
             /*
@@ -138,7 +136,7 @@ public class RpcApiUtil {
             //获取指定方法
             Method method = Arrays.stream(methods).filter(m -> methodName.equalsIgnoreCase(m.getName()) && args.size() == m.getParameterTypes().length).findFirst().get();
             // 获取第一个参数(my所有rpc接口只有一个参数)
-            Class params = method.getParameterTypes()[0];
+            Class<?> params = method.getParameterTypes()[0];
             Object[] arg = args.toArray(new Object[0]);
             // 检测参数中有没有泛型,如果有,则直接将hashMap转为对应类实例
             for (int i = 0; i < arg.length; i++) {
@@ -148,19 +146,17 @@ public class RpcApiUtil {
             }
             String parameterTypes = params.getName();
             if (genericService == null) {
-                GenericService value = getGenericServiceReferenceConfig(interfaceName, async, procotol);
+                GenericService<?> value = getGenericServiceReferenceConfig(interfaceName, async, procotol);
                 genericService = value;
                 MAP.put(interfaceName, value);
             }
-            Object serviceResult = JSONObject.parseObject(JSONObject.toJSONString(genericService.invoke(methodName, headers, new String[]{parameterTypes}, arg)));
 
-            return serviceResult;
+            return genericService.invoke(methodName, headers, new String[]{parameterTypes}, arg);
         } catch (InvocationTargetException e) {
-            LogUtil.error(RpcApiUtil.class, e.getCause());
-            return ServiceResult.buildErrorResult(e.getCause().getMessage());
+            final Throwable cause = e.getCause();
+            throw cause;
         } catch (Exception e) {
-            LogUtil.error(RpcApiUtil.class, e);
-            return ServiceResult.buildErrorResult(e.getMessage());
+            throw e;
         }
     }
 
@@ -173,9 +169,9 @@ public class RpcApiUtil {
      *
      * @return
      */
-    private static GenericService getGenericService(String interfaceName, boolean ansyn, String procotol) throws Exception {
+    private static GenericService<?> getGenericService(String interfaceName, boolean ansyn, String procotol) throws Exception {
         // 用GenericService可以替代所有接口引用
-        GenericService genericService;
+        GenericService<?> genericService;
         if (MAP.containsKey(interfaceName)) {
             genericService = MAP.get(interfaceName);
             if (genericService == null) {
@@ -190,10 +186,10 @@ public class RpcApiUtil {
         return genericService;
     }
 
-    private static GenericService getGenericServiceReferenceConfig(String interfaceName, boolean ansyn, String procotol) throws Exception {
+    private static GenericService<?> getGenericServiceReferenceConfig(String interfaceName, boolean ansyn, String procotol) throws Exception {
         RpcConsumerBeanFieldInjectConfiguration bean = SpringUtil.getBean(RpcConsumerBeanFieldInjectConfiguration.class);
         Object registryOnCache = bean.getRegistryOnCache(interfaceName);
-        return new GenericService(registryOnCache);
+        return new GenericService<>(registryOnCache);
     }
 
 

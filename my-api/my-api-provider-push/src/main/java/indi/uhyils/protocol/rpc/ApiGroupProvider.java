@@ -23,7 +23,7 @@ public interface ApiGroupProvider extends DTOProvider<ApiGroupDTO> {
      *
      * @return 结果
      */
-    ServiceResult<String> test(IdQuery request);
+    String test(IdQuery request);
 
     /**
      * 获取可以被订阅的所有api群
@@ -32,6 +32,6 @@ public interface ApiGroupProvider extends DTOProvider<ApiGroupDTO> {
      *
      * @return 可以被订阅的api群
      */
-    ServiceResult<List<ApiGroupDTO>> getCanBeSubscribed(DefaultCQE request);
+    List<ApiGroupDTO> getCanBeSubscribed(DefaultCQE request);
 }
 

@@ -1,9 +1,9 @@
 package indi.uhyils.protocol.rpc.provider;
 
 import indi.uhyils.core.topic.Topic;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * MQ信息
@@ -19,6 +19,6 @@ public interface MqInfoService {
      *
      * @return
      */
-    ServiceResult<ArrayList<Topic>> getAllInfo(DefaultCQE request) throws NoSuchFieldException, IllegalAccessException;
+    ArrayList<Topic> getAllInfo(DefaultCQE request) throws NoSuchFieldException, IllegalAccessException;
 
 }

@@ -22,6 +22,6 @@ public interface AlgorithmProvider extends DTOProvider<AlgorithmDTO> {
      *
      * @return
      */
-    ServiceResult<CellAlgorithmResponse> cellAlgorithm(CellAlgorithmRequest request);
+    CellAlgorithmResponse cellAlgorithm(CellAlgorithmRequest request);
 
 }

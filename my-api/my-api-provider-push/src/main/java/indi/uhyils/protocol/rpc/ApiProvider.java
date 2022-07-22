@@ -23,7 +23,7 @@ public interface ApiProvider extends DTOProvider<ApiDTO> {
      *
      * @return 所有的指定组下的api
      */
-    ServiceResult<Page<ApiDTO>> getByArgsAndGroup(GetByArgsAndGroupQuery request);
+    Page<ApiDTO> getByArgsAndGroup(GetByArgsAndGroupQuery request);
 
 }
 

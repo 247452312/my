@@ -1,11 +1,11 @@
 package indi.uhyils.pojo.DTO.response;
 
-import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.util.DefaultCQEBuildUtil;
+import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,19 +38,19 @@ public class WebResponse implements Serializable {
     }
 
     public static <T extends Serializable> WebResponse build(T data, ServiceCode code) {
-        if (code == ServiceCode.SPIDER_VERIFICATION) {
-            WebResponse serializableWebResponse = new WebResponse();
-            serializableWebResponse.setCode(code.getText());
+        try {
+            if (code == ServiceCode.SPIDER_VERIFICATION) {
+                WebResponse serializableWebResponse = new WebResponse();
+                serializableWebResponse.setCode(code.getText());
 
-            List args = new ArrayList();
-            args.add(DefaultCQEBuildUtil.getAdminDefaultCQE());
-            ServiceResult<JSONObject> serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(MyContext.VERIFICATION_CODE_INTERFACE, MyContext.GET_VERIFICATION_CODE_METHOD, args, new DefaultCQE());
-            JSONObject verification = serviceResult.getData();
-            VerificationGetDTO verificationGetResponse = verification.toJavaObject(VerificationGetDTO.class);
-            serializableWebResponse.setData(verificationGetResponse);
-
-            serializableWebResponse.setMsg(code.getMsg());
-            return serializableWebResponse;
+                List<DefaultCQE> args = new ArrayList<>();
+                args.add(DefaultCQEBuildUtil.getAdminDefaultCQE());
+                serializableWebResponse.setData(RpcApiUtil.rpcApiTool(MyContext.VERIFICATION_CODE_INTERFACE, MyContext.GET_VERIFICATION_CODE_METHOD, args, new DefaultCQE()));
+                serializableWebResponse.setMsg(code.getMsg());
+                return serializableWebResponse;
+            }
+        } catch (Throwable throwable) {
+            LogUtil.error(throwable, "验证码验证异常,请联系管理员.");
         }
         WebResponse serializableWebResponse = new WebResponse();
         serializableWebResponse.setCode(code.getText());

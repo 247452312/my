@@ -58,6 +58,7 @@ rpc:
     timeout: 30000
   custom:
     exceptionExtensionSpi: selfExceptionExtension
+    methodInvokerSpi: rpcHotSpotMethodInvoker
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

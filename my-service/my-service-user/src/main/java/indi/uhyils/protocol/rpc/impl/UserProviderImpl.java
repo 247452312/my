@@ -5,7 +5,6 @@ import indi.uhyils.annotation.Public;
 import indi.uhyils.pojo.DO.base.TokenInfo;
 import indi.uhyils.pojo.DTO.LoginDTO;
 import indi.uhyils.pojo.DTO.UserDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.ApplyUserCommand;
 import indi.uhyils.pojo.DTO.request.FindUserByNameQuery;
 import indi.uhyils.pojo.DTO.request.LoginCommand;
@@ -41,105 +40,90 @@ public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements Us
     private UserService service;
 
     @Override
-    public ServiceResult<UserDTO> getUserById(IdQuery request) {
+    public UserDTO getUserById(IdQuery request) {
         Identifier userId = new Identifier(request.getId());
-        UserDTO result = service.getUserById(userId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getUserById(userId);
     }
 
     @Override
-    public ServiceResult<String> getUserToken(IdQuery request) {
+    public String getUserToken(IdQuery request) {
         Identifier userId = new Identifier(request.getId());
-        String result = service.getUserToken(userId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getUserToken(userId);
     }
 
     @Override
-    public ServiceResult<TokenInfo> getTokenInfoByToken(DefaultCQE request) {
+    public TokenInfo getTokenInfoByToken(DefaultCQE request) {
         Token token = new Token(request.getToken());
-        TokenInfo result = service.getTokenInfoByToken(token);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getTokenInfoByToken(token);
     }
 
     @Override
     @Public
-    public ServiceResult<LoginDTO> login(LoginCommand request) {
+    public LoginDTO login(LoginCommand request) {
         UserName username = new UserName(request.getUsername());
         Password password = new Password(request.getPassword());
-        LoginDTO result = service.login(username, password);
-        return ServiceResult.buildSuccessResult(result);
+        return service.login(username, password);
     }
 
     @Override
     @Public
-    public ServiceResult<LoginDTO> visiterLogin(BlankCommand request) {
-        LoginDTO loginDTO = service.visiterLogin();
-        return ServiceResult.buildSuccessResult(loginDTO);
+    public LoginDTO visiterLogin(BlankCommand request) {
+        return service.visiterLogin();
     }
 
     @Override
-    public ServiceResult<Boolean> logout(DefaultCQE request) {
-        Boolean result = service.logout();
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean logout(DefaultCQE request) {
+        return service.logout();
     }
 
     @Override
-    public ServiceResult<List<UserDTO>> getUsers(DefaultCQE request) {
-        List<UserDTO> result = service.getUsers();
-        return ServiceResult.buildSuccessResult(result);
+    public List<UserDTO> getUsers(DefaultCQE request) {
+        return service.getUsers();
     }
 
     @Override
-    public ServiceResult<UserDTO> getUserByToken(DefaultCQE request) {
-        UserDTO result = service.getUserByToken();
-        return ServiceResult.buildSuccessResult(result);
+    public UserDTO getUserByToken(DefaultCQE request) {
+        return service.getUserByToken();
     }
 
     @Override
-    public ServiceResult<String> updatePassword(UpdatePasswordCommand request) {
+    public String updatePassword(UpdatePasswordCommand request) {
         Password oldPassword = new Password(request.getOldPassword());
         Password newPassword = new Password(request.getNewPassword());
-        String result = service.updatePassword(oldPassword, newPassword);
-        return ServiceResult.buildSuccessResult(result);
+        return service.updatePassword(oldPassword, newPassword);
     }
 
     @Override
-    public ServiceResult<String> getNameById(IdQuery request) {
+    public String getNameById(IdQuery request) {
         Identifier userId = new Identifier(request.getId());
-        String result = service.getNameById(userId);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getNameById(userId);
     }
 
     @Override
-    public ServiceResult<List<UserDTO>> getSampleUserByIds(IdsQuery request) {
+    public List<UserDTO> getSampleUserByIds(IdsQuery request) {
         List<Identifier> userIds = request.getIds().stream().map(Identifier::new).collect(Collectors.toList());
-        List<UserDTO> result = service.getSampleUserByIds(userIds);
-        return ServiceResult.buildSuccessResult(result);
+        return service.getSampleUserByIds(userIds);
     }
 
     @Override
     @NoLogin
-    public ServiceResult<Boolean> applyUser(ApplyUserCommand request) {
-        Boolean result = service.applyUser(request.getUserDTO());
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean applyUser(ApplyUserCommand request) {
+        return service.applyUser(request.getUserDTO());
     }
 
     @Override
-    public ServiceResult<Boolean> passApply(IdCommand request) {
-        Boolean result = service.passApply(new Identifier(request.getId()));
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean passApply(IdCommand request) {
+        return service.passApply(new Identifier(request.getId()));
     }
 
     @Override
-    public ServiceResult<Boolean> stopUser(IdCommand request) {
-        Boolean result = service.stopUser(new Identifier(request.getId()));
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean stopUser(IdCommand request) {
+        return service.stopUser(new Identifier(request.getId()));
     }
 
     @Override
-    public ServiceResult<UserDTO> getUserByUserName(FindUserByNameQuery request) {
-        UserDTO result = service.getUserByUserName(request);
-        return ServiceResult.buildSuccessResult(result);
+    public UserDTO getUserByUserName(FindUserByNameQuery request) {
+        return service.getUserByUserName(request);
     }
 
     @Override

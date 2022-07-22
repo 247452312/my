@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.SoftwareDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetRedisKeysQuery;
 import indi.uhyils.pojo.DTO.request.RedisKeyAndValue;
 import indi.uhyils.pojo.DTO.response.GetInfosResponse;
@@ -41,93 +40,78 @@ public class SoftwareProviderImpl extends BaseDefaultProvider<SoftwareDTO> imple
     }
 
     @Override
-    public ServiceResult<SoftwareDTO> reload(IdCommand request) {
-        SoftwareDTO result = service.reload(request);
-        return ServiceResult.buildSuccessResult(result);
+    public SoftwareDTO reload(IdCommand request) {
+        return service.reload(request);
     }
 
     @Override
-    public ServiceResult<OperateSoftwareResponse> start(IdCommand request) {
-        OperateSoftwareResponse result = service.start(request);
-        return ServiceResult.buildSuccessResult(result);
+    public OperateSoftwareResponse start(IdCommand request) {
+        return service.start(request);
     }
 
     @Override
-    public ServiceResult<OperateSoftwareResponse> stop(IdCommand request) {
-        OperateSoftwareResponse result = service.stop(request);
-        return ServiceResult.buildSuccessResult(result);
+    public OperateSoftwareResponse stop(IdCommand request) {
+        return service.stop(request);
     }
 
     @Override
-    public ServiceResult<Boolean> deleteManyRedis(IdsCommand request) {
-        Boolean result = service.deleteManyRedis(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean deleteManyRedis(IdsCommand request) {
+        return service.deleteManyRedis(request);
     }
 
     @Override
-    public ServiceResult<Boolean> reloadManyRedis(IdsCommand request) {
-        Boolean result = service.reloadManyRedis(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean reloadManyRedis(IdsCommand request) {
+        return service.reloadManyRedis(request);
     }
 
     @Override
-    public ServiceResult<Boolean> startManyRedis(IdsCommand request) {
-        Boolean result = service.startManyRedis(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean startManyRedis(IdsCommand request) {
+        return service.startManyRedis(request);
     }
 
     @Override
-    public ServiceResult<Boolean> stopManyRedis(IdsCommand request) {
-        Boolean result = service.stopManyRedis(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean stopManyRedis(IdsCommand request) {
+        return service.stopManyRedis(request);
     }
 
     @Override
-    public ServiceResult<List<String>> getRedisKeys(GetRedisKeysQuery request) {
-        List<String> result = service.getRedisKeys(request);
-        return ServiceResult.buildSuccessResult(result);
+    public List<String> getRedisKeys(GetRedisKeysQuery request) {
+        return service.getRedisKeys(request);
     }
 
     @Override
-    public ServiceResult<Integer> getRedisDb(IdQuery request) {
-        Integer result = service.getRedisDb(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Integer getRedisDb(IdQuery request) {
+        return service.getRedisDb(request);
     }
 
     @Override
-    public ServiceResult<Integer> addKey(AddCommand<RedisKeyAndValue> request) {
-        Integer result = service.addKey(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Integer addKey(AddCommand<RedisKeyAndValue> request) {
+        return service.addKey(request);
     }
 
     @Override
-    public ServiceResult<Integer> addKeyCover(AddCommand<RedisKeyAndValue> request) {
-        Integer result = service.addKeyCover(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Integer addKeyCover(AddCommand<RedisKeyAndValue> request) {
+        return service.addKeyCover(request);
     }
 
     @Override
-    public ServiceResult<Integer> updateKey(ChangeCommand<RedisKeyAndValue> request) {
-        Integer result = service.updateKey(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Integer updateKey(ChangeCommand<RedisKeyAndValue> request) {
+        return service.updateKey(request);
     }
 
     @Override
-    public ServiceResult<String> getValueByKey(KeyQuery request) {
-        String result = service.getValueByKey(request);
-        return ServiceResult.buildSuccessResult(result);
+    public String getValueByKey(KeyQuery request) {
+        return service.getValueByKey(request);
     }
 
     @Override
-    public ServiceResult<Boolean> deleteRedisByKey(ChangeCommand<RedisKeyAndValue> request) {
-        Boolean result = service.deleteRedisByKey(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean deleteRedisByKey(ChangeCommand<RedisKeyAndValue> request) {
+        return service.deleteRedisByKey(request);
     }
 
     @Override
-    public ServiceResult<List<GetInfosResponse>> getInfos(IdQuery request) {
-        List<GetInfosResponse> result = service.getInfos(request);
-        return ServiceResult.buildSuccessResult(result);
+    public List<GetInfosResponse> getInfos(IdQuery request) {
+        return service.getInfos(request);
     }
 }
 

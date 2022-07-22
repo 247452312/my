@@ -19,7 +19,7 @@ public interface TraceDetailProvider extends DTOProvider<TraceDetailDTO> {
      *
      * @return
      */
-    ServiceResult<GetTraceDetailByHashCodeResponse> getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request);
+    GetTraceDetailByHashCodeResponse getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request);
 
 
 }

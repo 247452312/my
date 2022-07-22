@@ -7,7 +7,7 @@ package indi.uhyils.exception;
  * @version 1.0
  * @date 文件创建日期 2021年07月15日 21时56分
  */
-public class AssertException extends RuntimeException {
+public class AssertException extends MyBusinessException {
 
     public AssertException(String message) {
         super(message);

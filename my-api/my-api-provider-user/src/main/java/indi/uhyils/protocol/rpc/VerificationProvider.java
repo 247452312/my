@@ -22,7 +22,7 @@ public interface VerificationProvider extends BaseProvider {
      *
      * @return 验证码与在redis中的key
      */
-    ServiceResult<VerificationGetDTO> getVerification(DefaultCQE request) throws IOException;
+    VerificationGetDTO getVerification(DefaultCQE request) throws IOException;
 
 
     /**
@@ -32,6 +32,6 @@ public interface VerificationProvider extends BaseProvider {
      *
      * @return
      */
-    ServiceResult<Boolean> verification(VerificationCommand request);
+    Boolean verification(VerificationCommand request);
 
 }

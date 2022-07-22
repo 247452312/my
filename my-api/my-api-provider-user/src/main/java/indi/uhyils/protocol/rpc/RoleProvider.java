@@ -27,7 +27,7 @@ public interface RoleProvider extends DTOProvider<RoleDTO> {
      *
      * @return 角色
      */
-    ServiceResult<RoleDTO> getRoleByRoleId(IdQuery request);
+    RoleDTO getRoleByRoleId(IdQuery request);
 
     /**
      * 给角色添加权限集
@@ -36,7 +36,7 @@ public interface RoleProvider extends DTOProvider<RoleDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> putDeptsToRole(PutDeptsToRoleCommand request) throws Exception;
+    Boolean putDeptsToRole(PutDeptsToRoleCommand request) throws Exception;
 
     /**
      * 删除 -> 真删. 不是假删
@@ -45,7 +45,7 @@ public interface RoleProvider extends DTOProvider<RoleDTO> {
      *
      * @return 删除是否成功
      */
-    ServiceResult<Boolean> deleteRoleDept(IdsCommand idsRequest);
+    Boolean deleteRoleDept(IdsCommand idsRequest);
 
     /**
      * 获取所有的角色
@@ -54,7 +54,7 @@ public interface RoleProvider extends DTOProvider<RoleDTO> {
      *
      * @return 角色
      */
-    ServiceResult<List<RoleDTO>> getRoles(DefaultCQE request);
+    List<RoleDTO> getRoles(DefaultCQE request);
 
     /**
      * 获取角色的用户权限集
@@ -63,7 +63,7 @@ public interface RoleProvider extends DTOProvider<RoleDTO> {
      *
      * @return 对应的权限集
      */
-    ServiceResult<List<DeptDTO>> getUserDeptsByRoleId(IdQuery request);
+    List<DeptDTO> getUserDeptsByRoleId(IdQuery request);
 
     /**
      * 获取所有权限集(带有角色包不包含此权限集的标记)
@@ -72,7 +72,7 @@ public interface RoleProvider extends DTOProvider<RoleDTO> {
      *
      * @return 所有权限集(带有角色包不包含此权限集的标记)
      */
-    ServiceResult<List<GetAllDeptWithHaveMarkDTO>> getAllDeptWithHaveMark(IdQuery request);
+    List<GetAllDeptWithHaveMarkDTO> getAllDeptWithHaveMark(IdQuery request);
 
     /**
      * 根据角色id删除角色以及关联表
@@ -81,7 +81,7 @@ public interface RoleProvider extends DTOProvider<RoleDTO> {
      *
      * @return 删除是否成功
      */
-    ServiceResult<Boolean> deleteRole(IdCommand request);
+    Boolean deleteRole(IdCommand request);
 
 
 }

@@ -32,7 +32,7 @@ public class TraceDetailProviderImpl extends BaseDefaultProvider<TraceDetailDTO>
     }
 
     @Override
-    public ServiceResult<GetTraceDetailByHashCodeResponse> getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request) {
+    public GetTraceDetailByHashCodeResponse getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request) {
         return null;
     }
 }

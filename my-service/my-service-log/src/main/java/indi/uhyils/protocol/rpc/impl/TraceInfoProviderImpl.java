@@ -39,33 +39,28 @@ public class TraceInfoProviderImpl extends BaseDefaultProvider<TraceInfoDTO> imp
     }
 
     @Override
-    public ServiceResult<List<TraceInfoDTO>> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request) {
-        List<TraceInfoDTO> result = service.getLinkByTraceIdAndRpcId(request);
-        return ServiceResult.buildSuccessResult(result);
+    public List<TraceInfoDTO> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request) {
+        return service.getLinkByTraceIdAndRpcId(request);
     }
 
     @Override
-    public ServiceResult<List<TraceInfoDTO>> getLinkByTraceId(TraceIdQuery request) {
-        List<TraceInfoDTO> result = service.getLinkByTraceId(request);
-        return ServiceResult.buildSuccessResult(result);
+    public List<TraceInfoDTO> getLinkByTraceId(TraceIdQuery request) {
+        return service.getLinkByTraceId(request);
     }
 
     @Override
-    public ServiceResult<Page<TraceInfoDTO>> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request) {
-        Page<TraceInfoDTO> result = service.getTraceInfoByArgAndPage(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Page<TraceInfoDTO> getTraceInfoByArgAndPage(GetTraceInfoByArgAndPageRequest request) {
+        return service.getTraceInfoByArgAndPage(request);
     }
 
     @Override
-    public ServiceResult<Page<TraceDetailStatisticsDTO>> getTraceStatistics(BlackQuery request) {
-        Page<TraceDetailStatisticsDTO> result = service.getTraceStatistics(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Page<TraceDetailStatisticsDTO> getTraceStatistics(BlackQuery request) {
+        return service.getTraceStatistics(request);
     }
 
     @Override
-    public ServiceResult<List<LogTypeDTO>> getLogType(DefaultCQE request) {
-        List<LogTypeDTO> result = service.getLogType(request);
-        return ServiceResult.buildSuccessResult(result);
+    public List<LogTypeDTO> getLogType(DefaultCQE request) {
+        return service.getLogType(request);
     }
 }
 

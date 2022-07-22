@@ -8,7 +8,6 @@ import indi.uhyils.enums.PushTypeEnum;
 import indi.uhyils.facade.PushFacade;
 import indi.uhyils.mq.util.MqUtil;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.PushMsgToSomeoneRequest;
 import indi.uhyils.pojo.entity.OrderNode;
 import indi.uhyils.pojo.temp.InitApiRequestTemporary;
@@ -35,8 +34,7 @@ public class PushFacadeImpl implements PushFacade {
         request.setType(pushType.getCode());
         request.setTitle(targetStatus.getTitle());
         request.setMsg(targetStatus.getMsg(orderInfo));
-        ServiceResult<Boolean> booleanServiceResult = pushMsgProvider.pushMsgToSomeone(request);
-        return booleanServiceResult.validationAndGet();
+        return pushMsgProvider.pushMsgToSomeone(request);
     }
 
     @Override

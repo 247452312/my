@@ -21,5 +21,5 @@ public interface KproProvider extends BaseProvider {
      *
      * @return map<文件名, 内容>
      */
-    ServiceResult<Map<String, String>> projectGenerate(ProjectGenerateRequest request);
+    Map<String, String> projectGenerate(ProjectGenerateRequest request);
 }

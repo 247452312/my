@@ -23,7 +23,7 @@ public interface ApiSubscribeProvider extends DTOProvider<ApiSubscribeDTO> {
      *
      * @throws InterruptedException
      */
-    ServiceResult<Boolean> subscribe(SubscribeRequest request);
+    Boolean subscribe(SubscribeRequest request);
 
 }
 

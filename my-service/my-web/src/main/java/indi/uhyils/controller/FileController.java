@@ -1,7 +1,7 @@
 package indi.uhyils.controller;
 
 import com.alibaba.fastjson.JSON;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
+import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.response.WebResponse;
 import indi.uhyils.pojo.cqe.DefaultCQE;
@@ -37,7 +37,7 @@ public class FileController {
 
     @RequestMapping("/down/{fileName}/{token}")
     public String down(@PathVariable String token, @PathVariable String fileName, HttpServletRequest request) {
-        ServiceResult serviceResult = null;
+        String serviceResult = null;
         Map<String, Object> args = new HashMap<>(3);
 
         try {
@@ -45,12 +45,14 @@ public class FileController {
             args.put("token", token);
             args.put("name", fileName);
 
-            serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, METHOD_NAME, args);
+            serviceResult = (String) RpcApiUtil.rpcApiTool(INTERFACE, METHOD_NAME, args);
 
-            ServiceResult<String> sr = serviceResult;
-            return sr.getData();
+            return serviceResult;
         } catch (Exception e) {
             LogUtil.error(this, e);
+            return null;
+        } catch (Throwable throwable) {
+            LogUtil.error(this, throwable);
             return null;
         }
     }
@@ -58,7 +60,6 @@ public class FileController {
     @RequestMapping("/up")
     public WebResponse up(@RequestBody Action action, HttpServletRequest request) {
         String methodName = "add";
-        ServiceResult serviceResult = null;
 
         LogUtil.info(this, "param: " + JSON.toJSONString(action));
         // token修改到arg中
@@ -68,10 +69,10 @@ public class FileController {
             action.getArgs().put("token", action.getToken());
             List<Object> list = new ArrayList();
             list.add(action.getArgs());
-            serviceResult = (ServiceResult) RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultCQE());
+            String result = (String) RpcApiUtil.rpcApiTool(INTERFACE, methodName, list, new DefaultCQE());
 
-            return WebResponse.build(serviceResult);
-        } catch (Exception e) {
+            return WebResponse.build(result, ServiceCode.SUCCESS);
+        } catch (Throwable e) {
             LogUtil.error(this, e);
             return null;
         }

@@ -24,7 +24,7 @@ public interface PowerProvider extends DTOProvider<PowerDTO> {
      *
      * @return 所有权限
      */
-    ServiceResult<List<PowerDTO>> getPowers(DefaultCQE request);
+    List<PowerDTO> getPowers(DefaultCQE request);
 
     /**
      * 检查用户是否存在此权限
@@ -33,7 +33,7 @@ public interface PowerProvider extends DTOProvider<PowerDTO> {
      *
      * @return 是否存在
      */
-    ServiceResult<Boolean> checkUserHavePower(CheckUserHavePowerQuery request);
+    Boolean checkUserHavePower(CheckUserHavePowerQuery request);
 
     /**
      * 删除权限->包括连接表
@@ -42,7 +42,7 @@ public interface PowerProvider extends DTOProvider<PowerDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> deletePower(IdCommand request);
+    Boolean deletePower(IdCommand request);
 
 
     /**
@@ -52,7 +52,7 @@ public interface PowerProvider extends DTOProvider<PowerDTO> {
      *
      * @return 所有interfaceName
      */
-    ServiceResult<List<String>> getInterfaces(DefaultCQE request);
+    List<String> getInterfaces(DefaultCQE request);
 
 
     /**
@@ -62,7 +62,7 @@ public interface PowerProvider extends DTOProvider<PowerDTO> {
      *
      * @return 对应方法
      */
-    ServiceResult<List<String>> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameQuery request);
+    List<String> getMethodNameByInterfaceName(GetMethodNameByInterfaceNameQuery request);
 
 
     /**
@@ -72,5 +72,5 @@ public interface PowerProvider extends DTOProvider<PowerDTO> {
      *
      * @return 添加的权限
      */
-    ServiceResult<Integer> initPowerInProStart(DefaultCQE request) throws Exception;
+    Integer initPowerInProStart(DefaultCQE request) throws Exception;
 }

@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.welcome.WelcomeResponse;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.DistributeProvider;
@@ -22,8 +21,7 @@ public class DistributeProviderImpl implements DistributeProvider {
 
 
     @Override
-    public ServiceResult<WelcomeResponse> getWelcomeData(DefaultCQE request) throws Exception {
-        WelcomeResponse welcomeData = service.getWelcomeData();
-        return ServiceResult.buildSuccessResult(welcomeData);
+    public WelcomeResponse getWelcomeData(DefaultCQE request) {
+        return service.getWelcomeData();
     }
 }

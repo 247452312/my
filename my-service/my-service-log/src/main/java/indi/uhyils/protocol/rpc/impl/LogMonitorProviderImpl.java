@@ -33,15 +33,13 @@ public class LogMonitorProviderImpl extends BaseDefaultProvider<LogMonitorDTO> i
     }
 
     @Override
-    public ServiceResult<JvmDataStatisticsDTO> getJvmDataStatisticsResponse(DefaultCQE request) {
-        JvmDataStatisticsDTO result = service.getJvmDataStatisticsResponse(request);
-        return ServiceResult.buildSuccessResult(result);
+    public JvmDataStatisticsDTO getJvmDataStatisticsResponse(DefaultCQE request) {
+        return service.getJvmDataStatisticsResponse(request);
     }
 
     @Override
-    public ServiceResult<JvmInfoLogDTO> getJvmInfoLogResponse(DefaultCQE request) {
-        JvmInfoLogDTO result = service.getJvmInfoLogResponse(request);
-        return ServiceResult.buildSuccessResult(result);
+    public JvmInfoLogDTO getJvmInfoLogResponse(DefaultCQE request) {
+        return service.getJvmInfoLogResponse(request);
     }
 }
 

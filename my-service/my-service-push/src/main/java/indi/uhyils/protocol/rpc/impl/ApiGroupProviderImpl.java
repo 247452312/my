@@ -33,15 +33,13 @@ public class ApiGroupProviderImpl extends BaseDefaultProvider<ApiGroupDTO> imple
     }
 
     @Override
-    public ServiceResult<String> test(IdQuery request) {
-        String result = service.test(request);
-        return ServiceResult.buildSuccessResult(result);
+    public String test(IdQuery request) {
+        return service.test(request);
     }
 
     @Override
-    public ServiceResult<List<ApiGroupDTO>> getCanBeSubscribed(DefaultCQE request) {
-        List<ApiGroupDTO> result = service.getCanBeSubscribed(request);
-        return ServiceResult.buildSuccessResult(result);
+    public List<ApiGroupDTO> getCanBeSubscribed(DefaultCQE request) {
+        return service.getCanBeSubscribed(request);
     }
 }
 

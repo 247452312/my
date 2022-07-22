@@ -22,7 +22,7 @@ public interface RelegationProvider extends DTOProvider<RelegationDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> demotion(RelegationDemotionCommand cqe);
+    Boolean demotion(RelegationDemotionCommand cqe);
 
 
     /**
@@ -32,6 +32,6 @@ public interface RelegationProvider extends DTOProvider<RelegationDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> recover(RelegationCoverCommand cqe);
+    Boolean recover(RelegationCoverCommand cqe);
 }
 

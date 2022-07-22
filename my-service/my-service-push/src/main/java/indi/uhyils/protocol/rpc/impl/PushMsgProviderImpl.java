@@ -32,15 +32,13 @@ public class PushMsgProviderImpl extends BaseDefaultProvider<PushMsgDTO> impleme
     }
 
     @Override
-    public ServiceResult<Boolean> push(CronRequest request) {
-        Boolean result = service.push(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean push(CronRequest request) {
+        return service.push(request);
     }
 
     @Override
-    public ServiceResult<Boolean> pushMsgToSomeone(PushMsgToSomeoneRequest request) {
-        Boolean result = service.pushMsgToSomeone(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean pushMsgToSomeone(PushMsgToSomeoneRequest request) {
+        return service.pushMsgToSomeone(request);
     }
 }
 

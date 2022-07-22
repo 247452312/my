@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc.base;
 
 import indi.uhyils.pojo.DTO.base.BaseDbDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.ChangeCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;
 import indi.uhyils.pojo.cqe.command.RemoveCommand;
@@ -28,7 +27,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 分页数据(也可以设置不分页)
      */
-    ServiceResult<Page<T>> query(BlackQuery query);
+    Page<T> query(BlackQuery query);
 
     /**
      * 根据某几列获取数据
@@ -37,7 +36,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 数据
      */
-    ServiceResult<List<T>> queryNoPage(BlackQuery query);
+    List<T> queryNoPage(BlackQuery query);
 
     /**
      * 根据id查询
@@ -46,7 +45,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 单条
      */
-    ServiceResult<T> queryById(IdQuery query);
+    T queryById(IdQuery query);
 
     /**
      * 根据id查询
@@ -55,7 +54,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 单条
      */
-    ServiceResult<List<T>> queryByIds(IdsQuery query);
+    List<T> queryByIds(IdsQuery query);
 
     /**
      * 插入
@@ -64,7 +63,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 插入条数
      */
-    ServiceResult<Long> add(AddCommand<T> addCommand);
+    Long add(AddCommand<T> addCommand);
 
     /**
      * 修改
@@ -73,7 +72,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 修改条数
      */
-    ServiceResult<Integer> change(ChangeCommand<T> changeCommand);
+    Integer change(ChangeCommand<T> changeCommand);
 
     /**
      * 删除
@@ -82,7 +81,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 删除条数
      */
-    ServiceResult<Integer> remove(RemoveCommand removeCommand);
+    Integer remove(RemoveCommand removeCommand);
 
     /**
      * 删除
@@ -91,7 +90,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 删除条数
      */
-    ServiceResult<Integer> remove(IdCommand id);
+    Integer remove(IdCommand id);
 
     /**
      * 数量
@@ -100,7 +99,7 @@ public interface DTOProvider<T extends BaseDbDTO> extends BaseProvider {
      *
      * @return 根据条件查询出来的数量
      */
-    ServiceResult<Long> count(BlackQuery order);
+    Long count(BlackQuery order);
 
 
 }

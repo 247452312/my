@@ -20,7 +20,7 @@ public interface OrderBaseInfoProvider extends DTOProvider<OrderBaseInfoDTO> {
      *
      * @return
      */
-    ServiceResult<List<OrderBaseInfoDTO>> getAllBaseOrderIdAndName(DefaultCQE request);
+    List<OrderBaseInfoDTO> getAllBaseOrderIdAndName(DefaultCQE request);
 
     /**
      * 获取一个工单的所有信息
@@ -29,7 +29,7 @@ public interface OrderBaseInfoProvider extends DTOProvider<OrderBaseInfoDTO> {
      *
      * @return
      */
-    ServiceResult<OrderBaseInfoDTO> getOneOrder(IdQuery request);
+    OrderBaseInfoDTO getOneOrder(IdQuery request);
 
 
 }

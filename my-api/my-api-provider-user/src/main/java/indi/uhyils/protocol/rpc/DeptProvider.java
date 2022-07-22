@@ -27,7 +27,7 @@ public interface DeptProvider extends DTOProvider<DeptDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> putPowersToDept(PutPowersToDeptCommand request) throws Exception;
+    Boolean putPowersToDept(PutPowersToDeptCommand request) throws Exception;
 
     /**
      * 删除 -> 真删. 不是假删
@@ -37,7 +37,7 @@ public interface DeptProvider extends DTOProvider<DeptDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> deleteDeptPower(IdsCommand idsRequest);
+    Boolean deleteDeptPower(IdsCommand idsRequest);
 
 
     /**
@@ -47,7 +47,7 @@ public interface DeptProvider extends DTOProvider<DeptDTO> {
      *
      * @return 是否成功
      */
-    ServiceResult<Boolean> putMenusToDept(PutMenusToDeptsCommand request);
+    Boolean putMenusToDept(PutMenusToDeptsCommand request);
 
     /**
      * 获取全部权限集
@@ -56,7 +56,7 @@ public interface DeptProvider extends DTOProvider<DeptDTO> {
      *
      * @return 权限集
      */
-    ServiceResult<List<DeptDTO>> getDepts(DefaultCQE request);
+    List<DeptDTO> getDepts(DefaultCQE request);
 
     /**
      * 获取所有权限
@@ -65,7 +65,7 @@ public interface DeptProvider extends DTOProvider<DeptDTO> {
      *
      * @return
      */
-    ServiceResult<List<GetAllPowerWithHaveMarkDTO>> getAllPowerWithHaveMark(IdQuery request);
+    List<GetAllPowerWithHaveMarkDTO> getAllPowerWithHaveMark(IdQuery request);
 
 
     /**
@@ -75,7 +75,7 @@ public interface DeptProvider extends DTOProvider<DeptDTO> {
      *
      * @return 删除是否成功
      */
-    ServiceResult<Boolean> deleteDept(IdCommand request);
+    Boolean deleteDept(IdCommand request);
 
 
 }

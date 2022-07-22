@@ -23,7 +23,7 @@ public interface PlatformSourceProvider extends DTOProvider<PlatformSourceDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> publishHttp(PublishHttpCommand request);
+    Boolean publishHttp(PublishHttpCommand request);
 
     /**
      * 发布一个my-rpc接口
@@ -32,7 +32,7 @@ public interface PlatformSourceProvider extends DTOProvider<PlatformSourceDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> publishRpc(PublishRpcCommand request);
+    Boolean publishRpc(PublishRpcCommand request);
 
     /**
      * 发布一个DB接口
@@ -41,5 +41,5 @@ public interface PlatformSourceProvider extends DTOProvider<PlatformSourceDTO> {
      *
      * @return
      */
-    ServiceResult<Boolean> publishDb(PublishDbCommand request);
+    Boolean publishDb(PublishDbCommand request);
 }

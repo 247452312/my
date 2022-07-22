@@ -33,21 +33,18 @@ public class BlackListProviderImpl extends BaseDefaultProvider<BlackListDTO> imp
     }
 
     @Override
-    public ServiceResult<Boolean> getLogIntervalByIp(GetLogIntervalByIpQuery request) {
-        Boolean result = service.getLogIntervalByIp(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean getLogIntervalByIp(GetLogIntervalByIpQuery request) {
+        return service.getLogIntervalByIp(request);
     }
 
     @Override
-    public ServiceResult<List<String>> getAllIpBlackList(DefaultCQE request) {
-        List<String> result = service.getAllIpBlackList(request);
-        return ServiceResult.buildSuccessResult(result);
+    public List<String> getAllIpBlackList(DefaultCQE request) {
+        return service.getAllIpBlackList(request);
     }
 
     @Override
-    public ServiceResult<Boolean> addBlackIp(AddBlackIpRequest request) {
-        Boolean result = service.addBlackIp(request);
-        return ServiceResult.buildSuccessResult(result);
+    public Boolean addBlackIp(AddBlackIpRequest request) {
+        return service.addBlackIp(request);
     }
 }
 

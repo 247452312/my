@@ -1,6 +1,5 @@
 package indi.uhyils.redis.config;
 
-import indi.uhyils.redis.aop.HotSpotAop;
 import indi.uhyils.redis.druid.filter.TableSqlFilter;
 import indi.uhyils.redis.hotspot.HotSpotRedisPool;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({
-            HotSpotAop.class,
             HotSpotRedisPool.class,
             TableSqlFilter.class
         })
