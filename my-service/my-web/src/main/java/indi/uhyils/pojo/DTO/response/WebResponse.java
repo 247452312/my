@@ -37,6 +37,21 @@ public class WebResponse implements Serializable {
         return serializableWebResponse;
     }
 
+    /**
+     * 构建一个错误的返回
+     *
+     * @param message
+     * @param code
+     *
+     * @return
+     */
+    public static WebResponse buildWithError(String message, Integer code) {
+        WebResponse serializableWebResponse = new WebResponse();
+        serializableWebResponse.setCode(code);
+        serializableWebResponse.setMsg(message);
+        return serializableWebResponse;
+    }
+
     public static <T extends Serializable> WebResponse build(T data, ServiceCode code) {
         try {
             if (code == ServiceCode.SPIDER_VERIFICATION) {

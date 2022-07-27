@@ -1,5 +1,6 @@
 package indi.uhyils.util;
 
+import com.google.common.collect.Maps.EntryTransformer;
 import indi.uhyils.annotation.Nullable;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -81,4 +82,25 @@ public final class MapUtil {
             mainMap.put(key, entry.getValue());
         }
     }
+
+    /**
+     * putAll 但是映射
+     *
+     * @param target   put的目标map
+     * @param source   源map
+     * @param keyMap   key值映射
+     * @param valueMap value值映射
+     * @param <TK>
+     * @param <TV>
+     * @param <SK>
+     * @param <SV>
+     */
+    public static <TK, TV, SK, SV> void putAllWithLink(Map<TK, TV> target, Map<SK, SV> source, EntryTransformer<SK, SV, TK> keyMap, EntryTransformer<SK, SV, TV> valueMap) {
+        for (Entry<SK, SV> sksvEntry : source.entrySet()) {
+            final SK key = sksvEntry.getKey();
+            final SV value = sksvEntry.getValue();
+            target.put(keyMap.transformEntry(key, value), valueMap.transformEntry(key, value));
+        }
+    }
+
 }

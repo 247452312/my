@@ -5,13 +5,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.enums.ServiceCode;
-import indi.uhyils.exception.ServiceResultException;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.request.SessionRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
+import indi.uhyils.util.WebExceptionHandler;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -86,19 +85,9 @@ public class AllController {
                 changeFieldTypeToString((JSONArray) data);
             }
             return WebResponse.build(data, null, ServiceCode.SUCCESS.getText());
-        } catch (ExecutionException e) {
-            final Throwable cause = e.getCause();
-            LogUtil.error(this, cause);
-            if (cause instanceof ServiceResultException) {
-                final ServiceResultException serviceResultException = (ServiceResultException) cause;
-                return WebResponse.build(null, serviceResultException.getMsg(), serviceResultException.getErrorCode());
-            } else {
-                return WebResponse.build(null, e.getMessage(), ServiceCode.ERROR.getText());
-            }
         } catch (Exception e) {
             // 如果失败,就返回微服务传回来的错误信息与提示
-            LogUtil.error(this, e);
-            return WebResponse.build(null, e.getMessage(), ServiceCode.ERROR.getText());
+            return WebExceptionHandler.onException(e);
         }
         // disruptor 注释了. 以后想用在别的地方当做参考
         /*finally {
@@ -112,6 +101,7 @@ public class AllController {
             }
         }*/
     }
+
 
     @PostMapping("/getSession")
     public Object getSession(@RequestBody SessionRequest sessionRequest, HttpServletRequest request) {
