@@ -54,6 +54,7 @@ public class WebExceptionHandler {
      * @return
      */
     private static WebResponse onOtherException(Throwable th) {
+        LogUtil.error(th);
         return WebResponse.buildWithError("系统异常,请联系管理员!", ServiceCode.ERROR.getText());
     }
 
