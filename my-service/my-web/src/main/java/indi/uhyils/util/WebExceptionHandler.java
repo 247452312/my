@@ -21,23 +21,40 @@ public class WebExceptionHandler {
      */
     public static WebResponse onException(Throwable th) {
 
+        // 解析线程池包装异常
         if (th instanceof ExecutionException) {
             return onException(th.getCause());
         }
+        // 解析rpc包装异常
         if (th instanceof MyRpcProviderThrowException) {
             return onException(th.getCause());
         }
+        // 断言异常 返回前端
         if (th instanceof AssertException) {
             return onAssertException((AssertException) th);
         }
+        // 未登录异常返回前端
         if (th instanceof NoLoginException) {
             return onNoLoginException((NoLoginException) th);
         }
+        // rpc网络异常返回前端
         if (th instanceof RpcNetException) {
-            return onOtherException((Exception) th);
+            return onRpcNetException((Exception) th);
         }
-        return null;
+        // 其他异常(不暴露异常信息)
+        return onOtherException(th);
 
+    }
+
+    /**
+     * 返回前端其他异常
+     *
+     * @param th
+     *
+     * @return
+     */
+    private static WebResponse onOtherException(Throwable th) {
+        return WebResponse.buildWithError("系统异常,请联系管理员!", ServiceCode.ERROR.getText());
     }
 
     /**
@@ -47,8 +64,8 @@ public class WebExceptionHandler {
      *
      * @return
      */
-    private static WebResponse onOtherException(Exception th) {
-        return WebResponse.buildWithError(th.getMessage(), ServiceCode.ERROR.getText());
+    private static WebResponse onRpcNetException(Exception th) {
+        return WebResponse.buildWithError("网络异常:" + th.getMessage(), ServiceCode.ERROR.getText());
     }
 
     /**
