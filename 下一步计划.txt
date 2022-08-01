@@ -1,4 +1,3 @@
-RPC byte[] 转RpcData 多处都有,简化为一处
 优雅上下线
 RPC自定义序列化
 RPC合并多个请求
