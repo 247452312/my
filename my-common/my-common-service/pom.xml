@@ -49,6 +49,11 @@
             <artifactId>amqp-client</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-elegant</artifactId>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

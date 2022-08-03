@@ -30,7 +30,6 @@ public class DictFacadeImpl implements DictFacade {
         DefaultCQE adminDefaultCQE = DefaultCQEBuildUtil.getAdminDefaultCQE();
         request.setUser(adminDefaultCQE.getUser());
         request.setCode(code);
-        ServiceResult<List<DictItemDTO>> byCode = dictProvider.getByCode(request);
-        return byCode.validationAndGet();
+        return dictProvider.getByCode(request);
     }
 }

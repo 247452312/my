@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Import;
 public class LogConfigurable {
 
     @Bean
-    public FilterRegistrationBean<ControllerLogFilter> setFilter() {
+    public FilterRegistrationBean<ControllerLogFilter> logControllerFilter() {
 
         FilterRegistrationBean<ControllerLogFilter> filterBean = new FilterRegistrationBean<>();
         filterBean.setFilter(new ControllerLogFilter());
