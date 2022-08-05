@@ -1,8 +1,13 @@
 package indi.uhyils.elegant;
 
 import indi.uhyils.MyExecutorWrapper;
+import indi.uhyils.rpc.netty.spi.filter.RpcFilter;
+import indi.uhyils.rpc.registry.MyRpcRegistryManager;
+import indi.uhyils.rpc.registry.RegistryFactory;
+import indi.uhyils.rpc.spi.RpcSpiManager;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -27,7 +32,10 @@ public class ElegantCoreProcessor implements InitializingBean, ApplicationListen
     @Override
     public void afterPropertiesSet() throws Exception {
         LogUtil.info("应用优雅上下线核心处理器开始行动!");
-        this.handlers = SpringUtil.getBeans(ElegantHandler.class);
+        this.handlers = new ArrayList<>();
+        this.handlers.addAll(SpringUtil.getBeans(ElegantHandler.class));
+        final MyRpcRegistryManager orGetMyRpcRegistryManager = RegistryFactory.createOrGetMyRpcRegistryManager();
+        this.handlers.add((ElegantHandler) RpcSpiManager.getExtensionByClass(RpcFilter.class, "elegantRpcFilter", orGetMyRpcRegistryManager));
         es.execute(new ElegantHandlerStartMonitor());
     }
 

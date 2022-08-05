@@ -6,7 +6,9 @@ import indi.uhyils.rpc.exchange.pojo.data.RpcData;
 import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.filter.filter.ProviderFilter;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
-import java.util.concurrent.atomic.AtomicBoolean;
+import indi.uhyils.rpc.registry.MyRpcRegistryManager;
+import indi.uhyils.rpc.registry.RegistryFactory;
+import indi.uhyils.util.LogUtil;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -15,16 +17,26 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @RpcSpi
 public class ElegantRpcFilter extends AbstractElegantHandler implements ProviderFilter {
 
-
     /**
-     * 是否在线
+     * rpcRegistry管理器
      */
-    private final AtomicBoolean online = new AtomicBoolean(Boolean.TRUE);
+    private MyRpcRegistryManager registryManager;
+
+    public ElegantRpcFilter() throws InterruptedException {
+
+    }
+
+    @Override
+    public void init(Object... params) throws InterruptedException {
+        ProviderFilter.super.init(params);
+        registryManager = (MyRpcRegistryManager) params[0];
+        LogUtil.info("优雅上下线rpcFilter初始化成功");
+    }
 
     @Override
     public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws InterruptedException {
 
-        if (Boolean.FALSE.equals(online.get())) {
+        if (!isOnline()) {
             // todo 这里是否可以报错来代替return
             return null;
         }
@@ -41,16 +53,24 @@ public class ElegantRpcFilter extends AbstractElegantHandler implements Provider
 
     @Override
     public Boolean isOnline() {
-        return online.get();
+        return registryManager.isPublish();
     }
 
     @Override
     public void close() {
         doShutdown();
+        doClose();
     }
 
     @Override
     protected void doShutdown() {
-        online.set(Boolean.FALSE);
+        registryManager.notAllowProviderToPublish();
+    }
+
+    /**
+     * 实际关闭需要的业务
+     */
+    private void doClose() {
+        registryManager.closeHook();
     }
 }

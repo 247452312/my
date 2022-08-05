@@ -56,6 +56,7 @@ rpc:
     check: false
   provider:
     timeout: 30000
+    elegant: true
   custom:
     exceptionExtensionSpi: selfExceptionExtension
     methodInvokerSpi: rpcHotSpotMethodInvoker
