@@ -36,6 +36,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserProviderImpl extends BaseDefaultProvider<UserDTO> implements UserProvider {
 
 
+    public UserProviderImpl() {
+        int i = 1;
+    }
+
     @Autowired
     private UserService service;
 

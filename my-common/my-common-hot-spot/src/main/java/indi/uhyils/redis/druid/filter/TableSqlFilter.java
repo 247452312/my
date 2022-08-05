@@ -10,6 +10,7 @@ import com.alibaba.druid.stat.TableStat;
 import indi.uhyils.enums.CacheTypeEnum;
 import indi.uhyils.redis.filter.RpcHotSpotMethodInvoker;
 import indi.uhyils.rpc.netty.callback.MethodInvokerFactory;
+import indi.uhyils.util.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,12 @@ public class TableSqlFilter extends FilterEventAdapter {
     private final RpcHotSpotMethodInvoker util;
 
     public TableSqlFilter() {
-        util = (RpcHotSpotMethodInvoker) MethodInvokerFactory.createMethodInvoker();
+        try {
+            util = (RpcHotSpotMethodInvoker) MethodInvokerFactory.createMethodInvoker();
+        } catch (InterruptedException e) {
+            LogUtil.error(this, e);
+            throw new RuntimeException(e);
+        }
     }
 
 

@@ -32,7 +32,7 @@ public class MqByteToMessageDecoder extends ByteToMessageDecoder {
     private final List<Finder> finders;
 
     public MqByteToMessageDecoder() {
-        finders = RpcSpiManager.getExtensionsByClass(Finder.class, Finder.class);
+        finders = RpcSpiManager.createOrGetExtensionListByClassNoInit(Finder.class, Finder.class);
     }
 
     @Override

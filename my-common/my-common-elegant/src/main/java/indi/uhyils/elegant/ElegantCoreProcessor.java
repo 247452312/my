@@ -35,7 +35,7 @@ public class ElegantCoreProcessor implements InitializingBean, ApplicationListen
         this.handlers = new ArrayList<>();
         this.handlers.addAll(SpringUtil.getBeans(ElegantHandler.class));
         final MyRpcRegistryManager orGetMyRpcRegistryManager = RegistryFactory.createOrGetMyRpcRegistryManager();
-        this.handlers.add((ElegantHandler) RpcSpiManager.getExtensionByClass(RpcFilter.class, "elegantRpcFilter", orGetMyRpcRegistryManager));
+        this.handlers.add((ElegantHandler) RpcSpiManager.createOrGetExtensionByClass(RpcFilter.class, "elegantRpcFilter", orGetMyRpcRegistryManager));
         es.execute(new ElegantHandlerStartMonitor());
     }
 

@@ -29,7 +29,7 @@ public final class MapUtil {
      */
     @Nullable
     public static <V, K> V putIfAbsent(Map<K, V> map, K key, Supplier<V> valueSupplier) {
-        return putIfAbsent(map, key, valueSupplier, true);
+        return putIfAbsent(map, key, valueSupplier, false);
     }
 
     /**
@@ -51,7 +51,8 @@ public final class MapUtil {
             return v;
         }
         V value = valueSupplier.get();
-        return returnOld ? map.put(key, value) : value;
+        final V old = map.put(key, value);
+        return returnOld ? old : value;
 
     }
 
