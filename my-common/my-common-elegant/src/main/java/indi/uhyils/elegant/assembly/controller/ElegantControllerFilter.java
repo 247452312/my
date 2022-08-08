@@ -50,4 +50,9 @@ public class ElegantControllerFilter extends AbstractElegantHandler implements F
     public void close() {
         doShutdown();
     }
+
+    @Override
+    public String name() {
+        return "controller";
+    }
 }

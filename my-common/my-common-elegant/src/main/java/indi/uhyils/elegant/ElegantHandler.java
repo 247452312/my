@@ -40,4 +40,11 @@ public interface ElegantHandler {
      * 强制关闭组件
      */
     void close();
+
+    /**
+     * 此优雅上下线组件的名称
+     *
+     * @return
+     */
+    String name();
 }

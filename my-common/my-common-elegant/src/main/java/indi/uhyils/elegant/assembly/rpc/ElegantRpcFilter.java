@@ -7,7 +7,6 @@ import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.filter.filter.ProviderFilter;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
 import indi.uhyils.rpc.registry.MyRpcRegistryManager;
-import indi.uhyils.rpc.registry.RegistryFactory;
 import indi.uhyils.util.LogUtil;
 
 /**
@@ -60,6 +59,11 @@ public class ElegantRpcFilter extends AbstractElegantHandler implements Provider
     public void close() {
         doShutdown();
         doClose();
+    }
+
+    @Override
+    public String name() {
+        return "RPC";
     }
 
     @Override
