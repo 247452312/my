@@ -22,7 +22,6 @@
         <module>my-service-mongo</module>
         <module>my-service-algorithm</module>
         <module>my-service-work-orders</module>
-        <module>my-service-mq</module>
         <module>my-service-all</module>
     </modules>
 
