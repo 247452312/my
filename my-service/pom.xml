@@ -23,6 +23,7 @@
         <module>my-service-algorithm</module>
         <module>my-service-work-orders</module>
         <module>my-service-all</module>
+        <module>my-service-gateway</module>
     </modules>
 
 

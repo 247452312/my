@@ -24,6 +24,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -48,6 +49,9 @@ public class TokenInjectAop {
      * 超级管理员账号
      */
     private static final String ADMIN = "admin";
+
+    @Value("${token.enable}")
+    private Boolean enable;
 
     @Autowired
     private RedisPoolHandle redisPoolHandle;
@@ -78,6 +82,10 @@ public class TokenInjectAop {
     @Around("tokenInjectPoint()")
     public Object tokenInjectAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
 
+        // 是否开启用户登录验证
+        if (!enable) {
+            return pjp.proceed();
+        }
         // public接口直接放行,不进行解析token的动作
         if (PublicInterfaceInvoker.checkAnnotation(pjp)) {
             return PublicInterfaceInvoker.create(pjp).invoke();

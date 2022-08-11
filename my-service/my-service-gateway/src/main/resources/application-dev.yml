@@ -1,0 +1,18 @@
+server:
+  port: 8011
+rpc:
+  provider:
+    port: 20811
+  application:
+    name: provider-gateway
+
+log-out:
+  dir-name: gateway
+
+id:
+  organization:
+    # 机构代码
+    code: 3
+
+token:
+  enable: false
