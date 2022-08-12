@@ -55,10 +55,6 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
         changeNodesOrderId();
     }
 
-    public List<OrderNode> nodes() {
-        return nodes;
-    }
-
     private void changeNodesOrderId() {
         if (CollectionUtil.isEmpty(nodes)) {
             return;
@@ -67,6 +63,10 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
             final OrderNodeDO orderNodeDO = node.toData().orElseThrow(Asserts::throwOptionalException);
             orderNodeDO.setBaseInfoId(getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException));
         }
+    }
+
+    public List<OrderNode> nodes() {
+        return nodes;
     }
 
     public void saveNode(OrderNodeRepository nodeRepository, OrderNodeFieldRepository fieldRepository, OrderNodeRouteRepository routeRepository, OrderNodeResultTypeRepository resultTypeRepository) {

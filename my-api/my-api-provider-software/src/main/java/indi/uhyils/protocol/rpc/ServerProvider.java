@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.ServerDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.TestConnByDataRequest;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;

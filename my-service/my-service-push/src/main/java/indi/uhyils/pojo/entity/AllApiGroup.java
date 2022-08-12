@@ -55,6 +55,12 @@ public class AllApiGroup extends AbstractEntity {
         }
     }
 
+    public void sendMsgToUser(UserFacade userFacade, PushMsgRepository msgRepository, PushMsgAssembler msgAssembler) {
+        List<PushMsgDTO> pushMsgDTOS = sendMsgToUser(userFacade);
+        List<PushMsg> pushMsgs = msgAssembler.listDTOToEntity(pushMsgDTOS);
+        msgRepository.save(pushMsgs);
+    }
+
     public List<PushMsgDTO> sendMsgToUser(UserFacade userFacade) {
         List<PushMsgDTO> result = new ArrayList<>();
         for (ApiGroup group : groups) {
@@ -62,11 +68,5 @@ public class AllApiGroup extends AbstractEntity {
             result.addAll(pushMsgDTOS);
         }
         return result;
-    }
-
-    public void sendMsgToUser(UserFacade userFacade, PushMsgRepository msgRepository, PushMsgAssembler msgAssembler) {
-        List<PushMsgDTO> pushMsgDTOS = sendMsgToUser(userFacade);
-        List<PushMsg> pushMsgs = msgAssembler.listDTOToEntity(pushMsgDTOS);
-        msgRepository.save(pushMsgs);
     }
 }

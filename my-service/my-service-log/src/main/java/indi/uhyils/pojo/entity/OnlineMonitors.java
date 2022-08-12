@@ -53,11 +53,6 @@ public class OnlineMonitors extends AbstractEntity {
 
     }
 
-    public Long earlyStartTime() {
-        initEarlyStartTime();
-        return earlyStartTime;
-    }
-
     private void initEarlyStartTime() {
         if (earlyStartTime != null) {
             return;
@@ -69,6 +64,11 @@ public class OnlineMonitors extends AbstractEntity {
                 this.earlyStartTime = logMonitorEntity.startTime();
             }
         }
+    }
+
+    public Long earlyStartTime() {
+        initEarlyStartTime();
+        return earlyStartTime;
     }
 
     public void initRpcExecuteCount(TraceInfoRepository repository) {

@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.DynamicCodeDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetByGroupIdQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 import java.util.List;

@@ -81,24 +81,6 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
     }
 
     /**
-     * 执行python
-     *
-     * @param requestBody
-     *
-     * @return
-     */
-    private Object cellPython(Object[] requestBody) {
-        AlgorithmDO algorithmDO = toData().orElseThrow(Asserts::throwOptionalException);
-        String body = algorithmDO.getBody();
-        try {
-            return PythonUtil.executePython(body, "__main__", requestBody);
-        } catch (IOException e) {
-            LogUtil.error(this, e);
-            return null;
-        }
-    }
-
-    /**
      * 执行java
      *
      * @param requestBody
@@ -141,6 +123,24 @@ public class Algorithm extends AbstractDoEntity<AlgorithmDO> {
             throw new AlgorithmException(e);
         }
         return invoke;
+    }
+
+    /**
+     * 执行python
+     *
+     * @param requestBody
+     *
+     * @return
+     */
+    private Object cellPython(Object[] requestBody) {
+        AlgorithmDO algorithmDO = toData().orElseThrow(Asserts::throwOptionalException);
+        String body = algorithmDO.getBody();
+        try {
+            return PythonUtil.executePython(body, "__main__", requestBody);
+        } catch (IOException e) {
+            LogUtil.error(this, e);
+            return null;
+        }
     }
 
 }

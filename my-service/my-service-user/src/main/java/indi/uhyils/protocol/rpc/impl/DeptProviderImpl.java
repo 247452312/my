@@ -29,11 +29,6 @@ public class DeptProviderImpl extends BaseDefaultProvider<DeptDTO> implements De
     private DeptService service;
 
     @Override
-    protected BaseDoService<DeptDTO> getService() {
-        return service;
-    }
-
-    @Override
     public Boolean putPowersToDept(PutPowersToDeptCommand request) throws Exception {
         Identifier deptId = new Identifier(request.getDeptId());
         List<Identifier> powerIds = request.getPowerIds().stream().map(Identifier::new).collect(Collectors.toList());
@@ -70,6 +65,11 @@ public class DeptProviderImpl extends BaseDefaultProvider<DeptDTO> implements De
         Identifier deptId = new Identifier(request.getId());
         return service.deleteDept(deptId);
 
+    }
+
+    @Override
+    protected BaseDoService<DeptDTO> getService() {
+        return service;
     }
 
 }

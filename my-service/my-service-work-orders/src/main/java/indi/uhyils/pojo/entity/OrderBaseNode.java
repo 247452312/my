@@ -49,10 +49,6 @@ public class OrderBaseNode extends AbstractDoEntity<OrderBaseNodeDO> {
         return resultTypes;
     }
 
-    public void forceFillFields(List<OrderBaseNodeField> fields) {
-        this.fields = fields;
-    }
-
     public void fillFields(List<OrderBaseNodeField> fields) {
         if (this.fields != null) {
             return;
@@ -60,8 +56,8 @@ public class OrderBaseNode extends AbstractDoEntity<OrderBaseNodeDO> {
         forceFillFields(fields);
     }
 
-    public void forceFillRoutes(List<OrderBaseNodeRoute> routes) {
-        this.routes = routes;
+    public void forceFillFields(List<OrderBaseNodeField> fields) {
+        this.fields = fields;
     }
 
     public void fillRoutes(List<OrderBaseNodeRoute> routes) {
@@ -71,8 +67,8 @@ public class OrderBaseNode extends AbstractDoEntity<OrderBaseNodeDO> {
         forceFillRoutes(routes);
     }
 
-    public void forceFillResultTypes(List<OrderBaseNodeResultType> resultTypes) {
-        this.resultTypes = resultTypes;
+    public void forceFillRoutes(List<OrderBaseNodeRoute> routes) {
+        this.routes = routes;
     }
 
     public void fillResultTypes(List<OrderBaseNodeResultType> resultTypes) {
@@ -80,6 +76,10 @@ public class OrderBaseNode extends AbstractDoEntity<OrderBaseNodeDO> {
             return;
         }
         forceFillResultTypes(resultTypes);
+    }
+
+    public void forceFillResultTypes(List<OrderBaseNodeResultType> resultTypes) {
+        this.resultTypes = resultTypes;
     }
 
 

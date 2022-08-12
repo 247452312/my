@@ -39,6 +39,18 @@ public class PlatformSourceDbDTO extends IdDTO {
      */
     private String username;
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("password", getPassword())
+            .append("id", getId())
+            .append("sourceId", getSourceId())
+            .append("type", getType())
+            .append("url", getUrl())
+            .append("username", getUsername())
+            .toString();
+    }
+
     public String getPassword() {
         return password;
     }
@@ -77,18 +89,6 @@ public class PlatformSourceDbDTO extends IdDTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("password", getPassword())
-            .append("id", getId())
-            .append("sourceId", getSourceId())
-            .append("type", getType())
-            .append("url", getUrl())
-            .append("username", getUsername())
-            .toString();
     }
 
 }

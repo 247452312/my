@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.ApiDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetByArgsAndGroupQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;
 

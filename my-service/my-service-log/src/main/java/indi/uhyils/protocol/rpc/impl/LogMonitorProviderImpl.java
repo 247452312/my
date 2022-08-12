@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.LogMonitorDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.response.JvmDataStatisticsDTO;
 import indi.uhyils.pojo.DTO.response.JvmInfoLogDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;
@@ -26,12 +25,6 @@ public class LogMonitorProviderImpl extends BaseDefaultProvider<LogMonitorDTO> i
     @Autowired
     private LogMonitorService service;
 
-
-    @Override
-    protected BaseDoService<LogMonitorDTO> getService() {
-        return service;
-    }
-
     @Override
     public JvmDataStatisticsDTO getJvmDataStatisticsResponse(DefaultCQE request) {
         return service.getJvmDataStatisticsResponse(request);
@@ -40,6 +33,11 @@ public class LogMonitorProviderImpl extends BaseDefaultProvider<LogMonitorDTO> i
     @Override
     public JvmInfoLogDTO getJvmInfoLogResponse(DefaultCQE request) {
         return service.getJvmInfoLogResponse(request);
+    }
+
+    @Override
+    protected BaseDoService<LogMonitorDTO> getService() {
+        return service;
     }
 }
 

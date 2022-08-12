@@ -20,6 +20,16 @@ public class Latitude implements Serializable, Comparable<Latitude> {
      */
     private Integer y;
 
+    @Override
+    public int compareTo(Latitude o) {
+        if (this.x.equals(o.getX()) && this.y.equals(o.getY())) {
+            return 0;
+        }
+        if (this.x + this.y > o.getX() + o.getY()) {
+            return 1;
+        }
+        return -1;
+    }
 
     public Integer getX() {
         return x;
@@ -35,16 +45,5 @@ public class Latitude implements Serializable, Comparable<Latitude> {
 
     public void setY(Integer y) {
         this.y = y;
-    }
-
-    @Override
-    public int compareTo(Latitude o) {
-        if (this.x.equals(o.getX()) && this.y.equals(o.getY())) {
-            return 0;
-        }
-        if (this.x + this.y > o.getX() + o.getY()) {
-            return 1;
-        }
-        return -1;
     }
 }

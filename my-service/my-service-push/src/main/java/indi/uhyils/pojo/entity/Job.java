@@ -35,14 +35,6 @@ public class Job extends AbstractDoEntity<JobDO> {
         completion(rep);
     }
 
-    private void initScheduled() {
-        if (this.scheduledManager != null) {
-            return;
-        }
-        scheduledManager = SpringUtil.getBean(ScheduledManager.class);
-
-    }
-
     public void fillUser(UserDTO user) {
         if (this.user != null) {
             return;
@@ -53,6 +45,14 @@ public class Job extends AbstractDoEntity<JobDO> {
     public void addSelfToJob() {
         initScheduled();
         scheduledManager.addJob(toData().orElseThrow(Asserts::throwOptionalException));
+
+    }
+
+    private void initScheduled() {
+        if (this.scheduledManager != null) {
+            return;
+        }
+        scheduledManager = SpringUtil.getBean(ScheduledManager.class);
 
     }
 

@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.JobDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.protocol.rpc.JobProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
@@ -24,12 +23,6 @@ public class JobProviderImpl extends BaseDefaultProvider<JobDTO> implements JobP
     @Autowired
     private JobService service;
 
-
-    @Override
-    protected BaseDoService<JobDTO> getService() {
-        return service;
-    }
-
     @Override
     public Boolean pause(IdQuery request) {
         return service.pause(request);
@@ -43,6 +36,11 @@ public class JobProviderImpl extends BaseDefaultProvider<JobDTO> implements JobP
     @Override
     public Boolean test(IdQuery request) {
         return service.test(request);
+    }
+
+    @Override
+    protected BaseDoService<JobDTO> getService() {
+        return service;
     }
 }
 

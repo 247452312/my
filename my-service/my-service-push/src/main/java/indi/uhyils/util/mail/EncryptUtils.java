@@ -21,15 +21,6 @@ public class EncryptUtils {
 
     private static IvParameterSpec iv = new IvParameterSpec(strParam.getBytes(StandardCharsets.UTF_8));
 
-    private static DESKeySpec getDesKeySpec(String source) throws Exception {
-        if (source == null || source.length() == 0) {
-            return null;
-        }
-        cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
-        String strKey = "Passw0rd";
-        return new DESKeySpec(strKey.getBytes(StandardCharsets.UTF_8));
-    }
-
     /**
      * 对称加密
      */
@@ -42,17 +33,13 @@ public class EncryptUtils {
             cipher.doFinal(source.getBytes(StandardCharsets.UTF_8))).toUpperCase();
     }
 
-    /**
-     * 对称解密
-     */
-    public static String desDecrypt(String source) throws Exception {
-        byte[] src = hex2byte(source.getBytes());
-        DESKeySpec desKeySpec = getDesKeySpec(source);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-        SecretKey secretKey = keyFactory.generateSecret(desKeySpec);
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
-        byte[] retByte = cipher.doFinal(src);
-        return new String(retByte);
+    private static DESKeySpec getDesKeySpec(String source) throws Exception {
+        if (source == null || source.length() == 0) {
+            return null;
+        }
+        cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+        String strKey = "Passw0rd";
+        return new DESKeySpec(strKey.getBytes(StandardCharsets.UTF_8));
     }
 
     private static String byte2hex(byte[] inStr) {
@@ -70,6 +57,18 @@ public class EncryptUtils {
         return out.toString();
     }
 
+    /**
+     * 对称解密
+     */
+    public static String desDecrypt(String source) throws Exception {
+        byte[] src = hex2byte(source.getBytes());
+        DESKeySpec desKeySpec = getDesKeySpec(source);
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+        SecretKey secretKey = keyFactory.generateSecret(desKeySpec);
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
+        byte[] retByte = cipher.doFinal(src);
+        return new String(retByte);
+    }
 
     private static byte[] hex2byte(byte[] b) {
         int size = 2;

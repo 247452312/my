@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.PushMsgDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.CronRequest;
 import indi.uhyils.pojo.DTO.request.PushMsgToSomeoneRequest;
 import indi.uhyils.protocol.rpc.base.DTOProvider;

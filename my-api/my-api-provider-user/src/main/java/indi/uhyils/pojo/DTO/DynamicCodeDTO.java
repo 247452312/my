@@ -34,6 +34,17 @@ public class DynamicCodeDTO extends IdDTO {
      */
     private String content;
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("serviceMark", getServiceMark())
+            .append("groupId", getGroupId())
+            .append("id", getId())
+            .append("className", getClassName())
+            .append("content", getContent())
+            .toString();
+    }
+
     public String getServiceMark() {
         return serviceMark;
     }
@@ -64,17 +75,6 @@ public class DynamicCodeDTO extends IdDTO {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("serviceMark", getServiceMark())
-            .append("groupId", getGroupId())
-            .append("id", getId())
-            .append("className", getClassName())
-            .append("content", getContent())
-            .toString();
     }
 
 }

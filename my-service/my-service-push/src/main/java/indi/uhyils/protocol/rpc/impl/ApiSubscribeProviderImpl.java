@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.ApiSubscribeDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.SubscribeRequest;
 import indi.uhyils.protocol.rpc.ApiSubscribeProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;
@@ -24,15 +23,14 @@ public class ApiSubscribeProviderImpl extends BaseDefaultProvider<ApiSubscribeDT
     @Autowired
     private ApiSubscribeService service;
 
+    @Override
+    public Boolean subscribe(SubscribeRequest request) {
+        return service.subscribe(request);
+    }
 
     @Override
     protected BaseDoService<ApiSubscribeDTO> getService() {
         return service;
-    }
-
-    @Override
-    public Boolean subscribe(SubscribeRequest request) {
-        return service.subscribe(request);
     }
 }
 

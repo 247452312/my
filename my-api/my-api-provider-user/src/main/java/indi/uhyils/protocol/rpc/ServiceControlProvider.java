@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.context.MyContext;
 import indi.uhyils.pojo.DTO.MethodDisableDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.DelMethodDisableCommand;
 import indi.uhyils.pojo.DTO.request.MethodDisableQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;

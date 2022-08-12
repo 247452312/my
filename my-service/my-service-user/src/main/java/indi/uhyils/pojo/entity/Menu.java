@@ -53,20 +53,6 @@ public class Menu extends AbstractDoEntity<MenuDO> {
         rep.remove(collect);
     }
 
-    private List<MenuDTO> paveTree(MenuTreeDTO node) {
-        List<MenuDTO> menuDTOS = new ArrayList<>();
-        paveTree(node, menuDTOS);
-        return menuDTOS;
-    }
-
-    private void paveTree(MenuTreeDTO node, List<MenuDTO> list) {
-        MenuDTO menuDTO = node.getMenuDTO();
-        list.add(menuDTO);
-        for (MenuTreeDTO childNode : node.getChild()) {
-            paveTree(childNode, list);
-        }
-    }
-
     /**
      * 发现本身以及以下的节点树
      *
@@ -89,25 +75,6 @@ public class Menu extends AbstractDoEntity<MenuDO> {
         List<MenuTreeDTO> build = menuTreeBuilder.build();
         return findNode(build, menuDO.getId());
     }
-
-    private MenuTreeDTO findNode(List<MenuTreeDTO> build, Long id) {
-        for (MenuTreeDTO menuTreeDTO : build) {
-            MenuTreeDTO node = findNode(menuTreeDTO, id);
-            if (node != null) {
-                return node;
-            }
-        }
-        return null;
-    }
-
-    private MenuTreeDTO findNode(MenuTreeDTO build, Long id) {
-        MenuDTO menuDTO = build.getMenuDTO();
-        if (Objects.equals(menuDTO.getId(), id)) {
-            return build;
-        }
-        return findNode(build.getChild(), id);
-    }
-
 
     public void cleanDept(MenuRepository rep) {
         this.depts = null;
@@ -135,5 +102,37 @@ public class Menu extends AbstractDoEntity<MenuDO> {
             result.add(newDeptId);
         }
         return result;
+    }
+
+    private List<MenuDTO> paveTree(MenuTreeDTO node) {
+        List<MenuDTO> menuDTOS = new ArrayList<>();
+        paveTree(node, menuDTOS);
+        return menuDTOS;
+    }
+
+    private void paveTree(MenuTreeDTO node, List<MenuDTO> list) {
+        MenuDTO menuDTO = node.getMenuDTO();
+        list.add(menuDTO);
+        for (MenuTreeDTO childNode : node.getChild()) {
+            paveTree(childNode, list);
+        }
+    }
+
+    private MenuTreeDTO findNode(List<MenuTreeDTO> build, Long id) {
+        for (MenuTreeDTO menuTreeDTO : build) {
+            MenuTreeDTO node = findNode(menuTreeDTO, id);
+            if (node != null) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    private MenuTreeDTO findNode(MenuTreeDTO build, Long id) {
+        MenuDTO menuDTO = build.getMenuDTO();
+        if (Objects.equals(menuDTO.getId(), id)) {
+            return build;
+        }
+        return findNode(build.getChild(), id);
     }
 }

@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc.provider;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.exception.UserException;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.CreateTopicRequest;
 import indi.uhyils.pojo.DTO.request.GetMessageRequest;
 import indi.uhyils.pojo.DTO.request.RegisterConsumerRequest;

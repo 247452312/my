@@ -58,6 +58,18 @@ public class RelegationServiceImpl extends AbstractDoService<RelegationDO, Releg
     }
 
     @Override
+    public Boolean demotion(String serviceName, String methodName) {
+        Relegation relegation = new Relegation(serviceName, methodName);
+        return relegation.demotion(facade);
+    }
+
+    @Override
+    public Boolean recover(String serviceName, String methodName) {
+        Relegation relegation = new Relegation(serviceName, methodName);
+        return relegation.recover(facade);
+    }
+
+    @Override
     public Page<RelegationDTO> query(List<Arg> args, Order order, Limit limit) {
         Page<RelegationDTO> query = super.query(args, order, limit);
         List<RelegationDTO> list = query.getList();
@@ -84,17 +96,5 @@ public class RelegationServiceImpl extends AbstractDoService<RelegationDO, Releg
         RelegationDTO query = super.query(id);
         facade.fillDisable(query);
         return query;
-    }
-
-    @Override
-    public Boolean demotion(String serviceName, String methodName) {
-        Relegation relegation = new Relegation(serviceName, methodName);
-        return relegation.demotion(facade);
-    }
-
-    @Override
-    public Boolean recover(String serviceName, String methodName) {
-        Relegation relegation = new Relegation(serviceName, methodName);
-        return relegation.recover(facade);
     }
 }

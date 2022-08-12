@@ -49,6 +49,20 @@ public class PlatformSourceInterfaceDTO extends IdDTO {
      */
     private Long sourceId;
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("returnType", getReturnType())
+            .append("requestType", getRequestType())
+            .append("interfaceName", getInterfaceName())
+            .append("url", getUrl())
+            .append("paramType", getParamType())
+            .append("methodName", getMethodName())
+            .append("id", getId())
+            .append("sourceId", getSourceId())
+            .toString();
+    }
+
     public String getReturnType() {
         return returnType;
     }
@@ -103,20 +117,6 @@ public class PlatformSourceInterfaceDTO extends IdDTO {
 
     public void setSourceId(Long sourceId) {
         this.sourceId = sourceId;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("returnType", getReturnType())
-            .append("requestType", getRequestType())
-            .append("interfaceName", getInterfaceName())
-            .append("url", getUrl())
-            .append("paramType", getParamType())
-            .append("methodName", getMethodName())
-            .append("id", getId())
-            .append("sourceId", getSourceId())
-            .toString();
     }
 
 }

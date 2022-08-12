@@ -46,15 +46,6 @@ public abstract class AbstractsInitialization implements DataInitialization<DnaD
         return quadraticData;
     }
 
-    /**
-     * 设置随机约束
-     *
-     * @param range 种群约束
-     */
-    public void setRandomFactor(Double... range) {
-        this.range = range;
-    }
-
     @Override
     public DnaData hybridization(DnaData one, DnaData otherOne) {
         List<DoubleGene> oneGenes = one.getGenes();
@@ -88,5 +79,14 @@ public abstract class AbstractsInitialization implements DataInitialization<DnaD
         DnaData quadraticData = new DnaData();
         quadraticData.setGenes(result);
         return quadraticData;
+    }
+
+    /**
+     * 设置随机约束
+     *
+     * @param range 种群约束
+     */
+    public void setRandomFactor(Double... range) {
+        this.range = range;
     }
 }

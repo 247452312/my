@@ -71,6 +71,32 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
         return logMonitorDO.getServiceName() + ":" + logMonitorDO.getIp();
     }
 
+    public List<ServiceQualityEnum> qualitys() {
+        Asserts.assertTrue(qualitys != null, "未分析结果");
+        return qualitys;
+    }
+
+    public Long id() {
+        return toData().map(BaseIdDO::getId).orElseThrow(() -> Asserts.makeException("未找到id"));
+    }
+
+    public void initServiceQuality(LogMonitorJvmStatusRepository repository) {
+        if (this.qualitys != null) {
+            return;
+        }
+        if (statuses == null) {
+            initStatuses(repository);
+        }
+        this.qualitys = analysis();
+    }
+
+    public void initStatuses(LogMonitorJvmStatusRepository repository) {
+        if (statuses != null) {
+            return;
+        }
+        this.statuses = repository.listLogMonitorJvmStatus(this);
+    }
+
     /**
      * 分析jvm运行信息
      *
@@ -166,32 +192,6 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
             list.add(ServiceQualityEnum.NOT_ENOUGH_NO_HEAP_MAX_MEMORY);
         }
         return list;
-    }
-
-    public List<ServiceQualityEnum> qualitys() {
-        Asserts.assertTrue(qualitys != null, "未分析结果");
-        return qualitys;
-    }
-
-    public Long id() {
-        return toData().map(BaseIdDO::getId).orElseThrow(() -> Asserts.makeException("未找到id"));
-    }
-
-    public void initStatuses(LogMonitorJvmStatusRepository repository) {
-        if (statuses != null) {
-            return;
-        }
-        this.statuses = repository.listLogMonitorJvmStatus(this);
-    }
-
-    public void initServiceQuality(LogMonitorJvmStatusRepository repository) {
-        if (this.qualitys != null) {
-            return;
-        }
-        if (statuses == null) {
-            initStatuses(repository);
-        }
-        this.qualitys = analysis();
     }
 
     public Long startTime() {

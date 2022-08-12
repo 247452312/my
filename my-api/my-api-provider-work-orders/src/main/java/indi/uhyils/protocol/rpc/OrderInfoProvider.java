@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.InitOrderDTO;
 import indi.uhyils.pojo.DTO.OrderInfoDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.CommitOrderCommand;
 import indi.uhyils.pojo.cqe.command.FrozenOrderCommand;
 import indi.uhyils.pojo.cqe.command.IdCommand;

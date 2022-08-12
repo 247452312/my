@@ -44,16 +44,24 @@ public class Gene implements Cloneable {
 
     }
 
+    @Override
+    public Object clone() {
+        Gene objectGene = new Gene();
+        objectGene.setValue(this.getValue());
+        objectGene.setDominance(this.getDominance());
+        return objectGene;
+    }
+
+    public Double getValue() {
+        return value;
+    }
+
     public Boolean getDominance() {
         return dominance;
     }
 
     public void setDominance(Boolean dominance) {
         this.dominance = dominance;
-    }
-
-    public Double getValue() {
-        return value;
     }
 
     public void setValue(Double value) {
@@ -71,13 +79,5 @@ public class Gene implements Cloneable {
         }
         sb.append('}');
         return sb.toString();
-    }
-
-    @Override
-    public Object clone() {
-        Gene objectGene = new Gene();
-        objectGene.setValue(this.getValue());
-        objectGene.setDominance(this.getDominance());
-        return objectGene;
     }
 }

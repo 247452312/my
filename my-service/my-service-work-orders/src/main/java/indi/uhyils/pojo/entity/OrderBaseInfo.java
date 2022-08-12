@@ -60,15 +60,14 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
         fillNodeRoute(routeRepository);
     }
 
-    public void fillNodeRoute(OrderBaseNodeRouteRepository routeRepository) {
-        List<OrderBaseNodeRoute> routes = routeRepository.findNodeRouteByNodes(this.nodes.stream().map(t -> t.getUnique().orElseThrow(Asserts::throwOptionalException)).collect(Collectors.toList()));
-        Map<Long, List<OrderBaseNodeRoute>> nodeIdRouteMap = routes.stream().collect(Collectors.groupingBy(t -> t.toData().map(OrderBaseNodeRouteDO::getPrevNodeId).orElseThrow(Asserts::throwOptionalException)));
+    public void fillNodeField(OrderBaseNodeFieldRepository fieldRepository) {
+        List<OrderBaseNodeField> fields = fieldRepository.findNodeFieldByNodes(this.nodes.stream().map(t -> t.getUnique().orElseThrow(Asserts::throwOptionalException)).collect(Collectors.toList()));
+        Map<Long, List<OrderBaseNodeField>> nodeIdFieldMap = fields.stream().collect(Collectors.groupingBy(t -> t.toData().map(OrderBaseNodeFieldDO::getBaseOrderId).orElseThrow(Asserts::throwOptionalException)));
         for (OrderBaseNode node : this.nodes) {
             Long id = node.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException);
-            List<OrderBaseNodeRoute> orderBaseNodeRoutes = nodeIdRouteMap.get(id);
-            node.fillRoutes(orderBaseNodeRoutes);
+            List<OrderBaseNodeField> fieldList = nodeIdFieldMap.get(id);
+            node.fillFields(fieldList);
         }
-
     }
 
     public void fillNodeResultType(OrderBaseNodeResultTypeRepository resultTypeRepository) {
@@ -81,14 +80,15 @@ public class OrderBaseInfo extends AbstractDoEntity<OrderBaseInfoDO> {
         }
     }
 
-    public void fillNodeField(OrderBaseNodeFieldRepository fieldRepository) {
-        List<OrderBaseNodeField> fields = fieldRepository.findNodeFieldByNodes(this.nodes.stream().map(t -> t.getUnique().orElseThrow(Asserts::throwOptionalException)).collect(Collectors.toList()));
-        Map<Long, List<OrderBaseNodeField>> nodeIdFieldMap = fields.stream().collect(Collectors.groupingBy(t -> t.toData().map(OrderBaseNodeFieldDO::getBaseOrderId).orElseThrow(Asserts::throwOptionalException)));
+    public void fillNodeRoute(OrderBaseNodeRouteRepository routeRepository) {
+        List<OrderBaseNodeRoute> routes = routeRepository.findNodeRouteByNodes(this.nodes.stream().map(t -> t.getUnique().orElseThrow(Asserts::throwOptionalException)).collect(Collectors.toList()));
+        Map<Long, List<OrderBaseNodeRoute>> nodeIdRouteMap = routes.stream().collect(Collectors.groupingBy(t -> t.toData().map(OrderBaseNodeRouteDO::getPrevNodeId).orElseThrow(Asserts::throwOptionalException)));
         for (OrderBaseNode node : this.nodes) {
             Long id = node.getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException);
-            List<OrderBaseNodeField> fieldList = nodeIdFieldMap.get(id);
-            node.fillFields(fieldList);
+            List<OrderBaseNodeRoute> orderBaseNodeRoutes = nodeIdRouteMap.get(id);
+            node.fillRoutes(orderBaseNodeRoutes);
         }
+
     }
 
     public void forceFillNode(List<OrderBaseNode> nodes) {

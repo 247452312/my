@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.TraceDetailDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetTraceDetailByHashCodeRequest;
 import indi.uhyils.pojo.DTO.response.GetTraceDetailByHashCodeResponse;
 import indi.uhyils.protocol.rpc.TraceDetailProvider;
@@ -25,15 +24,14 @@ public class TraceDetailProviderImpl extends BaseDefaultProvider<TraceDetailDTO>
     @Autowired
     private TraceDetailService service;
 
+    @Override
+    public GetTraceDetailByHashCodeResponse getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request) {
+        return null;
+    }
 
     @Override
     protected BaseDoService<TraceDetailDTO> getService() {
         return service;
-    }
-
-    @Override
-    public GetTraceDetailByHashCodeResponse getTraceDetailByHashCode(GetTraceDetailByHashCodeRequest request) {
-        return null;
     }
 }
 

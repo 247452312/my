@@ -165,50 +165,6 @@ public class IpSpiderTableAspect {
     }
 
     /**
-     * 初始化redis中的黑名单
-     *
-     * @return 是否成功 不成功的原因是多方面的, 首先 redis没有开, 其次 log服务没有开
-     */
-    @PostConstruct
-    private boolean init() {
-        // 没有初始化并且可以初始化
-        if (Boolean.FALSE.equals(init) && Boolean.TRUE.equals(canInit)) {
-            synchronized (this) {
-                if (Boolean.FALSE.equals(init) || Boolean.TRUE.equals(canInit)) {
-                    try {
-                        // 去后台获取数据库中的ip黑名单
-                        DefaultCQE request = DefaultCQEBuildUtil.getAdminDefaultCQE();
-                        List<String> allIpBlackList = null;
-                        try {
-                            allIpBlackList = blackListService.getAllIpBlackList(request);
-                        } catch (Exception e) {
-                            // 如果log服务挂了
-                            // 设置为不可用
-                            canInit = Boolean.FALSE;
-                            return Boolean.FALSE;
-                        }
-                        // 将黑名单存入redis
-                        Long sadd = redisPoolHandle.sadd(SpiderContext.IP_BLACK_REDIS_KEY, allIpBlackList);
-                        // 如果redis不可用
-                        if (sadd == -1L) {
-                            canInit = Boolean.FALSE;
-                            return Boolean.FALSE;
-                        }
-                        init = Boolean.TRUE;
-                        return Boolean.TRUE;
-                    } catch (Exception e) {
-                        LogUtil.error(this, e);
-                        canInit = Boolean.FALSE;
-                        return Boolean.FALSE;
-                    }
-                }
-            }
-        }
-        return Boolean.TRUE;
-
-    }
-
-    /**
      * 输入了错误的验证码 或者根本就没有输入验证码
      *
      * @param ip ip
@@ -256,6 +212,50 @@ public class IpSpiderTableAspect {
         }
         // 验证爬虫
         return WebResponse.build(null, ServiceCode.SPIDER_VERIFICATION);
+    }
+
+    /**
+     * 初始化redis中的黑名单
+     *
+     * @return 是否成功 不成功的原因是多方面的, 首先 redis没有开, 其次 log服务没有开
+     */
+    @PostConstruct
+    private boolean init() {
+        // 没有初始化并且可以初始化
+        if (Boolean.FALSE.equals(init) && Boolean.TRUE.equals(canInit)) {
+            synchronized (this) {
+                if (Boolean.FALSE.equals(init) || Boolean.TRUE.equals(canInit)) {
+                    try {
+                        // 去后台获取数据库中的ip黑名单
+                        DefaultCQE request = DefaultCQEBuildUtil.getAdminDefaultCQE();
+                        List<String> allIpBlackList = null;
+                        try {
+                            allIpBlackList = blackListService.getAllIpBlackList(request);
+                        } catch (Exception e) {
+                            // 如果log服务挂了
+                            // 设置为不可用
+                            canInit = Boolean.FALSE;
+                            return Boolean.FALSE;
+                        }
+                        // 将黑名单存入redis
+                        Long sadd = redisPoolHandle.sadd(SpiderContext.IP_BLACK_REDIS_KEY, allIpBlackList);
+                        // 如果redis不可用
+                        if (sadd == -1L) {
+                            canInit = Boolean.FALSE;
+                            return Boolean.FALSE;
+                        }
+                        init = Boolean.TRUE;
+                        return Boolean.TRUE;
+                    } catch (Exception e) {
+                        LogUtil.error(this, e);
+                        canInit = Boolean.FALSE;
+                        return Boolean.FALSE;
+                    }
+                }
+            }
+        }
+        return Boolean.TRUE;
+
     }
 
 }

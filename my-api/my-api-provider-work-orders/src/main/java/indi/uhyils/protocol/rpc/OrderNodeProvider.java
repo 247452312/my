@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.DealOrderNodeDTO;
 import indi.uhyils.pojo.DTO.OrderNodeDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.DealOrderNodeCommand;
 import indi.uhyils.pojo.cqe.command.FailOrderNodeCommand;
 import indi.uhyils.pojo.cqe.command.IdsCommand;

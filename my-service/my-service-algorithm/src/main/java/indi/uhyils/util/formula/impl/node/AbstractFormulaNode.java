@@ -57,6 +57,78 @@ public abstract class AbstractFormulaNode implements FormulaNode {
 
     protected abstract void init();
 
+    @Override
+    public Map<String, FormulaNode> lastNodes() {
+        return lastNodes;
+    }
+
+    @Override
+    public String getNodeFormula() {
+        return formula;
+    }
+
+    @Override
+    public String getFormula() {
+        String result = this.formula;
+        for (Entry<String, FormulaNode> entry : lastNodes.entrySet()) {
+            String key = entry.getKey();
+            FormulaNode value = entry.getValue();
+            String tempFormula = value.getFormula();
+            tempFormula = dealFormula(tempFormula);
+
+            result = result.replace(key, tempFormula);
+        }
+        return result;
+    }
+
+    @Override
+    public String derivation(String varName) {
+        if (!contains(varName)) {
+            return "0";
+        }
+        return haveVarNameDerivation(varName);
+    }
+
+    @Override
+    public Boolean contains(String symbol) {
+        List<String> allVarName = getAllVarName();
+        return allVarName.contains(symbol);
+    }
+
+    @Override
+    public List<String> getAllVarName() {
+        List<String> result = new ArrayList<>();
+        if (CollectionUtil.isNotEmpty(varNames)) {
+            result.addAll(varNames);
+        }
+        for (Entry<String, FormulaNode> entry : lastNodes.entrySet()) {
+            FormulaNode value = entry.getValue();
+            List<String> allVarName = value.getAllVarName();
+            result.addAll(allVarName);
+        }
+        return result.stream().filter(t -> !t.startsWith(VAR_NAME_PREX)).distinct().collect(Collectors.toList());
+    }
+
+    /**
+     * 不存在没有此变量的情况的求导
+     *
+     * @param varName
+     *
+     * @return
+     */
+    protected abstract String haveVarNameDerivation(String varName);
+
+    /**
+     * 处理公式串
+     *
+     * @param formula
+     *
+     * @return
+     */
+    protected String dealFormula(String formula) {
+        return String.format("(%s)", formula);
+    }
+
     /**
      * 替换方法,具体方法见{@link FormulaNode#FUNCTION_NAME}
      */
@@ -104,6 +176,14 @@ public abstract class AbstractFormulaNode implements FormulaNode {
         }
     }
 
+    /**
+     * 获取下一个替换变量的名称
+     *
+     * @return
+     */
+    protected String getLastVarName() {
+        return VAR_NAME_PREX + varIndex++;
+    }
 
     /**
      * 查询最终的自变量
@@ -164,17 +244,6 @@ public abstract class AbstractFormulaNode implements FormulaNode {
         }
     }
 
-
-    /**
-     * 获取下一个替换变量的名称
-     *
-     * @return
-     */
-    protected String getLastVarName() {
-        return VAR_NAME_PREX + varIndex++;
-    }
-
-
     /**
      * 替换每一项(+,-)
      */
@@ -198,78 +267,6 @@ public abstract class AbstractFormulaNode implements FormulaNode {
             }
 
         }
-    }
-
-    @Override
-    public Map<String, FormulaNode> lastNodes() {
-        return lastNodes;
-    }
-
-    @Override
-    public String getNodeFormula() {
-        return formula;
-    }
-
-    @Override
-    public String derivation(String varName) {
-        if (!contains(varName)) {
-            return "0";
-        }
-        return haveVarNameDerivation(varName);
-    }
-
-    @Override
-    public Boolean contains(String symbol) {
-        List<String> allVarName = getAllVarName();
-        return allVarName.contains(symbol);
-    }
-
-    /**
-     * 不存在没有此变量的情况的求导
-     *
-     * @param varName
-     *
-     * @return
-     */
-    protected abstract String haveVarNameDerivation(String varName);
-
-    @Override
-    public String getFormula() {
-        String result = this.formula;
-        for (Entry<String, FormulaNode> entry : lastNodes.entrySet()) {
-            String key = entry.getKey();
-            FormulaNode value = entry.getValue();
-            String tempFormula = value.getFormula();
-            tempFormula = dealFormula(tempFormula);
-
-            result = result.replace(key, tempFormula);
-        }
-        return result;
-    }
-
-    /**
-     * 处理公式串
-     *
-     * @param formula
-     *
-     * @return
-     */
-    protected String dealFormula(String formula) {
-        return String.format("(%s)", formula);
-    }
-
-    @Override
-    public List<String> getAllVarName() {
-        List<String> result = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(varNames)) {
-            result.addAll(varNames);
-        }
-        for (Entry<String, FormulaNode> entry : lastNodes.entrySet()) {
-            FormulaNode value = entry.getValue();
-            List<String> allVarName = value.getAllVarName();
-            result.addAll(allVarName);
-        }
-        return result.stream().filter(t -> !t.startsWith(VAR_NAME_PREX)).distinct().collect(Collectors.toList());
     }
 
 }

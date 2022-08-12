@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.ApiGroupDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.protocol.rpc.base.DTOProvider;

@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.RelegationDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.RelegationCoverCommand;
 import indi.uhyils.pojo.cqe.command.RelegationDemotionCommand;
 import indi.uhyils.protocol.rpc.base.DTOProvider;

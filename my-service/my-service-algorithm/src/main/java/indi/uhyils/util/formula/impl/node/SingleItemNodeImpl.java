@@ -51,6 +51,31 @@ public class SingleItemNodeImpl extends AbstractFormulaNode implements FormulaNo
         return result;
     }
 
+    private String multiplicationDerivation(String varName) {
+        StringBuilder result = new StringBuilder("0");
+        Map<String, FormulaNode> nodeMap = lastNodes();
+        for (Entry<String, FormulaNode> entry : nodeMap.entrySet()) {
+            String key = entry.getKey();
+            FormulaNode value = entry.getValue();
+            if (!value.contains(varName)) {
+                continue;
+            }
+            String derivation = value.derivation(varName);
+            result.append("+");
+            String nodeFormula = getNodeFormula();
+            String replace = nodeFormula.replace(key, derivation);
+
+            for (Entry<String, FormulaNode> nodeEntry : nodeMap.entrySet()) {
+                if (Objects.equals(nodeEntry.getKey(), key)) {
+                    continue;
+                }
+                replace = replace.replace(nodeEntry.getKey(), String.format("(%s)", nodeEntry.getValue().getFormula()));
+            }
+            result.append(replace);
+        }
+        return result.toString();
+    }
+
     /**
      * 幂次求导
      *
@@ -118,31 +143,6 @@ public class SingleItemNodeImpl extends AbstractFormulaNode implements FormulaNo
         return result;
     }
 
-    private String multiplicationDerivation(String varName) {
-        StringBuilder result = new StringBuilder("0");
-        Map<String, FormulaNode> nodeMap = lastNodes();
-        for (Entry<String, FormulaNode> entry : nodeMap.entrySet()) {
-            String key = entry.getKey();
-            FormulaNode value = entry.getValue();
-            if (!value.contains(varName)) {
-                continue;
-            }
-            String derivation = value.derivation(varName);
-            result.append("+");
-            String nodeFormula = getNodeFormula();
-            String replace = nodeFormula.replace(key, derivation);
-
-            for (Entry<String, FormulaNode> nodeEntry : nodeMap.entrySet()) {
-                if (Objects.equals(nodeEntry.getKey(), key)) {
-                    continue;
-                }
-                replace = replace.replace(nodeEntry.getKey(), String.format("(%s)", nodeEntry.getValue().getFormula()));
-            }
-            result.append(replace);
-        }
-        return result.toString();
-    }
-
     private void validateSingle() {
         if (formula.contains("+")) {
             Asserts.throwException("单项节点不允许有加号,如果在括号中请先去除括号");
@@ -188,14 +188,27 @@ public class SingleItemNodeImpl extends AbstractFormulaNode implements FormulaNo
     }
 
     /**
-     * 替换根节点
+     * 替换除法
      *
      * @param formula
      */
-    private void replaceLevel(String formula) {
-        String name = getLastVarName();
-        lastNodes.put(name, new LevelFormulaNodeImpl(formula));
-        this.formula = StringUtil.replaceFirst(this.formula, formula, name);
+    private void replaceDivision(String formula) {
+        String[] twoItem = formula.split("/");
+        Asserts.assertTrue(twoItem.length == 2);
+        String first = twoItem[0];
+        String second = twoItem[1];
+
+        if (!NumberUtils.isParsable(first)) {
+            String firstName = getLastVarName();
+            lastNodes.put(firstName, new SingleItemNodeImpl(first));
+            this.formula = StringUtil.replaceFirst(this.formula, first, firstName);
+        }
+        if (!NumberUtils.isParsable(second)) {
+            String secondName = getLastVarName();
+            second = second + "^-1";
+            lastNodes.put(secondName, new SingleItemNodeImpl(second));
+            this.formula = StringUtil.replaceFirst(this.formula, formula, secondName);
+        }
     }
 
     /**
@@ -222,26 +235,13 @@ public class SingleItemNodeImpl extends AbstractFormulaNode implements FormulaNo
     }
 
     /**
-     * 替换除法
+     * 替换根节点
      *
      * @param formula
      */
-    private void replaceDivision(String formula) {
-        String[] twoItem = formula.split("/");
-        Asserts.assertTrue(twoItem.length == 2);
-        String first = twoItem[0];
-        String second = twoItem[1];
-
-        if (!NumberUtils.isParsable(first)) {
-            String firstName = getLastVarName();
-            lastNodes.put(firstName, new SingleItemNodeImpl(first));
-            this.formula = StringUtil.replaceFirst(this.formula, first, firstName);
-        }
-        if (!NumberUtils.isParsable(second)) {
-            String secondName = getLastVarName();
-            second = second + "^-1";
-            lastNodes.put(secondName, new SingleItemNodeImpl(second));
-            this.formula = StringUtil.replaceFirst(this.formula, formula, secondName);
-        }
+    private void replaceLevel(String formula) {
+        String name = getLastVarName();
+        lastNodes.put(name, new LevelFormulaNodeImpl(formula));
+        this.formula = StringUtil.replaceFirst(this.formula, formula, name);
     }
 }

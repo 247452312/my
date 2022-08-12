@@ -29,6 +29,16 @@ public class PlatformPowerDTO extends IdDTO {
      */
     private Integer status;
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("userId", getUserId())
+            .append("id", getId())
+            .append("publishNodeId", getPublishNodeId())
+            .append("status", getStatus())
+            .toString();
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -51,16 +61,6 @@ public class PlatformPowerDTO extends IdDTO {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("userId", getUserId())
-            .append("id", getId())
-            .append("publishNodeId", getPublishNodeId())
-            .append("status", getStatus())
-            .toString();
     }
 
 }

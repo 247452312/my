@@ -24,16 +24,15 @@ public class AlgorithmProviderImpl extends BaseDefaultProvider<AlgorithmDTO> imp
     @Autowired
     private AlgorithmService service;
 
-
-    @Override
-    protected BaseDoService<AlgorithmDTO> getService() {
-        return service;
-    }
-
     @Override
     public CellAlgorithmResponse cellAlgorithm(CellAlgorithmRequest request) {
         CellAlgorithmResponse result = service.cellAlgorithm(request);
         return result;
+    }
+
+    @Override
+    protected BaseDoService<AlgorithmDTO> getService() {
+        return service;
     }
 
 }

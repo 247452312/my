@@ -131,6 +131,13 @@ public class DbInformation extends AbstractEntity {
     }
 
     public DbInformation(
+        String url, String dbName, String projectName, String bigProjectName, String smallProjectName, Integer port, Integer type, String userName, String password, List<String> tables,
+        String author) {
+        this(url, dbName, projectName, bigProjectName, smallProjectName, port, type, userName, password, tables);
+        this.author = author;
+    }
+
+    public DbInformation(
         String url, String dbName, String projectName, String bigProjectName, String smallProjectName, Integer port, Integer type, String userName, String password, List<String> tables) {
         this.url = url;
         this.dbName = dbName;
@@ -143,14 +150,6 @@ public class DbInformation extends AbstractEntity {
         this.password = password;
         this.tables = tables;
     }
-
-    public DbInformation(
-        String url, String dbName, String projectName, String bigProjectName, String smallProjectName, Integer port, Integer type, String userName, String password, List<String> tables,
-        String author) {
-        this(url, dbName, projectName, bigProjectName, smallProjectName, port, type, userName, password, tables);
-        this.author = author;
-    }
-
 
     /**
      * 初始化连接
@@ -190,68 +189,6 @@ public class DbInformation extends AbstractEntity {
     public void fillTableInfos() {
         fillDBInfo();
         fillDerivedInfo();
-    }
-
-    public DbTypeEnum getType() {
-        return DbTypeEnum.prase(type);
-    }
-
-    /**
-     * 结果
-     *
-     * @return
-     */
-    public Map<String, String> result() {
-        return KproUtil.getMySqlKpro(this);
-    }
-
-    /**
-     * 解析为模板类型代码
-     *
-     * @return 多个表的模板
-     */
-    public List<VelocityContext> parseToVelocityContext() {
-        String packageProperties = SpringUtil.getProperty(PACKAGE_PROPERTIES_PATH, PACKAGE_DEFAULT_PATH);
-        // 作者优先级 1.传入 2.配置文件 3.默认
-        String authorProperties = author;
-        if (StringUtil.isEmpty(authorProperties)) {
-            authorProperties = SpringUtil.getProperty(AUTHOR_PROPERTIES_PATH, AUTHOR_DEFAULT_PATH);
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
-        String dateTime = sdf.format(new Date());
-        List<VelocityContext> results = new ArrayList<>(tables.size());
-        for (String tableName : tables) {
-            VelocityContext velocityContext = new VelocityContext();
-            TableInfo tableInfo = tableInfos.get(tableName);
-            velocityContext.put("package", packageProperties);
-            velocityContext.put("packagePath", packageProperties.replace(".", "/"));
-            velocityContext.put("author", authorProperties);
-            velocityContext.put("tableComment", tableInfo.getTableComment());
-            velocityContext.put("dateTime", dateTime);
-            velocityContext.put("tableName", tableName);
-            velocityContext.put("className", tableInfo.getClassName());
-            velocityContext.put("columns", tableInfo.getColums());
-            velocityContext.put("pkColumn", tableInfo.getOnlyKey());
-            results.add(velocityContext);
-        }
-        return results;
-
-
-    }
-
-    /**
-     * 填充根据数据库信息衍生的信息
-     */
-    private void fillDerivedInfo() {
-        for (Entry<String, TableInfo> entry : this.tableInfos.entrySet()) {
-            TableInfo value = entry.getValue();
-            TypeConvertor typeConvertor = TypeConvertorFactory.getTypeConvertor(DbTypeEnum.prase(type));
-            for (ColumnInfo columnInfoEntity : value.getColums()) {
-                String dataType = columnInfoEntity.getDataType();
-                String javaType = typeConvertor.databaseType2JavaType(dataType);
-                columnInfoEntity.setJavaType(javaType);
-            }
-        }
     }
 
     /**
@@ -314,5 +251,67 @@ public class DbInformation extends AbstractEntity {
             }
         }
         this.tableInfos = stringTableInfoHashMap;
+    }
+
+    /**
+     * 填充根据数据库信息衍生的信息
+     */
+    private void fillDerivedInfo() {
+        for (Entry<String, TableInfo> entry : this.tableInfos.entrySet()) {
+            TableInfo value = entry.getValue();
+            TypeConvertor typeConvertor = TypeConvertorFactory.getTypeConvertor(DbTypeEnum.prase(type));
+            for (ColumnInfo columnInfoEntity : value.getColums()) {
+                String dataType = columnInfoEntity.getDataType();
+                String javaType = typeConvertor.databaseType2JavaType(dataType);
+                columnInfoEntity.setJavaType(javaType);
+            }
+        }
+    }
+
+    public DbTypeEnum getType() {
+        return DbTypeEnum.prase(type);
+    }
+
+    /**
+     * 结果
+     *
+     * @return
+     */
+    public Map<String, String> result() {
+        return KproUtil.getMySqlKpro(this);
+    }
+
+    /**
+     * 解析为模板类型代码
+     *
+     * @return 多个表的模板
+     */
+    public List<VelocityContext> parseToVelocityContext() {
+        String packageProperties = SpringUtil.getProperty(PACKAGE_PROPERTIES_PATH, PACKAGE_DEFAULT_PATH);
+        // 作者优先级 1.传入 2.配置文件 3.默认
+        String authorProperties = author;
+        if (StringUtil.isEmpty(authorProperties)) {
+            authorProperties = SpringUtil.getProperty(AUTHOR_PROPERTIES_PATH, AUTHOR_DEFAULT_PATH);
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
+        String dateTime = sdf.format(new Date());
+        List<VelocityContext> results = new ArrayList<>(tables.size());
+        for (String tableName : tables) {
+            VelocityContext velocityContext = new VelocityContext();
+            TableInfo tableInfo = tableInfos.get(tableName);
+            velocityContext.put("package", packageProperties);
+            velocityContext.put("packagePath", packageProperties.replace(".", "/"));
+            velocityContext.put("author", authorProperties);
+            velocityContext.put("tableComment", tableInfo.getTableComment());
+            velocityContext.put("dateTime", dateTime);
+            velocityContext.put("tableName", tableName);
+            velocityContext.put("className", tableInfo.getClassName());
+            velocityContext.put("columns", tableInfo.getColums());
+            velocityContext.put("pkColumn", tableInfo.getOnlyKey());
+            results.add(velocityContext);
+        }
+        return results;
+
+
     }
 }

@@ -110,6 +110,10 @@ public enum FunctionEnum {
         return null;
     }
 
+    public String getName() {
+        return name;
+    }
+
     /**
      * 去除方法体
      *
@@ -137,9 +141,5 @@ public enum FunctionEnum {
      */
     public String derivation(String formula, String varName) {
         return derivationFunction.transformEntry(formula, varName);
-    }
-
-    public String getName() {
-        return name;
     }
 }

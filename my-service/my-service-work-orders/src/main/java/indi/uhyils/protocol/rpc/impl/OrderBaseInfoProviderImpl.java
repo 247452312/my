@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.OrderBaseInfoDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.protocol.rpc.OrderBaseInfoProvider;
@@ -26,12 +25,6 @@ public class OrderBaseInfoProviderImpl extends BaseDefaultProvider<OrderBaseInfo
     @Autowired
     private OrderBaseInfoService service;
 
-
-    @Override
-    protected BaseDoService<OrderBaseInfoDTO> getService() {
-        return service;
-    }
-
     @Override
     public List<OrderBaseInfoDTO> getAllBaseOrderIdAndName(DefaultCQE request) {
         return service.getAllBaseOrderIdAndName(request);
@@ -40,6 +33,11 @@ public class OrderBaseInfoProviderImpl extends BaseDefaultProvider<OrderBaseInfo
     @Override
     public OrderBaseInfoDTO getOneOrder(IdQuery request) {
         return service.getOneOrder(request);
+    }
+
+    @Override
+    protected BaseDoService<OrderBaseInfoDTO> getService() {
+        return service;
     }
 
 }

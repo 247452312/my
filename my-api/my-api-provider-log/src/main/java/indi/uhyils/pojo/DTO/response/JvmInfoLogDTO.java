@@ -78,6 +78,14 @@ public class JvmInfoLogDTO implements BaseDTO {
 
     }
 
+    public String getDefaultData() {
+        return defaultData;
+    }
+
+    public void setDefaultData(String defaultData) {
+        this.defaultData = defaultData;
+    }
+
     public Integer getMaxY() {
         return maxY;
     }
@@ -92,13 +100,5 @@ public class JvmInfoLogDTO implements BaseDTO {
 
     public void setData(Map<String, List> data) {
         this.data = data;
-    }
-
-    public String getDefaultData() {
-        return defaultData;
-    }
-
-    public void setDefaultData(String defaultData) {
-        this.defaultData = defaultData;
     }
 }

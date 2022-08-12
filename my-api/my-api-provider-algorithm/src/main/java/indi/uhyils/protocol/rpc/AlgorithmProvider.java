@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc;
 
 
 import indi.uhyils.pojo.DTO.AlgorithmDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.CellAlgorithmRequest;
 import indi.uhyils.pojo.DTO.response.CellAlgorithmResponse;
 import indi.uhyils.protocol.rpc.base.DTOProvider;

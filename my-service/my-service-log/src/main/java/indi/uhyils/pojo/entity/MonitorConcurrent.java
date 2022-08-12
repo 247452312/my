@@ -77,6 +77,16 @@ public class MonitorConcurrent extends AbstractEntity<Long> {
     }
 
     /**
+     * 初始化当前服务等级
+     *
+     * @param rep
+     */
+    private void initLevel(TraceInfoRepository rep) {
+        Long level = rep.getRelegationLevel(LEVEL);
+        setUnique(level);
+    }
+
+    /**
      * 初始化类型,是降级还是升级
      *
      * @return
@@ -149,20 +159,6 @@ public class MonitorConcurrent extends AbstractEntity<Long> {
     }
 
     /**
-     * 降级
-     *
-     * @param facade
-     *
-     * @return
-     */
-    private boolean degradationLowInterface(ServiceControlFacade facade) {
-        // 挨个降级
-        List<Boolean> list = this.beDowngraded.stream().map(t -> t.demotion(facade)).collect(Collectors.toList());
-        // 只要有一个成功,则代表此次操作成功
-        return list.stream().anyMatch(t -> t);
-    }
-
-    /**
      * 恢复降级
      *
      * @param facade
@@ -175,12 +171,16 @@ public class MonitorConcurrent extends AbstractEntity<Long> {
     }
 
     /**
-     * 初始化当前服务等级
+     * 降级
      *
-     * @param rep
+     * @param facade
+     *
+     * @return
      */
-    private void initLevel(TraceInfoRepository rep) {
-        Long level = rep.getRelegationLevel(LEVEL);
-        setUnique(level);
+    private boolean degradationLowInterface(ServiceControlFacade facade) {
+        // 挨个降级
+        List<Boolean> list = this.beDowngraded.stream().map(t -> t.demotion(facade)).collect(Collectors.toList());
+        // 只要有一个成功,则代表此次操作成功
+        return list.stream().anyMatch(t -> t);
     }
 }

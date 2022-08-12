@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.ParamDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.FlushAllSysEvent;
 import indi.uhyils.protocol.rpc.ParamProvider;
 import indi.uhyils.protocol.rpc.base.BaseDefaultProvider;

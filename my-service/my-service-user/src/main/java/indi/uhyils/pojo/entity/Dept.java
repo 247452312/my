@@ -34,6 +34,12 @@ public class Dept extends AbstractDoEntity<DeptDO> {
         super(parseIdToDO(id));
     }
 
+    private static DeptDO parseIdToDO(Long id) {
+        DeptDO deptDO = new DeptDO();
+        deptDO.setId(id);
+        return deptDO;
+    }
+
     public Dept(Identifier id) {
         super(id, new DeptDO());
     }
@@ -46,12 +52,6 @@ public class Dept extends AbstractDoEntity<DeptDO> {
     public Dept(List<Menu> menus, DeptDO deptDO) {
         super(deptDO);
         this.menus = menus;
-    }
-
-    private static DeptDO parseIdToDO(Long id) {
-        DeptDO deptDO = new DeptDO();
-        deptDO.setId(id);
-        return deptDO;
     }
 
     public void addPower(List<Power> powers, DeptRepository rep) {

@@ -48,14 +48,14 @@ public class MethodDisable extends AbstractEntity {
      */
     private ReadWriteTypeEnum methodType;
 
+    public MethodDisable(String className, String methodName) {
+        this(className, methodName, null);
+    }
+
     public MethodDisable(String className, String methodName, ReadWriteTypeEnum methodType) {
         this.className = className;
         this.methodName = methodName;
         this.methodType = methodType;
-    }
-
-    public MethodDisable(String className, String methodName) {
-        this(className, methodName, null);
     }
 
     public MethodDisable(DelMethodDisableCommand query) {
@@ -64,17 +64,6 @@ public class MethodDisable extends AbstractEntity {
 
     public MethodDisable(MethodDisableDTO dto) {
         this(dto.getClassName(), dto.getMethodName(), ReadWriteTypeEnum.parse(dto.getDisableType()).orElseThrow(() -> Asserts.makeException("未找到方法禁用类型:{}", dto.getDisableType())));
-    }
-
-    public void completionClassName() {
-        if (!className.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
-            className = MyContext.SERVICE_PACKAGE_PREFIX + className;
-        }
-    }
-
-    public String toInterfaceMethodName() {
-        completionClassName();
-        return className + METHOD_LINK_CLASS_SYMBOL + methodName;
     }
 
     public Boolean checkInterfaceDisable(ServiceControlRepository repository) {
@@ -86,6 +75,17 @@ public class MethodDisable extends AbstractEntity {
             }
         }
         return repository.checkClassDisable(className, methodType);
+    }
+
+    public String toInterfaceMethodName() {
+        completionClassName();
+        return className + METHOD_LINK_CLASS_SYMBOL + methodName;
+    }
+
+    public void completionClassName() {
+        if (!className.contains(INTERFACE_NAME_PACKAGE_SEPARATOR)) {
+            className = MyContext.SERVICE_PACKAGE_PREFIX + className;
+        }
     }
 
     public void saveMethodDisable(ServiceControlRepository repository) {

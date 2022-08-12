@@ -16,7 +16,7 @@ class DbInformationTest {
     @Test
     void fillTableInfos() {
         DbInformationDTO dto = new DbInformationDTO();
-        dto.setTables(Arrays.asList("sys_call_node","sys_company","sys_company_power","sys_node","sys_node_parse","sys_provider_interface","sys_provider_interface_param"));
+        dto.setTables(Arrays.asList("sys_call_node", "sys_company", "sys_company_power", "sys_node", "sys_node_parse", "sys_provider_interface", "sys_provider_interface_param"));
         dto.setDbName("my_gateway");
         dto.setUrl("jdbc:mysql://prod:3306/my_gateway");
         dto.setType(DbTypeEnum.MYSQL.getTypeCode());

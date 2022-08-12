@@ -27,14 +27,14 @@ public class Dict extends AbstractDoEntity<DictDO> {
         super(parseCodeToDO(code));
     }
 
-    public Dict(Long id) {
-        super(id, new DictDO());
-    }
-
     private static DictDO parseCodeToDO(String code) {
         DictDO dictDO = new DictDO();
         dictDO.setCode(code);
         return dictDO;
+    }
+
+    public Dict(Long id) {
+        super(id, new DictDO());
     }
 
     public List<DictItem> findItemByCode(DictItemRepository dictItemRepository) {

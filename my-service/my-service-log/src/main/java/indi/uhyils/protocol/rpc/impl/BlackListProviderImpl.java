@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.BlackListDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.AddBlackIpRequest;
 import indi.uhyils.pojo.DTO.request.GetLogIntervalByIpQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
@@ -28,11 +27,6 @@ public class BlackListProviderImpl extends BaseDefaultProvider<BlackListDTO> imp
     private BlackListService service;
 
     @Override
-    protected BaseDoService<BlackListDTO> getService() {
-        return service;
-    }
-
-    @Override
     public Boolean getLogIntervalByIp(GetLogIntervalByIpQuery request) {
         return service.getLogIntervalByIp(request);
     }
@@ -45,6 +39,11 @@ public class BlackListProviderImpl extends BaseDefaultProvider<BlackListDTO> imp
     @Override
     public Boolean addBlackIp(AddBlackIpRequest request) {
         return service.addBlackIp(request);
+    }
+
+    @Override
+    protected BaseDoService<BlackListDTO> getService() {
+        return service;
     }
 }
 

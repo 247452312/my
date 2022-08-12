@@ -11,12 +11,12 @@ import indi.uhyils.repository.base.AbstractRepository;
 
 
 /**
-* 接口表,提供方提供的调用方式以及url(ProviderInterface)表 仓库实现
-*
-* @author uhyils <247452312@qq.com>
-* @version 1.0
-* @date 文件创建日期 2022年08月12日 08时33分
-*/
+ * 接口表,提供方提供的调用方式以及url(ProviderInterface)表 仓库实现
+ *
+ * @author uhyils <247452312@qq.com>
+ * @version 1.0
+ * @date 文件创建日期 2022年08月12日 08时33分
+ */
 @Repository
 public class ProviderInterfaceRepositoryImpl extends AbstractRepository<ProviderInterface, ProviderInterfaceDO, ProviderInterfaceDao, ProviderInterfaceDTO, ProviderInterfaceAssembler> implements ProviderInterfaceRepository {
 

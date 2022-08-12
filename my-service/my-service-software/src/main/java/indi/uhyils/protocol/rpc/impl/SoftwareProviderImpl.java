@@ -33,12 +33,6 @@ public class SoftwareProviderImpl extends BaseDefaultProvider<SoftwareDTO> imple
     @Autowired
     private SoftwareService service;
 
-
-    @Override
-    protected BaseDoService<SoftwareDTO> getService() {
-        return service;
-    }
-
     @Override
     public SoftwareDTO reload(IdCommand request) {
         return service.reload(request);
@@ -112,6 +106,11 @@ public class SoftwareProviderImpl extends BaseDefaultProvider<SoftwareDTO> imple
     @Override
     public List<GetInfosResponse> getInfos(IdQuery request) {
         return service.getInfos(request);
+    }
+
+    @Override
+    protected BaseDoService<SoftwareDTO> getService() {
+        return service;
     }
 }
 

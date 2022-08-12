@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.DeptDTO;
 import indi.uhyils.pojo.DTO.RoleDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.PutDeptsToRoleCommand;
 import indi.uhyils.pojo.DTO.response.GetAllDeptWithHaveMarkDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;

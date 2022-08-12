@@ -64,6 +64,23 @@ public class PlatformPublishNodeDTO extends IdDTO {
      */
     private Long nodeId;
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("dbType", getDbType())
+            .append("requestType", getRequestType())
+            .append("interfaceName", getInterfaceName())
+            .append("url", getUrl())
+            .append("sql", getSql())
+            .append("protocolType", getProtocolType())
+            .append("dbName", getDbName())
+            .append("userId", getUserId())
+            .append("methodName", getMethodName())
+            .append("id", getId())
+            .append("nodeId", getNodeId())
+            .toString();
+    }
+
     public Integer getDbType() {
         return dbType;
     }
@@ -142,23 +159,6 @@ public class PlatformPublishNodeDTO extends IdDTO {
 
     public void setNodeId(Long nodeId) {
         this.nodeId = nodeId;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("dbType", getDbType())
-            .append("requestType", getRequestType())
-            .append("interfaceName", getInterfaceName())
-            .append("url", getUrl())
-            .append("sql", getSql())
-            .append("protocolType", getProtocolType())
-            .append("dbName", getDbName())
-            .append("userId", getUserId())
-            .append("methodName", getMethodName())
-            .append("id", getId())
-            .append("nodeId", getNodeId())
-            .toString();
     }
 
 }

@@ -32,6 +32,39 @@ public class ScheduledManager {
     @Resource
     private Scheduler scheduler;
 
+    /**
+     * 更新job cron表达式
+     *
+     * @param quartzJob /
+     */
+    public boolean updateJobCron(JobDO quartzJob) {
+        try {
+            TriggerKey triggerKey = TriggerKey.triggerKey(JobConfig.JOB_NAME + quartzJob.getId());
+            CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+            // 如果不存在则创建一个定时任务
+            if (trigger == null) {
+                addJob(quartzJob);
+                trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+            }
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(quartzJob.getCron());
+            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
+            //重置启动时间
+            ((CronTriggerImpl) trigger).setStartTime(new Date());
+            trigger.getJobDataMap().put(JobConfig.JOB_KEY, quartzJob);
+
+            scheduler.rescheduleJob(triggerKey, trigger);
+            // 暂停任务
+            if (quartzJob.getPause()) {
+                pauseJob(quartzJob);
+            }
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+
+    }
+
     public boolean addJob(JobDO jobEntity) {
         try {
             // 构建job信息
@@ -65,36 +98,19 @@ public class ScheduledManager {
     }
 
     /**
-     * 更新job cron表达式
+     * 暂停一个job
      *
      * @param quartzJob /
      */
-    public boolean updateJobCron(JobDO quartzJob) {
+    public boolean pauseJob(JobDO quartzJob) {
         try {
-            TriggerKey triggerKey = TriggerKey.triggerKey(JobConfig.JOB_NAME + quartzJob.getId());
-            CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-            // 如果不存在则创建一个定时任务
-            if (trigger == null) {
-                addJob(quartzJob);
-                trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-            }
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(quartzJob.getCron());
-            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
-            //重置启动时间
-            ((CronTriggerImpl) trigger).setStartTime(new Date());
-            trigger.getJobDataMap().put(JobConfig.JOB_KEY, quartzJob);
-
-            scheduler.rescheduleJob(triggerKey, trigger);
-            // 暂停任务
-            if (quartzJob.getPause()) {
-                pauseJob(quartzJob);
-            }
+            JobKey jobKey = JobKey.jobKey(JobConfig.JOB_NAME + quartzJob.getId());
+            scheduler.pauseJob(jobKey);
         } catch (Exception e) {
             LogUtil.error(this, e);
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
-
     }
 
     /**
@@ -153,22 +169,6 @@ public class ScheduledManager {
             dataMap.put(JobConfig.JOB_KEY, quartzJob);
             JobKey jobKey = JobKey.jobKey(JobConfig.JOB_NAME + quartzJob.getId());
             scheduler.triggerJob(jobKey, dataMap);
-        } catch (Exception e) {
-            LogUtil.error(this, e);
-            return Boolean.FALSE;
-        }
-        return Boolean.TRUE;
-    }
-
-    /**
-     * 暂停一个job
-     *
-     * @param quartzJob /
-     */
-    public boolean pauseJob(JobDO quartzJob) {
-        try {
-            JobKey jobKey = JobKey.jobKey(JobConfig.JOB_NAME + quartzJob.getId());
-            scheduler.pauseJob(jobKey);
         } catch (Exception e) {
             LogUtil.error(this, e);
             return Boolean.FALSE;

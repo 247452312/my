@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.TraceDetailDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetTraceDetailByHashCodeRequest;
 import indi.uhyils.pojo.DTO.response.GetTraceDetailByHashCodeResponse;
 import indi.uhyils.protocol.rpc.base.DTOProvider;

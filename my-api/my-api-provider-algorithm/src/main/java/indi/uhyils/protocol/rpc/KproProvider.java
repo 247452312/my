@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc;
 
 
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.ProjectGenerateRequest;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 import java.util.Map;

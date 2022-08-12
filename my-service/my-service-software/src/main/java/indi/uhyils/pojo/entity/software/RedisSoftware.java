@@ -75,22 +75,6 @@ public class RedisSoftware extends Software implements RedisSoftwareInterface {
     }
 
     @Override
-    public void close() {
-        if (jedis != null) {
-            jedis.close();
-            jedis = null;
-        }
-    }
-
-    @Override
-    public void initBaseInfo() {
-        String redisVersion = getRedisNewVersion();
-        final SoftwareDO softwareDO = toData().orElseThrow(() -> Asserts.makeException("未找到data"));
-        softwareDO.setVersion(redisVersion);
-        softwareDO.setStatus(getStatus().getStatus());
-    }
-
-    @Override
     public Integer findRedisDb() {
         initJedis();
         List<String> databases = jedis.configGet("databases");
@@ -136,11 +120,6 @@ public class RedisSoftware extends Software implements RedisSoftwareInterface {
         jedis.del(key);
     }
 
-    private String getRedisNewVersion() {
-        Map<String, String> redisNewInfo = getRedisNewInfo();
-        return redisNewInfo.get("redis_version");
-    }
-
     private Map<String, String> getRedisNewInfo() {
         initJedis();
         Client client = jedis.getClient();
@@ -159,5 +138,26 @@ public class RedisSoftware extends Software implements RedisSoftwareInterface {
 
         });
         return redisInfoMap;
+    }
+
+    @Override
+    public void close() {
+        if (jedis != null) {
+            jedis.close();
+            jedis = null;
+        }
+    }
+
+    @Override
+    public void initBaseInfo() {
+        String redisVersion = getRedisNewVersion();
+        final SoftwareDO softwareDO = toData().orElseThrow(() -> Asserts.makeException("未找到data"));
+        softwareDO.setVersion(redisVersion);
+        softwareDO.setStatus(getStatus().getStatus());
+    }
+
+    private String getRedisNewVersion() {
+        Map<String, String> redisNewInfo = getRedisNewInfo();
+        return redisNewInfo.get("redis_version");
     }
 }

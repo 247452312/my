@@ -3,7 +3,6 @@ package indi.uhyils.facade.impl;
 import indi.uhyils.annotation.Facade;
 import indi.uhyils.facade.DictFacade;
 import indi.uhyils.pojo.DTO.DictItemDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetByCodeQuery;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.protocol.rpc.DictProvider;

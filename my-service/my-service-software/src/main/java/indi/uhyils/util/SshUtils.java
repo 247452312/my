@@ -84,6 +84,21 @@ public class SshUtils {
         }
     }
 
+    private static String getResult(InputStream in) {
+        InputStream stdout = new StreamGobbler(in);
+        StringBuilder buffer = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(stdout, StandardCharsets.UTF_8));
+            String line;
+            while ((line = br.readLine()) != null) {
+                buffer.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            LogUtil.error(SshUtils.class, "解析脚本出错：" + e.getMessage());
+        }
+        return buffer.toString();
+    }
+
     public static void execCommandBySshNoResponse(String ip, Integer port, String username, String password, String command) {
         Connection conn = null;
         Session ses = null;
@@ -106,20 +121,5 @@ public class SshUtils {
                 conn.close();
             }
         }
-    }
-
-    private static String getResult(InputStream in) {
-        InputStream stdout = new StreamGobbler(in);
-        StringBuilder buffer = new StringBuilder();
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(stdout, StandardCharsets.UTF_8));
-            String line;
-            while ((line = br.readLine()) != null) {
-                buffer.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            LogUtil.error(SshUtils.class, "解析脚本出错：" + e.getMessage());
-        }
-        return buffer.toString();
     }
 }

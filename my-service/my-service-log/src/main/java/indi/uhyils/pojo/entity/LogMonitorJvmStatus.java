@@ -41,10 +41,6 @@ public class LogMonitorJvmStatus extends AbstractDoEntity<LogMonitorJvmStatusDO>
         rep.changeEndTimeLag(this, realEndTime);
     }
 
-    public Long fid() {
-        return data.getFid();
-    }
-
     public void fillFid(LogMonitorRepository repository) {
         if (fid() != null) {
             return;
@@ -53,6 +49,10 @@ public class LogMonitorJvmStatus extends AbstractDoEntity<LogMonitorJvmStatusDO>
         Identifier idByUnique = repository.getIdByUnique(unique);
         data.setFid(idByUnique.getId());
 
+    }
+
+    public Long fid() {
+        return data.getFid();
     }
 
     public void addSelf(LogMonitorJvmStatusRepository rep) {

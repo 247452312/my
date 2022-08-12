@@ -71,6 +71,9 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
         this.apis = apis;
     }
 
+    public String callApi() {
+        return callApi(UserInfoHelper.doGet());
+    }
 
     public String callApi(UserDTO user) {
         Asserts.assertTrue(this.apis != null, "api为空");
@@ -79,10 +82,6 @@ public class ApiGroup extends AbstractDoEntity<ApiGroupDO> {
         String resultFormat = toData().map(ApiGroupDO::getResultFormat).orElseThrow(Asserts::throwOptionalException);
         resultFormat = ApiUtils.replaceString(parameter, resultFormat);
         return resultFormat;
-    }
-
-    public String callApi() {
-        return callApi(UserInfoHelper.doGet());
     }
 
     public void removeSelf(ApiGroupRepository rep) {

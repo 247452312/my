@@ -23,6 +23,11 @@ public abstract class UserAssembler extends AbstractAssembler<UserDO, User, User
     @Autowired
     private RoleAssembler roleAssembler;
 
+    public User toEntity(DefaultCQE cqe) {
+        UserDTO dto = cqe.getUser();
+        return toEntity(dto);
+    }
+
     @Override
     public User toEntity(UserDTO dto) {
         User user = new User(toDo(dto));
@@ -33,29 +38,12 @@ public abstract class UserAssembler extends AbstractAssembler<UserDO, User, User
         return user;
     }
 
-    public User toEntity(DefaultCQE cqe) {
-        UserDTO dto = cqe.getUser();
-        return toEntity(dto);
-    }
-
     @Override
     public UserDTO toDTO(User entity) {
         if (entity instanceof Visiter) {
             return visiterToDTO((Visiter) entity);
         }
         return entity.toData().map(t -> fillTypeAndRole(entity, t)).orElse(null);
-    }
-
-    @NotNull
-    private UserDTO fillTypeAndRole(User entity, UserDO t) {
-        final Role role = entity.role();
-        final UserDTO userDTO = toDTO(t);
-        userDTO.setUserType(UserTypeEnum.USER.getCode());
-        if (role != null) {
-            RoleDTO roleDTO = roleAssembler.toDTO(entity.role());
-            userDTO.setRole(roleDTO);
-        }
-        return userDTO;
     }
 
     private UserDTO visiterToDTO(Visiter visiter) {
@@ -75,5 +63,17 @@ public abstract class UserAssembler extends AbstractAssembler<UserDO, User, User
         userDTO.setIp(visiter.ip());
         return userDTO;
 
+    }
+
+    @NotNull
+    private UserDTO fillTypeAndRole(User entity, UserDO t) {
+        final Role role = entity.role();
+        final UserDTO userDTO = toDTO(t);
+        userDTO.setUserType(UserTypeEnum.USER.getCode());
+        if (role != null) {
+            RoleDTO roleDTO = roleAssembler.toDTO(entity.role());
+            userDTO.setRole(roleDTO);
+        }
+        return userDTO;
     }
 }

@@ -64,12 +64,6 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
         super(id, new OrderNodeDO());
     }
 
-    public void forceFillInfo(List<OrderNodeField> fields, List<OrderNodeResultType> resultTypes, List<OrderNodeRoute> routes) {
-        this.fields = fields;
-        this.resultTypes = resultTypes;
-        this.routes = routes;
-    }
-
     public List<OrderNodeField> fields() {
         return fields;
     }
@@ -88,6 +82,12 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
         return IdMapping.build(newId, oldId);
     }
 
+    public void changeAndSaveFieldNodeId(IdMapping idMappings, OrderNodeFieldRepository fieldRepository) {
+        Map<Long, Long> trans = new HashMap<>(1);
+        trans.put(idMappings.getOldId(), idMappings.getNewId());
+        changeAndSaveFieldNodeId(trans, fieldRepository);
+    }
+
     public void changeAndSaveFieldNodeId(Map<Long, Long> idMappings, OrderNodeFieldRepository fieldRepository) {
         if (CollectionUtil.isEmpty(fields)) {
             return;
@@ -101,10 +101,10 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
         }
     }
 
-    public void changeAndSaveFieldNodeId(IdMapping idMappings, OrderNodeFieldRepository fieldRepository) {
+    public void changeAndSaveResultTypeAndRoute(IdMapping idMappings, OrderNodeRouteRepository routeRepository, OrderNodeResultTypeRepository resultTypeRepository) {
         Map<Long, Long> trans = new HashMap<>(1);
         trans.put(idMappings.getOldId(), idMappings.getNewId());
-        changeAndSaveFieldNodeId(trans, fieldRepository);
+        changeAndSaveResultTypeAndRoute(trans, routeRepository, resultTypeRepository);
     }
 
     public void changeAndSaveResultTypeAndRoute(Map<Long, Long> idMappings, OrderNodeRouteRepository routeRepository, OrderNodeResultTypeRepository resultTypeRepository) {
@@ -134,18 +134,18 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
         }
     }
 
-    public void changeAndSaveResultTypeAndRoute(IdMapping idMappings, OrderNodeRouteRepository routeRepository, OrderNodeResultTypeRepository resultTypeRepository) {
-        Map<Long, Long> trans = new HashMap<>(1);
-        trans.put(idMappings.getOldId(), idMappings.getNewId());
-        changeAndSaveResultTypeAndRoute(trans, routeRepository, resultTypeRepository);
-    }
-
     public OrderNode copy() {
         OrderNodeDO dO = new OrderNodeDO();
         BeanUtil.copyProperties(data, dO);
         OrderNode orderNode = new OrderNode(dO);
         orderNode.forceFillInfo(fields, resultTypes, routes);
         return orderNode;
+    }
+
+    public void forceFillInfo(List<OrderNodeField> fields, List<OrderNodeResultType> resultTypes, List<OrderNodeRoute> routes) {
+        this.fields = fields;
+        this.resultTypes = resultTypes;
+        this.routes = routes;
     }
 
     public OrderNodeResultType createResultByTrans(OrderNodeResultTypeAssembler typeAssembler) {
@@ -215,6 +215,12 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
         changeStatus(rep, OrderNodeStatusEnum.WAIT_STATUS);
     }
 
+    public void changeStatus(OrderNodeRepository rep, OrderNodeStatusEnum status) {
+        data.setStatus(status.getCode());
+        onUpdate();
+        rep.save(this);
+    }
+
     public void checkAuto(PushFacade pushFacade, OrderNode pervOrder) {
         Integer runType = data.getRunType();
         if (OrderNodeRunTypeEnum.AUTO == OrderNodeRunTypeEnum.parse(runType)) {
@@ -225,12 +231,6 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
 
     public void transfer(OrderNodeRepository rep) {
         changeStatus(rep, OrderNodeStatusEnum.TRANSFER);
-    }
-
-    public void changeStatus(OrderNodeRepository rep, OrderNodeStatusEnum status) {
-        data.setStatus(status.getCode());
-        onUpdate();
-        rep.save(this);
     }
 
     public OrderInfo findBaseInfo(OrderInfoRepository infoRepository) {

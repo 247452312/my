@@ -3,7 +3,6 @@ package indi.uhyils.protocol.rpc;
 import indi.uhyils.pojo.DTO.TraceDetailStatisticsDTO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.DTO.response.LogTypeDTO;

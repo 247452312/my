@@ -52,17 +52,17 @@ public class Verification extends AbstractEntity {
         this(width, height, lines, new Font("cmr10", Font.BOLD, (int) (height / 1.2)));
     }
 
-    public Verification(String key, String code) {
-        this.key = key;
-        this.code = code;
-    }
-
-
     public Verification(Integer width, Integer height, Integer lines, Font font) {
         this.width = width;
         this.height = height;
         this.lines = lines;
         this.font = font;
+    }
+
+
+    public Verification(String key, String code) {
+        this.key = key;
+        this.code = code;
     }
 
     public void makeImg() throws IOException {
@@ -110,6 +110,13 @@ public class Verification extends AbstractEntity {
         rep.saveVerificationToCache(key, code, time);
     }
 
+    public String findKey() {
+        if (this.key != null) {
+            return this.key;
+        }
+        return this.key = "Verification" + UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
     public String findVerificationBase64() {
         Asserts.assertTrue(img != null, "img没有初始化,请执行:makeImg");
         if (base64 != null) {
@@ -117,13 +124,6 @@ public class Verification extends AbstractEntity {
         }
 
         return this.base64 = "data:image/jpeg;base64," + new String(img).replaceAll("\n", "");
-    }
-
-    public String findKey() {
-        if (this.key != null) {
-            return this.key;
-        }
-        return this.key = "Verification" + UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     public Boolean verification(VerificationRepository rep) {

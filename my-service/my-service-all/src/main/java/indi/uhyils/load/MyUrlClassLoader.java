@@ -55,15 +55,6 @@ public class MyUrlClassLoader extends ShareClassLoader {
     }
 
     @Override
-    public Class<?> loadClass(String name) throws ClassNotFoundException {
-        if (classAsmCache.containsKey(name)) {
-            byte[] bytes = classAsmCache.get(name);
-            return defineClass(name, bytes, 0, bytes.length);
-        }
-        return super.loadClass(name);
-    }
-
-    @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         if (classAsmCache.containsKey(name)) {
             try {
@@ -79,6 +70,15 @@ public class MyUrlClassLoader extends ShareClassLoader {
         }
         return super.findClass(name);
 
+    }
+
+    @Override
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
+        if (classAsmCache.containsKey(name)) {
+            byte[] bytes = classAsmCache.get(name);
+            return defineClass(name, bytes, 0, bytes.length);
+        }
+        return super.loadClass(name);
     }
 
 

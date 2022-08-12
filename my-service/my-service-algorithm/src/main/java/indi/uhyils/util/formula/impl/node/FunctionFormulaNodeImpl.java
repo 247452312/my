@@ -66,10 +66,20 @@ public class FunctionFormulaNodeImpl extends AbstractFormulaNode implements Form
     }
 
     @Override
+    public List<String> getAllVarName() {
+        return formulas.stream().map(FormulaNode::getAllVarName).flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    @Override
     protected String haveVarNameDerivation(String varName) {
         FunctionEnum parse = FunctionEnum.parse(functionName);
         Asserts.assertTrue(parse != null, "没有找到公式");
         return parse.derivation(getFormula(), varName);
+    }
+
+    @Override
+    protected String dealFormula(String formula) {
+        return formula;
     }
 
     /**
@@ -81,15 +91,5 @@ public class FunctionFormulaNodeImpl extends AbstractFormulaNode implements Form
      */
     private String addFunctionName(String formula) {
         return new StringBuilder().append(functionName).append("(").append(formula).append(")").toString();
-    }
-
-    @Override
-    public List<String> getAllVarName() {
-        return formulas.stream().map(FormulaNode::getAllVarName).flatMap(Collection::stream).collect(Collectors.toList());
-    }
-
-    @Override
-    protected String dealFormula(String formula) {
-        return formula;
     }
 }

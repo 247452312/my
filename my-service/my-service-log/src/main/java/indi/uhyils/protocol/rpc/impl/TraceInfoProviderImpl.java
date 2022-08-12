@@ -3,7 +3,6 @@ package indi.uhyils.protocol.rpc.impl;
 import indi.uhyils.pojo.DTO.TraceDetailStatisticsDTO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetLinkByTraceIdAndRpcIdQuery;
 import indi.uhyils.pojo.DTO.request.GetTraceInfoByArgAndPageRequest;
 import indi.uhyils.pojo.DTO.response.LogTypeDTO;
@@ -32,12 +31,6 @@ public class TraceInfoProviderImpl extends BaseDefaultProvider<TraceInfoDTO> imp
     @Autowired
     private TraceInfoService service;
 
-
-    @Override
-    protected BaseDoService<TraceInfoDTO> getService() {
-        return service;
-    }
-
     @Override
     public List<TraceInfoDTO> getLinkByTraceIdAndRpcId(GetLinkByTraceIdAndRpcIdQuery request) {
         return service.getLinkByTraceIdAndRpcId(request);
@@ -61,6 +54,11 @@ public class TraceInfoProviderImpl extends BaseDefaultProvider<TraceInfoDTO> imp
     @Override
     public List<LogTypeDTO> getLogType(DefaultCQE request) {
         return service.getLogType(request);
+    }
+
+    @Override
+    protected BaseDoService<TraceInfoDTO> getService() {
+        return service;
     }
 }
 

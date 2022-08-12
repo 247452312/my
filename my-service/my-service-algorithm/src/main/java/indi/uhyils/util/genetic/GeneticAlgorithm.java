@@ -88,6 +88,26 @@ public class GeneticAlgorithm {
         }
     }
 
+    public AbstractsInitialization getInitialization() {
+        return initialization;
+    }
+
+    public void setInitialization(AbstractsInitialization initialization) {
+        this.initialization = initialization;
+    }
+
+    /**
+     * 迭代
+     *
+     * @param count 迭代次数100-500
+     */
+    public void iteration(Integer count) {
+        for (int i = 0; i < count; i++) {
+            iteration();
+            LogUtil.info(this, "遍历第" + (i + 1) + "遍");
+        }
+    }
+
     /**
      * 迭代1次
      */
@@ -121,19 +141,6 @@ public class GeneticAlgorithm {
         }
     }
 
-    /**
-     * 迭代
-     *
-     * @param count 迭代次数100-500
-     */
-    public void iteration(Integer count) {
-        for (int i = 0; i < count; i++) {
-            iteration();
-            LogUtil.info(this, "遍历第" + (i + 1) + "遍");
-        }
-    }
-
-
     public Integer getMaxNum() {
         return maxNum;
     }
@@ -164,14 +171,6 @@ public class GeneticAlgorithm {
 
     public void setData(List<DnaData> data) {
         this.data = data;
-    }
-
-    public AbstractsInitialization getInitialization() {
-        return initialization;
-    }
-
-    public void setInitialization(AbstractsInitialization initialization) {
-        this.initialization = initialization;
     }
 
     public Double getGrowthRate() {
@@ -221,6 +220,11 @@ public class GeneticAlgorithm {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(maxNum, mutationProbability, fitnessFunction, initialization, growthRate, nonVariationRatio, data);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return Boolean.TRUE;
@@ -236,10 +240,5 @@ public class GeneticAlgorithm {
                Objects.equals(growthRate, that.growthRate) &&
                Objects.equals(nonVariationRatio, that.nonVariationRatio) &&
                Objects.equals(data, that.data);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maxNum, mutationProbability, fitnessFunction, initialization, growthRate, nonVariationRatio, data);
     }
 }

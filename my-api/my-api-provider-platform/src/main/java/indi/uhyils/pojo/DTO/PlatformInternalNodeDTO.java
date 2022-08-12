@@ -34,6 +34,17 @@ public class PlatformInternalNodeDTO extends IdDTO {
      */
     private String sql;
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("level", getLevel())
+            .append("userId", getUserId())
+            .append("id", getId())
+            .append("sourceId", getSourceId())
+            .append("sql", getSql())
+            .toString();
+    }
+
     public Integer getLevel() {
         return level;
     }
@@ -64,17 +75,6 @@ public class PlatformInternalNodeDTO extends IdDTO {
 
     public void setSql(String sql) {
         this.sql = sql;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("level", getLevel())
-            .append("userId", getUserId())
-            .append("id", getId())
-            .append("sourceId", getSourceId())
-            .append("sql", getSql())
-            .toString();
     }
 
 }

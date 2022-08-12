@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.SoftwareDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetRedisKeysQuery;
 import indi.uhyils.pojo.DTO.request.RedisKeyAndValue;
 import indi.uhyils.pojo.DTO.response.GetInfosResponse;

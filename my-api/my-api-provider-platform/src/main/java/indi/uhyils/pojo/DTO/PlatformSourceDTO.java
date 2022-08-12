@@ -29,6 +29,16 @@ public class PlatformSourceDTO extends IdDTO {
      */
     private Integer type;
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("groupId", getGroupId())
+            .append("name", getName())
+            .append("id", getId())
+            .append("type", getType())
+            .toString();
+    }
+
     public Long getGroupId() {
         return groupId;
     }
@@ -51,16 +61,6 @@ public class PlatformSourceDTO extends IdDTO {
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("groupId", getGroupId())
-            .append("name", getName())
-            .append("id", getId())
-            .append("type", getType())
-            .toString();
     }
 
 }

@@ -32,13 +32,6 @@ public class OrderInfoProviderImpl extends BaseDefaultProvider<OrderInfoDTO> imp
     @Autowired
     private OrderInfoService service;
 
-
-    @Override
-    protected BaseDoService<OrderInfoDTO> getService() {
-        return service;
-    }
-
-
     @Override
     public InitOrderDTO initOrder(IdCommand request) {
         return service.initOrder(request);
@@ -48,7 +41,6 @@ public class OrderInfoProviderImpl extends BaseDefaultProvider<OrderInfoDTO> imp
     public List<OrderInfoDTO> getAllOrder(GetAllOrderQuery request) {
         return service.getAllOrder(request);
     }
-
 
     @Override
     public Boolean commitOrder(CommitOrderCommand request) {
@@ -78,6 +70,11 @@ public class OrderInfoProviderImpl extends BaseDefaultProvider<OrderInfoDTO> imp
     @Override
     public Boolean approvalOrder(ApprovalOrderEvent request) {
         return service.approvalOrder(request);
+    }
+
+    @Override
+    protected BaseDoService<OrderInfoDTO> getService() {
+        return service;
     }
 }
 

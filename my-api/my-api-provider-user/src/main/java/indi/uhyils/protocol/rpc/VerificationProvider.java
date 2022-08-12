@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.rpc;
 
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.VerificationCommand;
 import indi.uhyils.pojo.DTO.response.VerificationGetDTO;
 import indi.uhyils.pojo.cqe.DefaultCQE;

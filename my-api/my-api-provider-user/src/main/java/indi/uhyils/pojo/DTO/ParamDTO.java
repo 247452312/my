@@ -34,6 +34,17 @@ public class ParamDTO extends IdDTO {
      */
     private Long userId;
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("id", getId())
+            .append("key", getKey())
+            .append("desc", getDesc())
+            .append("value", getValue())
+            .append("userId", getUserId())
+            .toString();
+    }
+
     public String getKey() {
         return key;
     }
@@ -64,17 +75,6 @@ public class ParamDTO extends IdDTO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("id", getId())
-            .append("key", getKey())
-            .append("desc", getDesc())
-            .append("value", getValue())
-            .append("userId", getUserId())
-            .toString();
     }
 
 }

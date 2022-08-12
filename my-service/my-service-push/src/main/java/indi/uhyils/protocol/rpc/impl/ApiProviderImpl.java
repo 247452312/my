@@ -2,7 +2,6 @@ package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.ApiDTO;
 import indi.uhyils.pojo.DTO.base.Page;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.GetByArgsAndGroupQuery;
 import indi.uhyils.pojo.cqe.query.demo.Limit;
 import indi.uhyils.pojo.cqe.query.demo.Order;
@@ -27,18 +26,17 @@ public class ApiProviderImpl extends BaseDefaultProvider<ApiDTO> implements ApiP
     @Autowired
     private ApiService service;
 
-
-    @Override
-    protected BaseDoService<ApiDTO> getService() {
-        return service;
-    }
-
     @Override
     public Page<ApiDTO> getByArgsAndGroup(GetByArgsAndGroupQuery request) {
         Long groupId = request.getGroupId();
         Order order = request.getOrder();
         Limit limit = request.getLimit();
         return service.getByArgsAndGroup(groupId, order, limit);
+    }
+
+    @Override
+    protected BaseDoService<ApiDTO> getService() {
+        return service;
     }
 }
 

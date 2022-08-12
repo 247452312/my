@@ -37,8 +37,17 @@ public class Token extends AbstractEntity<String> {
         this.id = parseTokenToId(token);
     }
 
-    public Identifier getId() {
-        return id;
+    private Identifier parseTokenToId(String token) {
+        final UserTypeEnum userTypeEnum = tokenUserType();
+        Asserts.assertTrue(userTypeEnum == UserTypeEnum.USER, "token不是用户类型");
+        String salt = SpringUtil.getProperty("token.salt");
+        assert salt != null;
+        String encodeRules = SpringUtil.getProperty("token.encodeRules");
+        assert encodeRules != null;
+        String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
+        assert tokenInfoString != null;
+        long id = Long.parseLong(tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length()));
+        return new Identifier(id);
     }
 
     /**
@@ -48,6 +57,10 @@ public class Token extends AbstractEntity<String> {
      */
     public UserTypeEnum tokenUserType() {
         return UserTypeEnum.getByCode(this.unique.substring(0, 2)).orElse(null);
+    }
+
+    public Identifier getId() {
+        return id;
     }
 
     public String getToken() {
@@ -95,18 +108,5 @@ public class Token extends AbstractEntity<String> {
             tokenInfo.setTimeOut(!aBoolean);
         }
         return tokenInfo;
-    }
-
-    private Identifier parseTokenToId(String token) {
-        final UserTypeEnum userTypeEnum = tokenUserType();
-        Asserts.assertTrue(userTypeEnum == UserTypeEnum.USER, "token不是用户类型");
-        String salt = SpringUtil.getProperty("token.salt");
-        assert salt != null;
-        String encodeRules = SpringUtil.getProperty("token.encodeRules");
-        assert encodeRules != null;
-        String tokenInfoString = AESUtil.AESDecode(encodeRules, token);
-        assert tokenInfoString != null;
-        long id = Long.parseLong(tokenInfoString.substring(10, tokenInfoString.length() - 1 - salt.length()));
-        return new Identifier(id);
     }
 }

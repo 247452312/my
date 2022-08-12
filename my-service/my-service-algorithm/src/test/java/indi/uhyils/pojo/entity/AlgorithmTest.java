@@ -28,6 +28,16 @@ public class AlgorithmTest extends BaseTest {
     private AlgorithmService service;
 
     @Test
+    public void cellB() {
+        CellAlgorithmRequest request = new CellAlgorithmRequest();
+        request.setAlgorithmId(1L);
+        request.setRequestBody(new Object[]{1, 2});
+        CellAlgorithmResponse cellAlgorithmResponse = service.cellAlgorithm(request);
+        Object cell = cellAlgorithmResponse.getResult();
+        Asserts.assertTrue(cell instanceof Integer && (Integer) cell == 3);
+    }
+
+    @Test
     void cell() {
         AlgorithmDO data = new AlgorithmDO();
         data.setId(123123L);
@@ -40,15 +50,5 @@ public class AlgorithmTest extends BaseTest {
         Algorithm algorithm = new Algorithm(data);
         Object cell = algorithm.cell(1, 1);
         Asserts.assertTrue(cell instanceof Integer && (Integer) cell == 2);
-    }
-
-    @Test
-    public void cellB() {
-        CellAlgorithmRequest request = new CellAlgorithmRequest();
-        request.setAlgorithmId(1L);
-        request.setRequestBody(new Object[]{1, 2});
-        CellAlgorithmResponse cellAlgorithmResponse = service.cellAlgorithm(request);
-        Object cell = cellAlgorithmResponse.getResult();
-        Asserts.assertTrue(cell instanceof Integer && (Integer) cell == 3);
     }
 }

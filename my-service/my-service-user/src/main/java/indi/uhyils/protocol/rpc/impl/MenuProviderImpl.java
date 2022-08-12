@@ -34,16 +34,16 @@ public class MenuProviderImpl extends BaseDefaultProvider<MenuDTO> implements Me
     private MenuService service;
 
     @Override
+    public IndexMenuTreeDTO getIndexMenu(DefaultCQE request) {
+        return service.getIndexMenu();
+
+    }
+
+    @Override
     public Boolean putDeptsToMenu(PutDeptsToMenuCommand request) {
         Identifier menuId = new Identifier(request.getMenuId());
         List<Identifier> deptIds = request.getDeptIds().stream().map(Identifier::new).collect(Collectors.toList());
         return service.putDeptsToMenu(menuId, deptIds);
-    }
-
-    @Override
-    public IndexMenuTreeDTO getIndexMenu(DefaultCQE request) {
-        return service.getIndexMenu();
-
     }
 
     @Override

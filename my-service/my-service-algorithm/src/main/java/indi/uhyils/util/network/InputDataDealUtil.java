@@ -17,6 +17,10 @@ public class InputDataDealUtil {
 
     static final int MAX = 1 << 30;
 
+    public static Datable getImageInputData(String imagePath) throws IOException {
+        return getImageInputData(ImageIO.read(new File(imagePath)));
+    }
+
     /**
      * 获取图像数据
      *
@@ -40,10 +44,6 @@ public class InputDataDealUtil {
         ThreeDimensionalData threeDimensionalData = new ThreeDimensionalData();
         threeDimensionalData.setData(result);
         return threeDimensionalData;
-    }
-
-    public static Datable getImageInputData(String imagePath) throws IOException {
-        return getImageInputData(ImageIO.read(new File(imagePath)));
     }
     /*
 

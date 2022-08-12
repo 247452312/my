@@ -16,6 +16,10 @@ public class DnaData implements Data {
      */
     private List<DoubleGene> genes;
 
+    public Double getA() {
+        DoubleGene doubleDoubleGene = getGenes().get(0);
+        return doubleDoubleGene.get();
+    }
 
     public List<DoubleGene> getGenes() {
         return genes;
@@ -25,14 +29,14 @@ public class DnaData implements Data {
         this.genes = genes;
     }
 
-    public Double getA() {
-        DoubleGene doubleDoubleGene = getGenes().get(0);
-        return doubleDoubleGene.get();
-    }
-
     public Double getB() {
         DoubleGene doubleDoubleGene = getGenes().get(1);
         return doubleDoubleGene.get();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(genes);
     }
 
     @Override
@@ -45,10 +49,5 @@ public class DnaData implements Data {
         }
         DnaData dnaData = (DnaData) o;
         return Objects.equals(genes, dnaData.genes);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(genes);
     }
 }

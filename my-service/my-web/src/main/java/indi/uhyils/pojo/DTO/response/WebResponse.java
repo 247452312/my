@@ -29,14 +29,6 @@ public class WebResponse implements Serializable {
      */
     private Object data;
 
-    public static WebResponse build(Object data, String message, Integer code) {
-        WebResponse serializableWebResponse = new WebResponse();
-        serializableWebResponse.setCode(code);
-        serializableWebResponse.setData(data);
-        serializableWebResponse.setMsg(message);
-        return serializableWebResponse;
-    }
-
     /**
      * 构建一个错误的返回
      *
@@ -76,6 +68,14 @@ public class WebResponse implements Serializable {
 
     public static WebResponse build(ServiceResult serviceResult) {
         return build(serviceResult.getData(), serviceResult.getServiceMessage(), serviceResult.getServiceCode());
+    }
+
+    public static WebResponse build(Object data, String message, Integer code) {
+        WebResponse serializableWebResponse = new WebResponse();
+        serializableWebResponse.setCode(code);
+        serializableWebResponse.setData(data);
+        serializableWebResponse.setMsg(message);
+        return serializableWebResponse;
     }
 
     public Object getData() {

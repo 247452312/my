@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.ServerDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.TestConnByDataRequest;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.command.IdCommand;
@@ -28,12 +27,6 @@ public class ServerProviderImpl extends BaseDefaultProvider<ServerDTO> implement
     @Autowired
     private ServerService service;
 
-
-    @Override
-    protected BaseDoService<ServerDTO> getService() {
-        return service;
-    }
-
     @Override
     public Boolean testConnByData(TestConnByDataRequest request) {
         return service.testConnByData(request);
@@ -52,6 +45,11 @@ public class ServerProviderImpl extends BaseDefaultProvider<ServerDTO> implement
     @Override
     public String getNameById(IdQuery request) {
         return service.getNameById(request);
+    }
+
+    @Override
+    protected BaseDoService<ServerDTO> getService() {
+        return service;
     }
 }
 

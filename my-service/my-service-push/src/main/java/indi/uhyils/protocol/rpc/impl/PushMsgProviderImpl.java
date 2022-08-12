@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.PushMsgDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.DTO.request.CronRequest;
 import indi.uhyils.pojo.DTO.request.PushMsgToSomeoneRequest;
 import indi.uhyils.protocol.rpc.PushMsgProvider;
@@ -25,12 +24,6 @@ public class PushMsgProviderImpl extends BaseDefaultProvider<PushMsgDTO> impleme
     @Autowired
     private PushMsgService service;
 
-
-    @Override
-    protected BaseDoService<PushMsgDTO> getService() {
-        return service;
-    }
-
     @Override
     public Boolean push(CronRequest request) {
         return service.push(request);
@@ -39,6 +32,11 @@ public class PushMsgProviderImpl extends BaseDefaultProvider<PushMsgDTO> impleme
     @Override
     public Boolean pushMsgToSomeone(PushMsgToSomeoneRequest request) {
         return service.pushMsgToSomeone(request);
+    }
+
+    @Override
+    protected BaseDoService<PushMsgDTO> getService() {
+        return service;
     }
 }
 

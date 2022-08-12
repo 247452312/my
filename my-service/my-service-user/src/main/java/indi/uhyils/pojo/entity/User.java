@@ -64,6 +64,13 @@ public class User extends AbstractDoEntity<UserDO> {
         super(parseUserNamePasswordToDO(userName, password));
     }
 
+    private static UserDO parseUserNamePasswordToDO(UserName userName, Password password) {
+        UserDO userDO = new UserDO();
+        userDO.setUsername(userName.getUserName());
+        userDO.setPassword(password.getPassword());
+        return userDO;
+    }
+
     public User(Long id) {
         super(id, new UserDO());
     }
@@ -90,13 +97,6 @@ public class User extends AbstractDoEntity<UserDO> {
         long id = String.format("%s&%s", data.getUsername(), data.getPassword()).hashCode();
         this.setUnique(new Identifier(id));
         userDO.setId(id);
-    }
-
-    private static UserDO parseUserNamePasswordToDO(UserName userName, Password password) {
-        UserDO userDO = new UserDO();
-        userDO.setUsername(userName.getUserName());
-        userDO.setPassword(password.getPassword());
-        return userDO;
     }
 
     public static void batchInitRole(List<User> all, RoleRepository roleRepository, DeptRepository deptRepository, PowerRepository powerRepository, MenuRepository menuRepository) {
@@ -132,20 +132,21 @@ public class User extends AbstractDoEntity<UserDO> {
     }
 
     /**
+     * 填充role
+     *
+     * @param role 角色
+     */
+    public void forceInitRole(Role role) {
+        this.role = role;
+    }
+
+    /**
      * 权限
      *
      * @return
      */
     public Role role() {
         return role;
-    }
-
-    /**
-     * 加密密码
-     */
-    public void encodePassword() {
-        Password password = new Password(data.getPassword());
-        data.setPassword(password.encode());
     }
 
     /**
@@ -163,15 +164,6 @@ public class User extends AbstractDoEntity<UserDO> {
 
     }
 
-    /**
-     * 填充role
-     *
-     * @param role 角色
-     */
-    public void forceInitRole(Role role) {
-        this.role = role;
-    }
-
     public List<Menu> screenMenu(List<Menu> menus) {
         // 管理员直接放行
         final Optional<UserDO> userDO = toData();
@@ -187,7 +179,6 @@ public class User extends AbstractDoEntity<UserDO> {
         return menus.stream().filter(t -> CollectionUtil.contains(menu, t, entity -> entity.toData().map(BaseIdDO::getId).orElse(null))).collect(Collectors.toList());
     }
 
-
     public User login(UserRepository userRepository, String salt, String encodeRole) {
         Asserts.assertTrue(data.getUsername() != null);
         Asserts.assertTrue(data.getPassword() != null);
@@ -198,15 +189,6 @@ public class User extends AbstractDoEntity<UserDO> {
         this.token = user.toToken(salt, encodeRole);
         return this;
     }
-
-    public UserName username() {
-        return new UserName(data.getUsername());
-    }
-
-    public Password password() {
-        return new Password(data.getPassword());
-    }
-
 
     public Token toToken(String salt, String encodeRules) {
         StringBuilder sb = new StringBuilder(26 + salt.length());
@@ -243,12 +225,33 @@ public class User extends AbstractDoEntity<UserDO> {
         return new Token(identifier.getId(), AESUtil.AESEncode(encodeRules, sb.toString()));
     }
 
+    public UserName username() {
+        return new UserName(data.getUsername());
+    }
+
+    public Password password() {
+        return new Password(data.getPassword());
+    }
+
     public Boolean havePower(PowerInfo powerInfo, PowerRepository rep) {
         // 系统用户放行
         if (this.isSysRole()) {
             return true;
         }
         return rep.havePower(this, powerInfo);
+    }
+
+    /**
+     * 判断此用户是不是系统用户
+     *
+     * @return
+     */
+    private boolean isSysRole() {
+        final Optional<UserDO> userDO = toData();
+        if (userDO.isPresent()) {
+            return Objects.equals(userDO.get().getRoleId(), UserInfoHelper.MYSQL_ROLE_ID);
+        }
+        return false;
     }
 
     public void removeUserInRedis(UserRepository userRepository) {
@@ -305,6 +308,17 @@ public class User extends AbstractDoEntity<UserDO> {
     }
 
     /**
+     * 修改用户状态
+     *
+     * @param status
+     */
+    private void changeStatus(UserStatusEnum status) {
+        final Optional<UserDO> userDOOpt = toData();
+        final UserDO userDO = userDOOpt.get();
+        userDO.setStatus(status.getCode());
+    }
+
+    /**
      * 通过用户申请
      *
      * @param userRepository
@@ -338,30 +352,6 @@ public class User extends AbstractDoEntity<UserDO> {
     }
 
     /**
-     * 判断此用户是不是系统用户
-     *
-     * @return
-     */
-    private boolean isSysRole() {
-        final Optional<UserDO> userDO = toData();
-        if (userDO.isPresent()) {
-            return Objects.equals(userDO.get().getRoleId(), UserInfoHelper.MYSQL_ROLE_ID);
-        }
-        return false;
-    }
-
-    /**
-     * 修改用户状态
-     *
-     * @param status
-     */
-    private void changeStatus(UserStatusEnum status) {
-        final Optional<UserDO> userDOOpt = toData();
-        final UserDO userDO = userDOOpt.get();
-        userDO.setStatus(status.getCode());
-    }
-
-    /**
      * 插入前校验
      */
     private void validationInsert() {
@@ -374,5 +364,13 @@ public class User extends AbstractDoEntity<UserDO> {
         Asserts.assertTrue(userDO.getUsername() != null, "用户名不能为空");
         Asserts.assertTrue(userDO.getMail() != null, "邮箱不能为空");
         Asserts.assertTrue(userDO.getPhone() != null, "电话不能为空");
+    }
+
+    /**
+     * 加密密码
+     */
+    public void encodePassword() {
+        Password password = new Password(data.getPassword());
+        data.setPassword(password.encode());
     }
 }

@@ -19,6 +19,14 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public abstract class OrderNodeFieldValueAssembler extends AbstractAssembler<OrderNodeFieldValueDO, OrderNodeFieldValue, OrderNodeFieldValueDTO> {
 
+    public List<OrderNodeFieldValueDTO> valueToValueDTO(Map<Long, String> value) {
+        List<OrderNodeFieldValueDTO> result = new ArrayList<>(value.size());
+        for (Map.Entry<Long, String> entry : value.entrySet()) {
+            result.add(buildOrderNodeFieldValue(entry.getKey(), entry.getValue()));
+        }
+        return result;
+    }
+
     /**
      * 创建一个工单节点属性的真实值
      *
@@ -32,14 +40,6 @@ public abstract class OrderNodeFieldValueAssembler extends AbstractAssembler<Ord
         fieldValue.setNodeFieldId(orderFieldId);
         fieldValue.setRealValue(value);
         return fieldValue;
-    }
-
-    public List<OrderNodeFieldValueDTO> valueToValueDTO(Map<Long, String> value) {
-        List<OrderNodeFieldValueDTO> result = new ArrayList<>(value.size());
-        for (Map.Entry<Long, String> entry : value.entrySet()) {
-            result.add(buildOrderNodeFieldValue(entry.getKey(), entry.getValue()));
-        }
-        return result;
     }
 }
 

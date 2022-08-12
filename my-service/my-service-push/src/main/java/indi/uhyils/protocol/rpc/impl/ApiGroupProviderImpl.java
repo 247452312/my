@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import indi.uhyils.pojo.DTO.ApiGroupDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.DefaultCQE;
 import indi.uhyils.pojo.cqe.query.IdQuery;
 import indi.uhyils.protocol.rpc.ApiGroupProvider;
@@ -26,12 +25,6 @@ public class ApiGroupProviderImpl extends BaseDefaultProvider<ApiGroupDTO> imple
     @Autowired
     private ApiGroupService service;
 
-
-    @Override
-    protected BaseDoService<ApiGroupDTO> getService() {
-        return service;
-    }
-
     @Override
     public String test(IdQuery request) {
         return service.test(request);
@@ -40,6 +33,11 @@ public class ApiGroupProviderImpl extends BaseDefaultProvider<ApiGroupDTO> imple
     @Override
     public List<ApiGroupDTO> getCanBeSubscribed(DefaultCQE request) {
         return service.getCanBeSubscribed(request);
+    }
+
+    @Override
+    protected BaseDoService<ApiGroupDTO> getService() {
+        return service;
     }
 }
 

@@ -104,6 +104,16 @@ public class PythonUtil {
         return result;
     }
 
+    /**
+     * 执行写好的python内容
+     *
+     * @param pythonStr python内容
+     *
+     * @return
+     */
+    public static Object executePython(String pythonStr) {
+        return executePython(pythonStr, DEFAULT_PARAM);
+    }
 
     /**
      * 执行写好的python内容
@@ -139,18 +149,6 @@ public class PythonUtil {
             LogUtil.error("python脚本出错", e);
         }
         return null;
-    }
-
-
-    /**
-     * 执行写好的python内容
-     *
-     * @param pythonStr python内容
-     *
-     * @return
-     */
-    public static Object executePython(String pythonStr) {
-        return executePython(pythonStr, DEFAULT_PARAM);
     }
 
     /**

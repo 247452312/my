@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.rpc;
 
 import indi.uhyils.pojo.DTO.PlatformSourceDTO;
-import indi.uhyils.pojo.DTO.base.ServiceResult;
 import indi.uhyils.pojo.cqe.command.PublishDbCommand;
 import indi.uhyils.pojo.cqe.command.PublishHttpCommand;
 import indi.uhyils.pojo.cqe.command.PublishRpcCommand;

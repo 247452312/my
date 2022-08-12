@@ -27,12 +27,6 @@ public class OrderNodeProviderImpl extends BaseDefaultProvider<OrderNodeDTO> imp
     @Autowired
     private OrderNodeService service;
 
-
-    @Override
-    protected BaseDoService<OrderNodeDTO> getService() {
-        return service;
-    }
-
     @Override
     public Boolean deleteByIds(IdsCommand request) {
         return service.deleteByIds(request);
@@ -51,6 +45,11 @@ public class OrderNodeProviderImpl extends BaseDefaultProvider<OrderNodeDTO> imp
     @Override
     public Boolean incapacityFailOrderNode(IncapacityFailOrderNodeCommand request) throws Exception {
         return service.incapacityFailOrderNode(request);
+    }
+
+    @Override
+    protected BaseDoService<OrderNodeDTO> getService() {
+        return service;
     }
 }
 
