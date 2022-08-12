@@ -131,11 +131,6 @@
             </dependency>
             <dependency>
                 <groupId>indi.uhyils</groupId>
-                <artifactId>my-api-provider-mq</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
                 <artifactId>my-api-provider-platform</artifactId>
                 <version>${project.version}</version>
             </dependency>
