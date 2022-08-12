@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indi.uhyils.dao.NodeDao">
+    <resultMap type="indi.uhyils.pojo.DO.NodeDO" id="NodeMap">
+            <result property="id" column="id" jdbcType="BIGINT"/>
+            <result property="createDate" column="create_date" jdbcType="BIGINT"/>
+            <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+            <result property="deleteFlag" column="delete_flag" jdbcType="BIT"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="updateDate" column="update_date" jdbcType="BIGINT"/>
+            <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="sql" column="sql" jdbcType="LONGVARCHAR"/>
+            <result property="subNode" column="sub_node" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--批量通过主键修改数据-->
+    <update id="updateBatch"
+            parameterType="indi.uhyils.pojo.DO.NodeDO">
+        <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+            update sys_node
+            set update_date = #{item.updateDate}
+            ,update_user = #{item.updateUser}
+              <if test="createDate != null">
+                ,create_date = #{createDate}
+              </if>
+              <if test="createUser != null">
+                ,create_user = #{createUser}
+              </if>
+              <if test="deleteFlag != null">
+                ,delete_flag = #{deleteFlag}
+              </if>
+              <if test="remark != null and remark != ''">
+                ,remark = #{remark}
+              </if>
+              <if test="updateDate != null">
+                ,update_date = #{updateDate}
+              </if>
+              <if test="updateUser != null">
+                ,update_user = #{updateUser}
+              </if>
+              <if test="name != null and name != ''">
+                ,name = #{name}
+              </if>
+              <if test="sql != null and sql != ''">
+                ,sql = #{sql}
+              </if>
+              <if test="subNode != null and subNode != ''">
+                ,sub_node = #{subNode}
+              </if>
+      where id = #{id}
+    </foreach>
+  </update>
+</mapper>

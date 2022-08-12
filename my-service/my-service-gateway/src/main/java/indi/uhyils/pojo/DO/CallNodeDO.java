@@ -1,0 +1,77 @@
+package indi.uhyils.pojo.DO;
+
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import indi.uhyils.pojo.DO.base.BaseDO;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+/**
+* 调用节点表, 真正调用的节点(CallNode)表 数据库实体类
+*
+* @author uhyils <247452312@qq.com>
+* @version 1.0
+* @date 文件创建日期 2022年08月12日 08时33分
+*/
+@TableName(value = "sys_call_node")
+public class CallNodeDO extends BaseDO {
+    
+    private static final long serialVersionUID = -1L;
+
+    /**
+     * 厂商id
+     */
+    @TableField
+    private Long companyId;
+    /**
+     * 转换节点id
+     */
+    @TableField
+    private Long nodeId;
+    /**
+     * 调用方式 1->http 2->mysql 3->rpc
+     */
+    @TableField
+    private Integer invokeType;
+
+    
+    
+    
+    
+    
+    
+    
+    public void setCompanyId(Long companyId){
+        this.companyId = companyId;
+    }
+
+    public Long getCompanyId(){
+        return companyId;
+    }
+    
+    public void setNodeId(Long nodeId){
+        this.nodeId = nodeId;
+    }
+
+    public Long getNodeId(){
+        return nodeId;
+    }
+    
+    public void setInvokeType(Integer invokeType){
+        this.invokeType = invokeType;
+    }
+
+    public Integer getInvokeType(){
+        return invokeType;
+    }
+    
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", getId())
+                .append("companyId", getCompanyId())
+                .append("nodeId", getNodeId())
+                .append("invokeType", getInvokeType())
+                .toString();
+    }
+}
