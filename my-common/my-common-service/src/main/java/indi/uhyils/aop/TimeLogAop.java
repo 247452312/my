@@ -2,6 +2,8 @@ package indi.uhyils.aop;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.util.LogUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -63,22 +65,6 @@ public class TimeLogAop {
 
     }
 
-
-    /**
-     * 日志切面后
-     *
-     * @param className  类名称
-     * @param methodName 方法名称
-     * @param v          执行时间
-     * @param proceed    返回值
-     */
-    private void after(String className, String methodName, double v, Object proceed) {
-        //        if (LogUtil.isDebugEnabled(this)) {
-        LogUtil.info(this, String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));
-        LogUtil.info(this, String.format("   返回值为:%s", JSONObject.toJSONString(proceed)));
-        //        }
-    }
-
     /**
      * 日志切面前
      *
@@ -96,13 +82,30 @@ public class TimeLogAop {
         sb.append(methodName);
         sb.append(",参数为:");
         for (Object arg : args) {
-            sb.append(JSONObject.toJSONString(arg));
+            if (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse)) {
+                sb.append(JSONObject.toJSONString(arg));
+            }
             sb.append("(");
             sb.append(arg.getClass().getSimpleName());
             sb.append(")");
         }
         LogUtil.info(this, "---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
         LogUtil.info(this, sb.toString());
+        //        }
+    }
+
+    /**
+     * 日志切面后
+     *
+     * @param className  类名称
+     * @param methodName 方法名称
+     * @param v          执行时间
+     * @param proceed    返回值
+     */
+    private void after(String className, String methodName, double v, Object proceed) {
+        //        if (LogUtil.isDebugEnabled(this)) {
+        LogUtil.info(this, String.format("方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, v));
+        LogUtil.info(this, String.format("   返回值为:%s", JSONObject.toJSONString(proceed)));
         //        }
     }
 }
