@@ -23,16 +23,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class GatewayController {
 
     /**
+     * 外界http调用的时候的前缀
+     */
+    private static final String INVOKE = "invoke/";
+
+    /**
      * 外界http调用
      *
      * @param httpServletRequest 请求,暂时没用,日后或许有用
      *
      * @return 向界面返回的值
      */
-    @RequestMapping("invoke")
+    @RequestMapping("invoke/**")
     public Object postInvoke(HttpServletRequest httpServletRequest) throws IOException {
+
         // 方法
         final String method = httpServletRequest.getMethod();
+        // invoke后面的路径
+        String outPath = getOutPath(httpServletRequest);
         // 请求头
         Map<String, String> headerParam = getHeaderParam(httpServletRequest);
         // get参数
@@ -40,10 +48,23 @@ public class GatewayController {
         // post参数
         Map<String, Object> postParams = getPostParam(httpServletRequest);
         LogUtil.info("对接中心http请求方法:{}", method);
+        LogUtil.info("路径解析:{}", outPath);
         LogUtil.info("header:{}", JSON.toJSONString(headerParam));
         LogUtil.info("get参数:{}", JSON.toJSONString(getParams));
         LogUtil.info("post参数:{}", JSON.toJSONString(postParams));
         return null;
+    }
+
+    /**
+     * 获取invoke后面的路径
+     *
+     * @param httpServletRequest
+     *
+     * @return
+     */
+    private String getOutPath(HttpServletRequest httpServletRequest) {
+        final String requestURI = httpServletRequest.getRequestURI();
+        return requestURI.substring(INVOKE.length() + 1);
     }
 
     /**
