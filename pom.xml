@@ -46,7 +46,7 @@
         <quartz.version>2.3.2</quartz.version>
         <hutool.version>5.3.8</hutool.version>
         <mail.version>1.4.7</mail.version>
-        <mongo.version>3.12.5</mongo.version>
+        <mongo.version>3.12.8</mongo.version>
         <nacos.version>1.4.4</nacos.version>
         <velocity.version>2.3</velocity.version>
         <httpclient.version>4.5.13</httpclient.version>
