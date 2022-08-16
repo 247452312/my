@@ -12,7 +12,7 @@
             <result property="updateDate" column="update_date" jdbcType="BIGINT"/>
             <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="sql" column="sql" jdbcType="TEXT"/>
+            <result property="sql" column="sql" jdbcType="VARCHAR"/>
             <result property="subNode" column="sub_node" jdbcType="VARCHAR"/>
             <result property="url" column="url" jdbcType="VARCHAR"/>
     </resultMap>

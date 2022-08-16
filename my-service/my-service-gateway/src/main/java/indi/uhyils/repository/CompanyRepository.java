@@ -13,4 +13,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  */
 public interface CompanyRepository extends BaseEntityRepository<CompanyDO, Company> {
 
+    /**
+     * 根据ak查询用户
+     *
+     * @param ak
+     *
+     * @return
+     */
+    Company findByAk(String ak);
 }

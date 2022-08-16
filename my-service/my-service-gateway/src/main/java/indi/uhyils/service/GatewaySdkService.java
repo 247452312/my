@@ -1,6 +1,9 @@
 package indi.uhyils.service;
 
+import indi.uhyils.mysql.service.MysqlSdkService;
 import indi.uhyils.pojo.cqe.InvokeCommand;
+import indi.uhyils.protocol.mysql.pojo.cqe.impl.MysqlAuthCommand;
+import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 
 /**
  * sdk gateway对外提供的方法
@@ -8,7 +11,7 @@ import indi.uhyils.pojo.cqe.InvokeCommand;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年08月15日 09时52分
  */
-public interface GatewaySdkService extends BaseService {
+public interface GatewaySdkService extends BaseService, MysqlSdkService {
 
     /**
      * 执行远程请求
@@ -18,4 +21,7 @@ public interface GatewaySdkService extends BaseService {
      * @return
      */
     Object invoke(InvokeCommand command);
+
+
+
 }

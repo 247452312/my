@@ -51,16 +51,10 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
         AbstractDoEntity<DO> dictItem = repository.find(this);
         Asserts.assertTrue(dictItem != null, "补全出的结果为空");
         final Optional<DO> data = dictItem.toData();
-        data.ifPresent(t -> this.data = t);
-    }
-
-    /**
-     * 升级do中的id为id
-     */
-    public void upId() {
-        final Optional<T> t = toData();
-        Asserts.assertTrue(t.isPresent(), "领域不存在数据(data)");
-        this.unique = new Identifier(t.get().getId());
+        data.ifPresent(t -> {
+            this.data = t;
+            setUnique(new Identifier(t.getId()));
+        });
     }
 
     /**
@@ -71,6 +65,15 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
     @Override
     public Optional<T> toData() {
         return Optional.of(data);
+    }
+
+    /**
+     * 升级do中的id为id
+     */
+    public void upId() {
+        final Optional<T> t = toData();
+        Asserts.assertTrue(t.isPresent(), "领域不存在数据(data)");
+        this.unique = new Identifier(t.get().getId());
     }
 
     public <EN extends AbstractDoEntity<T>> void saveSelf(BaseEntityRepository<T, EN> repository) {
@@ -93,16 +96,6 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
         data.preInsert();
     }
 
-    @Override
-    public boolean haveId() {
-        return unique != null && unique.getId() != null && unique.getId() > 0;
-    }
-
-    @Override
-    public boolean notHaveId() {
-        return !haveId();
-    }
-
     /**
      * 从另一个entity中复制来
      *
@@ -113,6 +106,16 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
         target.ifPresent(t -> BeanUtil.copyProperties(t, this.data));
         final Optional<Identifier> unique = entity.getUnique();
         unique.ifPresent(t -> this.unique = t);
+    }    @Override
+    public boolean haveId() {
+        return unique != null && unique.getId() != null && unique.getId() > 0;
     }
+
+    @Override
+    public boolean notHaveId() {
+        return !haveId();
+    }
+
+
 
 }

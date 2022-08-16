@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>my-common-util-mysql-plan</module>
+        <module>my-common-util-mysql</module>
         <module>my-common-util-obj-pool</module>
         <module>my-common-util-ast</module>
         <module>my-common-util-trace-executor</module>
