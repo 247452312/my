@@ -12,8 +12,9 @@
             <result property="updateDate" column="update_date" jdbcType="BIGINT"/>
             <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="sql" column="sql" jdbcType="LONGVARCHAR"/>
+            <result property="sql" column="sql" jdbcType="TEXT"/>
             <result property="subNode" column="sub_node" jdbcType="VARCHAR"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--批量通过主键修改数据-->
@@ -49,6 +50,9 @@
               </if>
               <if test="subNode != null and subNode != ''">
                 ,sub_node = #{subNode}
+              </if>
+              <if test="url != null and url != ''">
+                ,url = #{url}
               </if>
       where id = #{id}
     </foreach>

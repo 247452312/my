@@ -1,6 +1,7 @@
 package indi.uhyils.pojo.cqe;
 
 import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,10 +15,42 @@ public class InvokeCommand extends AbstractCommand {
     /**
      * 入参
      */
-    private Map<String, Object> params;
+    private List<Map<String, Object>> params;
 
     /**
      * 请求头
      */
     private Map<String, String> header;
+
+    /**
+     * 调用路径.
+     * 如果是controller, 此值为url中{/invoke/}后面的东西
+     * 如果是RPC,此值为{InterfaceName/MethodName}
+     * 如果是mysql,此值为{库名/表名}
+     */
+    private String path;
+
+    public List<Map<String, Object>> getParams() {
+        return params;
+    }
+
+    public void setParams(List<Map<String, Object>> params) {
+        this.params = params;
+    }
+
+    public Map<String, String> getHeader() {
+        return header;
+    }
+
+    public void setHeader(Map<String, String> header) {
+        this.header = header;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }

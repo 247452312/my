@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年08月16日 10时28分
  */
 @TableName(value = "sys_node")
 public class NodeDO extends BaseDO {
@@ -35,6 +35,12 @@ public class NodeDO extends BaseDO {
     @TableField
     private String subNode;
 
+    /**
+     * 对应唯一标识(url形式)
+     */
+    @TableField
+    private String url;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -42,6 +48,7 @@ public class NodeDO extends BaseDO {
             .append("name", getName())
             .append("sql", getSql())
             .append("subNode", getSubNode())
+            .append("url", getUrl())
             .toString();
     }
 
@@ -67,5 +74,13 @@ public class NodeDO extends BaseDO {
 
     public void setSubNode(String subNode) {
         this.subNode = subNode;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

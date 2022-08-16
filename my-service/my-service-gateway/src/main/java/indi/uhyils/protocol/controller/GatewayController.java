@@ -1,8 +1,9 @@
 package indi.uhyils.protocol.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.uhyils.util.LogUtil;
+import indi.uhyils.pojo.cqe.InvokeCommand;
+import indi.uhyils.pojo.cqe.InvokeCommandBuilder;
+import indi.uhyils.service.GatewaySdkService;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,8 +11,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -27,6 +30,9 @@ public class GatewayController {
      */
     private static final String INVOKE = "invoke/";
 
+    @Autowired
+    private GatewaySdkService gatewaySdkService;
+
     /**
      * 外界http调用
      *
@@ -34,11 +40,10 @@ public class GatewayController {
      *
      * @return 向界面返回的值
      */
+    @ResponseBody
     @RequestMapping("invoke/**")
     public Object postInvoke(HttpServletRequest httpServletRequest) throws IOException {
 
-        // 方法
-        final String method = httpServletRequest.getMethod();
         // invoke后面的路径
         String outPath = getOutPath(httpServletRequest);
         // 请求头
@@ -47,12 +52,13 @@ public class GatewayController {
         final Map<String, String[]> getParams = httpServletRequest.getParameterMap();
         // post参数
         Map<String, Object> postParams = getPostParam(httpServletRequest);
-        LogUtil.info("对接中心http请求方法:{}", method);
-        LogUtil.info("路径解析:{}", outPath);
-        LogUtil.info("header:{}", JSON.toJSONString(headerParam));
-        LogUtil.info("get参数:{}", JSON.toJSONString(getParams));
-        LogUtil.info("post参数:{}", JSON.toJSONString(postParams));
-        return null;
+        final InvokeCommandBuilder invokeCommandBuilder = new InvokeCommandBuilder();
+        invokeCommandBuilder.addPostMap(postParams);
+        invokeCommandBuilder.addGetMap(getParams);
+        invokeCommandBuilder.addPath(outPath);
+        invokeCommandBuilder.addHeader(headerParam);
+        final InvokeCommand build = invokeCommandBuilder.build();
+        return gatewaySdkService.invoke(build);
     }
 
     /**

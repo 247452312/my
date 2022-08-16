@@ -2,7 +2,7 @@ package indi.uhyils.rpc.filter.exception;
 
 import indi.uhyils.exception.AssertException;
 import indi.uhyils.rpc.annotation.RpcSpi;
-import indi.uhyils.rpc.content.HeaderContext;
+import indi.uhyils.rpc.content.RpcHeaderContext;
 import indi.uhyils.rpc.enums.RpcTypeEnum;
 import indi.uhyils.rpc.exception.RpcBusinessException;
 import indi.uhyils.rpc.exception.RpcException;
@@ -31,14 +31,14 @@ public class SelfExceptionExtension implements ProviderResponseExceptionExtensio
 
     @Override
     public RpcData onRpcException(RpcData rpcData, RpcException e) throws InterruptedException {
-        return ((ResponseRpcFactory) RpcFactoryProducer.build(RpcTypeEnum.RESPONSE)).createErrorResponse(rpcData.unique(), e.getCause(), HeaderContext.get().entrySet().stream().map(t -> new RpcHeader(t.getKey(), t.getValue())).toArray(RpcHeader[]::new));
+        return ((ResponseRpcFactory) RpcFactoryProducer.build(RpcTypeEnum.RESPONSE)).createErrorResponse(rpcData.unique(), e.getCause(), RpcHeaderContext.get().entrySet().stream().map(t -> new RpcHeader(t.getKey(), t.getValue())).toArray(RpcHeader[]::new));
 
     }
 
     @Override
     public RpcData onThrowable(RpcData rpcData, Throwable th) throws InterruptedException {
         final ResponseRpcFactory build = (ResponseRpcFactory) RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
-        final Map<String, String> headerMap = HeaderContext.get();
+        final Map<String, String> headerMap = RpcHeaderContext.get();
         RpcHeader[] rpcHeaders = new RpcHeader[0];
         if (headerMap != null) {
             rpcHeaders = headerMap.entrySet().stream().map(t -> new RpcHeader(t.getKey(), t.getValue())).toArray(RpcHeader[]::new);

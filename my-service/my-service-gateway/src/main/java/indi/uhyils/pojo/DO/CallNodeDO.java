@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年08月16日 10时28分
  */
 @TableName(value = "sys_call_node")
 public class CallNodeDO extends BaseDO {
@@ -35,6 +35,12 @@ public class CallNodeDO extends BaseDO {
     @TableField
     private Integer invokeType;
 
+    /**
+     * 对应唯一标识(url形式)
+     */
+    @TableField
+    private String url;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -42,6 +48,7 @@ public class CallNodeDO extends BaseDO {
             .append("companyId", getCompanyId())
             .append("nodeId", getNodeId())
             .append("invokeType", getInvokeType())
+            .append("url", getUrl())
             .toString();
     }
 
@@ -67,5 +74,13 @@ public class CallNodeDO extends BaseDO {
 
     public void setInvokeType(Integer invokeType) {
         this.invokeType = invokeType;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

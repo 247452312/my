@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年08月16日 10时28分
  */
 @TableName(value = "sys_provider_interface")
 public class ProviderInterfaceDO extends BaseDO {
@@ -18,7 +18,7 @@ public class ProviderInterfaceDO extends BaseDO {
     private static final long serialVersionUID = -1L;
 
     /**
-     * url
+     * 唯一标示(url形式)
      */
     @TableField
     private String url;

@@ -22,7 +22,6 @@
         <module>my-common-log</module>
         <module>my-common-util</module>
         <module>my-common-event-bus</module>
-        <module>my-common-protocol</module>
         <module>my-common-elegant</module>
     </modules>
 

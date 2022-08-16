@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年08月16日 10时28分
  */
 public class NodeDTO extends IdDTO {
 
@@ -29,6 +29,11 @@ public class NodeDTO extends IdDTO {
      */
     private String subNode;
 
+    /**
+     * 对应唯一标识(url形式)
+     */
+    private String url;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -36,6 +41,7 @@ public class NodeDTO extends IdDTO {
             .append("name", getName())
             .append("sql", getSql())
             .append("subNode", getSubNode())
+            .append("url", getUrl())
             .toString();
     }
 
@@ -61,6 +67,14 @@ public class NodeDTO extends IdDTO {
 
     public void setSubNode(String subNode) {
         this.subNode = subNode;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
 }

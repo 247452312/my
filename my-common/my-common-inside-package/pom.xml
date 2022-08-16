@@ -74,11 +74,6 @@
             </dependency>
             <dependency>
                 <groupId>indi.uhyils</groupId>
-                <artifactId>my-common-protocol-mysql</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>indi.uhyils</groupId>
                 <artifactId>my-common-util-obj-pool</artifactId>
                 <version>${project.version}</version>
             </dependency>
