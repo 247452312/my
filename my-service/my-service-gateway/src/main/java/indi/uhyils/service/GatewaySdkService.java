@@ -2,8 +2,6 @@ package indi.uhyils.service;
 
 import indi.uhyils.mysql.service.MysqlSdkService;
 import indi.uhyils.pojo.cqe.InvokeCommand;
-import indi.uhyils.protocol.mysql.pojo.cqe.impl.MysqlAuthCommand;
-import indi.uhyils.protocol.mysql.pojo.response.MysqlResponse;
 
 /**
  * sdk gateway对外提供的方法

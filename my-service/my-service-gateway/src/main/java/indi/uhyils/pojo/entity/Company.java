@@ -1,6 +1,8 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
+import indi.uhyils.mysql.pojo.cqe.impl.MysqlAuthCommand;
+import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.pojo.DO.CompanyDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;

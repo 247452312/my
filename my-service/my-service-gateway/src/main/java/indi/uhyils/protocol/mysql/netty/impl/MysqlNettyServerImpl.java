@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.mysql.netty.impl;
 
+import indi.uhyils.mysql.decode.impl.MysqlDecoderImpl;
 import indi.uhyils.mysql.handler.impl.MysqlInfoHandlerImpl;
 import indi.uhyils.protocol.mysql.netty.MysqlNettyServer;
 import indi.uhyils.util.LogUtil;
@@ -51,7 +52,7 @@ public class MysqlNettyServerImpl extends ChannelInitializer<SocketChannel> impl
     @Override
     protected void initChannel(SocketChannel ch) {
         // 由decoder解析 再交由handler处理
-        ch.pipeline().addLast(new MysqlInfoHandlerImpl());
+        ch.pipeline().addLast(new MysqlDecoderImpl(), new MysqlInfoHandlerImpl());
     }
 
 }
