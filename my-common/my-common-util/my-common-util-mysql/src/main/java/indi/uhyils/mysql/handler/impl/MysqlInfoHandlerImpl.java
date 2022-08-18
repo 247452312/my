@@ -3,6 +3,7 @@ package indi.uhyils.mysql.handler.impl;
 import indi.uhyils.exception.AssertException;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.decode.Proto;
+import indi.uhyils.mysql.decode.impl.MysqlDecoderImpl;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
 import indi.uhyils.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.mysql.enums.MysqlHandlerStatusEnum;
@@ -253,26 +254,19 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
             case COM_QUERY:
                 // sql查询请求
                 result = new ComQueryCommand(mysqlTcpInfo, mysqlThisRequestInfo);
-                return null;
-            //                            return service.query((MysqlSqlCommand) result);
+                break;
             case COM_FIELD_LIST:
                 // 字段获取请求
                 result = new ComFieldListCommand(mysqlTcpInfo, mysqlThisRequestInfo);
-                // todo 字段获取请求
-                return null;
-            //                return service.findFieldList(result);
+                break;
             case COM_TABLE_DUMP:
                 // 表结构获取请求
                 result = new ComTableDumpCommand(mysqlTcpInfo, mysqlThisRequestInfo);
-                // todo 表结构获取请求
-                return null;
-            //                return service.findTableInfo(result);
+                break;
             case COM_STMT_EXECUTE:
                 // 执行预处理语句
                 result = new ComStmtExecuteCommand(mysqlTcpInfo, mysqlThisRequestInfo);
-                // todo 执行预处理语句
-                return null;
-            //                return service.query((MysqlSqlCommand) result);
+                break;
 
             /*以下是不需要发送往服务器进行处理的请求类型*/
 

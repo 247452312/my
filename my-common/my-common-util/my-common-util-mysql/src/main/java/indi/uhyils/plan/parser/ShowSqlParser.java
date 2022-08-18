@@ -26,11 +26,6 @@ public class ShowSqlParser implements SqlParser {
         return false;
     }
 
-    @Override
-    public List<MysqlPlan> parse(SQLStatement sql, Map<Long, List<Map<String, Object>>> planResult) {
-        // show 没有前置执行计划
-        return null;
-    }
 
     @Override
     public List<MysqlPlan> parse(SQLStatement sql) {

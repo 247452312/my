@@ -10,7 +10,7 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年03月29日 08时40分
  */
-public interface MysqlPlan extends PlanResultObserver {
+public interface MysqlPlan {
 
     /**
      * 执行执行计划
@@ -40,11 +40,5 @@ public interface MysqlPlan extends PlanResultObserver {
      */
     long getId();
 
-    /**
-     * 列信息,要返回的
-     *
-     * @return
-     */
-    List<FieldInfo> colInfos();
 
 }

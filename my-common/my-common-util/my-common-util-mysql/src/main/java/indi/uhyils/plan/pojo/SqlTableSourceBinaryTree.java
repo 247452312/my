@@ -5,6 +5,8 @@ import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import indi.uhyils.annotation.NotNull;
 
 /**
+ * sql中 table的连接树
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年03月31日 13时41分
  */

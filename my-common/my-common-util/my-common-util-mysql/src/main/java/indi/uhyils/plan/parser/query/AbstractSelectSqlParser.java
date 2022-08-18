@@ -6,13 +6,11 @@ import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.parser.SqlParser;
 import indi.uhyils.plan.pojo.pool.SqlTableSourceBinaryTreePool;
-import java.util.HashMap;
+import indi.uhyils.util.SpringUtil;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 
 /**
  * 查询解释器
@@ -29,27 +27,7 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
     /**
      * sql解析
      */
-    @Autowired
-    @Lazy
     private List<AbstractSelectSqlParser> selectInterpreters;
-
-    @Override
-    public boolean canParse(SQLStatement sql) {
-        if (!(sql instanceof SQLSelectStatement)) {
-            return false;
-        }
-        return doCanParse((SQLSelectStatement) sql);
-    }
-
-    @Override
-    public List<MysqlPlan> parse(SQLStatement sql, Map<Long, List<Map<String, Object>>> planResult) {
-        return doParse((SQLSelectStatement) sql, planResult);
-    }
-
-    @Override
-    public List<MysqlPlan> parse(SQLStatement sql) {
-        return doParse((SQLSelectStatement) sql, new HashMap<>());
-    }
 
     /**
      * 重新解析一个sql
@@ -58,6 +36,8 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
      * @param sqlExecuteFunction sql解析成一个执行计划之后需要做什么
      */
     protected <T> T reExecute(String fromSql, Function<List<MysqlPlan>, T> sqlExecuteFunction) {
+        // 检查解析器是否初始化
+        checkInterpreters();
         SQLSelectStatement fromSqlStatement = (SQLSelectStatement) new MySqlStatementParser(fromSql).parseStatement();
         for (AbstractSelectSqlParser selectInterpreter : selectInterpreters) {
             if (selectInterpreter.canParse(fromSqlStatement)) {
@@ -69,20 +49,25 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
     }
 
     /**
-     * 重新解析一个sql
-     *
-     * @param fromSql
-     * @param reExecute
+     * 检查解析器是否初始化
      */
-    protected void reExecute(String fromSql, Consumer<List<MysqlPlan>> reExecute) {
-        SQLSelectStatement fromSqlStatement = (SQLSelectStatement) new MySqlStatementParser(fromSql).parseStatement();
-        for (AbstractSelectSqlParser selectInterpreter : selectInterpreters) {
-            if (selectInterpreter.canParse(fromSqlStatement)) {
-                List<MysqlPlan> parse = selectInterpreter.parse(fromSqlStatement);
-                reExecute.accept(parse);
-                break;
-            }
+    private void checkInterpreters() {
+        if (selectInterpreters == null) {
+            selectInterpreters = SpringUtil.getBeans(AbstractSelectSqlParser.class);
         }
+    }
+
+    @Override
+    public boolean canParse(SQLStatement sql) {
+        if (!(sql instanceof SQLSelectStatement)) {
+            return false;
+        }
+        return doCanParse((SQLSelectStatement) sql);
+    }
+
+    @Override
+    public List<MysqlPlan> parse(SQLStatement sql) {
+        return doParse((SQLSelectStatement) sql);
     }
 
     /**
@@ -101,6 +86,25 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
      *
      * @return
      */
-    protected abstract List<MysqlPlan> doParse(SQLSelectStatement sql, Map<Long, List<Map<String, Object>>> planResult);
+    protected abstract List<MysqlPlan> doParse(SQLSelectStatement sql);
+
+    /**
+     * 重新解析一个sql
+     *
+     * @param fromSql
+     * @param reExecute
+     */
+    protected void reExecute(String fromSql, Consumer<List<MysqlPlan>> reExecute) {
+        //检查解析器是否初始化
+        checkInterpreters();
+        SQLSelectStatement fromSqlStatement = (SQLSelectStatement) new MySqlStatementParser(fromSql).parseStatement();
+        for (AbstractSelectSqlParser selectInterpreter : selectInterpreters) {
+            if (selectInterpreter.canParse(fromSqlStatement)) {
+                List<MysqlPlan> parse = selectInterpreter.parse(fromSqlStatement);
+                reExecute.accept(parse);
+                break;
+            }
+        }
+    }
 
 }

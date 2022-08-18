@@ -8,10 +8,10 @@ import indi.uhyils.plan.result.MysqlPlanResult;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年04月01日 08时58分
  */
-public class EmptyMysqlPlan extends AbstractMysqlPlan {
+public class EmptyMysqlPlan extends AbstractMysqlSqlPlan {
 
     public EmptyMysqlPlan(long id) {
-        super(id, null, null, null);
+        super(id, null, null);
     }
 
     @Override

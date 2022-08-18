@@ -6,7 +6,6 @@ import com.alibaba.druid.sql.ast.statement.SQLUnionQuery;
 import indi.uhyils.plan.MysqlPlan;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,18 +20,18 @@ public class UnionSelectSqlParser extends AbstractSelectSqlParser {
 
 
     @Override
-    public List<MysqlPlan> doParse(SQLSelectStatement sql, Map<Long, List<Map<String, Object>>> planResult) {
-        // todo union语句
-        return new ArrayList<>();
-    }
-
-    @Override
     protected boolean doCanParse(SQLSelectStatement sql) {
         SQLSelectQuery query = sql.getSelect().getQuery();
         if (query instanceof SQLUnionQuery) {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<MysqlPlan> doParse(SQLSelectStatement sql) {
+        // todo union语句
+        return new ArrayList<>();
     }
 
 }

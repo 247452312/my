@@ -50,7 +50,7 @@ public class TokenInjectAop {
      */
     private static final String ADMIN = "admin";
 
-    @Value("${token.enable}")
+    @Value("${token.enable:true}")
     private Boolean enable;
 
     @Autowired

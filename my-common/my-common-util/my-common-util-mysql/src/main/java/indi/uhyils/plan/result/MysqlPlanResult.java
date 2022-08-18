@@ -1,5 +1,6 @@
 package indi.uhyils.plan.result;
 
+import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import java.util.List;
 import java.util.Map;
 
@@ -17,5 +18,13 @@ public interface MysqlPlanResult {
      * @return
      */
     List<Map<String, Object>> result();
+
+
+    /**
+     * 列信息,要返回的
+     *
+     * @return
+     */
+    List<FieldInfo> colInfos();
 
 }

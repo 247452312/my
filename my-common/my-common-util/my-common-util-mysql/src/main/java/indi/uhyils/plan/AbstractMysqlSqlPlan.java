@@ -1,26 +1,22 @@
 package indi.uhyils.plan;
 
-import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.plan.enums.MysqlPlanTypeEnum;
 import indi.uhyils.plan.pojo.Placeholder;
 import indi.uhyils.plan.result.MysqlPlanResult;
 import indi.uhyils.util.Asserts;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * sql执行计划的抽象模板
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年03月29日 08时49分
  */
-public abstract class AbstractMysqlPlan implements MysqlPlan {
+public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
 
-    /**
-     * 之前的结果
-     */
-    protected final Map<Long, List<Map<String, Object>>> planResult;
 
     /**
      * 执行计划id
@@ -33,21 +29,16 @@ public abstract class AbstractMysqlPlan implements MysqlPlan {
     protected final String sql;
 
     /**
-     * 执行计划参数
+     * 执行计划参数 key->参数名称 value->占位符(替换之后为实际的参数值)
      */
     protected final Map<String, Object> params;
 
-    protected AbstractMysqlPlan(long id, String sql, Map<String, Object> params, Map<Long, List<Map<String, Object>>> planResult) {
-        this.planResult = planResult;
+    protected AbstractMysqlSqlPlan(long id, String sql, Map<String, Object> params) {
         this.id = id;
         this.sql = sql;
         this.params = params;
     }
 
-    @Override
-    public Map<Long, List<Map<String, Object>>> getPlanResult() {
-        return planResult;
-    }
 
     @Override
     public MysqlPlanResult invoke() {
@@ -76,7 +67,7 @@ public abstract class AbstractMysqlPlan implements MysqlPlan {
 
     @Override
     public MysqlPlanTypeEnum type() {
-        return null;
+        return MysqlPlanTypeEnum.EXECUTE_SQL;
     }
 
     @Override
@@ -84,8 +75,4 @@ public abstract class AbstractMysqlPlan implements MysqlPlan {
         return id;
     }
 
-    @Override
-    public List<FieldInfo> colInfos() {
-        return new ArrayList<>();
-    }
 }

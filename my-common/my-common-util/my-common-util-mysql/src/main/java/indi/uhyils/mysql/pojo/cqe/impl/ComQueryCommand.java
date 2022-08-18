@@ -67,7 +67,7 @@ public class ComQueryCommand extends MysqlSqlCommand {
             mysqlPlan.complete(result);
             MysqlPlanResult rr = mysqlPlan.invoke();
             invokeResult = rr;
-            colInfos = mysqlPlan.colInfos();
+            colInfos = rr.colInfos();
             result.put((long) i, rr.result());
         }
         // 如果没有结果, 说明不是一个常规的查询语句,返回ok即可,如果报错,则在外部已经进行了try,catch
