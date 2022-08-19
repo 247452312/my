@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -19,20 +20,12 @@ public final class CollectionUtil {
     private CollectionUtil() {
     }
 
-    public static boolean isEmpty(Collection<?> collection) {
-        return collection == null || collection.isEmpty();
-    }
-
-    public static <T> boolean isEmpty(T[] array) {
-        return array == null || array.length == 0;
-    }
-
-    public static <T> boolean isNotEmpty(T[] array) {
-        return !isEmpty(array);
-    }
-
     public static boolean isNotEmpty(Collection<?> collection) {
         return !isEmpty(collection);
+    }
+
+    public static boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
     }
 
     /**
@@ -106,6 +99,14 @@ public final class CollectionUtil {
         return copy;
     }
 
+    public static <T> boolean isNotEmpty(T[] array) {
+        return !isEmpty(array);
+    }
+
+    public static <T> boolean isEmpty(T[] array) {
+        return array == null || array.length == 0;
+    }
+
     /**
      * 复制数组
      *
@@ -127,4 +128,15 @@ public final class CollectionUtil {
         return copy;
     }
 
+    /**
+     * 浅拷贝列表
+     *
+     * @param result
+     * @param <T>
+     *
+     * @return
+     */
+    public static <T> List<T> copyList(List<T> result) {
+        return result.stream().collect(Collectors.toList());
+    }
 }

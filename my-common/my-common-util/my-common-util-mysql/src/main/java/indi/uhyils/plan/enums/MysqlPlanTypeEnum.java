@@ -12,7 +12,8 @@ public enum MysqlPlanTypeEnum {
      */
     EXECUTE_SQL(1, "执行sql节点"),
     MAPPING(2, "字段映射节点"),
-    COMPOSITE_NODE(3, "组合节点");
+    COMPOSITE_NODE(3, "组合节点"),
+    INVOKE_METHOD(4, "方法执行节点");
 
     private final Integer code;
 

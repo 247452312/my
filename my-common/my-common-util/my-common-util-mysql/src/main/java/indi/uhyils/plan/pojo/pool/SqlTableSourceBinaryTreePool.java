@@ -1,9 +1,11 @@
 package indi.uhyils.plan.pojo.pool;
 
+import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import com.alibaba.druid.sql.ast.statement.SQLJoinTableSource.JoinType;
 import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.pool.AbstractObjectPool;
+import java.util.List;
 
 /**
  * sql实例池
@@ -24,9 +26,10 @@ public class SqlTableSourceBinaryTreePool extends AbstractObjectPool<SqlTableSou
     }
 
 
-    public SqlTableSourceBinaryTree getOrCreateObject(SQLTableSource tableSource) {
+    public SqlTableSourceBinaryTree getOrCreateObject(SQLTableSource tableSource, List<SQLBinaryOpExpr> where) {
         SqlTableSourceBinaryTree orCreateObject = super.getOrCreateObject();
         orCreateObject.setTableSource(tableSource);
+        orCreateObject.setWhere(where);
         return orCreateObject;
     }
 

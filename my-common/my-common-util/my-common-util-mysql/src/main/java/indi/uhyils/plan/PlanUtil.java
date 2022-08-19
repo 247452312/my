@@ -45,13 +45,17 @@ public final class PlanUtil {
 
     /**
      * 执行执行计划
+     *
+     * @return 每个执行计划的结果 key->执行计划id value->执行计划执行结果
      */
-    public static void execute(List<MysqlPlan> plan, Map<String, Object> params) {
+    public static Map<Long, List<Map<String, Object>>> execute(List<MysqlPlan> plan, Map<String, Object> params) {
         // 初始化参数
         Map<Long, List<Map<String, Object>>> planMap = new HashMap<>();
-        ArrayList<Map<String, Object>> value = new ArrayList<>();
-        value.add(params);
-        planMap.put(-1L, value);
+        if (params != null && params.size() != 0) {
+            ArrayList<Map<String, Object>> value = new ArrayList<>();
+            value.add(params);
+            planMap.put(-1L, value);
+        }
 
         // 补全并执行
         for (MysqlPlan mysqlPlan : plan) {
@@ -60,6 +64,7 @@ public final class PlanUtil {
             List<Map<String, Object>> result = invoke.result();
             planMap.put(mysqlPlan.getId(), result);
         }
+        return planMap;
     }
 
 }

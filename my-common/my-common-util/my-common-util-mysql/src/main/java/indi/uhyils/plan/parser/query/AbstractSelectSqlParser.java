@@ -6,6 +6,7 @@ import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.parser.SqlParser;
 import indi.uhyils.plan.pojo.pool.SqlTableSourceBinaryTreePool;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SpringUtil;
 import java.util.List;
 import java.util.function.Consumer;
@@ -94,7 +95,7 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
      * @param fromSql
      * @param reExecute
      */
-    protected void reExecute(String fromSql, Consumer<List<MysqlPlan>> reExecute) {
+    protected List<MysqlPlan> reExecute(String fromSql, Consumer<List<MysqlPlan>> reExecute) {
         //检查解析器是否初始化
         checkInterpreters();
         SQLSelectStatement fromSqlStatement = (SQLSelectStatement) new MySqlStatementParser(fromSql).parseStatement();
@@ -102,9 +103,11 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
             if (selectInterpreter.canParse(fromSqlStatement)) {
                 List<MysqlPlan> parse = selectInterpreter.parse(fromSqlStatement);
                 reExecute.accept(parse);
-                break;
+                return parse;
             }
         }
+        Asserts.throwException("错误,未找到对应的解析类,语句为:{}", fromSql);
+        return null;
     }
 
 }

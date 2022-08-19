@@ -1,6 +1,5 @@
 package indi.uhyils.plan;
 
-import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.plan.enums.MysqlPlanTypeEnum;
 import indi.uhyils.plan.result.MysqlPlanResult;
 import java.util.List;
@@ -34,7 +33,7 @@ public interface MysqlPlan {
     MysqlPlanTypeEnum type();
 
     /**
-     * 获取执行计划id
+     * 获取此plan唯一标示
      *
      * @return
      */

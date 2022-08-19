@@ -7,6 +7,7 @@ import com.alibaba.druid.sql.ast.expr.SQLBinaryOperator;
 import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
 import com.alibaba.druid.sql.ast.expr.SQLInListExpr;
 import com.alibaba.druid.sql.ast.expr.SQLInSubQueryExpr;
+import com.alibaba.druid.sql.ast.expr.SQLMethodInvokeExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import com.alibaba.druid.sql.ast.expr.SQLQueryExpr;
 import com.alibaba.druid.sql.ast.expr.SQLValuableExpr;
@@ -63,7 +64,15 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 result.add(newPlan);
                 return new SQLSelectItem(new MySqlCharExpr("&" + newPlan.getId()), t.getAlias());
             }
-            Asserts.throwException("查询报错,子查询类型找不到:{}", t.toString());
+            if (expr instanceof SQLMethodInvokeExpr) {
+                final SQLMethodInvokeExpr sqlMethodInvokeExpr = (SQLMethodInvokeExpr) expr;
+                final String methodName = sqlMethodInvokeExpr.getMethodName();
+                final List<SQLExpr> arguments = sqlMethodInvokeExpr.getArguments();
+                MysqlPlan newPlan = new MethodInvokePlan(CollectionUtil.copyList(result), methodName, arguments);
+                result.add(newPlan);
+                return new SQLSelectItem(new MySqlCharExpr("&" + newPlan.getId()), t.getAlias());
+            }
+            Asserts.throwException("查询报错,子查询类型找不到:{},内容为:{}", t.getClass().getName(), t.toString());
             return null;
         }).collect(Collectors.toList());
     }
@@ -71,32 +80,29 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     /**
      * 制作执行计划
      *
-     * @param result 出参
-     * @param froms  目标表(多个)
+     * @param froms 目标表(多个)
      *
      * @return
      */
     @NotNull
-    private List<MysqlPlan> makePlan(List<MysqlPlan> plans, List<SQLSelectItem> result, SqlTableSourceBinaryTree froms) {
+    private List<MysqlPlan> makePlan(List<MysqlPlan> plans, SqlTableSourceBinaryTree froms) {
         List<MysqlPlan> resultPlan = new ArrayList<>();
         if (froms.isLevel()) {
-            long id = 0;
-            if (CollectionUtil.isNotEmpty(plans)) {
-                id = plans.get(plans.size() - 1).getId();
-            }
-            MysqlPlan mysqlPlan = new BlockQuerySelectSqlPlan(id + 1, froms.toString(), null);
+            MysqlPlan mysqlPlan = new BlockQuerySelectSqlPlan(CollectionUtil.copyList(plans), froms, null);
             resultPlan.add(mysqlPlan);
+            plans.add(mysqlPlan);
+
             return resultPlan;
         } else {
             JoinType joinType = froms.getJoinType();
 
             switch (joinType) {
                 case INNER_JOIN:
-                    return makeInnerJoin(plans, result, froms);
+                    return makeInnerJoin(plans, froms);
                 case LEFT_OUTER_JOIN:
-                    return makeLeftJoin(plans, result, froms);
+                    return makeLeftJoin(plans, froms);
                 case RIGHT_OUTER_JOIN:
-                    return makeRightJoin(plans, result, froms);
+                    return makeRightJoin(plans, froms);
                 default:
                     Asserts.throwException("无指定连表方案");
                     return null;
@@ -105,45 +111,58 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     }
 
     @NotNull
-    private List<MysqlPlan> makeRightJoin(List<MysqlPlan> plans, List<SQLSelectItem> result, SqlTableSourceBinaryTree froms) {
-        List<MysqlPlan> rightPlan = makePlan(plans, result, froms.getRightTree());
+    private List<MysqlPlan> makeRightJoin(List<MysqlPlan> plans, SqlTableSourceBinaryTree froms) {
+        List<MysqlPlan> resultPlan = new ArrayList<>();
+        List<MysqlPlan> rightPlan = makePlan(plans, froms.getRightTree());
+        resultPlan.addAll(rightPlan);
         plans.addAll(rightPlan);
-        List<MysqlPlan> leftPlan = makePlan(plans, result, froms.getLeftTree());
+        List<MysqlPlan> leftPlan = makePlan(plans, froms.getLeftTree());
+        resultPlan.addAll(leftPlan);
         plans.addAll(leftPlan);
-        long id = plans.get(plans.size() - 1).getId();
-        long leftId = leftPlan.get(leftPlan.size() - 1).getId();
-        long right = rightPlan.get(rightPlan.size() - 1).getId();
-        MysqlPlan sqlPlan = new RightJoinSqlPlan(id + 1, null, leftId, right);
+
+        final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
+        final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
+
+        MysqlPlan sqlPlan = new RightJoinSqlPlan(CollectionUtil.copyList(plans), null, leftId, rightId);
+        resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
-        return plans;
+        return resultPlan;
     }
 
     @NotNull
-    private List<MysqlPlan> makeLeftJoin(List<MysqlPlan> plans, List<SQLSelectItem> result, SqlTableSourceBinaryTree froms) {
-        List<MysqlPlan> leftPlan = makePlan(plans, result, froms.getLeftTree());
-        plans.addAll(leftPlan);
-        List<MysqlPlan> rightPlan = makePlan(plans, result, froms.getRightTree());
-        plans.addAll(rightPlan);
-        long id = plans.get(plans.size() - 1).getId();
-        long leftId = leftPlan.get(leftPlan.size() - 1).getId();
-        long right = rightPlan.get(rightPlan.size() - 1).getId();
-        MysqlPlan sqlPlan = new LeftJoinSqlPlan(id + 1, null, leftId, right);
+    private List<MysqlPlan> makeLeftJoin(List<MysqlPlan> plans, SqlTableSourceBinaryTree froms) {
+        List<MysqlPlan> resultPlan = new ArrayList<>();
+        List<MysqlPlan> leftPlan = makePlan(plans, froms.getLeftTree());
+        resultPlan.addAll(leftPlan);
+        List<MysqlPlan> rightPlan = makePlan(plans, froms.getRightTree());
+        resultPlan.addAll(rightPlan);
+
+        final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
+        final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
+
+        MysqlPlan sqlPlan = new LeftJoinSqlPlan(CollectionUtil.copyList(plans), null, leftId, rightId);
+        resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
-        return plans;
+        return resultPlan;
     }
 
     @NotNull
-    private List<MysqlPlan> makeInnerJoin(List<MysqlPlan> plans, List<SQLSelectItem> result, SqlTableSourceBinaryTree froms) {
-        List<MysqlPlan> leftPlan = makePlan(plans, result, froms.getLeftTree());
+    private List<MysqlPlan> makeInnerJoin(List<MysqlPlan> plans, SqlTableSourceBinaryTree froms) {
+        List<MysqlPlan> resultPlan = new ArrayList<>();
+        List<MysqlPlan> leftPlan = makePlan(plans, froms.getLeftTree());
+        resultPlan.addAll(leftPlan);
         plans.addAll(leftPlan);
-        List<MysqlPlan> rightPlan = makePlan(plans, result, froms.getRightTree());
+        List<MysqlPlan> rightPlan = makePlan(plans, froms.getRightTree());
+        resultPlan.addAll(rightPlan);
         plans.addAll(rightPlan);
-        long id = plans.get(plans.size() - 1).getId();
-        long leftId = leftPlan.get(leftPlan.size() - 1).getId();
-        long right = rightPlan.get(rightPlan.size() - 1).getId();
-        MysqlPlan sqlPlan = new InnerJoinSqlPlan(id + 1, null, leftId, right);
+
+        final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
+        final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
+
+        MysqlPlan sqlPlan = new InnerJoinSqlPlan(CollectionUtil.copyList(plans), null, leftId, rightId);
+        resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
-        return plans;
+        return resultPlan;
     }
 
     /**
@@ -169,7 +188,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
             Asserts.assertTrue(CollectionUtil.isNotEmpty(mysqlPlans), "解析plan为空:{}", subQuery);
             plans.addAll(mysqlPlans);
             MysqlPlan mysqlPlan = mysqlPlans.get(0);
-            return Arrays.asList(new SQLBinaryOpExpr(expr, SQLBinaryOperator.Equality, new MySqlCharExpr(mysqlPlan.getId() + "&")));
+            return Arrays.asList(new SQLBinaryOpExpr(expr, SQLBinaryOperator.Equality, new MySqlCharExpr("&" + mysqlPlan.getId())));
         }
         if (where instanceof SQLInListExpr) {
             SQLInListExpr sqlInListExpr = (SQLInListExpr) where;
@@ -191,9 +210,9 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 return sqlBinaryOpExprs;
             }
             if (right instanceof SQLQueryExpr) {
-                final int index = plans.size() - 1;
-                reExecute(right.toString(), (Consumer<List<MysqlPlan>>) plans::addAll);
-                SQLBinaryOpExpr sqlBinaryOpExpr = new SQLBinaryOpExpr(left, whereSqlBinaryOpExpr.getOperator(), new MySqlCharExpr("&" + index));
+                final List<MysqlPlan> mysqlPlans = reExecute(right.toString(), (Consumer<List<MysqlPlan>>) plans::addAll);
+                final MysqlPlan lastMysqlPlan = mysqlPlans.get(mysqlPlans.size() - 1);
+                SQLBinaryOpExpr sqlBinaryOpExpr = new SQLBinaryOpExpr(left, whereSqlBinaryOpExpr.getOperator(), new MySqlCharExpr("&" + lastMysqlPlan.getId()));
                 sqlBinaryOpExprs.add(sqlBinaryOpExpr);
                 return sqlBinaryOpExprs;
             }
@@ -213,12 +232,12 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
      * @param plans
      * @param from
      */
-    private SqlTableSourceBinaryTree transFrom(List<MysqlPlan> plans, SQLTableSource from) {
+    private SqlTableSourceBinaryTree transFrom(List<MysqlPlan> plans, SQLTableSource from, List<SQLBinaryOpExpr> where) {
         if (from instanceof SQLJoinTableSource) {
             SQLJoinTableSource sqlJoinTableSource = (SQLJoinTableSource) from;
             JoinType joinType = sqlJoinTableSource.getJoinType();
-            SqlTableSourceBinaryTree lefts = transFrom(plans, sqlJoinTableSource.getLeft());
-            SqlTableSourceBinaryTree rights = transFrom(plans, sqlJoinTableSource.getRight());
+            SqlTableSourceBinaryTree lefts = transFrom(plans, sqlJoinTableSource.getLeft(), where);
+            SqlTableSourceBinaryTree rights = transFrom(plans, sqlJoinTableSource.getRight(), where);
 
             switch (joinType) {
                 case JOIN:
@@ -238,13 +257,13 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
             SQLExprTableSource sqlExprTableSource = reExecute(from.toString(), parse -> {
                 Asserts.assertTrue(CollectionUtil.isNotEmpty(parse), "解析plan为空:{}", from.toString());
                 plans.addAll(parse);
-                MysqlPlan fromFirstPlan = parse.get(0);
-                long index = fromFirstPlan.getId();
-                return new SQLExprTableSource(new MySqlCharExpr("&" + index), from.getAlias());
+                MysqlPlan lastPlan = parse.get(parse.size() - 1);
+                long lastPlanId = lastPlan.getId();
+                return new SQLExprTableSource(new MySqlCharExpr("&" + lastPlanId), from.getAlias());
             });
-            return pool.getOrCreateObject(sqlExprTableSource);
+            return pool.getOrCreateObject(sqlExprTableSource, where);
         } else {
-            return pool.getOrCreateObject(from);
+            return pool.getOrCreateObject(from, where);
         }
     }
 
@@ -261,12 +280,24 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         // 3.selectList 查询字段的子查询
         MySqlSelectQueryBlock query = (MySqlSelectQueryBlock) select.getQuery();
         final ArrayList<MysqlPlan> plans = new ArrayList<>();
-        final SqlTableSourceBinaryTree froms = transFrom(plans, query.getFrom());
-
         final List<SQLBinaryOpExpr> where = parseSQLExprWhere(plans, query.getWhere());
-        final List<SQLSelectItem> selectList = parseSelectList(plans, query.getSelectList());
 
-        return makePlan(plans, selectList, froms);
+        makePlan(plans, transFrom(plans, query.getFrom(), where));
+        final List<SQLSelectItem> selectList = parseSelectList(plans, query.getSelectList());
+        // 添加结果字段映射节点
+        addResultMappingPlan(plans, selectList);
+        return plans;
+    }
+
+    /**
+     * 结果字段映射节点添加
+     *
+     * @param plans
+     * @param selectList
+     */
+    private void addResultMappingPlan(ArrayList<MysqlPlan> plans, List<SQLSelectItem> selectList) {
+        ResultMappingPlan resultMappingPlan = new ResultMappingPlan(CollectionUtil.copyList(plans), selectList);
+        plans.add(resultMappingPlan);
     }
 
     /**
@@ -274,8 +305,14 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
      */
     public static class BlockQuerySelectSqlPlan extends AbstractMysqlSqlPlan {
 
-        protected BlockQuerySelectSqlPlan(long id, String sql, Map<String, Object> params) {
-            super(id, sql, params);
+        /**
+         * table详情
+         */
+        private SqlTableSourceBinaryTree froms;
+
+        protected BlockQuerySelectSqlPlan(List<MysqlPlan> mysqlPlan, SqlTableSourceBinaryTree froms, Map<String, Object> params) {
+            super(mysqlPlan, null, params);
+            this.froms = froms;
         }
 
         @Override
@@ -292,15 +329,15 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         /**
          * 左边结果
          */
-        private Long leftResult;
+        private List<Long> leftResult;
 
         /**
          * 右边结果
          */
-        private Long rightResult;
+        private List<Long> rightResult;
 
-        protected InnerJoinSqlPlan(long id, String sql, Long leftPlanId, Long rightPlanId) {
-            super(id, sql, null);
+        protected InnerJoinSqlPlan(List<MysqlPlan> lastPlan, String sql, List<Long> leftPlanId, List<Long> rightPlanId) {
+            super(lastPlan, sql, null);
             this.leftResult = leftPlanId;
             this.rightResult = rightPlanId;
         }
@@ -319,15 +356,15 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         /**
          * 左边结果
          */
-        private Long leftResult;
+        private List<Long> leftResult;
 
         /**
          * 右边结果
          */
-        private Long rightResult;
+        private List<Long> rightResult;
 
-        protected LeftJoinSqlPlan(long id, String sql, Long leftPlanId, Long rightPlanId) {
-            super(id, sql, null);
+        protected LeftJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, List<Long> leftPlanId, List<Long> rightPlanId) {
+            super(lastPlans, sql, null);
             this.leftResult = leftPlanId;
             this.rightResult = rightPlanId;
         }
@@ -346,15 +383,15 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         /**
          * 左边结果
          */
-        private Long leftResult;
+        private List<Long> leftResult;
 
         /**
          * 右边结果
          */
-        private Long rightResult;
+        private List<Long> rightResult;
 
-        protected RightJoinSqlPlan(long id, String sql, Long leftPlanId, Long rightPlanId) {
-            super(id, sql, null);
+        protected RightJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, List<Long> leftPlanId, List<Long> rightPlanId) {
+            super(lastPlans, sql, null);
             this.leftResult = leftPlanId;
             this.rightResult = rightPlanId;
         }
@@ -362,6 +399,46 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         @Override
         public MysqlPlanResult invoke() {
             return null;
+        }
+    }
+
+    /**
+     * 执行方法的执行计划
+     */
+    public static class MethodInvokePlan extends AbstractMysqlSqlPlan {
+
+        private final String methodName;
+
+        private final List<SQLExpr> arguments;
+
+        protected MethodInvokePlan(List<MysqlPlan> lastPlans, String methodName, List<SQLExpr> arguments) {
+            super(lastPlans, null, null);
+            this.methodName = methodName;
+            this.arguments = arguments;
+        }
+
+        @Override
+        public MysqlPlanResult invoke() {
+            return null;
+        }
+    }
+
+    /**
+     * 结果映射执行计划
+     */
+    public static class ResultMappingPlan extends AbstractMysqlSqlPlan {
+
+
+        private final List<SQLSelectItem> selectList;
+
+        protected ResultMappingPlan(List<MysqlPlan> mysqlPlans, List<SQLSelectItem> selectList) {
+            super(mysqlPlans, null, null);
+            this.selectList = selectList;
+        }
+
+        @Override
+        public MysqlPlanResult invoke() {
+            return super.invoke();
         }
     }
 

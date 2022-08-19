@@ -1,8 +1,10 @@
 package indi.uhyils.plan.pojo;
 
+import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import com.alibaba.druid.sql.ast.statement.SQLJoinTableSource.JoinType;
 import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import indi.uhyils.annotation.NotNull;
+import java.util.List;
 
 /**
  * sql中 table的连接树
@@ -16,6 +18,11 @@ public class SqlTableSourceBinaryTree {
      * 节点数据本身
      */
     private SQLTableSource tableSource;
+
+    /**
+     * 条件
+     */
+    private List<SQLBinaryOpExpr> where;
 
     /**
      * 左树
@@ -32,8 +39,9 @@ public class SqlTableSourceBinaryTree {
      */
     private JoinType joinType;
 
-    public SqlTableSourceBinaryTree(SQLTableSource tableSource) {
+    public SqlTableSourceBinaryTree(SQLTableSource tableSource, List<SQLBinaryOpExpr> where) {
         this.tableSource = tableSource;
+        this.where = where;
     }
 
     public SqlTableSourceBinaryTree(SqlTableSourceBinaryTree leftTree, SqlTableSourceBinaryTree rightTree, JoinType joinType) {
@@ -75,6 +83,14 @@ public class SqlTableSourceBinaryTree {
 
     public void setTableSource(SQLTableSource tableSource) {
         this.tableSource = tableSource;
+    }
+
+    public List<SQLBinaryOpExpr> getWhere() {
+        return where;
+    }
+
+    public void setWhere(List<SQLBinaryOpExpr> where) {
+        this.where = where;
     }
 
     @NotNull
