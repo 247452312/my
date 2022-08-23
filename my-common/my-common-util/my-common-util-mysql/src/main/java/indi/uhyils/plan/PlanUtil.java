@@ -48,7 +48,7 @@ public final class PlanUtil {
      *
      * @return 每个执行计划的结果 key->执行计划id value->执行计划执行结果
      */
-    public static Map<Long, List<Map<String, Object>>> execute(List<MysqlPlan> plan, Map<String, Object> params) {
+    public static List<Map<String, Object>> execute(List<MysqlPlan> plan, Map<String, Object> params) {
         // 初始化参数
         Map<Long, List<Map<String, Object>>> planMap = new HashMap<>();
         if (params != null && params.size() != 0) {
@@ -57,14 +57,17 @@ public final class PlanUtil {
             planMap.put(-1L, value);
         }
 
+        List<Map<String, Object>> lastResult;
         // 补全并执行
         for (MysqlPlan mysqlPlan : plan) {
             mysqlPlan.complete(planMap);
             MysqlPlanResult invoke = mysqlPlan.invoke();
-            List<Map<String, Object>> result = invoke.result();
+            final List<Map<String, Object>> result = invoke.result();
+            lastResult = result;
             planMap.put(mysqlPlan.getId(), result);
         }
-        return planMap;
+        // todo 结果未返回
+        return null;
     }
 
 }

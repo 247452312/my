@@ -155,7 +155,7 @@ public class FieldInfo {
         results.add(FILL_VALUE);
         count += FILL_VALUE.length;
         // 默认值
-        byte[] e9 = MysqlUtil.mergeLengthCodedBinary(defaultValue);
+        byte[] e9 = MysqlUtil.mergeLengthCodedBinary(defaultValue == null ? "" : defaultValue);
         results.add(e9);
         count += e9.length;
         return MysqlUtil.mergeListBytes(results, count);

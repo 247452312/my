@@ -54,7 +54,7 @@ public class ComQueryCommand extends MysqlSqlCommand {
             return Collections.singletonList(new OkResponse(getMysqlTcpInfo(), SqlTypeEnum.NULL));
         }
 
-        final Map<Long, List<Map<String, Object>>> execute = PlanUtil.execute(mysqlPlans, null);
+        final List<Map<String, Object>> execute = PlanUtil.execute(mysqlPlans, null);
         // index, 结果集
         Map<Long, List<Map<String, Object>>> result = new HashMap<>(mysqlPlans.size());
         // 此sql最终结果

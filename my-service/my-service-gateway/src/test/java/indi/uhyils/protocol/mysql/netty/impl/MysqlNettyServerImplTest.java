@@ -19,4 +19,6 @@ public class MysqlNettyServerImplTest extends BaseTest {
         final List<MysqlPlan> mysqlPlans = PlanUtil.analysisSql(sql);
         int i = 1;
     }
+
+
 }
