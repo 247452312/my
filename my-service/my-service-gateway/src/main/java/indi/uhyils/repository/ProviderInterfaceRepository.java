@@ -13,4 +13,13 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  */
 public interface ProviderInterfaceRepository extends BaseEntityRepository<ProviderInterfaceDO, ProviderInterface> {
 
+    /**
+     * 获取唯一接口信息
+     *
+     * @param invokeType
+     * @param path
+     *
+     * @return
+     */
+    ProviderInterface find(Integer invokeType, String path);
 }

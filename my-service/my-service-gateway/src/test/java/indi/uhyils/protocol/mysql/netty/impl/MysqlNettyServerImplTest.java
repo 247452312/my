@@ -20,5 +20,12 @@ public class MysqlNettyServerImplTest extends BaseTest {
         int i = 1;
     }
 
+    @Test
+    void analysisSql2() {
+        String sql = "select schema_name,default_character_set_name,default_collation_name from information_schema.schemata";
+        final List<MysqlPlan> mysqlPlans = PlanUtil.analysisSql(sql);
+        int i = 1;
+    }
+
 
 }

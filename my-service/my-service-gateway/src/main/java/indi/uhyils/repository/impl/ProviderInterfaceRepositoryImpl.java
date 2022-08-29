@@ -1,5 +1,7 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ProviderInterfaceAssembler;
 import indi.uhyils.dao.ProviderInterfaceDao;
@@ -25,4 +27,11 @@ public class ProviderInterfaceRepositoryImpl extends AbstractRepository<Provider
     }
 
 
+    @Override
+    public ProviderInterface find(Integer invokeType, String path) {
+        final LambdaQueryWrapper<ProviderInterfaceDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(ProviderInterfaceDO::getInvokeType, invokeType);
+        queryWrapper.eq(ProviderInterfaceDO::getUrl, path);
+        return assembler.toEntity(dao.selectOne(queryWrapper));
+    }
 }

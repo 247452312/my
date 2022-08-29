@@ -1,5 +1,6 @@
 package indi.uhyils.protocol.rpc;
 
+import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 
 /**
@@ -15,5 +16,5 @@ public interface GatewaySdkProvider {
      *
      * @return
      */
-    Object invokeRpc(InvokeCommand command);
+    JSONArray invokeRpc(InvokeCommand command);
 }

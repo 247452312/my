@@ -17,7 +17,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class MysqlNettyTest extends ChannelInitializer<SocketChannel> {
 
 
-    private final Integer port = 3306;
+    private final Integer port = 3300;
 
     /**
      * 主线程,单线程

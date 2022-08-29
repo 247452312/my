@@ -1,9 +1,11 @@
 package indi.uhyils.protocol.rpc.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.protocol.rpc.GatewaySdkProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.GatewaySdkService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -19,7 +21,7 @@ public class GatewaySdkProviderImpl implements GatewaySdkProvider {
     private GatewaySdkService service;
 
     @Override
-    public Object invokeRpc(InvokeCommand command) {
+    public JSONArray invokeRpc(InvokeCommand command) {
         return service.invoke(command);
     }
 

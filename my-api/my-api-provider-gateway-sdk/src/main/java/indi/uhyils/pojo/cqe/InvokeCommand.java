@@ -12,6 +12,7 @@ import java.util.Map;
  */
 public class InvokeCommand extends AbstractCommand {
 
+
     /**
      * 入参
      */
@@ -29,6 +30,11 @@ public class InvokeCommand extends AbstractCommand {
      * 如果是mysql,此值为{库名/表名}
      */
     private String path;
+
+    /**
+     * 调用方式
+     */
+    private Integer invokeType;
 
     public List<Map<String, Object>> getParams() {
         return params;
@@ -52,5 +58,13 @@ public class InvokeCommand extends AbstractCommand {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Integer getInvokeType() {
+        return invokeType;
+    }
+
+    public void setInvokeType(Integer invokeType) {
+        this.invokeType = invokeType;
     }
 }

@@ -52,10 +52,6 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
         id = SpringUtil.getBean(IdUtil.class).newId();
     }
 
-    @Override
-    public MysqlPlanResult invoke() {
-        return null;
-    }
 
     @Override
     public void complete(Map<Long, List<Map<String, Object>>> planArgs) {

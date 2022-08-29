@@ -1,5 +1,8 @@
 package indi.uhyils.enums;
 
+import indi.uhyils.util.Asserts;
+import java.util.Objects;
+
 /**
  * 执行类型
  *
@@ -20,6 +23,24 @@ public enum InvokeTypeEnum {
 
     InvokeTypeEnum(Integer code) {
         this.code = code;
+    }
+
+    /**
+     * 解析调用类型
+     *
+     * @param code
+     *
+     * @return
+     */
+    public static InvokeTypeEnum parse(Integer code) {
+
+        for (InvokeTypeEnum value : values()) {
+            if (Objects.equals(value.getCode(), code)) {
+                return value;
+            }
+        }
+        Asserts.throwException("未找到调用方法");
+        return null;
     }
 
     public Integer getCode() {

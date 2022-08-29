@@ -1,6 +1,7 @@
 package indi.uhyils.protocol.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.pojo.cqe.InvokeCommandBuilder;
 import indi.uhyils.service.GatewaySdkService;
@@ -57,6 +58,7 @@ public class GatewayController {
         invokeCommandBuilder.addGetMap(getParams);
         invokeCommandBuilder.addPath(outPath);
         invokeCommandBuilder.addHeader(headerParam);
+        invokeCommandBuilder.setType(InvokeTypeEnum.HTTP.getCode());
         final InvokeCommand build = invokeCommandBuilder.build();
         return gatewaySdkService.invoke(build);
     }

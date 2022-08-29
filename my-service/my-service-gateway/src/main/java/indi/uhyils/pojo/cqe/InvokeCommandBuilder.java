@@ -2,6 +2,8 @@ package indi.uhyils.pojo.cqe;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.enums.InvokeTypeEnum;
+import indi.uhyils.util.Asserts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,6 +32,11 @@ public class InvokeCommandBuilder {
      * 路径
      */
     private String path;
+
+    /**
+     * 调用类型
+     */
+    private InvokeTypeEnum invokeTypeEnum;
 
     public InvokeCommandBuilder() {
     }
@@ -123,6 +130,18 @@ public class InvokeCommandBuilder {
     }
 
     /**
+     * 设置请求类型
+     *
+     * @param type 1->http 2->mysql 3->rpc 具体枚举可能变化,见{@link InvokeTypeEnum}
+     *
+     * @return
+     */
+    public InvokeCommandBuilder setType(Integer type) {
+        this.invokeTypeEnum = InvokeTypeEnum.parse(type);
+        return this;
+    }
+
+    /**
      * 构建command
      *
      * @return
@@ -132,6 +151,8 @@ public class InvokeCommandBuilder {
         invokeCommand.setHeader(this.header);
         invokeCommand.setParams(this.params);
         invokeCommand.setPath(this.path);
+        Asserts.assertTrue(this.invokeTypeEnum != null, "调用类型没有设置!");
+        invokeCommand.setInvokeType(this.invokeTypeEnum.getCode());
         return invokeCommand;
     }
 

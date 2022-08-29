@@ -14,6 +14,17 @@ public class ProviderInterfaceDTO extends IdDTO {
 
     private static final long serialVersionUID = -1L;
 
+
+    /**
+     * 库名称
+     */
+    private String database;
+
+    /**
+     * 表名称
+     */
+    private String name;
+
     /**
      * 唯一标示(url形式)
      */
@@ -28,9 +39,23 @@ public class ProviderInterfaceDTO extends IdDTO {
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", getId())
+            .append("database", getDatabase())
+            .append("name", getName())
             .append("url", getUrl())
             .append("invokeType", getInvokeType())
             .toString();
+    }
+
+    public String getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getUrl() {
@@ -47,6 +72,10 @@ public class ProviderInterfaceDTO extends IdDTO {
 
     public void setInvokeType(Integer invokeType) {
         this.invokeType = invokeType;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

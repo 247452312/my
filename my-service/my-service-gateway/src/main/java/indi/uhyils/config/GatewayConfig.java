@@ -1,5 +1,6 @@
 package indi.uhyils.config;
 
+import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.pojo.cqe.InvokeCommandBuilder;
 import indi.uhyils.protocol.rpc.GatewaySdkProvider;
@@ -62,6 +63,7 @@ public class GatewayConfig implements BeanPostProcessor {
             InvokeCommandBuilder builder = new InvokeCommandBuilder();
             builder.addHeader(RpcHeaderContext.get());
             builder.addArgs(args);
+            builder.setType(InvokeTypeEnum.RPC.getCode());
             return provider.invokeRpc(builder.build());
         }
     }
