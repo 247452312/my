@@ -2,6 +2,7 @@ package indi.uhyils.plan;
 
 import indi.uhyils.plan.result.MysqlPlanResult;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 空白执行计划,什么都不做
@@ -11,8 +12,8 @@ import java.util.List;
  */
 public class EmptyMysqlPlan extends AbstractMysqlSqlPlan {
 
-    public EmptyMysqlPlan(List<MysqlPlan> lastPlan) {
-        super(lastPlan, null, null);
+    public EmptyMysqlPlan(List<MysqlPlan> lastPlan, Map<String, String> headers) {
+        super(lastPlan, null, headers, null);
     }
 
     @Override

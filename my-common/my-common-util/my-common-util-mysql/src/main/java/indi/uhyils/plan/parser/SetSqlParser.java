@@ -6,6 +6,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSetStatement;
 import indi.uhyils.plan.MysqlPlan;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,7 +26,7 @@ public class SetSqlParser implements SqlParser {
     }
 
     @Override
-    public List<MysqlPlan> parse(SQLStatement sql) {
+    public List<MysqlPlan> parse(SQLStatement sql, Map<String, String> headers) {
         // 解析set语句
         SQLSetStatement setSql = (SQLSetStatement) sql;
         List<SQLAssignItem> items = setSql.getItems();

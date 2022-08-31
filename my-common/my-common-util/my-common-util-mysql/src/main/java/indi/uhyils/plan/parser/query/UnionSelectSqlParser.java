@@ -6,6 +6,7 @@ import com.alibaba.druid.sql.ast.statement.SQLUnionQuery;
 import indi.uhyils.plan.MysqlPlan;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
@@ -29,7 +30,7 @@ public class UnionSelectSqlParser extends AbstractSelectSqlParser {
     }
 
     @Override
-    public List<MysqlPlan> doParse(SQLSelectStatement sql) {
+    public List<MysqlPlan> doParse(SQLSelectStatement sql, Map<String, String> headers) {
         // todo union语句
         return new ArrayList<>();
     }

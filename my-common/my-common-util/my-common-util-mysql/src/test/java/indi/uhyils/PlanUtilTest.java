@@ -1,9 +1,7 @@
 package indi.uhyils;
 
-import indi.uhyils.plan.MysqlPlan;
-import indi.uhyils.plan.PlanUtil;
+import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.util.Asserts;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -15,7 +13,7 @@ class PlanUtilTest extends BaseTest {
     @Test
     void analysisSql() {
         String sql = "select a.*,b.* from sys_user a left join sys_role b on a.role_id = b.id where a.id = 12 ";
-        Asserts.assertNoException(() -> PlanUtil.analysisSql(sql));
+        Asserts.assertNoException(() -> MysqlUtil.analysisSqlToPlan(sql, null));
     }
 
 }

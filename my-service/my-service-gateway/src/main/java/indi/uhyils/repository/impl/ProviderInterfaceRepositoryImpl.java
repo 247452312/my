@@ -7,6 +7,7 @@ import indi.uhyils.assembler.ProviderInterfaceAssembler;
 import indi.uhyils.dao.ProviderInterfaceDao;
 import indi.uhyils.pojo.DO.ProviderInterfaceDO;
 import indi.uhyils.pojo.DTO.ProviderInterfaceDTO;
+import indi.uhyils.pojo.entity.AbstractDataNode;
 import indi.uhyils.pojo.entity.ProviderInterface;
 import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.repository.base.AbstractRepository;
@@ -33,5 +34,13 @@ public class ProviderInterfaceRepositoryImpl extends AbstractRepository<Provider
         queryWrapper.eq(ProviderInterfaceDO::getInvokeType, invokeType);
         queryWrapper.eq(ProviderInterfaceDO::getUrl, path);
         return assembler.toEntity(dao.selectOne(queryWrapper));
+    }
+
+    @Override
+    public AbstractDataNode<ProviderInterfaceDO> find(String path) {
+        final LambdaQueryWrapper<ProviderInterfaceDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(ProviderInterfaceDO::getUrl, path);
+        final ProviderInterfaceDO nodeDO = dao.selectOne(queryWrapper);
+        return assembler.toEntity(nodeDO);
     }
 }

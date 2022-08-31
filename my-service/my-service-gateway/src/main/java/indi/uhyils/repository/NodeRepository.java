@@ -1,6 +1,7 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.NodeDO;
+import indi.uhyils.pojo.entity.AbstractDataNode;
 import indi.uhyils.pojo.entity.Node;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
@@ -13,4 +14,10 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  */
 public interface NodeRepository extends BaseEntityRepository<NodeDO, Node> {
 
+    /**
+     * 根据path获取中间节点或者底层节点
+     *
+     * @param path
+     */
+    AbstractDataNode find(String path);
 }

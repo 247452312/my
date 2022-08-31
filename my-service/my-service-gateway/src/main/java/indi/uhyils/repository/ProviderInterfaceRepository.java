@@ -1,6 +1,7 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.ProviderInterfaceDO;
+import indi.uhyils.pojo.entity.AbstractDataNode;
 import indi.uhyils.pojo.entity.ProviderInterface;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
@@ -22,4 +23,13 @@ public interface ProviderInterfaceRepository extends BaseEntityRepository<Provid
      * @return
      */
     ProviderInterface find(Integer invokeType, String path);
+
+    /**
+     * 根据path获取具体的根节点
+     *
+     * @param path
+     *
+     * @return
+     */
+    AbstractDataNode find(String path);
 }

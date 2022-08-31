@@ -2,7 +2,6 @@ package indi.uhyils.plan;
 
 import indi.uhyils.plan.enums.MysqlPlanTypeEnum;
 import indi.uhyils.plan.pojo.Placeholder;
-import indi.uhyils.plan.result.MysqlPlanResult;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.SpringUtil;
@@ -37,17 +36,23 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
     private final long id;
 
     /**
+     * 请求头
+     */
+    protected Map<String, String> headers;
+
+    /**
      * 前置需要执行的执行计划
      */
     private List<MysqlPlan> lastPlan;
 
-    protected AbstractMysqlSqlPlan(MysqlPlan lastPlan, String sql, Map<String, Object> params) {
-        this(Arrays.asList(lastPlan), sql, params);
+    protected AbstractMysqlSqlPlan(MysqlPlan lastPlan, String sql, Map<String, String> headers, Map<String, Object> params) {
+        this(Arrays.asList(lastPlan), sql, headers, params);
     }
 
-    protected AbstractMysqlSqlPlan(List<MysqlPlan> lastPlan, String sql, Map<String, Object> params) {
+    protected AbstractMysqlSqlPlan(List<MysqlPlan> lastPlan, String sql, Map<String, String> headers, Map<String, Object> params) {
         this.sql = sql;
         this.params = params;
+        this.headers = headers;
         this.lastPlan = lastPlan;
         id = SpringUtil.getBean(IdUtil.class).newId();
     }

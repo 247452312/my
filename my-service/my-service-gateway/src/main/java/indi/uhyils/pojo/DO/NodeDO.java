@@ -36,7 +36,7 @@ public class NodeDO extends BaseDO {
     private String subNode;
 
     /**
-     * 对应唯一标识(url形式)
+     * 对应唯一标识(url形式),如果是mysql调用,则使用全称拼写,例如库名/表名
      */
     @TableField
     private String url;

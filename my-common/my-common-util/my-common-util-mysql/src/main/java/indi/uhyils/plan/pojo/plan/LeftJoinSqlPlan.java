@@ -3,6 +3,7 @@ package indi.uhyils.plan.pojo.plan;
 import indi.uhyils.plan.AbstractMysqlSqlPlan;
 import indi.uhyils.plan.MysqlPlan;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 左连接执行计划
@@ -23,8 +24,8 @@ public abstract class LeftJoinSqlPlan extends AbstractMysqlSqlPlan {
     private List<Long> rightResult;
 
 
-    protected LeftJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, List<Long> leftPlanId, List<Long> rightPlanId) {
-        super(lastPlans, sql, null);
+    protected LeftJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+        super(lastPlans, sql, headers, null);
         this.leftResult = leftPlanId;
         this.rightResult = rightPlanId;
     }

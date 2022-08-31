@@ -28,7 +28,7 @@ public class ShowSqlParser implements SqlParser {
 
 
     @Override
-    public List<MysqlPlan> parse(SQLStatement sql) {
+    public List<MysqlPlan> parse(SQLStatement sql, Map<String, String> headers) {
         // todo show命令解析
         LogUtil.info("show:{}", sql.toLowerCaseString());
         return new ArrayList<>();

@@ -1,10 +1,10 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.pojo.DO.ProviderInterfaceDO;
 import indi.uhyils.pojo.DO.ProviderInterfaceParamDO;
 import indi.uhyils.pojo.dto.FieldInfoDTO;
-import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.repository.ProviderInterfaceParamRepository;
 import indi.uhyils.util.Asserts;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年08月12日 08时33分
  */
-public class ProviderInterface extends AbstractDoEntity<ProviderInterfaceDO> {
+public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
 
     private List<ProviderInterfaceParam> params;
 
@@ -56,5 +56,22 @@ public class ProviderInterface extends AbstractDoEntity<ProviderInterfaceDO> {
             fieldInfoDTO.setName(providerInterfaceParamDO.getName());
             return fieldInfoDTO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public NodeInvokeResult getResult() {
+        return null;
+    }
+
+    @Override
+    public String databaseName() {
+        final ProviderInterfaceDO providerInterfaceDO = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
+        return providerInterfaceDO.getDatabase();
+    }
+
+    @Override
+    public String tableName() {
+        final ProviderInterfaceDO providerInterfaceDO = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
+        return providerInterfaceDO.getName();
     }
 }

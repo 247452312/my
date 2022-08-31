@@ -5,6 +5,7 @@ import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.pojo.plan.MethodInvokePlan;
 import indi.uhyils.plan.result.MysqlPlanResult;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -12,8 +13,8 @@ import java.util.List;
  */
 public class MethodInvokePlanImpl extends MethodInvokePlan {
 
-    public MethodInvokePlanImpl(List<MysqlPlan> lastPlans, String methodName, List<SQLExpr> arguments) {
-        super(lastPlans, methodName, arguments);
+    public MethodInvokePlanImpl(List<MysqlPlan> lastPlans, Map<String, String> headers, String methodName, List<SQLExpr> arguments) {
+        super(lastPlans, headers, methodName, arguments);
     }
 
     @Override

@@ -43,11 +43,11 @@ public class ComStatisticsCommand extends AbstractMysqlCommand {
     public List<MysqlResponse> invoke() {
         ArrayList<FieldInfo> fields = new ArrayList<>();
         fields.add(new FieldInfo(root, STATIC_TABLE_NAME, STATIC_TABLE_NAME, "运行时间", "time", 3, (int) mysqlTcpInfo.index(), FieldTypeEnum.FIELD_TYPE_LONG, FieldMarkEnum.TIMESTAMP_FLAG
-            .getCode(), (byte) 3, null, 1L));
+            .getCode(), (byte) 3, null));
 
         fields
             .add(new FieldInfo(root, STATIC_TABLE_NAME, STATIC_TABLE_NAME, "每秒执行次数", "executions_per_second", 3, (int) mysqlTcpInfo.index(), FieldTypeEnum.FIELD_TYPE_LONG, FieldMarkEnum.ZEROFILL_FLAG
-                .getCode(), (byte) 3, null, 1L));
+                .getCode(), (byte) 3, null));
 
         List<Map<String, Object>> jsonArrayObj = new ArrayList<>(1);
         Map<String, Object> jsonResult = new HashMap<>(2);

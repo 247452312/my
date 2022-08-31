@@ -1,15 +1,15 @@
 package indi.uhyils.plan;
 
-import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
-import indi.uhyils.plan.parser.SqlParser;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.result.MysqlPlanResult;
-import indi.uhyils.util.Asserts;
-import indi.uhyils.util.SpringUtil;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 /**
  * 执行计划工具类
@@ -25,44 +25,26 @@ public final class PlanUtil {
 
 
     /**
-     * 解析sql语句
-     *
-     * @param sql
-     *
-     * @return
-     */
-    public static List<MysqlPlan> analysisSql(String sql) {
-        SQLStatement sqlStatement = new MySqlStatementParser(sql).parseStatement();
-        List<SqlParser> beans = SpringUtil.getBeans(SqlParser.class);
-        for (SqlParser bean : beans) {
-            if (bean.canParse(sqlStatement)) {
-                return bean.parse(sqlStatement);
-            }
-        }
-        Asserts.throwException("解析执行计划失败:{}", sql);
-        return null;
-    }
-
-    /**
      * 执行执行计划
      *
      * @return 每个执行计划的结果 key->执行计划id value->执行计划执行结果
      */
-    public static List<Map<String, Object>> execute(List<MysqlPlan> plan, Map<String, Object> params) {
+    public static NodeInvokeResult execute(List<MysqlPlan> plan, Map<String, Object> params) {
         // 初始化参数
-        Map<Long, List<Map<String, Object>>> planMap = new HashMap<>();
+        Map<Long, JSONArray> planMap = new HashMap<>();
         if (params != null && params.size() != 0) {
-            ArrayList<Map<String, Object>> value = new ArrayList<>();
+            JSONArray value = new JSONArray();
             value.add(params);
             planMap.put(-1L, value);
         }
 
-        List<Map<String, Object>> lastResult;
+        JSONArray lastResult;
         // 补全并执行
         for (MysqlPlan mysqlPlan : plan) {
-            mysqlPlan.complete(planMap);
+            final Map<Long, List<Map<String, Object>>> collect = planMap.entrySet().stream().collect(Collectors.toMap(Entry::getKey, t -> t.getValue().stream().map(s -> JSONObject.parseObject(JSON.toJSONString(s))).map(s -> (Map<String, Object>) s).collect(Collectors.toList())));
+            mysqlPlan.complete(collect);
             MysqlPlanResult invoke = mysqlPlan.invoke();
-            final List<Map<String, Object>> result = invoke.result();
+            final JSONArray result = invoke.result();
             lastResult = result;
             planMap.put(mysqlPlan.getId(), result);
         }

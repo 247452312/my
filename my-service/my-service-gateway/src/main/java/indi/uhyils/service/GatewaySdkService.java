@@ -1,6 +1,7 @@
 package indi.uhyils.service;
 
 import com.alibaba.fastjson.JSONArray;
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.mysql.service.MysqlSdkService;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.pojo.dto.response.GetInterfaceInfoResponse;
@@ -20,7 +21,16 @@ public interface GatewaySdkService extends BaseService, MysqlSdkService {
      *
      * @return
      */
-    JSONArray invoke(InvokeCommand command);
+    NodeInvokeResult invokeInterface(InvokeCommand command);
+
+    /**
+     * 执行节点
+     *
+     * @param command
+     *
+     * @return
+     */
+    NodeInvokeResult invokeNode(InvokeCommand command);
 
     /**
      * 获取接口信息

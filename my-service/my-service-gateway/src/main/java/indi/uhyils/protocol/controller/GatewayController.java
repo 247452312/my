@@ -60,7 +60,7 @@ public class GatewayController {
         invokeCommandBuilder.addHeader(headerParam);
         invokeCommandBuilder.setType(InvokeTypeEnum.HTTP.getCode());
         final InvokeCommand build = invokeCommandBuilder.build();
-        return gatewaySdkService.invoke(build);
+        return gatewaySdkService.invokeInterface(build);
     }
 
     /**

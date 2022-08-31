@@ -5,7 +5,6 @@ import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.protocol.rpc.GatewaySdkProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.GatewaySdkService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -22,7 +21,7 @@ public class GatewaySdkProviderImpl implements GatewaySdkProvider {
 
     @Override
     public JSONArray invokeRpc(InvokeCommand command) {
-        return service.invoke(command);
+        return service.invokeInterface(command);
     }
 
 }

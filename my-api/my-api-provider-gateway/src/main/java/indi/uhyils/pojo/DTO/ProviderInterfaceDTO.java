@@ -26,7 +26,7 @@ public class ProviderInterfaceDTO extends IdDTO {
     private String name;
 
     /**
-     * 唯一标示(url形式)
+     * 对应唯一标识(url形式),如果是mysql调用,则使用JDBC连接串
      */
     private String url;
 

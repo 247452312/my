@@ -1,8 +1,8 @@
 package indi.uhyils.plan.result;
 
+import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 执行计划结果
@@ -10,14 +10,26 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年03月29日 09时04分
  */
-public interface MysqlPlanResult {
+public class MysqlPlanResult {
+
+    private final JSONArray result;
+
+    private final List<FieldInfo> colInfos;
+
+    public MysqlPlanResult(JSONArray result, List<FieldInfo> colInfos) {
+        this.result = result;
+        this.colInfos = colInfos;
+    }
+
 
     /**
      * 获取执行计划结果
      *
      * @return
      */
-    List<Map<String, Object>> result();
+    public JSONArray result() {
+        return result;
+    }
 
 
     /**
@@ -25,6 +37,8 @@ public interface MysqlPlanResult {
      *
      * @return
      */
-    List<FieldInfo> colInfos();
+    public List<FieldInfo> colInfos() {
+        return colInfos;
+    }
 
 }

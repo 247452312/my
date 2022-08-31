@@ -9,6 +9,7 @@ import indi.uhyils.plan.pojo.pool.SqlTableSourceBinaryTreePool;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SpringUtil;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +37,13 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
      * @param fromSql
      * @param sqlExecuteFunction sql解析成一个执行计划之后需要做什么
      */
-    protected <T> T reExecute(String fromSql, Function<List<MysqlPlan>, T> sqlExecuteFunction) {
+    protected <T> T reExecute(String fromSql, Map<String, String> headers, Function<List<MysqlPlan>, T> sqlExecuteFunction) {
         // 检查解析器是否初始化
         checkInterpreters();
         SQLSelectStatement fromSqlStatement = (SQLSelectStatement) new MySqlStatementParser(fromSql).parseStatement();
         for (AbstractSelectSqlParser selectInterpreter : selectInterpreters) {
             if (selectInterpreter.canParse(fromSqlStatement)) {
-                List<MysqlPlan> parse = selectInterpreter.parse(fromSqlStatement);
+                List<MysqlPlan> parse = selectInterpreter.parse(fromSqlStatement, headers);
                 return sqlExecuteFunction.apply(parse);
             }
         }
@@ -67,8 +68,8 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
     }
 
     @Override
-    public List<MysqlPlan> parse(SQLStatement sql) {
-        return doParse((SQLSelectStatement) sql);
+    public List<MysqlPlan> parse(SQLStatement sql, Map<String, String> headers) {
+        return doParse((SQLSelectStatement) sql, headers);
     }
 
     /**
@@ -87,7 +88,7 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
      *
      * @return
      */
-    protected abstract List<MysqlPlan> doParse(SQLSelectStatement sql);
+    protected abstract List<MysqlPlan> doParse(SQLSelectStatement sql, Map<String, String> headers);
 
     /**
      * 重新解析一个sql
@@ -95,13 +96,13 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
      * @param fromSql
      * @param reExecute
      */
-    protected List<MysqlPlan> reExecute(String fromSql, Consumer<List<MysqlPlan>> reExecute) {
+    protected List<MysqlPlan> reExecute(String fromSql, Map<String, String> headers, Consumer<List<MysqlPlan>> reExecute) {
         //检查解析器是否初始化
         checkInterpreters();
         SQLSelectStatement fromSqlStatement = (SQLSelectStatement) new MySqlStatementParser(fromSql).parseStatement();
         for (AbstractSelectSqlParser selectInterpreter : selectInterpreters) {
             if (selectInterpreter.canParse(fromSqlStatement)) {
-                List<MysqlPlan> parse = selectInterpreter.parse(fromSqlStatement);
+                List<MysqlPlan> parse = selectInterpreter.parse(fromSqlStatement, headers);
                 reExecute.accept(parse);
                 return parse;
             }

@@ -4,6 +4,7 @@ import com.alibaba.druid.sql.ast.SQLExpr;
 import indi.uhyils.plan.AbstractMysqlSqlPlan;
 import indi.uhyils.plan.MysqlPlan;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 执行方法的执行计划
@@ -17,8 +18,8 @@ public abstract class MethodInvokePlan extends AbstractMysqlSqlPlan {
 
     private final List<SQLExpr> arguments;
 
-    protected MethodInvokePlan(List<MysqlPlan> lastPlans, String methodName, List<SQLExpr> arguments) {
-        super(lastPlans, null, null);
+    protected MethodInvokePlan(List<MysqlPlan> lastPlans, Map<String, String> headers, String methodName, List<SQLExpr> arguments) {
+        super(lastPlans, null, headers, null);
         this.methodName = methodName;
         this.arguments = arguments;
     }

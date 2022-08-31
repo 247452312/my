@@ -30,6 +30,21 @@ public class FieldInfoDTO implements Serializable {
      */
     private Integer decimals;
 
+    /**
+     * 字段类型
+     *
+     * @see indi.uhyils.mysql.enums.FieldTypeEnum
+     */
+    private Byte type;
+
+    public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
+    }
+
     public String getDatabase() {
         return database;
     }

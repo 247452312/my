@@ -107,13 +107,26 @@ public class InvokeCommandBuilder {
     /**
      * 添加自定义参数
      *
-     * @param path
+     * @param path rpc调用过来的参数形式
      *
      * @return
      */
     public InvokeCommandBuilder addArgs(Object[] path) {
         final List<JSONObject> collect = Arrays.stream(path).map(t -> JSON.parseObject(JSON.toJSONString(t))).collect(Collectors.toList());
         this.params.addAll(collect);
+        return this;
+    }
+
+    /**
+     * 添加自定义参数
+     *
+     * @param path mysql调用过来的形式
+     *
+     * @return
+     */
+    public InvokeCommandBuilder addArgs(Map<String, Object> path) {
+        final JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(path));
+        this.params.add(jsonObject);
         return this;
     }
 

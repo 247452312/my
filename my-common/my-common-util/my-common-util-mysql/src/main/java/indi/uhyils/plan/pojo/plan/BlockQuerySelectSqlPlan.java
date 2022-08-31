@@ -17,10 +17,10 @@ public abstract class BlockQuerySelectSqlPlan extends AbstractMysqlSqlPlan {
     /**
      * table详情
      */
-    private SqlTableSourceBinaryTree froms;
+    protected SqlTableSourceBinaryTree froms;
 
-    protected BlockQuerySelectSqlPlan(List<MysqlPlan> mysqlPlan, SqlTableSourceBinaryTree froms, Map<String, Object> params) {
-        super(mysqlPlan, null, params);
+    protected BlockQuerySelectSqlPlan(List<MysqlPlan> mysqlPlan, SqlTableSourceBinaryTree froms, Map<String, String> headers, Map<String, Object> params) {
+        super(mysqlPlan, null, headers, params);
         this.froms = froms;
     }
 

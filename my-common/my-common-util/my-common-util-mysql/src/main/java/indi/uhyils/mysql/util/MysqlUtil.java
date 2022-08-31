@@ -1,9 +1,13 @@
 package indi.uhyils.mysql.util;
 
+import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.plan.MysqlPlan;
+import indi.uhyils.plan.parser.SqlParser;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.SpringUtil;
 import io.netty.buffer.ByteBuf;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.io.HexDump;
 
 /**
@@ -28,7 +33,15 @@ public final class MysqlUtil {
      *
      * @return
      */
-    public static List<MysqlPlan> analysisSqlToPlan(String sql) {
+    public static List<MysqlPlan> analysisSqlToPlan(String sql, Map<String, String> headers) {
+        SQLStatement sqlStatement = new MySqlStatementParser(sql).parseStatement();
+        List<SqlParser> beans = SpringUtil.getBeans(SqlParser.class);
+        for (SqlParser bean : beans) {
+            if (bean.canParse(sqlStatement)) {
+                return bean.parse(sqlStatement, headers);
+            }
+        }
+        Asserts.throwException("解析执行计划失败:{}", sql);
         return null;
     }
 

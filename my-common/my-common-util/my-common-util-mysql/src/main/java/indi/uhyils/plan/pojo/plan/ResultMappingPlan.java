@@ -4,6 +4,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import indi.uhyils.plan.AbstractMysqlSqlPlan;
 import indi.uhyils.plan.MysqlPlan;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 结果映射执行计划
@@ -15,8 +16,8 @@ public abstract class ResultMappingPlan extends AbstractMysqlSqlPlan {
 
     private final List<SQLSelectItem> selectList;
 
-    protected ResultMappingPlan(List<MysqlPlan> mysqlPlans, List<SQLSelectItem> selectList) {
-        super(mysqlPlans, null, null);
+    protected ResultMappingPlan(List<MysqlPlan> mysqlPlans, Map<String, String> headers, List<SQLSelectItem> selectList) {
+        super(mysqlPlans, null, headers, null);
         this.selectList = selectList;
     }
 }

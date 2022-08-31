@@ -25,7 +25,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    BlockQuerySelectSqlPlan buildBlockQuerySelectSqlPlan(List<MysqlPlan> mysqlPlan, SqlTableSourceBinaryTree froms, Map<String, Object> params);
+    BlockQuerySelectSqlPlan buildBlockQuerySelectSqlPlan(List<MysqlPlan> mysqlPlan, SqlTableSourceBinaryTree froms, Map<String, String> headers, Map<String, Object> params);
 
 
     /**
@@ -33,7 +33,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    InnerJoinSqlPlan buildInnerJoinSqlPlan(List<MysqlPlan> lastPlan, String sql, List<Long> leftPlanId, List<Long> rightPlanId);
+    InnerJoinSqlPlan buildInnerJoinSqlPlan(List<MysqlPlan> lastPlan, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
 
 
     /**
@@ -41,7 +41,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    LeftJoinSqlPlan buildLeftJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, List<Long> leftPlanId, List<Long> rightPlanId);
+    LeftJoinSqlPlan buildLeftJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
 
 
     /**
@@ -49,7 +49,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    MethodInvokePlan buildMethodInvokePlan(List<MysqlPlan> lastPlans, String methodName, List<SQLExpr> arguments);
+    MethodInvokePlan buildMethodInvokePlan(List<MysqlPlan> lastPlans, Map<String, String> headers, String methodName, List<SQLExpr> arguments);
 
 
     /**
@@ -57,7 +57,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    ResultMappingPlan buildResultMappingPlan(List<MysqlPlan> mysqlPlans, List<SQLSelectItem> selectList);
+    ResultMappingPlan buildResultMappingPlan(List<MysqlPlan> mysqlPlans, Map<String, String> headers, List<SQLSelectItem> selectList);
 
 
     /**
@@ -65,7 +65,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    RightJoinSqlPlan buildRightJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, List<Long> leftPlanId, List<Long> rightPlanId);
+    RightJoinSqlPlan buildRightJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
 
 
 }
