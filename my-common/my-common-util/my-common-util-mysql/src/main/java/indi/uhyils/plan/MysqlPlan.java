@@ -1,7 +1,7 @@
 package indi.uhyils.plan;
 
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.enums.MysqlPlanTypeEnum;
-import indi.uhyils.plan.result.MysqlPlanResult;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +16,7 @@ public interface MysqlPlan {
      *
      * @return
      */
-    MysqlPlanResult invoke();
+    NodeInvokeResult invoke();
 
     /**
      * 补全执行计划参数

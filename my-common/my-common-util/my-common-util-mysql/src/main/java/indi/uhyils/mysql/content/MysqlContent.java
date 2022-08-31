@@ -12,6 +12,10 @@ import java.util.concurrent.atomic.AtomicLong;
 public class MysqlContent {
 
     /**
+     * path中的分隔符
+     */
+    public static final String PATH_SEPARATOR = "/";
+    /**
      * 全局预处理语句id
      */
     private static AtomicLong PREPARE_ID = new AtomicLong(0);

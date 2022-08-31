@@ -1,6 +1,7 @@
 package indi.uhyils.plan;
 
-import indi.uhyils.plan.result.MysqlPlanResult;
+
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class EmptyMysqlPlan extends AbstractMysqlSqlPlan {
     }
 
     @Override
-    public MysqlPlanResult invoke() {
+    public NodeInvokeResult invoke() {
         return null;
     }
 }

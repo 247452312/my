@@ -14,10 +14,6 @@ public class NodeDTO extends IdDTO {
 
     private static final long serialVersionUID = -1L;
 
-    /**
-     * 节点名称
-     */
-    private String name;
 
     /**
      * 对应低代码sql
@@ -38,20 +34,12 @@ public class NodeDTO extends IdDTO {
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", getId())
-            .append("name", getName())
             .append("sql", getSql())
             .append("subNode", getSubNode())
             .append("url", getUrl())
             .toString();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getSql() {
         return sql;

@@ -20,6 +20,7 @@ import indi.uhyils.repository.NodeRepository;
 import indi.uhyils.repository.ProviderInterfaceParamRepository;
 import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.service.GatewaySdkService;
+import indi.uhyils.util.Asserts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,16 +55,8 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
     @Override
     public NodeInvokeResult invokeNode(InvokeCommand command) {
         AbstractDataNode node = nodeRepository.find(command.getPath());
+        Asserts.assertTrue(node != null, "未查询到指定的节点,名称:{}", command.getPath());
         return node.getResult();
-    }
-
-    @Override
-    public GetInterfaceInfoResponse getInterfaceInfo(InvokeCommand command) {
-        final String path = command.getPath();
-        final Integer invokeType = command.getInvokeType();
-        ProviderInterface providerInterface = providerInterfaceRepository.find(invokeType, path);
-        providerInterface.fillParams(providerInterfaceParamRepository);
-        return GetInterfaceInfoResponse.build(providerInterface.fieldInfo());
     }
 
     @Override
@@ -79,5 +72,20 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
             return new OkResponse(mysqlTcpInfo, SqlTypeEnum.NULL);
         }
         return new ErrResponse(mysqlTcpInfo, MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "密码错误,密码请使用secretKey");
+    }
+
+    /**
+     * todo 待删除 逻辑迁移到逻辑中去
+     *
+     * @param command
+     *
+     * @return
+     */
+    private GetInterfaceInfoResponse getInterfaceInfo(InvokeCommand command) {
+        final String path = command.getPath();
+        final Integer invokeType = command.getInvokeType();
+        ProviderInterface providerInterface = providerInterfaceRepository.find(invokeType, path);
+        providerInterface.fillParams(providerInterfaceParamRepository);
+        return GetInterfaceInfoResponse.build(providerInterface.fieldInfo());
     }
 }

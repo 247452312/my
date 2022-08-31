@@ -33,7 +33,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    InnerJoinSqlPlan buildInnerJoinSqlPlan(List<MysqlPlan> lastPlan, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
+    InnerJoinSqlPlan buildInnerJoinSqlPlan(List<MysqlPlan> lastPlan,  Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
 
 
     /**
@@ -41,7 +41,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    LeftJoinSqlPlan buildLeftJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
+    LeftJoinSqlPlan buildLeftJoinSqlPlan(List<MysqlPlan> lastPlans, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
 
 
     /**
@@ -65,7 +65,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    RightJoinSqlPlan buildRightJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
+    RightJoinSqlPlan buildRightJoinSqlPlan(List<MysqlPlan> lastPlans, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
 
 
 }

@@ -20,6 +20,7 @@ import indi.uhyils.plan.PlanUtil;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.StringUtil;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,13 +51,13 @@ public class ComQueryCommand extends MysqlSqlCommand {
         }
 
         // 解析sql为执行计划
-        final List<MysqlPlan> mysqlPlans = MysqlUtil.analysisSqlToPlan(sql, null);
+        final List<MysqlPlan> mysqlPlans = MysqlUtil.analysisSqlToPlan(sql, new HashMap<>());
         // 执行计划为空, 返回执行成功,无信息
         if (CollectionUtil.isEmpty(mysqlPlans)) {
             return Collections.singletonList(new OkResponse(getMysqlTcpInfo(), SqlTypeEnum.NULL));
         }
 
-        final NodeInvokeResult execute = PlanUtil.execute(mysqlPlans, null);
+        final NodeInvokeResult execute = PlanUtil.execute(mysqlPlans, new HashMap<>());
 
         // 如果没有结果, 说明不是一个常规的查询语句,返回ok即可,如果报错,则在外部已经进行了try,catch
         if (CollectionUtil.isEmpty(execute.getFieldInfos())) {

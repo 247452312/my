@@ -34,13 +34,13 @@ public class PlanFactoryImpl implements PlanFactory {
     }
 
     @Override
-    public InnerJoinSqlPlan buildInnerJoinSqlPlan(List<MysqlPlan> lastPlan, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        return new InnerJoinSqlPlanImpl(lastPlan, sql, headers, leftPlanId, rightPlanId);
+    public InnerJoinSqlPlan buildInnerJoinSqlPlan(List<MysqlPlan> lastPlan,  Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+        return new InnerJoinSqlPlanImpl(lastPlan, headers, leftPlanId, rightPlanId);
     }
 
     @Override
-    public LeftJoinSqlPlan buildLeftJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        return new LeftJoinSqlPlanImpl(lastPlans, sql, headers, leftPlanId, rightPlanId);
+    public LeftJoinSqlPlan buildLeftJoinSqlPlan(List<MysqlPlan> lastPlans, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+        return new LeftJoinSqlPlanImpl(lastPlans, headers, leftPlanId, rightPlanId);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PlanFactoryImpl implements PlanFactory {
     }
 
     @Override
-    public RightJoinSqlPlan buildRightJoinSqlPlan(List<MysqlPlan> lastPlans, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        return new RightJoinSqlPlanImpl(lastPlans, sql, headers, leftPlanId, rightPlanId);
+    public RightJoinSqlPlan buildRightJoinSqlPlan(List<MysqlPlan> lastPlans, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+        return new RightJoinSqlPlanImpl(lastPlans, headers, leftPlanId, rightPlanId);
     }
 }

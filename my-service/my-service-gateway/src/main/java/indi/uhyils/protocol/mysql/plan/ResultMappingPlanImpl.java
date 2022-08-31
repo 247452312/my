@@ -1,9 +1,9 @@
 package indi.uhyils.protocol.mysql.plan;
 
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.pojo.plan.ResultMappingPlan;
-import indi.uhyils.plan.result.MysqlPlanResult;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class ResultMappingPlanImpl extends ResultMappingPlan {
     }
 
     @Override
-    public MysqlPlanResult invoke() {
+    public NodeInvokeResult invoke() {
         return null;
     }
 }

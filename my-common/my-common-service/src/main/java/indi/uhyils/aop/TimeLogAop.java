@@ -82,12 +82,16 @@ public class TimeLogAop {
         sb.append(methodName);
         sb.append(",参数为:");
         for (Object arg : args) {
-            if (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse)) {
-                sb.append(JSONObject.toJSONString(arg));
+            if (arg == null) {
+                sb.append("(null)");
+            } else {
+                if (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse)) {
+                    sb.append(JSONObject.toJSONString(arg));
+                }
+                sb.append("(");
+                sb.append(arg.getClass().getSimpleName());
+                sb.append(")");
             }
-            sb.append("(");
-            sb.append(arg.getClass().getSimpleName());
-            sb.append(")");
         }
         LogUtil.info(this, "---------------------↓-↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓--↓------------------------");
         LogUtil.info(this, sb.toString());

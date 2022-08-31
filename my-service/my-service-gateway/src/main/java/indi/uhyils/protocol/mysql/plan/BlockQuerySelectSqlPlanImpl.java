@@ -1,20 +1,17 @@
 package indi.uhyils.protocol.mysql.plan;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.druid.sql.ast.SQLExpr;
+import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import indi.uhyils.enums.InvokeTypeEnum;
-import indi.uhyils.mysql.enums.FieldTypeEnum;
-import indi.uhyils.mysql.pojo.DTO.FieldInfo;
+import indi.uhyils.mysql.content.MysqlContent;
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.plan.pojo.plan.BlockQuerySelectSqlPlan;
-import indi.uhyils.plan.result.MysqlPlanResult;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.pojo.cqe.InvokeCommandBuilder;
-import indi.uhyils.pojo.dto.FieldInfoDTO;
-import indi.uhyils.pojo.dto.response.GetInterfaceInfoResponse;
 import indi.uhyils.service.GatewaySdkService;
 import indi.uhyils.util.SpringUtil;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,22 +35,22 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
     }
 
     @Override
-    public MysqlPlanResult invoke() {
+    public NodeInvokeResult invoke() {
         InvokeCommandBuilder invokeCommandBuilder = new InvokeCommandBuilder();
         invokeCommandBuilder.setType(InvokeTypeEnum.MYSQL.getCode());
         invokeCommandBuilder.addArgs(params);
         invokeCommandBuilder.addHeader(headers);
-        invokeCommandBuilder.addPath("");
-        final InvokeCommand build = invokeCommandBuilder.build();
-        final JSONArray jsonArray = gatewaySdkService.invokeNode(build);
-        final GetInterfaceInfoResponse interfaceInfo = gatewaySdkService.getInterfaceInfo(build);
-        final ArrayList<FieldInfoDTO> fieldInfoDTOS = new ArrayList<>(interfaceInfo.getFieldInfoMap().values());
-        List<FieldInfo> fieldInfos = new ArrayList<>(fieldInfoDTOS.size());
-        for (int i = 0; i < fieldInfoDTOS.size(); i++) {
-            final FieldInfoDTO fieldInfoDTO = fieldInfoDTOS.get(i);
-            final FieldInfo fieldInfo = new FieldInfo(fieldInfoDTO.getDatabase(), fieldInfoDTO.getRealTable(), fieldInfoDTO.getRealTable(), fieldInfoDTO.getName(), fieldInfoDTO.getName(), 0, i, FieldTypeEnum.parse(fieldInfoDTO.getType()), (short) 0, fieldInfoDTO.getDecimals().byteValue(), null);
-            fieldInfos.add(fieldInfo);
+        final SQLPropertyExpr tableSource = froms.getTableSource();
+        final SQLExpr owner = tableSource.getOwner();
+        final String name = tableSource.getName();
+        StringBuilder path = new StringBuilder();
+        if (owner == null) {
+            path.append(owner.toString());
+            path.append(MysqlContent.PATH_SEPARATOR);
         }
-        return new MysqlPlanResult(jsonArray, fieldInfos);
+        path.append(name);
+        invokeCommandBuilder.addPath(path.toString());
+        final InvokeCommand build = invokeCommandBuilder.build();
+        return gatewaySdkService.invokeNode(build);
     }
 }

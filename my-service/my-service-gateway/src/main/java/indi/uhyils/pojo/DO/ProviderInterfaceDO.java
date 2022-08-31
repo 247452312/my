@@ -20,7 +20,7 @@ public class ProviderInterfaceDO extends BaseDO {
     /**
      * 库名称
      */
-    @TableField
+    @TableField("`database`")
     private String database;
 
     /**

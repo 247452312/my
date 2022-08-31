@@ -3,6 +3,7 @@ package indi.uhyils.plan.pojo.plan;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import indi.uhyils.plan.AbstractMysqlSqlPlan;
 import indi.uhyils.plan.MysqlPlan;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public abstract class ResultMappingPlan extends AbstractMysqlSqlPlan {
     private final List<SQLSelectItem> selectList;
 
     protected ResultMappingPlan(List<MysqlPlan> mysqlPlans, Map<String, String> headers, List<SQLSelectItem> selectList) {
-        super(mysqlPlans, null, headers, null);
+        super(mysqlPlans, null, headers, new HashMap<>());
         this.selectList = selectList;
     }
 }

@@ -1,6 +1,7 @@
 package indi.uhyils.protocol.rpc.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.protocol.rpc.GatewaySdkProvider;
 import indi.uhyils.rpc.annotation.RpcService;
@@ -21,7 +22,8 @@ public class GatewaySdkProviderImpl implements GatewaySdkProvider {
 
     @Override
     public JSONArray invokeRpc(InvokeCommand command) {
-        return service.invokeInterface(command);
+        final NodeInvokeResult nodeInvokeResult = service.invokeInterface(command);
+        return nodeInvokeResult.getJsonArray();
     }
 
 }

@@ -32,14 +32,6 @@ public interface GatewaySdkService extends BaseService, MysqlSdkService {
      */
     NodeInvokeResult invokeNode(InvokeCommand command);
 
-    /**
-     * 获取接口信息
-     *
-     * @param command 同 invoke 方便调用
-     *
-     * @return
-     */
-    GetInterfaceInfoResponse getInterfaceInfo(InvokeCommand command);
 
 
 }

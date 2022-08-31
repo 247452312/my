@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
-import indi.uhyils.plan.result.MysqlPlanResult;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +43,8 @@ public final class PlanUtil {
         for (MysqlPlan mysqlPlan : plan) {
             final Map<Long, List<Map<String, Object>>> collect = planMap.entrySet().stream().collect(Collectors.toMap(Entry::getKey, t -> t.getValue().stream().map(s -> JSONObject.parseObject(JSON.toJSONString(s))).map(s -> (Map<String, Object>) s).collect(Collectors.toList())));
             mysqlPlan.complete(collect);
-            MysqlPlanResult invoke = mysqlPlan.invoke();
-            final JSONArray result = invoke.result();
+            NodeInvokeResult invoke = mysqlPlan.invoke();
+            final JSONArray result = invoke.getJsonArray();
             lastResult = result;
             planMap.put(mysqlPlan.getId(), result);
         }
