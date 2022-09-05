@@ -2,7 +2,7 @@ package indi.uhyils.protocol.mysql;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
-import indi.uhyils.plan.MysqlPlan;
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.PlanFactory;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.plan.pojo.plan.BlockQuerySelectSqlPlan;
@@ -29,32 +29,32 @@ import org.springframework.stereotype.Component;
 public class PlanFactoryImpl implements PlanFactory {
 
     @Override
-    public BlockQuerySelectSqlPlan buildBlockQuerySelectSqlPlan(List<MysqlPlan> mysqlPlan, SqlTableSourceBinaryTree froms, Map<String, String> headers, Map<String, Object> params) {
-        return new BlockQuerySelectSqlPlanImpl(mysqlPlan, froms, headers, params);
+    public BlockQuerySelectSqlPlan buildBlockQuerySelectSqlPlan(SqlTableSourceBinaryTree froms, Map<String, String> headers, Map<String, Object> params) {
+        return new BlockQuerySelectSqlPlanImpl(froms, headers, params);
     }
 
     @Override
-    public InnerJoinSqlPlan buildInnerJoinSqlPlan(List<MysqlPlan> lastPlan,  Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        return new InnerJoinSqlPlanImpl(lastPlan, headers, leftPlanId, rightPlanId);
+    public InnerJoinSqlPlan buildInnerJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+        return new InnerJoinSqlPlanImpl(headers, leftPlanId, rightPlanId);
     }
 
     @Override
-    public LeftJoinSqlPlan buildLeftJoinSqlPlan(List<MysqlPlan> lastPlans, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        return new LeftJoinSqlPlanImpl(lastPlans, headers, leftPlanId, rightPlanId);
+    public LeftJoinSqlPlan buildLeftJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+        return new LeftJoinSqlPlanImpl(headers, leftPlanId, rightPlanId);
     }
 
     @Override
-    public MethodInvokePlan buildMethodInvokePlan(List<MysqlPlan> lastPlans, Map<String, String> headers, String methodName, List<SQLExpr> arguments) {
-        return new MethodInvokePlanImpl(lastPlans, headers, methodName, arguments);
+    public MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, String methodName, List<SQLExpr> arguments) {
+        return new MethodInvokePlanImpl(headers, methodName, arguments);
     }
 
     @Override
-    public ResultMappingPlan buildResultMappingPlan(List<MysqlPlan> mysqlPlans, Map<String, String> headers, List<SQLSelectItem> selectList) {
-        return new ResultMappingPlanImpl(mysqlPlans, headers, selectList);
+    public ResultMappingPlan buildResultMappingPlan( Map<String, String> headers, List<SQLSelectItem> selectList) {
+        return new ResultMappingPlanImpl( headers, selectList);
     }
 
     @Override
-    public RightJoinSqlPlan buildRightJoinSqlPlan(List<MysqlPlan> lastPlans, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        return new RightJoinSqlPlanImpl(lastPlans, headers, leftPlanId, rightPlanId);
+    public RightJoinSqlPlan buildRightJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+        return new RightJoinSqlPlanImpl(headers, leftPlanId, rightPlanId);
     }
 }

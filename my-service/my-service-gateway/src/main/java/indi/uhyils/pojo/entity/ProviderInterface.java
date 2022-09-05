@@ -19,7 +19,12 @@ import java.util.stream.Collectors;
  */
 public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
 
-    private List<ProviderInterfaceParam> params;
+
+    /**
+     * 需要的参数
+     */
+    private List<ProviderInterfaceParam> sholdParams;
+
 
     @Default
     public ProviderInterface(ProviderInterfaceDO data) {
@@ -30,13 +35,18 @@ public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
         super(id, new ProviderInterfaceDO());
     }
 
+    public ProviderInterface(boolean isSysDatabase) {
+        super(new ProviderInterfaceDO());
+        Asserts.assertTrue(isSysDatabase, "非系统数据库请不要使用此后遭方法");
+    }
+
     /**
      * 填充参数
      *
      * @param providerInterfaceParamRepository
      */
     public void fillParams(ProviderInterfaceParamRepository providerInterfaceParamRepository) {
-        this.params = providerInterfaceParamRepository.findByInterfaceId(getUnique().orElseThrow(() -> Asserts.makeException("接口未填充")));
+        this.sholdParams = providerInterfaceParamRepository.findByInterfaceId(getUnique().orElseThrow(() -> Asserts.makeException("接口未填充")));
     }
 
     /**
@@ -47,7 +57,7 @@ public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
     public List<FieldInfoDTO> fieldInfo() {
         final Optional<ProviderInterfaceDO> providerInterfaceOptional = toData();
         final ProviderInterfaceDO providerInterfaceDO = providerInterfaceOptional.orElseThrow(() -> Asserts.makeException("ProviderInterface未填充值"));
-        return this.params.stream().map(t -> {
+        return this.sholdParams.stream().map(t -> {
             final ProviderInterfaceParamDO providerInterfaceParamDO = t.toData().get();
             final FieldInfoDTO fieldInfoDTO = new FieldInfoDTO();
             fieldInfoDTO.setDatabase(providerInterfaceDO.getDatabase());

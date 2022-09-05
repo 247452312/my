@@ -1,5 +1,7 @@
 package indi.uhyils.mysql.pojo.response;
 
+import indi.uhyils.mysql.content.MysqlContent;
+import indi.uhyils.mysql.enums.MysqlHandlerStatusEnum;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlTcpInfoObserver;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
@@ -24,29 +26,33 @@ public abstract class AbstractMysqlResponse implements MysqlResponse, MysqlTcpIn
      */
     protected MysqlThisRequestInfo mysqlThisRequestInfo;
 
-    protected AbstractMysqlResponse(MysqlTcpInfo mysqlTcpInfo) {
-        this.mysqlTcpInfo = mysqlTcpInfo;
+    protected AbstractMysqlResponse() {
+        this.mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
     }
 
 
     @Override
     public List<byte[]> toByte() {
+        MysqlHandlerStatusEnum status = mysqlTcpInfo.getStatus();
+        final boolean b = status == MysqlHandlerStatusEnum.FIRST_SIGHT || status == MysqlHandlerStatusEnum.UNKNOW;
+
         List<byte[]> bytes = toByteNoMarkIndex();
         List<byte[]> result = new ArrayList<>(bytes.size());
         for (byte[] aByte : bytes) {
             List<byte[]> aByteList = new ArrayList<>();
-            aByteList.add(MysqlUtil.toBytes(aByte.length + 1L, 1));
+            aByteList.add(MysqlUtil.toBytes(aByte.length + (b ? 1 : 0), 1));
             aByteList.add(new byte[2]);
             long realResponseIndex = mysqlTcpInfo.index() + 1;
             aByteList.add(new byte[]{(byte) realResponseIndex});
-            aByteList.add(new byte[]{getFirstByte()});
+            if (b) {
+                aByteList.add(new byte[]{getFirstByte()});
+            }
             aByteList.add(aByte);
             result.add(MysqlUtil.mergeListBytes(aByteList));
         }
         return result;
 
     }
-
 
     /**
      * 返回没有前面长度位或标志位的字节组
@@ -55,13 +61,9 @@ public abstract class AbstractMysqlResponse implements MysqlResponse, MysqlTcpIn
      */
     protected abstract List<byte[]> toByteNoMarkIndex();
 
-    @Override
-    public MysqlTcpInfo getMysqlTcpInfo() {
-        return mysqlTcpInfo;
-    }
 
     @Override
     public MysqlThisRequestInfo getMysqlThisRequestInfo() {
-        return null;
+        return mysqlThisRequestInfo;
     }
 }

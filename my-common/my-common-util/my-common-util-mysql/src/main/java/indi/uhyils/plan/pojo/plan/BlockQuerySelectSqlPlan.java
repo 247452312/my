@@ -1,9 +1,7 @@
 package indi.uhyils.plan.pojo.plan;
 
 import indi.uhyils.plan.AbstractMysqlSqlPlan;
-import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,8 +17,8 @@ public abstract class BlockQuerySelectSqlPlan extends AbstractMysqlSqlPlan {
      */
     protected SqlTableSourceBinaryTree froms;
 
-    protected BlockQuerySelectSqlPlan(List<MysqlPlan> mysqlPlan, SqlTableSourceBinaryTree froms, Map<String, String> headers, Map<String, Object> params) {
-        super(mysqlPlan, null, headers, params);
+    protected BlockQuerySelectSqlPlan(SqlTableSourceBinaryTree froms, Map<String, String> headers, Map<String, Object> params) {
+        super(null, headers, params);
         this.froms = froms;
     }
 

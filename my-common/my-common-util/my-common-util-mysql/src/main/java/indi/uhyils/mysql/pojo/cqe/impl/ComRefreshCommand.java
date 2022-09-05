@@ -3,7 +3,6 @@ package indi.uhyils.mysql.pojo.cqe.impl;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
 import indi.uhyils.mysql.enums.MysqlRefreshEnum;
 import indi.uhyils.mysql.enums.SqlTypeEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
@@ -21,13 +20,13 @@ public class ComRefreshCommand extends AbstractMysqlCommand {
 
     private MysqlRefreshEnum refresh;
 
-    public ComRefreshCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    public ComRefreshCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
     }
 
     @Override
     public List<MysqlResponse> invoke() {
-        return Arrays.asList(new OkResponse(mysqlTcpInfo, SqlTypeEnum.DELETE));
+        return Arrays.asList(new OkResponse(SqlTypeEnum.DELETE));
     }
 
     @Override

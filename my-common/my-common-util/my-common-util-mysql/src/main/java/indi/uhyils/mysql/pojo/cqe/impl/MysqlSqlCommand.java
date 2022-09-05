@@ -1,7 +1,6 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
 
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 
@@ -16,8 +15,8 @@ public abstract class MysqlSqlCommand extends AbstractMysqlCommand {
      */
     protected String sql;
 
-    protected MysqlSqlCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    protected MysqlSqlCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
     }
 
     public String getSql() {

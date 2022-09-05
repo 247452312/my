@@ -5,14 +5,14 @@ import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
-import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.plan.pojo.plan.BlockQuerySelectSqlPlan;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.pojo.cqe.InvokeCommandBuilder;
 import indi.uhyils.service.GatewaySdkService;
+import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SpringUtil;
-import java.util.List;
+import indi.uhyils.util.StringUtil;
 import java.util.Map;
 
 /**
@@ -29,8 +29,8 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
     private GatewaySdkService gatewaySdkService;
 
 
-    public BlockQuerySelectSqlPlanImpl(List<MysqlPlan> mysqlPlan, SqlTableSourceBinaryTree froms, Map<String, String> headers, Map<String, Object> params) {
-        super(mysqlPlan, froms, headers, params);
+    public BlockQuerySelectSqlPlanImpl(SqlTableSourceBinaryTree froms, Map<String, String> headers, Map<String, Object> params) {
+        super(froms, headers, params);
         this.gatewaySdkService = SpringUtil.getBean(GatewaySdkService.class);
     }
 
@@ -44,9 +44,15 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
         final SQLExpr owner = tableSource.getOwner();
         final String name = tableSource.getName();
         StringBuilder path = new StringBuilder();
-        if (owner == null) {
-            path.append(owner.toString());
+        final String database = MysqlContent.MYSQL_TCP_INFO.get().getDatabase();
+        if (owner != null) {
+            path.append(owner);
             path.append(MysqlContent.PATH_SEPARATOR);
+        } else if (StringUtil.isNotEmpty(database)) {
+            path.append(database);
+            path.append(MysqlContent.PATH_SEPARATOR);
+        } else {
+            Asserts.throwException("No database selected");
         }
         path.append(name);
         invokeCommandBuilder.addPath(path.toString());

@@ -12,12 +12,12 @@ import java.util.Map;
  */
 public class LeftJoinSqlPlanImpl extends LeftJoinSqlPlan {
 
-    public LeftJoinSqlPlanImpl(List<MysqlPlan> lastPlans, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        super(lastPlans, null, headers, leftPlanId, rightPlanId);
+    public LeftJoinSqlPlanImpl(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+        super(null, headers, leftPlanId, rightPlanId);
     }
 
     @Override
     public NodeInvokeResult invoke() {
-        return null;
+        return new NodeInvokeResult();
     }
 }

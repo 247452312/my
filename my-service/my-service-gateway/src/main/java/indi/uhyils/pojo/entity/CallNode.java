@@ -1,8 +1,12 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
+import indi.uhyils.mysql.content.MysqlContent;
+import indi.uhyils.mysql.pojo.DTO.DatabaseInfo;
 import indi.uhyils.pojo.DO.CallNodeDO;
 import indi.uhyils.util.Asserts;
+import indi.uhyils.util.GatewayUtil;
+import javafx.util.Pair;
 
 /**
  * 调用节点表, 真正调用的节点(CallNode)表 数据库实体类
@@ -35,5 +39,28 @@ public class CallNode extends AbstractDataNode<CallNodeDO> {
         final String url = node.getUrl();
         final int firstIndex = url.indexOf("/");
         return url.substring(firstIndex + 1);
+    }
+
+    /**
+     * 转换为数据库格式
+     *
+     * @return
+     */
+    public DatabaseInfo changeToDatabaseInfo() {
+        final CallNodeDO callNodeDO = toData().orElseThrow(() -> Asserts.makeException("未填充"));
+        final String url = callNodeDO.getUrl();
+        final Pair<String, String> databaseAndTable = GatewayUtil.splitDataBaseUrl(url);
+        final DatabaseInfo databaseInfo = new DatabaseInfo();
+        databaseInfo.setCatalogName(MysqlContent.CATALOG_NAME);
+        final String key = databaseAndTable.getKey();
+        if (key == null) {
+            return null;
+        }
+        databaseInfo.setSchemaName(key);
+        databaseInfo.setDefaultCharacterSetName(MysqlContent.DEFAULT_CHARACTER_SET_NAME);
+        databaseInfo.setDefaultCollationName(MysqlContent.DEFAULT_COLLATION_NAME);
+        databaseInfo.setSqlPath(null);
+        databaseInfo.setDefaultEncryption("NO");
+        return databaseInfo;
     }
 }

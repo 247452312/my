@@ -2,7 +2,6 @@ package indi.uhyils.mysql.pojo.cqe.impl;
 
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
 import indi.uhyils.mysql.enums.SqlTypeEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
@@ -18,14 +17,14 @@ import java.util.List;
  */
 public class ComPingCommand extends AbstractMysqlCommand {
 
-    public ComPingCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    public ComPingCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
     }
 
     @Override
     public List<MysqlResponse> invoke() {
         return Collections
-            .singletonList(new OkResponse(mysqlTcpInfo, SqlTypeEnum.NULL));
+            .singletonList(new OkResponse(SqlTypeEnum.NULL));
     }
 
     @Override

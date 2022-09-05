@@ -1,7 +1,6 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
@@ -15,8 +14,8 @@ import java.util.List;
  */
 public class ComProcessKillCommand extends AbstractMysqlCommand {
 
-    public ComProcessKillCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    public ComProcessKillCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
     }
 
     @Override

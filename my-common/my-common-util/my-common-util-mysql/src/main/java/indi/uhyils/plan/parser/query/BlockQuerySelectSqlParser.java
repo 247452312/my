@@ -74,7 +74,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 final SQLMethodInvokeExpr sqlMethodInvokeExpr = (SQLMethodInvokeExpr) expr;
                 final String methodName = sqlMethodInvokeExpr.getMethodName();
                 final List<SQLExpr> arguments = sqlMethodInvokeExpr.getArguments();
-                MysqlPlan newPlan = planFactory.buildMethodInvokePlan(CollectionUtil.copyList(result), headers, methodName, arguments);
+                MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, methodName, arguments);
                 result.add(newPlan);
                 return new SQLSelectItem(new MySqlCharExpr("&" + newPlan.getId()), t.getAlias());
             }
@@ -94,7 +94,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     private List<MysqlPlan> makePlan(List<MysqlPlan> plans, SqlTableSourceBinaryTree froms, Map<String, String> headers) {
         List<MysqlPlan> resultPlan = new ArrayList<>();
         if (froms.isLevel()) {
-            MysqlPlan mysqlPlan = planFactory.buildBlockQuerySelectSqlPlan(CollectionUtil.copyList(plans), froms, headers, new HashMap<>());
+            MysqlPlan mysqlPlan = planFactory.buildBlockQuerySelectSqlPlan(froms, headers, new HashMap<>());
             resultPlan.add(mysqlPlan);
             plans.add(mysqlPlan);
             return resultPlan;
@@ -128,7 +128,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
         final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
 
-        MysqlPlan sqlPlan = planFactory.buildRightJoinSqlPlan(CollectionUtil.copyList(plans), headers, leftId, rightId);
+        MysqlPlan sqlPlan = planFactory.buildRightJoinSqlPlan(headers, leftId, rightId);
         resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
         return resultPlan;
@@ -145,7 +145,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
         final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
 
-        MysqlPlan sqlPlan = planFactory.buildLeftJoinSqlPlan(CollectionUtil.copyList(plans), headers, leftId, rightId);
+        MysqlPlan sqlPlan = planFactory.buildLeftJoinSqlPlan(headers, leftId, rightId);
         resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
         return resultPlan;
@@ -164,7 +164,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
         final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
 
-        MysqlPlan sqlPlan = planFactory.buildInnerJoinSqlPlan(CollectionUtil.copyList(plans), headers, leftId, rightId);
+        MysqlPlan sqlPlan = planFactory.buildInnerJoinSqlPlan(headers, leftId, rightId);
         resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
         return resultPlan;
@@ -302,7 +302,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
      * @param selectList
      */
     private void addResultMappingPlan(ArrayList<MysqlPlan> plans, Map<String, String> headers, List<SQLSelectItem> selectList) {
-        ResultMappingPlan resultMappingPlan = planFactory.buildResultMappingPlan(CollectionUtil.copyList(plans), headers, selectList);
+        ResultMappingPlan resultMappingPlan = planFactory.buildResultMappingPlan(headers, selectList);
         plans.add(resultMappingPlan);
     }
 

@@ -2,7 +2,6 @@ package indi.uhyils.plan;
 
 
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,12 +12,12 @@ import java.util.Map;
  */
 public class EmptyMysqlPlan extends AbstractMysqlSqlPlan {
 
-    public EmptyMysqlPlan(List<MysqlPlan> lastPlan, Map<String, String> headers) {
-        super(lastPlan, null, headers, null);
+    public EmptyMysqlPlan(Map<String, String> headers) {
+        super(null, headers, null);
     }
 
     @Override
     public NodeInvokeResult invoke() {
-        return null;
+        return new NodeInvokeResult();
     }
 }

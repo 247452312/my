@@ -1,16 +1,10 @@
 package indi.uhyils.pojo.cqe;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.util.Asserts;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -21,7 +15,7 @@ public class InvokeCommandBuilder {
     /**
      * 参数
      */
-    private List<Map<String, Object>> params = new ArrayList<>();
+    private Map<String, Object> params = new HashMap<>();
 
     /**
      * header
@@ -49,24 +43,10 @@ public class InvokeCommandBuilder {
      * @return
      */
     public InvokeCommandBuilder addPostMap(Map<String, Object> postMap) {
-        if (postMap != null) {
-            putToFirst(postMap);
-        }
+        params.putAll(postMap);
         return this;
     }
 
-    /**
-     * 添加到第一个map
-     *
-     * @param result
-     */
-    private void putToFirst(Map<String, Object> result) {
-        if (params.isEmpty()) {
-            params.add(new HashMap<>());
-        }
-        final Map<String, Object> stringObjectMap = params.get(0);
-        stringObjectMap.putAll(result);
-    }
 
     /**
      * 添加get参数
@@ -86,9 +66,7 @@ public class InvokeCommandBuilder {
                 result.put(key, value);
             }
         }
-        if (result.size() != 0) {
-            putToFirst(result);
-        }
+        params.putAll(result);
         return this;
     }
 
@@ -104,18 +82,6 @@ public class InvokeCommandBuilder {
         return this;
     }
 
-    /**
-     * 添加自定义参数
-     *
-     * @param path rpc调用过来的参数形式
-     *
-     * @return
-     */
-    public InvokeCommandBuilder addArgs(Object[] path) {
-        final List<JSONObject> collect = Arrays.stream(path).map(t -> JSON.parseObject(JSON.toJSONString(t))).collect(Collectors.toList());
-        this.params.addAll(collect);
-        return this;
-    }
 
     /**
      * 添加自定义参数
@@ -125,8 +91,7 @@ public class InvokeCommandBuilder {
      * @return
      */
     public InvokeCommandBuilder addArgs(Map<String, Object> path) {
-        final JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(path));
-        this.params.add(jsonObject);
+        this.params.putAll(path);
         return this;
     }
 

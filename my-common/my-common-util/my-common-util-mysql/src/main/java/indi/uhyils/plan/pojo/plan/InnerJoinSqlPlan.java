@@ -1,7 +1,6 @@
 package indi.uhyils.plan.pojo.plan;
 
 import indi.uhyils.plan.AbstractMysqlSqlPlan;
-import indi.uhyils.plan.MysqlPlan;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +24,8 @@ public abstract class InnerJoinSqlPlan extends AbstractMysqlSqlPlan {
      */
     private List<Long> rightResult;
 
-    protected InnerJoinSqlPlan(List<MysqlPlan> lastPlan, String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        super(lastPlan, sql, headers, new HashMap<>());
+    protected InnerJoinSqlPlan(String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+        super(sql, headers, new HashMap<>());
         this.leftResult = leftPlanId;
         this.rightResult = rightPlanId;
     }

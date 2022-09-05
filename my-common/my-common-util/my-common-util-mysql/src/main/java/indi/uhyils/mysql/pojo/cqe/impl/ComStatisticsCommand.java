@@ -1,5 +1,6 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
+import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.enums.FieldMarkEnum;
 import indi.uhyils.mysql.enums.FieldTypeEnum;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
@@ -34,14 +35,15 @@ public class ComStatisticsCommand extends AbstractMysqlCommand {
 
     private String root;
 
-    public ComStatisticsCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    public ComStatisticsCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
         root = SpringUtil.getProperty("mysql.db-name", "root");
     }
 
     @Override
     public List<MysqlResponse> invoke() {
         ArrayList<FieldInfo> fields = new ArrayList<>();
+        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         fields.add(new FieldInfo(root, STATIC_TABLE_NAME, STATIC_TABLE_NAME, "运行时间", "time", 3, (int) mysqlTcpInfo.index(), FieldTypeEnum.FIELD_TYPE_LONG, FieldMarkEnum.TIMESTAMP_FLAG
             .getCode(), (byte) 3, null));
 
@@ -55,7 +57,7 @@ public class ComStatisticsCommand extends AbstractMysqlCommand {
         jsonResult.put("executions_per_second", 0L);
         jsonArrayObj.add(jsonResult);
         return Arrays
-            .asList(new ResultSetResponse(mysqlTcpInfo, fields, jsonArrayObj, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, mysqlTcpInfo.warnCount()));
+            .asList(new ResultSetResponse(fields, jsonArrayObj, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, mysqlTcpInfo.warnCount()));
     }
 
     @Override

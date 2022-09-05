@@ -1,14 +1,15 @@
 package indi.uhyils.plan;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.mysql.enums.FieldTypeEnum;
+import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
-
+import indi.uhyils.util.Asserts;
+import indi.uhyils.util.CollectionUtil;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 /**
@@ -31,25 +32,80 @@ public final class PlanUtil {
      */
     public static NodeInvokeResult execute(List<MysqlPlan> plan, Map<String, Object> params) {
         // 初始化参数
-        Map<Long, JSONArray> planMap = new HashMap<>();
+        Map<Long, NodeInvokeResult> planMap = new HashMap<>();
         if (params != null && params.size() != 0) {
-            JSONArray value = new JSONArray();
+            List<Map<String, Object>> value = new ArrayList<>();
             value.add(params);
-            planMap.put(-1L, value);
+            planMap.put(-1L, PlanUtil.paramsToResult(value));
         }
 
-        JSONArray lastResult;
+        NodeInvokeResult lastResult = null;
         // 补全并执行
         for (MysqlPlan mysqlPlan : plan) {
-            final Map<Long, List<Map<String, Object>>> collect = planMap.entrySet().stream().collect(Collectors.toMap(Entry::getKey, t -> t.getValue().stream().map(s -> JSONObject.parseObject(JSON.toJSONString(s))).map(s -> (Map<String, Object>) s).collect(Collectors.toList())));
-            mysqlPlan.complete(collect);
+            mysqlPlan.complete(planMap);
             NodeInvokeResult invoke = mysqlPlan.invoke();
-            final JSONArray result = invoke.getJsonArray();
-            lastResult = result;
-            planMap.put(mysqlPlan.getId(), result);
+            lastResult = invoke;
+            planMap.put(mysqlPlan.getId(), invoke);
         }
         // todo 结果未返回
-        return null;
+        return lastResult;
+    }
+
+
+    /**
+     * 入参转成结果
+     *
+     * @return
+     */
+    public static NodeInvokeResult paramsToResult(List<Map<String, Object>> params) {
+        if (CollectionUtil.isEmpty(params)) {
+            return new NodeInvokeResult();
+        }
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
+
+        final LinkedList<FieldInfo> fieldInfos = new LinkedList<>();
+
+        final List<String> fields = params.stream().flatMap(t -> t.keySet().stream()).distinct().collect(Collectors.toList());
+        final Map<String, Object> firstParam = params.get(0);
+        first:
+        for (int i = 0; i < fields.size(); i++) {
+            final String field = fields.get(i);
+            if (firstParam.containsKey(field)) {
+                final FieldInfo fieldInfo = makeFieldInfo(firstParam.get(i), i, field);
+                fieldInfos.add(fieldInfo);
+            } else {
+                for (Map<String, Object> param : params) {
+                    if (param.containsKey(field)) {
+                        final FieldInfo fieldInfo = makeFieldInfo(firstParam.get(i), i, field);
+                        fieldInfos.add(fieldInfo);
+                        continue first;
+                    }
+                }
+                Asserts.makeException("未找到指定类的类型:{}", field);
+            }
+        }
+        nodeInvokeResult.setFieldInfos(fieldInfos);
+        nodeInvokeResult.setResult(params);
+        return nodeInvokeResult;
+    }
+
+
+    /**
+     * 获取字段类型
+     *
+     * @param i
+     * @param field
+     *
+     * @return
+     */
+    private static FieldInfo makeFieldInfo(Object o, int i, String field) {
+        if (o instanceof Number) {
+            return new FieldInfo(null, null, null, field, field, 0, i, FieldTypeEnum.FIELD_TYPE_FLOAT, (short) 0, (byte) 0, null);
+        } else if (o instanceof String) {
+            return new FieldInfo(null, null, null, field, field, 0, i, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0, null);
+        } else {
+            throw Asserts.makeException("未知的字段类型:{}", o.getClass().getName());
+        }
     }
 
 }

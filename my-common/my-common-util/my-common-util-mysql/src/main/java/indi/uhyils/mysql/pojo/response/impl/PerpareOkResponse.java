@@ -1,6 +1,5 @@
 package indi.uhyils.mysql.pojo.response.impl;
 
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.mysql.util.MysqlUtil;
@@ -46,8 +45,8 @@ public class PerpareOkResponse extends AbstractMysqlResponse {
      */
     private List<FieldInfo> param;
 
-    protected PerpareOkResponse(MysqlTcpInfo mysqlTcpInfo) {
-        super(mysqlTcpInfo);
+    protected PerpareOkResponse() {
+        super();
     }
 
     @Override
@@ -59,6 +58,8 @@ public class PerpareOkResponse extends AbstractMysqlResponse {
     public List<byte[]> toByteNoMarkIndex() {
         return Arrays.asList(new byte[0]);
     }
+
+
 
     /**
      * 获取列信息

@@ -1,7 +1,6 @@
 package indi.uhyils.mysql.pojo.response.impl;
 
 import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.mysql.util.MysqlUtil;
 import java.nio.charset.StandardCharsets;
@@ -31,8 +30,8 @@ public class AuthResponse extends AbstractMysqlResponse {
     private static final String END_OF_PROTO = "mysql_native_password";
 
 
-    public AuthResponse(MysqlTcpInfo mysqlTcpInfo) {
-        super(mysqlTcpInfo);
+    public AuthResponse() {
+        super();
     }
 
     /**
@@ -82,6 +81,7 @@ public class AuthResponse extends AbstractMysqlResponse {
         results.add(new byte[1]);
         return Arrays.asList(MysqlUtil.mergeListBytes(results));
     }
+
 
     /**
      * 服务器版本信息

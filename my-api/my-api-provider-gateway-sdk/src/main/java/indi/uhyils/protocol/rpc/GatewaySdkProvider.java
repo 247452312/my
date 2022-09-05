@@ -2,6 +2,8 @@ package indi.uhyils.protocol.rpc;
 
 import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.cqe.InvokeCommand;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -16,5 +18,5 @@ public interface GatewaySdkProvider {
      *
      * @return
      */
-    JSONArray invokeRpc(InvokeCommand command);
+    List<Map<String, Object>> invokeRpc(InvokeCommand command);
 }

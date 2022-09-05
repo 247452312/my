@@ -2,7 +2,6 @@ package indi.uhyils.plan;
 
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.enums.MysqlPlanTypeEnum;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +22,7 @@ public interface MysqlPlan {
      *
      * @param planArgs 计划参数<执行计划id,执行计划结果>
      */
-    void complete(Map<Long, List<Map<String, Object>>> planArgs);
+    void complete(Map<Long, NodeInvokeResult> planArgs);
 
     /**
      * 获取此执行计划的类型

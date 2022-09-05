@@ -79,7 +79,7 @@ public enum MysqlCommandTypeEnum {
                 return value;
             }
         }
-        Asserts.assertTrue(false, "");
+        Asserts.assertTrue(false, "mysql请求类型代码未找到:{}", Long.toHexString(code));
         return null;
     }
 

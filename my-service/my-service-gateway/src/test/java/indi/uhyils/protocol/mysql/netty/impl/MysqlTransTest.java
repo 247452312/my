@@ -30,7 +30,6 @@ public class MysqlTransTest {
 
     @Test
     void responseByteTest() {
-        final MysqlTcpInfo mysqlTcpInfo = new MysqlTcpInfo();
         final ArrayList<FieldInfo> fields = new ArrayList<>();
         short ss = 0;
         fields.add(new FieldInfo("testDB", "sys_table", "sys_table", "id", "id", 100, 1, FieldTypeEnum.FIELD_TYPE_LONG, ss, (byte) 0, null));
@@ -40,7 +39,7 @@ public class MysqlTransTest {
         firstLine.put("id", 1L);
         firstLine.put("name", "name1");
         jsonInfo.add(firstLine);
-        final ResultSetResponse e = new ResultSetResponse(mysqlTcpInfo, fields, jsonInfo);
+        final ResultSetResponse e = new ResultSetResponse(fields, jsonInfo);
         final List<byte[]> bytes = e.toByte();
         for (byte[] aByte : bytes) {
             LogUtil.info("\n" + MysqlUtil.dump(aByte));

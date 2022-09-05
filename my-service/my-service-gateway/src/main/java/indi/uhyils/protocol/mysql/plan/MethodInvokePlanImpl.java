@@ -13,12 +13,12 @@ import java.util.Map;
  */
 public class MethodInvokePlanImpl extends MethodInvokePlan {
 
-    public MethodInvokePlanImpl(List<MysqlPlan> lastPlans, Map<String, String> headers, String methodName, List<SQLExpr> arguments) {
-        super(lastPlans, headers, methodName, arguments);
+    public MethodInvokePlanImpl(Map<String, String> headers, String methodName, List<SQLExpr> arguments) {
+        super( headers, methodName, arguments);
     }
 
     @Override
     public NodeInvokeResult invoke() {
-        return null;
+        return new NodeInvokeResult();
     }
 }

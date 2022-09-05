@@ -12,12 +12,12 @@ import java.util.Map;
  */
 public class InnerJoinSqlPlanImpl extends InnerJoinSqlPlan {
 
-    public InnerJoinSqlPlanImpl(List<MysqlPlan> lastPlan, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        super(lastPlan, null, headers, leftPlanId, rightPlanId);
+    public InnerJoinSqlPlanImpl( Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+        super(null, headers, leftPlanId, rightPlanId);
     }
 
     @Override
     public NodeInvokeResult invoke() {
-        return null;
+        return new NodeInvokeResult();
     }
 }

@@ -1,6 +1,7 @@
 package indi.uhyils.mysql.pojo.cqe;
 
 import indi.uhyils.context.UserInfoHelper;
+import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlTcpInfoObserver;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
@@ -14,19 +15,14 @@ import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
  */
 public abstract class AbstractMysqlCommand extends AbstractCommand implements MysqlCommand, MysqlTcpInfoObserver {
 
-    /**
-     * mysql客户端连接
-     */
-    protected MysqlTcpInfo mysqlTcpInfo;
-
 
     /**
      * 要处理的字节数组
      */
     protected MysqlThisRequestInfo mysqlThisRequestInfo;
 
-    protected AbstractMysqlCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        this.mysqlTcpInfo = mysqlTcpInfo;
+    protected AbstractMysqlCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         UserDTO userInfo = mysqlTcpInfo.getUserDTO();
         if (userInfo != null) {
             String token = userInfo.getToken();
@@ -42,10 +38,6 @@ public abstract class AbstractMysqlCommand extends AbstractCommand implements My
      */
     protected abstract void load();
 
-    @Override
-    public MysqlTcpInfo getMysqlTcpInfo() {
-        return mysqlTcpInfo;
-    }
 
     @Override
     public MysqlThisRequestInfo getMysqlThisRequestInfo() {

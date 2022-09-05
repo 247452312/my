@@ -2,7 +2,6 @@ package indi.uhyils.mysql.pojo.cqe.impl;
 
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
@@ -20,8 +19,8 @@ public class ComFieldListCommand extends AbstractMysqlCommand {
 
     private List<String> fieldList;
 
-    public ComFieldListCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    public ComFieldListCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
     }
 
     @Override

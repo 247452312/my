@@ -89,17 +89,6 @@ public final class StringUtil {
     }
 
     /**
-     * 返回字符串是否为空
-     *
-     * @param cs
-     *
-     * @return
-     */
-    public static boolean isEmpty(final CharSequence cs) {
-        return cs == null || cs.length() == 0;
-    }
-
-    /**
      * <p>
      * 首字母转换小写
      * </p>
@@ -113,6 +102,17 @@ public final class StringUtil {
             return "";
         }
         return param.substring(0, 1).toLowerCase() + param.substring(1);
+    }
+
+    /**
+     * 返回字符串是否为空
+     *
+     * @param cs
+     *
+     * @return
+     */
+    public static boolean isEmpty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
     }
 
     /**
@@ -145,6 +145,18 @@ public final class StringUtil {
     }
 
     /**
+     * 根据indexList将 srcStr切分成多块,其中切分字符为""
+     *
+     * @param srcStr
+     * @param indexList
+     *
+     * @return
+     */
+    public static List<String> splitByIndexList(String srcStr, List<Integer> indexList) {
+        return splitByIndexList(srcStr, "", indexList);
+    }
+
+    /**
      * 根据indexList将 srcStr切分成多块,其中切分字符为replaceStr
      *
      * @param srcStr
@@ -164,18 +176,6 @@ public final class StringUtil {
 
         Collections.reverse(result);
         return result.stream().filter(t -> t.startsWith(replaceStr)).map(t -> t.replaceFirst(replaceStr, "")).collect(Collectors.toList());
-    }
-
-    /**
-     * 根据indexList将 srcStr切分成多块,其中切分字符为""
-     *
-     * @param srcStr
-     * @param indexList
-     *
-     * @return
-     */
-    public static List<String> splitByIndexList(String srcStr, List<Integer> indexList) {
-        return splitByIndexList(srcStr, "", indexList);
     }
 
     /**
@@ -378,4 +378,18 @@ public final class StringUtil {
         return className;
     }
 
+    /**
+     * 忽略大小比较字符串
+     *
+     * @param s1
+     * @param s2
+     *
+     * @return
+     */
+    public static boolean equalsIgnoreCase(String s1, String s2) {
+        if (s1 == null) {
+            return false;
+        }
+        return s1.equalsIgnoreCase(s2);
+    }
 }

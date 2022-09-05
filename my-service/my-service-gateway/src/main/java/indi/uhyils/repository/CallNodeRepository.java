@@ -1,8 +1,10 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.CallNodeDO;
+import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.CallNode;
 import indi.uhyils.repository.base.BaseEntityRepository;
+import java.util.List;
 
 /**
  * 调用节点表, 真正调用的节点(CallNode)表 数据仓库层
@@ -13,4 +15,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  */
 public interface CallNodeRepository extends BaseEntityRepository<CallNodeDO, CallNode> {
 
+    /**
+     * 获取此人有权限的库
+     *
+     * @param userDTO
+     *
+     * @return
+     */
+    List<CallNode> findByUser(UserDTO userDTO);
 }

@@ -1,10 +1,10 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
+import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
 import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.mysql.enums.SqlTypeEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.handler.PrepareInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
@@ -27,13 +27,13 @@ public class ComStmtPrepareCommand extends AbstractMysqlCommand {
      */
     private long prepareId;
 
-    public ComStmtPrepareCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    public ComStmtPrepareCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
     }
 
     @Override
     public List<MysqlResponse> invoke() {
-        return Arrays.asList(new OkResponse(mysqlTcpInfo, SqlTypeEnum.QUERY, 0L, prepareId, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, mysqlTcpInfo.warnCount(), "" + prepareId));
+        return Arrays.asList(new OkResponse(SqlTypeEnum.QUERY, 0L, prepareId, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, MysqlContent.MYSQL_TCP_INFO.get().warnCount(), "" + prepareId));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ComStmtPrepareCommand extends AbstractMysqlCommand {
         byte[] mysqlBytes = mysqlThisRequestInfo.getMysqlBytes();
         Proto proto = new Proto(mysqlBytes, 1);
         String sql = proto.get_lenenc_str();
-        this.prepareId = mysqlTcpInfo.addPrepareSql(new PrepareInfo(sql));
+        this.prepareId = MysqlContent.MYSQL_TCP_INFO.get().addPrepareSql(new PrepareInfo(sql));
     }
 
 }

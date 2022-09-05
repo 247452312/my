@@ -7,6 +7,10 @@ package indi.uhyils.mysql.enums;
  */
 public enum MysqlHandlerStatusEnum {
     /**
+     * 客户端刚刚请求连接,还没有任何交互的时候
+     */
+    UNKNOW(-1, "未知"),
+    /**
      * 客户端请求连接 到客户端发回认证信息之前的阶段
      */
     FIRST_SIGHT(0, "初见"),

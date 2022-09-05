@@ -20,4 +20,13 @@ public interface NodeRepository extends BaseEntityRepository<NodeDO, Node> {
      * @param path
      */
     AbstractDataNode find(String path);
+
+    /**
+     * 判断要查询的是否是系统表
+     *
+     * @param path
+     *
+     * @return
+     */
+    Boolean judgeSysTable(String path);
 }

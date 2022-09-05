@@ -8,12 +8,6 @@ package indi.uhyils.mysql.handler;
  */
 public interface MysqlTcpInfoObserver {
 
-    /**
-     * 获取mysqlHandler
-     *
-     * @return
-     */
-    MysqlTcpInfo getMysqlTcpInfo();
 
     /**
      * 获取mysql此次请求的信息

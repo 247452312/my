@@ -3,7 +3,6 @@ package indi.uhyils.mysql.pojo.cqe.impl;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.enums.ClientPowerEnum;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
@@ -69,12 +68,17 @@ public class MysqlAuthCommand extends AbstractMysqlCommand {
     private String pluginName;
 
 
-    public MysqlAuthCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    public MysqlAuthCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
     }
 
     @Override
     public List<MysqlResponse> invoke() {
+        return null;
+    }
+
+    @Override
+    public MysqlCommandTypeEnum type() {
         return null;
     }
 
@@ -148,11 +152,6 @@ public class MysqlAuthCommand extends AbstractMysqlCommand {
 
     public void setPluginName(String pluginName) {
         this.pluginName = pluginName;
-    }
-
-    @Override
-    public MysqlCommandTypeEnum type() {
-        return null;
     }
 
     @Override

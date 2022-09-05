@@ -14,7 +14,7 @@ public enum HttpReuestEnum {
     GET("get"),
     POST("post");
 
-    private  final String code;
+    private final String code;
 
     HttpReuestEnum(String code) {
         this.code = code;

@@ -53,7 +53,7 @@ public abstract class AbstractDataNode<T extends BaseDO> extends AbstractDoEntit
      *
      * @param sql
      */
-    protected void fillSqlInfo(String sql, Map<String, String> headers, Map<String, Object> params) {
+    public void fillSqlInfo(String sql, Map<String, String> headers, Map<String, Object> params) {
         this.sql = sql;
         this.header = headers;
         this.params = params;

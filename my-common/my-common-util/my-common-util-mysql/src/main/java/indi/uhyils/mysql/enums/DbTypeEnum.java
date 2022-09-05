@@ -9,8 +9,8 @@ public enum DbTypeEnum {
     /**
      * 数据库类型
      */
-    MYSQL(0,"mysql"),
-    ORACLE(1,"oracle");
+    MYSQL(0, "mysql"),
+    ORACLE(1, "oracle");
 
 
     private final Integer code;

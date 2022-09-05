@@ -1,9 +1,7 @@
 package indi.uhyils.mysql.pojo.response.impl;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.mysql.util.MysqlUtil;
@@ -29,7 +27,7 @@ public class ResultSetResponse extends AbstractMysqlResponse {
     /**
      * 要返回的信息
      */
-    private  List<Map<String, Object>> jsonInfo;
+    private List<Map<String, Object>> jsonInfo;
 
     /**
      * 数据库状态
@@ -41,20 +39,20 @@ public class ResultSetResponse extends AbstractMysqlResponse {
      */
     private int warnCount;
 
-    public ResultSetResponse(MysqlTcpInfo mysqlTcpInfo, List<FieldInfo> fields, List<Map<String, Object>> jsonInfo, MysqlServerStatusEnum serverStatus) {
-        this(mysqlTcpInfo, fields, jsonInfo, serverStatus, mysqlTcpInfo.warnCount());
+    public ResultSetResponse(List<FieldInfo> fields, List<Map<String, Object>> jsonInfo, MysqlServerStatusEnum serverStatus) {
+        this(fields, jsonInfo, serverStatus, MysqlContent.MYSQL_TCP_INFO.get().warnCount());
     }
 
-    public ResultSetResponse(MysqlTcpInfo mysqlTcpInfo, List<FieldInfo> fields, List<Map<String, Object>> jsonInfo, MysqlServerStatusEnum serverStatus, int warnCount) {
-        super(mysqlTcpInfo);
+    public ResultSetResponse(List<FieldInfo> fields, List<Map<String, Object>> jsonInfo, MysqlServerStatusEnum serverStatus, int warnCount) {
+        super();
         this.fields = fields;
         this.jsonInfo = jsonInfo;
         this.serverStatus = serverStatus;
         this.warnCount = warnCount;
     }
 
-    public ResultSetResponse(MysqlTcpInfo mysqlTcpInfo, List<FieldInfo> fields, List<Map<String, Object>> jsonInfo) {
-        this(mysqlTcpInfo, fields, jsonInfo, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, mysqlTcpInfo.warnCount());
+    public ResultSetResponse(List<FieldInfo> fields, List<Map<String, Object>> jsonInfo) {
+        this(fields, jsonInfo, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, MysqlContent.MYSQL_TCP_INFO.get().warnCount());
     }
 
     @Override
@@ -70,7 +68,7 @@ public class ResultSetResponse extends AbstractMysqlResponse {
         List<byte[]> rowDatas = toRowData();
         // todo 这里不正确, 正确的resultSet应该返回多个数组, 1.col条数 2.col信息们 3.eof 4.result们 5.eof
         /*1.col条数*/
-        results.add(MysqlUtil.mergeLengthCodedBinary(fields.size()));
+        results.add(makeColSizeByteArray(fields.size()));
         /*2.col信息*/
         results.addAll(fields);
         /*3.eof*/
@@ -81,6 +79,8 @@ public class ResultSetResponse extends AbstractMysqlResponse {
         results.add(eof);
         return results;
     }
+
+
 
     /**
      * 获取列信息
@@ -128,6 +128,17 @@ public class ResultSetResponse extends AbstractMysqlResponse {
             }
         }
         return results;
+    }
+
+    /**
+     * resultSet返回中的长度
+     *
+     * @param size
+     *
+     * @return
+     */
+    private byte[] makeColSizeByteArray(int size) {
+        return MysqlUtil.toBytes(size);
     }
 
     /**

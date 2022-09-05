@@ -3,7 +3,6 @@ package indi.uhyils.plan.pojo;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import com.alibaba.druid.sql.ast.statement.SQLJoinTableSource.JoinType;
-import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import indi.uhyils.annotation.NotNull;
 import java.util.List;
 

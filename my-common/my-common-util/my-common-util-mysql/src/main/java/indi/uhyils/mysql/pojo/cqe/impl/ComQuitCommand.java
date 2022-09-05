@@ -1,10 +1,10 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
+import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
 import indi.uhyils.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.mysql.enums.MysqlHandlerStatusEnum;
 import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
@@ -20,15 +20,14 @@ import java.util.List;
  */
 public class ComQuitCommand extends AbstractMysqlCommand {
 
-    public ComQuitCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    public ComQuitCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
     }
 
     @Override
     public List<MysqlResponse> invoke() {
-        mysqlTcpInfo.setStatus(MysqlHandlerStatusEnum.OVER);
-        return Arrays.asList(new ErrResponse(mysqlTcpInfo,
-                                             MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE,
+        MysqlContent.MYSQL_TCP_INFO.get().setStatus(MysqlHandlerStatusEnum.OVER);
+        return Arrays.asList(new ErrResponse(MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE,
                                              MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS,
                                              "?? 你竟然想关掉我? 脑子瓦特了?\n" + MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE.getMsg()));
     }

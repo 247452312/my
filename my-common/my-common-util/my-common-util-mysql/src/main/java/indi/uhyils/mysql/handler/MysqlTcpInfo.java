@@ -34,7 +34,7 @@ public class MysqlTcpInfo implements Serializable {
     /**
      * 创建完成之后默认是初见状态
      */
-    private MysqlHandlerStatusEnum status = MysqlHandlerStatusEnum.FIRST_SIGHT;
+    private MysqlHandlerStatusEnum status = MysqlHandlerStatusEnum.UNKNOW;
 
     /**
      * 此次登录的用户
@@ -57,6 +57,18 @@ public class MysqlTcpInfo implements Serializable {
      */
     private Map<Long, PrepareInfo> prepareSqlMap = new ConcurrentHashMap<>();
 
+    /**
+     * 当前所在数据库
+     */
+    private String database;
+
+    public String getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
+    }
 
     public PrepareInfo getPrepareCache(long key) {
         return prepareCache.get(key);
@@ -103,6 +115,9 @@ public class MysqlTcpInfo implements Serializable {
     public MysqlHandlerStatusEnum getAndIncrementStatus() {
         final MysqlHandlerStatusEnum status = getStatus();
         switch (status) {
+            case UNKNOW:
+                setStatus(MysqlHandlerStatusEnum.FIRST_SIGHT);
+                break;
             case FIRST_SIGHT:
                 setStatus(MysqlHandlerStatusEnum.PASSED);
                 break;

@@ -1,11 +1,11 @@
 package indi.uhyils.plan;
 
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.enums.MysqlPlanTypeEnum;
 import indi.uhyils.plan.pojo.Placeholder;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.IdUtil;
 import indi.uhyils.util.SpringUtil;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -41,31 +41,28 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
     protected Map<String, String> headers;
 
     /**
-     * 前置需要执行的执行计划
+     * 最后一次执行的结果
      */
-    private List<MysqlPlan> lastPlan;
+    protected NodeInvokeResult lastNodeInvokeResult;
 
-    protected AbstractMysqlSqlPlan(MysqlPlan lastPlan, String sql, Map<String, String> headers, Map<String, Object> params) {
-        this(Arrays.asList(lastPlan), sql, headers, params);
-    }
-
-    protected AbstractMysqlSqlPlan(List<MysqlPlan> lastPlan, String sql, Map<String, String> headers, Map<String, Object> params) {
+    protected AbstractMysqlSqlPlan(String sql, Map<String, String> headers, Map<String, Object> params) {
         this.sql = sql;
         this.params = params;
         this.headers = headers;
-        this.lastPlan = lastPlan;
         id = SpringUtil.getBean(IdUtil.class).newId();
     }
 
 
     @Override
-    public void complete(Map<Long, List<Map<String, Object>>> planArgs) {
+    public void complete(Map<Long, NodeInvokeResult> planArgs) {
         params.forEach((k, v) -> {
             // 如果是占位符
             if (v instanceof Placeholder) {
                 Placeholder placeholder = (Placeholder) v;
-                List<Map<String, Object>> maps = planArgs.get(placeholder.getId());
-                Asserts.assertTrue(maps != null, "占位符对应的参数不存在");
+                final NodeInvokeResult nodeInvokeResult = planArgs.get(placeholder.getId());
+                Asserts.assertTrue(nodeInvokeResult != null, "占位符对应的参数不存在");
+                final List<Map<String, Object>> maps = nodeInvokeResult.getResult();
+
                 String name = placeholder.getName();
                 List<Object> collect = maps.stream().map(t -> t.get(name)).filter(Objects::nonNull).collect(Collectors.toList());
                 if (collect.size() == 1) {
@@ -76,6 +73,7 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
                 }
             }
         });
+        planArgs.keySet().stream().max(Long::compareTo).ifPresent(aLong -> this.lastNodeInvokeResult = planArgs.get(aLong));
     }
 
     @Override
@@ -86,15 +84,6 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
     @Override
     public long getId() {
         return id;
-    }
-
-    /**
-     * 获取前置需要执行的执行计划
-     *
-     * @return
-     */
-    protected List<MysqlPlan> lastPlan() {
-        return lastPlan;
     }
 
 

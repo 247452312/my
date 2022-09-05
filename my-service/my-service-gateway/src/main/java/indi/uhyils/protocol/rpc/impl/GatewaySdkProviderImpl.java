@@ -1,11 +1,12 @@
 package indi.uhyils.protocol.rpc.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.protocol.rpc.GatewaySdkProvider;
 import indi.uhyils.rpc.annotation.RpcService;
 import indi.uhyils.service.GatewaySdkService;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -21,9 +22,9 @@ public class GatewaySdkProviderImpl implements GatewaySdkProvider {
     private GatewaySdkService service;
 
     @Override
-    public JSONArray invokeRpc(InvokeCommand command) {
+    public List<Map<String, Object>> invokeRpc(InvokeCommand command) {
         final NodeInvokeResult nodeInvokeResult = service.invokeInterface(command);
-        return nodeInvokeResult.getJsonArray();
+        return nodeInvokeResult.getResult();
     }
 
 }

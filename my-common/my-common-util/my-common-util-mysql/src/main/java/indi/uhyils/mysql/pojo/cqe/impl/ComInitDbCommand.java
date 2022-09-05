@@ -1,5 +1,6 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
+import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
 import indi.uhyils.mysql.enums.MysqlErrCodeEnum;
@@ -7,12 +8,15 @@ import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.mysql.enums.SqlTypeEnum;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
+import indi.uhyils.mysql.pojo.DTO.DatabaseInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.mysql.pojo.response.impl.ErrResponse;
 import indi.uhyils.mysql.pojo.response.impl.OkResponse;
+import indi.uhyils.mysql.service.MysqlSdkService;
+import indi.uhyils.pojo.cqe.query.BlackQuery;
 import indi.uhyils.util.SpringUtil;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -32,24 +36,34 @@ public class ComInitDbCommand extends AbstractMysqlCommand {
 
     private String sql;
 
-    public ComInitDbCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    private MysqlSdkService mysqlSdkService;
+
+    public ComInitDbCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
+        this.mysqlSdkService = SpringUtil.getBean(MysqlSdkService.class);
     }
 
     @Override
     public List<MysqlResponse> invoke() {
+        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         // use开头
         if (!sql.startsWith(SQL_START)) {
-            return Arrays.asList(new ErrResponse(mysqlTcpInfo, MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS));
+            return Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS));
         }
         // 数据库名称和标准名称一致
         String dbName = sql.substring(SQL_START.length()).trim();
-        String root = SpringUtil.getProperty("mysql.db-name", "root");
-        if (Objects.equals(root, dbName)) {
-            return Arrays.asList(new OkResponse(mysqlTcpInfo, SqlTypeEnum.USE));
+        final BlackQuery blackQuery = new BlackQuery();
+        if (MysqlContent.SYS_DATABASE.contains(dbName)) {
+            mysqlTcpInfo.setDatabase(dbName);
+            return Collections.singletonList(new OkResponse(SqlTypeEnum.USE));
+        }
+        // 获取这个人有权限的数据库列表
+        List<DatabaseInfo> databaseInfos = mysqlSdkService.getAllDatabaseInfo(blackQuery);
+        if (databaseInfos.stream().anyMatch(t -> Objects.equals(t.getSchemaName(), dbName))) {
+            return Collections.singletonList(new OkResponse(SqlTypeEnum.USE));
         }
         // 不一致就报错
-        return Arrays.asList(new ErrResponse(mysqlTcpInfo, MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "没有发现数据库: " + dbName + ",推荐: " + root));
+        return Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "没有发现数据库: " + dbName));
     }
 
     @Override

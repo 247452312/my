@@ -1,8 +1,8 @@
 package indi.uhyils.mysql.pojo.DTO;
 
-import com.alibaba.fastjson.JSONArray;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -18,13 +18,13 @@ public class NodeInvokeResult implements Serializable {
     /**
      * 结果
      */
-    private JSONArray jsonArray;
+    private List<Map<String, Object>> result;
 
 
-    public static NodeInvokeResult build(List<FieldInfo> fieldInfos, JSONArray jsonArray) {
+    public static NodeInvokeResult build(List<FieldInfo> fieldInfos, List<Map<String, Object>> result) {
         NodeInvokeResult build = new NodeInvokeResult();
         build.setFieldInfos(fieldInfos);
-        build.setJsonArray(jsonArray);
+        build.setResult(result);
         return build;
 
     }
@@ -37,11 +37,11 @@ public class NodeInvokeResult implements Serializable {
         this.fieldInfos = fieldInfos;
     }
 
-    public JSONArray getJsonArray() {
-        return jsonArray;
+    public List<Map<String, Object>> getResult() {
+        return result;
     }
 
-    public void setJsonArray(JSONArray jsonArray) {
-        this.jsonArray = jsonArray;
+    public void setResult(List<Map<String, Object>> result) {
+        this.result = result;
     }
 }

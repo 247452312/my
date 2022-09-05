@@ -1,13 +1,17 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.CallNodeAssembler;
 import indi.uhyils.dao.CallNodeDao;
 import indi.uhyils.pojo.DO.CallNodeDO;
 import indi.uhyils.pojo.DTO.CallNodeDTO;
+import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.CallNode;
 import indi.uhyils.repository.CallNodeRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
 
 
 /**
@@ -25,4 +29,11 @@ public class CallNodeRepositoryImpl extends AbstractRepository<CallNode, CallNod
     }
 
 
+    @Override
+    public List<CallNode> findByUser(UserDTO userDTO) {
+        final LambdaQueryWrapper<CallNodeDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(CallNodeDO::getCompanyId, userDTO.getId());
+        final List<CallNodeDO> callNodeDOS = dao.selectList(queryWrapper);
+        return assembler.listToEntity(callNodeDOS);
+    }
 }

@@ -38,17 +38,17 @@ public class MySqlListExpr extends SQLExprImpl implements MySqlExpr {
         return values.hashCode();
     }
 
-    @Override
-    protected void accept0(SQLASTVisitor visitor) {
-
-    }
-
     public List<SQLExpr> getValues() {
         return values;
     }
 
     public void setValues(List<SQLExpr> values) {
         this.values = values;
+    }
+
+    @Override
+    protected void accept0(SQLASTVisitor visitor) {
+
     }
 
     @Override

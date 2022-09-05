@@ -16,7 +16,7 @@ public class InvokeCommand extends AbstractCommand {
     /**
      * 入参
      */
-    private List<Map<String, Object>> params;
+    private Map<String, Object> params;
 
     /**
      * 请求头
@@ -36,11 +36,11 @@ public class InvokeCommand extends AbstractCommand {
      */
     private Integer invokeType;
 
-    public List<Map<String, Object>> getParams() {
+    public Map<String, Object> getParams() {
         return params;
     }
 
-    public void setParams(List<Map<String, Object>> params) {
+    public void setParams(Map<String, Object> params) {
         this.params = params;
     }
 

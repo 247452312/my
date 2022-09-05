@@ -2,7 +2,6 @@ package indi.uhyils.mysql.pojo.response.impl;
 
 import indi.uhyils.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.mysql.util.MysqlUtil;
 import java.nio.charset.StandardCharsets;
@@ -33,22 +32,22 @@ public class ErrResponse extends AbstractMysqlResponse {
      */
     private String msg;
 
-    public ErrResponse(MysqlTcpInfo mysqlTcpInfo, MysqlErrCodeEnum errCode, MysqlServerStatusEnum status, String msg) {
-        super(mysqlTcpInfo);
+    public ErrResponse(MysqlErrCodeEnum errCode, MysqlServerStatusEnum status, String msg) {
+        super();
         this.errCode = errCode;
         this.status = status;
         this.msg = msg;
     }
 
-    public ErrResponse(MysqlTcpInfo mysqlTcpInfo, MysqlErrCodeEnum errCode, MysqlServerStatusEnum status) {
-        super(mysqlTcpInfo);
+    public ErrResponse(MysqlErrCodeEnum errCode, MysqlServerStatusEnum status) {
+        super();
         this.errCode = errCode;
         this.status = status;
         this.msg = errCode.getMsg();
     }
 
-    public static ErrResponse build(MysqlTcpInfo mysqlTcpInfo, MysqlErrCodeEnum errCode, MysqlServerStatusEnum status, String msg) {
-        return new ErrResponse(mysqlTcpInfo, errCode, status, msg);
+    public static ErrResponse build(MysqlErrCodeEnum errCode, MysqlServerStatusEnum status, String msg) {
+        return new ErrResponse(errCode, status, msg);
     }
 
     @Override
@@ -73,6 +72,8 @@ public class ErrResponse extends AbstractMysqlResponse {
 
         return Arrays.asList(MysqlUtil.mergeListBytes(listResult));
     }
+
+
 
 
     public MysqlErrCodeEnum getErrCode() {

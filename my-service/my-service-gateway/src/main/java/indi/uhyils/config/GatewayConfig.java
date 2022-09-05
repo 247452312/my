@@ -9,8 +9,14 @@ import indi.uhyils.rpc.content.RpcHeaderContext;
 import indi.uhyils.util.StringUtil;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -62,7 +68,14 @@ public class GatewayConfig implements BeanPostProcessor {
             final GatewaySdkProvider provider = (GatewaySdkProvider) proxy;
             InvokeCommandBuilder builder = new InvokeCommandBuilder();
             builder.addHeader(RpcHeaderContext.get());
-            builder.addArgs(args);
+            final List<String> argNames = Arrays.stream(method.getParameters()).map(Parameter::getName).collect(Collectors.toList());
+            Map<String, Object> result = new HashMap<>(args.length);
+            for (int i = 0; i < argNames.size(); i++) {
+                final String argName = argNames.get(i);
+                final Object arg = args[i];
+                result.put(argName, arg);
+            }
+            builder.addArgs(result);
             builder.setType(InvokeTypeEnum.RPC.getCode());
             return provider.invokeRpc(builder.build());
         }

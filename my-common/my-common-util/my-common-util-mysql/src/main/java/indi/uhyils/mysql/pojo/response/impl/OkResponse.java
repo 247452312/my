@@ -2,7 +2,6 @@ package indi.uhyils.mysql.pojo.response.impl;
 
 import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.mysql.enums.SqlTypeEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.util.Asserts;
@@ -57,8 +56,8 @@ public class OkResponse extends AbstractMysqlResponse {
      * @param warnCount    告警计数
      * @param msg          带回的消息
      */
-    public OkResponse(MysqlTcpInfo mysqlTcpInfo, SqlTypeEnum sqlTypeEnum, long rowLength, long indexIdValue, MysqlServerStatusEnum serverStatus, int warnCount, String msg) {
-        super(mysqlTcpInfo);
+    public OkResponse(SqlTypeEnum sqlTypeEnum, long rowLength, long indexIdValue, MysqlServerStatusEnum serverStatus, int warnCount, String msg) {
+        super();
         this.sqlTypeEnum = sqlTypeEnum;
         this.rowLength = rowLength;
         this.indexIdValue = indexIdValue;
@@ -68,13 +67,13 @@ public class OkResponse extends AbstractMysqlResponse {
     }
 
 
-    public OkResponse(MysqlTcpInfo mysqlTcpInfo, SqlTypeEnum sqlTypeEnum) {
-        super(mysqlTcpInfo);
+    public OkResponse(SqlTypeEnum sqlTypeEnum) {
+        super();
         this.sqlTypeEnum = sqlTypeEnum;
     }
 
-    public OkResponse(MysqlTcpInfo mysqlTcpInfo) {
-        super(mysqlTcpInfo);
+    public OkResponse() {
+        super();
     }
 
     @Override
@@ -89,6 +88,8 @@ public class OkResponse extends AbstractMysqlResponse {
         Asserts.assertTrue(sqlTypeEnum == null || sqlTypeEnum != SqlTypeEnum.QUERY, "查询不能返回OK消息");
         return Arrays.asList(mergeOk());
     }
+
+
 
     private byte[] mergeOk() {
         List<byte[]> listResult = new ArrayList<>();

@@ -1,10 +1,10 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
+import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.enums.FieldTypeEnum;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
 import indi.uhyils.mysql.enums.PrepareMarkEnum;
-import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.handler.PrepareInfo;
 import indi.uhyils.mysql.pojo.DTO.PrepareParamInfo;
@@ -42,13 +42,13 @@ public class ComStmtExecuteCommand extends MysqlSqlCommand {
      */
     private PrepareMarkEnum parse;
 
-    public ComStmtExecuteCommand(MysqlTcpInfo mysqlTcpInfo, MysqlThisRequestInfo mysqlThisRequestInfo) {
-        super(mysqlTcpInfo, mysqlThisRequestInfo);
+    public ComStmtExecuteCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
+        super(mysqlThisRequestInfo);
     }
 
     @Override
     public List<MysqlResponse> invoke() throws Exception {
-        ComQueryCommand comQueryRequest = new ComQueryCommand(mysqlTcpInfo, mysqlThisRequestInfo, sql);
+        ComQueryCommand comQueryRequest = new ComQueryCommand(mysqlThisRequestInfo, sql);
         return comQueryRequest.invoke();
     }
 
@@ -63,7 +63,7 @@ public class ComStmtExecuteCommand extends MysqlSqlCommand {
         Proto proto = new Proto(mysqlBytes, 1);
         long prepareId = proto.getFixedInt(4);
         // 预处理语句
-        this.prepareSql = mysqlTcpInfo.getPrepareSql(prepareId);
+        this.prepareSql = MysqlContent.MYSQL_TCP_INFO.get().getPrepareSql(prepareId);
         long fixedInt = proto.getFixedInt(1);
         byte[] bytes = MysqlUtil.toBytes(fixedInt);
         // 预处理语句标志位
