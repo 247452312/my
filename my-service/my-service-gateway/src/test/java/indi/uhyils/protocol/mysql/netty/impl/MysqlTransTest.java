@@ -32,8 +32,8 @@ public class MysqlTransTest {
     void responseByteTest() {
         final ArrayList<FieldInfo> fields = new ArrayList<>();
         short ss = 0;
-        fields.add(new FieldInfo("testDB", "sys_table", "sys_table", "id", "id", 100, 1, FieldTypeEnum.FIELD_TYPE_LONG, ss, (byte) 0, null));
-        fields.add(new FieldInfo("testDB", "sys_table", "sys_table", "name", "name", 100, 2, FieldTypeEnum.FIELD_TYPE_STRING, ss, (byte) 0, null));
+        fields.add(new FieldInfo("testDB", "sys_table", "sys_table", "id", "id", 100, 1, FieldTypeEnum.FIELD_TYPE_LONG, ss, (byte) 0));
+        fields.add(new FieldInfo("testDB", "sys_table", "sys_table", "name", "name", 100, 2, FieldTypeEnum.FIELD_TYPE_STRING, ss, (byte) 0));
         final ArrayList<Map<String, Object>> jsonInfo = new ArrayList<>();
         final HashMap<String, Object> firstLine = new HashMap<>();
         firstLine.put("id", 1L);

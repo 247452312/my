@@ -100,9 +100,9 @@ public final class PlanUtil {
      */
     private static FieldInfo makeFieldInfo(Object o, int i, String field) {
         if (o instanceof Number) {
-            return new FieldInfo(null, null, null, field, field, 0, i, FieldTypeEnum.FIELD_TYPE_FLOAT, (short) 0, (byte) 0, null);
+            return new FieldInfo(null, null, null, field, field, 0, i, FieldTypeEnum.FIELD_TYPE_FLOAT, (short) 0, (byte) 0);
         } else if (o instanceof String) {
-            return new FieldInfo(null, null, null, field, field, 0, i, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0, null);
+            return new FieldInfo(null, null, null, field, field, 0, i, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0);
         } else {
             throw Asserts.makeException("未知的字段类型:{}", o.getClass().getName());
         }

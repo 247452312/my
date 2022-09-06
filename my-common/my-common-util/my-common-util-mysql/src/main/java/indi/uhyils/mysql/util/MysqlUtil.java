@@ -214,6 +214,22 @@ public final class MysqlUtil {
 
     }
 
+    public static byte[] fixString(String value) {
+        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+        byte[] result = new byte[bytes.length + 1];
+        result[bytes.length] = 0x00;
+        System.arraycopy(bytes, 0, result, 0, bytes.length);
+        return result;
+    }
+
+    public static byte[] varString(String value) {
+        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+        byte[] result = new byte[bytes.length + 1];
+        result[0] = (byte) bytes.length;
+        System.arraycopy(bytes, 0, result, 1, bytes.length);
+        return result;
+    }
+
     /**
      * 字符串转 Null-Terminated String
      *

@@ -49,6 +49,7 @@ public abstract class AbstractMysqlResponse implements MysqlResponse, MysqlTcpIn
             }
             aByteList.add(aByte);
             result.add(MysqlUtil.mergeListBytes(aByteList));
+            mysqlTcpInfo.addIndex();
         }
         return result;
 
