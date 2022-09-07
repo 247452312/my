@@ -6,6 +6,7 @@ import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.util.Asserts;
+import indi.uhyils.util.MapUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,12 +75,11 @@ public class ResultSetResponse extends AbstractMysqlResponse {
         /*3.eof*/
         results.add(eof);
         /*4.result*/
-        results.addAll(rowDatas);
+        results.add(MysqlUtil.mergeListBytes(rowDatas));
         /*5.eof*/
         results.add(eof);
         return results;
     }
-
 
 
     /**
@@ -119,6 +119,9 @@ public class ResultSetResponse extends AbstractMysqlResponse {
 
         for (int i = 0; i < jsonInfo.size(); i++) {
             final Map<String, Object> jsonObject = jsonInfo.get(i);
+            if (MapUtil.isEmpty(jsonObject)) {
+                continue;
+            }
 
             for (FieldInfo field : fields) {
                 String fieldName = field.getFieldName();
@@ -149,12 +152,15 @@ public class ResultSetResponse extends AbstractMysqlResponse {
      * @return
      */
     private byte[] transObjToByte(Object obj) {
+        if (obj == null) {
+            return new byte[0];
+        }
         if (obj instanceof Date) {
             Date dateValue = (Date) obj;
             return MysqlUtil.mergeLengthCodedBinary(dateValue.getTime());
         }
         if (obj instanceof String) {
-            return MysqlUtil.mergeLengthCodedBinary((String) obj);
+            return MysqlUtil.fixString((String) obj);
         }
         if (obj instanceof Long) {
             return MysqlUtil.mergeLengthCodedBinary((Long) obj);

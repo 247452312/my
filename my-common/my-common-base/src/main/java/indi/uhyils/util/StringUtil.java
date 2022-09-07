@@ -1,5 +1,6 @@
 package indi.uhyils.util;
 
+import indi.uhyils.annotation.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -122,6 +123,7 @@ public final class StringUtil {
      *
      * @return
      */
+    @NotNull
     public static String toUnderline(String fieldName) {
         /** 驼峰转下划线,效率比上面高 */
         Matcher matcher = humpPattern.matcher(fieldName);

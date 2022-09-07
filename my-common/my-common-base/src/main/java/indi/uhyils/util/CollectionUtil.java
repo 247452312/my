@@ -139,4 +139,21 @@ public final class CollectionUtil {
     public static <T> List<T> copyList(List<T> result) {
         return result.stream().collect(Collectors.toList());
     }
+
+    /**
+     * 字符串 忽略大小写判断是否包含
+     *
+     * @param needField
+     * @param key
+     *
+     * @return
+     */
+    public static boolean containsIgnoreCase(List<String> needField, String key) {
+        for (String s : needField) {
+            if (s != null && s.equalsIgnoreCase(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -58,22 +58,22 @@ public class ErrResponse extends AbstractMysqlResponse {
     @Override
     public List<byte[]> toByteNoMarkIndex() {
         List<byte[]> listResult = new ArrayList<>();
+        // header 恒为 FF
+        listResult.add(new byte[]{(byte) 0xff});
         // 错误编号
-        byte[] e = MysqlUtil.mergeLengthCodedBinary(errCode.getCode());
+        byte[] e = errCode.getByteCode();
         listResult.add(e);
         // 服务器状态标志,恒为 '#'
         listResult.add(new byte[]{'#'});
         // 服务器状态
-        byte[] e1 = MysqlUtil.mergeLengthCodedBinary(status.getCode());
+        byte[] e1 = "HY000".getBytes(StandardCharsets.UTF_8);;
         listResult.add(e1);
-        // 添加服务器消息
+        // 添加服务器消息 EOF类型的字符串
         byte[] bytes1 = msg.getBytes(StandardCharsets.UTF_8);
         listResult.add(bytes1);
 
         return Arrays.asList(MysqlUtil.mergeListBytes(listResult));
     }
-
-
 
 
     public MysqlErrCodeEnum getErrCode() {

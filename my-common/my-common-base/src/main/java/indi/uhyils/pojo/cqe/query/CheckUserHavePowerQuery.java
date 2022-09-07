@@ -25,6 +25,7 @@ public class CheckUserHavePowerQuery extends AbstractArgQuery {
      */
     private Long userId;
 
+
     public static CheckUserHavePowerQuery build(String interfaceName, String methodName, Long userId) {
         CheckUserHavePowerQuery checkUserHavePowerRequest = new CheckUserHavePowerQuery();
         checkUserHavePowerRequest.setInterfaceName(interfaceName);

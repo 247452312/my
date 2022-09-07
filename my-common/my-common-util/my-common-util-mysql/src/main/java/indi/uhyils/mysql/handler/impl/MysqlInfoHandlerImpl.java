@@ -221,8 +221,24 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
             return;
         }
         List<byte[]> finalResponse = new ArrayList<>();
-        for (MysqlResponse mysqlResponse : invokes) {
-            finalResponse.addAll(mysqlResponse.toByte());
+        try {
+            for (MysqlResponse mysqlResponse : invokes) {
+                finalResponse.addAll(mysqlResponse.toByte());
+            }
+        } catch (AssertException ae) {
+            LogUtil.error(ae);
+            final byte[] bytes = MysqlUtil.mergeListBytes(new ErrResponse(MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, ae.getMessage()).toByte());
+            String responseBytes = MysqlUtil.dump(bytes);
+            LogUtil.info("mysql回应:\n" + responseBytes);
+            send(bytes);
+            return;
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+            final byte[] bytes = MysqlUtil.mergeListBytes(new ErrResponse(MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "系统错误,请联系管理员或查询日志!").toByte());
+            String responseBytes = MysqlUtil.dump(bytes);
+            LogUtil.info("mysql回应:\n" + responseBytes);
+            send(bytes);
+            return;
         }
         final byte[] bytes = MysqlUtil.mergeListBytes(finalResponse);
         String responseBytes = MysqlUtil.dump(bytes);

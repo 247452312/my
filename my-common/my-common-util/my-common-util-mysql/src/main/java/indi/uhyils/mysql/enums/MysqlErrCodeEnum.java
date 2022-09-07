@@ -1,5 +1,7 @@
 package indi.uhyils.mysql.enums;
 
+import indi.uhyils.mysql.util.MysqlUtil;
+
 /**
  * mysql err错误返回代码
  *
@@ -110,6 +112,10 @@ public enum MysqlErrCodeEnum {
     MysqlErrCodeEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
+    }
+
+    public byte[] getByteCode() {
+        return MysqlUtil.toBytes(getCode(), 2);
     }
 
     public int getCode() {

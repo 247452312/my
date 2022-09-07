@@ -4,6 +4,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.pojo.plan.ResultMappingPlan;
+import indi.uhyils.util.CollectionUtil;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
