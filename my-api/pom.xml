@@ -20,7 +20,6 @@
         <module>my-api-provider-mongo</module>
         <module>my-api-provider-algorithm</module>
         <module>my-api-provider-work-orders</module>
-        <module>my-api-provider-platform</module>
         <module>my-api-provider-gateway</module>
         <module>my-api-provider-gateway-sdk</module>
     </modules>

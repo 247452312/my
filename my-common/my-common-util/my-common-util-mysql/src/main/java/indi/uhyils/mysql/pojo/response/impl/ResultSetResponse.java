@@ -160,7 +160,7 @@ public class ResultSetResponse extends AbstractMysqlResponse {
             return MysqlUtil.mergeLengthCodedBinary(dateValue.getTime());
         }
         if (obj instanceof String) {
-            return MysqlUtil.fixString((String) obj);
+            return MysqlUtil.varString((String) obj);
         }
         if (obj instanceof Long) {
             return MysqlUtil.mergeLengthCodedBinary((Long) obj);
