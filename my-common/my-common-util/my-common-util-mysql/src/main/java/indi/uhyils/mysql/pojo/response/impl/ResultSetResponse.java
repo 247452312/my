@@ -75,7 +75,7 @@ public class ResultSetResponse extends AbstractMysqlResponse {
         /*3.eof*/
         results.add(eof);
         /*4.result*/
-        results.add(MysqlUtil.mergeListBytes(rowDatas));
+        results.addAll(rowDatas);
         /*5.eof*/
         results.add(eof);
         return results;
@@ -122,13 +122,14 @@ public class ResultSetResponse extends AbstractMysqlResponse {
             if (MapUtil.isEmpty(jsonObject)) {
                 continue;
             }
-
+            List<byte[]> row = new ArrayList<>();
             for (FieldInfo field : fields) {
                 String fieldName = field.getFieldName();
                 Object o = jsonObject.get(fieldName);
                 byte[] byteData = transObjToByte(o);
-                results.add(byteData);
+                row.add(byteData);
             }
+            results.add(MysqlUtil.mergeListBytes(row));
         }
         return results;
     }
