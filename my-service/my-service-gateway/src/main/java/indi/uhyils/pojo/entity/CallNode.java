@@ -4,8 +4,11 @@ import indi.uhyils.annotation.Default;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.pojo.DTO.DatabaseInfo;
 import indi.uhyils.pojo.DO.CallNodeDO;
+import indi.uhyils.repository.NodeRepository;
+import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.GatewayUtil;
+import java.util.Optional;
 import javafx.util.Pair;
 
 /**
@@ -15,6 +18,11 @@ import javafx.util.Pair;
  * @date 文件创建日期 2022年08月12日 08时33分
  */
 public class CallNode extends AbstractDataNode<CallNodeDO> {
+
+    /**
+     * 中间节点
+     */
+    private Node node;
 
     @Default
     public CallNode(CallNodeDO data) {
@@ -62,5 +70,19 @@ public class CallNode extends AbstractDataNode<CallNodeDO> {
         databaseInfo.setSqlPath(null);
         databaseInfo.setDefaultEncryption("NO");
         return databaseInfo;
+    }
+
+    /**
+     * 向下填充
+     *
+     * @param nodeRepository
+     * @param providerInterfaceRepository
+     */
+    public void fillSubNode(NodeRepository nodeRepository, ProviderInterfaceRepository providerInterfaceRepository) {
+        final Optional<CallNodeDO> callNodeOptional = toData();
+        callNodeOptional.ifPresent(callNodeDO -> {
+            this.node = nodeRepository.find(new CallNode(callNodeDO.getNodeId()));
+            this.node.fillSubNode(nodeRepository, providerInterfaceRepository);
+        });
     }
 }

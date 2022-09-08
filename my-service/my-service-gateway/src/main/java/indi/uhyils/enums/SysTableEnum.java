@@ -2,12 +2,12 @@ package indi.uhyils.enums;
 
 import com.google.common.base.Function;
 import indi.uhyils.annotation.NotNull;
+import indi.uhyils.pojo.entity.sys.IColumns;
 import indi.uhyils.pojo.entity.sys.ISchemataTable;
 import indi.uhyils.pojo.entity.sys.SysTable;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.StringUtil;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 系统表枚举
@@ -20,6 +20,14 @@ public enum SysTableEnum {
      * 库表元数据存储表
      */
     INFORMATION_SCHEMA_SCHEMATA("information_schema", "schemata", ISchemataTable::new),
+    /**
+     * 表元数据存储
+     */
+    INFORMATION_SCHEMA_TABLES("information_schema", "tables", ISchemataTable::new),
+    /**
+     * 列信息
+     */
+    INFORMATION_SCHEMA_COLUMNS("information_schema", "columns", IColumns::new),
     ;
 
     /**

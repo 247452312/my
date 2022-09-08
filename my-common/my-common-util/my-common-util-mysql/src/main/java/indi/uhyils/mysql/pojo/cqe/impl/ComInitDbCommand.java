@@ -16,10 +16,11 @@ import indi.uhyils.mysql.pojo.response.impl.OkResponse;
 import indi.uhyils.mysql.service.MysqlSdkService;
 import indi.uhyils.pojo.cqe.query.BlackQuery;
 import indi.uhyils.util.SpringUtil;
+import indi.uhyils.util.StringUtil;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
+import java.util.Optional;
 
 
 /**
@@ -46,24 +47,23 @@ public class ComInitDbCommand extends AbstractMysqlCommand {
     @Override
     public List<MysqlResponse> invoke() {
         final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
-        // use开头
-        if (!sql.startsWith(SQL_START)) {
-            return Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS));
-        }
+
         // 数据库名称和标准名称一致
-        String dbName = sql.substring(SQL_START.length()).trim();
         final BlackQuery blackQuery = new BlackQuery();
-        if (MysqlContent.SYS_DATABASE.contains(dbName)) {
-            mysqlTcpInfo.setDatabase(dbName);
+        if (MysqlContent.SYS_DATABASE.contains(sql)) {
+            mysqlTcpInfo.setDatabase(sql);
             return Collections.singletonList(new OkResponse(SqlTypeEnum.USE));
         }
         // 获取这个人有权限的数据库列表
         List<DatabaseInfo> databaseInfos = mysqlSdkService.getAllDatabaseInfo(blackQuery);
-        if (databaseInfos.stream().anyMatch(t -> Objects.equals(t.getSchemaName(), dbName))) {
+        final Optional<DatabaseInfo> first = databaseInfos.stream().filter(t -> StringUtil.equalsIgnoreCase(t.getSchemaName(), sql)).findFirst();
+        if (first.isPresent()) {
+            final DatabaseInfo databaseInfo = first.get();
+            mysqlTcpInfo.setDatabase(databaseInfo.getSchemaName());
             return Collections.singletonList(new OkResponse(SqlTypeEnum.USE));
         }
         // 不一致就报错
-        return Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "没有发现数据库: " + dbName));
+        return Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "没有发现数据库: " + sql));
     }
 
     @Override

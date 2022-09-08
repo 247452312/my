@@ -2,6 +2,8 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
 import indi.uhyils.pojo.DO.NodeDO;
+import indi.uhyils.repository.NodeRepository;
+import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.util.Asserts;
 
 /**
@@ -36,5 +38,15 @@ public class Node extends AbstractDataNode<NodeDO> {
         final String url = node.getUrl();
         final int firstIndex = url.indexOf("/");
         return url.substring(firstIndex + 1);
+    }
+
+    /**
+     * 填充子节点
+     *
+     * @param nodeRepository
+     * @param providerInterfaceRepository
+     */
+    public void fillSubNode(NodeRepository nodeRepository, ProviderInterfaceRepository providerInterfaceRepository) {
+        
     }
 }

@@ -5,6 +5,7 @@ import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.enums.Symbol;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.enums.FieldTypeEnum;
+import indi.uhyils.mysql.pojo.DTO.ColumnsInfo;
 import indi.uhyils.mysql.pojo.DTO.DatabaseInfo;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
@@ -30,12 +31,10 @@ import java.util.stream.Collectors;
 import javafx.util.Pair;
 
 /**
- * inforamtion_schema库 SCHEMATA表
- *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2022年09月01日 14时22分
+ * @date 文件创建日期 2022年09月08日 14时24分
  */
-public class ISchemataTable implements SysTable {
+public class IColumns implements SysTable {
 
     /**
      * 入参
@@ -44,11 +43,10 @@ public class ISchemataTable implements SysTable {
 
     private CallNodeService callNodeService;
 
-    public ISchemataTable(Map<String, Object> params) {
+    public IColumns(Map<String, Object> params) {
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getKey));
         this.callNodeService = SpringUtil.getBean(CallNodeService.class);
     }
-
 
     @Override
     public NodeInvokeResult getResult() {
@@ -62,7 +60,7 @@ public class ISchemataTable implements SysTable {
         if (schemaName != null) {
             args.add(Arg.as(CallNodeDO::getUrl, Symbol.like, schemaName + "/%"));
         }
-        List<CallNodeDTO> callNodeDTOS = callNodeService.queryNoPage(args);
+        List<CallNodeDTO> callNodeDTOS = callNodeService.queryWithAllNode(args);
 
         final List<Map<String, Object>> newResults = new ArrayList<>();
 
@@ -79,14 +77,18 @@ public class ISchemataTable implements SysTable {
             }
         }).forEach(t -> {
             final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(t.getUrl());
-            final DatabaseInfo databaseInfo = new DatabaseInfo();
-            databaseInfo.setCatalogName(MysqlContent.CATALOG_NAME);
-            databaseInfo.setSchemaName(splitDataBaseUrl.getKey());
-            databaseInfo.setDefaultCharacterSetName(MysqlContent.DEFAULT_CHARACTER_SET_NAME);
-            databaseInfo.setDefaultCollationName(MysqlContent.DEFAULT_COLLATION_NAME);
-            databaseInfo.setSqlPath(null);
-            databaseInfo.setDefaultEncryption("NO");
-            newResults.add(JSONObject.parseObject(JSONObject.toJSONString(databaseInfo)));
+            final ColumnsInfo columnsInfo = new ColumnsInfo();
+            columnsInfo.setTableSchema();
+            columnsInfo.setTableName();
+            columnsInfo.setColumnName();
+            columnsInfo.setOrdinalPosition();
+            columnsInfo.setDataType();
+            columnsInfo.setDatetimePrecision();
+            columnsInfo.setColumnType();
+            columnsInfo.setPrivileges();
+            columnsInfo.setColumnComment();
+
+            newResults.add(JSONObject.parseObject(JSONObject.toJSONString(columnsInfo)));
         });
 
         final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
@@ -116,23 +118,5 @@ public class ISchemataTable implements SysTable {
         fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "DEFAULT_ENCRYPTION", "DEFAULT_ENCRYPTION", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
         nodeInvokeResult.setFieldInfos(fieldInfos);
         return nodeInvokeResult;
-    }
-
-    /**
-     * 是否包含
-     *
-     * @param schemaNameStrList
-     * @param schemaName
-     *
-     * @return
-     */
-    private boolean containsLike(List<String> schemaNameStrList, String schemaName) {
-        boolean result = false;
-        for (String s : schemaNameStrList) {
-            if (schemaName.startsWith(s)) {
-                result = true;
-            }
-        }
-        return result;
     }
 }
