@@ -42,7 +42,7 @@ public class ISchemataTable implements SysTable {
      */
     private final Map<String, Object> params;
 
-    private CallNodeService callNodeService;
+    private final CallNodeService callNodeService;
 
     public ISchemataTable(Map<String, Object> params) {
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getKey));

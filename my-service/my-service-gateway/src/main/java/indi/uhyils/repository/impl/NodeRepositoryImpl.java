@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年09月09日 15时45分
  */
 @Repository
 public class NodeRepositoryImpl extends AbstractRepository<Node, NodeDO, NodeDao, NodeDTO, NodeAssembler> implements NodeRepository {
@@ -36,14 +36,17 @@ public class NodeRepositoryImpl extends AbstractRepository<Node, NodeDO, NodeDao
 
 
     @Override
-    public AbstractDataNode find(String path) {
+    public AbstractDataNode find(String database, String table) {
+
         final LambdaQueryWrapper<NodeDO> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(NodeDO::getUrl, path);
+        queryWrapper.eq(NodeDO::getDatabase, database);
+        queryWrapper.eq(NodeDO::getTableName, table);
+
         final NodeDO nodeDO = dao.selectOne(queryWrapper);
         if (nodeDO != null) {
             return assembler.toEntity(nodeDO);
         }
-        return providerInterfaceRepository.find(path);
+        return providerInterfaceRepository.find(database, table);
     }
 
     @Override

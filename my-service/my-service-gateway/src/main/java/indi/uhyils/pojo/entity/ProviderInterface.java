@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * 接口表,提供方提供的调用方式以及url(ProviderInterface)表 数据库实体类
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年09月09日 15时45分
  */
 public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
 
@@ -61,7 +61,7 @@ public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
             final ProviderInterfaceParamDO providerInterfaceParamDO = t.toData().get();
             final FieldInfoDTO fieldInfoDTO = new FieldInfoDTO();
             fieldInfoDTO.setDatabase(providerInterfaceDO.getDatabase());
-            fieldInfoDTO.setRealTable(providerInterfaceDO.getName());
+            fieldInfoDTO.setRealTable(providerInterfaceDO.getTable());
             fieldInfoDTO.setDecimals(0);
             fieldInfoDTO.setName(providerInterfaceParamDO.getName());
             return fieldInfoDTO;
@@ -82,6 +82,6 @@ public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
     @Override
     public String tableName() {
         final ProviderInterfaceDO providerInterfaceDO = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
-        return providerInterfaceDO.getName();
+        return providerInterfaceDO.getTable();
     }
 }

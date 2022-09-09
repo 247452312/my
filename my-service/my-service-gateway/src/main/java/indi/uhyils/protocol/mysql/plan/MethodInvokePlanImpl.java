@@ -2,7 +2,6 @@ package indi.uhyils.protocol.mysql.plan;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
-import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.pojo.plan.MethodInvokePlan;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.Map;
 public class MethodInvokePlanImpl extends MethodInvokePlan {
 
     public MethodInvokePlanImpl(Map<String, String> headers, String methodName, List<SQLExpr> arguments) {
-        super( headers, methodName, arguments);
+        super(headers, methodName, arguments);
     }
 
     @Override

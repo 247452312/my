@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.mysql.plan;
 
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
-import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.pojo.plan.InnerJoinSqlPlan;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
  */
 public class InnerJoinSqlPlanImpl extends InnerJoinSqlPlan {
 
-    public InnerJoinSqlPlanImpl( Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
+    public InnerJoinSqlPlanImpl(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
         super(null, headers, leftPlanId, rightPlanId);
     }
 

@@ -3,10 +3,8 @@ package indi.uhyils.pojo.entity.sys;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.enums.Symbol;
-import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.enums.FieldTypeEnum;
 import indi.uhyils.mysql.pojo.DTO.ColumnsInfo;
-import indi.uhyils.mysql.pojo.DTO.DatabaseInfo;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.pojo.DO.CallNodeDO;
@@ -41,7 +39,7 @@ public class IColumns implements SysTable {
      */
     private final Map<String, Object> params;
 
-    private CallNodeService callNodeService;
+    private final CallNodeService callNodeService;
 
     public IColumns(Map<String, Object> params) {
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getKey));
@@ -78,15 +76,6 @@ public class IColumns implements SysTable {
         }).forEach(t -> {
             final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(t.getUrl());
             final ColumnsInfo columnsInfo = new ColumnsInfo();
-            columnsInfo.setTableSchema();
-            columnsInfo.setTableName();
-            columnsInfo.setColumnName();
-            columnsInfo.setOrdinalPosition();
-            columnsInfo.setDataType();
-            columnsInfo.setDatetimePrecision();
-            columnsInfo.setColumnType();
-            columnsInfo.setPrivileges();
-            columnsInfo.setColumnComment();
 
             newResults.add(JSONObject.parseObject(JSONObject.toJSONString(columnsInfo)));
         });

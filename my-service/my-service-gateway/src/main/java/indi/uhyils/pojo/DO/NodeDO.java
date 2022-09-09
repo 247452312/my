@@ -10,42 +10,40 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月16日 10时28分
+ * @date 文件创建日期 2022年09月09日 15时45分
  */
 @TableName(value = "sys_node")
 public class NodeDO extends BaseDO {
 
     private static final long serialVersionUID = -1L;
 
-
     /**
      * 对应低代码sql
      */
-    @TableField("`sql`")
+    @TableField
     private String sql;
 
     /**
-     * 下级接口id,多个使用分号隔开
+     * 中间接口库名
      */
     @TableField
-    private String subNode;
+    private String database;
 
     /**
-     * 对应唯一标识(url形式),如果是mysql调用,则使用全称拼写,例如库名/表名
+     * 中间接口表名
      */
     @TableField
-    private String url;
+    private String tableName;
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", getId())
             .append("sql", getSql())
-            .append("subNode", getSubNode())
-            .append("url", getUrl())
+            .append("database", getDatabase())
+            .append("tableName", getTableName())
             .toString();
     }
-
 
     public String getSql() {
         return sql;
@@ -55,19 +53,19 @@ public class NodeDO extends BaseDO {
         this.sql = sql;
     }
 
-    public String getSubNode() {
-        return subNode;
+    public String getDatabase() {
+        return database;
     }
 
-    public void setSubNode(String subNode) {
-        this.subNode = subNode;
+    public void setDatabase(String database) {
+        this.database = database;
     }
 
-    public String getUrl() {
-        return url;
+    public String getTableName() {
+        return tableName;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 }

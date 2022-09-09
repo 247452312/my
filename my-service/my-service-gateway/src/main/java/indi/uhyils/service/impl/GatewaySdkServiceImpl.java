@@ -29,10 +29,12 @@ import indi.uhyils.repository.ProviderInterfaceParamRepository;
 import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.service.GatewaySdkService;
 import indi.uhyils.util.Asserts;
+import indi.uhyils.util.GatewayUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +63,9 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
     @Override
     @Public
     public NodeInvokeResult invokeInterface(InvokeCommand command) {
-        final ProviderInterface providerInterface = providerInterfaceRepository.find(command.getInvokeType(), command.getPath());
+
+        final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(command.getPath());
+        final ProviderInterface providerInterface = providerInterfaceRepository.find(command.getInvokeType(), splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
         providerInterface.fillParams(providerInterfaceParamRepository);
         //        JSONArray.parseArray(JSONObject.toJSONString(Arrays.asList(command)))
         return new NodeInvokeResult();
@@ -75,7 +79,8 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
             ProviderInterface providerInterface = new SysProviderInterface(command.getPath(), command.getHeader(), command.getParams());
             return providerInterface.getResult();
         } else {
-            AbstractDataNode node = nodeRepository.find(path);
+            final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(path);
+            AbstractDataNode node = nodeRepository.find(splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
             Asserts.assertTrue(node != null, "未查询到指定的节点,名称:{}", command.getPath());
             return node.getResult();
         }
@@ -123,7 +128,9 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
     private GetInterfaceInfoResponse getInterfaceInfo(InvokeCommand command) {
         final String path = command.getPath();
         final Integer invokeType = command.getInvokeType();
-        ProviderInterface providerInterface = providerInterfaceRepository.find(invokeType, path);
+
+        final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(path);
+        ProviderInterface providerInterface = providerInterfaceRepository.find(invokeType, splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
         providerInterface.fillParams(providerInterfaceParamRepository);
         return GetInterfaceInfoResponse.build(providerInterface.fieldInfo());
     }

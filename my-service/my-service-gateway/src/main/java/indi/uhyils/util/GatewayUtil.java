@@ -1,13 +1,6 @@
 package indi.uhyils.util;
 
 import indi.uhyils.mysql.content.MysqlContent;
-import indi.uhyils.mysql.enums.FieldTypeEnum;
-import indi.uhyils.mysql.pojo.DTO.FieldInfo;
-import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import javafx.util.Pair;
 
 /**

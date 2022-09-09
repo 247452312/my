@@ -8,62 +8,35 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月16日 10时28分
+ * @date 文件创建日期 2022年09月09日 15时45分
  */
 public class ProviderInterfaceDTO extends IdDTO {
 
     private static final long serialVersionUID = -1L;
-
-
-    /**
-     * 库名称
-     */
-    private String database;
-
-    /**
-     * 表名称
-     */
-    private String name;
-
-    /**
-     * 对应唯一标识(url形式),如果是mysql调用,则使用JDBC连接串
-     */
-    private String url;
 
     /**
      * 调用方式 1->http 2->mysql 3->rpc
      */
     private Integer invokeType;
 
+    /**
+     * 此节点的库名称
+     */
+    private String database;
+
+    /**
+     * 此节点的表名称
+     */
+    private String table;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", getId())
-            .append("database", getDatabase())
-            .append("name", getName())
-            .append("url", getUrl())
             .append("invokeType", getInvokeType())
+            .append("database", getDatabase())
+            .append("table", getTable())
             .toString();
-    }
-
-    public String getDatabase() {
-        return database;
-    }
-
-    public void setDatabase(String database) {
-        this.database = database;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public Integer getInvokeType() {
@@ -74,8 +47,20 @@ public class ProviderInterfaceDTO extends IdDTO {
         this.invokeType = invokeType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
+    }
+
+    public String getTable() {
+        return table;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
     }
 
 }

@@ -1,7 +1,6 @@
 package indi.uhyils.protocol.mysql.plan;
 
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
-import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.pojo.plan.LeftJoinSqlPlan;
 import java.util.List;
 import java.util.Map;

@@ -18,12 +18,12 @@ public class SysProviderInterface extends ProviderInterface {
     /**
      * 系统数据库名称
      */
-    private String database;
+    private final String database;
 
     /**
      * 表
      */
-    private String table;
+    private final String table;
 
 
     public SysProviderInterface(String path, Map<String, String> header, Map<String, Object> params) {

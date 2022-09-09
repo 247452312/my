@@ -10,7 +10,7 @@ import indi.uhyils.util.Asserts;
  * 转换节点表(Node)表 数据库实体类
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年09月09日 15时45分
  */
 public class Node extends AbstractDataNode<NodeDO> {
 
@@ -25,19 +25,12 @@ public class Node extends AbstractDataNode<NodeDO> {
 
     @Override
     public String databaseName() {
-
-        final NodeDO node = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
-        final String url = node.getUrl();
-        final int firstIndex = url.indexOf("/");
-        return url.substring(0, firstIndex);
+        return toData().orElseThrow(() -> Asserts.makeException("未填充内容")).getDatabase();
     }
 
     @Override
     public String tableName() {
-        final NodeDO node = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
-        final String url = node.getUrl();
-        final int firstIndex = url.indexOf("/");
-        return url.substring(firstIndex + 1);
+        return toData().orElseThrow(() -> Asserts.makeException("未填充内容")).getTableName();
     }
 
     /**
@@ -47,6 +40,6 @@ public class Node extends AbstractDataNode<NodeDO> {
      * @param providerInterfaceRepository
      */
     public void fillSubNode(NodeRepository nodeRepository, ProviderInterfaceRepository providerInterfaceRepository) {
-        
+
     }
 }

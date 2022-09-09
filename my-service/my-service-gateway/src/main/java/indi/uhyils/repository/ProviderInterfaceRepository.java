@@ -10,7 +10,7 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年09月09日 15时45分
  */
 public interface ProviderInterfaceRepository extends BaseEntityRepository<ProviderInterfaceDO, ProviderInterface> {
 
@@ -18,18 +18,20 @@ public interface ProviderInterfaceRepository extends BaseEntityRepository<Provid
      * 获取唯一接口信息
      *
      * @param invokeType
-     * @param path
+     * @param database
+     * @param table
      *
      * @return
      */
-    ProviderInterface find(Integer invokeType, String path);
+    ProviderInterface find(Integer invokeType, String database, String table);
 
     /**
      * 根据path获取具体的根节点
      *
-     * @param path
+     * @param database
+     * @param table
      *
      * @return
      */
-    AbstractDataNode find(String path);
+    AbstractDataNode find(String database, String table);
 }

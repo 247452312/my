@@ -2,7 +2,6 @@ package indi.uhyils.protocol.mysql;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
-import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.PlanFactory;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.plan.pojo.plan.BlockQuerySelectSqlPlan;
@@ -49,8 +48,8 @@ public class PlanFactoryImpl implements PlanFactory {
     }
 
     @Override
-    public ResultMappingPlan buildResultMappingPlan( Map<String, String> headers, List<SQLSelectItem> selectList) {
-        return new ResultMappingPlanImpl( headers, selectList);
+    public ResultMappingPlan buildResultMappingPlan(Map<String, String> headers, List<SQLSelectItem> selectList) {
+        return new ResultMappingPlanImpl(headers, selectList);
     }
 
     @Override

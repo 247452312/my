@@ -11,10 +11,9 @@
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
             <result property="updateDate" column="update_date" jdbcType="BIGINT"/>
             <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="sql" column="sql" jdbcType="VARCHAR"/>
-            <result property="subNode" column="sub_node" jdbcType="VARCHAR"/>
-            <result property="url" column="url" jdbcType="VARCHAR"/>
+            <result property="sql" column="sql" jdbcType="TEXT"/>
+            <result property="database" column="database" jdbcType="VARCHAR"/>
+            <result property="tableName" column="table_name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--批量通过主键修改数据-->
@@ -42,17 +41,14 @@
               <if test="updateUser != null">
                 ,update_user = #{updateUser}
               </if>
-              <if test="name != null and name != ''">
-                ,name = #{name}
-              </if>
               <if test="sql != null and sql != ''">
                 ,sql = #{sql}
               </if>
-              <if test="subNode != null and subNode != ''">
-                ,sub_node = #{subNode}
+              <if test="database != null and database != ''">
+                ,database = #{database}
               </if>
-              <if test="url != null and url != ''">
-                ,url = #{url}
+              <if test="tableName != null and tableName != ''">
+                ,table_name = #{tableName}
               </if>
       where id = #{id}
     </foreach>

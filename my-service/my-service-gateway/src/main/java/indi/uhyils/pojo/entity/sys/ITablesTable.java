@@ -3,7 +3,6 @@ package indi.uhyils.pojo.entity.sys;
 import com.alibaba.fastjson.JSONObject;
 import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.enums.Symbol;
-import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.enums.FieldTypeEnum;
 import indi.uhyils.mysql.enums.TableTypeEnum;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
@@ -44,7 +43,7 @@ public class ITablesTable implements SysTable {
      */
     private final Map<String, Object> params;
 
-    private CallNodeService callNodeService;
+    private final CallNodeService callNodeService;
 
     public ITablesTable(Map<String, Object> params) {
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getKey));

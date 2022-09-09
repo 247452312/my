@@ -18,7 +18,7 @@ import indi.uhyils.repository.base.AbstractRepository;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年09月09日 15时45分
  */
 @Repository
 public class ProviderInterfaceRepositoryImpl extends AbstractRepository<ProviderInterface, ProviderInterfaceDO, ProviderInterfaceDao, ProviderInterfaceDTO, ProviderInterfaceAssembler> implements ProviderInterfaceRepository {
@@ -29,17 +29,19 @@ public class ProviderInterfaceRepositoryImpl extends AbstractRepository<Provider
 
 
     @Override
-    public ProviderInterface find(Integer invokeType, String path) {
+    public ProviderInterface find(Integer invokeType, String database, String table) {
         final LambdaQueryWrapper<ProviderInterfaceDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(ProviderInterfaceDO::getInvokeType, invokeType);
-        queryWrapper.eq(ProviderInterfaceDO::getUrl, path);
+        queryWrapper.eq(ProviderInterfaceDO::getDatabase, database);
+        queryWrapper.eq(ProviderInterfaceDO::getTable, table);
         return assembler.toEntity(dao.selectOne(queryWrapper));
     }
 
     @Override
-    public AbstractDataNode<ProviderInterfaceDO> find(String path) {
+    public AbstractDataNode<ProviderInterfaceDO> find(String database, String table) {
         final LambdaQueryWrapper<ProviderInterfaceDO> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(ProviderInterfaceDO::getUrl, path);
+        queryWrapper.eq(ProviderInterfaceDO::getDatabase, database);
+        queryWrapper.eq(ProviderInterfaceDO::getTable, table);
         final ProviderInterfaceDO nodeDO = dao.selectOne(queryWrapper);
         return assembler.toEntity(nodeDO);
     }

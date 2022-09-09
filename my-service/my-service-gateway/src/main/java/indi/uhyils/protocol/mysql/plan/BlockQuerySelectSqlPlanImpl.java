@@ -26,7 +26,7 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
     /**
      * 节点
      */
-    private GatewaySdkService gatewaySdkService;
+    private final GatewaySdkService gatewaySdkService;
 
 
     public BlockQuerySelectSqlPlanImpl(SqlTableSourceBinaryTree froms, Map<String, String> headers, Map<String, Object> params) {

@@ -10,16 +10,17 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年09月09日 15时45分
  */
 public interface NodeRepository extends BaseEntityRepository<NodeDO, Node> {
 
     /**
      * 根据path获取中间节点或者底层节点
      *
-     * @param path
+     * @param database
+     * @param table
      */
-    AbstractDataNode find(String path);
+    AbstractDataNode find(String database, String table);
 
     /**
      * 判断要查询的是否是系统表

@@ -11,8 +11,9 @@
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
             <result property="updateDate" column="update_date" jdbcType="BIGINT"/>
             <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
-            <result property="url" column="url" jdbcType="VARCHAR"/>
             <result property="invokeType" column="invoke_type" jdbcType="INTEGER"/>
+            <result property="database" column="database" jdbcType="VARCHAR"/>
+            <result property="table" column="table" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--批量通过主键修改数据-->
@@ -40,11 +41,14 @@
               <if test="updateUser != null">
                 ,update_user = #{updateUser}
               </if>
-              <if test="url != null and url != ''">
-                ,url = #{url}
-              </if>
               <if test="invokeType != null">
                 ,invoke_type = #{invokeType}
+              </if>
+              <if test="database != null and database != ''">
+                ,database = #{database}
+              </if>
+              <if test="table != null and table != ''">
+                ,table = #{table}
               </if>
       where id = #{id}
     </foreach>

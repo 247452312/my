@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *
  * @author uhyils <247452312@qq.com>
  * @version 1.0
- * @date 文件创建日期 2022年08月16日 10时28分
+ * @date 文件创建日期 2022年09月09日 15时45分
  */
 public class CallNodeDTO extends IdDTO {
 
@@ -34,11 +34,6 @@ public class CallNodeDTO extends IdDTO {
      */
     private String url;
 
-    /**
-     * 下层的node
-     */
-    private NodeDTO nodeDTO;
-
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -47,7 +42,6 @@ public class CallNodeDTO extends IdDTO {
             .append("nodeId", getNodeId())
             .append("invokeType", getInvokeType())
             .append("url", getUrl())
-            .append("nodeDTO", getNodeDTO())
             .toString();
     }
 
@@ -83,11 +77,4 @@ public class CallNodeDTO extends IdDTO {
         this.url = url;
     }
 
-    public NodeDTO getNodeDTO() {
-        return nodeDTO;
-    }
-
-    public void setNodeDTO(NodeDTO nodeDTO) {
-        this.nodeDTO = nodeDTO;
-    }
 }

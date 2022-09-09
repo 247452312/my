@@ -15,12 +15,12 @@ public class InvokeCommandBuilder {
     /**
      * 参数
      */
-    private Map<String, Object> params = new HashMap<>();
+    private final Map<String, Object> params = new HashMap<>();
 
     /**
      * header
      */
-    private Map<String, String> header = new HashMap<>();
+    private final Map<String, String> header = new HashMap<>();
 
     /**
      * 路径

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="indi.uhyils.dao.NodeParseDao">
-    <resultMap type="indi.uhyils.pojo.DO.NodeParseDO" id="NodeParseMap">
+<mapper namespace="indi.uhyils.dao.ProviderInterfaceMysqlDao">
+    <resultMap type="indi.uhyils.pojo.DO.ProviderInterfaceMysqlDO" id="ProviderInterfaceMysqlMap">
             <result property="id" column="id" jdbcType="BIGINT"/>
             <result property="createDate" column="create_date" jdbcType="BIGINT"/>
             <result property="createUser" column="create_user" jdbcType="BIGINT"/>
@@ -11,17 +11,16 @@
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
             <result property="updateDate" column="update_date" jdbcType="BIGINT"/>
             <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
-            <result property="nodeId" column="node_id" jdbcType="BIGINT"/>
-            <result property="paramName" column="param_name" jdbcType="VARCHAR"/>
-            <result property="paramType" column="param_type" jdbcType="INTEGER"/>
-            <result property="fid" column="fid" jdbcType="BIGINT"/>
+            <result property="database" column="database" jdbcType="VARCHAR"/>
+            <result property="table" column="table" jdbcType="VARCHAR"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--批量通过主键修改数据-->
     <update id="updateBatch"
-            parameterType="indi.uhyils.pojo.DO.NodeParseDO">
+            parameterType="indi.uhyils.pojo.DO.ProviderInterfaceMysqlDO">
         <foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
-            update sys_node_parse
+            update sys_provider_interface_mysql
             set update_date = #{item.updateDate}
             ,update_user = #{item.updateUser}
               <if test="createDate != null">
@@ -42,17 +41,14 @@
               <if test="updateUser != null">
                 ,update_user = #{updateUser}
               </if>
-              <if test="nodeId != null">
-                ,node_id = #{nodeId}
+              <if test="database != null and database != ''">
+                ,database = #{database}
               </if>
-              <if test="paramName != null and paramName != ''">
-                ,param_name = #{paramName}
+              <if test="table != null and table != ''">
+                ,table = #{table}
               </if>
-              <if test="paramType != null">
-                ,param_type = #{paramType}
-              </if>
-              <if test="fid != null">
-                ,fid = #{fid}
+              <if test="url != null and url != ''">
+                ,url = #{url}
               </if>
       where id = #{id}
     </foreach>

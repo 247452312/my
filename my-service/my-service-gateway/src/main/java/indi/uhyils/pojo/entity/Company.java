@@ -16,7 +16,7 @@ import org.apache.commons.codec.binary.Base64;
  * 厂商表(Company)表 数据库实体类
  *
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2022年08月12日 08时33分
+ * @date 文件创建日期 2022年09月09日 15时45分
  */
 public class Company extends AbstractDoEntity<CompanyDO> {
 
