@@ -35,7 +35,7 @@ import javafx.util.Pair;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年09月08日 09时13分
  */
-public class ITablesTable implements SysTable {
+public class ITables implements SysTable {
 
 
     /**
@@ -45,7 +45,7 @@ public class ITablesTable implements SysTable {
 
     private final CallNodeService callNodeService;
 
-    public ITablesTable(Map<String, Object> params) {
+    public ITables(Map<String, Object> params) {
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getKey));
         this.callNodeService = SpringUtil.getBean(CallNodeService.class);
     }

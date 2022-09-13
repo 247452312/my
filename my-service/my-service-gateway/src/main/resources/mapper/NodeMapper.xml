@@ -11,7 +11,7 @@
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
             <result property="updateDate" column="update_date" jdbcType="BIGINT"/>
             <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
-            <result property="sql" column="sql" jdbcType="TEXT"/>
+            <result property="sql" column="sql" jdbcType="VARCHAR"/>
             <result property="database" column="database" jdbcType="VARCHAR"/>
             <result property="tableName" column="table_name" jdbcType="VARCHAR"/>
     </resultMap>

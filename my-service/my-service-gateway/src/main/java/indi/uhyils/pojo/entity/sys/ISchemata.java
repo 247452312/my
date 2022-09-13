@@ -30,12 +30,12 @@ import java.util.stream.Collectors;
 import javafx.util.Pair;
 
 /**
- * inforamtion_schema库 SCHEMATA表
+ * information_schema库 SCHEMATA表
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年09月01日 14时22分
  */
-public class ISchemataTable implements SysTable {
+public class ISchemata implements SysTable {
 
     /**
      * 入参
@@ -44,7 +44,7 @@ public class ISchemataTable implements SysTable {
 
     private final CallNodeService callNodeService;
 
-    public ISchemataTable(Map<String, Object> params) {
+    public ISchemata(Map<String, Object> params) {
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getKey));
         this.callNodeService = SpringUtil.getBean(CallNodeService.class);
     }

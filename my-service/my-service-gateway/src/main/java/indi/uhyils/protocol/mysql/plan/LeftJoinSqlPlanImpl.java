@@ -2,6 +2,7 @@ package indi.uhyils.protocol.mysql.plan;
 
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.pojo.plan.LeftJoinSqlPlan;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,9 @@ public class LeftJoinSqlPlanImpl extends LeftJoinSqlPlan {
 
     @Override
     public NodeInvokeResult invoke() {
-        return new NodeInvokeResult();
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
+        nodeInvokeResult.setFieldInfos(new ArrayList<>());
+        nodeInvokeResult.setResult(new ArrayList<>());
+        return nodeInvokeResult;
     }
 }

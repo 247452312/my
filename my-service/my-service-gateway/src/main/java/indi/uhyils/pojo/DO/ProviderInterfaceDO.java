@@ -26,13 +26,13 @@ public class ProviderInterfaceDO extends BaseDO {
     /**
      * 此节点的库名称
      */
-    @TableField
+    @TableField("`database`")
     private String database;
 
     /**
      * 此节点的表名称
      */
-    @TableField
+    @TableField("`table`")
     private String table;
 
     @Override

@@ -3,6 +3,7 @@ package indi.uhyils.protocol.mysql.plan;
 import com.alibaba.druid.sql.ast.SQLExpr;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.pojo.plan.MethodInvokePlan;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,9 @@ public class MethodInvokePlanImpl extends MethodInvokePlan {
 
     @Override
     public NodeInvokeResult invoke() {
-        return new NodeInvokeResult();
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
+        nodeInvokeResult.setFieldInfos(new ArrayList<>());
+        nodeInvokeResult.setResult(new ArrayList<>());
+        return nodeInvokeResult;
     }
 }

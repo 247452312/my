@@ -20,13 +20,13 @@ public class NodeDO extends BaseDO {
     /**
      * 对应低代码sql
      */
-    @TableField
+    @TableField("`sql`")
     private String sql;
 
     /**
      * 中间接口库名
      */
-    @TableField
+    @TableField("`database`")
     private String database;
 
     /**

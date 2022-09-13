@@ -3,7 +3,9 @@ package indi.uhyils.enums;
 import com.google.common.base.Function;
 import indi.uhyils.annotation.NotNull;
 import indi.uhyils.pojo.entity.sys.IColumns;
-import indi.uhyils.pojo.entity.sys.ISchemataTable;
+import indi.uhyils.pojo.entity.sys.IParameters;
+import indi.uhyils.pojo.entity.sys.IRoutines;
+import indi.uhyils.pojo.entity.sys.ISchemata;
 import indi.uhyils.pojo.entity.sys.SysTable;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.StringUtil;
@@ -19,15 +21,23 @@ public enum SysTableEnum {
     /**
      * 库表元数据存储表
      */
-    INFORMATION_SCHEMA_SCHEMATA("information_schema", "schemata", ISchemataTable::new),
+    INFORMATION_SCHEMA_SCHEMATA("information_schema", "schemata", ISchemata::new),
     /**
      * 表元数据存储
      */
-    INFORMATION_SCHEMA_TABLES("information_schema", "tables", ISchemataTable::new),
+    INFORMATION_SCHEMA_TABLES("information_schema", "tables", ISchemata::new),
     /**
      * 列信息
      */
     INFORMATION_SCHEMA_COLUMNS("information_schema", "columns", IColumns::new),
+    /**
+     * 视图信息
+     */
+    INFORMATION_SCHEMA_PARAMETERS("information_schema", "parameters", IParameters::new),
+    /**
+     * 存储子程序（存储程序和函数）的信息
+     */
+    INFORMATION_SCHEMA_ROUTINES("information_schema", "routines", IRoutines::new),
     ;
 
     /**
