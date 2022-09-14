@@ -44,7 +44,8 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
         final SQLExpr owner = tableSource.getOwner();
         final String name = tableSource.getName();
         if (name.startsWith("&")) {
-            int i = 1;
+            final Long resultIndex = Long.parseLong(name.substring(1));
+            return lastAllPlanResult.get(resultIndex);
         }
         StringBuilder path = new StringBuilder();
         final String database = MysqlContent.MYSQL_TCP_INFO.get().getDatabase();

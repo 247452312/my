@@ -41,6 +41,11 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
     protected Map<String, String> headers;
 
     /**
+     * 过去执行的所有结果
+     */
+    protected Map<Long,NodeInvokeResult> lastAllPlanResult;
+
+    /**
      * 最后一次执行的结果
      */
     protected NodeInvokeResult lastNodeInvokeResult;
@@ -74,6 +79,7 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
             }
         });
         planArgs.keySet().stream().max(Long::compareTo).ifPresent(aLong -> this.lastNodeInvokeResult = planArgs.get(aLong));
+        this.lastAllPlanResult = planArgs;
     }
 
     @Override
