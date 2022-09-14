@@ -34,8 +34,13 @@ public class SqlTableSourceBinaryTreePool extends AbstractObjectPool<SqlTableSou
     public SqlTableSourceBinaryTree getOrCreateObject(SQLTableSource tableSource, List<SQLBinaryOpExpr> where) {
         SqlTableSourceBinaryTree orCreateObject = super.getOrCreateObject();
         final SQLName name = ((SQLExprTableSource) tableSource).getName();
-        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
-         orCreateObject.setTableSource((new SQLPropertyExpr(mysqlTcpInfo.getDatabase(), name.getSimpleName())));
+        if (name instanceof SQLPropertyExpr) {
+            orCreateObject.setTableSource((SQLPropertyExpr) name);
+        } else {
+            final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+            orCreateObject.setTableSource((new SQLPropertyExpr(mysqlTcpInfo.getDatabase(), name.getSimpleName())));
+        }
+
         orCreateObject.setWhere(where);
         return orCreateObject;
     }
