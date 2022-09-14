@@ -53,14 +53,16 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
         }
         final List<SQLBinaryOpExpr> where = froms.getWhere();
         Map<String, Object> whereParams = new HashMap<>();
-        for (SQLBinaryOpExpr sqlBinaryOpExpr : where) {
-            final SQLExpr left = sqlBinaryOpExpr.getLeft();
-            final SQLExpr right = sqlBinaryOpExpr.getRight();
-            String rightStr = right.toString();
-            if (right instanceof SQLCharExpr) {
-                rightStr = ((SQLCharExpr) right).getText();
+        if (where != null) {
+            for (SQLBinaryOpExpr sqlBinaryOpExpr : where) {
+                final SQLExpr left = sqlBinaryOpExpr.getLeft();
+                final SQLExpr right = sqlBinaryOpExpr.getRight();
+                String rightStr = right.toString();
+                if (right instanceof SQLCharExpr) {
+                    rightStr = ((SQLCharExpr) right).getText();
+                }
+                whereParams.put(left.toString(), rightStr);
             }
-            whereParams.put(left.toString(), rightStr);
         }
         invokeCommandBuilder.addArgs(whereParams);
         StringBuilder path = new StringBuilder();
