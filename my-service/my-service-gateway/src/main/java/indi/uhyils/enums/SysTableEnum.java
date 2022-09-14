@@ -3,6 +3,7 @@ package indi.uhyils.enums;
 import com.google.common.base.Function;
 import indi.uhyils.annotation.NotNull;
 import indi.uhyils.pojo.entity.sys.IColumns;
+import indi.uhyils.pojo.entity.sys.IEngines;
 import indi.uhyils.pojo.entity.sys.IParameters;
 import indi.uhyils.pojo.entity.sys.IRoutines;
 import indi.uhyils.pojo.entity.sys.ISchemata;
@@ -38,6 +39,10 @@ public enum SysTableEnum {
      * 存储子程序（存储程序和函数）的信息
      */
     INFORMATION_SCHEMA_ROUTINES("information_schema", "routines", IRoutines::new),
+    /**
+     * 存储引擎相关的信息
+     */
+    INFORMATION_SCHEMA_ENGINES("information_schema", "engines", IEngines::new),
     ;
 
     /**

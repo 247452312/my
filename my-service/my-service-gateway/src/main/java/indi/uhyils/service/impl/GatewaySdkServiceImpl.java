@@ -76,7 +76,7 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
         final String path = command.getPath();
         Boolean isSysTable = nodeRepository.judgeSysTable(path);
         if (isSysTable) {
-            ProviderInterface providerInterface = new SysProviderInterface(command.getPath(), command.getHeader(), command.getParams());
+            AbstractDataNode providerInterface = new SysProviderInterface(command.getPath(), command.getHeader(), command.getParams());
             return providerInterface.getResult();
         } else {
             final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(path);

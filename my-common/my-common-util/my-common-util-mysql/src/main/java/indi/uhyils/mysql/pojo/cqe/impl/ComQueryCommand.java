@@ -15,7 +15,9 @@ import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.PlanUtil;
 import indi.uhyils.util.CollectionUtil;
+import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.StringUtil;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -28,11 +30,11 @@ import java.util.List;
  */
 public class ComQueryCommand extends MysqlSqlCommand {
 
-    private String sql;
+    private String completeSql;
 
     public ComQueryCommand(MysqlThisRequestInfo mysqlThisRequestInfo, String sql) {
         super(mysqlThisRequestInfo);
-        this.sql = sql;
+        this.completeSql = sql;
     }
 
     public ComQueryCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
@@ -41,25 +43,33 @@ public class ComQueryCommand extends MysqlSqlCommand {
 
     @Override
     public List<MysqlResponse> invoke() throws Exception {
-        if (StringUtil.isEmpty(sql)) {
+        if (StringUtil.isEmpty(completeSql)) {
             return Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "sql语句不能为空"));
         }
+        LogUtil.info("mysql协议sql执行了:" + completeSql);
+        final String[] split = completeSql.split(";");
+        List<MysqlResponse> result = new ArrayList<>();
+        for (String sql : split) {
+            // 解析sql为执行计划
+            final List<MysqlPlan> mysqlPlans = MysqlUtil.analysisSqlToPlan(sql, new HashMap<>());
+            // 执行计划为空, 返回执行成功,无信息
+            if (CollectionUtil.isEmpty(mysqlPlans)) {
+                final List<OkResponse> okResponses = Collections.singletonList(new OkResponse(SqlTypeEnum.NULL));
+                result.addAll(okResponses);
+                continue;
+            }
+            final NodeInvokeResult execute = PlanUtil.execute(mysqlPlans, new HashMap<>());
 
-        // 解析sql为执行计划
-        final List<MysqlPlan> mysqlPlans = MysqlUtil.analysisSqlToPlan(sql, new HashMap<>());
-        // 执行计划为空, 返回执行成功,无信息
-        if (CollectionUtil.isEmpty(mysqlPlans)) {
-            return Collections.singletonList(new OkResponse(SqlTypeEnum.NULL));
+            // 如果没有结果, 说明不是一个常规的查询语句,返回ok即可,如果报错,则在外部已经进行了try,catch
+            if (CollectionUtil.isEmpty(execute.getFieldInfos())) {
+                final OkResponse o = new OkResponse(SqlTypeEnum.NULL);
+                result.add(o);
+                continue;
+            }
+            final ResultSetResponse o = new ResultSetResponse(execute.getFieldInfos(), execute.getResult());
+            result.add(o);
         }
-
-        final NodeInvokeResult execute = PlanUtil.execute(mysqlPlans, new HashMap<>());
-
-        // 如果没有结果, 说明不是一个常规的查询语句,返回ok即可,如果报错,则在外部已经进行了try,catch
-        if (CollectionUtil.isEmpty(execute.getFieldInfos())) {
-            return Collections.singletonList(new OkResponse(SqlTypeEnum.NULL));
-        }
-
-        return Collections.singletonList(new ResultSetResponse(execute.getFieldInfos(), execute.getResult()));
+        return result;
     }
 
     @Override
@@ -71,6 +81,6 @@ public class ComQueryCommand extends MysqlSqlCommand {
     protected void load() {
         byte[] mysqlBytes = mysqlThisRequestInfo.getMysqlBytes();
         Proto proto = new Proto(mysqlBytes, 5);
-        this.sql = proto.get_null_str();
+        this.completeSql = proto.get_null_str();
     }
 }
