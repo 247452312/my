@@ -45,14 +45,14 @@ public class ISchemata implements SysTable {
     private final CallNodeService callNodeService;
 
     public ISchemata(Map<String, Object> params) {
-        this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getKey));
+        this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getValue));
         this.callNodeService = SpringUtil.getBean(CallNodeService.class);
     }
 
 
     @Override
     public NodeInvokeResult getResult() {
-        final Object schemaName = params.get("schema_name");
+        final Object schemaName = params.get("table_schema");
         final ArrayList<Arg> args = new ArrayList<>();
         final Optional<UserDTO> userOptional = UserInfoHelper.get();
         if (!userOptional.isPresent()) {

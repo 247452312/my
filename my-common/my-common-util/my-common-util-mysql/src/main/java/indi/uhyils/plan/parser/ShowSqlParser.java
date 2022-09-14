@@ -1,6 +1,7 @@
 package indi.uhyils.plan.parser;
 
 import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.ast.statement.SQLShowTablesStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlShowStatement;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.util.LogUtil;
@@ -21,6 +22,9 @@ public class ShowSqlParser implements SqlParser {
     @Override
     public boolean canParse(SQLStatement sql) {
         if (sql instanceof MySqlShowStatement) {
+            return true;
+        }
+        if (sql instanceof SQLShowTablesStatement) {
             return true;
         }
         return false;

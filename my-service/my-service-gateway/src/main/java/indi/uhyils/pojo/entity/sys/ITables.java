@@ -46,7 +46,7 @@ public class ITables implements SysTable {
     private final CallNodeService callNodeService;
 
     public ITables(Map<String, Object> params) {
-        this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getKey));
+        this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getValue));
         this.callNodeService = SpringUtil.getBean(CallNodeService.class);
     }
 

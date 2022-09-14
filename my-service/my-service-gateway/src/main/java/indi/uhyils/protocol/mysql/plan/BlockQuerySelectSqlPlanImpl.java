@@ -1,6 +1,8 @@
 package indi.uhyils.protocol.mysql.plan;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
+import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
+import com.alibaba.druid.sql.ast.expr.SQLCharExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.mysql.content.MysqlContent;
@@ -13,6 +15,8 @@ import indi.uhyils.service.GatewaySdkService;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SpringUtil;
 import indi.uhyils.util.StringUtil;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,6 +51,18 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
             final Long resultIndex = Long.parseLong(name.substring(1));
             return lastAllPlanResult.get(resultIndex);
         }
+        final List<SQLBinaryOpExpr> where = froms.getWhere();
+        Map<String, Object> whereParams = new HashMap<>();
+        for (SQLBinaryOpExpr sqlBinaryOpExpr : where) {
+            final SQLExpr left = sqlBinaryOpExpr.getLeft();
+            final SQLExpr right = sqlBinaryOpExpr.getRight();
+            String rightStr = right.toString();
+            if (right instanceof SQLCharExpr) {
+                rightStr = ((SQLCharExpr) right).getText();
+            }
+            whereParams.put(left.toString(), rightStr);
+        }
+        invokeCommandBuilder.addArgs(whereParams);
         StringBuilder path = new StringBuilder();
         final String database = MysqlContent.MYSQL_TCP_INFO.get().getDatabase();
         if (owner != null) {
