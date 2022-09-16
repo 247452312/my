@@ -7,6 +7,8 @@ import indi.uhyils.pojo.entity.sys.IEngines;
 import indi.uhyils.pojo.entity.sys.IParameters;
 import indi.uhyils.pojo.entity.sys.IRoutines;
 import indi.uhyils.pojo.entity.sys.ISchemata;
+import indi.uhyils.pojo.entity.sys.ITables;
+import indi.uhyils.pojo.entity.sys.IView;
 import indi.uhyils.pojo.entity.sys.SysTable;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.StringUtil;
@@ -26,7 +28,7 @@ public enum SysTableEnum {
     /**
      * 表元数据存储
      */
-    INFORMATION_SCHEMA_TABLES("information_schema", "tables", ISchemata::new),
+    INFORMATION_SCHEMA_TABLES("information_schema", "tables", ITables::new),
     /**
      * 列信息
      */
@@ -43,6 +45,10 @@ public enum SysTableEnum {
      * 存储引擎相关的信息
      */
     INFORMATION_SCHEMA_ENGINES("information_schema", "engines", IEngines::new),
+    /**
+     * 视图相关的信息
+     */
+    INFORMATION_SCHEMA_VIEW("information_schema", "views", IView::new),
     ;
 
     /**

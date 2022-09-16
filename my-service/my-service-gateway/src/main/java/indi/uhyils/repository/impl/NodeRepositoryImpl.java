@@ -51,6 +51,7 @@ public class NodeRepositoryImpl extends AbstractRepository<Node, NodeDO, NodeDao
 
     @Override
     public Boolean judgeSysTable(String path) {
-        return MysqlContent.SYS_DATABASE.stream().anyMatch(t -> path.contains(t + MysqlContent.PATH_SEPARATOR));
+        final String lowerPath = path.toLowerCase();
+        return MysqlContent.SYS_DATABASE.stream().anyMatch(t -> lowerPath.contains(t + MysqlContent.PATH_SEPARATOR));
     }
 }

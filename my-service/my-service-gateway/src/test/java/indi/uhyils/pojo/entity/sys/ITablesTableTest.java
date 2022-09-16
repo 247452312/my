@@ -2,6 +2,7 @@ package indi.uhyils.pojo.entity.sys;
 
 import indi.uhyils.mysql.enums.TableTypeEnum;
 import indi.uhyils.mysql.pojo.DTO.EnginesInfo;
+import indi.uhyils.mysql.pojo.DTO.ViewInfo;
 import indi.uhyils.util.StringUtil;
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -15,7 +16,7 @@ class ITablesTableTest {
 
     @Test
     public void testTableInfo() {
-        final Field[] fields = EnginesInfo.class.getDeclaredFields();
+        final Field[] fields = ViewInfo.class.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
             final Field field = fields[i];
             final String name = field.getName();
@@ -34,7 +35,7 @@ class ITablesTableTest {
             if (typeStr == null) {
                 throw new RuntimeException("不对," + name + ",类型是:" + type.getName());
             }
-            System.out.println("fieldInfos.add(new FieldInfo(\"information_schema\", \"engines\", \"engines\", \"" + upperCase + "\", \"" + upperCase + "\", 0, 1, FieldTypeEnum." + typeStr + ", (short) 0, (byte) 0));");
+            System.out.println("fieldInfos.add(new FieldInfo(\"information_schema\", \"view\", \"view\", \"" + upperCase + "\", \"" + upperCase + "\", 0, 1, FieldTypeEnum." + typeStr + ", (short) 0, (byte) 0));");
         }
     }
 
