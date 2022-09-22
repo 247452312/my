@@ -2,6 +2,7 @@ package indi.uhyils.mysql.util;
 
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.parser.SqlParser;
@@ -403,4 +404,17 @@ public final class MysqlUtil {
         return true;
     }
 
+    /**
+     * 匹配like
+     *
+     * @param key          字段名称
+     * @param variableName 入参(可能带有%)
+     *
+     * @return
+     */
+    @NotNull
+    public static boolean likeMatching(String key, String variableName) {
+        // todo 匹配like
+        return false;
+    }
 }
