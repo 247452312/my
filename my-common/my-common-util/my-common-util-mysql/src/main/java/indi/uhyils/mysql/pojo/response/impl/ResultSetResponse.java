@@ -154,7 +154,7 @@ public class ResultSetResponse extends AbstractMysqlResponse {
      */
     private byte[] transObjToByte(Object obj) {
         if (obj == null) {
-            return new byte[0];
+            return new byte[]{(byte) 0xfb};
         }
         if (obj instanceof Date) {
             Date dateValue = (Date) obj;
@@ -168,6 +168,9 @@ public class ResultSetResponse extends AbstractMysqlResponse {
         }
         if (obj instanceof Double) {
             return MysqlUtil.mergeLengthCodedBinary((double) obj);
+        }
+        if (obj instanceof Integer) {
+            return MysqlUtil.mergeLengthCodedBinary((int) obj);
         }
         Asserts.assertTrue(false, "mysql 数据暂未支持类型:" + obj.getClass().getName());
         return null;

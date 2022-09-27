@@ -9,6 +9,7 @@ import indi.uhyils.plan.parser.SqlParser;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
+import indi.uhyils.util.StringUtil;
 import io.netty.buffer.ByteBuf;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,6 +27,11 @@ import org.apache.commons.io.HexDump;
  * @date 文件创建日期 2022年03月18日 08时51分
  */
 public final class MysqlUtil {
+
+    /**
+     * 单引号前缀
+     */
+    private static final String QUOTES_PREFIX = "`";
 
     /**
      * 解析mysql语句
@@ -416,5 +422,75 @@ public final class MysqlUtil {
     public static boolean likeMatching(String key, String variableName) {
         // todo 匹配like
         return false;
+    }
+
+
+    /**
+     * sha1加密
+     *
+     * @param password
+     *
+     * @return
+     */
+    public static String sha1(String password) {
+        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            'a', 'b', 'c', 'd', 'e', 'f'};
+        try {
+            MessageDigest mdTemp = MessageDigest.getInstance("SHA1");
+            mdTemp.update(password.getBytes(StandardCharsets.UTF_8));
+            byte[] md = mdTemp.digest();
+            int j = md.length;
+            char buf[] = new char[j * 2];
+            int k = 0;
+            for (int i = 0; i < j; i++) {
+                byte byte0 = md[i];
+                buf[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                buf[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(buf);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * 忽略单引号以及大小写匹配表名
+     *
+     * @param table
+     * @param targetTable
+     *
+     * @return
+     */
+    public static boolean equalsIgnoreCaseAndQuotes(String table, String targetTable) {
+        String rqTable = removeQuotes(table);
+        String rqTargetTable = removeQuotes(targetTable);
+        return StringUtil.equalsIgnoreCase(rqTable, rqTargetTable);
+    }
+
+    /**
+     * 去除表名中的单引号
+     *
+     * @param table
+     *
+     * @return
+     */
+    private static String removeQuotes(String table) {
+        if (table.startsWith(QUOTES_PREFIX) && table.endsWith(QUOTES_PREFIX)) {
+            return table.substring(1, table.length() - 1);
+        }
+        return table;
+    }
+
+    /**
+     * 忽略大小写以及单引号
+     *
+     * @param needField
+     * @param key
+     *
+     * @return
+     */
+    public static boolean ignoreCaseAndQuotesContains(List<String> needField, String key) {
+        final String rKey = removeQuotes(key);
+        return needField.stream().anyMatch(t -> StringUtil.equalsIgnoreCase(removeQuotes(t), rKey));
     }
 }

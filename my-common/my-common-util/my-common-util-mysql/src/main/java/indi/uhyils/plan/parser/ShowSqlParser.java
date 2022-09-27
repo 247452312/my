@@ -29,10 +29,13 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlShowTableStatusSta
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlShowTriggersStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlShowVariantsStatement;
 import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlShowWarningsStatement;
+import indi.uhyils.mysql.content.MysqlContent;
+import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.StringUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -156,11 +159,52 @@ public class ShowSqlParser implements SqlParser {
     }
 
     private List<MysqlPlan> doParse(MySqlShowStatusStatement sql, Map<String, String> headers) {
-        return null;
+        final SQLExpr like = sql.getLike();
+        StringBuilder transSql = new StringBuilder("select VARIABLE_NAME as VariableName,VARIABLE_VALUE as `Value` from performance_schema.GLOBAL_VARIABLES where 1=1");
+        if (like != null) {
+            transSql.append(" and VARIABLE_NAME like '");
+            transSql.append(like);
+            transSql.append("'");
+        }
+        return MysqlUtil.analysisSqlToPlan(transSql.toString(), headers);
     }
 
     private List<MysqlPlan> doParse(MySqlShowTableStatusStatement sql, Map<String, String> headers) {
-        return null;
+        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+        Asserts.assertTrue(mysqlTcpInfo != null, "No database selected");
+        final String database = mysqlTcpInfo.getDatabase();
+        Asserts.assertTrue(StringUtil.isNotEmpty(database), "No database selected");
+
+        final SQLExpr like = sql.getLike();
+        StringBuilder transSql = new StringBuilder().append("SELECT\n")
+                                                    .append("\tTABLE_NAME AS `Name`,\n")
+                                                    .append("\t`ENGINE` AS `Engine`,\n")
+                                                    .append("\t`VERSION` AS `Version`,\n")
+                                                    .append("\tROW_FORMAT AS Row_format,\n")
+                                                    .append("\tTABLE_ROWS AS `Rows`,\n")
+                                                    .append("\tAVG_ROW_LENGTH AS `Avg_row_length`,\n")
+                                                    .append("\tDATA_LENGTH AS `Data_length`,\n")
+                                                    .append("\tMAX_DATA_LENGTH AS `Max_data_length`,\n")
+                                                    .append("\tINDEX_LENGTH AS `Index_length`,\n")
+                                                    .append("\tDATA_FREE as `Data_free`,\n")
+                                                    .append("\tAUTO_INCREMENT as `Auto_increment`,\n")
+                                                    .append("\tCREATE_TIME as `Create_time`,\n")
+                                                    .append("\tUPDATE_TIME as `Update_time`,\n")
+                                                    .append("\tCHECK_TIME as `Check_time`,\n")
+                                                    .append("\tTABLE_COLLATION as `Collation`,\n")
+                                                    .append("\tCHECKSUB as `Checksub`,\n")
+                                                    .append("\tCREATE_OPTIONS as `Create_options`,\n")
+                                                    .append("\tTABLE_COMMENT as `Comment`\n")
+                                                    .append("FROM\n")
+                                                    .append("\tinformation_schema.`TABLES` where TABLE_SCHEMA='")
+                                                    .append(database)
+                                                    .append("' ");
+        if (like != null) {
+            transSql.append(" and TABLE_NAME like '");
+            transSql.append(like);
+            transSql.append("'");
+        }
+        return MysqlUtil.analysisSqlToPlan(transSql.toString(), headers);
     }
 
     private List<MysqlPlan> doParse(MySqlShowTriggersStatement sql, Map<String, String> headers) {
@@ -180,6 +224,19 @@ public class ShowSqlParser implements SqlParser {
 
     private List<MysqlPlan> doParse(MySqlShowWarningsStatement sql, Map<String, String> headers) {
         return null;
+    }
+
+    private List<MysqlPlan> doParse(SQLShowTablesStatement sql, Map<String, String> headers) {
+        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+        Asserts.assertTrue(mysqlTcpInfo != null, "No database selected");
+        final String database = mysqlTcpInfo.getDatabase();
+        Asserts.assertTrue(StringUtil.isNotEmpty(database), "No database selected");
+
+        StringBuilder transSql = new StringBuilder("select TABLE_NAME as 'Tables_in_'" + database + " from information_schema.`TABLES` where TABLE_SCHEMA = '");
+        transSql.append(database);
+        transSql.append("'");
+
+        return MysqlUtil.analysisSqlToPlan(transSql.toString(), headers);
     }
 
     private List<MysqlPlan> doParse(MySqlShowDatabasesStatement sql, Map<String, String> headers) {

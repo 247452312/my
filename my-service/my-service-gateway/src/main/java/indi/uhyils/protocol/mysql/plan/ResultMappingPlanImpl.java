@@ -3,6 +3,7 @@ package indi.uhyils.protocol.mysql.plan;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
+import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.plan.pojo.plan.ResultMappingPlan;
 import java.util.HashMap;
 import java.util.List;
@@ -26,13 +27,13 @@ public class ResultMappingPlanImpl extends ResultMappingPlan {
     public NodeInvokeResult invoke() {
         final List<FieldInfo> fieldInfos = this.lastNodeInvokeResult.getFieldInfos();
         final List<Map<String, Object>> lastResult = this.lastNodeInvokeResult.getResult();
-        final List<String> needField = selectList.stream().map(SQLSelectItem::toString).collect(Collectors.toList());
+        final List<String> needField = selectList.stream().map(t -> t.getExpr().toString()).collect(Collectors.toList());
 
         final List<FieldInfo> newFieldInfo = fieldInfos.stream().filter(t -> needField.contains(t.getFieldName()) || needField.contains("*")).collect(Collectors.toList());
         final List<Map<String, Object>> newResultList = lastResult.stream().map(t -> {
             Map<String, Object> newResult = new HashMap<>(selectList.size());
             for (Entry<String, Object> entry : t.entrySet()) {
-                if (needField.contains(entry.getKey()) || needField.contains("*")) {
+                if (MysqlUtil.ignoreCaseAndQuotesContains(needField, entry.getKey()) || needField.contains("*")) {
                     newResult.put(entry.getKey(), entry.getValue());
                 }
             }

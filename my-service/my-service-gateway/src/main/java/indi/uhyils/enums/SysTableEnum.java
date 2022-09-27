@@ -2,6 +2,7 @@ package indi.uhyils.enums;
 
 import com.google.common.base.Function;
 import indi.uhyils.annotation.NotNull;
+import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.pojo.entity.sys.IColumns;
 import indi.uhyils.pojo.entity.sys.IEngines;
 import indi.uhyils.pojo.entity.sys.IParameters;
@@ -87,7 +88,7 @@ public enum SysTableEnum {
     public static SysTableEnum parse(String database, String table) {
         for (SysTableEnum value : values()) {
             if (StringUtil.equalsIgnoreCase(value.database, database)) {
-                if (StringUtil.equalsIgnoreCase(value.table, table)) {
+                if (StringUtil.equalsIgnoreCase(value.table, table) || MysqlUtil.equalsIgnoreCaseAndQuotes(value.table, table)) {
                     return value;
                 }
             }
