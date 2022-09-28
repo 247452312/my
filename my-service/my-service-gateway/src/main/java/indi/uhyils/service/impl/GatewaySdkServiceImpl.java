@@ -80,7 +80,7 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
             return providerInterface.getResult();
         } else {
             final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(path);
-            AbstractDataNode node = nodeRepository.find(splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
+            AbstractDataNode node = callNodeRepository.findNodeByDatabaseAndTable(splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
             Asserts.assertTrue(node != null, "未查询到指定的节点,名称:{}", command.getPath());
             return node.getResult();
         }

@@ -3,6 +3,7 @@ package indi.uhyils.repository;
 import indi.uhyils.pojo.DO.CallNodeDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.CallNode;
+import indi.uhyils.pojo.entity.Node;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
 
@@ -23,4 +24,12 @@ public interface CallNodeRepository extends BaseEntityRepository<CallNodeDO, Cal
      * @return
      */
     List<CallNode> findByUser(UserDTO userDTO);
+
+    /**
+     *
+     * @param database
+     * @param table
+     * @return
+     */
+    Node findNodeByDatabaseAndTable(String database, String table);
 }

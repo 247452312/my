@@ -62,6 +62,7 @@ import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -262,7 +263,13 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
             return;
         }
         // 3.根据请求获取结果
-        List<MysqlResponse> invokes = loadCommand(mysqlThisRequestInfo, load);
+        List<MysqlResponse> invokes = null;
+        try {
+            invokes = loadCommand(mysqlThisRequestInfo, load);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+            invokes = Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_PROTOCOL_OPTION, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, e.getLocalizedMessage()));
+        }
         sendResponse(invokes);
 
     }
