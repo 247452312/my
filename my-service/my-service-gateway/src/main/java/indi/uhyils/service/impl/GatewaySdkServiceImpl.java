@@ -13,6 +13,7 @@ import indi.uhyils.mysql.pojo.cqe.impl.MysqlAuthCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.mysql.pojo.response.impl.ErrResponse;
 import indi.uhyils.mysql.pojo.response.impl.OkResponse;
+import indi.uhyils.pojo.DO.NodeDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.pojo.cqe.query.BlackQuery;
@@ -80,8 +81,9 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
             return providerInterface.getResult();
         } else {
             final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(path);
-            AbstractDataNode node = callNodeRepository.findNodeByDatabaseAndTable(splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
+            AbstractDataNode<NodeDO> node = callNodeRepository.findNodeByDatabaseAndTable(splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
             Asserts.assertTrue(node != null, "未查询到指定的节点,名称:{}", command.getPath());
+            node.fillSqlInfo(node.toData().get().getSql(), command.getHeader(), command.getParams());
             return node.getResult();
         }
 
