@@ -16,13 +16,13 @@ class DbInformationTest {
     @Test
     void fillTableInfos() {
         DbInformationDTO dto = new DbInformationDTO();
-        dto.setTables(Arrays.asList("sys_call_node", "sys_company", "sys_company_power", "sys_node", "sys_node_link", "sys_provider_interface", "sys_provider_interface_http", "sys_provider_interface_mysql", "sys_provider_interface_param", "sys_provider_interface_rpc"));
-        dto.setDbName("my_gateway");
-        dto.setUrl("jdbc:mysql://prod:3306/my_gateway");
+        dto.setTables(Arrays.asList("i_blood_sugar_result"));
+        dto.setDbName("lis");
+        dto.setUrl("jdbc:mysql://rm-bp1wxt5s354kmj3i7.mysql.rds.aliyuncs.com:3306/lis?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false");
         dto.setType(DbTypeEnum.MYSQL.getTypeCode());
-        dto.setUserName("root");
-        dto.setPassword("123456");
-        dto.setProjectName("my-service-gateway");
+        dto.setUserName("xnyl");
+        dto.setPassword("XUqk5RQ3d#jN");
+        dto.setProjectName("lis-service");
         dto.setPort(3306);
         dto.setAuthor("uhyils <247452312@qq.com>");
 
@@ -32,7 +32,7 @@ class DbInformationTest {
         db.fillTableInfos();
         Map<String, String> result = db.result();
 
-        KproUtil.saveToLocal("D:\\my\\生成文件", result);
+        KproUtil.saveToLocal("D:\\my\\生成文件\\lis", result);
 
     }
 }
