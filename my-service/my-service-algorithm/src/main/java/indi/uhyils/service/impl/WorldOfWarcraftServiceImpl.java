@@ -1,5 +1,7 @@
 package indi.uhyils.service.impl;
 
+import indi.uhyils.pojo.entity.wow.Enemy;
+import indi.uhyils.pojo.entity.wow.Person;
 import indi.uhyils.service.WorldOfWarcraftService;
 import org.springframework.stereotype.Service;
 
