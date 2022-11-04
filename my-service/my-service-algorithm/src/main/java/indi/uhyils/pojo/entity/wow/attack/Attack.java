@@ -1,5 +1,7 @@
-package indi.uhyils.pojo.entity.wow;
+package indi.uhyils.pojo.entity.wow.attack;
 
+import indi.uhyils.pojo.entity.wow.enemy.Enemy;
+import indi.uhyils.pojo.entity.wow.skill.Skill;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,14 @@ public interface Attack {
      * @return
      */
     Map<Enemy, Integer> hartEnemy(List<Enemy> enemies);
+    /**
+     * 伤害到一个怪物
+     *
+     * @param enemies
+     *
+     * @return
+     */
+    Map<Enemy, Integer> hartEnemy(Enemy enemies);
 
 
     /**

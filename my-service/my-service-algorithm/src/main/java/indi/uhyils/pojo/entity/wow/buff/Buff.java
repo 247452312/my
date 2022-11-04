@@ -1,7 +1,8 @@
-package indi.uhyils.pojo.entity.wow;
+package indi.uhyils.pojo.entity.wow.buff;
 
 import indi.uhyils.pojo.entity.base.BaseEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.wow.attack.Attack;
 
 /**
  * buff

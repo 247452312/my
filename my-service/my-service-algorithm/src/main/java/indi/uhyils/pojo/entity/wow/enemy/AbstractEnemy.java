@@ -2,7 +2,6 @@ package indi.uhyils.pojo.entity.wow.enemy;
 
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.pojo.entity.wow.Enemy;
 
 /**
  * 怪物
@@ -21,6 +20,8 @@ public abstract class AbstractEnemy extends AbstractEntity<Identifier> implement
      * 最大法力值
      */
     protected final Double maxMana;
+
+    protected final Double
 
     public AbstractEnemy(Double maxBlood, Double maxMana) {
         this.maxBlood = maxBlood;

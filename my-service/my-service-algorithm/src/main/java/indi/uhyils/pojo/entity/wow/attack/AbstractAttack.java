@@ -3,9 +3,8 @@ package indi.uhyils.pojo.entity.wow.attack;
 import indi.uhyils.enums.SkillReleaseTypeEnum;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.pojo.entity.wow.Attack;
 import indi.uhyils.pojo.entity.wow.Attributes;
-import indi.uhyils.pojo.entity.wow.Skill;
+import indi.uhyils.pojo.entity.wow.skill.Skill;
 import indi.uhyils.util.Asserts;
 import java.util.List;
 

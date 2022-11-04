@@ -1,9 +1,9 @@
 package indi.uhyils.pojo.entity.wow;
 
-import indi.uhyils.enums.SkillHurtTypeEnum;
-import indi.uhyils.enums.SkillReleaseTypeEnum;
+import indi.uhyils.pojo.entity.wow.attack.Attack;
 import indi.uhyils.pojo.entity.wow.person.AbstractPerson;
-import indi.uhyils.pojo.entity.wow.skill.AbstractSkill;
+import indi.uhyils.pojo.entity.wow.person.Person;
+import indi.uhyils.pojo.entity.wow.skill.Frostbolt;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +16,17 @@ public class WowTest {
     @Test
     public void attackTest() {
         Person person = new MyPerson();
+        // 初始化属性
+        person.initAttributes();
+        // 初始化天赋
+        person.initTalent();
+        // 初始化装备
+        person.initEquipment();
+        // 初始化buff
+        person.initBuff();
+
         final Attack attack = person.castSkill(new Frostbolt());
-        attack.hartEnemy(Arrays.asList());
+        attack.hartEnemy(Arrays.asList(new ));
     }
 
     /**
@@ -27,64 +36,4 @@ public class WowTest {
 
     }
 
-    /**
-     * 寒冰箭
-     */
-    private static class Frostbolt extends AbstractSkill {
-
-        @Override
-        public Attack convertOriginalAttack(Attributes attributes) {
-            return null;
-        }
-
-        @Override
-        public Buff convertBuff() {
-            return null;
-        }
-
-        @Override
-        public SkillReleaseTypeEnum releaseType() {
-            return SkillReleaseTypeEnum.STANDARD;
-        }
-
-        @Override
-        public Double maxDamageValue() {
-            return null;
-        }
-
-        @Override
-        public Double minDamageValue() {
-            return null;
-        }
-
-        @Override
-        public Long bootTime() {
-            return 2500L;
-        }
-
-        @Override
-        public Long duration() {
-            return null;
-        }
-
-        @Override
-        public Boolean haveGCD() {
-            return Boolean.TRUE;
-        }
-
-        @Override
-        public SkillHurtTypeEnum hurtType() {
-            return SkillHurtTypeEnum.ICE;
-        }
-
-        @Override
-        public Boolean isUnary() {
-            return Boolean.FALSE;
-        }
-
-        @Override
-        public Boolean isAoe() {
-            return Boolean.FALSE;
-        }
-    }
 }

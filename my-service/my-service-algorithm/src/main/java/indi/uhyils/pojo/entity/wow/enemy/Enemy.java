@@ -1,4 +1,4 @@
-package indi.uhyils.pojo.entity.wow;
+package indi.uhyils.pojo.entity.wow.enemy;
 
 import indi.uhyils.pojo.entity.base.BaseEntity;
 import indi.uhyils.pojo.entity.type.Identifier;

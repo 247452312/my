@@ -1,9 +1,7 @@
 package indi.uhyils.pojo.entity.wow.skill;
 
-import indi.uhyils.enums.SkillReleaseTypeEnum;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.pojo.entity.wow.Skill;
 
 /**
  * 技能

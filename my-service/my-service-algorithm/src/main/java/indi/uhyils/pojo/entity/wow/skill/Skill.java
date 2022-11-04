@@ -1,9 +1,12 @@
-package indi.uhyils.pojo.entity.wow;
+package indi.uhyils.pojo.entity.wow.skill;
 
 import indi.uhyils.enums.SkillHurtTypeEnum;
 import indi.uhyils.enums.SkillReleaseTypeEnum;
 import indi.uhyils.pojo.entity.base.BaseEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.wow.Attributes;
+import indi.uhyils.pojo.entity.wow.attack.Attack;
+import indi.uhyils.pojo.entity.wow.buff.Buff;
 
 /**
  * 技能
@@ -14,7 +17,7 @@ import indi.uhyils.pojo.entity.type.Identifier;
 public interface Skill extends BaseEntity<Identifier> {
 
     /**
-     * 转换为原始伤害
+     * 转换为没有结果buff增伤的原始伤害
      *
      * @return
      */
@@ -52,6 +55,7 @@ public interface Skill extends BaseEntity<Identifier> {
      * @return
      */
     Long bootTime();
+
     /**
      * 持续时间,单位(毫秒)
      *

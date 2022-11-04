@@ -1,7 +1,13 @@
-package indi.uhyils.pojo.entity.wow;
+package indi.uhyils.pojo.entity.wow.person;
 
 import indi.uhyils.pojo.entity.base.BaseEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.wow.Attributes;
+import indi.uhyils.pojo.entity.wow.Equipment;
+import indi.uhyils.pojo.entity.wow.skill.Skill;
+import indi.uhyils.pojo.entity.wow.Talent;
+import indi.uhyils.pojo.entity.wow.attack.Attack;
+import indi.uhyils.pojo.entity.wow.buff.Buff;
 import java.util.List;
 
 /**

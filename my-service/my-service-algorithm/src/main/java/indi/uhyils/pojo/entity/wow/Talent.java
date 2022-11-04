@@ -2,6 +2,7 @@ package indi.uhyils.pojo.entity.wow;
 
 import indi.uhyils.pojo.entity.base.BaseEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.wow.buff.Buff;
 
 /**
  * 天赋
