@@ -4,7 +4,7 @@ import indi.uhyils.enums.SkillHurtTypeEnum;
 import indi.uhyils.enums.SkillReleaseTypeEnum;
 import indi.uhyils.pojo.entity.base.BaseEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.pojo.entity.wow.Attributes;
+import indi.uhyils.pojo.entity.wow.attributes.Attributes;
 import indi.uhyils.pojo.entity.wow.attack.Attack;
 import indi.uhyils.pojo.entity.wow.buff.Buff;
 

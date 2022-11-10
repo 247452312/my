@@ -1,10 +1,7 @@
 package indi.uhyils.pojo.entity.wow.attack;
 
-import indi.uhyils.pojo.entity.wow.Attributes;
-import indi.uhyils.pojo.entity.wow.enemy.Enemy;
+import indi.uhyils.pojo.entity.wow.attributes.Attributes;
 import indi.uhyils.pojo.entity.wow.skill.Skill;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 伤害
@@ -23,14 +20,5 @@ public class RealAttack extends AbstractAttack {
         super(skill, maxDamageValue, minDamageValue);
     }
 
-    @Override
-    public Map<Enemy, Integer> hartEnemy(List<Enemy> enemies) {
-        return null;
-    }
-
-    @Override
-    public Map<Enemy, Integer> hartEnemy(Enemy enemies) {
-        return null;
-    }
 
 }

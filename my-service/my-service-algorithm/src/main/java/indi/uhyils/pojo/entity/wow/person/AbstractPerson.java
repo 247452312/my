@@ -4,9 +4,9 @@ import indi.uhyils.enums.PositionTypeEnum;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.wow.attack.Attack;
-import indi.uhyils.pojo.entity.wow.Attributes;
+import indi.uhyils.pojo.entity.wow.attributes.Attributes;
 import indi.uhyils.pojo.entity.wow.buff.Buff;
-import indi.uhyils.pojo.entity.wow.Equipment;
+import indi.uhyils.pojo.entity.wow.equipment.Equipment;
 import indi.uhyils.pojo.entity.wow.skill.Skill;
 import indi.uhyils.pojo.entity.wow.Talent;
 import java.util.ArrayList;
@@ -69,8 +69,8 @@ public abstract class AbstractPerson extends AbstractEntity<Identifier> implemen
 
     @Override
     public void initEquipment(List<Equipment> equipments) {
-        equipments.clear();
-        equipments.addAll(equipments);
+        this.equipments.clear();
+        this.equipments.addAll(equipments);
     }
 
     @Override

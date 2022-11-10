@@ -20,7 +20,7 @@ public interface Attack {
      *
      * @return
      */
-    Map<Enemy, Integer> hartEnemy(List<Enemy> enemies);
+    Map<Enemy, Double> hartEnemy(List<Enemy> enemies);
     /**
      * 伤害到一个怪物
      *
@@ -28,7 +28,7 @@ public interface Attack {
      *
      * @return
      */
-    Map<Enemy, Integer> hartEnemy(Enemy enemies);
+    Double hartEnemy(Enemy enemies);
 
 
     /**

@@ -1,8 +1,9 @@
-package indi.uhyils.pojo.entity.wow;
+package indi.uhyils.pojo.entity.wow.equipment;
 
 import indi.uhyils.enums.PositionTypeEnum;
 import indi.uhyils.pojo.entity.base.BaseEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.wow.attributes.Attributes;
 
 /**
  * 装备
@@ -18,4 +19,19 @@ public interface Equipment extends BaseEntity<Identifier> {
      * @return
      */
     PositionTypeEnum positionType();
+
+    /**
+     * 装备名称
+     *
+     * @return
+     */
+    String name();
+
+    /**
+     * 获取装备对应的属性
+     *
+     * @return
+     */
+    Attributes attributes();
+
 }

@@ -3,10 +3,14 @@ package indi.uhyils.pojo.entity.wow.attack;
 import indi.uhyils.enums.SkillReleaseTypeEnum;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.pojo.entity.wow.Attributes;
+import indi.uhyils.pojo.entity.wow.attributes.Attributes;
+import indi.uhyils.pojo.entity.wow.enemy.Enemy;
 import indi.uhyils.pojo.entity.wow.skill.Skill;
 import indi.uhyils.util.Asserts;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.apache.commons.lang3.RandomUtils;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -96,6 +100,24 @@ public abstract class AbstractAttack extends AbstractEntity<Identifier> implemen
         this.skill = skill;
         this.maxDamageValue = maxDamageValue;
         this.minDamageValue = minDamageValue;
+    }
+
+    @Override
+    public Map<Enemy, Double> hartEnemy(List<Enemy> enemies) {
+        final Map<Enemy, Double> result = new HashMap<>(enemies.size());
+
+        for (Enemy enemy : enemies) {
+            result.put(enemy, hartEnemy(enemy));
+        }
+        return result;
+    }
+
+    @Override
+    public Double hartEnemy(Enemy enemies) {
+        // 一元法术没有抵坑
+        final Boolean unary = skill.isUnary();
+
+        return RandomUtils.nextDouble(minDamageValue, maxDamageValue);
     }
 
     @Override

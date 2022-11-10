@@ -11,4 +11,17 @@ import indi.uhyils.pojo.entity.type.Identifier;
  */
 public interface Enemy extends BaseEntity<Identifier> {
 
+    /**
+     * 等级
+     *
+     * @return
+     */
+    Integer level();
+
+    /**
+     * 名称
+     *
+     * @return
+     */
+    String name();
 }

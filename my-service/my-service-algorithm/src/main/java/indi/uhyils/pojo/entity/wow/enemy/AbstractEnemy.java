@@ -1,7 +1,9 @@
 package indi.uhyils.pojo.entity.wow.enemy;
 
+import indi.uhyils.enums.SkillHurtTypeEnum;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
+import java.util.Map;
 
 /**
  * 怪物
@@ -21,12 +23,31 @@ public abstract class AbstractEnemy extends AbstractEntity<Identifier> implement
      */
     protected final Double maxMana;
 
-    protected final Double
+    /**
+     * 各个属性抗性
+     */
+    protected final Map<SkillHurtTypeEnum, Double> resistance;
 
-    public AbstractEnemy(Double maxBlood, Double maxMana) {
+    /**
+     * 护甲
+     */
+    protected final Double armor;
+
+    /**
+     * 等级
+     */
+    protected final Integer level;
+
+    public AbstractEnemy(Double maxBlood, Double maxMana, Map<SkillHurtTypeEnum, Double> resistance, Double armor, Integer level) {
         this.maxBlood = maxBlood;
         this.maxMana = maxMana;
+        this.resistance = resistance;
+        this.armor = armor;
+        this.level = level;
     }
 
-
+    @Override
+    public Integer level() {
+        return level;
+    }
 }
