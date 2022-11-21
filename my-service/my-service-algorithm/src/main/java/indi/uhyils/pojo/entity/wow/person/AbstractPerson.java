@@ -3,12 +3,12 @@ package indi.uhyils.pojo.entity.wow.person;
 import indi.uhyils.enums.PositionTypeEnum;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.pojo.entity.wow.Talent;
 import indi.uhyils.pojo.entity.wow.attack.Attack;
 import indi.uhyils.pojo.entity.wow.attributes.Attributes;
 import indi.uhyils.pojo.entity.wow.buff.Buff;
 import indi.uhyils.pojo.entity.wow.equipment.Equipment;
 import indi.uhyils.pojo.entity.wow.skill.Skill;
-import indi.uhyils.pojo.entity.wow.Talent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractPerson extends AbstractEntity<Identifier> implements Person {
 
+    /**
+     * 人物属性
+     */
     private Attributes attributes;
 
     /**

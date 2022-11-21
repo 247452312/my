@@ -42,13 +42,32 @@ public final class Attributes {
      */
     protected final long hit;
 
-    public Attributes(long intelligence, long spellPower, long spirit, long rapidly, long crit, long hit) {
+    /**
+     * 等级
+     */
+    protected final long level;
+
+    private Attributes(long intelligence, long spellPower, long spirit, long rapidly, long crit, long hit, long level) {
         this.intelligence = intelligence;
         this.spellPower = spellPower;
         this.spirit = spirit;
         this.rapidly = rapidly;
         this.crit = crit;
         this.hit = hit;
+        this.level = level;
+    }
+
+
+    public static Attributes buildEquipment(long intelligence, long spellPower, long spirit, long rapidly, long crit, long hit) {
+        return build(intelligence, spellPower, spirit, rapidly, crit, hit, 0);
+    }
+
+    public static Attributes build(long intelligence, long spellPower, long spirit, long rapidly, long crit, long hit, long level) {
+        return new Attributes(intelligence, spellPower, spirit, rapidly, crit, hit, level);
+    }
+
+    public static Attributes buildPerson(long intelligence, long spellPower, long spirit, long rapidly, long crit, long hit, long level) {
+        return new Attributes(intelligence, spellPower, spirit, rapidly, crit, hit, level);
     }
 
     /**
@@ -70,6 +89,8 @@ public final class Attributes {
 
         long hit = this.hit;
 
+        long level = this.level;
+
         for (Equipment equipment : equipments) {
             final Attributes attributes = equipment.attributes();
             intelligence += attributes.intelligence();
@@ -78,9 +99,10 @@ public final class Attributes {
             rapidly += attributes.rapidly();
             crit += attributes.crit();
             hit += attributes.hit();
+            level += attributes.level();
         }
 
-        return new Attributes(intelligence, spellPower, spirit, rapidly, crit, hit);
+        return new Attributes(intelligence, spellPower, spirit, rapidly, crit, hit, level);
     }
 
     public long intelligence() {
@@ -106,4 +128,9 @@ public final class Attributes {
     public long hit() {
         return hit;
     }
+
+    public long level() {
+        return level;
+    }
+
 }

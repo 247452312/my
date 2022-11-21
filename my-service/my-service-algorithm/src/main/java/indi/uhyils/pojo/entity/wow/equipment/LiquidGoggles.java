@@ -10,7 +10,7 @@ import indi.uhyils.pojo.entity.wow.attributes.Attributes;
 public class LiquidGoggles extends AbstractEquipment {
 
     public LiquidGoggles() {
-        super(new Attributes(80L, 90L, 0L, 100L, 40L, 30L));
+        super(Attributes.buildEquipment(80L, 90L, 0L, 100L, 40L, 30L));
     }
 
     @Override

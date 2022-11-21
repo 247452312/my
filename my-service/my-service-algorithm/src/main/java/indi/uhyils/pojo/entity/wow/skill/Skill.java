@@ -1,11 +1,12 @@
 package indi.uhyils.pojo.entity.wow.skill;
 
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.enums.SkillHurtTypeEnum;
 import indi.uhyils.enums.SkillReleaseTypeEnum;
 import indi.uhyils.pojo.entity.base.BaseEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
-import indi.uhyils.pojo.entity.wow.attributes.Attributes;
 import indi.uhyils.pojo.entity.wow.attack.Attack;
+import indi.uhyils.pojo.entity.wow.attributes.Attributes;
 import indi.uhyils.pojo.entity.wow.buff.Buff;
 
 /**
@@ -83,6 +84,7 @@ public interface Skill extends BaseEntity<Identifier> {
      *
      * @return
      */
+    @NotNull
     Boolean isUnary();
 
     /**
@@ -91,4 +93,11 @@ public interface Skill extends BaseEntity<Identifier> {
      * @return
      */
     Boolean isAoe();
+
+    /**
+     * 暴击乘数
+     *
+     * @return
+     */
+    Double criticalMultiplier();
 }

@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class DemoEnemy extends AbstractEnemy {
 
-    public DemoEnemy(Double maxBlood, Double maxMana, Map<SkillHurtTypeEnum, Double> resistance, Double armor, Integer level) {
+    public DemoEnemy(Double maxBlood, Double maxMana, Map<SkillHurtTypeEnum, Integer> resistance, Double armor, Integer level) {
         super(maxBlood, maxMana, resistance, armor, level);
     }
 

@@ -35,6 +35,11 @@ public abstract class AbstractAttack extends AbstractEntity<Identifier> implemen
 
     protected Skill skill;
 
+    /**
+     * 实时暴击乘数
+     */
+    protected Double criticalMultiplier;
+
     protected Attributes attributes;
 
     /**
@@ -50,6 +55,7 @@ public abstract class AbstractAttack extends AbstractEntity<Identifier> implemen
     protected AbstractAttack(Skill skill, Attributes attributes) {
         this.skill = skill;
         this.attributes = attributes;
+        criticalMultiplier = skill.criticalMultiplier();
 
         // 初始化伤害
         initDamage();

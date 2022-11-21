@@ -26,7 +26,7 @@ public abstract class AbstractEnemy extends AbstractEntity<Identifier> implement
     /**
      * 各个属性抗性
      */
-    protected final Map<SkillHurtTypeEnum, Double> resistance;
+    protected final Map<SkillHurtTypeEnum, Integer> resistance;
 
     /**
      * 护甲
@@ -38,7 +38,7 @@ public abstract class AbstractEnemy extends AbstractEntity<Identifier> implement
      */
     protected final Integer level;
 
-    public AbstractEnemy(Double maxBlood, Double maxMana, Map<SkillHurtTypeEnum, Double> resistance, Double armor, Integer level) {
+    public AbstractEnemy(Double maxBlood, Double maxMana, Map<SkillHurtTypeEnum, Integer> resistance, Double armor, Integer level) {
         this.maxBlood = maxBlood;
         this.maxMana = maxMana;
         this.resistance = resistance;
@@ -49,5 +49,20 @@ public abstract class AbstractEnemy extends AbstractEntity<Identifier> implement
     @Override
     public Integer level() {
         return level;
+    }
+
+    @Override
+    public Map<SkillHurtTypeEnum, Integer> resistanceMap() {
+        return resistance;
+    }
+
+    @Override
+    public Integer resistance(SkillHurtTypeEnum hurtType) {
+        final Integer result = resistance.get(hurtType);
+        if (result == null) {
+            return 0;
+        } else {
+            return result;
+        }
     }
 }

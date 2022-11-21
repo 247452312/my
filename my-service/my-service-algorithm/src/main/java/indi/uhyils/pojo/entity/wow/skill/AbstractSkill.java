@@ -26,5 +26,9 @@ public abstract class AbstractSkill extends AbstractEntity<Identifier> implement
         this.level = level;
     }
 
-
+    @Override
+    public Double criticalMultiplier() {
+        // 默认暴击是1.5倍
+        return 1.5;
+    }
 }
