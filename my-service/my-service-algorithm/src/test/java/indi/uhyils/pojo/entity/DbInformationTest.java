@@ -16,13 +16,13 @@ class DbInformationTest {
     @Test
     void fillTableInfos() {
         DbInformationDTO dto = new DbInformationDTO();
-        dto.setTables(Arrays.asList("i_blood_sugar_result"));
-        dto.setDbName("lis");
-        dto.setUrl("jdbc:mysql://rm-bp1wxt5s354kmj3i7.mysql.rds.aliyuncs.com:3306/lis?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false");
+        dto.setTables(Arrays.asList("hcos_operate_record"));
+        dto.setDbName("hcos_coordination");
+        dto.setUrl("jdbc:mysql://192.168.54.222:3306/hcos_coordination?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&autoconnect=true&failOverReadOnly=false&useSSL=false");
         dto.setType(DbTypeEnum.MYSQL.getTypeCode());
-        dto.setUserName("xnyl");
-        dto.setPassword("XUqk5RQ3d#jN");
-        dto.setProjectName("lis-service");
+        dto.setUserName("hcos");
+        dto.setPassword("HMqXGeJZzc%CBOx6F0");
+        dto.setProjectName("hcos_coordination");
         dto.setPort(3306);
         dto.setAuthor("uhyils <247452312@qq.com>");
 
@@ -32,7 +32,7 @@ class DbInformationTest {
         db.fillTableInfos();
         Map<String, String> result = db.result();
 
-        KproUtil.saveToLocal("D:\\my\\生成文件\\lis", result);
+        KproUtil.saveToLocal("D:\\my\\生成文件\\hcos", result);
 
     }
 }

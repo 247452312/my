@@ -42,7 +42,7 @@ public class MysqlTypeConvertor implements TypeConvertor {
             return "Float";
         }
         if ("datetime".equalsIgnoreCase(databaseType)) {
-            return "Date";
+            return "LocalDateTime";
         }
         if ("text".equalsIgnoreCase(databaseType)) {
             return "String";
@@ -55,13 +55,13 @@ public class MysqlTypeConvertor implements TypeConvertor {
         }
 
         if ("date".equalsIgnoreCase(databaseType)) {
-            return "Date";
+            return "LocalDateTime";
         }
         if ("time".equalsIgnoreCase(databaseType)) {
-            return "Date";
+            return "LocalDateTime";
         }
         if ("timestamp".equalsIgnoreCase(databaseType)) {
-            return "Date";
+            return "LocalDateTime";
         }
         if ("boolean".equalsIgnoreCase(databaseType) ||
             "bit".equalsIgnoreCase(databaseType)) {
