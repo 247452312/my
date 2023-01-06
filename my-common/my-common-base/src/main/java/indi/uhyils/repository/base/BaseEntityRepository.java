@@ -1,5 +1,6 @@
 package indi.uhyils.repository.base;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
@@ -17,7 +18,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月22日 14时49分
  */
-public interface BaseEntityRepository<DO extends BaseDO, EN extends AbstractDoEntity<DO>> extends BaseRepository {
+public interface BaseEntityRepository<DO extends BaseDO, EN extends AbstractDoEntity<DO>> extends BaseRepository, IService<DO> {
 
     /**
      * 保存逻辑

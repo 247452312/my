@@ -1,6 +1,7 @@
 package indi.uhyils.repository.base;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import indi.uhyils.assembler.AbstractAssembler;
 import indi.uhyils.dao.base.DefaultDao;
 import indi.uhyils.enums.OrderSymbolEnum;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 文件创建日期 2021年08月22日 15时52分
  */
-public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO extends BaseDO, DAO extends DefaultDao<DO>, DTO extends IdDTO, ASSEM extends AbstractAssembler<DO, EN, DTO>> implements BaseEntityRepository<DO, EN> {
+public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO extends BaseDO, DAO extends DefaultDao<DO>, DTO extends IdDTO, ASSEM extends AbstractAssembler<DO, EN, DTO>> extends ServiceImpl<DAO, DO> implements BaseEntityRepository<DO, EN> {
 
     /**
      * 转换器
