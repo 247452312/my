@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 标识是否是公开的接口
+ * 标识是否是公开的接口 如果是,则不需要解析token来判断是否登录或者是否游客, 直接可以访问
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年06月20日 11时01分

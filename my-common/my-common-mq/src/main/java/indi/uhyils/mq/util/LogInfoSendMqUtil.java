@@ -7,9 +7,9 @@ package indi.uhyils.mq.util;
  */
 public class LogInfoSendMqUtil {
 
-    private static final String EXCHANGE_NAME = "log_exchange";
+    public static final String EXCHANGE_NAME = "log_exchange";
 
-    private static final String QUEUE_NAME = "log_queue";
+    public static final String QUEUE_NAME = "log_queue";
 
 
     /**

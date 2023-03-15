@@ -3,9 +3,11 @@ package indi.uhyils.protocol.mq;
 import com.alibaba.fastjson.JSONObject;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import indi.uhyils.annotation.MyMq;
+import indi.uhyils.mq.content.RabbitMqContent;
 import indi.uhyils.mq.pojo.mqinfo.JvmStartInfoCommand;
+import indi.uhyils.protocol.mq.base.AbstractMqConsumer;
 import indi.uhyils.service.LogMonitorService;
 import indi.uhyils.util.LogUtil;
 import java.io.IOException;
@@ -18,7 +20,8 @@ import org.springframework.context.ApplicationContext;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年06月19日 11时33分
  */
-public class RabbitJvmStartInfoConsumer extends DefaultConsumer {
+@MyMq(topic = RabbitMqContent.JVM_START_QUEUE_NAME, tags = {RabbitMqContent.JVM_START_QUEUE_NAME}, group = "监听JVM启动消息")
+public class RabbitJvmStartInfoConsumer extends AbstractMqConsumer {
 
     private LogMonitorService logMonitorService;
 

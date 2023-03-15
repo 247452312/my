@@ -12,18 +12,24 @@ import org.springframework.stereotype.Component;
  * @date 文件创建日期 2020年09月18日 06时28分
  */
 @Component
-public class ConcurrentNumberTask {
+public class ConcurrentNumberTask implements BaseTask<Object, Object> {
 
 
     @Autowired
     private TraceInfoService service;
 
 
+    public void demoSchedule() {
+        service.monitorConcurrentNumber(new BlankCommand());
+    }
+
     /**
      * 测试环境暂时关闭 todo
      */
     //    @Scheduled(cron = "*/2 * * * * ?")
-    public void demoSchedule() {
+    @Override
+    public Object executeTask(Object o) {
         service.monitorConcurrentNumber(new BlankCommand());
+        return true;
     }
 }

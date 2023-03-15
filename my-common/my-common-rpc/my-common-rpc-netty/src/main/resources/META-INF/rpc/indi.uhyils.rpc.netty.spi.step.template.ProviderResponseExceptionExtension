@@ -1,0 +1,1 @@
+default_exception_extension=indi.uhyils.rpc.netty.spi.step.template.impl.DefaultProviderResponseExceptionExtensionImpl

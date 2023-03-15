@@ -44,6 +44,11 @@
             </dependency>
             <dependency>
                 <groupId>indi.uhyils</groupId>
+                <artifactId>my-common-swagger</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
                 <artifactId>my-common-data-redis</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -137,6 +142,11 @@
             <dependency>
                 <groupId>indi.uhyils</groupId>
                 <artifactId>my-api-provider-gateway-sdk</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>indi.uhyils</groupId>
+                <artifactId>my-common-rpc-spring-start</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

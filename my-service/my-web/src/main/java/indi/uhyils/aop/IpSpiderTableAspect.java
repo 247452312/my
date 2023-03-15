@@ -65,6 +65,9 @@ public class IpSpiderTableAspect {
 
     @Around("ipSpiderTableAspectPoint()")
     public Object ipSpiderTableAspectAroundAspect(ProceedingJoinPoint pjp) throws Throwable {
+        if (true) {
+            return pjp.proceed();
+        }
         Object[] args = pjp.getArgs();
         Action action = (Action) args[0];
         HttpServletRequest request = (HttpServletRequest) args[1];

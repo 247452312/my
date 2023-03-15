@@ -1,7 +1,9 @@
 package indi.uhyils;
 
 import java.util.Map;
-import java.util.concurrent.Executor;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -15,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MyExecutorWrapper extends ThreadPoolExecutor {
 
 
-    private final Executor executor;
+    private final ExecutorService executor;
 
     private MyExecutorWrapper(ThreadPoolExecutor executor) {
         super(executor.getCorePoolSize(), executor.getMaximumPoolSize(), executor.getKeepAliveTime(TimeUnit.NANOSECONDS), TimeUnit.NANOSECONDS, executor.getQueue(), executor.getThreadFactory(), executor.getRejectedExecutionHandler());
@@ -36,6 +38,11 @@ public class MyExecutorWrapper extends ThreadPoolExecutor {
     @Override
     public void execute(Runnable command) {
         this.executor.execute(wrapperRunnable(command));
+    }
+
+    @Override
+    public <T> Future<T> submit(Callable<T> task) {
+        return executor.submit(task);
     }
 
     /**

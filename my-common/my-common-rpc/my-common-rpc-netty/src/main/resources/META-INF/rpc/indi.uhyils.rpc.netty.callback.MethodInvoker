@@ -1,0 +1,1 @@
+defaultMethodInvoker=indi.uhyils.rpc.netty.callback.impl.DefaultMethodInvoker

@@ -22,8 +22,8 @@
             <artifactId>my-common-base</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.github.247452312</groupId>
-            <artifactId>my-rpc-spring-start</artifactId>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-rpc-spring-start</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>

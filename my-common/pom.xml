@@ -23,6 +23,8 @@
         <module>my-common-util</module>
         <module>my-common-event-bus</module>
         <module>my-common-elegant</module>
+        <module>my-common-swagger</module>
+        <module>my-common-rpc</module>
     </modules>
 
 

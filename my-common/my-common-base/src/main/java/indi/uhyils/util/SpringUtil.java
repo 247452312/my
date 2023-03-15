@@ -25,6 +25,7 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ApplicationListener;
@@ -45,19 +46,6 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
     private static ApplicationContext applicationContext = null;
 
     /**
-     * 获取applicationContext
-     *
-     * @return applicationContext
-     */
-    public static ApplicationContext getApplicationContext() {
-        if (applicationContext != null) {
-            return applicationContext;
-        }
-        return (ApplicationContext) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[]{ApplicationContext.class}, (proxy, method, args) -> null);
-    }
-
-
-    /**
      * 根据指定的annotation获取beans
      *
      * @param clazz
@@ -74,11 +62,8 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
      *
      * @return
      */
-    public static boolean isStart() {
-        if (applicationContext == null) {
-            return false;
-        }
-        return atomicBoolean;
+    public static boolean isNotStart() {
+        return !isStart();
     }
 
     /**
@@ -86,8 +71,11 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
      *
      * @return
      */
-    public static boolean isNotStart() {
-        return !isStart();
+    public static boolean isStart() {
+        if (applicationContext == null) {
+            return false;
+        }
+        return atomicBoolean;
     }
 
     /**
@@ -103,15 +91,15 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
     }
 
     /**
-     * 通过class获取Bean.
+     * 获取applicationContext
      *
-     * @param clazz class
-     * @param <T>   类型
-     *
-     * @return 对应类型的bean
+     * @return applicationContext
      */
-    public static <T> T getBean(Class<T> clazz) {
-        return getApplicationContext().getBean(clazz);
+    public static ApplicationContext getApplicationContext() {
+        if (applicationContext != null) {
+            return applicationContext;
+        }
+        return (ApplicationContext) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[]{ApplicationContext.class}, (proxy, method, args) -> null);
     }
 
     /**
@@ -144,6 +132,29 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
     }
 
     /**
+     * 通过key 至少获取一个环境变量
+     * 规则:
+     * 通过给定的key值数组,从前到后获取,直到获取到第一个值为止,如果均未获取到,则返回null
+     *
+     * @param keys 环境变量的key合集
+     *
+     * @return 环境变量的值
+     */
+    @Nullable
+    public static String getProperty(String[] keys) {
+        Environment environment = getApplicationContext().getEnvironment();
+        if (environment != null) {
+            for (String key : keys) {
+                String property = environment.getProperty(key, "");
+                if (StringUtils.isNotEmpty(property)) {
+                    return property;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * 通过key 获取环境变量
      *
      * @param key          环境变量的key
@@ -159,7 +170,6 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
         }
         return defaultValue;
     }
-
 
     /**
      * 通过key 查询是否存在bean
@@ -186,6 +196,18 @@ public class SpringUtil implements ApplicationContextInitializer, ApplicationLis
         } catch (Exception e) {
             return Boolean.FALSE;
         }
+    }
+
+    /**
+     * 通过class获取Bean.
+     *
+     * @param clazz class
+     * @param <T>   类型
+     *
+     * @return 对应类型的bean
+     */
+    public static <T> T getBean(Class<T> clazz) {
+        return getApplicationContext().getBean(clazz);
     }
 
     /**

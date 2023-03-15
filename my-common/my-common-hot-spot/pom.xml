@@ -39,10 +39,10 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
+        <!-- https://mvnrepository.com/artifact/indi.uhyils/my-rpc-spring-start -->
         <dependency>
-            <groupId>io.github.247452312</groupId>
-            <artifactId>my-rpc-spring-start</artifactId>
+            <groupId>indi.uhyils</groupId>
+            <artifactId>my-common-rpc-spring-start</artifactId>
         </dependency>
 
         <dependency>

@@ -3,11 +3,12 @@ package indi.uhyils.protocol.mq;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import indi.uhyils.MyExecutorWrapper;
+import indi.uhyils.annotation.MyMq;
 import indi.uhyils.bus.BusInterface;
 import indi.uhyils.enums.LogDetailTypeEnum;
+import indi.uhyils.mq.util.LogInfoSendMqUtil;
 import indi.uhyils.pojo.DTO.TraceDetailDTO;
 import indi.uhyils.pojo.DTO.TraceInfoDTO;
 import indi.uhyils.pojo.DTO.TraceLogDTO;
@@ -15,6 +16,7 @@ import indi.uhyils.pojo.cqe.event.parent.LogReceiveParentEvent;
 import indi.uhyils.pojo.trace.DetailTraceDeal;
 import indi.uhyils.pojo.trace.LinkTraceDeal;
 import indi.uhyils.pojo.trace.LogTraceDeal;
+import indi.uhyils.protocol.mq.base.AbstractMqConsumer;
 import indi.uhyils.service.TraceDetailService;
 import indi.uhyils.service.TraceInfoService;
 import indi.uhyils.service.TraceLogService;
@@ -38,7 +40,8 @@ import org.springframework.context.ApplicationContext;
  * @version 1.0
  * @date 文件创建日期 2021年07月29日 14时14分
  */
-public class RabbitLogInfoConsumer extends DefaultConsumer {
+@MyMq(topic = LogInfoSendMqUtil.QUEUE_NAME, tags = {LogInfoSendMqUtil.QUEUE_NAME}, group = "监听日志消息")
+public class RabbitLogInfoConsumer extends AbstractMqConsumer {
 
     private static final String THREAD_NAME = "thread_";
 

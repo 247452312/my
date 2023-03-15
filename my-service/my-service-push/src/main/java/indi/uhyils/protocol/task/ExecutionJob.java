@@ -18,7 +18,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  * @date 文件创建日期 2020年06月26日 08时26分
  */
 @Async
-public class ExecutionJob extends QuartzJobBean {
+public class ExecutionJob extends QuartzJobBean implements BaseTask<JobExecutionContext, Object> {
 
     /**
      * 执行定时任务线程池
@@ -32,6 +32,11 @@ public class ExecutionJob extends QuartzJobBean {
      */
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) {
+        executeTask(jobExecutionContext);
+    }
+
+    @Override
+    public Object executeTask(JobExecutionContext jobExecutionContext) {
         JobDTO quartzJob = (JobDTO) jobExecutionContext.getMergedJobDataMap().get(JobConfig.JOB_KEY);
         // 获取spring bean
         JobDao dao = SpringUtil.getBean(JobDao.class);
@@ -54,5 +59,6 @@ public class ExecutionJob extends QuartzJobBean {
             dao.updateById(dO);
             manager.deleteJob(dO);
         }
+        return null;
     }
 }

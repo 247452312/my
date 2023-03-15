@@ -1,6 +1,6 @@
 package indi.uhyils.service.impl;
 
-import indi.uhyils.assembler.BaseAssembler;
+import indi.uhyils.assembler.BaseEntityAssembler;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
@@ -19,7 +19,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月25日 20时36分
  */
-public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO, REP extends BaseEntityRepository<DO, ENTITY>, ASSEM extends BaseAssembler<DO, ENTITY, DTO>> implements BaseDoService<DTO> {
+public abstract class AbstractDoService<DO extends BaseDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO, REP extends BaseEntityRepository<DO, ENTITY>, ASSEM extends BaseEntityAssembler<DO, ENTITY, DTO>> implements BaseDoService<DTO> {
 
     protected final ASSEM assem;
 

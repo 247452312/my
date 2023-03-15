@@ -20,6 +20,7 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.6.1</spring-boot.version>
         <spring.version>5.3.13</spring.version>
+        <swagger2.version>3.0.0</swagger2.version>
         <!--        <org.dubbo.version>2.7.3</org.dubbo.version>-->
         <druid.version>1.1.22</druid.version>
         <maven.compiler.plugin.version>3.10.0</maven.compiler.plugin.version>
@@ -59,7 +60,6 @@
         <es.version>7.9.1</es.version>
         <netty.version>4.1.54.Final</netty.version>
         <flink.version>1.13.1</flink.version>
-        <my.rpc.version>2.0.0.0.my-SNAPSHOT</my.rpc.version>
         <asm.version>9.2</asm.version>
         <javaparser.version>3.24.2</javaparser.version>
         <mybatis.plus.spring.version>3.4.3.3</mybatis.plus.spring.version>
@@ -243,52 +243,12 @@
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
             </dependency>
-            <!--<dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${mockito.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-api-mockito2</artifactId>
-                <version>${powermock.version}</version>
-                <scope>test</scope>
-            </dependency>
 
             <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-module-junit4</artifactId>
-                <version>${powermock.version}</version>
-                <scope>test</scope>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger2.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-core</artifactId>
-                <version>${powermock.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-module-junit4-rule</artifactId>
-                <version>${powermock.version}</version>
-                <scope>test</scope>
-            </dependency>-->
-
-
-            <!--            &lt;!&ndash; dubbo &ndash;&gt;
-                        <dependency>
-                            <groupId>org.apache.dubbo</groupId>
-                            <artifactId>dubbo-spring-boot-starter</artifactId>
-                            <version>${org.dubbo.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.apache.dubbo</groupId>
-                            <artifactId>dubbo</artifactId>
-                            <version>${org.dubbo.version}</version>
-                        </dependency>-->
 
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -390,13 +350,6 @@
                 <artifactId>netty-all</artifactId>
                 <version>${netty.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/io.github.247452312/my-rpc-spring-start -->
-            <dependency>
-                <groupId>io.github.247452312</groupId>
-                <artifactId>my-rpc-spring-start</artifactId>
-                <version>${my.rpc.version}</version>
-            </dependency>
-
             <!--mapStruct-->
             <dependency>
                 <groupId>org.mapstruct</groupId>

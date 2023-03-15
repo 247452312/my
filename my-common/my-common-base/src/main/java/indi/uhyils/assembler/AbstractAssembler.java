@@ -23,7 +23,7 @@ import org.mapstruct.ap.spi.util.IntrospectorUtils;
  * @version 1.0
  * @date 文件创建日期 2021年08月26日 08时51分
  */
-public abstract class AbstractAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO> implements BaseAssembler<DO, ENTITY, DTO> {
+public abstract class AbstractAssembler<DO extends BaseDO, ENTITY extends AbstractDoEntity<DO>, DTO extends IdDTO> implements BaseEntityAssembler<DO, ENTITY, DTO> {
 
     /**
      * get方法开头
