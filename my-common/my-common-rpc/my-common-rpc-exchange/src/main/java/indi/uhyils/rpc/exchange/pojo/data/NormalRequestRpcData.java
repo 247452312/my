@@ -10,7 +10,7 @@ import indi.uhyils.rpc.exchange.pojo.content.RpcRequestContentFactory;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月18日 10时52分
  */
-@RpcSpi
+@RpcSpi(single = false)
 public class NormalRequestRpcData extends AbstractRequestRpcData {
 
 
