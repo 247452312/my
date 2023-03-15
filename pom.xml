@@ -26,7 +26,7 @@
         <maven.compiler.plugin.version>3.10.0</maven.compiler.plugin.version>
         <!--        <org.apache.dubbo.nacos.version>1.2.1</org.apache.dubbo.nacos.version>-->
         <commons-lang3.version>3.12.0</commons-lang3.version>
-        <fastjson.version>1.2.69</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
         <zookeeper.version>3.6.0</zookeeper.version>
         <zk-client.version>0.11</zk-client.version>
