@@ -48,7 +48,7 @@ public class RpcSelfNetty<T> implements RpcNetty {
 
     public RpcSelfNetty(Class<T> targetClass) throws Exception {
         this.targetClass = targetClass;
-        this.service = RpcBeanFactory.getInstance().getRpcBeans().get(targetClass.getSimpleName());
+        this.service = RpcBeanFactory.getInstance().getRpcBeans().get(targetClass.getName());
         providerRequestByteFilters = RpcSpiManager.createOrGetExtensionListByClassNoInit(RpcStep.class, ProviderRequestByteExtension.class);
         consumerResponseByteFilters = RpcSpiManager.createOrGetExtensionListByClassNoInit(RpcStep.class, ConsumerResponseByteExtension.class);
         consumerResponseDataFilters = RpcSpiManager.createOrGetExtensionListByClassNoInit(RpcStep.class, ConsumerResponseDataExtension.class);

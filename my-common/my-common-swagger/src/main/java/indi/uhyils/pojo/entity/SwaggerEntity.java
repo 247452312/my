@@ -3,11 +3,11 @@ package indi.uhyils.pojo.entity;
 import indi.uhyils.annotation.MySwagger;
 import indi.uhyils.content.SwaggerContent;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
+import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 项目级别的swagger
@@ -31,6 +31,14 @@ public class SwaggerEntity extends AbstractEntity<String> {
      * @return
      */
     public List<ClassSwaggerEntity> transClassSwagger() {
-        return protocolObjs.stream().map(ClassSwaggerEntity::new).collect(Collectors.toList());
+        List<ClassSwaggerEntity> list = new ArrayList<>();
+        try {
+            for (Object protocolObj : protocolObjs) {
+                list.add(new ClassSwaggerEntity(protocolObj));
+            }
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+        }
+        return list;
     }
 }

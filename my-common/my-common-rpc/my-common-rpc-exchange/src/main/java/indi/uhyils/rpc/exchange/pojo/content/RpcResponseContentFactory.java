@@ -20,6 +20,14 @@ public class RpcResponseContentFactory {
      */
     private static final Integer CONTENT_SIZE = 2;
 
+    /**
+     * 根据content列表来构建一个返回体
+     *
+     * @param rpcData
+     * @param contentArray
+     *
+     * @return
+     */
     public static RpcContent createByContentArray(RpcData rpcData, String[] contentArray) {
         if (contentArray.length != CONTENT_SIZE) {
             final String[] strings = CollectionUtil.arrayCopy(contentArray, 0, CONTENT_SIZE);

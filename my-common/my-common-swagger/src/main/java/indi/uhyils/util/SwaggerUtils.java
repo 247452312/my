@@ -1,9 +1,11 @@
 package indi.uhyils.util;
 
+import com.google.common.base.Objects;
 import indi.uhyils.pojo.DTO.MethodSwaggerDTO;
 import indi.uhyils.pojo.DTO.ModelFieldInfoDTO;
 import indi.uhyils.pojo.DTO.ModelInfoDTO;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +60,7 @@ public final class SwaggerUtils {
         modelInfoDTO.setAnnotation(Arrays.stream(returnType.getAnnotations()).map(t -> t.annotationType().getName()).collect(Collectors.toList()));
         modelInfoDTO.setName(returnType.getName());
         List<Method> getMethod = Arrays.stream(returnType.getDeclaredMethods()).filter(t -> t.getName().startsWith("get")).collect(Collectors.toList());
-        modelInfoDTO.setFields(parseGetMethodToFields(getMethod));
+        modelInfoDTO.setFields(parseGetMethodToFields(returnType, getMethod));
         return modelInfoDTO;
     }
 
@@ -80,23 +82,34 @@ public final class SwaggerUtils {
      *
      * @return
      */
-    private static List<ModelFieldInfoDTO> parseGetMethodToFields(List<Method> getMethod) {
-        return getMethod.stream().map(SwaggerUtils::parseGetMethodToField).collect(Collectors.toList());
+    private static List<ModelFieldInfoDTO> parseGetMethodToFields(Class<?> clazz, List<Method> getMethod) {
+        return getMethod.stream().map(t -> parseGetMethodToField(clazz, t)).collect(Collectors.toList());
     }
 
     /**
      * 解析get方法为字段
      *
-     * @param t
+     * @param method
      *
      * @return
      */
-    private static ModelFieldInfoDTO parseGetMethodToField(Method t) {
-        String name = StringUtil.firstToLowerCase(t.getName().substring("get".length()));
-        Class<?> returnType = t.getReturnType();
+    private static ModelFieldInfoDTO parseGetMethodToField(Class<?> clazz, Method method) {
+        String name = StringUtil.firstToLowerCase(method.getName().substring("get".length()));
+
+        Class<?> returnType = method.getReturnType();
+
         ModelFieldInfoDTO modelFieldInfoDTO = new ModelFieldInfoDTO();
         modelFieldInfoDTO.setType(returnType.getName());
         modelFieldInfoDTO.setName(name);
+
+        for (Field field : clazz.getFields()) {
+            if (!Objects.equal(field.getName(), name)) {
+                continue;
+            }
+            List<String> annotations = Arrays.stream(field.getAnnotations()).map(t -> t.annotationType().getName()).collect(Collectors.toList());
+            modelFieldInfoDTO.setAnnotations(annotations);
+            break;
+        }
         return modelFieldInfoDTO;
     }
 

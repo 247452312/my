@@ -11,6 +11,7 @@ import indi.uhyils.pojo.DTO.TaskClassSwaggerDTO;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
 import indi.uhyils.protocol.task.BaseTask;
 import indi.uhyils.util.Asserts;
+import indi.uhyils.util.ClassUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SwaggerUtils;
 import java.lang.reflect.Method;
@@ -27,8 +28,8 @@ public class ClassSwaggerEntity extends AbstractEntity<String> {
      */
     private ClassSwaggerDTO swaggerDTO;
 
-    public ClassSwaggerEntity(Object targetObj) {
-        this(targetObj.getClass());
+    public ClassSwaggerEntity(Object targetObj) throws Exception {
+        this(ClassUtil.getRealClass(targetObj));
     }
 
     public <T> ClassSwaggerEntity(Class<T> targetClass) {

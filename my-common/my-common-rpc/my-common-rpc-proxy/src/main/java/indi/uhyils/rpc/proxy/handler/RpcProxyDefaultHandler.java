@@ -117,15 +117,16 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws InterruptedException {
+        // 防止proxy自动调用toString方法导致的报错
+        if (TO_STRING.equals(method.getName())) {
+            return "this is the MY_RPC interface,it`s name is " + proxy.getClass().getSimpleName();
+        }
+
         // 懒加载时使用
         if (registry == null) {
             initRegistry(type);
         }
 
-        // 防止proxy自动调用toString方法导致的报错
-        if (TO_STRING.equals(method.getName())) {
-            return "this is the interface,it`s name is " + proxy.getClass().getSimpleName();
-        }
         // 验证method和arg是否正确
         validateArgsWithMethodParams(args, method);
         // 初始化RPCData

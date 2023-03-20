@@ -2,6 +2,7 @@ package indi.uhyils.pojo.DTO;
 
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * model字段的信息
@@ -17,6 +18,9 @@ public class ModelFieldInfoDTO implements Serializable {
     @ApiModelProperty("名称")
     private String name;
 
+    @ApiModelProperty("注解")
+    private List<String> annotations;
+
     public String getType() {
         return type;
     }
@@ -31,5 +35,13 @@ public class ModelFieldInfoDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<String> getAnnotations() {
+        return annotations;
+    }
+
+    public void setAnnotations(List<String> annotations) {
+        this.annotations = annotations;
     }
 }
