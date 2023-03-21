@@ -63,7 +63,8 @@ public class RegistryModeBuilder {
         necessaryInfo.setInterfaceName(clazz.getName());
         necessaryInfo.setHealth(true);
         necessaryInfo.setWeight(20d);
-        necessaryInfo.setClusterName(clazz.getSimpleName());
+        String clusterName = RpcConfigFactory.getInstance().getApplication().getName();
+        necessaryInfo.setClusterName(clusterName);
         // 开启优雅上下线之后 注册时不发布服务
         necessaryInfo.setEnable(provider.isElegant());
 

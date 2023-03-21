@@ -2,9 +2,11 @@ package indi.uhyils.rpc.registry;
 
 import com.alibaba.nacos.api.exception.NacosException;
 import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.ClusterFactory;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
+import indi.uhyils.rpc.content.Content;
 import indi.uhyils.rpc.exception.MyRpcException;
 import indi.uhyils.rpc.exception.RpcShowDownException;
 import indi.uhyils.rpc.exchange.pojo.data.RpcData;
@@ -13,6 +15,7 @@ import indi.uhyils.rpc.registry.mode.RegistryModeFactory;
 import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
 import indi.uhyils.util.LogUtil;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -49,8 +52,15 @@ public class ProviderRegistryImpl<T> extends AbstractRegistry<T> implements Prov
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
-        final Boolean shutdown = cluster.shutdown();
-        if (!shutdown) {
+        Boolean down = true;
+        for (Entry<String, Cluster> clusterEntry : clusters.entrySet()) {
+            Cluster value = clusterEntry.getValue();
+            Boolean shutdown = value.shutdown();
+            if (!shutdown) {
+                down = false;
+            }
+        }
+        if (!down) {
             throw new RpcShowDownException("rpc关闭错误");
         }
     }
@@ -84,7 +94,9 @@ public class ProviderRegistryImpl<T> extends AbstractRegistry<T> implements Prov
         HashMap<String, Object> beans = new HashMap<>(1);
         beans.put(this.serviceClass.getName(), bean);
         try {
-            this.cluster = ClusterFactory.createDefaultProviderCluster(port, beans);
+            Cluster defaultProviderCluster = ClusterFactory.createDefaultProviderCluster(port, beans);
+            clusters = new HashMap<>(1);
+            clusters.put(Content.DEFAULT_PROVIDER_CLUSTER_NAME, defaultProviderCluster);
         } catch (Exception e) {
             LogUtil.error(this, e);
         }

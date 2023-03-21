@@ -5,6 +5,7 @@ import indi.uhyils.rpc.netty.enums.RpcNettyTypeEnum;
 import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
 import indi.uhyils.rpc.spi.RpcSpiExtension;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -64,7 +65,7 @@ public interface RegistryMode extends RpcSpiExtension {
      *
      * @return
      */
-    List<RegistryInfo> getTargetInterfaceInfo(String interfaceName);
+    Map<String, List<RegistryInfo>> getTargetInterfaceInfo(String interfaceName);
 
     /**
      * 服务端注册
@@ -125,7 +126,7 @@ public interface RegistryMode extends RpcSpiExtension {
      * @param interfaceName 服务名称
      * @param cluster       服务集群
      */
-    void createListener(String interfaceName, Cluster cluster);
+    void createListener(String interfaceName, Map<String, Cluster> cluster);
 
     /**
      * 是否正在对外提供服务

@@ -129,29 +129,34 @@ public class RegistryNacosMode implements RegistryMode {
     }
 
     @Override
-    public List<RegistryInfo> getTargetInterfaceInfo(String interfaceName) {
+    public Map<String, List<RegistryInfo>> getTargetInterfaceInfo(String interfaceName) {
         List<Instance> allInstances = null;
         try {
             allInstances = nacosNaming.getAllInstances(interfaceName, RegistryContent.DEFAULT_REGISTRY_GROUP_NAME);
         } catch (NacosException e) {
             throw new RpcException(e);
         }
-        List<RegistryInfo> result = new ArrayList<>(allInstances.size());
+        Map<String, List<RegistryInfo>> stringRegistryInfoHashMap = new HashMap<>(allInstances.size());
         for (Instance instance : allInstances) {
             // 如果已注册 但是不对外提供服务的,排除掉
             if (!instance.isEnabled()) {
                 continue;
             }
-            RegistryProviderNecessaryInfo providerNecessaryInfo = RegistryProviderNecessaryInfo.build(instance.getServiceName(), instance.getIp(), instance.getPort(), null, instance.isHealthy(), instance.getClusterName(), instance.getWeight(), instance.isEnabled());
+            String clusterName = instance.getClusterName();
+            RegistryProviderNecessaryInfo providerNecessaryInfo = RegistryProviderNecessaryInfo.build(instance.getServiceName(), instance.getIp(), instance.getPort(), null, instance.isHealthy(), clusterName, instance.getWeight(), instance.isEnabled());
             Map<String, String> metadata = instance.getMetadata();
             RegistryMetadata registryMetadata = JSON.parseObject(metadata.get(METADATA), RegistryMetadata.class);
 
             RegistryInfo registryInfo = new RegistryInfo();
             registryInfo.setNecessaryInfo(providerNecessaryInfo);
             registryInfo.setMetadata(registryMetadata);
-            result.add(registryInfo);
+            if (!stringRegistryInfoHashMap.containsKey(clusterName)) {
+                stringRegistryInfoHashMap.put(clusterName, new ArrayList<>());
+            }
+            stringRegistryInfoHashMap.get(clusterName).add(registryInfo);
         }
-        return result;
+
+        return stringRegistryInfoHashMap;
     }
 
     @Override
@@ -268,7 +273,7 @@ public class RegistryNacosMode implements RegistryMode {
     }
 
     @Override
-    public void createListener(String interfaceName, Cluster cluster) {
+    public void createListener(String interfaceName, Map<String, Cluster> cluster) {
         RegistryServiceListener listener = new RegistryNacosServiceListener(this, interfaceName);
         listener.setCluster(cluster);
         this.addServiceListener(interfaceName, RegistryContent.DEFAULT_REGISTRY_GROUP_NAME, listener);

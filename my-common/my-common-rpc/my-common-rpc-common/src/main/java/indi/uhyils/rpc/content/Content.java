@@ -158,4 +158,9 @@ public interface Content {
      */
     String HEADER_RETURN_TYPE = "returnType";
 
+    /**
+     * 默认的provider_集群名称
+     */
+    String DEFAULT_PROVIDER_CLUSTER_NAME = "default_cluster_name";
+
 }

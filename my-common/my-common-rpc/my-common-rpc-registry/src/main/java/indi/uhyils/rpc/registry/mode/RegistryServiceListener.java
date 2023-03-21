@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.registry.mode;
 
 import indi.uhyils.rpc.cluster.Cluster;
+import java.util.Map;
 
 /**
  * 监听器
@@ -15,5 +16,5 @@ public interface RegistryServiceListener {
      *
      * @param cluster
      */
-    void setCluster(Cluster cluster);
+    void setCluster(Map<String, Cluster> cluster);
 }

@@ -1,6 +1,7 @@
 package indi.uhyils.rpc.registry.mode;
 
 import indi.uhyils.rpc.cluster.Cluster;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -11,10 +12,10 @@ public abstract class AbstractRegistryServiceListener implements RegistryService
     /**
      * 监听器对负载均衡措施的指针
      */
-    protected Cluster cluster;
+    protected Map<String, Cluster> cluster;
 
     @Override
-    public void setCluster(Cluster cluster) {
+    public void setCluster(Map<String, Cluster> cluster) {
         this.cluster = cluster;
     }
 }

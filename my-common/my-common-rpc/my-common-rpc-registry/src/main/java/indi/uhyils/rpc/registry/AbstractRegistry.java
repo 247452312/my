@@ -5,9 +5,10 @@ import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.config.ProtocolConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.exception.MyRpcException;
-import indi.uhyils.rpc.exception.RpcShowDownException;
 import indi.uhyils.rpc.registry.mode.RegistryMode;
 import indi.uhyils.util.LogUtil;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -28,7 +29,7 @@ public abstract class AbstractRegistry<T> implements Registry<T> {
     /**
      * 集群
      */
-    protected Cluster cluster;
+    protected Map<String, Cluster> clusters;
 
     /**
      * 和nacos连接的东西
@@ -75,12 +76,12 @@ public abstract class AbstractRegistry<T> implements Registry<T> {
         this.mode = mode;
     }
 
-    public Cluster getCluster() {
-        return cluster;
+    public Map<String, Cluster> getClusters() {
+        return clusters;
     }
 
-    public void setCluster(Cluster cluster) {
-        this.cluster = cluster;
+    public void setClusters(Map<String, Cluster> clusters) {
+        this.clusters = clusters;
     }
 
     public Class<T> getServiceClass() {
