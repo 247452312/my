@@ -28,7 +28,7 @@ public final class SwaggerUtils {
      */
     public static <T> List<MethodSwaggerDTO> parseToRpcMethods(Class<T> targetClass) {
         Method[] declaredMethods = targetClass.getDeclaredMethods();
-        return Arrays.asList(declaredMethods).stream().map(SwaggerUtils::parseToRpcMethod).collect(Collectors.toList());
+        return Arrays.asList(declaredMethods).stream().filter(t->!t.getName().contains("$")).map(SwaggerUtils::parseToRpcMethod).collect(Collectors.toList());
     }
 
     /**

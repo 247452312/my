@@ -3,6 +3,7 @@ package indi.uhyils.pojo.entity;
 import indi.uhyils.annotation.MySwagger;
 import indi.uhyils.content.SwaggerContent;
 import indi.uhyils.pojo.entity.base.AbstractEntity;
+import indi.uhyils.util.ClassUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.SpringUtil;
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ public class SwaggerEntity extends AbstractEntity<String> {
         List<ClassSwaggerEntity> list = new ArrayList<>();
         try {
             for (Object protocolObj : protocolObjs) {
-                list.add(new ClassSwaggerEntity(protocolObj));
+                Class<?> realClass = ClassUtil.getRealClass(protocolObj);
+                list.add(ClassSwaggerEntityFactory.createByClass(realClass));
             }
         } catch (Exception e) {
             LogUtil.error(this, e);
