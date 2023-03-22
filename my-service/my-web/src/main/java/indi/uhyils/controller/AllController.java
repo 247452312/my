@@ -8,9 +8,11 @@ import indi.uhyils.enums.ServiceCode;
 import indi.uhyils.pojo.DTO.request.Action;
 import indi.uhyils.pojo.DTO.request.SessionRequest;
 import indi.uhyils.pojo.DTO.response.WebResponse;
+import indi.uhyils.rpc.content.ClusterNameContext;
 import indi.uhyils.util.IpUtil;
 import indi.uhyils.util.LogUtil;
 import indi.uhyils.util.RpcApiUtil;
+import indi.uhyils.util.StringUtil;
 import indi.uhyils.util.WebExceptionHandler;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -18,13 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,13 +46,14 @@ public class AllController {
     private static final String UNIQUE = "unique";
 
     /**
+     * 调用集群名称的header
+     */
+    private static final String CLUSTER_NAME_HEADER = "target_cluster_name";
+
+    /**
      * 不传递的header
      */
-    private static final List<String> NON_TRANSITIVE_HEADER = Arrays.asList("sec-fetch-mode", "content-length", "referer", "sec-fetch-site", "accept-language", "cookie", "origin", "accept", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform", "host", "x-requested-with", "connection", "content-type", "accept-encoding", "user-agent", "sec-fetch-dest");
-
-    @Autowired
-    @Qualifier("actionExecutor")
-    private ThreadPoolTaskExecutor executor;
+    private static final List<String> NON_TRANSITIVE_HEADER = Arrays.asList("sec-fetch-mode", "content-length", "referer", "sec-fetch-site", "accept-language", "cookie", "origin", "accept", "sec-ch-ua", "sec-ch-ua-mobile", "sec-ch-ua-platform", "host", "x-requested-with", "connection", "content-type", "accept-encoding", "user-agent", "sec-fetch-dest", CLUSTER_NAME_HEADER);
 
     /**
      * 默认返回所有的方法
@@ -72,11 +70,15 @@ public class AllController {
 
         // 发送前处理
         dealActionBeforeCall(action);
+
         // 获取有价值的headers
         Map<String, String> headers = findHeaders(httpServletRequest);
+        String header = httpServletRequest.getHeader(CLUSTER_NAME_HEADER);
+        if (StringUtil.isNotEmpty(header)) {
+            ClusterNameContext.add(header);
+        }
         try {
-            Future<Object> submit = executor.submit(new ActionFuture(action, headers, httpServletRequest));
-            data = submit.get();
+            data = call(action, headers, httpServletRequest);
 
             // 修改字段类型为String,因为前端大数会失去精度
             if (data instanceof JSONObject) {
@@ -88,6 +90,8 @@ public class AllController {
         } catch (Exception e) {
             // 如果失败,就返回微服务传回来的错误信息与提示
             return WebExceptionHandler.onException(e);
+        } finally {
+            ClusterNameContext.remove();
         }
         // disruptor 注释了. 以后想用在别的地方当做参考
         /*finally {
@@ -182,36 +186,20 @@ public class AllController {
         action.getArgs().put(TOKEN, action.getToken());
     }
 
-    private static class ActionFuture implements Callable<Object> {
-
-        private final Action action;
-
-        private final Map<String, String> headers;
-
-        private final HttpServletRequest httpServletRequest;
-
-        public ActionFuture(Action action, Map<String, String> headers, HttpServletRequest httpServletRequest) {
-            this.action = action;
-            this.headers = headers;
-            this.httpServletRequest = httpServletRequest;
+    private Object call(Action action, Map<String, String> headers, HttpServletRequest httpServletRequest) throws Exception {
+        pushIp(httpServletRequest);
+        try {
+            return RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), headers, action.getArgs());
+        } catch (Exception e) {
+            throw e;
+        } catch (Throwable throwable) {
+            throw new Exception(throwable);
         }
+    }
 
-        @Override
-        public Object call() throws Exception {
-            pushIp();
-            try {
-                return RpcApiUtil.rpcApiTool(action.getInterfaceName(), action.getMethodName(), headers, action.getArgs());
-            } catch (Exception e) {
-                throw e;
-            } catch (Throwable throwable) {
-                throw new Exception(throwable);
-            }
-        }
-
-        private void pushIp() {
-            String ip = IpUtil.getServletIP(httpServletRequest);
-            UserInfoHelper.setIp(ip);
-        }
+    private void pushIp(HttpServletRequest httpServletRequest) {
+        String ip = IpUtil.getServletIP(httpServletRequest);
+        UserInfoHelper.setIp(ip);
     }
 
 }

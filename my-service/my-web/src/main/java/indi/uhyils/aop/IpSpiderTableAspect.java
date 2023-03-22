@@ -1,5 +1,6 @@
 package indi.uhyils.aop;
 
+import indi.uhyils.MyExecutorWrapper;
 import indi.uhyils.context.MyContext;
 import indi.uhyils.context.SpiderContext;
 import indi.uhyils.enums.ServiceCode;
@@ -18,7 +19,11 @@ import indi.uhyils.util.DefaultCQEBuildUtil;
 import indi.uhyils.util.LogPushUtils;
 import indi.uhyils.util.LogUtil;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -38,6 +43,8 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class IpSpiderTableAspect {
 
+
+    private static ExecutorService es = MyExecutorWrapper.createByThreadPoolExecutor(new ThreadPoolExecutor(5, 100, 3000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10)));
 
     @RpcReference
     private BlackListProvider blackListService;
@@ -135,7 +142,7 @@ public class IpSpiderTableAspect {
                     // 这里是绝对不会执行的,除非服务不存在
                     return null;
                 }
-            });
+            }, es);
             GetLogIntervalByIpQuery defaultRequest = new GetLogIntervalByIpQuery();
             UserDTO user = new UserDTO();
             user.setId(MyContext.ADMIN_USER_ID);
