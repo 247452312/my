@@ -1,6 +1,5 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.annotation.MySwagger;
 import indi.uhyils.pojo.DTO.ClassSwaggerDTO;
 import indi.uhyils.pojo.DTO.HttpClassSwaggerDTO;
 import indi.uhyils.util.SwaggerUtils;
@@ -21,8 +20,7 @@ public class ControllerClassSwaggerEntity extends ClassSwaggerEntity {
     @Override
     protected ClassSwaggerDTO parseClass() {
         HttpClassSwaggerDTO httpClassSwaggerDTO = new HttpClassSwaggerDTO();
-        httpClassSwaggerDTO.setTypeCode(annotation.value().getCode());
-        httpClassSwaggerDTO.setTypeName(annotation.value().toString());
+        httpClassSwaggerDTO.setServiceType(annotation.value());
         httpClassSwaggerDTO.setName(targetClass.getName());
         httpClassSwaggerDTO.setDesc(annotation.desc());
         httpClassSwaggerDTO.setMethods(SwaggerUtils.parseToRpcMethods(targetClass));

@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.DTO;
 
+import indi.uhyils.enums.ProtocolTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 
@@ -11,11 +12,9 @@ import java.io.Serializable;
  */
 public class ClassSwaggerDTO implements Serializable {
 
-    @ApiModelProperty("类型编码")
-    private Integer typeCode;
+    @ApiModelProperty("类型")
+    private ProtocolTypeEnum serviceType;
 
-    @ApiModelProperty("类型名称")
-    private String typeName;
 
     @ApiModelProperty("类名称")
     private String name;
@@ -23,20 +22,12 @@ public class ClassSwaggerDTO implements Serializable {
     @ApiModelProperty("类注释")
     private String desc;
 
-    public Integer getTypeCode() {
-        return typeCode;
+    public ProtocolTypeEnum getServiceType() {
+        return serviceType;
     }
 
-    public void setTypeCode(Integer typeCode) {
-        this.typeCode = typeCode;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setServiceType(ProtocolTypeEnum serviceType) {
+        this.serviceType = serviceType;
     }
 
     public String getName() {

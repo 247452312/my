@@ -1,6 +1,5 @@
 package indi.uhyils.pojo.entity;
 
-import indi.uhyils.annotation.MySwagger;
 import indi.uhyils.pojo.DTO.RpcClassSwaggerDTO;
 import indi.uhyils.util.SwaggerUtils;
 
@@ -18,8 +17,7 @@ public class RpcClassSwaggerEntity extends ClassSwaggerEntity {
     @Override
     protected RpcClassSwaggerDTO parseClass() {
         RpcClassSwaggerDTO rpcClassSwaggerDTO = new RpcClassSwaggerDTO();
-        rpcClassSwaggerDTO.setTypeCode(annotation.value().getCode());
-        rpcClassSwaggerDTO.setTypeName(annotation.value().toString());
+        rpcClassSwaggerDTO.setServiceType(annotation.value());
         rpcClassSwaggerDTO.setName(targetClass.getName());
         rpcClassSwaggerDTO.setDesc(annotation.desc());
         rpcClassSwaggerDTO.setMethods(SwaggerUtils.parseToRpcMethods(targetClass));

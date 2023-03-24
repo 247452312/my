@@ -22,14 +22,13 @@ public class TaskClassSwaggerEntity extends ClassSwaggerEntity {
     protected ClassSwaggerDTO parseClass() {
         MySwagger annotation = targetClass.getAnnotation(MySwagger.class);
         TaskClassSwaggerDTO taskClassSwaggerDTO = new TaskClassSwaggerDTO();
-        taskClassSwaggerDTO.setTypeCode(annotation.value().getCode());
-        taskClassSwaggerDTO.setTypeName(annotation.value().toString());
+        taskClassSwaggerDTO.setServiceType(annotation.value());
         taskClassSwaggerDTO.setName(targetClass.getName());
         taskClassSwaggerDTO.setDesc(annotation.desc());
         Method method = BaseTask.class.getMethods()[0];
         try {
             Method declaredMethod = targetClass.getDeclaredMethod(method.getName(), method.getParameterTypes());
-            taskClassSwaggerDTO.setMethod(SwaggerUtils.parseToRpcMethod(declaredMethod));
+            taskClassSwaggerDTO.setMethod(SwaggerUtils.parseToRpcMethod(targetClass, declaredMethod));
         } catch (NoSuchMethodException e) {
             LogUtil.error(this, e);
         }

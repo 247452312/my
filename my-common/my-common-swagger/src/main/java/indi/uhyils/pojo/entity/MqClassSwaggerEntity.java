@@ -1,8 +1,6 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.MyMq;
-import indi.uhyils.annotation.MySwagger;
-import indi.uhyils.enums.ProtocolTypeEnum;
 import indi.uhyils.pojo.DTO.ClassSwaggerDTO;
 import indi.uhyils.pojo.DTO.MqClassSwaggerDTO;
 import java.util.Arrays;
@@ -23,9 +21,7 @@ public class MqClassSwaggerEntity extends ClassSwaggerEntity {
         MqClassSwaggerDTO swaggerDTO = new MqClassSwaggerDTO();
 
         MyMq myMq = targetClass.getAnnotation(MyMq.class);
-        ProtocolTypeEnum value = annotation.value();
-        swaggerDTO.setTypeCode(value.getCode());
-        swaggerDTO.setTypeName(value.toString());
+        swaggerDTO.setServiceType(annotation.value());
         swaggerDTO.setName(targetClass.getName());
         swaggerDTO.setDesc(annotation.desc());
         swaggerDTO.setTopic(myMq.topic());

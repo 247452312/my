@@ -1,15 +1,22 @@
 package indi.uhyils.util;
 
 import com.google.common.base.Objects;
+import indi.uhyils.annotation.Public;
+import indi.uhyils.annotation.ReadWriteMark;
 import indi.uhyils.pojo.DTO.MethodSwaggerDTO;
 import indi.uhyils.pojo.DTO.ModelFieldInfoDTO;
 import indi.uhyils.pojo.DTO.ModelInfoDTO;
+import indi.uhyils.pojo.DTO.ReadWriteMarkInfo;
+import io.swagger.annotations.ApiModelProperty;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -28,7 +35,7 @@ public final class SwaggerUtils {
      */
     public static <T> List<MethodSwaggerDTO> parseToRpcMethods(Class<T> targetClass) {
         Method[] declaredMethods = targetClass.getDeclaredMethods();
-        return Arrays.asList(declaredMethods).stream().filter(t->!t.getName().contains("$")).map(SwaggerUtils::parseToRpcMethod).collect(Collectors.toList());
+        return Arrays.stream(declaredMethods).filter(t -> !t.getName().contains("$")).map(t -> parseToRpcMethod(targetClass, t)).collect(Collectors.toList());
     }
 
     /**
@@ -38,29 +45,74 @@ public final class SwaggerUtils {
      *
      * @return
      */
-    public static MethodSwaggerDTO parseToRpcMethod(Method method) {
-        MethodSwaggerDTO rpcMethodSwaggerDTO = new MethodSwaggerDTO();
+    public static MethodSwaggerDTO parseToRpcMethod(Class<?> targetClass, Method method) {
         Annotation[] annotations = method.getAnnotations();
-        rpcMethodSwaggerDTO.setAnnotations(Arrays.stream(annotations).map(t -> t.annotationType().getName()).collect(Collectors.toList()));
+        MethodSwaggerDTO rpcMethodSwaggerDTO = new MethodSwaggerDTO();
+        ReadWriteMarkInfo readWriteMark = null;
+
+        boolean publicFlag = false;
+        for (Annotation annotation : annotations) {
+            if (Objects.equal(annotation.annotationType(), Public.class)) {
+                publicFlag = true;
+            }
+            if (Objects.equal(annotation.annotationType(), ReadWriteMark.class)) {
+                ReadWriteMark readWriteMarkAnn = (ReadWriteMark) annotation;
+                readWriteMark = new ReadWriteMarkInfo();
+                readWriteMark.setType(readWriteMarkAnn.type());
+                readWriteMark.setTables(Arrays.asList(readWriteMarkAnn.tables()));
+                readWriteMark.setCacheType(readWriteMarkAnn.cacheType());
+            }
+        }
+        if (readWriteMark == null) {
+            ReadWriteMark annotation = targetClass.getAnnotation(ReadWriteMark.class);
+            if (annotation != null) {
+                readWriteMark = new ReadWriteMarkInfo();
+                readWriteMark.setType(annotation.type());
+                readWriteMark.setTables(Arrays.asList(annotation.tables()));
+                readWriteMark.setCacheType(annotation.cacheType());
+            }
+        }
+        rpcMethodSwaggerDTO.setPublicFlag(publicFlag);
+        rpcMethodSwaggerDTO.setReadWriteMark(readWriteMark);
         rpcMethodSwaggerDTO.setName(method.getName());
-        rpcMethodSwaggerDTO.setResult(parseToModel(method.getReturnType()));
-        rpcMethodSwaggerDTO.setParams(parseToFields(method.getParameterTypes()));
+        rpcMethodSwaggerDTO.setResultType(parseToModel(method.getGenericReturnType()));
+        rpcMethodSwaggerDTO.setParamTypes(parseToModels(method.getGenericParameterTypes()));
+
         return rpcMethodSwaggerDTO;
     }
 
+
     /**
-     * 解析一个类为字段信息
+     * 解析一个没有名称的类
      *
-     * @param returnType
+     * @param type
      *
      * @return
      */
-    public static ModelInfoDTO parseToModel(Class<?> returnType) {
+    public static ModelInfoDTO parseToModel(Type type) {
+        if (type instanceof ParameterizedType) {
+            return parseParameterizedTypeToModel((ParameterizedType) type);
+        } else if (type instanceof Class<?>) {
+            return parseClassToModel((Class<?>) type);
+        }
+        Asserts.throwException("错误的类型:{}", type.getClass().getName());
+        return null;
+    }
+
+    /**
+     * 解析一个不带泛型的类为model对象
+     * @param clazz
+     * @return
+     */
+    private static ModelInfoDTO parseClassToModel(Class<?> clazz) {
         ModelInfoDTO modelInfoDTO = new ModelInfoDTO();
-        modelInfoDTO.setAnnotation(Arrays.stream(returnType.getAnnotations()).map(t -> t.annotationType().getName()).collect(Collectors.toList()));
-        modelInfoDTO.setName(returnType.getName());
-        List<Method> getMethod = Arrays.stream(returnType.getDeclaredMethods()).filter(t -> t.getName().startsWith("get")).collect(Collectors.toList());
-        modelInfoDTO.setFields(parseGetMethodToFields(returnType, getMethod));
+        List<Method> getMethod = Arrays.stream(clazz.getDeclaredMethods()).filter(t -> t.getName().startsWith("get")).collect(Collectors.toList());
+
+        modelInfoDTO.setFields(parseGetMethodToFields(clazz, getMethod));
+        modelInfoDTO.setType(clazz.getName());
+        modelInfoDTO.setSimpleType(clazz.getSimpleName());
+        modelInfoDTO.setName(null);
+
         return modelInfoDTO;
     }
 
@@ -71,8 +123,36 @@ public final class SwaggerUtils {
      *
      * @return
      */
-    private static List<ModelInfoDTO> parseToFields(Class<?>... returnType) {
-        return parseToFields(Arrays.asList(returnType));
+    private static List<ModelInfoDTO> parseToModels(Type... returnType) {
+        return parseToModels(Arrays.asList(returnType));
+    }
+
+    /**
+     * 解析一个带有泛型的类为model对象
+     * @param type
+     * @return
+     */
+    private static ModelInfoDTO parseParameterizedTypeToModel(ParameterizedType type) {
+
+        Class<?> clazz = (Class<?>) type.getRawType();
+        ModelInfoDTO modelInfoDTO = parseClassToModel(clazz);
+        Type[] actualTypeArguments = type.getActualTypeArguments();
+        modelInfoDTO.setSchema(Arrays.stream(actualTypeArguments).map(t -> ((Class<?>) t).getName()).collect(Collectors.toList()));
+        modelInfoDTO.setSchemaSimple(Arrays.stream(actualTypeArguments).map(t -> ((Class<?>) t).getSimpleName()).collect(Collectors.toList()));
+        modelInfoDTO.setChildTypes(parseToModels(actualTypeArguments));
+        return modelInfoDTO;
+
+    }
+
+    /**
+     * 解析多个类为字段信息
+     *
+     * @param asList
+     *
+     * @return
+     */
+    private static List<ModelInfoDTO> parseToModels(List<Type> asList) {
+        return asList.stream().map(SwaggerUtils::parseToModel).collect(Collectors.toList());
     }
 
     /**
@@ -96,31 +176,37 @@ public final class SwaggerUtils {
     private static ModelFieldInfoDTO parseGetMethodToField(Class<?> clazz, Method method) {
         String name = StringUtil.firstToLowerCase(method.getName().substring("get".length()));
 
-        Class<?> returnType = method.getReturnType();
+        Type genericReturnType = method.getGenericReturnType();
+        ModelInfoDTO modelFieldInfoDTO = parseToModel(genericReturnType);
+        ModelFieldInfoDTO result = new ModelFieldInfoDTO();
 
-        ModelFieldInfoDTO modelFieldInfoDTO = new ModelFieldInfoDTO();
-        modelFieldInfoDTO.setType(returnType.getName());
-        modelFieldInfoDTO.setName(name);
+
+        result.setType(modelFieldInfoDTO.getType());
+        result.setChildTypes(modelFieldInfoDTO.getChildTypes());
+        result.setSimpleType(modelFieldInfoDTO.getSimpleType());
+        result.setSchema(modelFieldInfoDTO.getSchema());
+        result.setSchemaSimple(modelFieldInfoDTO.getSchemaSimple());
+        result.setName(name);
 
         for (Field field : clazz.getFields()) {
             if (!Objects.equal(field.getName(), name)) {
                 continue;
             }
             List<String> annotations = Arrays.stream(field.getAnnotations()).map(t -> t.annotationType().getName()).collect(Collectors.toList());
-            modelFieldInfoDTO.setAnnotations(annotations);
+            if (annotations.contains(ApiModelProperty.class.getSimpleName())) {
+                ApiModelProperty annotation = field.getAnnotation(ApiModelProperty.class);
+                String desc = annotation.value();
+                result.setDesc(desc);
+            }
+            if (annotations.contains(NotNull.class.getSimpleName())) {
+                result.setRequired(true);
+            } else if (annotations.contains(ApiModelProperty.class.getSimpleName())) {
+                ApiModelProperty annotation = field.getAnnotation(ApiModelProperty.class);
+                result.setRequired(annotation.required());
+            }
             break;
         }
-        return modelFieldInfoDTO;
+        return result;
     }
 
-    /**
-     * 解析多个类为字段信息
-     *
-     * @param asList
-     *
-     * @return
-     */
-    private static List<ModelInfoDTO> parseToFields(List<Class<?>> asList) {
-        return asList.stream().map(SwaggerUtils::parseToModel).collect(Collectors.toList());
-    }
 }
