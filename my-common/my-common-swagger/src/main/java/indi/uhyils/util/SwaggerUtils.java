@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
@@ -105,9 +106,16 @@ public final class SwaggerUtils {
      * @return
      */
     private static ModelInfoDTO parseClassToModel(Class<?> clazz) {
+        if (Collection.class.isAssignableFrom(clazz)) {
+            ModelInfoDTO modelInfoDTO = new ModelInfoDTO();
+            modelInfoDTO.setType(clazz.getName());
+            modelInfoDTO.setSimpleType(clazz.getSimpleName());
+            return modelInfoDTO;
+        }
         ModelInfoDTO modelInfoDTO = new ModelInfoDTO();
         List<Method> getMethod = Arrays.stream(clazz.getDeclaredMethods()).filter(t -> t.getName().startsWith("get")).collect(Collectors.toList());
 
+        // todo 此处有无限递归的风险
         modelInfoDTO.setFields(parseGetMethodToFields(clazz, getMethod));
         modelInfoDTO.setType(clazz.getName());
         modelInfoDTO.setSimpleType(clazz.getSimpleName());
@@ -179,7 +187,6 @@ public final class SwaggerUtils {
         Type genericReturnType = method.getGenericReturnType();
         ModelInfoDTO modelFieldInfoDTO = parseToModel(genericReturnType);
         ModelFieldInfoDTO result = new ModelFieldInfoDTO();
-
 
         result.setType(modelFieldInfoDTO.getType());
         result.setChildTypes(modelFieldInfoDTO.getChildTypes());
