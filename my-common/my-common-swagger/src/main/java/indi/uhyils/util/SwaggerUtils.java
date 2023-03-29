@@ -25,6 +25,7 @@ import javax.validation.constraints.NotNull;
  */
 public final class SwaggerUtils {
 
+
     /**
      * 解析一个类, 解析出rpc对应的方法信息
      * rpc类中的所有方法均为可以通过rpc进行调用的方法,所以需要解析所有方法
@@ -38,6 +39,7 @@ public final class SwaggerUtils {
         Method[] declaredMethods = targetClass.getDeclaredMethods();
         return Arrays.stream(declaredMethods).filter(t -> !t.getName().contains("$")).map(t -> parseToRpcMethod(targetClass, t)).collect(Collectors.toList());
     }
+
 
     /**
      * 见{@link SwaggerUtils#parseToRpcMethods(Class)},单体解析方法
@@ -82,7 +84,6 @@ public final class SwaggerUtils {
         return rpcMethodSwaggerDTO;
     }
 
-
     /**
      * 解析一个没有名称的类
      *
@@ -90,13 +91,39 @@ public final class SwaggerUtils {
      *
      * @return
      */
-    public static ModelInfoDTO parseToModel(Type type) {
-        if (type instanceof ParameterizedType) {
-            return parseParameterizedTypeToModel((ParameterizedType) type);
-        } else if (type instanceof Class<?>) {
-            return parseClassToModel((Class<?>) type);
+    private static ModelInfoDTO parseToModel(Type type) {
+        if (ModelNoteThreadLocalContext.contains(type.getTypeName())) {
+            return ModelInfoDTO.build(type.getTypeName());
         }
-        Asserts.throwException("错误的类型:{}", type.getClass().getName());
+        return ModelNoteThreadLocalContext.tryInit(() -> {
+            ModelNoteThreadLocalContext.add(type.getTypeName());
+
+            try {
+                // 基本类型直接返回
+                ModelInfoDTO modelInfoDTO = dealBasicType(type);
+                if (modelInfoDTO != null) {
+                    return modelInfoDTO;
+                } else if (type instanceof ParameterizedType) {
+                    return parseParameterizedTypeToModel((ParameterizedType) type);
+                } else if (type instanceof Class<?>) {
+                    return parseClassToModel((Class<?>) type);
+                }
+            } finally {
+                ModelNoteThreadLocalContext.remove(type.getTypeName());
+            }
+            Asserts.throwException("错误的类型:{}", type.getClass().getName());
+            return null;
+        });
+    }
+
+    /**
+     * 处理基本类型
+     * @param type
+     * @return
+     */
+    private static ModelInfoDTO dealBasicType(Type type) {
+        String typeName = type.getTypeName();
+        // todo 过滤基本类型
         return null;
     }
 
@@ -112,15 +139,13 @@ public final class SwaggerUtils {
             modelInfoDTO.setSimpleType(clazz.getSimpleName());
             return modelInfoDTO;
         }
-        ModelInfoDTO modelInfoDTO = new ModelInfoDTO();
         List<Method> getMethod = Arrays.stream(clazz.getDeclaredMethods()).filter(t -> t.getName().startsWith("get")).collect(Collectors.toList());
 
-        // todo 此处有无限递归的风险
+        ModelInfoDTO modelInfoDTO = new ModelInfoDTO();
         modelInfoDTO.setFields(parseGetMethodToFields(clazz, getMethod));
         modelInfoDTO.setType(clazz.getName());
         modelInfoDTO.setSimpleType(clazz.getSimpleName());
         modelInfoDTO.setName(null);
-
         return modelInfoDTO;
     }
 
@@ -143,13 +168,12 @@ public final class SwaggerUtils {
     private static ModelInfoDTO parseParameterizedTypeToModel(ParameterizedType type) {
 
         Class<?> clazz = (Class<?>) type.getRawType();
-        ModelInfoDTO modelInfoDTO = parseClassToModel(clazz);
+        ModelInfoDTO modelInfoDTO = parseToModel(clazz);
         Type[] actualTypeArguments = type.getActualTypeArguments();
         modelInfoDTO.setSchema(Arrays.stream(actualTypeArguments).map(t -> ((Class<?>) t).getName()).collect(Collectors.toList()));
         modelInfoDTO.setSchemaSimple(Arrays.stream(actualTypeArguments).map(t -> ((Class<?>) t).getSimpleName()).collect(Collectors.toList()));
         modelInfoDTO.setChildTypes(parseToModels(actualTypeArguments));
         return modelInfoDTO;
-
     }
 
     /**

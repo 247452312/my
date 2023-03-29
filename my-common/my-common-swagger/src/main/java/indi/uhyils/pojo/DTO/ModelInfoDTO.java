@@ -57,6 +57,12 @@ public class ModelInfoDTO implements Serializable {
     @ApiModelProperty("如果是array,此处为 泛型信息")
     private List<ModelInfoDTO> childTypes;
 
+    /**
+     * 如果此model是递归无法解析或者在之前重复的类,则需要直接使用之前的class名称即可
+     */
+    @ApiModelProperty("重复的class名称")
+    private String repeatClassName;
+
     public List<ModelFieldInfoDTO> getFields() {
         return fields;
     }
@@ -111,5 +117,22 @@ public class ModelInfoDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRepeatClassName() {
+        return repeatClassName;
+    }
+
+    public void setRepeatClassName(String repeatClassName) {
+        this.repeatClassName = repeatClassName;
+    }
+
+    /**
+     * 快捷创建
+     */
+    public static ModelInfoDTO build(String repeatClassName) {
+        ModelInfoDTO build = new ModelInfoDTO();
+        build.setRepeatClassName(repeatClassName);
+        return build;
     }
 }

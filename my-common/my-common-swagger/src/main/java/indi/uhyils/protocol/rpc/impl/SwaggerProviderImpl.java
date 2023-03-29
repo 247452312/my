@@ -5,6 +5,7 @@ import indi.uhyils.annotation.Public;
 import indi.uhyils.assembler.SwaggerAssembler;
 import indi.uhyils.enums.ProtocolTypeEnum;
 import indi.uhyils.pojo.DTO.ClassSwaggerDTO;
+import indi.uhyils.pojo.DTO.RpcClassSwaggerDTO;
 import indi.uhyils.pojo.cqe.FindSwaggerQuery;
 import indi.uhyils.pojo.entity.SwaggerEntity;
 import indi.uhyils.protocol.rpc.SwaggerProvider;
@@ -31,5 +32,12 @@ public class SwaggerProviderImpl implements SwaggerProvider {
     public List<ClassSwaggerDTO> findSwagger(FindSwaggerQuery query) {
         SwaggerEntity entity = new SwaggerEntity();
         return entity.transClassSwagger().stream().map(t -> assembler.toDTO(t)).collect(Collectors.toList());
+    }
+
+    @Override
+    @Public
+    public List<RpcClassSwaggerDTO> findRpcSwagger(FindSwaggerQuery query) {
+        SwaggerEntity entity = new SwaggerEntity();
+        return entity.transClassSwagger().stream().map(t -> assembler.toDTO(t)).map(t -> (RpcClassSwaggerDTO) t).collect(Collectors.toList());
     }
 }

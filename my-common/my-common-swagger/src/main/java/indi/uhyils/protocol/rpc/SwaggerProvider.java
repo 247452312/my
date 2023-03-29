@@ -1,6 +1,8 @@
 package indi.uhyils.protocol.rpc;
 
+import indi.uhyils.annotation.Public;
 import indi.uhyils.pojo.DTO.ClassSwaggerDTO;
+import indi.uhyils.pojo.DTO.RpcClassSwaggerDTO;
 import indi.uhyils.pojo.cqe.FindSwaggerQuery;
 import indi.uhyils.protocol.rpc.base.BaseProvider;
 import java.util.List;
@@ -21,4 +23,12 @@ public interface SwaggerProvider extends BaseProvider {
      * @return
      */
     List<ClassSwaggerDTO> findSwagger(FindSwaggerQuery query);
+
+    /**
+     * 测试用,请忽略
+     * @param query
+     * @return
+     */
+    @Public
+    List<RpcClassSwaggerDTO> findRpcSwagger(FindSwaggerQuery query);
 }
