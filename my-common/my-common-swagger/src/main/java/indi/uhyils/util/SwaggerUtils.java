@@ -99,12 +99,12 @@ public final class SwaggerUtils {
             ModelNoteThreadLocalContext.add(type.getTypeName());
 
             try {
-                // 基本类型直接返回
-                ModelInfoDTO modelInfoDTO = dealBasicType(type);
-                if (modelInfoDTO != null) {
-                    return modelInfoDTO;
-                } else if (type instanceof ParameterizedType) {
+                ModelInfoDTO result;
+                if (type instanceof ParameterizedType) {
                     return parseParameterizedTypeToModel((ParameterizedType) type);
+                } else if ((result = dealBasicType(type)) != null) {
+                    // 基本类型直接返回
+                    return result;
                 } else if (type instanceof Class<?>) {
                     return parseClassToModel((Class<?>) type);
                 }
@@ -123,8 +123,28 @@ public final class SwaggerUtils {
      */
     private static ModelInfoDTO dealBasicType(Type type) {
         String typeName = type.getTypeName();
-        // todo 过滤基本类型
-        return null;
+        if (!isBasicType(typeName)) {
+            return null;
+        }
+        ModelInfoDTO modelInfoDTO = new ModelInfoDTO();
+        modelInfoDTO.setFields(null);
+        modelInfoDTO.setType(typeName);
+        modelInfoDTO.setSimpleType(typeName);
+        return modelInfoDTO;
+    }
+
+    /**
+     * 判断一个类型是否是不需要解析的类型
+     * @param className
+     * @return
+     */
+    private static Boolean isBasicType(String className) {
+        if ("void".equalsIgnoreCase(className)) {
+            return true;
+        } else if (className.startsWith("java.")) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -219,12 +239,12 @@ public final class SwaggerUtils {
         result.setSchemaSimple(modelFieldInfoDTO.getSchemaSimple());
         result.setName(name);
 
-        for (Field field : clazz.getFields()) {
+        for (Field field : clazz.getDeclaredFields()) {
             if (!Objects.equal(field.getName(), name)) {
                 continue;
             }
             List<String> annotations = Arrays.stream(field.getAnnotations()).map(t -> t.annotationType().getName()).collect(Collectors.toList());
-            if (annotations.contains(ApiModelProperty.class.getSimpleName())) {
+            if (annotations.contains(ApiModelProperty.class.getName())) {
                 ApiModelProperty annotation = field.getAnnotation(ApiModelProperty.class);
                 String desc = annotation.value();
                 result.setDesc(desc);
