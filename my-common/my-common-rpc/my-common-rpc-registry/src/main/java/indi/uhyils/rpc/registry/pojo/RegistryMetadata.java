@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.registry.pojo.info.metadata;
+package indi.uhyils.rpc.registry.pojo;
 
 import java.io.Serializable;
 import java.util.List;

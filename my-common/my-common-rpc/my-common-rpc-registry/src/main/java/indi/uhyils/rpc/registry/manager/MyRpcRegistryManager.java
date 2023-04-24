@@ -1,4 +1,4 @@
-package indi.uhyils.rpc.registry;
+package indi.uhyils.rpc.registry.manager;
 
 import indi.uhyils.rpc.spi.RpcSpiExtension;
 

@@ -5,11 +5,11 @@ import indi.uhyils.rpc.config.ProviderConfig;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.exchange.content.MyRpcContent;
-import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
-import indi.uhyils.rpc.registry.pojo.info.RegistryProviderNecessaryInfo;
-import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadata;
-import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadataOfInterface;
-import indi.uhyils.rpc.registry.pojo.info.metadata.RegistryMetadataOfMethod;
+import indi.uhyils.rpc.registry.pojo.RegistryMetadata;
+import indi.uhyils.rpc.registry.pojo.RegistryMetadataOfInterface;
+import indi.uhyils.rpc.registry.pojo.RegistryMetadataOfMethod;
+import indi.uhyils.rpc.registry.pojo.RegistryModelInfo;
+import indi.uhyils.rpc.registry.pojo.RegistryProviderNecessaryInfo;
 import indi.uhyils.util.IpUtil;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -33,15 +33,10 @@ public class RegistryModeBuilder {
      *
      * @return
      */
-    public static RegistryInfo initRegistryInfo(Class<?> clazz) {
-        RegistryInfo info = new RegistryInfo();
-
+    public static RegistryModelInfo initRegistryInfo(Class<?> clazz) {
         RegistryProviderNecessaryInfo necessaryInfo = initRegistryProviderNecessaryInfo(clazz);
-        info.setNecessaryInfo(necessaryInfo);
-
         RegistryMetadata metadata = initRegistryMetadata(clazz);
-        info.setMetadata(metadata);
-        return info;
+        return RegistryModelInfo.build(necessaryInfo, metadata);
     }
 
     /**
@@ -51,11 +46,10 @@ public class RegistryModeBuilder {
      *
      * @return
      */
-    public static RegistryProviderNecessaryInfo initRegistryProviderNecessaryInfo(Class<?> clazz) {
+    private static RegistryProviderNecessaryInfo initRegistryProviderNecessaryInfo(Class<?> clazz) {
         RpcConfig config = RpcConfigFactory.getInstance();
         final ProviderConfig provider = config.getProvider();
         Integer port = provider.getPort();
-
         RegistryProviderNecessaryInfo necessaryInfo = new RegistryProviderNecessaryInfo();
         necessaryInfo.setHost(IpUtil.getIp());
         necessaryInfo.setPort(port);
@@ -78,7 +72,7 @@ public class RegistryModeBuilder {
      *
      * @return
      */
-    public static RegistryMetadata initRegistryMetadata(Class<?> clazz) {
+    private static RegistryMetadata initRegistryMetadata(Class<?> clazz) {
         RegistryMetadata metadata = new RegistryMetadata();
 
         List<RegistryMetadataOfMethod> methodInfos = initMethodInfo(clazz);
@@ -96,7 +90,7 @@ public class RegistryModeBuilder {
      *
      * @return
      */
-    public static List<RegistryMetadataOfMethod> initMethodInfo(Class<?> clazz) {
+    private static List<RegistryMetadataOfMethod> initMethodInfo(Class<?> clazz) {
         List<RegistryMetadataOfMethod> methodInfos = new ArrayList<>();
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
@@ -116,7 +110,7 @@ public class RegistryModeBuilder {
      *
      * @return
      */
-    public static RegistryMetadataOfInterface initInterface() {
+    private static RegistryMetadataOfInterface initInterface() {
         RpcConfig config = RpcConfigFactory.getInstance();
         RegistryMetadataOfInterface serviceInfo = new RegistryMetadataOfInterface();
         serviceInfo.setServiceName(config.getApplication().getName());

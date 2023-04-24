@@ -1,42 +1,75 @@
 package indi.uhyils.rpc.registry;
 
-import com.alibaba.nacos.api.exception.NacosException;
 import indi.uhyils.rpc.annotation.RpcSpi;
 import indi.uhyils.rpc.cluster.Cluster;
 import indi.uhyils.rpc.cluster.ClusterFactory;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
-import indi.uhyils.rpc.content.Content;
-import indi.uhyils.rpc.exception.MyRpcException;
 import indi.uhyils.rpc.exception.RpcShowDownException;
 import indi.uhyils.rpc.exchange.pojo.data.RpcData;
+import indi.uhyils.rpc.registry.mode.ProviderRegistryCenterHandler;
+import indi.uhyils.rpc.registry.mode.RegistryCenterHandler;
+import indi.uhyils.rpc.registry.mode.RegistryCenterHandlerFactory;
 import indi.uhyils.rpc.registry.mode.RegistryModeBuilder;
-import indi.uhyils.rpc.registry.mode.RegistryModeFactory;
-import indi.uhyils.rpc.registry.pojo.info.RegistryInfo;
 import indi.uhyils.util.LogUtil;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 /**
+ *
+ * @date 文件创建日期 2023年04月23日 13时56分
  * @author uhyils <247452312@qq.com>
- * @date 文件创建日期 2020年12月27日 15时43分
  */
 @RpcSpi(single = false)
-public class ProviderRegistryImpl<T> extends AbstractRegistry<T> implements ProviderRegistry<T> {
+public class ProviderRegistryImpl extends AbstractRegistry implements ProviderRegistry {
+
+    private Cluster cluster;
+
+    @Override
+    public void init(Object... objects) throws InterruptedException {
+        super.init(objects);
+        Object bean = objects[1];
+        RpcConfig config = RpcConfigFactory.getInstance();
+        Integer port = config.getProvider().getPort();
+        initCluster(bean, port);
+    }
+
+    /**
+     * 初始化生产者对应的集群信息
+     * @param bean 对应的服务提供类的bean
+     * @param port
+     */
+    private void initCluster(Object bean, Integer port) {
+        HashMap<String, Object> beans = new HashMap<>(1);
+        beans.put(this.serviceClass.getName(), bean);
+        try {
+            this.cluster = ClusterFactory.createDefaultProviderCluster(port, beans);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+        }
+    }
+
+    @Override
+    protected RegistryCenterHandler doInitRegistryCenterHandler(Object... objects) throws InterruptedException {
+        return RegistryCenterHandlerFactory.createProvider(serviceClass);
+    }
 
     @Override
     public void allowToPublish() {
-        this.mode.allowToPublish();
+        ProviderRegistryCenterHandler registryCenterHandler = (ProviderRegistryCenterHandler) this.registryCenterHandler;
+        registryCenterHandler.allowToPublish();
     }
 
     @Override
     public void notAllowToPublish() {
-        this.mode.notAllowToPublish();
+        ProviderRegistryCenterHandler registryCenterHandler = (ProviderRegistryCenterHandler) this.registryCenterHandler;
+        registryCenterHandler.notAllowToPublish();
+
     }
 
     @Override
     public Boolean publishStatus() {
-        return this.mode.isPublish();
+        ProviderRegistryCenterHandler registryCenterHandler = (ProviderRegistryCenterHandler) this.registryCenterHandler;
+        return registryCenterHandler.isPublish();
     }
 
     @Override
@@ -46,59 +79,19 @@ public class ProviderRegistryImpl<T> extends AbstractRegistry<T> implements Prov
     }
 
     @Override
-    public void close() {
+    public Boolean close() {
+        /*1.关闭与注册中心的连接*/
         try {
-            this.mode.removeInstance();
+            this.registryCenterHandler.close();
         } catch (Exception e) {
             LogUtil.error(this, e);
         }
-        Boolean down = true;
-        for (Entry<String, Cluster> clusterEntry : clusters.entrySet()) {
-            Cluster value = clusterEntry.getValue();
-            Boolean shutdown = value.shutdown();
-            if (!shutdown) {
-                down = false;
-            }
-        }
-        if (!down) {
+        /*2.关闭rpc*/
+        Boolean shutdown = cluster.shutdown();
+
+        if (!shutdown) {
             throw new RpcShowDownException("rpc关闭错误");
         }
-    }
-
-    @Override
-    protected void doRegistryInit(Object[] objects) throws NacosException, MyRpcException, InterruptedException {
-        Object bean = objects[1];
-
-        RpcConfig config = RpcConfigFactory.getInstance();
-        Integer port = config.getProvider().getPort();
-
-        // 初始化集群
-        initCluster(bean, port);
-
-        this.mode = RegistryModeFactory.create();
-        RegistryInfo info = RegistryModeBuilder.initRegistryInfo(this.serviceClass);
-        try {
-            this.mode.registry(info);
-        } catch (Exception e) {
-            LogUtil.error(this, e);
-        }
-    }
-
-    /**
-     * 初始化集群
-     *
-     * @param bean 生产者的项目中的bean或实例
-     * @param port 端口
-     */
-    private void initCluster(Object bean, Integer port) {
-        HashMap<String, Object> beans = new HashMap<>(1);
-        beans.put(this.serviceClass.getName(), bean);
-        try {
-            Cluster defaultProviderCluster = ClusterFactory.createDefaultProviderCluster(port, beans);
-            clusters = new HashMap<>(1);
-            clusters.put(Content.DEFAULT_PROVIDER_CLUSTER_NAME, defaultProviderCluster);
-        } catch (Exception e) {
-            LogUtil.error(this, e);
-        }
+        return true;
     }
 }

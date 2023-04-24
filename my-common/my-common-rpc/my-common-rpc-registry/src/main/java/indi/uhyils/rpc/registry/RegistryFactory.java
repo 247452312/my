@@ -1,7 +1,9 @@
 package indi.uhyils.rpc.registry;
 
 import indi.uhyils.rpc.config.RpcConfigFactory;
+import indi.uhyils.rpc.registry.content.RegistryContent;
 import indi.uhyils.rpc.spi.RpcSpiManager;
+import indi.uhyils.util.LogUtil;
 
 /**
  * 注册中心类工厂
@@ -31,15 +33,6 @@ public class RegistryFactory {
      */
     private static final String REGISTRY_PROVIDER_SPI_NAME = "registryProviderSpi";
 
-    /**
-     * 默认的rpcManager
-     */
-    private static final String DEFAULT_REGISTER_MANAGER = "default_register_manager";
-
-    /**
-     * 配置中rpcManager
-     */
-    private static final String REGISTRY_MANAGER_SPI = "registryManagerSpi";
 
     private RegistryFactory() {
     }
@@ -51,13 +44,14 @@ public class RegistryFactory {
      *
      * @return
      */
-    public static <T> ConsumerRegistry<T> createConsumer(Class<T> clazz) throws InterruptedException {
+    public static ConsumerRegistry createConsumer(Class<?> clazz) throws InterruptedException {
         /*registry大体包含三大部分,1.cluster(负载均衡集群,下层) 2.要实现的class 3.和注册中心保持连接的mode*/
         // spi 获取消费者的注册者信息
         String registryName = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_SPI_NAME, DEFAULT_REGISTRY);
         // 返回一个构造完成的消费者
-        final ConsumerRegistry<T> orGetExtensionByClass = (ConsumerRegistry<T>) RpcSpiManager.createOrGetExtensionByClass(Registry.class, registryName, clazz);
-        RpcContext.consumerRegistry.add(orGetExtensionByClass);
+        final ConsumerRegistry orGetExtensionByClass = (ConsumerRegistry) RpcSpiManager.createOrGetExtensionByClass(Registry.class, registryName, clazz);
+        LogUtil.debug("rpc消费者创建成功,class:{}", clazz.getName());
+        RegistryContent.CONSUMER_REGISTRY.add(orGetExtensionByClass);
         return orGetExtensionByClass;
     }
 
@@ -66,28 +60,17 @@ public class RegistryFactory {
      * 创建一个生产者的注册层
      *
      * @param clazz 某个接口的数据
-     * @param <T>
      *
      * @return
      */
-    public static <T> ProviderRegistry<T> createProvider(Class<T> clazz, Object bean) throws InterruptedException {
+    public static ProviderRegistry createProvider(Class<?> clazz, Object bean) throws InterruptedException {
         // spi 获取消费者的注册者信息
         String registryName = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_PROVIDER_SPI_NAME, DEFAULT_PROVIDER_REGISTRY);
         // 返回一个构造完成的生产者
-        final ProviderRegistry<T> orGetExtensionByClass = (ProviderRegistry<T>) RpcSpiManager.createOrGetExtensionByClass(Registry.class, registryName, clazz, bean);
-        RpcContext.providerRegistry.add(orGetExtensionByClass);
+        final ProviderRegistry orGetExtensionByClass = (ProviderRegistry) RpcSpiManager.createOrGetExtensionByClass(Registry.class, registryName, clazz, bean);
+        LogUtil.debug("rpc生产者创建成功,class:{}", clazz.getName());
+        RegistryContent.PROVIDER_REGISTRY.add(orGetExtensionByClass);
         return orGetExtensionByClass;
     }
 
-    /**
-     * 创建一个生产者的注册层
-     *
-     * @return
-     */
-    public static MyRpcRegistryManager createOrGetMyRpcRegistryManager() throws InterruptedException {
-        // spi 获取消费者的注册者信息
-        String registryName = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_MANAGER_SPI, DEFAULT_REGISTER_MANAGER);
-        // 返回一个构造完成的生产者
-        return (MyRpcRegistryManager) RpcSpiManager.createOrGetExtensionByClass(MyRpcRegistryManager.class, registryName, null);
-    }
 }

@@ -1,6 +1,10 @@
-package indi.uhyils.rpc.registry;
+package indi.uhyils.rpc.registry.manager;
 
 import indi.uhyils.rpc.annotation.RpcSpi;
+import indi.uhyils.rpc.registry.ProviderRegistry;
+import indi.uhyils.rpc.registry.Registry;
+import indi.uhyils.rpc.registry.content.RegistryContent;
+import java.util.stream.Collectors;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -14,7 +18,7 @@ public class MyRpcRegistryManagerImpl implements MyRpcRegistryManager {
      */
     @Override
     public void allowProviderToPublish() {
-        for (ProviderRegistry byClass : RpcContext.providerRegistry) {
+        for (ProviderRegistry byClass : RegistryContent.PROVIDER_REGISTRY) {
             byClass.allowToPublish();
         }
     }
@@ -24,7 +28,7 @@ public class MyRpcRegistryManagerImpl implements MyRpcRegistryManager {
      */
     @Override
     public void notAllowProviderToPublish() {
-        for (ProviderRegistry byClass : RpcContext.providerRegistry) {
+        for (ProviderRegistry byClass : RegistryContent.PROVIDER_REGISTRY) {
             byClass.notAllowToPublish();
         }
     }
@@ -37,7 +41,7 @@ public class MyRpcRegistryManagerImpl implements MyRpcRegistryManager {
      */
     @Override
     public boolean isPublish() {
-        for (ProviderRegistry byClass : RpcContext.providerRegistry) {
+        for (ProviderRegistry byClass : RegistryContent.PROVIDER_REGISTRY) {
             if (Boolean.FALSE.equals(byClass.publishStatus())) {
                 return false;
             }
@@ -50,13 +54,8 @@ public class MyRpcRegistryManagerImpl implements MyRpcRegistryManager {
      */
     @Override
     public void closeHook() {
-        for (ProviderRegistry byClass : RpcContext.providerRegistry) {
-            byClass.close();
-        }
-        for (ConsumerRegistry byClass : RpcContext.consumerRegistry) {
-            byClass.close();
-        }
-
+        RegistryContent.PROVIDER_REGISTRY.parallelStream().map(Registry::close).collect(Collectors.toList());
+        RegistryContent.CONSUMER_REGISTRY.parallelStream().map(Registry::close).collect(Collectors.toList());
 
     }
 }

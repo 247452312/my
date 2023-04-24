@@ -1,0 +1,2 @@
+default_provider_mode_registry=indi.uhyils.rpc.registry.mode.nacos.NacosProviderRegistryCenterHandler
+default_consumer_mode_registry=indi.uhyils.rpc.registry.mode.nacos.NacosConsumerRegistryCenterHandler

@@ -1,4 +1,6 @@
-package indi.uhyils.rpc.registry.pojo.info;
+package indi.uhyils.rpc.registry.pojo;
+
+import java.io.Serializable;
 
 /**
  * 注册服务时注册中心必要的数据
@@ -6,7 +8,7 @@ package indi.uhyils.rpc.registry.pojo.info;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2020年12月26日 17时32分
  */
-public class RegistryProviderNecessaryInfo implements RegistryNecessaryInterface {
+public class RegistryProviderNecessaryInfo implements Serializable {
 
 
     /**

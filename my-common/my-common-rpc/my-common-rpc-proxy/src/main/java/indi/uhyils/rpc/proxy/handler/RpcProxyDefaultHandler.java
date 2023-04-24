@@ -54,7 +54,7 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
     /**
      * 注册类
      */
-    private Registry<?> registry;
+    private Registry registry;
 
     /**
      * 消费者接收回复Object拦截器

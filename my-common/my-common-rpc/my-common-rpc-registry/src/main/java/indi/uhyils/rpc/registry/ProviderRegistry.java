@@ -6,7 +6,7 @@ package indi.uhyils.rpc.registry;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年08月04日 08时56分
  */
-public interface ProviderRegistry<T> extends Registry<T> {
+public interface ProviderRegistry extends Registry {
 
     /**
      * 开始对外提供服务

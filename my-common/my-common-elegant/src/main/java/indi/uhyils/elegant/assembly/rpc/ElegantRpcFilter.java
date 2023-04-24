@@ -6,10 +6,12 @@ import indi.uhyils.rpc.exchange.pojo.data.RpcData;
 import indi.uhyils.rpc.netty.spi.filter.FilterContext;
 import indi.uhyils.rpc.netty.spi.filter.filter.ProviderFilter;
 import indi.uhyils.rpc.netty.spi.filter.invoker.RpcInvoker;
-import indi.uhyils.rpc.registry.MyRpcRegistryManager;
+import indi.uhyils.rpc.registry.manager.MyRpcRegistryManager;
 import indi.uhyils.util.LogUtil;
 
 /**
+ * rpc优雅上下线管理器
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年08月03日 19时05分
  */

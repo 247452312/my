@@ -9,7 +9,6 @@ import indi.uhyils.rpc.exception.RpcException;
 import indi.uhyils.rpc.registry.ProviderRegistry;
 import indi.uhyils.rpc.registry.Registry;
 import indi.uhyils.rpc.registry.RegistryFactory;
-import indi.uhyils.rpc.registry.RpcContext;
 import indi.uhyils.rpc.spring.util.ClassUtil;
 import indi.uhyils.util.LogUtil;
 import java.util.HashMap;
@@ -118,7 +117,7 @@ public class RpcAutoConfiguration implements BeanFactoryAware, ApplicationContex
                     Class<?>[] interfaces = clazz.getInterfaces();
                     clazz = interfaces[0];
                 }
-                final Registry<?> provider = RegistryFactory.createProvider(clazz, beans.get(clazz.getName()));
+                final ProviderRegistry provider = RegistryFactory.createProvider(clazz, beans.get(clazz.getName()));
 
             }
         } catch (Exception e) {
