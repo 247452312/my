@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年03月30日 09时20分
  */
-class PlanUtilTest extends BaseTest {
+class PlanInvokerTest extends BaseTest {
 
     @Test
     void analysisSql() {

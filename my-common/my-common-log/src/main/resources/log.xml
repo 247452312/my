@@ -10,6 +10,7 @@
     <!-- 获取yml中的log地址 -->
     <springProperty scope="context" name="log.path" source="log-out.path" defaultValue="D:/my/logs"/>
     <springProperty scope="context" name="log.dir.name" source="log-out.dir-name" defaultValue="defaultDir"/>
+    <springProperty scope="context" name="log.level" source="log-out.level" defaultValue="info"/>
 
     <!--0. 日志格式和颜色渲染 -->
     <!-- 彩色日志依赖的渲染类 -->
@@ -271,10 +272,10 @@
     <!-- 4. 最终的策略 -->
     <!-- 4.1 开发环境:打印控制台-->
     <springProfile name="dev">
-        <logger name="indi.uhyils" level="info"/>
+        <logger name="indi.uhyils" level="${log.level}"/>
     </springProfile>
 
-    <root level="info">
+    <root level="${log.level}">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DEBUG_FILE"/>
         <appender-ref ref="INFO_FILE"/>

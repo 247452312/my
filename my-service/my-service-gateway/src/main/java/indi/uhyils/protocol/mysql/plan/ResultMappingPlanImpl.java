@@ -30,6 +30,7 @@ public class ResultMappingPlanImpl extends ResultMappingPlan {
         final List<String> needField = selectList.stream().map(t -> t.getExpr().toString()).collect(Collectors.toList());
 
         final List<FieldInfo> newFieldInfo = fieldInfos.stream().filter(t -> needField.contains(t.getFieldName()) || needField.contains("*")).collect(Collectors.toList());
+
         final List<Map<String, Object>> newResultList = lastResult.stream().map(t -> {
             Map<String, Object> newResult = new HashMap<>(selectList.size());
             for (Entry<String, Object> entry : t.entrySet()) {

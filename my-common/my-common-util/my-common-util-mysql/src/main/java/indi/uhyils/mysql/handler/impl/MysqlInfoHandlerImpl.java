@@ -62,7 +62,6 @@ import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -125,7 +124,7 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
         MysqlContent.putMysqlTcpInfo(mysqlChannel.id(), mysqlTcpInfo);
 
         for (byte[] msg : msgs) {
-            LogUtil.info("mysql服务端初始发送握手信息:\n" + MysqlUtil.dump(msg));
+            LogUtil.debug("mysql服务端初始发送握手信息:\n" + MysqlUtil.dump(msg));
             send(msg);
         }
     }
@@ -221,31 +220,28 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
         if (CollectionUtil.isEmpty(invokes)) {
             return;
         }
-        List<byte[]> finalResponse = new ArrayList<>();
         try {
+            List<byte[]> finalResponse = new ArrayList<>();
             for (MysqlResponse mysqlResponse : invokes) {
                 finalResponse.addAll(mysqlResponse.toByte());
             }
+            final byte[] bytes = MysqlUtil.mergeListBytes(finalResponse);
+            String responseBytes = MysqlUtil.dump(bytes);
+            LogUtil.debug("mysql回应:\n" + responseBytes);
+            send(bytes);
         } catch (AssertException ae) {
             LogUtil.error(ae);
             final byte[] bytes = MysqlUtil.mergeListBytes(new ErrResponse(MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, ae.getMessage()).toByte());
             String responseBytes = MysqlUtil.dump(bytes);
-            LogUtil.info("mysql回应:\n" + responseBytes);
+            LogUtil.debug("mysql回应:\n" + responseBytes);
             send(bytes);
-            return;
         } catch (Exception e) {
             LogUtil.error(this, e);
             final byte[] bytes = MysqlUtil.mergeListBytes(new ErrResponse(MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "系统错误,请联系管理员或查询日志!").toByte());
             String responseBytes = MysqlUtil.dump(bytes);
-            LogUtil.info("mysql回应:\n" + responseBytes);
+            LogUtil.debug("mysql回应:\n" + responseBytes);
             send(bytes);
-            return;
         }
-        final byte[] bytes = MysqlUtil.mergeListBytes(finalResponse);
-        String responseBytes = MysqlUtil.dump(bytes);
-        LogUtil.info("mysql回应:\n" + responseBytes);
-        send(bytes);
-
     }
 
     /**
@@ -265,7 +261,7 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
         // 3.根据请求获取结果
         List<MysqlResponse> invokes = null;
         try {
-            invokes = loadCommand(mysqlThisRequestInfo, load);
+            invokes = invoke(mysqlThisRequestInfo, load);
         } catch (Exception e) {
             LogUtil.error(this, e);
             invokes = Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_PROTOCOL_OPTION, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, e.getLocalizedMessage()));
@@ -293,7 +289,7 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
      *
      * @throws Exception
      */
-    private List<MysqlResponse> loadCommand(MysqlThisRequestInfo mysqlThisRequestInfo, MysqlCommandTypeEnum parse) throws Exception {
+    private List<MysqlResponse> invoke(MysqlThisRequestInfo mysqlThisRequestInfo, MysqlCommandTypeEnum parse) throws Exception {
         MysqlCommand result = null;
         switch (parse) {
             /*这里是需要发送往后台进行处理的请求类型*/

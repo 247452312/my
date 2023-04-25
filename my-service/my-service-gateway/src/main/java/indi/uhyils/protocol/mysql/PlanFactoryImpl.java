@@ -2,6 +2,7 @@ package indi.uhyils.protocol.mysql;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
+import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.PlanFactory;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.plan.pojo.plan.BlockQuerySelectSqlPlan;
@@ -16,6 +17,7 @@ import indi.uhyils.protocol.mysql.plan.LeftJoinSqlPlanImpl;
 import indi.uhyils.protocol.mysql.plan.MethodInvokePlanImpl;
 import indi.uhyils.protocol.mysql.plan.ResultMappingPlanImpl;
 import indi.uhyils.protocol.mysql.plan.RightJoinSqlPlanImpl;
+import indi.uhyils.protocol.mysql.plan.UnionSqlPlanImpl;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -43,8 +45,8 @@ public class PlanFactoryImpl implements PlanFactory {
     }
 
     @Override
-    public MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, String methodName, List<SQLExpr> arguments) {
-        return new MethodInvokePlanImpl(headers, methodName, arguments);
+    public MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, Integer resultIndex, String methodName, List<SQLExpr> arguments) {
+        return new MethodInvokePlanImpl(headers,  resultIndex, methodName, arguments);
     }
 
     @Override
@@ -55,5 +57,10 @@ public class PlanFactoryImpl implements PlanFactory {
     @Override
     public RightJoinSqlPlan buildRightJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
         return new RightJoinSqlPlanImpl(headers, leftPlanId, rightPlanId);
+    }
+
+    @Override
+    public MysqlPlan buildUnionSelectSqlPlan(Map<String, String> headers, List<Long> planIds) {
+        return new UnionSqlPlanImpl(headers, planIds);
     }
 }

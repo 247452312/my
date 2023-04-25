@@ -21,7 +21,7 @@ public class MysqlDecoderImpl extends ByteToMessageDecoder implements MysqlDecod
             return;
         }
         String dump = MysqlUtil.dump(packet);
-        LogUtil.info("客户端发来请求:\n" + dump);
+        LogUtil.debug("客户端发来请求:\n" + dump);
         out.add(packet);
     }
 }

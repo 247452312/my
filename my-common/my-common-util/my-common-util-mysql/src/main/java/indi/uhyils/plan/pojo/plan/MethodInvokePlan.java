@@ -14,12 +14,25 @@ import java.util.Map;
  */
 public abstract class MethodInvokePlan extends AbstractMysqlSqlPlan {
 
-    private final String methodName;
+    /**
+     * 此方法在语句中的位置
+     */
+    protected final Integer index;
 
-    private final List<SQLExpr> arguments;
+    /**
+     * 方法名称
+     */
+    protected final String methodName;
 
-    protected MethodInvokePlan(Map<String, String> headers, String methodName, List<SQLExpr> arguments) {
+    /**
+     * 方法入参
+     */
+    protected final List<SQLExpr> arguments;
+
+
+    protected MethodInvokePlan(Map<String, String> headers,Integer index, String methodName, List<SQLExpr> arguments) {
         super(null, headers, new HashMap<>());
+        this.index = index;
         this.methodName = methodName;
         this.arguments = arguments;
     }

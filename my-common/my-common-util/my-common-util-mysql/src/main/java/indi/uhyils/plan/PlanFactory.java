@@ -47,9 +47,14 @@ public interface PlanFactory {
     /**
      * 创建一个执行方法的执行计划
      *
+     * @param headers
+     * @param resultIndex  结果坐标
+     * @param methodName   方法名称
+     * @param arguments    参数
+     *
      * @return
      */
-    MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, String methodName, List<SQLExpr> arguments);
+    MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers,  Integer resultIndex, String methodName, List<SQLExpr> arguments);
 
 
     /**
@@ -68,4 +73,13 @@ public interface PlanFactory {
     RightJoinSqlPlan buildRightJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
 
 
+    /**
+     * 创建一个union sql执行计划
+     *
+     * @param planIds
+     * @param headers
+     *
+     * @return
+     */
+    MysqlPlan buildUnionSelectSqlPlan(Map<String, String> headers, List<Long> planIds);
 }

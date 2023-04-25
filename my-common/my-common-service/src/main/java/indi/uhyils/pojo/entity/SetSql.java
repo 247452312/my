@@ -32,7 +32,7 @@ public class SetSql extends Sql {
     public String sql() {
         super.sql();
         this.sql = sqlStatement.toString();
-        LogUtil.info("change++++\n" + sql);
+        LogUtil.debug("change++++\n" + sql);
         return this.sql;
     }
 

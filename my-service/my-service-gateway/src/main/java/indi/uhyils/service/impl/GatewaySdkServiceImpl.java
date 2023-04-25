@@ -77,9 +77,11 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
         final String path = command.getPath();
         Boolean isSysTable = nodeRepository.judgeSysTable(path);
         if (isSysTable) {
+            // 系统表
             AbstractDataNode providerInterface = new SysProviderInterface(command.getPath(), command.getHeader(), command.getParams());
             return providerInterface.getResult();
         } else {
+            //
             final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(path);
             AbstractDataNode<NodeDO> node = callNodeRepository.findNodeByDatabaseAndTable(splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
             Asserts.assertTrue(node != null, "未查询到指定的节点,名称:{}", command.getPath());

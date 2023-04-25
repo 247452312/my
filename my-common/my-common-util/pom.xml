@@ -9,6 +9,7 @@
         <module>my-common-util-obj-pool</module>
         <module>my-common-util-ast</module>
         <module>my-common-util-trace-executor</module>
+        <module>my-common-util-obj-pool</module>
     </modules>
     <parent>
         <groupId>indi.uhyils</groupId>

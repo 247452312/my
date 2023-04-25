@@ -98,7 +98,7 @@ public class SelectSql extends Sql {
     public String sql() {
         super.sql();
         this.sql = sqlSelect.toString();
-        LogUtil.info("change++++\n" + sql);
+        LogUtil.debug("change++++\n" + sql);
         return this.sql;
     }
 

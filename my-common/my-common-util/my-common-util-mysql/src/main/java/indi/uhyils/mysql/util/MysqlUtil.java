@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.HexDump;
@@ -40,6 +41,17 @@ public final class MysqlUtil {
      *
      * @return
      */
+    public static List<MysqlPlan> analysisSqlToPlan(String sql) {
+        return analysisSqlToPlan(sql, new HashMap<>());
+    }
+
+    /**
+     * 解析mysql语句
+     *
+     * @param sql mysql语句
+     *
+     * @return
+     */
     public static List<MysqlPlan> analysisSqlToPlan(String sql, Map<String, String> headers) {
         SQLStatement sqlStatement = new MySqlStatementParser(sql).parseStatement();
         List<SqlParser> beans = SpringUtil.getBeans(SqlParser.class);
@@ -51,7 +63,6 @@ public final class MysqlUtil {
         Asserts.throwException("解析执行计划失败:{}", sql);
         return null;
     }
-
 
     /**
      * 将协议解析为差不多看得懂的东西,但不能用 只能输出

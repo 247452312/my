@@ -1,8 +1,11 @@
 package indi.uhyils.mysql.enums;
 
 import indi.uhyils.mysql.decode.Proto;
+import indi.uhyils.mysql.pojo.DTO.FieldInfo;
+import indi.uhyils.util.Asserts;
 import java.util.Objects;
 import java.util.function.Function;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * mysql列类型
@@ -116,6 +119,31 @@ public enum FieldTypeEnum {
             }
         }
         return null;
+    }
+
+    /**
+     * 将结果封装为字段
+     *
+     * @param obj       结果
+     * @param index     index
+     * @param fieldName 字段名称
+     *
+     * @return
+     */
+    public static FieldInfo makeFieldInfo(Object obj, int index, String fieldName) {
+        Class<?> clazz = obj.getClass();
+        return makeFieldInfo(clazz, index, fieldName);
+    }
+
+    @NotNull
+    public static FieldInfo makeFieldInfo(Class<?> clazz, int index, String fieldName) {
+        if (Number.class.isAssignableFrom(clazz)) {
+            return new FieldInfo(null, null, null, fieldName, fieldName, 0, index, FIELD_TYPE_FLOAT, (short) 0, (byte) 0);
+        } else if (String.class.isAssignableFrom(clazz)) {
+            return new FieldInfo(null, null, null, fieldName, fieldName, 0, index, FIELD_TYPE_VARCHAR, (short) 0, (byte) 0);
+        } else {
+            throw Asserts.makeException("未知的字段类型:{}", clazz.getName());
+        }
     }
 
     public byte getCode() {

@@ -41,6 +41,17 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
         // 检查解析器是否初始化
         checkInterpreters();
         SQLSelectStatement fromSqlStatement = (SQLSelectStatement) new MySqlStatementParser(fromSql).parseStatement();
+        return reExecute(fromSqlStatement, headers, sqlExecuteFunction);
+    }
+    /**
+     * 重新解析一个sql
+     *
+     * @param fromSqlStatement
+     * @param sqlExecuteFunction sql解析成一个执行计划之后需要做什么
+     */
+    protected <T> T reExecute(SQLSelectStatement fromSqlStatement, Map<String, String> headers, Function<List<MysqlPlan>, T> sqlExecuteFunction) {
+        // 检查解析器是否初始化
+        checkInterpreters();
         for (AbstractSelectSqlParser selectInterpreter : selectInterpreters) {
             if (selectInterpreter.canParse(fromSqlStatement)) {
                 List<MysqlPlan> parse = selectInterpreter.parse(fromSqlStatement, headers);

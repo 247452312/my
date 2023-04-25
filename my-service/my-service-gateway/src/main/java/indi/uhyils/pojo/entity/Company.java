@@ -8,6 +8,7 @@ import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.pojo.entity.type.Password;
 import indi.uhyils.repository.CompanyRepository;
+import indi.uhyils.util.Asserts;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import org.apache.commons.codec.binary.Base64;
@@ -54,6 +55,7 @@ public class Company extends AbstractDoEntity<CompanyDO> {
      */
     public void completionByAk(CompanyRepository companyRepository) {
         Company company = companyRepository.findByAk(toData().map(CompanyDO::getAk).orElse(null));
+        Asserts.assertTrue(company != null, "未找到ak对应的公司,请联系管理");
         company.toData().ifPresent(t -> {
             this.data = t;
             setUnique(new Identifier(t.getId()));
