@@ -48,13 +48,14 @@ public interface PlanFactory {
      * 创建一个执行方法的执行计划
      *
      * @param headers
-     * @param resultIndex  结果坐标
-     * @param methodName   方法名称
-     * @param arguments    参数
+     * @param resultIndex 结果坐标
+     * @param methodName  方法名称
+     * @param arguments   参数
+     * @param asName      别名
      *
      * @return
      */
-    MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers,  Integer resultIndex, String methodName, List<SQLExpr> arguments);
+    MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, Integer resultIndex, String methodName, List<SQLExpr> arguments, SQLExpr asName);
 
 
     /**

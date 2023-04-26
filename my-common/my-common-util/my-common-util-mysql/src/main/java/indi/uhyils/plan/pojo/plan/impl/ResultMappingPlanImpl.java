@@ -1,10 +1,11 @@
-package indi.uhyils.protocol.mysql.plan;
+package indi.uhyils.plan.pojo.plan.impl;
 
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.plan.pojo.plan.ResultMappingPlan;
+import indi.uhyils.util.Asserts;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +29,22 @@ public class ResultMappingPlanImpl extends ResultMappingPlan {
         final List<FieldInfo> fieldInfos = this.lastNodeInvokeResult.getFieldInfos();
         final List<Map<String, Object>> lastResult = this.lastNodeInvokeResult.getResult();
         final List<String> needField = selectList.stream().map(t -> t.getExpr().toString()).collect(Collectors.toList());
+        // 只允许有一个*
+        if (needField.contains("*")) {
+            return lastNodeInvokeResult;
+        }
 
-        final List<FieldInfo> newFieldInfo = fieldInfos.stream().filter(t -> needField.contains(t.getFieldName()) || needField.contains("*")).collect(Collectors.toList());
+        Map<String, FieldInfo> fieldInfoMap = fieldInfos.stream().collect(Collectors.toMap(FieldInfo::getFieldName, t -> t));
+        List<FieldInfo> newFieldInfo = needField.stream().map(t -> {
+            if (t.startsWith("&")) {
+                NodeInvokeResult nodeInvokeResult = lastAllPlanResult.get(Long.parseLong(t.substring(1)));
+                List<FieldInfo> lastFieldInfos = nodeInvokeResult.getFieldInfos();
+                Asserts.assertTrue(lastFieldInfos != null && lastFieldInfos.size() == 1, "映射时需要有且仅有一个字段来映射");
+                return lastFieldInfos.get(0);
+            } else {
+                return fieldInfoMap.get(t);
+            }
+        }).collect(Collectors.toList());
 
         final List<Map<String, Object>> newResultList = lastResult.stream().map(t -> {
             Map<String, Object> newResult = new HashMap<>(selectList.size());

@@ -11,13 +11,13 @@ import indi.uhyils.plan.pojo.plan.LeftJoinSqlPlan;
 import indi.uhyils.plan.pojo.plan.MethodInvokePlan;
 import indi.uhyils.plan.pojo.plan.ResultMappingPlan;
 import indi.uhyils.plan.pojo.plan.RightJoinSqlPlan;
+import indi.uhyils.plan.pojo.plan.impl.InnerJoinSqlPlanImpl;
+import indi.uhyils.plan.pojo.plan.impl.LeftJoinSqlPlanImpl;
+import indi.uhyils.plan.pojo.plan.impl.MethodInvokePlanImpl;
+import indi.uhyils.plan.pojo.plan.impl.ResultMappingPlanImpl;
+import indi.uhyils.plan.pojo.plan.impl.RightJoinSqlPlanImpl;
+import indi.uhyils.plan.pojo.plan.impl.UnionSqlPlanImpl;
 import indi.uhyils.protocol.mysql.plan.BlockQuerySelectSqlPlanImpl;
-import indi.uhyils.protocol.mysql.plan.InnerJoinSqlPlanImpl;
-import indi.uhyils.protocol.mysql.plan.LeftJoinSqlPlanImpl;
-import indi.uhyils.protocol.mysql.plan.MethodInvokePlanImpl;
-import indi.uhyils.protocol.mysql.plan.ResultMappingPlanImpl;
-import indi.uhyils.protocol.mysql.plan.RightJoinSqlPlanImpl;
-import indi.uhyils.protocol.mysql.plan.UnionSqlPlanImpl;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -45,8 +45,8 @@ public class PlanFactoryImpl implements PlanFactory {
     }
 
     @Override
-    public MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, Integer resultIndex, String methodName, List<SQLExpr> arguments) {
-        return new MethodInvokePlanImpl(headers,  resultIndex, methodName, arguments);
+    public MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, Integer resultIndex, String methodName, List<SQLExpr> arguments, SQLExpr asName) {
+        return new MethodInvokePlanImpl(headers, resultIndex, methodName, arguments, asName);
     }
 
     @Override

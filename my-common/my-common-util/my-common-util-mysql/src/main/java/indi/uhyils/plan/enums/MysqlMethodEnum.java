@@ -29,6 +29,7 @@ public enum MysqlMethodEnum {
         Asserts.assertTrue(StringUtil.isNotEmpty(countParam), "mysql语句中方法使用错误,count入参不能为空白");
 
         if (StringUtil.equalsIgnoreCase(countParam, "*")) {
+            // todo 这里需要添加 sql语句中有group的情况
             int size = parentInvokeResult.getResult().size();
             List<Map<String, Object>> maps = new ArrayList<>();
             Map<String, Object> e = new HashMap<>();
@@ -48,6 +49,48 @@ public enum MysqlMethodEnum {
             maps.add(e);
             return maps;
         }
+    }),
+
+    /**
+     * concat
+     */
+    CONCAT("concat", -1, String.class, (parentInvokeResult, arguments, fieldName) -> {
+        List<Map<String, Object>> parentResult = parentInvokeResult.getResult();
+        List<Map<String, Object>> result = new ArrayList<>();
+        // 遍历每一行
+        for (Map<String, Object> lineResult : parentResult) {
+            StringBuilder sb = new StringBuilder();
+            for (SQLExpr argument : arguments) {
+                // todo 这里需要处理argument 如果argument有前缀之类的(a.name)就需要单独处理
+
+                Object o = lineResult.get(argument.toString());
+                sb.append(o);
+            }
+            Map<String, Object> e = new HashMap<>();
+            e.put(fieldName, sb.toString());
+            result.add(e);
+        }
+        return result;
+    }),
+
+    GROUP_CONCAT("group_concat", 1, String.class, (parentInvokeResult, arguments, fieldName) -> {
+        List<Map<String, Object>> parentResult = parentInvokeResult.getResult();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        StringBuilder sb = new StringBuilder();
+        // 遍历每一行
+        for (Map<String, Object> lineResult : parentResult) {
+            for (SQLExpr argument : arguments) {
+                // todo 这里需要处理argument 如果argument有前缀之类的(a.name)就需要单独处理
+
+                Object o = lineResult.get(argument.toString());
+                sb.append(o);
+            }
+        }
+        Map<String, Object> e = new HashMap<>();
+        e.put(fieldName, sb.toString());
+        result.add(e);
+        return result;
     });
 
 
@@ -57,7 +100,7 @@ public enum MysqlMethodEnum {
     private final String name;
 
     /**
-     * 方法入参个数
+     * 方法入参个数 如果是可变参数,则值为-1
      */
     private final Integer paramCount;
 
@@ -90,7 +133,7 @@ public enum MysqlMethodEnum {
     @NotNull
     public static MysqlMethodEnum parse(String name, Integer paramCount) {
         for (MysqlMethodEnum value : values()) {
-            if (StringUtil.equalsIgnoreCase(name, value.name) && Objects.equals(paramCount, value.paramCount)) {
+            if (StringUtil.equalsIgnoreCase(name, value.name) && (value.paramCount == -1 || Objects.equals(paramCount, value.paramCount))) {
                 return value;
             }
         }

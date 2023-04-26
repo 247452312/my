@@ -1,4 +1,4 @@
-package indi.uhyils.protocol.mysql.plan;
+package indi.uhyils.plan.pojo.plan.impl;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
@@ -16,8 +16,8 @@ import org.slf4j.helpers.MessageFormatter;
  */
 public class MethodInvokePlanImpl extends MethodInvokePlan {
 
-    public MethodInvokePlanImpl(Map<String, String> headers, Integer index, String methodName, List<SQLExpr> arguments) {
-        super(headers, index, methodName, arguments);
+    public MethodInvokePlanImpl(Map<String, String> headers, Integer index, String methodName, List<SQLExpr> arguments, SQLExpr asName) {
+        super(headers, index, methodName, arguments, asName);
     }
 
     @Override
@@ -31,6 +31,9 @@ public class MethodInvokePlanImpl extends MethodInvokePlan {
     }
 
     private String toFieldName() {
+        if (asName != null) {
+            return asName.toString();
+        }
         String collect = arguments.stream().map(Object::toString).collect(Collectors.joining(","));
         return MessageFormatter.arrayFormat("{}({})", new Object[]{methodName, collect}).getMessage();
     }

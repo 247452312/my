@@ -1,4 +1,4 @@
-package indi.uhyils.protocol.mysql.plan;
+package indi.uhyils.plan.pojo.plan.impl;
 
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.pojo.plan.UnionSqlPlan;

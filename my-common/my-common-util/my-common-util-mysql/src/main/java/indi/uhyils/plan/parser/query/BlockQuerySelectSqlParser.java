@@ -102,16 +102,16 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 return plans.get(0);
             });
             result.add(newPlan);
-            return new SQLSelectItem(new MySqlCharExpr("&" + newPlan.getId()), selectItem.getAlias());
+            return new SQLSelectItem(new SQLIdentifierExpr("&" + newPlan.getId()), selectItem.getAlias());
         }
         if (expr instanceof SQLMethodInvokeExpr) {
             final SQLMethodInvokeExpr sqlMethodInvokeExpr = (SQLMethodInvokeExpr) expr;
             final String methodName = sqlMethodInvokeExpr.getMethodName();
             final List<SQLExpr> arguments = sqlMethodInvokeExpr.getArguments();
             final List<SQLExpr> newArguments = parseMethodArgument(result, headers, arguments);
-            MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, index, methodName, newArguments);
+            MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, index, methodName, newArguments, sqlMethodInvokeExpr.getOwner());
             result.add(newPlan);
-            return new SQLSelectItem(new MySqlCharExpr("&" + newPlan.getId()), selectItem.getAlias());
+            return new SQLSelectItem(new SQLIdentifierExpr("&" + newPlan.getId()), selectItem.getAlias());
         }
         Asserts.throwException("查询报错,子查询类型找不到:{},内容为:{}", selectItem.getClass().getName(), selectItem.toString());
         return null;
@@ -132,7 +132,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 final String methodName = sqlMethodInvokeExpr.getMethodName();
                 final List<SQLExpr> argumentsItem = sqlMethodInvokeExpr.getArguments();
                 final List<SQLExpr> newArgumentsItem = parseMethodArgument(plans, headers, argumentsItem);
-                MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, i, methodName, newArgumentsItem);
+                MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, i, methodName, newArgumentsItem, sqlMethodInvokeExpr.getOwner());
                 plans.add(newPlan);
                 result.add(new MySqlCharExpr("&" + newPlan.getId()));
             } else {
