@@ -1,6 +1,8 @@
 package indi.uhyils.mysql.pojo.DTO;
 
+import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.enums.FieldTypeEnum;
+import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.util.MysqlUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,13 +95,14 @@ public class FieldInfo {
     }
 
     public byte[] toFieldBytes() {
+        MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         List<byte[]> results = new ArrayList<>();
         int count = 0;
         // 目录名称
         results.add(DIR_NAME);
         count += DIR_NAME.length;
         // 数据库名称
-        byte[] e = MysqlUtil.varString(dbName);
+        byte[] e = MysqlUtil.varString(dbName != null ? dbName : mysqlTcpInfo.getDatabase());
         results.add(e);
         count += e.length;
         // 数据表名称

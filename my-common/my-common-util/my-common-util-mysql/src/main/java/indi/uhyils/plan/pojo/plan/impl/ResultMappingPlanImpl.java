@@ -4,6 +4,7 @@ import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.mysql.util.MysqlUtil;
+import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.pojo.plan.ResultMappingPlan;
 import indi.uhyils.util.Asserts;
 import java.util.HashMap;
@@ -19,13 +20,16 @@ import java.util.stream.Collectors;
 public class ResultMappingPlanImpl extends ResultMappingPlan {
 
 
-    public ResultMappingPlanImpl(Map<String, String> headers, List<SQLSelectItem> selectList) {
-        super(headers, selectList);
+    public ResultMappingPlanImpl(Map<String, String> headers, MysqlPlan lastMainPlan, List<SQLSelectItem> selectList) {
+        super(headers, lastMainPlan, selectList);
     }
 
 
     @Override
     public NodeInvokeResult invoke() {
+        /**
+         * todo 结果映射需要做的事情
+         */
         final List<FieldInfo> fieldInfos = this.lastNodeInvokeResult.getFieldInfos();
         final List<Map<String, Object>> lastResult = this.lastNodeInvokeResult.getResult();
         final List<String> needField = selectList.stream().map(t -> t.getExpr().toString()).collect(Collectors.toList());

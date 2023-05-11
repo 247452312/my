@@ -33,6 +33,9 @@ public class ComStatisticsCommand extends AbstractMysqlCommand {
      */
     private static final String STATIC_TABLE_NAME = "static_info";
 
+    /**
+     * 根节点数据库名称
+     */
     private String root;
 
     public ComStatisticsCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {

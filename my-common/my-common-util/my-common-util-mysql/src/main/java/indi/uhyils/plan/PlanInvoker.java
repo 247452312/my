@@ -1,6 +1,8 @@
 package indi.uhyils.plan;
 
+import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.enums.FieldTypeEnum;
+import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.util.Asserts;
@@ -80,21 +82,22 @@ public class PlanInvoker {
 
         final List<String> fields = params.stream().flatMap(t -> t.keySet().stream()).distinct().collect(Collectors.toList());
         final Map<String, Object> firstParam = params.get(0);
+        MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         first:
         for (int i = 0; i < fields.size(); i++) {
             final String field = fields.get(i);
             if (firstParam.containsKey(field)) {
-                final FieldInfo fieldInfo = FieldTypeEnum.makeFieldInfo(firstParam.get(i), i, field);
+                final FieldInfo fieldInfo = FieldTypeEnum.makeFieldInfo(mysqlTcpInfo.getDatabase(), MysqlContent.DEFAULT_PARAM_TABLE, MysqlContent.DEFAULT_PARAM_TABLE, firstParam.get(i), i, field);
                 fieldInfos.add(fieldInfo);
             } else {
                 for (Map<String, Object> param : params) {
                     if (param.containsKey(field)) {
-                        final FieldInfo fieldInfo = FieldTypeEnum.makeFieldInfo(firstParam.get(i), i, field);
+                        final FieldInfo fieldInfo = FieldTypeEnum.makeFieldInfo(mysqlTcpInfo.getDatabase(), MysqlContent.DEFAULT_PARAM_TABLE, MysqlContent.DEFAULT_PARAM_TABLE, firstParam.get(i), i, field);
                         fieldInfos.add(fieldInfo);
                         continue first;
                     }
                 }
-                Asserts.makeException("未找到指定类的类型:{}", field);
+                Asserts.throwException("未找到指定类的类型:{}", field);
             }
         }
         nodeInvokeResult.setFieldInfos(fieldInfos);

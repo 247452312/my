@@ -143,14 +143,14 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     }
 
     /**
-     * 制作执行计划
+     * 制作执行计划 同时也会将生成的执行计划添加到参数plans中
      *
      * @param froms 目标表(多个)
      *
-     * @return
+     * @return 此次制作执行计划新生成的执行计划
      */
     @NotNull
-    private List<MysqlPlan> makePlan(List<MysqlPlan> plans, SqlTableSourceBinaryTree froms, Map<String, String> headers) {
+    private List<MysqlPlan> makeMainPlan(List<MysqlPlan> plans, SqlTableSourceBinaryTree froms, Map<String, String> headers) {
         List<MysqlPlan> resultPlan = new ArrayList<>();
         if (froms.isLevel()) {
             MysqlPlan mysqlPlan = planFactory.buildBlockQuerySelectSqlPlan(froms, headers, new HashMap<>());
@@ -177,10 +177,10 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     @NotNull
     private List<MysqlPlan> makeRightJoin(List<MysqlPlan> plans, SqlTableSourceBinaryTree froms, Map<String, String> headers) {
         List<MysqlPlan> resultPlan = new ArrayList<>();
-        List<MysqlPlan> rightPlan = makePlan(plans, froms.getRightTree(), headers);
+        List<MysqlPlan> rightPlan = makeMainPlan(plans, froms.getRightTree(), headers);
         resultPlan.addAll(rightPlan);
         plans.addAll(rightPlan);
-        List<MysqlPlan> leftPlan = makePlan(plans, froms.getLeftTree(), headers);
+        List<MysqlPlan> leftPlan = makeMainPlan(plans, froms.getLeftTree(), headers);
         resultPlan.addAll(leftPlan);
         plans.addAll(leftPlan);
 
@@ -196,9 +196,9 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     @NotNull
     private List<MysqlPlan> makeLeftJoin(List<MysqlPlan> plans, SqlTableSourceBinaryTree froms, Map<String, String> headers) {
         List<MysqlPlan> resultPlan = new ArrayList<>();
-        List<MysqlPlan> leftPlan = makePlan(plans, froms.getLeftTree(), headers);
+        List<MysqlPlan> leftPlan = makeMainPlan(plans, froms.getLeftTree(), headers);
         resultPlan.addAll(leftPlan);
-        List<MysqlPlan> rightPlan = makePlan(plans, froms.getRightTree(), headers);
+        List<MysqlPlan> rightPlan = makeMainPlan(plans, froms.getRightTree(), headers);
         resultPlan.addAll(rightPlan);
 
         final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
@@ -213,10 +213,10 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     @NotNull
     private List<MysqlPlan> makeInnerJoin(List<MysqlPlan> plans, SqlTableSourceBinaryTree froms, Map<String, String> headers) {
         List<MysqlPlan> resultPlan = new ArrayList<>();
-        List<MysqlPlan> leftPlan = makePlan(plans, froms.getLeftTree(), headers);
+        List<MysqlPlan> leftPlan = makeMainPlan(plans, froms.getLeftTree(), headers);
         resultPlan.addAll(leftPlan);
         plans.addAll(leftPlan);
-        List<MysqlPlan> rightPlan = makePlan(plans, froms.getRightTree(), headers);
+        List<MysqlPlan> rightPlan = makeMainPlan(plans, froms.getRightTree(), headers);
         resultPlan.addAll(rightPlan);
         plans.addAll(rightPlan);
 
@@ -342,28 +342,31 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
      */
     private List<MysqlPlan> parseSelect(SQLSelect select, Map<String, String> headers) {
         // 1. 处理where中的子查询
-        // 2.处理from后需要查询的条件
-        // 3.selectList 查询字段的子查询
         MySqlSelectQueryBlock query = (MySqlSelectQueryBlock) select.getQuery();
         final ArrayList<MysqlPlan> plans = new ArrayList<>();
         final List<SQLBinaryOpExpr> where = parseSQLExprWhere(plans, query.getWhere(), headers);
 
-        makePlan(plans, transFrom(plans, query.getFrom(), where, headers), headers);
+        // 2.处理from后需要查询的条件
+        List<MysqlPlan> mainPlans = makeMainPlan(plans, transFrom(plans, query.getFrom(), where, headers), headers);
+
+        // 3.selectList 查询字段的子查询
+        MysqlPlan lastMainPlan = mainPlans.get(mainPlans.size() - 1);
+        // 解析sql语句中字段
         final List<SQLSelectItem> selectList = parseSelectList(plans, query.getSelectList(), headers);
         // 添加结果字段映射节点
-        addResultMappingPlan(plans, headers, selectList);
+        plans.add(makeResultMappingPlan(headers, lastMainPlan, selectList));
+
         return plans;
     }
 
     /**
-     * 结果字段映射节点添加
+     * 制作结果字段映射节点执行计划
      *
-     * @param plans
+     * @param lastMainPlan
      * @param selectList
      */
-    private void addResultMappingPlan(ArrayList<MysqlPlan> plans, Map<String, String> headers, List<SQLSelectItem> selectList) {
-        ResultMappingPlan resultMappingPlan = planFactory.buildResultMappingPlan(headers, selectList);
-        plans.add(resultMappingPlan);
+    private ResultMappingPlan makeResultMappingPlan(Map<String, String> headers, MysqlPlan lastMainPlan, List<SQLSelectItem> selectList) {
+        return planFactory.buildResultMappingPlan(headers, lastMainPlan, selectList);
     }
 
 

@@ -63,7 +63,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    ResultMappingPlan buildResultMappingPlan(Map<String, String> headers, List<SQLSelectItem> selectList);
+    ResultMappingPlan buildResultMappingPlan(Map<String, String> headers, MysqlPlan lastMainPlan, List<SQLSelectItem> selectList);
 
 
     /**

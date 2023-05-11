@@ -6,6 +6,7 @@ import indi.uhyils.util.LogUtil;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 
 
 /**
@@ -16,6 +17,8 @@ import java.util.List;
 @indi.uhyils.annotation.Register
 public class LogRegister implements Register {
 
+    @Value("${event.log.info:true}")
+    private Boolean info;
 
     @Override
     public List<Class<? extends BaseEvent>> targetEvent() {
@@ -24,17 +27,13 @@ public class LogRegister implements Register {
 
     @Override
     public void onEvent(BaseEvent event) {
-        //        debugLog(event);
-        info(event);
-    }
-
-    private void info(BaseEvent event) {
-        LogUtil.info(MessageFormat.format("事件:{0}发布", event.getClass()));
-    }
-
-    private void debugLog(BaseEvent event) {
-        if (LogUtil.isDebugEnabled(this)) {
-            LogUtil.debug(MessageFormat.format("事件:{0}发布", event.getClass()));
+        if (info) {
+            LogUtil.info(MessageFormat.format("事件:{0}发布", event.getClass()));
+        } else {
+            if (LogUtil.isDebugEnabled(this)) {
+                LogUtil.debug(MessageFormat.format("事件:{0}发布", event.getClass()));
+            }
         }
     }
+
 }

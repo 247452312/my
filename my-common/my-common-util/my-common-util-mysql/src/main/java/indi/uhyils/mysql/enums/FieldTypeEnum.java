@@ -130,17 +130,17 @@ public enum FieldTypeEnum {
      *
      * @return
      */
-    public static FieldInfo makeFieldInfo(Object obj, int index, String fieldName) {
+    public static FieldInfo makeFieldInfo(String dbName, String tableName, String tableRealName, Object obj, int index, String fieldName) {
         Class<?> clazz = obj.getClass();
-        return makeFieldInfo(clazz, index, fieldName);
+        return makeFieldInfo(dbName, tableName, tableRealName, clazz, index, fieldName);
     }
 
     @NotNull
-    public static FieldInfo makeFieldInfo(Class<?> clazz, int index, String fieldName) {
+    public static FieldInfo makeFieldInfo(String dbName, String tableName, String tableRealName, Class<?> clazz, int index, String fieldName) {
         if (Number.class.isAssignableFrom(clazz)) {
-            return new FieldInfo(null, null, null, fieldName, fieldName, 0, index, FIELD_TYPE_FLOAT, (short) 0, (byte) 0);
+            return new FieldInfo(dbName, tableName, tableRealName, fieldName, fieldName, 0, index, FIELD_TYPE_FLOAT, (short) 0, (byte) 0);
         } else if (String.class.isAssignableFrom(clazz)) {
-            return new FieldInfo(null, null, null, fieldName, fieldName, 0, index, FIELD_TYPE_VARCHAR, (short) 0, (byte) 0);
+            return new FieldInfo(dbName, tableName, tableRealName, fieldName, fieldName, 0, index, FIELD_TYPE_VARCHAR, (short) 0, (byte) 0);
         } else {
             throw Asserts.makeException("未知的字段类型:{}", clazz.getName());
         }

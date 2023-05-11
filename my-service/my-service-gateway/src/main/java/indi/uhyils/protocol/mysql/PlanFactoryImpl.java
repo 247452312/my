@@ -50,8 +50,8 @@ public class PlanFactoryImpl implements PlanFactory {
     }
 
     @Override
-    public ResultMappingPlan buildResultMappingPlan(Map<String, String> headers, List<SQLSelectItem> selectList) {
-        return new ResultMappingPlanImpl(headers, selectList);
+    public ResultMappingPlan buildResultMappingPlan(Map<String, String> headers, MysqlPlan lastMainPlan, List<SQLSelectItem> selectList) {
+        return new ResultMappingPlanImpl(headers, lastMainPlan, selectList);
     }
 
     @Override

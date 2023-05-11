@@ -147,8 +147,8 @@ public enum MysqlMethodEnum {
      * @return
      */
     @NotNull
-    public FieldInfo makeFieldInfo(Integer index, String fieldName) {
-        return FieldTypeEnum.makeFieldInfo(resultType, index, fieldName);
+    public FieldInfo makeFieldInfo(String dbName, String tableName, String tableRealName, Integer index, String fieldName) {
+        return FieldTypeEnum.makeFieldInfo(dbName, tableName, tableRealName, resultType, index, fieldName);
     }
 
     /**

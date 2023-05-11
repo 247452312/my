@@ -1,6 +1,8 @@
 package indi.uhyils.plan.pojo.plan.impl;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
+import indi.uhyils.mysql.content.MysqlContent;
+import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.enums.MysqlMethodEnum;
 import indi.uhyils.plan.pojo.plan.MethodInvokePlan;
@@ -22,10 +24,11 @@ public class MethodInvokePlanImpl extends MethodInvokePlan {
 
     @Override
     public NodeInvokeResult invoke() {
+        MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         MysqlMethodEnum parse = MysqlMethodEnum.parse(methodName, arguments.size());
         final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
         String fieldName = toFieldName();
-        nodeInvokeResult.setFieldInfos(Collections.singletonList(parse.makeFieldInfo(this.index, fieldName)));
+        nodeInvokeResult.setFieldInfos(Collections.singletonList(parse.makeFieldInfo(mysqlTcpInfo.getDatabase(), MysqlContent.DEFAULT_METHOD_CALL_TABLE, MysqlContent.DEFAULT_METHOD_CALL_TABLE, this.index, fieldName)));
         nodeInvokeResult.setResult(parse.makeResult(lastNodeInvokeResult, arguments, fieldName));
         return nodeInvokeResult;
     }

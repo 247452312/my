@@ -112,7 +112,7 @@ public abstract class AbstractRpcData implements RpcData {
 
         //获取head 和 content 的压缩后的数组 并写入size
         byte[] headAndContent = headerAndContent().getBytes(StandardCharsets.UTF_8);
-        //        headAndContent = BytesUtil.compress(headAndContent);
+        headAndContent = BytesUtil.compress(headAndContent);
         System.arraycopy(BytesUtil.changeIntegerToByte(headAndContent.length), 0, previousBytes, writeIndex.getAndAdd(MyRpcContent.RPC_DATA_ITEM_SIZE.get(MyRpcContent.RPC_DATA_SIZE_INDEX)),
                          MyRpcContent.RPC_DATA_ITEM_SIZE.get(MyRpcContent.RPC_DATA_SIZE_INDEX));
 
@@ -389,7 +389,7 @@ public abstract class AbstractRpcData implements RpcData {
 
             // 获取剩余的部分 解压缩 指针重置到0
             byte[] lastBytes = Arrays.copyOfRange(data, readIndex.get(), data.length);
-            //            lastBytes = BytesUtil.uncompress(lastBytes);
+            lastBytes = BytesUtil.uncompress(lastBytes);
             readIndex.set(0);
 
             // 获取header

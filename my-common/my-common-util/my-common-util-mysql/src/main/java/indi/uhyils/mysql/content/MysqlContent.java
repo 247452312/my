@@ -46,6 +46,16 @@ public class MysqlContent {
     public static final List<String> SYS_DATABASE = new ArrayList<>();
 
     /**
+     * 入参构造的表的表名默认值
+     */
+    public static final String DEFAULT_PARAM_TABLE = "param_table";
+
+    /**
+     * 方法结果的表的表名默认值
+     */
+    public static final String DEFAULT_METHOD_CALL_TABLE = "method_call_table";
+
+    /**
      * 全局预处理语句id
      */
     private static AtomicLong PREPARE_ID = new AtomicLong(0);
