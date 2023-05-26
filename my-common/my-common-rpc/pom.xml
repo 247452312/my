@@ -32,7 +32,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <slf4j-api.version>1.7.31</slf4j-api.version>
-        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+        <spring-boot.version>2.5.15</spring-boot.version>
         <maven.complier.plugin.version>3.8.1</maven.complier.plugin.version>
     </properties>
     <licenses>
