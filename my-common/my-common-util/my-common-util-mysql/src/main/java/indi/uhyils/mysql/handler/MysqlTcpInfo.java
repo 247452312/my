@@ -60,7 +60,7 @@ public class MysqlTcpInfo implements Serializable {
     /**
      * 当前所在数据库
      */
-    private String database;
+    private String database = "MY_DEFAULT_DB";
 
     public String getDatabase() {
         return database;

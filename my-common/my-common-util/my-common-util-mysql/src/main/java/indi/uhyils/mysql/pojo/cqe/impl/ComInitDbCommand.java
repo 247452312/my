@@ -3,8 +3,6 @@ package indi.uhyils.mysql.pojo.cqe.impl;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
-import indi.uhyils.mysql.enums.MysqlErrCodeEnum;
-import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.mysql.enums.SqlTypeEnum;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
@@ -63,7 +61,7 @@ public class ComInitDbCommand extends AbstractMysqlCommand {
             return Collections.singletonList(new OkResponse(SqlTypeEnum.USE));
         }
         // 不一致就报错
-        return Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "没有发现数据库: " + sql));
+        return Collections.singletonList(ErrResponse.build("没有发现数据库: " + sql));
     }
 
     @Override

@@ -192,7 +192,7 @@ public class ShowSqlParser implements SqlParser {
                                                     .append("\tUPDATE_TIME as `Update_time`,\n")
                                                     .append("\tCHECK_TIME as `Check_time`,\n")
                                                     .append("\tTABLE_COLLATION as `Collation`,\n")
-                                                    .append("\tCHECKSUB as `Checksub`,\n")
+                                                    /*.append("\tCHECKSUB as `Checksub`,\n")*/
                                                     .append("\tCREATE_OPTIONS as `Create_options`,\n")
                                                     .append("\tTABLE_COMMENT as `Comment`\n")
                                                     .append("FROM\n")

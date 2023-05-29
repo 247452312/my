@@ -62,6 +62,12 @@ public class Asserts {
         msg = MessageFormatter.arrayFormat(msg, params).getMessage();
         assertTrue(false, 3, msg);
     }
+    /**
+     * 断言错误
+     */
+    public static void throwException(Exception e) {
+        assertTrue(false, 3, e.getMessage());
+    }
 
     /**
      * 断言正确

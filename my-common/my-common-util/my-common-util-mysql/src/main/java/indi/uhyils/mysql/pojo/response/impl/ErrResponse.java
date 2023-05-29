@@ -32,14 +32,15 @@ public class ErrResponse extends AbstractMysqlResponse {
      */
     private String msg;
 
-    public ErrResponse(MysqlErrCodeEnum errCode, MysqlServerStatusEnum status, String msg) {
+    private ErrResponse(MysqlErrCodeEnum errCode, MysqlServerStatusEnum status, String msg) {
         super();
         this.errCode = errCode;
         this.status = status;
         this.msg = msg;
     }
 
-    public ErrResponse(MysqlErrCodeEnum errCode, MysqlServerStatusEnum status) {
+
+    private ErrResponse(MysqlErrCodeEnum errCode, MysqlServerStatusEnum status) {
         super();
         this.errCode = errCode;
         this.status = status;
@@ -48,6 +49,10 @@ public class ErrResponse extends AbstractMysqlResponse {
 
     public static ErrResponse build(MysqlErrCodeEnum errCode, MysqlServerStatusEnum status, String msg) {
         return new ErrResponse(errCode, status, msg);
+    }
+
+    public static ErrResponse build(String msg) {
+        return new ErrResponse(MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, msg);
     }
 
     @Override
@@ -66,7 +71,8 @@ public class ErrResponse extends AbstractMysqlResponse {
         // 服务器状态标志,恒为 '#'
         listResult.add(new byte[]{'#'});
         // 服务器状态
-        byte[] e1 = "HY000".getBytes(StandardCharsets.UTF_8);;
+        byte[] e1 = "HY000".getBytes(StandardCharsets.UTF_8);
+        ;
         listResult.add(e1);
         // 添加服务器消息 EOF类型的字符串
         byte[] bytes1 = msg.getBytes(StandardCharsets.UTF_8);

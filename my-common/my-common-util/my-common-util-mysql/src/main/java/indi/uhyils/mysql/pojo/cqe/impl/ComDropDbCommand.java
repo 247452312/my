@@ -1,8 +1,6 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
-import indi.uhyils.mysql.enums.MysqlErrCodeEnum;
-import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
@@ -24,7 +22,7 @@ public class ComDropDbCommand extends AbstractMysqlCommand {
 
     @Override
     public List<MysqlResponse> invoke() {
-        return Arrays.asList(new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_OPTION, MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS, "请去对接平台配置页面删除表"));
+        return Arrays.asList(ErrResponse.build("请去对接平台配置页面删除表"));
     }
 
     @Override

@@ -2,8 +2,6 @@ package indi.uhyils.mysql.pojo.cqe.impl;
 
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
-import indi.uhyils.mysql.enums.MysqlErrCodeEnum;
-import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.mysql.enums.SqlTypeEnum;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
@@ -43,7 +41,7 @@ public class ComQueryCommand extends MysqlSqlCommand {
     @Override
     public List<MysqlResponse> invoke() throws Exception {
         if (StringUtil.isEmpty(completeSql)) {
-            return Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "sql语句不能为空"));
+            return Collections.singletonList(ErrResponse.build("sql语句不能为空"));
         }
         LogUtil.info("mysql协议sql执行了:" + completeSql);
         final String[] split = completeSql.split(";");

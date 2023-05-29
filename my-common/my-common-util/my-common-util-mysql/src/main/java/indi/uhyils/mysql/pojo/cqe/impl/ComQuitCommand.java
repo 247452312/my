@@ -4,7 +4,6 @@ import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
 import indi.uhyils.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.mysql.enums.MysqlHandlerStatusEnum;
-import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
@@ -27,9 +26,7 @@ public class ComQuitCommand extends AbstractMysqlCommand {
     @Override
     public List<MysqlResponse> invoke() {
         MysqlContent.MYSQL_TCP_INFO.get().setStatus(MysqlHandlerStatusEnum.OVER);
-        return Arrays.asList(new ErrResponse(MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE,
-                                             MysqlServerStatusEnum.SERVER_STATUS_IN_TRANS,
-                                             "?? 你竟然想关掉我? 脑子瓦特了?\n" + MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE.getMsg()));
+        return Arrays.asList(ErrResponse.build("?? 你竟然想关掉我? 脑子瓦特了?\n" + MysqlErrCodeEnum.EE_FAILED_PROCESSING_DIRECTIVE.getMsg()));
     }
 
     @Override

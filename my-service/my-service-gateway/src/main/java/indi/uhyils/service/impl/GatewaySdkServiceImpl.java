@@ -3,8 +3,6 @@ package indi.uhyils.service.impl;
 import indi.uhyils.annotation.Public;
 import indi.uhyils.context.UserInfoHelper;
 import indi.uhyils.mysql.content.MysqlContent;
-import indi.uhyils.mysql.enums.MysqlErrCodeEnum;
-import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.mysql.enums.SqlTypeEnum;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.pojo.DTO.DatabaseInfo;
@@ -107,7 +105,7 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
             mysqlTcpInfo.setUserDTO(userDTO);
             return new OkResponse(SqlTypeEnum.NULL);
         }
-        return new ErrResponse(MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "密码错误,密码请使用secretKey");
+        return ErrResponse.build("密码错误,密码请使用secretKey");
     }
 
     @Override

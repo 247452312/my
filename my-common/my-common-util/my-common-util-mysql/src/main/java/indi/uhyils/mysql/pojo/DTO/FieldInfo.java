@@ -150,12 +150,38 @@ public class FieldInfo {
         return MysqlUtil.mergeListBytes(results, count);
     }
 
+    /**
+     * 根据新名字复制一个字段
+     *
+     * @param newFieldName
+     *
+     * @return
+     */
+    public FieldInfo copyWithNewFieldName(String newFieldName) {
+        return new FieldInfo(this.dbName, this.tableName, this.tableRealName, newFieldName, this.fieldRealName, this.length, this.index, this.fieldType, this.fieldMark, this.accuracy);
+    }
+
+    /**
+     * 根据新名字复制一个字段
+     *
+     * @param index 复制为第几个
+     *
+     * @return
+     */
+    public FieldInfo copyWithNewFieldName(Integer index) {
+        return copyWithNewFieldName(this.fieldName + "(" + index + ")");
+    }
+
     public String getFieldName() {
         return fieldName;
     }
 
     public int getIndex() {
         return index;
+    }
+
+    public String getTableName() {
+        return tableName;
     }
 
 }

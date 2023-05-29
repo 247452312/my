@@ -7,6 +7,7 @@ import indi.uhyils.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.MapUtil;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -168,6 +169,10 @@ public class ResultSetResponse extends AbstractMysqlResponse {
         }
         if (obj instanceof Double) {
             return MysqlUtil.mergeLengthCodedBinary((double) obj);
+        }
+        if (obj instanceof BigDecimal) {
+            BigDecimal bigDecimal = (BigDecimal) obj;
+            return MysqlUtil.mergeLengthCodedBinary(bigDecimal.floatValue());
         }
         if (obj instanceof Integer) {
             return MysqlUtil.mergeLengthCodedBinary((int) obj);

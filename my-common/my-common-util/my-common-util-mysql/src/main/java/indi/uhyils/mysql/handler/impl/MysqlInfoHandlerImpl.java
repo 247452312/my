@@ -6,9 +6,7 @@ import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.decode.impl.MysqlDecoderImpl;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
-import indi.uhyils.mysql.enums.MysqlErrCodeEnum;
 import indi.uhyils.mysql.enums.MysqlHandlerStatusEnum;
-import indi.uhyils.mysql.enums.MysqlServerStatusEnum;
 import indi.uhyils.mysql.handler.MysqlInfoHandler;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
@@ -130,17 +128,6 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
     }
 
     /**
-     * 发送数据
-     *
-     * @param msg
-     */
-    private void send(byte[] msg) {
-        ByteBuf buf = Unpooled.buffer();
-        buf.writeBytes(msg);
-        this.mysqlChannel.writeAndFlush(buf);
-    }
-
-    /**
      * 接收到信息时调用
      *
      * @param ctx
@@ -188,14 +175,34 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
                     Asserts.throwException("请求已经结束,请不要再次请求");
             }
         } catch (AssertException e) {
-            LogUtil.error(e, "解析错误");
-            MysqlResponse response = new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_PROTOCOL_OPTION, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, e.getLocalizedMessage());
+            LogUtil.error(e);
+            MysqlResponse response = ErrResponse.build(e.getLocalizedMessage());
             List<byte[]> bytes = response.toByte();
             for (byte[] aByte : bytes) {
                 send(aByte);
             }
             closeOnFlush();
         }
+    }
+
+    /**
+     * 关闭
+     */
+    public void closeOnFlush() {
+        if (mysqlChannel != null && mysqlChannel.isActive()) {
+            mysqlChannel.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+        }
+    }
+
+    /**
+     * 发送数据
+     *
+     * @param msg
+     */
+    private void send(byte[] msg) {
+        ByteBuf buf = Unpooled.buffer();
+        buf.writeBytes(msg);
+        this.mysqlChannel.writeAndFlush(buf);
     }
 
     /**
@@ -230,17 +237,10 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
             LogUtil.debug("mysql回应:\n" + responseBytes);
             send(bytes);
         } catch (AssertException ae) {
-            LogUtil.error(ae);
-            final byte[] bytes = MysqlUtil.mergeListBytes(new ErrResponse(MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, ae.getMessage()).toByte());
-            String responseBytes = MysqlUtil.dump(bytes);
-            LogUtil.debug("mysql回应:\n" + responseBytes);
-            send(bytes);
+            throw ae;
         } catch (Exception e) {
             LogUtil.error(this, e);
-            final byte[] bytes = MysqlUtil.mergeListBytes(new ErrResponse(MysqlErrCodeEnum.EE_STAT, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, "系统错误,请联系管理员或查询日志!").toByte());
-            String responseBytes = MysqlUtil.dump(bytes);
-            LogUtil.debug("mysql回应:\n" + responseBytes);
-            send(bytes);
+            Asserts.throwException("系统错误,请联系管理员或查询日志!");
         }
     }
 
@@ -251,7 +251,7 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
      *
      * @throws Exception
      */
-    private void doDealRequest(MysqlThisRequestInfo mysqlThisRequestInfo) throws Exception {
+    private void doDealRequest(MysqlThisRequestInfo mysqlThisRequestInfo) {
         // 2.判断为已登录,加载并解析请求
         MysqlCommandTypeEnum load = RequestAnalysis.load(mysqlThisRequestInfo);
         if (load == null) {
@@ -264,19 +264,10 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
             invokes = invoke(mysqlThisRequestInfo, load);
         } catch (Exception e) {
             LogUtil.error(this, e);
-            invokes = Collections.singletonList(new ErrResponse(MysqlErrCodeEnum.EE_UNKNOWN_PROTOCOL_OPTION, MysqlServerStatusEnum.SERVER_STATUS_NO_BACKSLASH_ESCAPES, e.getLocalizedMessage()));
+            Asserts.throwException(e);
         }
         sendResponse(invokes);
 
-    }
-
-    /**
-     * 关闭
-     */
-    public void closeOnFlush() {
-        if (mysqlChannel != null && mysqlChannel.isActive()) {
-            mysqlChannel.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
-        }
     }
 
     /**
