@@ -43,7 +43,7 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
     /**
      * 过去执行的所有结果
      */
-    protected Map<Long,NodeInvokeResult> lastAllPlanResult;
+    protected Map<Long, NodeInvokeResult> lastAllPlanResult;
 
     /**
      * 最后一次执行的结果
@@ -60,6 +60,28 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
 
     @Override
     public void complete(Map<Long, NodeInvokeResult> planArgs) {
+        // 填充占位符
+        completePlaceholder(planArgs);
+        planArgs.keySet().stream().max(Long::compareTo).ifPresent(aLong -> this.lastNodeInvokeResult = planArgs.get(aLong));
+        this.lastAllPlanResult = planArgs;
+    }
+
+    @Override
+    public MysqlPlanTypeEnum type() {
+        return MysqlPlanTypeEnum.EXECUTE_SQL;
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * 填充占位符
+     *
+     * @param planArgs
+     */
+    protected void completePlaceholder(Map<Long, NodeInvokeResult> planArgs) {
         params.forEach((k, v) -> {
             // 如果是占位符
             if (v instanceof Placeholder) {
@@ -78,18 +100,6 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
                 }
             }
         });
-        planArgs.keySet().stream().max(Long::compareTo).ifPresent(aLong -> this.lastNodeInvokeResult = planArgs.get(aLong));
-        this.lastAllPlanResult = planArgs;
-    }
-
-    @Override
-    public MysqlPlanTypeEnum type() {
-        return MysqlPlanTypeEnum.EXECUTE_SQL;
-    }
-
-    @Override
-    public long getId() {
-        return id;
     }
 
 

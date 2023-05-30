@@ -1,5 +1,6 @@
 package indi.uhyils.mysql.pojo.DTO;
 
+import indi.uhyils.plan.MysqlPlan;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +21,17 @@ public class NodeInvokeResult implements Serializable {
      */
     private List<Map<String, Object>> result;
 
+    /**
+     * 来源执行计划
+     */
+    private MysqlPlan sourcePlan;
 
-    public static NodeInvokeResult build(List<FieldInfo> fieldInfos, List<Map<String, Object>> result) {
-        NodeInvokeResult build = new NodeInvokeResult();
+    public NodeInvokeResult(MysqlPlan sourcePlan) {
+        this.sourcePlan = sourcePlan;
+    }
+
+    public static NodeInvokeResult build(List<FieldInfo> fieldInfos, List<Map<String, Object>> result, MysqlPlan plan) {
+        NodeInvokeResult build = new NodeInvokeResult(plan);
         build.setFieldInfos(fieldInfos);
         build.setResult(result);
         return build;
@@ -43,5 +52,13 @@ public class NodeInvokeResult implements Serializable {
 
     public void setResult(List<Map<String, Object>> result) {
         this.result = result;
+    }
+
+    public MysqlPlan getSourcePlan() {
+        return sourcePlan;
+    }
+
+    public void setSourcePlan(MysqlPlan sourcePlan) {
+        this.sourcePlan = sourcePlan;
     }
 }

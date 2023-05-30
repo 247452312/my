@@ -29,6 +29,19 @@ public class ResultMappingPlanImpl extends ResultMappingPlan {
         super(headers, lastMainPlan, selectList);
     }
 
+    @Override
+    public void complete(Map<Long, NodeInvokeResult> planArgs) {
+        // 填充占位符
+        completePlaceholder(planArgs);
+        this.lastAllPlanResult = planArgs;
+        List<Long> planIds = planArgs.keySet().stream().sorted(Long::compareTo).collect(Collectors.toList());
+        for (int i = planIds.size() - 1; i >= 0; i--) {
+            Long key = planIds.get(i);
+            NodeInvokeResult nodeInvokeResult = planArgs.get(key);
+
+        }
+
+    }
 
     @Override
     public NodeInvokeResult invoke() {
