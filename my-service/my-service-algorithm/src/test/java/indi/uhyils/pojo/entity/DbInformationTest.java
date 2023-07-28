@@ -17,12 +17,12 @@ class DbInformationTest {
     void fillTableInfos() {
         DbInformationDTO dto = new DbInformationDTO();
         dto.setTables(Arrays.asList("hcos_operate_record"));
-        dto.setDbName("hcos_coordination");
-        dto.setUrl("jdbc:mysql://192.168.54.222:3306/hcos_coordination?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&autoconnect=true&failOverReadOnly=false&useSSL=false");
+        dto.setDbName("test");
+        dto.setUrl("jdbc:mysql://my:3306/hcos_coordination?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&autoconnect=true&failOverReadOnly=false&useSSL=false");
         dto.setType(DbTypeEnum.MYSQL.getTypeCode());
-        dto.setUserName("hcos");
-        dto.setPassword("HMqXGeJZzc%CBOx6F0");
-        dto.setProjectName("hcos_coordination");
+        dto.setUserName("test");
+        dto.setPassword("test");
+        dto.setProjectName("test");
         dto.setPort(3306);
         dto.setAuthor("uhyils <247452312@qq.com>");
 

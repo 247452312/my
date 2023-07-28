@@ -41,11 +41,6 @@ public class DbInformation extends AbstractEntity {
     private static final String PACKAGE_PROPERTIES_PATH = "vm.package";
 
     /**
-     * 默认package参数
-     */
-    private static final String PACKAGE_DEFAULT_PATH = "indi.uhyils";
-
-    /**
      * author参数路径
      */
     private static final String AUTHOR_PROPERTIES_PATH = "vm.author";
@@ -54,6 +49,11 @@ public class DbInformation extends AbstractEntity {
      * 默认author参数
      */
     private static final String AUTHOR_DEFAULT_PATH = "uhyils <247452312@qq.com>";
+
+    /**
+     * 默认package参数
+     */
+    private String packagePrefix;
 
     /**
      * 数据库连接串
@@ -127,14 +127,15 @@ public class DbInformation extends AbstractEntity {
 
     public DbInformation(DbInformationDTO dto) {
         this(dto.getUrl(), dto.getDbName(), dto.getProjectName(), dto.getBigProjectName(), dto.getSmallProjectName(), dto.getPort(), dto.getType(), dto.getUserName(), dto.getPassword(), dto
-            .getTables(), dto.getAuthor());
+            .getTables(), dto.getAuthor(), dto.getPackagePrefix());
     }
 
     public DbInformation(
         String url, String dbName, String projectName, String bigProjectName, String smallProjectName, Integer port, Integer type, String userName, String password, List<String> tables,
-        String author) {
+        String author, String packagePrefix) {
         this(url, dbName, projectName, bigProjectName, smallProjectName, port, type, userName, password, tables);
         this.author = author;
+        this.packagePrefix = packagePrefix;
     }
 
     public DbInformation(
@@ -189,6 +190,53 @@ public class DbInformation extends AbstractEntity {
     public void fillTableInfos() {
         fillDBInfo();
         fillDerivedInfo();
+    }
+
+    public DbTypeEnum getType() {
+        return DbTypeEnum.prase(type);
+    }
+
+    /**
+     * 结果
+     *
+     * @return
+     */
+    public Map<String, String> result() {
+        return KproUtil.getMySqlKpro(this);
+    }
+
+    /**
+     * 解析为模板类型代码
+     *
+     * @return 多个表的模板
+     */
+    public List<VelocityContext> parseToVelocityContext() {
+        String packageProperties = SpringUtil.getProperty(PACKAGE_PROPERTIES_PATH, packagePrefix);
+        // 作者优先级 1.传入 2.配置文件 3.默认
+        String authorProperties = author;
+        if (StringUtil.isEmpty(authorProperties)) {
+            authorProperties = SpringUtil.getProperty(AUTHOR_PROPERTIES_PATH, AUTHOR_DEFAULT_PATH);
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
+        String dateTime = sdf.format(new Date());
+        List<VelocityContext> results = new ArrayList<>(tables.size());
+        for (String tableName : tables) {
+            VelocityContext velocityContext = new VelocityContext();
+            TableInfo tableInfo = tableInfos.get(tableName);
+            velocityContext.put("package", packageProperties);
+            velocityContext.put("packagePath", packageProperties.replace(".", "/"));
+            velocityContext.put("author", authorProperties);
+            velocityContext.put("tableComment", tableInfo.getTableComment());
+            velocityContext.put("dateTime", dateTime);
+            velocityContext.put("tableName", tableName);
+            velocityContext.put("className", tableInfo.getClassName());
+            velocityContext.put("columns", tableInfo.getColums());
+            velocityContext.put("pkColumn", tableInfo.getOnlyKey());
+            results.add(velocityContext);
+        }
+        return results;
+
+
     }
 
     /**
@@ -266,52 +314,5 @@ public class DbInformation extends AbstractEntity {
                 columnInfoEntity.setJavaType(javaType);
             }
         }
-    }
-
-    public DbTypeEnum getType() {
-        return DbTypeEnum.prase(type);
-    }
-
-    /**
-     * 结果
-     *
-     * @return
-     */
-    public Map<String, String> result() {
-        return KproUtil.getMySqlKpro(this);
-    }
-
-    /**
-     * 解析为模板类型代码
-     *
-     * @return 多个表的模板
-     */
-    public List<VelocityContext> parseToVelocityContext() {
-        String packageProperties = SpringUtil.getProperty(PACKAGE_PROPERTIES_PATH, PACKAGE_DEFAULT_PATH);
-        // 作者优先级 1.传入 2.配置文件 3.默认
-        String authorProperties = author;
-        if (StringUtil.isEmpty(authorProperties)) {
-            authorProperties = SpringUtil.getProperty(AUTHOR_PROPERTIES_PATH, AUTHOR_DEFAULT_PATH);
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
-        String dateTime = sdf.format(new Date());
-        List<VelocityContext> results = new ArrayList<>(tables.size());
-        for (String tableName : tables) {
-            VelocityContext velocityContext = new VelocityContext();
-            TableInfo tableInfo = tableInfos.get(tableName);
-            velocityContext.put("package", packageProperties);
-            velocityContext.put("packagePath", packageProperties.replace(".", "/"));
-            velocityContext.put("author", authorProperties);
-            velocityContext.put("tableComment", tableInfo.getTableComment());
-            velocityContext.put("dateTime", dateTime);
-            velocityContext.put("tableName", tableName);
-            velocityContext.put("className", tableInfo.getClassName());
-            velocityContext.put("columns", tableInfo.getColums());
-            velocityContext.put("pkColumn", tableInfo.getOnlyKey());
-            results.add(velocityContext);
-        }
-        return results;
-
-
     }
 }

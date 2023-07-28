@@ -67,6 +67,11 @@ public class DbInformationDTO {
      */
     private String author;
 
+    /**
+     * 包前缀
+     */
+    private String packagePrefix;
+
     public List<String> getTables() {
         return tables;
     }
@@ -147,5 +152,13 @@ public class DbInformationDTO {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getPackagePrefix() {
+        return packagePrefix;
+    }
+
+    public void setPackagePrefix(String packagePrefix) {
+        this.packagePrefix = packagePrefix;
     }
 }

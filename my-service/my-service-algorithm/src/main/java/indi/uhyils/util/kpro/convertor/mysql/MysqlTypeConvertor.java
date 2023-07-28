@@ -22,6 +22,9 @@ public class MysqlTypeConvertor implements TypeConvertor {
             "int unsigned".equalsIgnoreCase(databaseType)) {
             return "Long";
         }
+        if ("decimal".equalsIgnoreCase(databaseType)) {
+            return "BigDecimal";
+        }
         if ("varchar".equalsIgnoreCase(databaseType) ||
             "char".equalsIgnoreCase(databaseType) ||
             "MEDIUMTEXT".equalsIgnoreCase(databaseType) ||
