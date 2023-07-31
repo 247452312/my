@@ -32,10 +32,10 @@ public abstract class MethodInvokePlan extends AbstractMysqlSqlPlan {
     /**
      * 别名
      */
-    protected final SQLExpr asName;
+    protected final String asName;
 
 
-    protected MethodInvokePlan(Map<String, String> headers, Integer index, String methodName, List<SQLExpr> arguments, SQLExpr asName) {
+    protected MethodInvokePlan(Map<String, String> headers, Integer index, String methodName, List<SQLExpr> arguments, String asName) {
         super(null, headers, new HashMap<>());
         this.index = index;
         this.methodName = methodName;

@@ -31,7 +31,7 @@ public class IEngines implements SysTable {
 
         final List<Map<String, Object>> newResults = new ArrayList<>();
 
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
         nodeInvokeResult.setResult(newResults);
         final List<FieldInfo> fieldInfos = new ArrayList<>();
 

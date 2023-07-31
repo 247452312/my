@@ -6,6 +6,9 @@ import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.util.MysqlUtil;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -162,6 +165,18 @@ public class FieldInfo {
     }
 
     /**
+     * 根据新信息复制一个字段
+     *
+     * @param newTableName 新表名
+     * @param newFieldName 新字段名
+     *
+     * @return
+     */
+    public FieldInfo copyWithNewFieldName(String newTableName, String newFieldName) {
+        return new FieldInfo(this.dbName, newTableName, this.tableRealName, newFieldName, this.fieldRealName, this.length, this.index, this.fieldType, this.fieldMark, this.accuracy);
+    }
+
+    /**
      * 根据新名字复制一个字段
      *
      * @param index 复制为第几个
@@ -184,4 +199,48 @@ public class FieldInfo {
         return tableName;
     }
 
+    /**
+     * 获取 表名.列表格式
+     *
+     * @return
+     */
+    public String getTableNameDotFieldName() {
+        if (StringUtils.isNotEmpty(tableName)) {
+            return tableName + "." + fieldName;
+        }
+        return fieldName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FieldInfo fieldInfo = (FieldInfo) o;
+        return length == fieldInfo.length && index == fieldInfo.index && fieldMark == fieldInfo.fieldMark && accuracy == fieldInfo.accuracy && Objects.equals(dbName, fieldInfo.dbName) && Objects.equals(tableName, fieldInfo.tableName) && Objects.equals(tableRealName, fieldInfo.tableRealName) && Objects.equals(fieldName, fieldInfo.fieldName) && Objects.equals(fieldRealName, fieldInfo.fieldRealName) && fieldType == fieldInfo.fieldType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dbName, tableName, tableRealName, fieldName, fieldRealName, length, index, fieldType, fieldMark, accuracy);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("dbName", dbName)
+            .append("tableName", tableName)
+            .append("tableRealName", tableRealName)
+            .append("fieldName", fieldName)
+            .append("fieldRealName", fieldRealName)
+            .append("length", length)
+            .append("index", index)
+            .append("fieldType", fieldType)
+            .append("fieldMark", fieldMark)
+            .append("accuracy", accuracy)
+            .toString();
+    }
 }

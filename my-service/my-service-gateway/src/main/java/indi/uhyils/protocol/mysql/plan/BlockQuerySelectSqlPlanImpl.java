@@ -79,6 +79,8 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
         path.append(name);
         invokeCommandBuilder.addPath(path.toString());
         final InvokeCommand build = invokeCommandBuilder.build();
-        return gatewaySdkService.invokeNode(build);
+        NodeInvokeResult nodeInvokeResult = gatewaySdkService.invokeNode(build);
+        nodeInvokeResult.setSourcePlan(this);
+        return nodeInvokeResult;
     }
 }

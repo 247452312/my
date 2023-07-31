@@ -33,7 +33,7 @@ import java.util.Map;
  * --------
  * 2. 子查询,方法等结果映射为此处的结果
  * sql: select a.id,(select count(*) from user b where b.id in (1,2)) as size from user a where a.id in (1,2)
- *
+ * <p>
  * 第一步,查出整个表
  * __________________________
  * | id   | name    | age   |
@@ -47,21 +47,17 @@ import java.util.Map;
  * |------------|
  * | 2          |
  * --------------
- *
+ * <p>
  * 将两个表的结果组合
- *
+ * <p>
  * _______________
  * | id   | size |
  * |-------------|
  * | 1    | 2    |
  * | 2    | 2    |
  * ---------------
- *
+ * <p>
  * 注: 为什么没有 select a.id,(select b.`name` from user b where b.id  = a.id ) as name from user a where a.id in (1,2) 这种复杂子查询? 因为这种sql语句在解析为执行计划时会优化为 SELECT a.id, b.age FROM `user` a INNER JOIN `user` b ON a.id = b.id WHERE a.id IN ( 1, 2 )
- *
- *
- *
- *
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年08月26日 15时57分

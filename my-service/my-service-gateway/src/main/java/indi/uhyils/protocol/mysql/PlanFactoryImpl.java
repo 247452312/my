@@ -1,6 +1,8 @@
 package indi.uhyils.protocol.mysql;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
+import com.alibaba.druid.sql.ast.SQLObject;
+import com.alibaba.druid.sql.ast.expr.SQLMethodInvokeExpr;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.PlanFactory;
@@ -35,17 +37,24 @@ public class PlanFactoryImpl implements PlanFactory {
     }
 
     @Override
-    public InnerJoinSqlPlan buildInnerJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        return new InnerJoinSqlPlanImpl(headers, leftPlanId, rightPlanId);
+    public InnerJoinSqlPlan buildInnerJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+        return new InnerJoinSqlPlanImpl(headers, tree, leftPlanId, rightPlanId);
     }
 
     @Override
-    public LeftJoinSqlPlan buildLeftJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        return new LeftJoinSqlPlanImpl(headers, leftPlanId, rightPlanId);
+    public LeftJoinSqlPlan buildLeftJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+        return new LeftJoinSqlPlanImpl(headers, tree, leftPlanId, rightPlanId);
     }
 
     @Override
-    public MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, Integer resultIndex, String methodName, List<SQLExpr> arguments, SQLExpr asName) {
+    public MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, Integer resultIndex, String methodName, List<SQLExpr> arguments, SQLMethodInvokeExpr invokeExpr) {
+        SQLObject parent = invokeExpr.getParent();
+        String asName;
+        if (parent instanceof SQLSelectItem) {
+            asName = ((SQLSelectItem) parent).getAlias();
+        } else {
+            asName = invokeExpr.getOwner() != null ? invokeExpr.getOwner().toString() : null;
+        }
         return new MethodInvokePlanImpl(headers, resultIndex, methodName, arguments, asName);
     }
 
@@ -55,8 +64,8 @@ public class PlanFactoryImpl implements PlanFactory {
     }
 
     @Override
-    public RightJoinSqlPlan buildRightJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        return new RightJoinSqlPlanImpl(headers, leftPlanId, rightPlanId);
+    public RightJoinSqlPlan buildRightJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+        return new RightJoinSqlPlanImpl(headers, tree, leftPlanId, rightPlanId);
     }
 
     @Override

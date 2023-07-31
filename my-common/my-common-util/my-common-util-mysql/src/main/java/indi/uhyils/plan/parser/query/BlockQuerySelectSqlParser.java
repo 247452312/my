@@ -109,7 +109,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
             final String methodName = sqlMethodInvokeExpr.getMethodName();
             final List<SQLExpr> arguments = sqlMethodInvokeExpr.getArguments();
             final List<SQLExpr> newArguments = parseMethodArgument(result, headers, arguments);
-            MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, index, methodName, newArguments, sqlMethodInvokeExpr.getOwner());
+            MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, index, methodName, newArguments, sqlMethodInvokeExpr);
             result.add(newPlan);
             return new SQLSelectItem(new SQLIdentifierExpr("&" + newPlan.getId()), selectItem.getAlias());
         }
@@ -132,7 +132,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 final String methodName = sqlMethodInvokeExpr.getMethodName();
                 final List<SQLExpr> argumentsItem = sqlMethodInvokeExpr.getArguments();
                 final List<SQLExpr> newArgumentsItem = parseMethodArgument(plans, headers, argumentsItem);
-                MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, i, methodName, newArgumentsItem, sqlMethodInvokeExpr.getOwner());
+                MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, i, methodName, newArgumentsItem, sqlMethodInvokeExpr);
                 plans.add(newPlan);
                 result.add(new MySqlCharExpr("&" + newPlan.getId()));
             } else {
@@ -187,7 +187,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
         final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
 
-        MysqlPlan sqlPlan = planFactory.buildRightJoinSqlPlan(headers, leftId, rightId);
+        MysqlPlan sqlPlan = planFactory.buildRightJoinSqlPlan(headers, froms, leftId, rightId);
         resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
         return resultPlan;
@@ -204,7 +204,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
         final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
 
-        MysqlPlan sqlPlan = planFactory.buildLeftJoinSqlPlan(headers, leftId, rightId);
+        MysqlPlan sqlPlan = planFactory.buildLeftJoinSqlPlan(headers, froms, leftId, rightId);
         resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
         return resultPlan;
@@ -223,7 +223,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
         final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
 
-        MysqlPlan sqlPlan = planFactory.buildInnerJoinSqlPlan(headers, leftId, rightId);
+        MysqlPlan sqlPlan = planFactory.buildInnerJoinSqlPlan(headers, froms, leftId, rightId);
         resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
         return resultPlan;
@@ -304,15 +304,16 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
             SqlTableSourceBinaryTree lefts = transFrom(plans, sqlJoinTableSource.getLeft(), where, headers);
             SqlTableSourceBinaryTree rights = transFrom(plans, sqlJoinTableSource.getRight(), where, headers);
 
+            SQLBinaryOpExpr condition = (SQLBinaryOpExpr) sqlJoinTableSource.getCondition();
             switch (joinType) {
                 case JOIN:
                 case COMMA:
                 case INNER_JOIN:
-                    return pool.getOrCreateObject(lefts, rights, JoinType.INNER_JOIN);
+                    return pool.getOrCreateObject(lefts, rights, condition, JoinType.INNER_JOIN);
                 case LEFT_OUTER_JOIN:
-                    return pool.getOrCreateObject(lefts, rights, JoinType.LEFT_OUTER_JOIN);
+                    return pool.getOrCreateObject(lefts, rights, condition, JoinType.LEFT_OUTER_JOIN);
                 case RIGHT_OUTER_JOIN:
-                    return pool.getOrCreateObject(rights, lefts, JoinType.LEFT_OUTER_JOIN);
+                    return pool.getOrCreateObject(rights, lefts, condition, JoinType.LEFT_OUTER_JOIN);
                 default:
                     Asserts.throwException("sql连表条件不支持:{}", joinType.name_lcase);
                     return null;

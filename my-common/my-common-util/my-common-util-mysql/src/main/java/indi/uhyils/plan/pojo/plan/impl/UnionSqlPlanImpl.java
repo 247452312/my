@@ -22,7 +22,7 @@ public class UnionSqlPlanImpl extends UnionSqlPlan {
     @Override
     public NodeInvokeResult invoke() {
         List<NodeInvokeResult> lastUnionResults = unionPlanIds.stream().map(t -> lastAllPlanResult.get(t)).filter(Objects::nonNull).collect(Collectors.toList());
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
         nodeInvokeResult.setFieldInfos(new ArrayList<>());
         nodeInvokeResult.setResult(new ArrayList<>());
         if (CollectionUtil.isEmpty(lastUnionResults)) {

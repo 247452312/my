@@ -74,9 +74,9 @@ public class PlanInvoker {
      */
     private NodeInvokeResult paramsToResult(List<Map<String, Object>> params) {
         if (CollectionUtil.isEmpty(params)) {
-            return new NodeInvokeResult();
+            return new NodeInvokeResult(null);
         }
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
 
         final LinkedList<FieldInfo> fieldInfos = new LinkedList<>();
 

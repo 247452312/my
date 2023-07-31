@@ -43,7 +43,7 @@ public class IView implements SysTable {
 
         final List<Map<String, Object>> newResults = new ArrayList<>();
 
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
         nodeInvokeResult.setResult(newResults);
         final List<FieldInfo> fieldInfos = new ArrayList<>();
         fieldInfos.add(new FieldInfo("information_schema", "view", "view", "TABLE_CATALOG", "TABLE_CATALOG", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));

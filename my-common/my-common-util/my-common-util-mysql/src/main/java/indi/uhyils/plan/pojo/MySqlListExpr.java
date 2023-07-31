@@ -47,12 +47,12 @@ public class MySqlListExpr extends SQLExprImpl implements MySqlExpr {
     }
 
     @Override
-    protected void accept0(SQLASTVisitor visitor) {
-
+    public String toString() {
+        return JSON.toJSONString(values);
     }
 
     @Override
-    public String toString() {
-        return JSON.toJSONString(values);
+    protected void accept0(SQLASTVisitor visitor) {
+
     }
 }

@@ -1,7 +1,6 @@
 package indi.uhyils.plan.pojo.plan;
 
-import indi.uhyils.plan.AbstractMysqlSqlPlan;
-import java.util.HashMap;
+import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import java.util.List;
 import java.util.Map;
 
@@ -11,22 +10,9 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年08月26日 15时55分
  */
-public abstract class LeftJoinSqlPlan extends AbstractMysqlSqlPlan {
+public abstract class LeftJoinSqlPlan extends JoinSqlPlan {
 
-    /**
-     * 左边结果
-     */
-    private List<Long> leftResult;
-
-    /**
-     * 右边结果
-     */
-    private List<Long> rightResult;
-
-
-    protected LeftJoinSqlPlan(String sql, Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        super(sql, headers, new HashMap<>());
-        this.leftResult = leftPlanId;
-        this.rightResult = rightPlanId;
+    protected LeftJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+        super(headers, tree, leftPlanId, rightPlanId);
     }
 }

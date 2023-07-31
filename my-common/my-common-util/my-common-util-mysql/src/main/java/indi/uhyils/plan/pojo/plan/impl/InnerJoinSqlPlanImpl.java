@@ -1,6 +1,7 @@
 package indi.uhyils.plan.pojo.plan.impl;
 
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
+import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.plan.pojo.plan.InnerJoinSqlPlan;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +13,17 @@ import java.util.Map;
  */
 public class InnerJoinSqlPlanImpl extends InnerJoinSqlPlan {
 
-    public InnerJoinSqlPlanImpl(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        super(null, headers, leftPlanId, rightPlanId);
+    public InnerJoinSqlPlanImpl(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+        super(headers, tree, leftPlanId, rightPlanId);
     }
 
     @Override
     public NodeInvokeResult invoke() {
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
-        nodeInvokeResult.setFieldInfos(new ArrayList<>());
-        nodeInvokeResult.setResult(new ArrayList<>());
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
+        nodeInvokeResult.setFieldInfos(allFieldInfo());
+        List<Map<String, Object>> result = new ArrayList<>();
+        /*此处两个不同行列数的table 需要融合在一起 on中的条件是融合前需要遵守的,也是合并表的依据 where 是合并后进行筛选*/
+        nodeInvokeResult.setResult(result);
         return nodeInvokeResult;
     }
 }

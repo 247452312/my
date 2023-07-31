@@ -80,7 +80,7 @@ public class IColumns implements SysTable {
             newResults.add(JSONObject.parseObject(JSONObject.toJSONString(columnsInfo)));
         });
 
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
         if (CollectionUtil.isNotEmpty(newResults)) {
             final List<Map<String, Object>> tempResults = new ArrayList<>();
             final Map<String, Object> first = newResults.get(0);

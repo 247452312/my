@@ -45,11 +45,12 @@ public class SqlTableSourceBinaryTreePool extends AbstractObjectPool<SqlTableSou
         return orCreateObject;
     }
 
-    public SqlTableSourceBinaryTree getOrCreateObject(SqlTableSourceBinaryTree leftTree, SqlTableSourceBinaryTree rightTree, JoinType joinType) {
+    public SqlTableSourceBinaryTree getOrCreateObject(SqlTableSourceBinaryTree leftTree, SqlTableSourceBinaryTree rightTree, SQLBinaryOpExpr condition, JoinType joinType) {
         SqlTableSourceBinaryTree orCreateObject = super.getOrCreateObject();
         orCreateObject.setLeftTree(leftTree);
         orCreateObject.setRightTree(rightTree);
         orCreateObject.setJoinType(joinType);
+        orCreateObject.setCondition(condition);
         return orCreateObject;
     }
 

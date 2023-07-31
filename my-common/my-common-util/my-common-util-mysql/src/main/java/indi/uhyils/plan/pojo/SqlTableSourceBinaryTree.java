@@ -39,6 +39,11 @@ public class SqlTableSourceBinaryTree {
      */
     private JoinType joinType;
 
+    /**
+     * 连接条件
+     */
+    private SQLBinaryOpExpr condition;
+
     public SqlTableSourceBinaryTree(SQLPropertyExpr tableSource, List<SQLBinaryOpExpr> where) {
         this.tableSource = tableSource;
         this.where = where;
@@ -91,6 +96,14 @@ public class SqlTableSourceBinaryTree {
 
     public void setWhere(List<SQLBinaryOpExpr> where) {
         this.where = where;
+    }
+
+    public SQLBinaryOpExpr getCondition() {
+        return condition;
+    }
+
+    public void setCondition(SQLBinaryOpExpr condition) {
+        this.condition = condition;
     }
 
     @NotNull

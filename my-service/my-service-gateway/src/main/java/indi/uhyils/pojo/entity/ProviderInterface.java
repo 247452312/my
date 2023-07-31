@@ -70,7 +70,7 @@ public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
 
     @Override
     public NodeInvokeResult getResult() {
-        return null;
+        return new NodeInvokeResult(null);
     }
 
     @Override

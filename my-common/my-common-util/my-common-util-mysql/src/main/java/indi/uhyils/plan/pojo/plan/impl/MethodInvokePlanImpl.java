@@ -18,7 +18,7 @@ import org.slf4j.helpers.MessageFormatter;
  */
 public class MethodInvokePlanImpl extends MethodInvokePlan {
 
-    public MethodInvokePlanImpl(Map<String, String> headers, Integer index, String methodName, List<SQLExpr> arguments, SQLExpr asName) {
+    public MethodInvokePlanImpl(Map<String, String> headers, Integer index, String methodName, List<SQLExpr> arguments, String asName) {
         super(headers, index, methodName, arguments, asName);
     }
 
@@ -26,7 +26,7 @@ public class MethodInvokePlanImpl extends MethodInvokePlan {
     public NodeInvokeResult invoke() {
         MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         MysqlMethodEnum parse = MysqlMethodEnum.parse(methodName, arguments.size());
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
         String fieldName = toFieldName();
         nodeInvokeResult.setFieldInfos(Collections.singletonList(parse.makeFieldInfo(mysqlTcpInfo.getDatabase(), MysqlContent.DEFAULT_METHOD_CALL_TABLE, MysqlContent.DEFAULT_METHOD_CALL_TABLE, this.index, fieldName)));
         nodeInvokeResult.setResult(parse.makeResult(lastNodeInvokeResult, arguments, fieldName));
@@ -35,7 +35,7 @@ public class MethodInvokePlanImpl extends MethodInvokePlan {
 
     private String toFieldName() {
         if (asName != null) {
-            return asName.toString();
+            return asName;
         }
         String collect = arguments.stream().map(Object::toString).collect(Collectors.joining(","));
         return MessageFormatter.arrayFormat("{}({})", new Object[]{methodName, collect}).getMessage();

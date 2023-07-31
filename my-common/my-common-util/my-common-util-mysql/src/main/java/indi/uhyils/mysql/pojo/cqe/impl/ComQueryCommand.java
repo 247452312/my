@@ -1,5 +1,6 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
+import indi.uhyils.exception.AssertException;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
 import indi.uhyils.mysql.enums.SqlTypeEnum;
@@ -56,7 +57,12 @@ public class ComQueryCommand extends MysqlSqlCommand {
                 continue;
             }
 
-            final NodeInvokeResult execute = new PlanInvoker(mysqlPlans).execute();
+            NodeInvokeResult execute = null;
+            try {
+                execute = new PlanInvoker(mysqlPlans).execute();
+            } catch (AssertException e) {
+                LogUtil.error(this, e, "sql:" + sql + "\n");
+            }
 
             // 如果没有结果, 说明不是一个常规的查询语句,返回ok即可,如果报错,则在外部已经进行了try,catch
             if (CollectionUtil.isEmpty(execute.getFieldInfos())) {

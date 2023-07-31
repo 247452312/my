@@ -2,6 +2,7 @@ package indi.uhyils.util;
 
 import com.google.common.collect.Maps.EntryTransformer;
 import indi.uhyils.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
@@ -103,5 +104,25 @@ public final class MapUtil {
             target.put(keyMap.transformEntry(key, value), valueMap.transformEntry(key, value));
         }
     }
+
+
+    /**
+     * copyMap
+     *
+     * @param data
+     *
+     * @return
+     */
+    public static <K, V> Map<K, V> copy(Map<K, V> data) {
+        return copy(data, new HashMap<>());
+    }
+
+    private static <K, V> Map<K, V> copy(Map<K, V> data, HashMap<K, V> kvHashMap) {
+        for (Entry<K, V> kvEntry : data.entrySet()) {
+            kvHashMap.put(kvEntry.getKey(), kvEntry.getValue());
+        }
+        return kvHashMap;
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package indi.uhyils.service;
 
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.mysql.service.MysqlSdkService;
 import indi.uhyils.pojo.cqe.InvokeCommand;
@@ -28,6 +29,7 @@ public interface GatewaySdkService extends BaseService, MysqlSdkService {
      *
      * @return
      */
+    @NotNull
     NodeInvokeResult invokeNode(InvokeCommand command);
 
 

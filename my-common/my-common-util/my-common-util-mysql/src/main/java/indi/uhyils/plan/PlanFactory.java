@@ -1,6 +1,7 @@
 package indi.uhyils.plan;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
+import com.alibaba.druid.sql.ast.expr.SQLMethodInvokeExpr;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.plan.pojo.plan.BlockQuerySelectSqlPlan;
@@ -33,7 +34,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    InnerJoinSqlPlan buildInnerJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
+    InnerJoinSqlPlan buildInnerJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId);
 
 
     /**
@@ -41,7 +42,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    LeftJoinSqlPlan buildLeftJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
+    LeftJoinSqlPlan buildLeftJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId);
 
 
     /**
@@ -55,7 +56,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, Integer resultIndex, String methodName, List<SQLExpr> arguments, SQLExpr asName);
+    MethodInvokePlan buildMethodInvokePlan(Map<String, String> headers, Integer resultIndex, String methodName, List<SQLExpr> arguments, SQLMethodInvokeExpr asName);
 
 
     /**
@@ -71,7 +72,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    RightJoinSqlPlan buildRightJoinSqlPlan(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId);
+    RightJoinSqlPlan buildRightJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId);
 
 
     /**

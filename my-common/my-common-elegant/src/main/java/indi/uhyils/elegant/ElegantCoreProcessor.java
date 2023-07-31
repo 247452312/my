@@ -54,7 +54,7 @@ public class ElegantCoreProcessor implements InitializingBean, ApplicationListen
         } catch (InterruptedException e) {
             LogUtil.error(this, e);
         }
-        LogUtil.info("组件业务完成,优雅下线结束,期待下次的相遇!");
+        LogUtil.info("组件业务完成,优雅下线结束, 祝君武运昌隆, 愿君顶峰相见!");
     }
 
 
@@ -111,7 +111,7 @@ public class ElegantCoreProcessor implements InitializingBean, ApplicationListen
                     handler.allowToPublish();
                     LogUtil.info("组件:{}优雅上线成功!", handler.name());
                 }
-                LogUtil.info("优雅上线结束!");
+                LogUtil.info("本项目优雅上线成功,可以正常工作!");
             } catch (InterruptedException e) {
                 LogUtil.error(this, e);
             }

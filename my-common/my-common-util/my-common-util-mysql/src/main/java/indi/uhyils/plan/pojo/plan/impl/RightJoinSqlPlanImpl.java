@@ -1,6 +1,7 @@
 package indi.uhyils.plan.pojo.plan.impl;
 
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
+import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.plan.pojo.plan.RightJoinSqlPlan;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,14 +13,14 @@ import java.util.Map;
  */
 public class RightJoinSqlPlanImpl extends RightJoinSqlPlan {
 
-    public RightJoinSqlPlanImpl(Map<String, String> headers, List<Long> leftPlanId, List<Long> rightPlanId) {
-        super(null, headers, leftPlanId, rightPlanId);
+    public RightJoinSqlPlanImpl(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+        super(headers, tree, leftPlanId, rightPlanId);
     }
 
     @Override
     public NodeInvokeResult invoke() {
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult();
-        nodeInvokeResult.setFieldInfos(new ArrayList<>());
+        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
+        nodeInvokeResult.setFieldInfos(allFieldInfo());
         nodeInvokeResult.setResult(new ArrayList<>());
         return nodeInvokeResult;
     }

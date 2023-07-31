@@ -67,7 +67,7 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
         final ProviderInterface providerInterface = providerInterfaceRepository.find(command.getInvokeType(), splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
         providerInterface.fillParams(providerInterfaceParamRepository);
         //        JSONArray.parseArray(JSONObject.toJSONString(Arrays.asList(command)))
-        return new NodeInvokeResult();
+        return new NodeInvokeResult(null);
     }
 
     @Override
