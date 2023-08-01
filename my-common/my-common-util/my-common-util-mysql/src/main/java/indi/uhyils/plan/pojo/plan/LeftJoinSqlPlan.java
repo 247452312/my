@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public abstract class LeftJoinSqlPlan extends JoinSqlPlan {
 
-    protected LeftJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+    protected LeftJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, Long leftPlanId, Long rightPlanId) {
         super(headers, tree, leftPlanId, rightPlanId);
     }
 }

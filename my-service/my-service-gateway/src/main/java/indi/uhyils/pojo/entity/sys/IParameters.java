@@ -12,19 +12,20 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * 视图信息查询
+ * 该表存放这存储过程和存储函数的参数信息以及存储函数的返回值，及我们一般意义上的存储过程和函数，统称为stored routines
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年09月13日 08时28分
  */
-public class IParameters implements SysTable {
+public class IParameters extends AbstractSysTable {
 
 
     public IParameters(Map<String, Object> params) {
+        super(params);
     }
 
     @Override
-    public NodeInvokeResult getResult() {
+    public NodeInvokeResult doGetResultNoParams() {
         final Optional<UserDTO> userOptional = UserInfoHelper.get();
         if (!userOptional.isPresent()) {
             throw Asserts.makeException("未登录");

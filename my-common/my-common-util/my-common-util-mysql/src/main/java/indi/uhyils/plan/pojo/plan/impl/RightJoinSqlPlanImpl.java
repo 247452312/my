@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class RightJoinSqlPlanImpl extends RightJoinSqlPlan {
 
-    public RightJoinSqlPlanImpl(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+    public RightJoinSqlPlanImpl(Map<String, String> headers, SqlTableSourceBinaryTree tree, Long leftPlanId, Long rightPlanId) {
         super(headers, tree, leftPlanId, rightPlanId);
     }
 

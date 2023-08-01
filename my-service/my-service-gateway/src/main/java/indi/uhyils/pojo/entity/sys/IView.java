@@ -19,23 +19,19 @@ import java.util.stream.Collectors;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年09月16日 09时54分
  */
-public class IView implements SysTable {
+public class IView extends AbstractSysTable {
 
-
-    /**
-     * 入参
-     */
-    private final Map<String, Object> params;
 
     private final CallNodeService callNodeService;
 
     public IView(Map<String, Object> params) {
+        super(params);
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getValue));
         this.callNodeService = SpringUtil.getBean(CallNodeService.class);
     }
 
     @Override
-    public NodeInvokeResult getResult() {
+    public NodeInvokeResult doGetResultNoParams() {
         final Optional<UserDTO> userOptional = UserInfoHelper.get();
         if (!userOptional.isPresent()) {
             throw Asserts.makeException("未登录");

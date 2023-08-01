@@ -27,12 +27,12 @@ public abstract class JoinSqlPlan extends AbstractMysqlSqlPlan {
     /**
      * 左边执行计划id
      */
-    protected List<Long> leftResultPlanIds;
+    protected Long leftResultPlanId;
 
     /**
      * 左边结果
      */
-    protected List<NodeInvokeResult> leftResults;
+    protected NodeInvokeResult leftResult;
 
 
     /**
@@ -43,12 +43,12 @@ public abstract class JoinSqlPlan extends AbstractMysqlSqlPlan {
     /**
      * 右边执行计划id
      */
-    protected List<Long> rightResultPlanIds;
+    protected Long rightResultPlanId;
 
     /**
      * 右边结果
      */
-    protected List<NodeInvokeResult> rightResults;
+    protected NodeInvokeResult rightResult;
 
     /**
      * 右树
@@ -60,10 +60,10 @@ public abstract class JoinSqlPlan extends AbstractMysqlSqlPlan {
      */
     protected SQLBinaryOpExpr condition;
 
-    protected JoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+    protected JoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, Long leftPlanId, Long rightPlanId) {
         super(null, headers, new HashMap<>());
-        this.leftResultPlanIds = leftPlanId;
-        this.rightResultPlanIds = rightPlanId;
+        this.leftResultPlanId = leftPlanId;
+        this.rightResultPlanId = rightPlanId;
         this.leftTree = tree.getLeftTree();
         this.rightTree = tree.getRightTree();
         this.condition = tree.getCondition();
@@ -76,7 +76,7 @@ public abstract class JoinSqlPlan extends AbstractMysqlSqlPlan {
      *
      * @return
      */
-    private static List<FieldInfo> findResultByTree(SqlTableSourceBinaryTree tree, List<NodeInvokeResult> results) {
+    private static List<FieldInfo> findResultByTree(SqlTableSourceBinaryTree tree, NodeInvokeResult results) {
         SQLPropertyExpr tableSource = tree.getTableSource();
         SQLObject parent = tableSource.getParent();
         SQLExprTableSource rightTableSource = (SQLExprTableSource) parent;
@@ -84,18 +84,14 @@ public abstract class JoinSqlPlan extends AbstractMysqlSqlPlan {
         if (StringUtil.isEmpty(rightAlias)) {
             rightAlias = ((SQLPropertyExpr) rightTableSource.getExpr()).getName();
         }
-        List<FieldInfo> result = new ArrayList<>();
-        for (NodeInvokeResult rightResult : results) {
-            String finalRightAlias = rightAlias;
-            result.addAll(rightResult.getFieldInfos().stream().map(s -> s.copyWithNewFieldName(finalRightAlias, s.getFieldName())).collect(Collectors.toList()));
-        }
-        return result;
+        String finalRightAlias = rightAlias;
+        return results.getFieldInfos().stream().map(s -> s.copyWithNewFieldName(finalRightAlias, s.getFieldName())).collect(Collectors.toList());
     }
 
     @Override
     public void complete(Map<Long, NodeInvokeResult> planArgs) {
-        this.leftResults = leftResultPlanIds.stream().map(planArgs::get).collect(Collectors.toList());
-        this.rightResults = rightResultPlanIds.stream().map(planArgs::get).collect(Collectors.toList());
+        this.leftResult = planArgs.get(leftResultPlanId);
+        this.rightResult = planArgs.get(rightResultPlanId);
     }
 
     /**
@@ -105,8 +101,8 @@ public abstract class JoinSqlPlan extends AbstractMysqlSqlPlan {
      */
     protected List<FieldInfo> allFieldInfo() {
         Set<FieldInfo> result = new HashSet<>();
-        result.addAll(findResultByTree(leftTree, leftResults));
-        result.addAll(findResultByTree(rightTree, rightResults));
+        result.addAll(findResultByTree(leftTree, leftResult));
+        result.addAll(findResultByTree(rightTree, rightResult));
         return new ArrayList<>(result);
     }
 
@@ -120,6 +116,22 @@ public abstract class JoinSqlPlan extends AbstractMysqlSqlPlan {
             return new ArrayList<>();
         }
         return splitCondition(condition);
+    }
+
+    /**
+     * 检查两行是否可以合并
+     *
+     * @param left
+     * @param right
+     * @param on
+     *
+     * @return
+     */
+    protected boolean checkMerge(Map<String, Object> left, Map<String, Object> right, List<SQLBinaryOpExpr> on) {
+        for (SQLBinaryOpExpr sqlBinaryOpExpr : on) {
+            int i = 1;
+        }
+        return false;
     }
 
     /**
@@ -143,5 +155,6 @@ public abstract class JoinSqlPlan extends AbstractMysqlSqlPlan {
         return result;
 
     }
+
 
 }

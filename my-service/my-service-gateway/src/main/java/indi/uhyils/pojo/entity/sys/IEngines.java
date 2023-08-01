@@ -12,18 +12,19 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * 引擎相关信息
+ * 该表提供存储引擎相关的信息，主要用来确认数据库是否支持该存储引擎以及是否是默认的该表不是标准的INFORMATION_SCHEMA表
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年09月14日 09时40分
  */
-public class IEngines implements SysTable {
+public class IEngines extends AbstractSysTable {
 
     public IEngines(Map<String, Object> params) {
+        super(params);
     }
 
     @Override
-    public NodeInvokeResult getResult() {
+    public NodeInvokeResult doGetResultNoParams() {
         final Optional<UserDTO> userOptional = UserInfoHelper.get();
         if (!userOptional.isPresent()) {
             throw Asserts.makeException("未登录");

@@ -31,27 +31,25 @@ import javafx.util.Pair;
 
 /**
  * information_schema库 SCHEMATA表
+ * 提供了关于数据库中的库的信息。详细表述了某个库的名称，默认编码，排序规则。
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年09月01日 14时22分
  */
-public class ISchemata implements SysTable {
+public class ISchemata extends AbstractSysTable {
 
-    /**
-     * 入参
-     */
-    private final Map<String, Object> params;
 
     private final CallNodeService callNodeService;
 
     public ISchemata(Map<String, Object> params) {
+        super(params);
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getValue));
         this.callNodeService = SpringUtil.getBean(CallNodeService.class);
     }
 
 
     @Override
-    public NodeInvokeResult getResult() {
+    public NodeInvokeResult doGetResultNoParams() {
         final Object schemaName = params.get("table_schema");
         final ArrayList<Arg> args = new ArrayList<>();
         final Optional<UserDTO> userOptional = UserInfoHelper.get();

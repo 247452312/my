@@ -37,12 +37,12 @@ public class PlanFactoryImpl implements PlanFactory {
     }
 
     @Override
-    public InnerJoinSqlPlan buildInnerJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+    public InnerJoinSqlPlan buildInnerJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, Long leftPlanId, Long rightPlanId) {
         return new InnerJoinSqlPlanImpl(headers, tree, leftPlanId, rightPlanId);
     }
 
     @Override
-    public LeftJoinSqlPlan buildLeftJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+    public LeftJoinSqlPlan buildLeftJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, Long leftPlanId, Long rightPlanId) {
         return new LeftJoinSqlPlanImpl(headers, tree, leftPlanId, rightPlanId);
     }
 
@@ -64,7 +64,7 @@ public class PlanFactoryImpl implements PlanFactory {
     }
 
     @Override
-    public RightJoinSqlPlan buildRightJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+    public RightJoinSqlPlan buildRightJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, Long leftPlanId, Long rightPlanId) {
         return new RightJoinSqlPlanImpl(headers, tree, leftPlanId, rightPlanId);
     }
 

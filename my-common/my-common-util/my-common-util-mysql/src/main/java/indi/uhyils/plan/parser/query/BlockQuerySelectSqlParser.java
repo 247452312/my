@@ -184,10 +184,10 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         resultPlan.addAll(leftPlan);
         plans.addAll(leftPlan);
 
-        final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
-        final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
+        long leftPlanId = leftPlan.get(leftPlan.size() - 1).getId();
+        long rightPlanId = rightPlan.get(rightPlan.size() - 1).getId();
 
-        MysqlPlan sqlPlan = planFactory.buildRightJoinSqlPlan(headers, froms, leftId, rightId);
+        MysqlPlan sqlPlan = planFactory.buildRightJoinSqlPlan(headers, froms, leftPlanId, rightPlanId);
         resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
         return resultPlan;
@@ -201,10 +201,9 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         List<MysqlPlan> rightPlan = makeMainPlan(plans, froms.getRightTree(), headers);
         resultPlan.addAll(rightPlan);
 
-        final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
-        final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
-
-        MysqlPlan sqlPlan = planFactory.buildLeftJoinSqlPlan(headers, froms, leftId, rightId);
+        long leftPlanId = leftPlan.get(leftPlan.size() - 1).getId();
+        long rightPlanId = rightPlan.get(rightPlan.size() - 1).getId();
+        MysqlPlan sqlPlan = planFactory.buildLeftJoinSqlPlan(headers, froms, leftPlanId, rightPlanId);
         resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
         return resultPlan;
@@ -219,11 +218,10 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         List<MysqlPlan> rightPlan = makeMainPlan(plans, froms.getRightTree(), headers);
         resultPlan.addAll(rightPlan);
         plans.addAll(rightPlan);
+        long leftPlanId = leftPlan.get(leftPlan.size() - 1).getId();
+        long rightPlanId = rightPlan.get(rightPlan.size() - 1).getId();
 
-        final List<Long> leftId = leftPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
-        final List<Long> rightId = rightPlan.stream().map(MysqlPlan::getId).collect(Collectors.toList());
-
-        MysqlPlan sqlPlan = planFactory.buildInnerJoinSqlPlan(headers, froms, leftId, rightId);
+        MysqlPlan sqlPlan = planFactory.buildInnerJoinSqlPlan(headers, froms, leftPlanId, rightPlanId);
         resultPlan.add(sqlPlan);
         plans.add(sqlPlan);
         return resultPlan;

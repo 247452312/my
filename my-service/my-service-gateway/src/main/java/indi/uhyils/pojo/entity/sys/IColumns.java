@@ -29,25 +29,24 @@ import java.util.stream.Collectors;
 import javafx.util.Pair;
 
 /**
+ * 里面记录了mysql所有库中所有表的字段信息
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年09月08日 14时24分
  */
-public class IColumns implements SysTable {
+public class IColumns extends AbstractSysTable {
 
-    /**
-     * 入参
-     */
-    private final Map<String, Object> params;
 
     private final CallNodeService callNodeService;
 
     public IColumns(Map<String, Object> params) {
+        super(params);
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getValue));
         this.callNodeService = SpringUtil.getBean(CallNodeService.class);
     }
 
     @Override
-    public NodeInvokeResult getResult() {
+    public NodeInvokeResult doGetResultNoParams() {
         final Object schemaName = params.get("schema_name");
         final ArrayList<Arg> args = new ArrayList<>();
         final Optional<UserDTO> userOptional = UserInfoHelper.get();
@@ -99,28 +98,28 @@ public class IColumns implements SysTable {
         }
         nodeInvokeResult.setResult(newResults);
         final List<FieldInfo> fieldInfos = new ArrayList<>();
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "TABLE_CATALOG", "TABLE_CATALOG", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "TABLE_SCHEMA", "TABLE_SCHEMA", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "TABLE_NAME", "TABLE_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "COLUMN_NAME", "COLUMN_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "ORDINAL_POSITION", "ORDINAL_POSITION", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "DATA_TYPE", "DATA_TYPE", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "DATETIME_PRECISION", "DATETIME_PRECISION", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "COLUMN_TYPE", "COLUMN_TYPE", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "PRIVILEGES", "PRIVILEGES", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "COLUMN_COMMENT", "COLUMN_COMMENT", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "COLUMN_DEFAULT", "COLUMN_DEFAULT", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "IS_NULLABLE", "IS_NULLABLE", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "CHARACTER_MAXIMUM_LENGTH", "CHARACTER_MAXIMUM_LENGTH", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "CHARACTER_OCTET_LENGTH", "CHARACTER_OCTET_LENGTH", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "NUMERIC_PRECISION", "NUMERIC_PRECISION", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "NUMERIC_SCALE", "NUMERIC_SCALE", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "CHARACTER_SET_NAME", "CHARACTER_SET_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "COLLATION_NAME", "COLLATION_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "COLUMN_KEY", "COLUMN_KEY", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "EXTRA", "EXTRA", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "GENERATION_EXPRESSION", "GENERATION_EXPRESSION", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
-        fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "SRS_ID", "SRS_ID", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "TABLE_CATALOG", "TABLE_CATALOG", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "TABLE_SCHEMA", "TABLE_SCHEMA", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "TABLE_NAME", "TABLE_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "COLUMN_NAME", "COLUMN_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "ORDINAL_POSITION", "ORDINAL_POSITION", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "DATA_TYPE", "DATA_TYPE", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "DATETIME_PRECISION", "DATETIME_PRECISION", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "COLUMN_TYPE", "COLUMN_TYPE", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "PRIVILEGES", "PRIVILEGES", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "COLUMN_COMMENT", "COLUMN_COMMENT", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "COLUMN_DEFAULT", "COLUMN_DEFAULT", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "IS_NULLABLE", "IS_NULLABLE", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "CHARACTER_MAXIMUM_LENGTH", "CHARACTER_MAXIMUM_LENGTH", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "CHARACTER_OCTET_LENGTH", "CHARACTER_OCTET_LENGTH", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "NUMERIC_PRECISION", "NUMERIC_PRECISION", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "NUMERIC_SCALE", "NUMERIC_SCALE", 0, 1, FieldTypeEnum.FIELD_TYPE_INT24, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "CHARACTER_SET_NAME", "CHARACTER_SET_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "COLLATION_NAME", "COLLATION_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "COLUMN_KEY", "COLUMN_KEY", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "EXTRA", "EXTRA", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "GENERATION_EXPRESSION", "GENERATION_EXPRESSION", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+        fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "SRS_ID", "SRS_ID", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
 
         nodeInvokeResult.setFieldInfos(fieldInfos);
         return nodeInvokeResult;

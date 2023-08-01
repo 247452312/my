@@ -23,16 +23,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
+ * 系统变量
+ *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年09月22日 09时30分
  */
-public class PGlobalVariables implements SysTable {
-
-
-    /**
-     * 入参
-     */
-    private final Map<String, Object> params;
+public class PGlobalVariables extends AbstractSysTable {
 
     /**
      * mysql全局系统参数
@@ -41,12 +37,13 @@ public class PGlobalVariables implements SysTable {
 
 
     public PGlobalVariables(Map<String, Object> params) {
+        super(params);
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getValue));
         this.mysqlGlobalVariables = SpringUtil.getBean(MysqlGlobalVariables.class);
     }
 
     @Override
-    public NodeInvokeResult getResult() {
+    public NodeInvokeResult doGetResultNoParams() {
 
         final Optional<UserDTO> userOptional = UserInfoHelper.get();
         if (!userOptional.isPresent()) {

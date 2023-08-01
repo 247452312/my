@@ -35,26 +35,21 @@ import javafx.util.Pair;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年09月08日 09时13分
  */
-public class ITables implements SysTable {
-
-
-    /**
-     * 入参
-     */
-    private final Map<String, Object> params;
+public class ITables extends AbstractSysTable {
 
     private final CallNodeService callNodeService;
 
     public ITables(Map<String, Object> params) {
+        super(params);
         this.params = params.entrySet().stream().collect(Collectors.toMap(t -> t.getKey().toLowerCase(), Entry::getValue));
         this.callNodeService = SpringUtil.getBean(CallNodeService.class);
     }
 
     @Override
-    public NodeInvokeResult getResult() {
-        final Object schemaName = params.get("table_schema");
-        final ArrayList<Arg> args = new ArrayList<>();
-        final Optional<UserDTO> userOptional = UserInfoHelper.get();
+    public NodeInvokeResult doGetResultNoParams() {
+        Object schemaName = params.get("table_schema");
+        List<Arg> args = new ArrayList<>();
+        Optional<UserDTO> userOptional = UserInfoHelper.get();
         if (!userOptional.isPresent()) {
             throw Asserts.makeException("未登录");
         }
@@ -67,9 +62,9 @@ public class ITables implements SysTable {
         final List<Map<String, Object>> newResults = new ArrayList<>();
         Set<String> dbSet = new HashSet<>();
         callNodeDTOS.stream().filter(t -> {
-            final String url = t.getUrl();
-            final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(url);
-            final String database = splitDataBaseUrl.getKey();
+            String url = t.getUrl();
+            Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(url);
+            String database = splitDataBaseUrl.getKey();
             if (dbSet.contains(database)) {
                 return false;
             } else {

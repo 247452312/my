@@ -4,6 +4,7 @@ import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.plan.pojo.plan.LeftJoinSqlPlan;
+import indi.uhyils.util.MapUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Map;
  */
 public class LeftJoinSqlPlanImpl extends LeftJoinSqlPlan {
 
-    public LeftJoinSqlPlanImpl(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+    public LeftJoinSqlPlanImpl(Map<String, String> headers, SqlTableSourceBinaryTree tree, Long leftPlanId, Long rightPlanId) {
         super(headers, tree, leftPlanId, rightPlanId);
     }
 
@@ -27,7 +28,29 @@ public class LeftJoinSqlPlanImpl extends LeftJoinSqlPlan {
         List<SQLBinaryOpExpr> on = splitCondition();
 
         /*todo left join 中 以左边列表为准, 每条去遍历另一边的列表,判断on条件是否成立, 如果成立,则筛选出一条新数据*/
-        nodeInvokeResult.setResult(new ArrayList<>());
+        List<Map<String, Object>> leftResult = this.leftResult.getResult();
+        List<Map<String, Object>> rightResult = this.rightResult.getResult();
+
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Map<String, Object> left : leftResult) {
+            boolean haveLine = false;
+            for (Map<String, Object> right : rightResult) {
+                // 如果这是一个可以合并的行
+                if (checkMerge(left, right, on)) {
+                    Map<String, Object> copy = MapUtil.copy(left);
+                    copy.putAll(right);
+                    haveLine = true;
+                    result.add(copy);
+                }
+            }
+            // 如果没有一条符合的,就单独搞一个left添加进入
+            if (!haveLine) {
+                Map<String, Object> copy = MapUtil.copy(left);
+                result.add(copy);
+            }
+        }
+        nodeInvokeResult.setResult(result);
         return nodeInvokeResult;
     }
+
 }

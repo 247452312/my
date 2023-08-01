@@ -13,7 +13,7 @@ import java.util.Map;
 public abstract class InnerJoinSqlPlan extends JoinSqlPlan {
 
 
-    protected InnerJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, List<Long> leftPlanId, List<Long> rightPlanId) {
+    protected InnerJoinSqlPlan(Map<String, String> headers, SqlTableSourceBinaryTree tree, Long leftPlanId, Long rightPlanId) {
         super(headers, tree, leftPlanId, rightPlanId);
     }
 }

@@ -13,17 +13,19 @@ import java.util.Optional;
 
 /**
  * 存储子程序（存储程序和函数）的信息
+ * 提供有关存储例程(存储过程和存储函数)的信息。该ROUTINES表不包括内置SQL函数或用户定义函数(UDF)
  *
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年09月13日 08时55分
  */
-public class IRoutines implements SysTable {
+public class IRoutines extends AbstractSysTable {
 
     public IRoutines(Map<String, Object> params) {
+        super(params);
     }
 
     @Override
-    public NodeInvokeResult getResult() {
+    public NodeInvokeResult doGetResultNoParams() {
         Optional<UserDTO> userOptional = UserInfoHelper.get();
         if (!userOptional.isPresent()) {
             throw Asserts.makeException("未登录");
