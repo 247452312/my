@@ -4,7 +4,6 @@ import com.alibaba.druid.sql.ast.SQLExpr;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
-import indi.uhyils.plan.enums.MysqlMethodEnum;
 import indi.uhyils.plan.pojo.plan.MethodInvokePlan;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +17,7 @@ import org.slf4j.helpers.MessageFormatter;
  */
 public class MethodInvokePlanImpl extends MethodInvokePlan {
 
+
     public MethodInvokePlanImpl(Map<String, String> headers, Integer index, String methodName, List<SQLExpr> arguments, String asName) {
         super(headers, index, methodName, arguments, asName);
     }
@@ -25,11 +25,10 @@ public class MethodInvokePlanImpl extends MethodInvokePlan {
     @Override
     public NodeInvokeResult invoke() {
         MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
-        MysqlMethodEnum parse = MysqlMethodEnum.parse(methodName, arguments.size());
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
+        NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
         String fieldName = toFieldName();
-        nodeInvokeResult.setFieldInfos(Collections.singletonList(parse.makeFieldInfo(mysqlTcpInfo.getDatabase(), MysqlContent.DEFAULT_METHOD_CALL_TABLE, MysqlContent.DEFAULT_METHOD_CALL_TABLE, this.index, fieldName)));
-        nodeInvokeResult.setResult(parse.makeResult(lastNodeInvokeResult, arguments, fieldName));
+        nodeInvokeResult.setFieldInfos(Collections.singletonList(methodEnum.makeFieldInfo(mysqlTcpInfo.getDatabase(), MysqlContent.DEFAULT_METHOD_CALL_TABLE, MysqlContent.DEFAULT_METHOD_CALL_TABLE, this.index, fieldName)));
+        nodeInvokeResult.setResult(methodEnum.makeResult(lastNodeInvokeResult, arguments, fieldName));
         return nodeInvokeResult;
     }
 
@@ -40,4 +39,5 @@ public class MethodInvokePlanImpl extends MethodInvokePlan {
         String collect = arguments.stream().map(Object::toString).collect(Collectors.joining(","));
         return MessageFormatter.arrayFormat("{}({})", new Object[]{methodName, collect}).getMessage();
     }
+
 }

@@ -13,8 +13,10 @@ import indi.uhyils.mysql.pojo.response.impl.ResultSetResponse;
 import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.PlanInvoker;
+import indi.uhyils.plan.config.MysqlPlanConfig;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.LogUtil;
+import indi.uhyils.util.SpringUtil;
 import indi.uhyils.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +33,7 @@ public class ComQueryCommand extends MysqlSqlCommand {
     private String completeSql;
 
     public ComQueryCommand(MysqlThisRequestInfo mysqlThisRequestInfo, String sql) {
-        super(mysqlThisRequestInfo);
+        this(mysqlThisRequestInfo);
         this.completeSql = sql;
     }
 

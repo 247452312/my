@@ -26,9 +26,11 @@ import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.plan.PlanFactory;
+import indi.uhyils.plan.pojo.MySQLSelectItem;
 import indi.uhyils.plan.pojo.MySqlListExpr;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
-import indi.uhyils.plan.pojo.plan.ResultMappingPlan;
+import indi.uhyils.plan.pojo.plan.AbstractResultMappingPlan;
+import indi.uhyils.plan.pojo.plan.MethodInvokePlan;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.util.ArrayList;
@@ -37,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -67,12 +68,12 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         return parseSelect(sql.getSelect(), headers);
     }
 
-    private List<SQLSelectItem> parseSelectList(List<MysqlPlan> planResults, List<SQLSelectItem> selectList, Map<String, String> headers) {
-        List<SQLSelectItem> result = new ArrayList<>();
+    private List<MySQLSelectItem> parseSelectList(List<MysqlPlan> planResults, List<SQLSelectItem> selectList, Map<String, String> headers) {
+        List<MySQLSelectItem> result = new ArrayList<>();
         for (int i = 0; i < selectList.size(); i++) {
             SQLSelectItem t = selectList.get(i);
             // 解析语句块
-            SQLSelectItem sqlSelectItems = parseSelectListItem(planResults, i, headers, t);
+            MySQLSelectItem sqlSelectItems = parseSelectListItem(planResults, i, headers, t);
             result.add(sqlSelectItems);
         }
         return result;
@@ -89,11 +90,11 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
      * @return
      */
     @Nullable
-    private SQLSelectItem parseSelectListItem(List<MysqlPlan> result, int index, Map<String, String> headers, SQLSelectItem selectItem) {
+    private MySQLSelectItem parseSelectListItem(List<MysqlPlan> result, int index, Map<String, String> headers, SQLSelectItem selectItem) {
         SQLExpr expr = selectItem.getExpr();
         // 常规,直接返回
         if (expr instanceof SQLPropertyExpr || expr instanceof SQLIdentifierExpr || expr instanceof SQLAllColumnExpr) {
-            return selectItem;
+            return new MySQLSelectItem(expr, selectItem.getAlias(), selectItem);
         }
         if (expr instanceof SQLQueryExpr) {
             String sql = expr.toString();
@@ -102,16 +103,16 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 return plans.get(0);
             });
             result.add(newPlan);
-            return new SQLSelectItem(new SQLIdentifierExpr("&" + newPlan.getId()), selectItem.getAlias());
+            return new MySQLSelectItem(new SQLIdentifierExpr("&" + newPlan.getId()), selectItem.getAlias(), selectItem);
         }
         if (expr instanceof SQLMethodInvokeExpr) {
             final SQLMethodInvokeExpr sqlMethodInvokeExpr = (SQLMethodInvokeExpr) expr;
             final String methodName = sqlMethodInvokeExpr.getMethodName();
             final List<SQLExpr> arguments = sqlMethodInvokeExpr.getArguments();
             final List<SQLExpr> newArguments = parseMethodArgument(result, headers, arguments);
-            MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, index, methodName, newArguments, sqlMethodInvokeExpr);
+            MethodInvokePlan newPlan = planFactory.buildMethodInvokePlan(headers, index, methodName, newArguments, sqlMethodInvokeExpr);
             result.add(newPlan);
-            return new SQLSelectItem(new SQLIdentifierExpr("&" + newPlan.getId()), selectItem.getAlias());
+            return new MySQLSelectItem(new SQLIdentifierExpr("&" + newPlan.getId()), selectItem.getAlias(), selectItem, newPlan.getMethodEnum());
         }
         Asserts.throwException("查询报错,子查询类型找不到:{},内容为:{}", selectItem.getClass().getName(), selectItem.toString());
         return null;
@@ -351,7 +352,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         // 3.selectList 查询字段的子查询
         MysqlPlan lastMainPlan = mainPlans.get(mainPlans.size() - 1);
         // 解析sql语句中字段
-        final List<SQLSelectItem> selectList = parseSelectList(plans, query.getSelectList(), headers);
+        final List<MySQLSelectItem> selectList = parseSelectList(plans, query.getSelectList(), headers);
         // 添加结果字段映射节点
         plans.add(makeResultMappingPlan(headers, lastMainPlan, selectList));
 
@@ -364,7 +365,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
      * @param lastMainPlan
      * @param selectList
      */
-    private ResultMappingPlan makeResultMappingPlan(Map<String, String> headers, MysqlPlan lastMainPlan, List<SQLSelectItem> selectList) {
+    private AbstractResultMappingPlan makeResultMappingPlan(Map<String, String> headers, MysqlPlan lastMainPlan, List<MySQLSelectItem> selectList) {
         return planFactory.buildResultMappingPlan(headers, lastMainPlan, selectList);
     }
 

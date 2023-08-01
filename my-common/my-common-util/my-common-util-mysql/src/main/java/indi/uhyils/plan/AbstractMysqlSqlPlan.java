@@ -1,6 +1,7 @@
 package indi.uhyils.plan;
 
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
+import indi.uhyils.plan.config.MysqlPlanConfig;
 import indi.uhyils.plan.enums.MysqlPlanTypeEnum;
 import indi.uhyils.plan.pojo.Placeholder;
 import indi.uhyils.util.Asserts;
@@ -50,11 +51,17 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
      */
     protected NodeInvokeResult lastNodeInvokeResult;
 
+    /**
+     * 配置
+     */
+    protected MysqlPlanConfig config;
+
     protected AbstractMysqlSqlPlan(String sql, Map<String, String> headers, Map<String, Object> params) {
         this.sql = sql;
         this.params = params;
         this.headers = headers;
-        id = SpringUtil.getBean(IdUtil.class).newId();
+        this.id = SpringUtil.getBean(IdUtil.class).newId();
+        this.config = SpringUtil.getBean(MysqlPlanConfig.class);
     }
 
 

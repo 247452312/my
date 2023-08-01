@@ -1,16 +1,19 @@
 package indi.uhyils.plan.pojo.plan.impl;
 
-import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import com.google.common.base.Objects;
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.mysql.util.StringUtil;
 import indi.uhyils.plan.MysqlPlan;
+import indi.uhyils.plan.enums.MysqlMethodEnum;
+import indi.uhyils.plan.pojo.MySQLSelectItem;
+import indi.uhyils.plan.pojo.plan.AbstractResultMappingPlan;
 import indi.uhyils.plan.pojo.plan.BlockQuerySelectSqlPlan;
 import indi.uhyils.plan.pojo.plan.JoinSqlPlan;
-import indi.uhyils.plan.pojo.plan.ResultMappingPlan;
 import indi.uhyils.util.Asserts;
+import indi.uhyils.util.CollectionUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,17 +28,28 @@ import org.apache.commons.lang3.StringUtils;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年08月26日 16时33分
  */
-public class ResultMappingPlanImpl extends ResultMappingPlan {
+public class ResultMappingPlanImpl extends AbstractResultMappingPlan {
 
 
+    /**
+     * 是否是每行一个结果
+     */
+    private final Boolean singleLine;
 
     /**
      * 当前映射之前最后一个查询执行计划的结果
      */
     private NodeInvokeResult lastQueryPlanResult;
 
-    public ResultMappingPlanImpl(Map<String, String> headers, MysqlPlan lastMainPlan, List<SQLSelectItem> selectList) {
+    public ResultMappingPlanImpl(Map<String, String> headers, MysqlPlan lastMainPlan, List<MySQLSelectItem> selectList) {
         super(headers, lastMainPlan, selectList);
+        // 是否是每行一个结果
+        List<MysqlMethodEnum> allMethod = selectList.stream().filter(MySQLSelectItem::isMethodItem).map(MySQLSelectItem::method).collect(Collectors.toList());
+        if (CollectionUtil.isEmpty(allMethod)) {
+            this.singleLine = true;
+        } else {
+            this.singleLine = allMethod.stream().allMatch(MysqlMethodEnum::getSingleLine);
+        }
     }
 
     @Override
@@ -43,6 +57,7 @@ public class ResultMappingPlanImpl extends ResultMappingPlan {
         // 填充占位符
         completePlaceholder(planArgs);
         this.lastAllPlanResult = planArgs;
+
         List<Long> planIds = planArgs.keySet().stream().sorted(Long::compareTo).collect(Collectors.toList());
         for (int i = planIds.size() - 1; i >= 0; i--) {
             Long key = planIds.get(i);
@@ -58,10 +73,34 @@ public class ResultMappingPlanImpl extends ResultMappingPlan {
 
     @Override
     public NodeInvokeResult invoke() {
+        /**
+         * 整个mapping 应该是分为几种情况
+         * 1.带有count,sum等函数的 需要行合并 则结果动态修正
+         *  1.1 带有group 需要分组
+         *  1.2 不带group 只有一行
+         * 2.不需要合并,则可以直接根据上一次结果来直接映射 如果有子查询,则只需要判断size和上一次查询结果的行数来匹配后一一插入即可
+         */
+
+        /*如果是需要组合的情况*/
+        if (!singleLine) {
+            // 制作存在方法合并时候的结果
+            return makeMethodNoSingleLine();
+        }
+
+        // 其他情况
+        return makeOther();
+    }
+
+    /**
+     * 除了方法合并的其他情况
+     *
+     * @return
+     */
+    private NodeInvokeResult makeOther() {
+        List<String> needFields = selectList.stream().map(t -> t.getExpr().toString()).collect(Collectors.toList());
         /*1.如果结果列只有一个* 则直接返回 (如果除了*还有其他的 则报错)*/
-        final List<FieldInfo> lastFieldInfos = this.lastQueryPlanResult.getFieldInfos();
-        final List<Map<String, Object>> lastResult = this.lastQueryPlanResult.getResult();
-        final List<String> needFields = selectList.stream().map(t -> t.getExpr().toString()).collect(Collectors.toList());
+        List<FieldInfo> lastFieldInfos = this.lastQueryPlanResult.getFieldInfos();
+        List<Map<String, Object>> lastResult = this.lastQueryPlanResult.getResult();
         // 只允许有一个*
         if (needFields.contains("*")) {
             if (needFields.size() != 1) {
@@ -106,8 +145,7 @@ public class ResultMappingPlanImpl extends ResultMappingPlan {
             newFieldInfo.add(fieldInfo);
             newFieldNameSet.add(fieldInfo.getFieldName());
         }
-
-        final List<Map<String, Object>> newResultList = lastResult.stream().map(t -> {
+        List<Map<String, Object>> newResultList = lastResult.stream().map(t -> {
             Map<String, Object> newResult = new HashMap<>(selectList.size());
             for (Entry<String, Object> entry : t.entrySet()) {
                 if (MysqlUtil.ignoreCaseAndQuotesContains(needFields, entry.getKey()) || needFields.contains("*")) {
@@ -117,11 +155,73 @@ public class ResultMappingPlanImpl extends ResultMappingPlan {
             return newResult;
         }).collect(Collectors.toList());
 
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
+        NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
         nodeInvokeResult.setFieldInfos(newFieldInfo);
         nodeInvokeResult.setResult(newResultList);
         return nodeInvokeResult;
     }
+
+    /**
+     * 制作存在方法合并时候的结果
+     *
+     * @return
+     */
+    @NotNull
+    private NodeInvokeResult makeMethodNoSingleLine() {
+        List<String> needFields = selectList.stream().map(t -> t.getExpr().toString()).collect(Collectors.toList());
+        int rowCount = -1;
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<FieldInfo> fieldInfos = new ArrayList<>();
+        Map<String, FieldInfo> fieldInfoMap = this.lastQueryPlanResult.getFieldInfos().stream().collect(Collectors.toMap(t -> StringUtil.cleanQuotation(t.getFieldName()), t -> t));
+        /*每一个field都需要寻找是否是方法执行, 如果是正常的数据行,则需要判断容错查询参数是否开启*/
+        for (String needField : needFields) {
+            if (needField.startsWith("&")) {
+                NodeInvokeResult nodeInvokeResult = lastAllPlanResult.get(Long.parseLong(needField.substring(1)));
+                List<FieldInfo> specialLastFieldInfos = nodeInvokeResult.getFieldInfos();
+                Asserts.assertTrue(specialLastFieldInfos != null && specialLastFieldInfos.size() == 1, "映射时需要有且仅有一个字段来映射");
+                fieldInfos.add(specialLastFieldInfos.get(0));
+                List<Map<String, Object>> fieldResult = nodeInvokeResult.getResult();
+                if (rowCount == -1) {
+                    rowCount = fieldResult.size();
+                }
+                Asserts.assertTrue(rowCount == fieldResult.size(), "多个方法并列的语句中,各个方法执行结果行数不同");
+                if (CollectionUtil.isEmpty(result)) {
+                    result.addAll(fieldResult);
+                } else {
+                    for (int i = 0; i < result.size(); i++) {
+                        result.get(i).putAll(fieldResult.get(i));
+                    }
+                }
+            } else {
+                Boolean allowFault = config.getAllowFault();
+                Asserts.assertTrue(allowFault, "不允许错误的sql语句, 在有合并意义的语句中不能出现实际行");
+
+                /*获取对应字段的结果*/
+                List<Map<String, Object>> lastResult = this.lastQueryPlanResult.getResult();
+                Object newResult = null;
+                if (CollectionUtil.isNotEmpty(lastResult)) {
+                    Map<String, Object> first = lastResult.get(0);
+                    for (Entry<String, Object> entry : first.entrySet()) {
+                        if (Objects.equal(StringUtil.cleanQuotation(needField), StringUtil.cleanQuotation(entry.getKey())) || Objects.equal(needField, "*")) {
+                            newResult = entry.getValue();
+                        }
+                    }
+                }
+                for (Map<String, Object> map : result) {
+                    map.put(needField, newResult);
+                }
+
+                /*获取对应的字段信息*/
+                fieldInfos.add(fieldInfoMap.get(StringUtil.cleanQuotation(needField)));
+
+            }
+        }
+        NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
+        nodeInvokeResult.setFieldInfos(fieldInfos);
+        nodeInvokeResult.setResult(result);
+        return nodeInvokeResult;
+    }
+
 
     /**
      * 查询字段

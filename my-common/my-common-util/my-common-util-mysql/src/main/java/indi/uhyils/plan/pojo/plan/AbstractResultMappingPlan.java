@@ -1,8 +1,8 @@
 package indi.uhyils.plan.pojo.plan;
 
-import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import indi.uhyils.plan.AbstractMysqlSqlPlan;
 import indi.uhyils.plan.MysqlPlan;
+import indi.uhyils.plan.pojo.MySQLSelectItem;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,19 +62,19 @@ import java.util.Map;
  * @author uhyils <247452312@qq.com>
  * @date 文件创建日期 2022年08月26日 15时57分
  */
-public abstract class ResultMappingPlan extends AbstractMysqlSqlPlan {
+public abstract class AbstractResultMappingPlan extends AbstractMysqlSqlPlan {
 
     /**
      * 要映射成的几个字段
      */
-    protected final List<SQLSelectItem> selectList;
+    protected final List<MySQLSelectItem> selectList;
 
     /**
      * 主sql执行计划
      */
     protected final MysqlPlan lastMainPlan;
 
-    protected ResultMappingPlan(Map<String, String> headers, MysqlPlan lastMainPlan, List<SQLSelectItem> selectList) {
+    protected AbstractResultMappingPlan(Map<String, String> headers, MysqlPlan lastMainPlan, List<MySQLSelectItem> selectList) {
         super(null, headers, new HashMap<>());
         this.selectList = selectList;
         this.lastMainPlan = lastMainPlan;

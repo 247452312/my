@@ -2,13 +2,13 @@ package indi.uhyils.plan;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.expr.SQLMethodInvokeExpr;
-import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
+import indi.uhyils.plan.pojo.MySQLSelectItem;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
 import indi.uhyils.plan.pojo.plan.BlockQuerySelectSqlPlan;
 import indi.uhyils.plan.pojo.plan.InnerJoinSqlPlan;
 import indi.uhyils.plan.pojo.plan.LeftJoinSqlPlan;
 import indi.uhyils.plan.pojo.plan.MethodInvokePlan;
-import indi.uhyils.plan.pojo.plan.ResultMappingPlan;
+import indi.uhyils.plan.pojo.plan.AbstractResultMappingPlan;
 import indi.uhyils.plan.pojo.plan.RightJoinSqlPlan;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +64,7 @@ public interface PlanFactory {
      *
      * @return
      */
-    ResultMappingPlan buildResultMappingPlan(Map<String, String> headers, MysqlPlan lastMainPlan, List<SQLSelectItem> selectList);
+    AbstractResultMappingPlan buildResultMappingPlan(Map<String, String> headers, MysqlPlan lastMainPlan, List<MySQLSelectItem> selectList);
 
 
     /**

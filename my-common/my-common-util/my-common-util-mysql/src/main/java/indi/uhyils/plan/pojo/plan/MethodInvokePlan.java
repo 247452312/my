@@ -2,6 +2,7 @@ package indi.uhyils.plan.pojo.plan;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import indi.uhyils.plan.AbstractMysqlSqlPlan;
+import indi.uhyils.plan.enums.MysqlMethodEnum;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,11 @@ public abstract class MethodInvokePlan extends AbstractMysqlSqlPlan {
      */
     protected final String asName;
 
+    /**
+     * 方法
+     */
+    protected MysqlMethodEnum methodEnum;
+
 
     protected MethodInvokePlan(Map<String, String> headers, Integer index, String methodName, List<SQLExpr> arguments, String asName) {
         super(null, headers, new HashMap<>());
@@ -41,6 +47,10 @@ public abstract class MethodInvokePlan extends AbstractMysqlSqlPlan {
         this.methodName = methodName;
         this.arguments = arguments;
         this.asName = asName;
+        this.methodEnum = MysqlMethodEnum.parse(methodName, arguments.size());
     }
 
+    public MysqlMethodEnum getMethodEnum() {
+        return methodEnum;
+    }
 }

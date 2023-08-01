@@ -23,7 +23,7 @@ public enum MysqlMethodEnum {
     /**
      * count
      */
-    COUNT("count", 1, Long.class, (parentInvokeResult, arguments, fieldName) -> {
+    COUNT("count", 1, Long.class, false, (parentInvokeResult, arguments, fieldName) -> {
         Asserts.assertTrue(arguments.size() == 1, "mysql语句中方法使用错误,count入参只能为一个");
         String countParam = arguments.get(0).toString();
         Asserts.assertTrue(StringUtil.isNotEmpty(countParam), "mysql语句中方法使用错误,count入参不能为空白");
@@ -54,7 +54,7 @@ public enum MysqlMethodEnum {
     /**
      * concat
      */
-    CONCAT("concat", -1, String.class, (parentInvokeResult, arguments, fieldName) -> {
+    CONCAT("concat", -1, String.class, true, (parentInvokeResult, arguments, fieldName) -> {
         List<Map<String, Object>> parentResult = parentInvokeResult.getResult();
         List<Map<String, Object>> result = new ArrayList<>();
         // 遍历每一行
@@ -73,7 +73,7 @@ public enum MysqlMethodEnum {
         return result;
     }),
 
-    GROUP_CONCAT("group_concat", 1, String.class, (parentInvokeResult, arguments, fieldName) -> {
+    GROUP_CONCAT("group_concat", 1, String.class, false, (parentInvokeResult, arguments, fieldName) -> {
         List<Map<String, Object>> parentResult = parentInvokeResult.getResult();
         List<Map<String, Object>> result = new ArrayList<>();
 
@@ -114,12 +114,22 @@ public enum MysqlMethodEnum {
      */
     private final MakeResultFunction function;
 
+    /**
+     * 每行都可以得到一个结果
+     */
+    private final Boolean singleLine;
 
-    MysqlMethodEnum(String name, Integer paramCount, Class<?> resultType, MakeResultFunction function) {
+
+    MysqlMethodEnum(String name, Integer paramCount, Class<?> resultType, Boolean singleLine, MakeResultFunction function) {
         this.name = name;
         this.paramCount = paramCount;
         this.resultType = resultType;
+        this.singleLine = singleLine;
         this.function = function;
+    }
+
+    public Boolean getSingleLine() {
+        return singleLine;
     }
 
     /**
