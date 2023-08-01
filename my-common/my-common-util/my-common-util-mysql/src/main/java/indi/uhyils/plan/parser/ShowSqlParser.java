@@ -232,7 +232,7 @@ public class ShowSqlParser implements SqlParser {
         final String database = mysqlTcpInfo.getDatabase();
         Asserts.assertTrue(StringUtil.isNotEmpty(database), "No database selected");
 
-        StringBuilder transSql = new StringBuilder("select TABLE_NAME as 'Tables_in_'" + database + " from information_schema.`TABLES` where TABLE_SCHEMA = '");
+        StringBuilder transSql = new StringBuilder("select TABLE_NAME as 'Tables_in_" + database + "' from information_schema.`TABLES` where TABLE_SCHEMA = '");
         transSql.append(database);
         transSql.append("'");
 

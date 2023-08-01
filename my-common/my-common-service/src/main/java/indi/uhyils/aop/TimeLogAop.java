@@ -101,7 +101,7 @@ public class TimeLogAop {
      * @param proceed    返回值
      */
     private void after(String className, String methodName, double v, Object proceed) {
-        LogUtil.debug(this, "方法执行完毕:  %s类中的%s,执行时间为%f秒", className, methodName, Double.toString(v));
-        LogUtil.debug(this, "   返回值为:%s", JSONObject.toJSONString(proceed));
+        LogUtil.debug(this, "方法执行完毕:  {}类中的{},执行时间为{}秒", className, methodName, Double.toString(v));
+        LogUtil.debug(this, "   返回值为:{}", JSONObject.toJSONString(proceed));
     }
 }
