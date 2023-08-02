@@ -6,6 +6,7 @@ import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.pojo.entity.sys.IColumns;
 import indi.uhyils.pojo.entity.sys.IEngines;
 import indi.uhyils.pojo.entity.sys.IParameters;
+import indi.uhyils.pojo.entity.sys.IProfiling;
 import indi.uhyils.pojo.entity.sys.IRoutines;
 import indi.uhyils.pojo.entity.sys.ISchemata;
 import indi.uhyils.pojo.entity.sys.ITables;
@@ -51,6 +52,10 @@ public enum SysTableEnum {
      * 视图相关的信息
      */
     INFORMATION_SCHEMA_VIEW("information_schema", "views", IView::new),
+    /**
+     * 可以用来分析每一条SQL在它执行的各个阶段的用时
+     */
+    INFORMATION_SCHEMA_PROFILING("information_schema", "profiling", IProfiling::new),
     /**
      * 系统参数
      */

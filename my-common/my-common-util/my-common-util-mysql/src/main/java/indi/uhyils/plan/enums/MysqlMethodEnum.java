@@ -72,7 +72,28 @@ public enum MysqlMethodEnum {
         }
         return result;
     }),
+    SUM("sum", 1, Long.class, false, (parentInvokeResult, arguments, fieldName) -> {
+        Asserts.assertTrue(arguments.size() == 1, "mysql语句中方法使用错误,sum入参只能为一个");
+        String countParam = arguments.get(0).toString();
+        Asserts.assertTrue(StringUtil.isNotEmpty(countParam), "mysql语句中方法使用错误,sum入参不能为空白");
 
+        if (StringUtil.equalsIgnoreCase(countParam, "*")) {
+            Asserts.throwException("mysql语句中方法使用错误,sum入参不能为*");
+            return null;
+        } else if (countParam.contains("=")) {
+            Asserts.throwException("暂不支持sum方法中使用等号来判断");
+            return null;
+        } else {
+            // count中为字段名称
+            List<Map<String, Object>> result = parentInvokeResult.getResult();
+            long sum = result.stream().filter(t -> t.containsKey(fieldName) && t.get(fieldName) != null).mapToLong(t -> (long) t.get(fieldName)).sum();
+            List<Map<String, Object>> maps = new ArrayList<>();
+            Map<String, Object> item = new HashMap<>();
+            item.put(fieldName, sum);
+            maps.add(item);
+            return maps;
+        }
+    }),
     GROUP_CONCAT("group_concat", 1, String.class, false, (parentInvokeResult, arguments, fieldName) -> {
         List<Map<String, Object>> parentResult = parentInvokeResult.getResult();
         List<Map<String, Object>> result = new ArrayList<>();
@@ -128,10 +149,6 @@ public enum MysqlMethodEnum {
         this.function = function;
     }
 
-    public Boolean getSingleLine() {
-        return singleLine;
-    }
-
     /**
      * 解析mysql方法
      *
@@ -149,6 +166,10 @@ public enum MysqlMethodEnum {
         }
         Asserts.throwException("未知的mysql方法名称,name:{},参数个数:{}", name, paramCount.toString());
         return null;
+    }
+
+    public Boolean getSingleLine() {
+        return singleLine;
     }
 
     /**

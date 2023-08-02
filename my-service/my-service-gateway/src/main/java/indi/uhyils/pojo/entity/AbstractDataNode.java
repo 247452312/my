@@ -4,7 +4,6 @@ import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.mysql.pojo.entity.DataNode;
 import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.plan.MysqlPlan;
-import indi.uhyils.plan.PlanInvoker;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
 import java.util.List;
@@ -43,8 +42,7 @@ public abstract class AbstractDataNode<T extends BaseDO> extends AbstractDoEntit
 
     @Override
     public NodeInvokeResult getResult() {
-        final List<MysqlPlan> mysqlPlans = MysqlUtil.analysisSqlToPlan(sql, header);
-        return new PlanInvoker(mysqlPlans).execute(params);
+        return new NodeInvokeResult(null);
     }
 
 

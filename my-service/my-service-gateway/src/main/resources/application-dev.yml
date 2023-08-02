@@ -8,7 +8,6 @@ rpc:
 
 log-out:
   dir-name: gateway
-  level: INFO
 
 id:
   organization:
