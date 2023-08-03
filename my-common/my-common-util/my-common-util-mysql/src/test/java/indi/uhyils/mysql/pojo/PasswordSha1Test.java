@@ -12,7 +12,7 @@ public class PasswordSha1Test {
 
     @Test
     public void passwordSha1Test() {
-        final String s = MysqlUtil.sha1("123456");
+        String s = MysqlUtil.sha1("123456");
         LogUtil.info(s);
     }
 

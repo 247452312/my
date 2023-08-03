@@ -56,6 +56,30 @@ public abstract class AbstractObjectPool<T> implements ObjectPool<T> {
         init();
     }
 
+    @Override
+    public T getOrCreateObject() {
+        synchronized (lock) {
+            // 转移reference中的数据
+            transReference();
+            if (queue.isEmpty()) {
+                return createObject();
+            }
+            return queue.poll();
+        }
+    }
+
+    @Override
+    public long remainderCount() {
+        return queue.size();
+    }
+
+    /**
+     * 清空 以及归还之前需要做的事情
+     *
+     * @param t
+     */
+    protected abstract void emptyObj(T t);
+
     private void init() {
         for (int i = 0; i < size; i++) {
             T obj = createObject();
@@ -73,18 +97,6 @@ public abstract class AbstractObjectPool<T> implements ObjectPool<T> {
         } catch (Exception e) {
             LogUtil.error(this, e);
             return null;
-        }
-    }
-
-    @Override
-    public T getOrCreateObject() {
-        synchronized (lock) {
-            // 转移reference中的数据
-            transReference();
-            if (queue.isEmpty()) {
-                return createObject();
-            }
-            return queue.poll();
         }
     }
 
@@ -119,18 +131,5 @@ public abstract class AbstractObjectPool<T> implements ObjectPool<T> {
         Field referent = Reference.class.getDeclaredField(REFERENT_FIELD_NAME);
         referent.setAccessible(true);
         return (T) referent.get(poll);
-    }
-
-    /**
-     * 清空 以及归还之前需要做的事情
-     *
-     * @param t
-     */
-    protected abstract void emptyObj(T t);
-
-
-    @Override
-    public long remainderCount() {
-        return queue.size();
     }
 }

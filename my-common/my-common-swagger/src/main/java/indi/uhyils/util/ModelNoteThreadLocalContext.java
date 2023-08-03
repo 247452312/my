@@ -6,10 +6,10 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 /**
- *
  * 临时存储modelNotes的地方
- * @date 文件创建日期 2023年03月29日 09时19分
+ *
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年03月29日 09时19分
  */
 public class ModelNoteThreadLocalContext {
 
@@ -24,18 +24,6 @@ public class ModelNoteThreadLocalContext {
                 remove();
             }
         }
-    }
-
-    private static boolean init() {
-        if (PARSEING_MODEL_NOTES.get() == null) {
-            PARSEING_MODEL_NOTES.set(new HashSet<>());
-            return true;
-        }
-        return false;
-    }
-
-    private static void remove() {
-        PARSEING_MODEL_NOTES.remove();
     }
 
     public static Boolean contains(String typeName) {
@@ -60,5 +48,17 @@ public class ModelNoteThreadLocalContext {
             return;
         }
         strings.remove(typeName);
+    }
+
+    private static boolean init() {
+        if (PARSEING_MODEL_NOTES.get() == null) {
+            PARSEING_MODEL_NOTES.set(new HashSet<>());
+            return true;
+        }
+        return false;
+    }
+
+    private static void remove() {
+        PARSEING_MODEL_NOTES.remove();
     }
 }

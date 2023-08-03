@@ -1,8 +1,13 @@
 package indi.uhyils.pojo.entity;
 
+import com.alibaba.druid.sql.ast.SQLName;
+import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
+import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
 import indi.uhyils.annotation.Default;
 import indi.uhyils.exception.AssertException;
+import indi.uhyils.mysql.content.MysqlContent;
+import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.plan.MysqlPlan;
@@ -67,10 +72,20 @@ public class Node extends AbstractDataNode<NodeDO> {
             if (plan instanceof BlockQuerySelectSqlPlan) {
                 BlockQuerySelectSqlPlan selectSqlPlan = (BlockQuerySelectSqlPlan) plan;
                 SqlTableSourceBinaryTree sqlTableSourceBinaryTree = selectSqlPlan.toTable();
-                SQLPropertyExpr tableSource = sqlTableSourceBinaryTree.getTableSource();
-                String ownerName = tableSource.getOwnernName();
-                String name = tableSource.getName();
-                AbstractDataNode abstractDataNode = nodeRepository.findNodeOrProvider(ownerName, name);
+                SQLExprTableSource tableSource = sqlTableSourceBinaryTree.getTableSource();
+
+                SQLName name = tableSource.getName();
+
+                MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+                String owner = null;
+                if (name instanceof SQLPropertyExpr) {
+                    SQLPropertyExpr sqlPropertyExpr = (SQLPropertyExpr) name;
+                    owner = sqlPropertyExpr.getOwner() != null ? sqlPropertyExpr.getOwnernName() : mysqlTcpInfo.getDatabase();
+                } else if (name instanceof SQLIdentifierExpr) {
+                    owner = mysqlTcpInfo.getDatabase();
+                }
+
+                AbstractDataNode abstractDataNode = nodeRepository.findNodeOrProvider(owner, name.getSimpleName());
                 abstractDataNode.fill(nodeRepository, providerInterfaceRepository);
                 MysqlPlan nodeInvokePlan = new MysqlNodeInvokePlan(abstractDataNode, selectSqlPlan, sql);
                 result.add(nodeInvokePlan);

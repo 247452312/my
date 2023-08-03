@@ -129,10 +129,10 @@ public class RpcDefaultRequestCallBack implements RpcCallBack {
 
     @Override
     public RpcData assembly(Long unique, InvokeResult result) throws InterruptedException {
-        final Map<String, String> headerMap = RpcHeaderContext.get();
+        Map<String, String> headerMap = RpcHeaderContext.get();
         List<RpcHeader> headers = new ArrayList<>(headerMap.size() + 1);
         headerMap.entrySet().forEach(t -> headers.add(new RpcHeader(t.getKey(), t.getValue())));
-        final RpcHeader[] rpcHeaders = headers.toArray(new RpcHeader[0]);
+        RpcHeader[] rpcHeaders = headers.toArray(new RpcHeader[0]);
 
         String responseType;
         RpcStatusEnum rpcStatus = RpcStatusEnum.OK;

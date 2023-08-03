@@ -58,7 +58,7 @@ public abstract class AbstractAssembler<DO extends BaseDO, ENTITY extends Abstra
 
     @Override
     public DTO toDTO(ENTITY entity) {
-        final Optional<DO> aDo = entity.toData();
+        Optional<DO> aDo = entity.toData();
         if (!aDo.isPresent()) {
             Asserts.throwException("entity没有data!");
         }

@@ -20,15 +20,14 @@ import indi.uhyils.rpc.registry.pojo.RegistryProviderNecessaryInfo;
 import indi.uhyils.util.LogUtil;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * 生产者注册中心句柄 的nacos默认实现 此类为实现句柄的例子可以通过spi机制修改
  *
- * @date 文件创建日期 2023年04月23日 16时50分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年04月23日 16时50分
  */
 @RpcSpi(single = false)
 public class NacosProviderRegistryCenterHandler extends AbstractProviderRegistryCenterHandler {
@@ -95,7 +94,7 @@ public class NacosProviderRegistryCenterHandler extends AbstractProviderRegistry
     @Override
     protected void doRemoveRegistryInfo() {
         RegistryModelInfo registryModelInfo = singleProviderRegistryModelInfo();
-        final RegistryProviderNecessaryInfo providerNecessaryInfo = registryModelInfo.getNecessaryInfo();
+        RegistryProviderNecessaryInfo providerNecessaryInfo = registryModelInfo.getNecessaryInfo();
 
         try {
             nacosNaming.deregisterInstance(providerNecessaryInfo.getInterfaceName(), providerNecessaryInfo.getHost(), providerNecessaryInfo.getPort());
@@ -107,7 +106,7 @@ public class NacosProviderRegistryCenterHandler extends AbstractProviderRegistry
     @Override
     protected Boolean doChangeRegistryInfo() {
         RegistryModelInfo registryModelInfo = singleProviderRegistryModelInfo();
-        final RegistryProviderNecessaryInfo providerNecessaryInfo = registryModelInfo.getNecessaryInfo();
+        RegistryProviderNecessaryInfo providerNecessaryInfo = registryModelInfo.getNecessaryInfo();
 
         try {
             nacosNaming.registerInstance(providerNecessaryInfo.getInterfaceName(), providerNecessaryInfo.getHost(), providerNecessaryInfo.getPort());
@@ -115,6 +114,12 @@ public class NacosProviderRegistryCenterHandler extends AbstractProviderRegistry
             throw new RpcException(e);
         }
         return Boolean.TRUE;
+    }
+
+    @Override
+    protected void initRegistryInfo() {
+        RegistryModelInfo registryModelInfo = RegistryModeBuilder.initRegistryInfo(serviceClass);
+        this.registryModelInfo = Collections.singletonList(registryModelInfo);
     }
 
     /**
@@ -151,12 +156,6 @@ public class NacosProviderRegistryCenterHandler extends AbstractProviderRegistry
         instanceMeta.put(METADATA, JSON.toJSONString(metadata, SerializerFeature.WriteClassName));
         instance.setMetadata(instanceMeta);
         return instance;
-    }
-
-    @Override
-    protected void initRegistryInfo() {
-        RegistryModelInfo registryModelInfo = RegistryModeBuilder.initRegistryInfo(serviceClass);
-        this.registryModelInfo = Collections.singletonList(registryModelInfo);
     }
 
 }

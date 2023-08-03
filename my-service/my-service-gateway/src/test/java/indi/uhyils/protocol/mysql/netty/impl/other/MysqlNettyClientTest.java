@@ -22,13 +22,13 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class MysqlNettyClientTest {
 
+    private final MysqlInfoHandlerTest mysqlInfoHandlerTest;
+
     private EventLoopGroup group;
 
     private Bootstrap bootstrap;
 
     private ChannelFuture connect;
-
-    private final MysqlInfoHandlerTest mysqlInfoHandlerTest;
 
     public MysqlNettyClientTest(MysqlInfoHandlerTest mysqlInfoHandlerTest) {
         this.mysqlInfoHandlerTest = mysqlInfoHandlerTest;

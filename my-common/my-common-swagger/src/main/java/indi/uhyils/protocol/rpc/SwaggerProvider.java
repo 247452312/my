@@ -26,7 +26,9 @@ public interface SwaggerProvider extends BaseProvider {
 
     /**
      * 测试用,请忽略
+     *
      * @param query
+     *
      * @return
      */
     @Public

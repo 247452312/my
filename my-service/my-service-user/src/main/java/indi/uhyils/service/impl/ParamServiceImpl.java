@@ -38,7 +38,7 @@ public class ParamServiceImpl extends AbstractDoService<ParamDO, Param, ParamDTO
 
     @Override
     public Boolean flushAllGlobal() {
-        final Param param = new Param();
+        Param param = new Param();
         return param.flushAllGlobal(rep);
     }
 }

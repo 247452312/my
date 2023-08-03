@@ -50,23 +50,6 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
         Asserts.assertTrue(status == statusEnum, "状态错误: " + status.name());
     }
 
-    /**
-     * 获取状态
-     *
-     * @return
-     */
-    protected SoftwareStatusEnum getStatus() {
-        String statusSh = toData().map(SoftwareDO::getStatusSh).orElseThrow(() -> Asserts.makeException("未找到data"));
-        Asserts.assertTrue(StringUtils.isNotBlank(statusSh));
-        String status = SshUtils.execCommandBySsh(server.toData().orElseThrow(() -> Asserts.makeException("未找到data")), statusSh);
-        if (status.contains("ERROR")) {
-            return SoftwareStatusEnum.ERROR;
-        } else if (status.contains("STOP")) {
-            return SoftwareStatusEnum.STOP;
-        }
-        return SoftwareStatusEnum.RUNNING;
-    }
-
     public void stop() {
         checkStatus(SoftwareStatusEnum.RUNNING);
         String stopSh = toData().map(SoftwareDO::getStopSh).orElseThrow(() -> Asserts.makeException("未找到data"));
@@ -107,5 +90,22 @@ public class Software extends AbstractDoEntity<SoftwareDO> {
 
     public Identifier saveSelf(SoftwareRepository rep) {
         return rep.save(this);
+    }
+
+    /**
+     * 获取状态
+     *
+     * @return
+     */
+    protected SoftwareStatusEnum getStatus() {
+        String statusSh = toData().map(SoftwareDO::getStatusSh).orElseThrow(() -> Asserts.makeException("未找到data"));
+        Asserts.assertTrue(StringUtils.isNotBlank(statusSh));
+        String status = SshUtils.execCommandBySsh(server.toData().orElseThrow(() -> Asserts.makeException("未找到data")), statusSh);
+        if (status.contains("ERROR")) {
+            return SoftwareStatusEnum.ERROR;
+        } else if (status.contains("STOP")) {
+            return SoftwareStatusEnum.STOP;
+        }
+        return SoftwareStatusEnum.RUNNING;
     }
 }

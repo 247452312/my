@@ -1,11 +1,7 @@
 package indi.uhyils.pojo.entity.sys;
 
 import indi.uhyils.mysql.enums.TableTypeEnum;
-import indi.uhyils.mysql.pojo.DTO.ColumnsInfo;
-import indi.uhyils.mysql.pojo.DTO.EnginesInfo;
-import indi.uhyils.mysql.pojo.DTO.GlobalVariablesInfo;
 import indi.uhyils.mysql.pojo.DTO.ProfilingInfo;
-import indi.uhyils.mysql.pojo.DTO.ViewInfo;
 import indi.uhyils.util.StringUtil;
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -19,12 +15,12 @@ class ITablesTableTest {
 
     @Test
     public void testTableInfo() {
-        final Field[] fields = ProfilingInfo.class.getDeclaredFields();
+        Field[] fields = ProfilingInfo.class.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            final Field field = fields[i];
-            final String name = field.getName();
-            final Class<?> type = field.getType();
-            final String upperCase = StringUtil.toUnderline(name).toUpperCase();
+            Field field = fields[i];
+            String name = field.getName();
+            Class<?> type = field.getType();
+            String upperCase = StringUtil.toUnderline(name).toUpperCase();
             String typeStr = null;
             if (type.isAssignableFrom(String.class)) {
                 typeStr = "FIELD_TYPE_VARCHAR";

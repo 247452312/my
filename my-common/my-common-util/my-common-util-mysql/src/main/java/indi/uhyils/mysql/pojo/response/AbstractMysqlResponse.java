@@ -34,7 +34,7 @@ public abstract class AbstractMysqlResponse implements MysqlResponse, MysqlTcpIn
     @Override
     public List<byte[]> toByte() {
         MysqlHandlerStatusEnum status = mysqlTcpInfo.getStatus();
-        final boolean b = status == MysqlHandlerStatusEnum.FIRST_SIGHT || status == MysqlHandlerStatusEnum.UNKNOW;
+        boolean b = status == MysqlHandlerStatusEnum.FIRST_SIGHT || status == MysqlHandlerStatusEnum.UNKNOW;
 
         List<byte[]> bytes = toByteNoMarkIndex();
         List<byte[]> result = new ArrayList<>(bytes.size());
@@ -55,16 +55,15 @@ public abstract class AbstractMysqlResponse implements MysqlResponse, MysqlTcpIn
 
     }
 
+    @Override
+    public MysqlThisRequestInfo getMysqlThisRequestInfo() {
+        return mysqlThisRequestInfo;
+    }
+
     /**
      * 返回没有前面长度位或标志位的字节组
      *
      * @return
      */
     protected abstract List<byte[]> toByteNoMarkIndex();
-
-
-    @Override
-    public MysqlThisRequestInfo getMysqlThisRequestInfo() {
-        return mysqlThisRequestInfo;
-    }
 }

@@ -52,7 +52,7 @@ public final class MapUtil {
             return v;
         }
         V value = valueSupplier.get();
-        final V old = map.put(key, value);
+        V old = map.put(key, value);
         return returnOld ? old : value;
 
     }
@@ -99,8 +99,8 @@ public final class MapUtil {
      */
     public static <TK, TV, SK, SV> void putAllWithLink(Map<TK, TV> target, Map<SK, SV> source, EntryTransformer<SK, SV, TK> keyMap, EntryTransformer<SK, SV, TV> valueMap) {
         for (Entry<SK, SV> sksvEntry : source.entrySet()) {
-            final SK key = sksvEntry.getKey();
-            final SV value = sksvEntry.getValue();
+            SK key = sksvEntry.getKey();
+            SV value = sksvEntry.getValue();
             target.put(keyMap.transformEntry(key, value), valueMap.transformEntry(key, value));
         }
     }

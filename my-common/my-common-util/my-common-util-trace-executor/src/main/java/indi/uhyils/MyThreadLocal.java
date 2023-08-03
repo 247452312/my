@@ -39,22 +39,22 @@ public class MyThreadLocal<T> extends InheritableThreadLocal<T> {
 
     @Override
     public T get() {
-        final Thread thread = Thread.currentThread();
-        final Optional<Map<MyThreadLocal<?>, Object>> myThreadLocalObjectMap = Optional.ofNullable(cacheMyThreadLocal.get(thread));
+        Thread thread = Thread.currentThread();
+        Optional<Map<MyThreadLocal<?>, Object>> myThreadLocalObjectMap = Optional.ofNullable(cacheMyThreadLocal.get(thread));
         return myThreadLocalObjectMap.map(t -> (T) t.get(this)).orElse(initialValue());
     }
 
     @Override
     public void set(T value) {
-        final Thread thread = Thread.currentThread();
+        Thread thread = Thread.currentThread();
         Map<MyThreadLocal<?>, Object> myThreadLocalObjectMap = cacheMyThreadLocal.computeIfAbsent(thread, k -> new HashMap<>());
         myThreadLocalObjectMap.put(this, value);
     }
 
     @Override
     public void remove() {
-        final Thread thread = Thread.currentThread();
-        final Map<MyThreadLocal<?>, Object> myThreadLocalObjectMap = cacheMyThreadLocal.get(thread);
+        Thread thread = Thread.currentThread();
+        Map<MyThreadLocal<?>, Object> myThreadLocalObjectMap = cacheMyThreadLocal.get(thread);
         if (myThreadLocalObjectMap == null) {
             return;
         }

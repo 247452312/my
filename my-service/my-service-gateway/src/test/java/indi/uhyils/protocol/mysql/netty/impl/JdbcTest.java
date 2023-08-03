@@ -24,10 +24,10 @@ public class JdbcTest {
         Connection con = DriverManager.getConnection(url, userName, password);
         Asserts.assertTrue(con != null);
         String sql = "select * from information_schema.`TABLES`";
-        final PreparedStatement preparedStatement = con.prepareStatement(sql);
-        final ResultSet resultSet = preparedStatement.executeQuery();
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            final String abc = resultSet.getString("abc");
+            String abc = resultSet.getString("abc");
             LogUtil.info(abc);
         }
 

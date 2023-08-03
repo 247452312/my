@@ -23,7 +23,7 @@ public class GatewaySdkProviderImpl implements GatewaySdkProvider {
 
     @Override
     public List<Map<String, Object>> invokeRpc(InvokeCommand command) {
-        final NodeInvokeResult nodeInvokeResult = service.invokeInterface(command);
+        NodeInvokeResult nodeInvokeResult = service.invokeInterface(command);
         return nodeInvokeResult.getResult();
     }
 

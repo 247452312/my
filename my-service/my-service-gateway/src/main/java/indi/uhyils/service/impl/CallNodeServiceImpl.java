@@ -39,7 +39,7 @@ public class CallNodeServiceImpl extends AbstractDoService<CallNodeDO, CallNode,
 
     @Override
     public List<CallNodeDTO> queryWithAllNode(List<Arg> args) {
-        final List<CallNode> callNodes = rep.findNoPage(args);
+        List<CallNode> callNodes = rep.findNoPage(args);
         for (CallNode callNode : callNodes) {
             // 向下填充
             callNode.fill(nodeRepository, providerInterfaceRepository);

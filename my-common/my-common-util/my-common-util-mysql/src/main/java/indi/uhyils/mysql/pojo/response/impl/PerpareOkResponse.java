@@ -60,7 +60,6 @@ public class PerpareOkResponse extends AbstractMysqlResponse {
     }
 
 
-
     /**
      * 获取列信息
      *

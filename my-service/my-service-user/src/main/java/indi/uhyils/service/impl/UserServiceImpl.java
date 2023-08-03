@@ -165,10 +165,10 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
 
     @Override
     public LoginDTO visiterLogin() {
-        final Optional<String> userIp = UserInfoHelper.getUserIp();
+        Optional<String> userIp = UserInfoHelper.getUserIp();
         Asserts.assertTrue(userIp.isPresent(), "获取用户ip失败");
 
-        final User visiter = new Visiter(userIp.get());
+        User visiter = new Visiter(userIp.get());
         visiter.login(rep, salt, encodeRules);
         // 登录->游客也加入缓存中
         visiter.addUserToRedis(rep);

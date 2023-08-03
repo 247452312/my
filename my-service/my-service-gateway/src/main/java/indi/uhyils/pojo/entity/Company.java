@@ -42,8 +42,8 @@ public class Company extends AbstractDoEntity<CompanyDO> {
      * @return
      */
     private static CompanyDO parseCommand(MysqlAuthCommand command) {
-        final CompanyDO companyDO = new CompanyDO();
-        final String ak = command.getUsername();
+        CompanyDO companyDO = new CompanyDO();
+        String ak = command.getUsername();
         companyDO.setAk(ak);
         return companyDO;
     }

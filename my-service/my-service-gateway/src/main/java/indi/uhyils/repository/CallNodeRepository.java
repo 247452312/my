@@ -5,7 +5,6 @@ import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.pojo.DO.CallNodeDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.CallNode;
-import indi.uhyils.pojo.entity.Node;
 import indi.uhyils.repository.base.BaseEntityRepository;
 import java.util.List;
 

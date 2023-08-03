@@ -4,9 +4,8 @@ import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.rpc.spi.RpcSpiManager;
 
 /**
- *
- * @date 文件创建日期 2023年04月24日 11时09分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年04月24日 11时09分
  */
 public class MyRpcRegistryManagerFactory {
 

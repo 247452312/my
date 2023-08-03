@@ -70,9 +70,9 @@ public class ShowSqlParser implements SqlParser {
         LogUtil.info("show:{}", sql.toLowerCaseString());
         List<MysqlPlan> result = null;
         try {
-            final Method doParse = this.getClass().getDeclaredMethod("doParse", sql.getClass(), Map.class);
+            Method doParse = this.getClass().getDeclaredMethod("doParse", sql.getClass(), Map.class);
             doParse.setAccessible(true);
-            final Object invoke = doParse.invoke(this, sql, headers);
+            Object invoke = doParse.invoke(this, sql, headers);
             Asserts.assertTrue(invoke != null, "未知的show语句:{}", sql.toLowerCaseString());
             result = (List<MysqlPlan>) invoke;
             doParse.setAccessible(false);
@@ -159,7 +159,7 @@ public class ShowSqlParser implements SqlParser {
     }
 
     private List<MysqlPlan> doParse(MySqlShowStatusStatement sql, Map<String, String> headers) {
-        final SQLExpr like = sql.getLike();
+        SQLExpr like = sql.getLike();
         StringBuilder transSql = new StringBuilder("select VARIABLE_NAME as VariableName,VARIABLE_VALUE as `Value` from performance_schema.GLOBAL_VARIABLES where 1=1");
         if (like != null) {
             transSql.append(" and VARIABLE_NAME like '");
@@ -170,12 +170,12 @@ public class ShowSqlParser implements SqlParser {
     }
 
     private List<MysqlPlan> doParse(MySqlShowTableStatusStatement sql, Map<String, String> headers) {
-        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+        MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         Asserts.assertTrue(mysqlTcpInfo != null, "No database selected");
-        final String database = mysqlTcpInfo.getDatabase();
+        String database = mysqlTcpInfo.getDatabase();
         Asserts.assertTrue(StringUtil.isNotEmpty(database), "No database selected");
 
-        final SQLExpr like = sql.getLike();
+        SQLExpr like = sql.getLike();
         StringBuilder transSql = new StringBuilder().append("SELECT\n")
                                                     .append("\tTABLE_NAME AS `Name`,\n")
                                                     .append("\t`ENGINE` AS `Engine`,\n")
@@ -212,7 +212,7 @@ public class ShowSqlParser implements SqlParser {
     }
 
     private List<MysqlPlan> doParse(MySqlShowVariantsStatement sql, Map<String, String> headers) {
-        final SQLExpr like = sql.getLike();
+        SQLExpr like = sql.getLike();
         StringBuilder transSql = new StringBuilder("select VARIABLE_NAME as VariableName,VARIABLE_VALUE as `Value` from performance_schema.GLOBAL_VARIABLES where 1=1");
         if (like != null) {
             transSql.append(" and VARIABLE_NAME like '");
@@ -227,9 +227,9 @@ public class ShowSqlParser implements SqlParser {
     }
 
     private List<MysqlPlan> doParse(SQLShowTablesStatement sql, Map<String, String> headers) {
-        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+        MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         Asserts.assertTrue(mysqlTcpInfo != null, "No database selected");
-        final String database = mysqlTcpInfo.getDatabase();
+        String database = mysqlTcpInfo.getDatabase();
         Asserts.assertTrue(StringUtil.isNotEmpty(database), "No database selected");
 
         StringBuilder transSql = new StringBuilder("select TABLE_NAME as 'Tables_in_" + database + "' from information_schema.`TABLES` where TABLE_SCHEMA = '");
@@ -240,8 +240,8 @@ public class ShowSqlParser implements SqlParser {
     }
 
     private List<MysqlPlan> doParse(MySqlShowDatabasesStatement sql, Map<String, String> headers) {
-        final SQLExpr like = sql.getLike();
-        final SQLExpr where = sql.getWhere();
+        SQLExpr like = sql.getLike();
+        SQLExpr where = sql.getWhere();
         StringBuilder transSql = new StringBuilder("select SCHEMA_NAME as `Database` from information_schema.SCHEMATA where 1=1");
         if (where != null) {
             transSql.append(" and ");

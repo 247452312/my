@@ -170,35 +170,6 @@ public class MyTraceIdContext {
         return sb.toString();
     }
 
-    private static List<Integer> getRpcId() {
-        if (rpcId.get() == null) {
-            if (checkMainThread()) {
-                ArrayList<Integer> integers = new ArrayList<>();
-                integers.add(-1);
-                return integers;
-            }
-            synchronized (MyTraceIdContext.class) {
-                if (rpcId.get() == null) {
-                    ArrayList<Integer> value = new ArrayList<>();
-                    value.add(1);
-                    rpcId.set(value);
-                    thisRpcId.set(new AtomicInteger(1));
-                }
-            }
-        }
-        return rpcId.get();
-    }
-
-    /**
-     * 设置rpcId
-     *
-     * @param lastRpcIds
-     */
-    public static void setRpcId(List<Integer> lastRpcIds) {
-        rpcId.set(lastRpcIds);
-        thisRpcId.set(new AtomicInteger(1));
-    }
-
     /**
      * 获取rpcId
      *
@@ -209,28 +180,6 @@ public class MyTraceIdContext {
         int rpcId = getThisRpcId().get();
         StringBuilder sb = mergeRpcId(lastRpcIds, rpcId);
         return sb.toString();
-    }
-
-    private static boolean checkMainThread() {
-        return MAIN_THREAD_NAME.equals(Thread.currentThread().getName());
-    }
-
-    /**
-     * rpcId
-     *
-     * @param lastRpcIds 上一层rpcId
-     * @param rpcId      这一层的rpcId
-     *
-     * @return
-     */
-    private static StringBuilder mergeRpcId(List<Integer> lastRpcIds, int rpcId) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < lastRpcIds.size(); i++) {
-            sb.append(lastRpcIds.get(i));
-            sb.append(".");
-        }
-        sb.append(rpcId);
-        return sb;
     }
 
     public static void clean() {
@@ -249,21 +198,6 @@ public class MyTraceIdContext {
         AtomicInteger atomicInteger = getThisRpcId();
         nestRpcIds.add(atomicInteger.get());
         return nestRpcIds;
-    }
-
-    private static AtomicInteger getThisRpcId() {
-        if (thisRpcId.get() == null) {
-            if (checkMainThread()) {
-                return new AtomicInteger(-1);
-            }
-            synchronized (MyTraceIdContext.class) {
-                if (thisRpcId.get() == null) {
-                    AtomicInteger integer = new AtomicInteger(1);
-                    thisRpcId.set(integer);
-                }
-            }
-        }
-        return thisRpcId.get();
     }
 
     /**
@@ -339,6 +273,72 @@ public class MyTraceIdContext {
             MyTraceIdContext.clean();
         }
 
+    }
+
+    private static List<Integer> getRpcId() {
+        if (rpcId.get() == null) {
+            if (checkMainThread()) {
+                ArrayList<Integer> integers = new ArrayList<>();
+                integers.add(-1);
+                return integers;
+            }
+            synchronized (MyTraceIdContext.class) {
+                if (rpcId.get() == null) {
+                    ArrayList<Integer> value = new ArrayList<>();
+                    value.add(1);
+                    rpcId.set(value);
+                    thisRpcId.set(new AtomicInteger(1));
+                }
+            }
+        }
+        return rpcId.get();
+    }
+
+    /**
+     * 设置rpcId
+     *
+     * @param lastRpcIds
+     */
+    public static void setRpcId(List<Integer> lastRpcIds) {
+        rpcId.set(lastRpcIds);
+        thisRpcId.set(new AtomicInteger(1));
+    }
+
+    private static boolean checkMainThread() {
+        return MAIN_THREAD_NAME.equals(Thread.currentThread().getName());
+    }
+
+    /**
+     * rpcId
+     *
+     * @param lastRpcIds 上一层rpcId
+     * @param rpcId      这一层的rpcId
+     *
+     * @return
+     */
+    private static StringBuilder mergeRpcId(List<Integer> lastRpcIds, int rpcId) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lastRpcIds.size(); i++) {
+            sb.append(lastRpcIds.get(i));
+            sb.append(".");
+        }
+        sb.append(rpcId);
+        return sb;
+    }
+
+    private static AtomicInteger getThisRpcId() {
+        if (thisRpcId.get() == null) {
+            if (checkMainThread()) {
+                return new AtomicInteger(-1);
+            }
+            synchronized (MyTraceIdContext.class) {
+                if (thisRpcId.get() == null) {
+                    AtomicInteger integer = new AtomicInteger(1);
+                    thisRpcId.set(integer);
+                }
+            }
+        }
+        return thisRpcId.get();
     }
 
     private static String hash(String[] additionals) {

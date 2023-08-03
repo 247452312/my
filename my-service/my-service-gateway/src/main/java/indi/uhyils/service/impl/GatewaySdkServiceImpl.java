@@ -23,7 +23,6 @@ import indi.uhyils.pojo.entity.SysProviderInterface;
 import indi.uhyils.repository.CallNodeRepository;
 import indi.uhyils.repository.CompanyRepository;
 import indi.uhyils.repository.NodeRepository;
-import indi.uhyils.repository.ProviderInterfaceParamRepository;
 import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.service.GatewaySdkService;
 import indi.uhyils.util.Asserts;
@@ -53,17 +52,14 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
     private NodeRepository nodeRepository;
 
     @Autowired
-    private ProviderInterfaceParamRepository providerInterfaceParamRepository;
-
-    @Autowired
     private CallNodeRepository callNodeRepository;
 
     @Override
     @Public
     public NodeInvokeResult invokeInterface(InvokeCommand command) {
 
-        final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(command.getPath());
-        final ProviderInterface providerInterface = providerInterfaceRepository.find(command.getInvokeType(), splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
+        Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(command.getPath());
+        ProviderInterface providerInterface = providerInterfaceRepository.find(command.getInvokeType(), splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
         providerInterface.fill(nodeRepository, providerInterfaceRepository);
         //        JSONArray.parseArray(JSONObject.toJSONString(Arrays.asList(command)))
         NodeInvokeResult result = providerInterface.getResult(command.getHeader(), command.getParams());
@@ -73,15 +69,14 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
     @NotNull
     @Override
     public NodeInvokeResult invokeCallNode(InvokeCommand command) {
-        final String path = command.getPath();
+        String path = command.getPath();
         Boolean isSysTable = callNodeRepository.judgeSysTable(path);
         if (isSysTable) {
             // 系统表
             SysProviderInterface providerInterface = new SysProviderInterface(command.getPath());
             return providerInterface.getResult(command.getHeader(), command.getParams());
         } else {
-            //
-            final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(path);
+            Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(path);
             CallNode node = callNodeRepository.findNodeByDatabaseAndTable(splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue(), InvokeTypeEnum.parse(command.getInvokeType()));
             node.fill(nodeRepository, providerInterfaceRepository);
             return node.getResult(command.getHeader(), command.getParams());
@@ -99,7 +94,7 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
 
         // 1.判断密码是否正确
         if (company.checkSkByMysqlChallenge(mysqlTcpInfo.getRandomByte(), command.getChallenge())) {
-            final UserDTO userDTO = new UserDTO();
+            UserDTO userDTO = new UserDTO();
             userDTO.setIp(UserInfoHelper.getUserIp().orElse(null));
             userDTO.setId(company.unique.getId());
             mysqlTcpInfo.setUserDTO(userDTO);
@@ -110,7 +105,7 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
 
     @Override
     public List<DatabaseInfo> getAllDatabaseInfo(BlackQuery blackQuery) {
-        final UserDTO userDTO = UserInfoHelper.get().orElseThrow(() -> Asserts.makeException("未登录"));
+        UserDTO userDTO = UserInfoHelper.get().orElseThrow(() -> Asserts.makeException("未登录"));
         Asserts.assertTrue(userDTO != null, "未登录");
         List<CallNode> callNodes = callNodeRepository.findByUser(userDTO);
         return new ArrayList<>(callNodes.stream()

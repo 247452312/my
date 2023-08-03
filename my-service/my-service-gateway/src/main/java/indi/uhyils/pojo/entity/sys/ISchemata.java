@@ -50,9 +50,9 @@ public class ISchemata extends AbstractSysTable {
 
     @Override
     public NodeInvokeResult doGetResultNoParams() {
-        final Object schemaName = params.get("table_schema");
-        final ArrayList<Arg> args = new ArrayList<>();
-        final Optional<UserDTO> userOptional = UserInfoHelper.get();
+        Object schemaName = params.get("table_schema");
+        ArrayList<Arg> args = new ArrayList<>();
+        Optional<UserDTO> userOptional = UserInfoHelper.get();
         if (!userOptional.isPresent()) {
             throw Asserts.makeException("未登录");
         }
@@ -62,13 +62,13 @@ public class ISchemata extends AbstractSysTable {
         }
         List<CallNodeDTO> callNodeDTOS = callNodeService.queryNoPage(args);
 
-        final List<Map<String, Object>> newResults = new ArrayList<>();
+        List<Map<String, Object>> newResults = new ArrayList<>();
 
         Set<String> dbSet = new HashSet<>();
         callNodeDTOS.stream().filter(t -> {
-            final String url = t.getUrl();
-            final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(url);
-            final String database = splitDataBaseUrl.getKey();
+            String url = t.getUrl();
+            Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(url);
+            String database = splitDataBaseUrl.getKey();
             if (dbSet.contains(database)) {
                 return false;
             } else {
@@ -76,8 +76,8 @@ public class ISchemata extends AbstractSysTable {
                 return true;
             }
         }).forEach(t -> {
-            final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(t.getUrl());
-            final DatabaseInfo databaseInfo = new DatabaseInfo();
+            Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(t.getUrl());
+            DatabaseInfo databaseInfo = new DatabaseInfo();
             databaseInfo.setCatalogName(MysqlContent.CATALOG_NAME);
             databaseInfo.setSchemaName(splitDataBaseUrl.getKey());
             databaseInfo.setDefaultCharacterSetName(MysqlContent.DEFAULT_CHARACTER_SET_NAME);
@@ -87,16 +87,16 @@ public class ISchemata extends AbstractSysTable {
             newResults.add(JSONObject.parseObject(JSONObject.toJSONString(databaseInfo)));
         });
 
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
+        NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
         if (CollectionUtil.isNotEmpty(newResults)) {
-            final List<Map<String, Object>> tempResults = new ArrayList<>();
-            final Map<String, Object> first = newResults.get(0);
-            final Map<String, String> fieldNameMap = first.keySet().stream().collect(Collectors.toMap(t -> t, t -> StringUtil.toUnderline(t).toUpperCase()));
+            List<Map<String, Object>> tempResults = new ArrayList<>();
+            Map<String, Object> first = newResults.get(0);
+            Map<String, String> fieldNameMap = first.keySet().stream().collect(Collectors.toMap(t -> t, t -> StringUtil.toUnderline(t).toUpperCase()));
             for (Map<String, Object> newResult : newResults) {
                 Map<String, Object> tempNewResultMap = new HashMap<>(newResult.size());
                 for (Entry<String, Object> newResultItem : newResult.entrySet()) {
-                    final String key = newResultItem.getKey();
-                    final Object value = newResultItem.getValue();
+                    String key = newResultItem.getKey();
+                    Object value = newResultItem.getValue();
                     tempNewResultMap.put(fieldNameMap.get(key), value);
                 }
                 tempResults.add(tempNewResultMap);
@@ -105,7 +105,7 @@ public class ISchemata extends AbstractSysTable {
             newResults.addAll(tempResults);
         }
         nodeInvokeResult.setResult(newResults);
-        final List<FieldInfo> fieldInfos = new ArrayList<>();
+        List<FieldInfo> fieldInfos = new ArrayList<>();
         fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "CATALOG_NAME", "CATALOG_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
         fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "SCHEMA_NAME", "SCHEMA_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
         fieldInfos.add(new FieldInfo("information_schema", "schemata", "schemata", "DEFAULT_CHARACTER_SET_NAME", "DEFAULT_CHARACTER_SET_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));

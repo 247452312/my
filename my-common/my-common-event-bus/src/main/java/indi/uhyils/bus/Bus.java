@@ -84,7 +84,7 @@ public class Bus extends DefaultConsumer implements BusInterface {
 
     @Override
     public void commitAndPushWithTransactional(BaseParentEvent... events) {
-        final boolean actualTransactionActive = TransactionSynchronizationManager.isActualTransactionActive();
+        boolean actualTransactionActive = TransactionSynchronizationManager.isActualTransactionActive();
         // 没有事务的时候走正常的路径
         if (!actualTransactionActive) {
             commitAndPush(events);
@@ -103,7 +103,7 @@ public class Bus extends DefaultConsumer implements BusInterface {
 
     @Override
     public void commitAndPushWithTransactional(BaseParentEvent events) {
-        final boolean actualTransactionActive = TransactionSynchronizationManager.isActualTransactionActive();
+        boolean actualTransactionActive = TransactionSynchronizationManager.isActualTransactionActive();
         // 没有事务的时候走正常的路径
         if (!actualTransactionActive) {
             commitAndPush(events);

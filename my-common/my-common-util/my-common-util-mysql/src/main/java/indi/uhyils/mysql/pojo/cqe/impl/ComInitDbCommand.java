@@ -44,19 +44,19 @@ public class ComInitDbCommand extends AbstractMysqlCommand {
 
     @Override
     public List<MysqlResponse> invoke() {
-        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+        MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
 
         // 数据库名称和标准名称一致
-        final BlackQuery blackQuery = new BlackQuery();
+        BlackQuery blackQuery = new BlackQuery();
         if (MysqlContent.SYS_DATABASE.contains(sql)) {
             mysqlTcpInfo.setDatabase(sql);
             return Collections.singletonList(new OkResponse(SqlTypeEnum.USE));
         }
         // 获取这个人有权限的数据库列表
         List<DatabaseInfo> databaseInfos = mysqlSdkService.getAllDatabaseInfo(blackQuery);
-        final Optional<DatabaseInfo> first = databaseInfos.stream().filter(t -> StringUtil.equalsIgnoreCase(t.getSchemaName(), sql)).findFirst();
+        Optional<DatabaseInfo> first = databaseInfos.stream().filter(t -> StringUtil.equalsIgnoreCase(t.getSchemaName(), sql)).findFirst();
         if (first.isPresent()) {
-            final DatabaseInfo databaseInfo = first.get();
+            DatabaseInfo databaseInfo = first.get();
             mysqlTcpInfo.setDatabase(databaseInfo.getSchemaName());
             return Collections.singletonList(new OkResponse(SqlTypeEnum.USE));
         }

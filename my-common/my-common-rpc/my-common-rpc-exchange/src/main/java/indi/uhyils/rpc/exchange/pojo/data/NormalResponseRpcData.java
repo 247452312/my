@@ -15,14 +15,13 @@ public class NormalResponseRpcData extends AbstractResponseRpcData {
 
 
     @Override
-    protected void initContent() {
-        this.content = RpcResponseContentFactory.createByContentArray(this, this.contentArray);
-    }
-
-
-    @Override
     public Integer type() {
         return RpcTypeEnum.RESPONSE.getCode();
+    }
+
+    @Override
+    protected void initContent() {
+        this.content = RpcResponseContentFactory.createByContentArray(this, this.contentArray);
     }
 
 }

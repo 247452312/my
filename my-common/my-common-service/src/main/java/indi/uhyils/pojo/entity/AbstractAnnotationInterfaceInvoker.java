@@ -40,9 +40,9 @@ public abstract class AbstractAnnotationInterfaceInvoker {
 
     @Nullable
     protected ServiceResult<?> checkIp() {
-        final Optional<String> userIp = UserInfoHelper.getUserIp();
+        Optional<String> userIp = UserInfoHelper.getUserIp();
         if (userIp.isPresent()) {
-            final String ip = userIp.get();
+            String ip = userIp.get();
             try (final Redisable jedis = redisPool.getJedis()) {
                 /*检查临时冻结列表 以及黑名单列表*/
                 // 是否在黑名单中

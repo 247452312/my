@@ -89,7 +89,9 @@ public class OkResponse extends AbstractMysqlResponse {
         return Arrays.asList(mergeOk());
     }
 
-
+    public SqlTypeEnum getSqlTypeEnum() {
+        return sqlTypeEnum;
+    }
 
     private byte[] mergeOk() {
         List<byte[]> listResult = new ArrayList<>();
@@ -114,10 +116,6 @@ public class OkResponse extends AbstractMysqlResponse {
             listResult.add(bytes1);
         }
         return MysqlUtil.mergeListBytes(listResult);
-    }
-
-    public SqlTypeEnum getSqlTypeEnum() {
-        return sqlTypeEnum;
     }
 
 

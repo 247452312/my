@@ -1,7 +1,6 @@
 package indi.uhyils.plan.pojo.plan;
 
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -74,7 +74,7 @@ public class ThreadLayerInfo implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("ThreadLayerInfo{");
+        StringBuffer sb = new StringBuffer("ThreadLayerInfo{");
         sb.append("className='").append(className).append('\'');
         sb.append(", methodName='").append(methodName).append('\'');
         sb.append(", fileName='").append(fileName).append('\'');

@@ -110,10 +110,6 @@ public enum FunctionEnum {
         return null;
     }
 
-    public String getName() {
-        return name;
-    }
-
     /**
      * 去除方法体
      *
@@ -129,6 +125,10 @@ public enum FunctionEnum {
         int first = formula.indexOf("(", formula.indexOf(functionName));
         int end = formula.lastIndexOf(")");
         return formula.substring(first + 1, end);
+    }
+
+    public String getName() {
+        return name;
     }
 
     /**

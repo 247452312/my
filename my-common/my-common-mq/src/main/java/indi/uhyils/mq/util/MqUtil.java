@@ -118,6 +118,91 @@ public class MqUtil {
      *
      * @param exchange 路由名称
      * @param queue    队列名称
+     * @param msg      发送的信息的byte
+     *
+     * @return
+     */
+    public static void sendMsg(String exchange, String queue, String msg) {
+        MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
+        byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
+        sendMsg(exchange, queue, bytes);
+    }
+
+    /**
+     * 推送信息到mq
+     *
+     * @param exchange 路由名称
+     * @param queue    队列名称
+     * @param listener 回应监听
+     * @param msg      发送的信息
+     *
+     * @return
+     */
+    public static void sendConfirmMsg(String exchange, String queue, ConfirmListener listener, String msg) {
+        try {
+            MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, () -> {
+                MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
+                byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
+                try {
+                    sendConfirmMsg(exchange, queue, listener, bytes);
+                } catch (Exception e) {
+                    LogUtil.error(e);
+                }
+                return null;
+            }, new String[]{exchange, queue}, exchange, queue);
+        } catch (Throwable throwable) {
+            LogUtil.error(throwable);
+        }
+
+    }
+
+    /**
+     * 推送信息到mq
+     *
+     * @param exchange 路由名称
+     * @param queue    队列名称
+     * @param listener 回应监听
+     * @param obj      发送的信息
+     *
+     * @return
+     */
+    public static void sendConfirmMsg(String exchange, String queue, ConfirmListener listener, Object obj) {
+        String msg = JSON.toJSONString(obj);
+        try {
+            MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, () -> {
+                MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
+                byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
+                try {
+                    sendConfirmMsg(exchange, queue, listener, bytes);
+                } catch (Exception e) {
+                    LogUtil.error(e);
+                }
+                return null;
+            }, new String[]{exchange, queue}, exchange, queue);
+        } catch (Throwable throwable) {
+            LogUtil.error(throwable);
+        }
+
+    }
+
+    /**
+     * 推送信息到mq
+     *
+     * @param exchange 路由名称
+     * @param queue    队列名称
+     * @param msg      发送的信息的byte
+     *
+     * @return
+     */
+    protected static void sendMsgNoLog(String exchange, String queue, String msg) {
+        doSendMsg(exchange, queue, JSON.toJSONString(msg).getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * 推送信息到mq
+     *
+     * @param exchange 路由名称
+     * @param queue    队列名称
      * @param bytes    发送的信息的byte
      *
      * @return
@@ -134,34 +219,6 @@ public class MqUtil {
         }
 
 
-    }
-
-    /**
-     * 推送信息到mq
-     *
-     * @param exchange 路由名称
-     * @param queue    队列名称
-     * @param msg      发送的信息的byte
-     *
-     * @return
-     */
-    public static void sendMsg(String exchange, String queue, String msg) {
-        MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
-        byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
-        sendMsg(exchange, queue, bytes);
-    }
-
-    /**
-     * 推送信息到mq
-     *
-     * @param exchange 路由名称
-     * @param queue    队列名称
-     * @param msg      发送的信息的byte
-     *
-     * @return
-     */
-    protected static void sendMsgNoLog(String exchange, String queue, String msg) {
-        doSendMsg(exchange, queue, JSON.toJSONString(msg).getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -268,64 +325,6 @@ public class MqUtil {
             LogUtil.error(throwable);
         }
     }
-
-    /**
-     * 推送信息到mq
-     *
-     * @param exchange 路由名称
-     * @param queue    队列名称
-     * @param listener 回应监听
-     * @param msg      发送的信息
-     *
-     * @return
-     */
-    public static void sendConfirmMsg(String exchange, String queue, ConfirmListener listener, String msg) {
-        try {
-            MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, () -> {
-                MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
-                byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
-                try {
-                    sendConfirmMsg(exchange, queue, listener, bytes);
-                } catch (Exception e) {
-                    LogUtil.error(e);
-                }
-                return null;
-            }, new String[]{exchange, queue}, exchange, queue);
-        } catch (Throwable throwable) {
-            LogUtil.error(throwable);
-        }
-
-    }
-
-    /**
-     * 推送信息到mq
-     *
-     * @param exchange 路由名称
-     * @param queue    队列名称
-     * @param listener 回应监听
-     * @param obj      发送的信息
-     *
-     * @return
-     */
-    public static void sendConfirmMsg(String exchange, String queue, ConfirmListener listener, Object obj) {
-        String msg = JSON.toJSONString(obj);
-        try {
-            MyTraceIdContext.printLogInfo(LogTypeEnum.MQ, () -> {
-                MqSendInfo build = MqSendInfo.build(msg, RpcTraceInfo.build(MyTraceIdContext.getThraceId(), MyTraceIdContext.getNextRpcIds()));
-                byte[] bytes = JSON.toJSONString(build).getBytes(StandardCharsets.UTF_8);
-                try {
-                    sendConfirmMsg(exchange, queue, listener, bytes);
-                } catch (Exception e) {
-                    LogUtil.error(e);
-                }
-                return null;
-            }, new String[]{exchange, queue}, exchange, queue);
-        } catch (Throwable throwable) {
-            LogUtil.error(throwable);
-        }
-
-    }
-
 
     static class MqQueueInfo {
 

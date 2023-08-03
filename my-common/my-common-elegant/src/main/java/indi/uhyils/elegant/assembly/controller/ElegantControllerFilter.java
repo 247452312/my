@@ -37,11 +37,6 @@ public class ElegantControllerFilter extends AbstractElegantHandler implements F
     }
 
     @Override
-    protected void doShutdown() {
-        online.set(Boolean.FALSE);
-    }
-
-    @Override
     public Boolean isOnline() {
         return online.get();
     }
@@ -54,5 +49,10 @@ public class ElegantControllerFilter extends AbstractElegantHandler implements F
     @Override
     public String name() {
         return "controller";
+    }
+
+    @Override
+    protected void doShutdown() {
+        online.set(Boolean.FALSE);
     }
 }

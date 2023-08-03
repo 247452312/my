@@ -40,43 +40,6 @@ public class FormulaUtil {
     }
 
     /**
-     * 化简处理公式项
-     *
-     * @param formula
-     *
-     * @return
-     */
-    private static String simplificationFunction(String formula) {
-        for (FunctionEnum value : FunctionEnum.values()) {
-            String name = value.getName();
-            int i = formula.indexOf(name);
-            if (i == -1) {
-                continue;
-            }
-            Map<Integer, String> integerStringMap = StringUtil.find(formula, name + "(*)");
-
-        }
-        return null;
-    }
-
-    /**
-     * 去除零项
-     *
-     * @param formula
-     *
-     * @return
-     */
-    private static String simplificationZero(String formula) {
-        formula = formula.replace("+0+", "+");
-        formula = formula.replace("+0-", "-");
-        formula = formula.replace("-0+", "+");
-        formula = formula.replace("-0-", "-");
-        formula = formula.replace("(0-", "(");
-        formula = formula.replace("(0+", "(");
-        return formula;
-    }
-
-    /**
      * 去除可以去除的括号
      *
      * @param formula
@@ -129,6 +92,43 @@ public class FormulaUtil {
             value = simplification(value);
             formula = formula.replace(key, value);
         }
+        return formula;
+    }
+
+    /**
+     * 化简处理公式项
+     *
+     * @param formula
+     *
+     * @return
+     */
+    private static String simplificationFunction(String formula) {
+        for (FunctionEnum value : FunctionEnum.values()) {
+            String name = value.getName();
+            int i = formula.indexOf(name);
+            if (i == -1) {
+                continue;
+            }
+            Map<Integer, String> integerStringMap = StringUtil.find(formula, name + "(*)");
+
+        }
+        return null;
+    }
+
+    /**
+     * 去除零项
+     *
+     * @param formula
+     *
+     * @return
+     */
+    private static String simplificationZero(String formula) {
+        formula = formula.replace("+0+", "+");
+        formula = formula.replace("+0-", "-");
+        formula = formula.replace("-0+", "+");
+        formula = formula.replace("-0-", "-");
+        formula = formula.replace("(0-", "(");
+        formula = formula.replace("(0+", "(");
         return formula;
     }
 

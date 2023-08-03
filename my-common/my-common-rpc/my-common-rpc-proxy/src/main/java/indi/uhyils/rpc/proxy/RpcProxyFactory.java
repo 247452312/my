@@ -51,6 +51,21 @@ public class RpcProxyFactory {
     }
 
     /**
+     * 获取泛化接口
+     *
+     * @param clazz   对应的类
+     * @param generic 是否泛化接口
+     *
+     * @return
+     *
+     * @throws RegistryException
+     */
+    public static Object newProxy(Class<?> clazz, boolean generic) {
+        Object service = newProxy(clazz);
+        return generic ? new GenericService<>(service) : service;
+    }
+
+    /**
      * 从spi管理处获取一个指定的扩展点名称
      *
      * @param clazz
@@ -67,20 +82,5 @@ public class RpcProxyFactory {
             LogUtil.error(clazz, e);
         }
         return extensionByClass;
-    }
-
-    /**
-     * 获取泛化接口
-     *
-     * @param clazz   对应的类
-     * @param generic 是否泛化接口
-     *
-     * @return
-     *
-     * @throws RegistryException
-     */
-    public static Object newProxy(Class<?> clazz, boolean generic) {
-        Object service = newProxy(clazz);
-        return generic ? new GenericService<>(service) : service;
     }
 }

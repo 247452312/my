@@ -211,10 +211,10 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
      * @param mysqlThisRequestInfo
      */
     private void initIndex(MysqlThisRequestInfo mysqlThisRequestInfo) {
-        final byte[] mysqlBytes = mysqlThisRequestInfo.getMysqlBytes();
+        byte[] mysqlBytes = mysqlThisRequestInfo.getMysqlBytes();
         Proto proto = new Proto(mysqlBytes);
         proto.getFixedInt(3);
-        final long index = proto.getFixedInt(1);
+        long index = proto.getFixedInt(1);
         this.mysqlTcpInfo.changeIndexToClientIndex(index);
     }
 
@@ -232,7 +232,7 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
             for (MysqlResponse mysqlResponse : invokes) {
                 finalResponse.addAll(mysqlResponse.toByte());
             }
-            final byte[] bytes = MysqlUtil.mergeListBytes(finalResponse);
+            byte[] bytes = MysqlUtil.mergeListBytes(finalResponse);
             String responseBytes = MysqlUtil.dump(bytes);
             LogUtil.debug("mysql回应:\n" + responseBytes);
             send(bytes);

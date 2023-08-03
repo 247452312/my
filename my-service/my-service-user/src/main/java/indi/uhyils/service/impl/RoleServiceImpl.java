@@ -48,7 +48,7 @@ public class RoleServiceImpl extends AbstractDoService<RoleDO, Role, RoleDTO, Ro
     public RoleDTO getRoleByRoleId(Identifier roleId) {
         Role role = new Role(roleId);
         role.completion(rep);
-        final Optional<RoleDO> roleDOOpt = role.toData();
+        Optional<RoleDO> roleDOOpt = role.toData();
         Asserts.assertTrue(roleDOOpt.isPresent(), "查询失败");
         return assem.toDTO(roleDOOpt.get());
     }

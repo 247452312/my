@@ -100,6 +100,77 @@ public class Sql extends AbstractEntity {
         }
     }
 
+    public Boolean isUnion(SQLSelectQuery query) {
+        return query instanceof SQLUnionQuery;
+    }
+
+    public void changeQueryWhere(SQLSelectQueryBlock queryBlock, Map<String, SQLExpr> willChange) {
+        SQLExpr newWhereCondition = getNewWhereCondition(queryBlock.getFrom(), queryBlock.getWhere(), willChange);
+        if (newWhereCondition == null) {
+            return;
+        }
+        queryBlock.setWhere(newWhereCondition);
+    }
+
+    public List<SQLSelectQueryBlock> blockQuerys(SQLSelectQuery query) {
+        List<SQLSelectQueryBlock> queryBlocks = new ArrayList<>();
+        // union
+        if (isUnion(query)) {
+            SQLUnionQuery uniqueQuery = (SQLUnionQuery) query;
+            List<SQLSelectQuery> relations = uniqueQuery.getRelations();
+            for (SQLSelectQuery relation : relations) {
+                List<SQLSelectQueryBlock> allBlockQuery = blockQuerys(relation);
+                queryBlocks.addAll(allBlockQuery);
+            }
+            return queryBlocks;
+        }
+
+        SQLSelectQueryBlock queryBlock = (SQLSelectQueryBlock) query;
+
+        // 子查询
+        List<SQLSelectItem> selectList = queryBlock.getSelectList();
+        for (SQLSelectItem sqlSelectItem : selectList) {
+            SQLExpr expr = sqlSelectItem.getExpr();
+            if (expr instanceof SQLQueryExpr) {
+                SQLQueryExpr queryExpr = (SQLQueryExpr) expr;
+                queryBlocks.addAll(blockQuerys(queryExpr.getSubQuery().getQueryBlock()));
+            }
+        }
+        // from语句中的子查询
+        SQLTableSource from = queryBlock.getFrom();
+        // 如果from语句是子查询
+        if (from instanceof SQLSubqueryTableSource) {
+            SQLSubqueryTableSource subqueryTableSource = (SQLSubqueryTableSource) from;
+            queryBlocks.addAll(blockQuerys(subqueryTableSource.getSelect().getQueryBlock()));
+        }
+        SQLExpr where = queryBlock.getWhere();
+        if (where != null) {
+            List<SQLSelectQueryBlock> queryBlockInExpr = findQueryBlockInExpr(where);
+            if (queryBlockInExpr != null) {
+                queryBlocks.addAll(queryBlockInExpr);
+            }
+        }
+        queryBlocks.add(queryBlock);
+        return queryBlocks;
+    }
+
+    public SQLBinaryOpExpr mergeWhere(Map<String, SQLExpr> willChange, String alias1) {
+        SQLBinaryOpExpr result = null;
+        for (Entry<String, SQLExpr> entry : willChange.entrySet()) {
+            SQLBinaryOpExpr where = getTenantIdCondition(alias1, entry.getKey(), entry.getValue());
+            if (result == null) {
+                result = where;
+            } else {
+                SQLBinaryOpExpr temp = new SQLBinaryOpExpr("mysql");
+                temp.setLeft(result);
+                temp.setOperator(SQLBinaryOperator.BooleanAnd);
+                temp.setRight(where);
+                result = temp;
+            }
+        }
+        return result;
+    }
+
     protected SQLExpr getNewWhereCondition(SQLTableSource from, SQLExpr where, Map<String, SQLExpr> willChange) {
         List<SQLExprTableSource> sqlExprTableSources = parseTables(from);
         sqlExprTableSources = sqlExprTableSources.stream().filter(t -> !ignoreTables.contains(t.getName().getSimpleName())).collect(Collectors.toList());
@@ -107,6 +178,27 @@ public class Sql extends AbstractEntity {
             return null;
         }
         return getNewWhere(where, sqlExprTableSources, willChange);
+    }
+
+    protected SQLExpr getNewWhere(SQLExpr where, List<SQLExprTableSource> tableSource, Map<String, SQLExpr> willChange) {
+        String[] tableName = getTableName(tableSource);
+        if (where == null) {
+            return getCondition(willChange, tableName);
+        }
+
+        // 如果需要condition
+        HashMap<String, Boolean> result = new HashMap<>();
+        needAddCondition(where, result);
+        tableName = Arrays.stream(tableName).filter(t -> !result.containsKey(t)).toArray(String[]::new);
+        if (tableName.length == 0) {
+            return where;
+        }
+
+        SQLBinaryOpExpr condition = new SQLBinaryOpExpr("mysql");
+        condition.setLeft(where);
+        condition.setOperator(SQLBinaryOperator.BooleanAnd);
+        condition.setRight(getCondition(willChange, tableName));
+        return condition;
     }
 
     private List<SQLExprTableSource> parseTables(SQLTableSource table) {
@@ -162,27 +254,6 @@ public class Sql extends AbstractEntity {
         }
     }
 
-    protected SQLExpr getNewWhere(SQLExpr where, List<SQLExprTableSource> tableSource, Map<String, SQLExpr> willChange) {
-        String[] tableName = getTableName(tableSource);
-        if (where == null) {
-            return getCondition(willChange, tableName);
-        }
-
-        // 如果需要condition
-        HashMap<String, Boolean> result = new HashMap<>();
-        needAddCondition(where, result);
-        tableName = Arrays.stream(tableName).filter(t -> !result.containsKey(t)).toArray(String[]::new);
-        if (tableName.length == 0) {
-            return where;
-        }
-
-        SQLBinaryOpExpr condition = new SQLBinaryOpExpr("mysql");
-        condition.setLeft(where);
-        condition.setOperator(SQLBinaryOperator.BooleanAnd);
-        condition.setRight(getCondition(willChange, tableName));
-        return condition;
-    }
-
     private String[] getTableName(List<SQLExprTableSource> tableSource) {
         String[] results = new String[tableSource.size()];
         for (int i = 0; i < tableSource.size(); i++) {
@@ -194,60 +265,6 @@ public class Sql extends AbstractEntity {
         }
 
         return results;
-    }
-
-    public Boolean isUnion(SQLSelectQuery query) {
-        return query instanceof SQLUnionQuery;
-    }
-
-    public void changeQueryWhere(SQLSelectQueryBlock queryBlock, Map<String, SQLExpr> willChange) {
-        SQLExpr newWhereCondition = getNewWhereCondition(queryBlock.getFrom(), queryBlock.getWhere(), willChange);
-        if (newWhereCondition == null) {
-            return;
-        }
-        queryBlock.setWhere(newWhereCondition);
-    }
-
-    public List<SQLSelectQueryBlock> blockQuerys(SQLSelectQuery query) {
-        List<SQLSelectQueryBlock> queryBlocks = new ArrayList<>();
-        // union
-        if (isUnion(query)) {
-            SQLUnionQuery uniqueQuery = (SQLUnionQuery) query;
-            List<SQLSelectQuery> relations = uniqueQuery.getRelations();
-            for (SQLSelectQuery relation : relations) {
-                List<SQLSelectQueryBlock> allBlockQuery = blockQuerys(relation);
-                queryBlocks.addAll(allBlockQuery);
-            }
-            return queryBlocks;
-        }
-
-        SQLSelectQueryBlock queryBlock = (SQLSelectQueryBlock) query;
-
-        // 子查询
-        List<SQLSelectItem> selectList = queryBlock.getSelectList();
-        for (SQLSelectItem sqlSelectItem : selectList) {
-            SQLExpr expr = sqlSelectItem.getExpr();
-            if (expr instanceof SQLQueryExpr) {
-                SQLQueryExpr queryExpr = (SQLQueryExpr) expr;
-                queryBlocks.addAll(blockQuerys(queryExpr.getSubQuery().getQueryBlock()));
-            }
-        }
-        // from语句中的子查询
-        SQLTableSource from = queryBlock.getFrom();
-        // 如果from语句是子查询
-        if (from instanceof SQLSubqueryTableSource) {
-            SQLSubqueryTableSource subqueryTableSource = (SQLSubqueryTableSource) from;
-            queryBlocks.addAll(blockQuerys(subqueryTableSource.getSelect().getQueryBlock()));
-        }
-        SQLExpr where = queryBlock.getWhere();
-        if (where != null) {
-            List<SQLSelectQueryBlock> queryBlockInExpr = findQueryBlockInExpr(where);
-            if (queryBlockInExpr != null) {
-                queryBlocks.addAll(queryBlockInExpr);
-            }
-        }
-        queryBlocks.add(queryBlock);
-        return queryBlocks;
     }
 
     /**
@@ -305,23 +322,6 @@ public class Sql extends AbstractEntity {
             }
         }
         return allCondition;
-    }
-
-    public SQLBinaryOpExpr mergeWhere(Map<String, SQLExpr> willChange, String alias1) {
-        SQLBinaryOpExpr result = null;
-        for (Entry<String, SQLExpr> entry : willChange.entrySet()) {
-            SQLBinaryOpExpr where = getTenantIdCondition(alias1, entry.getKey(), entry.getValue());
-            if (result == null) {
-                result = where;
-            } else {
-                SQLBinaryOpExpr temp = new SQLBinaryOpExpr("mysql");
-                temp.setLeft(result);
-                temp.setOperator(SQLBinaryOperator.BooleanAnd);
-                temp.setRight(where);
-                result = temp;
-            }
-        }
-        return result;
     }
 
     /**

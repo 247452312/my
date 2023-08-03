@@ -47,9 +47,9 @@ public class CallNodeRepositoryImpl extends AbstractRepository<CallNode, CallNod
 
     @Override
     public List<CallNode> findByUser(UserDTO userDTO) {
-        final LambdaQueryWrapper<CallNodeDO> queryWrapper = Wrappers.lambdaQuery();
+        LambdaQueryWrapper<CallNodeDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(CallNodeDO::getCompanyId, userDTO.getId());
-        final List<CallNodeDO> callNodeDOS = dao.selectList(queryWrapper);
+        List<CallNodeDO> callNodeDOS = dao.selectList(queryWrapper);
         return assembler.listToEntity(callNodeDOS);
     }
 
@@ -77,7 +77,7 @@ public class CallNodeRepositoryImpl extends AbstractRepository<CallNode, CallNod
 
     @Override
     public Boolean judgeSysTable(String path) {
-        final String lowerPath = path.toLowerCase();
+        String lowerPath = path.toLowerCase();
         return MysqlContent.SYS_DATABASE.stream().anyMatch(t -> lowerPath.contains(t + MysqlContent.PATH_SEPARATOR));
     }
 

@@ -74,7 +74,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
 
     @Override
     public <E extends IdEntity> EN find(E query) {
-        final Optional<Identifier> id = query.getUnique();
+        Optional<Identifier> id = query.getUnique();
         Asserts.assertTrue(id.isPresent(), "单个查询中不存在id");
         return find(id.get());
     }
@@ -159,7 +159,7 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     @Override
     public int change(EN entity, List<Arg> args) {
         QueryWrapper<DO> queryWrapper = Symbol.makeWrapper(args);
-        final Optional<DO> aDo = entity.toData();
+        Optional<DO> aDo = entity.toData();
         Asserts.assertTrue(aDo.isPresent(), "修改时不存在修改对应的值");
         return dao.update(aDo.get(), queryWrapper);
     }

@@ -53,19 +53,6 @@ public class OnlineMonitors extends AbstractEntity {
 
     }
 
-    private void initEarlyStartTime() {
-        if (earlyStartTime != null) {
-            return;
-        }
-        // 由于无法分辨前台发送请求是哪一个服务的 所以这里以现在正在运行的jvm最早启动时间为开始时间
-        Long firstStartTile = System.currentTimeMillis();
-        for (LogMonitor logMonitorEntity : logMonitors) {
-            if (logMonitorEntity.startTime() < firstStartTile) {
-                this.earlyStartTime = logMonitorEntity.startTime();
-            }
-        }
-    }
-
     public Long earlyStartTime() {
         initEarlyStartTime();
         return earlyStartTime;
@@ -99,5 +86,18 @@ public class OnlineMonitors extends AbstractEntity {
             map.put(logMonitorEntity.echartKey(), echart);
         }
         return JvmInfoLogDTO.build(map);
+    }
+
+    private void initEarlyStartTime() {
+        if (earlyStartTime != null) {
+            return;
+        }
+        // 由于无法分辨前台发送请求是哪一个服务的 所以这里以现在正在运行的jvm最早启动时间为开始时间
+        Long firstStartTile = System.currentTimeMillis();
+        for (LogMonitor logMonitorEntity : logMonitors) {
+            if (logMonitorEntity.startTime() < firstStartTile) {
+                this.earlyStartTime = logMonitorEntity.startTime();
+            }
+        }
     }
 }

@@ -30,7 +30,7 @@ public class RpcResponseContentFactory {
      */
     public static RpcContent createByContentArray(RpcData rpcData, String[] contentArray) {
         if (contentArray.length != CONTENT_SIZE) {
-            final String[] strings = CollectionUtil.arrayCopy(contentArray, 0, CONTENT_SIZE);
+            String[] strings = CollectionUtil.arrayCopy(contentArray, 0, CONTENT_SIZE);
             strings[CONTENT_SIZE - 1] = Arrays.stream(contentArray).skip(CONTENT_SIZE - 1).collect(Collectors.joining("\n"));
             contentArray = strings;
         }

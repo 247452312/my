@@ -82,7 +82,7 @@ public class DoubleGene {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("{");
+        StringBuilder sb = new StringBuilder("{");
         sb.append("            \"one\":")
           .append(one);
         if (two != null) {

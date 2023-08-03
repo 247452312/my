@@ -119,7 +119,7 @@ public class ResultSetResponse extends AbstractMysqlResponse {
         List<byte[]> results = new ArrayList<>();
 
         for (int i = 0; i < jsonInfo.size(); i++) {
-            final Map<String, Object> jsonObject = jsonInfo.get(i);
+            Map<String, Object> jsonObject = jsonInfo.get(i);
             if (MapUtil.isEmpty(jsonObject)) {
                 continue;
             }

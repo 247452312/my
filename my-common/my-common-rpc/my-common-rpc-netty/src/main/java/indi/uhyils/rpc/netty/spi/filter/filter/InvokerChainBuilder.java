@@ -21,8 +21,8 @@ public class InvokerChainBuilder {
         List<ProviderFilter> chain = RpcSpiManager.createOrGetExtensionListByClassNoInit(RpcFilter.class, ProviderFilter.class);
 
         for (int i = chain.size() - 1; i >= 0; i--) {
-            final ProviderFilter providerInvoker = chain.get(i);
-            final RpcInvoker next = last;
+            ProviderFilter providerInvoker = chain.get(i);
+            RpcInvoker next = last;
             last = context -> providerInvoker.invoke(next, context);
         }
         return last;
@@ -32,8 +32,8 @@ public class InvokerChainBuilder {
         RpcInvoker last = lastConsumerInvoker;
         List<ConsumerFilter> chain = RpcSpiManager.createOrGetExtensionListByClassNoInit(RpcFilter.class, ConsumerFilter.class);
         for (int i = chain.size() - 1; i >= 0; i--) {
-            final ConsumerFilter providerInvoker = chain.get(i);
-            final RpcInvoker next = last;
+            ConsumerFilter providerInvoker = chain.get(i);
+            RpcInvoker next = last;
             last = context -> providerInvoker.invoke(next, context);
         }
         return last;

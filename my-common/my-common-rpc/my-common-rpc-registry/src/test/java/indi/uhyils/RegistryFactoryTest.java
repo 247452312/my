@@ -47,6 +47,46 @@ class RegistryFactoryTest {
         Assert.isTrue(true, "hello world");
     }
 
+    @Test
+    void createProvider1() throws Exception {
+
+        RpcConfigFactory.setRpcConfig(RpcConfigFactory.newDefault());
+        FunctionOneInterface functionOneInterface = new FunctionOne();
+        Registry provider = RegistryFactory.createProvider(FunctionOneInterface.class, functionOneInterface);
+        System.out.println("服务提供者服务加载完毕----------------------------!!!!!!! yeah");
+        System.in.read();
+
+        Assert.isTrue(true, "hello world");
+    }
+
+    @Test
+    void createProvider2() throws Exception {
+
+        RpcConfigFactory.setRpcConfig(RpcConfigFactory.newDefault());
+        FunctionOneInterface functionOneInterface = new FunctionOne();
+        Registry provider = RegistryFactory.createProvider(FunctionOneInterface.class, functionOneInterface);
+        System.out.println("服务提供者服务加载完毕----------------------------!!!!!!! yeah");
+        System.in.read();
+
+        Assert.isTrue(true, "hello world");
+    }
+
+    @Test
+    void testNacos() throws Exception {
+        NamingService namingService = NamingFactory.createNamingService("192.168.1.101:8848");
+        namingService.subscribe("indi.uhyils.rpc.netty.function.FunctionOneInterface", RegistryContent.DEFAULT_REGISTRY_GROUP_NAME, event -> {
+            if (event instanceof NamingEvent) {
+                System.out.println(((NamingEvent) event).getServiceName());
+                System.out.println(((NamingEvent) event).getGroupName());
+                System.out.println(((NamingEvent) event).getInstances());
+                System.out.println(((NamingEvent) event).getClusters());
+            }
+        });
+        System.in.read();
+
+        Assert.isTrue(true, "hello world");
+    }
+
     /**
      * 初始化rpcData
      *
@@ -88,45 +128,5 @@ class RegistryFactoryTest {
         }
         sb.delete(sb.length() - 1, sb.length());
         return sb.toString();
-    }
-
-    @Test
-    void createProvider1() throws Exception {
-
-        RpcConfigFactory.setRpcConfig(RpcConfigFactory.newDefault());
-        FunctionOneInterface functionOneInterface = new FunctionOne();
-        Registry provider = RegistryFactory.createProvider(FunctionOneInterface.class, functionOneInterface);
-        System.out.println("服务提供者服务加载完毕----------------------------!!!!!!! yeah");
-        System.in.read();
-
-        Assert.isTrue(true, "hello world");
-    }
-
-    @Test
-    void createProvider2() throws Exception {
-
-        RpcConfigFactory.setRpcConfig(RpcConfigFactory.newDefault());
-        FunctionOneInterface functionOneInterface = new FunctionOne();
-        Registry provider = RegistryFactory.createProvider(FunctionOneInterface.class, functionOneInterface);
-        System.out.println("服务提供者服务加载完毕----------------------------!!!!!!! yeah");
-        System.in.read();
-
-        Assert.isTrue(true, "hello world");
-    }
-
-    @Test
-    void testNacos() throws Exception {
-        NamingService namingService = NamingFactory.createNamingService("192.168.1.101:8848");
-        namingService.subscribe("indi.uhyils.rpc.netty.function.FunctionOneInterface", RegistryContent.DEFAULT_REGISTRY_GROUP_NAME, event -> {
-            if (event instanceof NamingEvent) {
-                System.out.println(((NamingEvent) event).getServiceName());
-                System.out.println(((NamingEvent) event).getGroupName());
-                System.out.println(((NamingEvent) event).getInstances());
-                System.out.println(((NamingEvent) event).getClusters());
-            }
-        });
-        System.in.read();
-
-        Assert.isTrue(true, "hello world");
     }
 }

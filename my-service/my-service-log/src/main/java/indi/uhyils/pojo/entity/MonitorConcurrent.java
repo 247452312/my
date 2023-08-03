@@ -77,38 +77,6 @@ public class MonitorConcurrent extends AbstractEntity<Long> {
     }
 
     /**
-     * 初始化当前服务等级
-     *
-     * @param rep
-     */
-    private void initLevel(TraceInfoRepository rep) {
-        Long level = rep.getRelegationLevel(LEVEL);
-        setUnique(level);
-    }
-
-    /**
-     * 初始化类型,是降级还是升级
-     *
-     * @return
-     */
-    private DemotionTypeEnum initType() {
-        /* 设置并发数的80% ~ 设置的并发数 之间的不会有其他的操作*/
-        if (realTimeConcurrency >= specifyConcurrency * RECOVERY_PRE && realTimeConcurrency <= specifyConcurrency) {
-            return DemotionTypeEnum.NULL;
-        }
-        // 如果设置的并发数的80%大于已有并发数,说明高峰已经过去(设置80% 防抖) 服务恢复
-        if (specifyConcurrency * RECOVERY_PRE > realTimeConcurrency) {
-            return DemotionTypeEnum.DOWN;
-        }
-        //如果设置的并发数小于现有的并发数 服务降级
-        if (specifyConcurrency < realTimeConcurrency) {
-            return DemotionTypeEnum.RECOVER;
-        }
-        Asserts.throwException("错误,并发数有问题,设定并发数为:{},(80%:{}) 实际并发数为:{}", specifyConcurrency, specifyConcurrency * 0.8, realTimeConcurrency);
-        return null;
-    }
-
-    /**
      * 同步降级状态到
      *
      * @param repository
@@ -156,6 +124,38 @@ public class MonitorConcurrent extends AbstractEntity<Long> {
             // 如果进行了服务降级或者服务恢复操作,则记录时间,5分钟内不得再次降级或者恢复
             repository.markRelegationOptionTime(RELEGATION_OPTION_INTERVAL_TIME);
         }
+    }
+
+    /**
+     * 初始化当前服务等级
+     *
+     * @param rep
+     */
+    private void initLevel(TraceInfoRepository rep) {
+        Long level = rep.getRelegationLevel(LEVEL);
+        setUnique(level);
+    }
+
+    /**
+     * 初始化类型,是降级还是升级
+     *
+     * @return
+     */
+    private DemotionTypeEnum initType() {
+        /* 设置并发数的80% ~ 设置的并发数 之间的不会有其他的操作*/
+        if (realTimeConcurrency >= specifyConcurrency * RECOVERY_PRE && realTimeConcurrency <= specifyConcurrency) {
+            return DemotionTypeEnum.NULL;
+        }
+        // 如果设置的并发数的80%大于已有并发数,说明高峰已经过去(设置80% 防抖) 服务恢复
+        if (specifyConcurrency * RECOVERY_PRE > realTimeConcurrency) {
+            return DemotionTypeEnum.DOWN;
+        }
+        //如果设置的并发数小于现有的并发数 服务降级
+        if (specifyConcurrency < realTimeConcurrency) {
+            return DemotionTypeEnum.RECOVER;
+        }
+        Asserts.throwException("错误,并发数有问题,设定并发数为:{},(80%:{}) 实际并发数为:{}", specifyConcurrency, specifyConcurrency * 0.8, realTimeConcurrency);
+        return null;
     }
 
     /**

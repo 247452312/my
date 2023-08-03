@@ -56,6 +56,10 @@ public class Gene implements Cloneable {
         return value;
     }
 
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
     public Boolean getDominance() {
         return dominance;
     }
@@ -64,13 +68,9 @@ public class Gene implements Cloneable {
         this.dominance = dominance;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
-    }
-
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("{");
+        StringBuilder sb = new StringBuilder("{");
         sb.append("            \"dominance\":")
           .append(dominance);
         if (value != null) {

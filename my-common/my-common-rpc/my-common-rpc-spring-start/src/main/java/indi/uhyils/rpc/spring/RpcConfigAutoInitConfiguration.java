@@ -1,11 +1,8 @@
 package indi.uhyils.rpc.spring;
 
-import indi.uhyils.rpc.annotation.MyRpc;
 import indi.uhyils.rpc.config.RpcConfig;
 import indi.uhyils.rpc.config.RpcConfigFactory;
 import indi.uhyils.util.LogUtil;
-import indi.uhyils.util.SpringUtil;
-import java.util.Map;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

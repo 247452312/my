@@ -22,7 +22,7 @@ class MyExecutorWrapperTest {
                 TempContext.temp.remove();
             }
             wrapper.execute(() -> {
-                final String s = TempContext.temp.get();
+                String s = TempContext.temp.get();
                 System.out.println(s);
             });
             Thread.sleep(10L);
@@ -40,7 +40,7 @@ class MyExecutorWrapperTest {
                 TempContext.temp2.remove();
             }
             wrapper.execute(() -> {
-                final String s = TempContext.temp2.get();
+                String s = TempContext.temp2.get();
                 System.out.println(s);
             });
             Thread.sleep(10L);

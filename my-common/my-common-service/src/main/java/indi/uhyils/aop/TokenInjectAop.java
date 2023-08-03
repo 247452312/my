@@ -118,10 +118,10 @@ public class TokenInjectAop {
                 Asserts.assertTrue(false, "用户类型不正确");
             }
         } else {
-            final Optional<UserDTO> user = redisPoolHandle.getUser(token);
+            Optional<UserDTO> user = redisPoolHandle.getUser(token);
             Asserts.assertTrue(user.isPresent(), "登录已过期");
             userDTO = user.get();
-            final Optional<UserTypeEnum> byCode = UserTypeEnum.getByCode(userDTO.getUserType());
+            Optional<UserTypeEnum> byCode = UserTypeEnum.getByCode(userDTO.getUserType());
             Asserts.assertTrue(byCode.isPresent(), "用户类型不存在");
             Asserts.assertTrue(byCode.get() == UserTypeEnum.USER, "用户类型不正确");
         }
@@ -152,7 +152,7 @@ public class TokenInjectAop {
         if (substring.contains(IMPL)) {
             substring = substring.substring(0, substring.length() - 4);
         }
-        final Boolean havePower = checkUserHavePower(userDTO, userDTO.getId(), substring, methodName, token, arg);
+        Boolean havePower = checkUserHavePower(userDTO, userDTO.getId(), substring, methodName, token, arg);
 
         if (!havePower) {
             throw new NoAuthException();

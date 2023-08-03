@@ -4,6 +4,7 @@ import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import com.alibaba.druid.sql.ast.expr.SQLCharExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
+import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
 import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
@@ -44,19 +45,21 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
         invokeCommandBuilder.setType(InvokeTypeEnum.MYSQL.getCode());
         invokeCommandBuilder.addArgs(params);
         invokeCommandBuilder.addHeader(headers);
-        final SQLPropertyExpr tableSource = froms.getTableSource();
-        final SQLExpr owner = tableSource.getOwner();
-        final String name = tableSource.getName();
+        SQLExprTableSource tableSource = froms.getTableSource();
+        invokeCommandBuilder.addAlias(tableSource.getAlias());
+        SQLPropertyExpr expr = (SQLPropertyExpr) tableSource.getExpr();
+        String owner = expr.getOwnernName();
+        String name = expr.getName();
         if (name.startsWith("&")) {
-            final Long resultIndex = Long.parseLong(name.substring(1));
+            Long resultIndex = Long.parseLong(name.substring(1));
             return lastAllPlanResult.get(resultIndex);
         }
-        final List<SQLBinaryOpExpr> where = froms.getWhere();
+        List<SQLBinaryOpExpr> where = froms.getWhere();
         Map<String, Object> whereParams = new HashMap<>();
         if (where != null) {
             for (SQLBinaryOpExpr sqlBinaryOpExpr : where) {
-                final SQLExpr left = sqlBinaryOpExpr.getLeft();
-                final SQLExpr right = sqlBinaryOpExpr.getRight();
+                SQLExpr left = sqlBinaryOpExpr.getLeft();
+                SQLExpr right = sqlBinaryOpExpr.getRight();
                 String rightStr = right.toString();
                 if (right instanceof SQLCharExpr) {
                     rightStr = ((SQLCharExpr) right).getText();
@@ -66,7 +69,7 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
         }
         invokeCommandBuilder.addArgs(whereParams);
         StringBuilder path = new StringBuilder();
-        final String database = MysqlContent.MYSQL_TCP_INFO.get().getDatabase();
+        String database = MysqlContent.MYSQL_TCP_INFO.get().getDatabase();
         if (owner != null) {
             path.append(owner);
             path.append(MysqlContent.PATH_SEPARATOR);
@@ -78,7 +81,7 @@ public class BlockQuerySelectSqlPlanImpl extends BlockQuerySelectSqlPlan {
         }
         path.append(name);
         invokeCommandBuilder.addPath(path.toString());
-        final InvokeCommand build = invokeCommandBuilder.build();
+        InvokeCommand build = invokeCommandBuilder.build();
         NodeInvokeResult nodeInvokeResult = gatewaySdkService.invokeCallNode(build);
         nodeInvokeResult.setSourcePlan(this);
         return nodeInvokeResult;

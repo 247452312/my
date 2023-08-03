@@ -124,6 +124,40 @@ public class ShowDocUtil {
         }
     }
 
+    /**
+     * 获取一个class包含自己的所有父类
+     *
+     * @param clazz clazz
+     *
+     * @return
+     */
+    public static List<Class> getSuperClass(Class clazz) {
+        List<Class> listSuperClass = new ArrayList<>();
+        listSuperClass.add(clazz);
+        Class superclass = clazz.getSuperclass();
+        while (superclass != null) {
+            if ("java.lang.Object".equals(superclass.getName())) {
+                break;
+            }
+            listSuperClass.add(superclass);
+            superclass = superclass.getSuperclass();
+        }
+        return listSuperClass;
+    }
+
+    /**
+     * 格式化json
+     *
+     * @param jsonString json
+     *
+     * @return 格式化后的json
+     */
+    public static String jsonFormat(String jsonString) {
+        JSONObject object = JSONObject.parseObject(jsonString);
+        jsonString = JSON.toJSONString(object, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
+        return jsonString;
+    }
+
     private static void sendHttpToShowDoc(JSONObject data) throws Exception {
 
         String url = "http://39.98.164.91:4999/server/index.php?s=/api/item/updateByApi";
@@ -246,40 +280,6 @@ public class ShowDocUtil {
                 .append("}");
             return jsonFormat(sb.toString());
         }
-    }
-
-    /**
-     * 获取一个class包含自己的所有父类
-     *
-     * @param clazz clazz
-     *
-     * @return
-     */
-    public static List<Class> getSuperClass(Class clazz) {
-        List<Class> listSuperClass = new ArrayList<>();
-        listSuperClass.add(clazz);
-        Class superclass = clazz.getSuperclass();
-        while (superclass != null) {
-            if ("java.lang.Object".equals(superclass.getName())) {
-                break;
-            }
-            listSuperClass.add(superclass);
-            superclass = superclass.getSuperclass();
-        }
-        return listSuperClass;
-    }
-
-    /**
-     * 格式化json
-     *
-     * @param jsonString json
-     *
-     * @return 格式化后的json
-     */
-    public static String jsonFormat(String jsonString) {
-        JSONObject object = JSONObject.parseObject(jsonString);
-        jsonString = JSON.toJSONString(object, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
-        return jsonString;
     }
 
     static class ApiContent {

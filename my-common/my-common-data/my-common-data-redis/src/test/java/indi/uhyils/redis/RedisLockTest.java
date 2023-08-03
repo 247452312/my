@@ -73,7 +73,7 @@ public class RedisLockTest {
         List<Callable<Boolean>> callables = new ArrayList<>(threadCount);
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
         for (int i = 0; i < threadCount; i++) {
-            final int index = i;
+            int index = i;
             Callable<Boolean> test = () -> {
                 latch.countDown();
                 LogUtil.info(this, "线程" + index + " 就位");

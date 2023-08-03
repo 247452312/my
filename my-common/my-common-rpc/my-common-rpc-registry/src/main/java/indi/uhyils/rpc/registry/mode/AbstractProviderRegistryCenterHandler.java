@@ -8,19 +8,12 @@ import indi.uhyils.util.CollectionUtil;
 import java.util.Collections;
 
 /**
- *
  * 生产者注册中心句柄
  *
- * @date 文件创建日期 2023年04月23日 15时24分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年04月23日 15时24分
  */
 public abstract class AbstractProviderRegistryCenterHandler extends AbstractRegistryCenterHandler implements ProviderRegistryCenterHandler {
-
-    @Override
-    protected void otherDoInit() {
-        /*provider初始化 1.注册*/
-        registry(RegistryModeBuilder.initRegistryInfo(serviceClass));
-    }
 
     @Override
     public Boolean registry(RegistryModelInfo info) {
@@ -35,14 +28,6 @@ public abstract class AbstractProviderRegistryCenterHandler extends AbstractRegi
         }
         return doRegistry();
     }
-
-
-    /**
-     * 往注册中心提交注册信息
-     *
-     * @return
-     */
-    protected abstract Boolean doRegistry();
 
     @Override
     public Boolean allowToPublish() {
@@ -66,20 +51,29 @@ public abstract class AbstractProviderRegistryCenterHandler extends AbstractRegi
         doRemoveRegistryInfo();
     }
 
-    /**
-     * 删除本服务在注册中心的信息
-     */
-    protected abstract void doRemoveRegistryInfo();
-
     @Override
     public Boolean isPublish() {
         Asserts.assertTrue(this.registryModelInfo != null, "服务未注册");
         return singleRegistryModel().getNecessaryInfo().getEnable();
     }
 
-    private RegistryModelInfo singleRegistryModel() {
-        return this.registryModelInfo.get(0);
+    @Override
+    protected void otherDoInit() {
+        /*provider初始化 1.注册*/
+        registry(RegistryModeBuilder.initRegistryInfo(serviceClass));
     }
+
+    /**
+     * 往注册中心提交注册信息
+     *
+     * @return
+     */
+    protected abstract Boolean doRegistry();
+
+    /**
+     * 删除本服务在注册中心的信息
+     */
+    protected abstract void doRemoveRegistryInfo();
 
     /**
      * 修改本服务在注册中心的信息
@@ -87,5 +81,9 @@ public abstract class AbstractProviderRegistryCenterHandler extends AbstractRegi
      * @return 是否修改成功
      */
     protected abstract Boolean doChangeRegistryInfo();
+
+    private RegistryModelInfo singleRegistryModel() {
+        return this.registryModelInfo.get(0);
+    }
 
 }

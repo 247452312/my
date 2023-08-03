@@ -38,20 +38,20 @@ public class ParamRepositoryImpl extends AbstractRepository<Param, ParamDO, Para
 
     @Override
     public List<Param> findAllGlobalParam() {
-        final LambdaQueryWrapper<ParamDO> queryWrapper = Wrappers.lambdaQuery();
+        LambdaQueryWrapper<ParamDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(ParamDO::getUserId, SystemParamContext.REDIS_PARAM_SYSTEM_USER_ID);
-        final List<ParamDO> paramDOs = dao.selectList(queryWrapper);
+        List<ParamDO> paramDOs = dao.selectList(queryWrapper);
         return assembler.listToEntity(paramDOs);
     }
 
     @Override
     public void flushParam(Param param) {
-        final ParamDO paramDO = param.toData().orElseThrow(() -> Asserts.makeException("刷新系统参数失败"));
-        final String key = paramDO.getKey();
-        final Optional<SysParamEnum> sysParamEnumOpt = SysParamEnum.parseEnum(key);
+        ParamDO paramDO = param.toData().orElseThrow(() -> Asserts.makeException("刷新系统参数失败"));
+        String key = paramDO.getKey();
+        Optional<SysParamEnum> sysParamEnumOpt = SysParamEnum.parseEnum(key);
         Asserts.assertTrue(sysParamEnumOpt.isPresent(), "参数键值不存在");
 
-        final SysParamEnum sysParamEnum = sysParamEnumOpt.get();
+        SysParamEnum sysParamEnum = sysParamEnumOpt.get();
         sysParamEnum.flush(paramDO.getUserId(), paramDO.getValue(), redisPool);
     }
 }

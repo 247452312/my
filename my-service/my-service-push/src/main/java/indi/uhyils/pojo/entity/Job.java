@@ -48,14 +48,6 @@ public class Job extends AbstractDoEntity<JobDO> {
 
     }
 
-    private void initScheduled() {
-        if (this.scheduledManager != null) {
-            return;
-        }
-        scheduledManager = SpringUtil.getBean(ScheduledManager.class);
-
-    }
-
     public void delJob() {
         initScheduled();
         scheduledManager.deleteJob(toData().orElseThrow(Asserts::throwOptionalException));
@@ -63,7 +55,7 @@ public class Job extends AbstractDoEntity<JobDO> {
 
     public void pause() {
         initScheduled();
-        final JobDO jobDO = toData().orElseThrow(Asserts::throwOptionalException);
+        JobDO jobDO = toData().orElseThrow(Asserts::throwOptionalException);
         jobDO.setPause(true);
         scheduledManager.pauseJob(jobDO);
 
@@ -71,14 +63,22 @@ public class Job extends AbstractDoEntity<JobDO> {
 
     public void start() {
         initScheduled();
-        final JobDO jobDO = toData().orElseThrow(Asserts::throwOptionalException);
+        JobDO jobDO = toData().orElseThrow(Asserts::throwOptionalException);
         jobDO.setPause(false);
         scheduledManager.resumeJob(jobDO);
     }
 
     public void test() {
         initScheduled();
-        final JobDO jobDO = toData().orElseThrow(Asserts::throwOptionalException);
+        JobDO jobDO = toData().orElseThrow(Asserts::throwOptionalException);
         scheduledManager.runJobNow(jobDO);
+    }
+
+    private void initScheduled() {
+        if (this.scheduledManager != null) {
+            return;
+        }
+        scheduledManager = SpringUtil.getBean(ScheduledManager.class);
+
     }
 }

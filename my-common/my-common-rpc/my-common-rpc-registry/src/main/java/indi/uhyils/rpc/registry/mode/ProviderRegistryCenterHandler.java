@@ -3,11 +3,10 @@ package indi.uhyils.rpc.registry.mode;
 import indi.uhyils.rpc.registry.pojo.RegistryModelInfo;
 
 /**
- *
  * 服务提供者 消费中心句柄
  *
- * @date 文件创建日期 2023年04月23日 15时20分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年04月23日 15时20分
  */
 public interface ProviderRegistryCenterHandler extends RegistryCenterHandler {
 

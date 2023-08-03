@@ -76,23 +76,23 @@ public class PlanInvoker {
         if (CollectionUtil.isEmpty(params)) {
             return new NodeInvokeResult(null);
         }
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
+        NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
 
-        final LinkedList<FieldInfo> fieldInfos = new LinkedList<>();
+        LinkedList<FieldInfo> fieldInfos = new LinkedList<>();
 
-        final List<String> fields = params.stream().flatMap(t -> t.keySet().stream()).distinct().collect(Collectors.toList());
-        final Map<String, Object> firstParam = params.get(0);
+        List<String> fields = params.stream().flatMap(t -> t.keySet().stream()).distinct().collect(Collectors.toList());
+        Map<String, Object> firstParam = params.get(0);
         MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         first:
         for (int i = 0; i < fields.size(); i++) {
-            final String field = fields.get(i);
+            String field = fields.get(i);
             if (firstParam.containsKey(field)) {
-                final FieldInfo fieldInfo = FieldTypeEnum.makeFieldInfo(mysqlTcpInfo.getDatabase(), MysqlContent.DEFAULT_PARAM_TABLE, MysqlContent.DEFAULT_PARAM_TABLE, firstParam.get(i), i, field);
+                FieldInfo fieldInfo = FieldTypeEnum.makeFieldInfo(mysqlTcpInfo.getDatabase(), MysqlContent.DEFAULT_PARAM_TABLE, MysqlContent.DEFAULT_PARAM_TABLE, firstParam.get(i), i, field);
                 fieldInfos.add(fieldInfo);
             } else {
                 for (Map<String, Object> param : params) {
                     if (param.containsKey(field)) {
-                        final FieldInfo fieldInfo = FieldTypeEnum.makeFieldInfo(mysqlTcpInfo.getDatabase(), MysqlContent.DEFAULT_PARAM_TABLE, MysqlContent.DEFAULT_PARAM_TABLE, firstParam.get(i), i, field);
+                        FieldInfo fieldInfo = FieldTypeEnum.makeFieldInfo(mysqlTcpInfo.getDatabase(), MysqlContent.DEFAULT_PARAM_TABLE, MysqlContent.DEFAULT_PARAM_TABLE, firstParam.get(i), i, field);
                         fieldInfos.add(fieldInfo);
                         continue first;
                     }

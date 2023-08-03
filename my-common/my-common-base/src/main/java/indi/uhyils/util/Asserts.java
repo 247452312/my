@@ -21,7 +21,7 @@ public class Asserts {
      * @return
      */
     public static Optional<AssertException> assertTrueAndGetException(boolean condition, String msg, Object... params) {
-        final AssertException assertException = assertTrueAndGetException(condition, 3, msg, params);
+        AssertException assertException = assertTrueAndGetException(condition, 3, msg, params);
         return Optional.ofNullable(assertException);
     }
 
@@ -62,10 +62,14 @@ public class Asserts {
         msg = MessageFormatter.arrayFormat(msg, params).getMessage();
         assertTrue(false, 3, msg);
     }
+
     /**
      * 断言错误
      */
     public static void throwException(Exception e) {
+        if (e instanceof AssertException) {
+            throw (AssertException) e;
+        }
         assertTrue(false, 3, e.getMessage());
     }
 
@@ -113,62 +117,11 @@ public class Asserts {
     /**
      * 断言正确
      *
-     * @param condition        验证
-     * @param removeLayerCount 要删除的顶层堆栈的层数
-     * @param msg
-     */
-    private static void assertTrue(boolean condition, int removeLayerCount, String msg, Object... params) {
-        if (!condition) {
-            msg = MessageFormatter.arrayFormat(msg, params).getMessage();
-            AssertException assertException = new AssertException("断言异常: " + msg);
-            removeExceptionTrace(assertException, removeLayerCount);
-            LogUtil.error(assertException);
-            throw assertException;
-        }
-    }
-
-    /**
-     * 断言正确
-     *
-     * @param condition        验证
-     * @param removeLayerCount 要删除的顶层堆栈的层数
-     * @param msg
-     */
-    private static AssertException assertTrueAndGetException(boolean condition, int removeLayerCount, String msg, Object... params) {
-        if (!condition) {
-            msg = MessageFormatter.arrayFormat(msg, params).getMessage();
-            AssertException assertException = new AssertException("断言异常: " + msg);
-            removeExceptionTrace(assertException, removeLayerCount);
-            return assertException;
-        }
-        return null;
-    }
-
-
-    /**
-     * 断言正确
-     *
      * @param condition
      * @param msgFunction
      */
     public static void assertTrue(boolean condition, Supplier<String> msgFunction) {
         assertTrue(condition, 3, msgFunction);
-    }
-
-    /**
-     * 断言正确
-     *
-     * @param condition
-     * @param removeLayerCount
-     * @param msgFunction
-     */
-    private static void assertTrue(boolean condition, int removeLayerCount, Supplier<String> msgFunction) {
-        if (!condition) {
-            String msg = msgFunction.get();
-            AssertException AssertException = new AssertException("断言异常: " + msg);
-            removeExceptionTrace(AssertException, removeLayerCount);
-            throw AssertException;
-        }
     }
 
     /**
@@ -256,6 +209,55 @@ public class Asserts {
         return collection;
     }
 
+    /**
+     * 断言正确
+     *
+     * @param condition        验证
+     * @param removeLayerCount 要删除的顶层堆栈的层数
+     * @param msg
+     */
+    private static void assertTrue(boolean condition, int removeLayerCount, String msg, Object... params) {
+        if (!condition) {
+            msg = MessageFormatter.arrayFormat(msg, params).getMessage();
+            AssertException assertException = new AssertException("断言异常: " + msg);
+            removeExceptionTrace(assertException, removeLayerCount);
+            LogUtil.error(assertException);
+            throw assertException;
+        }
+    }
+
+    /**
+     * 断言正确
+     *
+     * @param condition        验证
+     * @param removeLayerCount 要删除的顶层堆栈的层数
+     * @param msg
+     */
+    private static AssertException assertTrueAndGetException(boolean condition, int removeLayerCount, String msg, Object... params) {
+        if (!condition) {
+            msg = MessageFormatter.arrayFormat(msg, params).getMessage();
+            AssertException assertException = new AssertException("断言异常: " + msg);
+            removeExceptionTrace(assertException, removeLayerCount);
+            return assertException;
+        }
+        return null;
+    }
+
+    /**
+     * 断言正确
+     *
+     * @param condition
+     * @param removeLayerCount
+     * @param msgFunction
+     */
+    private static void assertTrue(boolean condition, int removeLayerCount, Supplier<String> msgFunction) {
+        if (!condition) {
+            String msg = msgFunction.get();
+            AssertException AssertException = new AssertException("断言异常: " + msg);
+            removeExceptionTrace(AssertException, removeLayerCount);
+            throw AssertException;
+        }
+    }
 
     /**
      * 删除异常的顶层堆栈信息

@@ -12,8 +12,8 @@ public class MysqlErrCodeEnumTest {
 
     @Test
     public void getByteCode() {
-        final byte[] byteCode = MysqlErrCodeEnum.EE_STAT.getByteCode();
-        final String dump = MysqlUtil.dump(byteCode);
+        byte[] byteCode = MysqlErrCodeEnum.EE_STAT.getByteCode();
+        String dump = MysqlUtil.dump(byteCode);
         System.out.println(dump);
 
     }

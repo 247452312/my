@@ -2,10 +2,10 @@ package indi.uhyils.plan.pojo.pool;
 
 import com.alibaba.druid.sql.ast.SQLName;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
+import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLJoinTableSource.JoinType;
-import com.alibaba.druid.sql.ast.statement.SQLTableSource;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.plan.pojo.SqlTableSourceBinaryTree;
@@ -31,16 +31,20 @@ public class SqlTableSourceBinaryTreePool extends AbstractObjectPool<SqlTableSou
     }
 
 
-    public SqlTableSourceBinaryTree getOrCreateObject(SQLTableSource tableSource, List<SQLBinaryOpExpr> where) {
+    public SqlTableSourceBinaryTree getOrCreateObject(SQLExprTableSource tableSource, List<SQLBinaryOpExpr> where) {
         SqlTableSourceBinaryTree orCreateObject = super.getOrCreateObject();
-        final SQLName name = ((SQLExprTableSource) tableSource).getName();
+        MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+        SQLName name = tableSource.getName();
+
+        String owner = null;
         if (name instanceof SQLPropertyExpr) {
-            orCreateObject.setTableSource((SQLPropertyExpr) name);
-        } else {
-            final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
-            orCreateObject.setTableSource((new SQLPropertyExpr(mysqlTcpInfo.getDatabase(), name.getSimpleName())));
+            SQLPropertyExpr sqlPropertyExpr = (SQLPropertyExpr) name;
+            owner = sqlPropertyExpr.getOwner() != null ? sqlPropertyExpr.getOwnernName() : mysqlTcpInfo.getDatabase();
+        } else if (name instanceof SQLIdentifierExpr) {
+            owner = mysqlTcpInfo.getDatabase();
         }
 
+        orCreateObject.setTableSource(new SQLExprTableSource(new SQLPropertyExpr(owner, name.getSimpleName()), tableSource.getAlias()));
         orCreateObject.setWhere(where);
         return orCreateObject;
     }

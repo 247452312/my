@@ -44,7 +44,7 @@ public class OrderNodeFieldValue extends AbstractDoEntity<OrderNodeFieldValueDO>
         Asserts.assertTrue(field != null, "属性不能为空");
         String realValue = data.getRealValue();
 
-        final OrderNodeFieldDO orderNodeFieldDO = field.toData().orElseThrow(Asserts::throwOptionalException);
+        OrderNodeFieldDO orderNodeFieldDO = field.toData().orElseThrow(Asserts::throwOptionalException);
         OrderNodeFieldValueTypeEnum parse = OrderNodeFieldValueTypeEnum.parse(orderNodeFieldDO.getValueType());
         switch (parse) {
             case DATE:

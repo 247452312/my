@@ -18,13 +18,13 @@ public class NormalRequestRpcData extends AbstractRequestRpcData {
     }
 
     @Override
-    protected void initContent() {
-        this.content = RpcRequestContentFactory.createNormalByContentArray(this, this.contentArray);
+    public Integer type() {
+        return RpcTypeEnum.REQUEST.getCode();
     }
 
     @Override
-    public Integer type() {
-        return RpcTypeEnum.REQUEST.getCode();
+    protected void initContent() {
+        this.content = RpcRequestContentFactory.createNormalByContentArray(this, this.contentArray);
     }
 
 

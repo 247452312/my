@@ -79,6 +79,80 @@ public class InternalUtil {
 
     public static final Set<String> temp = new HashSet<>();
 
+    /**
+     * 替换方法中的每一行
+     *
+     * @param compilationUnit
+     */
+    public static void dealCompilationUnitMethodRow(CompilationUnit compilationUnit) {
+        for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
+            for (MethodDeclaration method : type.getMethods()) {
+                dealMethodCallExprWithLink(method, compilationUnit);
+            }
+        }
+    }
+
+    /**
+     * 根据compilationUnit 去获取可以在局部代码中直接使用的变量
+     *
+     * @param compilationUnit
+     *
+     * @return
+     */
+    public static Map<String, TypeDeclaration<?>> findCanUseVariable(CompilationUnit compilationUnit) {
+        Map<String, TypeDeclaration<?>> result = new HashMap<>();
+
+        // 1.同包中其他类中的非私有静态变量
+        // 2.util包中静态变量
+        // 3.同包中其他枚举类的枚举
+        // 4.util包中的枚举
+
+        // 静态变量
+        List<VariableDeclarator> otherPackageVariables = new ArrayList<>();
+        // 枚举
+        List<EnumConstantDeclaration> otherPackageEnumConstantDeclaration = new ArrayList<>();
+
+        for (TypeDeclaration<?> typeDeclaration : compilationUnit.getTypes()) {
+            if (typeDeclaration.isClassOrInterfaceDeclaration()) {
+                ClassOrInterfaceDeclaration classOrInterfaceDeclaration = typeDeclaration.asClassOrInterfaceDeclaration();
+                if (classOrInterfaceDeclaration.isInterface()) {
+                    // 接口中的全部
+                    List<VariableDeclarator> collect = classOrInterfaceDeclaration.getFields().stream().flatMap(t -> t.getVariables().stream()).collect(Collectors.toList());
+                    otherPackageVariables.addAll(collect);
+                } else {
+                    //非接口中的静态非私有变量
+                    List<VariableDeclarator> collect = typeDeclaration.getFields().stream().filter(t -> !t.isPrivate() && t.isStatic()).flatMap(t -> t.getVariables().stream()).collect(Collectors.toList());
+                    otherPackageVariables.addAll(collect);
+                }
+            } else if (typeDeclaration.isEnumDeclaration()) {
+                // 枚举们
+                EnumDeclaration enumDeclaration = typeDeclaration.asEnumDeclaration();
+                List<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
+                otherPackageEnumConstantDeclaration.addAll(entries);
+            } else if (typeDeclaration.isAnnotationDeclaration()) {
+                // 注解跳过
+            } else {
+                throw new RuntimeException("不支持的类类型:" + typeDeclaration.getClass().getName());
+            }
+        }
+        for (VariableDeclarator variableDeclarator : otherPackageVariables) {
+            Optional<TypeDeclaration<?>> targetOptional = variableDeclarator.getType().getTarget();
+            targetOptional.ifPresent(typeDeclaration -> result.put(variableDeclarator.getNameAsString(), typeDeclaration));
+        }
+        // 枚举
+        for (EnumConstantDeclaration enumConstantDeclaration : otherPackageEnumConstantDeclaration) {
+            EnumDeclaration enumDeclaration = (EnumDeclaration) enumConstantDeclaration.getParentNode().orElse(null);
+            String classType = enumDeclaration.getName().asString();
+            String fieldName = enumConstantDeclaration.getName().asString();
+            String finalName = classType + "." + fieldName;
+            result.put(finalName, enumDeclaration);
+        }
+        return result;
+    }
+
+    public static void print() {
+        temp.forEach(System.out::println);
+    }
 
     /**
      * 获取一个type的全名
@@ -102,20 +176,6 @@ public class InternalUtil {
             typeAllName = packageName + "." + typeSimpleName;
         }
         return typeAllName;
-    }
-
-
-    /**
-     * 替换方法中的每一行
-     *
-     * @param compilationUnit
-     */
-    public static void dealCompilationUnitMethodRow(CompilationUnit compilationUnit) {
-        for (TypeDeclaration<?> type : compilationUnit.getTypes()) {
-            for (MethodDeclaration method : type.getMethods()) {
-                dealMethodCallExprWithLink(method, compilationUnit);
-            }
-        }
     }
 
     /**
@@ -178,64 +238,6 @@ public class InternalUtil {
             // 处理方法中的每一个代码块中的方法
             dealStatementWithLink(compilationUnit, vars, statement);
         }
-    }
-
-    /**
-     * 根据compilationUnit 去获取可以在局部代码中直接使用的变量
-     *
-     * @param compilationUnit
-     *
-     * @return
-     */
-    public static Map<String, TypeDeclaration<?>> findCanUseVariable(CompilationUnit compilationUnit) {
-        Map<String, TypeDeclaration<?>> result = new HashMap<>();
-
-        // 1.同包中其他类中的非私有静态变量
-        // 2.util包中静态变量
-        // 3.同包中其他枚举类的枚举
-        // 4.util包中的枚举
-
-        // 静态变量
-        List<VariableDeclarator> otherPackageVariables = new ArrayList<>();
-        // 枚举
-        List<EnumConstantDeclaration> otherPackageEnumConstantDeclaration = new ArrayList<>();
-
-        for (TypeDeclaration<?> typeDeclaration : compilationUnit.getTypes()) {
-            if (typeDeclaration.isClassOrInterfaceDeclaration()) {
-                ClassOrInterfaceDeclaration classOrInterfaceDeclaration = typeDeclaration.asClassOrInterfaceDeclaration();
-                if (classOrInterfaceDeclaration.isInterface()) {
-                    // 接口中的全部
-                    List<VariableDeclarator> collect = classOrInterfaceDeclaration.getFields().stream().flatMap(t -> t.getVariables().stream()).collect(Collectors.toList());
-                    otherPackageVariables.addAll(collect);
-                } else {
-                    //非接口中的静态非私有变量
-                    List<VariableDeclarator> collect = typeDeclaration.getFields().stream().filter(t -> !t.isPrivate() && t.isStatic()).flatMap(t -> t.getVariables().stream()).collect(Collectors.toList());
-                    otherPackageVariables.addAll(collect);
-                }
-            } else if (typeDeclaration.isEnumDeclaration()) {
-                // 枚举们
-                EnumDeclaration enumDeclaration = typeDeclaration.asEnumDeclaration();
-                List<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
-                otherPackageEnumConstantDeclaration.addAll(entries);
-            } else if (typeDeclaration.isAnnotationDeclaration()) {
-                // 注解跳过
-            } else {
-                throw new RuntimeException("不支持的类类型:" + typeDeclaration.getClass().getName());
-            }
-        }
-        for (VariableDeclarator variableDeclarator : otherPackageVariables) {
-            Optional<TypeDeclaration<?>> targetOptional = variableDeclarator.getType().getTarget();
-            targetOptional.ifPresent(typeDeclaration -> result.put(variableDeclarator.getNameAsString(), typeDeclaration));
-        }
-        // 枚举
-        for (EnumConstantDeclaration enumConstantDeclaration : otherPackageEnumConstantDeclaration) {
-            EnumDeclaration enumDeclaration = (EnumDeclaration) enumConstantDeclaration.getParentNode().orElse(null);
-            String classType = enumDeclaration.getName().asString();
-            String fieldName = enumConstantDeclaration.getName().asString();
-            String finalName = classType + "." + fieldName;
-            result.put(finalName, enumDeclaration);
-        }
-        return result;
     }
 
     /**
@@ -822,7 +824,6 @@ public class InternalUtil {
         }
     }
 
-
     /**
      * 匹配方法参数类型
      *
@@ -853,10 +854,5 @@ public class InternalUtil {
             }
         }
         return true;
-    }
-
-
-    public static void print() {
-        temp.forEach(System.out::println);
     }
 }

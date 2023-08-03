@@ -22,7 +22,7 @@ public abstract class AbstractMysqlCommand extends AbstractCommand implements My
     protected MysqlThisRequestInfo mysqlThisRequestInfo;
 
     protected AbstractMysqlCommand(MysqlThisRequestInfo mysqlThisRequestInfo) {
-        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+        MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         UserDTO userInfo = mysqlTcpInfo.getUserDTO();
         if (userInfo != null) {
             String token = userInfo.getToken();
@@ -33,14 +33,13 @@ public abstract class AbstractMysqlCommand extends AbstractCommand implements My
         load();
     }
 
-    /**
-     * 加载
-     */
-    protected abstract void load();
-
-
     @Override
     public MysqlThisRequestInfo getMysqlThisRequestInfo() {
         return mysqlThisRequestInfo;
     }
+
+    /**
+     * 加载
+     */
+    protected abstract void load();
 }

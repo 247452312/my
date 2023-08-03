@@ -61,7 +61,7 @@ public enum SysParamEnum {
      * @return
      */
     public Boolean flush(Long userId, String value, RedisPool pool) {
-        final String redisKey = SystemParamContext.compileRedisKey(userId, this.key);
+        String redisKey = SystemParamContext.compileRedisKey(userId, this.key);
         try (final Redisable jedis = pool.getJedis()) {
             jedis.set(redisKey, value);
             jedis.expire(redisKey, SystemParamContext.REDIS_PARAM_EXPIRE_TIME);
@@ -93,7 +93,7 @@ public enum SysParamEnum {
      */
     protected String findValue(Long userId, RedisPool redisPool, SystemParamNotFoundCallBack callBack) {
         try (Redisable jedis = redisPool.getJedis()) {
-            final String sysRedisKey = SystemParamContext.compileRedisKey(userId, this.key);
+            String sysRedisKey = SystemParamContext.compileRedisKey(userId, this.key);
             if (jedis.exists(sysRedisKey)) {
                 return jedis.get(sysRedisKey);
             }
@@ -110,7 +110,7 @@ public enum SysParamEnum {
      * @return
      */
     protected String findUserValue(RedisPool redisPool, SystemParamNotFoundCallBack callBack) {
-        final Optional<UserDTO> userDTO = UserInfoHelper.get();
+        Optional<UserDTO> userDTO = UserInfoHelper.get();
         if (userDTO.isPresent()) {
             return findValue(userDTO.get().getId(), redisPool, callBack);
         } else {

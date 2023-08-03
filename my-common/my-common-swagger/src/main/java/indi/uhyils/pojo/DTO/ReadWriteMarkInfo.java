@@ -7,19 +7,19 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *
  * {
- *     "type": "READ", // READ WRITE
- *     "tables": [
- *         "table1",
- *         "table2"
- *     ],
- *     "cacheType": "NOT_TYPE" // ROLE_TYPE角色缓存 ALL_TYPE公用缓存 NOT_TYEP不缓存
+ * "type": "READ", // READ WRITE
+ * "tables": [
+ * "table1",
+ * "table2"
+ * ],
+ * "cacheType": "NOT_TYPE" // ROLE_TYPE角色缓存 ALL_TYPE公用缓存 NOT_TYEP不缓存
  * }
- *
+ * <p>
  * 接口自动配置方法
- * @date 文件创建日期 2023年03月22日 17时49分
+ *
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年03月22日 17时49分
  */
 public class ReadWriteMarkInfo implements Serializable {
 

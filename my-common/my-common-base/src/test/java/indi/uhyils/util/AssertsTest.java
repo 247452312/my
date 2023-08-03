@@ -22,12 +22,12 @@ public class AssertsTest {
     public void testOptionToJson() {
         Optional<String> optionalS = Optional.ofNullable("asd");
 
-        final String s1 = optionalS.toString();
+        String s1 = optionalS.toString();
         System.out.println(s1);
-        final String str = JSONObject.toJSONString(optionalS);
+        String str = JSONObject.toJSONString(optionalS);
         System.out.println(str);
         optionalS = Optional.ofNullable(null);
-        final String s = JSONObject.toJSONString(optionalS);
+        String s = JSONObject.toJSONString(optionalS);
         System.out.println(s);
     }
 }

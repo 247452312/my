@@ -37,7 +37,7 @@ public class LastSelfInvoker implements RpcInvoker {
     @Override
     public RpcData invoke(FilterContext context) throws InterruptedException {
         RpcData request = context.getRequestData();
-        final RpcRequestContent content = (RpcRequestContent) request.content();
+        RpcRequestContent content = (RpcRequestContent) request.content();
         LogUtil.info("调用本项目的服务:{},{}", content.getServiceName(), content.getMethodName());
         String methodName = content.getMethodName();
         String[] methodParameterTypes = content.getMethodParameterTypes();

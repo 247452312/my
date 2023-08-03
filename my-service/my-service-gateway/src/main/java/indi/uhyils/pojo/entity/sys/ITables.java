@@ -59,7 +59,7 @@ public class ITables extends AbstractSysTable {
         }
         List<CallNodeDTO> callNodeDTOS = callNodeService.queryNoPage(args);
 
-        final List<Map<String, Object>> newResults = new ArrayList<>();
+        List<Map<String, Object>> newResults = new ArrayList<>();
         Set<String> dbSet = new HashSet<>();
         callNodeDTOS.stream().filter(t -> {
             String url = t.getUrl();
@@ -98,7 +98,7 @@ public class ITables extends AbstractSysTable {
             newResults.addAll(tempResults);
         }
         nodeInvokeResult.setResult(newResults);
-        final List<FieldInfo> fieldInfos = new ArrayList<>();
+        List<FieldInfo> fieldInfos = new ArrayList<>();
         fieldInfos.add(new FieldInfo("information_schema", "tables", "tables", "TABLE_CATALOG", "TABLE_CATALOG", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
         fieldInfos.add(new FieldInfo("information_schema", "tables", "tables", "TABLE_SCHEMA", "TABLE_SCHEMA", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
         fieldInfos.add(new FieldInfo("information_schema", "tables", "tables", "TABLE_NAME", "TABLE_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));

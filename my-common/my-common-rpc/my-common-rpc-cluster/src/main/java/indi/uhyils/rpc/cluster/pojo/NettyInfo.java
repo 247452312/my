@@ -28,6 +28,16 @@ public class NettyInfo {
      */
     private Integer port;
 
+    public NettyInfo(Integer indexInColony, Integer weight, String host, Integer port) {
+        this.indexInColony = indexInColony;
+        this.weight = weight;
+        this.host = host;
+        this.port = port;
+    }
+
+    public NettyInfo() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -75,15 +85,5 @@ public class NettyInfo {
 
     public void setIndexInColony(Integer indexInColony) {
         this.indexInColony = indexInColony;
-    }
-
-    public NettyInfo(Integer indexInColony, Integer weight, String host, Integer port) {
-        this.indexInColony = indexInColony;
-        this.weight = weight;
-        this.host = host;
-        this.port = port;
-    }
-
-    public NettyInfo() {
     }
 }

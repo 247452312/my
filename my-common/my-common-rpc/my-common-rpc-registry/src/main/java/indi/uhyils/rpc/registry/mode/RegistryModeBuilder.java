@@ -48,7 +48,7 @@ public class RegistryModeBuilder {
      */
     private static RegistryProviderNecessaryInfo initRegistryProviderNecessaryInfo(Class<?> clazz) {
         RpcConfig config = RpcConfigFactory.getInstance();
-        final ProviderConfig provider = config.getProvider();
+        ProviderConfig provider = config.getProvider();
         Integer port = provider.getPort();
         RegistryProviderNecessaryInfo necessaryInfo = new RegistryProviderNecessaryInfo();
         necessaryInfo.setHost(IpUtil.getIp());

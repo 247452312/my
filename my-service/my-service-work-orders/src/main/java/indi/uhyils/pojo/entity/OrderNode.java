@@ -112,7 +112,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
             return;
         }
         for (OrderNodeResultType resultType : resultTypes) {
-            final Identifier unique = resultType.getUnique().orElseThrow(Asserts::throwOptionalException);
+            Identifier unique = resultType.getUnique().orElseThrow(Asserts::throwOptionalException);
             Long oldId = unique.getId();
             OrderNodeResultTypeDO orderNodeResultTypeDO = resultType.toData().orElseThrow(Asserts::throwOptionalException);
             orderNodeResultTypeDO.setBaseNodeId(idMappings.get(orderNodeResultTypeDO.getBaseNodeId()));
@@ -149,7 +149,7 @@ public class OrderNode extends AbstractDoEntity<OrderNodeDO> {
     }
 
     public OrderNodeResultType createResultByTrans(OrderNodeResultTypeAssembler typeAssembler) {
-        final Identifier unique = getUnique().orElseThrow(Asserts::throwOptionalException);
+        Identifier unique = getUnique().orElseThrow(Asserts::throwOptionalException);
         OrderNodeResultTypeDTO transResult = OrderNodeResultTypeBuilder.build(unique.getId(), "转交");
         return typeAssembler.toEntity(transResult);
 

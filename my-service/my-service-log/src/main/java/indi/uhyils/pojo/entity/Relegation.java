@@ -36,7 +36,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
 
     public Relegation(String serviceName, String methodName) {
         super(new RelegationDO());
-        final Optional<RelegationDO> relegationDO = toData();
+        Optional<RelegationDO> relegationDO = toData();
         relegationDO.ifPresent(dO -> {
             dO.setServiceName(serviceName);
             dO.setMethodName(methodName);
@@ -59,7 +59,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
 
     public Relegation(Integer type, String serviceName, String methodName) {
         super(new RelegationDO());
-        final Optional<RelegationDO> relegationDO = toData();
+        Optional<RelegationDO> relegationDO = toData();
         relegationDO.ifPresent(dO -> {
             this.logTypeEnum = LogTypeEnum.parse(type).get();
             dO.setServiceName(serviceName);
@@ -74,7 +74,7 @@ public class Relegation extends AbstractDoEntity<RelegationDO> {
      */
     public void validate() {
         Asserts.assertTrue(logTypeEnum == LogTypeEnum.RPC, "非RPC,不是接口");
-        final RelegationDO relegationDO = toData().orElseThrow(() -> Asserts.makeException("没有查到接口信息"));
+        RelegationDO relegationDO = toData().orElseThrow(() -> Asserts.makeException("没有查到接口信息"));
         Asserts.assertTrue(StringUtil.isNotEmpty(relegationDO.getServiceName()) && StringUtil.isNotEmpty(relegationDO.getMethodName()));
     }
 

@@ -28,7 +28,7 @@ public class SysProviderInterface extends ProviderInterface {
 
     public SysProviderInterface(String path) {
         super(true);
-        final Pair<String, String> stringStringPair = GatewayUtil.splitDataBaseUrl(path);
+        Pair<String, String> stringStringPair = GatewayUtil.splitDataBaseUrl(path);
         this.database = stringStringPair.getKey();
         this.table = stringStringPair.getValue();
     }
@@ -36,8 +36,8 @@ public class SysProviderInterface extends ProviderInterface {
     @Override
     public NodeInvokeResult getResult(Map<String, String> header, Map<String, Object> params) {
         Asserts.assertTrue(StringUtil.isNotEmpty(database) && StringUtil.isNotEmpty(table), "数据库不存在或表不存在");
-        final SysTableEnum parse = SysTableEnum.parse(database, table);
-        final SysTable sysTable = parse.getSysTable(params);
+        SysTableEnum parse = SysTableEnum.parse(database, table);
+        SysTable sysTable = parse.getSysTable(params);
         return sysTable.getResult();
     }
 }

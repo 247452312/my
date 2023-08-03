@@ -50,16 +50,16 @@ public class GatewayController {
         // 请求头
         Map<String, String> headerParam = getHeaderParam(httpServletRequest);
         // get参数
-        final Map<String, String[]> getParams = httpServletRequest.getParameterMap();
+        Map<String, String[]> getParams = httpServletRequest.getParameterMap();
         // post参数
         Map<String, Object> postParams = getPostParam(httpServletRequest);
-        final InvokeCommandBuilder invokeCommandBuilder = new InvokeCommandBuilder();
+        InvokeCommandBuilder invokeCommandBuilder = new InvokeCommandBuilder();
         invokeCommandBuilder.addPostMap(postParams);
         invokeCommandBuilder.addGetMap(getParams);
         invokeCommandBuilder.addPath(outPath);
         invokeCommandBuilder.addHeader(headerParam);
         invokeCommandBuilder.setType(InvokeTypeEnum.HTTP.getCode());
-        final InvokeCommand build = invokeCommandBuilder.build();
+        InvokeCommand build = invokeCommandBuilder.build();
         return gatewaySdkService.invokeInterface(build);
     }
 
@@ -71,7 +71,7 @@ public class GatewayController {
      * @return
      */
     private String getOutPath(HttpServletRequest httpServletRequest) {
-        final String requestURI = httpServletRequest.getRequestURI();
+        String requestURI = httpServletRequest.getRequestURI();
         return requestURI.substring(INVOKE.length() + 1);
     }
 
@@ -83,11 +83,11 @@ public class GatewayController {
      * @return
      */
     private Map<String, String> getHeaderParam(HttpServletRequest httpServletRequest) {
-        final Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
+        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
         Map<String, String> result = new HashMap<>();
         while (headerNames.hasMoreElements()) {
-            final String s = headerNames.nextElement();
-            final String header = httpServletRequest.getHeader(s);
+            String s = headerNames.nextElement();
+            String header = httpServletRequest.getHeader(s);
             result.put(s, header);
         }
         return result;
@@ -101,14 +101,14 @@ public class GatewayController {
      * @return
      */
     private Map<String, Object> getPostParam(HttpServletRequest httpServletRequest) throws IOException {
-        final BufferedReader reader = new BufferedReader(new InputStreamReader(httpServletRequest.getInputStream()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(httpServletRequest.getInputStream()));
         String str = "";
 
         StringBuilder sb = new StringBuilder();
         while ((str = reader.readLine()) != null) {
             sb.append(str);
         }
-        final String s = sb.toString();
+        String s = sb.toString();
         return JSONObject.parseObject(s);
 
     }

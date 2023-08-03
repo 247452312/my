@@ -72,7 +72,7 @@ public class NormalRpcRequestFactory extends AbstractRpcFactory implements Reque
     public RpcData createTimeoutResponse(RpcData request, Long timeout) throws InterruptedException {
         // spi 获取消费者的注册者信息
         String registryName = (String) RpcConfigFactory.getCustomOrDefault(RPC_REQUEST_SPI_NAME, RPC_REQUEST_DEFAULT_NAME);
-        final RpcRequestContent abstractRpcContent = (RpcRequestContent) request.content();
+        RpcRequestContent abstractRpcContent = (RpcRequestContent) request.content();
         // 返回一个构造完成的消费者
         NormalRequestRpcData rpcNormalRequest = (NormalRequestRpcData) RpcSpiManager.createOrGetExtensionByClass(RpcData.class, registryName);
         rpcNormalRequest.setType(RpcTypeEnum.REQUEST.getCode());

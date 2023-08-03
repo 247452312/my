@@ -147,7 +147,7 @@ public class FieldInfo {
         results.add(e8);
         count += e8.length;
         // 填充值
-        final byte[] e9 = {0x00, 0x00};
+        byte[] e9 = {0x00, 0x00};
         results.add(e9);
         count += e9.length;
         return MysqlUtil.mergeListBytes(results, count);

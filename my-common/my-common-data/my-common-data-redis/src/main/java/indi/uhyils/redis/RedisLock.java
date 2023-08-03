@@ -210,24 +210,6 @@ public class RedisLock {
     }
 
     /**
-     * 用循环的方式等待countDownLatch完成
-     *
-     * @param jedis
-     * @param uniqueName
-     *
-     * @return
-     *
-     * @throws InterruptedException
-     */
-    private boolean loopToWaitCountDownLatch(Redisable jedis, String uniqueName) throws InterruptedException {
-        String key = REDIS_COUNT_DOWN_LATCH + uniqueName;
-        while (jedis.exists(key) && Integer.parseInt(jedis.get(key)) <= 0 && !Thread.interrupted()) {
-            Thread.sleep(1000L);
-        }
-        return !Thread.interrupted();
-    }
-
-    /**
      * 方法介绍见{@link RedisLock#createCountDownLatch(java.lang.String, java.lang.Integer, java.lang.Integer)}
      *
      * @param uniqueName
@@ -264,5 +246,23 @@ public class RedisLock {
             }
             return Boolean.TRUE;
         }
+    }
+
+    /**
+     * 用循环的方式等待countDownLatch完成
+     *
+     * @param jedis
+     * @param uniqueName
+     *
+     * @return
+     *
+     * @throws InterruptedException
+     */
+    private boolean loopToWaitCountDownLatch(Redisable jedis, String uniqueName) throws InterruptedException {
+        String key = REDIS_COUNT_DOWN_LATCH + uniqueName;
+        while (jedis.exists(key) && Integer.parseInt(jedis.get(key)) <= 0 && !Thread.interrupted()) {
+            Thread.sleep(1000L);
+        }
+        return !Thread.interrupted();
     }
 }

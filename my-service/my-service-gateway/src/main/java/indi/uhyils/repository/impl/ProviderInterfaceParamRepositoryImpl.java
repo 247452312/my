@@ -31,7 +31,7 @@ public class ProviderInterfaceParamRepositoryImpl extends AbstractRepository<Pro
 
     @Override
     public List<ProviderInterfaceParam> findByInterfaceId(Identifier interfaceId) {
-        final LambdaQueryWrapper<ProviderInterfaceParamDO> queryWrapper = Wrappers.lambdaQuery();
+        LambdaQueryWrapper<ProviderInterfaceParamDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(ProviderInterfaceParamDO::getProviderInterfaceId, interfaceId.getId());
         return assembler.listToEntity(dao.selectList(queryWrapper));
     }

@@ -34,9 +34,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- *
- * @date 文件创建日期 2023年04月23日 14时01分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年04月23日 14时01分
  */
 @RpcSpi(single = false)
 public class ConsumerRegistryImpl extends AbstractRegistry implements ConsumerRegistry {
@@ -62,6 +61,43 @@ public class ConsumerRegistryImpl extends AbstractRegistry implements ConsumerRe
         initClusters();
         ConsumerRegistryCenterHandler registryCenterHandler = (ConsumerRegistryCenterHandler) this.registryCenterHandler;
         registryCenterHandler.registerEvent(this::onEvent);
+    }
+
+    @Override
+    public RpcData invoke(RpcData rpcData) throws InterruptedException {
+        String clusterName = ClusterNameContext.get();
+        if (StringUtil.isNotEmpty(clusterName)) {
+            Asserts.assertTrue(clusters.containsKey(clusterName), "执行时集群中不存在指定的集群名称:{}", clusterName);
+            Cluster cluster = clusters.get(clusterName);
+            return cluster.sendMsg(rpcData, new SendInfo(selfIp));
+        }
+        Optional<Entry<String, Cluster>> any = clusters.entrySet().stream().findAny();
+        RpcRequestContentImpl content = (RpcRequestContentImpl) rpcData.content();
+        Asserts.assertTrue(any.isPresent(), "指定接口未发现可用的服务:{},版本:{}", content.getServiceName(), content.getServiceVersion());
+        Entry<String, Cluster> stringClusterEntry = any.get();
+        Cluster value = stringClusterEntry.getValue();
+        return value.sendMsg(rpcData, new SendInfo(selfIp));
+    }
+
+    @Override
+    public Boolean close() {
+        boolean down = true;
+        for (Entry<String, Cluster> clusterEntry : clusters.entrySet()) {
+            Cluster value = clusterEntry.getValue();
+            Boolean shutdown = value.shutdown();
+            if (!shutdown) {
+                down = false;
+            }
+        }
+        if (!down) {
+            throw new RpcShowDownException("rpc关闭错误");
+        }
+        return true;
+    }
+
+    @Override
+    protected RegistryCenterHandler doInitRegistryCenterHandler(Object... objects) throws InterruptedException {
+        return RegistryCenterHandlerFactory.createConsumer(serviceClass);
     }
 
     private void initClusters() throws InterruptedException {
@@ -126,6 +162,7 @@ public class ConsumerRegistryImpl extends AbstractRegistry implements ConsumerRe
      * 创建单个集群信息
      *
      * @param registryInfos
+     *
      * @return
      */
     private Cluster createCluster(List<RegistryModelInfo> registryInfos) throws InterruptedException {
@@ -161,43 +198,6 @@ public class ConsumerRegistryImpl extends AbstractRegistry implements ConsumerRe
      */
     private boolean isSelfService(String host, Integer port) {
         return Objects.equals(host, selfIp) && Objects.equals(RpcConfigFactory.getInstance().getProvider().getPort(), port);
-    }
-
-    @Override
-    protected RegistryCenterHandler doInitRegistryCenterHandler(Object... objects) throws InterruptedException {
-        return RegistryCenterHandlerFactory.createConsumer(serviceClass);
-    }
-
-    @Override
-    public RpcData invoke(RpcData rpcData) throws InterruptedException {
-        String clusterName = ClusterNameContext.get();
-        if (StringUtil.isNotEmpty(clusterName)) {
-            Asserts.assertTrue(clusters.containsKey(clusterName), "执行时集群中不存在指定的集群名称:{}", clusterName);
-            Cluster cluster = clusters.get(clusterName);
-            return cluster.sendMsg(rpcData, new SendInfo(selfIp));
-        }
-        Optional<Entry<String, Cluster>> any = clusters.entrySet().stream().findAny();
-        RpcRequestContentImpl content = (RpcRequestContentImpl) rpcData.content();
-        Asserts.assertTrue(any.isPresent(), "指定接口未发现可用的服务:{},版本:{}", content.getServiceName(), content.getServiceVersion());
-        Entry<String, Cluster> stringClusterEntry = any.get();
-        Cluster value = stringClusterEntry.getValue();
-        return value.sendMsg(rpcData, new SendInfo(selfIp));
-    }
-
-    @Override
-    public Boolean close() {
-        boolean down = true;
-        for (Entry<String, Cluster> clusterEntry : clusters.entrySet()) {
-            Cluster value = clusterEntry.getValue();
-            Boolean shutdown = value.shutdown();
-            if (!shutdown) {
-                down = false;
-            }
-        }
-        if (!down) {
-            throw new RpcShowDownException("rpc关闭错误");
-        }
-        return true;
     }
 
 }

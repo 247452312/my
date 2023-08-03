@@ -39,18 +39,18 @@ public class CallNode extends AbstractDataNode<CallNodeDO> {
     @NotNull
     @Override
     public String databaseName() {
-        final CallNodeDO node = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
-        final String url = node.getUrl();
-        final int firstIndex = url.indexOf("/");
+        CallNodeDO node = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
+        String url = node.getUrl();
+        int firstIndex = url.indexOf("/");
         return url.substring(0, firstIndex);
     }
 
     @NotNull
     @Override
     public String tableName() {
-        final CallNodeDO node = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
-        final String url = node.getUrl();
-        final int firstIndex = url.indexOf("/");
+        CallNodeDO node = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
+        String url = node.getUrl();
+        int firstIndex = url.indexOf("/");
         return url.substring(firstIndex + 1);
     }
 
@@ -60,12 +60,12 @@ public class CallNode extends AbstractDataNode<CallNodeDO> {
      * @return
      */
     public DatabaseInfo changeToDatabaseInfo() {
-        final CallNodeDO callNodeDO = toData().orElseThrow(() -> Asserts.makeException("未填充"));
-        final String url = callNodeDO.getUrl();
-        final Pair<String, String> databaseAndTable = GatewayUtil.splitDataBaseUrl(url);
-        final DatabaseInfo databaseInfo = new DatabaseInfo();
+        CallNodeDO callNodeDO = toData().orElseThrow(() -> Asserts.makeException("未填充"));
+        String url = callNodeDO.getUrl();
+        Pair<String, String> databaseAndTable = GatewayUtil.splitDataBaseUrl(url);
+        DatabaseInfo databaseInfo = new DatabaseInfo();
         databaseInfo.setCatalogName(MysqlContent.CATALOG_NAME);
-        final String key = databaseAndTable.getKey();
+        String key = databaseAndTable.getKey();
         if (key == null) {
             return null;
         }
@@ -84,7 +84,7 @@ public class CallNode extends AbstractDataNode<CallNodeDO> {
      */
     @Override
     public void fill(NodeRepository nodeRepository, ProviderInterfaceRepository providerInterfaceRepository) {
-        final Optional<CallNodeDO> callNodeOptional = toData();
+        Optional<CallNodeDO> callNodeOptional = toData();
         callNodeOptional.ifPresent(callNodeDO -> {
             this.node = nodeRepository.find(new CallNode(callNodeDO.getNodeId()));
             this.node.fill(nodeRepository, providerInterfaceRepository);

@@ -21,7 +21,7 @@ public class SystemParamCache {
      */
     @NotNull
     public static String findValue(Boolean global, SysParamEnum sysParamEnum) {
-        final RedisPool redisPool = SpringUtil.getBean(RedisPool.class);
+        RedisPool redisPool = SpringUtil.getBean(RedisPool.class);
         return Boolean.TRUE.equals(global) ?
             sysParamEnum.findValue(redisPool) :
             sysParamEnum.findUserValue(redisPool);
@@ -36,7 +36,7 @@ public class SystemParamCache {
      * @return
      */
     public static String findValue(Boolean global, SysParamEnum sysParamEnum, SystemParamNotFoundCallBack callBack) {
-        final RedisPool redisPool = SpringUtil.getBean(RedisPool.class);
+        RedisPool redisPool = SpringUtil.getBean(RedisPool.class);
         return Boolean.TRUE.equals(global) ?
             sysParamEnum.findValue(redisPool, callBack) :
             sysParamEnum.findUserValue(redisPool, callBack);

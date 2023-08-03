@@ -1,7 +1,7 @@
 package indi.uhyils.plan.pojo;
 
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
-import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
+import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLJoinTableSource.JoinType;
 import indi.uhyils.annotation.NotNull;
 import java.util.List;
@@ -17,7 +17,7 @@ public class SqlTableSourceBinaryTree {
     /**
      * 节点数据本身
      */
-    private SQLPropertyExpr tableSource;
+    private SQLExprTableSource tableSource;
 
     /**
      * 条件
@@ -44,7 +44,7 @@ public class SqlTableSourceBinaryTree {
      */
     private SQLBinaryOpExpr condition;
 
-    public SqlTableSourceBinaryTree(SQLPropertyExpr tableSource, List<SQLBinaryOpExpr> where) {
+    public SqlTableSourceBinaryTree(SQLExprTableSource tableSource, List<SQLBinaryOpExpr> where) {
         this.tableSource = tableSource;
         this.where = where;
     }
@@ -82,11 +82,11 @@ public class SqlTableSourceBinaryTree {
         this.joinType = joinType;
     }
 
-    public SQLPropertyExpr getTableSource() {
+    public SQLExprTableSource getTableSource() {
         return tableSource;
     }
 
-    public void setTableSource(SQLPropertyExpr tableSource) {
+    public void setTableSource(SQLExprTableSource tableSource) {
         this.tableSource = tableSource;
     }
 

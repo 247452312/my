@@ -55,16 +55,6 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
         changeNodesOrderId();
     }
 
-    private void changeNodesOrderId() {
-        if (CollectionUtil.isEmpty(nodes)) {
-            return;
-        }
-        for (OrderNode node : nodes) {
-            final OrderNodeDO orderNodeDO = node.toData().orElseThrow(Asserts::throwOptionalException);
-            orderNodeDO.setBaseInfoId(getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException));
-        }
-    }
-
     public List<OrderNode> nodes() {
         return nodes;
     }
@@ -87,7 +77,7 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
     }
 
     public void compareAndSave(OrderInfoRepository rep, Long monitorUserId) {
-        final OrderInfoDO orderInfoDO = toData().orElseThrow(Asserts::throwOptionalException);
+        OrderInfoDO orderInfoDO = toData().orElseThrow(Asserts::throwOptionalException);
         Long selfMonitor = orderInfoDO.getMonitorUserId();
         if (!Objects.equals(selfMonitor, monitorUserId)) {
             orderInfoDO.setMonitorUserId(monitorUserId);
@@ -127,5 +117,15 @@ public class OrderInfo extends AbstractDoEntity<OrderInfoDO> {
         data.setStatus(lastStatus.getCode());
         onUpdate();
         rep.save(this);
+    }
+
+    private void changeNodesOrderId() {
+        if (CollectionUtil.isEmpty(nodes)) {
+            return;
+        }
+        for (OrderNode node : nodes) {
+            OrderNodeDO orderNodeDO = node.toData().orElseThrow(Asserts::throwOptionalException);
+            orderNodeDO.setBaseInfoId(getUnique().map(Identifier::getId).orElseThrow(Asserts::throwOptionalException));
+        }
     }
 }

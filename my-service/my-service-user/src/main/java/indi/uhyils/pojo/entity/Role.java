@@ -60,21 +60,6 @@ public class Role extends AbstractDoEntity<RoleDO> {
 
     }
 
-    private List<Dept> addDeptToEntity(List<Dept> depts) {
-        if (this.depts == null) {
-            this.depts = new ArrayList<>(depts.size());
-        }
-        List<Dept> result = new ArrayList<>();
-        for (Dept newDeptId : depts) {
-            if (this.depts.contains(newDeptId)) {
-                continue;
-            }
-            this.depts.add(newDeptId);
-            result.add(newDeptId);
-        }
-        return result;
-    }
-
     /**
      * 填充部门与权限
      *
@@ -85,7 +70,7 @@ public class Role extends AbstractDoEntity<RoleDO> {
         if (this.depts != null) {
             return;
         }
-        final Optional<Identifier> unique = getUnique();
+        Optional<Identifier> unique = getUnique();
         unique.ifPresent(t -> {
             this.depts = deptRepository.findByRoleId(t);
             for (Dept dept : depts) {
@@ -96,7 +81,6 @@ public class Role extends AbstractDoEntity<RoleDO> {
 
     }
 
-
     public List<Menu> menus() {
         Asserts.assertTrue(depts != null, "没有初始化部门");
         List<Menu> result = new ArrayList<>();
@@ -105,7 +89,6 @@ public class Role extends AbstractDoEntity<RoleDO> {
         }
         return result;
     }
-
 
     public void forceInitDeptIds(List<Dept> depts) {
         this.depts = depts;
@@ -145,9 +128,24 @@ public class Role extends AbstractDoEntity<RoleDO> {
     }
 
     public void removeSelf(RoleRepository rep) {
-        final Optional<Identifier> unique = getUnique();
+        Optional<Identifier> unique = getUnique();
         Asserts.assertTrue(unique.isPresent(), "唯一标识不存在,不能移除自身");
         rep.remove(unique.get());
+    }
+
+    private List<Dept> addDeptToEntity(List<Dept> depts) {
+        if (this.depts == null) {
+            this.depts = new ArrayList<>(depts.size());
+        }
+        List<Dept> result = new ArrayList<>();
+        for (Dept newDeptId : depts) {
+            if (this.depts.contains(newDeptId)) {
+                continue;
+            }
+            this.depts.add(newDeptId);
+            result.add(newDeptId);
+        }
+        return result;
     }
 
 }

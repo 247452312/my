@@ -33,6 +33,23 @@ public class PushUtils {
     }
 
     /**
+     * 页面推送
+     *
+     * @param userEntity  用户信息
+     * @param title       标题
+     * @param sendContent 发送内容
+     *
+     * @return
+     */
+    public static PushMsgDTO pagePush(UserDTO userEntity, String title, String sendContent) {
+        Long userId = userEntity.getId();
+        Boolean send = SendPage.send(userId, title, sendContent);
+        PushMsgDTO pushMsgDTO = makeMsg(userEntity, title, sendContent, PushTypeEnum.PAGE, send);
+        LogUtil.info(PushUtils.class, "向" + userEntity.getNickName() + " 页面推送");
+        return pushMsgDTO;
+    }
+
+    /**
      * 保存到消息表中
      *
      * @param userEntity  目标人
@@ -48,22 +65,5 @@ public class PushUtils {
             t = MsgBuild.buildFaultMsg(userEntity.getId(), title, sendContent, type);
         }
         return t;
-    }
-
-    /**
-     * 页面推送
-     *
-     * @param userEntity  用户信息
-     * @param title       标题
-     * @param sendContent 发送内容
-     *
-     * @return
-     */
-    public static PushMsgDTO pagePush(UserDTO userEntity, String title, String sendContent) {
-        Long userId = userEntity.getId();
-        Boolean send = SendPage.send(userId, title, sendContent);
-        PushMsgDTO pushMsgDTO = makeMsg(userEntity, title, sendContent, PushTypeEnum.PAGE, send);
-        LogUtil.info(PushUtils.class, "向" + userEntity.getNickName() + " 页面推送");
-        return pushMsgDTO;
     }
 }

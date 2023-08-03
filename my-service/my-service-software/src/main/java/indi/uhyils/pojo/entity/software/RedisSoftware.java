@@ -60,7 +60,7 @@ public class RedisSoftware extends Software implements RedisSoftwareInterface {
 
     public void initJedis() {
         Asserts.assertTrue(server != null, "server不能为空");
-        final SoftwareDO softwareDO = toData().orElseThrow(() -> Asserts.makeException("未找到data"));
+        SoftwareDO softwareDO = toData().orElseThrow(() -> Asserts.makeException("未找到data"));
         if (jedis == null) {
             jedis = new Jedis(server.toData().orElseThrow(() -> Asserts.makeException("未找到data")).getIp(), softwareDO.getPort());
         }
@@ -120,6 +120,22 @@ public class RedisSoftware extends Software implements RedisSoftwareInterface {
         jedis.del(key);
     }
 
+    @Override
+    public void close() {
+        if (jedis != null) {
+            jedis.close();
+            jedis = null;
+        }
+    }
+
+    @Override
+    public void initBaseInfo() {
+        String redisVersion = getRedisNewVersion();
+        SoftwareDO softwareDO = toData().orElseThrow(() -> Asserts.makeException("未找到data"));
+        softwareDO.setVersion(redisVersion);
+        softwareDO.setStatus(getStatus().getStatus());
+    }
+
     private Map<String, String> getRedisNewInfo() {
         initJedis();
         Client client = jedis.getClient();
@@ -138,22 +154,6 @@ public class RedisSoftware extends Software implements RedisSoftwareInterface {
 
         });
         return redisInfoMap;
-    }
-
-    @Override
-    public void close() {
-        if (jedis != null) {
-            jedis.close();
-            jedis = null;
-        }
-    }
-
-    @Override
-    public void initBaseInfo() {
-        String redisVersion = getRedisNewVersion();
-        final SoftwareDO softwareDO = toData().orElseThrow(() -> Asserts.makeException("未找到data"));
-        softwareDO.setVersion(redisVersion);
-        softwareDO.setStatus(getStatus().getStatus());
     }
 
     private String getRedisNewVersion() {

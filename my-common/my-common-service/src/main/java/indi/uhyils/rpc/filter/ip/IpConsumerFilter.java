@@ -24,7 +24,7 @@ public class IpConsumerFilter implements ConsumerFilter {
     public RpcData invoke(RpcInvoker invoker, FilterContext invokerContext) throws InterruptedException {
         Optional<String> ipOpt = UserInfoHelper.getUserIp();
         ipOpt.ifPresent(ip -> {
-            final AbstractRpcData requestData = (AbstractRpcData) invokerContext.getRequestData();
+            AbstractRpcData requestData = (AbstractRpcData) invokerContext.getRequestData();
             RpcHeader[] rpcHeaders = requestData.rpcHeaders();
             rpcHeaders = CollectionUtil.arrayAdd(rpcHeaders, RpcHeaderFactory.newHeader(UserInfoHelper.USER_IP_RPC_KEY, ip));
             requestData.setHeaders(rpcHeaders);

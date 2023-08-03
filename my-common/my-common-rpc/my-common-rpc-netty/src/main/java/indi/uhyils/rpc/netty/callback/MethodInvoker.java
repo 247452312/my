@@ -1,7 +1,6 @@
 package indi.uhyils.rpc.netty.callback;
 
 import indi.uhyils.rpc.spi.RpcSpiExtension;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**

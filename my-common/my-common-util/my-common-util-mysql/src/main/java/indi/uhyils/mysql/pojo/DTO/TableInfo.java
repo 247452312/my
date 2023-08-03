@@ -121,8 +121,6 @@ public class TableInfo implements Serializable {
     private String checksum;
 
 
-
-
     public String getTableCatalog() {
         return tableCatalog;
     }

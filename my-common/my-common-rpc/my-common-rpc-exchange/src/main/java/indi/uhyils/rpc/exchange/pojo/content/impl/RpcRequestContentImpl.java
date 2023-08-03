@@ -55,34 +55,10 @@ public class RpcRequestContentImpl extends AbstractRpcContent implements RpcRequ
         setRpcData(rpcData);
     }
 
-    /**
-     * 初始化属性
-     */
-    private void init() {
-        this.setServiceName(this.getLine(RpcRequestContentEnum.SERVICE_NAME.getLine()));
-        this.setServiceVersion(this.getLine(RpcRequestContentEnum.SERVICE_VERSION.getLine()));
-        this.setMethodName(this.getLine(RpcRequestContentEnum.METHOD_NAME.getLine()));
-        String[] methodParameterTypes = this.getLine(RpcRequestContentEnum.METHOD_PARAM_TYPE.getLine()).split(";");
-        this.setMethodParamterTypes(methodParameterTypes);
-        List argsMap = JSON.parseObject(this.getLine(RpcRequestContentEnum.ARG_MAP.getLine()), ArrayList.class);
-
-        this.setArgs(argsMap.toArray());
-
-        List<Object> others = new ArrayList<>();
-        for (int i = 5; i < this.contentArray().length; i++) {
-            String s = this.getLine(i);
-            Object parse = JSON.parse(s);
-            others.add(parse);
-        }
-        this.setOthers(others.toArray());
-    }
-
-
     @Override
     public RpcTypeEnum type() {
         return RpcTypeEnum.REQUEST;
     }
-
 
     @Override
     public String contentString() {
@@ -162,5 +138,27 @@ public class RpcRequestContentImpl extends AbstractRpcContent implements RpcRequ
 
     public void setMethodParamterTypes(String[] methodParamterTypes) {
         this.methodParamterTypes = methodParamterTypes;
+    }
+
+    /**
+     * 初始化属性
+     */
+    private void init() {
+        this.setServiceName(this.getLine(RpcRequestContentEnum.SERVICE_NAME.getLine()));
+        this.setServiceVersion(this.getLine(RpcRequestContentEnum.SERVICE_VERSION.getLine()));
+        this.setMethodName(this.getLine(RpcRequestContentEnum.METHOD_NAME.getLine()));
+        String[] methodParameterTypes = this.getLine(RpcRequestContentEnum.METHOD_PARAM_TYPE.getLine()).split(";");
+        this.setMethodParamterTypes(methodParameterTypes);
+        List argsMap = JSON.parseObject(this.getLine(RpcRequestContentEnum.ARG_MAP.getLine()), ArrayList.class);
+
+        this.setArgs(argsMap.toArray());
+
+        List<Object> others = new ArrayList<>();
+        for (int i = 5; i < this.contentArray().length; i++) {
+            String s = this.getLine(i);
+            Object parse = JSON.parse(s);
+            others.add(parse);
+        }
+        this.setOthers(others.toArray());
     }
 }

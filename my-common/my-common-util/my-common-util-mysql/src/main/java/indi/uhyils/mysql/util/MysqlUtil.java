@@ -217,15 +217,6 @@ public final class MysqlUtil {
         return byteToLengthCodeBinary(bytes);
     }
 
-    private static byte[] toBytes(double value) {
-        long longValue = Double.doubleToRawLongBits(value);
-        byte[] byteRet = new byte[8];
-        for (int i = 0; i < 8; i++) {
-            byteRet[i] = (byte) ((longValue >> 8 * i) & 0xff);
-        }
-        return byteRet;
-    }
-
     public static byte[] mergeLengthCodedBinary(String value) {
         byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
         return byteToLengthCodeBinary(bytes);
@@ -435,7 +426,6 @@ public final class MysqlUtil {
         return false;
     }
 
-
     /**
      * sha1加密
      *
@@ -479,6 +469,28 @@ public final class MysqlUtil {
     }
 
     /**
+     * 忽略大小写以及单引号
+     *
+     * @param needField
+     * @param key
+     *
+     * @return
+     */
+    public static boolean ignoreCaseAndQuotesContains(List<String> needField, String key) {
+        String rKey = removeQuotes(key);
+        return needField.stream().anyMatch(t -> StringUtil.equalsIgnoreCase(removeQuotes(t), rKey));
+    }
+
+    private static byte[] toBytes(double value) {
+        long longValue = Double.doubleToRawLongBits(value);
+        byte[] byteRet = new byte[8];
+        for (int i = 0; i < 8; i++) {
+            byteRet[i] = (byte) ((longValue >> 8 * i) & 0xff);
+        }
+        return byteRet;
+    }
+
+    /**
      * 去除表名中的单引号
      *
      * @param table
@@ -490,18 +502,5 @@ public final class MysqlUtil {
             return table.substring(1, table.length() - 1);
         }
         return table;
-    }
-
-    /**
-     * 忽略大小写以及单引号
-     *
-     * @param needField
-     * @param key
-     *
-     * @return
-     */
-    public static boolean ignoreCaseAndQuotesContains(List<String> needField, String key) {
-        final String rKey = removeQuotes(key);
-        return needField.stream().anyMatch(t -> StringUtil.equalsIgnoreCase(removeQuotes(t), rKey));
     }
 }

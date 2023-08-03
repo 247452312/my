@@ -3,8 +3,8 @@ package indi.uhyils.rpc.registry.pojo;
 /**
  * 缓存的注册中心信息
  *
- * @date 文件创建日期 2023年03月30日 17时06分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年03月30日 17时06分
  */
 public class RegistryModelInfo {
 

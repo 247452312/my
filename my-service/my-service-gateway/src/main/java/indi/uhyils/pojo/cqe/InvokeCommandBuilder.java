@@ -2,6 +2,7 @@ package indi.uhyils.pojo.cqe;
 
 import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.util.Asserts;
+import indi.uhyils.util.StringUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,6 +12,8 @@ import java.util.Map.Entry;
  * @date 文件创建日期 2022年08月15日 09时19分
  */
 public class InvokeCommandBuilder {
+
+    private static final String SPLIT_DOT = ".";
 
     /**
      * 参数
@@ -32,6 +35,11 @@ public class InvokeCommandBuilder {
      */
     private InvokeTypeEnum invokeTypeEnum;
 
+    /**
+     * 别名
+     */
+    private String alias;
+
     public InvokeCommandBuilder() {
     }
 
@@ -47,7 +55,6 @@ public class InvokeCommandBuilder {
         return this;
     }
 
-
     /**
      * 添加get参数
      *
@@ -58,8 +65,8 @@ public class InvokeCommandBuilder {
     public InvokeCommandBuilder addGetMap(Map<String, String[]> getMap) {
         Map<String, Object> result = new HashMap<>();
         for (Entry<String, String[]> stringEntry : getMap.entrySet()) {
-            final String key = stringEntry.getKey();
-            final String[] value = stringEntry.getValue();
+            String key = stringEntry.getKey();
+            String[] value = stringEntry.getValue();
             if (value.length == 1) {
                 result.put(key, value[0]);
             } else {
@@ -81,7 +88,6 @@ public class InvokeCommandBuilder {
         this.path = path;
         return this;
     }
-
 
     /**
      * 添加自定义参数
@@ -125,7 +131,8 @@ public class InvokeCommandBuilder {
      * @return
      */
     public InvokeCommand build() {
-        final InvokeCommand invokeCommand = new InvokeCommand();
+        delParamAlias();
+        InvokeCommand invokeCommand = new InvokeCommand();
         invokeCommand.setHeader(this.header);
         invokeCommand.setParams(this.params);
         invokeCommand.setPath(this.path);
@@ -134,4 +141,29 @@ public class InvokeCommandBuilder {
         return invokeCommand;
     }
 
+    public void addAlias(String alias) {
+        this.alias = alias;
+    }
+
+    /**
+     * 删除入参中的alias
+     */
+    private void delParamAlias() {
+        if (StringUtil.isEmpty(this.alias)) {
+            return;
+        }
+        String s = this.alias + SPLIT_DOT;
+        Map<String, Object> result = new HashMap<>(8);
+        for (Entry<String, Object> entry : params.entrySet()) {
+            String key = entry.getKey();
+            if (key.startsWith(s)) {
+                String newKey = key.substring(s.length());
+                result.put(newKey, entry.getValue());
+                continue;
+            }
+            result.put(key, entry.getValue());
+        }
+        this.params.clear();
+        this.params.putAll(result);
+    }
 }

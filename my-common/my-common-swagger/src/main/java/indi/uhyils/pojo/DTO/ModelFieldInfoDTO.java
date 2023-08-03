@@ -6,16 +6,16 @@ import java.util.List;
 
 /**
  * {
- *     "name": "message",
- *     "type": "java.lang.String",
- *     "simpleType": "string",
- *     "desc": "参数说明",
- *     "schema": "", // 提要, 如果是泛型,则此处显示泛型里面的类名称
- *     "schemaSimple": "", // 简称题要
- *     "required": true, // 是否必要 returnType恒为true 以@NotNull为准如果没有NotNull则使用@ApiModelProperty中的required字段
- *     "childTypes": [
- *         {} // 如果是array 或者object,则此处应该有后续 注: 这里同returnType 不是field
- *     ]
+ * "name": "message",
+ * "type": "java.lang.String",
+ * "simpleType": "string",
+ * "desc": "参数说明",
+ * "schema": "", // 提要, 如果是泛型,则此处显示泛型里面的类名称
+ * "schemaSimple": "", // 简称题要
+ * "required": true, // 是否必要 returnType恒为true 以@NotNull为准如果没有NotNull则使用@ApiModelProperty中的required字段
+ * "childTypes": [
+ * {} // 如果是array 或者object,则此处应该有后续 注: 这里同returnType 不是field
+ * ]
  * }
  *
  * @author uhyils <247452312@qq.com>

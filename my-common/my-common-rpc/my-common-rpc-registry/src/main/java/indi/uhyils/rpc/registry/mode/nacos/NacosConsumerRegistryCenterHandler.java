@@ -29,11 +29,10 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 
 /**
- *
  * 消费者注册中心句柄 的nacos默认实现 此类为实现句柄的例子可以通过spi机制修改
  *
- * @date 文件创建日期 2023年04月23日 16时41分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年04月23日 16时41分
  */
 @RpcSpi(single = false)
 public class NacosConsumerRegistryCenterHandler extends AbstractConsumerRegistryCenterHandler implements EventListener, Listener {
@@ -100,38 +99,6 @@ public class NacosConsumerRegistryCenterHandler extends AbstractConsumerRegistry
         }
     }
 
-    /**
-     * service的event
-     *
-     * @param event
-     */
-    private void doServiceEvent(NamingEvent event) {
-        List<Instance> instances = event.getInstances();
-        RegistryEvent registryEvent = new RegistryEvent();
-        // key-> 集群名称 value -> netty信息
-        Map<String, List<NettyInfo>> nettyInfos = new HashMap<>(instances.size());
-        // 处理新增和修改
-        for (int i = 0; i < instances.size(); i++) {
-            Instance instance = instances.get(i);
-            if (!instance.isEnabled() || !instance.isHealthy()) {
-                continue;
-            }
-            NettyInfo nettyInfo = new NettyInfo();
-            nettyInfo.setIndexInColony(i);
-            nettyInfo.setHost(instance.getIp());
-            nettyInfo.setPort(instance.getPort());
-            nettyInfo.setWeight((int) instance.getWeight());
-            String clusterName = instance.getClusterName();
-            if (!nettyInfos.containsKey(clusterName)) {
-                nettyInfos.put(clusterName, new ArrayList<>());
-            }
-            nettyInfos.get(clusterName).add(nettyInfo);
-        }
-        registryEvent.setRegistryNettyInfoMap(nettyInfos);
-        onEvent(registryEvent);
-
-    }
-
     @Override
     public void close() {
         try {
@@ -176,5 +143,37 @@ public class NacosConsumerRegistryCenterHandler extends AbstractConsumerRegistry
         } catch (NacosException e) {
             throw new RpcException(e);
         }
+    }
+
+    /**
+     * service的event
+     *
+     * @param event
+     */
+    private void doServiceEvent(NamingEvent event) {
+        List<Instance> instances = event.getInstances();
+        RegistryEvent registryEvent = new RegistryEvent();
+        // key-> 集群名称 value -> netty信息
+        Map<String, List<NettyInfo>> nettyInfos = new HashMap<>(instances.size());
+        // 处理新增和修改
+        for (int i = 0; i < instances.size(); i++) {
+            Instance instance = instances.get(i);
+            if (!instance.isEnabled() || !instance.isHealthy()) {
+                continue;
+            }
+            NettyInfo nettyInfo = new NettyInfo();
+            nettyInfo.setIndexInColony(i);
+            nettyInfo.setHost(instance.getIp());
+            nettyInfo.setPort(instance.getPort());
+            nettyInfo.setWeight((int) instance.getWeight());
+            String clusterName = instance.getClusterName();
+            if (!nettyInfos.containsKey(clusterName)) {
+                nettyInfos.put(clusterName, new ArrayList<>());
+            }
+            nettyInfos.get(clusterName).add(nettyInfo);
+        }
+        registryEvent.setRegistryNettyInfoMap(nettyInfos);
+        onEvent(registryEvent);
+
     }
 }

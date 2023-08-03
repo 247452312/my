@@ -58,7 +58,7 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
     @Override
     public User findUserByTokenInRedis(Token token) {
         String tokenStr = token.getToken();
-        final Optional<UserDTO> userDTOOpt = redisPoolHandle.getUser(tokenStr);
+        Optional<UserDTO> userDTOOpt = redisPoolHandle.getUser(tokenStr);
         if (!userDTOOpt.isPresent()) {
             return null;
         }
@@ -90,19 +90,19 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
 
     @Override
     public Boolean checkCacheUserId(User userId) {
-        final Optional<Long> aLong = userId.getUnique().map(Identifier::getId);
+        Optional<Long> aLong = userId.getUnique().map(Identifier::getId);
         return aLong.map(redisPoolHandle::haveUserId).orElse(false);
     }
 
     @Override
     public boolean removeUserInCacheById(User userId) {
-        final Optional<Identifier> unique = userId.getUnique();
+        Optional<Identifier> unique = userId.getUnique();
         return unique.map(t -> redisPoolHandle.removeUserById(t.getId())).orElse(false);
     }
 
     @Override
     public void cacheUser(Token token, User user) {
-        final UserDTO userDTO = assembler.toDTO(user);
+        UserDTO userDTO = assembler.toDTO(user);
         Asserts.assertTrue(userDTO != null, "没有找到用户信息.无法进行缓存");
         redisPoolHandle.addUser(token.getToken(), userDTO);
     }
@@ -114,14 +114,14 @@ public class UserRepositoryImpl extends AbstractRepository<User, UserDO, UserDao
 
     @Override
     public void checkPassword(User user, Password password) {
-        final Optional<Identifier> unique = user.getUnique();
-        final Integer integer = unique.map(t -> dao.checkUserPassword(t.getId(), password.encode())).orElse(0);
+        Optional<Identifier> unique = user.getUnique();
+        Integer integer = unique.map(t -> dao.checkUserPassword(t.getId(), password.encode())).orElse(0);
         Asserts.assertTrue(integer == 1, "密码错误");
     }
 
     @Override
     public boolean checkUserNameRepeat(User user) {
-        final Optional<UserDO> userDOOpt = user.toData();
+        Optional<UserDO> userDOOpt = user.toData();
         Asserts.assertTrue(userDOOpt.isPresent(), "用户信息错误,无法进行分析用户名称是否重复");
         UserDO userDO = userDOOpt.get();
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery();

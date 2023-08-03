@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * 注册中心发来的消息
  *
- * @date 文件创建日期 2023年03月30日 16时49分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年03月30日 16时49分
  */
 public class RegistryEvent {
 

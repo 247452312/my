@@ -43,7 +43,7 @@ public class RoleRepositoryImpl extends AbstractRepository<Role, RoleDO, RoleDao
         RoleDeptDO roleDeptDO = new RoleDeptDO();
         roleDeptDO.setRoleId(roleId.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("roleId不存在")));
         for (Dept deptId : deptIds) {
-            final Optional<Identifier> unique = deptId.getUnique();
+            Optional<Identifier> unique = deptId.getUnique();
             unique.ifPresent(identifier -> {
                 roleDeptDO.setDeptId(identifier.getId());
                 roleDeptDO.preInsert();

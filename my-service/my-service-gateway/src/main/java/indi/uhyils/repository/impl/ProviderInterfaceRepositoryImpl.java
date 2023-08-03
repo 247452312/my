@@ -38,7 +38,7 @@ public class ProviderInterfaceRepositoryImpl extends AbstractRepository<Provider
 
     @Override
     public ProviderInterface find(Integer invokeType, String database, String table) {
-        final LambdaQueryWrapper<ProviderInterfaceDO> queryWrapper = Wrappers.lambdaQuery();
+        LambdaQueryWrapper<ProviderInterfaceDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(ProviderInterfaceDO::getInvokeType, invokeType);
         queryWrapper.eq(ProviderInterfaceDO::getDatabase, database);
         queryWrapper.eq(ProviderInterfaceDO::getTable, table);
@@ -47,10 +47,10 @@ public class ProviderInterfaceRepositoryImpl extends AbstractRepository<Provider
 
     @Override
     public AbstractDataNode<ProviderInterfaceDO> find(String database, String table) {
-        final LambdaQueryWrapper<ProviderInterfaceDO> queryWrapper = Wrappers.lambdaQuery();
+        LambdaQueryWrapper<ProviderInterfaceDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(ProviderInterfaceDO::getDatabase, database);
         queryWrapper.eq(ProviderInterfaceDO::getTable, table);
-        final ProviderInterfaceDO nodeDO = dao.selectOne(queryWrapper);
+        ProviderInterfaceDO nodeDO = dao.selectOne(queryWrapper);
         return assembler.toEntity(nodeDO);
     }
 

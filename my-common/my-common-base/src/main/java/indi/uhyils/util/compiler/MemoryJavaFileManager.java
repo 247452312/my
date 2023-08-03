@@ -63,7 +63,7 @@ public class MemoryJavaFileManager extends ForwardingJavaFileManager<JavaFileMan
 
     static class MemoryInputJavaFileObject extends SimpleJavaFileObject {
 
-        final String code;
+        String code;
 
         MemoryInputJavaFileObject(String name, String code) {
             super(URI.create("string:///" + name), Kind.SOURCE);
@@ -78,7 +78,7 @@ public class MemoryJavaFileManager extends ForwardingJavaFileManager<JavaFileMan
 
     class MemoryOutputJavaFileObject extends SimpleJavaFileObject {
 
-        final String name;
+        String name;
 
         MemoryOutputJavaFileObject(String name) {
             super(URI.create("string:///" + name), Kind.CLASS);

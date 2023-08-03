@@ -47,9 +47,9 @@ public class IColumns extends AbstractSysTable {
 
     @Override
     public NodeInvokeResult doGetResultNoParams() {
-        final Object schemaName = params.get("schema_name");
-        final ArrayList<Arg> args = new ArrayList<>();
-        final Optional<UserDTO> userOptional = UserInfoHelper.get();
+        Object schemaName = params.get("schema_name");
+        ArrayList<Arg> args = new ArrayList<>();
+        Optional<UserDTO> userOptional = UserInfoHelper.get();
         if (!userOptional.isPresent()) {
             throw Asserts.makeException("未登录");
         }
@@ -59,13 +59,13 @@ public class IColumns extends AbstractSysTable {
         }
         List<CallNodeDTO> callNodeDTOS = callNodeService.queryWithAllNode(args);
 
-        final List<Map<String, Object>> newResults = new ArrayList<>();
+        List<Map<String, Object>> newResults = new ArrayList<>();
 
         Set<String> dbSet = new HashSet<>();
         callNodeDTOS.stream().filter(t -> {
-            final String url = t.getUrl();
-            final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(url);
-            final String database = splitDataBaseUrl.getKey();
+            String url = t.getUrl();
+            Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(url);
+            String database = splitDataBaseUrl.getKey();
             if (dbSet.contains(database)) {
                 return false;
             } else {
@@ -73,22 +73,22 @@ public class IColumns extends AbstractSysTable {
                 return true;
             }
         }).forEach(t -> {
-            final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(t.getUrl());
-            final ColumnsInfo columnsInfo = new ColumnsInfo();
+            Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(t.getUrl());
+            ColumnsInfo columnsInfo = new ColumnsInfo();
 
             newResults.add(JSONObject.parseObject(JSONObject.toJSONString(columnsInfo)));
         });
 
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
+        NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
         if (CollectionUtil.isNotEmpty(newResults)) {
-            final List<Map<String, Object>> tempResults = new ArrayList<>();
-            final Map<String, Object> first = newResults.get(0);
-            final Map<String, String> fieldNameMap = first.keySet().stream().collect(Collectors.toMap(t -> t, t -> StringUtil.toUnderline(t).toUpperCase()));
+            List<Map<String, Object>> tempResults = new ArrayList<>();
+            Map<String, Object> first = newResults.get(0);
+            Map<String, String> fieldNameMap = first.keySet().stream().collect(Collectors.toMap(t -> t, t -> StringUtil.toUnderline(t).toUpperCase()));
             for (Map<String, Object> newResult : newResults) {
                 Map<String, Object> tempNewResultMap = new HashMap<>(newResult.size());
                 for (Entry<String, Object> newResultItem : newResult.entrySet()) {
-                    final String key = newResultItem.getKey();
-                    final Object value = newResultItem.getValue();
+                    String key = newResultItem.getKey();
+                    Object value = newResultItem.getValue();
                     tempNewResultMap.put(fieldNameMap.get(key), value);
                 }
                 tempResults.add(tempNewResultMap);
@@ -97,7 +97,7 @@ public class IColumns extends AbstractSysTable {
             newResults.addAll(tempResults);
         }
         nodeInvokeResult.setResult(newResults);
-        final List<FieldInfo> fieldInfos = new ArrayList<>();
+        List<FieldInfo> fieldInfos = new ArrayList<>();
         fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "TABLE_CATALOG", "TABLE_CATALOG", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
         fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "TABLE_SCHEMA", "TABLE_SCHEMA", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
         fieldInfos.add(new FieldInfo("information_schema", "columns", "columns", "TABLE_NAME", "TABLE_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));

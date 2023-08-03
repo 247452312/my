@@ -75,6 +75,12 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
         init(clazz);
     }
 
+    /**
+     * 创建时不初始化 兼容spi
+     */
+    public RpcProxyDefaultHandler() {
+    }
+
     @Override
     public void init(Object... params) {
         if (params == null || !(params[0] instanceof Class)) {
@@ -88,31 +94,6 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
             initRegistry(clazz);
         }
         consumerResponseObjectExtensions = RpcSpiManager.createOrGetExtensionListByClassNoInit(RpcStep.class, ConsumerResponseObjectExtension.class);
-    }
-
-    /**
-     * 配置中是否使用了懒加载
-     *
-     * @return
-     */
-    private boolean isCheck() {
-        RpcConfig instance = RpcConfigFactory.getInstance();
-        ConsumerConfig consumer = instance.getConsumer();
-        return consumer.getCheck();
-    }
-
-    private void initRegistry(Class<?> clazz) {
-        try {
-            this.registry = RegistryFactory.createConsumer(clazz);
-        } catch (Exception e) {
-            LogUtil.error(this, e);
-        }
-    }
-
-    /**
-     * 创建时不初始化 兼容spi
-     */
-    public RpcProxyDefaultHandler() {
     }
 
     @Override
@@ -136,6 +117,25 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
         // 解析结果 - 正常返回或者报错
         return parseResult(method, invoke);
 
+    }
+
+    /**
+     * 配置中是否使用了懒加载
+     *
+     * @return
+     */
+    private boolean isCheck() {
+        RpcConfig instance = RpcConfigFactory.getInstance();
+        ConsumerConfig consumer = instance.getConsumer();
+        return consumer.getCheck();
+    }
+
+    private void initRegistry(Class<?> clazz) {
+        try {
+            this.registry = RegistryFactory.createConsumer(clazz);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+        }
     }
 
     /**
@@ -189,7 +189,7 @@ public class RpcProxyDefaultHandler implements RpcProxyHandlerInterface {
     private Object parseResult(Method method, RpcData invoke) {
         RpcResponseContent content = (RpcResponseContent) invoke.content();
 
-        final RpcResponseTypeEnum parse = RpcResponseTypeEnum.parse(content.responseType());
+        RpcResponseTypeEnum parse = RpcResponseTypeEnum.parse(content.responseType());
         switch (parse) {
             case EXCEPTION:
                 throw new MyRpcProviderThrowException((Throwable) JSONObject.parse(content.getResponseContent()));

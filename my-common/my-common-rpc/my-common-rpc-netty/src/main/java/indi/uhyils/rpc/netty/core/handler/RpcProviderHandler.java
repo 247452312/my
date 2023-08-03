@@ -41,20 +41,6 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<ByteBuf> {
         providerRequestByteFilters = RpcSpiManager.createOrGetExtensionListByClassNoInit(RpcStep.class, ProviderRequestByteExtension.class);
     }
 
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws InterruptedException {
-        byte[] bytes = receiveByte(msg);
-        final byte[] responseBytes = invokeRequestBytes(bytes, providerRequestByteFilters, callback);
-        send(ctx, responseBytes);
-    }
-
-    private byte[] receiveByte(ByteBuf msg) {
-        /*接收并释放byteBuf*/
-        byte[] bytes = new byte[msg.readableBytes()];
-        msg.readBytes(bytes);
-        return bytes;
-    }
-
     public static byte[] invokeRequestBytes(byte[] bytes, List<ProviderRequestByteExtension> providerRequestByteFilters, RpcCallBack callback) throws InterruptedException {
         // ProviderRequestByteFilter
         for (ProviderRequestByteExtension filter : providerRequestByteFilters) {
@@ -74,6 +60,20 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<ByteBuf> {
         RpcData invoke = rpcInvoker.invoke(context);
         LogUtil.info("接收端发送唯一标示:{}", invoke.unique().toString());
         return invoke.toBytes();
+    }
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws InterruptedException {
+        byte[] bytes = receiveByte(msg);
+        byte[] responseBytes = invokeRequestBytes(bytes, providerRequestByteFilters, callback);
+        send(ctx, responseBytes);
+    }
+
+    private byte[] receiveByte(ByteBuf msg) {
+        /*接收并释放byteBuf*/
+        byte[] bytes = new byte[msg.readableBytes()];
+        msg.readBytes(bytes);
+        return bytes;
     }
 
     private void send(ChannelHandlerContext ctx, byte[] responseBytes) {

@@ -30,7 +30,7 @@ public interface DataNode {
      * 获取结果集
      *
      * @param header
-     * @param params
+     * @param params 入参
      *
      * @return
      */

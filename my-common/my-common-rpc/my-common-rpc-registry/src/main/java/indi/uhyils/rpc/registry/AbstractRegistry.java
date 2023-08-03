@@ -5,8 +5,8 @@ import indi.uhyils.rpc.registry.mode.RegistryCenterHandler;
 /**
  * 注册中心层模板
  *
- * @date 文件创建日期 2023年04月23日 15时48分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年04月23日 15时48分
  */
 public abstract class AbstractRegistry implements Registry {
 

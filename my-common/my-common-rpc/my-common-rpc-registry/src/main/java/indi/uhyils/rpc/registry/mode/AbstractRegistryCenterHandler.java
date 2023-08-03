@@ -4,11 +4,10 @@ import indi.uhyils.rpc.registry.pojo.RegistryModelInfo;
 import java.util.List;
 
 /**
- *
  * 是{@link RegistryCenterHandler}的推荐实现,可以在此基础上小部分的调整具体逻辑
  *
- * @date 文件创建日期 2023年03月30日 17时05分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年03月30日 17时05分
  */
 public abstract class AbstractRegistryCenterHandler implements RegistryCenterHandler {
 
@@ -30,15 +29,15 @@ public abstract class AbstractRegistryCenterHandler implements RegistryCenterHan
         otherDoInit();
     }
 
-    /**
-     * 子类进行初始化
-     */
-    protected abstract void otherDoInit();
-
     @Override
     public List<RegistryModelInfo> cacheInfo() {
         return registryModelInfo;
     }
+
+    /**
+     * 子类进行初始化
+     */
+    protected abstract void otherDoInit();
 
     /**
      * 获取自身在指定注册中心内的信息

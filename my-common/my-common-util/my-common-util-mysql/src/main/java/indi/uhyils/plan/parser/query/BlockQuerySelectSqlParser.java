@@ -106,10 +106,10 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
             return new MySQLSelectItem(new SQLIdentifierExpr("&" + newPlan.getId()), selectItem.getAlias(), selectItem);
         }
         if (expr instanceof SQLMethodInvokeExpr) {
-            final SQLMethodInvokeExpr sqlMethodInvokeExpr = (SQLMethodInvokeExpr) expr;
-            final String methodName = sqlMethodInvokeExpr.getMethodName();
-            final List<SQLExpr> arguments = sqlMethodInvokeExpr.getArguments();
-            final List<SQLExpr> newArguments = parseMethodArgument(result, headers, arguments);
+            SQLMethodInvokeExpr sqlMethodInvokeExpr = (SQLMethodInvokeExpr) expr;
+            String methodName = sqlMethodInvokeExpr.getMethodName();
+            List<SQLExpr> arguments = sqlMethodInvokeExpr.getArguments();
+            List<SQLExpr> newArguments = parseMethodArgument(result, headers, arguments);
             MethodInvokePlan newPlan = planFactory.buildMethodInvokePlan(headers, index, methodName, newArguments, sqlMethodInvokeExpr);
             result.add(newPlan);
             return new MySQLSelectItem(new SQLIdentifierExpr("&" + newPlan.getId()), selectItem.getAlias(), selectItem, newPlan.getMethodEnum());
@@ -129,10 +129,10 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         for (int i = 0; i < arguments.size(); i++) {
             SQLExpr argument = arguments.get(i);
             if (argument instanceof SQLMethodInvokeExpr) {
-                final SQLMethodInvokeExpr sqlMethodInvokeExpr = (SQLMethodInvokeExpr) argument;
-                final String methodName = sqlMethodInvokeExpr.getMethodName();
-                final List<SQLExpr> argumentsItem = sqlMethodInvokeExpr.getArguments();
-                final List<SQLExpr> newArgumentsItem = parseMethodArgument(plans, headers, argumentsItem);
+                SQLMethodInvokeExpr sqlMethodInvokeExpr = (SQLMethodInvokeExpr) argument;
+                String methodName = sqlMethodInvokeExpr.getMethodName();
+                List<SQLExpr> argumentsItem = sqlMethodInvokeExpr.getArguments();
+                List<SQLExpr> newArgumentsItem = parseMethodArgument(plans, headers, argumentsItem);
                 MysqlPlan newPlan = planFactory.buildMethodInvokePlan(headers, i, methodName, newArgumentsItem, sqlMethodInvokeExpr);
                 plans.add(newPlan);
                 result.add(new MySqlCharExpr("&" + newPlan.getId()));
@@ -273,8 +273,8 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 return sqlBinaryOpExprs;
             }
             if (right instanceof SQLQueryExpr) {
-                final List<MysqlPlan> mysqlPlans = reExecute(right.toString(), headers, (Consumer<List<MysqlPlan>>) plans::addAll);
-                final MysqlPlan lastMysqlPlan = mysqlPlans.get(mysqlPlans.size() - 1);
+                List<MysqlPlan> mysqlPlans = reExecute(right.toString(), headers, (Consumer<List<MysqlPlan>>) plans::addAll);
+                MysqlPlan lastMysqlPlan = mysqlPlans.get(mysqlPlans.size() - 1);
                 SQLBinaryOpExpr sqlBinaryOpExpr = new SQLBinaryOpExpr(left, whereSqlBinaryOpExpr.getOperator(), new MySqlCharExpr("&" + lastMysqlPlan.getId()));
                 sqlBinaryOpExprs.add(sqlBinaryOpExpr);
                 return sqlBinaryOpExprs;
@@ -324,12 +324,12 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
                 plans.addAll(parse);
                 MysqlPlan lastPlan = parse.get(parse.size() - 1);
                 long lastPlanId = lastPlan.getId();
-                final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+                MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
                 return new SQLExprTableSource(new SQLPropertyExpr(mysqlTcpInfo.getDatabase(), "&" + lastPlanId), from.getAlias());
             });
             return pool.getOrCreateObject(sqlExprTableSource, where);
         } else {
-            return pool.getOrCreateObject(from, where);
+            return pool.getOrCreateObject((SQLExprTableSource) from, where);
         }
     }
 
@@ -343,8 +343,8 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     private List<MysqlPlan> parseSelect(SQLSelect select, Map<String, String> headers) {
         // 1. 处理where中的子查询
         MySqlSelectQueryBlock query = (MySqlSelectQueryBlock) select.getQuery();
-        final ArrayList<MysqlPlan> plans = new ArrayList<>();
-        final List<SQLBinaryOpExpr> where = parseSQLExprWhere(plans, query.getWhere(), headers);
+        ArrayList<MysqlPlan> plans = new ArrayList<>();
+        List<SQLBinaryOpExpr> where = parseSQLExprWhere(plans, query.getWhere(), headers);
 
         // 2.处理from后需要查询的条件
         List<MysqlPlan> mainPlans = makeMainPlan(plans, transFrom(plans, query.getFrom(), where, headers), headers);
@@ -352,7 +352,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
         // 3.selectList 查询字段的子查询
         MysqlPlan lastMainPlan = mainPlans.get(mainPlans.size() - 1);
         // 解析sql语句中字段
-        final List<MySQLSelectItem> selectList = parseSelectList(plans, query.getSelectList(), headers);
+        List<MySQLSelectItem> selectList = parseSelectList(plans, query.getSelectList(), headers);
         // 添加结果字段映射节点
         plans.add(makeResultMappingPlan(headers, lastMainPlan, selectList));
 

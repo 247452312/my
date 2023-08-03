@@ -63,7 +63,7 @@ public class DeptRepositoryImpl extends AbstractRepository<Dept, DeptDO, DeptDao
 
     @Override
     public void cleanMenu(Dept deptEntity) {
-        final Long deptId = deptEntity.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("未找到deptId"));
+        Long deptId = deptEntity.getUnique().map(Identifier::getId).orElseThrow(() -> Asserts.makeException("未找到deptId"));
         dao.deleteDeptMenuMiddleByDeptId(deptId);
     }
 

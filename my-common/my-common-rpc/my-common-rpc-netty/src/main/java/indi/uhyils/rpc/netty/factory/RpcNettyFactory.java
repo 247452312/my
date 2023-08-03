@@ -53,6 +53,17 @@ public class RpcNettyFactory {
     }
 
     /**
+     * 创建一个自己服务里面的netty
+     *
+     * @param target
+     *
+     * @return
+     */
+    public static RpcNetty createSelfNetty(Class<?> target) throws Exception {
+        return new RpcSelfNetty(target);
+    }
+
+    /**
      * 创建一个服务消费者
      *
      * @param host
@@ -81,16 +92,5 @@ public class RpcNettyFactory {
         String registryName = (String) RpcConfigFactory.getCustomOrDefault(PROVIDER_NETTY_SPI_NAME, PROVIDER_NETTY_DEFAULT_NAME);
         // 返回一个构造完成的消费者
         return (RpcNetty) RpcSpiManager.createOrGetExtensionByClass(RpcNetty.class, registryName, outTime, callBack, host, port);
-    }
-
-    /**
-     * 创建一个自己服务里面的netty
-     *
-     * @param target
-     *
-     * @return
-     */
-    public static RpcNetty createSelfNetty(Class<?> target) throws Exception {
-        return new RpcSelfNetty(target);
     }
 }

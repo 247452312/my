@@ -49,7 +49,7 @@ public class RegistryFactory {
         // spi 获取消费者的注册者信息
         String registryName = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_SPI_NAME, DEFAULT_REGISTRY);
         // 返回一个构造完成的消费者
-        final ConsumerRegistry orGetExtensionByClass = (ConsumerRegistry) RpcSpiManager.createOrGetExtensionByClass(Registry.class, registryName, clazz);
+        ConsumerRegistry orGetExtensionByClass = (ConsumerRegistry) RpcSpiManager.createOrGetExtensionByClass(Registry.class, registryName, clazz);
         LogUtil.debug("rpc消费者创建成功,class:{}", clazz.getName());
         RegistryContent.CONSUMER_REGISTRY.add(orGetExtensionByClass);
         return orGetExtensionByClass;
@@ -67,7 +67,7 @@ public class RegistryFactory {
         // spi 获取消费者的注册者信息
         String registryName = (String) RpcConfigFactory.getCustomOrDefault(REGISTRY_PROVIDER_SPI_NAME, DEFAULT_PROVIDER_REGISTRY);
         // 返回一个构造完成的生产者
-        final ProviderRegistry orGetExtensionByClass = (ProviderRegistry) RpcSpiManager.createOrGetExtensionByClass(Registry.class, registryName, clazz, bean);
+        ProviderRegistry orGetExtensionByClass = (ProviderRegistry) RpcSpiManager.createOrGetExtensionByClass(Registry.class, registryName, clazz, bean);
         LogUtil.debug("rpc生产者创建成功,class:{}", clazz.getName());
         RegistryContent.PROVIDER_REGISTRY.add(orGetExtensionByClass);
         return orGetExtensionByClass;

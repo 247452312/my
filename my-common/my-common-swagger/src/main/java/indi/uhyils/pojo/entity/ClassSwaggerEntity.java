@@ -36,12 +36,12 @@ public abstract class ClassSwaggerEntity extends AbstractEntity<String> {
         this.swaggerDTO = parseClass();
     }
 
+    public ClassSwaggerDTO toDTO() {
+        return swaggerDTO;
+    }
+
     /**
      * 解析传入的class 子类应该去实现如何解析对应类型的类的swagger提示
      */
     protected abstract ClassSwaggerDTO parseClass();
-
-    public ClassSwaggerDTO toDTO() {
-        return swaggerDTO;
-    }
 }

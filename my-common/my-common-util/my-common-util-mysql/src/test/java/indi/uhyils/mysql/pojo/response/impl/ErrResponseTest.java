@@ -15,11 +15,11 @@ public class ErrResponseTest {
 
     @Test
     public void errResponseToByteTest() {
-        final MysqlTcpInfo value = new MysqlTcpInfo();
+        MysqlTcpInfo value = new MysqlTcpInfo();
         value.setStatus(MysqlHandlerStatusEnum.PASSED);
         MysqlContent.MYSQL_TCP_INFO.set(value);
-        final byte[] bytes = MysqlUtil.mergeListBytes(ErrResponse.build("错误信息").toByte());
-        final String dump = MysqlUtil.dump(bytes);
+        byte[] bytes = MysqlUtil.mergeListBytes(ErrResponse.build("错误信息").toByte());
+        String dump = MysqlUtil.dump(bytes);
         System.out.println(dump);
 
 

@@ -15,7 +15,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -82,6 +81,127 @@ public class RpcSpiManager {
         this.type = type;
     }
 
+    /**
+     * 获取启动类名称
+     *
+     * @return
+     */
+    public static Class getMainClass() {
+        StackTraceElement[] stackTraceElements = new RuntimeException().getStackTrace();
+        for (StackTraceElement stackTraceElement : stackTraceElements) {
+            if ("main".equals(stackTraceElement.getMethodName())) {
+                try {
+                    return Class.forName(stackTraceElement.getClassName());
+                } catch (ClassNotFoundException e) {
+                    LogUtil.error(RpcSpiManager.class, e);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 创建时化时顺带初始化
+     *
+     * @param root
+     * @param name
+     * @param args
+     * @param <T>
+     *
+     * @return
+     */
+    public static <T extends RpcSpiExtension> RpcSpiExtension createOrGetExtensionByClass(Class<T> root, String name, Object... args) throws InterruptedException {
+        RpcSpiExtension extensionByClass = createOrGetExtensionByClassNoInit(root, name);
+
+        RpcSpi annotation = extensionByClass.getClass().getAnnotation(RpcSpi.class);
+        if (annotation != null) {
+            boolean single = annotation.single();
+
+            if (single) {
+                /*单例的初始化过程*/
+                Map<String, Boolean> stringBooleanMap = init.computeIfAbsent(root, k -> new HashMap<>());
+                Boolean isInit = stringBooleanMap.computeIfAbsent(name, k -> Boolean.FALSE);
+
+                if (Boolean.FALSE.equals(isInit)) {
+                    extensionByClass.init(args);
+                    stringBooleanMap.put(name, Boolean.TRUE);
+                }
+            } else {
+                /*原型的初始化过程*/
+                extensionByClass.init(args);
+            }
+        }
+        return extensionByClass;
+    }
+
+    /**
+     * 根据rpcClass中的类作为root,以目标class获取指定的所有类,根据order排序的linkList
+     *
+     * @param root        rpcClass中定义的类
+     * @param targetClass 要获取的类
+     *
+     * @return
+     */
+    public static <T extends RpcSpiExtension, E extends T> List<E> createOrGetExtensionListByClassNoInit(Class<T> root, Class<E> targetClass, Object... args) {
+        // 看看加载的类中是否有目标root
+        if (!cacheClass.containsKey(root)) {
+            throw new RpcBeanNotFoundException(root);
+        }
+        //缓存中的key,如果有 直接返回
+        String cacheKey = root.getName() + " : " + targetClass.getName();
+        if (hotExtensionCache.containsKey(cacheKey)) {
+            List<RpcSpiExtension> objects = hotExtensionCache.get(cacheKey);
+            return objects.stream().map(t -> (E) t).map(RpcSpiManager::checkSingleAndGetResult).filter(Objects::nonNull).collect(Collectors.toList());
+        }
+
+        /*以下代表 此类在spi中并且没有初始化过,或者初始化过 但是targetClass没有单独拿出来获取过*/
+
+        // 初始化缓存,加速获取用
+        Map<String, RpcSpiExtension> cacheMap = MapUtil.putIfAbsent(cacheClassInstanceMap, root, () -> new HashMap<>(cacheClass.get(root).size()), false);
+
+        Map<String, Class<?>> classMap = cacheClass.get(root);
+        ArrayList<String> list = new ArrayList<>(classMap.keySet());
+        // 获取结果,注 这里面不是克隆的 而是原型模式中的原型 所以不需要clone
+        List<RpcSpiExtension> result = list.stream()
+                                           //将对应的转换为object 缓存
+                                           .map(value -> {
+                                               Class<?> clazz = classMap.get(value);
+                                               // 筛选出所有rootClass中 targetClass的子类
+                                               if (!targetClass.isAssignableFrom(clazz)) {
+                                                   return null;
+                                               }
+
+                                               //从缓存中拿出已经有的,防止重复初始化
+                                               if (cacheMap.containsKey(value)) {
+                                                   return cacheMap.get(value);
+                                               } else {
+                                                   RpcSpiExtension instance = null;
+                                                   Constructor<?> constructor;
+                                                   try {
+                                                       // 获取空的构造器
+                                                       constructor = clazz.getConstructor();
+                                                   } catch (Exception e) {
+                                                       throw new IllegalStateException(root.getName() + " 必须要空构造器");
+                                                   }
+
+                                                   try {
+                                                       // 初始化
+                                                       instance = (RpcSpiExtension) constructor.newInstance();
+                                                       instance.init(args);
+                                                   } catch (Exception e) {
+                                                       LogUtil.error(RpcSpiManager.class, e);
+                                                   }
+                                                   cacheMap.put(value, instance);
+                                                   return instance;
+                                               }
+                                           })
+                                           .filter(Objects::nonNull)
+                                           .sorted(Comparator.comparingInt(value -> value.getClass().getAnnotation(RpcSpi.class).order())).collect(Collectors.toList());
+
+        hotExtensionCache.put(cacheKey, result);
+
+        return result.stream().map(t -> (E) t).map(RpcSpiManager::checkSingleAndGetResult).filter(Objects::nonNull).collect(Collectors.toList());
+    }
 
     /**
      * 初始化cacheClass 只是把class加载进来,并不会初始化bean
@@ -100,7 +220,7 @@ public class RpcSpiManager {
         }
 
         // 扫描启动类下的myRpc注解 然后扫描此注解下的所有spi
-        final List<Class<?>> rpcSpiList = scanRunClassMyRpcPackageSpiSubclass();
+        List<Class<?>> rpcSpiList = scanRunClassMyRpcPackageSpiSubclass();
         /*将扫描出来的类分发到各个类里面去*/
         Set<Class<?>> rootClazz = cacheClass.keySet();
         // 遍历每个spi类
@@ -164,12 +284,6 @@ public class RpcSpiManager {
             return new ArrayList<>();
         }
         return result;
-    }
-
-    public Map<String, Class<?>> load() {
-        Map<String, Class<?>> extensions = new HashMap<>(16);
-        loadDirs(extensions, RPC_EXTENSION_PATH, type.getName());
-        return extensions;
     }
 
     /**
@@ -246,6 +360,95 @@ public class RpcSpiManager {
     }
 
     /**
+     * 判断clazz是否是扩展点
+     *
+     * @param clazz
+     *
+     * @return
+     */
+    private static boolean haveSpi(Class<?> clazz) {
+        return clazz.getAnnotation(RpcSpi.class) != null;
+    }
+
+    /**
+     * 根据名称获取指定扩展点的类
+     *
+     * @param root 指定扩展点(rpcClass文件中的类)
+     * @param name 名称,唯一
+     *
+     * @return 单例模式返回单例, 原型模式返回clone后的
+     */
+    private static <T extends RpcSpiExtension> RpcSpiExtension createOrGetExtensionByClassNoInit(Class<T> root, String name) {
+        // 看看加载的类中是否有目标root
+        if (!cacheClass.containsKey(root)) {
+            throw new RpcRunTimeException("rpcSpi 没有类:[" + root.getName() + "] 请在META-INF/rpcClass中添加需要加载的类");
+        }
+
+        // 如果应该加载的地方没有此名称
+        if (!cacheClass.get(root).containsKey(name)) {
+            throw new RpcRunTimeException("rpcSpi 没有加载此扩展,请检查是否在 META-INF/rpc/" + root.getName() + " 文件中添加需要扩展的类,名称: " + name);
+        }
+
+        // 初始化缓存,加速获取用
+        Map<String, RpcSpiExtension> cacheMap = MapUtil.putIfAbsent(cacheClassInstanceMap, root, () -> new HashMap<>(cacheClass.get(root).size()));
+
+        // 查询之前缓存里有没有
+        if (cacheMap.containsKey(name)) {
+            return checkSingleAndGetResult(cacheMap.get(name));
+        } else {
+            synchronized (cacheMap) {
+                // 双重检测,防止重复
+                if (cacheMap.containsKey(name)) {
+                    return checkSingleAndGetResult(cacheMap.get(name));
+                }
+                // 之前缓存里也没有 只能初始化一次了
+                Class<?> clazz = cacheClass.get(root).get(name);
+                Constructor<?> constructor;
+                try {
+                    // 获取空的构造器
+                    constructor = clazz.getConstructor();
+                } catch (Exception e) {
+                    throw new IllegalStateException(root.getName() + " 必须要空构造器");
+                }
+                RpcSpiExtension instance = null;
+                try {
+                    // 初始化
+                    instance = (RpcSpiExtension) constructor.newInstance();
+                } catch (Exception e) {
+                    LogUtil.error(RpcSpiManager.class, e);
+                }
+                //放入缓存
+                cacheMap.put(name, instance);
+                return checkSingleAndGetResult(instance);
+            }
+        }
+    }
+
+    /**
+     * 扫描spi是否是单例,如果不是,则使用clone方法
+     *
+     * @param obj
+     *
+     * @return
+     */
+    private static <T extends RpcSpiExtension> T checkSingleAndGetResult(T obj) {
+        RpcSpi annotation = obj.getClass().getAnnotation(RpcSpi.class);
+        // 如果是单例模式,直接返回
+        if (annotation.single()) {
+            return obj;
+        } else {
+            //调用clone方法
+            return (T) obj.rpcClone();
+        }
+    }
+
+    public Map<String, Class<?>> load() {
+        Map<String, Class<?>> extensions = new HashMap<>(16);
+        loadDirs(extensions, RPC_EXTENSION_PATH, type.getName());
+        return extensions;
+    }
+
+    /**
      * 读取执行resource所在的文件夹
      *
      * @param extensions
@@ -269,25 +472,6 @@ public class RpcSpiManager {
         } catch (IOException e) {
             LogUtil.error(e, "找不到资源文件" + dir + name);
         }
-    }
-
-    /**
-     * 获取启动类名称
-     *
-     * @return
-     */
-    public static Class getMainClass() {
-        StackTraceElement[] stackTraceElements = new RuntimeException().getStackTrace();
-        for (StackTraceElement stackTraceElement : stackTraceElements) {
-            if ("main".equals(stackTraceElement.getMethodName())) {
-                try {
-                    return Class.forName(stackTraceElement.getClassName());
-                } catch (ClassNotFoundException e) {
-                    LogUtil.error(RpcSpiManager.class, e);
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -347,17 +531,6 @@ public class RpcSpiManager {
     }
 
     /**
-     * 判断clazz是否是扩展点
-     *
-     * @param clazz
-     *
-     * @return
-     */
-    private static boolean haveSpi(Class<?> clazz) {
-        return clazz.getAnnotation(RpcSpi.class) != null;
-    }
-
-    /**
      * 查询className
      *
      * @param clazz
@@ -374,181 +547,6 @@ public class RpcSpiManager {
             return name.toLowerCase();
         }
         return annotation.name();
-    }
-
-    /**
-     * 创建时化时顺带初始化
-     *
-     * @param root
-     * @param name
-     * @param args
-     * @param <T>
-     *
-     * @return
-     */
-    public static <T extends RpcSpiExtension> RpcSpiExtension createOrGetExtensionByClass(Class<T> root, String name, Object... args) throws InterruptedException {
-        RpcSpiExtension extensionByClass = createOrGetExtensionByClassNoInit(root, name);
-
-        RpcSpi annotation = extensionByClass.getClass().getAnnotation(RpcSpi.class);
-        if (annotation != null) {
-            boolean single = annotation.single();
-
-            if (single) {
-                /*单例的初始化过程*/
-                Map<String, Boolean> stringBooleanMap = init.computeIfAbsent(root, k -> new HashMap<>());
-                Boolean isInit = stringBooleanMap.computeIfAbsent(name, k -> Boolean.FALSE);
-
-                if (Boolean.FALSE.equals(isInit)) {
-                    extensionByClass.init(args);
-                    stringBooleanMap.put(name, Boolean.TRUE);
-                }
-            } else {
-                /*原型的初始化过程*/
-                extensionByClass.init(args);
-            }
-        }
-        return extensionByClass;
-    }
-
-    /**
-     * 根据名称获取指定扩展点的类
-     *
-     * @param root 指定扩展点(rpcClass文件中的类)
-     * @param name 名称,唯一
-     *
-     * @return 单例模式返回单例, 原型模式返回clone后的
-     */
-    private static <T extends RpcSpiExtension> RpcSpiExtension createOrGetExtensionByClassNoInit(Class<T> root, String name) {
-        // 看看加载的类中是否有目标root
-        if (!cacheClass.containsKey(root)) {
-            throw new RpcRunTimeException("rpcSpi 没有类:[" + root.getName() + "] 请在META-INF/rpcClass中添加需要加载的类");
-        }
-
-        // 如果应该加载的地方没有此名称
-        if (!cacheClass.get(root).containsKey(name)) {
-            throw new RpcRunTimeException("rpcSpi 没有加载此扩展,请检查是否在 META-INF/rpc/" + root.getName() + " 文件中添加需要扩展的类,名称: " + name);
-        }
-
-        // 初始化缓存,加速获取用
-        final Map<String, RpcSpiExtension> cacheMap = MapUtil.putIfAbsent(cacheClassInstanceMap, root, () -> new HashMap<>(cacheClass.get(root).size()));
-
-        // 查询之前缓存里有没有
-        if (cacheMap.containsKey(name)) {
-            return checkSingleAndGetResult(cacheMap.get(name));
-        } else {
-            synchronized (cacheMap) {
-                // 双重检测,防止重复
-                if (cacheMap.containsKey(name)) {
-                    return checkSingleAndGetResult(cacheMap.get(name));
-                }
-                // 之前缓存里也没有 只能初始化一次了
-                Class<?> clazz = cacheClass.get(root).get(name);
-                Constructor<?> constructor;
-                try {
-                    // 获取空的构造器
-                    constructor = clazz.getConstructor();
-                } catch (Exception e) {
-                    throw new IllegalStateException(root.getName() + " 必须要空构造器");
-                }
-                RpcSpiExtension instance = null;
-                try {
-                    // 初始化
-                    instance = (RpcSpiExtension) constructor.newInstance();
-                } catch (Exception e) {
-                    LogUtil.error(RpcSpiManager.class, e);
-                }
-                //放入缓存
-                cacheMap.put(name, instance);
-                return checkSingleAndGetResult(instance);
-            }
-        }
-    }
-
-    /**
-     * 扫描spi是否是单例,如果不是,则使用clone方法
-     *
-     * @param obj
-     *
-     * @return
-     */
-    private static <T extends RpcSpiExtension> T checkSingleAndGetResult(T obj) {
-        RpcSpi annotation = obj.getClass().getAnnotation(RpcSpi.class);
-        // 如果是单例模式,直接返回
-        if (annotation.single()) {
-            return obj;
-        } else {
-            //调用clone方法
-            return (T) obj.rpcClone();
-        }
-    }
-
-    /**
-     * 根据rpcClass中的类作为root,以目标class获取指定的所有类,根据order排序的linkList
-     *
-     * @param root        rpcClass中定义的类
-     * @param targetClass 要获取的类
-     *
-     * @return
-     */
-    public static <T extends RpcSpiExtension, E extends T> List<E> createOrGetExtensionListByClassNoInit(Class<T> root, Class<E> targetClass, Object... args) {
-        // 看看加载的类中是否有目标root
-        if (!cacheClass.containsKey(root)) {
-            throw new RpcBeanNotFoundException(root);
-        }
-        //缓存中的key,如果有 直接返回
-        String cacheKey = root.getName() + " : " + targetClass.getName();
-        if (hotExtensionCache.containsKey(cacheKey)) {
-            List<RpcSpiExtension> objects = hotExtensionCache.get(cacheKey);
-            return objects.stream().map(t -> (E) t).map(RpcSpiManager::checkSingleAndGetResult).filter(Objects::nonNull).collect(Collectors.toList());
-        }
-
-        /*以下代表 此类在spi中并且没有初始化过,或者初始化过 但是targetClass没有单独拿出来获取过*/
-
-        // 初始化缓存,加速获取用
-        final Map<String, RpcSpiExtension> cacheMap = MapUtil.putIfAbsent(cacheClassInstanceMap, root, () -> new HashMap<>(cacheClass.get(root).size()), false);
-
-        final Map<String, Class<?>> classMap = cacheClass.get(root);
-        ArrayList<String> list = new ArrayList<>(classMap.keySet());
-        // 获取结果,注 这里面不是克隆的 而是原型模式中的原型 所以不需要clone
-        List<RpcSpiExtension> result = list.stream()
-                                           //将对应的转换为object 缓存
-                                           .map(value -> {
-                                               Class<?> clazz = classMap.get(value);
-                                               // 筛选出所有rootClass中 targetClass的子类
-                                               if (!targetClass.isAssignableFrom(clazz)) {
-                                                   return null;
-                                               }
-
-                                               //从缓存中拿出已经有的,防止重复初始化
-                                               if (cacheMap.containsKey(value)) {
-                                                   return cacheMap.get(value);
-                                               } else {
-                                                   RpcSpiExtension instance = null;
-                                                   Constructor<?> constructor;
-                                                   try {
-                                                       // 获取空的构造器
-                                                       constructor = clazz.getConstructor();
-                                                   } catch (Exception e) {
-                                                       throw new IllegalStateException(root.getName() + " 必须要空构造器");
-                                                   }
-
-                                                   try {
-                                                       // 初始化
-                                                       instance = (RpcSpiExtension) constructor.newInstance();
-                                                       instance.init(args);
-                                                   } catch (Exception e) {
-                                                       LogUtil.error(RpcSpiManager.class, e);
-                                                   }
-                                                   cacheMap.put(value, instance);
-                                                   return instance;
-                                               }
-                                           })
-                                           .filter(Objects::nonNull)
-                                           .sorted(Comparator.comparingInt(value -> value.getClass().getAnnotation(RpcSpi.class).order())).collect(Collectors.toList());
-
-        hotExtensionCache.put(cacheKey, result);
-
-        return result.stream().map(t -> (E) t).map(RpcSpiManager::checkSingleAndGetResult).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
 

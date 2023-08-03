@@ -37,11 +37,11 @@ public class NodeRepositoryImpl extends AbstractRepository<Node, NodeDO, NodeDao
     @Override
     public AbstractDataNode findNodeOrProvider(String database, String table) {
 
-        final LambdaQueryWrapper<NodeDO> queryWrapper = Wrappers.lambdaQuery();
+        LambdaQueryWrapper<NodeDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(NodeDO::getDatabase, database);
         queryWrapper.eq(NodeDO::getTableName, table);
 
-        final NodeDO nodeDO = dao.selectOne(queryWrapper);
+        NodeDO nodeDO = dao.selectOne(queryWrapper);
         if (nodeDO != null) {
             return assembler.toEntity(nodeDO);
         }

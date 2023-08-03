@@ -25,16 +25,6 @@ public class ExecutionJob extends QuartzJobBean implements BaseTask<JobExecution
      */
     private static final ThreadPoolExecutor EXECUTOR = ThreadPoolExecutorUtil.getPoll();
 
-    /**
-     * 执行定时任务
-     *
-     * @param jobExecutionContext
-     */
-    @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) {
-        executeTask(jobExecutionContext);
-    }
-
     @Override
     public Object executeTask(JobExecutionContext jobExecutionContext) {
         JobDTO quartzJob = (JobDTO) jobExecutionContext.getMergedJobDataMap().get(JobConfig.JOB_KEY);
@@ -60,5 +50,15 @@ public class ExecutionJob extends QuartzJobBean implements BaseTask<JobExecution
             manager.deleteJob(dO);
         }
         return null;
+    }
+
+    /**
+     * 执行定时任务
+     *
+     * @param jobExecutionContext
+     */
+    @Override
+    protected void executeInternal(JobExecutionContext jobExecutionContext) {
+        executeTask(jobExecutionContext);
     }
 }

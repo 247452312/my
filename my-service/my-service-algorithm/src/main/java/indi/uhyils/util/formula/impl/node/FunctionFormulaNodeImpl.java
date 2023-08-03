@@ -33,23 +33,6 @@ public class FunctionFormulaNodeImpl extends AbstractFormulaNode implements Form
     }
 
     @Override
-    protected void init() {
-        //从公式中移除方法名称
-        removeFunctionNameForFormula();
-
-        this.formulas = Arrays.stream(formula.split(",")).map(FormulaNodeFactory::create).collect(Collectors.toList());
-    }
-
-    /**
-     * 从公式中移除方法名称
-     */
-    private void removeFunctionNameForFormula() {
-        int start = formula.indexOf("(");
-        int end = formula.lastIndexOf(")");
-        formula = formula.substring(start + 1, end);
-    }
-
-    @Override
     public String getNodeFormula() {
         StringBuilder sb = new StringBuilder();
         for (FormulaNode normalFormulaNode : formulas) {
@@ -71,6 +54,14 @@ public class FunctionFormulaNodeImpl extends AbstractFormulaNode implements Form
     }
 
     @Override
+    protected void init() {
+        //从公式中移除方法名称
+        removeFunctionNameForFormula();
+
+        this.formulas = Arrays.stream(formula.split(",")).map(FormulaNodeFactory::create).collect(Collectors.toList());
+    }
+
+    @Override
     protected String haveVarNameDerivation(String varName) {
         FunctionEnum parse = FunctionEnum.parse(functionName);
         Asserts.assertTrue(parse != null, "没有找到公式");
@@ -80,6 +71,15 @@ public class FunctionFormulaNodeImpl extends AbstractFormulaNode implements Form
     @Override
     protected String dealFormula(String formula) {
         return formula;
+    }
+
+    /**
+     * 从公式中移除方法名称
+     */
+    private void removeFunctionNameForFormula() {
+        int start = formula.indexOf("(");
+        int end = formula.lastIndexOf(")");
+        formula = formula.substring(start + 1, end);
     }
 
     /**

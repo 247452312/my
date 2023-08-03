@@ -109,9 +109,9 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
             // 如果是占位符
             if (v instanceof Placeholder) {
                 Placeholder placeholder = (Placeholder) v;
-                final NodeInvokeResult nodeInvokeResult = planArgs.get(placeholder.getId());
+                NodeInvokeResult nodeInvokeResult = planArgs.get(placeholder.getId());
                 Asserts.assertTrue(nodeInvokeResult != null, "占位符对应的参数不存在");
-                final List<Map<String, Object>> maps = nodeInvokeResult.getResult();
+                List<Map<String, Object>> maps = nodeInvokeResult.getResult();
 
                 String name = placeholder.getName();
                 List<Object> collect = maps.stream().map(t -> t.get(name)).filter(Objects::nonNull).collect(Collectors.toList());

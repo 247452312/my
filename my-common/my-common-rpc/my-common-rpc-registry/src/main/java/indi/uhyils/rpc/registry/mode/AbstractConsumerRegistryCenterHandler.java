@@ -10,8 +10,8 @@ import java.util.function.Consumer;
 /**
  * 消费者注册中心句柄模板
  *
- * @date 文件创建日期 2023年04月23日 11时10分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年04月23日 11时10分
  */
 public abstract class AbstractConsumerRegistryCenterHandler extends AbstractRegistryCenterHandler implements ConsumerRegistryCenterHandler {
 
@@ -33,6 +33,11 @@ public abstract class AbstractConsumerRegistryCenterHandler extends AbstractRegi
     }
 
     @Override
+    public List<RegistryModelInfo> cacheInfo() {
+        return registryModelInfo;
+    }
+
+    @Override
     protected void otherDoInit() {
         initRegistryInfo();
         addConsumerListener();
@@ -43,14 +48,9 @@ public abstract class AbstractConsumerRegistryCenterHandler extends AbstractRegi
      */
     protected abstract void addConsumerListener();
 
-    @Override
-    public List<RegistryModelInfo> cacheInfo() {
-        return registryModelInfo;
-    }
-
-
     /**
      * 事件接收时通过注册好的回调事件进行逻辑处理
+     *
      * @param event
      */
     protected synchronized void onEvent(RegistryEvent event) {

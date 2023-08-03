@@ -67,7 +67,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
      * @return
      */
     public String echartKey() {
-        final LogMonitorDO logMonitorDO = toData().orElseThrow(() -> Asserts.makeException("未找到日志监控"));
+        LogMonitorDO logMonitorDO = toData().orElseThrow(() -> Asserts.makeException("未找到日志监控"));
         return logMonitorDO.getServiceName() + ":" + logMonitorDO.getIp();
     }
 
@@ -124,7 +124,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
 
         /* 2.如果是程序内存经常(经常理解为超过总发送次数的1/3,下同)超过最大值的80%,或者经常低于最低内存的50%(低于成立的前提是一次高于最低内存的时候都没有) 判断为JVM可调优,警告 */
         // JVM调优->最大值的百分比 阈值
-        final double outMaxPro = 0.8;
+        double outMaxPro = 0.8;
         // 次数阈值
         int threshold = statuses.size() / 3;
         // 总内存超出阈值次数
@@ -134,7 +134,7 @@ public class LogMonitor extends AbstractDoEntity<LogMonitorDO> {
         // 非堆内存超出次数
         int noHeapOutCount = 0;
         // JVM调优->最大值的百分比 阈值
-        final double lowMinPro = 0.5;
+        double lowMinPro = 0.5;
         // 总内存超出阈值次数
         int allMemLowCount = 0;
         // 堆内存超出次数

@@ -55,6 +55,14 @@ public class HuffmanCodeUtil {
         return code;
     }
 
+    public static void main(String[] args) throws Exception {
+        HashMap<String, Integer> huffmanCodeUtilOnFile = getHuffmanCodeUtilOnFile("D:\\share\\ideaSrc\\speechRecognition\\data\\data_thchs30\\data");
+        for (Map.Entry<String, Integer> entry : huffmanCodeUtilOnFile.entrySet()) {
+            System.out.printf(entry.getKey() + " " + entry.getValue());
+            System.out.printf(";");
+        }
+    }
+
     private static Node create(List<Node> nodes) {
         while (nodes.size() > 1) {
             Node n1;
@@ -111,14 +119,6 @@ public class HuffmanCodeUtil {
             ergodic(root.right, result, parentStr + "1");
         } else {
             result.put(root.getKey(), parentStr);
-        }
-    }
-
-    public static void main(String[] args) throws Exception {
-        HashMap<String, Integer> huffmanCodeUtilOnFile = getHuffmanCodeUtilOnFile("D:\\share\\ideaSrc\\speechRecognition\\data\\data_thchs30\\data");
-        for (Map.Entry<String, Integer> entry : huffmanCodeUtilOnFile.entrySet()) {
-            System.out.printf(entry.getKey() + " " + entry.getValue());
-            System.out.printf(";");
         }
     }
 

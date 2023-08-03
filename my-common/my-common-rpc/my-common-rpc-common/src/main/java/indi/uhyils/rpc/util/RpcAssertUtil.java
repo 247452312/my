@@ -25,7 +25,7 @@ public class RpcAssertUtil {
      * @return
      */
     public static Optional<RpcAssertException> assertTrueAndGetException(boolean condition, String msg, Object... params) {
-        final RpcAssertException assertException = assertTrueAndGetException(condition, 3, msg, params);
+        RpcAssertException assertException = assertTrueAndGetException(condition, 3, msg, params);
         return Optional.ofNullable(assertException);
     }
 
@@ -111,62 +111,11 @@ public class RpcAssertUtil {
     /**
      * 断言正确
      *
-     * @param condition        验证
-     * @param removeLayerCount 要删除的顶层堆栈的层数
-     * @param msg
-     */
-    private static void assertTrue(boolean condition, int removeLayerCount, String msg, Object... params) {
-        if (!condition) {
-            msg = MessageFormatter.arrayFormat(msg, params).getMessage();
-            RpcAssertException assertException = new RpcAssertException("断言异常: " + msg);
-            removeExceptionTrace(assertException, removeLayerCount);
-            LogUtil.error(assertException);
-            throw assertException;
-        }
-    }
-
-    /**
-     * 断言正确
-     *
-     * @param condition        验证
-     * @param removeLayerCount 要删除的顶层堆栈的层数
-     * @param msg
-     */
-    private static RpcAssertException assertTrueAndGetException(boolean condition, int removeLayerCount, String msg, Object... params) {
-        if (!condition) {
-            msg = MessageFormatter.arrayFormat(msg, params).getMessage();
-            RpcAssertException assertException = new RpcAssertException("断言异常: " + msg);
-            removeExceptionTrace(assertException, removeLayerCount);
-            return assertException;
-        }
-        return null;
-    }
-
-
-    /**
-     * 断言正确
-     *
      * @param condition
      * @param msgFunction
      */
     public static void assertTrue(boolean condition, Supplier<String> msgFunction) {
         assertTrue(condition, 3, msgFunction);
-    }
-
-    /**
-     * 断言正确
-     *
-     * @param condition
-     * @param removeLayerCount
-     * @param msgFunction
-     */
-    private static void assertTrue(boolean condition, int removeLayerCount, Supplier<String> msgFunction) {
-        if (!condition) {
-            String msg = msgFunction.get();
-            RpcAssertException assertException = new RpcAssertException("断言异常: " + msg);
-            removeExceptionTrace(assertException, removeLayerCount);
-            throw assertException;
-        }
     }
 
     /**
@@ -252,6 +201,55 @@ public class RpcAssertUtil {
         return collection;
     }
 
+    /**
+     * 断言正确
+     *
+     * @param condition        验证
+     * @param removeLayerCount 要删除的顶层堆栈的层数
+     * @param msg
+     */
+    private static void assertTrue(boolean condition, int removeLayerCount, String msg, Object... params) {
+        if (!condition) {
+            msg = MessageFormatter.arrayFormat(msg, params).getMessage();
+            RpcAssertException assertException = new RpcAssertException("断言异常: " + msg);
+            removeExceptionTrace(assertException, removeLayerCount);
+            LogUtil.error(assertException);
+            throw assertException;
+        }
+    }
+
+    /**
+     * 断言正确
+     *
+     * @param condition        验证
+     * @param removeLayerCount 要删除的顶层堆栈的层数
+     * @param msg
+     */
+    private static RpcAssertException assertTrueAndGetException(boolean condition, int removeLayerCount, String msg, Object... params) {
+        if (!condition) {
+            msg = MessageFormatter.arrayFormat(msg, params).getMessage();
+            RpcAssertException assertException = new RpcAssertException("断言异常: " + msg);
+            removeExceptionTrace(assertException, removeLayerCount);
+            return assertException;
+        }
+        return null;
+    }
+
+    /**
+     * 断言正确
+     *
+     * @param condition
+     * @param removeLayerCount
+     * @param msgFunction
+     */
+    private static void assertTrue(boolean condition, int removeLayerCount, Supplier<String> msgFunction) {
+        if (!condition) {
+            String msg = msgFunction.get();
+            RpcAssertException assertException = new RpcAssertException("断言异常: " + msg);
+            removeExceptionTrace(assertException, removeLayerCount);
+            throw assertException;
+        }
+    }
 
     /**
      * 删除异常的顶层堆栈信息

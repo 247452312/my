@@ -33,7 +33,7 @@ public class RpcSendLogFilter implements ConsumerFilter {
         List<Integer> nextRpcIds = MyTraceIdContext.getNextRpcIds();
         AbstractRpcData requestData = (AbstractRpcData) invokerContext.getRequestData();
         RpcContent content = requestData.content();
-        final SupplierWithException<RpcData> rpcDataSupplierWithException = () -> {
+        SupplierWithException<RpcData> rpcDataSupplierWithException = () -> {
             addRpcTraceInfoToRpcHeader(requestData, nextRpcIds);
             return invoker.invoke(invokerContext);
         };

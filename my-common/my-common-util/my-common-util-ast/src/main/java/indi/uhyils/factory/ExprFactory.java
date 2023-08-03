@@ -159,7 +159,7 @@ public class ExprFactory extends AbstractFactory {
                 }
             }
         }
-        final String privi;
+        String privi;
         if (!haveLiteralExpr) {
             // 如果没有,则默认是int
             privi = "int";

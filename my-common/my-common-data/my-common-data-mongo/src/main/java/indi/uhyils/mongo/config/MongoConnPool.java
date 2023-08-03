@@ -46,35 +46,6 @@ public class MongoConnPool {
     public MongoConnPool() {
     }
 
-    /**
-     * 初始化
-     */
-    @PostConstruct
-    private void init() {
-        // 开启守护线程
-        /**
-         * 守护线程 用来销毁到期线程
-         */
-        Runnable guardianThread = new MongoGuardianThread(this);
-        Thread thread = new Thread(guardianThread, "mongo线程池守护线程");
-        thread.setDaemon(Boolean.TRUE);
-        thread.start();
-
-        /*底下的是线程池来运行的代码.感觉不需要呀?*/
-        //        // 开启守护线程
-        //        /**
-        //         * 守护线程 用来销毁到期线程
-        //         */
-        //        Runnable guardianThread = new MongoGuardianThread(this);
-        //        ExecutorService executorService = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.SECONDS, new ArrayBlockingQueue<>(1), r -> {
-        //            Thread thread1 = new Thread(guardianThread);
-        //            thread1.setDaemon(true);
-        //            thread1.setName("mongo线程池守护线程");
-        //            return thread1;
-        //        });
-        //        executorService.execute(guardianThread);
-    }
-
     public List<MongoConn> getList() {
         return list;
     }
@@ -134,5 +105,34 @@ public class MongoConnPool {
 
     public void returnConn(MongoConn conn) {
         conn.setHaveUse(false);
+    }
+
+    /**
+     * 初始化
+     */
+    @PostConstruct
+    private void init() {
+        // 开启守护线程
+        /**
+         * 守护线程 用来销毁到期线程
+         */
+        Runnable guardianThread = new MongoGuardianThread(this);
+        Thread thread = new Thread(guardianThread, "mongo线程池守护线程");
+        thread.setDaemon(Boolean.TRUE);
+        thread.start();
+
+        /*底下的是线程池来运行的代码.感觉不需要呀?*/
+        //        // 开启守护线程
+        //        /**
+        //         * 守护线程 用来销毁到期线程
+        //         */
+        //        Runnable guardianThread = new MongoGuardianThread(this);
+        //        ExecutorService executorService = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.SECONDS, new ArrayBlockingQueue<>(1), r -> {
+        //            Thread thread1 = new Thread(guardianThread);
+        //            thread1.setDaemon(true);
+        //            thread1.setName("mongo线程池守护线程");
+        //            return thread1;
+        //        });
+        //        executorService.execute(guardianThread);
     }
 }

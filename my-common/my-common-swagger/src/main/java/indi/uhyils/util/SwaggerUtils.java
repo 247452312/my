@@ -118,7 +118,9 @@ public final class SwaggerUtils {
 
     /**
      * 处理基本类型
+     *
      * @param type
+     *
      * @return
      */
     private static ModelInfoDTO dealBasicType(Type type) {
@@ -135,7 +137,9 @@ public final class SwaggerUtils {
 
     /**
      * 判断一个类型是否是不需要解析的类型
+     *
      * @param className
+     *
      * @return
      */
     private static Boolean isBasicType(String className) {
@@ -149,7 +153,9 @@ public final class SwaggerUtils {
 
     /**
      * 解析一个不带泛型的类为model对象
+     *
      * @param clazz
+     *
      * @return
      */
     private static ModelInfoDTO parseClassToModel(Class<?> clazz) {
@@ -182,7 +188,9 @@ public final class SwaggerUtils {
 
     /**
      * 解析一个带有泛型的类为model对象
+     *
      * @param type
+     *
      * @return
      */
     private static ModelInfoDTO parseParameterizedTypeToModel(ParameterizedType type) {

@@ -22,7 +22,7 @@ public class SelfExceptionExtension implements ProviderResponseExceptionExtensio
 
     @Override
     public RpcData onBusinessException(RpcData rpcData, RpcBusinessException e) throws InterruptedException {
-        final Throwable cause = e.getCause();
+        Throwable cause = e.getCause();
         if (cause instanceof AssertException) {
             return ((ResponseRpcFactory) RpcFactoryProducer.build(RpcTypeEnum.RESPONSE)).createAssertExceptionResponse(rpcData, (AssertException) cause);
         }
@@ -37,8 +37,8 @@ public class SelfExceptionExtension implements ProviderResponseExceptionExtensio
 
     @Override
     public RpcData onThrowable(RpcData rpcData, Throwable th) throws InterruptedException {
-        final ResponseRpcFactory build = (ResponseRpcFactory) RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
-        final Map<String, String> headerMap = RpcHeaderContext.get();
+        ResponseRpcFactory build = (ResponseRpcFactory) RpcFactoryProducer.build(RpcTypeEnum.RESPONSE);
+        Map<String, String> headerMap = RpcHeaderContext.get();
         RpcHeader[] rpcHeaders = new RpcHeader[0];
         if (headerMap != null) {
             rpcHeaders = headerMap.entrySet().stream().map(t -> new RpcHeader(t.getKey(), t.getValue())).toArray(RpcHeader[]::new);

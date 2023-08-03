@@ -27,7 +27,7 @@ public class PublicInterfaceInvoker extends AbstractAnnotationInterfaceInvoker {
      * @return
      */
     public static boolean checkAnnotation(ProceedingJoinPoint pjp) {
-        final Class<?> targetClass = pjp.getTarget().getClass();
+        Class<?> targetClass = pjp.getTarget().getClass();
         Signature signature = pjp.getSignature();
         Public[] methodNoLoginAnnotation = ((MethodSignature) signature).getMethod().getAnnotationsByType(Public.class);
         Public[] classNoLoginAnnotation = targetClass.getAnnotationsByType(Public.class);

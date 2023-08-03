@@ -21,7 +21,7 @@ public class LeftJoinSqlPlanImpl extends LeftJoinSqlPlan {
 
     @Override
     public NodeInvokeResult invoke() {
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
+        NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(this);
         nodeInvokeResult.setFieldInfos(allFieldInfo());
         /*此处两个不同行列数的table 需要融合在一起 on中的条件是融合前需要遵守的,也是合并表的依据 where 是合并后进行筛选*/
         // on里的条件

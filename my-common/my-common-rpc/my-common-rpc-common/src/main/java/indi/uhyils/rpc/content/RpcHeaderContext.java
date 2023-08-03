@@ -41,15 +41,6 @@ public class RpcHeaderContext {
     }
 
     /**
-     * 初始化header
-     */
-    private static void initHeaders() {
-        if (headers.get() == null) {
-            headers.set(new HashMap<>());
-        }
-    }
-
-    /**
      * 添加header
      *
      * @param key
@@ -79,6 +70,15 @@ public class RpcHeaderContext {
      */
     public static void remove() {
         headers.remove();
+    }
+
+    /**
+     * 初始化header
+     */
+    private static void initHeaders() {
+        if (headers.get() == null) {
+            headers.set(new HashMap<>());
+        }
     }
 
 

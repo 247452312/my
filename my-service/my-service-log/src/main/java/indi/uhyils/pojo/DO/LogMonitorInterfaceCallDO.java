@@ -117,7 +117,7 @@ public class LogMonitorInterfaceCallDO extends BaseDO {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("{");
+        StringBuilder sb = new StringBuilder("{");
         sb.append("            \"fid\":")
           .append(fid);
         if (interfaceName != null) {

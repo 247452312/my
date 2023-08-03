@@ -1,6 +1,5 @@
 package indi.uhyils.protocol.rpc;
 
-import com.alibaba.fastjson.JSONArray;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import java.util.List;
 import java.util.Map;

@@ -27,7 +27,7 @@ public abstract class AbstractTimeOutFilter {
 
     protected RpcData invoke0(RpcInvoker invoker, FilterContext invokerContext) throws InterruptedException {
         RpcData requestData = invokerContext.getRequestData();
-        final Long timeOut = getTimeout();
+        Long timeOut = getTimeout();
         Callable<RpcData> rpcDataCallable = () -> {
             try {
                 return invoker.invoke(invokerContext);
@@ -39,13 +39,13 @@ public abstract class AbstractTimeOutFilter {
             }
 
         };
-        final Future<RpcData> submit = es.submit(rpcDataCallable);
+        Future<RpcData> submit = es.submit(rpcDataCallable);
         try {
             RpcData rpcData = submit.get(timeOut, TimeUnit.MILLISECONDS);
             return rpcData;
         } catch (TimeoutException e) {
-            final AbstractRequestRpcData abstractRequestRpcData = (AbstractRequestRpcData) requestData;
-            final RpcRequestContent content = (RpcRequestContent) abstractRequestRpcData.getContent();
+            AbstractRequestRpcData abstractRequestRpcData = (AbstractRequestRpcData) requestData;
+            RpcRequestContent content = (RpcRequestContent) abstractRequestRpcData.getContent();
             LogUtil.error(e, "Rpc超时,接口:{},方法:{}", content.getServiceName(), content.getMethodName());
             submit.cancel(Boolean.TRUE);
             return invokeException(requestData, timeOut);

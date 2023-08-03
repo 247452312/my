@@ -4,7 +4,6 @@ import com.rabbitmq.client.Consumer;
 import indi.uhyils.pojo.cqe.event.base.BaseEvent;
 import indi.uhyils.pojo.cqe.event.base.BaseParentEvent;
 import java.util.List;
-import org.springframework.transaction.TransactionStatus;
 
 /**
  * @author uhyils <247452312@qq.com>

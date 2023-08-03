@@ -44,26 +44,6 @@ public class LimitFilter extends FilterEventAdapter {
         LogUtil.info(String.format("[rowsLimitFilter] interrupt:%s,size:%s,", this.druidFilterConfiguration.getRowsLimitInterrupt(), this.druidFilterConfiguration.getRowsLimitSize()));
     }
 
-    private void commonBefore(StatementProxy statement) {
-        try {
-            // 此处只支持mysql的JDBC 其他的会报错
-            statement.getRawObject().setFetchSize(Integer.MIN_VALUE);
-        } catch (SQLException var3) {
-            LogUtil.error(String.format("setFetchSize  occur error %s", statement));
-        }
-
-    }
-
-    @Override
-    protected void statementExecuteQueryBefore(StatementProxy statement, String sql) {
-        this.commonBefore(statement);
-    }
-
-    @Override
-    protected void statementExecuteBefore(StatementProxy statement, String sql) {
-        this.commonBefore(statement);
-    }
-
     @Override
     public ResultSetProxy statement_executeQuery(FilterChain chain, StatementProxy statement, String sql) throws SQLException {
         return new ResultSetWrapperImpl(statement, super.statement_executeQuery(chain, statement, sql), this.druidFilterConfiguration);
@@ -77,5 +57,25 @@ public class LimitFilter extends FilterEventAdapter {
     @Override
     public ResultSetProxy statement_getResultSet(FilterChain chain, StatementProxy statement) throws SQLException {
         return new ResultSetWrapperImpl(statement, super.statement_getResultSet(chain, statement), this.druidFilterConfiguration);
+    }
+
+    @Override
+    protected void statementExecuteQueryBefore(StatementProxy statement, String sql) {
+        this.commonBefore(statement);
+    }
+
+    @Override
+    protected void statementExecuteBefore(StatementProxy statement, String sql) {
+        this.commonBefore(statement);
+    }
+
+    private void commonBefore(StatementProxy statement) {
+        try {
+            // 此处只支持mysql的JDBC 其他的会报错
+            statement.getRawObject().setFetchSize(Integer.MIN_VALUE);
+        } catch (SQLException var3) {
+            LogUtil.error(String.format("setFetchSize  occur error %s", statement));
+        }
+
     }
 }

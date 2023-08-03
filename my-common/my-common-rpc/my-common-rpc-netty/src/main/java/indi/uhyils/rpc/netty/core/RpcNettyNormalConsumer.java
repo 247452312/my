@@ -96,7 +96,7 @@ public class RpcNettyNormalConsumer extends AbstractRpcNetty implements RpcNetty
     public Boolean shutdown() {
         try {
             if (group != null) {
-                final Future<?> future = this.group.shutdownGracefully();
+                Future<?> future = this.group.shutdownGracefully();
                 future.get();
             }
             return Boolean.TRUE;

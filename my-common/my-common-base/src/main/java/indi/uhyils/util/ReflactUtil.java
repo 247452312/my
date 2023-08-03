@@ -82,10 +82,6 @@ public final class ReflactUtil {
         return null;
     }
 
-    private static String format(@Nonnull String message, Object... args) {
-        return MessageFormatter.arrayFormat(message, args).getMessage();
-    }
-
     public static <T> T newInstance(Class<T> tClass) {
         try {
             T t = tClass.newInstance();
@@ -142,5 +138,9 @@ public final class ReflactUtil {
             LogUtil.error(e);
         }
         return null;
+    }
+
+    private static String format(@Nonnull String message, Object... args) {
+        return MessageFormatter.arrayFormat(message, args).getMessage();
     }
 }

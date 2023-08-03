@@ -19,12 +19,12 @@ public final class GatewayUtil {
      * @return
      */
     public static Pair<String, String> splitDataBaseUrl(String url) {
-        final int separatorIndex = url.indexOf(MysqlContent.PATH_SEPARATOR);
+        int separatorIndex = url.indexOf(MysqlContent.PATH_SEPARATOR);
         if (separatorIndex == -1) {
             return new Pair<>(null, url);
         }
-        final String database = url.substring(0, separatorIndex);
-        final String table = url.substring(separatorIndex + 1);
+        String database = url.substring(0, separatorIndex);
+        String table = url.substring(separatorIndex + 1);
         return new Pair<>(database, table);
     }
 

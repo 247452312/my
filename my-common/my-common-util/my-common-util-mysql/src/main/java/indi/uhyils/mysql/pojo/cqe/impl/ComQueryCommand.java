@@ -57,11 +57,12 @@ public class ComQueryCommand extends MysqlSqlCommand {
                 continue;
             }
 
-            NodeInvokeResult execute = null;
+            NodeInvokeResult execute;
             try {
                 execute = new PlanInvoker(mysqlPlans).execute();
             } catch (AssertException e) {
                 LogUtil.error(this, e, "sql:" + sql + "\n");
+                throw e;
             }
 
             // 如果没有结果, 说明不是一个常规的查询语句,返回ok即可,如果报错,则在外部已经进行了try,catch

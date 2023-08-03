@@ -34,7 +34,7 @@ public class GatewayConfig implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        final Object o = BeanPostProcessor.super.postProcessBeforeInitialization(bean, beanName);
+        Object o = BeanPostProcessor.super.postProcessBeforeInitialization(bean, beanName);
         if (Objects.equals(beanName, StringUtil.firstToLowerCase(GatewaySdkProviderImpl.class.getSimpleName()))) {
             return Proxy.newProxyInstance(bean.getClass().getClassLoader(), bean.getClass().getInterfaces(), new GatewaySdkRpcProviderHandler((GatewaySdkProvider) bean));
         }
@@ -65,14 +65,14 @@ public class GatewayConfig implements BeanPostProcessor {
             if (Objects.equals(method.getName(), INVOKE)) {
                 return gatewaySdkProvider.invokeRpc((InvokeCommand) args[0]);
             }
-            final GatewaySdkProvider provider = (GatewaySdkProvider) proxy;
+            GatewaySdkProvider provider = (GatewaySdkProvider) proxy;
             InvokeCommandBuilder builder = new InvokeCommandBuilder();
             builder.addHeader(RpcHeaderContext.get());
-            final List<String> argNames = Arrays.stream(method.getParameters()).map(Parameter::getName).collect(Collectors.toList());
+            List<String> argNames = Arrays.stream(method.getParameters()).map(Parameter::getName).collect(Collectors.toList());
             Map<String, Object> result = new HashMap<>(args.length);
             for (int i = 0; i < argNames.size(); i++) {
-                final String argName = argNames.get(i);
-                final Object arg = args[i];
+                String argName = argNames.get(i);
+                Object arg = args[i];
                 result.put(argName, arg);
             }
             builder.addArgs(result);

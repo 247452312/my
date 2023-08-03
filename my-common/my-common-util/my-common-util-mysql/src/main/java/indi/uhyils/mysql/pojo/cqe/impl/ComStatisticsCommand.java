@@ -46,7 +46,7 @@ public class ComStatisticsCommand extends AbstractMysqlCommand {
     @Override
     public List<MysqlResponse> invoke() {
         ArrayList<FieldInfo> fields = new ArrayList<>();
-        final MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+        MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         fields.add(new FieldInfo(root, STATIC_TABLE_NAME, STATIC_TABLE_NAME, "运行时间", "time", 3, (int) mysqlTcpInfo.index(), FieldTypeEnum.FIELD_TYPE_LONG, FieldMarkEnum.TIMESTAMP_FLAG
             .getCode(), (byte) 3));
 

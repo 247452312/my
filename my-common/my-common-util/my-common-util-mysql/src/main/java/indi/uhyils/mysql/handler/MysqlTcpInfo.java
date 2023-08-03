@@ -113,7 +113,7 @@ public class MysqlTcpInfo implements Serializable {
     }
 
     public MysqlHandlerStatusEnum getAndIncrementStatus() {
-        final MysqlHandlerStatusEnum status = getStatus();
+        MysqlHandlerStatusEnum status = getStatus();
         switch (status) {
             case UNKNOW:
                 setStatus(MysqlHandlerStatusEnum.FIRST_SIGHT);

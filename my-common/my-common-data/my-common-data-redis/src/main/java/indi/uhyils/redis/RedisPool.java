@@ -64,6 +64,27 @@ public class RedisPool {
     @Value("${redis.normal.password}")
     private String password;
 
+    public Redisable getJedis() {
+        // 如果没有初始化过
+        if (initMark == null) {
+            // 初始化
+            Boolean success = initPool();
+            // 是否成功
+            if (success) {
+                return new MyJedis(pool.getResource());
+            } else {
+                return SpringUtil.getBean(OffLineJedis.class);
+            }
+        } else {
+            // 初始化是否为正式redis
+            if (initTypeIsRedis) {
+                return new MyJedis(pool.getResource());
+            } else {
+                return SpringUtil.getBean(OffLineJedis.class);
+            }
+        }
+
+    }
 
     private Boolean initPool() {
         initMark = new Object();
@@ -90,28 +111,6 @@ public class RedisPool {
             initTypeIsRedis = Boolean.FALSE;
             return Boolean.FALSE;
         }
-    }
-
-    public Redisable getJedis() {
-        // 如果没有初始化过
-        if (initMark == null) {
-            // 初始化
-            Boolean success = initPool();
-            // 是否成功
-            if (success) {
-                return new MyJedis(pool.getResource());
-            } else {
-                return SpringUtil.getBean(OffLineJedis.class);
-            }
-        } else {
-            // 初始化是否为正式redis
-            if (initTypeIsRedis) {
-                return new MyJedis(pool.getResource());
-            } else {
-                return SpringUtil.getBean(OffLineJedis.class);
-            }
-        }
-
     }
 
 }

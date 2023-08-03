@@ -37,7 +37,7 @@ public class Power extends AbstractDoEntity<PowerDO> {
     }
 
     public void removeSelf(PowerRepository rep) {
-        final Optional<Identifier> unique = this.getUnique();
+        Optional<Identifier> unique = this.getUnique();
         Asserts.assertTrue(unique.isPresent(), "唯一标识");
         rep.remove(unique.get());
     }

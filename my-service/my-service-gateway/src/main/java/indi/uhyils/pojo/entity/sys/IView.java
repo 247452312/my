@@ -32,16 +32,16 @@ public class IView extends AbstractSysTable {
 
     @Override
     public NodeInvokeResult doGetResultNoParams() {
-        final Optional<UserDTO> userOptional = UserInfoHelper.get();
+        Optional<UserDTO> userOptional = UserInfoHelper.get();
         if (!userOptional.isPresent()) {
             throw Asserts.makeException("未登录");
         }
 
-        final List<Map<String, Object>> newResults = new ArrayList<>();
+        List<Map<String, Object>> newResults = new ArrayList<>();
 
-        final NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
+        NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
         nodeInvokeResult.setResult(newResults);
-        final List<FieldInfo> fieldInfos = new ArrayList<>();
+        List<FieldInfo> fieldInfos = new ArrayList<>();
         fieldInfos.add(new FieldInfo("information_schema", "view", "view", "TABLE_CATALOG", "TABLE_CATALOG", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
         fieldInfos.add(new FieldInfo("information_schema", "view", "view", "TABLE_SCHEMA", "TABLE_SCHEMA", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
         fieldInfos.add(new FieldInfo("information_schema", "view", "view", "TABLE_NAME", "TABLE_NAME", 0, 1, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));

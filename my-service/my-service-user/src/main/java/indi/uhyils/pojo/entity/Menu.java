@@ -62,7 +62,7 @@ public class Menu extends AbstractDoEntity<MenuDO> {
      * @return
      */
     public MenuTreeDTO findSelfNode(MenuRepository rep, MenuAssembler assembler) {
-        final Optional<MenuDO> menuDOOpt = toData();
+        Optional<MenuDO> menuDOOpt = toData();
         if (!menuDOOpt.isPresent()) {
             return null;
         }

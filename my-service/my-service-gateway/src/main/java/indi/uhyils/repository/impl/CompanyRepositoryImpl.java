@@ -32,9 +32,9 @@ public class CompanyRepositoryImpl extends AbstractRepository<Company, CompanyDO
     @Override
     public Company findByAk(String ak) {
         Asserts.assertTrue(StringUtil.isNotEmpty(ak), "用户名不存在,厂商登录失败!");
-        final LambdaQueryWrapper<CompanyDO> queryWrapper = Wrappers.lambdaQuery();
+        LambdaQueryWrapper<CompanyDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(CompanyDO::getAk, ak);
-        final CompanyDO companyDO = dao.selectOne(queryWrapper);
+        CompanyDO companyDO = dao.selectOne(queryWrapper);
         return assembler.toEntity(companyDO);
     }
 }

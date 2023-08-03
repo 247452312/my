@@ -39,7 +39,7 @@ public class NoTokenInterfaceInvoker extends AbstractAnnotationInterfaceInvoker 
      * @return
      */
     public static boolean checkAnnotation(ProceedingJoinPoint pjp) {
-        final Class<?> targetClass = pjp.getTarget().getClass();
+        Class<?> targetClass = pjp.getTarget().getClass();
         Signature signature = pjp.getSignature();
         NoLogin[] methodNoLoginAnnotation = ((MethodSignature) signature).getMethod().getAnnotationsByType(NoLogin.class);
         NoLogin[] classNoLoginAnnotation = targetClass.getAnnotationsByType(NoLogin.class);
@@ -55,7 +55,7 @@ public class NoTokenInterfaceInvoker extends AbstractAnnotationInterfaceInvoker 
 
         // 未登录,判断为游客第一次访问,生成token
         if (StringUtils.isEmpty(token) && arg.getUser() == null) {
-            final LoginDTO loginDTO = visiterLogin();
+            LoginDTO loginDTO = visiterLogin();
             UserInfoHelper.setUser(loginDTO.getUserEntity());
             UserInfoHelper.setToken(loginDTO.getToken());
         } else if (arg.getUser() != null) {
@@ -77,7 +77,7 @@ public class NoTokenInterfaceInvoker extends AbstractAnnotationInterfaceInvoker 
         BlankCommand build = new BlankCommand();
         ArrayList<Object> args = new ArrayList<>();
         args.add(build);
-        final Object o1 = RpcApiUtil.rpcApiTool("UserProvider", "visiterLogin", args);
+        Object o1 = RpcApiUtil.rpcApiTool("UserProvider", "visiterLogin", args);
         JSONObject o = (JSONObject) o1;
         return o.toJavaObject(LoginDTO.class);
     }

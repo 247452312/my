@@ -30,7 +30,7 @@ public class DefaultProviderResponseExceptionExtensionImpl implements ProviderRe
     @Override
     public RpcData onRpcException(RpcData rpcData, RpcException e) throws InterruptedException {
         // rpc本身异常
-        final Throwable cause = e.getCause();
+        Throwable cause = e.getCause();
         return rpcResponseFactory.createErrorResponse(rpcData.unique(), cause, null);
     }
 

@@ -252,7 +252,7 @@ public abstract class AbstractRpcData implements RpcData {
     @Override
     public String headerAndContent() {
         StringBuilder sb = new StringBuilder();
-        final RpcHeader[] rpcHeaders = rpcHeaders();
+        RpcHeader[] rpcHeaders = rpcHeaders();
         if (CollectionUtil.isNotEmpty(rpcHeaders)) {
             for (RpcHeader rpcHeader : rpcHeaders) {
                 sb.append("\n");
@@ -290,26 +290,26 @@ public abstract class AbstractRpcData implements RpcData {
      * @param readIndex
      */
     protected void initSize(byte[] data, AtomicInteger readIndex) {
-        final int sizeSize = MyRpcContent.RPC_DATA_ITEM_SIZE.get(MyRpcContent.RPC_DATA_SIZE_INDEX);
-        final int startIndex = readIndex.get();
+        int sizeSize = MyRpcContent.RPC_DATA_ITEM_SIZE.get(MyRpcContent.RPC_DATA_SIZE_INDEX);
+        int startIndex = readIndex.get();
         byte[] sizeBytes = Arrays.copyOfRange(data, startIndex, startIndex + sizeSize);
         this.size = BytesUtil.changeByteToInteger(sizeBytes);
         readIndex.addAndGet(sizeSize);
     }
 
     protected void initUnique(byte[] data, AtomicInteger readIndex) {
-        final int uniqueSize = MyRpcContent.RPC_DATA_ITEM_SIZE.get(MyRpcContent.RPC_DATA_UNIQUE_INDEX);
-        final int startIndex = readIndex.get();
+        int uniqueSize = MyRpcContent.RPC_DATA_ITEM_SIZE.get(MyRpcContent.RPC_DATA_UNIQUE_INDEX);
+        int startIndex = readIndex.get();
         byte[] uniqueBytes = Arrays.copyOfRange(data, startIndex, startIndex + uniqueSize);
         this.unique = BytesUtil.changeByteToLong(uniqueBytes);
         readIndex.addAndGet(uniqueSize);
     }
 
     protected void initStatus(byte[] data, AtomicInteger readIndex) {
-        final int statusSize = MyRpcContent.RPC_DATA_ITEM_SIZE.get(MyRpcContent.RPC_DATA_STATUS_INDEX);
+        int statusSize = MyRpcContent.RPC_DATA_ITEM_SIZE.get(MyRpcContent.RPC_DATA_STATUS_INDEX);
         assert statusSize == 1;
-        final int startIndex = readIndex.get();
-        final byte[] dataStatus = Arrays.copyOfRange(data, startIndex, startIndex + statusSize);
+        int startIndex = readIndex.get();
+        byte[] dataStatus = Arrays.copyOfRange(data, startIndex, startIndex + statusSize);
         // 先这么搞..
         this.setStatus(dataStatus[0]);
         readIndex.addAndGet(statusSize);

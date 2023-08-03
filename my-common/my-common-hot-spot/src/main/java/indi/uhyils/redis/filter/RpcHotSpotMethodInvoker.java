@@ -88,16 +88,16 @@ public class RpcHotSpotMethodInvoker implements MethodInvoker {
 
     @Override
     public Object doMethodInvoke(Object target, Method method, Object[] args) throws Throwable {
-        final SupplierWithException<Object> objectSupplier = () -> {
+        SupplierWithException<Object> objectSupplier = () -> {
             method.setAccessible(true);
             return method.invoke(target, args);
         };
-        final Class<?> targetClass = target.getClass();
-        final String serviceName = targetClass.getName();
+        Class<?> targetClass = target.getClass();
+        String serviceName = targetClass.getName();
 
-        final String className = targetClass.getSimpleName();
+        String className = targetClass.getSimpleName();
 
-        final String methodName = method.getName();
+        String methodName = method.getName();
 
         // 如果 热点集群redis没有加载成功,则一段时间后自动重试一次
         if (!HotSpotRedisPool.initTypeIsRedis) {
@@ -205,6 +205,10 @@ public class RpcHotSpotMethodInvoker implements MethodInvoker {
 
     }
 
+    public MyThreadLocal<CacheTypeEnum> getMarkThreadLocal() {
+        return markThreadLocal;
+    }
+
     /**
      * 读接口应该做的方法
      */
@@ -276,10 +280,6 @@ public class RpcHotSpotMethodInvoker implements MethodInvoker {
             return hotSpotResponse;
         }
 
-    }
-
-    public MyThreadLocal<CacheTypeEnum> getMarkThreadLocal() {
-        return markThreadLocal;
     }
 
 }

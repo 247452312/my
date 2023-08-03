@@ -47,7 +47,7 @@ public class NettyInitDto implements Serializable {
     }
 
     public static NettyInitDto buildSelf() {
-        final NettyInitDto build = new NettyInitDto();
+        NettyInitDto build = new NettyInitDto();
         build.setSelfService(Boolean.TRUE);
         return build;
     }

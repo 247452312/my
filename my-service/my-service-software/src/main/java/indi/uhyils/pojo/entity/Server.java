@@ -30,7 +30,7 @@ public class Server extends AbstractDoEntity<ServerDO> {
     }
 
     public Boolean testConn() {
-        final ServerDO serverDO = toData().orElseThrow(() -> Asserts.makeException("未找到data"));
+        ServerDO serverDO = toData().orElseThrow(() -> Asserts.makeException("未找到data"));
         return SshUtils.testConn(serverDO.getIp(), serverDO.getPort(), serverDO.getUsername(), serverDO.getPassword());
     }
 }

@@ -31,6 +31,19 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
      */
     private List<AbstractSelectSqlParser> selectInterpreters;
 
+    @Override
+    public boolean canParse(SQLStatement sql) {
+        if (!(sql instanceof SQLSelectStatement)) {
+            return false;
+        }
+        return doCanParse((SQLSelectStatement) sql);
+    }
+
+    @Override
+    public List<MysqlPlan> parse(SQLStatement sql, Map<String, String> headers) {
+        return doParse((SQLSelectStatement) sql, headers);
+    }
+
     /**
      * 重新解析一个sql
      *
@@ -43,6 +56,7 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
         SQLSelectStatement fromSqlStatement = (SQLSelectStatement) new MySqlStatementParser(fromSql).parseStatement();
         return reExecute(fromSqlStatement, headers, sqlExecuteFunction);
     }
+
     /**
      * 重新解析一个sql
      *
@@ -59,28 +73,6 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
             }
         }
         return null;
-    }
-
-    /**
-     * 检查解析器是否初始化
-     */
-    private void checkInterpreters() {
-        if (selectInterpreters == null) {
-            selectInterpreters = SpringUtil.getBeans(AbstractSelectSqlParser.class);
-        }
-    }
-
-    @Override
-    public boolean canParse(SQLStatement sql) {
-        if (!(sql instanceof SQLSelectStatement)) {
-            return false;
-        }
-        return doCanParse((SQLSelectStatement) sql);
-    }
-
-    @Override
-    public List<MysqlPlan> parse(SQLStatement sql, Map<String, String> headers) {
-        return doParse((SQLSelectStatement) sql, headers);
     }
 
     /**
@@ -120,6 +112,15 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
         }
         Asserts.throwException("错误,未找到对应的解析类,语句为:{}", fromSql);
         return null;
+    }
+
+    /**
+     * 检查解析器是否初始化
+     */
+    private void checkInterpreters() {
+        if (selectInterpreters == null) {
+            selectInterpreters = SpringUtil.getBeans(AbstractSelectSqlParser.class);
+        }
     }
 
 }

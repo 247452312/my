@@ -231,6 +231,22 @@ public class Proto {
         return res;
     }
 
+    public static char int2char(byte i) {
+        return (char) i;
+    }
+
+    public static long getFixedInt(byte[] bytes) {
+        long value = 0;
+
+        for (int i = bytes.length - 1; i > 0; i--) {
+            value |= bytes[i] & 0xFF;
+            value <<= 8;
+        }
+        value |= bytes[0] & 0xFF;
+
+        return value;
+    }
+
     public boolean has_remaining_data() {
         return this.packet.length - this.offset > 0;
     }
@@ -260,10 +276,6 @@ public class Proto {
         }
 
         return str.toString();
-    }
-
-    public static char int2char(byte i) {
-        return (char) i;
     }
 
     public String get_fixed_str(long len, boolean base64) {
@@ -368,18 +380,6 @@ public class Proto {
         System.arraycopy(packet, offset, bytes, 0, size);
         this.offset += size;
         return getFixedInt(bytes);
-    }
-
-    public static long getFixedInt(byte[] bytes) {
-        long value = 0;
-
-        for (int i = bytes.length - 1; i > 0; i--) {
-            value |= bytes[i] & 0xFF;
-            value <<= 8;
-        }
-        value |= bytes[0] & 0xFF;
-
-        return value;
     }
 
     public byte[] get_fixed_byte(int length) {

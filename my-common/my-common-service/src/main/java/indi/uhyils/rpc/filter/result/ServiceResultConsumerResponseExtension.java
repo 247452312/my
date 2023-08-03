@@ -17,7 +17,7 @@ public class ServiceResultConsumerResponseExtension implements ConsumerResponseO
     @Override
     public Object doFilter(Object obj, RpcData rpcData) {
         if (obj instanceof ServiceResult) {
-            final ServiceResult<?> serviceResult = (ServiceResult<?>) obj;
+            ServiceResult<?> serviceResult = (ServiceResult<?>) obj;
             return serviceResult.validationAndGet();
         }
         return obj;

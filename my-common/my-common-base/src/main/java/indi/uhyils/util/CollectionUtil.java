@@ -91,7 +91,7 @@ public final class CollectionUtil {
     public static <T> T[] arrayCopy(T[] array, int pos, int length) {
         Asserts.assertTrue(isNotEmpty(array));
 
-        final Class<? extends Object[]> newType = array.getClass();
+        Class<? extends Object[]> newType = array.getClass();
         T[] copy = (newType == Object[].class)
             ? (T[]) new Object[length]
             : (T[]) Array.newInstance(newType.getComponentType(), length);
@@ -118,9 +118,9 @@ public final class CollectionUtil {
      */
     public static <T> T[] arrayCopy(T[] array, int pos) {
         Asserts.assertTrue(isNotEmpty(array));
-        final int length = array.length - pos;
+        int length = array.length - pos;
 
-        final Class<? extends Object[]> newType = array.getClass();
+        Class<? extends Object[]> newType = array.getClass();
         T[] copy = (newType == Object[].class)
             ? (T[]) new Object[length]
             : (T[]) Array.newInstance(newType.getComponentType(), length);

@@ -6,28 +6,28 @@ import java.util.List;
 
 /**
  * {
- *     "fields": [
- *         {
- *             "name": "message",
- *             "type": "java.lang.String",
- *             "simpleType": "string",
- *             "desc": "参数说明",
- *             "schema": "", // 提要, 如果是泛型,则此处显示泛型里面的类名称
- *             "schemaSimple": "", // 简称题要
- *             "required": true, // 是否必要 returnType恒为true 以@NotNull为准如果没有NotNull则使用@ApiModelProperty中的required字段
- *             "childTypes": [
- *                 {} // 如果是array 或者object,则此处应该有后续 注: 这里同returnType 不是field
- *             ]
- *         }
- *     ],
- *     "name": "",
- *     "type": "indi.uhyils.pojo.DTO.ClassSwaggerDTO",
- *     "simpleType": "ClassSwaggerDTO",
- *     "schema": "", // 提要, 如果是泛型,则此处显示泛型里面的类名称
- *     "schemaSimple": "", // 简称题要
- *     "childTypes": [
- *         {} // 如果返回值本身是array,则此处应该有后续,且fields为空, 注: 这里同returnType 不是field
- *     ]
+ * "fields": [
+ * {
+ * "name": "message",
+ * "type": "java.lang.String",
+ * "simpleType": "string",
+ * "desc": "参数说明",
+ * "schema": "", // 提要, 如果是泛型,则此处显示泛型里面的类名称
+ * "schemaSimple": "", // 简称题要
+ * "required": true, // 是否必要 returnType恒为true 以@NotNull为准如果没有NotNull则使用@ApiModelProperty中的required字段
+ * "childTypes": [
+ * {} // 如果是array 或者object,则此处应该有后续 注: 这里同returnType 不是field
+ * ]
+ * }
+ * ],
+ * "name": "",
+ * "type": "indi.uhyils.pojo.DTO.ClassSwaggerDTO",
+ * "simpleType": "ClassSwaggerDTO",
+ * "schema": "", // 提要, 如果是泛型,则此处显示泛型里面的类名称
+ * "schemaSimple": "", // 简称题要
+ * "childTypes": [
+ * {} // 如果返回值本身是array,则此处应该有后续,且fields为空, 注: 这里同returnType 不是field
+ * ]
  * }
  *
  * @author uhyils <247452312@qq.com>
@@ -62,6 +62,15 @@ public class ModelInfoDTO implements Serializable {
      */
     @ApiModelProperty("重复的class名称")
     private String repeatClassName;
+
+    /**
+     * 快捷创建
+     */
+    public static ModelInfoDTO build(String repeatClassName) {
+        ModelInfoDTO build = new ModelInfoDTO();
+        build.setRepeatClassName(repeatClassName);
+        return build;
+    }
 
     public List<ModelFieldInfoDTO> getFields() {
         return fields;
@@ -125,14 +134,5 @@ public class ModelInfoDTO implements Serializable {
 
     public void setRepeatClassName(String repeatClassName) {
         this.repeatClassName = repeatClassName;
-    }
-
-    /**
-     * 快捷创建
-     */
-    public static ModelInfoDTO build(String repeatClassName) {
-        ModelInfoDTO build = new ModelInfoDTO();
-        build.setRepeatClassName(repeatClassName);
-        return build;
     }
 }

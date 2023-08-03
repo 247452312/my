@@ -34,12 +34,6 @@ public class Dept extends AbstractDoEntity<DeptDO> {
         super(parseIdToDO(id));
     }
 
-    private static DeptDO parseIdToDO(Long id) {
-        DeptDO deptDO = new DeptDO();
-        deptDO.setId(id);
-        return deptDO;
-    }
-
     public Dept(Identifier id) {
         super(id, new DeptDO());
     }
@@ -52,6 +46,12 @@ public class Dept extends AbstractDoEntity<DeptDO> {
     public Dept(List<Menu> menus, DeptDO deptDO) {
         super(deptDO);
         this.menus = menus;
+    }
+
+    private static DeptDO parseIdToDO(Long id) {
+        DeptDO deptDO = new DeptDO();
+        deptDO.setId(id);
+        return deptDO;
     }
 
     public void addPower(List<Power> powers, DeptRepository rep) {
@@ -95,22 +95,6 @@ public class Dept extends AbstractDoEntity<DeptDO> {
             rep.addMenu(this, newPowerId);
         }
     }
-
-    private List<Menu> addMenuToEntity(List<Menu> menuIds) {
-        if (this.menus == null) {
-            this.menus = new ArrayList<>(menuIds.size());
-        }
-        List<Menu> result = new ArrayList<>();
-        for (Menu newMenuId : menuIds) {
-            if (this.menus.contains(newMenuId)) {
-                continue;
-            }
-            this.menus.add(newMenuId);
-            result.add(newMenuId);
-        }
-        return result;
-    }
-
 
     /**
      * 填充权限
@@ -162,5 +146,20 @@ public class Dept extends AbstractDoEntity<DeptDO> {
 
     public List<Power> powers() {
         return powers;
+    }
+
+    private List<Menu> addMenuToEntity(List<Menu> menuIds) {
+        if (this.menus == null) {
+            this.menus = new ArrayList<>(menuIds.size());
+        }
+        List<Menu> result = new ArrayList<>();
+        for (Menu newMenuId : menuIds) {
+            if (this.menus.contains(newMenuId)) {
+                continue;
+            }
+            this.menus.add(newMenuId);
+            result.add(newMenuId);
+        }
+        return result;
     }
 }

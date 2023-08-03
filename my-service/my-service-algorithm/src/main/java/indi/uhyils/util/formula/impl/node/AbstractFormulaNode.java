@@ -55,8 +55,6 @@ public abstract class AbstractFormulaNode implements FormulaNode {
         init();
     }
 
-    protected abstract void init();
-
     @Override
     public Map<String, FormulaNode> lastNodes() {
         return lastNodes;
@@ -108,6 +106,8 @@ public abstract class AbstractFormulaNode implements FormulaNode {
         }
         return result.stream().filter(t -> !t.startsWith(VAR_NAME_PREX)).distinct().collect(Collectors.toList());
     }
+
+    protected abstract void init();
 
     /**
      * 不存在没有此变量的情况的求导

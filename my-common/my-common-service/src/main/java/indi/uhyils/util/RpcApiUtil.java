@@ -153,7 +153,7 @@ public class RpcApiUtil {
 
             return genericService.invoke(methodName, headers, new String[]{parameterTypes}, arg);
         } catch (InvocationTargetException e) {
-            final Throwable cause = e.getCause();
+            Throwable cause = e.getCause();
             throw cause;
         } catch (Exception e) {
             throw e;

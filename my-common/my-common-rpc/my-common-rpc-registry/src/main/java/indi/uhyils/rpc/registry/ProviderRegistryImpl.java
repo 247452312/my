@@ -10,14 +10,12 @@ import indi.uhyils.rpc.exchange.pojo.data.RpcData;
 import indi.uhyils.rpc.registry.mode.ProviderRegistryCenterHandler;
 import indi.uhyils.rpc.registry.mode.RegistryCenterHandler;
 import indi.uhyils.rpc.registry.mode.RegistryCenterHandlerFactory;
-import indi.uhyils.rpc.registry.mode.RegistryModeBuilder;
 import indi.uhyils.util.LogUtil;
 import java.util.HashMap;
 
 /**
- *
- * @date 文件创建日期 2023年04月23日 13时56分
  * @author uhyils <247452312@qq.com>
+ * @date 文件创建日期 2023年04月23日 13时56分
  */
 @RpcSpi(single = false)
 public class ProviderRegistryImpl extends AbstractRegistry implements ProviderRegistry {
@@ -31,26 +29,6 @@ public class ProviderRegistryImpl extends AbstractRegistry implements ProviderRe
         RpcConfig config = RpcConfigFactory.getInstance();
         Integer port = config.getProvider().getPort();
         initCluster(bean, port);
-    }
-
-    /**
-     * 初始化生产者对应的集群信息
-     * @param bean 对应的服务提供类的bean
-     * @param port
-     */
-    private void initCluster(Object bean, Integer port) {
-        HashMap<String, Object> beans = new HashMap<>(1);
-        beans.put(this.serviceClass.getName(), bean);
-        try {
-            this.cluster = ClusterFactory.createDefaultProviderCluster(port, beans);
-        } catch (Exception e) {
-            LogUtil.error(this, e);
-        }
-    }
-
-    @Override
-    protected RegistryCenterHandler doInitRegistryCenterHandler(Object... objects) throws InterruptedException {
-        return RegistryCenterHandlerFactory.createProvider(serviceClass);
     }
 
     @Override
@@ -93,5 +71,26 @@ public class ProviderRegistryImpl extends AbstractRegistry implements ProviderRe
             throw new RpcShowDownException("rpc关闭错误");
         }
         return true;
+    }
+
+    @Override
+    protected RegistryCenterHandler doInitRegistryCenterHandler(Object... objects) throws InterruptedException {
+        return RegistryCenterHandlerFactory.createProvider(serviceClass);
+    }
+
+    /**
+     * 初始化生产者对应的集群信息
+     *
+     * @param bean 对应的服务提供类的bean
+     * @param port
+     */
+    private void initCluster(Object bean, Integer port) {
+        HashMap<String, Object> beans = new HashMap<>(1);
+        beans.put(this.serviceClass.getName(), bean);
+        try {
+            this.cluster = ClusterFactory.createDefaultProviderCluster(port, beans);
+        } catch (Exception e) {
+            LogUtil.error(this, e);
+        }
     }
 }

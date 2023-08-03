@@ -1,6 +1,5 @@
 package indi.uhyils.plan.pojo.plan;
 
-import com.alibaba.druid.sql.ast.SQLObject;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOperator;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
@@ -77,12 +76,10 @@ public abstract class JoinSqlPlan extends AbstractMysqlSqlPlan {
      * @return
      */
     private static List<FieldInfo> findResultByTree(SqlTableSourceBinaryTree tree, NodeInvokeResult results) {
-        SQLPropertyExpr tableSource = tree.getTableSource();
-        SQLObject parent = tableSource.getParent();
-        SQLExprTableSource rightTableSource = (SQLExprTableSource) parent;
-        String rightAlias = rightTableSource.getAlias();
+        SQLExprTableSource tableSource = tree.getTableSource();
+        String rightAlias = tableSource.getAlias();
         if (StringUtil.isEmpty(rightAlias)) {
-            rightAlias = ((SQLPropertyExpr) rightTableSource.getExpr()).getName();
+            rightAlias = ((SQLPropertyExpr) tableSource.getExpr()).getName();
         }
         String finalRightAlias = rightAlias;
         return results.getFieldInfos().stream().map(s -> s.copyWithNewFieldName(finalRightAlias, s.getFieldName())).collect(Collectors.toList());

@@ -63,7 +63,7 @@ public class Visiter extends User {
         //盐 x位
         sb.append(salt);
 
-        final Optional<Identifier> unique = getUnique();
+        Optional<Identifier> unique = getUnique();
         Asserts.assertTrue(unique.isPresent(), "唯一标示不存在,不能进行token生成");
         return new Token(unique.get().getId(), AESUtil.AESEncode(encodeRules, sb.toString()));
     }

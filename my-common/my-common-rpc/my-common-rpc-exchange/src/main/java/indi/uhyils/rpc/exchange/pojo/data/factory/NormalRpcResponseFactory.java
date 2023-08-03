@@ -74,11 +74,11 @@ public class NormalRpcResponseFactory extends AbstractRpcFactory implements Resp
 
         rpcNormalRequest.setType(RpcTypeEnum.RESPONSE.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
-        final Map<String, String> rpcHeaderMap = RpcHeaderContext.get();
-        final RpcHeader[] rpcHeaderArray = rpcHeaderMap.entrySet().stream().map(t -> new RpcHeader(t.getKey(), t.getValue())).toArray(RpcHeader[]::new);
+        Map<String, String> rpcHeaderMap = RpcHeaderContext.get();
+        RpcHeader[] rpcHeaderArray = rpcHeaderMap.entrySet().stream().map(t -> new RpcHeader(t.getKey(), t.getValue())).toArray(RpcHeader[]::new);
         rpcNormalRequest.setHeaders(rpcHeaderArray);
-        final ServiceResult<?> serviceResult = ServiceResult.buildAssertFailedResult(cause.getMessage());
-        final String[] contentArray = {String.valueOf(RpcResponseTypeEnum.STRING_BACK.getCode()), JSON.toJSONString(serviceResult, SerializerFeature.WriteClassName)};
+        ServiceResult<?> serviceResult = ServiceResult.buildAssertFailedResult(cause.getMessage());
+        String[] contentArray = {String.valueOf(RpcResponseTypeEnum.STRING_BACK.getCode()), JSON.toJSONString(serviceResult, SerializerFeature.WriteClassName)};
         rpcNormalRequest.setContentArray(contentArray);
         rpcNormalRequest.setStatus(RpcStatusEnum.OK.getCode());
         rpcNormalRequest.setUnique(requestRpcData.unique());
@@ -137,12 +137,6 @@ public class NormalRpcResponseFactory extends AbstractRpcFactory implements Resp
 
     }
 
-
-    @Override
-    protected RpcTypeEnum getRpcType() {
-        return RpcTypeEnum.RESPONSE;
-    }
-
     /**
      * 创建一个
      *
@@ -158,7 +152,7 @@ public class NormalRpcResponseFactory extends AbstractRpcFactory implements Resp
         rpcNormalRequest.setType(RpcTypeEnum.RESPONSE.getCode());
         rpcNormalRequest.setVersion(MyRpcContent.VERSION);
         rpcNormalRequest.setHeaders(rpcHeaders);
-        final Throwable cause = businessException.getCause();
+        Throwable cause = businessException.getCause();
         String exceptionStr = JSON.toJSONString(cause);
         String[] contentArray = new String[]{RpcResponseTypeEnum.EXCEPTION.getCode().toString(), cause == null ? RpcStatusEnum.PROVIDER_ERROR.getName() : exceptionStr};
         rpcNormalRequest.setContentArray(contentArray);
@@ -169,5 +163,10 @@ public class NormalRpcResponseFactory extends AbstractRpcFactory implements Resp
         rpcNormalRequest.setContent(content);
         rpcNormalRequest.setSize(content.toString().getBytes(StandardCharsets.UTF_8).length);
         return rpcNormalRequest;
+    }
+
+    @Override
+    protected RpcTypeEnum getRpcType() {
+        return RpcTypeEnum.RESPONSE;
     }
 }

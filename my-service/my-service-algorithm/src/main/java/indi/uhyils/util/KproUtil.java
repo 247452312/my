@@ -56,6 +56,39 @@ public final class KproUtil {
     }
 
     /**
+     * 保存到本地
+     *
+     * @param path
+     * @param fileContext
+     */
+    public static void saveToLocal(String path, Map<String, String> fileContext) {
+        path = path.replace("\\", "/");
+        if (!path.endsWith("/")) {
+            path = path + "/";
+        }
+        for (Entry<String, String> entry : fileContext.entrySet()) {
+            String filePath = entry.getKey();
+            String fileContent = entry.getValue();
+            try {
+                filePath = path + filePath;
+                File file = new File(filePath);
+                String dir = filePath.substring(0, filePath.lastIndexOf("/"));
+                File dirFile = new File(dir);
+                if (!dirFile.exists()) {
+                    dirFile.mkdirs();
+                    file.createNewFile();
+                }
+                FileWriter fw = new FileWriter(filePath);
+                fw.write(fileContent);
+                fw.close();
+            } catch (IOException e) {
+                LogUtil.error(e);
+            }
+        }
+
+    }
+
+    /**
      * 获取mysql解析后的结果
      *
      * @return
@@ -117,39 +150,6 @@ public final class KproUtil {
             result.addAll(parseFiles(listFile));
         }
         return result;
-    }
-
-    /**
-     * 保存到本地
-     *
-     * @param path
-     * @param fileContext
-     */
-    public static void saveToLocal(String path, Map<String, String> fileContext) {
-        path = path.replace("\\", "/");
-        if (!path.endsWith("/")) {
-            path = path + "/";
-        }
-        for (Entry<String, String> entry : fileContext.entrySet()) {
-            String filePath = entry.getKey();
-            String fileContent = entry.getValue();
-            try {
-                filePath = path + filePath;
-                File file = new File(filePath);
-                String dir = filePath.substring(0, filePath.lastIndexOf("/"));
-                File dirFile = new File(dir);
-                if (!dirFile.exists()) {
-                    dirFile.mkdirs();
-                    file.createNewFile();
-                }
-                FileWriter fw = new FileWriter(filePath);
-                fw.write(fileContent);
-                fw.close();
-            } catch (IOException e) {
-                LogUtil.error(e);
-            }
-        }
-
     }
 
 }

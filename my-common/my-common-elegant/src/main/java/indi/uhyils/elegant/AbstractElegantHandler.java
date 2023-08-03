@@ -22,16 +22,6 @@ public abstract class AbstractElegantHandler implements ElegantHandler {
      */
     private final AtomicInteger onlineCount = new AtomicInteger(0);
 
-    /**
-     * 是否可以对外发布服务
-     *
-     * @return
-     */
-    protected Boolean canPublish() {
-        return this.canPublish.get();
-    }
-
-
     @Override
     public void allowToPublish() {
         canPublish.set(Boolean.TRUE);
@@ -51,6 +41,15 @@ public abstract class AbstractElegantHandler implements ElegantHandler {
     @Override
     public Boolean isBusy() {
         return Objects.equals(onlineCount.get(), 1);
+    }
+
+    /**
+     * 是否可以对外发布服务
+     *
+     * @return
+     */
+    protected Boolean canPublish() {
+        return this.canPublish.get();
     }
 
     /**

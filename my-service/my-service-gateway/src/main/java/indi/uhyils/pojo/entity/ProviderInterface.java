@@ -70,19 +70,20 @@ public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
         // providerInterface改造为可以使用的
         NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
         nodeInvokeResult.setFieldInfos(fieldInfo());
+        nodeInvokeResult.setResult(new ArrayList<>());
         return nodeInvokeResult;
     }
 
 
     @Override
     public String databaseName() {
-        final ProviderInterfaceDO providerInterfaceDO = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
+        ProviderInterfaceDO providerInterfaceDO = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
         return providerInterfaceDO.getDatabase();
     }
 
     @Override
     public String tableName() {
-        final ProviderInterfaceDO providerInterfaceDO = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
+        ProviderInterfaceDO providerInterfaceDO = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
         return providerInterfaceDO.getTable();
     }
 }

@@ -67,8 +67,8 @@ public abstract class UserAssembler extends AbstractAssembler<UserDO, User, User
 
     @NotNull
     private UserDTO fillTypeAndRole(User entity, UserDO t) {
-        final Role role = entity.role();
-        final UserDTO userDTO = toDTO(t);
+        Role role = entity.role();
+        UserDTO userDTO = toDTO(t);
         userDTO.setUserType(UserTypeEnum.USER.getCode());
         if (role != null) {
             RoleDTO roleDTO = roleAssembler.toDTO(entity.role());
