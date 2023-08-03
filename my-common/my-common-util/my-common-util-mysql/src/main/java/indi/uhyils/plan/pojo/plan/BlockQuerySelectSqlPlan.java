@@ -22,4 +22,12 @@ public abstract class BlockQuerySelectSqlPlan extends AbstractMysqlSqlPlan {
         this.froms = froms;
     }
 
+    public BlockQuerySelectSqlPlan(Long id, String sql, Map<String, String> headers, Map<String, Object> params) {
+        super(id, sql, headers, params);
+    }
+
+    public SqlTableSourceBinaryTree toTable() {
+        return froms;
+    }
+
 }

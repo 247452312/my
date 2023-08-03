@@ -142,8 +142,6 @@ public class User extends AbstractDoEntity<UserDO> {
 
     /**
      * 权限
-     *
-     * @return
      */
     public Role role() {
         return role;
@@ -151,8 +149,6 @@ public class User extends AbstractDoEntity<UserDO> {
 
     /**
      * 填充role
-     *
-     * @param roleRepository
      */
     public void initRole(RoleRepository roleRepository, DeptRepository deptRepository, PowerRepository powerRepository, MenuRepository menuRepository) {
         if (role != null) {

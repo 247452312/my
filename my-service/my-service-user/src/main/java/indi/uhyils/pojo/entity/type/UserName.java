@@ -9,7 +9,7 @@ package indi.uhyils.pojo.entity.type;
  */
 public class UserName implements BaseType {
 
-    private String userName;
+    private final String userName;
 
     public UserName(String userName) {
         this.userName = userName;

@@ -1,6 +1,5 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
-import com.alibaba.fastjson.JSON;
 import indi.uhyils.exception.AssertException;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
@@ -46,14 +45,14 @@ public class ComQueryCommand extends MysqlSqlCommand {
             return Collections.singletonList(ErrResponse.build("sql语句不能为空"));
         }
         LogUtil.info("mysql协议sql执行了:" + completeSql);
-        final String[] split = completeSql.split(";");
+        String[] split = completeSql.split(";");
         List<MysqlResponse> result = new ArrayList<>();
         for (String sql : split) {
             // 解析sql为执行计划
-            final List<MysqlPlan> mysqlPlans = MysqlUtil.analysisSqlToPlan(sql);
+            List<MysqlPlan> mysqlPlans = MysqlUtil.analysisSqlToPlan(sql);
             // 执行计划为空, 返回执行成功,无信息
             if (CollectionUtil.isEmpty(mysqlPlans)) {
-                final List<OkResponse> okResponses = Collections.singletonList(new OkResponse(SqlTypeEnum.NULL));
+                List<OkResponse> okResponses = Collections.singletonList(new OkResponse(SqlTypeEnum.NULL));
                 result.addAll(okResponses);
                 continue;
             }

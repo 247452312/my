@@ -30,7 +30,7 @@ public interface GatewaySdkService extends BaseService, MysqlSdkService {
      * @return
      */
     @NotNull
-    NodeInvokeResult invokeNode(InvokeCommand command);
+    NodeInvokeResult invokeCallNode(InvokeCommand command);
 
 
 }

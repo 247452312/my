@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.DTO;
 
+import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.pojo.DTO.base.IdDTO;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -26,6 +27,8 @@ public class CallNodeDTO extends IdDTO {
 
     /**
      * 调用方式 1->http 2->mysql 3->rpc
+     *
+     * @see InvokeTypeEnum
      */
     private Integer invokeType;
 

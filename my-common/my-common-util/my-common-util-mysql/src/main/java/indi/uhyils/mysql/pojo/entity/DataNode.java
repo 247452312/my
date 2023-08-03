@@ -2,6 +2,7 @@ package indi.uhyils.mysql.pojo.entity;
 
 import indi.uhyils.annotation.NotNull;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
+import java.util.Map;
 
 /**
  * 数据处理节点
@@ -18,17 +19,21 @@ public interface DataNode {
     String databaseName();
 
     /**
-     * 获取结果集
-     *
-     * @return
-     */
-    NodeInvokeResult getResult();
-
-    /**
      * 表名
      *
      * @return
      */
     @NotNull
     String tableName();
+
+    /**
+     * 获取结果集
+     *
+     * @param header
+     * @param params
+     *
+     * @return
+     */
+    NodeInvokeResult getResult(Map<String, String> header, Map<String, Object> params);
+
 }

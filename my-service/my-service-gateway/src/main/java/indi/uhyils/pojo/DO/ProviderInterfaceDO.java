@@ -2,6 +2,7 @@ package indi.uhyils.pojo.DO;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -19,6 +20,8 @@ public class ProviderInterfaceDO extends BaseDO {
 
     /**
      * 调用方式 1->http 2->mysql 3->rpc
+     *
+     * @see InvokeTypeEnum
      */
     @TableField
     private Integer invokeType;

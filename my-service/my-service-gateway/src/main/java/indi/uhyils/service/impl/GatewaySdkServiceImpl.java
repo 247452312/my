@@ -1,7 +1,9 @@
 package indi.uhyils.service.impl;
 
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.annotation.Public;
 import indi.uhyils.context.UserInfoHelper;
+import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.enums.SqlTypeEnum;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
@@ -11,12 +13,9 @@ import indi.uhyils.mysql.pojo.cqe.impl.MysqlAuthCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.mysql.pojo.response.impl.ErrResponse;
 import indi.uhyils.mysql.pojo.response.impl.OkResponse;
-import indi.uhyils.pojo.DO.NodeDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.cqe.InvokeCommand;
 import indi.uhyils.pojo.cqe.query.BlackQuery;
-import indi.uhyils.pojo.dto.response.GetInterfaceInfoResponse;
-import indi.uhyils.pojo.entity.AbstractDataNode;
 import indi.uhyils.pojo.entity.CallNode;
 import indi.uhyils.pojo.entity.Company;
 import indi.uhyils.pojo.entity.ProviderInterface;
@@ -65,32 +64,33 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
 
         final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(command.getPath());
         final ProviderInterface providerInterface = providerInterfaceRepository.find(command.getInvokeType(), splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
-        providerInterface.fillParams(providerInterfaceParamRepository);
+        providerInterface.fill(nodeRepository, providerInterfaceRepository);
         //        JSONArray.parseArray(JSONObject.toJSONString(Arrays.asList(command)))
+        NodeInvokeResult result = providerInterface.getResult(command.getHeader(), command.getParams());
         return new NodeInvokeResult(null);
     }
 
+    @NotNull
     @Override
-    public NodeInvokeResult invokeNode(InvokeCommand command) {
+    public NodeInvokeResult invokeCallNode(InvokeCommand command) {
         final String path = command.getPath();
-        Boolean isSysTable = nodeRepository.judgeSysTable(path);
+        Boolean isSysTable = callNodeRepository.judgeSysTable(path);
         if (isSysTable) {
             // 系统表
-            AbstractDataNode providerInterface = new SysProviderInterface(command.getPath(), command.getHeader(), command.getParams());
-            return providerInterface.getResult();
+            SysProviderInterface providerInterface = new SysProviderInterface(command.getPath());
+            return providerInterface.getResult(command.getHeader(), command.getParams());
         } else {
             //
             final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(path);
-            AbstractDataNode<NodeDO> node = callNodeRepository.findNodeByDatabaseAndTable(splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
-            Asserts.assertTrue(node != null, "未查询到指定的节点,名称:{}", command.getPath());
-            node.fillSqlInfo(node.toData().get().getSql(), command.getHeader(), command.getParams());
-            return node.getResult();
+            CallNode node = callNodeRepository.findNodeByDatabaseAndTable(splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue(), InvokeTypeEnum.parse(command.getInvokeType()));
+            node.fill(nodeRepository, providerInterfaceRepository);
+            return node.getResult(command.getHeader(), command.getParams());
         }
 
     }
 
     @Override
-    public MysqlResponse login(MysqlAuthCommand command) {
+    public MysqlResponse mysqlLogin(MysqlAuthCommand command) {
         MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
         Company company = new Company(command);
 
@@ -120,20 +120,4 @@ public class GatewaySdkServiceImpl implements GatewaySdkService {
                                         .values());
     }
 
-    /**
-     * todo 待删除 逻辑迁移到逻辑中去
-     *
-     * @param command
-     *
-     * @return
-     */
-    private GetInterfaceInfoResponse getInterfaceInfo(InvokeCommand command) {
-        final String path = command.getPath();
-        final Integer invokeType = command.getInvokeType();
-
-        final Pair<String, String> splitDataBaseUrl = GatewayUtil.splitDataBaseUrl(path);
-        ProviderInterface providerInterface = providerInterfaceRepository.find(invokeType, splitDataBaseUrl.getKey(), splitDataBaseUrl.getValue());
-        providerInterface.fillParams(providerInterfaceParamRepository);
-        return GetInterfaceInfoResponse.build(providerInterface.fieldInfo());
-    }
 }

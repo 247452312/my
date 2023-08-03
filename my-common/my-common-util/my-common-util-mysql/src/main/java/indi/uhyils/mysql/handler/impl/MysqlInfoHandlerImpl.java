@@ -155,7 +155,7 @@ public class MysqlInfoHandlerImpl extends ChannelInboundHandlerAdapter implement
                 case FIRST_SIGHT:
                     // 第一次见,默认为登录请求
                     MysqlAuthCommand mysqlCommand = new MysqlAuthCommand(mysqlThisRequestInfo);
-                    MysqlResponse invoke = service.login(mysqlCommand);
+                    MysqlResponse invoke = service.mysqlLogin(mysqlCommand);
                     sendResponse(Collections.singletonList(invoke));
                     mysqlTcpInfo.getAndIncrementStatus();
                     return;

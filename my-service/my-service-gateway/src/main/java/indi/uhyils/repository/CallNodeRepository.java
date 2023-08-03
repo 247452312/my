@@ -1,5 +1,7 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.annotation.NotNull;
+import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.pojo.DO.CallNodeDO;
 import indi.uhyils.pojo.DTO.UserDTO;
 import indi.uhyils.pojo.entity.CallNode;
@@ -26,10 +28,23 @@ public interface CallNodeRepository extends BaseEntityRepository<CallNodeDO, Cal
     List<CallNode> findByUser(UserDTO userDTO);
 
     /**
-     *
      * @param database
      * @param table
+     *
      * @return
      */
-    Node findNodeByDatabaseAndTable(String database, String table);
+    @NotNull
+    CallNode findNodeByDatabaseAndTable(String database, String table, InvokeTypeEnum invokeType);
+
+
+    /**
+     * 判断要查询的是否是系统表
+     *
+     * @param path
+     *
+     * @return
+     */
+    Boolean judgeSysTable(String path);
+
+
 }

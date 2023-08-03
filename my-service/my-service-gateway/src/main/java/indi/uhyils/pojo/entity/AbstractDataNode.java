@@ -2,11 +2,10 @@ package indi.uhyils.pojo.entity;
 
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.mysql.pojo.entity.DataNode;
-import indi.uhyils.mysql.util.MysqlUtil;
-import indi.uhyils.plan.MysqlPlan;
 import indi.uhyils.pojo.DO.base.BaseDO;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
-import java.util.List;
+import indi.uhyils.repository.NodeRepository;
+import indi.uhyils.repository.ProviderInterfaceRepository;
 import java.util.Map;
 
 /**
@@ -17,20 +16,6 @@ import java.util.Map;
  */
 public abstract class AbstractDataNode<T extends BaseDO> extends AbstractDoEntity<T> implements DataNode {
 
-    /**
-     * 此节点的入参
-     */
-    protected Map<String, Object> params;
-
-    /**
-     * 此节点的请求头信息
-     */
-    protected Map<String, String> header;
-
-    /**
-     * 此节点对应的sql语句
-     */
-    protected String sql;
 
     public AbstractDataNode(T t) {
         super(t);
@@ -41,19 +26,16 @@ public abstract class AbstractDataNode<T extends BaseDO> extends AbstractDoEntit
     }
 
     @Override
-    public NodeInvokeResult getResult() {
+    public NodeInvokeResult getResult(Map<String, String> header, Map<String, Object> params) {
         return new NodeInvokeResult(null);
     }
 
-
     /**
-     * 填充sql信息
+     * 填充必要数据
      *
-     * @param sql
+     * @param nodeRepository
+     * @param providerInterfaceRepository
      */
-    public void fillSqlInfo(String sql, Map<String, String> headers, Map<String, Object> params) {
-        this.sql = sql;
-        this.header = headers;
-        this.params = params;
-    }
+    public abstract void fill(NodeRepository nodeRepository, ProviderInterfaceRepository providerInterfaceRepository);
+
 }

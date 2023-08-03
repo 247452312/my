@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.cqe;
 
+import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.pojo.cqe.command.base.AbstractCommand;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,8 @@ public class InvokeCommand extends AbstractCommand {
 
     /**
      * 调用方式
+     *
+     * @see InvokeTypeEnum
      */
     private Integer invokeType;
 

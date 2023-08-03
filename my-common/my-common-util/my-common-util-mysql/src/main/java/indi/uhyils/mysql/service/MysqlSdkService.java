@@ -21,7 +21,7 @@ public interface MysqlSdkService {
      *
      * @return
      */
-    MysqlResponse login(MysqlAuthCommand mysqlCommand);
+    MysqlResponse mysqlLogin(MysqlAuthCommand mysqlCommand);
 
     /**
      * 获取有权限的数据库列表

@@ -24,7 +24,7 @@ import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -44,18 +44,16 @@ public class UserServiceImpl extends AbstractDoService<UserDO, User, UserDTO, Us
     @Value("${token.encodeRules}")
     private String encodeRules;
 
-    @Autowired
+    @Resource
     private RoleRepository roleRepository;
 
-    @Autowired
+    @Resource
     private DeptRepository deptRepository;
 
-
-    @Autowired
+    @Resource
     private PowerRepository powerRepository;
 
-
-    @Autowired
+    @Resource
     private MenuRepository menuRepository;
 
 

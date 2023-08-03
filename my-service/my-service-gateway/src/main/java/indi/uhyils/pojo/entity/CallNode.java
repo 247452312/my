@@ -1,13 +1,16 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.pojo.DTO.DatabaseInfo;
+import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.pojo.DO.CallNodeDO;
 import indi.uhyils.repository.NodeRepository;
 import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.GatewayUtil;
+import java.util.Map;
 import java.util.Optional;
 import javafx.util.Pair;
 
@@ -33,6 +36,7 @@ public class CallNode extends AbstractDataNode<CallNodeDO> {
         super(id, new CallNodeDO());
     }
 
+    @NotNull
     @Override
     public String databaseName() {
         final CallNodeDO node = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
@@ -41,6 +45,7 @@ public class CallNode extends AbstractDataNode<CallNodeDO> {
         return url.substring(0, firstIndex);
     }
 
+    @NotNull
     @Override
     public String tableName() {
         final CallNodeDO node = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
@@ -76,13 +81,19 @@ public class CallNode extends AbstractDataNode<CallNodeDO> {
      * 向下填充
      *
      * @param nodeRepository
-     * @param providerInterfaceRepository
      */
-    public void fillSubNode(NodeRepository nodeRepository, ProviderInterfaceRepository providerInterfaceRepository) {
+    @Override
+    public void fill(NodeRepository nodeRepository, ProviderInterfaceRepository providerInterfaceRepository) {
         final Optional<CallNodeDO> callNodeOptional = toData();
         callNodeOptional.ifPresent(callNodeDO -> {
             this.node = nodeRepository.find(new CallNode(callNodeDO.getNodeId()));
-            this.node.fillSubNode(nodeRepository, providerInterfaceRepository);
+            this.node.fill(nodeRepository, providerInterfaceRepository);
         });
+    }
+
+    @Override
+    public NodeInvokeResult getResult(Map<String, String> header, Map<String, Object> params) {
+        Asserts.assertTrue(node != null, "callNode未初始化");
+        return node.getResult(header, params);
     }
 }

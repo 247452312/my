@@ -16,4 +16,13 @@ public interface DoEntity<T extends BaseDO> extends IdEntity {
      * @return
      */
     Optional<T> toData();
+
+
+    /**
+     * 转换为DO(带验证)
+     *
+     * @return
+     */
+    T toDataAndValidate();
+
 }

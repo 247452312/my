@@ -64,6 +64,14 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
         this.config = SpringUtil.getBean(MysqlPlanConfig.class);
     }
 
+    protected AbstractMysqlSqlPlan(Long id, String sql, Map<String, String> headers, Map<String, Object> params) {
+        this.sql = sql;
+        this.params = params;
+        this.headers = headers;
+        this.id = id;
+        this.config = SpringUtil.getBean(MysqlPlanConfig.class);
+    }
+
 
     @Override
     public void complete(Map<Long, NodeInvokeResult> planArgs) {
@@ -81,6 +89,14 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
     @Override
     public long getId() {
         return id;
+    }
+
+    public Map<String, Object> toParams() {
+        return params;
+    }
+
+    public Map<String, String> toHeaders() {
+        return headers;
     }
 
     /**
@@ -108,6 +124,4 @@ public abstract class AbstractMysqlSqlPlan implements MysqlSqlPlan {
             }
         });
     }
-
-
 }

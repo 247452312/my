@@ -9,8 +9,13 @@ import indi.uhyils.pojo.DO.ProviderInterfaceDO;
 import indi.uhyils.pojo.DTO.ProviderInterfaceDTO;
 import indi.uhyils.pojo.entity.AbstractDataNode;
 import indi.uhyils.pojo.entity.ProviderInterface;
+import indi.uhyils.pojo.entity.ProviderInterfaceParam;
+import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.repository.ProviderInterfaceParamRepository;
 import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import java.util.List;
+import javax.annotation.Resource;
 
 
 /**
@@ -22,6 +27,9 @@ import indi.uhyils.repository.base.AbstractRepository;
  */
 @Repository
 public class ProviderInterfaceRepositoryImpl extends AbstractRepository<ProviderInterface, ProviderInterfaceDO, ProviderInterfaceDao, ProviderInterfaceDTO, ProviderInterfaceAssembler> implements ProviderInterfaceRepository {
+
+    @Resource
+    private ProviderInterfaceParamRepository paramRepository;
 
     protected ProviderInterfaceRepositoryImpl(ProviderInterfaceAssembler convert, ProviderInterfaceDao dao) {
         super(convert, dao);
@@ -44,5 +52,10 @@ public class ProviderInterfaceRepositoryImpl extends AbstractRepository<Provider
         queryWrapper.eq(ProviderInterfaceDO::getTable, table);
         final ProviderInterfaceDO nodeDO = dao.selectOne(queryWrapper);
         return assembler.toEntity(nodeDO);
+    }
+
+    @Override
+    public List<ProviderInterfaceParam> findParamByInterfaceId(Identifier id) {
+        return paramRepository.findByInterfaceId(id);
     }
 }

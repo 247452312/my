@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.NodeAssembler;
 import indi.uhyils.dao.NodeDao;
-import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.pojo.DO.NodeDO;
 import indi.uhyils.pojo.DTO.NodeDTO;
 import indi.uhyils.pojo.entity.AbstractDataNode;
@@ -36,7 +35,7 @@ public class NodeRepositoryImpl extends AbstractRepository<Node, NodeDO, NodeDao
 
 
     @Override
-    public AbstractDataNode find(String database, String table) {
+    public AbstractDataNode findNodeOrProvider(String database, String table) {
 
         final LambdaQueryWrapper<NodeDO> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(NodeDO::getDatabase, database);
@@ -47,11 +46,5 @@ public class NodeRepositoryImpl extends AbstractRepository<Node, NodeDO, NodeDao
             return assembler.toEntity(nodeDO);
         }
         return providerInterfaceRepository.find(database, table);
-    }
-
-    @Override
-    public Boolean judgeSysTable(String path) {
-        final String lowerPath = path.toLowerCase();
-        return MysqlContent.SYS_DATABASE.stream().anyMatch(t -> lowerPath.contains(t + MysqlContent.PATH_SEPARATOR));
     }
 }

@@ -11,7 +11,7 @@ import indi.uhyils.repository.NodeRepository;
 import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.service.CallNodeService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,10 +26,10 @@ import org.springframework.stereotype.Service;
 public class CallNodeServiceImpl extends AbstractDoService<CallNodeDO, CallNode, CallNodeDTO, CallNodeRepository, CallNodeAssembler> implements CallNodeService {
 
 
-    @Autowired
+    @Resource
     private NodeRepository nodeRepository;
 
-    @Autowired
+    @Resource
     private ProviderInterfaceRepository providerInterfaceRepository;
 
     public CallNodeServiceImpl(CallNodeAssembler assembler, CallNodeRepository repository) {
@@ -42,7 +42,7 @@ public class CallNodeServiceImpl extends AbstractDoService<CallNodeDO, CallNode,
         final List<CallNode> callNodes = rep.findNoPage(args);
         for (CallNode callNode : callNodes) {
             // 向下填充
-            callNode.fillSubNode(nodeRepository, providerInterfaceRepository);
+            callNode.fill(nodeRepository, providerInterfaceRepository);
         }
         return assem.listEntityToDTO(callNodes);
     }

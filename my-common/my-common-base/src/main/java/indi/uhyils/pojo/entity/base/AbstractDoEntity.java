@@ -68,6 +68,17 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
     }
 
     /**
+     * 转换为DO
+     *
+     * @return
+     */
+    @Override
+    public T toDataAndValidate() {
+        Asserts.assertTrue(data != null, "未初始化");
+        return data;
+    }
+
+    /**
      * 升级do中的id为id
      */
     public void upId() {
@@ -96,6 +107,16 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
         data.preInsert();
     }
 
+    @Override
+    public boolean haveId() {
+        return unique != null && unique.getId() != null && unique.getId() > 0;
+    }
+
+    @Override
+    public boolean notHaveId() {
+        return !haveId();
+    }
+
     /**
      * 从另一个entity中复制来
      *
@@ -106,16 +127,7 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
         target.ifPresent(t -> BeanUtil.copyProperties(t, this.data));
         final Optional<Identifier> unique = entity.getUnique();
         unique.ifPresent(t -> this.unique = t);
-    }    @Override
-    public boolean haveId() {
-        return unique != null && unique.getId() != null && unique.getId() > 0;
     }
-
-    @Override
-    public boolean notHaveId() {
-        return !haveId();
-    }
-
 
 
 }
