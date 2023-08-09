@@ -1,16 +1,15 @@
 package indi.uhyils.pojo.entity;
 
 import indi.uhyils.annotation.Default;
-import indi.uhyils.mysql.pojo.DTO.FieldInfo;
+import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.pojo.DO.ProviderInterfaceDO;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.NodeRepository;
 import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.util.Asserts;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * 接口表,提供方提供的调用方式以及url(ProviderInterface)表 数据库实体类
@@ -26,6 +25,10 @@ public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
      */
     private List<ProviderInterfaceParam> shouldParams;
 
+    /**
+     * 可执行的实例
+     */
+    private ProviderExample example;
 
     @Default
     public ProviderInterface(ProviderInterfaceDO data) {
@@ -44,34 +47,18 @@ public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
 
     @Override
     public void fill(NodeRepository nodeRepository, ProviderInterfaceRepository providerInterfaceRepository) {
-        this.shouldParams = providerInterfaceRepository.findParamByInterfaceId(getUnique().orElseThrow(() -> Asserts.makeException("接口未填充")));
+        ProviderInterfaceDO providerInterfaceDO = toDataAndValidate();
+        Identifier id = Identifier.build(providerInterfaceDO.getId());
+        this.shouldParams = providerInterfaceRepository.findParamByInterfaceId(id);
+        InvokeTypeEnum type = InvokeTypeEnum.getByCode(providerInterfaceDO.getInvokeType());
+        this.example = providerInterfaceRepository.findExample(id, type);
     }
 
-    /**
-     * 拼装字段信息返回值
-     *
-     * @return
-     */
-    public List<FieldInfo> fieldInfo() {
-        Optional<ProviderInterfaceDO> providerInterfaceOptional = toData();
-        ProviderInterfaceDO providerInterfaceDO = providerInterfaceOptional.orElseThrow(() -> Asserts.makeException("ProviderInterface未填充值"));
-        List<FieldInfo> results = new ArrayList<>();
-
-        for (int i = 0; i < shouldParams.size(); i++) {
-            ProviderInterfaceParam shouldParam = shouldParams.get(i);
-            FieldInfo fieldInfo = new FieldInfo(providerInterfaceDO.getDatabase(), providerInterfaceDO.getTable(), providerInterfaceDO.getTable(), shouldParam.name(), shouldParam.name(), 0, i, shouldParam.type(), (short) 0, (byte) 0);
-            results.add(fieldInfo);
-        }
-        return results;
-    }
 
     @Override
     public NodeInvokeResult getResult(Map<String, String> header, Map<String, Object> params) {
-        // providerInterface改造为可以使用的
-        NodeInvokeResult nodeInvokeResult = new NodeInvokeResult(null);
-        nodeInvokeResult.setFieldInfos(fieldInfo());
-        nodeInvokeResult.setResult(new ArrayList<>());
-        return nodeInvokeResult;
+        Asserts.assertTrue(example != null, "执行前请先填充,对应方法 fill");
+        return example.invoke(header, params, shouldParams);
     }
 
 
@@ -86,4 +73,5 @@ public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
         ProviderInterfaceDO providerInterfaceDO = toData().orElseThrow(() -> Asserts.makeException("未填充内容"));
         return providerInterfaceDO.getTable();
     }
+
 }

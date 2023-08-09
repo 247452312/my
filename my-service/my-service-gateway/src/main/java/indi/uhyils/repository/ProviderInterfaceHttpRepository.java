@@ -1,7 +1,9 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.ProviderInterfaceHttpDO;
+import indi.uhyils.pojo.entity.ProviderExample;
 import indi.uhyils.pojo.entity.ProviderInterfaceHttp;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**
@@ -13,4 +15,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  */
 public interface ProviderInterfaceHttpRepository extends BaseEntityRepository<ProviderInterfaceHttpDO, ProviderInterfaceHttp> {
 
+    /**
+     * 根据providerId获取
+     *
+     * @param id
+     *
+     * @return
+     */
+    ProviderExample findByProviderId(Identifier id);
 }

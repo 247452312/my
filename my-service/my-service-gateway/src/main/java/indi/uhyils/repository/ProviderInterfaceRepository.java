@@ -1,7 +1,9 @@
 package indi.uhyils.repository;
 
+import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.pojo.DO.ProviderInterfaceDO;
 import indi.uhyils.pojo.entity.AbstractDataNode;
+import indi.uhyils.pojo.entity.ProviderExample;
 import indi.uhyils.pojo.entity.ProviderInterface;
 import indi.uhyils.pojo.entity.ProviderInterfaceParam;
 import indi.uhyils.pojo.entity.type.Identifier;
@@ -46,4 +48,14 @@ public interface ProviderInterfaceRepository extends BaseEntityRepository<Provid
      * @return
      */
     List<ProviderInterfaceParam> findParamByInterfaceId(Identifier id);
+
+    /**
+     * 获取实际执行者
+     *
+     * @param id
+     * @param type
+     *
+     * @return
+     */
+    ProviderExample findExample(Identifier id, InvokeTypeEnum type);
 }

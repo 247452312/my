@@ -5,7 +5,9 @@ import indi.uhyils.assembler.ProviderInterfaceMysqlAssembler;
 import indi.uhyils.dao.ProviderInterfaceMysqlDao;
 import indi.uhyils.pojo.DO.ProviderInterfaceMysqlDO;
 import indi.uhyils.pojo.DTO.ProviderInterfaceMysqlDTO;
+import indi.uhyils.pojo.entity.ProviderExample;
 import indi.uhyils.pojo.entity.ProviderInterfaceMysql;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ProviderInterfaceMysqlRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 
@@ -25,4 +27,8 @@ public class ProviderInterfaceMysqlRepositoryImpl extends AbstractRepository<Pro
     }
 
 
+    @Override
+    public ProviderExample findByProviderId(Identifier id) {
+        return null;
+    }
 }

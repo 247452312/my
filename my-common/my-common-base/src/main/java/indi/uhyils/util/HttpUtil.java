@@ -1,5 +1,6 @@
 package indi.uhyils.util;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -46,8 +47,8 @@ public final class HttpUtil {
      *
      * @throws Exception
      */
-    public static Object sendHttpGet(String url, Map<String, Object> head) throws Exception {
-        JSONObject jsonObject = null;
+    public static Object sendHttpGet(String url, Map<String, String> head) throws Exception {
+        Object result = null;
         CloseableHttpClient client = null;
         CloseableHttpResponse response = null;
         try {
@@ -87,16 +88,27 @@ public final class HttpUtil {
                 /**
                  * 通过EntityUitls获取返回内容
                  */
-                String result = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+                String httpResult = EntityUtils.toString(entity, StandardCharsets.UTF_8);
 
+                if (httpResult != null && httpResult.startsWith("[")) {
+                    /**
+                     * 转换成json,根据合法性返回json或者字符串
+                     */
+                    try {
+                        result = JSONArray.parseArray(httpResult);
+                        return result;
+                    } catch (Exception e) {
+                        Asserts.throwException(e);
+                    }
+                }
                 /**
                  * 转换成json,根据合法性返回json或者字符串
                  */
                 try {
-                    jsonObject = JSONObject.parseObject(result);
-                    return jsonObject;
-                } catch (Exception e) {
+                    result = JSONObject.parseObject(httpResult);
                     return result;
+                } catch (Exception e) {
+                    return httpResult;
                 }
             } else {
                 LogUtil.error(HttpUtil.class, "GET请求失败");
@@ -125,7 +137,7 @@ public final class HttpUtil {
      *
      * @throws Exception
      */
-    public static Object sendHttpsGet(String url, Map<String, Object> head) throws Exception {
+    public static Object sendHttpsGet(String url, Map<String, String> head) throws Exception {
         JSONObject jsonObject = null;
         CloseableHttpResponse response = null;
         try (
@@ -200,7 +212,7 @@ public final class HttpUtil {
      *
      * @throws Exception
      */
-    public static Object sendHttpPost(String url, Map<String, Object> heads, Map<String, Object> params) throws Exception {
+    public static Object sendHttpPost(String url, Map<String, String> heads, Map<String, Object> params) throws Exception {
         JSONObject jsonObject = null;
         CloseableHttpClient client = null;
         CloseableHttpResponse response = null;
@@ -278,7 +290,7 @@ public final class HttpUtil {
      *
      * @throws Exception
      */
-    public static Object sendHttpsPost(String url, Map<String, Object> heads, Map<String, Object> params) throws Exception {
+    public static Object sendHttpsPost(String url, Map<String, String> heads, Map<String, Object> params) throws Exception {
         JSONObject jsonObject = null;
         CloseableHttpClient client = null;
         CloseableHttpResponse response = null;
@@ -363,10 +375,10 @@ public final class HttpUtil {
      *
      * @return 参数对象
      */
-    private static List<BasicHeader> getHeads(Map<String, Object> heads) {
+    private static List<BasicHeader> getHeads(Map<String, String> heads) {
         List<BasicHeader> nameValuePairList = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : heads.entrySet()) {
-            nameValuePairList.add(new BasicHeader(entry.getKey(), entry.getValue().toString()));
+        for (Map.Entry<String, String> entry : heads.entrySet()) {
+            nameValuePairList.add(new BasicHeader(entry.getKey(), entry.getValue()));
         }
         return nameValuePairList;
     }

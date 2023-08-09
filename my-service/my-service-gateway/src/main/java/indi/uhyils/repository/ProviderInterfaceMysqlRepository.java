@@ -1,7 +1,9 @@
 package indi.uhyils.repository;
 
 import indi.uhyils.pojo.DO.ProviderInterfaceMysqlDO;
+import indi.uhyils.pojo.entity.ProviderExample;
 import indi.uhyils.pojo.entity.ProviderInterfaceMysql;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.base.BaseEntityRepository;
 
 /**
@@ -13,4 +15,12 @@ import indi.uhyils.repository.base.BaseEntityRepository;
  */
 public interface ProviderInterfaceMysqlRepository extends BaseEntityRepository<ProviderInterfaceMysqlDO, ProviderInterfaceMysql> {
 
+    /**
+     * 根据providerId获取
+     *
+     * @param id
+     *
+     * @return
+     */
+    ProviderExample findByProviderId(Identifier id);
 }

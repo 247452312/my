@@ -5,7 +5,9 @@ import indi.uhyils.assembler.ProviderInterfaceHttpAssembler;
 import indi.uhyils.dao.ProviderInterfaceHttpDao;
 import indi.uhyils.pojo.DO.ProviderInterfaceHttpDO;
 import indi.uhyils.pojo.DTO.ProviderInterfaceHttpDTO;
+import indi.uhyils.pojo.entity.ProviderExample;
 import indi.uhyils.pojo.entity.ProviderInterfaceHttp;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ProviderInterfaceHttpRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 
@@ -25,4 +27,8 @@ public class ProviderInterfaceHttpRepositoryImpl extends AbstractRepository<Prov
     }
 
 
+    @Override
+    public ProviderExample findByProviderId(Identifier id) {
+        return null;
+    }
 }

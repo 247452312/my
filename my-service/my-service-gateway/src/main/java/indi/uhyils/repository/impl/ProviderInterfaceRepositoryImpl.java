@@ -5,15 +5,21 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ProviderInterfaceAssembler;
 import indi.uhyils.dao.ProviderInterfaceDao;
+import indi.uhyils.enums.InvokeTypeEnum;
 import indi.uhyils.pojo.DO.ProviderInterfaceDO;
 import indi.uhyils.pojo.DTO.ProviderInterfaceDTO;
 import indi.uhyils.pojo.entity.AbstractDataNode;
+import indi.uhyils.pojo.entity.ProviderExample;
 import indi.uhyils.pojo.entity.ProviderInterface;
 import indi.uhyils.pojo.entity.ProviderInterfaceParam;
 import indi.uhyils.pojo.entity.type.Identifier;
+import indi.uhyils.repository.ProviderInterfaceHttpRepository;
+import indi.uhyils.repository.ProviderInterfaceMysqlRepository;
 import indi.uhyils.repository.ProviderInterfaceParamRepository;
 import indi.uhyils.repository.ProviderInterfaceRepository;
+import indi.uhyils.repository.ProviderInterfaceRpcRepository;
 import indi.uhyils.repository.base.AbstractRepository;
+import indi.uhyils.util.Asserts;
 import java.util.List;
 import javax.annotation.Resource;
 
@@ -30,6 +36,15 @@ public class ProviderInterfaceRepositoryImpl extends AbstractRepository<Provider
 
     @Resource
     private ProviderInterfaceParamRepository paramRepository;
+
+    @Resource
+    private ProviderInterfaceRpcRepository rpcRepository;
+
+    @Resource
+    private ProviderInterfaceHttpRepository httpRepository;
+
+    @Resource
+    private ProviderInterfaceMysqlRepository mysqlRepository;
 
     protected ProviderInterfaceRepositoryImpl(ProviderInterfaceAssembler convert, ProviderInterfaceDao dao) {
         super(convert, dao);
@@ -57,5 +72,21 @@ public class ProviderInterfaceRepositoryImpl extends AbstractRepository<Provider
     @Override
     public List<ProviderInterfaceParam> findParamByInterfaceId(Identifier id) {
         return paramRepository.findByInterfaceId(id);
+    }
+
+    @Override
+    public ProviderExample findExample(Identifier id, InvokeTypeEnum type) {
+        switch (type) {
+            case RPC:
+                return rpcRepository.findByProviderId(id);
+            case HTTP:
+                return httpRepository.findByProviderId(id);
+            case MYSQL:
+                return mysqlRepository.findByProviderId(id);
+            default:
+                Asserts.throwException("未找到对应类型:{}", type);
+        }
+
+        return null;
     }
 }

@@ -1,11 +1,16 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ProviderInterfaceRpcAssembler;
 import indi.uhyils.dao.ProviderInterfaceRpcDao;
+import indi.uhyils.pojo.DO.ProviderInterfaceDO;
 import indi.uhyils.pojo.DO.ProviderInterfaceRpcDO;
 import indi.uhyils.pojo.DTO.ProviderInterfaceRpcDTO;
+import indi.uhyils.pojo.entity.ProviderExample;
 import indi.uhyils.pojo.entity.ProviderInterfaceRpc;
+import indi.uhyils.pojo.entity.type.Identifier;
 import indi.uhyils.repository.ProviderInterfaceRpcRepository;
 import indi.uhyils.repository.base.AbstractRepository;
 
@@ -25,4 +30,10 @@ public class ProviderInterfaceRpcRepositoryImpl extends AbstractRepository<Provi
     }
 
 
+    @Override
+    public ProviderExample findByProviderId(Identifier id) {
+        LambdaQueryWrapper<ProviderInterfaceRpcDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(ProviderInterfaceRpcDO::getInterfaceName, invokeType);
+        return null;
+    }
 }

@@ -43,6 +43,15 @@ public enum InvokeTypeEnum {
         return null;
     }
 
+    public static InvokeTypeEnum getByCode(Integer invokeType) {
+        for (InvokeTypeEnum value : values()) {
+            if (Objects.equals(value.getCode(), invokeType)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
     public Integer getCode() {
         return code;
     }
