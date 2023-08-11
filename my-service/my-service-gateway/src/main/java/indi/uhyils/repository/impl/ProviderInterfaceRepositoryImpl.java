@@ -85,8 +85,7 @@ public class ProviderInterfaceRepositoryImpl extends AbstractRepository<Provider
                 return mysqlRepository.findByProviderId(id);
             default:
                 Asserts.throwException("未找到对应类型:{}", type);
+                return null;
         }
-
-        return null;
     }
 }

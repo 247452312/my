@@ -16,6 +16,7 @@ import indi.uhyils.service.CallNodeService;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.GatewayUtil;
+import indi.uhyils.util.Pair;
 import indi.uhyils.util.SpringUtil;
 import indi.uhyils.util.StringUtil;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javafx.util.Pair;
 
 /**
  * information_schema库 SCHEMATA表
@@ -129,6 +129,7 @@ public class ISchemata extends AbstractSysTable {
         for (String s : schemaNameStrList) {
             if (schemaName.startsWith(s)) {
                 result = true;
+                break;
             }
         }
         return result;

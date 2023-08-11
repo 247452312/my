@@ -21,4 +21,10 @@ public interface ProviderExample {
      */
     NodeInvokeResult invoke(Map<String, String> header, Map<String, Object> params, List<ProviderInterfaceParam> shouldParams);
 
+    /**
+     * 填充父类
+     *
+     * @param providerInterface
+     */
+    void fillInterface(ProviderInterface providerInterface);
 }

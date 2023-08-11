@@ -29,12 +29,20 @@ public class ProviderInterfaceRpcDO extends BaseDO {
     @TableField
     private String methodName;
 
+
+    /**
+     * 主表id
+     */
+    @TableField
+    private Long fid;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", getId())
             .append("interfaceName", getInterfaceName())
             .append("methodName", getMethodName())
+            .append("fid", getFid())
             .toString();
     }
 
@@ -52,5 +60,13 @@ public class ProviderInterfaceRpcDO extends BaseDO {
 
     public void setMethodName(String methodName) {
         this.methodName = methodName;
+    }
+
+    public Long getFid() {
+        return fid;
+    }
+
+    public void setFid(Long fid) {
+        this.fid = fid;
     }
 }

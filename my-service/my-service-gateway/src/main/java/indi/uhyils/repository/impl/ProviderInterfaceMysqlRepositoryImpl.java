@@ -1,5 +1,7 @@
 package indi.uhyils.repository.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import indi.uhyils.annotation.Repository;
 import indi.uhyils.assembler.ProviderInterfaceMysqlAssembler;
 import indi.uhyils.dao.ProviderInterfaceMysqlDao;
@@ -29,6 +31,9 @@ public class ProviderInterfaceMysqlRepositoryImpl extends AbstractRepository<Pro
 
     @Override
     public ProviderExample findByProviderId(Identifier id) {
-        return null;
+        LambdaQueryWrapper<ProviderInterfaceMysqlDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(ProviderInterfaceMysqlDO::getFid, id.getId());
+        ProviderInterfaceMysqlDO little = dao.selectOne(queryWrapper);
+        return assembler.toEntity(little);
     }
 }

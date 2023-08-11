@@ -24,22 +24,22 @@ public class ResultSetResponse extends AbstractMysqlResponse {
     /**
      * 列类型
      */
-    private List<FieldInfo> fields;
+    private final List<FieldInfo> fields;
 
     /**
      * 要返回的信息
      */
-    private List<Map<String, Object>> jsonInfo;
+    private final List<Map<String, Object>> jsonInfo;
 
     /**
      * 数据库状态
      */
-    private MysqlServerStatusEnum serverStatus;
+    private final MysqlServerStatusEnum serverStatus;
 
     /**
      * 告警计数
      */
-    private int warnCount;
+    private final int warnCount;
 
     public ResultSetResponse(List<FieldInfo> fields, List<Map<String, Object>> jsonInfo, MysqlServerStatusEnum serverStatus) {
         this(fields, jsonInfo, serverStatus, MysqlContent.MYSQL_TCP_INFO.get().warnCount());
@@ -176,6 +176,9 @@ public class ResultSetResponse extends AbstractMysqlResponse {
         }
         if (obj instanceof Integer) {
             return MysqlUtil.mergeLengthCodedBinary((int) obj);
+        }
+        if (obj instanceof Boolean) {
+            return MysqlUtil.mergeLengthCodedBinary((Boolean) obj ? 1 : 0);
         }
         Asserts.assertTrue(false, "mysql 数据暂未支持类型:" + obj.getClass().getName());
         return null;

@@ -29,12 +29,18 @@ public class ProviderInterfaceHttpDO extends BaseDO {
     @TableField
     private Integer httpType;
 
+    /**
+     * 主表id
+     */
+    @TableField
+    private Long fid;
     @Override
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", getId())
             .append("url", getUrl())
             .append("httpType", getHttpType())
+            .append("fid", getFid())
             .toString();
     }
 
@@ -52,5 +58,13 @@ public class ProviderInterfaceHttpDO extends BaseDO {
 
     public void setHttpType(Integer httpType) {
         this.httpType = httpType;
+    }
+
+    public Long getFid() {
+        return fid;
+    }
+
+    public void setFid(Long fid) {
+        this.fid = fid;
     }
 }

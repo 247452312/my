@@ -11,6 +11,7 @@ import indi.uhyils.pojo.entity.sys.IRoutines;
 import indi.uhyils.pojo.entity.sys.ISchemata;
 import indi.uhyils.pojo.entity.sys.ITables;
 import indi.uhyils.pojo.entity.sys.IView;
+import indi.uhyils.pojo.entity.sys.MDual;
 import indi.uhyils.pojo.entity.sys.PGlobalVariables;
 import indi.uhyils.pojo.entity.sys.SysTable;
 import indi.uhyils.util.Asserts;
@@ -60,6 +61,10 @@ public enum SysTableEnum {
      * 系统参数
      */
     PERFORMANCE_SCHEMA_GLOBAL_VARIABLES("performance_schema", "global_variables", PGlobalVariables::new),
+    /**
+     * 系统参数
+     */
+    MYSQL_DUAL("mysql", "dual", MDual::new),
     ;
 
     /**

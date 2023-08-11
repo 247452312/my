@@ -52,6 +52,7 @@ public class ProviderInterface extends AbstractDataNode<ProviderInterfaceDO> {
         this.shouldParams = providerInterfaceRepository.findParamByInterfaceId(id);
         InvokeTypeEnum type = InvokeTypeEnum.getByCode(providerInterfaceDO.getInvokeType());
         this.example = providerInterfaceRepository.findExample(id, type);
+        this.example.fillInterface(this);
     }
 
 

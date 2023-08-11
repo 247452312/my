@@ -1,7 +1,6 @@
 package indi.uhyils.util;
 
 import indi.uhyils.mysql.content.MysqlContent;
-import javafx.util.Pair;
 
 /**
  * @author uhyils <247452312@qq.com>
@@ -9,7 +8,7 @@ import javafx.util.Pair;
  */
 public final class GatewayUtil {
 
-    protected GatewayUtil() {
+    private GatewayUtil() {
         throw new RuntimeException("不能初始化");
     }
 

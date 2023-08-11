@@ -11,7 +11,6 @@ public class MysqlPlanConfig {
      */
     private Boolean allowFault;
 
-
     public Boolean getAllowFault() {
         return allowFault;
     }

@@ -5,6 +5,7 @@ import com.alibaba.druid.sql.ast.expr.SQLIdentifierExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
 import indi.uhyils.annotation.Default;
+import indi.uhyils.annotation.NotNull;
 import indi.uhyils.exception.AssertException;
 import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.handler.MysqlTcpInfo;
@@ -55,6 +56,29 @@ public class Node extends AbstractDataNode<NodeDO> {
         return toDataAndValidate().getTableName();
     }
 
+    @NotNull
+    private static MysqlPlan makeNodePlan(NodeRepository nodeRepository, ProviderInterfaceRepository providerInterfaceRepository, BlockQuerySelectSqlPlan plan, String sql) {
+        BlockQuerySelectSqlPlan selectSqlPlan = plan;
+        SqlTableSourceBinaryTree sqlTableSourceBinaryTree = selectSqlPlan.toTable();
+        SQLExprTableSource tableSource = sqlTableSourceBinaryTree.getTableSource();
+
+        SQLName name = tableSource.getName();
+
+        MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+        String owner = null;
+        if (name instanceof SQLPropertyExpr) {
+            SQLPropertyExpr sqlPropertyExpr = (SQLPropertyExpr) name;
+            owner = sqlPropertyExpr.getOwner() != null ? sqlPropertyExpr.getOwnernName() : mysqlTcpInfo.getDatabase();
+        } else if (name instanceof SQLIdentifierExpr) {
+            owner = mysqlTcpInfo.getDatabase();
+        }
+
+        AbstractDataNode abstractDataNode = nodeRepository.findNodeOrProvider(owner, name.getSimpleName());
+        abstractDataNode.fill(nodeRepository, providerInterfaceRepository);
+        MysqlPlan nodeInvokePlan = new MysqlNodeInvokePlan(abstractDataNode, selectSqlPlan, sql);
+        return nodeInvokePlan;
+    }
+
     /**
      * 填充子节点
      *
@@ -70,24 +94,7 @@ public class Node extends AbstractDataNode<NodeDO> {
         // 将blockSql 执行计划 转换为node执行计划
         for (MysqlPlan plan : mysqlPlans) {
             if (plan instanceof BlockQuerySelectSqlPlan) {
-                BlockQuerySelectSqlPlan selectSqlPlan = (BlockQuerySelectSqlPlan) plan;
-                SqlTableSourceBinaryTree sqlTableSourceBinaryTree = selectSqlPlan.toTable();
-                SQLExprTableSource tableSource = sqlTableSourceBinaryTree.getTableSource();
-
-                SQLName name = tableSource.getName();
-
-                MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
-                String owner = null;
-                if (name instanceof SQLPropertyExpr) {
-                    SQLPropertyExpr sqlPropertyExpr = (SQLPropertyExpr) name;
-                    owner = sqlPropertyExpr.getOwner() != null ? sqlPropertyExpr.getOwnernName() : mysqlTcpInfo.getDatabase();
-                } else if (name instanceof SQLIdentifierExpr) {
-                    owner = mysqlTcpInfo.getDatabase();
-                }
-
-                AbstractDataNode abstractDataNode = nodeRepository.findNodeOrProvider(owner, name.getSimpleName());
-                abstractDataNode.fill(nodeRepository, providerInterfaceRepository);
-                MysqlPlan nodeInvokePlan = new MysqlNodeInvokePlan(abstractDataNode, selectSqlPlan, sql);
+                MysqlPlan nodeInvokePlan = makeNodePlan(nodeRepository, providerInterfaceRepository, (BlockQuerySelectSqlPlan) plan, sql);
                 result.add(nodeInvokePlan);
                 continue;
             }

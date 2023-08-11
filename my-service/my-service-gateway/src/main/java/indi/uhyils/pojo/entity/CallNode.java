@@ -10,9 +10,9 @@ import indi.uhyils.repository.NodeRepository;
 import indi.uhyils.repository.ProviderInterfaceRepository;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.GatewayUtil;
+import indi.uhyils.util.Pair;
 import java.util.Map;
 import java.util.Optional;
-import javafx.util.Pair;
 
 /**
  * 调用节点表, 真正调用的节点(CallNode)表 数据库实体类

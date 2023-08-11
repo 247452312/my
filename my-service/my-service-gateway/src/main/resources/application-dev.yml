@@ -8,7 +8,7 @@ rpc:
 
 log-out:
   dir-name: gateway
-  level: INFO
+  level: DEBUG
 
 id:
   organization:

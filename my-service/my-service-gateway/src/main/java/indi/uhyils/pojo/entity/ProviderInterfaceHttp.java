@@ -2,6 +2,7 @@ package indi.uhyils.pojo.entity;
 
 
 import static indi.uhyils.mysql.enums.FieldTypeEnum.FIELD_TYPE_FLOAT;
+import static indi.uhyils.mysql.enums.FieldTypeEnum.FIELD_TYPE_TINY;
 import static indi.uhyils.mysql.enums.FieldTypeEnum.FIELD_TYPE_VARCHAR;
 
 import com.alibaba.fastjson.JSONArray;
@@ -49,11 +50,10 @@ public class ProviderInterfaceHttp extends AbstractProviderExample<ProviderInter
                 case GET:
                     String url = makeGetUrl(providerInterfaceHttpDO.getUrl(), params);
                     httpResult = HttpUtil.sendHttpGet(url, header);
+                    break;
                 case POST:
                     httpResult = HttpUtil.sendHttpPost(providerInterfaceHttpDO.getUrl(), header, params);
                     break;
-                case UPDATE:
-                case DELETE:
                 default:
                     Asserts.throwException("http调用方式:{} 还未开放,敬请期待", byCode.getName());
             }
@@ -107,6 +107,8 @@ public class ProviderInterfaceHttp extends AbstractProviderExample<ProviderInter
                 Object value = entry.getValue();
                 if (value instanceof Number) {
                     fieldInfos.add(new FieldInfo(providerInterface.databaseName(), providerInterface.tableName(), providerInterface.tableName(), fieldName, fieldName, 0, 0, FIELD_TYPE_FLOAT, (short) 0, (byte) 0));
+                } else if (value instanceof Boolean) {
+                    fieldInfos.add(new FieldInfo(providerInterface.databaseName(), providerInterface.tableName(), providerInterface.tableName(), fieldName, fieldName, 0, 0, FIELD_TYPE_TINY, (short) 0, (byte) 0));
                 } else {
                     fieldInfos.add(new FieldInfo(providerInterface.databaseName(), providerInterface.tableName(), providerInterface.tableName(), fieldName, fieldName, 0, 0, FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
                 }

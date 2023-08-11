@@ -5,7 +5,7 @@ import indi.uhyils.mysql.pojo.response.AbstractMysqlResponse;
 import indi.uhyils.mysql.util.MysqlUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.RandomUtils;
 
@@ -79,7 +79,7 @@ public class AuthResponse extends AbstractMysqlResponse {
         results.add(randomLow);
         results.add(END_OF_PROTO.getBytes(StandardCharsets.UTF_8));
         results.add(new byte[1]);
-        return Arrays.asList(MysqlUtil.mergeListBytes(results));
+        return Collections.singletonList(MysqlUtil.mergeListBytes(results));
     }
 
 
@@ -112,7 +112,10 @@ public class AuthResponse extends AbstractMysqlResponse {
      */
     private byte[] toAuthPluginName() {
         // 20位随机数
-        byte[] randomBytes = RandomUtils.nextBytes(20);
+        byte[] randomBytes = new byte[20];
+        for (int i = 0; i < randomBytes.length; i++) {
+            randomBytes[i] = (byte) RandomUtils.nextInt(1, 127);
+        }
         mysqlTcpInfo.setRandomByte(randomBytes);
 
         List<byte[]> result = new ArrayList<>();

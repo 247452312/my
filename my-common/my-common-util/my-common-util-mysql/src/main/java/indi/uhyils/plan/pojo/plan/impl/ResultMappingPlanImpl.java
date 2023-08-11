@@ -1,7 +1,12 @@
 package indi.uhyils.plan.pojo.plan.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Objects;
 import indi.uhyils.annotation.NotNull;
+import indi.uhyils.mysql.content.MysqlContent;
+import indi.uhyils.mysql.content.MysqlGlobalVariables;
+import indi.uhyils.mysql.enums.FieldTypeEnum;
 import indi.uhyils.mysql.pojo.DTO.FieldInfo;
 import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.mysql.util.MysqlUtil;
@@ -14,6 +19,7 @@ import indi.uhyils.plan.pojo.plan.BlockQuerySelectSqlPlan;
 import indi.uhyils.plan.pojo.plan.JoinSqlPlan;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
+import indi.uhyils.util.SpringUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,12 +43,19 @@ public class ResultMappingPlanImpl extends AbstractResultMappingPlan {
     private final Boolean singleLine;
 
     /**
+     * mysql系统变量
+     */
+    private final Map<String, Object> mysqlSystemVariables;
+
+    /**
      * 当前映射之前最后一个查询执行计划的结果
      */
     private NodeInvokeResult lastQueryPlanResult;
 
     public ResultMappingPlanImpl(Map<String, String> headers, MysqlPlan lastMainPlan, List<MySQLSelectItem> selectList) {
         super(headers, lastMainPlan, selectList);
+        MysqlGlobalVariables bean = SpringUtil.getBean(MysqlGlobalVariables.class);
+        this.mysqlSystemVariables = JSONObject.parseObject(JSON.toJSONString(bean));
         // 是否是每行一个结果
         List<MysqlMethodEnum> allMethod = selectList.stream().filter(MySQLSelectItem::isMethodItem).map(MySQLSelectItem::method).collect(Collectors.toList());
         if (CollectionUtil.isEmpty(allMethod)) {
@@ -133,6 +146,12 @@ public class ResultMappingPlanImpl extends AbstractResultMappingPlan {
                 newFieldNameSet.add(fieldInfo.getFieldName());
                 continue;
             }
+            /*4.如果列是查询系统配置的,则返回*/
+            if (needFieldName.startsWith("@@")) {
+                newFieldInfo.add(new FieldInfo(MysqlContent.DUAL_DATABASES, "dual", "dual", needFieldName, needFieldName, 0, 0, FieldTypeEnum.FIELD_TYPE_VARCHAR, (short) 0, (byte) 0));
+                newFieldNameSet.add(needFieldName);
+                continue;
+            }
 
             /*4.如果结果列为 A.name 则通过tableName回溯寻找表来源,拼装*/
 
@@ -150,6 +169,13 @@ public class ResultMappingPlanImpl extends AbstractResultMappingPlan {
             for (Entry<String, Object> entry : t.entrySet()) {
                 if (MysqlUtil.ignoreCaseAndQuotesContains(needFields, entry.getKey()) || needFields.contains("*")) {
                     newResult.put(entry.getKey(), entry.getValue());
+                }
+            }
+            for (MySQLSelectItem mySQLSelectItem : selectList) {
+                String variable = mySQLSelectItem.toString();
+                if (variable.startsWith("@@")) {
+                    String variableCleanName = variable.substring(2);
+                    newResult.put(variable, mysqlSystemVariables.get(variableCleanName));
                 }
             }
             return newResult;

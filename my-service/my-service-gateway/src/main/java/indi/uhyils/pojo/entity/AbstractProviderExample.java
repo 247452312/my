@@ -43,7 +43,8 @@ public abstract class AbstractProviderExample<T extends BaseDO> extends Abstract
         return nodeInvokeResult;
     }
 
-    void fillInterface(ProviderInterface providerInterface) {
+    @Override
+    public void fillInterface(ProviderInterface providerInterface) {
         this.providerInterface = providerInterface;
     }
 

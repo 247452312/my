@@ -5,9 +5,9 @@ import indi.uhyils.mysql.pojo.DTO.NodeInvokeResult;
 import indi.uhyils.pojo.entity.sys.SysTable;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.GatewayUtil;
+import indi.uhyils.util.Pair;
 import indi.uhyils.util.StringUtil;
 import java.util.Map;
-import javafx.util.Pair;
 
 /**
  * @author uhyils <247452312@qq.com>

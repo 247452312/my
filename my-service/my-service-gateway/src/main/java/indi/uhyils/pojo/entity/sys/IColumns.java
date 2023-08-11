@@ -15,6 +15,7 @@ import indi.uhyils.service.CallNodeService;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import indi.uhyils.util.GatewayUtil;
+import indi.uhyils.util.Pair;
 import indi.uhyils.util.SpringUtil;
 import indi.uhyils.util.StringUtil;
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javafx.util.Pair;
 
 /**
  * 里面记录了mysql所有库中所有表的字段信息

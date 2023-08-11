@@ -68,7 +68,6 @@
         <rocketmq.version>4.3.0</rocketmq.version>
         <jython.version>2.7.2</jython.version>
         <javassist.version>3.24.0-GA</javassist.version>
-        <auto-service.version>1.0</auto-service.version>
         <kotlin.version>1.6.20-RC</kotlin.version>
     </properties>
 
@@ -388,12 +387,6 @@
                 <scope>compile</scope>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/com.google.auto.service/auto-service -->
-            <dependency>
-                <groupId>com.google.auto.service</groupId>
-                <artifactId>auto-service</artifactId>
-                <version>${auto-service.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>com.google.guava</groupId>

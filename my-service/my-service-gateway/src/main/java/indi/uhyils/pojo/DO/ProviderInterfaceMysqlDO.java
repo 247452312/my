@@ -35,6 +35,12 @@ public class ProviderInterfaceMysqlDO extends BaseDO {
     @TableField
     private String url;
 
+    /**
+     * 主表id
+     */
+    @TableField
+    private Long fid;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -42,6 +48,7 @@ public class ProviderInterfaceMysqlDO extends BaseDO {
             .append("database", getDatabase())
             .append("table", getTable())
             .append("url", getUrl())
+            .append("fid", getFid())
             .toString();
     }
 
@@ -67,5 +74,13 @@ public class ProviderInterfaceMysqlDO extends BaseDO {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Long getFid() {
+        return fid;
+    }
+
+    public void setFid(Long fid) {
+        this.fid = fid;
     }
 }

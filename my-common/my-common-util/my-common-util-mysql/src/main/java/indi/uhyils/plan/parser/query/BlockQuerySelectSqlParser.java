@@ -11,6 +11,7 @@ import com.alibaba.druid.sql.ast.expr.SQLMethodInvokeExpr;
 import com.alibaba.druid.sql.ast.expr.SQLPropertyExpr;
 import com.alibaba.druid.sql.ast.expr.SQLQueryExpr;
 import com.alibaba.druid.sql.ast.expr.SQLValuableExpr;
+import com.alibaba.druid.sql.ast.expr.SQLVariantRefExpr;
 import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLJoinTableSource;
 import com.alibaba.druid.sql.ast.statement.SQLJoinTableSource.JoinType;
@@ -34,7 +35,7 @@ import indi.uhyils.plan.pojo.plan.MethodInvokePlan;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.CollectionUtil;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,8 +93,9 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
     @Nullable
     private MySQLSelectItem parseSelectListItem(List<MysqlPlan> result, int index, Map<String, String> headers, SQLSelectItem selectItem) {
         SQLExpr expr = selectItem.getExpr();
-        // 常规,直接返回
-        if (expr instanceof SQLPropertyExpr || expr instanceof SQLIdentifierExpr || expr instanceof SQLAllColumnExpr) {
+        // 查询参数的,或者查询常规,直接返回
+        if (expr instanceof SQLVariantRefExpr || (expr instanceof SQLPropertyExpr && ((SQLPropertyExpr) expr).getOwner() instanceof SQLVariantRefExpr)
+            || expr instanceof SQLPropertyExpr || expr instanceof SQLIdentifierExpr || expr instanceof SQLAllColumnExpr) {
             return new MySQLSelectItem(expr, selectItem.getAlias(), selectItem);
         }
         if (expr instanceof SQLQueryExpr) {
@@ -114,7 +116,7 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
             result.add(newPlan);
             return new MySQLSelectItem(new SQLIdentifierExpr("&" + newPlan.getId()), selectItem.getAlias(), selectItem, newPlan.getMethodEnum());
         }
-        Asserts.throwException("查询报错,子查询类型找不到:{},内容为:{}", selectItem.getClass().getName(), selectItem.toString());
+        Asserts.throwException("查询报错,子查询类型找不到:{},内容为:{}", expr.getClass().getName(), selectItem.toString());
         return null;
     }
 
@@ -251,14 +253,14 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
             Asserts.assertTrue(CollectionUtil.isNotEmpty(mysqlPlans), "解析plan为空:{}", subQuery);
             plans.addAll(mysqlPlans);
             MysqlPlan mysqlPlan = mysqlPlans.get(0);
-            return Arrays.asList(new SQLBinaryOpExpr(expr, SQLBinaryOperator.Equality, new MySqlCharExpr("&" + mysqlPlan.getId())));
+            return Collections.singletonList(new SQLBinaryOpExpr(expr, SQLBinaryOperator.Equality, new MySqlCharExpr("&" + mysqlPlan.getId())));
         }
         if (where instanceof SQLInListExpr) {
             SQLInListExpr sqlInListExpr = (SQLInListExpr) where;
             SQLExpr expr = sqlInListExpr.getExpr();
             List<SQLExpr> targetList = sqlInListExpr.getTargetList();
             MySqlListExpr mySqlListExpr = new MySqlListExpr(targetList);
-            return Arrays.asList(new SQLBinaryOpExpr(expr, SQLBinaryOperator.Equality, mySqlListExpr));
+            return Collections.singletonList(new SQLBinaryOpExpr(expr, SQLBinaryOperator.Equality, mySqlListExpr));
         }
         Asserts.throwException("sql_where解析错误,没有找到解析类型:{}", where);
         return null;
@@ -297,7 +299,11 @@ public class BlockQuerySelectSqlParser extends AbstractSelectSqlParser {
      */
     @NotNull
     private SqlTableSourceBinaryTree transFrom(List<MysqlPlan> plans, SQLTableSource from, List<SQLBinaryOpExpr> where, Map<String, String> headers) {
-        if (from instanceof SQLJoinTableSource) {
+        if (from == null) {
+            // 无from语句,默认字段为@@前缀的系统变量, 并且如果from为空,则默认查询dual表
+            SQLExprTableSource dual = new SQLExprTableSource(new SQLPropertyExpr(MysqlContent.DUAL_DATABASES, "dual"), null);
+            return pool.getOrCreateObject(dual, where);
+        } else if (from instanceof SQLJoinTableSource) {
             SQLJoinTableSource sqlJoinTableSource = (SQLJoinTableSource) from;
             JoinType joinType = sqlJoinTableSource.getJoinType();
             SqlTableSourceBinaryTree lefts = transFrom(plans, sqlJoinTableSource.getLeft(), where, headers);

@@ -56,14 +56,19 @@ public class MysqlContent {
     public static final String DEFAULT_METHOD_CALL_TABLE = "method_call_table";
 
     /**
+     * dual表对应的db
+     */
+    public static final String DUAL_DATABASES = "mysql";
+
+    /**
      * 全局预处理语句id
      */
-    private static AtomicLong PREPARE_ID = new AtomicLong(0);
+    private static final AtomicLong PREPARE_ID = new AtomicLong(0);
 
     /**
      * mysql的tcp缓存
      */
-    private static WeakHashMap<ChannelId, MysqlTcpInfo> mysqlTcpInfoWeakHashMap = new WeakHashMap<>();
+    private static final WeakHashMap<ChannelId, MysqlTcpInfo> mysqlTcpInfoWeakHashMap = new WeakHashMap<>();
 
     static {
         SYS_DATABASE.add("information_schema");
