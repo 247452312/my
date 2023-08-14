@@ -17,11 +17,11 @@ import java.util.Map;
 public abstract class AbstractDataNode<T extends BaseDO> extends AbstractDoEntity<T> implements DataNode {
 
 
-    public AbstractDataNode(T t) {
+    protected AbstractDataNode(T t) {
         super(t);
     }
 
-    public AbstractDataNode(Long id, T t) {
+    protected AbstractDataNode(Long id, T t) {
         super(id, t);
     }
 

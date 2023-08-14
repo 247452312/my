@@ -18,7 +18,7 @@ public abstract class AbstractMqConsumer extends DefaultConsumer implements Base
      *
      * @param channel the channel to which this consumer is attached
      */
-    public AbstractMqConsumer(Channel channel) {
+    protected AbstractMqConsumer(Channel channel) {
         super(channel);
     }
 

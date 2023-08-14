@@ -159,9 +159,8 @@ public abstract class AbstractRepository<EN extends AbstractDoEntity<DO>, DO ext
     @Override
     public int change(EN entity, List<Arg> args) {
         QueryWrapper<DO> queryWrapper = Symbol.makeWrapper(args);
-        Optional<DO> aDo = entity.toData();
-        Asserts.assertTrue(aDo.isPresent(), "修改时不存在修改对应的值");
-        return dao.update(aDo.get(), queryWrapper);
+        DO dataAndValidate = entity.toDataAndValidate();
+        return dao.update(dataAndValidate, queryWrapper);
     }
 
     @Override

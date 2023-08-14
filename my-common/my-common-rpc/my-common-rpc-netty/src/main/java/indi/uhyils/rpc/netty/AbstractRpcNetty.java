@@ -11,11 +11,6 @@ import io.netty.channel.Channel;
 public abstract class AbstractRpcNetty implements RpcNetty {
 
     /**
-     * 默认的指向自身的target
-     */
-    private static final Object defaultTarget = new Object();
-
-    /**
      * 超时时间
      */
     protected Long timeOut;

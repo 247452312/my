@@ -6,14 +6,12 @@ import indi.uhyils.pojo.DTO.base.IdDTO;
 import indi.uhyils.pojo.DTO.base.Page;
 import indi.uhyils.pojo.cqe.query.demo.Arg;
 import indi.uhyils.pojo.entity.base.AbstractDoEntity;
-import indi.uhyils.util.Asserts;
 import indi.uhyils.util.LogUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.mapstruct.ap.spi.util.IntrospectorUtils;
 
@@ -58,11 +56,7 @@ public abstract class AbstractAssembler<DO extends BaseDO, ENTITY extends Abstra
 
     @Override
     public DTO toDTO(ENTITY entity) {
-        Optional<DO> aDo = entity.toData();
-        if (!aDo.isPresent()) {
-            Asserts.throwException("entity没有data!");
-        }
-        return toDTO(aDo.get());
+        return toDTO(entity.toDataAndValidate());
     }
 
     @Override

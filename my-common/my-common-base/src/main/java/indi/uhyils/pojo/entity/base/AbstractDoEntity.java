@@ -50,8 +50,8 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
         Asserts.assertTrue(this.unique != null, "数据库id不存在 不能补全");
         AbstractDoEntity<DO> dictItem = repository.find(this);
         Asserts.assertTrue(dictItem != null, "补全出的结果为空");
-        Optional<DO> data = dictItem.toData();
-        data.ifPresent(t -> {
+        Optional<DO> dataOptional = dictItem.toData();
+        dataOptional.ifPresent(t -> {
             this.data = t;
             setUnique(new Identifier(t.getId()));
         });
@@ -82,9 +82,8 @@ public abstract class AbstractDoEntity<T extends BaseDO> extends AbstractEntity<
      * 升级do中的id为id
      */
     public void upId() {
-        Optional<T> t = toData();
-        Asserts.assertTrue(t.isPresent(), "领域不存在数据(data)");
-        this.unique = new Identifier(t.get().getId());
+        T dataAndValidate = toDataAndValidate();
+        this.unique = new Identifier(dataAndValidate.getId());
     }
 
     public <EN extends AbstractDoEntity<T>> void saveSelf(BaseEntityRepository<T, EN> repository) {

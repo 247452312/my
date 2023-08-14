@@ -1,5 +1,6 @@
 package indi.uhyils.pojo.cqe.query.demo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @version 1.0
  * @date 文件创建日期 2021年08月22日 18时01分
  */
-public class Order {
+public class Order implements Serializable {
 
     private List<Column> columns;
 

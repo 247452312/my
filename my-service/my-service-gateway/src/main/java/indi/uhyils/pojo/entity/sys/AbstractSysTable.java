@@ -19,7 +19,7 @@ public abstract class AbstractSysTable implements SysTable {
      */
     protected Map<String, Object> params;
 
-    public AbstractSysTable(Map<String, Object> params) {
+    protected AbstractSysTable(Map<String, Object> params) {
         this.params = params;
     }
 

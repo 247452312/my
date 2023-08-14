@@ -8,6 +8,7 @@ import indi.uhyils.plan.parser.SqlParser;
 import indi.uhyils.plan.pojo.pool.SqlTableSourceBinaryTreePool;
 import indi.uhyils.util.Asserts;
 import indi.uhyils.util.SpringUtil;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -111,7 +112,7 @@ public abstract class AbstractSelectSqlParser implements SqlParser {
             }
         }
         Asserts.throwException("错误,未找到对应的解析类,语句为:{}", fromSql);
-        return null;
+        return Collections.emptyList();
     }
 
     /**

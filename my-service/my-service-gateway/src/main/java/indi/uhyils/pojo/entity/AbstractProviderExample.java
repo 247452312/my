@@ -19,18 +19,18 @@ public abstract class AbstractProviderExample<T extends BaseDO> extends Abstract
      */
     protected ProviderInterface providerInterface;
 
-    public AbstractProviderExample(T t) {
+    protected AbstractProviderExample(T t) {
         super(t);
     }
 
-    public AbstractProviderExample() {
+    protected AbstractProviderExample() {
     }
 
-    public AbstractProviderExample(Identifier id, T t) {
+    protected AbstractProviderExample(Identifier id, T t) {
         super(id, t);
     }
 
-    public AbstractProviderExample(Long id, T t) {
+    protected AbstractProviderExample(Long id, T t) {
         super(id, t);
     }
 

@@ -65,7 +65,4 @@ class AbstractObjectPoolTest {
 
     }
 
-    @Test
-    void remainderCount() {
-    }
 }

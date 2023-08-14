@@ -41,7 +41,7 @@ public class PublicInterfaceInvoker extends AbstractAnnotationInterfaceInvoker {
 
     @Override
     public Object invoke() throws Throwable {
-        ServiceResult<?> result = checkIp();
+        ServiceResult<Long> result = checkIp();
         if (result != null) {
             return result;
         }

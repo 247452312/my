@@ -23,7 +23,7 @@ import java.util.concurrent.TimeoutException;
  */
 public abstract class AbstractTimeOutFilter {
 
-    private static ExecutorService es = MyExecutorWrapper.createByThreadPoolExecutor(new ThreadPoolExecutor(5, 100, 3000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10)));
+    private static final ExecutorService es = MyExecutorWrapper.createByThreadPoolExecutor(new ThreadPoolExecutor(5, 100, 3000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(10)));
 
     protected RpcData invoke0(RpcInvoker invoker, FilterContext invokerContext) throws InterruptedException {
         RpcData requestData = invokerContext.getRequestData();
@@ -31,11 +31,9 @@ public abstract class AbstractTimeOutFilter {
         Callable<RpcData> rpcDataCallable = () -> {
             try {
                 return invoker.invoke(invokerContext);
-            } catch (InterruptedException | RpcException e) {
+            } catch (RpcException e) {
                 LogUtil.error(e);
-                throw new RuntimeException(e);
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
+                throw e;
             }
 
         };

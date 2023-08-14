@@ -31,7 +31,7 @@ public abstract class AbstractProviderRegistryCenterHandler extends AbstractRegi
 
     @Override
     public Boolean allowToPublish() {
-        Asserts.assertTrue(CollectionUtil.isNotEmpty(registryModelInfo), "服务未注册");
+        assertRegistryModelNotEmpty();
         RegistryProviderNecessaryInfo necessaryInfo = singleRegistryModel().getNecessaryInfo();
         necessaryInfo.setEnable(true);
         return doChangeRegistryInfo();
@@ -39,7 +39,7 @@ public abstract class AbstractProviderRegistryCenterHandler extends AbstractRegi
 
     @Override
     public Boolean notAllowToPublish() {
-        Asserts.assertTrue(this.registryModelInfo != null, "服务未注册");
+        assertRegistryModelNotEmpty();
         RegistryProviderNecessaryInfo necessaryInfo = singleRegistryModel().getNecessaryInfo();
         necessaryInfo.setEnable(false);
         return doChangeRegistryInfo();
@@ -47,13 +47,13 @@ public abstract class AbstractProviderRegistryCenterHandler extends AbstractRegi
 
     @Override
     public void removeInstance() {
-        Asserts.assertTrue(this.registryModelInfo != null, "服务未注册");
+        assertRegistryModelNotEmpty();
         doRemoveRegistryInfo();
     }
 
     @Override
     public Boolean isPublish() {
-        Asserts.assertTrue(this.registryModelInfo != null, "服务未注册");
+        assertRegistryModelNotEmpty();
         return singleRegistryModel().getNecessaryInfo().getEnable();
     }
 
@@ -81,6 +81,13 @@ public abstract class AbstractProviderRegistryCenterHandler extends AbstractRegi
      * @return 是否修改成功
      */
     protected abstract Boolean doChangeRegistryInfo();
+
+    /**
+     * 校验是否存在或者已经加载对应生产者信息
+     */
+    private void assertRegistryModelNotEmpty() {
+        Asserts.assertTrue(CollectionUtil.isNotEmpty(registryModelInfo), "服务未注册");
+    }
 
     private RegistryModelInfo singleRegistryModel() {
         return this.registryModelInfo.get(0);

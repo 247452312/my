@@ -24,7 +24,7 @@ public abstract class AbstractAnnotationInterfaceInvoker {
 
     protected final RedisPool redisPool;
 
-    public AbstractAnnotationInterfaceInvoker(ProceedingJoinPoint pjp) {
+    protected AbstractAnnotationInterfaceInvoker(ProceedingJoinPoint pjp) {
         this.pjp = pjp;
         this.redisPool = SpringUtil.getBean(RedisPool.class);
     }
@@ -39,7 +39,7 @@ public abstract class AbstractAnnotationInterfaceInvoker {
     public abstract Object invoke() throws Throwable;
 
     @Nullable
-    protected ServiceResult<?> checkIp() {
+    protected ServiceResult<Long> checkIp() {
         Optional<String> userIp = UserInfoHelper.getUserIp();
         if (userIp.isPresent()) {
             String ip = userIp.get();
