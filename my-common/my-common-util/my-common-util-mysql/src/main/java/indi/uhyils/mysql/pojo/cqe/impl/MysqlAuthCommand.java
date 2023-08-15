@@ -1,13 +1,16 @@
 package indi.uhyils.mysql.pojo.cqe.impl;
 
+import indi.uhyils.mysql.content.MysqlContent;
 import indi.uhyils.mysql.decode.Proto;
 import indi.uhyils.mysql.enums.ClientPowerEnum;
 import indi.uhyils.mysql.enums.MysqlCommandTypeEnum;
+import indi.uhyils.mysql.handler.MysqlTcpInfo;
 import indi.uhyils.mysql.handler.MysqlThisRequestInfo;
 import indi.uhyils.mysql.pojo.cqe.AbstractMysqlCommand;
 import indi.uhyils.mysql.pojo.response.MysqlResponse;
 import indi.uhyils.mysql.util.MysqlUtil;
 import indi.uhyils.util.Asserts;
+import indi.uhyils.util.StringUtil;
 import java.util.List;
 
 
@@ -172,6 +175,10 @@ public class MysqlAuthCommand extends AbstractMysqlCommand {
 
         if (MysqlUtil.hasAbility(this.abilityFlags, ClientPowerEnum.CLIENT_CONNECT_WITH_DB.getCode())) {
             this.dbName = proto.get_null_str();
+            if (StringUtil.isNotEmpty(dbName)) {
+                MysqlTcpInfo mysqlTcpInfo = MysqlContent.MYSQL_TCP_INFO.get();
+                mysqlTcpInfo.setDatabase(dbName);
+            }
         }
 
         if (MysqlUtil.hasAbility(this.abilityFlags, ClientPowerEnum.CLIENT_SECURE_CONNECTION.getCode())) {
